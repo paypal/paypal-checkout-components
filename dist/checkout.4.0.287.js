@@ -1,14 +1,4 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define("paypal", [], factory);
-	else if(typeof exports === 'object')
-		exports["paypal"] = factory();
-	else
-		root["paypal"] = factory();
-})((typeof self !== 'undefined' ? self : this), function() {
-return /******/ (function(modules) { // webpackBootstrap
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -91,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 59);
+/******/ 	return __webpack_require__(__webpack_require__.s = 62);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -680,7 +670,7 @@ var LOCALE = (_LOCALE = {}, _LOCALE[COUNTRY.AD] = [LANG.EN, LANG.FR, LANG.ES, LA
 /* unused harmony export JsxHTMLNodeContainer */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return jsxToHTML; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return jsxRender; });
-/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
 
 
@@ -1335,204 +1325,20 @@ function () {
 
 "use strict";
 
-// EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js + 4 modules
-var cross_domain_utils_src = __webpack_require__(7);
+// EXTERNAL MODULE: ./src/lib/device.js
+var device = __webpack_require__(21);
 
-// CONCATENATED MODULE: ./src/lib/device.js
-
-function getUserAgent() {
-  return window.navigator.mockUserAgent || window.navigator.userAgent;
-}
-function isDevice() {
-  var userAgent = getUserAgent();
-
-  if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
-    return true;
-  }
-
-  return false;
-}
-function isInsidePopup() {
-  // Checks to see if the top-most window is a pop-up
-  return Boolean(Object(cross_domain_utils_src["l" /* getOpener */])(Object(cross_domain_utils_src["n" /* getTop */])(window) || window));
-}
-function isStandAlone() {
-  // Chrome interprets pop-up windows as standalone windows
-  return !isInsidePopup() && (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
-}
-function isFacebookWebView(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return ua.indexOf('FBAN') !== -1 || ua.indexOf('FBAV') !== -1;
-}
-function isFirefoxIOS(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /FxiOS/i.test(ua);
-}
-function isEdgeIOS(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /EdgiOS/i.test(ua);
-}
-function isOperaMini(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return ua.indexOf('Opera Mini') > -1;
-}
-function isAndroid(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /Android/.test(ua);
-}
-function isIos(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /iPhone|iPod|iPad/.test(ua);
-}
-function isGoogleSearchApp(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /\bGSA\b/.test(ua);
-}
-function isQQBrowser(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /QQBrowser/.test(ua);
-}
-function isIosWebview(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  if (isIos(ua)) {
-    if (isGoogleSearchApp(ua)) {
-      return true;
-    }
-
-    return /.+AppleWebKit(?!.*Safari)/.test(ua);
-  }
-
-  return false;
-}
-function isAndroidWebview(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  if (isAndroid(ua)) {
-    return /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
-  }
-
-  return false;
-}
-function isWebView() {
-  return isFacebookWebView() || isIosWebview() || isAndroidWebview();
-}
-function isIE() {
-  if (window.document.documentMode) {
-    return true;
-  }
-
-  if (window.navigator && typeof window.navigator.userAgent === 'string') {
-    if (/Edge|MSIE/i.test(window.navigator.userAgent)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-function isIE11() {
-  if (!isIE()) {
-    return false;
-  }
-
-  if (window.navigator && typeof window.navigator.userAgent === 'string') {
-    if (/MSIE 11\.0/i.test(window.navigator.userAgent)) {
-      return true;
-    }
-
-    if (/Trident/i.test(window.navigator.userAgent) && /rv:11\.0/i.test(window.navigator.userAgent)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-function isIECompHeader() {
-  var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]');
-  var mContent = window.document.querySelector('meta[content="IE=edge"]');
-
-  if (mHttp && mContent) {
-    return true;
-  }
-
-  return false;
-}
-function isElectron() {
-  var userAgent = getUserAgent(); // here we want a case-insensitive full word boundary
-
-  return /\belectron\b/i.test(userAgent);
-}
-function isIEIntranet() {
-  if (!isIE11()) {
-    return false;
-  } // This status check only works for older versions of IE with document.documentMode set
-
-
-  if (window.document.documentMode) {
-    try {
-      var status = window.status;
-      window.status = 'testIntranetMode';
-
-      if (window.status === 'testIntranetMode') {
-        window.status = status;
-        return true;
-      }
-
-      return false;
-    } catch (err) {
-      return false;
-    }
-  }
-
-  return false;
-}
-function isMacOsCna() {
-  var userAgent = getUserAgent();
-  return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
-}
-function supportsPopups(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
-}
 // EXTERNAL MODULE: ./src/lib/util.js
 var util = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./node_modules/post-robot/src/index.js + 12 modules
-var post_robot_src = __webpack_require__(13);
+var src = __webpack_require__(13);
 
 // EXTERNAL MODULE: ./node_modules/beaver-logger/client/index.js + 8 modules
 var client = __webpack_require__(5);
+
+// EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js + 4 modules
+var cross_domain_utils_src = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__(4);
@@ -1540,514 +1346,9 @@ var config = __webpack_require__(4);
 // EXTERNAL MODULE: ./src/constants/index.js + 7 modules
 var constants = __webpack_require__(0);
 
-// EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var zalgo_promise_src = __webpack_require__(2);
+// EXTERNAL MODULE: ./src/lib/session.js
+var session = __webpack_require__(19);
 
-// CONCATENATED MODULE: ./src/lib/dom.js
-
-
-
-
-
-
-
-function isDocumentReady() {
-  return Boolean(document.body) && document.readyState === 'complete';
-}
-
-var documentReady = new zalgo_promise_src["a" /* ZalgoPromise */](function (resolve) {
-  if (isDocumentReady()) {
-    return resolve();
-  }
-
-  var interval = setInterval(function () {
-    if (isDocumentReady()) {
-      clearInterval(interval);
-      return resolve();
-    }
-  }, 10);
-});
-var documentBody = documentReady.then(function () {
-  if (document.body) {
-    return document.body;
-  }
-
-  throw new Error('Document ready but document.body not present');
-});
-function loadScript(src, timeout, attrs) {
-  if (timeout === void 0) {
-    timeout = 0;
-  }
-
-  if (attrs === void 0) {
-    attrs = {};
-  }
-
-  return new zalgo_promise_src["a" /* ZalgoPromise */](function (resolve, reject) {
-    var script = document.createElement('script');
-    script.addEventListener('load', function () {
-      resolve();
-    }); // For Internet explorer 8 support
-
-    script.onreadystatechange = function scriptOnReadyStateChange() {
-      if (this.readyState === 'complete' || this.readyState === 'loaded') {
-        resolve();
-      }
-    };
-
-    var scriptLoadError = new Error('script_loading_error');
-    script.addEventListener('error', function () {
-      return reject(scriptLoadError);
-    });
-
-    if (timeout) {
-      setTimeout(function () {
-        return reject(new Error('script_loading_timed_out'));
-      }, timeout);
-    }
-
-    for (var _i2 = 0, _Object$keys2 = Object.keys(attrs); _i2 < _Object$keys2.length; _i2++) {
-      var attr = _Object$keys2[_i2];
-      script.setAttribute(attr, attrs[attr]);
-    }
-
-    script.setAttribute('src', src);
-    var head = document.getElementsByTagName('head')[0];
-    head.appendChild(script);
-  });
-}
-function isNodeList(nodes) {
-  var result = Object.prototype.toString.call(nodes);
-
-  if (result === '[object HTMLCollection]' || result === '[object NodeList]') {
-    return true;
-  }
-
-  return false;
-}
-function isElement(item) {
-  return item instanceof HTMLElement;
-}
-function getElement(item) {
-  if (!item) {
-    return;
-  }
-
-  if (item instanceof HTMLElement) {
-    return item;
-  }
-
-  if (typeof item === 'string') {
-    if (document.querySelector) {
-      var result = document.querySelector(item);
-
-      if (result) {
-        return result;
-      }
-    }
-
-    return document.getElementById(item);
-  }
-}
-function getElements(collection) {
-  if (!collection) {
-    return [];
-  }
-
-  if (collection instanceof HTMLElement || typeof collection === 'string') {
-    var element = getElement(collection);
-
-    if (element) {
-      return [element];
-    }
-
-    return [];
-  }
-
-  if (Array.isArray(collection) || collection instanceof NodeList || collection instanceof HTMLCollection) {
-    var result = [];
-
-    for (var i = 0; i < collection.length; i++) {
-      var el = getElement(collection[i]);
-
-      if (el) {
-        result.push(el);
-      }
-    }
-
-    return result;
-  }
-
-  return [];
-}
-function onDocumentReady(method) {
-  return documentReady.then(method);
-}
-var parseQuery = Object(util["i" /* memoize */])(function (queryString) {
-  var params = {};
-
-  if (!queryString) {
-    return params;
-  }
-
-  if (queryString.indexOf('=') === -1) {
-    return params;
-  }
-
-  for (var _i4 = 0, _queryString$split2 = queryString.split('&'); _i4 < _queryString$split2.length; _i4++) {
-    var pair = _queryString$split2[_i4];
-    pair = pair.split('=');
-
-    if (pair[0] && pair[1]) {
-      params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-    }
-  }
-
-  return params;
-});
-function getQueryParam(name) {
-  return parseQuery(window.location.search.slice(1))[name];
-}
-function urlWillRedirectPage(url) {
-  if (url.indexOf('#') === -1) {
-    return true;
-  }
-
-  if (url.indexOf('#') === 0) {
-    return false;
-  }
-
-  if (url.split('#')[0] === window.location.href.split('#')[0]) {
-    return false;
-  }
-
-  return true;
-}
-function extendUrl(url, params) {
-  if (params === void 0) {
-    params = {};
-  }
-
-  var hasHash = url.indexOf('#') > 0;
-
-  var _url$split = url.split('#'),
-      serverUrl = _url$split[0],
-      hash = _url$split[1];
-
-  if (hash && !serverUrl) {
-    var _ref = ["#" + hash, ''];
-    serverUrl = _ref[0];
-    hash = _ref[1];
-  }
-
-  var _serverUrl$split = serverUrl.split('?'),
-      originalUrl = _serverUrl$split[0],
-      originalQueryString = _serverUrl$split[1];
-
-  if (originalQueryString) {
-    var originalQuery = parseQuery(originalQueryString);
-
-    for (var _key in originalQuery) {
-      if (!params.hasOwnProperty(_key)) {
-        params[_key] = originalQuery[_key];
-      }
-    }
-  }
-
-  var newQueryString = Object.keys(params).filter(function (key) {
-    return key && params[key];
-  }).sort().map(function (key) {
-    return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
-  }).join('&');
-  var newUrl = originalUrl;
-
-  if (newQueryString) {
-    newUrl = newUrl + "?" + newQueryString;
-  }
-
-  if (hasHash) {
-    newUrl = newUrl + "#" + (hash || '');
-  }
-
-  return newUrl;
-}
-function redirect(win, url) {
-  if (win === void 0) {
-    win = window;
-  }
-
-  return new zalgo_promise_src["a" /* ZalgoPromise */](function (resolve) {
-    Object(client["k" /* info */])("redirect", {
-      url: url
-    });
-    setTimeout(function () {
-      win.location = url;
-
-      if (!urlWillRedirectPage(url)) {
-        resolve();
-      }
-    }, 1);
-  });
-}
-function hasMetaViewPort() {
-  var meta = document.querySelector('meta[name=viewport]');
-
-  if (isDevice() && window.screen.width < 660 && !meta) {
-    return false;
-  }
-
-  return true;
-}
-function getBrowserLocales() {
-  var nav = window.navigator;
-  var locales = nav.languages ? Array.prototype.slice.apply(nav.languages) : [];
-
-  if (nav.language) {
-    locales.push(nav.language);
-  }
-
-  if (nav.userLanguage) {
-    locales.push(nav.userLanguage);
-  }
-
-  return locales;
-}
-function normalizeLocale(locale) {
-  if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
-    var _locale$split = locale.split(/[-_]/),
-        lang = _locale$split[0],
-        country = _locale$split[1];
-
-    if (constants["z" /* LOCALE */][country] && constants["z" /* LOCALE */][country].indexOf(lang) !== -1) {
-      return {
-        country: country,
-        lang: lang
-      };
-    }
-  }
-}
-function normalizeLang(lang) {
-  if (lang && lang.match(/^[a-z]{2}$/)) {
-    if (constants["y" /* LANG_TO_DEFAULT_COUNTRY */][lang]) {
-      return {
-        country: constants["y" /* LANG_TO_DEFAULT_COUNTRY */][lang],
-        lang: lang
-      };
-    }
-  }
-}
-var getBrowserLocale = Object(util["i" /* memoize */])(function () {
-  var locales = getBrowserLocales();
-
-  for (var _i6 = 0; _i6 < locales.length; _i6++) {
-    var locale = locales[_i6];
-    var loc = normalizeLocale(locale);
-
-    if (loc) {
-      Object(client["k" /* info */])('better_browser_locale_full');
-      return loc;
-    }
-
-    loc = normalizeLang(locale);
-
-    if (loc) {
-      Object(client["k" /* info */])('better_browser_locale_lang');
-      return loc;
-    }
-  }
-
-  return config["a" /* config */].defaultLocale;
-});
-function isElementVisible(el) {
-  return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-}
-var enablePerformance = Object(util["i" /* memoize */])(function () {
-  /* eslint-disable compat/compat */
-  return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1000 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
-  /* eslint-enable compat/compat */
-});
-function getPageRenderTime() {
-  return documentReady.then(function () {
-    if (!enablePerformance()) {
-      return;
-    }
-
-    var timing = window.performance.timing; // eslint-disable-line compat/compat
-
-    if (timing.connectEnd && timing.domInteractive) {
-      return timing.domInteractive - timing.connectEnd;
-    }
-  });
-}
-function getResourceLoadTime(url) {
-  if (!enablePerformance()) {
-    return;
-  }
-
-  if (!window.performance || typeof window.performance.getEntries !== 'function') {
-    // eslint-disable-line compat/compat
-    return;
-  }
-
-  var entries = window.performance.getEntries(); // eslint-disable-line compat/compat
-
-  for (var i = 0; i < entries.length; i++) {
-    var entry = entries[i];
-
-    if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 60000) {
-      return Math.floor(entry.duration);
-    }
-  }
-}
-function htmlEncode(html) {
-  if (html === void 0) {
-    html = '';
-  }
-
-  return html.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/\//g, '&#x2F;');
-}
-// CONCATENATED MODULE: ./src/lib/security.js
-
-
-
-function allowIframe() {
-  if (!supportsPopups()) {
-    return true;
-  }
-
-  var parentWindow = Object(cross_domain_utils_src["m" /* getParent */])(window);
-
-  if (parentWindow && Object(cross_domain_utils_src["u" /* isSameDomain */])(parentWindow)) {
-    return true;
-  }
-
-  var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
-
-  if (parentComponentWindow && Object(cross_domain_utils_src["u" /* isSameDomain */])(parentComponentWindow)) {
-    return true;
-  }
-
-  if (false) {}
-
-  return false;
-}
-function isPayPalDomain() {
-  return Boolean((window.location.protocol + "//" + window.location.host).match(config["a" /* config */].paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
-}
-// CONCATENATED MODULE: ./src/lib/session.js
-
-
-
-
-var LOCAL_STORAGE_KEY = '__paypal_storage__';
-var SESSION_KEY = '__paypal_session__';
-var GLOBAL_KEY = '__paypal_global__';
-var accessedStorage;
-function getStorageState(handler) {
-  var localStorageEnabled = Object(util["f" /* isLocalStorageEnabled */])();
-  var storage;
-
-  if (accessedStorage) {
-    storage = accessedStorage;
-  }
-
-  if (!storage && localStorageEnabled) {
-    var rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
-
-    if (rawStorage) {
-      storage = JSON.parse(rawStorage);
-    }
-  }
-
-  if (!storage) {
-    storage = window[LOCAL_STORAGE_KEY];
-  }
-
-  if (!storage) {
-    storage = {
-      id: Object(util["s" /* uniqueID */])()
-    };
-  }
-
-  if (!storage.id) {
-    storage.id = Object(util["s" /* uniqueID */])();
-  }
-
-  accessedStorage = storage;
-  var result = handler(storage);
-
-  if (localStorageEnabled) {
-    window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
-  } else {
-    window[LOCAL_STORAGE_KEY] = storage;
-  }
-
-  accessedStorage = null;
-  return result;
-}
-function getStorageID() {
-  return getStorageState(function (storage) {
-    return storage.id;
-  });
-}
-function getSession(handler) {
-  return getStorageState(function (storage) {
-    var session = storage[SESSION_KEY];
-    var now = Date.now();
-
-    if (session && now - session.created > config["a" /* config */].session_uid_lifetime) {
-      session = null;
-    }
-
-    if (!session) {
-      session = {
-        guid: Object(util["s" /* uniqueID */])(),
-        created: now
-      };
-    }
-
-    storage[SESSION_KEY] = session;
-    return handler(session);
-  });
-}
-function getSessionState(handler) {
-  return getSession(function (session) {
-    session.state = session.state || {};
-    return handler(session.state);
-  });
-}
-function getSessionID() {
-  var xprops = window.xprops;
-
-  if (xprops && xprops.sessionID) {
-    return xprops.sessionID;
-  }
-
-  var querySessionID = getQueryParam('sessionID');
-
-  if (isPayPalDomain() && querySessionID) {
-    return querySessionID;
-  }
-
-  return getSession(function (session) {
-    return session.guid;
-  });
-}
-function getButtonSessionID() {
-  if (window.xprops && window.xprops.buttonSessionID) {
-    return window.xprops.buttonSessionID;
-  }
-
-  var querySessionID = getQueryParam('buttonSessionID');
-
-  if (isPayPalDomain() && querySessionID) {
-    return querySessionID;
-  }
-}
-function getGlobalState(handler) {
-  window[GLOBAL_KEY] = window[GLOBAL_KEY] || {};
-  return handler(window[GLOBAL_KEY]);
-}
 // CONCATENATED MODULE: ./src/lib/proxy.js
 
 
@@ -2056,7 +1357,7 @@ function getGlobalState(handler) {
 function proxyMethod(name, win, originalMethod) {
   if (win && Object(cross_domain_utils_src["g" /* getDomain */])() === config["a" /* config */].paypalDomain && !Object(cross_domain_utils_src["u" /* isSameDomain */])(win)) {
     if (win) {
-      Object(post_robot_src["send"])(win, "proxy_" + name, {
+      Object(src["send"])(win, "proxy_" + name, {
         originalMethod: originalMethod
       }).catch(util["j" /* noop */]);
     }
@@ -2065,7 +1366,7 @@ function proxyMethod(name, win, originalMethod) {
   }
 
   var methods = [];
-  Object(post_robot_src["on"])("proxy_" + name, {
+  Object(src["on"])("proxy_" + name, {
     domain: config["a" /* config */].paypal_domain_regex
   }, function (_ref) {
     var data = _ref.data;
@@ -2088,6 +1389,12 @@ function proxyMethod(name, win, originalMethod) {
     return originalMethod.apply(this, arguments);
   };
 }
+// EXTERNAL MODULE: ./src/lib/dom.js
+var dom = __webpack_require__(24);
+
+// EXTERNAL MODULE: ./src/lib/security.js
+var security = __webpack_require__(25);
+
 // CONCATENATED MODULE: ./src/lib/logger.js
 
 
@@ -2113,8 +1420,8 @@ function getToken() {
     return window.root.token;
   }
 
-  if (isPayPalDomain()) {
-    var queryToken = getQueryParam('token');
+  if (Object(security["b" /* isPayPalDomain */])()) {
+    var queryToken = Object(dom["f" /* getQueryParam */])('token');
 
     if (queryToken) {
       return queryToken;
@@ -2132,7 +1439,7 @@ function initLogger() {
       env: config["a" /* config */].env,
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
-      uid: getSessionID(),
+      uid: Object(session["c" /* getSessionID */])(),
       ver: "4.0.287"
     };
   });
@@ -2153,9 +1460,9 @@ function initLogger() {
       payload = {};
     }
 
-    var sessionID = getSessionID();
+    var sessionID = Object(session["c" /* getSessionID */])();
     var paymentToken = getToken();
-    var buttonSessionID = payload[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] || getButtonSessionID();
+    var buttonSessionID = payload[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] || Object(session["a" /* getButtonSessionID */])();
     var contextType;
     var contextID;
 
@@ -2191,7 +1498,7 @@ function setLogLevel(logLevel) {
 
   config["a" /* config */].logLevel = logLevel;
   client["e" /* config */].logLevel = logLevel;
-  post_robot_src["CONFIG"].LOG_LEVEL = logLevel;
+  src["CONFIG"].LOG_LEVEL = logLevel;
   window.LOG_LEVEL = logLevel;
 }
 // CONCATENATED MODULE: ./src/lib/eligibility.js
@@ -2202,15 +1509,15 @@ function setLogLevel(logLevel) {
 var bowserCache = {};
 
 function getBowser() {
-  var userAgent = getUserAgent();
+  var userAgent = Object(device["a" /* getUserAgent */])();
 
   if (bowserCache[userAgent]) {
     return bowserCache[userAgent];
   }
 
-  delete __webpack_require__.c[/*require.resolve*/(36)];
+  delete __webpack_require__.c[/*require.resolve*/(42)];
 
-  var bowser = __webpack_require__(36);
+  var bowser = __webpack_require__(42);
 
   bowserCache[userAgent] = bowser;
   return bowser;
@@ -2234,7 +1541,7 @@ function getBrowser() {
 }
 
 function isBrowserEligible() {
-  if (isIEIntranet()) {
+  if (Object(device["e" /* isIEIntranet */])()) {
     return false;
   }
 
@@ -2253,7 +1560,7 @@ function isBrowserEligible() {
 
 var eligibilityResults = {};
 function isEligible() {
-  if (isIEIntranet()) {
+  if (Object(device["e" /* isIEIntranet */])()) {
     return false;
   }
 
@@ -2322,11 +1629,11 @@ function checkForCommonErrors() {
     Object(client["q" /* warn */])("json_stringify_object_broken");
   }
 
-  if (isIEIntranet()) {
+  if (Object(device["e" /* isIEIntranet */])()) {
     Object(client["q" /* warn */])("ie_intranet_mode");
   }
 
-  if (isIE() && !isIECompHeader()) {
+  if (Object(device["c" /* isIE */])() && !Object(device["d" /* isIECompHeader */])()) {
     Object(client["q" /* warn */])("ie_meta_compatibility_header_missing", {
       message: "Drop tag: <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"
     });
@@ -2380,6 +1687,9 @@ function checkForCommonErrors() {
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
 var esm_extends = __webpack_require__(11);
+
+// EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
+var zalgo_promise_src = __webpack_require__(2);
 
 // CONCATENATED MODULE: ./src/lib/http.js
 
@@ -2563,128 +1873,9 @@ request.post = function (url, data, options) {
 request.addHeaderBuilder = function (method) {
   headerBuilders.push(method);
 };
-// CONCATENATED MODULE: ./src/lib/beacon.js
+// EXTERNAL MODULE: ./src/lib/beacon.js
+var beacon = __webpack_require__(29);
 
-
-
-
-var BEACON_URL = config["a" /* config */].loggerUrl;
-var APP_NAME = 'checkoutjs';
-function beacon(event, payload) {
-  if (payload === void 0) {
-    payload = {};
-  }
-
-  try {
-    payload.event = "ppxo_" + event;
-    payload.version = "4.0.287";
-    payload.host = window.location.host;
-    payload.uid = getSessionID();
-    payload.appName = APP_NAME;
-    var query = [];
-
-    for (var key in payload) {
-      if (payload.hasOwnProperty(key)) {
-        query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
-      }
-    }
-
-    query = query.join('&');
-
-    if (true) {
-      var beaconImage = new window.Image();
-      beaconImage.src = BEACON_URL + "?" + query;
-    }
-
-    setTimeout(function () {
-      if (config["a" /* config */].logLevel === constants["A" /* LOG_LEVEL */].DEBUG) {
-        if (window.console && window.console.log) {
-          window.console.log('*', event, payload);
-        }
-      }
-    }, 1);
-  } catch (err) {// pass
-  }
-}
-
-function isCheckpointUnique(name) {
-  return getSessionState(function (state) {
-    state.loggedBeacons = state.loggedBeacons || [];
-
-    if (state.loggedBeacons.indexOf(name) === -1) {
-      state.loggedBeacons.push(name);
-      return true;
-    }
-
-    return false;
-  });
-}
-
-function beacon_checkpoint(name, payload, options) {
-  if (payload === void 0) {
-    payload = {};
-  }
-
-  if (options === void 0) {
-    options = {};
-  }
-
-  try {
-    var checkpointName = name;
-
-    if (options.version) {
-      var version = "4.0.287".replace(/[^0-9]+/g, '_');
-
-      checkpointName = version + "_" + checkpointName;
-    }
-
-    if (!isCheckpointUnique(checkpointName)) {
-      return;
-    }
-
-    return beacon(checkpointName, payload);
-  } catch (err) {// pass
-  }
-}
-var FPTI_URL = 'https://t.paypal.com/ts';
-
-function buildPayload() {
-  return {
-    v: "checkout.js." + "4.0.287",
-    t: Date.now(),
-    g: new Date().getTimezoneOffset(),
-    flnm: 'ec:hermes:',
-    shir: 'main_ec_hermes_',
-    pgrp: 'main:ec:hermes::incontext-merchant',
-    page: 'main:ec:hermes::incontext-merchant',
-    vers: 'member:hermes:',
-    qual: 'incontext',
-    tmpl: 'merchant:incontext'
-  };
-}
-
-function fpti(payload) {
-  if (payload === void 0) {
-    payload = {};
-  }
-
-  var query = [];
-  payload = Object(esm_extends["a" /* default */])({}, buildPayload(), {}, payload);
-
-  for (var key in payload) {
-    if (payload.hasOwnProperty(key)) {
-      query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
-    }
-  }
-
-  query = query.join('&');
-
-  try {
-    var beaconImage = new window.Image();
-    beaconImage.src = FPTI_URL + "?" + query;
-  } catch (err) {// pass
-  }
-}
 // CONCATENATED MODULE: ./src/lib/throttle.js
 
 
@@ -2693,7 +1884,7 @@ function fpti(payload) {
 
 
 function getThrottlePercentile(name) {
-  return getStorageState(function (storage) {
+  return Object(session["f" /* getStorageState */])(function (storage) {
     storage.throttlePercentiles = storage.throttlePercentiles || {};
     storage.throttlePercentiles[name] = storage.throttlePercentiles[name] || Math.floor(Math.random() * 100);
     return storage.throttlePercentiles[name];
@@ -2706,7 +1897,7 @@ var THROTTLE_GROUP = {
   THROTTLE: 'throttle'
 };
 function getThrottle(name, sample) {
-  var uid = getStorageID();
+  var uid = Object(session["e" /* getStorageID */])();
   var throttle = getThrottlePercentile(name);
   var group;
 
@@ -2787,46 +1978,9 @@ function getReturnToken() {
     return token;
   }
 }
-// CONCATENATED MODULE: ./src/lib/namespace.js
+// EXTERNAL MODULE: ./src/lib/namespace.js
+var namespace = __webpack_require__(32);
 
-function extendNamespace(xports, namespaces, childnamespaces) {
-  if (namespaces === void 0) {
-    namespaces = [];
-  }
-
-  if (childnamespaces === void 0) {
-    childnamespaces = [];
-  }
-
-  for (var _i2 = 0, _namespaces2 = namespaces; _i2 < _namespaces2.length; _i2++) {
-    var name = _namespaces2[_i2];
-    var namespace = window[name];
-
-    if (!namespace) {
-      continue;
-    }
-
-    for (var _i4 = 0, _childnamespaces2 = childnamespaces; _i4 < _childnamespaces2.length; _i4++) {
-      var _extends2;
-
-      var childname = _childnamespaces2[_i4];
-      var childnamespace = xports[childname];
-
-      if (namespace[childname]) {
-        childnamespace = Object(esm_extends["a" /* default */])({}, namespace[childname], {}, childnamespace);
-      }
-
-      xports = Object(esm_extends["a" /* default */])({}, namespace, {}, xports, (_extends2 = {}, _extends2[childname] = childnamespace, _extends2));
-    }
-  }
-
-  for (var _i6 = 0, _namespaces4 = namespaces; _i6 < _namespaces4.length; _i6++) {
-    var _name = _namespaces4[_i6];
-    window[_name] = xports;
-  }
-
-  return xports;
-}
 // CONCATENATED MODULE: ./src/lib/script.js
 
 
@@ -2906,7 +2060,7 @@ var openMetaFrame = Object(util["i" /* memoize */])(function (env) {
   }
 
   return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    if (isIEIntranet()) {
+    if (Object(device["e" /* isIEIntranet */])()) {
       return {
         iframeEligible: false,
         iframeEligibleReason: 'ie_intranet',
@@ -2917,14 +2071,14 @@ var openMetaFrame = Object(util["i" /* memoize */])(function (env) {
     var metaFrameUrl = config["a" /* config */].metaFrameUrls[env];
     var metaFrameDomain = config["a" /* config */].paypalDomains[env];
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-      if (!post_robot_src["bridge"]) {
+      if (!src["bridge"]) {
         throw new Error("Opening meta window without bridge support is not currently supported");
       }
 
-      var metaListener = Object(post_robot_src["once"])('meta', {
+      var metaListener = Object(src["once"])('meta', {
         domain: metaFrameDomain
       });
-      return post_robot_src["bridge"].openBridge(extendUrl(metaFrameUrl, {
+      return src["bridge"].openBridge(Object(dom["a" /* extendUrl */])(metaFrameUrl, {
         version: getScriptVersion()
       }), metaFrameDomain).then(function () {
         return metaListener;
@@ -2948,7 +2102,7 @@ function getRememberedFunding(handler) {
     handler = util["e" /* identity */];
   }
 
-  return getStorageState(function (storage) {
+  return Object(session["f" /* getStorageState */])(function (storage) {
     storage.rememberedFunding = storage.rememberedFunding || [];
     return handler(storage.rememberedFunding);
   });
@@ -2961,7 +2115,7 @@ function hasRememberedFunding(source) {
     return true;
   }
 
-  if (getSessionState(function (session) {
+  if (Object(session["d" /* getSessionState */])(function (session) {
     return session.recentlyCheckedRemembered;
   })) {
     return true;
@@ -2977,7 +2131,7 @@ function isRememberedFunding(source) {
     return true;
   }
 
-  if (getSessionState(function (session) {
+  if (Object(session["d" /* getSessionState */])(function (session) {
     return session.recentlyCheckedRemembered;
   })) {
     return false;
@@ -2987,7 +2141,7 @@ function isRememberedFunding(source) {
 }
 
 function getRememberedFundingPromises() {
-  return getGlobalState(function (global) {
+  return Object(session["b" /* getGlobalState */])(function (global) {
     global.rememberFundingPromises = global.rememberFundingPromises || {};
     return global.rememberFundingPromises;
   });
@@ -3021,7 +2175,7 @@ function rememberFunding(sources) {
     for (var _i4 = 0; _i4 < sources.length; _i4++) {
       var source = sources[_i4];
 
-      if (source === constants["v" /* FUNDING */].VENMO && !isDevice()) {
+      if (source === constants["v" /* FUNDING */].VENMO && !Object(device["b" /* isDevice */])()) {
         continue;
       }
 
@@ -3032,7 +2186,7 @@ function rememberFunding(sources) {
 
     flushRememberedFundingPromises();
   });
-  getSessionState(function (session) {
+  Object(session["d" /* getSessionState */])(function (session) {
     session.recentlyCheckedRemembered = true;
   });
 }
@@ -3058,7 +2212,7 @@ function isFundingRemembered(source) {
   });
 }
 function precacheRememberedFunding() {
-  if (!getSessionState(function (session) {
+  if (!Object(session["d" /* getSessionState */])(function (session) {
     return session.recentlyCheckedRemembered;
   })) {
     return loadMeta();
@@ -3071,7 +2225,7 @@ var jsx = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./src/lib/index.js
 /* unused concated harmony import getUserAgent */
-/* concated harmony reexport isDevice */__webpack_require__.d(__webpack_exports__, "z", function() { return isDevice; });
+/* concated harmony reexport isDevice */__webpack_require__.d(__webpack_exports__, "z", function() { return device["b" /* isDevice */]; });
 /* unused concated harmony import isInsidePopup */
 /* unused concated harmony import isStandAlone */
 /* unused concated harmony import isFacebookWebView */
@@ -3079,19 +2233,19 @@ var jsx = __webpack_require__(1);
 /* unused concated harmony import isEdgeIOS */
 /* unused concated harmony import isOperaMini */
 /* unused concated harmony import isAndroid */
-/* concated harmony reexport isIos */__webpack_require__.d(__webpack_exports__, "F", function() { return isIos; });
+/* concated harmony reexport isIos */__webpack_require__.d(__webpack_exports__, "F", function() { return device["f" /* isIos */]; });
 /* unused concated harmony import isGoogleSearchApp */
 /* unused concated harmony import isQQBrowser */
 /* unused concated harmony import isIosWebview */
 /* unused concated harmony import isAndroidWebview */
 /* unused concated harmony import isWebView */
-/* concated harmony reexport isIE */__webpack_require__.d(__webpack_exports__, "D", function() { return isIE; });
+/* concated harmony reexport isIE */__webpack_require__.d(__webpack_exports__, "D", function() { return device["c" /* isIE */]; });
 /* unused concated harmony import isIE11 */
 /* unused concated harmony import isIECompHeader */
 /* unused concated harmony import isElectron */
-/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "E", function() { return isIEIntranet; });
+/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "E", function() { return device["e" /* isIEIntranet */]; });
 /* unused concated harmony import isMacOsCna */
-/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "W", function() { return supportsPopups; });
+/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "W", function() { return device["g" /* supportsPopups */]; });
 /* concated harmony reexport noop */__webpack_require__.d(__webpack_exports__, "J", function() { return util["j" /* noop */]; });
 /* concated harmony reexport once */__webpack_require__.d(__webpack_exports__, "L", function() { return util["k" /* once */]; });
 /* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "X", function() { return util["s" /* uniqueID */]; });
@@ -3131,26 +2285,26 @@ var jsx = __webpack_require__(1);
 /* concated harmony reexport checkForCommonErrors */__webpack_require__.d(__webpack_exports__, "c", function() { return checkForCommonErrors; });
 /* unused concated harmony import documentReady */
 /* unused concated harmony import documentBody */
-/* concated harmony reexport loadScript */__webpack_require__.d(__webpack_exports__, "H", function() { return loadScript; });
+/* concated harmony reexport loadScript */__webpack_require__.d(__webpack_exports__, "H", function() { return dom["i" /* loadScript */]; });
 /* unused concated harmony import isNodeList */
 /* unused concated harmony import isElement */
-/* concated harmony reexport getElement */__webpack_require__.d(__webpack_exports__, "n", function() { return getElement; });
-/* concated harmony reexport getElements */__webpack_require__.d(__webpack_exports__, "o", function() { return getElements; });
-/* concated harmony reexport onDocumentReady */__webpack_require__.d(__webpack_exports__, "K", function() { return onDocumentReady; });
+/* concated harmony reexport getElement */__webpack_require__.d(__webpack_exports__, "n", function() { return dom["c" /* getElement */]; });
+/* concated harmony reexport getElements */__webpack_require__.d(__webpack_exports__, "o", function() { return dom["d" /* getElements */]; });
+/* concated harmony reexport onDocumentReady */__webpack_require__.d(__webpack_exports__, "K", function() { return dom["j" /* onDocumentReady */]; });
 /* unused concated harmony import parseQuery */
-/* concated harmony reexport getQueryParam */__webpack_require__.d(__webpack_exports__, "q", function() { return getQueryParam; });
-/* concated harmony reexport urlWillRedirectPage */__webpack_require__.d(__webpack_exports__, "Y", function() { return urlWillRedirectPage; });
-/* concated harmony reexport extendUrl */__webpack_require__.d(__webpack_exports__, "g", function() { return extendUrl; });
-/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "P", function() { return redirect; });
+/* concated harmony reexport getQueryParam */__webpack_require__.d(__webpack_exports__, "q", function() { return dom["f" /* getQueryParam */]; });
+/* concated harmony reexport urlWillRedirectPage */__webpack_require__.d(__webpack_exports__, "Y", function() { return dom["l" /* urlWillRedirectPage */]; });
+/* concated harmony reexport extendUrl */__webpack_require__.d(__webpack_exports__, "g", function() { return dom["a" /* extendUrl */]; });
+/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "P", function() { return dom["k" /* redirect */]; });
 /* unused concated harmony import hasMetaViewPort */
 /* unused concated harmony import getBrowserLocales */
 /* unused concated harmony import normalizeLocale */
 /* unused concated harmony import normalizeLang */
-/* concated harmony reexport getBrowserLocale */__webpack_require__.d(__webpack_exports__, "i", function() { return getBrowserLocale; });
-/* concated harmony reexport isElementVisible */__webpack_require__.d(__webpack_exports__, "A", function() { return isElementVisible; });
+/* concated harmony reexport getBrowserLocale */__webpack_require__.d(__webpack_exports__, "i", function() { return dom["b" /* getBrowserLocale */]; });
+/* concated harmony reexport isElementVisible */__webpack_require__.d(__webpack_exports__, "A", function() { return dom["h" /* isElementVisible */]; });
 /* unused concated harmony import enablePerformance */
-/* concated harmony reexport getPageRenderTime */__webpack_require__.d(__webpack_exports__, "p", function() { return getPageRenderTime; });
-/* concated harmony reexport getResourceLoadTime */__webpack_require__.d(__webpack_exports__, "s", function() { return getResourceLoadTime; });
+/* concated harmony reexport getPageRenderTime */__webpack_require__.d(__webpack_exports__, "p", function() { return dom["e" /* getPageRenderTime */]; });
+/* concated harmony reexport getResourceLoadTime */__webpack_require__.d(__webpack_exports__, "s", function() { return dom["g" /* getResourceLoadTime */]; });
 /* unused concated harmony import htmlEncode */
 /* concated harmony reexport request */__webpack_require__.d(__webpack_exports__, "R", function() { return request; });
 /* unused concated harmony import beacon */
@@ -3162,9 +2316,9 @@ var jsx = __webpack_require__(1);
 /* unused concated harmony import getStorageState */
 /* unused concated harmony import getStorageID */
 /* unused concated harmony import getSession */
-/* concated harmony reexport getSessionState */__webpack_require__.d(__webpack_exports__, "w", function() { return getSessionState; });
-/* concated harmony reexport getSessionID */__webpack_require__.d(__webpack_exports__, "v", function() { return getSessionID; });
-/* concated harmony reexport getButtonSessionID */__webpack_require__.d(__webpack_exports__, "j", function() { return getButtonSessionID; });
+/* concated harmony reexport getSessionState */__webpack_require__.d(__webpack_exports__, "w", function() { return session["d" /* getSessionState */]; });
+/* concated harmony reexport getSessionID */__webpack_require__.d(__webpack_exports__, "v", function() { return session["c" /* getSessionID */]; });
+/* concated harmony reexport getButtonSessionID */__webpack_require__.d(__webpack_exports__, "j", function() { return session["a" /* getButtonSessionID */]; });
 /* unused concated harmony import getGlobalState */
 /* unused concated harmony import proxyMethod */
 /* concated harmony reexport openMetaFrame */__webpack_require__.d(__webpack_exports__, "M", function() { return openMetaFrame; });
@@ -3181,8 +2335,8 @@ var jsx = __webpack_require__(1);
 /* unused concated harmony import JsxHTMLNodeContainer */
 /* unused concated harmony import jsxToHTML */
 /* unused concated harmony import jsxRender */
-/* concated harmony reexport allowIframe */__webpack_require__.d(__webpack_exports__, "a", function() { return allowIframe; });
-/* concated harmony reexport isPayPalDomain */__webpack_require__.d(__webpack_exports__, "G", function() { return isPayPalDomain; });
+/* concated harmony reexport allowIframe */__webpack_require__.d(__webpack_exports__, "a", function() { return security["a" /* allowIframe */]; });
+/* concated harmony reexport isPayPalDomain */__webpack_require__.d(__webpack_exports__, "G", function() { return security["b" /* isPayPalDomain */]; });
 
 
 
@@ -3240,7 +2394,7 @@ function getDefaultEnv() {
 
 var config = {
   locales: constants["z" /* LOCALE */],
-  scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.lib.js",
+  scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.4.0.287.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
   version: "4.0.287",
@@ -4713,7 +3867,7 @@ var zalgo_promise_src = __webpack_require__(2);
 var cross_domain_safe_weakmap_src = __webpack_require__(17);
 
 // EXTERNAL MODULE: ./node_modules/zoid/src/error.js
-var error = __webpack_require__(22);
+var error = __webpack_require__(26);
 
 // CONCATENATED MODULE: ./node_modules/zoid/src/lib/util.js
 /* eslint max-lines: off */
@@ -8347,7 +7501,7 @@ var SEND_MESSAGE_STRATEGIES = {};
 SEND_MESSAGE_STRATEGIES[conf["b" /* CONSTANTS */].SEND_STRATEGIES.POST_MESSAGE] = function (win, serializedMessage, domain) {
   if (true) {
     try {
-      __webpack_require__(37).emulateIERestrictions(window, win);
+      __webpack_require__(43).emulateIERestrictions(window, win);
     } catch (err) {
       return;
     }
@@ -8389,7 +7543,7 @@ SEND_MESSAGE_STRATEGIES[conf["b" /* CONSTANTS */].SEND_STRATEGIES.POST_MESSAGE] 
 };
 
 if (true) {
-  var _require = __webpack_require__(21),
+  var _require = __webpack_require__(23),
       sendBridgeMessage = _require.sendBridgeMessage,
       needsBridgeForBrowser = _require.needsBridgeForBrowser,
       isBridge = _require.isBridge;
@@ -8955,7 +8109,7 @@ function messageListener(event) {
 
   if (true) {
     try {
-      __webpack_require__(37).emulateIERestrictions(messageEvent.source, window);
+      __webpack_require__(43).emulateIERestrictions(messageEvent.source, window);
     } catch (err) {
       return;
     }
@@ -9371,13 +8525,13 @@ function cleanUpWindow(win) {
 
 
 
-var bridge =  true ? __webpack_require__(56) : undefined;
+var bridge =  true ? __webpack_require__(63) : undefined;
 function init() {
   if (!global["a" /* global */].initialized) {
     listenForMessages();
 
     if (true) {
-      __webpack_require__(21).openTunnelToOpener();
+      __webpack_require__(23).openTunnelToOpener();
     }
 
     Object(lib["d" /* initOnReady */])();
@@ -10024,12 +9178,12 @@ var src = __webpack_require__(2);
 var beaver_logger_client = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./node_modules/zoid/src/index.js + 20 modules
-var zoid_src = __webpack_require__(19);
+var zoid_src = __webpack_require__(20);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 12 modules
 var belter_src = __webpack_require__(16);
 
-// EXTERNAL MODULE: ./src/lib/index.js + 15 modules
+// EXTERNAL MODULE: ./src/lib/index.js + 9 modules
 var lib = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
@@ -10172,10 +9326,10 @@ window.onLegacyFallback = window.watchForLegacyFallback;
 // CONCATENATED MODULE: ./src/compat/index.js
 
 // EXTERNAL MODULE: ./src/integrations/index.js + 1 modules
-var integrations = __webpack_require__(23);
+var integrations = __webpack_require__(27);
 
 // EXTERNAL MODULE: ./src/checkout/template/index.js + 6 modules
-var template = __webpack_require__(25);
+var template = __webpack_require__(30);
 
 // CONCATENATED MODULE: ./src/checkout/component.js
 
@@ -15420,15 +14574,15 @@ function boletoLogo(_ref) {
   })))));
 }
 // EXTERNAL MODULE: ./src/resources/fundingLogos/pp_white.svg
-var pp_white = __webpack_require__(38);
+var pp_white = __webpack_require__(44);
 var pp_white_default = /*#__PURE__*/__webpack_require__.n(pp_white);
 
 // EXTERNAL MODULE: ./src/resources/fundingLogos/pp_blue.svg
-var pp_blue = __webpack_require__(39);
+var pp_blue = __webpack_require__(45);
 var pp_blue_default = /*#__PURE__*/__webpack_require__.n(pp_blue);
 
 // EXTERNAL MODULE: ./src/resources/fundingLogos/pp_black.svg
-var pp_black = __webpack_require__(40);
+var pp_black = __webpack_require__(46);
 var pp_black_default = /*#__PURE__*/__webpack_require__.n(pp_black);
 
 // CONCATENATED MODULE: ./src/resources/fundingLogos/paypal.jsx
@@ -15558,23 +14712,23 @@ function creditLogo(_ref) {
   }
 }
 // EXTERNAL MODULE: ./src/resources/fundingLogos/venmo_white.svg
-var venmo_white = __webpack_require__(41);
+var venmo_white = __webpack_require__(47);
 var venmo_white_default = /*#__PURE__*/__webpack_require__.n(venmo_white);
 
 // EXTERNAL MODULE: ./src/resources/fundingLogos/itau.svg
-var itau = __webpack_require__(42);
+var itau = __webpack_require__(48);
 var itau_default = /*#__PURE__*/__webpack_require__.n(itau);
 
 // EXTERNAL MODULE: ./src/resources/fundingLogos/venmo_blue.svg
-var venmo_blue = __webpack_require__(43);
+var venmo_blue = __webpack_require__(49);
 var venmo_blue_default = /*#__PURE__*/__webpack_require__.n(venmo_blue);
 
 // EXTERNAL MODULE: ./src/resources/fundingLogos/elv.svg
-var elv = __webpack_require__(44);
+var elv = __webpack_require__(50);
 var elv_default = /*#__PURE__*/__webpack_require__.n(elv);
 
 // EXTERNAL MODULE: ./src/resources/fundingLogos/elv_white.svg
-var elv_white = __webpack_require__(45);
+var elv_white = __webpack_require__(51);
 var elv_white_default = /*#__PURE__*/__webpack_require__.n(elv_white);
 
 // CONCATENATED MODULE: ./src/resources/fundingLogos/index.js
@@ -15606,39 +14760,39 @@ var _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ITAU, _BUTTON_LOGO$ELV, _f
 
 var fundingLogos = (_fundingLogos = {}, _fundingLogos[constants["h" /* BUTTON_LOGO */].PP] = (_BUTTON_LOGO$PP = {}, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = pp_white_default.a, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].BLACK] = pp_black_default.a, _BUTTON_LOGO$PP), _fundingLogos[constants["h" /* BUTTON_LOGO */].PAYPAL] = paypalLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].CREDIT] = creditLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].VENMO] = (_BUTTON_LOGO$VENMO = {}, _BUTTON_LOGO$VENMO[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = venmo_white_default.a, _BUTTON_LOGO$VENMO[constants["i" /* BUTTON_LOGO_COLOR */].BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), _fundingLogos[constants["h" /* BUTTON_LOGO */].ITAU] = (_BUTTON_LOGO$ITAU = {}, _BUTTON_LOGO$ITAU[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = itau_default.a, _BUTTON_LOGO$ITAU), _fundingLogos[constants["h" /* BUTTON_LOGO */].IDEAL] = idealLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].ELV] = (_BUTTON_LOGO$ELV = {}, _BUTTON_LOGO$ELV[constants["i" /* BUTTON_LOGO_COLOR */].ANY] = elv_default.a, _BUTTON_LOGO$ELV[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[constants["h" /* BUTTON_LOGO */].BANCONTACT] = bancontactLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].GIROPAY] = giropayLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].SOFORT] = sofortLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].EPS] = epsLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].MYBANK] = mybankLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].P24] = p24Logo, _fundingLogos[constants["h" /* BUTTON_LOGO */].PAYU] = payuLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].VERKKOPANKKI] = verkkopankkiLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].BLIK] = blikLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].TRUSTLY] = trustlyLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].MAXIMA] = maximaLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].BOLETO] = boletoLogo, _fundingLogos);
 // EXTERNAL MODULE: ./src/resources/cardLogos/visa.svg
-var visa = __webpack_require__(46);
+var visa = __webpack_require__(52);
 var visa_default = /*#__PURE__*/__webpack_require__.n(visa);
 
 // EXTERNAL MODULE: ./src/resources/cardLogos/amex.svg
-var amex = __webpack_require__(47);
+var amex = __webpack_require__(53);
 var amex_default = /*#__PURE__*/__webpack_require__.n(amex);
 
 // EXTERNAL MODULE: ./src/resources/cardLogos/mastercard.svg
-var mastercard = __webpack_require__(48);
+var mastercard = __webpack_require__(54);
 var mastercard_default = /*#__PURE__*/__webpack_require__.n(mastercard);
 
 // EXTERNAL MODULE: ./src/resources/cardLogos/maestro.svg
-var maestro = __webpack_require__(49);
+var maestro = __webpack_require__(55);
 var maestro_default = /*#__PURE__*/__webpack_require__.n(maestro);
 
 // EXTERNAL MODULE: ./src/resources/cardLogos/discover.svg
-var discover = __webpack_require__(50);
+var discover = __webpack_require__(56);
 var discover_default = /*#__PURE__*/__webpack_require__.n(discover);
 
 // EXTERNAL MODULE: ./src/resources/cardLogos/hiper.svg
-var hiper = __webpack_require__(51);
+var hiper = __webpack_require__(57);
 var hiper_default = /*#__PURE__*/__webpack_require__.n(hiper);
 
 // EXTERNAL MODULE: ./src/resources/cardLogos/elo.svg
-var elo = __webpack_require__(52);
+var elo = __webpack_require__(58);
 var elo_default = /*#__PURE__*/__webpack_require__.n(elo);
 
 // EXTERNAL MODULE: ./src/resources/cardLogos/jcb.svg
-var jcb = __webpack_require__(53);
+var jcb = __webpack_require__(59);
 var jcb_default = /*#__PURE__*/__webpack_require__.n(jcb);
 
 // EXTERNAL MODULE: ./src/resources/cardLogos/cup.svg
-var cup = __webpack_require__(54);
+var cup = __webpack_require__(60);
 var cup_default = /*#__PURE__*/__webpack_require__.n(cup);
 
 // CONCATENATED MODULE: ./src/resources/cardLogos/index.js
@@ -15666,6 +14820,136 @@ var cardLogos = (_cardLogos = {}, _cardLogos[constants["o" /* CARD */].VISA] = v
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getStorageState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getStorageID; });
+/* unused harmony export getSession */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getSessionState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getSessionID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getButtonSessionID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getGlobalState; });
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
+/* harmony import */ var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
+
+
+
+
+var LOCAL_STORAGE_KEY = '__paypal_storage__';
+var SESSION_KEY = '__paypal_session__';
+var GLOBAL_KEY = '__paypal_global__';
+var accessedStorage;
+function getStorageState(handler) {
+  var localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* isLocalStorageEnabled */ "f"])();
+  var storage;
+
+  if (accessedStorage) {
+    storage = accessedStorage;
+  }
+
+  if (!storage && localStorageEnabled) {
+    var rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+
+    if (rawStorage) {
+      storage = JSON.parse(rawStorage);
+    }
+  }
+
+  if (!storage) {
+    storage = window[LOCAL_STORAGE_KEY];
+  }
+
+  if (!storage) {
+    storage = {
+      id: Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* uniqueID */ "s"])()
+    };
+  }
+
+  if (!storage.id) {
+    storage.id = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* uniqueID */ "s"])();
+  }
+
+  accessedStorage = storage;
+  var result = handler(storage);
+
+  if (localStorageEnabled) {
+    window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
+  } else {
+    window[LOCAL_STORAGE_KEY] = storage;
+  }
+
+  accessedStorage = null;
+  return result;
+}
+function getStorageID() {
+  return getStorageState(function (storage) {
+    return storage.id;
+  });
+}
+function getSession(handler) {
+  return getStorageState(function (storage) {
+    var session = storage[SESSION_KEY];
+    var now = Date.now();
+
+    if (session && now - session.created > _config__WEBPACK_IMPORTED_MODULE_0__[/* config */ "a"].session_uid_lifetime) {
+      session = null;
+    }
+
+    if (!session) {
+      session = {
+        guid: Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* uniqueID */ "s"])(),
+        created: now
+      };
+    }
+
+    storage[SESSION_KEY] = session;
+    return handler(session);
+  });
+}
+function getSessionState(handler) {
+  return getSession(function (session) {
+    session.state = session.state || {};
+    return handler(session.state);
+  });
+}
+function getSessionID() {
+  var xprops = window.xprops;
+
+  if (xprops && xprops.sessionID) {
+    return xprops.sessionID;
+  }
+
+  var querySessionID = Object(_dom__WEBPACK_IMPORTED_MODULE_2__[/* getQueryParam */ "f"])('sessionID');
+
+  if (Object(_security__WEBPACK_IMPORTED_MODULE_3__[/* isPayPalDomain */ "b"])() && querySessionID) {
+    return querySessionID;
+  }
+
+  return getSession(function (session) {
+    return session.guid;
+  });
+}
+function getButtonSessionID() {
+  if (window.xprops && window.xprops.buttonSessionID) {
+    return window.xprops.buttonSessionID;
+  }
+
+  var querySessionID = Object(_dom__WEBPACK_IMPORTED_MODULE_2__[/* getQueryParam */ "f"])('buttonSessionID');
+
+  if (Object(_security__WEBPACK_IMPORTED_MODULE_3__[/* isPayPalDomain */ "b"])() && querySessionID) {
+    return querySessionID;
+  }
+}
+function getGlobalState(handler) {
+  window[GLOBAL_KEY] = window[GLOBAL_KEY] || {};
+  return handler(window[GLOBAL_KEY]);
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 var interface_namespaceObject = {};
 __webpack_require__.r(interface_namespaceObject);
 __webpack_require__.d(interface_namespaceObject, "create", function() { return create; });
@@ -15690,7 +14974,7 @@ function _assertThisInitialized(self) {
   return self;
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
-var inheritsLoose = __webpack_require__(20);
+var inheritsLoose = __webpack_require__(22);
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/applyDecoratedDescriptor.js
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
@@ -15931,7 +15215,7 @@ var client = __webpack_require__(5);
 var belter_src = __webpack_require__(16);
 
 // EXTERNAL MODULE: ./node_modules/hi-base32/src/base32.js
-var base32 = __webpack_require__(28);
+var base32 = __webpack_require__(34);
 var base32_default = /*#__PURE__*/__webpack_require__.n(base32);
 
 // EXTERNAL MODULE: ./node_modules/zoid/src/constants.js
@@ -16145,7 +15429,7 @@ function getPosition(_ref2) {
   };
 }
 // EXTERNAL MODULE: ./node_modules/zoid/src/error.js
-var src_error = __webpack_require__(22);
+var src_error = __webpack_require__(26);
 
 // CONCATENATED MODULE: ./node_modules/zoid/src/component/child/props.js
 
@@ -18805,7 +18089,7 @@ function (_BaseComponent) {
   return DelegateComponent;
 }(base_BaseComponent);
 // EXTERNAL MODULE: ./node_modules/zoid/src/drivers/index.js
-var drivers = __webpack_require__(24);
+var drivers = __webpack_require__(28);
 
 // CONCATENATED MODULE: ./node_modules/zoid/src/component/component/validate.js
 
@@ -19730,7 +19014,222 @@ var CONSTANTS = constants;
 /* harmony default export */ var zoid_src = (interface_namespaceObject);
 
 /***/ }),
-/* 20 */
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getUserAgent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isDevice; });
+/* unused harmony export isInsidePopup */
+/* unused harmony export isStandAlone */
+/* unused harmony export isFacebookWebView */
+/* unused harmony export isFirefoxIOS */
+/* unused harmony export isEdgeIOS */
+/* unused harmony export isOperaMini */
+/* unused harmony export isAndroid */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return isIos; });
+/* unused harmony export isGoogleSearchApp */
+/* unused harmony export isQQBrowser */
+/* unused harmony export isIosWebview */
+/* unused harmony export isAndroidWebview */
+/* unused harmony export isWebView */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isIE; });
+/* unused harmony export isIE11 */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isIECompHeader; });
+/* unused harmony export isElectron */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isIEIntranet; });
+/* unused harmony export isMacOsCna */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return supportsPopups; });
+/* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+
+function getUserAgent() {
+  return window.navigator.mockUserAgent || window.navigator.userAgent;
+}
+function isDevice() {
+  var userAgent = getUserAgent();
+
+  if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
+    return true;
+  }
+
+  return false;
+}
+function isInsidePopup() {
+  // Checks to see if the top-most window is a pop-up
+  return Boolean(Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getOpener */ "l"])(Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getTop */ "n"])(window) || window));
+}
+function isStandAlone() {
+  // Chrome interprets pop-up windows as standalone windows
+  return !isInsidePopup() && (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
+}
+function isFacebookWebView(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return ua.indexOf('FBAN') !== -1 || ua.indexOf('FBAV') !== -1;
+}
+function isFirefoxIOS(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /FxiOS/i.test(ua);
+}
+function isEdgeIOS(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /EdgiOS/i.test(ua);
+}
+function isOperaMini(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return ua.indexOf('Opera Mini') > -1;
+}
+function isAndroid(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Android/.test(ua);
+}
+function isIos(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /iPhone|iPod|iPad/.test(ua);
+}
+function isGoogleSearchApp(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /\bGSA\b/.test(ua);
+}
+function isQQBrowser(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /QQBrowser/.test(ua);
+}
+function isIosWebview(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  if (isIos(ua)) {
+    if (isGoogleSearchApp(ua)) {
+      return true;
+    }
+
+    return /.+AppleWebKit(?!.*Safari)/.test(ua);
+  }
+
+  return false;
+}
+function isAndroidWebview(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  if (isAndroid(ua)) {
+    return /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
+  }
+
+  return false;
+}
+function isWebView() {
+  return isFacebookWebView() || isIosWebview() || isAndroidWebview();
+}
+function isIE() {
+  if (window.document.documentMode) {
+    return true;
+  }
+
+  if (window.navigator && typeof window.navigator.userAgent === 'string') {
+    if (/Edge|MSIE/i.test(window.navigator.userAgent)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+function isIE11() {
+  if (!isIE()) {
+    return false;
+  }
+
+  if (window.navigator && typeof window.navigator.userAgent === 'string') {
+    if (/MSIE 11\.0/i.test(window.navigator.userAgent)) {
+      return true;
+    }
+
+    if (/Trident/i.test(window.navigator.userAgent) && /rv:11\.0/i.test(window.navigator.userAgent)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+function isIECompHeader() {
+  var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]');
+  var mContent = window.document.querySelector('meta[content="IE=edge"]');
+
+  if (mHttp && mContent) {
+    return true;
+  }
+
+  return false;
+}
+function isElectron() {
+  var userAgent = getUserAgent(); // here we want a case-insensitive full word boundary
+
+  return /\belectron\b/i.test(userAgent);
+}
+function isIEIntranet() {
+  if (!isIE11()) {
+    return false;
+  } // This status check only works for older versions of IE with document.documentMode set
+
+
+  if (window.document.documentMode) {
+    try {
+      var status = window.status;
+      window.status = 'testIntranetMode';
+
+      if (window.status === 'testIntranetMode') {
+        window.status = status;
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  return false;
+}
+function isMacOsCna() {
+  var userAgent = getUserAgent();
+  return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
+}
+function supportsPopups(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
+}
+
+/***/ }),
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19742,7 +19241,7 @@ function _inheritsLoose(subClass, superClass) {
 }
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20361,7 +19860,442 @@ function destroyBridges() {
 
 
 /***/ }),
-/* 22 */
+/* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export documentReady */
+/* unused harmony export documentBody */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return loadScript; });
+/* unused harmony export isNodeList */
+/* unused harmony export isElement */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getElements; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return onDocumentReady; });
+/* unused harmony export parseQuery */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getQueryParam; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return urlWillRedirectPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return extendUrl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return redirect; });
+/* unused harmony export hasMetaViewPort */
+/* unused harmony export getBrowserLocales */
+/* unused harmony export normalizeLocale */
+/* unused harmony export normalizeLang */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getBrowserLocale; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return isElementVisible; });
+/* unused harmony export enablePerformance */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getPageRenderTime; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return getResourceLoadTime; });
+/* unused harmony export htmlEncode */
+/* harmony import */ var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
+/* harmony import */ var _device__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(21);
+
+
+
+
+
+
+
+function isDocumentReady() {
+  return Boolean(document.body) && document.readyState === 'complete';
+}
+
+var documentReady = new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"](function (resolve) {
+  if (isDocumentReady()) {
+    return resolve();
+  }
+
+  var interval = setInterval(function () {
+    if (isDocumentReady()) {
+      clearInterval(interval);
+      return resolve();
+    }
+  }, 10);
+});
+var documentBody = documentReady.then(function () {
+  if (document.body) {
+    return document.body;
+  }
+
+  throw new Error('Document ready but document.body not present');
+});
+function loadScript(src, timeout, attrs) {
+  if (timeout === void 0) {
+    timeout = 0;
+  }
+
+  if (attrs === void 0) {
+    attrs = {};
+  }
+
+  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"](function (resolve, reject) {
+    var script = document.createElement('script');
+    script.addEventListener('load', function () {
+      resolve();
+    }); // For Internet explorer 8 support
+
+    script.onreadystatechange = function scriptOnReadyStateChange() {
+      if (this.readyState === 'complete' || this.readyState === 'loaded') {
+        resolve();
+      }
+    };
+
+    var scriptLoadError = new Error('script_loading_error');
+    script.addEventListener('error', function () {
+      return reject(scriptLoadError);
+    });
+
+    if (timeout) {
+      setTimeout(function () {
+        return reject(new Error('script_loading_timed_out'));
+      }, timeout);
+    }
+
+    for (var _i2 = 0, _Object$keys2 = Object.keys(attrs); _i2 < _Object$keys2.length; _i2++) {
+      var attr = _Object$keys2[_i2];
+      script.setAttribute(attr, attrs[attr]);
+    }
+
+    script.setAttribute('src', src);
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(script);
+  });
+}
+function isNodeList(nodes) {
+  var result = Object.prototype.toString.call(nodes);
+
+  if (result === '[object HTMLCollection]' || result === '[object NodeList]') {
+    return true;
+  }
+
+  return false;
+}
+function isElement(item) {
+  return item instanceof HTMLElement;
+}
+function getElement(item) {
+  if (!item) {
+    return;
+  }
+
+  if (item instanceof HTMLElement) {
+    return item;
+  }
+
+  if (typeof item === 'string') {
+    if (document.querySelector) {
+      var result = document.querySelector(item);
+
+      if (result) {
+        return result;
+      }
+    }
+
+    return document.getElementById(item);
+  }
+}
+function getElements(collection) {
+  if (!collection) {
+    return [];
+  }
+
+  if (collection instanceof HTMLElement || typeof collection === 'string') {
+    var element = getElement(collection);
+
+    if (element) {
+      return [element];
+    }
+
+    return [];
+  }
+
+  if (Array.isArray(collection) || collection instanceof NodeList || collection instanceof HTMLCollection) {
+    var result = [];
+
+    for (var i = 0; i < collection.length; i++) {
+      var el = getElement(collection[i]);
+
+      if (el) {
+        result.push(el);
+      }
+    }
+
+    return result;
+  }
+
+  return [];
+}
+function onDocumentReady(method) {
+  return documentReady.then(method);
+}
+var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_4__[/* memoize */ "i"])(function (queryString) {
+  var params = {};
+
+  if (!queryString) {
+    return params;
+  }
+
+  if (queryString.indexOf('=') === -1) {
+    return params;
+  }
+
+  for (var _i4 = 0, _queryString$split2 = queryString.split('&'); _i4 < _queryString$split2.length; _i4++) {
+    var pair = _queryString$split2[_i4];
+    pair = pair.split('=');
+
+    if (pair[0] && pair[1]) {
+      params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+    }
+  }
+
+  return params;
+});
+function getQueryParam(name) {
+  return parseQuery(window.location.search.slice(1))[name];
+}
+function urlWillRedirectPage(url) {
+  if (url.indexOf('#') === -1) {
+    return true;
+  }
+
+  if (url.indexOf('#') === 0) {
+    return false;
+  }
+
+  if (url.split('#')[0] === window.location.href.split('#')[0]) {
+    return false;
+  }
+
+  return true;
+}
+function extendUrl(url, params) {
+  if (params === void 0) {
+    params = {};
+  }
+
+  var hasHash = url.indexOf('#') > 0;
+
+  var _url$split = url.split('#'),
+      serverUrl = _url$split[0],
+      hash = _url$split[1];
+
+  if (hash && !serverUrl) {
+    var _ref = ["#" + hash, ''];
+    serverUrl = _ref[0];
+    hash = _ref[1];
+  }
+
+  var _serverUrl$split = serverUrl.split('?'),
+      originalUrl = _serverUrl$split[0],
+      originalQueryString = _serverUrl$split[1];
+
+  if (originalQueryString) {
+    var originalQuery = parseQuery(originalQueryString);
+
+    for (var _key in originalQuery) {
+      if (!params.hasOwnProperty(_key)) {
+        params[_key] = originalQuery[_key];
+      }
+    }
+  }
+
+  var newQueryString = Object.keys(params).filter(function (key) {
+    return key && params[key];
+  }).sort().map(function (key) {
+    return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+  }).join('&');
+  var newUrl = originalUrl;
+
+  if (newQueryString) {
+    newUrl = newUrl + "?" + newQueryString;
+  }
+
+  if (hasHash) {
+    newUrl = newUrl + "#" + (hash || '');
+  }
+
+  return newUrl;
+}
+function redirect(win, url) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"](function (resolve) {
+    Object(beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__[/* info */ "k"])("redirect", {
+      url: url
+    });
+    setTimeout(function () {
+      win.location = url;
+
+      if (!urlWillRedirectPage(url)) {
+        resolve();
+      }
+    }, 1);
+  });
+}
+function hasMetaViewPort() {
+  var meta = document.querySelector('meta[name=viewport]');
+
+  if (Object(_device__WEBPACK_IMPORTED_MODULE_5__[/* isDevice */ "b"])() && window.screen.width < 660 && !meta) {
+    return false;
+  }
+
+  return true;
+}
+function getBrowserLocales() {
+  var nav = window.navigator;
+  var locales = nav.languages ? Array.prototype.slice.apply(nav.languages) : [];
+
+  if (nav.language) {
+    locales.push(nav.language);
+  }
+
+  if (nav.userLanguage) {
+    locales.push(nav.userLanguage);
+  }
+
+  return locales;
+}
+function normalizeLocale(locale) {
+  if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+    var _locale$split = locale.split(/[-_]/),
+        lang = _locale$split[0],
+        country = _locale$split[1];
+
+    if (_constants__WEBPACK_IMPORTED_MODULE_2__[/* LOCALE */ "z"][country] && _constants__WEBPACK_IMPORTED_MODULE_2__[/* LOCALE */ "z"][country].indexOf(lang) !== -1) {
+      return {
+        country: country,
+        lang: lang
+      };
+    }
+  }
+}
+function normalizeLang(lang) {
+  if (lang && lang.match(/^[a-z]{2}$/)) {
+    if (_constants__WEBPACK_IMPORTED_MODULE_2__[/* LANG_TO_DEFAULT_COUNTRY */ "y"][lang]) {
+      return {
+        country: _constants__WEBPACK_IMPORTED_MODULE_2__[/* LANG_TO_DEFAULT_COUNTRY */ "y"][lang],
+        lang: lang
+      };
+    }
+  }
+}
+var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_4__[/* memoize */ "i"])(function () {
+  var locales = getBrowserLocales();
+
+  for (var _i6 = 0; _i6 < locales.length; _i6++) {
+    var locale = locales[_i6];
+    var loc = normalizeLocale(locale);
+
+    if (loc) {
+      Object(beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__[/* info */ "k"])('better_browser_locale_full');
+      return loc;
+    }
+
+    loc = normalizeLang(locale);
+
+    if (loc) {
+      Object(beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__[/* info */ "k"])('better_browser_locale_lang');
+      return loc;
+    }
+  }
+
+  return _config__WEBPACK_IMPORTED_MODULE_3__[/* config */ "a"].defaultLocale;
+});
+function isElementVisible(el) {
+  return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+}
+var enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_4__[/* memoize */ "i"])(function () {
+  /* eslint-disable compat/compat */
+  return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1000 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
+  /* eslint-enable compat/compat */
+});
+function getPageRenderTime() {
+  return documentReady.then(function () {
+    if (!enablePerformance()) {
+      return;
+    }
+
+    var timing = window.performance.timing; // eslint-disable-line compat/compat
+
+    if (timing.connectEnd && timing.domInteractive) {
+      return timing.domInteractive - timing.connectEnd;
+    }
+  });
+}
+function getResourceLoadTime(url) {
+  if (!enablePerformance()) {
+    return;
+  }
+
+  if (!window.performance || typeof window.performance.getEntries !== 'function') {
+    // eslint-disable-line compat/compat
+    return;
+  }
+
+  var entries = window.performance.getEntries(); // eslint-disable-line compat/compat
+
+  for (var i = 0; i < entries.length; i++) {
+    var entry = entries[i];
+
+    if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 60000) {
+      return Math.floor(entry.duration);
+    }
+  }
+}
+function htmlEncode(html) {
+  if (html === void 0) {
+    html = '';
+  }
+
+  return html.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/\//g, '&#x2F;');
+}
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return allowIframe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isPayPalDomain; });
+/* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _device__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(21);
+
+
+
+function allowIframe() {
+  if (!Object(_device__WEBPACK_IMPORTED_MODULE_2__[/* supportsPopups */ "g"])()) {
+    return true;
+  }
+
+  var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getParent */ "m"])(window);
+
+  if (parentWindow && Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* isSameDomain */ "u"])(parentWindow)) {
+    return true;
+  }
+
+  var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
+
+  if (parentComponentWindow && Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* isSameDomain */ "u"])(parentComponentWindow)) {
+    return true;
+  }
+
+  if (false) {}
+
+  return false;
+}
+function isPayPalDomain() {
+  return Boolean((window.location.protocol + "//" + window.location.host).match(_config__WEBPACK_IMPORTED_MODULE_1__[/* config */ "a"].paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
+}
+
+/***/ }),
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20382,13 +20316,13 @@ function RenderError(message) {
 RenderError.prototype = Object.create(Error.prototype);
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
 // EXTERNAL MODULE: ./src/integrations/checkout.js
-var checkout = __webpack_require__(26);
+var checkout = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
 var src = __webpack_require__(2);
@@ -20506,32 +20440,32 @@ function mapPaymentToBraintree(payment) {
  // export * from './popupBridge';
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+/* harmony import */ var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(35);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "script", function() { return _script__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
-/* harmony import */ var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+/* harmony import */ var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "react", function() { return _react__WEBPACK_IMPORTED_MODULE_1__["a"]; });
 
-/* harmony import */ var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(31);
+/* harmony import */ var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(37);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "vue", function() { return _vue__WEBPACK_IMPORTED_MODULE_2__["a"]; });
 
-/* harmony import */ var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(32);
+/* harmony import */ var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(38);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "angular", function() { return _angular__WEBPACK_IMPORTED_MODULE_3__["a"]; });
 
-/* harmony import */ var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(33);
+/* harmony import */ var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(39);
 /* harmony import */ var _ember__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_ember__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony reexport (checked) */ if(__webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2")) __webpack_require__.d(__webpack_exports__, "angular2", function() { return _ember__WEBPACK_IMPORTED_MODULE_4__["angular2"]; });
 
 /* harmony reexport (checked) */ if(__webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer")) __webpack_require__.d(__webpack_exports__, "glimmer", function() { return _ember__WEBPACK_IMPORTED_MODULE_4__["glimmer"]; });
 
-/* harmony import */ var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(34);
+/* harmony import */ var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(40);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "glimmer", function() { return _glimmer__WEBPACK_IMPORTED_MODULE_5__["a"]; });
 
-/* harmony import */ var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(35);
+/* harmony import */ var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(41);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "angular2", function() { return _angular2__WEBPACK_IMPORTED_MODULE_6__["a"]; });
 
 
@@ -20543,7 +20477,141 @@ function mapPaymentToBraintree(payment) {
 
 
 /***/ }),
-/* 25 */
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return beacon; });
+/* unused harmony export checkpoint */
+/* unused harmony export fpti */
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
+
+
+
+
+var BEACON_URL = _config__WEBPACK_IMPORTED_MODULE_1__[/* config */ "a"].loggerUrl;
+var APP_NAME = 'checkoutjs';
+function beacon(event, payload) {
+  if (payload === void 0) {
+    payload = {};
+  }
+
+  try {
+    payload.event = "ppxo_" + event;
+    payload.version = "4.0.287";
+    payload.host = window.location.host;
+    payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
+    payload.appName = APP_NAME;
+    var query = [];
+
+    for (var key in payload) {
+      if (payload.hasOwnProperty(key)) {
+        query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
+      }
+    }
+
+    query = query.join('&');
+
+    if (true) {
+      var beaconImage = new window.Image();
+      beaconImage.src = BEACON_URL + "?" + query;
+    }
+
+    setTimeout(function () {
+      if (_config__WEBPACK_IMPORTED_MODULE_1__[/* config */ "a"].logLevel === _constants__WEBPACK_IMPORTED_MODULE_2__[/* LOG_LEVEL */ "A"].DEBUG) {
+        if (window.console && window.console.log) {
+          window.console.log('*', event, payload);
+        }
+      }
+    }, 1);
+  } catch (err) {// pass
+  }
+}
+
+function isCheckpointUnique(name) {
+  return Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionState */ "d"])(function (state) {
+    state.loggedBeacons = state.loggedBeacons || [];
+
+    if (state.loggedBeacons.indexOf(name) === -1) {
+      state.loggedBeacons.push(name);
+      return true;
+    }
+
+    return false;
+  });
+}
+
+function checkpoint(name, payload, options) {
+  if (payload === void 0) {
+    payload = {};
+  }
+
+  if (options === void 0) {
+    options = {};
+  }
+
+  try {
+    var checkpointName = name;
+
+    if (options.version) {
+      var version = "4.0.287".replace(/[^0-9]+/g, '_');
+
+      checkpointName = version + "_" + checkpointName;
+    }
+
+    if (!isCheckpointUnique(checkpointName)) {
+      return;
+    }
+
+    return beacon(checkpointName, payload);
+  } catch (err) {// pass
+  }
+}
+var FPTI_URL = 'https://t.paypal.com/ts';
+
+function buildPayload() {
+  return {
+    v: "checkout.js." + "4.0.287",
+    t: Date.now(),
+    g: new Date().getTimezoneOffset(),
+    flnm: 'ec:hermes:',
+    shir: 'main_ec_hermes_',
+    pgrp: 'main:ec:hermes::incontext-merchant',
+    page: 'main:ec:hermes::incontext-merchant',
+    vers: 'member:hermes:',
+    qual: 'incontext',
+    tmpl: 'merchant:incontext'
+  };
+}
+
+function fpti(payload) {
+  if (payload === void 0) {
+    payload = {};
+  }
+
+  var query = [];
+  payload = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, buildPayload(), {}, payload);
+
+  for (var key in payload) {
+    if (payload.hasOwnProperty(key)) {
+      query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
+    }
+  }
+
+  query = query.join('&');
+
+  try {
+    var beaconImage = new window.Image();
+    beaconImage.src = FPTI_URL + "?" + query;
+  } catch (err) {// pass
+  }
+}
+
+/***/ }),
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20578,11 +20646,11 @@ var resources = __webpack_require__(18);
 // EXTERNAL MODULE: ./src/constants/index.js + 7 modules
 var constants = __webpack_require__(0);
 
-// EXTERNAL MODULE: ./src/lib/index.js + 15 modules
+// EXTERNAL MODULE: ./src/lib/index.js + 9 modules
 var lib = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/checkout/template/containerContent.js
-var containerContent = __webpack_require__(27);
+var containerContent = __webpack_require__(33);
 
 // CONCATENATED MODULE: ./src/checkout/template/containerStyle/base.js
 
@@ -20736,7 +20804,7 @@ function containerTemplate(_ref) {
 
 
 /***/ }),
-/* 26 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20780,7 +20848,54 @@ function determineUrl(env, fundingSource, payment) {
 }
 
 /***/ }),
-/* 27 */
+/* 32 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return extendNamespace; });
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
+
+function extendNamespace(xports, namespaces, childnamespaces) {
+  if (namespaces === void 0) {
+    namespaces = [];
+  }
+
+  if (childnamespaces === void 0) {
+    childnamespaces = [];
+  }
+
+  for (var _i2 = 0, _namespaces2 = namespaces; _i2 < _namespaces2.length; _i2++) {
+    var name = _namespaces2[_i2];
+    var namespace = window[name];
+
+    if (!namespace) {
+      continue;
+    }
+
+    for (var _i4 = 0, _childnamespaces2 = childnamespaces; _i4 < _childnamespaces2.length; _i4++) {
+      var _extends2;
+
+      var childname = _childnamespaces2[_i4];
+      var childnamespace = xports[childname];
+
+      if (namespace[childname]) {
+        childnamespace = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, namespace[childname], {}, childnamespace);
+      }
+
+      xports = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, namespace, {}, xports, (_extends2 = {}, _extends2[childname] = childnamespace, _extends2));
+    }
+  }
+
+  for (var _i6 = 0, _namespaces4 = namespaces; _i6 < _namespaces4.length; _i6++) {
+    var _name = _namespaces4[_i6];
+    window[_name] = xports;
+  }
+
+  return xports;
+}
+
+/***/ }),
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24020,7 +24135,7 @@ var containerContent = {
 };
 
 /***/ }),
-/* 28 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -24044,7 +24159,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*
   }
 
   var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && typeof module === 'object' && module.exports;
-  var AMD =  true && __webpack_require__(57);
+  var AMD =  true && __webpack_require__(64);
   var BASE32_ENCODE_CHAR = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.split('');
   var BASE32_DECODE_CHAR = {
     'A': 0,
@@ -24500,7 +24615,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*
 })();
 
 /***/ }),
-/* 29 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24560,12 +24675,12 @@ var script = {
 };
 
 /***/ }),
-/* 30 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return react; });
-/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 
 
@@ -24657,7 +24772,7 @@ var react = {
 };
 
 /***/ }),
-/* 31 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24689,7 +24804,7 @@ var vue = {
 };
 
 /***/ }),
-/* 32 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24774,19 +24889,19 @@ var angular = {
 };
 
 /***/ }),
-/* 33 */
+/* 39 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 34 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return glimmer; });
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
-/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
 
 
 var glimmer = {
@@ -24815,7 +24930,7 @@ var glimmer = {
 };
 
 /***/ }),
-/* 35 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24886,7 +25001,7 @@ var angular2 = {
 };
 
 /***/ }),
-/* 36 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -24895,7 +25010,7 @@ var angular2 = {
  * MIT License | (c) Dustin Diaz 2015
  */
 !function (e, t, n) {
-   true && module.exports ? module.exports = n() :  true ? __webpack_require__(58)(t, n) : undefined;
+   true && module.exports ? module.exports = n() :  true ? __webpack_require__(65)(t, n) : undefined;
 }(this, "bowser", function () {
   function t(t) {
     function n(e) {
@@ -25189,7 +25304,7 @@ var angular2 = {
 });
 
 /***/ }),
-/* 37 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25216,109 +25331,109 @@ function emulateIERestrictions(sourceWindow, targetWindow) {
 
 
 /***/ }),
-/* 38 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = "<svg width=\"24\" height=\"32\" viewBox=\"0 0 24 32\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"xMinYMin meet\">\n    <path fill=\"#ffffff\" opacity=\"0.7\" d=\"M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446\"></path>\n    <path fill=\"#ffffff\" opacity=\"0.7\" d=\"M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446\"></path>\n    <path fill=\"#ffffff\" d=\"M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z\"></path>\n    <g transform=\"matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)\" opacity=\"0.2\">\n        <path fill=\"#231f20\" d=\"M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z\"></path>\n        <path fill=\"#231f20\" d=\"M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z\"></path>\n        <path fill=\"#231f20\" d=\"M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z\"></path>\n    </g>\n</svg>\n"
 
 /***/ }),
-/* 39 */
+/* 45 */
 /***/ (function(module, exports) {
 
 module.exports = "<svg width=\"24\" height=\"32\" viewBox=\"0 0 24 32\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"xMinYMin meet\">\n    <path fill=\"#009cde\" d=\"M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 6.675 28.9 C 6.581 29.3 6.862 29.6 7.236 29.6 L 11.356 29.6 C 11.825 29.6 12.292 29.3 12.386 28.8 L 12.386 28.5 L 13.228 23.3 L 13.228 23.1 C 13.322 22.6 13.79 22.2 14.258 22.2 L 14.821 22.2 C 18.845 22.2 21.935 20.5 22.871 15.5 C 23.339 13.4 23.153 11.7 22.029 10.5 C 21.748 10.1 21.279 9.8 20.905 9.5 L 20.905 9.5\"></path>\n    <path fill=\"#012169\" d=\"M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 8.173 18.7 C 8.267 18.1 8.735 17.7 9.296 17.7 L 11.636 17.7 C 16.224 17.7 19.782 15.7 20.905 10.1 C 20.812 9.8 20.905 9.7 20.905 9.5\"></path>\n    <path fill=\"#003087\" d=\"M 9.485 9.5 C 9.577 9.2 9.765 8.9 10.046 8.7 C 10.232 8.7 10.326 8.6 10.513 8.6 L 16.692 8.6 C 17.442 8.6 18.189 8.7 18.753 8.8 C 18.939 8.8 19.127 8.8 19.314 8.9 C 19.501 9 19.688 9 19.782 9.1 C 19.875 9.1 19.968 9.1 20.063 9.1 C 20.343 9.2 20.624 9.4 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.6 C 18.658 3.2 16.506 2.6 13.79 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 9.485 9.5 Z\"></path>\n</svg>\n"
 
 /***/ }),
-/* 40 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"24\" height=\"32\" viewBox=\"0 0 24 32\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path opacity=\"0.7\" d=\"M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446\" style=\"fill: rgb(99, 99, 99);\"/>\n  <path opacity=\"0.7\" d=\"M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446\"/>\n  <path d=\"M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z\" style=\"fill: rgb(51, 48, 48);\"/>\n  <g transform=\"matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)\" opacity=\"0.2\">\n    <path fill=\"#231f20\" d=\"M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z\"/>\n    <path fill=\"#231f20\" d=\"M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z\"/>\n    <path fill=\"#231f20\" d=\"M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z\"/>\n  </g>\n</svg>"
 
 /***/ }),
-/* 41 */
+/* 47 */
 /***/ (function(module, exports) {
 
 module.exports = "<svg width=\"101\" height=\"32\" viewBox=\"0 0 101 32\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"xMinYMin meet\">\n    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n        <g id=\"White\" fill=\"#FFFFFF\">\n            <g id=\"Logo\" transform=\"translate(0.000000, 6.000000)\">\n                <path d=\"M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z\"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ }),
-/* 42 */
+/* 48 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!-- Generator: Adobe Illustrator 23.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" id=\"Layer_1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 181 33\" preserveAspectRatio=\"xMinYMin meet\">\n   <path fill=\"#FF7900\" d=\"M136.5,5.6L153,1.8c2.2-0.5,4.4,0.8,5,2.9l4,15.2c0.5,2.1-0.8,4.2-3,4.7l-16.5,3.8c-2.2,0.5-4.4-0.8-5-2.9  l-4-15.2C132.8,8.3,134.2,6.1,136.5,5.6z\" />\n   <path fill=\"#004995\" d=\"M144.5,6.1h10.1c1.5,0,2.7,1.2,2.7,2.5v9.7c0,1.3-1.2,2.5-2.7,2.5h-10.1c-1.5,0-2.7-1.2-2.7-2.5V8.6  C141.9,7.2,143.1,6.1,144.5,6.1z\" />\n   <path fill=\"#FFFFFF\" d=\"M108.2,19.9c-0.1-1-0.5-1.9-1.1-2.8c-1.1-1.3-2.8-2-4.6-1.9c-1.6,0.1-3.9,0.3-5.3,1.3L98,19  c0,0,1.3-1.1,3.9-1.1c1.1,0,2.1,0.6,2.3,1.3v0.2c-1.4,0-5.7,0.3-7.4,2.8c-2,3,1.1,5.8,3.1,5.8c1.6,0,3.2,0.1,4.6-1.3l0.2,1.1h3.4  v-7.3c0-0.1,0-0.2,0-0.2L108.2,19.9L108.2,19.9z M100.4,24.1c0.2-1.8,2.7-1.9,3.9-1.9v2.1C103,26,100.2,25.8,100.4,24.1z\" />\n   <path fill=\"#FFFFFF\" d=\"M95.2,16.1c0,0-7.6-2-10,3c-1.3,2.8-0.7,5.7,0.8,7.3c0.7,0.7,1.6,1.2,2.6,1.5c2,0.6,5.4,0.4,6.5-0.2l-0.4-2.8  c0,0-3.4,1.1-5.2-0.6c-2.2-2.2-0.2-5.7,2.1-5.7c2.3,0,3.1,0.4,3.1,0.4L95.2,16.1z\" />\n   <rect fill=\"#FFFFFF\" x=\"42.3\" y=\"11.7\" width=\"3.9\" height=\"16.3\" />\n   <path fill=\"#FFFFFF\" d=\"M55.7,18.7v-3h-2.1v-4.1h-3.9v4.1h-2v3h2v6.2c0,1.7,1.3,3,3,3l0,0h3.1v-3h-1.1c-0.7,0-1.1-0.5-1.1-1.1l0,0v-5.2  L55.7,18.7L55.7,18.7z\" />\n   <path fill=\"#FFFFFF\" d=\"M69,19.9c-0.1-1-0.5-1.9-1.1-2.8c-1.2-1.3-2.8-2-4.6-1.9c-1.6,0.1-3.9,0.3-5.3,1.3l0.8,2.5c0,0,1.3-1.1,3.9-1.1  c1.1,0,2.1,0.6,2.3,1.3v0.2c-1.4,0-5.8,0.3-7.4,2.8c-2,3,1.1,5.8,3.1,5.8c1.6,0,3.2,0.1,4.6-1.3l0.2,1.1H69V19.9L69,19.9z   M61.1,24.1c0.2-1.8,2.7-1.9,3.9-1.9v2.1C63.8,26,60.9,25.8,61.1,24.1L61.1,24.1z\" />\n   <path fill=\"#FFFFFF\" d=\"M79.1,15.7v7.2c0,0.3-0.1,0.5-0.2,0.7c-0.5,0.7-1.1,1.3-2,1.3c-0.9,0.1-1.8-0.5-2.1-1.3  c-0.1-0.2-0.1-0.4-0.1-0.6v-7.3h-3.9V24c0,2.1,1.8,4.1,3.9,4.1c3.9,0.2,4.6-1.8,4.6-1.8v-0.1l0.4,1.5H83V15.6L79.1,15.7z\" />\n   <rect fill=\"#FFF100\" x=\"143.1\" y=\"13.5\" width=\"1.2\" height=\"5\" />\n   <path fill=\"#FFF100\" d=\"M147.3,15.7v-0.9h-0.7v-1.3h-1.2v1.3h-0.6v0.9h0.6v1.9c0,0.5,0.4,0.9,1,0.9h1v-0.9H147c-0.2,0-0.4-0.2-0.4-0.3  l0,0v-1.6C146.6,15.7,147.3,15.7,147.3,15.7z\" />\n   <path fill=\"#FFF100\" d=\"M151.6,16c0-0.3-0.2-0.6-0.4-0.8c-0.4-0.4-0.9-0.6-1.5-0.6s-1.1,0.2-1.7,0.4l0.3,0.8c0.4-0.3,0.8-0.3,1.2-0.3  c0.3,0,0.6,0.2,0.7,0.3v0.1c-0.4,0-1.9,0.1-2.3,0.8c-0.4,0.6-0.2,1.3,0.4,1.6c0.2,0.1,0.4,0.2,0.5,0.2c0.5,0.1,1.1-0.1,1.5-0.3  l0.1,0.3h1.1L151.6,16L151.6,16z M149.1,17.3c0.1-0.6,0.9-0.6,1.2-0.6v0.7C149.9,17.9,149,17.8,149.1,17.3L149.1,17.3z\" />\n   <path fill=\"#FFF100\" d=\"M154.8,14.8V17c-0.1,0.3-0.4,0.4-0.7,0.5c-0.4,0-0.6-0.2-0.7-0.5v-2.3h-1.2v2.5c0,0.7,0.5,1.2,1.2,1.3  c1.2,0.1,1.5-0.5,1.5-0.5l0,0l0.2,0.4h1.1v-3.8L154.8,14.8L154.8,14.8z\" />\n   <path fill=\"#FFFFFF\" d=\"M113.5,17.9l-0.2-2.1H110V28h3.9v-6.8c0.4-0.8,1.2-2.1,3.4-2.1v-3.6C115.9,15.4,114.4,16.3,113.5,17.9z\" />\n   <path fill=\"#FFFFFF\" d=\"M128.1,10.4v6.4c-0.7-0.6-1.7-1.4-3.7-1.4c-3.6,0-6.1,3.2-6.1,6.8c-0.1,3.2,2.6,5.9,5.9,6  c1.5-0.1,3-0.6,4.2-1.4L129,28h3.1V10.5L128.1,10.4L128.1,10.4z M125.4,25.1c-2.3,0-2.8-1.9-2.8-3.4s0.7-3.2,2.8-3.2  c1.3,0,2.1,0.9,2.7,1.8v3C127.5,24.1,126.6,25.1,125.4,25.1z\" />\n   <polygon fill=\"#FFF100\" points=\"154.6,14.4 153.5,14.4 154.4,13.5 155.7,13.5 \" />\n   <line fill=\"none\" x1=\"35.6\" y1=\"8.3\" x2=\"35.6\" y2=\"28.2\" />\n   <rect fill=\"#D8D8D8\" x=\"22.4\" y=\"32.2\" width=\"0.1\" height=\"0.1\" />\n   <path fill=\"#FFFFFF\" opacity=\"0.7\" enable-background=\"new    \" d=\"M25.3,12.9c0.2-1.6,0-2.6-0.9-3.7s-2.6-1.5-4.6-1.5h-6.1c-0.4,0-0.8,0.3-0.9,0.8l-2.5,16.8  c-0.1,0.4,0.1,0.7,0.5,0.7h3.8l-0.3,1.7c-0.1,0.2,0.2,0.5,0.4,0.5H18c0.4,0,0.6-0.3,0.7-0.7l0.1-0.2l0.6-3.9l0.1-0.2  c0.1-0.5,0.4-0.7,0.7-0.7h0.5c3.1,0,5.4-1.4,6.1-5.1c0.3-1.6,0.1-2.9-0.6-3.8C25.9,13.4,25.6,13.1,25.3,12.9L25.3,12.9\" />\n   <path fill=\"#FFFFFF\" opacity=\"0.7\" enable-background=\"new    \" d=\"M25.3,12.9c0.2-1.6,0-2.6-0.9-3.7s-2.6-1.5-4.6-1.5h-6.1c-0.4,0-0.8,0.3-0.9,0.8l-2.5,16.8  c-0.1,0.4,0.1,0.7,0.5,0.7h3.8l0.9-6.3l-0.1,0.2c0.1-0.5,0.4-0.8,0.9-0.8h1.8c3.5,0,6.2-1.5,7-5.8C25.2,13.2,25.2,13,25.3,12.9\" />\n   <path fill=\"#FFFFFF\" d=\"M16.6,12.9c0-0.2,0.1-0.5,0.4-0.6c0.1,0,0.2-0.1,0.3-0.1h4.8c0.6,0,1.1,0.1,1.6,0.1c0.1,0,0.2,0,0.4,0.1  c0.1,0.1,0.2,0.1,0.4,0.2c0.1,0,0.1,0,0.2,0.1c0.2,0.1,0.4,0.2,0.6,0.2c0.2-1.6,0-2.6-0.9-3.6c-0.9-1.1-2.6-1.6-4.6-1.6h-6.1  c-0.4,0-0.8,0.4-0.9,0.8l-2.5,16.8c-0.1,0.4,0.1,0.7,0.5,0.7h3.8l0.9-6.3L16.6,12.9z\" />\n   <g transform=\"matrix(0.379173, 0, 0, 0.397443, 9.686229, 4.778377)\" opacity=\"0.2\">\n      <path fill=\"#231F20\" d=\"M41.1,20.5c0.9,0.5,1.7,1.1,2.3,1.8c1,1.1,1.6,2.5,1.9,4.1c0.3-3.2-0.2-5.8-1.9-7.8c-0.6-0.7-1.3-1.2-2.1-1.7   C41.3,18,41.3,19.2,41.1,20.5z\" />\n      <path fill=\"#231F20\" d=\"M2.2,49L8.5,9.4c0.1-1.1,1.1-1.9,2.2-1.9h16c5.5,0,9.8,1.2,12.2,3.9c1.2,1.4,1.9,3,2.2,4.8   c0.4-3.6-0.2-6.1-2.2-8.4c-2.4-2.8-6.7-4-12.2-4h-16c-1.1,0-2.1,0.8-2.3,1.9L1.8,47.9C1.8,48.3,1.9,48.7,2.2,49z\" />\n      <path fill=\"#231F20\" d=\"M12.5,53.2l-0.1,0.6c-0.1,0.4,0.1,0.8,0.4,1.1l0.3-1.7C13.1,53.2,12.5,53.2,12.5,53.2z\" />\n   </g>\n   <rect fill=\"#FFFFFF\" x=\"35.5\" y=\"6.7\" width=\"1.1\" height=\"21.5\" />\n</svg>"
 
 /***/ }),
-/* 43 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = "<svg width=\"101\" height=\"32\" viewBox=\"0 0 101 32\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"xMinYMin meet\">\n    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n        <g id=\"Blue\" fill=\"#3D93CE\">\n            <g id=\"Logo\" transform=\"translate(0.000000, 6.000000)\">\n                <path d=\"M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z\"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n"
 
 /***/ }),
-/* 44 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"100\" height=\"32\" viewBox=\"0 0 100 32\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path fill=\"#005DA0\" d=\"M 39.871 18.772 C 37.78 18.772 35.843 18.278 34.272 17.425 L 34.81 13.935 C 36.409 14.769 38.051 15.263 39.826 15.263 C 41.809 15.263 42.661 14.544 42.661 13.284 C 42.661 10.45 34.34 11.641 34.34 5.59 C 34.34 2.53 36.319 0.055 40.885 0.055 C 42.639 0.055 44.549 0.416 45.946 0.999 L 45.474 4.395 C 43.989 3.926 42.481 3.633 41.108 3.633 C 38.86 3.633 38.275 4.395 38.275 5.364 C 38.275 8.175 46.598 6.895 46.598 13.013 C 46.576 16.569 44.101 18.772 39.871 18.772 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 62.233 14.881 L 62.233 18.413 L 49.951 18.413 L 49.951 0.345 L 62.233 0.345 L 62.233 3.946 L 54.022 3.946 L 54.022 7.549 L 60.705 7.549 L 60.705 10.787 L 54.022 10.787 L 54.022 14.905 L 62.233 14.905 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 72.313 12.565 L 69.905 12.565 L 69.905 18.437 L 65.834 18.437 L 65.834 0.345 L 72.313 0.345 C 77.328 0.345 79.376 2.328 79.376 6.534 C 79.376 10.361 77.355 12.565 72.313 12.565 Z M 72.313 3.766 L 69.905 3.766 L 69.905 9.302 L 72.313 9.302 C 74.314 9.302 75.194 8.808 75.194 6.534 C 75.194 4.352 74.428 3.766 72.313 3.766 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 91.797 14.924 L 85.246 14.924 L 84.234 18.437 L 79.939 18.437 L 86.193 0.345 L 91.031 0.345 L 97.352 18.437 L 92.808 18.437 L 91.797 14.924 Z M 88.04 5.318 L 86.238 11.506 L 90.85 11.506 L 89.118 5.318 L 88.645 3.408 L 88.578 3.408 L 88.04 5.318 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 39.736 30.157 L 39.692 31.867 L 34.382 31.867 L 34.382 23.475 L 36.299 23.475 L 36.299 30.157 L 39.736 30.157 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 44.798 31.215 L 44.778 31.215 C 44.371 31.71 43.722 31.977 42.931 31.977 C 41.648 31.977 40.818 31.257 40.818 29.727 C 40.818 28.468 41.695 27.613 43.222 27.613 C 43.722 27.613 44.168 27.68 44.527 27.796 L 44.527 27.411 C 44.527 26.736 44.168 26.421 43.244 26.421 C 42.505 26.421 42.007 26.534 41.382 26.782 L 41.245 25.387 C 41.919 25.095 42.707 24.936 43.563 24.936 C 45.563 24.936 46.263 25.792 46.263 27.658 L 46.263 31.867 L 44.933 31.867 L 44.798 31.215 Z M 44.549 28.966 C 44.393 28.896 44.056 28.828 43.583 28.828 C 42.819 28.828 42.46 29.12 42.46 29.727 C 42.46 30.38 42.842 30.63 43.427 30.63 C 44.012 30.63 44.549 30.271 44.549 29.842 L 44.549 28.966 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 50.02 32.002 C 49.21 32.002 48.466 31.842 47.883 31.529 L 48.062 30.088 C 48.625 30.405 49.41 30.561 49.996 30.561 C 50.693 30.561 50.986 30.29 50.986 29.887 C 50.986 28.807 47.84 29.436 47.84 27.051 C 47.84 25.838 48.667 24.959 50.403 24.959 C 51.075 24.959 51.752 25.095 52.336 25.32 L 52.201 26.736 C 51.64 26.512 50.897 26.396 50.381 26.396 C 49.816 26.396 49.503 26.625 49.503 26.961 C 49.503 27.995 52.603 27.366 52.603 29.707 C 52.603 31.101 51.862 32.002 50.02 32.002 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 56.026 26.375 L 56.026 29.842 C 56.026 30.36 56.295 30.582 56.836 30.582 C 57.014 30.582 57.239 30.561 57.374 30.514 L 57.464 31.776 C 57.239 31.888 56.789 31.956 56.295 31.956 C 54.946 31.956 54.27 31.169 54.27 29.887 L 54.27 26.352 L 53.506 26.352 L 53.506 25.095 L 54.337 25.095 L 54.631 23.562 L 56.002 23.451 L 56.002 25.116 L 57.51 25.116 L 57.51 26.421 L 56.026 26.421 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 60.885 32.002 C 60.073 32.002 59.331 31.842 58.748 31.529 L 58.929 30.088 C 59.49 30.405 60.275 30.561 60.862 30.561 C 61.561 30.561 61.851 30.29 61.851 29.887 C 61.851 28.807 58.702 29.436 58.702 27.051 C 58.702 25.838 59.534 24.959 61.269 24.959 C 61.943 24.959 62.615 25.095 63.203 25.32 L 63.069 26.736 C 62.505 26.512 61.764 26.396 61.246 26.396 C 60.681 26.396 60.367 26.625 60.367 26.961 C 60.367 27.995 63.47 27.366 63.47 29.707 C 63.47 31.101 62.729 32.002 60.885 32.002 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 69.365 26.736 C 69.028 26.625 68.603 26.534 68.22 26.534 C 66.958 26.534 66.53 27.051 66.53 28.49 C 66.53 29.954 67.116 30.514 68.174 30.514 C 68.623 30.514 69.05 30.425 69.41 30.271 L 69.525 31.616 C 69.119 31.867 68.511 32.002 67.792 32.002 C 65.787 32.002 64.732 30.854 64.732 28.49 C 64.732 26.242 65.653 24.981 67.835 24.981 C 68.397 24.981 69.05 25.095 69.479 25.276 L 69.365 26.736 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 75.078 31.867 L 75.078 27.546 C 75.078 26.849 74.743 26.491 74.001 26.491 C 73.508 26.491 73.055 26.714 72.855 27.008 L 72.855 31.867 L 71.122 31.867 L 71.122 23.16 L 72.855 23.069 L 72.855 24.622 L 72.83 25.52 L 72.855 25.545 C 73.348 25.116 73.979 24.959 74.541 24.959 C 75.98 24.959 76.812 25.926 76.812 27.546 L 76.812 31.867 L 75.078 31.867 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 78.658 31.867 L 78.658 25.139 L 80.052 25.072 L 80.21 26.199 L 80.231 26.199 C 80.66 25.387 81.313 24.981 82.098 24.981 C 82.39 24.981 82.663 25.028 82.84 25.072 L 82.731 26.782 C 82.528 26.714 82.257 26.667 81.985 26.667 C 81.088 26.667 80.413 27.321 80.413 28.468 L 80.413 31.867 L 78.658 31.867 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 85.382 24.35 C 84.708 24.35 84.395 24.172 84.395 23.609 C 84.395 23.136 84.708 22.867 85.382 22.867 C 86.058 22.867 86.375 23.113 86.375 23.609 C 86.354 24.105 86.058 24.35 85.382 24.35 Z M 84.484 31.867 L 84.484 25.139 L 86.259 25.072 L 86.259 31.888 L 84.484 31.888 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 88.757 31.867 L 88.757 26.375 L 87.902 26.375 L 87.902 25.095 L 88.757 25.095 L 88.757 24.798 C 88.757 23.79 89.454 22.935 91.076 22.935 C 91.459 22.935 91.885 22.979 92.178 23.069 L 92.063 24.195 C 91.863 24.147 91.636 24.126 91.411 24.126 C 90.738 24.126 90.466 24.399 90.466 24.825 L 90.466 25.072 L 91.907 25.072 L 91.907 26.352 L 90.466 26.352 L 90.466 31.842 L 88.757 31.842 Z\"/>\n  <path fill=\"#005DA0\" d=\"M 95.486 26.375 L 95.486 29.842 C 95.486 30.36 95.754 30.582 96.296 30.582 C 96.473 30.582 96.698 30.561 96.834 30.514 L 96.924 31.776 C 96.698 31.888 96.249 31.956 95.754 31.956 C 94.406 31.956 93.729 31.169 93.729 29.887 L 93.729 26.352 L 92.965 26.352 L 92.965 25.095 L 93.798 25.095 L 94.09 23.562 L 95.461 23.451 L 95.461 25.116 L 96.969 25.116 L 96.969 26.421 L 95.486 26.421 Z\"/>\n  <path fill=\"#AEB1BC\" d=\"M 20.357 8.826 L 15.368 5.081 L 10.379 1.334 C 10.033 1.074 9.54 1.146 9.281 1.493 L 4.883 7.322 C 4.811 7.409 4.768 7.51 4.754 7.624 C 4.68 7.93 4.782 8.248 5.043 8.45 L 8.022 10.677 L 12.042 13.698 L 15.021 15.926 C 15.281 16.13 15.629 16.13 15.888 15.97 C 15.991 15.912 16.062 15.854 16.136 15.752 L 20.531 9.91 C 20.763 9.578 20.706 9.087 20.357 8.826 Z M 10.047 1.769 L 13.012 3.995 L 13.012 3.995 L 15.021 5.5 L 17.046 7.017 L 17.046 7.017 L 20.025 9.245 C 20.142 9.332 20.156 9.491 20.082 9.607 L 19.374 10.591 L 16.005 8.058 L 12.36 5.326 L 8.976 2.809 L 9.684 1.826 C 9.772 1.709 9.931 1.682 10.047 1.769 Z M 15.673 15.463 C 15.629 15.507 15.585 15.536 15.528 15.55 C 15.469 15.564 15.398 15.55 15.339 15.507 L 12.345 13.265 L 8.34 10.257 L 5.361 8.001 C 5.302 7.958 5.275 7.9 5.259 7.842 C 5.259 7.785 5.259 7.726 5.302 7.669 L 6.113 6.585 C 6.113 6.585 7.009 5.427 7.791 4.386 L 11.16 6.917 L 14.804 9.65 L 18.173 12.181 C 17.393 13.222 16.496 14.379 16.496 14.379 L 15.673 15.463 Z\"/>\n  <g transform=\"matrix(0.144619, 0, 0, 0.144619, -7.250457, -3.988513)\">\n    <path fill=\"#005DA0\" d=\"M197.1,150.4l52-69.6l5.3-7c0,0,0.1-0.2,0.2-0.2c0.4-0.5,0.3-1.2-0.2-1.6l-14.7-10.7&#10;&#9;&#9;&#9;c-0.5-0.4-1.2-0.2-1.6,0.3c-0.1,0.1-0.2,0.2-0.2,0.2l-2,2.5l-64.3,86l-70.8,0l-26.5,87.4h177.1l-25-87.4L197.1,150.4z M79.1,234.3&#10;&#9;&#9;&#9;l24.2-80.5l65.7,0l-5.7,7.6l-8.1,11.3l-0.9,1.7l-0.9,1.9l-0.9,2.2l-0.9,2.3l-0.9,2.5l-0.9,2.5l-0.8,2.5l-0.8,2.4l-0.7,2.3&#10;&#9;&#9;&#9;l-0.7,2.1l-0.6,1.9l-0.4,1.6l-0.3,1.2l-0.3,0.7c0,0-0.1,0.2-0.2,0.4c-0.2,0.2-1.2,1.1-2,0.5c-0.8-0.6-0.7-2.6-0.6-3.6&#10;&#9;&#9;&#9;c0.2-3,0.5-6,0.7-8.9c0.1-1-1.2-1.6-2-1.2c-3.6,2.1-5.8,4.6-7.8,7.5c0.2-0.7,0.4-1.4,0.6-2c0.8-3.1,2-6.2,2.5-9.4&#10;&#9;&#9;&#9;c0.3-1.8-0.2-3.9-2.3-4.3c-2.4-0.4-3.9,2.1-5.1,3.7c-3.5,5-5.6,11.2-9.9,15.5c-1.6,1.6-3.5,2.8-5.8,2.1c-2.7-0.8-3.8,2.4,1,2.9&#10;&#9;&#9;&#9;c4.7,0.4,8.3-4.6,10.4-8.1c1.6-2.5,2.9-5.2,4.5-7.8c0.7-1.2,1.5-2.4,2.3-3.6c0.4-0.5,1-1.8,1.7-2c0.8-0.2,0.6,0.3,0.6,0.9&#10;&#9;&#9;&#9;c-0.1,1.5-0.7,3-1.1,4.5c-0.4,1.6-0.9,3.2-1.3,4.7c-0.9,3.4-1.8,6.8-2.8,10.1c-0.4,1.5,1.6,2.2,2.5,1c3.4-4.8,5.1-8.9,9.2-12.1&#10;&#9;&#9;&#9;c-0.1,1.1-0.2,2.1-0.3,3.2c-0.1,1.7-0.5,3.6-0.4,5.3c0.2,2.9,2.4,4.8,5.1,3.6c1.4-0.7,2.4-1.7,2.4-1.7l0.2-0.1l0.6-0.4l1-0.7&#10;&#9;&#9;&#9;l1.4-1l1.6-1.2l1.7-1.2l2.1-1.4l2.1-1.5l2.1-1.5l2.1-1.5l2-1.5l1.9-1.4l1.8-1.4l1.5-1.2l1.2-1.1l1-0.9l0-0.1l0,0l6.5-7.6&#10;&#9;&#9;&#9;l16.6-22.1l29.4,0l22.9,80.5H79.1z\"/>\n    <path fill=\"#005DA0\" d=\"M261.1,77.1l-1.9-1.5c-0.4-0.3-0.9-0.2-1.2,0.2l-24.7,32.9c-0.3,0.4-0.2,0.9,0.2,1.2l1.9,1.5&#10;&#9;&#9;&#9;c0.4,0.3,0.9,0.2,1.2-0.2l24.7-32.9C261.5,77.9,261.5,77.4,261.1,77.1z\"/>\n    <polygon fill=\"#005DA0\" points=\"161.7,217.2 210.9,217.2 209.9,213.3 161.7,213.3 113.6,213.3 112.5,217.2 &#9;&#9;\"/>\n  </g>\n</svg>"
 
 /***/ }),
-/* 45 */
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"100\" height=\"32\" viewBox=\"0 0 100 32\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"M 39.871 18.772 C 37.78 18.772 35.843 18.278 34.272 17.425 L 34.81 13.935 C 36.409 14.769 38.051 15.263 39.826 15.263 C 41.809 15.263 42.661 14.544 42.661 13.284 C 42.661 10.45 34.34 11.641 34.34 5.59 C 34.34 2.53 36.319 0.055 40.885 0.055 C 42.639 0.055 44.549 0.416 45.946 0.999 L 45.474 4.395 C 43.989 3.926 42.481 3.633 41.108 3.633 C 38.86 3.633 38.275 4.395 38.275 5.364 C 38.275 8.175 46.598 6.895 46.598 13.013 C 46.576 16.569 44.101 18.772 39.871 18.772 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 62.233 14.881 L 62.233 18.413 L 49.951 18.413 L 49.951 0.345 L 62.233 0.345 L 62.233 3.946 L 54.022 3.946 L 54.022 7.549 L 60.705 7.549 L 60.705 10.787 L 54.022 10.787 L 54.022 14.905 L 62.233 14.905 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 72.313 12.565 L 69.905 12.565 L 69.905 18.437 L 65.834 18.437 L 65.834 0.345 L 72.313 0.345 C 77.328 0.345 79.376 2.328 79.376 6.534 C 79.376 10.361 77.355 12.565 72.313 12.565 Z M 72.313 3.766 L 69.905 3.766 L 69.905 9.302 L 72.313 9.302 C 74.314 9.302 75.194 8.808 75.194 6.534 C 75.194 4.352 74.428 3.766 72.313 3.766 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 91.797 14.924 L 85.246 14.924 L 84.234 18.437 L 79.939 18.437 L 86.193 0.345 L 91.031 0.345 L 97.352 18.437 L 92.808 18.437 L 91.797 14.924 Z M 88.04 5.318 L 86.238 11.506 L 90.85 11.506 L 89.118 5.318 L 88.645 3.408 L 88.578 3.408 L 88.04 5.318 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 39.736 30.157 L 39.692 31.867 L 34.382 31.867 L 34.382 23.475 L 36.299 23.475 L 36.299 30.157 L 39.736 30.157 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 44.798 31.215 L 44.778 31.215 C 44.371 31.71 43.722 31.977 42.931 31.977 C 41.648 31.977 40.818 31.257 40.818 29.727 C 40.818 28.468 41.695 27.613 43.222 27.613 C 43.722 27.613 44.168 27.68 44.527 27.796 L 44.527 27.411 C 44.527 26.736 44.168 26.421 43.244 26.421 C 42.505 26.421 42.007 26.534 41.382 26.782 L 41.245 25.387 C 41.919 25.095 42.707 24.936 43.563 24.936 C 45.563 24.936 46.263 25.792 46.263 27.658 L 46.263 31.867 L 44.933 31.867 L 44.798 31.215 Z M 44.549 28.966 C 44.393 28.896 44.056 28.828 43.583 28.828 C 42.819 28.828 42.46 29.12 42.46 29.727 C 42.46 30.38 42.842 30.63 43.427 30.63 C 44.012 30.63 44.549 30.271 44.549 29.842 L 44.549 28.966 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 50.02 32.002 C 49.21 32.002 48.466 31.842 47.883 31.529 L 48.062 30.088 C 48.625 30.405 49.41 30.561 49.996 30.561 C 50.693 30.561 50.986 30.29 50.986 29.887 C 50.986 28.807 47.84 29.436 47.84 27.051 C 47.84 25.838 48.667 24.959 50.403 24.959 C 51.075 24.959 51.752 25.095 52.336 25.32 L 52.201 26.736 C 51.64 26.512 50.897 26.396 50.381 26.396 C 49.816 26.396 49.503 26.625 49.503 26.961 C 49.503 27.995 52.603 27.366 52.603 29.707 C 52.603 31.101 51.862 32.002 50.02 32.002 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 56.026 26.375 L 56.026 29.842 C 56.026 30.36 56.295 30.582 56.836 30.582 C 57.014 30.582 57.239 30.561 57.374 30.514 L 57.464 31.776 C 57.239 31.888 56.789 31.956 56.295 31.956 C 54.946 31.956 54.27 31.169 54.27 29.887 L 54.27 26.352 L 53.506 26.352 L 53.506 25.095 L 54.337 25.095 L 54.631 23.562 L 56.002 23.451 L 56.002 25.116 L 57.51 25.116 L 57.51 26.421 L 56.026 26.421 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 60.885 32.002 C 60.073 32.002 59.331 31.842 58.748 31.529 L 58.929 30.088 C 59.49 30.405 60.275 30.561 60.862 30.561 C 61.561 30.561 61.851 30.29 61.851 29.887 C 61.851 28.807 58.702 29.436 58.702 27.051 C 58.702 25.838 59.534 24.959 61.269 24.959 C 61.943 24.959 62.615 25.095 63.203 25.32 L 63.069 26.736 C 62.505 26.512 61.764 26.396 61.246 26.396 C 60.681 26.396 60.367 26.625 60.367 26.961 C 60.367 27.995 63.47 27.366 63.47 29.707 C 63.47 31.101 62.729 32.002 60.885 32.002 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 69.365 26.736 C 69.028 26.625 68.603 26.534 68.22 26.534 C 66.958 26.534 66.53 27.051 66.53 28.49 C 66.53 29.954 67.116 30.514 68.174 30.514 C 68.623 30.514 69.05 30.425 69.41 30.271 L 69.525 31.616 C 69.119 31.867 68.511 32.002 67.792 32.002 C 65.787 32.002 64.732 30.854 64.732 28.49 C 64.732 26.242 65.653 24.981 67.835 24.981 C 68.397 24.981 69.05 25.095 69.479 25.276 L 69.365 26.736 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 75.078 31.867 L 75.078 27.546 C 75.078 26.849 74.743 26.491 74.001 26.491 C 73.508 26.491 73.055 26.714 72.855 27.008 L 72.855 31.867 L 71.122 31.867 L 71.122 23.16 L 72.855 23.069 L 72.855 24.622 L 72.83 25.52 L 72.855 25.545 C 73.348 25.116 73.979 24.959 74.541 24.959 C 75.98 24.959 76.812 25.926 76.812 27.546 L 76.812 31.867 L 75.078 31.867 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 78.658 31.867 L 78.658 25.139 L 80.052 25.072 L 80.21 26.199 L 80.231 26.199 C 80.66 25.387 81.313 24.981 82.098 24.981 C 82.39 24.981 82.663 25.028 82.84 25.072 L 82.731 26.782 C 82.528 26.714 82.257 26.667 81.985 26.667 C 81.088 26.667 80.413 27.321 80.413 28.468 L 80.413 31.867 L 78.658 31.867 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 85.382 24.35 C 84.708 24.35 84.395 24.172 84.395 23.609 C 84.395 23.136 84.708 22.867 85.382 22.867 C 86.058 22.867 86.375 23.113 86.375 23.609 C 86.354 24.105 86.058 24.35 85.382 24.35 Z M 84.484 31.867 L 84.484 25.139 L 86.259 25.072 L 86.259 31.888 L 84.484 31.888 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 88.757 31.867 L 88.757 26.375 L 87.902 26.375 L 87.902 25.095 L 88.757 25.095 L 88.757 24.798 C 88.757 23.79 89.454 22.935 91.076 22.935 C 91.459 22.935 91.885 22.979 92.178 23.069 L 92.063 24.195 C 91.863 24.147 91.636 24.126 91.411 24.126 C 90.738 24.126 90.466 24.399 90.466 24.825 L 90.466 25.072 L 91.907 25.072 L 91.907 26.352 L 90.466 26.352 L 90.466 31.842 L 88.757 31.842 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 95.486 26.375 L 95.486 29.842 C 95.486 30.36 95.754 30.582 96.296 30.582 C 96.473 30.582 96.698 30.561 96.834 30.514 L 96.924 31.776 C 96.698 31.888 96.249 31.956 95.754 31.956 C 94.406 31.956 93.729 31.169 93.729 29.887 L 93.729 26.352 L 92.965 26.352 L 92.965 25.095 L 93.798 25.095 L 94.09 23.562 L 95.461 23.451 L 95.461 25.116 L 96.969 25.116 L 96.969 26.421 L 95.486 26.421 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 20.357 8.826 L 15.368 5.081 L 10.379 1.334 C 10.033 1.074 9.54 1.146 9.281 1.493 L 4.883 7.322 C 4.811 7.409 4.768 7.51 4.754 7.624 C 4.68 7.93 4.782 8.248 5.043 8.45 L 8.022 10.677 L 12.042 13.698 L 15.021 15.926 C 15.281 16.13 15.629 16.13 15.888 15.97 C 15.991 15.912 16.062 15.854 16.136 15.752 L 20.531 9.91 C 20.763 9.578 20.706 9.087 20.357 8.826 Z M 10.047 1.769 L 13.012 3.995 L 13.012 3.995 L 15.021 5.5 L 17.046 7.017 L 17.046 7.017 L 20.025 9.245 C 20.142 9.332 20.156 9.491 20.082 9.607 L 19.374 10.591 L 16.005 8.058 L 12.36 5.326 L 8.976 2.809 L 9.684 1.826 C 9.772 1.709 9.931 1.682 10.047 1.769 Z M 15.673 15.463 C 15.629 15.507 15.585 15.536 15.528 15.55 C 15.469 15.564 15.398 15.55 15.339 15.507 L 12.345 13.265 L 8.34 10.257 L 5.361 8.001 C 5.302 7.958 5.275 7.9 5.259 7.842 C 5.259 7.785 5.259 7.726 5.302 7.669 L 6.113 6.585 C 6.113 6.585 7.009 5.427 7.791 4.386 L 11.16 6.917 L 14.804 9.65 L 18.173 12.181 C 17.393 13.222 16.496 14.379 16.496 14.379 L 15.673 15.463 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <g transform=\"matrix(0.144619, 0, 0, 0.144619, -7.250457, -3.988513)\">\n    <path d=\"M197.1,150.4l52-69.6l5.3-7c0,0,0.1-0.2,0.2-0.2c0.4-0.5,0.3-1.2-0.2-1.6l-14.7-10.7&#10;&#9;&#9;&#9;c-0.5-0.4-1.2-0.2-1.6,0.3c-0.1,0.1-0.2,0.2-0.2,0.2l-2,2.5l-64.3,86l-70.8,0l-26.5,87.4h177.1l-25-87.4L197.1,150.4z M79.1,234.3&#10;&#9;&#9;&#9;l24.2-80.5l65.7,0l-5.7,7.6l-8.1,11.3l-0.9,1.7l-0.9,1.9l-0.9,2.2l-0.9,2.3l-0.9,2.5l-0.9,2.5l-0.8,2.5l-0.8,2.4l-0.7,2.3&#10;&#9;&#9;&#9;l-0.7,2.1l-0.6,1.9l-0.4,1.6l-0.3,1.2l-0.3,0.7c0,0-0.1,0.2-0.2,0.4c-0.2,0.2-1.2,1.1-2,0.5c-0.8-0.6-0.7-2.6-0.6-3.6&#10;&#9;&#9;&#9;c0.2-3,0.5-6,0.7-8.9c0.1-1-1.2-1.6-2-1.2c-3.6,2.1-5.8,4.6-7.8,7.5c0.2-0.7,0.4-1.4,0.6-2c0.8-3.1,2-6.2,2.5-9.4&#10;&#9;&#9;&#9;c0.3-1.8-0.2-3.9-2.3-4.3c-2.4-0.4-3.9,2.1-5.1,3.7c-3.5,5-5.6,11.2-9.9,15.5c-1.6,1.6-3.5,2.8-5.8,2.1c-2.7-0.8-3.8,2.4,1,2.9&#10;&#9;&#9;&#9;c4.7,0.4,8.3-4.6,10.4-8.1c1.6-2.5,2.9-5.2,4.5-7.8c0.7-1.2,1.5-2.4,2.3-3.6c0.4-0.5,1-1.8,1.7-2c0.8-0.2,0.6,0.3,0.6,0.9&#10;&#9;&#9;&#9;c-0.1,1.5-0.7,3-1.1,4.5c-0.4,1.6-0.9,3.2-1.3,4.7c-0.9,3.4-1.8,6.8-2.8,10.1c-0.4,1.5,1.6,2.2,2.5,1c3.4-4.8,5.1-8.9,9.2-12.1&#10;&#9;&#9;&#9;c-0.1,1.1-0.2,2.1-0.3,3.2c-0.1,1.7-0.5,3.6-0.4,5.3c0.2,2.9,2.4,4.8,5.1,3.6c1.4-0.7,2.4-1.7,2.4-1.7l0.2-0.1l0.6-0.4l1-0.7&#10;&#9;&#9;&#9;l1.4-1l1.6-1.2l1.7-1.2l2.1-1.4l2.1-1.5l2.1-1.5l2.1-1.5l2-1.5l1.9-1.4l1.8-1.4l1.5-1.2l1.2-1.1l1-0.9l0-0.1l0,0l6.5-7.6&#10;&#9;&#9;&#9;l16.6-22.1l29.4,0l22.9,80.5H79.1z\" style=\"fill: rgb(255, 255, 255);\"/>\n    <path d=\"M261.1,77.1l-1.9-1.5c-0.4-0.3-0.9-0.2-1.2,0.2l-24.7,32.9c-0.3,0.4-0.2,0.9,0.2,1.2l1.9,1.5&#10;&#9;&#9;&#9;c0.4,0.3,0.9,0.2,1.2-0.2l24.7-32.9C261.5,77.9,261.5,77.4,261.1,77.1z\" style=\"fill: rgb(255, 255, 255);\"/>\n    <polygon points=\"161.7,217.2 210.9,217.2 209.9,213.3 161.7,213.3 113.6,213.3 112.5,217.2 &#9;&#9;\" style=\"fill: rgb(255, 255, 255);\"/>\n  </g>\n</svg>"
 
 /***/ }),
-/* 46 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"40\" height=\"24\" viewBox=\"0 0 40 24\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"M0 1.927C0 .863.892 0 1.992 0h36.016C39.108 0 40 .863 40 1.927v20.146C40 23.137 39.108 24 38.008 24H1.992C.892 24 0 23.137 0 22.073V1.927z\" style=\"fill: rgb(33, 86, 154);\"/>\n  <path d=\"M19.596 7.885l-2.11 9.478H14.93l2.11-9.478h2.554zm10.743 6.12l1.343-3.56.773 3.56H30.34zm2.85 3.358h2.36l-2.063-9.478H31.31c-.492 0-.905.274-1.088.695l-3.832 8.783h2.682l.532-1.415h3.276l.31 1.415zm-6.667-3.094c.01-2.502-3.6-2.64-3.577-3.76.008-.338.345-.7 1.083-.793.365-.045 1.373-.08 2.517.425l.448-2.01c-.615-.214-1.405-.42-2.39-.42-2.523 0-4.3 1.288-4.313 3.133-.016 1.364 1.268 2.125 2.234 2.58.996.464 1.33.762 1.325 1.177-.006.636-.793.918-1.526.928-1.285.02-2.03-.333-2.623-.6l-.462 2.08c.598.262 1.7.49 2.84.502 2.682 0 4.437-1.273 4.445-3.243zM15.948 7.884l-4.138 9.478h-2.7L7.076 9.8c-.123-.466-.23-.637-.606-.834-.615-.32-1.63-.62-2.52-.806l.06-.275h4.345c.554 0 1.052.354 1.178.966l1.076 5.486 2.655-6.45h2.683z\" style=\"fill: rgb(255, 255, 255);\"/>\n</svg>"
 
 /***/ }),
-/* 47 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"40\" height=\"24\" viewBox=\"0 0 40 24\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z\" style=\"fill: rgb(20, 119, 190);\"/>\n  <path d=\"M6.26 12.32h2.313L7.415 9.66M27.353 9.977h-3.738v1.23h3.666v1.384h-3.675v1.385h3.821v1.005c.623-.77 1.33-1.466 2.025-2.235l.707-.77c-.934-1.004-1.87-2.08-2.804-3.075v1.077z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M38.25 7h-5.605l-1.328 1.4L30.072 7H16.984l-1.017 2.416L14.877 7h-9.58L1.25 16.5h4.826l.623-1.556h1.4l.623 1.556H29.99l1.327-1.483 1.328 1.483h5.605l-4.36-4.667L38.25 7zm-17.685 8.1h-1.557V9.883L16.673 15.1h-1.33L13.01 9.883l-.084 5.217H9.73l-.623-1.556h-3.27L5.132 15.1H3.42l2.884-6.772h2.42l2.645 6.233V8.33h2.646l2.107 4.51 1.868-4.51h2.575V15.1zm14.727 0h-2.024l-2.024-2.26-2.023 2.26H22.06V8.328H29.53l1.795 2.177 2.024-2.177h2.025L32.26 11.75l3.032 3.35z\" style=\"fill: rgb(255, 255, 255);\"/>\n</svg>"
 
 /***/ }),
-/* 48 */
+/* 54 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"40\" height=\"24\" viewBox=\"0 0 40 24\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"M0 1.927C0 .863.892 0 1.992 0h36.016C39.108 0 40 .863 40 1.927v20.146C40 23.137 39.108 24 38.008 24H1.992C.892 24 0 23.137 0 22.073V1.927z\" style=\"fill: rgb(62, 57, 57);\"/>\n  <path style=\"fill: rgb(255, 95, 0);\" d=\"M 22.205 3.901 L 15.688 3.901 L 15.688 15.589 L 22.205 15.589\"/>\n  <path d=\"M 16.1 9.747 C 16.1 7.371 17.218 5.265 18.935 3.901 C 17.67 2.912 16.078 2.312 14.342 2.312 C 10.223 2.312 6.892 5.636 6.892 9.746 C 6.892 13.853 10.223 17.178 14.342 17.178 C 16.078 17.178 17.67 16.58 18.935 15.588 C 17.216 14.246 16.099 12.119 16.099 9.745 Z\" style=\"fill: rgb(235, 0, 27);\"/>\n  <path d=\"M 30.996 9.747 C 30.996 13.854 27.663 17.179 23.547 17.179 C 21.81 17.179 20.216 16.581 18.954 15.589 C 20.691 14.227 21.788 12.12 21.788 9.746 C 21.788 7.37 20.671 5.264 18.954 3.9 C 20.216 2.911 21.81 2.311 23.547 2.311 C 27.663 2.311 30.996 5.657 30.996 9.745 Z\" style=\"fill: rgb(247, 158, 27);\"/>\n  <path d=\"M 7.167 22.481 L 7.167 20.43 C 7.167 19.641 6.685 19.127 5.857 19.127 C 5.443 19.127 4.993 19.262 4.683 19.71 C 4.44 19.332 4.096 19.127 3.579 19.127 C 3.233 19.127 2.888 19.23 2.612 19.607 L 2.612 19.197 L 1.886 19.197 L 1.886 22.481 L 2.612 22.481 L 2.612 20.668 C 2.612 20.086 2.921 19.812 3.406 19.812 C 3.888 19.812 4.131 20.121 4.131 20.669 L 4.131 22.481 L 4.856 22.481 L 4.856 20.668 C 4.856 20.086 5.204 19.812 5.651 19.812 C 6.137 19.812 6.377 20.121 6.377 20.669 L 6.377 22.481 L 7.171 22.481 Z M 17.909 19.197 L 16.734 19.197 L 16.734 18.204 L 16.007 18.204 L 16.007 19.197 L 15.352 19.197 L 15.352 19.845 L 16.007 19.845 L 16.007 21.351 C 16.007 22.106 16.319 22.551 17.146 22.551 C 17.459 22.551 17.804 22.449 18.044 22.309 L 17.839 21.695 C 17.632 21.831 17.389 21.867 17.216 21.867 C 16.872 21.867 16.734 21.66 16.734 21.319 L 16.734 19.847 L 17.909 19.847 L 17.909 19.198 Z M 24.053 19.127 C 23.639 19.127 23.364 19.332 23.191 19.607 L 23.191 19.197 L 22.465 19.197 L 22.465 22.481 L 23.191 22.481 L 23.191 20.633 C 23.191 20.086 23.434 19.777 23.882 19.777 C 24.018 19.777 24.192 19.812 24.33 19.847 L 24.538 19.162 C 24.401 19.127 24.192 19.127 24.052 19.127 Z M 14.765 19.469 C 14.42 19.229 13.937 19.127 13.418 19.127 C 12.588 19.127 12.036 19.538 12.036 20.188 C 12.036 20.736 12.453 21.044 13.175 21.146 L 13.524 21.181 C 13.903 21.249 14.108 21.351 14.108 21.523 C 14.108 21.765 13.832 21.934 13.35 21.934 C 12.864 21.934 12.484 21.764 12.244 21.592 L 11.898 22.139 C 12.278 22.411 12.794 22.549 13.313 22.549 C 14.28 22.549 14.831 22.105 14.831 21.488 C 14.831 20.908 14.383 20.599 13.692 20.496 L 13.348 20.462 C 13.037 20.428 12.795 20.36 12.795 20.155 C 12.795 19.914 13.038 19.777 13.418 19.777 C 13.83 19.777 14.245 19.949 14.453 20.052 L 14.764 19.469 Z M 34.033 19.127 C 33.618 19.127 33.342 19.332 33.171 19.607 L 33.171 19.197 L 32.445 19.197 L 32.445 22.481 L 33.171 22.481 L 33.171 20.633 C 33.171 20.086 33.414 19.777 33.862 19.777 C 33.998 19.777 34.17 19.812 34.307 19.847 L 34.515 19.162 C 34.38 19.127 34.172 19.127 34.033 19.127 Z M 24.779 20.838 C 24.779 21.834 25.47 22.551 26.54 22.551 C 27.025 22.551 27.369 22.449 27.715 22.173 L 27.369 21.593 C 27.092 21.798 26.816 21.901 26.504 21.901 C 25.919 21.901 25.505 21.49 25.505 20.84 C 25.505 20.226 25.919 19.813 26.507 19.78 C 26.816 19.78 27.092 19.883 27.369 20.089 L 27.715 19.507 C 27.369 19.233 27.024 19.13 26.54 19.13 C 25.47 19.13 24.779 19.85 24.779 20.841 Z M 31.478 20.838 L 31.478 19.198 L 30.75 19.198 L 30.75 19.608 C 30.51 19.3 30.165 19.128 29.717 19.128 C 28.784 19.128 28.058 19.848 28.058 20.84 C 28.058 21.835 28.784 22.552 29.716 22.552 C 30.197 22.552 30.543 22.382 30.748 22.074 L 30.748 22.484 L 31.477 22.484 L 31.477 20.84 Z M 28.818 20.838 C 28.818 20.259 29.196 19.779 29.819 19.779 C 30.406 19.779 30.821 20.224 30.821 20.84 C 30.821 21.424 30.406 21.902 29.819 21.902 C 29.196 21.869 28.818 21.424 28.818 20.841 Z M 20.148 19.128 C 19.183 19.128 18.494 19.813 18.494 20.84 C 18.494 21.869 19.183 22.552 20.185 22.552 C 20.671 22.552 21.154 22.417 21.533 22.108 L 21.188 21.595 C 20.914 21.799 20.565 21.937 20.222 21.937 C 19.772 21.937 19.323 21.732 19.219 21.149 L 21.671 21.149 L 21.671 20.878 C 21.705 19.815 21.083 19.13 20.15 19.13 Z M 20.148 19.748 C 20.6 19.748 20.911 20.019 20.98 20.532 L 19.253 20.532 C 19.321 20.087 19.633 19.748 20.148 19.748 Z M 38.141 20.84 L 38.141 17.898 L 37.412 17.898 L 37.412 19.61 C 37.173 19.302 36.828 19.13 36.38 19.13 C 35.446 19.13 34.721 19.85 34.721 20.841 C 34.721 21.837 35.446 22.554 36.379 22.554 C 36.861 22.554 37.206 22.383 37.41 22.076 L 37.41 22.486 L 38.14 22.486 L 38.14 20.841 Z M 35.481 20.84 C 35.481 20.261 35.861 19.78 36.484 19.78 C 37.069 19.78 37.486 20.226 37.486 20.841 C 37.486 21.426 37.069 21.904 36.484 21.904 C 35.861 21.87 35.481 21.426 35.481 20.843 Z M 11.237 20.84 L 11.237 19.2 L 10.515 19.2 L 10.515 19.61 C 10.272 19.302 9.928 19.13 9.478 19.13 C 8.545 19.13 7.82 19.85 7.82 20.841 C 7.82 21.837 8.545 22.554 9.477 22.554 C 9.96 22.554 10.304 22.383 10.512 22.076 L 10.512 22.486 L 11.236 22.486 L 11.236 20.841 Z M 8.546 20.84 C 8.546 20.261 8.926 19.78 9.548 19.78 C 10.134 19.78 10.55 20.226 10.55 20.841 C 10.55 21.426 10.134 21.904 9.548 21.904 C 8.926 21.87 8.546 21.426 8.546 20.843 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n</svg>"
 
 /***/ }),
-/* 49 */
+/* 55 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 40 23.999999\" width=\"40\" height=\"24\" preserveAspectRatio=\"xMinYMin meet\" version=\"1.1\">\n    <path d=\"M 0,1.927 C 0,0.86299997 0.892,0 1.992,0 H 38.008 C 39.108,0 40,0.86299997 40,1.927 V 22.073 C 40,23.137 39.108,24 38.008,24 H 1.992 C 0.892,24 0,23.137 0,22.073 Z\" style=\"fill:#3e3939\" />\n    <path d=\"m 23.74623,18.221667 v 0.929759 h -0.621716 v 0.609196 h 0.621716 v 1.394324 c 0,0.71165 0.275786,1.135118 1.064369,1.135118 a 1.564348,1.564348 0 0 0 0.833339,-0.237293 l -0.192215,-0.571003 a 1.2309624,1.2309624 0 0 1 -0.589785,0.17343 c -0.333383,0 -0.442649,-0.192213 -0.442649,-0.512774 v -1.388065 h 1.086908 V 19.151426 H 24.419289 V 18.221667 Z M 10.802242,19.066278 A 1.1860835,1.1860835 0 0 0 9.8436827,19.612862 1.1251765,1.1251765 0 0 0 8.830654,19.068153 1.0129794,1.0129794 0 0 0 7.9328276,19.523328 V 19.145165 H 7.2660325 v 3.061001 H 7.939089 v -1.704869 a 0.71485573,0.71485573 0 0 1 0.7500683,-0.814556 c 0.4423764,0 0.6667964,0.288356 0.6667964,0.807671 v 1.702363 h 0.6736813 v -1.695478 a 0.72126699,0.72126699 0 0 1 0.750068,-0.814556 c 0.4552,0 0.673058,0.288356 0.673058,0.807671 v 1.702363 l 0.669926,0.0094 v -1.923369 a 1.1379991,1.1379991 0 0 0 -1.202112,-1.214633 1.1860835,1.1860835 0 0 0 -0.118329,-0.002 z m 10.549158,0.002 c -0.782176,0 -1.282253,0.372027 -1.282253,0.981097 0,0.50008 0.372102,0.80792 1.058106,0.904089 l 0.320567,0.04445 c 0.365439,0.05128 0.538444,0.147461 0.538444,0.320563 0,0.237218 -0.243528,0.371902 -0.69873,0.371902 a 1.6316662,1.6316662 0 0 1 -1.019289,-0.320606 l -0.320562,0.519663 a 2.2086798,2.2086798 0 0 0 1.323576,0.396946 c 0.881546,0 1.394948,-0.461335 1.394948,-0.999881 0,-0.538545 -0.403858,-0.820441 -1.07063,-0.916612 l -0.320563,-0.04509 c -0.288506,-0.03848 -0.519662,-0.07675 -0.519662,-0.301152 0,-0.224394 0.218082,-0.359382 0.583526,-0.359382 a 1.9714631,1.9714631 0 0 1 0.961688,0.262961 l 0.298023,-0.538445 A 2.2888207,2.2888207 0 0 0 21.3514,19.06818 Z m 6.45947,0 0.0132,0.01254 a 0.90398792,0.90398792 0 0 0 -0.80829,0.448915 v -0.371917 h -0.659908 v 3.061628 h 0.666794 v -1.714927 c 0,-0.506487 0.205162,-0.788884 0.641127,-0.788884 a 1.0835034,1.0835034 0 0 1 0.416355,0.07701 l 0.205363,-0.641127 a 1.4200945,1.4200945 0 0 0 -0.474583,-0.08326 z m 2.301544,0 a 1.7246296,1.7246296 0 0 0 -0.656779,0.13148 1.5835818,1.5835818 0 0 0 -0.519661,0.339973 1.564348,1.564348 0 0 0 -0.343103,0.509644 1.7021902,1.7021902 0 0 0 0,1.282252 1.564348,1.564348 0 0 0 0.343103,0.509647 1.5835818,1.5835818 0 0 0 0.519661,0.339972 1.8143872,1.8143872 0 0 0 1.314183,0 1.6028157,1.6028157 0 0 0 0.522793,-0.339972 1.5483199,1.5483199 0 0 0 0.345606,-0.509647 1.6989845,1.6989845 0 0 0 0,-1.282252 1.5515252,1.5515252 0 0 0 -0.345606,-0.509644 1.6028157,1.6028157 0 0 0 -0.532186,-0.343105 1.7246296,1.7246296 0 0 0 -0.641125,-0.122092 z m -15.816534,0.0025 a 1.1604384,1.1604384 0 0 0 -0.05759,6.27e-4 1.602816,1.602816 0 0 0 0,3.205632 1.1604384,1.1604384 0 0 0 0.961689,-0.448915 v 0.371903 h 0.666796 l 0.0062,-1.522675 v -1.528937 h -0.673017 v 0.371902 a 1.1604384,1.1604384 0 0 0 -0.904087,-0.449539 z m 3.747834,0.0039 a 1.6029727,1.6029727 0 0 0 0.04446,3.205629 1.859266,1.859266 0 0 0 1.253452,-0.429506 l -0.320573,-0.493394 a 1.458562,1.458562 0 0 1 -0.89094,0.320563 0.84949219,0.84949219 0 0 1 -0.917235,-0.750067 h 2.273368 c 0.0096,-0.07692 0.0094,-0.160682 0.0094,-0.250439 0,-0.961691 -0.596025,-1.602816 -1.451926,-1.602816 z m -0.05135,0.589784 a 0.78858528,0.78858528 0 0 1 0.03819,0 0.75973457,0.75973457 0 0 1 0.775738,0.743808 h -1.589666 a 0.78858528,0.78858528 0 0 1 0.775738,-0.743808 z m 12.120042,0.03256 a 0.99374563,0.99374563 0 0 1 0.385051,0.08952 0.91681058,0.91681058 0 0 1 0.320563,0.201604 0.92963292,0.92963292 0 0 1 0.201606,0.320564 1.1123539,1.1123539 0 0 1 0,0.795147 0.92642727,0.92642727 0 0 1 -0.201606,0.320562 0.91681058,0.91681058 0 0 1 -0.320563,0.202231 1.0418302,1.0418302 0 0 1 -0.760083,0 0.89757672,0.89757672 0 0 1 -0.304286,-0.202231 0.9360443,0.9360443 0 0 1 -0.202231,-0.320562 1.1123539,1.1123539 0 0 1 0,-0.795147 0.93924994,0.93924994 0 0 1 0.202231,-0.320564 0.90078228,0.90078228 0 0 1 0.304286,-0.201604 0.99374563,0.99374563 0 0 1 0.381918,-0.07073 z M 14.309018,19.80595 a 0.92642727,0.92642727 0 1 1 0.01565,1.852627 0.91681058,0.91681058 0 0 1 -0.936018,-0.981097 h 0.0069 a 0.92642727,0.92642727 0 0 1 0.913439,-0.871499 z m 18.111818,1.952179 -0.01629,0.0031 a 0.3205631,0.3205631 0 0 0 -0.10581,0.0194 0.3205631,0.3205631 0 0 0 -0.09955,0.06386 0.3205631,0.3205631 0 0 0 -0.067,0.09641 0.30132932,0.30132932 0 0 0 0,0.236665 0.3205631,0.3205631 0 0 0 0.288631,0.185952 0.30132932,0.30132932 0 0 0 0.12147,-0.02567 0.3205631,0.3205631 0 0 0 0.09956,-0.06384 0.3205631,0.3205631 0 0 0 0.06763,-0.09642 0.2981237,0.2981237 0 0 0 0,-0.236664 0.3205631,0.3205631 0 0 0 -0.06763,-0.09641 0.3205631,0.3205631 0 0 0 -0.09956,-0.06387 0.3205631,0.3205631 0 0 0 -0.12147,-0.02255 z m 0,0.067 a 0.23080544,0.23080544 0 0 1 0.09266,0.01941 0.2372167,0.2372167 0 0 1 0.07387,0.384424 0.24042232,0.24042232 0 0 1 -0.07387,0.05135 0.2275998,0.2275998 0 0 1 -0.09266,0.01941 v -0.01321 a 0.2372167,0.2372167 0 0 1 -0.170301,-0.07014 0.2372167,0.2372167 0 0 1 0,-0.320564 0.23401105,0.23401105 0 0 1 0.07701,-0.05134 0.24042232,0.24042232 0 0 1 0.09329,-0.0194 z m 0.01878,0.09329 -0.134612,0.0031 v 0.281748 h 0.06134 v -0.105802 h 0.0288 l 0.08639,0.105811 h 0.07388 l -0.09329,-0.105811 a 0.11219709,0.11219709 0 0 0 0.06761,-0.02879 0.07693513,0.07693513 0 0 0 0.02255,-0.05761 0.08014078,0.08014078 0 0 0 -0.0288,-0.067 0.12822525,0.12822525 0 0 0 -0.08391,-0.02567 z m -0.07014,0.05448 0.07014,0.01878 a 0.06731826,0.06731826 0 0 1 0.03881,0 0.03205633,0.03205633 0 0 1 0,0.02943 0.03205633,0.03205633 0 0 1 0,0.0288 0.06731826,0.06731826 0 0 1 -0.03881,0 h -0.07014 z\" style=\"fill:#ffffff;stroke-width:0.77356213\" />\n    <g transform=\"matrix(0.21220782,0,0,0.21220782,2.1400282,0.14227739)\">\n        <rect x=\"68.410004\" y=\"15.14\" width=\"31.5\" height=\"56.610001\" style=\"fill:#7673c0\" />\n        <path d=\"m 382.25,296.22 a 35.94,35.94 0 0 1 13.75,-28.3 36,36 0 1 0 0,56.61 35.94,35.94 0 0 1 -13.75,-28.31 z\" transform=\"translate(-311.84,-252.78)\" id=\"path8\" style=\"fill:#eb001b\" />\n        <path d=\"m 450.81,318.53 v -1.16 h 0.47 v -0.24 h -1.19 v 0.24 h 0.47 v 1.16 z m 2.31,0 v -1.4 h -0.36 l -0.42,1 -0.42,-1 h -0.36 v 1.4 h 0.26 v -1.05 l 0.39,0.91 h 0.27 l 0.39,-0.91 v 1.06 z\" transform=\"translate(-311.84,-252.78)\" style=\"fill:#00a1df\" />\n        <path d=\"m 454.25,296.22 a 36,36 0 0 1 -58.25,28.3 36,36 0 0 0 0,-56.61 36,36 0 0 1 58.25,28.3 z\" transform=\"translate(-311.84,-252.78)\" style=\"fill:#00a1df\" />\n    </g>\n</svg>\n"
 
 /***/ }),
-/* 50 */
+/* 56 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"40\" height=\"24\" viewBox=\"0 0 40 24\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z\" style=\"fill: rgb(17, 49, 82);\"/>\n  <path d=\"M 5.498 13.349 C 5.16 13.654 4.722 13.787 4.028 13.787 L 3.738 13.787 L 3.738 10.141 L 4.028 10.141 C 4.722 10.141 5.143 10.265 5.498 10.587 C 5.868 10.917 6.093 11.431 6.093 11.959 C 6.093 12.489 5.869 13.019 5.498 13.349 Z M 4.243 9.206 L 2.666 9.206 L 2.666 14.721 L 4.236 14.721 C 5.069 14.721 5.671 14.524 6.199 14.084 C 6.829 13.564 7.199 12.779 7.199 11.968 C 7.199 10.34 5.985 9.206 4.243 9.206 Z M 7.696 14.721 L 8.77 14.721 L 8.77 9.207 L 7.696 9.207 M 11.393 11.323 C 10.748 11.083 10.559 10.926 10.559 10.628 C 10.559 10.281 10.897 10.018 11.359 10.018 C 11.681 10.018 11.946 10.15 12.226 10.464 L 12.788 9.727 C 12.326 9.322 11.773 9.115 11.17 9.115 C 10.195 9.115 9.452 9.793 9.452 10.695 C 9.452 11.455 9.798 11.845 10.807 12.208 C 11.227 12.356 11.442 12.455 11.55 12.522 C 11.765 12.662 11.872 12.862 11.872 13.092 C 11.872 13.54 11.518 13.872 11.038 13.872 C 10.528 13.872 10.114 13.614 9.868 13.136 L 9.173 13.806 C 9.668 14.532 10.263 14.856 11.08 14.856 C 12.196 14.856 12.98 14.111 12.98 13.044 C 12.98 12.168 12.617 11.771 11.395 11.324 Z M 13.316 11.968 C 13.316 13.588 14.586 14.845 16.223 14.845 C 16.685 14.845 17.081 14.755 17.57 14.525 L 17.57 13.258 C 17.14 13.688 16.76 13.862 16.273 13.862 C 15.191 13.862 14.423 13.077 14.423 11.962 C 14.423 10.902 15.215 10.067 16.223 10.067 C 16.735 10.067 17.123 10.25 17.57 10.687 L 17.57 9.421 C 17.098 9.181 16.71 9.081 16.248 9.081 C 14.621 9.081 13.316 10.364 13.316 11.968 Z M 26.088 12.911 L 24.62 9.206 L 23.446 9.206 L 25.783 14.862 L 26.361 14.862 L 28.741 9.207 L 27.576 9.207 M 29.226 14.721 L 32.272 14.721 L 32.272 13.787 L 30.299 13.787 L 30.299 12.299 L 32.199 12.299 L 32.199 11.365 L 30.299 11.365 L 30.299 10.141 L 32.272 10.141 L 32.272 9.206 L 29.226 9.206 M 34.373 11.745 L 34.059 11.745 L 34.059 10.075 L 34.389 10.075 C 35.059 10.075 35.423 10.355 35.423 10.893 C 35.423 11.447 35.059 11.745 34.373 11.745 Z M 36.528 10.835 C 36.528 9.802 35.818 9.207 34.578 9.207 L 32.986 9.207 L 32.986 14.721 L 34.059 14.721 L 34.059 12.506 L 34.199 12.506 L 35.686 14.721 L 37.006 14.721 L 35.273 12.398 C 36.083 12.233 36.528 11.678 36.528 10.835 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <g id=\"MarkingBase_1_\" transform=\"matrix(0.089776, 0, 0, 0.089776, 2.192296, 5.72498)\">\n    <linearGradient id=\"SVGID_1_\" gradientUnits=\"userSpaceOnUse\" x1=\"224.3917\" y1=\"44.1731\" x2=\"201.33\" y2=\"80.2807\" gradientTransform=\"matrix(1 0 0 -1 0 141.7323)\">\n      <stop offset=\"0\" style=\"stop-color:#F89F21\"/>\n      <stop offset=\"0.2502\" style=\"stop-color:#F79A23\"/>\n      <stop offset=\"0.5331\" style=\"stop-color:#F78E22\"/>\n      <stop offset=\"0.6196\" style=\"stop-color:#F68721\"/>\n      <stop offset=\"0.7232\" style=\"stop-color:#F48220\"/>\n      <stop offset=\"1\" style=\"stop-color:#F27623\"/>\n    </linearGradient>\n    <circle fill=\"url(#SVGID_1_)\" cx=\"207.343\" cy=\"70.866\" r=\"33.307\"/>\n    <linearGradient id=\"SVGID_2_\" gradientUnits=\"userSpaceOnUse\" x1=\"220.7487\" y1=\"44.664\" x2=\"187.0436\" y2=\"110.5426\" gradientTransform=\"matrix(1 0 0 -1 0 141.7323)\">\n      <stop offset=\"0\" style=\"stop-color:#F68721;stop-opacity:0\"/>\n      <stop offset=\"0.3587\" style=\"stop-color:#E27027;stop-opacity:0.2704\"/>\n      <stop offset=\"0.703\" style=\"stop-color:#D4612C;stop-opacity:0.5299\"/>\n      <stop offset=\"0.9816\" style=\"stop-color:#D15D2D;stop-opacity:0.74\"/>\n    </linearGradient>\n    <circle opacity=\"0.65\" fill=\"url(#SVGID_2_)\" cx=\"207.343\" cy=\"70.866\" r=\"33.307\"/>\n  </g>\n  <g id=\"Orange_1_\" enable-background=\"new    \" transform=\"matrix(0.469224, 0, 0, 0.469224, 13.785085, 6.199149)\">\n    <g id=\"Orange\">\n      <g>\n        <path d=\"M13,38c20.1,0,40,0,40,0c1.7,0,3-1.3,3-3V18C56,18,51.2,31.8,13,38z\" style=\"fill: rgb(255, 129, 38);\"/>\n      </g>\n    </g>\n  </g>\n</svg>"
 
 /***/ }),
-/* 51 */
+/* 57 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"40\" height=\"24\" viewBox=\"0 0 40 24\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"M0 1.927C0 .863.892 0 1.992 0h36.016C39.108 0 40 .863 40 1.927v20.146C40 23.137 39.108 24 38.008 24H1.992C.892 24 0 23.137 0 22.073V1.927z\" style=\"fill: rgb(243, 97, 24);\"/>\n  <path id=\"path16\" style=\"fill: rgb(255, 255, 255); fill-opacity: 1; fill-rule: nonzero; stroke: none;\" d=\"M 3.206 6.45 L 3.206 16.929 L 5.586 16.929 L 5.586 12.545 L 9.489 12.545 L 9.489 16.929 L 11.853 16.929 L 11.853 6.45 L 9.489 6.45 L 9.489 10.477 L 5.586 10.477 L 5.586 6.45 L 3.206 6.45\"/>\n  <path id=\"path18\" style=\"fill: rgb(255, 255, 255); fill-opacity: 1; fill-rule: nonzero; stroke: none;\" d=\"M 32.319 13.882 C 32.351 13.71 32.397 13.353 32.397 12.949 C 32.397 11.068 31.464 9.155 29.008 9.155 C 26.364 9.155 25.167 11.285 25.167 13.213 C 25.167 15.592 26.644 17.085 29.225 17.085 C 30.251 17.085 31.2 16.929 31.977 16.618 L 31.666 15.017 C 31.029 15.219 30.376 15.328 29.567 15.328 C 28.463 15.328 27.499 14.861 27.422 13.882 Z M 27.406 12.265 C 27.468 11.628 27.873 10.725 28.868 10.725 C 29.956 10.725 30.205 11.689 30.205 12.265 L 27.406 12.265\"/>\n  <path id=\"path20\" style=\"fill: rgb(255, 255, 255); fill-opacity: 1; fill-rule: nonzero; stroke: none;\" d=\"M 33.155 16.929 L 35.519 16.929 L 35.519 13.073 C 35.519 12.887 35.533 12.7 35.565 12.545 C 35.72 11.814 36.31 11.348 37.182 11.348 C 37.446 11.348 37.648 11.378 37.819 11.41 L 37.819 9.186 C 37.648 9.155 37.539 9.155 37.321 9.155 C 36.591 9.155 35.658 9.621 35.269 10.725 L 35.207 10.725 L 35.129 9.326 L 33.092 9.326 C 33.123 9.979 33.155 10.709 33.155 11.829 L 33.155 16.929\"/>\n  <path id=\"path22\" style=\"fill: rgb(254, 234, 1); fill-opacity: 1; fill-rule: evenodd; stroke: none;\" d=\"M 14.256 6.028 C 14.927 6.028 15.472 6.572 15.472 7.243 C 15.472 7.914 14.927 8.458 14.256 8.458 C 13.585 8.458 13.041 7.914 13.041 7.243 C 13.041 6.572 13.585 6.028 14.256 6.028\"/>\n  <path id=\"path24\" style=\"fill: rgb(255, 255, 255); fill-opacity: 1; fill-rule: evenodd; stroke: none;\" d=\"M 19.247 15.159 L 20.433 15.159 C 21.624 15.159 22.163 14.395 22.163 13.6 C 22.163 12.805 22.106 11.006 20.633 11.006 C 18.943 11.006 19.218 13.238 19.224 14.408 C 19.226 14.658 19.24 14.908 19.247 15.159 Z M 13.041 9.315 L 15.472 9.315 L 15.472 13.6 C 15.472 14.395 15.912 15.157 16.887 15.159 C 16.894 13.229 16.886 11.243 16.822 9.315 L 18.852 9.315 C 18.896 9.687 18.936 10.059 18.973 10.432 C 19.932 8.514 22.954 8.937 23.971 10.555 C 25.022 12.228 25.379 17.017 20.433 17.017 L 19.282 17.017 C 19.293 17.988 19.295 18.963 19.295 19.936 L 16.865 19.936 C 16.865 19.001 16.871 18.022 16.878 17.016 C 14.252 17.007 13.041 15.339 13.041 13.6 L 13.041 9.315\"/>\n</svg>"
 
 /***/ }),
-/* 52 */
+/* 58 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"40\" height=\"24\" viewBox=\"0 0 40 24\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z\" style=\"fill: rgb(21, 21, 21);\"/>\n  <path class=\"st0\" d=\"M 9.229 8.55 C 9.592 8.431 9.977 8.365 10.382 8.365 C 12.14 8.365 13.602 9.613 13.939 11.268 L 16.427 10.762 C 15.855 7.946 13.365 5.824 10.379 5.824 C 9.693 5.824 9.037 5.935 8.42 6.142 L 9.229 8.55 Z\" style=\"fill: rgb(255, 205, 5);\"/>\n  <path class=\"st1\" d=\"M 6.292 16.616 L 7.973 14.716 C 7.221 14.052 6.749 13.08 6.749 11.999 C 6.749 10.917 7.221 9.945 7.973 9.279 L 6.292 7.38 C 5.015 8.51 4.209 10.16 4.209 11.999 C 4.209 13.836 5.019 15.488 6.292 16.616\" style=\"fill: rgb(0, 164, 224);\"/>\n  <path class=\"st2\" d=\"M 13.939 12.723 C 13.602 14.379 12.136 15.626 10.382 15.626 C 9.977 15.626 9.592 15.562 9.229 15.442 L 8.422 17.849 C 9.039 18.055 9.698 18.167 10.382 18.167 C 13.365 18.167 15.855 16.05 16.427 13.235 L 13.939 12.723 Z\" style=\"fill: rgb(239, 66, 35);\"/>\n  <path d=\"M 18.603 14.794 C 18.521 14.663 18.412 14.453 18.343 14.296 C 17.948 13.381 17.932 12.434 18.264 11.526 C 18.631 10.527 19.33 9.765 20.233 9.378 C 21.366 8.889 22.626 8.986 23.713 9.632 C 24.406 10.028 24.897 10.641 25.269 11.506 C 25.319 11.615 25.358 11.737 25.398 11.835 L 18.603 14.794 Z M 20.87 10.845 C 20.066 11.194 19.65 11.949 19.734 12.834 L 23.151 11.363 C 22.565 10.675 21.802 10.444 20.87 10.845 Z M 23.578 14.044 C 23.578 14.044 23.578 14.044 23.578 14.044 L 23.508 13.998 C 23.302 14.331 22.985 14.595 22.584 14.768 C 21.82 15.1 21.113 15.014 20.602 14.569 L 20.559 14.643 C 20.559 14.643 20.559 14.643 20.559 14.643 L 19.688 15.936 C 19.905 16.088 20.134 16.213 20.376 16.315 C 21.333 16.712 22.311 16.693 23.279 16.273 C 23.978 15.971 24.527 15.509 24.9 14.924 L 23.578 14.044 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <path d=\"M 27.77 7.466 L 27.77 14.673 L 28.891 15.13 L 28.254 16.614 L 27.018 16.1 C 26.742 15.979 26.552 15.797 26.409 15.588 C 26.272 15.377 26.171 15.085 26.171 14.698 L 26.171 7.466 L 27.77 7.466 Z\" style=\"fill: rgb(255, 255, 255);\"/>\n  <g transform=\"matrix(0.037801, 0, 0, 0.037801, 1.0913, 0.089785)\">\n    <path d=\"M782.7,337.2c0-16.2,7.2-30.8,18.5-40.7l-30.4-33.9c-20.6,18.2-33.6,44.9-33.6,74.6c0,29.7,12.9,56.4,33.6,74.7l30.4-34&#10;&#9;&#9;C789.8,367.9,782.6,353.4,782.7,337.2z\" style=\"fill: rgb(255, 255, 255);\"/>\n    <path d=\"M836.7,391.4c-6,0-11.8-1-17.1-2.8L805,431.7c9.9,3.3,20.6,5.1,31.6,5.2c48.2,0,88.4-34.1,97.7-79.6l-44.7-9.1&#10;&#9;&#9;C884.6,372.9,862.8,391.4,836.7,391.4z\" style=\"fill: rgb(255, 255, 255);\"/>\n    <path d=\"M836.8,237.6c-11,0-21.7,1.8-31.6,5.1l14.4,43.2c5.4-1.8,11.2-2.8,17.1-2.8c26.2,0,48,18.6,53,43.3l44.7-9.1&#10;&#9;&#9;C925.2,272,885,237.7,836.8,237.6z\" style=\"fill: rgb(255, 255, 255);\"/>\n  </g>\n</svg>"
 
 /***/ }),
-/* 53 */
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg width=\"40\" height=\"24\" viewBox=\"0 0 40 24\" preserveAspectRatio=\"xMinYMin meet\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <pattern id=\"pattern-0\" x=\"0\" y=\"0\" width=\"20\" height=\"20\" patternUnits=\"userSpaceOnUse\" viewBox=\"0 0 100 100\">\n      <path d=\"M 0 0 L 50 0 L 50 100 L 0 100 Z\" style=\"fill: black;\"/>\n    </pattern>\n  </defs>\n  <path d=\"M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z\" style=\"fill: rgb(255, 255, 255); stroke: rgb(233, 234, 231);\"/>\n  <g transform=\"matrix(0.100306, 0, 0, 0.100306, 4.733743, 10.105099)\" id=\"g6321\">\n    <g transform=\"matrix(1.8215159,0,0,1.8215159,-8.5437653,-109.83667)\" id=\"g6323\">\n      <path style=\"fill:#ffffff\" id=\"path6325\" d=\"m 174,108.3 c 0,14 -11.4,25.4 -25.4,25.4 l -138.2,0 0,-100.6 c 0,-14 11.4,-25.4 25.4,-25.4 l 138.2,0 0,100.6 z\" class=\"st0\"/>\n      <g id=\"g6327\">\n        <linearGradient gradientTransform=\"matrix(1.125,0,0,1.125,-11.9755,-13.8615)\" y2=\"81.398598\" x2=\"157.3299\" y1=\"81.398598\" x1=\"117.3856\" gradientUnits=\"userSpaceOnUse\" id=\"SVGID_1_\">\n          <stop id=\"stop6330\" style=\"stop-color:#007940\" offset=\"0\"/>\n          <stop id=\"stop6332\" style=\"stop-color:#00873F\" offset=\"0.2285\"/>\n          <stop id=\"stop6334\" style=\"stop-color:#40A737\" offset=\"0.7433\"/>\n          <stop id=\"stop6336\" style=\"stop-color:#5CB531\" offset=\"1\"/>\n        </linearGradient>\n        <path style=\"fill:url(#SVGID_1_)\" id=\"path6338\" d=\"m 129,82.5 10.5,0 c 0.3,0 1,-0.1 1.3,-0.1 2,-0.4 3.7,-2.2 3.7,-4.7 0,-2.4 -1.7,-4.2 -3.7,-4.7 -0.3,-0.1 -0.9,-0.1 -1.3,-0.1 l -10.5,0 0,9.6 z\" class=\"st1\"/>\n        <linearGradient gradientTransform=\"matrix(1.125,0,0,1.125,-11.9755,-13.8615)\" y2=\"75.171402\" x2=\"157.3318\" y1=\"75.171402\" x1=\"117.3844\" gradientUnits=\"userSpaceOnUse\" id=\"SVGID_2_\">\n          <stop id=\"stop6341\" style=\"stop-color:#007940\" offset=\"0\"/>\n          <stop id=\"stop6343\" style=\"stop-color:#00873F\" offset=\"0.2285\"/>\n          <stop id=\"stop6345\" style=\"stop-color:#40A737\" offset=\"0.7433\"/>\n          <stop id=\"stop6347\" style=\"stop-color:#5CB531\" offset=\"1\"/>\n        </linearGradient>\n        <path style=\"fill:url(#SVGID_2_)\" id=\"path6349\" d=\"m 138.3,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,18.9 25.7,0 c 0.6,0 1.3,0 1.8,0.1 5.8,0.3 10.1,3.3 10.1,8.5 0,4.1 -2.9,7.6 -8.3,8.3 l 0,0.2 c 5.9,0.4 10.4,3.7 10.4,8.8 0,5.5 -5,9.1 -11.6,9.1 l -28.2,0 0,37 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-90.9 -26.6,0 z\" class=\"st2\"/>\n        <linearGradient gradientTransform=\"matrix(1.125,0,0,1.125,-11.9755,-13.8615)\" y2=\"68.399101\" x2=\"157.33051\" y1=\"68.399101\" x1=\"117.3846\" gradientUnits=\"userSpaceOnUse\" id=\"SVGID_3_\">\n          <stop id=\"stop6352\" style=\"stop-color:#007940\" offset=\"0\"/>\n          <stop id=\"stop6354\" style=\"stop-color:#00873F\" offset=\"0.2285\"/>\n          <stop id=\"stop6356\" style=\"stop-color:#40A737\" offset=\"0.7433\"/>\n          <stop id=\"stop6358\" style=\"stop-color:#5CB531\" offset=\"1\"/>\n        </linearGradient>\n        <path style=\"fill:url(#SVGID_3_)\" id=\"path6360\" d=\"m 143.2,63.1 c 0,-2.4 -1.7,-4 -3.7,-4.3 -0.2,0 -0.7,-0.1 -1,-0.1 l -9.5,0 0,8.8 9.5,0 c 0.3,0 0.9,0 1,-0.1 2,-0.3 3.7,-1.9 3.7,-4.3 z\" class=\"st3\"/>\n      </g>\n      <linearGradient gradientTransform=\"matrix(1.125,0,0,1.125,-11.9755,-13.8615)\" y2=\"75.171402\" x2=\"68.522102\" y1=\"75.171402\" x1=\"27.9594\" gradientUnits=\"userSpaceOnUse\" id=\"SVGID_4_\">\n        <stop id=\"stop6363\" style=\"stop-color:#1F286F\" offset=\"0\"/>\n        <stop id=\"stop6365\" style=\"stop-color:#004E94\" offset=\"0.4751\"/>\n        <stop id=\"stop6367\" style=\"stop-color:#0066B1\" offset=\"0.8261\"/>\n        <stop id=\"stop6369\" style=\"stop-color:#006FBC\" offset=\"1\"/>\n      </linearGradient>\n      <path style=\"fill:url(#SVGID_4_)\" id=\"path6371\" d=\"m 37.7,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,44.9 c 5.1,2.5 10.4,4.1 15.7,4.1 6.3,0 9.7,-3.8 9.7,-9 l 0,-21.2 15.6,0 0,21.1 c 0,8.2 -5.1,14.9 -22.4,14.9 -10.5,0 -18.7,-2.3 -18.7,-2.3 l 0,38.3 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-90.8 -26.6,0 z\" class=\"st4\"/>\n      <linearGradient gradientTransform=\"matrix(1.125,0,0,1.125,-11.9755,-13.8615)\" y2=\"75.171402\" x2=\"111.8553\" y1=\"75.171402\" x1=\"72.459503\" gradientUnits=\"userSpaceOnUse\" id=\"SVGID_5_\">\n        <stop id=\"stop6374\" style=\"stop-color:#6C2C2F\" offset=\"0\"/>\n        <stop id=\"stop6376\" style=\"stop-color:#882730\" offset=\"0.1735\"/>\n        <stop id=\"stop6378\" style=\"stop-color:#BE1833\" offset=\"0.5731\"/>\n        <stop id=\"stop6380\" style=\"stop-color:#DC0436\" offset=\"0.8585\"/>\n        <stop id=\"stop6382\" style=\"stop-color:#E60039\" offset=\"1\"/>\n      </linearGradient>\n      <path style=\"fill:url(#SVGID_5_)\" id=\"path6384\" d=\"m 88,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,23.8 c 4.6,-3.9 12.6,-6.4 25.5,-5.8 6.9,0.3 14.3,2.2 14.3,2.2 l 0,7.7 c -3.7,-1.9 -8.1,-3.6 -13.8,-4 -9.8,-0.7 -15.7,4.1 -15.7,12.5 0,8.5 5.9,13.3 15.7,12.5 5.7,-0.4 10.1,-2.2 13.8,-4 l 0,7.7 c 0,0 -7.3,1.9 -14.3,2.2 -12.9,0.6 -20.9,-1.9 -25.5,-5.8 l 0,42 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-91 -26.7,0 z\" class=\"st5\"/>\n    </g>\n    <g id=\"g6386\"/>\n  </g>\n</svg>"
 
 /***/ }),
-/* 54 */
+/* 60 */
 /***/ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg width=\"40px\" height=\"24px\" viewBox=\"0 0 40 24\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->\n    <title>unionpay</title>\n    <desc>Created with Sketch.</desc>\n    <defs></defs>\n    <g id=\"unionpay\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n        <g>\n            <path d=\"M38,24 L2,24 C0.9,24 0,23.1 0,22 L0,2 C0,0.9 0.9,0 2,0 L38,0 C39.1,0 40,0.9 40,2 L40,22 C40,23.1 39.1,24 38,24\" id=\"Fill-1\" fill=\"#FFFFFF\"></path>\n            <path d=\"M38,0 L2,0 C0.9,0 0,0.9 0,2 L0,22 C0,23.1 0.9,24 2,24 L38,24 C39.1,24 40,23.1 40,22 L40,2 C40,0.9 39.1,0 38,0 M38,1 C38.551,1 39,1.449 39,2 L39,22 C39,22.551 38.551,23 38,23 L2,23 C1.449,23 1,22.551 1,22 L1,2 C1,1.449 1.449,1 2,1 L38,1\" id=\"Fill-3\" fill=\"#C8C8C8\"></path>\n            <path d=\"M11.6294,3.3945 L18.4974,3.3945 C19.4564,3.3945 20.0524,4.1755 19.8284,5.1375 L16.6294,18.8655 C16.4054,19.8245 15.4474,20.6055 14.4904,20.6055 L7.6204,20.6055 C6.6624,20.6055 6.0664,19.8245 6.2894,18.8655 L9.4894,5.1375 C9.7124,4.1755 10.6694,3.3945 11.6294,3.3945\" id=\"Fill-5\" fill=\"#D80029\"></path>\n            <path d=\"M17.9287,3.3945 L24.7967,3.3945 C25.7537,3.3945 26.3547,4.1755 26.1257,5.1375 L22.9297,18.8655 C22.7037,19.8245 21.7437,20.6055 20.7837,20.6055 L13.9177,20.6055 C12.9587,20.6055 12.3627,19.8245 12.5877,18.8655 L15.7837,5.1375 C16.0077,4.1755 16.9697,3.3945 17.9287,3.3945\" id=\"Fill-7\" fill=\"#0E2E62\"></path>\n            <path d=\"M25.5161,3.3945 L32.3771,3.3945 C33.3361,3.3945 33.9351,4.1755 33.7091,5.1375 L30.5121,18.8655 C30.2891,19.8245 29.3291,20.6055 28.3711,20.6055 L21.5001,20.6055 C20.5421,20.6055 19.9431,19.8245 20.1691,18.8655 L23.3661,5.1375 C23.5901,4.1755 24.5511,3.3945 25.5161,3.3945\" id=\"Fill-9\" fill=\"#0C606C\"></path>\n            <path d=\"M24.4546,16.3071 L25.1006,16.3071 L25.2466,15.6821 L24.5976,15.6821 L24.4546,16.3071 Z M24.8526,14.5921 L24.6816,15.3221 C24.6816,15.3221 24.9176,15.1981 25.0506,15.1611 C25.1796,15.1271 25.3786,15.1051 25.3786,15.1051 L25.5006,14.5921 L24.8526,14.5921 Z M25.1026,13.5291 L24.9406,14.2371 C24.9406,14.2371 25.1706,14.1281 25.3006,14.0941 C25.4316,14.0581 25.6296,14.0401 25.6296,14.0401 L25.7516,13.5291 L25.1026,13.5291 Z M26.5356,13.5291 L25.8886,16.2961 L26.1126,16.2961 L25.9756,16.8721 L25.7516,16.8721 L25.7106,17.0491 L24.9126,17.0491 L24.9556,16.8721 L23.3366,16.8721 L23.4636,16.3421 L23.6286,16.3401 L24.2886,13.5291 L24.4186,12.9631 L25.2336,12.9631 L25.1686,13.2481 C25.1686,13.2481 25.3736,13.0911 25.5716,13.0391 C25.7756,12.9841 26.9526,12.9641 26.9526,12.9641 L26.8176,13.5291 L26.5356,13.5291 Z\" id=\"Fill-11\" fill=\"#FFFFFF\"></path>\n            <path d=\"M26.9966,12.9678 L27.8616,12.9678 L27.8726,13.2878 C27.8666,13.3418 27.9146,13.3668 28.0136,13.3688 L28.1616,13.3688 L28.0306,13.9018 L27.5596,13.9018 C27.1566,13.9318 27.0016,13.7578 27.0136,13.5618 L26.9966,12.9678\" id=\"Fill-13\" fill=\"#FFFFFF\"></path>\n            <path d=\"M27.1436,15.4956 L26.3166,15.4956 L26.4276,15.0226 L27.3706,15.0226 L27.4736,14.5886 L26.5416,14.5886 L26.6686,14.0536 L29.2616,14.0536 L29.1336,14.5886 L28.2656,14.5886 L28.1616,15.0226 L29.0326,15.0226 L28.9216,15.4956 L27.9786,15.4956 L27.8216,15.6976 L28.2056,15.6976 L28.3396,16.2966 C28.3516,16.3536 28.3596,16.3926 28.3786,16.4196 C28.3956,16.4386 28.5126,16.4486 28.5806,16.4486 L28.6976,16.4486 L28.5596,17.0356 L28.2656,17.0356 C28.2206,17.0356 28.1526,17.0346 28.0576,17.0246 C27.9706,17.0176 27.9036,16.9636 27.8406,16.9376 C27.7836,16.9106 27.6996,16.8476 27.6706,16.7326 L27.5386,16.1376 L27.1546,16.7246 C27.0266,16.9106 26.8526,17.0496 26.5396,17.0496 L25.9386,17.0496 L26.0596,16.5326 L26.2906,16.5326 C26.3556,16.5326 26.4156,16.5056 26.4546,16.4836 C26.4986,16.4646 26.5356,16.4426 26.5796,16.3806 L27.1436,15.4956\" id=\"Fill-15\" fill=\"#FFFFFF\"></path>\n            <path d=\"M18.0044,14.1973 L20.1934,14.1973 L20.0684,14.7183 L19.1874,14.7183 L19.0834,15.1663 L19.9734,15.1663 L19.8434,15.7033 L18.9514,15.7033 L18.7794,16.4263 C18.7584,16.5053 18.9974,16.5203 19.0834,16.5203 L19.5254,16.4583 L19.3824,17.0503 L18.3764,17.0503 C18.2934,17.0503 18.2344,17.0433 18.1454,17.0223 C18.0594,17.0003 18.0184,16.9613 17.9734,16.9053 C17.9374,16.8493 17.8764,16.7963 17.9074,16.6723 L18.1364,15.7123 L17.6394,15.7123 L17.7704,15.1663 L18.2714,15.1663 L18.3764,14.7183 L17.8784,14.7183 L18.0044,14.1973\" id=\"Fill-17\" fill=\"#FFFFFF\"></path>\n            <path d=\"M19.4194,13.2588 L20.3174,13.2588 L20.1894,13.8018 L18.9614,13.8018 L18.8354,13.9198 C18.7844,13.9738 18.7614,13.9518 18.6914,13.9888 C18.6234,14.0278 18.4814,14.0938 18.2914,14.0938 L17.9004,14.0938 L18.0264,13.5718 L18.1414,13.5718 C18.2444,13.5718 18.3104,13.5588 18.3434,13.5378 C18.3804,13.5158 18.4214,13.4598 18.4644,13.3688 L18.6664,12.9618 L19.5584,12.9618 L19.4194,13.2588\" id=\"Fill-19\" fill=\"#FFFFFF\"></path>\n            <path d=\"M21.1973,14.1572 C21.1973,14.1572 21.4273,13.9322 21.8443,13.8582 C21.9383,13.8422 22.5393,13.8462 22.5393,13.8462 L22.6063,13.5452 L21.3453,13.5452 L21.1973,14.1572 Z M22.3963,14.3842 L21.1463,14.3842 L21.0853,14.6352 L22.1703,14.6352 C22.2953,14.6232 22.3233,14.6392 22.3313,14.6342 L22.3963,14.3842 Z M20.6843,12.9632 L21.4543,12.9632 L21.3633,13.3512 C21.3633,13.3512 21.5903,13.1552 21.7603,13.0912 C21.9223,13.0252 22.3023,12.9702 22.3023,12.9702 L23.5393,12.9632 L23.2033,14.3672 C23.1463,14.6112 23.0763,14.7642 23.0263,14.8342 C22.9833,14.9052 22.9343,14.9662 22.8283,15.0262 C22.7283,15.0832 22.6333,15.1142 22.5453,15.1222 C22.4663,15.1322 22.3403,15.1322 22.1653,15.1332 L20.9773,15.1332 L20.7093,16.2452 C20.6813,16.3562 20.6723,16.4072 20.6943,16.4382 C20.7123,16.4622 20.7553,16.4932 20.8113,16.4932 L21.3323,16.4422 L21.1933,17.0552 L20.6003,17.0552 C20.4153,17.0552 20.2773,17.0502 20.1853,17.0422 C20.0933,17.0352 19.9953,17.0422 19.9293,16.9922 C19.8733,16.9412 19.7873,16.8822 19.7843,16.8172 C19.7873,16.7572 19.8063,16.6562 19.8333,16.5212 L20.6843,12.9632 Z\" id=\"Fill-21\" fill=\"#FFFFFF\"></path>\n            <path d=\"M23.0562,15.2319 L23.0082,15.5689 C22.9802,15.6729 22.9602,15.7539 22.8882,15.8259 C22.8062,15.8939 22.7132,15.9679 22.4822,15.9679 L22.0622,15.9839 L22.0792,16.3649 C22.0832,16.4769 22.1092,16.4639 22.1282,16.4819 C22.1512,16.5019 22.1652,16.5079 22.1862,16.5139 L22.3222,16.5079 L22.7222,16.4829 L22.5922,17.0439 L22.1282,17.0439 C21.8022,17.0439 21.5562,17.0339 21.4752,16.9709 C21.3932,16.9189 21.3802,16.8579 21.3752,16.7559 L21.3112,15.2649 L22.0562,15.2649 L22.0642,15.5689 L22.2422,15.5689 C22.3052,15.5689 22.3442,15.5649 22.3702,15.5479 C22.3892,15.5289 22.4032,15.5069 22.4162,15.4709 L22.4692,15.2319 L23.0562,15.2319\" id=\"Fill-23\" fill=\"#FFFFFF\"></path>\n            <path d=\"M12.4448,7.7773 C12.4168,7.9033 11.9418,10.0983 11.9398,10.1003 C11.8368,10.5433 11.7588,10.8603 11.5118,11.0673 C11.3628,11.1853 11.1948,11.2413 11.0048,11.2413 C10.6918,11.2413 10.5078,11.0883 10.4738,10.7923 L10.4658,10.6903 C10.4658,10.6903 10.5628,10.0983 10.5628,10.0963 C10.5628,10.0963 11.0648,8.0893 11.1558,7.8233 C11.1578,7.8083 11.1608,7.7983 11.1638,7.7903 C10.1898,7.8023 10.0168,7.7953 10.0048,7.7773 C9.9988,7.7983 9.9738,7.9253 9.9738,7.9253 L9.4628,10.1823 L9.4148,10.3743 L9.3348,10.9983 C9.3348,11.1853 9.3698,11.3383 9.4428,11.4663 C9.6748,11.8713 10.3408,11.9313 10.7158,11.9313 C11.1998,11.9313 11.6508,11.8263 11.9588,11.6443 C12.4908,11.3253 12.6318,10.8333 12.7528,10.3993 L12.8108,10.1743 C12.8108,10.1743 13.3288,8.0923 13.4158,7.8233 C13.4178,7.8083 13.4218,7.7983 13.4238,7.7903 C12.7188,7.8013 12.5118,7.7953 12.4448,7.7773\" id=\"Fill-25\" fill=\"#FFFFFF\"></path>\n            <path d=\"M15.2935,11.9106 C14.9485,11.9056 14.8275,11.9056 14.4245,11.9246 L14.4055,11.8966 C14.4425,11.7416 14.4815,11.5876 14.5165,11.4346 L14.5645,11.2266 C14.6395,10.8986 14.7155,10.5206 14.7195,10.4026 C14.7285,10.3336 14.7505,10.1606 14.5525,10.1606 C14.4695,10.1606 14.3815,10.1996 14.2925,10.2416 C14.2475,10.4136 14.1445,10.9026 14.0985,11.1246 C14.0005,11.5956 13.9905,11.6496 13.9475,11.8796 L13.9185,11.9106 C13.5605,11.9056 13.4395,11.9056 13.0315,11.9246 L13.0135,11.8926 C13.0795,11.6086 13.1485,11.3326 13.2115,11.0526 C13.3855,10.2976 13.4265,10.0106 13.4725,9.6276 L13.5045,9.6006 C13.9065,9.5466 14.0015,9.5326 14.4355,9.4436 L14.4695,9.4836 L14.4035,9.7266 C14.4785,9.6846 14.5505,9.6406 14.6255,9.6006 C14.8275,9.5026 15.0535,9.4706 15.1805,9.4706 C15.3675,9.4706 15.5725,9.5256 15.6605,9.7426 C15.7475,9.9376 15.6885,10.1786 15.5805,10.6526 L15.5275,10.8916 C15.4135,11.4216 15.3975,11.5196 15.3345,11.8796 L15.2935,11.9106\" id=\"Fill-27\" fill=\"#FFFFFF\"></path>\n            <path d=\"M16.6963,11.9106 C16.4873,11.9056 16.3543,11.9056 16.2243,11.9106 C16.0943,11.9106 15.9663,11.9146 15.7733,11.9246 L15.7623,11.9056 L15.7513,11.8926 C15.8033,11.6936 15.8313,11.6216 15.8583,11.5526 C15.8843,11.4806 15.9093,11.4106 15.9553,11.2066 C16.0143,10.9436 16.0533,10.7546 16.0783,10.5966 C16.1083,10.4366 16.1223,10.3066 16.1423,10.1526 L16.1613,10.1396 L16.1743,10.1236 C16.3833,10.0986 16.5133,10.0776 16.6503,10.0546 C16.7823,10.0356 16.9213,10.0106 17.1363,9.9716 L17.1423,9.9866 L17.1523,10.0046 C17.1083,10.1696 17.0713,10.3336 17.0303,10.4996 C16.9913,10.6646 16.9533,10.8296 16.9173,10.9926 C16.8353,11.3386 16.8083,11.4716 16.7883,11.5626 C16.7723,11.6526 16.7673,11.6976 16.7363,11.8796 L16.7173,11.8966 L16.6963,11.9106\" id=\"Fill-29\" fill=\"#FFFFFF\"></path>\n            <path d=\"M18.8965,10.6846 C18.8765,10.7706 18.7985,11.1066 18.6915,11.2486 C18.6185,11.3496 18.5295,11.4126 18.4375,11.4126 C18.4085,11.4126 18.2365,11.4126 18.2325,11.1616 C18.2325,11.0356 18.2545,10.9076 18.2875,10.7676 C18.3775,10.3706 18.4865,10.0316 18.7585,10.0316 C18.9745,10.0316 18.9875,10.2766 18.8965,10.6846 M19.7975,10.7226 C19.9195,10.1886 19.8285,9.9396 19.7085,9.7916 C19.5255,9.5596 19.2115,9.4836 18.8795,9.4836 C18.6825,9.4836 18.2135,9.5056 17.8445,9.8486 C17.5825,10.0906 17.4525,10.4256 17.3825,10.7426 C17.3075,11.0676 17.2205,11.6586 17.7575,11.8716 C17.9245,11.9426 18.1635,11.9656 18.3155,11.9656 C18.7125,11.9656 19.1165,11.8536 19.4175,11.5286 C19.6555,11.2726 19.7605,10.8806 19.7975,10.7226\" id=\"Fill-31\" fill=\"#FFFFFF\"></path>\n            <path d=\"M28.7817,9.5107 C28.3477,9.5897 28.2337,9.6107 27.8217,9.6667 L27.7857,9.6907 C27.7837,9.7247 27.7777,9.7567 27.7717,9.7927 C27.7097,9.6877 27.6207,9.5947 27.4737,9.5377 C27.2867,9.4687 26.8547,9.5587 26.4857,9.9007 C26.2207,10.1417 26.0987,10.4697 26.0217,10.7907 C25.9497,11.1087 25.8627,11.6977 26.3987,11.9057 C26.5687,11.9777 26.7237,11.9987 26.8767,11.9907 C27.0457,11.9847 27.1937,11.8967 27.3367,11.7747 C27.3217,11.8257 27.3107,11.8767 27.2967,11.9287 L27.3217,11.9577 C27.7077,11.9427 27.8277,11.9427 28.2447,11.9477 L28.2827,11.9147 C28.3417,11.5587 28.4027,11.2087 28.5587,10.5227 C28.6347,10.1967 28.7127,9.8717 28.7937,9.5467 L28.7817,9.5107 M27.4107,11.2907 C27.3417,11.3917 27.1717,11.4537 27.0787,11.4537 C27.0507,11.4537 26.8807,11.4537 26.8767,11.2057 C26.8747,11.0787 26.8977,10.9507 26.9297,10.8127 C27.0187,10.4157 27.1277,10.0797 27.4047,10.0797 C27.5797,10.0797 27.6667,10.2537 27.6427,10.5387 C27.6267,10.6017 27.6187,10.6597 27.6017,10.7337 C27.5717,10.8587 27.5367,10.9807 27.5067,11.1027 C27.4797,11.1767 27.4487,11.2457 27.4107,11.2907\" id=\"Fill-33\" fill=\"#FFFFFF\"></path>\n            <path d=\"M22.1577,11.9106 C21.8087,11.9056 21.6947,11.9056 21.2867,11.9246 L21.2717,11.8966 C21.3087,11.7416 21.3477,11.5876 21.3827,11.4346 L21.4317,11.2266 C21.5037,10.8986 21.5797,10.5206 21.5897,10.4026 C21.5927,10.3336 21.6147,10.1606 21.4167,10.1606 C21.3367,10.1606 21.2457,10.1996 21.1567,10.2416 C21.1117,10.4136 21.0117,10.9026 20.9637,11.1246 C20.8677,11.5956 20.8597,11.6496 20.8157,11.8796 L20.7837,11.9106 C20.4287,11.9056 20.3077,11.9056 19.8967,11.9246 L19.8777,11.8926 C19.9477,11.6086 20.0137,11.3326 20.0777,11.0526 C20.2507,10.2976 20.2907,10.0106 20.3407,9.6276 L20.3727,9.6006 C20.7727,9.5466 20.8677,9.5326 21.3027,9.4436 L21.3367,9.4836 L21.2717,9.7266 C21.3407,9.6846 21.4147,9.6406 21.4887,9.6006 C21.6927,9.5026 21.9187,9.4706 22.0427,9.4706 C22.2317,9.4706 22.4397,9.5256 22.5257,9.7426 C22.6087,9.9376 22.5547,10.1786 22.4457,10.6526 L22.3907,10.8916 C22.2787,11.4216 22.2607,11.5196 22.1987,11.8796 L22.1577,11.9106\" id=\"Fill-35\" fill=\"#FFFFFF\"></path>\n            <path d=\"M25.1504,7.7729 L24.8644,7.7789 C24.1174,7.7889 23.8204,7.7859 23.6934,7.7679 C23.6834,7.8229 23.6634,7.9199 23.6634,7.9199 L23.3994,9.1629 C23.3994,9.1629 22.7584,11.7979 22.7284,11.9239 C23.3774,11.9119 23.6474,11.9119 23.7574,11.9259 C23.7834,11.8019 23.9354,11.0669 23.9374,11.0629 C23.9374,11.0629 24.0654,10.5229 24.0744,10.5089 C24.0744,10.5089 24.1104,10.4499 24.1544,10.4269 L24.2154,10.4269 C24.7754,10.4269 25.4114,10.4269 25.9104,10.0589 C26.2474,9.8139 26.4764,9.4389 26.5834,8.9909 C26.6084,8.8799 26.6294,8.7489 26.6294,8.6159 C26.6294,8.4449 26.5944,8.2749 26.4944,8.1349 C26.2434,7.7809 25.7364,7.7789 25.1504,7.7729 M25.5254,9.0659 C25.4634,9.3409 25.2884,9.5699 25.0564,9.6849 C24.8664,9.7799 24.6384,9.7869 24.3974,9.7869 L24.2404,9.7869 L24.2554,9.7249 C24.2554,9.7249 24.5394,8.4899 24.5394,8.4919 L24.5454,8.4289 L24.5514,8.3809 L24.6664,8.3889 C24.6664,8.3889 25.2534,8.4409 25.2664,8.4449 C25.4964,8.5349 25.5934,8.7639 25.5254,9.0659\" id=\"Fill-37\" fill=\"#FFFFFF\"></path>\n            <path d=\"M17.0757,9.7915 C17.3027,9.6335 17.3337,9.4145 17.1407,9.2965 C16.9457,9.1865 16.6047,9.2195 16.3747,9.3795 C16.1427,9.5355 16.1177,9.7565 16.3117,9.8725 C16.5047,9.9865 16.8457,9.9485 17.0757,9.7915\" id=\"Fill-39\" fill=\"#FFFFFF\"></path>\n            <path d=\"M31.6587,9.5098 L31.6217,9.4688 C31.1967,9.5568 31.1197,9.5698 30.7267,9.6218 L30.6967,9.6478 C30.6967,9.6548 30.6967,9.6628 30.6957,9.6688 L30.6927,9.6628 C30.3997,10.3378 30.4117,10.1908 30.1737,10.7218 C30.1707,10.6958 30.1707,10.6768 30.1707,10.6558 L30.1107,9.5098 L30.0747,9.4688 C29.6287,9.5568 29.6167,9.5698 29.2057,9.6218 L29.1727,9.6478 C29.1687,9.6668 29.1667,9.6788 29.1637,9.6958 L29.1687,9.7008 C29.2187,9.9658 29.2067,9.9058 29.2597,10.3208 C29.2817,10.5228 29.3147,10.7308 29.3377,10.9338 C29.3807,11.2698 29.4037,11.4368 29.4507,11.9478 C29.1727,12.4128 29.1077,12.5858 28.8417,12.9888 L28.6527,13.2908 C28.6307,13.3238 28.6117,13.3418 28.5827,13.3548 C28.5547,13.3668 28.5127,13.3738 28.4587,13.3738 L28.3167,13.3738 L28.1927,13.9118 L28.7297,13.9018 C29.0437,13.9018 29.2417,13.7458 29.3477,13.5498 L29.6807,12.9768 L31.6587,9.5098\" id=\"Fill-41\" fill=\"#FFFFFF\"></path>\n        </g>\n    </g>\n</svg>"
 
 /***/ }),
-/* 55 */
+/* 61 */
 /***/ (function(module, exports) {
 
 // get successful control from form and assemble into object
@@ -25565,12 +25680,56 @@ function str_serialize(result, key, value) {
 module.exports = serialize;
 
 /***/ }),
-/* 56 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+/* harmony import */ var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
+/* harmony import */ var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
+
+
+
+
+
+if ( true && !Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__[/* isPayPalDomain */ "b"])() && !false) {
+  throw new Error("Do not integrate with versioned script url");
+}
+
+if (window.paypal && window.paypal.version === "4.0.287") {
+  Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
+    version: "4.0.287"
+  });
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.287" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.287" && window.paypal.Button && window.paypal.Button.render) {
+  Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
+    existingVersion: window.paypal.version,
+    version: "4.0.287"
+  });
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.287");
+} else {
+  try {
+    var _interface = __webpack_require__(66);
+
+    Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__[/* extendNamespace */ "a"])(_interface, ['paypal', 'PAYPAL', 'ppxo'], ['apps']);
+  } catch (err) {
+    Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_error', {
+      error: Object(_lib_util__WEBPACK_IMPORTED_MODULE_2__[/* stringifyError */ "q"])(err),
+      errtype: {}.toString.call(err)
+    });
+    throw err;
+  }
+}
+
+/***/ }),
+/* 63 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "openBridge", function() { return _index__WEBPACK_IMPORTED_MODULE_0__["openBridge"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "linkUrl", function() { return _index__WEBPACK_IMPORTED_MODULE_0__["linkUrl"]; });
@@ -25594,7 +25753,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 57 */
+/* 64 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
@@ -25603,7 +25762,7 @@ module.exports = __webpack_amd_options__;
 /* WEBPACK VAR INJECTION */}.call(this, {}))
 
 /***/ }),
-/* 58 */
+/* 65 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -25612,7 +25771,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 59 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25656,7 +25815,7 @@ __webpack_require__.d(interface_namespaceObject, "ThreeDomainSecure", function()
 var beaver_logger_client = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./node_modules/zoid/src/index.js + 20 modules
-var src = __webpack_require__(19);
+var src = __webpack_require__(20);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
 var zalgo_promise_src = __webpack_require__(2);
@@ -25664,7 +25823,7 @@ var zalgo_promise_src = __webpack_require__(2);
 // EXTERNAL MODULE: ./node_modules/post-robot/src/index.js + 12 modules
 var post_robot_src = __webpack_require__(13);
 
-// EXTERNAL MODULE: ./src/lib/index.js + 15 modules
+// EXTERNAL MODULE: ./src/lib/index.js + 9 modules
 var lib = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/checkout/index.js + 3 modules
@@ -25686,10 +25845,10 @@ var config = __webpack_require__(4);
 var resources = __webpack_require__(18);
 
 // EXTERNAL MODULE: ./src/checkout/template/containerContent.js
-var containerContent = __webpack_require__(27);
+var containerContent = __webpack_require__(33);
 
 // EXTERNAL MODULE: ./src/checkout/template/index.js + 6 modules
-var checkout_template = __webpack_require__(25);
+var checkout_template = __webpack_require__(30);
 
 // CONCATENATED MODULE: ./src/billing/template/containerTemplate.jsx
 var _LOGO_COLOR;
@@ -26674,10 +26833,10 @@ if (Object(lib["m" /* getDomainSetting */])('log_authorize')) {
   }
 }
 // EXTERNAL MODULE: ./src/integrations/index.js + 1 modules
-var integrations = __webpack_require__(23);
+var integrations = __webpack_require__(27);
 
 // EXTERNAL MODULE: ./src/integrations/checkout.js
-var integrations_checkout = __webpack_require__(26);
+var integrations_checkout = __webpack_require__(31);
 
 // CONCATENATED MODULE: ./src/integrations/popupBridge.js
 
@@ -36452,7 +36611,7 @@ var interface_checkout;
 var apps;
 
 if (true) {
-  var legacy = __webpack_require__(60);
+  var legacy = __webpack_require__(67);
 
   interface_checkout = legacy.checkout;
   apps = legacy.apps;
@@ -36527,7 +36686,7 @@ if (Object(lib["G" /* isPayPalDomain */])() || false) {
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = (interface_namespaceObject);
 
 /***/ }),
-/* 60 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36536,7 +36695,7 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: ./node_modules/beaver-logger/client/index.js + 8 modules
 var client = __webpack_require__(5);
 
-// EXTERNAL MODULE: ./src/lib/index.js + 15 modules
+// EXTERNAL MODULE: ./src/lib/index.js + 9 modules
 var lib = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/constants/index.js + 7 modules
@@ -36560,7 +36719,7 @@ var esm_extends = __webpack_require__(11);
 var src = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./node_modules/form-serialize/index.js
-var form_serialize = __webpack_require__(55);
+var form_serialize = __webpack_require__(61);
 var form_serialize_default = /*#__PURE__*/__webpack_require__.n(form_serialize);
 
 // EXTERNAL MODULE: ./src/checkout/index.js + 3 modules
@@ -37775,5 +37934,4 @@ Object(lib["K" /* onDocumentReady */])(function () {
 
 /***/ })
 /******/ ]);
-});
-//# sourceMappingURL=checkout.lib.js.map
+//# sourceMappingURL=checkout.4.0.287.js.map
