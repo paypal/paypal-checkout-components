@@ -993,8 +993,21 @@ export const Button : Component<ButtonOptions> = create({
                     shape:        BUTTON_SHAPE.PILL,
                     size:         BUTTON_SIZE.SMALL,
                     label:        BUTTON_LABEL.CHECKOUT,
-                    fundingicons: false
+                    fundingicons: false,
+                    layout:       BUTTON_LAYOUT.HORIZONTAL
                 };
+            },
+            
+            decorate(style : Object) : Object {
+                const { label, layout = BUTTON_LAYOUT.HORIZONTAL } = style;
+                if (!label && layout === BUTTON_LAYOUT.HORIZONTAL) {
+                    style.label = BUTTON_LABEL.CHECKOUT;
+                    return style;
+                } else if (!label && layout === BUTTON_LAYOUT.VERTICAL) {
+                    style.label = BUTTON_LABEL.PAYPAL;
+                    return style;
+                }
+                return style;
             },
 
             validate(style = {}, props) {

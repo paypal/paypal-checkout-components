@@ -15,6 +15,8 @@ import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
+const allowedPersonalizationLabels = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY, BUTTON_LABEL.INSTALLMENT ];
+
 function LoadingDots(delay) : JsxHTMLNode {
     return (
         <div>
@@ -72,6 +74,22 @@ function LoadingDots(delay) : JsxHTMLNode {
                         <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
                 }
             </div>
+        </div>
+    );
+}
+
+function Beacon(impression) : JsxHTMLNode {
+    return (
+        <div class='tracking-beacon'>
+            <style innerHTML={ `
+            .tracking-beacon {
+                visibility: hidden;
+                position: absolute;
+                height: 1px;
+                width: 1px;
+            }
+        ` } />
+            <img class='tracking-beacon' src={ impression } />
         </div>
     );
 }
@@ -267,8 +285,8 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
     });
 }
 
-function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
-    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, installmentperiod : number }) : JsxHTMLNode {
+function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod, checkoutCustomization } :
+    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, installmentperiod : number }) : JsxHTMLNode {
 
     const logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -276,10 +294,20 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
 
     // If the determined button label matches up with the label passed by the merchant, use
     // the label template, otherwise use the logo template.
-    let contentText = (buttonLabel === label)
-        ? getButtonConfig(label, 'label')
-        : getButtonConfig(label, 'logoLabel');
-
+    let contentText;
+    let impression;
+    const morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+    if (buttonLabel === label) {
+        // checks for button label: pay, buynow, checkout, paypal, installment
+        if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText) {
+            contentText = morsText;
+            impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
+        } else {
+            contentText = getButtonConfig(label, 'label');
+        }
+    } else {
+        contentText = getButtonConfig(label, 'logoLabel');
+    }
 
     // Add all the variables in dynamic content required to be plugged in content
     const dynamicContent = {
@@ -287,7 +315,10 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
         locale
     };
 
-    contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
+    // check for button label=installment. If the personalization text comes through for installment,
+    // we should use that instead of the handler function for content text; if not we should continue
+    // using the handler for installment button
+    contentText = (typeof contentText === 'function' && !(morsText && label === BUTTON_LABEL.INSTALLMENT)) ? contentText(dynamicContent) : contentText;
     contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     // Define a list of funding options that will not need a tabindex
@@ -306,6 +337,9 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             tabindex={ hasTabIndex && 0 }>
             
             { contentText }
+            {
+                impression && Beacon(impression)
+            }
         </div>
     );
 }
@@ -436,7 +470,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
             shape,
             cards,
             installmentperiod,
-            size
+            size,
+            checkoutCustomization
         }));
 
     const taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization, layout });
