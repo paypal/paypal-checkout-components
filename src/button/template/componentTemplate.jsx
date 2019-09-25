@@ -209,7 +209,7 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
 }
 
 // this function performs the first button render for eligible population
-function renderPPPayPalLoadingDots({ color, logoColor, branding } : { color : string, logoColor : string, branding : boolean }) : JsxHTMLNode {
+function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : string, branding : boolean, label : $Values<typeof BUTTON_LABEL> }) : JsxHTMLNode {
     if (!logoColor) {
         throw new Error(`Can not determine logo without logo color`);
     }
@@ -220,7 +220,7 @@ function renderPPPayPalLoadingDots({ color, logoColor, branding } : { color : st
     const loadingDotsElement = ( <span class={ `${ CLASS.TEXT }`}>{ LoadingDots(delay) }</span> );
     
     // this is specifically for the buynow button when the style.branding = false
-    if (!branding) {
+    if (!branding && label === BUTTON_LABEL.BUYNOW) {
         return new JsxHTMLNodeContainer([loadingDotsElement]);
     }
     const spaceElement = ( <span class={ `${ CLASS.TEXT }`}> </span> );
