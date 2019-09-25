@@ -16,7 +16,7 @@ import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
-const allowedPersonalizationLabels = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY, BUTTON_LABEL.INSTALLMENT ];
+const allowedPersonalizationLabels = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY ];
 const delay = 0.2;
 
 function LoadingDots(delay) : JsxHTMLNode {
@@ -360,13 +360,9 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
         installmentperiod,
         locale
     };
-
-
-    // check for button label=installment. If the personalization text comes through for installment,
-    // we should use that instead of the handler function for content text; if not we should continue
-    // using the handler for installment button
-    contentText = (typeof contentText === 'function' && !(morsText && label === BUTTON_LABEL.INSTALLMENT)) ? contentText(dynamicContent) : contentText;
-    contentText = ( __WEB__ && label !== FUNDING.PAYPAL && source === FUNDING.PAYPAL) ? renderPPPayPalLoadingDots({ color, logoColor }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
+    
+    contentText = (typeof contentText === 'function') ? contentText(dynamicContent) : contentText;
+    contentText = ( __WEB__ && source === FUNDING.PAYPAL && allowedPersonalizationLabels.indexOf(label) !== -1) ? renderPPPayPalLoadingDots({ color, logoColor }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
