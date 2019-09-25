@@ -31,12 +31,14 @@ export function getMenuMiddleware({ logger = defaultLogger, cache } : MenuMiddle
         }
 
         const pageHTML = `
-                <body data-nonce="${ cspNonce }" data-client-version="${ client.version }">
-                    ${ meta.getSDKLoader({ nonce: cspNonce }) }
-                    <script nonce="${ cspNonce }">${ client.script }</script>
-                    <script nonce="${ cspNonce }">spb.setupMenu(${ safeJSON({ cspNonce }) })</script>
-                </body>
-            `;
+            <!DOCTYPE html>
+            <head></head>
+            <body data-nonce="${ cspNonce }" data-client-version="${ client.version }">
+                ${ meta.getSDKLoader({ nonce: cspNonce }) }
+                <script nonce="${ cspNonce }">${ client.script }</script>
+                <script nonce="${ cspNonce }">spb.setupMenu(${ safeJSON({ cspNonce }) })</script>
+            </body>
+        `;
 
         allowFrame(res);
         return htmlResponse(res, pageHTML);

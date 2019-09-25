@@ -5,10 +5,6 @@ export const buttonStyle = `
         transition: all 0.3s ease-in-out;
     }
 
-    .card-fields-container {
-        margin-top: 10px;
-    }
-
     iframe[title=pbf], iframe[title=ppfniframe] {
         display: none;
     }
