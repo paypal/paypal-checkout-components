@@ -140,7 +140,7 @@ function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { col
         />);
     
     // for an intentional white space
-    nodes[1] = spaceElement;
+    nodes[1] = ' ';
     
     nodes[2] = (
         <img
@@ -150,7 +150,7 @@ function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { col
         />);
     
     // for an intentional white space
-    nodes[3] = spaceElement;
+    nodes[3] = ' ';
     
     nodes[4] = loadingDotsElement;
     
@@ -266,7 +266,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     };
     
     contentText = (typeof contentText === 'function') ? contentText(dynamicContent) : contentText;
-    contentText = (__WEB__ && source === FUNDING.PAYPAL && allowedPersonalizationLabels.indexOf(label) !== -1) ? renderPPPayPalLoadingDots({ color, logoColor }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
+    contentText = (__WEB__ && buttonLabel === label && allowedPersonalizationLabels.indexOf(label) !== -1) ? renderPPPayPalLoadingDots({ color, logoColor, branding, label }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
