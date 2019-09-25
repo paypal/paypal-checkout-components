@@ -3,118 +3,21 @@
 
 import { base64encode } from 'belter/src';
 
-import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender, JsxHTMLNodeContainer } from '../../lib/jsx';
 import { fundingLogos, cardLogos } from '../../resources';
-import { BUTTON_LOGO } from '../../constants';
 import { validateButtonProps } from '../validate';
 import type { LocaleType, FundingSource, FundingSelection, FundingList, CheckoutCustomizationType } from '../../types';
 
+import { Tagline, Beacon, LoadingDots } from './miscComponent';
 import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
 const allowedPersonalizationLabels = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY ];
 const delay = 0.2;
-
-function LoadingDots(delay) : JsxHTMLNode {
-    return (
-        <div>
-            <style innerHTML={ `
-                .loading-dots {
-                    color: rgba(0, 0, 0, 0.5);
-                    font-size: inherit;
-                    font-family: Arial, Helvetica, sans-serif;
-                    display: inline-block;
-                }
-
-                .loading-dot {
-                    opacity: 0;
-                    display: inline-block;
-                    animation-name: loading-dot;
-                    animation-duration: 1s;
-                    animation-fill-mode: forwards;
-                    animation-iteration-count: infinite;
-                    margin-right: 2px;
-                }
-
-                .loading-dot-0 {
-                    animation-delay: ${ delay.toFixed(1) }s;
-                }
-
-                .loading-dot-1 {
-                    animation-delay: ${ (delay * 2).toFixed(1) }s;
-                }
-
-                .loading-dot-2 {
-                    animation-delay: ${ (delay * 3).toFixed(1) }s;
-                }
-
-                @keyframes loading-dot {
-                    0% {
-                        opacity: 0;
-                    }
-                    20% {
-                        opacity: 1;
-                    }
-                    30% {
-                        opacity: 1;
-                    }
-                    40% {
-                        opacity: 0;
-                    }
-                    100% {
-                        opacity: 0;
-                    }
-                }
-            ` } />
-            <div class='loading-dots'>
-                {
-                    [ 0, 1, 2 ].map(i =>
-                        <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
-                }
-            </div>
-        </div>
-    );
-}
-
-function Beacon(impression) : JsxHTMLNode {
-    return (
-        <div class='tracking-beacon'>
-            <style innerHTML={ `
-            .tracking-beacon {
-                visibility: hidden;
-                position: absolute;
-                height: 1px;
-                width: 1px;
-            }
-        ` } />
-            <img class='tracking-beacon' src={ impression } />
-        </div>
-    );
-}
-
-function Tagline(tagColor : string, impression : ?string, text : string | JsxHTMLNode) : JsxHTMLNode {
-    const nodes = [];
-    nodes[0] = ( <style innerHTML={ `
-            .tracking-beacon {
-                visibility: hidden;
-                position: absolute;
-                height: 1px;
-                width: 1px;
-            }
-        ` } /> );
-    nodes[1] = (
-        <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
-            <span>{ text }</span>
-            {
-                impression  && <img class='tracking-beacon' src={ impression } />
-            }
-        </div> );
-    return new JsxHTMLNodeContainer(nodes);
-}
 
 function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
     return [
@@ -217,13 +120,13 @@ function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { col
         throw new Error(`Can not determine button without color`);
     }
     
-    const loadingDotsElement = ( <span class={ `${ CLASS.TEXT }`}>{ LoadingDots(delay) }</span> );
+    const loadingDotsElement = (<span class={ `${ CLASS.TEXT }` }>{ LoadingDots(delay) }</span>);
     
     // this is specifically for the buynow button when the style.branding = false
     if (!branding && label === BUTTON_LABEL.BUYNOW) {
-        return new JsxHTMLNodeContainer([loadingDotsElement]);
+        return new JsxHTMLNodeContainer([ loadingDotsElement ]);
     }
-    const spaceElement = ( <span class={ `${ CLASS.TEXT }`}> </span> );
+    const spaceElement = (<span class={ `${ CLASS.TEXT }` }> </span>);
     
     const ppLogo = fundingLogos[BUTTON_LOGO.PP][logoColor];
     const paypalLogo = fundingLogos[BUTTON_LOGO.PAYPAL]({ logoColor });
@@ -362,7 +265,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     };
     
     contentText = (typeof contentText === 'function') ? contentText(dynamicContent) : contentText;
-    contentText = ( __WEB__ && source === FUNDING.PAYPAL && allowedPersonalizationLabels.indexOf(label) !== -1) ? renderPPPayPalLoadingDots({ color, logoColor }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
+    contentText = (__WEB__ && source === FUNDING.PAYPAL && allowedPersonalizationLabels.indexOf(label) !== -1) ? renderPPPayPalLoadingDots({ color, logoColor }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
@@ -388,7 +291,6 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
 }
 
 function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization, layout } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, layout : $Values<typeof BUTTON_LAYOUT> }) : ?JsxHTMLNode {
-    const delay = 0.2;
     if (!tagline) {
         return;
     }
