@@ -71,11 +71,12 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
     locale = locale ? parseLocale(locale) : (defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'));
 
     // $FlowFixMe
+    // funding indicated the allowed/disallowed payment methods (including cards) passed in the integration script
     funding = funding || {};
     funding.allowed = funding.allowed || [];
     funding.disallowed = funding.disallowed || [];
     funding.remembered = funding.remembered || [];
-
+    
     const label  = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
     const layout = style[BUTTON_STYLE_OPTIONS.LAYOUT] || getButtonConfig(label, 'defaultLayout');
 
@@ -91,11 +92,14 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
         [ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD ]:  installmentperiod
     } = style;
 
+    // max is the maximum number of buttons to be displayed in the iframe
     max = determineMaxButtons({ label, layout, max });
 
     const selected = labelToFunding(label);
     let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit });
+    // sources is an array of funding sources eligible to be displayed
     sources = sortBy(sources.slice(0, max), FUNDING_ORDER);
+    // multiple is a boolean value indicating whether the sources is greater than 1
     const multiple = sources.length > 1;
 
     if (multiple) {
@@ -105,7 +109,7 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
     tagline = enableTagline({ tagline, branding, fundingicons, layout });
 
     const cards = determineEligibleCards({ funding, locale });
-
+    
     return { size, label, locale, color, shape, branding, fundingicons,
         tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod, checkoutCustomization };
 });

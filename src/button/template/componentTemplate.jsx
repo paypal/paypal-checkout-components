@@ -6,8 +6,9 @@ import { base64encode } from 'belter/src';
 import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
-import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx';
+import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender, JsxHTMLNodeContainer } from '../../lib/jsx';
 import { fundingLogos, cardLogos } from '../../resources';
+import { BUTTON_LOGO } from '../../constants';
 import { validateButtonProps } from '../validate';
 import type { LocaleType, FundingSource, FundingSelection, FundingList, CheckoutCustomizationType } from '../../types';
 
@@ -16,6 +17,7 @@ import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
 const allowedPersonalizationLabels = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY, BUTTON_LABEL.INSTALLMENT ];
+const delay = 0.2;
 
 function LoadingDots(delay) : JsxHTMLNode {
     return (
@@ -95,24 +97,23 @@ function Beacon(impression) : JsxHTMLNode {
 }
 
 function Tagline(tagColor : string, impression : ?string, text : string | JsxHTMLNode) : JsxHTMLNode {
-    return (
-        <div>
-            <style innerHTML={ `
+    const nodes = [];
+    nodes[0] = ( <style innerHTML={ `
             .tracking-beacon {
                 visibility: hidden;
                 position: absolute;
                 height: 1px;
                 width: 1px;
             }
-        ` } />
-            <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
-                <span>{ text }</span>
-                {
-                    impression  && <img class='tracking-beacon' src={ impression } />
-                }
-            </div>
-        </div>
-    );
+        ` } /> );
+    nodes[1] = (
+        <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
+            <span>{ text }</span>
+            {
+                impression  && <img class='tracking-beacon' src={ impression } />
+            }
+        </div> );
+    return new JsxHTMLNodeContainer(nodes);
 }
 
 function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
@@ -205,6 +206,51 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
     }
 
     return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, size, layout }) }</div>;
+}
+
+// this function performs the first button render for eligible population
+function renderPPPayPalLoadingDots({ color, logoColor, branding } : { color : string, logoColor : string, branding : boolean }) : JsxHTMLNode {
+    if (!logoColor) {
+        throw new Error(`Can not determine logo without logo color`);
+    }
+    if (!color) {
+        throw new Error(`Can not determine button without color`);
+    }
+    
+    const loadingDotsElement = ( <span class={ `${ CLASS.TEXT }`}>{ LoadingDots(delay) }</span> );
+    
+    // this is specifically for the buynow button when the style.branding = false
+    if (!branding) {
+        return new JsxHTMLNodeContainer([loadingDotsElement]);
+    }
+    const spaceElement = ( <span class={ `${ CLASS.TEXT }`}> </span> );
+    
+    const ppLogo = fundingLogos[BUTTON_LOGO.PP][logoColor];
+    const paypalLogo = fundingLogos[BUTTON_LOGO.PAYPAL]({ logoColor });
+    const nodes = [];
+    nodes[0] = (
+        <img
+            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PP  } ${ CLASS.LOGO }-${ color }` }
+            src={ `data:image/svg+xml;base64,${ base64encode(ppLogo.toString()) }` }
+            alt={ BUTTON_LOGO.PP }
+        />);
+    
+    // for an intentional white space
+    nodes[1] = spaceElement;
+    
+    nodes[2] = (
+        <img
+            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } ${ CLASS.LOGO }-${ color }` }
+            src={ `data:image/svg+xml;base64,${ base64encode(paypalLogo.toString()) }` }
+            alt={ BUTTON_LOGO.PAYPAL }
+        />);
+    
+    // for an intentional white space
+    nodes[3] = spaceElement;
+    
+    nodes[4] = loadingDotsElement;
+    
+    return new JsxHTMLNodeContainer(nodes);
 }
 
 function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size } :
@@ -315,11 +361,12 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
         locale
     };
 
+
     // check for button label=installment. If the personalization text comes through for installment,
     // we should use that instead of the handler function for content text; if not we should continue
     // using the handler for installment button
     contentText = (typeof contentText === 'function' && !(morsText && label === BUTTON_LABEL.INSTALLMENT)) ? contentText(dynamicContent) : contentText;
-    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
+    contentText = ( __WEB__ && label !== FUNDING.PAYPAL && source === FUNDING.PAYPAL) ? renderPPPayPalLoadingDots({ color, logoColor }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
@@ -346,7 +393,6 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
 
 function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization, layout } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, layout : $Values<typeof BUTTON_LAYOUT> }) : ?JsxHTMLNode {
     const delay = 0.2;
-    
     if (!tagline) {
         return;
     }
