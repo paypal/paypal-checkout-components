@@ -69,9 +69,9 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
     } = props;
 
     locale = locale ? parseLocale(locale) : (defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'));
-
-    // $FlowFixMe
+    
     // funding indicated the allowed/disallowed payment methods (including cards) passed in the integration script
+    // $FlowFixMe
     funding = funding || {};
     funding.allowed = funding.allowed || [];
     funding.disallowed = funding.disallowed || [];

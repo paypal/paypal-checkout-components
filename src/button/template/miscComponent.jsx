@@ -5,7 +5,7 @@ import { jsxToHTML, type JsxHTMLNode, JsxHTMLNodeContainer } from '../../lib/jsx
 
 import { CLASS } from './componentStyle';
 
-export function LoadingDots(delay) : JsxHTMLNode {
+export function LoadingDots(delay : number) : JsxHTMLNode {
     return (
         <div>
             <style innerHTML={ `
@@ -66,7 +66,7 @@ export function LoadingDots(delay) : JsxHTMLNode {
     );
 }
 
-export function Beacon(impression) : JsxHTMLNode {
+export function Beacon(impression : string) : JsxHTMLNode {
     return (
         <div class='tracking-beacon'>
             <style innerHTML={ `

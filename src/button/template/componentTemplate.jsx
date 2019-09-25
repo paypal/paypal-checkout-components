@@ -112,7 +112,7 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
 }
 
 // this function performs the first button render for eligible population
-function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : string, branding : boolean, label : $Values<typeof BUTTON_LABEL> }) : JsxHTMLNode {
+function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : $Values<typeof BUTTON_LOGO_COLOR>, branding : boolean, label : string }) : JsxHTMLNode {
     if (!logoColor) {
         throw new Error(`Can not determine logo without logo color`);
     }
@@ -126,10 +126,11 @@ function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { col
     if (!branding && label === BUTTON_LABEL.BUYNOW) {
         return new JsxHTMLNodeContainer([ loadingDotsElement ]);
     }
-    const spaceElement = (<span class={ `${ CLASS.TEXT }` }> </span>);
     
-    const ppLogo = fundingLogos[BUTTON_LOGO.PP][logoColor];
-    const paypalLogo = fundingLogos[BUTTON_LOGO.PAYPAL]({ logoColor });
+    const ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
+    const ppLogo =  typeof ppFundingLogo === 'function' ? ppFundingLogo({ logoColor }) : ppFundingLogo[logoColor];
+    const paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
+    const paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({ logoColor }) : paypalFundingLogo[logoColor];
     const nodes = [];
     nodes[0] = (
         <img
