@@ -6343,7 +6343,8 @@ var normalizeProps = util_memoize(function (props, defs) {
       funding = props.funding,
       commit = props.commit,
       checkoutCustomization = props.checkoutCustomization;
-  locale = locale ? parseLocale(locale) : defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'); // $FlowFixMe
+  locale = locale ? parseLocale(locale) : defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'); // funding indicated the allowed/disallowed payment methods (including cards) passed in the integration script
+  // $FlowFixMe
 
   funding = funding || {};
   funding.allowed = funding.allowed || [];
@@ -6365,7 +6366,8 @@ var normalizeProps = util_memoize(function (props, defs) {
       tagline = _style$BUTTON_STYLE_O6 === void 0 ? getButtonConfig(label, 'defaultTagline') : _style$BUTTON_STYLE_O6,
       max = style[BUTTON_STYLE_OPTIONS.MAXBUTTONS],
       height = style[BUTTON_STYLE_OPTIONS.HEIGHT],
-      installmentperiod = style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD];
+      installmentperiod = style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD]; // max is the maximum number of buttons to be displayed in the iframe
+
   max = determineMaxButtons({
     label: label,
     layout: layout,
@@ -6379,8 +6381,10 @@ var normalizeProps = util_memoize(function (props, defs) {
     env: env,
     layout: layout,
     commit: commit
-  });
-  sources = sortBy(sources.slice(0, max), FUNDING_ORDER);
+  }); // sources is an array of funding sources eligible to be displayed
+
+  sources = sortBy(sources.slice(0, max), FUNDING_ORDER); // multiple is a boolean value indicating whether the sources is greater than 1
+
   var multiple = sources.length > 1;
 
   if (multiple) {
@@ -8115,7 +8119,7 @@ var PAYPAL_LOGO_COLORS = (_PAYPAL_LOGO_COLORS = {}, _PAYPAL_LOGO_COLORS[BUTTON_L
   primary: '#333030',
   secondary: '#636363'
 }, _PAYPAL_LOGO_COLORS);
-function paypalLogo(_ref) {
+function paypal_paypalLogo(_ref) {
   var logoColor = _ref.logoColor;
 
   if (!PAYPAL_LOGO_COLORS[logoColor]) {
@@ -8272,7 +8276,7 @@ var _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ITAU, _BUTTON_LOGO$ELV, _f
 
 
 
-var fundingLogos = (_fundingLogos = {}, _fundingLogos[BUTTON_LOGO.PP] = (_BUTTON_LOGO$PP = {}, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.WHITE] = pp_white_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLACK] = pp_black_default.a, _BUTTON_LOGO$PP), _fundingLogos[BUTTON_LOGO.PAYPAL] = paypalLogo, _fundingLogos[BUTTON_LOGO.CREDIT] = creditLogo, _fundingLogos[BUTTON_LOGO.VENMO] = (_BUTTON_LOGO$VENMO = {}, _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.WHITE] = venmo_white_default.a, _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), _fundingLogos[BUTTON_LOGO.ITAU] = (_BUTTON_LOGO$ITAU = {}, _BUTTON_LOGO$ITAU[BUTTON_LOGO_COLOR.WHITE] = itau_default.a, _BUTTON_LOGO$ITAU), _fundingLogos[BUTTON_LOGO.IDEAL] = idealLogo, _fundingLogos[BUTTON_LOGO.ELV] = (_BUTTON_LOGO$ELV = {}, _BUTTON_LOGO$ELV[BUTTON_LOGO_COLOR.ANY] = elv_default.a, _BUTTON_LOGO$ELV[BUTTON_LOGO_COLOR.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[BUTTON_LOGO.BANCONTACT] = bancontactLogo, _fundingLogos[BUTTON_LOGO.GIROPAY] = giropayLogo, _fundingLogos[BUTTON_LOGO.SOFORT] = sofortLogo, _fundingLogos[BUTTON_LOGO.EPS] = epsLogo, _fundingLogos[BUTTON_LOGO.MYBANK] = mybankLogo, _fundingLogos[BUTTON_LOGO.P24] = p24Logo, _fundingLogos[BUTTON_LOGO.PAYU] = payuLogo, _fundingLogos[BUTTON_LOGO.VERKKOPANKKI] = verkkopankkiLogo, _fundingLogos[BUTTON_LOGO.BLIK] = blikLogo, _fundingLogos[BUTTON_LOGO.TRUSTLY] = trustlyLogo, _fundingLogos[BUTTON_LOGO.MAXIMA] = maximaLogo, _fundingLogos[BUTTON_LOGO.BOLETO] = boletoLogo, _fundingLogos);
+var fundingLogos = (_fundingLogos = {}, _fundingLogos[BUTTON_LOGO.PP] = (_BUTTON_LOGO$PP = {}, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.WHITE] = pp_white_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLACK] = pp_black_default.a, _BUTTON_LOGO$PP), _fundingLogos[BUTTON_LOGO.PAYPAL] = paypal_paypalLogo, _fundingLogos[BUTTON_LOGO.CREDIT] = creditLogo, _fundingLogos[BUTTON_LOGO.VENMO] = (_BUTTON_LOGO$VENMO = {}, _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.WHITE] = venmo_white_default.a, _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), _fundingLogos[BUTTON_LOGO.ITAU] = (_BUTTON_LOGO$ITAU = {}, _BUTTON_LOGO$ITAU[BUTTON_LOGO_COLOR.WHITE] = itau_default.a, _BUTTON_LOGO$ITAU), _fundingLogos[BUTTON_LOGO.IDEAL] = idealLogo, _fundingLogos[BUTTON_LOGO.ELV] = (_BUTTON_LOGO$ELV = {}, _BUTTON_LOGO$ELV[BUTTON_LOGO_COLOR.ANY] = elv_default.a, _BUTTON_LOGO$ELV[BUTTON_LOGO_COLOR.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[BUTTON_LOGO.BANCONTACT] = bancontactLogo, _fundingLogos[BUTTON_LOGO.GIROPAY] = giropayLogo, _fundingLogos[BUTTON_LOGO.SOFORT] = sofortLogo, _fundingLogos[BUTTON_LOGO.EPS] = epsLogo, _fundingLogos[BUTTON_LOGO.MYBANK] = mybankLogo, _fundingLogos[BUTTON_LOGO.P24] = p24Logo, _fundingLogos[BUTTON_LOGO.PAYU] = payuLogo, _fundingLogos[BUTTON_LOGO.VERKKOPANKKI] = verkkopankkiLogo, _fundingLogos[BUTTON_LOGO.BLIK] = blikLogo, _fundingLogos[BUTTON_LOGO.TRUSTLY] = trustlyLogo, _fundingLogos[BUTTON_LOGO.MAXIMA] = maximaLogo, _fundingLogos[BUTTON_LOGO.BOLETO] = boletoLogo, _fundingLogos);
 // EXTERNAL MODULE: ./src/resources/cardLogos/visa.svg
 var visa = __webpack_require__(8);
 var visa_default = /*#__PURE__*/__webpack_require__.n(visa);
@@ -8577,6 +8581,44 @@ function componentStyle(_ref) {
 // CONCATENATED MODULE: ./src/button/template/componentStyle/index.js
 
 
+// CONCATENATED MODULE: ./src/button/template/miscComponent.jsx
+/** @jsx jsxToHTML */
+
+
+function LoadingDots(delay) {
+  return jsxToHTML("div", null, jsxToHTML("style", {
+    innerHTML: "\n                .loading-dots {\n                    color: rgba(0, 0, 0, 0.5);\n                    font-size: inherit;\n                    font-family: Arial, Helvetica, sans-serif;\n                    display: inline-block;\n                }\n\n                .loading-dot {\n                    opacity: 0;\n                    display: inline-block;\n                    animation-name: loading-dot;\n                    animation-duration: 1s;\n                    animation-fill-mode: forwards;\n                    animation-iteration-count: infinite;\n                    margin-right: 2px;\n                }\n\n                .loading-dot-0 {\n                    animation-delay: " + delay.toFixed(1) + "s;\n                }\n\n                .loading-dot-1 {\n                    animation-delay: " + (delay * 2).toFixed(1) + "s;\n                }\n\n                .loading-dot-2 {\n                    animation-delay: " + (delay * 3).toFixed(1) + "s;\n                }\n\n                @keyframes loading-dot {\n                    0% {\n                        opacity: 0;\n                    }\n                    20% {\n                        opacity: 1;\n                    }\n                    30% {\n                        opacity: 1;\n                    }\n                    40% {\n                        opacity: 0;\n                    }\n                    100% {\n                        opacity: 0;\n                    }\n                }\n            "
+  }), jsxToHTML("div", {
+    class: "loading-dots"
+  }, [0, 1, 2].map(function (i) {
+    return jsxToHTML("div", {
+      class: "loading-dot loading-dot-" + i
+    }, "\u2022");
+  })));
+}
+function Beacon(impression) {
+  return jsxToHTML("div", {
+    class: "tracking-beacon"
+  }, jsxToHTML("style", {
+    innerHTML: "\n            .tracking-beacon {\n                visibility: hidden;\n                position: absolute;\n                height: 1px;\n                width: 1px;\n            }\n        "
+  }), jsxToHTML("img", {
+    class: "tracking-beacon",
+    src: impression
+  }));
+}
+function Tagline(tagColor, impression, text) {
+  var nodes = [];
+  nodes[0] = jsxToHTML("style", {
+    innerHTML: "\n            .tracking-beacon {\n                visibility: hidden;\n                position: absolute;\n                height: 1px;\n                width: 1px;\n            }\n        "
+  });
+  nodes[1] = jsxToHTML("div", {
+    class: CLASS.TAGLINE + " " + CLASS.TAGLINE_COLOR + "-" + tagColor
+  }, jsxToHTML("span", null, text), impression && jsxToHTML("img", {
+    class: "tracking-beacon",
+    src: impression
+  }));
+  return new jsx_JsxHTMLNodeContainer(nodes);
+}
 // CONCATENATED MODULE: ./src/button/template/componentScript.js
 function getComponentScript() {
   /* istanbul ignore next */
@@ -14658,41 +14700,9 @@ var componentContent = {
 
 
 
-var allowedPersonalizationLabels = [BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY, BUTTON_LABEL.INSTALLMENT];
 
-function LoadingDots(delay) {
-  return jsxToHTML("div", null, jsxToHTML("style", {
-    innerHTML: "\n                .loading-dots {\n                    color: rgba(0, 0, 0, 0.5);\n                    font-size: inherit;\n                    font-family: Arial, Helvetica, sans-serif;\n                    display: inline-block;\n                }\n\n                .loading-dot {\n                    opacity: 0;\n                    display: inline-block;\n                    animation-name: loading-dot;\n                    animation-duration: 1s;\n                    animation-fill-mode: forwards;\n                    animation-iteration-count: infinite;\n                    margin-right: 2px;\n                }\n\n                .loading-dot-0 {\n                    animation-delay: " + delay.toFixed(1) + "s;\n                }\n\n                .loading-dot-1 {\n                    animation-delay: " + (delay * 2).toFixed(1) + "s;\n                }\n\n                .loading-dot-2 {\n                    animation-delay: " + (delay * 3).toFixed(1) + "s;\n                }\n\n                @keyframes loading-dot {\n                    0% {\n                        opacity: 0;\n                    }\n                    20% {\n                        opacity: 1;\n                    }\n                    30% {\n                        opacity: 1;\n                    }\n                    40% {\n                        opacity: 0;\n                    }\n                    100% {\n                        opacity: 0;\n                    }\n                }\n            "
-  }), jsxToHTML("div", {
-    class: "loading-dots"
-  }, [0, 1, 2].map(function (i) {
-    return jsxToHTML("div", {
-      class: "loading-dot loading-dot-" + i
-    }, "\u2022");
-  })));
-}
-
-function Beacon(impression) {
-  return jsxToHTML("div", {
-    class: "tracking-beacon"
-  }, jsxToHTML("style", {
-    innerHTML: "\n            .tracking-beacon {\n                visibility: hidden;\n                position: absolute;\n                height: 1px;\n                width: 1px;\n            }\n        "
-  }), jsxToHTML("img", {
-    class: "tracking-beacon",
-    src: impression
-  }));
-}
-
-function Tagline(tagColor, impression, text) {
-  return jsxToHTML("div", null, jsxToHTML("style", {
-    innerHTML: "\n            .tracking-beacon {\n                visibility: hidden;\n                position: absolute;\n                height: 1px;\n                width: 1px;\n            }\n        "
-  }), jsxToHTML("div", {
-    class: CLASS.TAGLINE + " " + CLASS.TAGLINE_COLOR + "-" + tagColor
-  }, jsxToHTML("span", null, text), impression && jsxToHTML("img", {
-    class: "tracking-beacon",
-    src: impression
-  })));
-}
+var allowedPersonalizationLabels = [BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY];
+var componentTemplate_delay = 0.2;
 
 function getCommonButtonClasses(_ref) {
   var layout = _ref.layout,
@@ -14794,20 +14804,70 @@ function renderFundingIcons(_ref9) {
     size: size,
     layout: layout
   }));
+} // this function performs the first button render for eligible population
+
+
+function renderPPPayPalLoadingDots(_ref10) {
+  var color = _ref10.color,
+      logoColor = _ref10.logoColor,
+      branding = _ref10.branding,
+      label = _ref10.label;
+
+  if (!logoColor) {
+    throw new Error("Can not determine logo without logo color");
+  }
+
+  if (!color) {
+    throw new Error("Can not determine button without color");
+  }
+
+  var loadingDotsElement = jsxToHTML("span", {
+    class: "" + CLASS.TEXT
+  }, LoadingDots(componentTemplate_delay)); // this is specifically for the buynow button when the style.branding = false
+
+  if (!branding && label === BUTTON_LABEL.BUYNOW) {
+    return new jsx_JsxHTMLNodeContainer([loadingDotsElement]);
+  }
+
+  var ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
+  var ppLogo = typeof ppFundingLogo === 'function' ? ppFundingLogo({
+    logoColor: logoColor
+  }) : ppFundingLogo[logoColor];
+  var paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
+  var paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({
+    logoColor: logoColor
+  }) : paypalFundingLogo[logoColor];
+  var nodes = [];
+  nodes[0] = jsxToHTML("img", {
+    class: CLASS.LOGO + " " + CLASS.LOGO + "-" + BUTTON_LOGO.PP + " " + CLASS.LOGO + "-" + color,
+    src: "data:image/svg+xml;base64," + base64encode(ppLogo.toString()),
+    alt: BUTTON_LOGO.PP
+  }); // for an intentional white space
+
+  nodes[1] = ' ';
+  nodes[2] = jsxToHTML("img", {
+    class: CLASS.LOGO + " " + CLASS.LOGO + "-" + BUTTON_LOGO.PAYPAL + " " + CLASS.LOGO + "-" + color,
+    src: "data:image/svg+xml;base64," + base64encode(paypalLogo.toString()),
+    alt: BUTTON_LOGO.PAYPAL
+  }); // for an intentional white space
+
+  nodes[3] = ' ';
+  nodes[4] = loadingDotsElement;
+  return new jsx_JsxHTMLNodeContainer(nodes);
 }
 
-function renderContent(text, _ref10) {
-  var label = _ref10.label,
-      locale = _ref10.locale,
-      color = _ref10.color,
-      branding = _ref10.branding,
-      logoColor = _ref10.logoColor,
-      funding = _ref10.funding,
-      env = _ref10.env,
-      _cards = _ref10.cards,
-      dynamicContent = _ref10.dynamicContent,
-      layout = _ref10.layout,
-      size = _ref10.size;
+function renderContent(text, _ref11) {
+  var label = _ref11.label,
+      locale = _ref11.locale,
+      color = _ref11.color,
+      branding = _ref11.branding,
+      logoColor = _ref11.logoColor,
+      funding = _ref11.funding,
+      env = _ref11.env,
+      _cards = _ref11.cards,
+      dynamicContent = _ref11.dynamicContent,
+      layout = _ref11.layout,
+      size = _ref11.size;
 
   var _content = getLocaleContent(locale);
 
@@ -14902,24 +14962,24 @@ function renderContent(text, _ref10) {
   });
 }
 
-function renderButton(_ref11) {
-  var _ref12, _ref13, _ref14;
+function renderButton(_ref12) {
+  var _ref13, _ref14, _ref15;
 
-  var size = _ref11.size,
-      label = _ref11.label,
-      color = _ref11.color,
-      locale = _ref11.locale,
-      branding = _ref11.branding,
-      multiple = _ref11.multiple,
-      layout = _ref11.layout,
-      shape = _ref11.shape,
-      source = _ref11.source,
-      funding = _ref11.funding,
-      i = _ref11.i,
-      env = _ref11.env,
-      cards = _ref11.cards,
-      installmentperiod = _ref11.installmentperiod,
-      checkoutCustomization = _ref11.checkoutCustomization;
+  var size = _ref12.size,
+      label = _ref12.label,
+      color = _ref12.color,
+      locale = _ref12.locale,
+      branding = _ref12.branding,
+      multiple = _ref12.multiple,
+      layout = _ref12.layout,
+      shape = _ref12.shape,
+      source = _ref12.source,
+      funding = _ref12.funding,
+      i = _ref12.i,
+      env = _ref12.env,
+      cards = _ref12.cards,
+      installmentperiod = _ref12.installmentperiod,
+      checkoutCustomization = _ref12.checkoutCustomization;
   var logoColor = getButtonConfig(label, 'logoColors')[color];
   var buttonLabel = determineLabel({
     label: label,
@@ -14949,12 +15009,9 @@ function renderButton(_ref11) {
   var dynamicContent = {
     installmentperiod: installmentperiod,
     locale: locale
-  }; // check for button label=installment. If the personalization text comes through for installment,
-  // we should use that instead of the handler function for content text; if not we should continue
-  // using the handler for installment button
-
-  contentText = typeof contentText === 'function' && !(morsText && label === BUTTON_LABEL.INSTALLMENT) ? contentText(dynamicContent) : contentText;
-  contentText = renderContent(contentText, {
+  };
+  contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
+  contentText =  false ? undefined : renderContent(contentText, {
     label: label,
     locale: locale,
     color: color,
@@ -14969,7 +15026,7 @@ function renderButton(_ref11) {
   }); // Define a list of funding options that will not need a tabindex
 
   var hasTabIndex = [FUNDING.CARD].indexOf(source) === -1;
-  return jsxToHTML("div", _extends({}, (_ref12 = {}, _ref12[ATTRIBUTE.LAYOUT] = layout ? layout : '', _ref12), (_ref13 = {}, _ref13[ATTRIBUTE.SIZE] = size ? size : '', _ref13), (_ref14 = {}, _ref14[ATTRIBUTE.FUNDING_SOURCE] = source, _ref14[ATTRIBUTE.BUTTON] = true, _ref14), {
+  return jsxToHTML("div", _extends({}, (_ref13 = {}, _ref13[ATTRIBUTE.LAYOUT] = layout ? layout : '', _ref13), (_ref14 = {}, _ref14[ATTRIBUTE.SIZE] = size ? size : '', _ref14), (_ref15 = {}, _ref15[ATTRIBUTE.FUNDING_SOURCE] = source, _ref15[ATTRIBUTE.BUTTON] = true, _ref15), {
     class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -14987,17 +15044,16 @@ function renderButton(_ref11) {
   }), contentText, impression && Beacon(impression));
 }
 
-function renderTagline(_ref15) {
-  var label = _ref15.label,
-      tagline = _ref15.tagline,
-      color = _ref15.color,
-      locale = _ref15.locale,
-      multiple = _ref15.multiple,
-      env = _ref15.env,
-      cards = _ref15.cards,
-      checkoutCustomization = _ref15.checkoutCustomization,
-      layout = _ref15.layout;
-  var delay = 0.2;
+function renderTagline(_ref16) {
+  var label = _ref16.label,
+      tagline = _ref16.tagline,
+      color = _ref16.color,
+      locale = _ref16.locale,
+      multiple = _ref16.multiple,
+      env = _ref16.env,
+      cards = _ref16.cards,
+      checkoutCustomization = _ref16.checkoutCustomization,
+      layout = _ref16.layout;
 
   if (!tagline) {
     return;
@@ -15032,9 +15088,9 @@ function renderScript() {
   });
 }
 
-function renderStyle(_ref16) {
-  var height = _ref16.height,
-      cardNumber = _ref16.cardNumber;
+function renderStyle(_ref17) {
+  var height = _ref17.height,
+      cardNumber = _ref17.cardNumber;
   return jsxToHTML("style", {
     innerHTML: componentStyle({
       height: height,
@@ -15070,10 +15126,10 @@ function renderPowerByPaypalLogo(props) {
   })));
 }
 
-function componentTemplate(_ref17) {
-  var _ref18;
+function componentTemplate(_ref18) {
+  var _ref19;
 
-  var props = _ref17.props;
+  var props = _ref18.props;
 
   if (props && props.style) {
     var style = props.style;
@@ -15160,7 +15216,7 @@ function componentTemplate(_ref17) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.287", _ref18), {
+  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.288", _ref19), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
