@@ -43,5 +43,7 @@ export const CLIENT_ID_PAYEE_NO_MATCH = [
 ];
 
 export const FIREBASE_SCRIPTS = {
-
+    APP:      'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
+    AUTH:     'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
+    DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
 };

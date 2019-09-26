@@ -60,3 +60,21 @@ export function redirectTop(url : string) {
         window.top.location = url;
     }
 }
+
+export function loadScript(url : string) : ZalgoPromise<string> {
+    return new ZalgoPromise((resolve, reject) => {
+        const container = document.body || document.head;
+
+        if (!container) {
+            return reject(new Error(`Can not find container for script: ${ url }`));
+        }
+
+        const script = document.createElement('script');
+        script.setAttribute('src', url);
+        container.appendChild(script);
+
+        script.addEventListener('load', () => resolve(script));
+        // $FlowFixMe
+        script.addEventListener('error', (err) => reject(err));
+    });
+}

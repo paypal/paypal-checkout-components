@@ -4,7 +4,9 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { request, uniqueID, noop } from 'belter/src';
 
-import { sleep } from './util';
+import { FIREBASE_SCRIPTS } from '../config';
+
+import { sleep, loadScript } from './util';
 
 const MESSAGE_TYPE = {
     REQUEST:  ('request' : 'request'),
@@ -412,25 +414,31 @@ export function firebaseSocket({ sessionUID, sessionToken, config, url, sourceAp
             }
         };
 
-        window.firebase.initializeApp(config);
+        const databasePromise = ZalgoPromise.all([
+            loadScript(FIREBASE_SCRIPTS.APP),
+            loadScript(FIREBASE_SCRIPTS.AUTH),
+            loadScript(FIREBASE_SCRIPTS.DATABASE)
+        ]).then(() => {
+            window.firebase.initializeApp(config);
 
-        const databasePromise = window.firebase.auth().signInWithCustomToken(sessionToken).then(() => {
-            const database = window.firebase.database();
-            open = true;
-
-            for (const handler of onOpenHandlers) {
-                handler();
-            }
-
-            database.ref(`users/${ sessionUID }/messages`).on('value', (messages) => {
-                for (const messageID of Object.keys(messages)) {
-                    const message = messages[messageID];
-                    for (const handler of onMessageHandlers) {
-                        handler(JSON.stringify(message, null, 4));
-                    }
+            return window.firebase.auth().signInWithCustomToken(sessionToken).then(() => {
+                const database = window.firebase.database();
+                open = true;
+    
+                for (const handler of onOpenHandlers) {
+                    handler();
                 }
+    
+                database.ref(`users/${ sessionUID }/messages`).on('value', (messages) => {
+                    for (const messageID of Object.keys(messages)) {
+                        const message = messages[messageID];
+                        for (const handler of onMessageHandlers) {
+                            handler(JSON.stringify(message, null, 4));
+                        }
+                    }
+                });
             });
-        }).catch(error);
+        });
 
         const socket = new WebSocket(url);
 
