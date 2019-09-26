@@ -16,7 +16,7 @@ import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
-const allowedPersonalizationLabels = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY ];
+const allowedPersonalizationLabels = [ BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY ];
 const delay = 0.2;
 
 function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
