@@ -2,11 +2,11 @@
 /* eslint unicorn/prefer-add-event-listener: off, max-lines: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { request, uniqueID, noop } from 'belter/src';
+import { uniqueID, noop } from 'belter/src';
 
 import { FIREBASE_SCRIPTS } from '../config';
 
-import { sleep, loadScript } from './util';
+import { loadScript } from './util';
 
 const MESSAGE_TYPE = {
     REQUEST:  ('request' : 'request'),
@@ -90,6 +90,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
     const sendMessage = (socket, data) => {
         const messageUID = uniqueID();
+        receivedMessages[messageUID] = true;
 
         const message = {
             message_uid:        messageUID,
@@ -393,13 +394,12 @@ export type FirebaseSocketOptions = {|
     sessionUID : string,
     sessionToken : string,
     config : FirebaseConfig,
-    url : string,
     sourceApp : string,
     sourceAppVersion : string,
     targetApp : string
 |};
 
-export function firebaseSocket({ sessionUID, sessionToken, config, url, sourceApp, sourceAppVersion, targetApp } : FirebaseSocketOptions) : MessageSocket {
+export function firebaseSocket({ sessionUID, sessionToken, config, sourceApp, sourceAppVersion, targetApp } : FirebaseSocketOptions) : MessageSocket {
     const driver = () => {
         let open = false;
         
@@ -437,10 +437,10 @@ export function firebaseSocket({ sessionUID, sessionToken, config, url, sourceAp
                         }
                     }
                 });
+
+                return database;
             });
         });
-
-        const socket = new WebSocket(url);
 
         return {
             send: (data) => {
@@ -449,7 +449,9 @@ export function firebaseSocket({ sessionUID, sessionToken, config, url, sourceAp
                 }).catch(error);
             },
             close: () => {
-                socket.close();
+                databasePromise.then(database => {
+                    database.goOffline();
+                });
             },
             onMessage: (handler) => {
                 onMessageHandlers.push(handler);
@@ -458,109 +460,11 @@ export function firebaseSocket({ sessionUID, sessionToken, config, url, sourceAp
                 onErrorHandlers.push(handler);
             },
             onOpen: (handler) => {
-                onOpenHandlers.push(handler);
-            },
-            onClose: (handler) => {
-                onCloseHandlers.push(handler);
-            },
-            isOpen: () => {
-                return open;
-            }
-        };
-    };
-
-    return messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion, targetApp });
-}
-
-export function httpSocket({ url, sourceApp, sourceAppVersion, targetApp, sessionUID } : WebSocketOptions) : MessageSocket {
-    const driver = () => {
-        const onMessageHandlers = [];
-        const onErrorHandlers = [];
-        const onCloseHandlers = [];
-
-        let open = true;
-        let errDelay = 1;
-
-        const flush = (messages) => {
-            for (const message of messages) {
-                for (const handler of onMessageHandlers) {
-                    handler(JSON.stringify(message, null, 4));
+                if (open) {
+                    handler();
+                } else {
+                    onOpenHandlers.push(handler);
                 }
-            }
-        };
-    
-        const error = (err) => {
-            for (const handler of onErrorHandlers) {
-                handler(err);
-            }
-        };
-
-        const close = (err) => {
-            open = false;
-            for (const handler of onCloseHandlers) {
-                handler(err);
-            }
-        };
-    
-        const fullURL = `${ url }/${ sessionUID }`;
-    
-        const poll = () => {
-            if (!open) {
-                return;
-            }
-            
-            return request({ url: fullURL }).then(({ status, body }) => {
-                if (status !== 200) {
-                    throw new Error(`Bad status code from ${ url }: ${ status }`);
-                }
-    
-                if (!body || !body.messages || !Array.isArray(body.messages)) {
-                    throw new Error(`Expected messages to be an array`);
-                }
-    
-                flush(body.messages);
-    
-            }).catch(err => {
-    
-                if (errDelay >= 32) {
-                    error(err);
-                    return new ZalgoPromise();
-                }
-    
-                errDelay *= 2;
-                return sleep(errDelay);
-    
-            }).then(() => {
-                return poll();
-            });
-        };
-
-        poll();
-
-        return {
-            send: (data) => {
-                request({
-                    url,
-                    method: 'post',
-                    json:   {
-                        poll:     false,
-                        messages: [
-                            JSON.parse(data)
-                        ]
-                    }
-                }).catch(error);
-            },
-            close: () => {
-                close(new Error(`Http socket was closed`));
-            },
-            onMessage: (handler) => {
-                onMessageHandlers.push(handler);
-            },
-            onError: (handler) => {
-                onErrorHandlers.push(handler);
-            },
-            onOpen: (handler) => {
-                handler();
             },
             onClose: (handler) => {
                 onCloseHandlers.push(handler);

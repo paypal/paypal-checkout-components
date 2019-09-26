@@ -71,10 +71,9 @@ export function loadScript(url : string) : ZalgoPromise<string> {
 
         const script = document.createElement('script');
         script.setAttribute('src', url);
-        container.appendChild(script);
-
         script.addEventListener('load', () => resolve(script));
         // $FlowFixMe
         script.addEventListener('error', (err) => reject(err));
+        container.appendChild(script);
     });
 }

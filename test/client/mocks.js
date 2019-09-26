@@ -400,21 +400,34 @@ export function getActivateSubscriptionIdApiMock(options : Object = {}, subscrip
 
 export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
-        method: 'POST',
-        uri:    '/graphql',
-        data:   {
-            data: {
-                checkoutSession: {
-                    cart: {
-                        intent:  'capture',
-                        amounts: {
-                            total: {
-                                currencyCode: 'USD'
+        method:  'POST',
+        uri:     '/graphql',
+        handler: ({ data }) => {
+            if (options.extraHandler) {
+                const result = options.extraHandler({ data });
+                if (result) {
+                    return result;
+                }
+            }
+
+            if (data.query.includes('query GetCheckoutDetails')) {
+                return {
+                    data: {
+                        checkoutSession: {
+                            cart: {
+                                intent:  'capture',
+                                amounts: {
+                                    total: {
+                                        currencyCode: 'USD'
+                                    }
+                                }
                             }
                         }
                     }
-                }
+                };
             }
+
+            return {};
         },
         ...options
     });
@@ -481,7 +494,7 @@ type NativeMockWebSocket = {|
     onError : () => void
 |};
 
-export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : { getSessionUID : () => ?string, allowDetect? : boolean }) : NativeMockWebSocket {
+export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () => ?string }) : NativeMockWebSocket {
     let props;
 
     let getPropsRequestID;
@@ -491,7 +504,7 @@ export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : {
 
     const { send, expect } = mockWebSocket({
         uri:     'wss://127.0.0.1/paypal/native',
-        handler: ({ data, respond }) => {
+        handler: ({ data }) => {
             const {
                 request_uid:    requestUID,
                 message_type:   messageType,
@@ -504,25 +517,10 @@ export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : {
                 throw new Error(messageData.message);
             }
 
-            if (messageType === 'request' && messageName === 'detectApp') {
-                return respond(JSON.stringify({
-                    source_app:         'paypal_native_checkout_sdk',
-                    source_app_version: '1.2.3',
-                    target_app:         'paypal_smart_payment_buttons',
-                    request_uid:        requestUID,
-                    message_uid:        uniqueID(),
-                    message_type:       'response',
-                    message_status:     allowDetect ? 'success' : 'error',
-                    message_name:       'detectApp',
-                    message_data:       allowDetect ? {} : { message: 'Nope!' }
-                }));
-            }
-
             if (messageType === 'response' && messageName === 'getProps') {
                 if (requestUID !== getPropsRequestID) {
                     throw new Error(`Request uid doest not match for getProps response`);
                 }
-
                 props = messageData;
             }
 
@@ -626,5 +624,321 @@ export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : {
 
     return {
         expect, getProps, onApprove, onCancel, onError
+    };
+}
+
+export const MOCK_FIREBASE_CONFIG = {
+    apiKey:            'AIzaSyAeyii31bJYddKqSHrkyiRKU3EHCvh-owM',
+    authDomain:        'testmessaging-63f5d.firebaseapp.com',
+    databaseURL:       'https://testmessaging-63f5d.firebaseio.com',
+    projectId:         'testmessaging-63f5d',
+    storageBucket:     'testmessaging-63f5d.appspot.com',
+    messagingSenderId: '330437320943',
+    appId:             '1:330437320943:web:c7a8b59c274429d1707b1a',
+    measurementId:     'G-6ZYN3ND8X2'
+};
+
+type MockFirebase = {|
+    send : (string, Object) => void,
+    expect : () => {|
+        done : () => void
+    |}
+|};
+
+function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) : MockFirebase {
+
+    let hasCalls = false;
+
+    const messages = {};
+    const listeners = {};
+
+    const splitPath = (path : string) => {
+        const pathComponents = path.split('/');
+        let [ namespace, key ] = [ pathComponents.slice(0, pathComponents.length - 1), pathComponents[pathComponents.length - 1] ];
+        namespace = namespace.join('/');
+        return { namespace, key };
+    };
+
+    const send = (path, data) => {
+        const { namespace, key } = splitPath(path);
+        messages[namespace] = messages[namespace] || {};
+        messages[namespace][key] = data;
+        for (const listener of (listeners[namespace] || [])) {
+            listener(messages[namespace]);
+        }
+    };
+
+    window.firebase = {
+        initializeApp: () => {
+            // pass
+        },
+        auth: () => {
+            return {
+                signInWithCustomToken: () => {
+                    return ZalgoPromise.resolve();
+                }
+            };
+        },
+        database: () => {
+            return {
+                ref: (path) => {
+                    return {
+                        set: (data) => {
+                            hasCalls = true;
+                            const { namespace } = splitPath(path);
+                            send(path, data);
+                            handler({
+                                data: messages[namespace]
+                            });
+
+                        },
+                        on: (item, onHandler) => {
+                            listeners[path] = listeners[path] || [];
+                            listeners[path].push(onHandler);
+                        }
+                    };
+                },
+                goOffline: () => {
+                    // pass
+                }
+            };
+        }
+    };
+
+    const expect = () => {
+        return {
+            done: () => {
+                if (!hasCalls) {
+                    throw new Error(`Expected calls to firebase`);
+                }
+            }
+        };
+    };
+
+    return { send, expect };
+}
+
+export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () => string }) : NativeMockWebSocket {
+    let props;
+
+    let getPropsRequestID;
+    let onApproveRequestID;
+    let onCancelRequestID;
+    let onErrorRequestID;
+
+    const received = {};
+
+    const { send, expect } = mockFirebase({
+        handler: ({ data }) => {
+            for (const id of Object.keys(data)) {
+                const {
+                    request_uid:    requestUID,
+                    message_uid:    messageUID,
+                    message_type:   messageType,
+                    message_status: messageStatus,
+                    message_name:   messageName,
+                    message_data:   messageData
+                } = data[id];
+
+                if (received[messageUID]) {
+                    continue;
+                }
+
+                received[messageUID] = true;
+    
+                if (messageType === 'response' && messageStatus === 'error') {
+                    throw new Error(messageData.message);
+                }
+    
+                if (messageType === 'response' && messageName === 'getProps') {
+                    if (requestUID !== getPropsRequestID) {
+                        throw new Error(`Request uid doest not match for getProps response`);
+                    }
+                    props = messageData;
+                }
+    
+                if (messageType === 'response' && messageName === 'onApprove') {
+                    if (requestUID !== onApproveRequestID) {
+                        throw new Error(`Request uid doest not match for onApprove response`);
+                    }
+                }
+    
+                if (messageType === 'response' && messageName === 'onCancel') {
+                    if (requestUID !== onCancelRequestID) {
+                        throw new Error(`Request uid doest not match for onCancel response`);
+                    }
+                }
+    
+                if (messageType === 'response' && messageName === 'onError') {
+                    if (requestUID !== onErrorRequestID) {
+                        throw new Error(`Request uid doest not match for onError response`);
+                    }
+                }
+            }
+        }
+    });
+
+    const getProps = () => {
+        getPropsRequestID = uniqueID();
+
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, {
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        getPropsRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'getProps'
+        });
+    };
+
+    const onApprove = () => {
+        if (!props) {
+            throw new Error(`Can not approve without getting props`);
+        }
+
+        onApproveRequestID = uniqueID();
+
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, {
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onApproveRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onApprove',
+            message_data:       {
+                orderID: props.orderID,
+                payerID: 'XXYYZZ123456'
+            }
+        });
+    };
+
+    const onCancel = () => {
+        if (!props) {
+            throw new Error(`Can not approve without getting props`);
+        }
+
+        onCancelRequestID = uniqueID();
+
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, {
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onCancelRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onCancel',
+            message_data:       {
+                orderID: props.orderID
+            }
+        });
+    };
+
+    const onError = () => {
+        onErrorRequestID = uniqueID();
+
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, {
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onErrorRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onError',
+            message_data:       {
+                message: 'Something went wrong'
+            }
+        });
+    };
+
+    return {
+        expect, getProps, onApprove, onCancel, onError
+    };
+}
+
+
+const mockScripts = {};
+
+export function mockScript({ src, expect = true, block = true } : { src : string, expect? : boolean, block? : boolean }) : { done : () => void } {
+    mockScripts[src] = { expect, block };
+
+    return {
+        done: () => {
+            if (expect && !mockScripts[src].created) {
+                throw new Error(`Expected script with src ${ src } to have been created`);
+            }
+
+            delete mockScripts[src];
+        }
+    };
+}
+
+const createElement = document.createElement;
+// $FlowFixMe
+document.createElement = function mockCreateElement(name : string) : HTMLElement {
+    const el = createElement.apply(this, arguments);
+
+    if (name !== 'script') {
+        return el;
+    }
+
+    const setAttribute = el.setAttribute;
+    el.setAttribute = function mockSetAttribute(key : string, value : string) {
+        if (key === 'src' && mockScripts[value]) {
+            mockScripts[value].created = true;
+            const { block } = mockScripts[value];
+
+            if (block) {
+                setAttribute.call(this, 'type', 'mock/javascript');
+            }
+
+            setAttribute.apply(this, arguments);
+        }
+    };
+
+    const addEventListener = el.addEventListener;
+    el.addEventListener = function mockAddEventListener(eventName : string, handler : () => void) {
+        if (eventName === 'load') {
+            handler();
+            return;
+        }
+
+        addEventListener.apply(this, arguments);
+    };
+
+    return el;
+};
+
+export function mockFirebaseScripts() : { done : () => void } {
+
+    const mockfirebaseApp = mockScript({
+        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
+        expect: true,
+        block:  true
+    });
+
+    const mockfirebaseAuth = mockScript({
+        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
+        expect: true,
+        block:  true
+    });
+
+    const mockfirebaseDatabase = mockScript({
+        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js',
+        expect: true,
+        block:  true
+    });
+
+    return {
+        done: () => {
+            mockfirebaseApp.done();
+            mockfirebaseAuth.done();
+            mockfirebaseDatabase.done();
+        }
     };
 }

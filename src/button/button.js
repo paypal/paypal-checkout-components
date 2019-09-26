@@ -81,7 +81,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
             const isCardFields = isCardFieldsEligible({ win, vault, onShippingChange, fundingSource, isCardFieldsExperimentEnabled, enableStandardCardFields });
             const isVaultCapture = isVaultCaptureEligible({ win, paymentMethodID, onShippingChange });
             const isPopupBridge = isPopupBridgeEligible({ win, onShippingChange });
-            const isNative = isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription, enableNativeCheckout });
+            const isNative = isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription, enableNativeCheckout, firebaseConfig });
             const isCheckout = !isCardFields && !isVaultCapture && !isPopupBridge && !isNative;
 
             const { start, close, triggerError } = (() => {

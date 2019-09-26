@@ -42,7 +42,7 @@ describe('client config cases', () => {
             }).expectCalls();
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
-                gqlMock.disable();
+                gqlMock.done();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
@@ -91,7 +91,7 @@ describe('client config cases', () => {
             }).expectCalls();
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
-                gqlMock.disable();
+                gqlMock.done();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
@@ -140,7 +140,7 @@ describe('client config cases', () => {
             }).expectCalls();
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
-                gqlMock.disable();
+                gqlMock.done();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
@@ -183,7 +183,7 @@ describe('client config cases', () => {
             }).expectCalls();
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
-                gqlMock.disable();
+                gqlMock.done();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
@@ -226,7 +226,7 @@ describe('client config cases', () => {
             }).expectCalls();
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
-                gqlMock.disable();
+                gqlMock.done();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);

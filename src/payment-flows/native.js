@@ -7,7 +7,7 @@ import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-doma
 
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
 import type { ProxyWindow, LocaleType, FundingEligibilityType } from '../types';
-import { NATIVE_WEBSOCKET_URL, EXPERIENCE_URI } from '../config';
+import { EXPERIENCE_URI } from '../config';
 import { firebaseSocket, promiseNoop, type MessageSocket, type FirebaseConfig } from '../lib';
 import { createAccessToken, getFirebaseSessionToken } from '../api';
 import { CONTEXT } from '../constants';
@@ -32,10 +32,13 @@ type NativeEligibleProps = {|
     onShippingChange : ?OnShippingChange,
     createBillingAgreement : ?CreateBillingAgreement,
     createSubscription : ?CreateSubscription,
-    enableNativeCheckout : ?boolean
+    enableNativeCheckout : ?boolean,
+    firebaseConfig : ?FirebaseConfig
 |};
 
-export function isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription, enableNativeCheckout } : NativeEligibleProps) : boolean {
+export function isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement,
+    createSubscription, enableNativeCheckout, firebaseConfig } : NativeEligibleProps) : boolean {
+
     if (win) {
         return false;
     }
@@ -68,6 +71,10 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
         return false;
     }
 
+    if (!firebaseConfig) {
+        return false;
+    }
+
     if (enableNativeCheckout) {
         return true;
     }
@@ -80,16 +87,14 @@ const sessionUID = uniqueID();
 let nativeWebSocket : ?MessageSocket;
 
 function getNativeSocket({ sessionToken, firebaseConfig } : { sessionToken : string, firebaseConfig : FirebaseConfig }) : MessageSocket {
-    const socketParams = {
+    nativeWebSocket = nativeWebSocket || firebaseSocket({
         sessionUID,
         sessionToken,
         sourceApp:        SOURCE_APP,
         sourceAppVersion: SOURCE_APP_VERSION,
         targetApp:        TARGET_APP,
         config:           firebaseConfig
-    };
-
-    nativeWebSocket = nativeWebSocket || firebaseSocket({ url: NATIVE_WEBSOCKET_URL, ...socketParams });
+    });
 
     return nativeWebSocket;
 }
