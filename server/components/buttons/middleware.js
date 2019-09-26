@@ -4,7 +4,7 @@ import { html } from 'jsx-pragmatic';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization } from '../../service';
-import type { LoggerType, CacheType, ClientIDToMerchantID, ExpressRequest } from '../../types';
+import type { LoggerType, CacheType, ClientIDToMerchantID, ExpressRequest, FirebaseConfig } from '../../types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { EVENT } from './constants';
@@ -17,10 +17,11 @@ type ButtonMiddlewareOptions = {|
     getPersonalization : Function,
     clientIDToMerchantID : ClientIDToMerchantID,
     getInlineGuestExperiment? : (req : ExpressRequest, params : Object) => Promise<boolean>,
-    cache? : CacheType
+    cache? : CacheType,
+    firebaseConfig? : FirebaseConfig
 |};
 
-export function getButtonMiddleware({ logger = defaultLogger, cache, getFundingEligibility, getPersonalization, clientIDToMerchantID, getInlineGuestExperiment = () => Promise.resolve(false) } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+export function getButtonMiddleware({ logger = defaultLogger, cache, getFundingEligibility, getPersonalization, clientIDToMerchantID, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     return sdkMiddleware({ logger, cache }, async ({ req, res, params, meta, logBuffer }) => {
         logger.info(req, EVENT.RENDER);
         if (logBuffer) {
@@ -80,7 +81,7 @@ export function getButtonMiddleware({ logger = defaultLogger, cache, getFundingE
 
                 ${ meta.getSDKLoader({ nonce: cspNonce }) }
                 <script nonce="${ cspNonce }">${ client.script }</script>
-                <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, isCardFieldsExperimentEnabled }) })</script>
+                <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig }) })</script>
                 ${ shouldRenderFraudnet({ fundingEligibility }) ? renderFraudnetScript({ id: buttonSessionID, cspNonce, env }) : '' }
             </body>
         `;

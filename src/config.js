@@ -41,3 +41,7 @@ export const CLIENT_ID_PAYEE_NO_MATCH = [
     'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU',
     'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'
 ];
+
+export const FIREBASE_SCRIPTS = {
+
+};

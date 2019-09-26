@@ -5,7 +5,7 @@ import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, ProxyWindow, PersonalizationType } from '../types';
-import { setupLogger, sendBeacon, fixClickFocus } from '../lib';
+import { setupLogger, sendBeacon, fixClickFocus, type FirebaseConfig } from '../lib';
 import { createAccessToken } from '../api';
 import { initCheckout, setupCheckout, isVaultCaptureEligible, isCardFieldsEligible, initVault, initCardFields } from '../payment-flows';
 import { DATA_ATTRIBUTES } from '../constants';
@@ -24,7 +24,8 @@ type ButtonOpts = {|
     cspNonce? : string,
     merchantID : $ReadOnlyArray<string>,
     personalization? : PersonalizationType,
-    isCardFieldsExperimentEnabled? : boolean
+    isCardFieldsExperimentEnabled? : boolean,
+    firebaseConfig? : FirebaseConfig
 |};
 
 type PayOptions = {|
@@ -35,7 +36,7 @@ type PayOptions = {|
     paymentMethodID? : ?string
 |};
 
-export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID, personalization, isCardFieldsExperimentEnabled } : ButtonOpts) : ZalgoPromise<void> {
+export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig } : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal SDK not loaded`);
     }
@@ -118,10 +119,14 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                 }
 
                 if (isNative) {
+                    if (!firebaseConfig) {
+                        throw new Error(`Firebase config required`);
+                    }
+
                     return initNative({
                         createOrder, onApprove, onCancel, onError, commit, fundingSource,
                         clientID, getPageUrl, env, stageHost, apiStageHost, win, buttonSessionID, card, buyerCountry,
-                        onShippingChange, cspNonce, locale, vault,
+                        onShippingChange, cspNonce, locale, vault, firebaseConfig,
                         clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
                 }
@@ -196,7 +201,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
     const setupCheckoutFlow = setupCheckout();
     const setupPopupBridgeFlow = setupPopupBridge({ getPopupBridge });
-    const setupNativeFlow = setupNative({ platform, enableNativeCheckout });
+    const setupNativeFlow = setupNative();
 
     const createFacilitatorAccessToken = createAccessToken(clientID);
 

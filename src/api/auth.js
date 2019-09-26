@@ -6,6 +6,8 @@ import { inlineMemoize, base64encode, request } from 'belter/src';
 import { AUTH_API_URL } from '../config';
 import { getLogger } from '../lib';
 
+import { callGraphQL } from './api';
+
 export function createAccessToken (clientID : string) : ZalgoPromise<string> {
     return inlineMemoize(createAccessToken, () => {
 
@@ -37,4 +39,21 @@ export function createAccessToken (clientID : string) : ZalgoPromise<string> {
             return body.access_token;
         });
     }, [ clientID ]);
+}
+
+export function getFirebaseSessionToken(sessionUID : string) : ZalgoPromise<string> {
+    return callGraphQL({
+        query: `
+            query GetFireBaseSessionToken($sessionUID: String!) {
+                firebase {
+                    auth(sessionUID: $sessionUID) {
+                        sessionToken
+                    }
+                }
+            }
+        `,
+        variables: { sessionUID }
+    }).then(res => {
+        return res.data.firebase.auth.sessionToken;
+    });
 }

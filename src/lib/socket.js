@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint unicorn/prefer-add-event-listener: off */
+/* eslint unicorn/prefer-add-event-listener: off, max-lines: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { request, uniqueID, noop } from 'belter/src';
@@ -369,6 +369,94 @@ export function webSocket({ sessionUID, url, sourceApp, sourceAppVersion, target
             },
             isOpen: () => {
                 return socket.readyState === WebSocket.OPEN;
+            }
+        };
+    };
+
+    return messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion, targetApp });
+}
+
+export type FirebaseConfig = {|
+    apiKey : string,
+    authDomain : string,
+    databaseURL : string,
+    projectId : string,
+    storageBucket : string,
+    messagingSenderId : string,
+    appId : string,
+    measurementId : string
+|};
+
+export type FirebaseSocketOptions = {|
+    sessionUID : string,
+    sessionToken : string,
+    config : FirebaseConfig,
+    url : string,
+    sourceApp : string,
+    sourceAppVersion : string,
+    targetApp : string
+|};
+
+export function firebaseSocket({ sessionUID, sessionToken, config, url, sourceApp, sourceAppVersion, targetApp } : FirebaseSocketOptions) : MessageSocket {
+    const driver = () => {
+        let open = false;
+        
+        const onMessageHandlers = [];
+        const onErrorHandlers = [];
+        const onCloseHandlers = [];
+        const onOpenHandlers = [];
+
+        const error = (err) => {
+            for (const handler of onErrorHandlers) {
+                handler(err);
+            }
+        };
+
+        window.firebase.initializeApp(config);
+
+        const databasePromise = window.firebase.auth().signInWithCustomToken(sessionToken).then(() => {
+            const database = window.firebase.database();
+            open = true;
+
+            for (const handler of onOpenHandlers) {
+                handler();
+            }
+
+            database.ref(`users/${ sessionUID }/messages`).on('value', (messages) => {
+                for (const messageID of Object.keys(messages)) {
+                    const message = messages[messageID];
+                    for (const handler of onMessageHandlers) {
+                        handler(JSON.stringify(message, null, 4));
+                    }
+                }
+            });
+        }).catch(error);
+
+        const socket = new WebSocket(url);
+
+        return {
+            send: (data) => {
+                databasePromise.then(database => {
+                    return database.ref(`users/${ sessionUID }/messages/${ uniqueID() }`).set(JSON.parse(data));
+                }).catch(error);
+            },
+            close: () => {
+                socket.close();
+            },
+            onMessage: (handler) => {
+                onMessageHandlers.push(handler);
+            },
+            onError: (handler) => {
+                onErrorHandlers.push(handler);
+            },
+            onOpen: (handler) => {
+                onOpenHandlers.push(handler);
+            },
+            onClose: (handler) => {
+                onCloseHandlers.push(handler);
+            },
+            isOpen: () => {
+                return open;
             }
         };
     };

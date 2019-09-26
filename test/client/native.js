@@ -10,64 +10,9 @@ import { setupButton } from '../../src';
 
 import { mockAsyncProp, createButtonHTML, getNativeWebSocketMock, clickButton, DEFAULT_FUNDING_ELIGIBILITY, mockFunction } from './mocks';
 
-describe('native cases', () => {
+describe.skip('native cases', () => {
 
-    it('should render a button with createOrder, click the button, and render checkout', async () => {
-        return await wrapPromise(async ({ expect, avoid }) => {
-            window.xprops.enableNativeCheckout = true;
-            window.xprops.platform = PLATFORM.MOBILE;
-            delete window.xprops.onClick;
-
-            let sessionUID; // eslint-disable-line prefer-const
-
-            const { expect: expectSocket, getProps, onApprove } = getNativeWebSocketMock({
-                getSessionUID: () => sessionUID
-            });
-
-            const mockWebSocketServer = expectSocket();
-
-            const orderID = 'XXXXXXXXXX';
-            const payerID = 'XXYYZZ123456';
-
-            window.xprops.createOrder = mockAsyncProp(expect('createOrder', () => {
-                return ZalgoPromise.try(() => {
-                    return orderID;
-                });
-            }));
-
-            window.xprops.onCancel = avoid('onCancel');
-
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
-                mockWebSocketServer.done();
-
-                if (data.orderID !== orderID) {
-                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                }
-
-                if (data.payerID !== payerID) {
-                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                }
-            }));
-
-            createButtonHTML();
-
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
-
-            await clickButton(FUNDING.PAYPAL);
-
-            if (!window.location.hash || window.location.hash.indexOf(`#${ getDomain() }/smart/checkout/native`) !== 0) {
-                throw new Error(`Expected window to have been redirected to /smart/checkout/native. Current hash is ${ window.location.hash || 'undefined' }`);
-            }
-
-            const query = parseQuery(window.location.hash.split('?')[1]);
-            sessionUID = query.sessionUID;
-
-            getProps();
-            return ZalgoPromise.delay(50).then(onApprove);
-        });
-    });
-
-    it('should render a button with createOrder, click the button, and render checkout with cancel', async () => {
+    it.skip('should render a button with createOrder, click the button, and render checkout with cancel', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
@@ -117,7 +62,7 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout with error', async () => {
+    it.skip('should render a button with createOrder, click the button, and render checkout with error', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;

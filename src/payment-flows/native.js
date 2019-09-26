@@ -1,6 +1,6 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, stringifyError, supportsPopups, popup } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, PLATFORM, FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
@@ -8,8 +8,8 @@ import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-doma
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
 import type { ProxyWindow, LocaleType, FundingEligibilityType } from '../types';
 import { NATIVE_WEBSOCKET_URL, EXPERIENCE_URI } from '../config';
-import { webSocket, promiseNoop, getLogger, redirectTop, type MessageSocket } from '../lib';
-import { createAccessToken } from '../api';
+import { firebaseSocket, promiseNoop, type MessageSocket, type FirebaseConfig } from '../lib';
+import { createAccessToken, getFirebaseSessionToken } from '../api';
 import { CONTEXT } from '../constants';
 
 import { initCheckout } from './checkout';
@@ -17,17 +17,13 @@ import { initCheckout } from './checkout';
 const SOURCE_APP = 'paypal_smart_payment_buttons';
 const SOURCE_APP_VERSION = window.paypal ? window.paypal.version : 'unknown';
 const TARGET_APP = 'paypal_native_checkout_sdk';
-const APP_DETECT_TIMEOUT = 2000;
 
 const MESSAGE = {
-    DETECT_APP: 'detectApp',
     GET_PROPS:  'getProps',
     ON_APPROVE: 'onApprove',
     ON_CANCEL:  'onCancel',
     ON_ERROR:   'onError'
 };
-
-let isNativeCheckoutInstalled = false;
 
 type NativeEligibleProps = {|
     win : ?ProxyWindow,
@@ -83,15 +79,17 @@ const sessionUID = uniqueID();
 
 let nativeWebSocket : ?MessageSocket;
 
-function getNativeSocket() : MessageSocket {
+function getNativeSocket({ sessionToken, firebaseConfig } : { sessionToken : string, firebaseConfig : FirebaseConfig }) : MessageSocket {
     const socketParams = {
         sessionUID,
+        sessionToken,
         sourceApp:        SOURCE_APP,
         sourceAppVersion: SOURCE_APP_VERSION,
-        targetApp:        TARGET_APP
+        targetApp:        TARGET_APP,
+        config:           firebaseConfig
     };
 
-    nativeWebSocket = nativeWebSocket || webSocket({ url: NATIVE_WEBSOCKET_URL, ...socketParams });
+    nativeWebSocket = nativeWebSocket || firebaseSocket({ url: NATIVE_WEBSOCKET_URL, ...socketParams });
 
     return nativeWebSocket;
 }
@@ -103,41 +101,11 @@ function closeNativeSocket() {
     }
 }
 
-type SetupNativeProps = {|
-    platform : $Values<typeof PLATFORM>,
-    enableNativeCheckout : ?boolean
-|};
-
-export function setupNative({ platform, enableNativeCheckout } : SetupNativeProps) : ZalgoPromise<void> {
+export function setupNative() : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         if (window.xprops.simulateNoWebSocket) {
             window.__CHECKOUT_URI__ = '/smart/testappswitch';
-            return;
         }
-
-        if (platform !== PLATFORM.MOBILE || !enableNativeCheckout) {
-            return;
-        }
-
-        if (nativeWebSocket) {
-            nativeWebSocket.close();
-            nativeWebSocket = null;
-        }
-
-        isNativeCheckoutInstalled = false;
-
-        const socket = getNativeSocket();
-
-        return socket.send(MESSAGE.DETECT_APP, {}, { requireSessionUID: false, timeout: APP_DETECT_TIMEOUT }).then(() => {
-            getLogger().info('native_sdk_detected');
-            if (!window.xprops.simulateNoLongRunningWebSocket) {
-                isNativeCheckoutInstalled = true;
-            }
-        }, err => {
-            getLogger().info('native_sdk_not_detected', { err: stringifyError(err) });
-        }).finally(() => {
-            closeNativeSocket();
-        });
     });
 }
 
@@ -166,7 +134,8 @@ type NativeProps = {|
     onError : (mixed) => ZalgoPromise<void>,
     vault : boolean,
     clientAccessToken : ?string,
-    fundingEligibility : FundingEligibilityType
+    fundingEligibility : FundingEligibilityType,
+    firebaseConfig : FirebaseConfig
 |};
 
 type NativeInstance = {|
@@ -190,7 +159,7 @@ type NativeSDKProps = {|
 export function initNative(props : NativeProps) : NativeInstance {
     const { createOrder, onApprove, onCancel, onError, commit, clientID, getPageUrl, env, stageHost, apiStageHost,
         buttonSessionID, fundingSource, card, buyerCountry, onShippingChange, cspNonce, locale,
-        vault, clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription } = props;
+        vault, clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription, firebaseConfig } = props;
 
     let close = promiseNoop;
     let triggerError = (err) => {
@@ -215,8 +184,8 @@ export function initNative(props : NativeProps) : NativeInstance {
         const orderPromise = createOrder();
         const pageUrlPromise = getPageUrl();
 
-        const openCheckoutSocket = () => {
-            const socket = getNativeSocket();
+        const openCheckoutSocket = ({ sessionToken }) => {
+            const socket = getNativeSocket({ sessionToken, firebaseConfig });
 
             socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
                 return ZalgoPromise.all([
@@ -259,18 +228,15 @@ export function initNative(props : NativeProps) : NativeInstance {
         };
 
         const nativeUrl = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
-
-        if (isNativeCheckoutInstalled) {
-            redirectTop(nativeUrl);
-            return openCheckoutSocket();
-        }
-
         const win = popup(nativeUrl);
 
         return orderPromise.then(() => {
             if (isBlankDomain(win)) {
-                openCheckoutSocket();
                 win.close();
+
+                return getFirebaseSessionToken(sessionUID).then(sessionToken => {
+                    openCheckoutSocket({ sessionToken });
+                });
             } else {
                 return fallbackToWebCheckout({ win });
             }
