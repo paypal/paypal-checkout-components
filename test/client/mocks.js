@@ -664,7 +664,7 @@ function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) :
         messages[namespace] = messages[namespace] || {};
         messages[namespace][key] = data;
         for (const listener of (listeners[namespace] || [])) {
-            listener(messages[namespace]);
+            listener({ val: () => messages[namespace] });
         }
     };
 

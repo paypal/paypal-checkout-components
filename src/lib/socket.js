@@ -429,7 +429,8 @@ export function firebaseSocket({ sessionUID, sessionToken, config, sourceApp, so
                     handler();
                 }
     
-                database.ref(`users/${ sessionUID }/messages`).on('value', (messages) => {
+                database.ref(`users/${ sessionUID }/messages`).on('value', (res) => {
+                    const messages = res.val() || {};
                     for (const messageID of Object.keys(messages)) {
                         const message = messages[messageID];
                         for (const handler of onMessageHandlers) {
