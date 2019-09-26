@@ -3843,7 +3843,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.v4.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.288",
+  version: "4.0.289",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -8162,6 +8162,19 @@ var cross_domain_safe_weakmap_src = __webpack_require__(14);
 /* eslint max-lines: 0 */
 
 
+function getFunctionName(fn) {
+  return fn.name || fn.__name__ || fn.displayName || 'anonymous';
+}
+function setFunctionName(fn, name) {
+  try {
+    delete fn.name;
+    fn.name = name;
+  } catch (err) {// pass
+  }
+
+  fn.__name__ = fn.displayName = name;
+  return fn;
+}
 function base64encode(str) {
   if (typeof btoa === 'function') {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (m, p1) {
@@ -8285,11 +8298,7 @@ function memoize(method, options) {
     cacheMap.delete(options.thisNamespace ? _this : method);
   };
 
-  if (options.name) {
-    memoizedFunction.displayName = options.name + ":memoized";
-  }
-
-  return memoizedFunction;
+  return setFunctionName(memoizedFunction, getFunctionName(method) + "::memoized");
 } // eslint-disable-next-line flowtype/no-weak-types
 
 function memoizePromise(method) {
@@ -8321,7 +8330,7 @@ function memoizePromise(method) {
     cache = {};
   };
 
-  return memoizedPromiseFunction;
+  return setFunctionName(memoizedPromiseFunction, getFunctionName(method) + "::promiseMemoized");
 } // eslint-disable-next-line flowtype/no-weak-types
 
 function promisify(method, options) {
@@ -8337,7 +8346,7 @@ function promisify(method, options) {
     promisifiedFunction.displayName = options.name + ":promisified";
   }
 
-  return promisifiedFunction;
+  return setFunctionName(promisifiedFunction, getFunctionName(method) + "::promisified");
 } // eslint-disable-next-line flowtype/no-weak-types
 
 function inlineMemoize(method, logic, args) {
@@ -8361,12 +8370,15 @@ function noop() {// pass
 }
 function once(method) {
   var called = false;
-  return function onceFunction() {
+
+  var onceFunction = function onceFunction() {
     if (!called) {
       called = true;
       return method.apply(this, arguments);
     }
   };
+
+  return setFunctionName(onceFunction, getFunctionName(method) + "::once");
 }
 function hashStr(str) {
   var hash = 0;
@@ -8604,7 +8616,8 @@ function promiseDebounce(method, delay) {
 
   var promise;
   var timeout;
-  return function promiseDebouncedMethod() {
+
+  var promiseDebounced = function promiseDebounced() {
     if (timeout) {
       clearTimeout(timeout);
     }
@@ -8621,6 +8634,8 @@ function promiseDebounce(method, delay) {
     }, delay);
     return localPromise;
   };
+
+  return setFunctionName(promiseDebounced, getFunctionName(method) + "::promiseDebounced");
 }
 function safeInterval(method, time) {
   var timeout;
@@ -9036,7 +9051,8 @@ function debounce(method, time) {
   }
 
   var timeout;
-  return function debounceWrapper() {
+
+  var debounceWrapper = function debounceWrapper() {
     var _this4 = this,
         _arguments3 = arguments;
 
@@ -9045,6 +9061,8 @@ function debounce(method, time) {
       return method.apply(_this4, _arguments3);
     }, time);
   };
+
+  return setFunctionName(debounceWrapper, getFunctionName(method) + "::debounced");
 }
 function isRegex(item) {
   return Object.prototype.toString.call(item) === '[object RegExp]';
@@ -9563,23 +9581,26 @@ function popup(url, options) {
     }
   }
 
-  options = Object(esm_extends["a" /* default */])({
-    top: top,
-    left: left,
-    width: width,
-    height: height,
-    status: 1,
-    toolbar: 0,
-    menubar: 0,
-    resizable: 1,
-    scrollbars: 1
-  }, options);
+  if (width && height) {
+    options = Object(esm_extends["a" /* default */])({
+      top: top,
+      left: left,
+      width: width,
+      height: height,
+      status: 1,
+      toolbar: 0,
+      menubar: 0,
+      resizable: 1,
+      scrollbars: 1
+    }, options);
+  }
+
   var name = options.name || '';
   delete options.name; // eslint-disable-next-line array-callback-return
 
   var params = Object.keys(options).map(function (key) {
     // $FlowFixMe
-    if (options[key]) {
+    if (options[key] !== null && options[key] !== undefined) {
       return key + "=" + stringify(options[key]);
     }
   }).filter(Boolean).join(',');
@@ -10703,6 +10724,8 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import experiment */
 /* unused concated harmony import getGlobalNameSpace */
 /* unused concated harmony import getStorage */
+/* unused concated harmony import getFunctionName */
+/* unused concated harmony import setFunctionName */
 /* concated harmony reexport base64encode */__webpack_require__.d(__webpack_exports__, "a", function() { return base64encode; });
 /* unused concated harmony import base64decode */
 /* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "g", function() { return uniqueID; });
@@ -12583,7 +12606,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.288";
+    payload.version = "4.0.289";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -12639,7 +12662,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.288".replace(/[^0-9]+/g, '_');
+      var version = "4.0.289".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -12656,7 +12679,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.288",
+    v: "checkout.js." + "4.0.289",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -14054,17 +14077,17 @@ __webpack_require__.r(__webpack_exports__);
 
 if (false) {}
 
-if (window.paypal && window.paypal.version === "4.0.288") {
+if (window.paypal && window.paypal.version === "4.0.289") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.288"
+    version: "4.0.289"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.288" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.288" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.289" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.289" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.288"
+    version: "4.0.289"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.288");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.289");
 } else {
   try {
     var _interface = __webpack_require__(56);
@@ -18325,7 +18348,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(lib_session["c" /* getSessionID */])(),
-      ver: "4.0.288"
+      ver: "4.0.289"
     };
   });
   Object(beaver_logger_client["a" /* addHeaderBuilder */])(function () {
@@ -18894,7 +18917,7 @@ function getScriptVersion() {
   if ( true && isPayPalObjects()) {
     return  false ? undefined : "4";
   } else {
-    return  false ? undefined : "4.0.288";
+    return  false ? undefined : "4.0.289";
   }
 }
 function getCurrentScriptUrl() {
@@ -18910,7 +18933,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.288" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.289" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["g" /* getDomain */])();
@@ -33744,7 +33767,7 @@ var componentContent = {
 
 
 
-var allowedPersonalizationLabels = [src_constants["f" /* BUTTON_LABEL */].PAYPAL, src_constants["f" /* BUTTON_LABEL */].CHECKOUT, src_constants["f" /* BUTTON_LABEL */].BUYNOW, src_constants["f" /* BUTTON_LABEL */].PAY];
+var allowedPersonalizationLabels = [src_constants["f" /* BUTTON_LABEL */].CHECKOUT, src_constants["f" /* BUTTON_LABEL */].BUYNOW, src_constants["f" /* BUTTON_LABEL */].PAY];
 var componentTemplate_delay = 0.2;
 
 function getCommonButtonClasses(_ref) {
@@ -34266,7 +34289,7 @@ function componentTemplate_componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(props_normalizeProps(props)) : null;
-  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.288", _ref19), {
+  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.289", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -36079,7 +36102,7 @@ var interface_postRobot = src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.288";
+var interface_version = "4.0.289";
 var interface_checkout;
 var apps;
 

@@ -2184,6 +2184,19 @@ function () {
 /* eslint max-lines: 0 */
 
 
+function getFunctionName(fn) {
+  return fn.name || fn.__name__ || fn.displayName || 'anonymous';
+}
+function setFunctionName(fn, name) {
+  try {
+    delete fn.name;
+    fn.name = name;
+  } catch (err) {// pass
+  }
+
+  fn.__name__ = fn.displayName = name;
+  return fn;
+}
 function base64encode(str) {
   if (typeof btoa === 'function') {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (m, p1) {
@@ -2307,11 +2320,7 @@ function memoize(method, options) {
     cacheMap.delete(options.thisNamespace ? _this : method);
   };
 
-  if (options.name) {
-    memoizedFunction.displayName = options.name + ":memoized";
-  }
-
-  return memoizedFunction;
+  return setFunctionName(memoizedFunction, getFunctionName(method) + "::memoized");
 } // eslint-disable-next-line flowtype/no-weak-types
 
 function memoizePromise(method) {
@@ -2343,7 +2352,7 @@ function memoizePromise(method) {
     cache = {};
   };
 
-  return memoizedPromiseFunction;
+  return setFunctionName(memoizedPromiseFunction, getFunctionName(method) + "::promiseMemoized");
 } // eslint-disable-next-line flowtype/no-weak-types
 
 function promisify(method, options) {
@@ -2359,7 +2368,7 @@ function promisify(method, options) {
     promisifiedFunction.displayName = options.name + ":promisified";
   }
 
-  return promisifiedFunction;
+  return setFunctionName(promisifiedFunction, getFunctionName(method) + "::promisified");
 } // eslint-disable-next-line flowtype/no-weak-types
 
 function inlineMemoize(method, logic, args) {
@@ -2383,12 +2392,15 @@ function src_util_noop() {// pass
 }
 function once(method) {
   var called = false;
-  return function onceFunction() {
+
+  var onceFunction = function onceFunction() {
     if (!called) {
       called = true;
       return method.apply(this, arguments);
     }
   };
+
+  return setFunctionName(onceFunction, getFunctionName(method) + "::once");
 }
 function hashStr(str) {
   var hash = 0;
@@ -2626,7 +2638,8 @@ function promiseDebounce(method, delay) {
 
   var promise;
   var timeout;
-  return function promiseDebouncedMethod() {
+
+  var promiseDebounced = function promiseDebounced() {
     if (timeout) {
       clearTimeout(timeout);
     }
@@ -2643,6 +2656,8 @@ function promiseDebounce(method, delay) {
     }, delay);
     return localPromise;
   };
+
+  return setFunctionName(promiseDebounced, getFunctionName(method) + "::promiseDebounced");
 }
 function safeInterval(method, time) {
   var timeout;
@@ -3058,7 +3073,8 @@ function debounce(method, time) {
   }
 
   var timeout;
-  return function debounceWrapper() {
+
+  var debounceWrapper = function debounceWrapper() {
     var _this4 = this,
         _arguments3 = arguments;
 
@@ -3067,6 +3083,8 @@ function debounce(method, time) {
       return method.apply(_this4, _arguments3);
     }, time);
   };
+
+  return setFunctionName(debounceWrapper, getFunctionName(method) + "::debounced");
 }
 function util_isRegex(item) {
   return Object.prototype.toString.call(item) === '[object RegExp]';
@@ -3585,23 +3603,26 @@ function popup(url, options) {
     }
   }
 
-  options = _extends({
-    top: top,
-    left: left,
-    width: width,
-    height: height,
-    status: 1,
-    toolbar: 0,
-    menubar: 0,
-    resizable: 1,
-    scrollbars: 1
-  }, options);
+  if (width && height) {
+    options = _extends({
+      top: top,
+      left: left,
+      width: width,
+      height: height,
+      status: 1,
+      toolbar: 0,
+      menubar: 0,
+      resizable: 1,
+      scrollbars: 1
+    }, options);
+  }
+
   var name = options.name || '';
   delete options.name; // eslint-disable-next-line array-callback-return
 
   var params = Object.keys(options).map(function (key) {
     // $FlowFixMe
-    if (options[key]) {
+    if (options[key] !== null && options[key] !== undefined) {
       return key + "=" + stringify(options[key]);
     }
   }).filter(Boolean).join(',');
@@ -14701,7 +14722,7 @@ var componentContent = {
 
 
 
-var allowedPersonalizationLabels = [BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY];
+var allowedPersonalizationLabels = [BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY];
 var componentTemplate_delay = 0.2;
 
 function getCommonButtonClasses(_ref) {
@@ -15216,7 +15237,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.288", _ref19), {
+  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.289", _ref19), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
