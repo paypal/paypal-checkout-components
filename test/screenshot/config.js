@@ -296,7 +296,7 @@ for (const color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.CREDIT, FUNDING.CARD, FUNDING.BOLETO ]
+                allowed: [ FUNDING.CREDIT, FUNDING.BOLETO, FUNDING.CARD ]
             }
         }
     });
