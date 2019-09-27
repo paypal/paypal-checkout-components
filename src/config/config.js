@@ -19,6 +19,6 @@ export function getMenuUrl() : string {
 }
 
 export const DEFAULT_POPUP_SIZE = {
-    WIDTH:  450,
-    HEIGHT: 535
+    WIDTH:  500,
+    HEIGHT: 590
 };
