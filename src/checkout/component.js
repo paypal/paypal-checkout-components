@@ -573,13 +573,13 @@ export const Checkout : Component<CheckoutPropsType> = create({
         if (isDevice()) {
             return {
                 width:  '100%',
-                height: '535px'
+                height: '590px'
             };
         }
 
         return {
-            width:  '450px',
-            height: '535px'
+            width:  '500px',
+            height: '590px'
         };
     }
 });
