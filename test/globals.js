@@ -65,6 +65,15 @@ export const fundingEligibility = {
     wechatpay: {
         eligible: false
     },
+    oxxo: {
+        eligible: false
+    },
+    boleto: {
+        eligible: false
+    },
+    maxima: {
+        eligible: false
+    },
     zimpler: {
         eligible: false
     }
