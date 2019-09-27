@@ -432,7 +432,7 @@ for (const color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.P24, FUNDING.BLIK ]
+                allowed: [ FUNDING.BLIK, FUNDING.P24 ]
             }
         }
     });

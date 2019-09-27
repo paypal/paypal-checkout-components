@@ -16,10 +16,10 @@ export const FUNDING_PRIORITY = [
     FUNDING.EPS,
     FUNDING.SOFORT,
     FUNDING.MYBANK,
+    FUNDING.BLIK,
     FUNDING.P24,
     FUNDING.PAYU,
     FUNDING.VERKKOPANKKI,
-    FUNDING.BLIK,
     FUNDING.TRUSTLY,
     FUNDING.MAXIMA,
     FUNDING.BOLETO
@@ -37,10 +37,10 @@ export const FUNDING_ORDER = [
     FUNDING.EPS,
     FUNDING.SOFORT,
     FUNDING.MYBANK,
+    FUNDING.BLIK,
     FUNDING.P24,
     FUNDING.PAYU,
     FUNDING.VERKKOPANKKI,
-    FUNDING.BLIK,
     FUNDING.TRUSTLY,
     FUNDING.MAXIMA,
     FUNDING.BOLETO,
@@ -204,7 +204,6 @@ export const FUNDING_CONFIG = {
     },
     [ FUNDING.PAYU ]: {
         allowedCountries: [
-            COUNTRY.PL,
             COUNTRY.CZ
         ],
 
@@ -239,7 +238,6 @@ export const FUNDING_CONFIG = {
             COUNTRY.MT,
             COUNTRY.NL,
             COUNTRY.NO,
-            COUNTRY.PL,
             COUNTRY.SE
         ],
 
