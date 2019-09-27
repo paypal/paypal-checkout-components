@@ -1528,14 +1528,14 @@ window.spb = function(modules) {
                         for (var _i4 = 0; _i4 < onOpenHandlers.length; _i4++) (0, onOpenHandlers[_i4])();
                         return database.ref("users/" + sessionUID + "/messages").on("value", (function(res) {
                             for (var messages = res.val() || {}, _i6 = 0, _Object$keys2 = Object.keys(messages); _i6 < _Object$keys2.length; _i6++) for (var message = messages[_Object$keys2[_i6]], _i8 = 0; _i8 < onMessageHandlers.length; _i8++) (0, 
-                            onMessageHandlers[_i8])(JSON.stringify(message, null, 4));
+                            onMessageHandlers[_i8])(message);
                         })), database;
                     }));
                 }));
                 return {
                     send: function(data) {
                         databasePromise.then((function(database) {
-                            return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src.v)()).set(JSON.parse(data));
+                            return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src.v)()).set(data);
                         })).catch(error);
                     },
                     close: function() {
