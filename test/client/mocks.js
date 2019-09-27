@@ -738,7 +738,7 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
                     message_status: messageStatus,
                     message_name:   messageName,
                     message_data:   messageData
-                } = data[id];
+                } = JSON.parse(data[id]);
 
                 if (received[messageUID]) {
                     continue;
@@ -781,7 +781,7 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
     const getProps = () => {
         getPropsRequestID = uniqueID();
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, {
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -790,7 +790,7 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
             message_uid:        uniqueID(),
             message_type:       'request',
             message_name:       'getProps'
-        });
+        }));
     };
 
     const onApprove = () => {
@@ -800,7 +800,7 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
 
         onApproveRequestID = uniqueID();
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, {
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -813,7 +813,7 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
                 orderID: props.orderID,
                 payerID: 'XXYYZZ123456'
             }
-        });
+        }));
     };
 
     const onCancel = () => {
@@ -823,7 +823,7 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
 
         onCancelRequestID = uniqueID();
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, {
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -835,13 +835,13 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
             message_data:       {
                 orderID: props.orderID
             }
-        });
+        }));
     };
 
     const onError = () => {
         onErrorRequestID = uniqueID();
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, {
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -853,7 +853,7 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
             message_data:       {
                 message: 'Something went wrong'
             }
-        });
+        }));
     };
 
     return {

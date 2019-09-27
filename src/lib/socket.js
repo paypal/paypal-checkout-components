@@ -434,7 +434,7 @@ export function firebaseSocket({ sessionUID, sessionToken, config, sourceApp, so
                     for (const messageID of Object.keys(messages)) {
                         const message = messages[messageID];
                         for (const handler of onMessageHandlers) {
-                            handler(JSON.stringify(message, null, 4));
+                            handler(message);
                         }
                     }
                 });
@@ -446,7 +446,7 @@ export function firebaseSocket({ sessionUID, sessionToken, config, sourceApp, so
         return {
             send: (data) => {
                 databasePromise.then(database => {
-                    return database.ref(`users/${ sessionUID }/messages/${ uniqueID() }`).set(JSON.parse(data));
+                    return database.ref(`users/${ sessionUID }/messages/${ uniqueID() }`).set(data);
                 }).catch(error);
             },
             close: () => {
