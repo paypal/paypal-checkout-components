@@ -5,8 +5,9 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { uniqueID, noop } from 'belter/src';
 
 import { FIREBASE_SCRIPTS } from '../config';
+import { loadScript } from '../lib/util';
 
-import { loadScript } from './util';
+import { getFirebaseSessionToken } from './auth';
 
 const MESSAGE_TYPE = {
     REQUEST:  ('request' : 'request'),
@@ -392,14 +393,13 @@ export type FirebaseConfig = {|
 
 export type FirebaseSocketOptions = {|
     sessionUID : string,
-    sessionToken : string,
     config : FirebaseConfig,
     sourceApp : string,
     sourceAppVersion : string,
     targetApp : string
 |};
 
-export function firebaseSocket({ sessionUID, sessionToken, config, sourceApp, sourceAppVersion, targetApp } : FirebaseSocketOptions) : MessageSocket {
+export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion, targetApp } : FirebaseSocketOptions) : MessageSocket {
     const driver = () => {
         let open = false;
         
@@ -415,10 +415,11 @@ export function firebaseSocket({ sessionUID, sessionToken, config, sourceApp, so
         };
 
         const databasePromise = ZalgoPromise.all([
+            getFirebaseSessionToken(sessionUID),
             loadScript(FIREBASE_SCRIPTS.APP),
             loadScript(FIREBASE_SCRIPTS.AUTH),
             loadScript(FIREBASE_SCRIPTS.DATABASE)
-        ]).then(() => {
+        ]).then(([ sessionToken ]) => {
             window.firebase.initializeApp(config);
 
             return window.firebase.auth().signInWithCustomToken(sessionToken).then(() => {

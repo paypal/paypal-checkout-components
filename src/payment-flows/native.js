@@ -1,6 +1,6 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, PLATFORM, FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
@@ -8,8 +8,8 @@ import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-doma
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
 import type { ProxyWindow, LocaleType, FundingEligibilityType } from '../types';
 import { EXPERIENCE_URI } from '../config';
-import { firebaseSocket, promiseNoop, type MessageSocket, type FirebaseConfig } from '../lib';
-import { createAccessToken, getFirebaseSessionToken } from '../api';
+import { promiseNoop } from '../lib';
+import { createAccessToken, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { CONTEXT } from '../constants';
 
 import { initCheckout } from './checkout';
@@ -19,6 +19,7 @@ const SOURCE_APP_VERSION = window.paypal ? window.paypal.version : 'unknown';
 const TARGET_APP = 'paypal_native_checkout_sdk';
 
 const MESSAGE = {
+    SET_PROPS:  'setProps',
     GET_PROPS:  'getProps',
     ON_APPROVE: 'onApprove',
     ON_CANCEL:  'onCancel',
@@ -82,14 +83,12 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
     return false;
 }
 
-const sessionUID = uniqueID();
-
 let nativeWebSocket : ?MessageSocket;
 
-function getNativeSocket({ sessionToken, firebaseConfig } : { sessionToken : string, firebaseConfig : FirebaseConfig }) : MessageSocket {
+const getNativeSocket = memoize(({ sessionUID, firebaseConfig } : { sessionUID : string, firebaseConfig : FirebaseConfig }) : MessageSocket => {
+
     nativeWebSocket = nativeWebSocket || firebaseSocket({
         sessionUID,
-        sessionToken,
         sourceApp:        SOURCE_APP,
         sourceAppVersion: SOURCE_APP_VERSION,
         targetApp:        TARGET_APP,
@@ -97,7 +96,7 @@ function getNativeSocket({ sessionToken, firebaseConfig } : { sessionToken : str
     });
 
     return nativeWebSocket;
-}
+});
 
 function closeNativeSocket() {
     if (nativeWebSocket) {
@@ -106,12 +105,16 @@ function closeNativeSocket() {
     }
 }
 
-export function setupNative() : ZalgoPromise<void> {
+export function setupNative({ clientID } : { clientID : string }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         if (window.xprops.simulateNoWebSocket) {
             window.__CHECKOUT_URI__ = '/smart/testappswitch';
         }
-    });
+
+        if (window.xprops.enableNativeCheckout) {
+            return createAccessToken(clientID);
+        }
+    }).then(noop);
 }
 
 type NativeProps = {|
@@ -166,6 +169,8 @@ export function initNative(props : NativeProps) : NativeInstance {
         buttonSessionID, fundingSource, card, buyerCountry, onShippingChange, cspNonce, locale,
         vault, clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription, firebaseConfig } = props;
 
+    const sessionUID = uniqueID();
+
     let close = promiseNoop;
     let triggerError = (err) => {
         throw err;
@@ -189,27 +194,31 @@ export function initNative(props : NativeProps) : NativeInstance {
         const orderPromise = createOrder();
         const pageUrlPromise = getPageUrl();
 
-        const openCheckoutSocket = ({ sessionToken }) => {
-            const socket = getNativeSocket({ sessionToken, firebaseConfig });
+        const getProps = () => {
+            return ZalgoPromise.all([
+                facilitatorAccessTokenPromise, orderPromise, pageUrlPromise
+            ]).then(([ facilitatorAccessToken, orderID, pageUrl ]) => {
+                const userAgent = getUserAgent();
+    
+                return {
+                    orderID,
+                    facilitatorAccessToken,
+                    pageUrl,
+                    commit,
+                    userAgent,
+                    buttonSessionID,
+                    env,
+                    stageHost,
+                    apiStageHost
+                };
+            });
+        };
+
+        const openCheckoutSocket = () => {
+            const socket = getNativeSocket({ sessionUID, firebaseConfig });
 
             socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
-                return ZalgoPromise.all([
-                    facilitatorAccessTokenPromise, orderPromise, pageUrlPromise
-                ]).then(([ facilitatorAccessToken, orderID, pageUrl ]) => {
-                    const userAgent = getUserAgent();
-    
-                    return {
-                        orderID,
-                        facilitatorAccessToken,
-                        pageUrl,
-                        commit,
-                        userAgent,
-                        buttonSessionID,
-                        env,
-                        stageHost,
-                        apiStageHost
-                    };
-                });
+                return getProps();
             });
     
             socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
@@ -238,10 +247,7 @@ export function initNative(props : NativeProps) : NativeInstance {
         return orderPromise.then(() => {
             if (isBlankDomain(win)) {
                 win.close();
-
-                return getFirebaseSessionToken(sessionUID).then(sessionToken => {
-                    openCheckoutSocket({ sessionToken });
-                });
+                openCheckoutSocket();
             } else {
                 return fallbackToWebCheckout({ win });
             }

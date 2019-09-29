@@ -5,8 +5,8 @@ import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, ProxyWindow, PersonalizationType } from '../types';
-import { setupLogger, sendBeacon, fixClickFocus, type FirebaseConfig } from '../lib';
-import { createAccessToken } from '../api';
+import { setupLogger, sendBeacon, fixClickFocus } from '../lib';
+import { createAccessToken, type FirebaseConfig } from '../api';
 import { initCheckout, setupCheckout, isVaultCaptureEligible, isCardFieldsEligible, initVault, initCardFields } from '../payment-flows';
 import { DATA_ATTRIBUTES } from '../constants';
 import { isPopupBridgeEligible, initPopupBridge, setupPopupBridge } from '../payment-flows/popup-bridge';
@@ -123,6 +123,8 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                         throw new Error(`Firebase config required`);
                     }
 
+                    enableLoadingSpinner(button);
+
                     return initNative({
                         createOrder, onApprove, onCancel, onError, commit, fundingSource,
                         clientID, getPageUrl, env, stageHost, apiStageHost, win, buttonSessionID, card, buyerCountry,
@@ -201,7 +203,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
     const setupCheckoutFlow = setupCheckout();
     const setupPopupBridgeFlow = setupPopupBridge({ getPopupBridge });
-    const setupNativeFlow = setupNative();
+    const setupNativeFlow = setupNative({ clientID });
 
     const createFacilitatorAccessToken = createAccessToken(clientID);
 
