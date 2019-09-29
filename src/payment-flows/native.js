@@ -6,7 +6,7 @@ import { ENV, PLATFORM, FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
 
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
-import type { ProxyWindow, LocaleType, FundingEligibilityType } from '../types';
+import type { ProxyWindow, LocaleType, FundingEligibilityType, CheckoutFlowType } from '../types';
 import { EXPERIENCE_URI } from '../config';
 import { promiseNoop } from '../lib';
 import { createAccessToken, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
@@ -15,12 +15,12 @@ import { CONTEXT } from '../constants';
 import { initCheckout } from './checkout';
 
 const SOURCE_APP = 'paypal_smart_payment_buttons';
-const SOURCE_APP_VERSION = window.paypal ? window.paypal.version : 'unknown';
 const TARGET_APP = 'paypal_native_checkout_sdk';
 
 const MESSAGE = {
     SET_PROPS:  'setProps',
     GET_PROPS:  'getProps',
+    CLOSE:      'close',
     ON_APPROVE: 'onApprove',
     ON_CANCEL:  'onCancel',
     ON_ERROR:   'onError'
@@ -64,14 +64,6 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
         return false;
     }
 
-    if (window.xprops.simulateNoWebSocket) {
-        return false;
-    }
-
-    if (window.xprops.onClick) {
-        return false;
-    }
-
     if (!firebaseConfig) {
         return false;
     }
@@ -83,41 +75,32 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
     return false;
 }
 
-let nativeWebSocket : ?MessageSocket;
+type NativeSocketOptions = {|
+    sessionUID : string,
+    firebaseConfig : FirebaseConfig,
+    version : string
+|};
 
-const getNativeSocket = memoize(({ sessionUID, firebaseConfig } : { sessionUID : string, firebaseConfig : FirebaseConfig }) : MessageSocket => {
-
-    nativeWebSocket = nativeWebSocket || firebaseSocket({
+const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : NativeSocketOptions) : MessageSocket => {
+    return firebaseSocket({
         sessionUID,
         sourceApp:        SOURCE_APP,
-        sourceAppVersion: SOURCE_APP_VERSION,
+        sourceAppVersion: version,
         targetApp:        TARGET_APP,
         config:           firebaseConfig
     });
-
-    return nativeWebSocket;
 });
 
-function closeNativeSocket() {
-    if (nativeWebSocket) {
-        nativeWebSocket.close();
-        nativeWebSocket = null;
-    }
-}
-
-export function setupNative({ clientID } : { clientID : string }) : ZalgoPromise<void> {
+export function setupNative({ clientID, enableNativeCheckout } : { clientID : string, enableNativeCheckout : boolean }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        if (window.xprops.simulateNoWebSocket) {
-            window.__CHECKOUT_URI__ = '/smart/testappswitch';
-        }
-
-        if (window.xprops.enableNativeCheckout) {
+        if (enableNativeCheckout) {
             return createAccessToken(clientID);
         }
     }).then(noop);
 }
 
 type NativeProps = {|
+    Checkout : CheckoutFlowType,
     createOrder : CreateOrder,
     onApprove : OnApprove,
     onCancel : OnCancel,
@@ -143,7 +126,8 @@ type NativeProps = {|
     vault : boolean,
     clientAccessToken : ?string,
     fundingEligibility : FundingEligibilityType,
-    firebaseConfig : FirebaseConfig
+    firebaseConfig : FirebaseConfig,
+    version : string
 |};
 
 type NativeInstance = {|
@@ -165,8 +149,8 @@ type NativeSDKProps = {|
 |};
 
 export function initNative(props : NativeProps) : NativeInstance {
-    const { createOrder, onApprove, onCancel, onError, commit, clientID, getPageUrl, env, stageHost, apiStageHost,
-        buttonSessionID, fundingSource, card, buyerCountry, onShippingChange, cspNonce, locale,
+    const { Checkout, createOrder, onApprove, onCancel, onError, commit, clientID, getPageUrl, env, stageHost, apiStageHost,
+        buttonSessionID, fundingSource, card, buyerCountry, onShippingChange, cspNonce, locale, version,
         vault, clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription, firebaseConfig } = props;
 
     const sessionUID = uniqueID();
@@ -178,7 +162,7 @@ export function initNative(props : NativeProps) : NativeInstance {
 
     const fallbackToWebCheckout = ({ context = CONTEXT.POPUP, win } : { context? : $Values<typeof CONTEXT>, win? : CrossDomainWindowType }) => {
         const { start: startCheckout, close: closeCheckout, triggerError: triggerCheckoutError } = initCheckout({
-            win, context, clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+            Checkout, win, context, clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
             onShippingChange, cspNonce, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
             createBillingAgreement, createSubscription
         });
@@ -194,35 +178,28 @@ export function initNative(props : NativeProps) : NativeInstance {
         const orderPromise = createOrder();
         const pageUrlPromise = getPageUrl();
 
-        const getProps = () => {
+        const getSDKProps = () => {
             return ZalgoPromise.all([
                 facilitatorAccessTokenPromise, orderPromise, pageUrlPromise
             ]).then(([ facilitatorAccessToken, orderID, pageUrl ]) => {
                 const userAgent = getUserAgent();
     
                 return {
-                    orderID,
-                    facilitatorAccessToken,
-                    pageUrl,
-                    commit,
-                    userAgent,
-                    buttonSessionID,
-                    env,
-                    stageHost,
-                    apiStageHost
+                    orderID, facilitatorAccessToken, pageUrl, commit,
+                    userAgent, buttonSessionID, env, stageHost, apiStageHost
                 };
             });
         };
 
         const openCheckoutSocket = () => {
-            const socket = getNativeSocket({ sessionUID, firebaseConfig });
+            const socket = getNativeSocket({ sessionUID, firebaseConfig, version });
 
             socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
-                return getProps();
+                return getSDKProps();
             });
     
             socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
-                closeNativeSocket();
+                socket.close();
                 return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
                     const data = { payerID, paymentID, billingToken, facilitatorAccessToken };
                     const actions = { restart: () => fallbackToWebCheckout({ context: CONTEXT.IFRAME }) };
@@ -231,26 +208,32 @@ export function initNative(props : NativeProps) : NativeInstance {
             });
     
             socket.on(MESSAGE.ON_CANCEL, () => {
-                closeNativeSocket();
+                socket.close();
                 return onCancel();
             });
     
             socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
-                closeNativeSocket();
+                socket.close();
                 return onError(new Error(message));
             });
+
+            return {
+                close:    () => socket.send(MESSAGE.CLOSE),
+                setProps: () => socket.send(MESSAGE.SET_PROPS, getSDKProps())
+            };
         };
 
         const nativeUrl = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
         const win = popup(nativeUrl);
 
         return orderPromise.then(() => {
-            if (isBlankDomain(win)) {
-                win.close();
-                openCheckoutSocket();
-            } else {
+            if (!isBlankDomain(win)) {
                 return fallbackToWebCheckout({ win });
             }
+
+            win.close();
+            const { close: closeNative } = openCheckoutSocket();
+            close = closeNative;
         });
     });
 

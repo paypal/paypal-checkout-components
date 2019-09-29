@@ -42,16 +42,17 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     }
 
     const xprops = window.xprops;
+    const { version, Checkout, CardFields, ThreeDomainSecure } = window.paypal;
 
     const {
         env, stageHost, apiStageHost, buttonSessionID, style,
         vault, commit, clientAccessToken, buyerCountry, locale, cspNonce, platform,
         sessionID, clientID, partnerAttributionID, correlationID, enableThreeDomainSecure,
         merchantDomain, getPopupBridge, getPrerenderDetails, getPageUrl, rememberFunding,
-        onError, onInit, enableStandardCardFields, enableNativeCheckout, onClick
+        onError, onInit, enableStandardCardFields, enableNativeCheckout, onClick, getParent
     } = getGlobalProps({ xprops, buyerGeoCountry, cspNonce: serverCSPNonce });
 
-    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit,
+    setupLogger({ env, version, sessionID, clientID, partnerAttributionID, commit,
         correlationID, locale, merchantID, buttonSessionID, merchantDomain });
 
     const { initPromise, isEnabled } = onInit();
@@ -87,7 +88,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
             const { start, close, triggerError } = (() => {
                 if (isCheckout) {
                     return initCheckout({
-                        clientID, win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+                        Checkout, clientID, win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                         onShippingChange, cspNonce, locale, commit, onError, vault,
                         clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
@@ -97,14 +98,14 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                     enableLoadingSpinner(button);
 
                     return initVault({
-                        clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure,
-                        buttonSessionID, partnerAttributionID
+                        ThreeDomainSecure, clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure,
+                        buttonSessionID, partnerAttributionID, getParent
                     });
                 }
 
                 if (isCardFields) {
                     return initCardFields({
-                        clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+                        CardFields, Checkout, clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                         onShippingChange, cspNonce, locale, commit, onError, vault,
                         clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
@@ -126,9 +127,9 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                     enableLoadingSpinner(button);
 
                     return initNative({
-                        createOrder, onApprove, onCancel, onError, commit, fundingSource,
+                        Checkout, createOrder, onApprove, onCancel, onError, commit, fundingSource,
                         clientID, getPageUrl, env, stageHost, apiStageHost, win, buttonSessionID, card, buyerCountry,
-                        onShippingChange, cspNonce, locale, vault, firebaseConfig,
+                        onShippingChange, cspNonce, locale, vault, firebaseConfig, version,
                         clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
                 }
@@ -201,9 +202,9 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     const setupRememberTask = setupRemember({ rememberFunding, fundingEligibility });
     const setupButtonLogsTask = setupButtonLogs({ style });
 
-    const setupCheckoutFlow = setupCheckout();
+    const setupCheckoutFlow = setupCheckout({ Checkout });
     const setupPopupBridgeFlow = setupPopupBridge({ getPopupBridge });
-    const setupNativeFlow = setupNative({ clientID });
+    const setupNativeFlow = setupNative({ clientID, enableNativeCheckout });
 
     const createFacilitatorAccessToken = createAccessToken(clientID);
 

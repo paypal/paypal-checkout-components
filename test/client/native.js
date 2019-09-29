@@ -361,6 +361,28 @@ describe('native cases', () => {
                 }
             }));
 
+            let win : Object;
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
+
+                if (checkoutProps.window !== win) {
+                    throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
+                }
+
+                const checkoutInstance = CheckoutOriginal(checkoutProps);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return checkoutProps.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
 
             const windowOpen = window.open;
             window.open = expect('windowOpen', (url) => {
@@ -377,7 +399,7 @@ describe('native cases', () => {
                     throw new Error(`Expected sessionUID to be passed in url`);
                 }
 
-                const win : Object = {
+                win = {
                     location: {
                         href: url
                     },
@@ -385,27 +407,8 @@ describe('native cases', () => {
                     close:  avoid('close')
                 };
 
+                // $FlowFixMe
                 win.parent = win.top = win;
-
-                mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
-
-                    if (checkoutProps.window !== win) {
-                        throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
-                    }
-    
-                    const checkoutInstance = CheckoutOriginal(checkoutProps);
-    
-                    mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
-                        return checkoutProps.createOrder().then(id => {
-                            if (id !== orderID) {
-                                throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
-                            }
-                            return renderToOriginal(...args);
-                        });
-                    }));
-    
-                    return checkoutInstance;
-                }));
 
                 return win;
             });

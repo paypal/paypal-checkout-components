@@ -5,17 +5,9 @@ import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { memoize, querySelectorAll, debounce } from 'belter/src';
 
 import { CONTEXT, DATA_ATTRIBUTES } from '../constants';
-import type { LocaleType, FundingEligibilityType, ProxyWindow } from '../types';
+import type { LocaleType, FundingEligibilityType, ProxyWindow, CardFieldsFlowType, CheckoutFlowType } from '../types';
 import { unresolvedPromise, promiseNoop } from '../lib';
-import type {
-    CreateOrder,
-    OnApprove,
-    OnCancel,
-    OnShippingChange,
-    OnError,
-    CreateBillingAgreement,
-    CreateSubscription
-} from '../button/props';
+import type { CreateOrder, OnApprove, OnCancel, OnShippingChange, OnError, CreateBillingAgreement, CreateSubscription } from '../button/props';
 import { createAccessToken } from '../api';
 
 import { initCheckout } from './checkout';
@@ -23,6 +15,8 @@ import { initCheckout } from './checkout';
 let cardFieldsOpen = false;
 
 type CardFieldsProps = {|
+    CardFields : CardFieldsFlowType,
+    Checkout : CheckoutFlowType,
     clientID : string,
     buttonSessionID : string,
     fundingSource : $Values<typeof FUNDING>,
@@ -146,7 +140,7 @@ const slideDownButtons = () => {
 };
 
 export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
-    const { fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+    const { CardFields, Checkout, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
         onShippingChange, cspNonce, locale, commit, onError, buttonSessionID, clientID,
         vault, clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription  } = props;
 
@@ -164,7 +158,7 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     }
 
     const restart = memoize(() : ZalgoPromise<void> =>
-        initCheckout({ clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+        initCheckout({ Checkout, clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
             onShippingChange, cspNonce, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
             createBillingAgreement, createSubscription, context: CONTEXT.IFRAME }).start().finally(unresolvedPromise));
 
@@ -179,17 +173,17 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     const facilitatorAccessTokenPromise = createAccessToken(clientID);
     let buyerAccessToken;
 
-    const { render, close: closeCardFields, onError: triggerError } = window.paypal.CardFields({
+    const { render, close: closeCardFields, onError: triggerError } = CardFields({
         createOrder,
 
         fundingSource,
         card,
 
         onApprove: ({ payerID, paymentID, billingToken }) => {
-            return ZalgoPromise.all([
-                facilitatorAccessTokenPromise,
-                close() // eslint-disable-line no-use-before-define
-            ]).then(([ facilitatorAccessToken ]) => {
+            return ZalgoPromise.hash({
+                facilitatorAccessToken: facilitatorAccessTokenPromise,
+                close:                  close() // eslint-disable-line no-use-before-define
+            }).then(({ facilitatorAccessToken }) => {
                 return onApprove({ payerID, paymentID, billingToken, facilitatorAccessToken, buyerAccessToken }, { restart });
             });
         },
@@ -201,7 +195,6 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
         onCancel,
         onError,
         onClose,
-        onShippingChange,
         onCardTypeChange,
 
         buttonSessionID,

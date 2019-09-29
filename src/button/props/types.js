@@ -1,5 +1,6 @@
 /* @flow */
 
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY } from '@paypal/sdk-constants/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -62,9 +63,10 @@ export type XProps = {|
     remember : RememberFunding,
     enableThreeDomainSecure : boolean,
     enableStandardCardFields : ?boolean,
-    enableNativeCheckout : ?boolean,
+    enableNativeCheckout : boolean | void,
     getParentDomain : () => string,
     getPageUrl : GetPageURL,
+    getParent : () => CrossDomainWindowType,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -100,9 +102,10 @@ export type GlobalProps = {|
     getPopupBridge : GetPopupBridge,
     rememberFunding : RememberFunding,
     enableThreeDomainSecure : boolean,
-    enableNativeCheckout : ?boolean,
+    enableNativeCheckout : boolean,
     merchantDomain : string,
     getPageUrl : GetPageURL,
+    getParent : () => CrossDomainWindowType,
 
     stageHost : ?string,
     apiStageHost : ?string,

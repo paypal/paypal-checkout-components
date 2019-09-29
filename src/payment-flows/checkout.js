@@ -8,7 +8,7 @@ import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-util
 import { enableVault, createAccessToken } from '../api';
 import { CONTEXT, TARGET_ELEMENT } from '../constants';
 import { unresolvedPromise } from '../lib';
-import type { ProxyWindow, LocaleType, FundingEligibilityType } from '../types';
+import type { ProxyWindow, LocaleType, FundingEligibilityType, CheckoutFlowType } from '../types';
 import type { CreateOrder, OnApprove, OnCancel, OnShippingChange, CreateBillingAgreement, CreateSubscription } from '../button/props';
 
 let checkoutOpen = false;
@@ -23,7 +23,7 @@ function getRenderWindow() : Object {
     }
 }
 
-export function setupCheckout() : ZalgoPromise<void> {
+export function setupCheckout({ Checkout } : { Checkout : CheckoutFlowType }) : ZalgoPromise<void> {
     checkoutOpen = false;
 
     const [ parent, top ] = [ getParent(window), getTop(window) ];
@@ -31,7 +31,7 @@ export function setupCheckout() : ZalgoPromise<void> {
     const tasks = {};
 
     if (top && parent && parent !== top) {
-        tasks.canRenderTo = window.paypal.Checkout.canRenderTo(top).then(result => {
+        tasks.canRenderTo = Checkout.canRenderTo(top).then(result => {
             canRenderTop = result;
         });
     }
@@ -105,6 +105,7 @@ export function getDefaultContext() : $Values<typeof CONTEXT> {
 }
 
 type CheckoutProps= {|
+    Checkout : CheckoutFlowType,
     clientID : string,
     win? : ?(ProxyWindow | CrossDomainWindowType),
     buttonSessionID : string,
@@ -134,7 +135,7 @@ type CheckoutInstance = {|
 |};
 
 export function initCheckout(props : CheckoutProps) : CheckoutInstance {
-    const { clientID, win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+    const { Checkout, clientID, win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
         onShippingChange, cspNonce, context, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
         createBillingAgreement, createSubscription } = props;
 
@@ -157,7 +158,7 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
     const facilitatorAccessTokenPromise = createAccessToken(clientID);
     let buyerAccessToken;
 
-    const { renderTo, close: closeCheckout, onError: triggerError } = window.paypal.Checkout({
+    const { renderTo, close: closeCheckout, onError: triggerError } = Checkout({
         window: win,
         buttonSessionID,
         clientAccessToken,
@@ -173,10 +174,7 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
         onApprove: ({ payerID, paymentID, billingToken, subscriptionID }) => {
             approved = true;
 
-            return ZalgoPromise.all([
-                facilitatorAccessTokenPromise,
-                closeCheckout()
-            ]).then(([ facilitatorAccessToken ]) => {
+            return ZalgoPromise.hash({ facilitatorAccessToken: facilitatorAccessTokenPromise, close: closeCheckout() }).then(({ facilitatorAccessToken }) => {
                 return onApprove({ payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken, buyerAccessToken }, { restart });
             });
         },
@@ -197,10 +195,6 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
                     return onShippingChange({ facilitatorAccessToken, buyerAccessToken, ...data }, actions);
                 });
             } : null,
-
-        getFacilitatorAccessToken: () => {
-            return facilitatorAccessTokenPromise;
-        },
 
         onError,
         onClose,

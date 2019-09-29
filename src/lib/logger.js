@@ -26,10 +26,11 @@ type LoggerOptions = {|
     locale : LocaleType,
     buttonSessionID : string,
     merchantID : $ReadOnlyArray<string>,
-    merchantDomain : string
+    merchantDomain : string,
+    version : string
 |};
 
-export function setupLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain } : LoggerOptions) {
+export function setupLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version } : LoggerOptions) {
     const logger = getLogger();
 
     logger.addPayloadBuilder(() => {
@@ -58,7 +59,7 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
             [FPTI_KEY.INTEGRATION_IDENTIFIER]: clientID,
             [FPTI_KEY.PARTNER_ATTRIBUTION_ID]: partnerAttributionID,
             [FPTI_KEY.SDK_NAME]:               FPTI_SDK_NAME.PAYMENTS_SDK,
-            [FPTI_KEY.SDK_VERSION]:            window.paypal.version,
+            [FPTI_KEY.SDK_VERSION]:            version,
             [FPTI_KEY.USER_AGENT]:             window.navigator && window.navigator.userAgent,
             [FPTI_KEY.USER_ACTION]:            commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE,
             [FPTI_KEY.CONTEXT_CORRID]:         correlationID

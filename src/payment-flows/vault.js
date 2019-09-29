@@ -1,8 +1,9 @@
 /* @flow */
 
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import type { ProxyWindow } from '../types';
+import type { ProxyWindow, ThreeDomainSecureFlowType } from '../types';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse, createAccessToken } from '../api';
 import type { CreateOrder, OnApprove, OnShippingChange } from '../button/props';
 import { TARGET_ELEMENT } from '../constants';
@@ -35,7 +36,37 @@ type VaultInstance = {|
     triggerError : (mixed) => ZalgoPromise<void>
 |};
 
+type ThreeDomainSecureProps = {|
+    ThreeDomainSecure : ThreeDomainSecureFlowType,
+    createOrder : CreateOrder,
+    getParent : () => CrossDomainWindowType
+|};
+
+function handleThreeDomainSecure({ ThreeDomainSecure, createOrder, getParent } : ThreeDomainSecureProps) : ZalgoPromise<void> {
+    
+    const promise = new ZalgoPromise();
+    const instance = ThreeDomainSecure({
+        createOrder,
+        onSuccess: () => promise.resolve(),
+        onCancel:  () => promise.reject(new Error(`3DS cancelled`)),
+        onError:   (err) => promise.reject(err)
+    });
+
+    return instance.renderTo(getParent(), TARGET_ELEMENT.BODY)
+        .then(() => promise)
+        .finally(instance.close);
+}
+
+type HandleValidateResponse = {|
+    ThreeDomainSecure : ThreeDomainSecureFlowType,
+    status : number,
+    body : ValidatePaymentMethodResponse,
+    createOrder : CreateOrder,
+    getParent : () => CrossDomainWindowType
+|};
+
 type VaultProps = {|
+    ThreeDomainSecure : ThreeDomainSecureFlowType,
     clientID : string,
     createOrder : CreateOrder,
     paymentMethodID : ?string,
@@ -43,39 +74,14 @@ type VaultProps = {|
     clientAccessToken : ?string,
     enableThreeDomainSecure : boolean,
     buttonSessionID : string,
-    partnerAttributionID : ?string
+    partnerAttributionID : ?string,
+    getParent : () => CrossDomainWindowType
 |};
 
-
-type ThreeDomainSecureProps = {|
-    createOrder : CreateOrder
-|};
-
-function handleThreeDomainSecure({ createOrder } : ThreeDomainSecureProps) : ZalgoPromise<void> {
-    
-    const promise = new ZalgoPromise();
-    const instance = window.paypal.ThreeDomainSecure({
-        createOrder,
-        onSuccess: () => promise.resolve(),
-        onCancel:  () => promise.reject(new Error(`3DS cancelled`)),
-        onError:   (err) => promise.reject(err)
-    });
-
-    return instance.renderTo(window.parent, TARGET_ELEMENT.BODY)
-        .then(() => promise)
-        .finally(instance.close);
-}
-
-type HandleValidateResponse = {|
-    status : number,
-    body : ValidatePaymentMethodResponse,
-    createOrder : CreateOrder
-|};
-
-function handleValidateResponse({ status, body, createOrder } : HandleValidateResponse) : ZalgoPromise<void> {
+function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, getParent } : HandleValidateResponse) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         if (status === 422 && body.links && body.links.some(link => link.rel === '3ds-contingency-resolution')) {
-            return handleThreeDomainSecure({ createOrder });
+            return handleThreeDomainSecure({ ThreeDomainSecure, createOrder, getParent });
         }
 
         if (status !== 200) {
@@ -85,7 +91,8 @@ function handleValidateResponse({ status, body, createOrder } : HandleValidateRe
 }
 
 export function initVault(props : VaultProps) : VaultInstance {
-    const { clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure, buttonSessionID, partnerAttributionID } = props;
+    const { ThreeDomainSecure, clientID, createOrder, paymentMethodID, onApprove, clientAccessToken,
+        enableThreeDomainSecure, buttonSessionID, partnerAttributionID, getParent } = props;
 
     if (!paymentMethodID) {
         throw new Error(`Payment method id required for vault capture`);
@@ -109,7 +116,7 @@ export function initVault(props : VaultProps) : VaultInstance {
         }).then((orderID) => {
             return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, buttonSessionID, partnerAttributionID });
         }).then(({ status, body }) => {
-            return handleValidateResponse({ status, body, createOrder });
+            return handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, getParent });
         }).then(() => {
             return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
                 return onApprove({ facilitatorAccessToken }, { restart });
