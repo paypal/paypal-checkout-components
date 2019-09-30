@@ -93,6 +93,7 @@ export type GlobalProps = {|
 
     vault : boolean,
     commit : boolean,
+    currency : $Values<typeof CURRENCY>,
 
     clientAccessToken : ?string,
     buyerCountry : $Values<typeof COUNTRY>,

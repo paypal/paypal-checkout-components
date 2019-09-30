@@ -45,7 +45,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     const { version, Checkout, CardFields, ThreeDomainSecure } = window.paypal;
 
     const {
-        env, stageHost, apiStageHost, buttonSessionID, style,
+        env, stageHost, apiStageHost, buttonSessionID, style, currency,
         vault, commit, clientAccessToken, buyerCountry, locale, cspNonce, platform,
         sessionID, clientID, partnerAttributionID, correlationID, enableThreeDomainSecure,
         merchantDomain, getPopupBridge, getPrerenderDetails, getPageUrl, rememberFunding,
@@ -204,7 +204,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
     const setupCheckoutFlow = setupCheckout({ Checkout });
     const setupPopupBridgeFlow = setupPopupBridge({ getPopupBridge });
-    const setupNativeFlow = setupNative({ clientID, enableNativeCheckout });
+    const setupNativeFlow = setupNative({ clientID, enableNativeCheckout, vault, onShippingChange: window.xprops.onShippingChange, merchantID, buyerCountry, currency, buttonSessionID });
 
     const createFacilitatorAccessToken = createAccessToken(clientID);
 

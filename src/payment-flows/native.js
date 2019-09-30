@@ -2,14 +2,14 @@
 
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { ENV, PLATFORM, FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
+import { ENV, PLATFORM, FUNDING, CARD, COUNTRY, CURRENCY } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
 
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
 import type { ProxyWindow, LocaleType, FundingEligibilityType, CheckoutFlowType } from '../types';
 import { EXPERIENCE_URI, NATIVE_DETECTION_URL } from '../config';
 import { promiseNoop, redirectTop } from '../lib';
-import { createAccessToken, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
+import { createAccessToken, firebaseSocket, type MessageSocket, type FirebaseConfig, getNativeEligibility } from '../api';
 import { CONTEXT } from '../constants';
 
 import { initCheckout } from './checkout';
@@ -25,6 +25,64 @@ const MESSAGE = {
     ON_CANCEL:  'onCancel',
     ON_ERROR:   'onError'
 };
+
+type NativeSocketOptions = {|
+    sessionUID : string,
+    firebaseConfig : FirebaseConfig,
+    version : string
+|};
+
+const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : NativeSocketOptions) : MessageSocket => {
+    return firebaseSocket({
+        sessionUID,
+        sourceApp:        SOURCE_APP,
+        sourceAppVersion: version,
+        targetApp:        TARGET_APP,
+        config:           firebaseConfig
+    });
+});
+
+let nativeInstalled = false;
+let nativeEligible = false;
+
+type SetupNativeOptions = {|
+    clientID : string,
+    enableNativeCheckout : boolean,
+    vault : boolean,
+    onShippingChange : OnShippingChange,
+    merchantID : $ReadOnlyArray<string>,
+    buyerCountry : $Values<typeof COUNTRY>,
+    currency : $Values<typeof CURRENCY>,
+    buttonSessionID : string
+|};
+
+export function setupNative({ clientID, enableNativeCheckout, vault, onShippingChange, merchantID, buyerCountry, currency, buttonSessionID } : SetupNativeOptions) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
+        if (!enableNativeCheckout) {
+            return;
+        }
+
+        createAccessToken(clientID);
+
+        // eslint-disable-next-line compat/compat
+        fetch(NATIVE_DETECTION_URL).then(res => {
+            if (res.status === 200) {
+                nativeInstalled = true;
+            }
+        }, noop);
+
+        const shippingCallbackEnabled = Boolean(onShippingChange);
+        const userAgent = getUserAgent();
+
+        getNativeEligibility({
+            vault, shippingCallbackEnabled, merchantID, clientID, buyerCountry,
+            currency, userAgent, buttonSessionID
+        }).then(eligible => {
+            nativeEligible = eligible;
+        });
+
+    }).then(noop);
+}
 
 type NativeEligibleProps = {|
     win : ?ProxyWindow,
@@ -72,40 +130,7 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
         return true;
     }
 
-    return false;
-}
-
-type NativeSocketOptions = {|
-    sessionUID : string,
-    firebaseConfig : FirebaseConfig,
-    version : string
-|};
-
-const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : NativeSocketOptions) : MessageSocket => {
-    return firebaseSocket({
-        sessionUID,
-        sourceApp:        SOURCE_APP,
-        sourceAppVersion: version,
-        targetApp:        TARGET_APP,
-        config:           firebaseConfig
-    });
-});
-
-let appInstalled = false;
-
-export function setupNative({ clientID, enableNativeCheckout } : { clientID : string, enableNativeCheckout : boolean }) : ZalgoPromise<void> {
-    return ZalgoPromise.try(() => {
-        if (enableNativeCheckout) {
-            createAccessToken(clientID);
-
-            // eslint-disable-next-line compat/compat
-            fetch(NATIVE_DETECTION_URL).then(res => {
-                if (res.status === 200) {
-                    appInstalled = true;
-                }
-            }, noop);
-        }
-    }).then(noop);
+    return nativeEligible;
 }
 
 type NativeProps = {|
@@ -231,7 +256,7 @@ export function initNative(props : NativeProps) : NativeInstance {
 
         const nativeUrl = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
 
-        if (appInstalled) {
+        if (nativeInstalled) {
             redirectTop(nativeUrl);
             return openCheckoutSocket();
         }

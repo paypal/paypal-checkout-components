@@ -42,7 +42,8 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         stageHost,
         apiStageHost,
         style,
-        getParent
+        getParent,
+        currency
     } = xprops;
 
     cspNonce = cspNonce || getNonce();
@@ -70,6 +71,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         correlationID,
         merchantDomain,
         platform,
+        currency,
 
         getPopupBridge,
         getPrerenderDetails,
