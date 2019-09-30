@@ -1,3691 +1,9784 @@
-window.spb = function(modules) {
-    var installedModules = {};
-    function __webpack_require__(moduleId) {
-        if (installedModules[moduleId]) return installedModules[moduleId].exports;
-        var module = installedModules[moduleId] = {
-            i: moduleId,
-            l: !1,
-            exports: {}
-        };
-        return modules[moduleId].call(module.exports, module, module.exports, __webpack_require__), 
-        module.l = !0, module.exports;
+window["spb"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 28);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return SMART_BUTTONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return SMART_PAYMENT_BUTTONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return HEADERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DATA_ATTRIBUTES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CLASS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return ORDER_API_ERROR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CONTEXT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return TARGET_ELEMENT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return INTEGRATION_ARTIFACT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return USER_EXPERIENCE_FLOW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return DOM_EVENT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return PRODUCT_FLOW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_CONTEXT_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_STATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return FPTI_TRANSITION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_BUTTON_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return FTPI_BUTTON_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return USER_ACTION; });
+var SMART_BUTTONS = 'smart_buttons';
+var SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
+var HEADERS = {
+  AUTHORIZATION: 'authorization',
+  ACCESS_TOKEN: 'x-paypal-internal-euat',
+  CSRF_TOKEN: 'x-csrf-jwt',
+  SOURCE: 'x-source',
+  REQUESTED_BY: 'x-requested-by',
+  PARTNER_ATTRIBUTION_ID: 'paypal-partner-attribution-id',
+  CLIENT_METADATA_ID: 'paypal-client-metadata-id',
+  PAYPAL_DEBUG_ID: 'paypal-debug-id'
+};
+var DATA_ATTRIBUTES = {
+  FUNDING_SOURCE: 'data-funding-source',
+  CARD: 'data-card',
+  PAYMENT_METHOD_ID: 'data-payment-method-id'
+};
+var CLASS = {
+  LOADING: 'paypal-button-loading',
+  CLICKED: 'paypal-button-clicked'
+};
+var ORDER_API_ERROR = {
+  INSTRUMENT_DECLINED: 'INSTRUMENT_DECLINED',
+  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
+};
+var CONTEXT = {
+  IFRAME: 'iframe',
+  POPUP: 'popup'
+};
+var TARGET_ELEMENT = {
+  BODY: 'body'
+};
+var INTEGRATION_ARTIFACT = {
+  PAYPAL_JS_SDK: 'PAYPAL_JS_SDK'
+};
+var USER_EXPERIENCE_FLOW = {
+  INCONTEXT: 'INCONTEXT',
+  INLINE: 'INLINE'
+};
+var DOM_EVENT = {
+  MOUSEDOWN: 'mousedown',
+  HOVER: 'hover'
+};
+var PRODUCT_FLOW = {
+  SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
+};
+var FPTI_CONTEXT_TYPE = {
+  BUTTON_SESSION_ID: 'button_session_id',
+  ORDER_ID: 'EC-Token'
+};
+var FPTI_STATE = {
+  BUTTON: 'smart_button'
+};
+var FPTI_TRANSITION = {
+  BUTTON_LOAD: 'process_button_load',
+  BUTTON_CLICK: 'process_button_click',
+  CREATE_ORDER: 'process_create_order',
+  RECEIVE_ORDER: 'process_receive_order',
+  CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
+  CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
+  CHECKOUT_CANCEL: 'process_checkout_cancel'
+};
+var FPTI_BUTTON_TYPE = {
+  IFRAME: 'iframe'
+};
+var FTPI_BUTTON_KEY = {
+  BUTTON_LAYOUT: 'button_layout',
+  BUTTON_COLOR: 'button_color',
+  BUTTON_SIZE: 'button_size',
+  BUTTON_SHAPE: 'button_shape',
+  BUTTON_LABEL: 'button_label',
+  BUTTON_WIDTH: 'button_width',
+  BUTTON_TYPE: 'button_type',
+  BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled'
+};
+var USER_ACTION = {
+  COMMIT: 'commit',
+  CONTINUE: 'continue'
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/utils.js
+function utils_isPromise(item) {
+  try {
+    if (!item) {
+      return false;
     }
-    return __webpack_require__.m = modules, __webpack_require__.c = installedModules, 
-    __webpack_require__.d = function(exports, name, getter) {
-        __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
-            enumerable: !0,
-            get: getter
+
+    if (typeof Promise !== 'undefined' && item instanceof Promise) {
+      return true;
+    }
+
+    if (typeof window !== 'undefined' && typeof window.Window === 'function' && item instanceof window.Window) {
+      return false;
+    }
+
+    if (typeof window !== 'undefined' && typeof window.constructor === 'function' && item instanceof window.constructor) {
+      return false;
+    }
+
+    var _toString = {}.toString;
+
+    if (_toString) {
+      var name = _toString.call(item);
+
+      if (name === '[object Window]' || name === '[object global]' || name === '[object DOMWindow]') {
+        return false;
+      }
+    }
+
+    if (typeof item.then === 'function') {
+      return true;
+    }
+  } catch (err) {
+    return false;
+  }
+
+  return false;
+}
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/exceptions.js
+var dispatchedErrors = [];
+var possiblyUnhandledPromiseHandlers = [];
+function dispatchPossiblyUnhandledError(err, promise) {
+  if (dispatchedErrors.indexOf(err) !== -1) {
+    return;
+  }
+
+  dispatchedErrors.push(err);
+  setTimeout(function () {
+    if (false) {}
+
+    throw err;
+  }, 1);
+
+  for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) {
+    // $FlowFixMe
+    possiblyUnhandledPromiseHandlers[j](err, promise);
+  }
+}
+function exceptions_onPossiblyUnhandledException(handler) {
+  possiblyUnhandledPromiseHandlers.push(handler);
+  return {
+    cancel: function cancel() {
+      possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+    }
+  };
+}
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/flush.js
+var activeCount = 0;
+var flushPromise;
+
+function flushActive() {
+  if (!activeCount && flushPromise) {
+    var promise = flushPromise;
+    flushPromise = null;
+    promise.resolve();
+  }
+}
+
+function startActive() {
+  activeCount += 1;
+}
+function endActive() {
+  activeCount -= 1;
+  flushActive();
+}
+function awaitActive(Zalgo) {
+  // eslint-disable-line no-undef
+  var promise = flushPromise = flushPromise || new Zalgo();
+  flushActive();
+  return promise;
+}
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/promise.js
+
+
+
+var promise_ZalgoPromise =
+/*#__PURE__*/
+function () {
+  function ZalgoPromise(handler) {
+    var _this = this;
+
+    this.resolved = void 0;
+    this.rejected = void 0;
+    this.errorHandled = void 0;
+    this.value = void 0;
+    this.error = void 0;
+    this.handlers = void 0;
+    this.dispatching = void 0;
+    this.stack = void 0;
+    this.resolved = false;
+    this.rejected = false;
+    this.errorHandled = false;
+    this.handlers = [];
+
+    if (handler) {
+      var _result;
+
+      var _error;
+
+      var resolved = false;
+      var rejected = false;
+      var isAsync = false;
+      startActive();
+
+      try {
+        handler(function (res) {
+          if (isAsync) {
+            _this.resolve(res);
+          } else {
+            resolved = true;
+            _result = res;
+          }
+        }, function (err) {
+          if (isAsync) {
+            _this.reject(err);
+          } else {
+            rejected = true;
+            _error = err;
+          }
         });
-    }, __webpack_require__.r = function(exports) {
-        "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(exports, Symbol.toStringTag, {
-            value: "Module"
-        }), Object.defineProperty(exports, "__esModule", {
-            value: !0
-        });
-    }, __webpack_require__.t = function(value, mode) {
-        if (1 & mode && (value = __webpack_require__(value)), 8 & mode) return value;
-        if (4 & mode && "object" == typeof value && value && value.__esModule) return value;
-        var ns = Object.create(null);
-        if (__webpack_require__.r(ns), Object.defineProperty(ns, "default", {
-            enumerable: !0,
-            value: value
-        }), 2 & mode && "string" != typeof value) for (var key in value) __webpack_require__.d(ns, key, function(key) {
-            return value[key];
-        }.bind(null, key));
-        return ns;
-    }, __webpack_require__.n = function(module) {
-        var getter = module && module.__esModule ? function() {
-            return module.default;
-        } : function() {
-            return module;
-        };
-        return __webpack_require__.d(getter, "a", getter), getter;
-    }, __webpack_require__.o = function(object, property) {
-        return {}.hasOwnProperty.call(object, property);
-    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 28);
-}([ function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "n", (function() {
-        return SMART_BUTTONS;
-    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
-        return SMART_PAYMENT_BUTTONS;
-    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return HEADERS;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return DATA_ATTRIBUTES;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return CLASS;
-    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
-        return ORDER_API_ERROR;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return CONTEXT;
-    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
-        return TARGET_ELEMENT;
-    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return INTEGRATION_ARTIFACT;
-    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
-        return USER_EXPERIENCE_FLOW;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return DOM_EVENT;
-    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
-        return PRODUCT_FLOW;
-    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return FPTI_CONTEXT_TYPE;
-    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return FPTI_STATE;
-    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return FPTI_TRANSITION;
-    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return FPTI_BUTTON_TYPE;
-    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return FTPI_BUTTON_KEY;
-    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
-        return USER_ACTION;
-    }));
-    var SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", HEADERS = {
-        AUTHORIZATION: "authorization",
-        ACCESS_TOKEN: "x-paypal-internal-euat",
-        CSRF_TOKEN: "x-csrf-jwt",
-        SOURCE: "x-source",
-        REQUESTED_BY: "x-requested-by",
-        PARTNER_ATTRIBUTION_ID: "paypal-partner-attribution-id",
-        CLIENT_METADATA_ID: "paypal-client-metadata-id",
-        PAYPAL_DEBUG_ID: "paypal-debug-id"
-    }, DATA_ATTRIBUTES = {
-        FUNDING_SOURCE: "data-funding-source",
-        CARD: "data-card",
-        PAYMENT_METHOD_ID: "data-payment-method-id"
-    }, CLASS = {
-        LOADING: "paypal-button-loading",
-        CLICKED: "paypal-button-clicked"
-    }, ORDER_API_ERROR = {
-        INSTRUMENT_DECLINED: "INSTRUMENT_DECLINED",
-        PAYER_ACTION_REQUIRED: "PAYER_ACTION_REQUIRED"
-    }, CONTEXT = {
-        IFRAME: "iframe",
-        POPUP: "popup"
-    }, TARGET_ELEMENT = {
-        BODY: "body"
-    }, INTEGRATION_ARTIFACT = {
-        PAYPAL_JS_SDK: "PAYPAL_JS_SDK"
-    }, USER_EXPERIENCE_FLOW = {
-        INCONTEXT: "INCONTEXT",
-        INLINE: "INLINE"
-    }, DOM_EVENT = {
-        MOUSEDOWN: "mousedown",
-        HOVER: "hover"
-    }, PRODUCT_FLOW = {
-        SMART_PAYMENT_BUTTONS: "SMART_PAYMENT_BUTTONS"
-    }, FPTI_CONTEXT_TYPE = {
-        BUTTON_SESSION_ID: "button_session_id",
-        ORDER_ID: "EC-Token"
-    }, FPTI_STATE = {
-        BUTTON: "smart_button"
-    }, FPTI_TRANSITION = {
-        BUTTON_LOAD: "process_button_load",
-        BUTTON_CLICK: "process_button_click",
-        CREATE_ORDER: "process_create_order",
-        RECEIVE_ORDER: "process_receive_order",
-        CHECKOUT_SHIPPING_CHANGE: "process_checkout_shipping_change",
-        CHECKOUT_AUTHORIZE: "process_checkout_authorize",
-        CHECKOUT_CANCEL: "process_checkout_cancel"
-    }, FPTI_BUTTON_TYPE = {
-        IFRAME: "iframe"
-    }, FTPI_BUTTON_KEY = {
-        BUTTON_LAYOUT: "button_layout",
-        BUTTON_COLOR: "button_color",
-        BUTTON_SIZE: "button_size",
-        BUTTON_SHAPE: "button_shape",
-        BUTTON_LABEL: "button_label",
-        BUTTON_WIDTH: "button_width",
-        BUTTON_TYPE: "button_type",
-        BUTTON_TAGLINE_ENABLED: "button_tagline_enabled"
-    }, USER_ACTION = {
-        COMMIT: "commit",
-        CONTINUE: "continue"
+      } catch (err) {
+        endActive();
+        this.reject(err);
+        return;
+      }
+
+      endActive();
+      isAsync = true;
+
+      if (resolved) {
+        // $FlowFixMe
+        this.resolve(_result);
+      } else if (rejected) {
+        this.reject(_error);
+      }
+    }
+
+    if (false) {}
+  }
+
+  var _proto = ZalgoPromise.prototype;
+
+  _proto.resolve = function resolve(result) {
+    if (this.resolved || this.rejected) {
+      return this;
+    }
+
+    if (utils_isPromise(result)) {
+      throw new Error('Can not resolve promise with another promise');
+    }
+
+    this.resolved = true;
+    this.value = result;
+    this.dispatch();
+    return this;
+  };
+
+  _proto.reject = function reject(error) {
+    var _this2 = this;
+
+    if (this.resolved || this.rejected) {
+      return this;
+    }
+
+    if (utils_isPromise(error)) {
+      throw new Error('Can not reject promise with another promise');
+    }
+
+    if (!error) {
+      // $FlowFixMe
+      var _err = error && typeof error.toString === 'function' ? error.toString() : Object.prototype.toString.call(error);
+
+      error = new Error("Expected reject to be called with Error, got " + _err);
+    }
+
+    this.rejected = true;
+    this.error = error;
+
+    if (!this.errorHandled) {
+      setTimeout(function () {
+        if (!_this2.errorHandled) {
+          dispatchPossiblyUnhandledError(error, _this2);
+        }
+      }, 1);
+    }
+
+    this.dispatch();
+    return this;
+  };
+
+  _proto.asyncReject = function asyncReject(error) {
+    this.errorHandled = true;
+    this.reject(error);
+    return this;
+  };
+
+  _proto.dispatch = function dispatch() {
+    var dispatching = this.dispatching,
+        resolved = this.resolved,
+        rejected = this.rejected,
+        handlers = this.handlers;
+
+    if (dispatching) {
+      return;
+    }
+
+    if (!resolved && !rejected) {
+      return;
+    }
+
+    this.dispatching = true;
+    startActive();
+
+    var chain = function chain(firstPromise, secondPromise) {
+      return firstPromise.then(function (res) {
+        secondPromise.resolve(res);
+      }, function (err) {
+        secondPromise.reject(err);
+      });
     };
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    function utils_isPromise(item) {
+
+    for (var i = 0; i < handlers.length; i++) {
+      var _handlers$i = handlers[i],
+          onSuccess = _handlers$i.onSuccess,
+          onError = _handlers$i.onError,
+          promise = _handlers$i.promise;
+
+      var _result2 = void 0;
+
+      if (resolved) {
         try {
-            if (!item) return !1;
-            if ("undefined" != typeof Promise && item instanceof Promise) return !0;
-            if ("undefined" != typeof window && "function" == typeof window.Window && item instanceof window.Window) return !1;
-            if ("undefined" != typeof window && "function" == typeof window.constructor && item instanceof window.constructor) return !1;
-            var _toString = {}.toString;
-            if (_toString) {
-                var name = _toString.call(item);
-                if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
-            }
-            if ("function" == typeof item.then) return !0;
+          _result2 = onSuccess ? onSuccess(this.value) : this.value;
         } catch (err) {
-            return !1;
+          promise.reject(err);
+          continue;
         }
-        return !1;
-    }
-    var flushPromise, dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [], activeCount = 0;
-    function flushActive() {
-        if (!activeCount && flushPromise) {
-            var promise = flushPromise;
-            flushPromise = null, promise.resolve();
+      } else if (rejected) {
+        if (!onError) {
+          promise.reject(this.error);
+          continue;
         }
-    }
-    function startActive() {
-        activeCount += 1;
-    }
-    function endActive() {
-        activeCount -= 1, flushActive();
-    }
-    var promise_ZalgoPromise = function() {
-        function ZalgoPromise(handler) {
-            var _this = this;
-            if (this.resolved = void 0, this.rejected = void 0, this.errorHandled = void 0, 
-            this.value = void 0, this.error = void 0, this.handlers = void 0, this.dispatching = void 0, 
-            this.stack = void 0, this.resolved = !1, this.rejected = !1, this.errorHandled = !1, 
-            this.handlers = [], handler) {
-                var _result, _error, resolved = !1, rejected = !1, isAsync = !1;
-                startActive();
-                try {
-                    handler((function(res) {
-                        isAsync ? _this.resolve(res) : (resolved = !0, _result = res);
-                    }), (function(err) {
-                        isAsync ? _this.reject(err) : (rejected = !0, _error = err);
-                    }));
-                } catch (err) {
-                    return endActive(), void this.reject(err);
-                }
-                endActive(), isAsync = !0, resolved ? this.resolve(_result) : rejected && this.reject(_error);
-            }
-        }
-        var _proto = ZalgoPromise.prototype;
-        return _proto.resolve = function(result) {
-            if (this.resolved || this.rejected) return this;
-            if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
-            return this.resolved = !0, this.value = result, this.dispatch(), this;
-        }, _proto.reject = function(error) {
-            var _this2 = this;
-            if (this.resolved || this.rejected) return this;
-            if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
-            if (!error) {
-                var _err = error && "function" == typeof error.toString ? error.toString() : {}.toString.call(error);
-                error = new Error("Expected reject to be called with Error, got " + _err);
-            }
-            return this.rejected = !0, this.error = error, this.errorHandled || setTimeout((function() {
-                _this2.errorHandled || function(err, promise) {
-                    if (-1 === dispatchedErrors.indexOf(err)) {
-                        dispatchedErrors.push(err), setTimeout((function() {
-                            throw err;
-                        }), 1);
-                        for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
-                    }
-                }(error, _this2);
-            }), 1), this.dispatch(), this;
-        }, _proto.asyncReject = function(error) {
-            return this.errorHandled = !0, this.reject(error), this;
-        }, _proto.dispatch = function() {
-            var resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
-            if (!this.dispatching && (resolved || rejected)) {
-                this.dispatching = !0, startActive();
-                for (var chain = function(firstPromise, secondPromise) {
-                    return firstPromise.then((function(res) {
-                        secondPromise.resolve(res);
-                    }), (function(err) {
-                        secondPromise.reject(err);
-                    }));
-                }, i = 0; i < handlers.length; i++) {
-                    var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, _result2 = void 0;
-                    if (resolved) try {
-                        _result2 = onSuccess ? onSuccess(this.value) : this.value;
-                    } catch (err) {
-                        promise.reject(err);
-                        continue;
-                    } else if (rejected) {
-                        if (!onError) {
-                            promise.reject(this.error);
-                            continue;
-                        }
-                        try {
-                            _result2 = onError(this.error);
-                        } catch (err) {
-                            promise.reject(err);
-                            continue;
-                        }
-                    }
-                    _result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected) ? (_result2.resolved ? promise.resolve(_result2.value) : promise.reject(_result2.error), 
-                    _result2.errorHandled = !0) : utils_isPromise(_result2) ? _result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected) ? _result2.resolved ? promise.resolve(_result2.value) : promise.reject(_result2.error) : chain(_result2, promise) : promise.resolve(_result2);
-                }
-                handlers.length = 0, this.dispatching = !1, endActive();
-            }
-        }, _proto.then = function(onSuccess, onError) {
-            if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
-            if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
-            var promise = new ZalgoPromise;
-            return this.handlers.push({
-                promise: promise,
-                onSuccess: onSuccess,
-                onError: onError
-            }), this.errorHandled = !0, this.dispatch(), promise;
-        }, _proto.catch = function(onError) {
-            return this.then(void 0, onError);
-        }, _proto.finally = function(onFinally) {
-            if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
-            return this.then((function(result) {
-                return ZalgoPromise.try(onFinally).then((function() {
-                    return result;
-                }));
-            }), (function(err) {
-                return ZalgoPromise.try(onFinally).then((function() {
-                    throw err;
-                }));
-            }));
-        }, _proto.timeout = function(time, err) {
-            var _this3 = this;
-            if (this.resolved || this.rejected) return this;
-            var timeout = setTimeout((function() {
-                _this3.resolved || _this3.rejected || _this3.reject(err || new Error("Promise timed out after " + time + "ms"));
-            }), time);
-            return this.then((function(result) {
-                return clearTimeout(timeout), result;
-            }));
-        }, _proto.toPromise = function() {
-            if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
-            return Promise.resolve(this);
-        }, ZalgoPromise.resolve = function(value) {
-            return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
-                return value.then(resolve, reject);
-            })) : (new ZalgoPromise).resolve(value);
-        }, ZalgoPromise.reject = function(error) {
-            return (new ZalgoPromise).reject(error);
-        }, ZalgoPromise.asyncReject = function(error) {
-            return (new ZalgoPromise).asyncReject(error);
-        }, ZalgoPromise.all = function(promises) {
-            var promise = new ZalgoPromise, count = promises.length, results = [];
-            if (!count) return promise.resolve(results), promise;
-            for (var chain = function(i, firstPromise, secondPromise) {
-                return firstPromise.then((function(res) {
-                    results[i] = res, 0 == (count -= 1) && promise.resolve(results);
-                }), (function(err) {
-                    secondPromise.reject(err);
-                }));
-            }, i = 0; i < promises.length; i++) {
-                var prom = promises[i];
-                if (prom instanceof ZalgoPromise) {
-                    if (prom.resolved) {
-                        results[i] = prom.value, count -= 1;
-                        continue;
-                    }
-                } else if (!utils_isPromise(prom)) {
-                    results[i] = prom, count -= 1;
-                    continue;
-                }
-                chain(i, ZalgoPromise.resolve(prom), promise);
-            }
-            return 0 === count && promise.resolve(results), promise;
-        }, ZalgoPromise.hash = function(promises) {
-            var result = {};
-            return ZalgoPromise.all(Object.keys(promises).map((function(key) {
-                return ZalgoPromise.resolve(promises[key]).then((function(value) {
-                    result[key] = value;
-                }));
-            }))).then((function() {
-                return result;
-            }));
-        }, ZalgoPromise.map = function(items, method) {
-            return ZalgoPromise.all(items.map(method));
-        }, ZalgoPromise.onPossiblyUnhandledException = function(handler) {
-            return function(handler) {
-                return possiblyUnhandledPromiseHandlers.push(handler), {
-                    cancel: function() {
-                        possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
-                    }
-                };
-            }(handler);
-        }, ZalgoPromise.try = function(method, context, args) {
-            if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
-            var result;
-            startActive();
-            try {
-                result = method.apply(context, args || []);
-            } catch (err) {
-                return endActive(), ZalgoPromise.reject(err);
-            }
-            return endActive(), ZalgoPromise.resolve(result);
-        }, ZalgoPromise.delay = function(_delay) {
-            return new ZalgoPromise((function(resolve) {
-                setTimeout(resolve, _delay);
-            }));
-        }, ZalgoPromise.isPromise = function(value) {
-            return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
-        }, ZalgoPromise.flush = function() {
-            return promise = flushPromise = flushPromise || new ZalgoPromise, flushActive(), 
-            promise;
-            var promise;
-        }, ZalgoPromise;
-    }();
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return promise_ZalgoPromise;
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var COUNTRY = {
-        AD: "AD",
-        AE: "AE",
-        AG: "AG",
-        AI: "AI",
-        AL: "AL",
-        AM: "AM",
-        AN: "AN",
-        AO: "AO",
-        AR: "AR",
-        AT: "AT",
-        AU: "AU",
-        AW: "AW",
-        AZ: "AZ",
-        BA: "BA",
-        BB: "BB",
-        BE: "BE",
-        BF: "BF",
-        BG: "BG",
-        BH: "BH",
-        BI: "BI",
-        BJ: "BJ",
-        BM: "BM",
-        BN: "BN",
-        BO: "BO",
-        BR: "BR",
-        BS: "BS",
-        BT: "BT",
-        BW: "BW",
-        BY: "BY",
-        BZ: "BZ",
-        CA: "CA",
-        CD: "CD",
-        CG: "CG",
-        CH: "CH",
-        CI: "CI",
-        CK: "CK",
-        CL: "CL",
-        CM: "CM",
-        CN: "CN",
-        CO: "CO",
-        CR: "CR",
-        CV: "CV",
-        CY: "CY",
-        CZ: "CZ",
-        DE: "DE",
-        DJ: "DJ",
-        DK: "DK",
-        DM: "DM",
-        DO: "DO",
-        DZ: "DZ",
-        EC: "EC",
-        EE: "EE",
-        EG: "EG",
-        ER: "ER",
-        ES: "ES",
-        ET: "ET",
-        FI: "FI",
-        FJ: "FJ",
-        FK: "FK",
-        FM: "FM",
-        FO: "FO",
-        FR: "FR",
-        GA: "GA",
-        GB: "GB",
-        GD: "GD",
-        GE: "GE",
-        GF: "GF",
-        GI: "GI",
-        GL: "GL",
-        GM: "GM",
-        GN: "GN",
-        GP: "GP",
-        GR: "GR",
-        GT: "GT",
-        GW: "GW",
-        GY: "GY",
-        HK: "HK",
-        HN: "HN",
-        HR: "HR",
-        HU: "HU",
-        ID: "ID",
-        IE: "IE",
-        IL: "IL",
-        IN: "IN",
-        IS: "IS",
-        IT: "IT",
-        JM: "JM",
-        JO: "JO",
-        JP: "JP",
-        KE: "KE",
-        KG: "KG",
-        KH: "KH",
-        KI: "KI",
-        KM: "KM",
-        KN: "KN",
-        KR: "KR",
-        KW: "KW",
-        KY: "KY",
-        KZ: "KZ",
-        LA: "LA",
-        LC: "LC",
-        LI: "LI",
-        LK: "LK",
-        LS: "LS",
-        LT: "LT",
-        LU: "LU",
-        LV: "LV",
-        MA: "MA",
-        MC: "MC",
-        MD: "MD",
-        ME: "ME",
-        MG: "MG",
-        MH: "MH",
-        MK: "MK",
-        ML: "ML",
-        MN: "MN",
-        MQ: "MQ",
-        MR: "MR",
-        MS: "MS",
-        MT: "MT",
-        MU: "MU",
-        MV: "MV",
-        MW: "MW",
-        MX: "MX",
-        MY: "MY",
-        MZ: "MZ",
-        NA: "NA",
-        NC: "NC",
-        NE: "NE",
-        NF: "NF",
-        NG: "NG",
-        NI: "NI",
-        NL: "NL",
-        NO: "NO",
-        NP: "NP",
-        NR: "NR",
-        NU: "NU",
-        NZ: "NZ",
-        OM: "OM",
-        PA: "PA",
-        PE: "PE",
-        PF: "PF",
-        PG: "PG",
-        PH: "PH",
-        PL: "PL",
-        PM: "PM",
-        PN: "PN",
-        PT: "PT",
-        PW: "PW",
-        PY: "PY",
-        QA: "QA",
-        RE: "RE",
-        RO: "RO",
-        RS: "RS",
-        RU: "RU",
-        RW: "RW",
-        SA: "SA",
-        SB: "SB",
-        SC: "SC",
-        SE: "SE",
-        SG: "SG",
-        SH: "SH",
-        SI: "SI",
-        SJ: "SJ",
-        SK: "SK",
-        SL: "SL",
-        SM: "SM",
-        SN: "SN",
-        SO: "SO",
-        SR: "SR",
-        ST: "ST",
-        SV: "SV",
-        SZ: "SZ",
-        TC: "TC",
-        TD: "TD",
-        TG: "TG",
-        TH: "TH",
-        TJ: "TJ",
-        TM: "TM",
-        TN: "TN",
-        TO: "TO",
-        TR: "TR",
-        TT: "TT",
-        TV: "TV",
-        TW: "TW",
-        TZ: "TZ",
-        UA: "UA",
-        UG: "UG",
-        US: "US",
-        UY: "UY",
-        VA: "VA",
-        VC: "VC",
-        VE: "VE",
-        VG: "VG",
-        VN: "VN",
-        VU: "VU",
-        WF: "WF",
-        WS: "WS",
-        YE: "YE",
-        YT: "YT",
-        ZA: "ZA",
-        ZM: "ZM",
-        ZW: "ZW"
-    }, SDK_QUERY_KEYS = {
-        COMPONENTS: "components",
-        ENV: "env",
-        DEBUG: "debug",
-        CACHEBUST: "cachebust",
-        CLIENT_ID: "client-id",
-        MERCHANT_ID: "merchant-id",
-        MERCHANT_EMAIL_HASH: "merchant-email-hash",
-        LOCALE: "locale",
-        CURRENCY: "currency",
-        INTENT: "intent",
-        COMMIT: "commit",
-        VAULT: "vault",
-        BUYER_COUNTRY: "buyer-country",
-        DISABLE_FUNDING: "disable-funding",
-        DISABLE_CARD: "disable-card",
-        LOCALE_COUNTRY: "locale-country",
-        LOCALE_LANG: "locale-lang",
-        FRAMEWORK: "framework",
-        INTEGRATION_DATE: "integration-date",
-        ORDER_CURRENCY: "order-currency",
-        ORDER_INTENT: "order-intent",
-        ORDER_COMMIT: "order-commit",
-        ORDER_VAULT: "order-vault"
-    }, FPTI_KEY = {
-        FEED: "feed_name",
-        STATE: "state_name",
-        TRANSITION: "transition_name",
-        BUTTON_TYPE: "button_type",
-        SESSION_UID: "page_session_id",
-        BUTTON_SESSION_UID: "button_session_id",
-        TOKEN: "token",
-        CONTEXT_ID: "context_id",
-        CONTEXT_TYPE: "context_type",
-        REFERER: "referer_url",
-        MERCHANT_DOMAIN: "merchant_domain",
-        PAY_ID: "pay_id",
-        SELLER_ID: "seller_id",
-        CLIENT_ID: "client_id",
-        DATA_SOURCE: "serverside_data_source",
-        BUTTON_SOURCE: "button_source",
-        ERROR_CODE: "ext_error_code",
-        ERROR_DESC: "ext_error_desc",
-        PAGE_LOAD_TIME: "page_load_time",
-        EXPERIMENT_NAME: "pxp_exp_id",
-        TREATMENT_NAME: "pxp_trtmnt_id",
-        TRANSITION_TIME: "transition_time",
-        FUNDING_LIST: "eligible_payment_methods",
-        FUNDING_COUNT: "eligible_payment_count",
-        CHOSEN_FUNDING: "selected_payment_method",
-        BUTTON_LAYOUT: "button_layout",
-        VERSION: "checkoutjs_version",
-        LOCALE: "locale",
-        BUYER_COUNTRY: "buyer_cntry",
-        INTEGRATION_IDENTIFIER: "integration_identifier",
-        PARTNER_ATTRIBUTION_ID: "bn_code",
-        SDK_NAME: "sdk_name",
-        SDK_VERSION: "sdk_version",
-        USER_AGENT: "user_agent",
-        USER_ACTION: "user_action",
-        CONTEXT_CORRID: "context_correlation_id",
-        SDK_CACHE: "sdk_cache",
-        SDK_LOAD_TIME: "sdk_load_time"
-    }, FPTI_USER_ACTION = {
-        COMMIT: "commit",
-        CONTINUE: "continue"
-    }, FPTI_DATA_SOURCE = {
-        PAYMENTS_SDK: "checkout"
-    }, FPTI_FEED = {
-        PAYMENTS_SDK: "payments_sdk"
-    }, FPTI_SDK_NAME = {
-        PAYMENTS_SDK: "payments_sdk"
-    }, INTENT = {
-        CAPTURE: "capture",
-        AUTHORIZE: "authorize",
-        ORDER: "order"
-    }, PLATFORM = {
-        DESKTOP: "desktop",
-        MOBILE: "mobile"
-    }, FUNDING = {
-        PAYPAL: "paypal",
-        VENMO: "venmo",
-        ITAU: "itau",
-        CREDIT: "credit",
-        CARD: "card",
-        IDEAL: "ideal",
-        SEPA: "sepa",
-        BANCONTACT: "bancontact",
-        GIROPAY: "giropay",
-        SOFORT: "sofort",
-        EPS: "eps",
-        MYBANK: "mybank",
-        P24: "p24",
-        VERKKOPANKKI: "verkkopankki",
-        PAYU: "payu",
-        BLIK: "blik",
-        TRUSTLY: "trustly",
-        ZIMPLER: "zimpler",
-        MAXIMA: "maxima",
-        OXXO: "oxxo",
-        BOLETO: "boleto",
-        WECHATPAY: "wechatpay"
-    };
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return COUNTRY;
-    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return SDK_QUERY_KEYS;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return FPTI_KEY;
-    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return FPTI_USER_ACTION;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return FPTI_DATA_SOURCE;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return FPTI_FEED;
-    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return FPTI_SDK_NAME;
-    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return INTENT;
-    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return PLATFORM;
-    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return FUNDING;
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    function getUserAgent() {
-        return window.navigator.mockUserAgent || window.navigator.userAgent;
-    }
-    function isOperaMini(ua) {
-        return void 0 === ua && (ua = getUserAgent()), ua.indexOf("Opera Mini") > -1;
-    }
-    function isIEIntranet() {
-        if (window.document.documentMode) try {
-            var status = window.status;
-            return window.status = "testIntranetMode", "testIntranetMode" === window.status && (window.status = status, 
-            !0);
+
+        try {
+          _result2 = onError(this.error);
         } catch (err) {
-            return !1;
+          promise.reject(err);
+          continue;
         }
-        return !1;
-    }
-    function supportsPopups(ua) {
-        return void 0 === ua && (ua = getUserAgent()), !(function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /iPhone|iPod|iPad/.test(ua);
-            }(ua) && (!!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /\bGSA\b/.test(ua);
-            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /Android/.test(ua);
-            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
-        }(ua) || isOperaMini(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /FxiOS/i.test(ua);
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /EdgiOS/i.test(ua);
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /QQBrowser/.test(ua);
-        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
-        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
-        var userAgent;
-    }
-    var esm_extends = __webpack_require__(8), src = __webpack_require__(1), cross_domain_utils_src = __webpack_require__(9);
-    function safeIndexOf(collection, item) {
-        for (var i = 0; i < collection.length; i++) try {
-            if (collection[i] === item) return i;
-        } catch (err) {}
-        return -1;
-    }
-    var objectIDs, weakmap_CrossDomainSafeWeakMap = function() {
-        function CrossDomainSafeWeakMap() {
-            if (this.name = void 0, this.weakmap = void 0, this.keys = void 0, this.values = void 0, 
-            this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__", function() {
-                if ("undefined" == typeof WeakMap) return !1;
-                if (void 0 === Object.freeze) return !1;
-                try {
-                    var testWeakMap = new WeakMap, testKey = {};
-                    return Object.freeze(testKey), testWeakMap.set(testKey, "__testvalue__"), "__testvalue__" === testWeakMap.get(testKey);
-                } catch (err) {
-                    return !1;
-                }
-            }()) try {
-                this.weakmap = new WeakMap;
-            } catch (err) {}
-            this.keys = [], this.values = [];
+      }
+
+      if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
+        if (_result2.resolved) {
+          promise.resolve(_result2.value);
+        } else {
+          promise.reject(_result2.error);
         }
-        var _proto = CrossDomainSafeWeakMap.prototype;
-        return _proto._cleanupClosedWindows = function() {
-            for (var weakmap = this.weakmap, keys = this.keys, i = 0; i < keys.length; i++) {
-                var value = keys[i];
-                if (Object(cross_domain_utils_src.e)(value) && Object(cross_domain_utils_src.f)(value)) {
-                    if (weakmap) try {
-                        weakmap.delete(value);
-                    } catch (err) {}
-                    keys.splice(i, 1), this.values.splice(i, 1), i -= 1;
-                }
-            }
-        }, _proto.isSafeToReadWrite = function(key) {
-            return !Object(cross_domain_utils_src.e)(key);
-        }, _proto.set = function(key, value) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                weakmap.set(key, value);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var name = this.name, entry = key[name];
-                return void (entry && entry[0] === key ? entry[1] = value : Object.defineProperty(key, name, {
-                    value: [ key, value ],
-                    writable: !0
-                }));
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
-            -1 === index ? (keys.push(key), values.push(value)) : values[index] = value;
-        }, _proto.get = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                if (weakmap.has(key)) return weakmap.get(key);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                return entry && entry[0] === key ? entry[1] : void 0;
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var index = safeIndexOf(this.keys, key);
-            if (-1 !== index) return this.values[index];
-        }, _proto.delete = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                weakmap.delete(key);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var keys = this.keys, index = safeIndexOf(keys, key);
-            -1 !== index && (keys.splice(index, 1), this.values.splice(index, 1));
-        }, _proto.has = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                if (weakmap.has(key)) return !0;
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                return !(!entry || entry[0] !== key);
-            } catch (err) {}
-            return this._cleanupClosedWindows(), -1 !== safeIndexOf(this.keys, key);
-        }, _proto.getOrSet = function(key, getter) {
-            if (this.has(key)) return this.get(key);
-            var value = getter();
-            return this.set(key, value), value;
-        }, CrossDomainSafeWeakMap;
-    }();
-    function getFunctionName(fn) {
-        return fn.name || fn.__name__ || fn.displayName || "anonymous";
-    }
-    function setFunctionName(fn, name) {
-        try {
-            delete fn.name, fn.name = name;
-        } catch (err) {}
-        return fn.__name__ = fn.displayName = name, fn;
-    }
-    function base64encode(str) {
-        if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
-            return String.fromCharCode(parseInt(p1, 16));
-        })));
-        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-        throw new Error("Can not find window.btoa or Buffer");
-    }
-    function uniqueID() {
-        var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, (function() {
-            return chars.charAt(Math.floor(Math.random() * chars.length));
-        })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-    }
-    function serializeArgs(args) {
-        try {
-            return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                return "function" == typeof val ? "memoize[" + function(obj) {
-                    if (objectIDs = objectIDs || new weakmap_CrossDomainSafeWeakMap, null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
-                    var uid = objectIDs.get(obj);
-                    return uid || (uid = typeof obj + ":" + uniqueID(), objectIDs.set(obj, uid)), uid;
-                }(val) + "]" : val;
-            }));
-        } catch (err) {
-            throw new Error("Arguments not serializable -- can not be used to memoize");
+
+        _result2.errorHandled = true;
+      } else if (utils_isPromise(_result2)) {
+        if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
+          if (_result2.resolved) {
+            promise.resolve(_result2.value);
+          } else {
+            promise.reject(_result2.error);
+          }
+        } else {
+          // $FlowFixMe
+          chain(_result2, promise);
         }
+      } else {
+        promise.resolve(_result2);
+      }
     }
-    function memoize(method, options) {
-        var _this = this;
-        void 0 === options && (options = {});
-        var cacheMap = new weakmap_CrossDomainSafeWeakMap, memoizedFunction = function() {
-            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-            var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, (function() {
-                return {};
-            })), key = serializeArgs(args), cacheTime = options.time;
-            if (cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key], 
-            cache[key]) return cache[key].value;
-            var time = Date.now(), value = method.apply(this, arguments);
-            return cache[key] = {
-                time: time,
-                value: value
-            }, cache[key].value;
-        };
-        return memoizedFunction.reset = function() {
-            cacheMap.delete(options.thisNamespace ? _this : method);
-        }, setFunctionName(memoizedFunction, getFunctionName(method) + "::memoized");
+
+    handlers.length = 0;
+    this.dispatching = false;
+    endActive();
+  };
+
+  _proto.then = function then(onSuccess, onError) {
+    if (onSuccess && typeof onSuccess !== 'function' && !onSuccess.call) {
+      throw new Error('Promise.then expected a function for success handler');
     }
-    function inlineMemoize(method, logic, args) {
-        void 0 === args && (args = []);
-        var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
-        return cache.hasOwnProperty(key) ? cache[key] : cache[key] = logic.apply(void 0, args);
+
+    if (onError && typeof onError !== 'function' && !onError.call) {
+      throw new Error('Promise.then expected a function for error handler');
     }
-    function util_noop() {}
-    function stringifyError(err, level) {
-        if (void 0 === level && (level = 1), level >= 3) return "stringifyError stack overflow";
-        try {
-            if (!err) return "<unknown error: " + {}.toString.call(err) + ">";
-            if ("string" == typeof err) return err;
-            if (err instanceof Error) {
-                var stack = err && err.stack, message = err && err.message;
-                if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
-                if (stack) return stack;
-                if (message) return message;
-            }
-            return err && err.toString && "function" == typeof err.toString ? err.toString() : {}.toString.call(err);
-        } catch (newErr) {
-            return "Error while stringifying error: " + stringifyError(newErr, level + 1);
-        }
+
+    var promise = new ZalgoPromise();
+    this.handlers.push({
+      promise: promise,
+      onSuccess: onSuccess,
+      onError: onError
+    });
+    this.errorHandled = true;
+    this.dispatch();
+    return promise;
+  };
+
+  _proto.catch = function _catch(onError) {
+    return this.then(undefined, onError);
+  };
+
+  _proto.finally = function _finally(onFinally) {
+    if (onFinally && typeof onFinally !== 'function' && !onFinally.call) {
+      throw new Error('Promise.finally expected a function');
     }
-    function stringifyErrorMessage(err) {
-        var defaultMessage = "<unknown error: " + {}.toString.call(err) + ">";
-        return err ? err instanceof Error ? err.message || defaultMessage : "string" == typeof err.message && err.message || defaultMessage : defaultMessage;
-    }
-    function objFilter(obj, filter) {
-        void 0 === filter && (filter = Boolean);
-        var result = {};
-        for (var key in obj) obj.hasOwnProperty(key) && filter(obj[key], key) && (result[key] = obj[key]);
+
+    return this.then(function (result) {
+      return ZalgoPromise.try(onFinally).then(function () {
         return result;
+      });
+    }, function (err) {
+      return ZalgoPromise.try(onFinally).then(function () {
+        throw err;
+      });
+    });
+  };
+
+  _proto.timeout = function timeout(time, err) {
+    var _this3 = this;
+
+    if (this.resolved || this.rejected) {
+      return this;
     }
-    function promiseDebounce(method, delay) {
-        var promise, timeout;
-        return void 0 === delay && (delay = 50), setFunctionName((function() {
-            timeout && clearTimeout(timeout);
-            var localPromise = promise = promise || new src.a;
-            return timeout = setTimeout((function() {
-                promise = null, timeout = null, src.a.try(method).then((function(result) {
-                    localPromise.resolve(result);
-                }), (function(err) {
-                    localPromise.reject(err);
-                }));
-            }), delay), localPromise;
-        }), getFunctionName(method) + "::promiseDebounced");
+
+    var timeout = setTimeout(function () {
+      if (_this3.resolved || _this3.rejected) {
+        return;
+      }
+
+      _this3.reject(err || new Error("Promise timed out after " + time + "ms"));
+    }, time);
+    return this.then(function (result) {
+      clearTimeout(timeout);
+      return result;
+    });
+  } // $FlowFixMe
+  ;
+
+  _proto.toPromise = function toPromise() {
+    // $FlowFixMe
+    if (typeof Promise === 'undefined') {
+      throw new TypeError("Could not find Promise");
+    } // $FlowFixMe
+
+
+    return Promise.resolve(this); // eslint-disable-line compat/compat
+  };
+
+  ZalgoPromise.resolve = function resolve(value) {
+    if (value instanceof ZalgoPromise) {
+      return value;
     }
-    function safeInterval(method, time) {
-        var timeout;
-        return function loop() {
-            timeout = setTimeout((function() {
-                method(), loop();
-            }), time);
-        }(), {
-            cancel: function() {
-                clearTimeout(timeout);
-            }
-        };
+
+    if (utils_isPromise(value)) {
+      // $FlowFixMe
+      return new ZalgoPromise(function (resolve, reject) {
+        return value.then(resolve, reject);
+      });
     }
-    function debounce(method, time) {
-        var timeout;
-        return void 0 === time && (time = 100), setFunctionName((function() {
-            var _this4 = this, _arguments3 = arguments;
-            clearTimeout(timeout), timeout = setTimeout((function() {
-                return method.apply(_this4, _arguments3);
-            }), time);
-        }), getFunctionName(method) + "::debounced");
+
+    return new ZalgoPromise().resolve(value);
+  };
+
+  ZalgoPromise.reject = function reject(error) {
+    return new ZalgoPromise().reject(error);
+  };
+
+  ZalgoPromise.asyncReject = function asyncReject(error) {
+    return new ZalgoPromise().asyncReject(error);
+  };
+
+  ZalgoPromise.all = function all(promises) {
+    // eslint-disable-line no-undef
+    var promise = new ZalgoPromise();
+    var count = promises.length;
+    var results = [];
+
+    if (!count) {
+      promise.resolve(results);
+      return promise;
     }
-    var KEY_CODES = {
-        ENTER: 13
+
+    var chain = function chain(i, firstPromise, secondPromise) {
+      return firstPromise.then(function (res) {
+        results[i] = res;
+        count -= 1;
+
+        if (count === 0) {
+          promise.resolve(results);
+        }
+      }, function (err) {
+        secondPromise.reject(err);
+      });
     };
-    function isDocumentReady() {
-        return Boolean(document.body) && "complete" === document.readyState;
-    }
-    function urlEncode(str) {
-        return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
-    }
-    function waitForDocumentReady() {
-        return inlineMemoize(waitForDocumentReady, (function() {
-            return new src.a((function(resolve) {
-                if (isDocumentReady()) return resolve();
-                var interval = setInterval((function() {
-                    if (isDocumentReady()) return clearInterval(interval), resolve();
-                }), 10);
-            }));
-        }));
-    }
-    function parseQuery(queryString) {
-        return inlineMemoize(parseQuery, (function() {
-            var params = {};
-            if (!queryString) return params;
-            if (-1 === queryString.indexOf("=")) return params;
-            for (var _i2 = 0, _queryString$split2 = queryString.split("&"); _i2 < _queryString$split2.length; _i2++) {
-                var pair = _queryString$split2[_i2];
-                (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
-            }
-            return params;
-        }), [ queryString ]);
-    }
-    function extendQuery(originalQuery, props) {
-        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), {}, props)) && (obj = {}), 
-        Object.keys(obj).filter((function(key) {
-            return "string" == typeof obj[key];
-        })).map((function(key) {
-            return urlEncode(key) + "=" + urlEncode(obj[key]);
-        })).join("&")) : originalQuery;
-        var obj;
-    }
-    function extendUrl(url, options) {
-        void 0 === options && (options = {});
-        var originalUrl, originalHash, query = options.query || {}, hash = options.hash || {}, _url$split = url.split("#");
-        originalHash = _url$split[1];
-        var _originalUrl$split = (originalUrl = _url$split[0]).split("?");
-        originalUrl = _originalUrl$split[0];
-        var queryString = extendQuery(_originalUrl$split[1], query), hashString = extendQuery(originalHash, hash);
-        return queryString && (originalUrl = originalUrl + "?" + queryString), hashString && (originalUrl = originalUrl + "#" + hashString), 
-        originalUrl;
-    }
-    function redirect(url, win) {
-        return void 0 === win && (win = window), new src.a((function(resolve) {
-            win.location = url, function(url) {
-                return -1 === url.indexOf("#") || 0 !== url.indexOf("#") && url.split("#")[0] !== window.location.href.split("#")[0];
-            }(url) || resolve();
-        }));
-    }
-    function enablePerformance() {
-        return inlineMemoize(enablePerformance, (function() {
-            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
-        }));
-    }
-    function getPageRenderTime() {
-        return waitForDocumentReady().then((function() {
-            if (enablePerformance()) {
-                var timing = window.performance.timing;
-                return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
-            }
-        }));
-    }
-    function isBrowser() {
-        return "undefined" != typeof window;
-    }
-    function querySelectorAll(selector, doc) {
-        return void 0 === doc && (doc = window.document), [].slice.call(doc.querySelectorAll(selector));
-    }
-    function onClick(element, handler) {
-        element.addEventListener("touchstart", util_noop), element.addEventListener("click", handler), 
-        element.addEventListener("keypress", (function(event) {
-            if (event.keyCode === KEY_CODES.ENTER) return handler(event);
-        }));
-    }
-    function PopupOpenError(message) {
-        this.message = message;
-    }
-    function popup(url, options) {
-        var width = (options = options || {}).width, height = options.height, top = 0, left = 0;
-        width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2))), 
-        height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2))), 
-        width && height && (options = Object(esm_extends.a)({
-            top: top,
-            left: left,
-            width: width,
-            height: height,
-            status: 1,
-            toolbar: 0,
-            menubar: 0,
-            resizable: 1,
-            scrollbars: 1
-        }, options));
-        var name = options.name || "";
-        delete options.name;
-        var win, err, params = Object.keys(options).map((function(key) {
-            if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
-            var item;
-        })).filter(Boolean).join(",");
-        try {
-            win = window.open(url, name, params, !0);
-        } catch (err) {
-            throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+
+    for (var i = 0; i < promises.length; i++) {
+      var prom = promises[i];
+
+      if (prom instanceof ZalgoPromise) {
+        if (prom.resolved) {
+          results[i] = prom.value;
+          count -= 1;
+          continue;
         }
-        if (Object(cross_domain_utils_src.f)(win)) throw new PopupOpenError("Can not open popup window - blocked");
-        return window.addEventListener("unload", (function() {
-            return win.close();
-        })), win;
+      } else if (!utils_isPromise(prom)) {
+        results[i] = prom;
+        count -= 1;
+        continue;
+      }
+
+      chain(i, ZalgoPromise.resolve(prom), promise);
     }
-    PopupOpenError.prototype = Object.create(Error.prototype);
-    var HEADERS = {
-        CONTENT_TYPE: "content-type",
-        ACCEPT: "accept"
-    }, headerBuilders = [];
-    function request(_ref) {
-        var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
-        return new src.a((function(resolve, reject) {
-            if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
-            for (var normalizedHeaders = {}, _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
-                var _key2 = _Object$keys2[_i4];
-                normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
-            }
-            json ? normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8"), 
-            normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || "application/json";
-            for (var _i6 = 0; _i6 < headerBuilders.length; _i6++) for (var builtHeaders = (0, 
-            headerBuilders[_i6])(), _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
-                var _key3 = _Object$keys4[_i8];
-                normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
-            }
-            var xhr = new win.XMLHttpRequest;
-            for (var _key4 in xhr.addEventListener("load", (function() {
-                var responseHeaders = function(rawHeaders) {
-                    void 0 === rawHeaders && (rawHeaders = "");
-                    for (var result = {}, _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
-                        var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
-                        result[_key.toLowerCase()] = values.join(":").trim();
-                    }
-                    return result;
-                }(this.getAllResponseHeaders());
-                if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
-                var contentType = responseHeaders["content-type"], isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json")), responseBody = this.responseText;
-                try {
-                    responseBody = JSON.parse(responseBody);
-                } catch (err) {
-                    if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
-                }
-                return resolve({
-                    status: this.status,
-                    headers: responseHeaders,
-                    body: responseBody
-                });
-            }), !1), xhr.addEventListener("error", (function(evt) {
-                reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
-            }), !1), xhr.open(method, url, !0), normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
-            json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
-                return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
-            })).join("&")), xhr.timeout = timeout, xhr.ontimeout = function() {
-                reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
-            }, xhr.send(body);
-        }));
+
+    if (count === 0) {
+      promise.resolve(results);
     }
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return getUserAgent;
-    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return isIEIntranet;
-    })), __webpack_require__.d(__webpack_exports__, "u", (function() {
-        return supportsPopups;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return extendUrl;
-    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
-        return redirect;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return getPageRenderTime;
-    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return isBrowser;
-    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
-        return querySelectorAll;
-    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
-        return onClick;
-    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
-        return popup;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return base64encode;
-    })), __webpack_require__.d(__webpack_exports__, "v", (function() {
-        return uniqueID;
-    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return memoize;
-    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return inlineMemoize;
-    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return util_noop;
-    })), __webpack_require__.d(__webpack_exports__, "s", (function() {
-        return stringifyError;
-    })), __webpack_require__.d(__webpack_exports__, "t", (function() {
-        return stringifyErrorMessage;
-    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return objFilter;
-    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
-        return promiseDebounce;
-    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
-        return safeInterval;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return debounce;
-    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
-        return request;
+
+    return promise;
+  };
+
+  ZalgoPromise.hash = function hash(promises) {
+    // eslint-disable-line no-undef
+    var result = {};
+    return ZalgoPromise.all(Object.keys(promises).map(function (key) {
+      return ZalgoPromise.resolve(promises[key]).then(function (value) {
+        result[key] = value;
+      });
+    })).then(function () {
+      return result;
+    });
+  };
+
+  ZalgoPromise.map = function map(items, method) {
+    // $FlowFixMe
+    return ZalgoPromise.all(items.map(method));
+  };
+
+  ZalgoPromise.onPossiblyUnhandledException = function onPossiblyUnhandledException(handler) {
+    return exceptions_onPossiblyUnhandledException(handler);
+  };
+
+  ZalgoPromise.try = function _try(method, context, args) {
+    if (method && typeof method !== 'function' && !method.call) {
+      throw new Error('Promise.try expected a function');
+    }
+
+    var result;
+    startActive();
+
+    try {
+      // $FlowFixMe
+      result = method.apply(context, args || []);
+    } catch (err) {
+      endActive();
+      return ZalgoPromise.reject(err);
+    }
+
+    endActive();
+    return ZalgoPromise.resolve(result);
+  };
+
+  ZalgoPromise.delay = function delay(_delay) {
+    return new ZalgoPromise(function (resolve) {
+      setTimeout(resolve, _delay);
+    });
+  };
+
+  ZalgoPromise.isPromise = function isPromise(value) {
+    if (value && value instanceof ZalgoPromise) {
+      return true;
+    }
+
+    return utils_isPromise(value);
+  };
+
+  ZalgoPromise.flush = function flush() {
+    return awaitActive(ZalgoPromise);
+  };
+
+  return ZalgoPromise;
+}();
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/index.js
+/* concated harmony reexport ZalgoPromise */__webpack_require__.d(__webpack_exports__, "a", function() { return promise_ZalgoPromise; });
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/locale.js
+/* eslint max-lines: 0 */
+var COUNTRY = {
+  AD: 'AD',
+  AE: 'AE',
+  AG: 'AG',
+  AI: 'AI',
+  AL: 'AL',
+  AM: 'AM',
+  AN: 'AN',
+  AO: 'AO',
+  AR: 'AR',
+  AT: 'AT',
+  AU: 'AU',
+  AW: 'AW',
+  AZ: 'AZ',
+  BA: 'BA',
+  BB: 'BB',
+  BE: 'BE',
+  BF: 'BF',
+  BG: 'BG',
+  BH: 'BH',
+  BI: 'BI',
+  BJ: 'BJ',
+  BM: 'BM',
+  BN: 'BN',
+  BO: 'BO',
+  BR: 'BR',
+  BS: 'BS',
+  BT: 'BT',
+  BW: 'BW',
+  BY: 'BY',
+  BZ: 'BZ',
+  CA: 'CA',
+  CD: 'CD',
+  CG: 'CG',
+  CH: 'CH',
+  CI: 'CI',
+  CK: 'CK',
+  CL: 'CL',
+  CM: 'CM',
+  CN: 'CN',
+  CO: 'CO',
+  CR: 'CR',
+  CV: 'CV',
+  CY: 'CY',
+  CZ: 'CZ',
+  DE: 'DE',
+  DJ: 'DJ',
+  DK: 'DK',
+  DM: 'DM',
+  DO: 'DO',
+  DZ: 'DZ',
+  EC: 'EC',
+  EE: 'EE',
+  EG: 'EG',
+  ER: 'ER',
+  ES: 'ES',
+  ET: 'ET',
+  FI: 'FI',
+  FJ: 'FJ',
+  FK: 'FK',
+  FM: 'FM',
+  FO: 'FO',
+  FR: 'FR',
+  GA: 'GA',
+  GB: 'GB',
+  GD: 'GD',
+  GE: 'GE',
+  GF: 'GF',
+  GI: 'GI',
+  GL: 'GL',
+  GM: 'GM',
+  GN: 'GN',
+  GP: 'GP',
+  GR: 'GR',
+  GT: 'GT',
+  GW: 'GW',
+  GY: 'GY',
+  HK: 'HK',
+  HN: 'HN',
+  HR: 'HR',
+  HU: 'HU',
+  ID: 'ID',
+  IE: 'IE',
+  IL: 'IL',
+  IN: 'IN',
+  IS: 'IS',
+  IT: 'IT',
+  JM: 'JM',
+  JO: 'JO',
+  JP: 'JP',
+  KE: 'KE',
+  KG: 'KG',
+  KH: 'KH',
+  KI: 'KI',
+  KM: 'KM',
+  KN: 'KN',
+  KR: 'KR',
+  KW: 'KW',
+  KY: 'KY',
+  KZ: 'KZ',
+  LA: 'LA',
+  LC: 'LC',
+  LI: 'LI',
+  LK: 'LK',
+  LS: 'LS',
+  LT: 'LT',
+  LU: 'LU',
+  LV: 'LV',
+  MA: 'MA',
+  MC: 'MC',
+  MD: 'MD',
+  ME: 'ME',
+  MG: 'MG',
+  MH: 'MH',
+  MK: 'MK',
+  ML: 'ML',
+  MN: 'MN',
+  MQ: 'MQ',
+  MR: 'MR',
+  MS: 'MS',
+  MT: 'MT',
+  MU: 'MU',
+  MV: 'MV',
+  MW: 'MW',
+  MX: 'MX',
+  MY: 'MY',
+  MZ: 'MZ',
+  NA: 'NA',
+  NC: 'NC',
+  NE: 'NE',
+  NF: 'NF',
+  NG: 'NG',
+  NI: 'NI',
+  NL: 'NL',
+  NO: 'NO',
+  NP: 'NP',
+  NR: 'NR',
+  NU: 'NU',
+  NZ: 'NZ',
+  OM: 'OM',
+  PA: 'PA',
+  PE: 'PE',
+  PF: 'PF',
+  PG: 'PG',
+  PH: 'PH',
+  PL: 'PL',
+  PM: 'PM',
+  PN: 'PN',
+  PT: 'PT',
+  PW: 'PW',
+  PY: 'PY',
+  QA: 'QA',
+  RE: 'RE',
+  RO: 'RO',
+  RS: 'RS',
+  RU: 'RU',
+  RW: 'RW',
+  SA: 'SA',
+  SB: 'SB',
+  SC: 'SC',
+  SE: 'SE',
+  SG: 'SG',
+  SH: 'SH',
+  SI: 'SI',
+  SJ: 'SJ',
+  SK: 'SK',
+  SL: 'SL',
+  SM: 'SM',
+  SN: 'SN',
+  SO: 'SO',
+  SR: 'SR',
+  ST: 'ST',
+  SV: 'SV',
+  SZ: 'SZ',
+  TC: 'TC',
+  TD: 'TD',
+  TG: 'TG',
+  TH: 'TH',
+  TJ: 'TJ',
+  TM: 'TM',
+  TN: 'TN',
+  TO: 'TO',
+  TR: 'TR',
+  TT: 'TT',
+  TV: 'TV',
+  TW: 'TW',
+  TZ: 'TZ',
+  UA: 'UA',
+  UG: 'UG',
+  US: 'US',
+  UY: 'UY',
+  VA: 'VA',
+  VC: 'VC',
+  VE: 'VE',
+  VG: 'VG',
+  VN: 'VN',
+  VU: 'VU',
+  WF: 'WF',
+  WS: 'WS',
+  YE: 'YE',
+  YT: 'YT',
+  ZA: 'ZA',
+  ZM: 'ZM',
+  ZW: 'ZW'
+};
+var LANG = {
+  AR: 'ar',
+  CS: 'cs',
+  DA: 'da',
+  DE: 'de',
+  EL: 'el',
+  EN: 'en',
+  ES: 'es',
+  FI: 'fi',
+  FR: 'fr',
+  HE: 'he',
+  HU: 'hu',
+  ID: 'id',
+  IT: 'it',
+  JA: 'ja',
+  KO: 'ko',
+  NL: 'nl',
+  NO: 'no',
+  PL: 'pl',
+  PT: 'pt',
+  RU: 'ru',
+  SK: 'sk',
+  SV: 'sv',
+  TH: 'th',
+  TR: 'tr',
+  ZH: 'zh'
+};
+var COUNTRY_LANGS = {
+  AD: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR],
+  AG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AL: [LANG.EN],
+  AM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AR: [LANG.ES, LANG.EN],
+  AT: [LANG.DE, LANG.EN],
+  AU: [LANG.EN],
+  AW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BA: [LANG.EN],
+  BB: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BE: [LANG.EN, LANG.NL, LANG.FR],
+  BF: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  BG: [LANG.EN],
+  BH: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BI: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  BJ: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  BM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BN: [LANG.EN],
+  BO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  BR: [LANG.PT, LANG.EN],
+  BS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BT: [LANG.EN],
+  BW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BY: [LANG.EN],
+  BZ: [LANG.EN, LANG.ES, LANG.FR, LANG.ZH],
+  CA: [LANG.EN, LANG.FR],
+  CD: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  CG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  CH: [LANG.DE, LANG.FR, LANG.EN],
+  CI: [LANG.FR, LANG.EN],
+  CK: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  CL: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  CM: [LANG.FR, LANG.EN],
+  CN: [LANG.ZH],
+  CO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  CR: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  CV: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  CY: [LANG.EN],
+  CZ: [LANG.CS, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  DE: [LANG.DE, LANG.EN],
+  DJ: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  DK: [LANG.DA, LANG.EN],
+  DM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  DO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  DZ: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  EC: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  EE: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
+  EG: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ER: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ES: [LANG.ES, LANG.EN],
+  ET: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FI: [LANG.FI, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FK: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FM: [LANG.EN],
+  FO: [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FR: [LANG.FR, LANG.EN],
+  GA: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  GB: [LANG.EN],
+  GD: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GL: [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GN: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  GP: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GR: [LANG.EL, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GT: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  GW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GY: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  HK: [LANG.EN, LANG.ZH],
+  HN: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  HR: [LANG.EN],
+  HU: [LANG.HU, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ID: [LANG.ID, LANG.EN],
+  IE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  IL: [LANG.HE, LANG.EN],
+  IN: [LANG.EN],
+  IS: [LANG.EN],
+  IT: [LANG.IT, LANG.EN],
+  JM: [LANG.EN, LANG.ES, LANG.FR, LANG.ZH],
+  JO: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  JP: [LANG.JA, LANG.EN],
+  KE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KH: [LANG.EN],
+  KI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KM: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  KN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KR: [LANG.KO, LANG.EN],
+  KW: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KY: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  LA: [LANG.EN],
+  LC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  LI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  LK: [LANG.EN],
+  LS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  LT: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
+  LU: [LANG.EN, LANG.DE, LANG.FR, LANG.ES, LANG.ZH],
+  LV: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
+  MA: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MC: [LANG.FR, LANG.EN],
+  MD: [LANG.EN],
+  ME: [LANG.EN],
+  MG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MH: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MK: [LANG.EN],
+  ML: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  MN: [LANG.EN],
+  MQ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MT: [LANG.EN],
+  MU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MV: [LANG.EN],
+  MW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MX: [LANG.ES, LANG.EN],
+  MY: [LANG.EN],
+  MZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NE: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  NF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NG: [LANG.EN],
+  NI: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  NL: [LANG.NL, LANG.EN],
+  NO: [LANG.NO, LANG.EN],
+  NP: [LANG.EN],
+  NR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  OM: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PA: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  PE: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  PF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PH: [LANG.EN],
+  PL: [LANG.PL, LANG.EN],
+  PM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PT: [LANG.PT, LANG.EN],
+  PW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PY: [LANG.ES, LANG.EN],
+  QA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR],
+  RE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  RO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  RS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  RU: [LANG.RU, LANG.EN],
+  RW: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  SA: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SB: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SC: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  SE: [LANG.SV, LANG.EN],
+  SG: [LANG.EN],
+  SH: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SK: [LANG.SK, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SL: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SN: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  SO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ST: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SV: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  SZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TD: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  TG: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  TH: [LANG.TH, LANG.EN],
+  TJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TN: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TO: [LANG.EN],
+  TR: [LANG.TR, LANG.EN],
+  TT: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TV: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TW: [LANG.ZH, LANG.EN],
+  TZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  UA: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
+  UG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  US: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  UY: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  VA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  VC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  VE: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  VG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  VN: [LANG.EN],
+  VU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  WF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  WS: [LANG.EN],
+  YE: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  YT: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ZA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ZM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ZW: [LANG.EN]
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/params.js
+var SDK_PATH = '/sdk/js';
+var SDK_SETTINGS = {
+  NAMESPACE: 'data-namespace',
+  CLIENT_TOKEN: 'data-client-token',
+  PARTNER_ATTRIBUTION_ID: 'data-partner-attribution-id',
+  STAGE_HOST: 'data-stage-host',
+  API_STAGE_HOST: 'data-api-stage-host',
+  CSP_NONCE: 'data-csp-nonce',
+  ENABLE_3DS: 'data-enable-3ds'
+};
+var SDK_QUERY_KEYS = {
+  COMPONENTS: 'components',
+  ENV: 'env',
+  DEBUG: 'debug',
+  CACHEBUST: 'cachebust',
+  CLIENT_ID: 'client-id',
+  MERCHANT_ID: 'merchant-id',
+  MERCHANT_EMAIL_HASH: 'merchant-email-hash',
+  LOCALE: 'locale',
+  CURRENCY: 'currency',
+  INTENT: 'intent',
+  COMMIT: 'commit',
+  VAULT: 'vault',
+  BUYER_COUNTRY: 'buyer-country',
+  DISABLE_FUNDING: 'disable-funding',
+  DISABLE_CARD: 'disable-card',
+  LOCALE_COUNTRY: 'locale-country',
+  LOCALE_LANG: 'locale-lang',
+  FRAMEWORK: 'framework',
+  INTEGRATION_DATE: 'integration-date',
+  ORDER_CURRENCY: 'order-currency',
+  ORDER_INTENT: 'order-intent',
+  ORDER_COMMIT: 'order-commit',
+  ORDER_VAULT: 'order-vault'
+};
+var COMPONENTS = {
+  BUTTONS: 'buttons',
+  HOSTED_FIELDS: 'hosted-fields'
+};
+var FRAMEWORK = {
+  ANGULARJS: 'angularjs',
+  ANGULAR: 'angular',
+  REACT: 'react',
+  VUE: 'vue'
+};
+var DEBUG = {
+  TRUE: true,
+  FALSE: false
+};
+var QUERY_BOOL = {
+  TRUE: 'true',
+  FALSE: 'false'
+};
+var UNKNOWN = 'unknown';
+var PROTOCOL = {
+  HTTP: 'http',
+  HTTPS: 'https'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/env.js
+var ENV = {
+  LOCAL: 'local',
+  STAGE: 'stage',
+  SANDBOX: 'sandbox',
+  PRODUCTION: 'production',
+  TEST: 'test'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/fpti.js
+var FPTI_KEY = {
+  FEED: 'feed_name',
+  STATE: 'state_name',
+  TRANSITION: 'transition_name',
+  BUTTON_TYPE: 'button_type',
+  SESSION_UID: 'page_session_id',
+  BUTTON_SESSION_UID: 'button_session_id',
+  TOKEN: 'token',
+  CONTEXT_ID: 'context_id',
+  CONTEXT_TYPE: 'context_type',
+  REFERER: 'referer_url',
+  MERCHANT_DOMAIN: 'merchant_domain',
+  PAY_ID: 'pay_id',
+  SELLER_ID: 'seller_id',
+  CLIENT_ID: 'client_id',
+  DATA_SOURCE: 'serverside_data_source',
+  BUTTON_SOURCE: 'button_source',
+  ERROR_CODE: 'ext_error_code',
+  ERROR_DESC: 'ext_error_desc',
+  PAGE_LOAD_TIME: 'page_load_time',
+  EXPERIMENT_NAME: 'pxp_exp_id',
+  TREATMENT_NAME: 'pxp_trtmnt_id',
+  TRANSITION_TIME: 'transition_time',
+  FUNDING_LIST: 'eligible_payment_methods',
+  FUNDING_COUNT: 'eligible_payment_count',
+  CHOSEN_FUNDING: 'selected_payment_method',
+  BUTTON_LAYOUT: 'button_layout',
+  VERSION: 'checkoutjs_version',
+  LOCALE: 'locale',
+  BUYER_COUNTRY: 'buyer_cntry',
+  INTEGRATION_IDENTIFIER: 'integration_identifier',
+  PARTNER_ATTRIBUTION_ID: 'bn_code',
+  SDK_NAME: 'sdk_name',
+  SDK_VERSION: 'sdk_version',
+  USER_AGENT: 'user_agent',
+  USER_ACTION: 'user_action',
+  CONTEXT_CORRID: 'context_correlation_id',
+  SDK_CACHE: 'sdk_cache',
+  SDK_LOAD_TIME: 'sdk_load_time'
+};
+var FPTI_USER_ACTION = {
+  COMMIT: 'commit',
+  CONTINUE: 'continue'
+};
+var FPTI_DATA_SOURCE = {
+  PAYMENTS_SDK: 'checkout'
+};
+var FPTI_FEED = {
+  PAYMENTS_SDK: 'payments_sdk'
+};
+var FPTI_SDK_NAME = {
+  PAYMENTS_SDK: 'payments_sdk'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/order.js
+var INTENT = {
+  CAPTURE: 'capture',
+  AUTHORIZE: 'authorize',
+  ORDER: 'order'
+};
+var COMMIT = {
+  TRUE: true,
+  FALSE: false
+};
+var VAULT = {
+  TRUE: true,
+  FALSE: false
+};
+var CURRENCY = {
+  AUD: 'AUD',
+  BRL: 'BRL',
+  CAD: 'CAD',
+  CZK: 'CZK',
+  DKK: 'DKK',
+  EUR: 'EUR',
+  HKD: 'HKD',
+  HUF: 'HUF',
+  INR: 'INR',
+  ILS: 'ILS',
+  JPY: 'JPY',
+  MUR: 'MUR',
+  MYR: 'MYR',
+  MXN: 'MXN',
+  TWD: 'TWD',
+  NZD: 'NZD',
+  NOK: 'NOK',
+  PHP: 'PHP',
+  PLN: 'PLN',
+  GBP: 'GBP',
+  RUB: 'RUB',
+  SGD: 'SGD',
+  SEK: 'SEK',
+  CHF: 'CHF',
+  THB: 'THB',
+  USD: 'USD'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/platform.js
+var PLATFORM = {
+  DESKTOP: 'desktop',
+  MOBILE: 'mobile'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/funding.js
+var FUNDING = {
+  PAYPAL: 'paypal',
+  VENMO: 'venmo',
+  ITAU: 'itau',
+  CREDIT: 'credit',
+  CARD: 'card',
+  IDEAL: 'ideal',
+  SEPA: 'sepa',
+  BANCONTACT: 'bancontact',
+  GIROPAY: 'giropay',
+  SOFORT: 'sofort',
+  EPS: 'eps',
+  MYBANK: 'mybank',
+  P24: 'p24',
+  VERKKOPANKKI: 'verkkopankki',
+  PAYU: 'payu',
+  BLIK: 'blik',
+  TRUSTLY: 'trustly',
+  ZIMPLER: 'zimpler',
+  MAXIMA: 'maxima',
+  OXXO: 'oxxo',
+  BOLETO: 'boleto',
+  WECHATPAY: 'wechatpay'
+};
+var CARD = {
+  VISA: 'visa',
+  MASTERCARD: 'mastercard',
+  AMEX: 'amex',
+  DISCOVER: 'discover',
+  HIPER: 'hiper',
+  ELO: 'elo',
+  JCB: 'jcb',
+  CUP: 'cup'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/defaults.js
+
+
+
+var DEFAULT_COUNTRY = COUNTRY.US;
+var DEFAULT_CURRENCY = CURRENCY.USD;
+var DEFAULT_INTENT = INTENT.CAPTURE;
+var DEFAULT_COMMIT = COMMIT.TRUE;
+var DEFAULT_SALE_COMMIT = COMMIT.TRUE;
+var DEFAULT_NONSALE_COMMIT = COMMIT.TRUE;
+var DEFAULT_VAULT = VAULT.FALSE;
+var DEFAULT_COMPONENTS = COMPONENTS.BUTTONS;
+var DEFAULT_DEBUG = DEBUG.FALSE;
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/index.js
+/* concated harmony reexport COUNTRY */__webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY; });
+/* unused concated harmony import LANG */
+/* unused concated harmony import COUNTRY_LANGS */
+/* unused concated harmony import SDK_PATH */
+/* unused concated harmony import SDK_SETTINGS */
+/* concated harmony reexport SDK_QUERY_KEYS */__webpack_require__.d(__webpack_exports__, "j", function() { return SDK_QUERY_KEYS; });
+/* unused concated harmony import COMPONENTS */
+/* unused concated harmony import FRAMEWORK */
+/* unused concated harmony import DEBUG */
+/* unused concated harmony import QUERY_BOOL */
+/* unused concated harmony import UNKNOWN */
+/* unused concated harmony import PROTOCOL */
+/* unused concated harmony import ENV */
+/* concated harmony reexport FPTI_KEY */__webpack_require__.d(__webpack_exports__, "d", function() { return FPTI_KEY; });
+/* concated harmony reexport FPTI_USER_ACTION */__webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_USER_ACTION; });
+/* concated harmony reexport FPTI_DATA_SOURCE */__webpack_require__.d(__webpack_exports__, "b", function() { return FPTI_DATA_SOURCE; });
+/* concated harmony reexport FPTI_FEED */__webpack_require__.d(__webpack_exports__, "c", function() { return FPTI_FEED; });
+/* concated harmony reexport FPTI_SDK_NAME */__webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_SDK_NAME; });
+/* concated harmony reexport INTENT */__webpack_require__.d(__webpack_exports__, "h", function() { return INTENT; });
+/* unused concated harmony import COMMIT */
+/* unused concated harmony import VAULT */
+/* unused concated harmony import CURRENCY */
+/* concated harmony reexport PLATFORM */__webpack_require__.d(__webpack_exports__, "i", function() { return PLATFORM; });
+/* concated harmony reexport FUNDING */__webpack_require__.d(__webpack_exports__, "g", function() { return FUNDING; });
+/* unused concated harmony import CARD */
+/* unused concated harmony import DEFAULT_COUNTRY */
+/* unused concated harmony import DEFAULT_CURRENCY */
+/* unused concated harmony import DEFAULT_INTENT */
+/* unused concated harmony import DEFAULT_COMMIT */
+/* unused concated harmony import DEFAULT_SALE_COMMIT */
+/* unused concated harmony import DEFAULT_NONSALE_COMMIT */
+/* unused concated harmony import DEFAULT_VAULT */
+/* unused concated harmony import DEFAULT_COMPONENTS */
+/* unused concated harmony import DEFAULT_DEBUG */
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/belter/src/device.js
+function getUserAgent() {
+  return window.navigator.mockUserAgent || window.navigator.userAgent;
+}
+function isDevice(userAgent) {
+  if (userAgent === void 0) {
+    userAgent = getUserAgent();
+  }
+
+  if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
+    return true;
+  }
+
+  return false;
+}
+function isWebView() {
+  var userAgent = getUserAgent();
+  return /(iPhone|iPod|iPad|Macintosh).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
+}
+function isStandAlone() {
+  return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+}
+function isFacebookWebView(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return ua.indexOf('FBAN') !== -1 || ua.indexOf('FBAV') !== -1;
+}
+function isFirefoxIOS(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /FxiOS/i.test(ua);
+}
+function isEdgeIOS(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /EdgiOS/i.test(ua);
+}
+function isOperaMini(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return ua.indexOf('Opera Mini') > -1;
+}
+function isAndroid(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Android/.test(ua);
+}
+function isIos(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /iPhone|iPod|iPad/.test(ua);
+}
+function isGoogleSearchApp(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /\bGSA\b/.test(ua);
+}
+function isQQBrowser(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /QQBrowser/.test(ua);
+}
+function isIosWebview(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  if (isIos(ua)) {
+    if (isGoogleSearchApp(ua)) {
+      return true;
+    }
+
+    return /.+AppleWebKit(?!.*Safari)/.test(ua);
+  }
+
+  return false;
+}
+function isAndroidWebview(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  if (isAndroid(ua)) {
+    return /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
+  }
+
+  return false;
+}
+function device_isIE() {
+  if (window.document.documentMode) {
+    return true;
+  }
+
+  return Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE|rv:11/i.test(window.navigator.userAgent));
+}
+function isIECompHeader() {
+  var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]');
+  var mContent = window.document.querySelector('meta[content="IE=edge"]');
+
+  if (mHttp && mContent) {
+    return true;
+  }
+
+  return false;
+}
+function isElectron() {
+  if (typeof process !== 'undefined' && process.versions && process.versions.electron) {
+    return true;
+  }
+
+  return false;
+}
+function isIEIntranet() {
+  // This status check only works for older versions of IE with document.documentMode set
+  if (window.document.documentMode) {
+    try {
+      var status = window.status;
+      window.status = 'testIntranetMode';
+
+      if (window.status === 'testIntranetMode') {
+        window.status = status;
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  return false;
+}
+function isMacOsCna() {
+  var userAgent = getUserAgent();
+  return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
+}
+function supportsPopups(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
+}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+var esm_extends = __webpack_require__(8);
+
+// EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
+var src = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js + 4 modules
+var cross_domain_utils_src = __webpack_require__(9);
+
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/native.js
+function hasNativeWeakMap() {
+  if (typeof WeakMap === 'undefined') {
+    return false;
+  }
+
+  if (typeof Object.freeze === 'undefined') {
+    return false;
+  }
+
+  try {
+    var testWeakMap = new WeakMap();
+    var testKey = {};
+    var testValue = '__testvalue__';
+    Object.freeze(testKey);
+    testWeakMap.set(testKey, testValue);
+
+    if (testWeakMap.get(testKey) === testValue) {
+      return true;
+    }
+
+    return false;
+  } catch (err) {
+    return false;
+  }
+}
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/util.js
+function safeIndexOf(collection, item) {
+  for (var i = 0; i < collection.length; i++) {
+    try {
+      if (collection[i] === item) {
+        return i;
+      }
+    } catch (err) {// pass
+    }
+  }
+
+  return -1;
+} // eslint-disable-next-line no-unused-vars
+
+function noop() {// pass
+}
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/weakmap.js
+
+
+
+var weakmap_CrossDomainSafeWeakMap =
+/*#__PURE__*/
+function () {
+  function CrossDomainSafeWeakMap() {
+    this.name = void 0;
+    this.weakmap = void 0;
+    this.keys = void 0;
+    this.values = void 0;
+    // eslint-disable-next-line no-bitwise
+    this.name = "__weakmap_" + (Math.random() * 1e9 >>> 0) + "__";
+
+    if (hasNativeWeakMap()) {
+      try {
+        this.weakmap = new WeakMap();
+      } catch (err) {// pass
+      }
+    }
+
+    this.keys = [];
+    this.values = [];
+  }
+
+  var _proto = CrossDomainSafeWeakMap.prototype;
+
+  _proto._cleanupClosedWindows = function _cleanupClosedWindows() {
+    var weakmap = this.weakmap;
+    var keys = this.keys;
+
+    for (var i = 0; i < keys.length; i++) {
+      var value = keys[i];
+
+      if (Object(cross_domain_utils_src["e" /* isWindow */])(value) && Object(cross_domain_utils_src["f" /* isWindowClosed */])(value)) {
+        if (weakmap) {
+          try {
+            weakmap.delete(value);
+          } catch (err) {// pass
+          }
+        }
+
+        keys.splice(i, 1);
+        this.values.splice(i, 1);
+        i -= 1;
+      }
+    }
+  };
+
+  _proto.isSafeToReadWrite = function isSafeToReadWrite(key) {
+    if (Object(cross_domain_utils_src["e" /* isWindow */])(key)) {
+      return false;
+    }
+
+    try {
+      noop(key && key.self);
+      noop(key && key[this.name]);
+    } catch (err) {
+      return false;
+    }
+
+    return true;
+  };
+
+  _proto.set = function set(key, value) {
+    if (!key) {
+      throw new Error("WeakMap expected key");
+    }
+
+    var weakmap = this.weakmap;
+
+    if (weakmap) {
+      try {
+        weakmap.set(key, value);
+      } catch (err) {
+        delete this.weakmap;
+      }
+    }
+
+    if (this.isSafeToReadWrite(key)) {
+      try {
+        var name = this.name;
+        var entry = key[name];
+
+        if (entry && entry[0] === key) {
+          entry[1] = value;
+        } else {
+          Object.defineProperty(key, name, {
+            value: [key, value],
+            writable: true
+          });
+        }
+
+        return;
+      } catch (err) {// pass
+      }
+    }
+
+    this._cleanupClosedWindows();
+
+    var keys = this.keys;
+    var values = this.values;
+    var index = safeIndexOf(keys, key);
+
+    if (index === -1) {
+      keys.push(key);
+      values.push(value);
+    } else {
+      values[index] = value;
+    }
+  };
+
+  _proto.get = function get(key) {
+    if (!key) {
+      throw new Error("WeakMap expected key");
+    }
+
+    var weakmap = this.weakmap;
+
+    if (weakmap) {
+      try {
+        if (weakmap.has(key)) {
+          return weakmap.get(key);
+        }
+      } catch (err) {
+        delete this.weakmap;
+      }
+    }
+
+    if (this.isSafeToReadWrite(key)) {
+      try {
+        var entry = key[this.name];
+
+        if (entry && entry[0] === key) {
+          return entry[1];
+        }
+
+        return;
+      } catch (err) {// pass
+      }
+    }
+
+    this._cleanupClosedWindows();
+
+    var keys = this.keys;
+    var index = safeIndexOf(keys, key);
+
+    if (index === -1) {
+      return;
+    }
+
+    return this.values[index];
+  };
+
+  _proto.delete = function _delete(key) {
+    if (!key) {
+      throw new Error("WeakMap expected key");
+    }
+
+    var weakmap = this.weakmap;
+
+    if (weakmap) {
+      try {
+        weakmap.delete(key);
+      } catch (err) {
+        delete this.weakmap;
+      }
+    }
+
+    if (this.isSafeToReadWrite(key)) {
+      try {
+        var entry = key[this.name];
+
+        if (entry && entry[0] === key) {
+          entry[0] = entry[1] = undefined;
+        }
+      } catch (err) {// pass
+      }
+    }
+
+    this._cleanupClosedWindows();
+
+    var keys = this.keys;
+    var index = safeIndexOf(keys, key);
+
+    if (index !== -1) {
+      keys.splice(index, 1);
+      this.values.splice(index, 1);
+    }
+  };
+
+  _proto.has = function has(key) {
+    if (!key) {
+      throw new Error("WeakMap expected key");
+    }
+
+    var weakmap = this.weakmap;
+
+    if (weakmap) {
+      try {
+        if (weakmap.has(key)) {
+          return true;
+        }
+      } catch (err) {
+        delete this.weakmap;
+      }
+    }
+
+    if (this.isSafeToReadWrite(key)) {
+      try {
+        var entry = key[this.name];
+
+        if (entry && entry[0] === key) {
+          return true;
+        }
+
+        return false;
+      } catch (err) {// pass
+      }
+    }
+
+    this._cleanupClosedWindows();
+
+    var index = safeIndexOf(this.keys, key);
+    return index !== -1;
+  };
+
+  _proto.getOrSet = function getOrSet(key, getter) {
+    if (this.has(key)) {
+      // $FlowFixMe
+      return this.get(key);
+    }
+
+    var value = getter();
+    this.set(key, value);
+    return value;
+  };
+
+  return CrossDomainSafeWeakMap;
+}();
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/index.js
+
+// CONCATENATED MODULE: ./node_modules/belter/src/util.js
+/* eslint max-lines: 0 */
+
+
+function getFunctionName(fn) {
+  return fn.name || fn.__name__ || fn.displayName || 'anonymous';
+}
+function setFunctionName(fn, name) {
+  try {
+    delete fn.name;
+    fn.name = name;
+  } catch (err) {// pass
+  }
+
+  fn.__name__ = fn.displayName = name;
+  return fn;
+}
+function base64encode(str) {
+  if (typeof btoa === 'function') {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (m, p1) {
+      return String.fromCharCode(parseInt(p1, 16));
     }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var util = __webpack_require__(11), esm_extends = __webpack_require__(8), src = __webpack_require__(1), belter_src = __webpack_require__(3), LOG_LEVEL = {
-        DEBUG: "debug",
-        INFO: "info",
-        WARN: "warn",
-        ERROR: "error"
-    }, PROTOCOL = {
-        FILE: "file:"
-    }, AUTO_FLUSH_LEVEL = [ LOG_LEVEL.WARN, LOG_LEVEL.ERROR ], LOG_LEVEL_PRIORITY = [ LOG_LEVEL.ERROR, LOG_LEVEL.WARN, LOG_LEVEL.INFO, LOG_LEVEL.DEBUG ], FLUSH_INTERVAL = 6e4, DEFAULT_LOG_LEVEL = LOG_LEVEL.WARN;
-    function httpTransport(_ref) {
-        var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json;
-        return Object(belter_src.q)({
-            url: url,
-            method: method,
-            headers: headers,
-            json: json
-        }).then(belter_src.j);
+  }
+
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(str, 'utf8').toString('base64');
+  }
+
+  throw new Error("Can not find window.btoa or Buffer");
+}
+function base64decode(str) {
+  if (typeof atob === 'function') {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
+      // eslint-disable-next-line prefer-template
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  }
+
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(str, 'base64').toString('utf8');
+  }
+
+  throw new Error("Can not find window.atob or Buffer");
+}
+function uniqueID() {
+  var chars = '0123456789abcdef';
+  var randomID = 'xxxxxxxxxx'.replace(/./g, function () {
+    return chars.charAt(Math.floor(Math.random() * chars.length));
+  });
+  var timeID = base64encode(new Date().toISOString().slice(11, 19).replace('T', '.')).replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+  return randomID + "_" + timeID;
+}
+function getGlobal() {
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+
+  if (typeof global !== 'undefined') {
+    return global;
+  }
+
+  throw new Error("No global found");
+}
+var objectIDs;
+function getObjectID(obj) {
+  objectIDs = objectIDs || new weakmap_CrossDomainSafeWeakMap();
+
+  if (obj === null || obj === undefined || typeof obj !== 'object' && typeof obj !== 'function') {
+    throw new Error("Invalid object");
+  }
+
+  var uid = objectIDs.get(obj);
+
+  if (!uid) {
+    uid = typeof obj + ":" + uniqueID();
+    objectIDs.set(obj, uid);
+  }
+
+  return uid;
+}
+
+function serializeArgs(args) {
+  try {
+    return JSON.stringify(Array.prototype.slice.call(args), function (subkey, val) {
+      if (typeof val === 'function') {
+        return "memoize[" + getObjectID(val) + "]";
+      }
+
+      return val;
+    });
+  } catch (err) {
+    throw new Error("Arguments not serializable -- can not be used to memoize");
+  }
+}
+
+function memoize(method, options) {
+  var _this = this;
+
+  if (options === void 0) {
+    options = {};
+  }
+
+  var cacheMap = new weakmap_CrossDomainSafeWeakMap(); // $FlowFixMe
+
+  var memoizedFunction = function memoizedFunction() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
-    function extendIfDefined(target, source) {
-        for (var key in source) source.hasOwnProperty(key) && source[key] && !target[key] && (target[key] = source[key]);
+
+    var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function () {
+      return {};
+    });
+    var key = serializeArgs(args);
+    var cacheTime = options.time;
+
+    if (cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime) {
+      delete cache[key];
     }
-    var sdk_constants_src = __webpack_require__(2), config = __webpack_require__(6), constants = __webpack_require__(0);
-    function getLogger() {
-        return Object(belter_src.f)(getLogger, (function() {
-            return function(_ref2) {
-                var url = _ref2.url, prefix = _ref2.prefix, _ref2$logLevel = _ref2.logLevel, logLevel = void 0 === _ref2$logLevel ? DEFAULT_LOG_LEVEL : _ref2$logLevel, _ref2$transport = _ref2.transport, transport = void 0 === _ref2$transport ? httpTransport : _ref2$transport, _ref2$flushInterval = _ref2.flushInterval, flushInterval = void 0 === _ref2$flushInterval ? FLUSH_INTERVAL : _ref2$flushInterval, events = [], tracking = [], payloadBuilders = [], metaBuilders = [], trackingBuilders = [], headerBuilders = [];
-                function print(level, event, payload) {
-                    if (Object(belter_src.g)() && window.console && window.console.log) {
-                        var consoleLogLevel = logLevel;
-                        if (window.LOG_LEVEL && -1 !== LOG_LEVEL_PRIORITY.indexOf(window.LOG_LEVEL) && (consoleLogLevel = window.LOG_LEVEL), 
-                        !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(consoleLogLevel))) {
-                            var args = [ event ];
-                            args.push(payload), (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
-                            try {
-                                window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
-                            } catch (err) {}
-                        }
-                    }
-                }
-                function immediateFlush() {
-                    return src.a.try((function() {
-                        if (Object(belter_src.g)() && window.location.protocol !== PROTOCOL.FILE && (events.length || tracking.length)) {
-                            for (var meta = {}, _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, 
-                            metaBuilders[_i2])(meta));
-                            for (var headers = {}, _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
-                            headerBuilders[_i4])(headers));
-                            var req = transport({
-                                method: "POST",
-                                url: url,
-                                headers: headers,
-                                json: {
-                                    events: events,
-                                    meta: meta,
-                                    tracking: tracking
-                                }
-                            });
-                            return events = [], tracking = [], req.then(belter_src.j);
-                        }
-                    }));
-                }
-                var flush = Object(belter_src.n)(immediateFlush);
-                function log(level, event, payload) {
-                    if (void 0 === payload && (payload = {}), !Object(belter_src.g)()) return logger;
-                    prefix && (event = prefix + "_" + event);
-                    for (var logPayload = Object(esm_extends.a)({}, Object(belter_src.k)(payload), {
-                        timestamp: Date.now().toString()
-                    }), _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
-                    payloadBuilders[_i6])(logPayload));
-                    return function(level, event, payload) {
-                        events.push({
-                            level: level,
-                            event: event,
-                            payload: payload
-                        }), -1 !== AUTO_FLUSH_LEVEL.indexOf(level) && flush();
-                    }(level, event, logPayload), print(level, event, logPayload), logger;
-                }
-                function addBuilder(builders, builder) {
-                    return builders.push(builder), logger;
-                }
-                Object(belter_src.g)() && Object(belter_src.r)(flush, flushInterval);
-                var logger = {
-                    debug: function(event, payload) {
-                        return log(LOG_LEVEL.DEBUG, event, payload);
-                    },
-                    info: function(event, payload) {
-                        return log(LOG_LEVEL.INFO, event, payload);
-                    },
-                    warn: function(event, payload) {
-                        return log(LOG_LEVEL.WARN, event, payload);
-                    },
-                    error: function(event, payload) {
-                        return log(LOG_LEVEL.ERROR, event, payload);
-                    },
-                    track: function(payload) {
-                        if (void 0 === payload && (payload = {}), !Object(belter_src.g)()) return logger;
-                        for (var trackingPayload = Object(belter_src.k)(payload), _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
-                        trackingBuilders[_i8])(trackingPayload));
-                        return print(LOG_LEVEL.DEBUG, "track", trackingPayload), tracking.push(trackingPayload), 
-                        logger;
-                    },
-                    flush: flush,
-                    immediateFlush: immediateFlush,
-                    addPayloadBuilder: function(builder) {
-                        return addBuilder(payloadBuilders, builder);
-                    },
-                    addMetaBuilder: function(builder) {
-                        return addBuilder(metaBuilders, builder);
-                    },
-                    addTrackingBuilder: function(builder) {
-                        return addBuilder(trackingBuilders, builder);
-                    },
-                    addHeaderBuilder: function(builder) {
-                        return addBuilder(headerBuilders, builder);
-                    },
-                    setTransport: function(newTransport) {
-                        return transport = newTransport, logger;
-                    }
-                };
-                return logger;
-            }({
-                url: config.g
-            });
-        }));
+
+    if (cache[key]) {
+      return cache[key].value;
     }
-    function setupLogger(_ref) {
-        var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, correlationID = _ref.correlationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version, logger = getLogger();
-        logger.addPayloadBuilder((function() {
-            return {
-                referer: window.location.host,
-                uid: sessionID,
-                env: env
-            };
-        })), logger.addTrackingBuilder((function() {
-            var _ref2, lang = locale.lang, country = locale.country;
-            return (_ref2 = {})[sdk_constants_src.d.CONTEXT_TYPE] = constants.f.BUTTON_SESSION_ID, 
-            _ref2[sdk_constants_src.d.CONTEXT_ID] = buttonSessionID, _ref2[sdk_constants_src.d.STATE] = constants.g.BUTTON, 
-            _ref2[sdk_constants_src.d.FEED] = sdk_constants_src.c.PAYMENTS_SDK, _ref2[sdk_constants_src.d.DATA_SOURCE] = sdk_constants_src.b.PAYMENTS_SDK, 
-            _ref2[sdk_constants_src.d.CLIENT_ID] = clientID, _ref2[sdk_constants_src.d.SELLER_ID] = merchantID[0], 
-            _ref2[sdk_constants_src.d.SESSION_UID] = sessionID, _ref2[sdk_constants_src.d.REFERER] = window.location.host, 
-            _ref2[sdk_constants_src.d.MERCHANT_DOMAIN] = merchantDomain, _ref2[sdk_constants_src.d.LOCALE] = lang + "_" + country, 
-            _ref2[sdk_constants_src.d.INTEGRATION_IDENTIFIER] = clientID, _ref2[sdk_constants_src.d.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, 
-            _ref2[sdk_constants_src.d.SDK_NAME] = sdk_constants_src.e.PAYMENTS_SDK, _ref2[sdk_constants_src.d.SDK_VERSION] = version, 
-            _ref2[sdk_constants_src.d.USER_AGENT] = window.navigator && window.navigator.userAgent, 
-            _ref2[sdk_constants_src.d.USER_ACTION] = commit ? sdk_constants_src.f.COMMIT : sdk_constants_src.f.CONTINUE, 
-            _ref2[sdk_constants_src.d.CONTEXT_CORRID] = correlationID, _ref2;
-        })), src.a.onPossiblyUnhandledException((function(err) {
-            var _logger$track;
-            logger.track(((_logger$track = {})[sdk_constants_src.d.ERROR_CODE] = "payments_sdk_error", 
-            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.t)(err), _logger$track)), 
-            logger.error("unhandled_error", {
-                err: Object(belter_src.s)(err)
-            }), logger.flush().catch(belter_src.j);
-        }));
-    }
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return util.e;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return util.c;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return util.d;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return util.a;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return getLogger;
-    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return setupLogger;
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var src = __webpack_require__(1), belter_src = __webpack_require__(3), src_config = __webpack_require__(6), lib = __webpack_require__(4), api = __webpack_require__(7);
-    function createAccessToken(clientID) {
-        return Object(belter_src.f)(createAccessToken, (function() {
-            Object(lib.b)().info("rest_api_create_access_token");
-            var basicAuth = Object(belter_src.a)(clientID + ":");
-            return Object(belter_src.q)({
-                method: "post",
-                url: src_config.a,
-                headers: {
-                    Authorization: "Basic " + basicAuth
-                },
-                data: {
-                    grant_type: "client_credentials"
-                }
-            }).then((function(_ref) {
-                var body = _ref.body;
-                if (body && "invalid_client" === body.error) throw new Error("Auth Api invalid client id: " + clientID + ":\n\n" + JSON.stringify(body, null, 4));
-                if (!body || !body.access_token) throw new Error("Auth Api response error:\n\n" + JSON.stringify(body, null, 4));
-                return body.access_token;
-            }));
-        }), [ clientID ]);
-    }
-    function getFirebaseSessionToken(sessionUID) {
-        return Object(api.a)({
-            query: "\n            query GetFireBaseSessionToken($sessionUID: String!) {\n                firebase {\n                    auth(sessionUID: $sessionUID) {\n                        sessionToken\n                    }\n                }\n            }\n        ",
-            variables: {
-                sessionUID: sessionUID
-            }
-        }).then((function(res) {
-            return res.data.firebase.auth.sessionToken;
-        }));
-    }
-    var sdk_constants_src = __webpack_require__(2), constants = __webpack_require__(0);
-    function createOrderID(order, _ref) {
-        var _headers, facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID;
-        return Object(lib.b)().info("rest_api_create_order_id"), Object(api.b)({
-            accessToken: facilitatorAccessToken,
-            method: "post",
-            url: "" + src_config.h,
-            data: order,
-            headers: (_headers = {}, _headers[constants.j.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || "", 
-            _headers)
-        }).then((function(body) {
-            var _getLogger$track, orderID = body && body.id;
-            if (!orderID) throw new Error("Order Api response error:\n\n" + JSON.stringify(body, null, 4));
-            return Object(lib.b)().track(((_getLogger$track = {})[sdk_constants_src.d.STATE] = constants.g.BUTTON, 
-            _getLogger$track[sdk_constants_src.d.TRANSITION] = constants.h.CREATE_ORDER, _getLogger$track[sdk_constants_src.d.CONTEXT_TYPE] = constants.f.ORDER_ID, 
-            _getLogger$track[sdk_constants_src.d.TOKEN] = orderID, _getLogger$track[sdk_constants_src.d.CONTEXT_ID] = orderID, 
-            _getLogger$track)), orderID;
-        }));
-    }
-    function getOrder(orderID, _ref2) {
-        var _headers2, facilitatorAccessToken = _ref2.facilitatorAccessToken, buyerAccessToken = _ref2.buyerAccessToken, partnerAttributionID = _ref2.partnerAttributionID;
-        return buyerAccessToken ? Object(api.c)({
-            accessToken: buyerAccessToken,
-            url: src_config.i.ORDER + "/" + orderID
-        }) : Object(api.b)({
-            accessToken: facilitatorAccessToken,
-            url: src_config.h + "/" + orderID,
-            headers: (_headers2 = {}, _headers2[constants.j.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || "", 
-            _headers2)
-        });
-    }
-    function captureOrder(orderID, _ref3) {
-        var _headers3, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID;
-        return buyerAccessToken ? Object(api.c)({
-            accessToken: buyerAccessToken,
-            method: "post",
-            url: src_config.i.ORDER + "/" + orderID + "/capture"
-        }) : Object(api.b)({
-            accessToken: facilitatorAccessToken,
-            method: "post",
-            url: src_config.h + "/" + orderID + "/capture",
-            headers: (_headers3 = {}, _headers3[constants.j.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || "", 
-            _headers3)
-        });
-    }
-    function authorizeOrder(orderID, _ref4) {
-        var _headers4, facilitatorAccessToken = _ref4.facilitatorAccessToken, buyerAccessToken = _ref4.buyerAccessToken, partnerAttributionID = _ref4.partnerAttributionID;
-        return buyerAccessToken ? Object(api.c)({
-            accessToken: buyerAccessToken,
-            method: "post",
-            url: src_config.i.ORDER + "/" + orderID + "/authorize"
-        }) : Object(api.b)({
-            accessToken: facilitatorAccessToken,
-            method: "post",
-            url: src_config.h + "/" + orderID + "/authorize",
-            headers: (_headers4 = {}, _headers4[constants.j.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || "", 
-            _headers4)
-        });
-    }
-    function patchOrder(orderID, data, _ref5) {
-        var _headers5, facilitatorAccessToken = _ref5.facilitatorAccessToken, buyerAccessToken = _ref5.buyerAccessToken, partnerAttributionID = _ref5.partnerAttributionID, patchData = Array.isArray(data) ? {
-            patch: data
-        } : data;
-        return buyerAccessToken ? Object(api.c)({
-            accessToken: buyerAccessToken,
-            method: "post",
-            url: src_config.i.ORDER + "/" + orderID + "/patch",
-            json: {
-                data: patchData
-            }
-        }) : Object(api.b)({
-            accessToken: facilitatorAccessToken,
-            method: "patch",
-            url: src_config.h + "/" + orderID,
-            data: patchData,
-            headers: (_headers5 = {}, _headers5[constants.j.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || "", 
-            _headers5)
-        });
-    }
-    function getPayee(orderID) {
-        return Object(api.c)({
-            url: src_config.i.CHECKOUT + "/" + orderID + "/payee"
-        });
-    }
-    var VALIDATE_CONTINGENCIES = {
-        THREE_DOMAIN_SECURE: "3D_SECURE"
+
+    var time = Date.now();
+    var value = method.apply(this, arguments);
+    cache[key] = {
+      time: time,
+      value: value
     };
-    function validatePaymentMethod(_ref6) {
-        var _headers6, clientAccessToken = _ref6.clientAccessToken, orderID = _ref6.orderID, paymentMethodID = _ref6.paymentMethodID, enableThreeDomainSecure = _ref6.enableThreeDomainSecure, partnerAttributionID = _ref6.partnerAttributionID, buttonSessionID = _ref6.buttonSessionID;
-        Object(lib.b)().info("rest_api_create_order_token");
-        var headers = ((_headers6 = {})[constants.j.AUTHORIZATION] = "Bearer " + clientAccessToken, 
-        _headers6[constants.j.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _headers6[constants.j.CLIENT_METADATA_ID] = buttonSessionID, 
-        _headers6), paymentSource = {
-            token: {
-                id: paymentMethodID,
-                type: "NONCE"
-            }
+    return cache[key].value;
+  };
+
+  memoizedFunction.reset = function () {
+    cacheMap.delete(options.thisNamespace ? _this : method);
+  };
+
+  return setFunctionName(memoizedFunction, getFunctionName(method) + "::memoized");
+} // eslint-disable-next-line flowtype/no-weak-types
+
+function memoizePromise(method) {
+  var cache = {}; // eslint-disable-next-line flowtype/no-weak-types
+
+  function memoizedPromiseFunction() {
+    var _this2 = this,
+        _arguments = arguments;
+
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    var key = serializeArgs(args);
+
+    if (cache.hasOwnProperty(key)) {
+      return cache[key];
+    }
+
+    cache[key] = src["a" /* ZalgoPromise */].try(function () {
+      return method.apply(_this2, _arguments);
+    }).finally(function () {
+      delete cache[key];
+    });
+    return cache[key];
+  }
+
+  memoizedPromiseFunction.reset = function () {
+    cache = {};
+  };
+
+  return setFunctionName(memoizedPromiseFunction, getFunctionName(method) + "::promiseMemoized");
+} // eslint-disable-next-line flowtype/no-weak-types
+
+function promisify(method, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  function promisifiedFunction() {
+    return src["a" /* ZalgoPromise */].try(method, this, arguments);
+  }
+
+  if (options.name) {
+    promisifiedFunction.displayName = options.name + ":promisified";
+  }
+
+  return setFunctionName(promisifiedFunction, getFunctionName(method) + "::promisified");
+} // eslint-disable-next-line flowtype/no-weak-types
+
+function inlineMemoize(method, logic, args) {
+  if (args === void 0) {
+    args = [];
+  }
+
+  // $FlowFixMe
+  var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
+  var key = serializeArgs(args);
+
+  if (cache.hasOwnProperty(key)) {
+    return cache[key];
+  }
+
+  var result = cache[key] = logic.apply(void 0, args);
+  return result;
+} // eslint-disable-next-line no-unused-vars
+
+function util_noop() {// pass
+}
+function once(method) {
+  var called = false;
+
+  var onceFunction = function onceFunction() {
+    if (!called) {
+      called = true;
+      return method.apply(this, arguments);
+    }
+  };
+
+  return setFunctionName(onceFunction, getFunctionName(method) + "::once");
+}
+function hashStr(str) {
+  var hash = 0;
+
+  for (var i = 0; i < str.length; i++) {
+    hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
+  }
+
+  return Math.floor(Math.pow(Math.sqrt(hash), 5));
+}
+function strHashStr(str) {
+  var hash = '';
+
+  for (var i = 0; i < str.length; i++) {
+    var total = str[i].charCodeAt(0) * i;
+
+    if (str[i + 1]) {
+      total += str[i + 1].charCodeAt(0) * (i - 1);
+    }
+
+    hash += String.fromCharCode(97 + Math.abs(total) % 26);
+  }
+
+  return hash;
+}
+function match(str, pattern) {
+  var regmatch = str.match(pattern);
+
+  if (regmatch) {
+    return regmatch[1];
+  }
+}
+function awaitKey(obj, key) {
+  return new src["a" /* ZalgoPromise */](function (resolve) {
+    var value = obj[key];
+
+    if (value) {
+      return resolve(value);
+    }
+
+    delete obj[key];
+    Object.defineProperty(obj, key, {
+      configurable: true,
+      set: function set(item) {
+        value = item;
+
+        if (value) {
+          resolve(value);
+        }
+      },
+      get: function get() {
+        return value;
+      }
+    });
+  });
+}
+function stringifyError(err, level) {
+  if (level === void 0) {
+    level = 1;
+  }
+
+  if (level >= 3) {
+    return 'stringifyError stack overflow';
+  }
+
+  try {
+    if (!err) {
+      return "<unknown error: " + Object.prototype.toString.call(err) + ">";
+    }
+
+    if (typeof err === 'string') {
+      return err;
+    }
+
+    if (err instanceof Error) {
+      var stack = err && err.stack;
+      var message = err && err.message;
+
+      if (stack && message) {
+        if (stack.indexOf(message) !== -1) {
+          return stack;
+        } else {
+          return message + "\n" + stack;
+        }
+      } else if (stack) {
+        return stack;
+      } else if (message) {
+        return message;
+      }
+    }
+
+    if (err && err.toString && typeof err.toString === 'function') {
+      // $FlowFixMe
+      return err.toString();
+    }
+
+    return Object.prototype.toString.call(err);
+  } catch (newErr) {
+    // eslint-disable-line unicorn/catch-error-name
+    return "Error while stringifying error: " + stringifyError(newErr, level + 1);
+  }
+}
+function stringifyErrorMessage(err) {
+  var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
+
+  if (!err) {
+    return defaultMessage;
+  }
+
+  if (err instanceof Error) {
+    return err.message || defaultMessage;
+  }
+
+  if (typeof err.message === 'string') {
+    return err.message || defaultMessage;
+  }
+
+  return defaultMessage;
+}
+function stringify(item) {
+  if (typeof item === 'string') {
+    return item;
+  }
+
+  if (item && item.toString && typeof item.toString === 'function') {
+    // $FlowFixMe
+    return item.toString();
+  }
+
+  return Object.prototype.toString.call(item);
+}
+function domainMatches(hostname, domain) {
+  hostname = hostname.split('://')[1];
+  var index = hostname.indexOf(domain);
+  return index !== -1 && hostname.slice(index) === domain;
+}
+function patchMethod(obj, name, handler) {
+  var original = obj[name];
+
+  obj[name] = function patchedMethod() {
+    var _this3 = this,
+        _arguments2 = arguments;
+
+    return handler({
+      context: this,
+      args: Array.prototype.slice.call(arguments),
+      original: original,
+      callOriginal: function callOriginal() {
+        return original.apply(_this3, _arguments2);
+      }
+    });
+  };
+}
+function extend(obj, source) {
+  if (!source) {
+    return obj;
+  }
+
+  if (Object.assign) {
+    return Object.assign(obj, source);
+  }
+
+  for (var key in source) {
+    if (source.hasOwnProperty(key)) {
+      obj[key] = source[key];
+    }
+  }
+
+  return obj;
+}
+function util_values(obj) {
+  var result = [];
+
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      result.push(obj[key]);
+    }
+  }
+
+  return result;
+}
+function perc(pixels, percentage) {
+  return Math.round(pixels * percentage / 100);
+}
+function min() {
+  return Math.min.apply(Math, arguments);
+}
+function max() {
+  return Math.max.apply(Math, arguments);
+}
+function regexMap(str, regexp, handler) {
+  var results = []; // $FlowFixMe
+
+  str.replace(regexp, function regexMapMatcher(item) {
+    results.push(handler ? handler.apply(null, arguments) : item);
+  }); // $FlowFixMe
+
+  return results;
+}
+function svgToBase64(svg) {
+  return "data:image/svg+xml;base64," + base64encode(svg);
+}
+function objFilter(obj, filter) {
+  if (filter === void 0) {
+    filter = Boolean;
+  }
+
+  var result = {};
+
+  for (var key in obj) {
+    if (!obj.hasOwnProperty(key) || !filter(obj[key], key)) {
+      continue;
+    }
+
+    result[key] = obj[key];
+  }
+
+  return result;
+}
+function identity(item) {
+  return item;
+}
+function regexTokenize(text, regexp) {
+  var result = [];
+  text.replace(regexp, function (token) {
+    result.push(token);
+    return '';
+  });
+  return result;
+}
+function promiseDebounce(method, delay) {
+  if (delay === void 0) {
+    delay = 50;
+  }
+
+  var promise;
+  var timeout;
+
+  var promiseDebounced = function promiseDebounced() {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    var localPromise = promise = promise || new src["a" /* ZalgoPromise */]();
+    timeout = setTimeout(function () {
+      promise = null;
+      timeout = null;
+      src["a" /* ZalgoPromise */].try(method).then(function (result) {
+        localPromise.resolve(result);
+      }, function (err) {
+        localPromise.reject(err);
+      });
+    }, delay);
+    return localPromise;
+  };
+
+  return setFunctionName(promiseDebounced, getFunctionName(method) + "::promiseDebounced");
+}
+function safeInterval(method, time) {
+  var timeout;
+
+  function loop() {
+    timeout = setTimeout(function () {
+      method();
+      loop();
+    }, time);
+  }
+
+  loop();
+  return {
+    cancel: function cancel() {
+      clearTimeout(timeout);
+    }
+  };
+}
+function isInteger(str) {
+  return Boolean(str.match(/^[0-9]+$/));
+}
+function isFloat(str) {
+  return Boolean(str.match(/^[0-9]+\.[0-9]+$/));
+}
+function serializePrimitive(value) {
+  return value.toString();
+}
+function deserializePrimitive(value) {
+  if (value === 'true') {
+    return true;
+  } else if (value === 'false') {
+    return false;
+  } else if (isInteger(value)) {
+    return parseInt(value, 10);
+  } else if (isFloat(value)) {
+    return parseFloat(value);
+  } else {
+    return value;
+  }
+}
+function dotify(obj, prefix, newobj) {
+  if (prefix === void 0) {
+    prefix = '';
+  }
+
+  if (newobj === void 0) {
+    newobj = {};
+  }
+
+  prefix = prefix ? prefix + "." : prefix;
+
+  for (var key in obj) {
+    if (!obj.hasOwnProperty(key) || obj[key] === undefined || obj[key] === null || typeof obj[key] === 'function') {
+      continue;
+    } else if (obj[key] && Array.isArray(obj[key]) && obj[key].length && obj[key].every(function (val) {
+      return typeof val !== 'object';
+    })) {
+      newobj["" + prefix + key + "[]"] = obj[key].join(',');
+    } else if (obj[key] && typeof obj[key] === 'object') {
+      newobj = dotify(obj[key], "" + prefix + key, newobj);
+    } else {
+      newobj["" + prefix + key] = serializePrimitive(obj[key]);
+    }
+  }
+
+  return newobj;
+}
+function undotify(obj) {
+  var result = {};
+
+  for (var key in obj) {
+    if (!obj.hasOwnProperty(key) || typeof obj[key] !== 'string') {
+      continue;
+    }
+
+    var value = obj[key];
+
+    if (key.match(/^.+\[\]$/)) {
+      key = key.slice(0, key.length - 2);
+      value = value.split(',').map(deserializePrimitive);
+    } else {
+      value = deserializePrimitive(value);
+    }
+
+    var keyResult = result;
+    var parts = key.split('.');
+
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      var isLast = i + 1 === parts.length;
+      var isIndex = !isLast && isInteger(parts[i + 1]);
+
+      if (part === 'constructor' || part === 'prototype' || part === '__proto__') {
+        throw new Error("Disallowed key: " + part);
+      }
+
+      if (isLast) {
+        // $FlowFixMe
+        keyResult[part] = value;
+      } else {
+        // $FlowFixMe
+        keyResult = keyResult[part] = keyResult[part] || (isIndex ? [] : {});
+      }
+    }
+  }
+
+  return result;
+}
+function eventEmitter() {
+  var triggered = {};
+  var handlers = {};
+  return {
+    on: function on(eventName, handler) {
+      var handlerList = handlers[eventName] = handlers[eventName] || [];
+      handlerList.push(handler);
+      var cancelled = false;
+      return {
+        cancel: function cancel() {
+          if (!cancelled) {
+            cancelled = true;
+            handlerList.splice(handlerList.indexOf(handler), 1);
+          }
+        }
+      };
+    },
+    once: function once(eventName, handler) {
+      var listener = this.on(eventName, function () {
+        listener.cancel();
+        handler();
+      });
+      return listener;
+    },
+    trigger: function trigger(eventName) {
+      for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+        args[_key3 - 1] = arguments[_key3];
+      }
+
+      var handlerList = handlers[eventName];
+      var promises = [];
+
+      if (handlerList) {
+        var _loop = function _loop(_i2) {
+          var handler = handlerList[_i2];
+          promises.push(src["a" /* ZalgoPromise */].try(function () {
+            return handler.apply(void 0, args);
+          }));
         };
-        enableThreeDomainSecure && (paymentSource.contingencies = [ VALIDATE_CONTINGENCIES.THREE_DOMAIN_SECURE ]);
-        var json = {
-            payment_source: paymentSource
-        };
-        return Object(belter_src.q)({
-            method: "post",
-            url: src_config.h + "/" + orderID + "/" + src_config.j,
-            headers: headers,
-            json: json
-        });
+
+        for (var _i2 = 0; _i2 < handlerList.length; _i2++) {
+          _loop(_i2);
+        }
+      }
+
+      return src["a" /* ZalgoPromise */].all(promises).then(util_noop);
+    },
+    triggerOnce: function triggerOnce(eventName) {
+      if (triggered[eventName]) {
+        return src["a" /* ZalgoPromise */].resolve();
+      }
+
+      triggered[eventName] = true;
+
+      for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+        args[_key4 - 1] = arguments[_key4];
+      }
+
+      return this.trigger.apply(this, [eventName].concat(args));
     }
-    function billingTokenToOrderID(billingToken) {
-        return Object(api.c)({
-            method: "post",
-            url: src_config.i.PAYMENT + "/" + billingToken + "/ectoken"
-        }).then((function(data) {
-            return data.token;
-        }));
+  };
+}
+function camelToDasherize(string) {
+  return string.replace(/([A-Z])/g, function (g) {
+    return "-" + g.toLowerCase();
+  });
+}
+function dasherizeToCamel(string) {
+  return string.replace(/-([a-z])/g, function (g) {
+    return g[1].toUpperCase();
+  });
+}
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+function util_get(item, path, def) {
+  if (!path) {
+    return def;
+  }
+
+  var pathParts = path.split('.'); // Loop through each section of our key path
+
+  for (var i = 0; i < pathParts.length; i++) {
+    // If we have an object, we can get the key
+    if (typeof item === 'object' && item !== null) {
+      item = item[pathParts[i]]; // Otherwise, we should return the default (undefined if not provided)
+    } else {
+      return def;
     }
-    function subscriptionIdToCartId(subscriptionID) {
-        return Object(api.c)({
-            method: "post",
-            url: src_config.i.SUBSCRIPTION + "/" + subscriptionID + "/cartid"
-        }).then((function(data) {
-            return data.token;
-        }));
+  } // If our final result is undefined, we should return the default
+
+
+  return item === undefined ? def : item;
+}
+function safeTimeout(method, time) {
+  var interval = safeInterval(function () {
+    time -= 100;
+
+    if (time <= 0) {
+      interval.cancel();
+      method();
     }
-    function enableVault(_ref7) {
-        var _headers7, orderID = _ref7.orderID, clientAccessToken = _ref7.clientAccessToken;
-        return Object(api.a)({
-            query: "\n            mutation EnableVault(\n                $orderID : String!\n            ) {\n                enableVault(\n                    token: $orderID\n                )\n            }\n        ",
-            variables: {
-                orderID: orderID
-            },
-            headers: (_headers7 = {}, _headers7[constants.j.ACCESS_TOKEN] = clientAccessToken, 
-            _headers7)
-        });
+  }, 100);
+}
+function defineLazyProp(obj, key, getter) {
+  if (Array.isArray(obj)) {
+    if (typeof key !== 'number') {
+      throw new TypeError("Array key must be number");
     }
-    function updateClientConfig(_ref8) {
-        var orderID = _ref8.orderID, fundingSource = _ref8.fundingSource, integrationArtifact = _ref8.integrationArtifact, userExperienceFlow = _ref8.userExperienceFlow, productFlow = _ref8.productFlow;
-        return Object(api.a)({
-            query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
-            variables: {
-                orderID: orderID,
-                fundingSource: fundingSource,
-                integrationArtifact: integrationArtifact,
-                userExperienceFlow: userExperienceFlow,
-                productFlow: productFlow
-            }
-        }).then(belter_src.j);
+  } else if (typeof obj === 'object' && obj !== null) {
+    if (typeof key !== 'string') {
+      throw new TypeError("Object key must be string");
     }
-    function createSubscription(accessToken, subscriptionPayload, _ref) {
-        var partnerAttributionID = _ref.partnerAttributionID;
-        if (Object(lib.b)().info("rest_api_create_subscription_id"), !accessToken) throw new Error("Access token not passed");
-        if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
-        var headers = {
-            Authorization: "Bearer " + accessToken,
-            "PayPal-Partner-Attribution-Id": partnerAttributionID
-        };
-        return Object(belter_src.q)({
-            method: "post",
-            url: src_config.c,
-            headers: headers,
-            json: subscriptionPayload
-        }).then((function(_ref2) {
-            var body = _ref2.body;
-            if (!body || !body.id) throw new Error("Create Subscription Api response error:\n\n" + JSON.stringify(body, null, 4));
-            return body.id;
-        }));
+  }
+
+  Object.defineProperty(obj, key, {
+    configurable: true,
+    enumerable: true,
+    get: function get() {
+      // $FlowFixMe
+      delete obj[key];
+      var value = getter(); // $FlowFixMe
+
+      obj[key] = value;
+      return value;
+    },
+    set: function set(value) {
+      // $FlowFixMe
+      delete obj[key]; // $FlowFixMe
+
+      obj[key] = value;
     }
-    function reviseSubscription(accessToken, subscriptionID, subscriptionPayload, _ref3) {
-        var partnerAttributionID = _ref3.partnerAttributionID;
-        if (Object(lib.b)().info("rest_api_create_subscription_id"), !accessToken) throw new Error("Access token not passed");
-        if (!subscriptionID) throw new Error("Expected subscription id to be passed as first argument to revise subscription api");
-        if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
-        var headers = {
-            Authorization: "Bearer " + accessToken,
-            "PayPal-Partner-Attribution-Id": partnerAttributionID
-        };
-        return Object(belter_src.q)({
-            method: "post",
-            url: src_config.c + "/" + subscriptionID + "/revise",
-            headers: headers,
-            json: subscriptionPayload
-        }).then((function(_ref4) {
-            var status = _ref4.status;
-            if (200 !== status) throw new Error("Revise Subscription Api HTTP-" + status + " response: error:\n\n" + JSON.stringify(_ref4.body, null, 4));
-            return subscriptionID;
-        }));
-    }
-    function activateSubscription(subscriptionID, _ref5) {
-        var buyerAccessToken = _ref5.buyerAccessToken;
-        return Object(api.c)({
-            accessToken: buyerAccessToken,
-            method: "post",
-            url: src_config.i.SUBSCRIPTION + "/" + subscriptionID + "/activate"
-        });
-    }
-    function getSubscription(subscriptionID, _ref6) {
-        var buyerAccessToken = _ref6.buyerAccessToken;
-        return Object(api.c)({
-            accessToken: buyerAccessToken,
-            url: src_config.i.SUBSCRIPTION + "/" + subscriptionID
-        });
-    }
-    var esm_extends = __webpack_require__(8), util = __webpack_require__(11), MESSAGE_TYPE = {
-        REQUEST: "request",
-        RESPONSE: "response"
-    }, RESPONSE_STATUS = {
-        SUCCESS: "success",
-        ERROR: "error"
+  });
+}
+function arrayFrom(item) {
+  // eslint-disable-line no-undef
+  return Array.prototype.slice.call(item);
+}
+function isObject(item) {
+  return typeof item === 'object' && item !== null;
+}
+function isObjectObject(obj) {
+  return isObject(obj) && Object.prototype.toString.call(obj) === '[object Object]';
+}
+function isPlainObject(obj) {
+  if (!isObjectObject(obj)) {
+    return false;
+  } // $FlowFixMe
+
+
+  var constructor = obj.constructor;
+
+  if (typeof constructor !== 'function') {
+    return false;
+  }
+
+  var prototype = constructor.prototype;
+
+  if (!isObjectObject(prototype)) {
+    return false;
+  }
+
+  if (!prototype.hasOwnProperty('isPrototypeOf')) {
+    return false;
+  }
+
+  return true;
+}
+function replaceObject(item, replacer, fullKey) {
+  if (fullKey === void 0) {
+    fullKey = '';
+  }
+
+  if (Array.isArray(item)) {
+    var length = item.length;
+    var result = [];
+
+    var _loop2 = function _loop2(i) {
+      defineLazyProp(result, i, function () {
+        var itemKey = fullKey ? fullKey + "." + i : "" + i;
+        var el = item[i];
+        var child = replacer(el, i, itemKey);
+
+        if (isPlainObject(child) || Array.isArray(child)) {
+          // $FlowFixMe
+          child = replaceObject(child, replacer, itemKey);
+        }
+
+        return child;
+      });
     };
-    function firebaseSocket(_ref8) {
-        var sessionUID = _ref8.sessionUID, config = _ref8.config;
-        return function(_ref) {
-            var retryDelay, socketPromise, retryPromise, sessionUID = _ref.sessionUID, driver = _ref.driver, sourceApp = _ref.sourceApp, sourceAppVersion = _ref.sourceAppVersion, targetApp = _ref.targetApp, _ref$retry = _ref.retry, retry = void 0 === _ref$retry || _ref$retry, receivedMessages = {}, requestListeners = {}, responseListeners = {}, sendMessage = function(socket, data) {
-                var messageUID = Object(belter_src.v)();
-                receivedMessages[messageUID] = !0;
-                var message = Object(esm_extends.a)({
-                    message_uid: messageUID,
-                    source_app: sourceApp,
-                    source_app_version: sourceAppVersion,
-                    target_app: targetApp
-                }, data);
-                socket.send(JSON.stringify(message));
-            }, sendResponse = function(socket, _ref2) {
-                var messageName = _ref2.messageName, responseStatus = _ref2.responseStatus, responseData = _ref2.responseData, messageSessionUID = _ref2.messageSessionUID, requestUID = _ref2.requestUID;
-                if (socket.isOpen()) return sendMessage(socket, {
-                    session_uid: messageSessionUID,
-                    request_uid: requestUID,
-                    message_name: messageName,
-                    message_status: responseStatus,
-                    message_type: MESSAGE_TYPE.RESPONSE,
-                    message_data: responseData
-                });
-            }, closed = !1, init = function init() {
-                (socketPromise = src.a.try((function() {
-                    if (retryDelay) return retryPromise = src.a.delay(retryDelay);
-                })).then((function() {
-                    retryPromise = null;
-                    var instance = driver(), connectionPromise = new src.a((function(resolve, reject) {
-                        instance.onOpen((function() {
-                            closed = !1, retryDelay = 0, resolve(instance);
-                        })), instance.onClose((function(err) {
-                            closed = !0, reject(err || new Error("socket closed")), retry && (retry && (retryDelay = retryDelay ? 2 * retryDelay : 1), 
-                            init());
-                        })), instance.onError((function(err) {
-                            reject(err);
-                        }));
-                    }));
-                    return instance.onMessage((function(rawMessage) {
-                        return connectionPromise.then((function(socket) {
-                            return function(socket, rawData) {
-                                var parsedData;
-                                try {
-                                    parsedData = JSON.parse(rawData);
-                                } catch (err) {
-                                    throw new Error("Could not parse socket message: " + rawData);
-                                }
-                                if (!parsedData) throw new Error("No data passed from socket message");
-                                var messageSessionUID = parsedData.session_uid, requestUID = parsedData.request_uid, messageUID = parsedData.message_uid, messageName = parsedData.message_name, messageType = parsedData.message_type, messageData = parsedData.message_data, responseStatus = parsedData.message_status, messageTargetApp = parsedData.target_app;
-                                if (!(messageUID && requestUID && messageName && messageType && messageTargetApp)) throw new Error("Incomplete message: " + rawData);
-                                if (!receivedMessages[messageUID] && messageTargetApp === sourceApp) {
-                                    if (receivedMessages[messageUID] = !0, messageType === MESSAGE_TYPE.REQUEST) return function(socket, _ref3) {
-                                        var messageSessionUID = _ref3.messageSessionUID, requestUID = _ref3.requestUID, messageName = _ref3.messageName, messageData = _ref3.messageData;
-                                        return src.a.try((function() {
-                                            var requestListener = requestListeners[messageName];
-                                            if (!requestListener) throw new Error("No listener found for name: " + messageName);
-                                            var handler = requestListener.handler;
-                                            if (requestListener.requireSessionUID && messageSessionUID !== sessionUID) throw new Error("Incorrect sessionUID: " + (messageSessionUID || "undefined"));
-                                            return handler({
-                                                data: messageData
-                                            });
-                                        })).then((function(res) {
-                                            sendResponse(socket, {
-                                                responseStatus: RESPONSE_STATUS.SUCCESS,
-                                                responseData: res,
-                                                messageName: messageName,
-                                                messageSessionUID: messageSessionUID,
-                                                requestUID: requestUID
-                                            });
-                                        }), (function(err) {
-                                            sendResponse(socket, {
-                                                responseStatus: RESPONSE_STATUS.ERROR,
-                                                responseData: {
-                                                    message: err && err.message ? err.message : "Unknown error"
-                                                },
-                                                messageName: messageName,
-                                                messageSessionUID: messageSessionUID,
-                                                requestUID: requestUID
-                                            });
-                                        }));
-                                    }(socket, {
-                                        messageSessionUID: messageSessionUID,
-                                        requestUID: requestUID,
-                                        messageName: messageName,
-                                        messageData: messageData
-                                    });
-                                    if (messageType === MESSAGE_TYPE.RESPONSE) return function(_ref4) {
-                                        var requestUID = _ref4.requestUID, messageSessionUID = _ref4.messageSessionUID, responseStatus = _ref4.responseStatus, messageData = _ref4.messageData, _responseListeners$re = responseListeners[requestUID], listenerPromise = _responseListeners$re.listenerPromise, requireSessionUID = _responseListeners$re.requireSessionUID;
-                                        if (!listenerPromise) throw new Error("Could not find response listener with id: " + requestUID);
-                                        if (requireSessionUID && messageSessionUID !== sessionUID) throw new Error("Incorrect sessionUID: " + (messageSessionUID || "undefined"));
-                                        if (delete responseListeners[requestUID], responseStatus === RESPONSE_STATUS.SUCCESS) listenerPromise.resolve({
-                                            data: messageData
-                                        }); else {
-                                            if (responseStatus !== RESPONSE_STATUS.ERROR) throw new Error("Can not handle response status: " + (status || "undefined"));
-                                            listenerPromise.reject(new Error(messageData.message));
-                                        }
-                                    }({
-                                        requestUID: requestUID,
-                                        messageSessionUID: messageSessionUID,
-                                        responseStatus: responseStatus,
-                                        messageData: messageData
-                                    });
-                                    throw new Error("Unhandleable message type: " + messageType);
-                                }
-                            }(socket, rawMessage);
-                        }));
-                    })), connectionPromise;
-                }))).catch(belter_src.j);
-            };
-            return init(), {
-                on: function(name, handler, _temp) {
-                    var _ref5$requireSessionU = (void 0 === _temp ? {} : _temp).requireSessionUID, requireSessionUID = void 0 === _ref5$requireSessionU || _ref5$requireSessionU;
-                    if (requestListeners[name]) throw new Error("Listener already registered for name: " + name);
-                    requestListeners[name] = {
-                        handler: handler,
-                        requireSessionUID: requireSessionUID
-                    };
-                },
-                send: function(messageName, messageData, _temp2) {
-                    var _ref6 = void 0 === _temp2 ? {} : _temp2, _ref6$requireSessionU = _ref6.requireSessionUID, requireSessionUID = void 0 === _ref6$requireSessionU || _ref6$requireSessionU, _ref6$timeout = _ref6.timeout, timeout = void 0 === _ref6$timeout ? 0 : _ref6$timeout;
-                    return socketPromise.then((function(socket) {
-                        var requestUID = Object(belter_src.v)(), listenerPromise = new src.a;
-                        return responseListeners[requestUID] = {
-                            listenerPromise: listenerPromise,
-                            requireSessionUID: requireSessionUID
-                        }, sendMessage(socket, {
-                            request_uid: requestUID,
-                            message_name: messageName,
-                            message_type: MESSAGE_TYPE.REQUEST,
-                            message_data: messageData
-                        }), timeout && setTimeout((function() {
-                            listenerPromise.reject(new Error("Timeoued out waiting for " + messageName + " response after " + timeout + "ms"));
-                        }), timeout), listenerPromise;
-                    }));
-                },
-                reconnect: function() {
-                    return src.a.try((function() {
-                        return closed ? retryPromise ? (retryPromise.resolve(), socketPromise) : (retryDelay = 0, 
-                        init()) : socketPromise;
-                    }));
-                },
-                close: function() {
-                    retry = !1, socketPromise.then((function(socket) {
-                        return socket.close();
-                    }), belter_src.j);
-                }
-            };
-        }({
-            sessionUID: sessionUID,
-            driver: function() {
-                var open = !1, onMessageHandlers = [], onErrorHandlers = [], onCloseHandlers = [], onOpenHandlers = [], error = function(err) {
-                    for (var _i2 = 0; _i2 < onErrorHandlers.length; _i2++) (0, onErrorHandlers[_i2])(err);
-                }, databasePromise = src.a.all([ getFirebaseSessionToken(sessionUID), Object(util.b)(src_config.e.APP), Object(util.b)(src_config.e.AUTH), Object(util.b)(src_config.e.DATABASE) ]).then((function(_ref9) {
-                    var sessionToken = _ref9[0];
-                    return window.firebase.initializeApp(config), window.firebase.auth().signInWithCustomToken(sessionToken).then((function() {
-                        var database = window.firebase.database();
-                        window.firebase.database.INTERNAL.forceWebSockets(), open = !0;
-                        for (var _i4 = 0; _i4 < onOpenHandlers.length; _i4++) (0, onOpenHandlers[_i4])();
-                        return database.ref("users/" + sessionUID + "/messages").on("value", (function(res) {
-                            for (var messages = res.val() || {}, _i6 = 0, _Object$keys2 = Object.keys(messages); _i6 < _Object$keys2.length; _i6++) for (var message = messages[_Object$keys2[_i6]], _i8 = 0; _i8 < onMessageHandlers.length; _i8++) (0, 
-                            onMessageHandlers[_i8])(message);
-                        })), database;
-                    }));
-                }));
-                return {
-                    send: function(data) {
-                        databasePromise.then((function(database) {
-                            return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src.v)()).set(data);
-                        })).catch(error);
-                    },
-                    close: function() {
-                        databasePromise.then((function(database) {
-                            database.goOffline();
-                        }));
-                    },
-                    onMessage: function(handler) {
-                        onMessageHandlers.push(handler);
-                    },
-                    onError: function(handler) {
-                        onErrorHandlers.push(handler);
-                    },
-                    onOpen: function(handler) {
-                        open ? handler() : onOpenHandlers.push(handler);
-                    },
-                    onClose: function(handler) {
-                        onCloseHandlers.push(handler);
-                    },
-                    isOpen: function() {
-                        return open;
-                    }
-                };
-            },
-            sourceApp: _ref8.sourceApp,
-            sourceAppVersion: _ref8.sourceAppVersion,
-            targetApp: _ref8.targetApp
-        });
-    }
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return createAccessToken;
-    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return createOrderID;
-    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return getOrder;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return captureOrder;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return authorizeOrder;
-    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
-        return patchOrder;
-    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return getPayee;
-    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
-        return validatePaymentMethod;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return billingTokenToOrderID;
-    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
-        return subscriptionIdToCartId;
-    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return enableVault;
-    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
-        return updateClientConfig;
-    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return createSubscription;
-    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
-        return reviseSubscription;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return activateSubscription;
-    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
-        return getSubscription;
-    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return firebaseSocket;
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return LOGGER_URL;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return AUTH_API_URL;
-    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return ORDERS_API_URL;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return CREATE_SUBSCRIPTIONS_API_URL;
-    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return VALIDATE_PAYMENT_METHOD_API;
-    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return SMART_API_URI;
-    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return GRAPHQL_URI;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return EXPERIENCE_URI;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return CLIENT_ID_PAYEE_NO_MATCH;
-    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return FIREBASE_SCRIPTS;
-    }));
-    var LOGGER_URL = "/xoplatform/logger/api/logger", AUTH_API_URL = "/v1/oauth2/token", ORDERS_API_URL = "/v2/checkout/orders", CREATE_SUBSCRIPTIONS_API_URL = "/v1/billing/subscriptions", VALIDATE_PAYMENT_METHOD_API = "validate-payment-method", SMART_API_URI = {
-        AUTH: "/smart/api/auth",
-        CHECKOUT: "/smart/api/checkout",
-        ORDER: "/smart/api/order",
-        PAYMENT: "/smart/api/payment",
-        SUBSCRIPTION: "/smart/api/billagmt/subscriptions"
-    }, GRAPHQL_URI = "/graphql", EXPERIENCE_URI = {
-        CHECKOUT: "/checkoutnow",
-        NATIVE_CHECKOUT: "/smart/checkout/native"
-    }, CLIENT_ID_PAYEE_NO_MATCH = [ "Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT", "AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb", "AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO", "Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC", "AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt", "Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7", "ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP", "AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb", "ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP", "AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT", "Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD", "AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR", "ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU", "AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2" ], FIREBASE_SCRIPTS = {
-        APP: "https://www.paypalobjects.com/checkout/js/lib/firebase-app.js",
-        AUTH: "https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js",
-        DATABASE: "https://www.paypalobjects.com/checkout/js/lib/firebase-database.js"
+
+    for (var i = 0; i < length; i++) {
+      _loop2(i);
+    } // $FlowFixMe
+
+
+    return result;
+  } else if (isPlainObject(item)) {
+    var _result = {};
+
+    var _loop3 = function _loop3(key) {
+      if (!item.hasOwnProperty(key)) {
+        return "continue";
+      }
+
+      defineLazyProp(_result, key, function () {
+        var itemKey = fullKey ? fullKey + "." + key : "" + key; // $FlowFixMe
+
+        var el = item[key];
+        var child = replacer(el, key, itemKey);
+
+        if (isPlainObject(child) || Array.isArray(child)) {
+          // $FlowFixMe
+          child = replaceObject(child, replacer, itemKey);
+        }
+
+        return child;
+      });
     };
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return callRestAPI;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return callSmartAPI;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return callGraphQL;
-    }));
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8), belter_src__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_require__(1), 
-    __webpack_require__(3)), _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6), _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(0);
-    function callRestAPI(_ref) {
-        var _extends2, accessToken = _ref.accessToken, method = _ref.method, url = _ref.url, data = _ref.data, headers = _ref.headers;
-        if (!accessToken) throw new Error("No access token passed to " + url);
-        var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)(((_extends2 = {})[_constants__WEBPACK_IMPORTED_MODULE_4__.j.AUTHORIZATION] = "Bearer " + accessToken, 
-        _extends2), headers);
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.q)({
-            method: method,
-            url: url,
-            headers: requestHeaders,
-            json: data
-        }).then((function(_ref2) {
-            var status = _ref2.status, body = _ref2.body;
-            if (status >= 300) throw new Error(url + " returned status: " + status + " (Corr ID: " + _ref2.headers[_constants__WEBPACK_IMPORTED_MODULE_4__.j.PAYPAL_DEBUG_ID] + ")");
-            return body;
-        }));
+
+    for (var key in item) {
+      var _ret = _loop3(key);
+
+      if (_ret === "continue") continue;
+    } // $FlowFixMe
+
+
+    return _result;
+  } else {
+    throw new Error("Pass an object or array");
+  }
+}
+function copyProp(source, target, name, def) {
+  if (source.hasOwnProperty(name)) {
+    var descriptor = Object.getOwnPropertyDescriptor(source, name); // $FlowFixMe
+
+    Object.defineProperty(target, name, descriptor);
+  } else {
+    target[name] = def;
+  }
+}
+function regex(pattern, string, start) {
+  if (start === void 0) {
+    start = 0;
+  }
+
+  if (typeof pattern === 'string') {
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    pattern = new RegExp(pattern);
+  }
+
+  var result = string.slice(start).match(pattern);
+
+  if (!result) {
+    return;
+  } // $FlowFixMe
+
+
+  var index = result.index;
+  var regmatch = result[0];
+  return {
+    text: regmatch,
+    groups: result.slice(1),
+    start: start + index,
+    end: start + index + regmatch.length,
+    length: regmatch.length,
+    replace: function replace(text) {
+      if (!regmatch) {
+        return '';
+      }
+
+      return "" + regmatch.slice(0, start + index) + text + regmatch.slice(index + regmatch.length);
     }
-    function callSmartAPI(_ref3) {
-        var _reqHeaders, accessToken = _ref3.accessToken, url = _ref3.url, _ref3$method = _ref3.method, method = void 0 === _ref3$method ? "get" : _ref3$method, json = _ref3.json, reqHeaders = ((_reqHeaders = {})[_constants__WEBPACK_IMPORTED_MODULE_4__.j.SOURCE] = _constants__WEBPACK_IMPORTED_MODULE_4__.n, 
-        _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.j.REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__.o, 
-        _reqHeaders);
-        return accessToken && (reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.j.ACCESS_TOKEN] = accessToken), 
-        Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.q)({
-            url: url,
-            method: method,
-            headers: reqHeaders,
-            json: json
-        }).then((function(_ref4) {
-            var status = _ref4.status, body = _ref4.body, headers = _ref4.headers;
-            if ("contingency" === body.ack) {
-                var err = new Error(body.contingency);
-                throw err.data = body.data, err;
-            }
-            if (status > 400) throw new Error("Api: " + url + " returned status code: " + status + " (Corr ID: " + headers[_constants__WEBPACK_IMPORTED_MODULE_4__.j.PAYPAL_DEBUG_ID] + ")");
-            if ("success" !== body.ack) throw new Error("Api: " + url + " returned ack: " + body.ack + " (Corr ID: " + headers[_constants__WEBPACK_IMPORTED_MODULE_4__.j.PAYPAL_DEBUG_ID] + ")");
-            return body.data;
-        }));
+  };
+}
+function regexAll(pattern, string) {
+  var matches = [];
+  var start = 0; // eslint-disable-next-line no-constant-condition
+
+  while (true) {
+    var regmatch = regex(pattern, string, start);
+
+    if (!regmatch) {
+      break;
     }
-    function callGraphQL(_ref5) {
-        var query = _ref5.query, _ref5$variables = _ref5.variables, variables = void 0 === _ref5$variables ? {} : _ref5$variables, _ref5$headers = _ref5.headers, headers = void 0 === _ref5$headers ? {} : _ref5$headers;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.q)({
-            url: _config__WEBPACK_IMPORTED_MODULE_3__.f,
-            method: "POST",
-            json: {
-                query: query,
-                variables: variables
-            },
-            headers: Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, headers)
-        }).then((function(_ref6) {
-            var status = _ref6.status, body = _ref6.body, errors = body.errors || [];
-            if (errors.length) {
-                var message = errors[0].message || JSON.stringify(errors[0]);
-                throw new Error(message);
-            }
-            if (200 !== status) throw new Error(_config__WEBPACK_IMPORTED_MODULE_3__.f + " returned status " + status);
-            return body;
-        }));
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    function _extends() {
-        return (_extends = Object.assign || function(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) ({}).hasOwnProperty.call(source, key) && (target[key] = source[key]);
-            }
-            return target;
-        }).apply(this, arguments);
-    }
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return _extends;
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var PROTOCOL = {
-        MOCK: "mock:",
-        FILE: "file:",
-        ABOUT: "about:"
-    }, IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n";
-    function isAboutProtocol(win) {
-        return void 0 === win && (win = window), win.location.protocol === PROTOCOL.ABOUT;
-    }
-    function getParent(win) {
-        if (void 0 === win && (win = window), win) try {
-            if (win.parent && win.parent !== win) return win.parent;
-        } catch (err) {}
-    }
-    function canReadFromWindow(win) {
-        try {
-            return !0;
-        } catch (err) {}
-        return !1;
-    }
-    function getActualDomain(win) {
-        void 0 === win && (win = window);
-        var location = win.location;
-        if (!location) throw new Error("Can not read window location");
-        var protocol = location.protocol;
-        if (!protocol) throw new Error("Can not read window protocol");
-        if (protocol === PROTOCOL.FILE) return PROTOCOL.FILE + "//";
-        if (protocol === PROTOCOL.ABOUT) {
-            var parent = getParent(win);
-            return parent && canReadFromWindow() ? getActualDomain(parent) : PROTOCOL.ABOUT + "//";
-        }
-        var host = location.host;
-        if (!host) throw new Error("Can not read window host");
-        return protocol + "//" + host;
-    }
-    function getDomain(win) {
-        void 0 === win && (win = window);
-        var domain = getActualDomain(win);
-        return domain && win.mockDomain && 0 === win.mockDomain.indexOf(PROTOCOL.MOCK) ? win.mockDomain : domain;
-    }
-    function isBlankDomain(win) {
-        try {
-            if (!win.location.href) return !0;
-            if ("about:blank" === win.location.href) return !0;
-        } catch (err) {}
-        return !1;
-    }
-    function isAncestorParent(parent, child) {
-        if (!parent || !child) return !1;
-        var childParent = getParent(child);
-        return childParent ? childParent === parent : -1 !== function(win) {
-            var result = [];
-            try {
-                for (;win.parent !== win; ) result.push(win.parent), win = win.parent;
-            } catch (err) {}
-            return result;
-        }(child).indexOf(parent);
-    }
-    function getTop(win) {
-        void 0 === win && (win = window);
-        try {
-            if (win.top) return win.top;
-        } catch (err) {}
-        if (getParent(win) === win) return win;
-        try {
-            if (isAncestorParent(window, win) && window.top) return window.top;
-        } catch (err) {}
-        try {
-            if (isAncestorParent(win, window) && window.top) return window.top;
-        } catch (err) {}
-        for (var _i7 = 0, _getAllChildFrames4 = function getAllChildFrames(win) {
-            for (var result = [], _i3 = 0, _getFrames2 = function(win) {
-                var frames, len, result = [];
-                try {
-                    frames = win.frames;
-                } catch (err) {
-                    frames = win;
-                }
-                try {
-                    len = frames.length;
-                } catch (err) {}
-                if (0 === len) return result;
-                if (len) {
-                    for (var i = 0; i < len; i++) {
-                        var frame = void 0;
-                        try {
-                            frame = frames[i];
-                        } catch (err) {
-                            continue;
-                        }
-                        result.push(frame);
-                    }
-                    return result;
-                }
-                for (var _i = 0; _i < 100; _i++) {
-                    var _frame = void 0;
-                    try {
-                        _frame = frames[_i];
-                    } catch (err) {
-                        return result;
-                    }
-                    if (!_frame) return result;
-                    result.push(_frame);
-                }
-                return result;
-            }(win); _i3 < _getFrames2.length; _i3++) {
-                var frame = _getFrames2[_i3];
-                result.push(frame);
-                for (var _i5 = 0, _getAllChildFrames2 = getAllChildFrames(frame); _i5 < _getAllChildFrames2.length; _i5++) result.push(_getAllChildFrames2[_i5]);
-            }
-            return result;
-        }(win); _i7 < _getAllChildFrames4.length; _i7++) {
-            var frame = _getAllChildFrames4[_i7];
-            try {
-                if (frame.top) return frame.top;
-            } catch (err) {}
-            if (getParent(frame) === frame) return frame;
-        }
-    }
-    var iframeWindows = [], iframeFrames = [];
-    function isWindowClosed(win, allowMock) {
-        void 0 === allowMock && (allowMock = !0);
-        try {
-            if (win === window) return !1;
-        } catch (err) {
-            return !0;
-        }
-        try {
-            if (!win) return !0;
-        } catch (err) {
-            return !0;
-        }
-        try {
-            if (win.closed) return !0;
-        } catch (err) {
-            return !err || err.message !== IE_WIN_ACCESS_ERROR;
-        }
-        if (allowMock && function(win) {
-            if (!function(win) {
-                try {
-                    if (win === window) return !0;
-                } catch (err) {}
-                try {
-                    var desc = Object.getOwnPropertyDescriptor(win, "location");
-                    if (desc && !1 === desc.enumerable) return !1;
-                } catch (err) {}
-                try {
-                    if (isAboutProtocol(win) && canReadFromWindow()) return !0;
-                } catch (err) {}
-                try {
-                    if (getActualDomain(win) === getActualDomain(window)) return !0;
-                } catch (err) {}
-                return !1;
-            }(win)) return !1;
-            try {
-                if (win === window) return !0;
-                if (isAboutProtocol(win) && canReadFromWindow()) return !0;
-                if (getDomain(window) === getDomain(win)) return !0;
-            } catch (err) {}
-            return !1;
-        }(win)) try {
-            if (win.mockclosed) return !0;
-        } catch (err) {}
-        try {
-            if (!win.parent || !win.top) return !0;
-        } catch (err) {}
-        var iframeIndex = function(collection, item) {
-            for (var i = 0; i < collection.length; i++) try {
-                if (collection[i] === item) return i;
-            } catch (err) {}
-            return -1;
-        }(iframeWindows, win);
-        if (-1 !== iframeIndex) {
-            var frame = iframeFrames[iframeIndex];
-            if (frame && function(frame) {
-                if (!frame.contentWindow) return !0;
-                if (!frame.parentNode) return !0;
-                var doc = frame.ownerDocument;
-                return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
-            }(frame)) return !0;
-        }
-        return !1;
-    }
-    function linkFrameWindow(frame) {
-        if (function() {
-            for (var i = 0; i < iframeWindows.length; i++) {
-                var closed = !1;
-                try {
-                    closed = iframeWindows[i].closed;
-                } catch (err) {}
-                closed && (iframeFrames.splice(i, 1), iframeWindows.splice(i, 1));
-            }
-        }(), frame && frame.contentWindow) try {
-            iframeWindows.push(frame.contentWindow), iframeFrames.push(frame);
-        } catch (err) {}
-    }
-    function isWindow(obj) {
-        try {
-            if (obj === window) return !0;
-        } catch (err) {
-            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
-        }
-        try {
-            if ("[object Window]" === {}.toString.call(obj)) return !0;
-        } catch (err) {
-            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
-        }
-        try {
-            if (window.Window && obj instanceof window.Window) return !0;
-        } catch (err) {
-            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
-        }
-        try {
-            if (obj && obj.self === obj) return !0;
-        } catch (err) {
-            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
-        }
-        try {
-            if (obj && obj.parent === obj) return !0;
-        } catch (err) {
-            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
-        }
-        try {
-            if (obj && obj.top === obj) return !0;
-        } catch (err) {
-            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
-        }
-        try {
-            if (obj && "__unlikely_value__" === obj.__cross_domain_utils_window_check__) return !1;
-        } catch (err) {
-            return !0;
-        }
-        return !1;
-    }
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return getParent;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return getDomain;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return isBlankDomain;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return getTop;
-    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return isWindowClosed;
-    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return linkFrameWindow;
-    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return isWindow;
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return getButtons;
-    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return getSelectedFunding;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return enableLoadingSpinner;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return disableLoadingSpinner;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return getNonce;
-    })), __webpack_require__(2);
-    var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-    function getButtons() {
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.o)("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__.c.FUNDING_SOURCE + " ]");
-    }
-    function getSelectedFunding(button) {
-        var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.c.FUNDING_SOURCE), paymentMethodID = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.c.PAYMENT_METHOD_ID);
-        return {
-            fundingSource: fundingSource,
-            card: button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.c.CARD),
-            paymentMethodID: paymentMethodID
-        };
-    }
-    function enableLoadingSpinner(button) {
-        button.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__.a.LOADING);
-    }
-    function disableLoadingSpinner(button) {
-        button.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__.a.LOADING);
-    }
-    function getNonce() {
-        var nonce = "";
-        return document.body && (nonce = document.body.getAttribute("data-nonce") || ""), 
-        nonce;
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return unresolvedPromise;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return promiseNoop;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return sendBeacon;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return fixClickFocus;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return loadScript;
-    }));
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-    function unresolvedPromise() {
-        return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a(belter_src__WEBPACK_IMPORTED_MODULE_1__.j);
-    }
-    function promiseNoop() {
-        return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.resolve();
-    }
-    function sendBeacon(url) {
-        var img = document.createElement("img");
-        img.src = url, img.style.visibility = "hidden", img.style.position = "absolute", 
-        document.body && document.body.appendChild(img);
-    }
-    function fixClickFocus(el) {
-        el.addEventListener(_constants__WEBPACK_IMPORTED_MODULE_2__.d.MOUSEDOWN, (function() {
-            el.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__.a.CLICKED);
-        })), el.addEventListener(_constants__WEBPACK_IMPORTED_MODULE_2__.d.HOVER, (function(event) {
-            el.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_2__.a.CLICKED) && (event.preventDefault(), 
-            el.blur(), el.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__.a.CLICKED));
-        }));
-    }
-    function loadScript(url) {
-        return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a((function(resolve, reject) {
-            var container = document.body || document.head;
-            if (!container) return reject(new Error("Can not find container for script: " + url));
-            var script = document.createElement("script");
-            script.setAttribute("src", url), script.addEventListener("load", (function() {
-                return resolve(script);
-            })), script.addEventListener("error", (function(err) {
-                return reject(err);
-            })), container.appendChild(script);
-        }));
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return POPUP_BRIDGE_OPTYPE;
-    })), __webpack_require__(1);
-    var POPUP_BRIDGE_OPTYPE = {
-        PAYMENT: "payment",
-        CANCEL: "cancel"
-    };
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.r(__webpack_exports__), __webpack_require__(22);
-    var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23);
-    __webpack_require__.d(__webpack_exports__, "getGlobalProps", (function() {
-        return _props__WEBPACK_IMPORTED_MODULE_1__.b;
-    })), __webpack_require__.d(__webpack_exports__, "getButtonCallbackProps", (function() {
-        return _props__WEBPACK_IMPORTED_MODULE_1__.a;
-    }));
-    var _createOrder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(15);
-    __webpack_require__.d(__webpack_exports__, "buildXCreateOrderData", (function() {
-        return _createOrder__WEBPACK_IMPORTED_MODULE_2__.c;
-    })), __webpack_require__.d(__webpack_exports__, "buildCreateOrder", (function() {
-        return _createOrder__WEBPACK_IMPORTED_MODULE_2__.a;
-    })), __webpack_require__.d(__webpack_exports__, "buildXCreateOrderActions", (function() {
-        return _createOrder__WEBPACK_IMPORTED_MODULE_2__.b;
-    })), __webpack_require__.d(__webpack_exports__, "getCreateOrder", (function() {
-        return _createOrder__WEBPACK_IMPORTED_MODULE_2__.d;
-    }));
-    var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
-    __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementData", (function() {
-        return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__.b;
-    })), __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementActions", (function() {
-        return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__.a;
-    })), __webpack_require__.d(__webpack_exports__, "getCreateBillingAgreement", (function() {
-        return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__.c;
-    }));
-    var _createSubscription__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
-    __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionData", (function() {
-        return _createSubscription__WEBPACK_IMPORTED_MODULE_4__.b;
-    })), __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionActions", (function() {
-        return _createSubscription__WEBPACK_IMPORTED_MODULE_4__.a;
-    })), __webpack_require__.d(__webpack_exports__, "getCreateSubscription", (function() {
-        return _createSubscription__WEBPACK_IMPORTED_MODULE_4__.c;
-    }));
-    var _onApprove__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16);
-    __webpack_require__.d(__webpack_exports__, "getOnApprove", (function() {
-        return _onApprove__WEBPACK_IMPORTED_MODULE_5__.a;
-    }));
-    var _onInit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(14);
-    __webpack_require__.d(__webpack_exports__, "buildXOnInitData", (function() {
-        return _onInit__WEBPACK_IMPORTED_MODULE_6__.b;
-    })), __webpack_require__.d(__webpack_exports__, "buildXOnInitActions", (function() {
-        return _onInit__WEBPACK_IMPORTED_MODULE_6__.a;
-    })), __webpack_require__.d(__webpack_exports__, "getOnInit", (function() {
-        return _onInit__WEBPACK_IMPORTED_MODULE_6__.c;
-    }));
-    var _onCancel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(17);
-    __webpack_require__.d(__webpack_exports__, "buildXOnCancelData", (function() {
-        return _onCancel__WEBPACK_IMPORTED_MODULE_7__.b;
-    })), __webpack_require__.d(__webpack_exports__, "buildXOnCancelActions", (function() {
-        return _onCancel__WEBPACK_IMPORTED_MODULE_7__.a;
-    })), __webpack_require__.d(__webpack_exports__, "getOnCancel", (function() {
-        return _onCancel__WEBPACK_IMPORTED_MODULE_7__.c;
-    }));
-    var _onShippingChange__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(21);
-    __webpack_require__.d(__webpack_exports__, "buildXOnShippingChangeData", (function() {
-        return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__.a;
-    })), __webpack_require__.d(__webpack_exports__, "buildXShippingChangeActions", (function() {
-        return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__.b;
-    })), __webpack_require__.d(__webpack_exports__, "getOnShippingChange", (function() {
-        return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__.c;
-    }));
-    var _onClick__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(18);
-    __webpack_require__.d(__webpack_exports__, "buildXOnClickData", (function() {
-        return _onClick__WEBPACK_IMPORTED_MODULE_9__.b;
-    })), __webpack_require__.d(__webpack_exports__, "buildXOnClickActions", (function() {
-        return _onClick__WEBPACK_IMPORTED_MODULE_9__.a;
-    })), __webpack_require__.d(__webpack_exports__, "getOnClick", (function() {
-        return _onClick__WEBPACK_IMPORTED_MODULE_9__.c;
-    }));
-    var _onError__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(24);
-    for (var __WEBPACK_IMPORT_KEY__ in _onError__WEBPACK_IMPORTED_MODULE_10__) [ "getGlobalProps", "getButtonCallbackProps", "buildXCreateOrderData", "buildCreateOrder", "buildXCreateOrderActions", "getCreateOrder", "buildXCreateBillingAgreementData", "buildXCreateBillingAgreementActions", "getCreateBillingAgreement", "buildXCreateSubscriptionData", "buildXCreateSubscriptionActions", "getCreateSubscription", "getOnApprove", "buildXOnInitData", "buildXOnInitActions", "getOnInit", "buildXOnCancelData", "buildXOnCancelActions", "getOnCancel", "buildXOnShippingChangeData", "buildXShippingChangeActions", "getOnShippingChange", "buildXOnClickData", "buildXOnClickActions", "getOnClick", "default" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
-        __webpack_require__.d(__webpack_exports__, key, (function() {
-            return _onError__WEBPACK_IMPORTED_MODULE_10__[key];
-        }));
-    }(__WEBPACK_IMPORT_KEY__);
-    var _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(12);
-    __webpack_require__.d(__webpack_exports__, "POPUP_BRIDGE_OPTYPE", (function() {
-        return _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__.a;
-    })), __webpack_require__(25), __webpack_require__(26);
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return buildXOnInitData;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return buildXOnInitActions;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return getOnInit;
-    }));
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-    function buildXOnInitData() {
-        return {};
-    }
-    function buildXOnInitActions(set) {
-        return {
-            enable: function() {
-                return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.try((function() {
-                    return set(!0);
-                }));
-            },
-            disable: function() {
-                return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.try((function() {
-                    return set(!1);
-                }));
-            }
-        };
-    }
-    function getOnInit(xprops) {
-        var onInit = xprops.onInit;
-        return function() {
-            var enabled = !0;
-            return {
-                initPromise: zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.try((function() {
-                    if (onInit) return onInit({}, buildXOnInitActions((function(val) {
-                        enabled = val;
-                    })));
-                })),
-                isEnabled: function() {
-                    return enabled;
-                }
-            };
-        };
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return buildXCreateOrderData;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return buildCreateOrder;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return buildXCreateOrderActions;
-    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return getCreateOrder;
-    }));
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8), zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1), belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2), _api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(0), _lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4);
-    function buildXCreateOrderData() {
-        return {};
-    }
-    function buildCreateOrder(_ref) {
-        var clientID = _ref.clientID, intent = _ref.intent, currency = _ref.currency, merchantID = _ref.merchantID, partnerAttributionID = _ref.partnerAttributionID;
-        return function(data) {
-            var order = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, data);
-            if (order.intent && order.intent.toLowerCase() !== intent) throw new Error("Unexpected intent: " + order.intent + " passed to order.create. Please ensure you are passing /sdk/js?" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.j.INTENT + "=" + order.intent.toLowerCase() + " in the paypal script tag.");
-            return (order = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, order, {
-                intent: intent.toUpperCase()
-            })).purchase_units = order.purchase_units.map((function(unit) {
-                if (unit.amount.currency_code && unit.amount.currency_code !== currency) throw new Error("Unexpected currency: " + unit.amount.currency_code + " passed to order.create. Please ensure you are passing /sdk/js?" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.j.CURRENCY + "=" + unit.amount.currency_code + " in the paypal script tag.");
-                var payee = unit.payee;
-                if (payee && merchantID && merchantID.length) {
-                    if (!merchantID[0]) throw new Error("Pass " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.j.MERCHANT_ID + "=XYZ in the paypal script tag.");
-                    if (payee.merchant_id && payee.merchant_id !== merchantID[0]) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
-                }
-                return merchantID && (payee = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, payee, {
-                    merchant_id: merchantID[0]
-                })), Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, unit, {
-                    payee: payee,
-                    amount: Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, unit.amount, {
-                        currency_code: currency
-                    })
-                });
-            })), order.application_context = order.application_context || {}, Object(_api__WEBPACK_IMPORTED_MODULE_4__.e)(clientID).then((function(facilitatorAccessToken) {
-                return Object(_api__WEBPACK_IMPORTED_MODULE_4__.f)(order, {
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    partnerAttributionID: partnerAttributionID
-                });
-            }));
-        };
-    }
-    function buildXCreateOrderActions(_ref2) {
-        return {
-            order: {
-                create: buildCreateOrder({
-                    clientID: _ref2.clientID,
-                    intent: _ref2.intent,
-                    currency: _ref2.currency,
-                    merchantID: _ref2.merchantID,
-                    partnerAttributionID: _ref2.partnerAttributionID
-                })
-            }
-        };
-    }
-    function getCreateOrder(xprops, _ref3) {
-        var validationPromise = _ref3.validationPromise, createBillingAgreement = _ref3.createBillingAgreement, createSubscription = _ref3.createSubscription, createOrder = xprops.createOrder, buttonSessionID = xprops.buttonSessionID, data = {}, actions = buildXCreateOrderActions({
-            clientID: xprops.clientID,
-            intent: xprops.intent,
-            currency: xprops.currency,
-            merchantID: xprops.merchantID,
-            partnerAttributionID: xprops.partnerAttributionID
+
+    matches.push(regmatch);
+    start = match.end;
+  }
+
+  return matches;
+}
+function isDefined(value) {
+  return value !== null && value !== undefined;
+}
+function cycle(method) {
+  return src["a" /* ZalgoPromise */].try(method).then(function () {
+    return cycle(method);
+  });
+}
+function debounce(method, time) {
+  if (time === void 0) {
+    time = 100;
+  }
+
+  var timeout;
+
+  var debounceWrapper = function debounceWrapper() {
+    var _this4 = this,
+        _arguments3 = arguments;
+
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      return method.apply(_this4, _arguments3);
+    }, time);
+  };
+
+  return setFunctionName(debounceWrapper, getFunctionName(method) + "::debounced");
+}
+function isRegex(item) {
+  return Object.prototype.toString.call(item) === '[object RegExp]';
+}
+// eslint-disable-next-line flowtype/no-weak-types
+var util_weakMapMemoize = function weakMapMemoize(method) {
+  var weakmap = new weakmap_CrossDomainSafeWeakMap(); // eslint-disable-next-line flowtype/no-weak-types
+
+  return function weakmapMemoized(arg) {
+    var _this5 = this;
+
+    return weakmap.getOrSet(arg, function () {
+      return method.call(_this5, arg);
+    });
+  };
+};
+// eslint-disable-next-line flowtype/no-weak-types
+var util_weakMapMemoizePromise = function weakMapMemoizePromise(method) {
+  var weakmap = new weakmap_CrossDomainSafeWeakMap(); // eslint-disable-next-line flowtype/no-weak-types
+
+  return function weakmapMemoizedPromise(arg) {
+    var _this6 = this;
+
+    return weakmap.getOrSet(arg, function () {
+      return method.call(_this6, arg).finally(function () {
+        weakmap.delete(arg);
+      });
+    });
+  };
+};
+function getOrSet(obj, key, getter) {
+  if (obj.hasOwnProperty(key)) {
+    return obj[key];
+  }
+
+  var val = getter();
+  obj[key] = val;
+  return val;
+}
+function cleanup(obj) {
+  var tasks = [];
+  var cleaned = false;
+  return {
+    set: function set(name, item) {
+      if (!cleaned) {
+        obj[name] = item;
+        this.register(function () {
+          delete obj[name];
         });
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.i)((function() {
-            return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__.a.try((function() {
-                return validationPromise || !0;
-            })).then((function(valid) {
-                return valid ? createBillingAgreement ? createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_4__.c) : createSubscription ? createSubscription().then(_api__WEBPACK_IMPORTED_MODULE_4__.o) : createOrder ? createOrder(data, actions) : actions.order.create({
-                    purchase_units: [ {
-                        amount: {
-                            currency_code: "USD",
-                            value: "0.01"
-                        }
-                    } ]
-                }) : Object(_lib__WEBPACK_IMPORTED_MODULE_6__.f)();
-            })).then((function(orderID) {
-                var _getLogger$track;
-                if (!orderID || "string" != typeof orderID) throw new Error("Expected an order id to be passed");
-                if (0 === orderID.indexOf("PAY-") || 0 === orderID.indexOf("PAYID-")) throw new Error("Do not pass PAY-XXX or PAYID-XXX directly into createOrder. Pass the EC-XXX token instead");
-                return Object(_lib__WEBPACK_IMPORTED_MODULE_6__.b)().track((_getLogger$track = {}, 
-                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_5__.g.BUTTON, 
-                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_5__.h.RECEIVE_ORDER, 
-                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.d.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_5__.f.ORDER_ID, 
-                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.d.CONTEXT_ID] = orderID, 
-                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.d.BUTTON_SESSION_UID] = buttonSessionID, 
-                _getLogger$track)).flush(), orderID;
-            }));
-        }));
+      }
+
+      return item;
+    },
+    register: function register(method) {
+      if (cleaned) {
+        method();
+      } else {
+        tasks.push(once(method));
+      }
+    },
+    all: function all() {
+      var results = [];
+      cleaned = true;
+
+      while (tasks.length) {
+        var task = tasks.pop();
+        results.push(task());
+      }
+
+      return src["a" /* ZalgoPromise */].all(results).then(util_noop);
     }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return getOnApprove;
-    }));
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0), _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
-    function getOnApprove(xprops, _ref2) {
-        var createOrder = _ref2.createOrder, onApprove = xprops.onApprove, onError = xprops.onError, intent = xprops.intent, buttonSessionID = xprops.buttonSessionID, partnerAttributionID = xprops.partnerAttributionID;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function(_ref3, _ref4) {
-            var payerID = _ref3.payerID, paymentID = _ref3.paymentID, billingToken = _ref3.billingToken, subscriptionID = _ref3.subscriptionID, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, restart = _ref4.restart;
-            return createOrder().then((function(orderID) {
-                var _getLogger$info$track;
-                Object(_lib__WEBPACK_IMPORTED_MODULE_4__.b)().info("button_authorize").track((_getLogger$info$track = {}, 
-                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__.g.BUTTON, 
-                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__.h.CHECKOUT_AUTHORIZE, 
-                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.BUTTON_SESSION_UID] = buttonSessionID, 
-                _getLogger$info$track)).flush();
-                var data = {
-                    orderID: orderID,
-                    payerID: payerID,
-                    paymentID: paymentID,
-                    billingToken: billingToken,
-                    subscriptionID: subscriptionID
-                }, actions = function(_ref) {
-                    var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, subscriptionID = _ref.subscriptionID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, handleProcessorError = function(err) {
-                        if (err && err.data && err.data.details && err.data.details.some((function(detail) {
-                            return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.l.INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.l.PAYER_ACTION_REQUIRED;
-                        }))) return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__.f);
-                        throw new Error("Order could not be captured");
-                    }, get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function() {
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.j)(orderID, {
-                            facilitatorAccessToken: facilitatorAccessToken,
-                            buyerAccessToken: buyerAccessToken,
-                            partnerAttributionID: partnerAttributionID
-                        });
-                    })), capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function() {
-                        if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE) throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.j.INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE + " to use client-side capture");
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.d)(orderID, {
-                            facilitatorAccessToken: facilitatorAccessToken,
-                            buyerAccessToken: buyerAccessToken,
-                            partnerAttributionID: partnerAttributionID
-                        }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
-                    })), authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function() {
-                        if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE) throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.j.INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE + " to use client-side authorize");
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.b)(orderID, {
-                            facilitatorAccessToken: facilitatorAccessToken,
-                            buyerAccessToken: buyerAccessToken,
-                            partnerAttributionID: partnerAttributionID
-                        }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
-                    })), getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function() {
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.l)(subscriptionID, {
-                            buyerAccessToken: buyerAccessToken
-                        });
-                    })), activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function() {
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.a)(subscriptionID, {
-                            buyerAccessToken: buyerAccessToken
-                        });
-                    }));
-                    return {
-                        order: {
-                            capture: capture,
-                            authorize: authorize,
-                            patch: function(data) {
-                                return void 0 === data && (data = {}), Object(_api__WEBPACK_IMPORTED_MODULE_2__.m)(orderID, data, {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
-                                    partnerAttributionID: partnerAttributionID
-                                }).catch((function() {
-                                    throw new Error("Order could not be patched");
-                                }));
-                            },
-                            get: get
-                        },
-                        subscription: {
-                            get: getSubscriptionApi,
-                            activate: activateSubscriptionApi
-                        },
-                        restart: restart,
-                        redirect: function(url) {
-                            if (!url) throw new Error("Expected redirect url");
-                            if (-1 === url.indexOf("://")) throw Object(_lib__WEBPACK_IMPORTED_MODULE_4__.b)().warn("redir_url_non_scheme", {
-                                url: url
-                            }).flush(), new Error("Invalid redirect url: " + url + " - must be fully qualified url");
-                            return url.match(/^https?:\/\//) || Object(_lib__WEBPACK_IMPORTED_MODULE_4__.b)().warn("redir_url_non_http", {
-                                url: url
-                            }).flush(), Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.p)(url, window.top);
-                        }
-                    };
-                }({
-                    orderID: orderID,
-                    intent: intent,
-                    restart: restart,
-                    subscriptionID: subscriptionID,
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    buyerAccessToken: buyerAccessToken,
-                    partnerAttributionID: partnerAttributionID
-                });
-                return onApprove ? onApprove(data, actions).catch(onError) : intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE ? actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__.j) : intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE ? actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__.j) : void 0;
-            }));
-        }));
+  };
+}
+function tryCatch(fn) {
+  var result;
+  var error;
+
+  try {
+    result = fn();
+  } catch (err) {
+    error = err;
+  } // $FlowFixMe
+
+
+  return {
+    result: result,
+    error: error
+  };
+}
+function removeFromArray(arr, item) {
+  var index = arr.indexOf(item);
+
+  if (index !== -1) {
+    arr.splice(index, 1);
+  }
+}
+function assertExists(name, thing) {
+  if (thing === null || typeof thing === 'undefined') {
+    throw new Error("Expected " + name + " to be present");
+  }
+
+  return thing;
+}
+function unique(arr) {
+  var result = {};
+
+  for (var _i4 = 0; _i4 < arr.length; _i4++) {
+    var item = arr[_i4];
+    // eslint-disable-next-line const-immutable/no-mutation
+    result[item] = true;
+  }
+
+  return Object.keys(result);
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/constants.js
+var KEY_CODES = {
+  ENTER: 13
+};
+// CONCATENATED MODULE: ./node_modules/belter/src/dom.js
+
+
+/* eslint max-lines: off */
+
+
+
+
+
+
+function isDocumentReady() {
+  return Boolean(document.body) && document.readyState === 'complete';
+}
+function urlEncode(str) {
+  return str.replace(/\?/g, '%3F').replace(/&/g, '%26').replace(/#/g, '%23').replace(/\+/g, '%2B');
+}
+function waitForWindowReady() {
+  return inlineMemoize(waitForWindowReady, function () {
+    return new src["a" /* ZalgoPromise */](function (resolve) {
+      if (isDocumentReady()) {
+        resolve();
+      }
+
+      window.addEventListener('load', function () {
+        return resolve();
+      });
+    });
+  });
+}
+function waitForDocumentReady() {
+  return inlineMemoize(waitForDocumentReady, function () {
+    return new src["a" /* ZalgoPromise */](function (resolve) {
+      if (isDocumentReady()) {
+        return resolve();
+      }
+
+      var interval = setInterval(function () {
+        if (isDocumentReady()) {
+          clearInterval(interval);
+          return resolve();
+        }
+      }, 10);
+    });
+  });
+}
+function waitForDocumentBody() {
+  return waitForDocumentReady().then(function () {
+    if (document.body) {
+      return document.body;
     }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return buildXOnCancelData;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return buildXOnCancelActions;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return getOnCancel;
-    }));
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2), _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4), _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(0);
-    function buildXOnCancelData(_ref) {
-        return {
-            orderID: _ref.orderID
+
+    throw new Error('Document ready but document.body not present');
+  });
+}
+function parseQuery(queryString) {
+  return inlineMemoize(parseQuery, function () {
+    var params = {};
+
+    if (!queryString) {
+      return params;
+    }
+
+    if (queryString.indexOf('=') === -1) {
+      return params;
+    }
+
+    for (var _i2 = 0, _queryString$split2 = queryString.split('&'); _i2 < _queryString$split2.length; _i2++) {
+      var pair = _queryString$split2[_i2];
+      pair = pair.split('=');
+
+      if (pair[0] && pair[1]) {
+        params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+      }
+    }
+
+    return params;
+  }, [queryString]);
+}
+function getQueryParam(name) {
+  return parseQuery(window.location.search.slice(1))[name];
+}
+function urlWillRedirectPage(url) {
+  if (url.indexOf('#') === -1) {
+    return true;
+  }
+
+  if (url.indexOf('#') === 0) {
+    return false;
+  }
+
+  if (url.split('#')[0] === window.location.href.split('#')[0]) {
+    return false;
+  }
+
+  return true;
+}
+function formatQuery(obj) {
+  if (obj === void 0) {
+    obj = {};
+  }
+
+  return Object.keys(obj).filter(function (key) {
+    return typeof obj[key] === 'string';
+  }).map(function (key) {
+    return urlEncode(key) + "=" + urlEncode(obj[key]);
+  }).join('&');
+}
+function extendQuery(originalQuery, props) {
+  if (props === void 0) {
+    props = {};
+  }
+
+  if (!props || !Object.keys(props).length) {
+    return originalQuery;
+  }
+
+  return formatQuery(Object(esm_extends["a" /* default */])({}, parseQuery(originalQuery), {}, props));
+}
+function extendUrl(url, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  var query = options.query || {};
+  var hash = options.hash || {};
+  var originalUrl;
+  var originalQuery;
+  var originalHash;
+
+  var _url$split = url.split('#');
+
+  originalUrl = _url$split[0];
+  originalHash = _url$split[1];
+
+  var _originalUrl$split = originalUrl.split('?');
+
+  originalUrl = _originalUrl$split[0];
+  originalQuery = _originalUrl$split[1];
+  var queryString = extendQuery(originalQuery, query);
+  var hashString = extendQuery(originalHash, hash);
+
+  if (queryString) {
+    originalUrl = originalUrl + "?" + queryString;
+  }
+
+  if (hashString) {
+    originalUrl = originalUrl + "#" + hashString;
+  }
+
+  return originalUrl;
+}
+function redirect(url, win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  return new src["a" /* ZalgoPromise */](function (resolve) {
+    win.location = url;
+
+    if (!urlWillRedirectPage(url)) {
+      resolve();
+    }
+  });
+}
+function hasMetaViewPort() {
+  var meta = document.querySelector('meta[name=viewport]');
+
+  if (isDevice() && window.screen.width < 660 && !meta) {
+    return false;
+  }
+
+  return true;
+}
+function isElementVisible(el) {
+  return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+}
+function enablePerformance() {
+  return inlineMemoize(enablePerformance, function () {
+    /* eslint-disable compat/compat */
+    return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1000 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
+    /* eslint-enable compat/compat */
+  });
+}
+function getPageRenderTime() {
+  return waitForDocumentReady().then(function () {
+    if (!enablePerformance()) {
+      return;
+    }
+
+    var timing = window.performance.timing;
+
+    if (timing.connectEnd && timing.domInteractive) {
+      return timing.domInteractive - timing.connectEnd;
+    }
+  });
+}
+function htmlEncode(html) {
+  if (html === void 0) {
+    html = '';
+  }
+
+  return html.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/\//g, '&#x2F;');
+}
+function isBrowser() {
+  return typeof window !== 'undefined';
+}
+function querySelectorAll(selector, doc) {
+  if (doc === void 0) {
+    doc = window.document;
+  }
+
+  return Array.prototype.slice.call(doc.querySelectorAll(selector));
+}
+function onClick(element, handler) {
+  element.addEventListener('touchstart', util_noop);
+  element.addEventListener('click', handler);
+  element.addEventListener('keypress', function (event) {
+    // $FlowFixMe
+    if (event.keyCode === KEY_CODES.ENTER) {
+      return handler(event);
+    }
+  });
+}
+function getScript(_ref) {
+  var _ref$host = _ref.host,
+      host = _ref$host === void 0 ? window.location.host : _ref$host,
+      path = _ref.path;
+  return inlineMemoize(getScript, function () {
+    var url = "" + host + path;
+    var scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
+
+    for (var _i4 = 0; _i4 < scripts.length; _i4++) {
+      var script = scripts[_i4];
+
+      if (!script.src) {
+        continue;
+      }
+
+      var src = script.src.replace(/^https?:\/\//, '').split('?')[0];
+
+      if (src === url) {
+        return script;
+      }
+    }
+  }, [path]);
+}
+function isLocalStorageEnabled() {
+  return inlineMemoize(isLocalStorageEnabled, function () {
+    try {
+      if (typeof window === 'undefined') {
+        return false;
+      }
+
+      if (window.localStorage) {
+        var value = Math.random().toString();
+        window.localStorage.setItem('__test__localStorage__', value);
+        var result = window.localStorage.getItem('__test__localStorage__');
+        window.localStorage.removeItem('__test__localStorage__');
+
+        if (value === result) {
+          return true;
+        }
+      }
+    } catch (err) {// pass
+    }
+
+    return false;
+  });
+}
+function getBrowserLocales() {
+  var nav = window.navigator;
+  var locales = nav.languages ? Array.prototype.slice.apply(nav.languages) : [];
+
+  if (nav.language) {
+    locales.push(nav.language);
+  }
+
+  if (nav.userLanguage) {
+    locales.push(nav.userLanguage);
+  }
+
+  return locales.map(function (locale) {
+    if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+      var _locale$split = locale.split(/[-_]/),
+          lang = _locale$split[0],
+          country = _locale$split[1];
+
+      return {
+        country: country,
+        lang: lang
+      };
+    }
+
+    if (locale && locale.match(/^[a-z]{2}$/)) {
+      return {
+        lang: locale
+      };
+    }
+
+    return null;
+  }).filter(Boolean);
+}
+function appendChild(container, child) {
+  container.appendChild(child);
+}
+function isElement(element) {
+  if (element instanceof window.Element) {
+    return true;
+  }
+
+  if (element !== null && typeof element === 'object' && element.nodeType === 1 && typeof element.style === 'object' && typeof element.ownerDocument === 'object') {
+    return true;
+  }
+
+  return false;
+}
+function getElementSafe(id, doc) {
+  if (doc === void 0) {
+    doc = document;
+  }
+
+  if (isElement(id)) {
+    // $FlowFixMe
+    return id;
+  }
+
+  if (typeof id === 'string') {
+    return doc.querySelector(id);
+  }
+}
+function getElement(id, doc) {
+  if (doc === void 0) {
+    doc = document;
+  }
+
+  var element = getElementSafe(id, doc);
+
+  if (element) {
+    return element;
+  }
+
+  throw new Error("Can not find element: " + stringify(id));
+}
+function elementReady(id) {
+  return new src["a" /* ZalgoPromise */](function (resolve, reject) {
+    var name = stringify(id);
+    var el = getElementSafe(id);
+
+    if (el) {
+      return resolve(el);
+    }
+
+    if (isDocumentReady()) {
+      return reject(new Error("Document is ready and element " + name + " does not exist"));
+    }
+
+    var interval = setInterval(function () {
+      el = getElementSafe(id);
+
+      if (el) {
+        clearInterval(interval);
+        return resolve(el);
+      }
+
+      if (isDocumentReady()) {
+        clearInterval(interval);
+        return reject(new Error("Document is ready and element " + name + " does not exist"));
+      }
+    }, 10);
+  });
+}
+function PopupOpenError(message) {
+  this.message = message;
+}
+PopupOpenError.prototype = Object.create(Error.prototype);
+function popup(url, options) {
+  // $FlowFixMe
+  options = options || {};
+  var _options = options,
+      width = _options.width,
+      height = _options.height;
+  var top = 0;
+  var left = 0;
+
+  if (width) {
+    if (window.outerWidth) {
+      left = Math.round((window.outerWidth - width) / 2) + window.screenX;
+    } else if (window.screen.width) {
+      left = Math.round((window.screen.width - width) / 2);
+    }
+  }
+
+  if (height) {
+    if (window.outerHeight) {
+      top = Math.round((window.outerHeight - height) / 2) + window.screenY;
+    } else if (window.screen.height) {
+      top = Math.round((window.screen.height - height) / 2);
+    }
+  }
+
+  if (width && height) {
+    options = Object(esm_extends["a" /* default */])({
+      top: top,
+      left: left,
+      width: width,
+      height: height,
+      status: 1,
+      toolbar: 0,
+      menubar: 0,
+      resizable: 1,
+      scrollbars: 1
+    }, options);
+  }
+
+  var name = options.name || '';
+  delete options.name; // eslint-disable-next-line array-callback-return
+
+  var params = Object.keys(options).map(function (key) {
+    // $FlowFixMe
+    if (options[key] !== null && options[key] !== undefined) {
+      return key + "=" + stringify(options[key]);
+    }
+  }).filter(Boolean).join(',');
+  var win;
+
+  try {
+    win = window.open(url, name, params, true);
+  } catch (err) {
+    throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+  }
+
+  if (Object(cross_domain_utils_src["f" /* isWindowClosed */])(win)) {
+    var err = new PopupOpenError("Can not open popup window - blocked");
+    throw err;
+  }
+
+  window.addEventListener('unload', function () {
+    return win.close();
+  });
+  return win;
+}
+function writeToWindow(win, html) {
+  try {
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+  } catch (err) {
+    try {
+      win.location = "javascript: document.open(); document.write(" + JSON.stringify(html) + "); document.close();";
+    } catch (err2) {// pass
+    }
+  }
+}
+function writeElementToWindow(win, el) {
+  var tag = el.tagName.toLowerCase();
+
+  if (tag !== 'html') {
+    throw new Error("Expected element to be html, got " + tag);
+  }
+
+  var documentElement = win.document.documentElement;
+
+  for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) {
+    var child = _arrayFrom2[_i6];
+    documentElement.removeChild(child);
+  }
+
+  for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) {
+    var _child = _arrayFrom4[_i8];
+    documentElement.appendChild(_child);
+  }
+}
+function setStyle(el, styleText, doc) {
+  if (doc === void 0) {
+    doc = window.document;
+  }
+
+  // $FlowFixMe
+  if (el.styleSheet) {
+    // $FlowFixMe
+    el.styleSheet.cssText = styleText;
+  } else {
+    el.appendChild(doc.createTextNode(styleText));
+  }
+}
+var awaitFrameLoadPromises;
+function awaitFrameLoad(frame) {
+  awaitFrameLoadPromises = awaitFrameLoadPromises || new weakmap_CrossDomainSafeWeakMap();
+
+  if (awaitFrameLoadPromises.has(frame)) {
+    var _promise = awaitFrameLoadPromises.get(frame);
+
+    if (_promise) {
+      return _promise;
+    }
+  }
+
+  var promise = new src["a" /* ZalgoPromise */](function (resolve, reject) {
+    frame.addEventListener('load', function () {
+      Object(cross_domain_utils_src["g" /* linkFrameWindow */])(frame);
+      resolve(frame);
+    });
+    frame.addEventListener('error', function (err) {
+      if (frame.contentWindow) {
+        resolve(frame);
+      } else {
+        reject(err);
+      }
+    });
+  });
+  awaitFrameLoadPromises.set(frame, promise);
+  return promise;
+}
+function awaitFrameWindow(frame) {
+  return awaitFrameLoad(frame).then(function (loadedFrame) {
+    if (!loadedFrame.contentWindow) {
+      throw new Error("Could not find window in iframe");
+    }
+
+    return loadedFrame.contentWindow;
+  });
+}
+function createElement(tag, options, container) {
+  if (tag === void 0) {
+    tag = 'div';
+  }
+
+  if (options === void 0) {
+    options = {};
+  }
+
+  tag = tag.toLowerCase();
+  var element = document.createElement(tag);
+
+  if (options.style) {
+    extend(element.style, options.style);
+  }
+
+  if (options.class) {
+    element.className = options.class.join(' ');
+  }
+
+  if (options.id) {
+    element.setAttribute('id', options.id);
+  }
+
+  if (options.attributes) {
+    for (var _i10 = 0, _Object$keys2 = Object.keys(options.attributes); _i10 < _Object$keys2.length; _i10++) {
+      var key = _Object$keys2[_i10];
+      element.setAttribute(key, options.attributes[key]);
+    }
+  }
+
+  if (options.styleSheet) {
+    setStyle(element, options.styleSheet);
+  }
+
+  if (container) {
+    appendChild(container, element);
+  }
+
+  if (options.html) {
+    if (tag === 'iframe') {
+      // $FlowFixMe
+      if (!container || !element.contentWindow) {
+        throw new Error("Iframe html can not be written unless container provided and iframe in DOM");
+      } // $FlowFixMe
+
+
+      writeToWindow(element.contentWindow, options.html);
+    } else {
+      element.innerHTML = options.html;
+    }
+  }
+
+  return element;
+}
+function iframe(options, container) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  var attributes = options.attributes || {};
+  var style = options.style || {};
+  var frame = createElement('iframe', {
+    attributes: Object(esm_extends["a" /* default */])({
+      allowTransparency: 'true'
+    }, attributes),
+    style: Object(esm_extends["a" /* default */])({
+      backgroundColor: 'transparent',
+      border: 'none'
+    }, style),
+    html: options.html,
+    class: options.class
+  });
+  var isIE = window.navigator.userAgent.match(/MSIE|Edge/i);
+
+  if (!frame.hasAttribute('id')) {
+    frame.setAttribute('id', uniqueID());
+  } // $FlowFixMe
+
+
+  awaitFrameLoad(frame);
+
+  if (container) {
+    var el = getElement(container);
+    el.appendChild(frame);
+  }
+
+  if (options.url || isIE) {
+    frame.setAttribute('src', options.url || 'about:blank');
+  } // $FlowFixMe
+
+
+  return frame;
+}
+function addEventListener(obj, event, handler) {
+  obj.addEventListener(event, handler);
+  return {
+    cancel: function cancel() {
+      obj.removeEventListener(event, handler);
+    }
+  };
+}
+function bindEvents(element, eventNames, handler) {
+  handler = once(handler);
+
+  for (var _i12 = 0; _i12 < eventNames.length; _i12++) {
+    var eventName = eventNames[_i12];
+    element.addEventListener(eventName, handler);
+  }
+
+  return {
+    cancel: once(function () {
+      for (var _i14 = 0; _i14 < eventNames.length; _i14++) {
+        var _eventName = eventNames[_i14];
+        element.removeEventListener(_eventName, handler);
+      }
+    })
+  };
+}
+var VENDOR_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
+function setVendorCSS(element, name, value) {
+  // $FlowFixMe
+  element.style[name] = value;
+  var capitalizedName = capitalizeFirstLetter(name);
+
+  for (var _i16 = 0; _i16 < VENDOR_PREFIXES.length; _i16++) {
+    var prefix = VENDOR_PREFIXES[_i16];
+    // $FlowFixMe
+    element.style["" + prefix + capitalizedName] = value;
+  }
+}
+var ANIMATION_START_EVENTS = ['animationstart', 'webkitAnimationStart', 'oAnimationStart', 'MSAnimationStart'];
+var ANIMATION_END_EVENTS = ['animationend', 'webkitAnimationEnd', 'oAnimationEnd', 'MSAnimationEnd'];
+function animate(element, name, clean, timeout) {
+  if (timeout === void 0) {
+    timeout = 1000;
+  }
+
+  return new src["a" /* ZalgoPromise */](function (resolve, reject) {
+    var el = getElement(element);
+
+    if (!el) {
+      return resolve();
+    }
+
+    var hasStarted = false;
+    var startTimeout;
+    var endTimeout;
+    var startEvent;
+    var endEvent;
+
+    function cleanUp() {
+      clearTimeout(startTimeout);
+      clearTimeout(endTimeout);
+      startEvent.cancel();
+      endEvent.cancel();
+    }
+
+    startEvent = bindEvents(el, ANIMATION_START_EVENTS, function (event) {
+      // $FlowFixMe
+      if (event.target !== el || event.animationName !== name) {
+        return;
+      }
+
+      clearTimeout(startTimeout);
+      event.stopPropagation();
+      startEvent.cancel();
+      hasStarted = true;
+      endTimeout = setTimeout(function () {
+        cleanUp();
+        resolve();
+      }, timeout);
+    });
+    endEvent = bindEvents(el, ANIMATION_END_EVENTS, function (event) {
+      // $FlowFixMe
+      if (event.target !== el || event.animationName !== name) {
+        return;
+      }
+
+      cleanUp(); // $FlowFixMe
+
+      if (typeof event.animationName === 'string' && event.animationName !== name) {
+        return reject("Expected animation name to be " + name + ", found " + event.animationName);
+      }
+
+      return resolve();
+    });
+    setVendorCSS(el, 'animationName', name);
+    startTimeout = setTimeout(function () {
+      if (!hasStarted) {
+        cleanUp();
+        return resolve();
+      }
+    }, 200);
+
+    if (clean) {
+      clean(cleanUp);
+    }
+  });
+}
+var STYLE = {
+  DISPLAY: {
+    NONE: 'none',
+    BLOCK: 'block'
+  },
+  VISIBILITY: {
+    VISIBLE: 'visible',
+    HIDDEN: 'hidden'
+  },
+  IMPORTANT: 'important'
+};
+function makeElementVisible(element) {
+  element.style.setProperty('visibility', '');
+}
+function makeElementInvisible(element) {
+  element.style.setProperty('visibility', STYLE.VISIBILITY.HIDDEN, STYLE.IMPORTANT);
+}
+function showElement(element) {
+  element.style.setProperty('display', '');
+}
+function hideElement(element) {
+  element.style.setProperty('display', STYLE.DISPLAY.NONE, STYLE.IMPORTANT);
+}
+function destroyElement(element) {
+  if (element && element.parentNode) {
+    element.parentNode.removeChild(element);
+  }
+}
+function showAndAnimate(element, name, clean) {
+  var animation = animate(element, name, clean);
+  showElement(element);
+  return animation;
+}
+function animateAndHide(element, name, clean) {
+  return animate(element, name, clean).then(function () {
+    hideElement(element);
+  });
+}
+function addClass(element, name) {
+  element.classList.add(name);
+}
+function removeClass(element, name) {
+  element.classList.remove(name);
+}
+function isElementClosed(el) {
+  if (!el || !el.parentNode) {
+    return true;
+  }
+
+  return false;
+}
+function watchElementForClose(element, handler) {
+  handler = once(handler);
+  var interval;
+
+  if (isElementClosed(element)) {
+    handler();
+  } else {
+    interval = safeInterval(function () {
+      if (isElementClosed(element)) {
+        interval.cancel();
+        handler();
+      }
+    }, 50);
+  }
+
+  return {
+    cancel: function cancel() {
+      if (interval) {
+        interval.cancel();
+      }
+    }
+  };
+}
+function fixScripts(el, doc) {
+  if (doc === void 0) {
+    doc = window.document;
+  }
+
+  for (var _i18 = 0, _querySelectorAll2 = querySelectorAll('script', el); _i18 < _querySelectorAll2.length; _i18++) {
+    var script = _querySelectorAll2[_i18];
+    var parentNode = script.parentNode;
+
+    if (!parentNode) {
+      continue;
+    }
+
+    var newScript = doc.createElement('script');
+    newScript.text = script.textContent;
+    parentNode.replaceChild(newScript, script);
+  }
+}
+function onResize(el, handler, _temp) {
+  var _ref2 = _temp === void 0 ? {} : _temp,
+      _ref2$width = _ref2.width,
+      width = _ref2$width === void 0 ? true : _ref2$width,
+      _ref2$height = _ref2.height,
+      height = _ref2$height === void 0 ? true : _ref2$height,
+      _ref2$interval = _ref2.interval,
+      interval = _ref2$interval === void 0 ? 100 : _ref2$interval,
+      _ref2$win = _ref2.win,
+      win = _ref2$win === void 0 ? window : _ref2$win;
+
+  var currentWidth = el.offsetWidth;
+  var currentHeight = el.offsetHeight;
+  handler({
+    width: currentWidth,
+    height: currentHeight
+  });
+
+  var check = function check() {
+    var newWidth = el.offsetWidth;
+    var newHeight = el.offsetHeight;
+
+    if (width && newWidth !== currentWidth || height && newHeight !== currentHeight) {
+      handler({
+        width: newWidth,
+        height: newHeight
+      });
+    }
+
+    currentWidth = newWidth;
+    currentHeight = newHeight;
+  };
+
+  var observer;
+  var timeout;
+
+  if (typeof win.ResizeObserver !== 'undefined') {
+    observer = new win.ResizeObserver(check);
+    observer.observe(el);
+  } else if (typeof win.MutationObserver !== 'undefined') {
+    observer = new win.MutationObserver(check);
+    observer.observe(el, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      characterData: false
+    });
+    win.addEventListener('resize', check);
+  } else {
+    var loop = function loop() {
+      check();
+      timeout = setTimeout(loop, interval);
+    };
+
+    loop();
+  }
+
+  return {
+    cancel: function cancel() {
+      observer.disconnect();
+      window.removeEventListener('resize', check);
+      clearTimeout(timeout);
+    }
+  };
+}
+function getResourceLoadTime(url) {
+  if (!enablePerformance()) {
+    return;
+  }
+
+  if (!window.performance || typeof window.performance.getEntries !== 'function') {
+    return;
+  }
+
+  var entries = window.performance.getEntries();
+
+  for (var i = 0; i < entries.length; i++) {
+    var entry = entries[i];
+
+    if (entry && entry.name && entry.name.indexOf(url) === 0 && typeof entry.duration === 'number') {
+      return Math.floor(entry.duration);
+    }
+  }
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/storage.js
+
+
+var DEFAULT_SESSION_STORAGE = 20 * 60 * 1000;
+function getStorage(_ref) {
+  var name = _ref.name,
+      _ref$lifetime = _ref.lifetime,
+      lifetime = _ref$lifetime === void 0 ? DEFAULT_SESSION_STORAGE : _ref$lifetime;
+  return inlineMemoize(getStorage, function () {
+    var STORAGE_KEY = "__" + name + "_storage__";
+    var accessedStorage;
+
+    function getState(handler) {
+      var localStorageEnabled = isLocalStorageEnabled();
+      var storage;
+
+      if (accessedStorage) {
+        storage = accessedStorage;
+      }
+
+      if (!storage && localStorageEnabled) {
+        var rawStorage = window.localStorage.getItem(STORAGE_KEY);
+
+        if (rawStorage) {
+          storage = JSON.parse(rawStorage);
+        }
+      }
+
+      if (!storage) {
+        storage = getGlobal()[STORAGE_KEY];
+      }
+
+      if (!storage) {
+        storage = {
+          id: uniqueID()
         };
+      }
+
+      if (!storage.id) {
+        storage.id = uniqueID();
+      }
+
+      accessedStorage = storage;
+      var result = handler(storage);
+
+      if (localStorageEnabled) {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+      } else {
+        getGlobal()[STORAGE_KEY] = storage;
+      }
+
+      accessedStorage = null;
+      return result;
     }
-    function buildXOnCancelActions() {
-        return {
-            redirect: function(url) {
-                if (!url) throw new Error("Expected redirect url");
-                if (-1 === url.indexOf("://")) throw Object(_lib__WEBPACK_IMPORTED_MODULE_3__.b)().warn("redir_url_non_scheme", {
-                    url: url
-                }).flush(), new Error("Invalid redirect url: " + url + " - must be fully qualified url");
-                return url.match(/^https?:\/\//) || Object(_lib__WEBPACK_IMPORTED_MODULE_3__.b)().warn("redir_url_non_http", {
-                    url: url
-                }).flush(), Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.p)(url, window.top);
+
+    function getID() {
+      return getState(function (storage) {
+        return storage.id;
+      });
+    }
+
+    function getSession(handler) {
+      return getState(function (storage) {
+        var session = storage.__session__;
+        var now = Date.now();
+
+        if (session && now - session.created > lifetime) {
+          session = null;
+        }
+
+        if (!session) {
+          session = {
+            guid: uniqueID(),
+            created: now
+          };
+        }
+
+        storage.__session__ = session;
+        return handler(session);
+      });
+    }
+
+    function getSessionState(handler) {
+      return getSession(function (session) {
+        session.state = session.state || {};
+        return handler(session.state);
+      });
+    }
+
+    function getSessionID() {
+      return getSession(function (session) {
+        return session.guid;
+      });
+    }
+
+    return {
+      getState: getState,
+      getID: getID,
+      getSessionState: getSessionState,
+      getSessionID: getSessionID
+    };
+  }, [{
+    name: name,
+    lifetime: lifetime
+  }]);
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/experiment.js
+
+
+
+function getBelterExperimentStorage() {
+  return getStorage({
+    name: 'belter_experiment'
+  });
+}
+
+function isEventUnique(name) {
+  return getBelterExperimentStorage().getSessionState(function (state) {
+    state.loggedBeacons = state.loggedBeacons || [];
+
+    if (state.loggedBeacons.indexOf(name) === -1) {
+      state.loggedBeacons.push(name);
+      return true;
+    }
+
+    return false;
+  });
+}
+
+function getThrottlePercentile(name) {
+  return getBelterExperimentStorage().getState(function (state) {
+    state.throttlePercentiles = state.throttlePercentiles || {};
+    state.throttlePercentiles[name] = state.throttlePercentiles[name] || Math.floor(Math.random() * 100);
+    return state.throttlePercentiles[name];
+  });
+}
+
+var THROTTLE_GROUP = {
+  TEST: 'test',
+  CONTROL: 'control',
+  THROTTLE: 'throttle'
+};
+function experiment(_ref) {
+  var name = _ref.name,
+      _ref$sample = _ref.sample,
+      sample = _ref$sample === void 0 ? 50 : _ref$sample,
+      _ref$logTreatment = _ref.logTreatment,
+      logTreatment = _ref$logTreatment === void 0 ? util_noop : _ref$logTreatment,
+      _ref$logCheckpoint = _ref.logCheckpoint,
+      logCheckpoint = _ref$logCheckpoint === void 0 ? util_noop : _ref$logCheckpoint;
+  var throttle = getThrottlePercentile(name);
+  var group;
+
+  if (throttle < sample) {
+    group = THROTTLE_GROUP.TEST;
+  } else if (sample >= 50 || sample <= throttle && throttle < sample * 2) {
+    group = THROTTLE_GROUP.CONTROL;
+  } else {
+    group = THROTTLE_GROUP.THROTTLE;
+  }
+
+  var treatment = name + "_" + group;
+  var started = false;
+  var forced = false;
+
+  try {
+    if (window.localStorage && window.localStorage.getItem(name)) {
+      forced = true;
+    }
+  } catch (err) {// pass
+  }
+
+  return {
+    isEnabled: function isEnabled() {
+      return group === THROTTLE_GROUP.TEST || forced;
+    },
+    isDisabled: function isDisabled() {
+      return group !== THROTTLE_GROUP.TEST && !forced;
+    },
+    getTreatment: function getTreatment() {
+      return treatment;
+    },
+    log: function log(checkpoint, payload) {
+      if (payload === void 0) {
+        payload = {};
+      }
+
+      if (!started) {
+        return this;
+      }
+
+      if (isEventUnique(name + "_" + treatment)) {
+        logTreatment({
+          name: name,
+          treatment: treatment
+        });
+      }
+
+      if (isEventUnique(name + "_" + treatment + "_" + checkpoint)) {
+        logCheckpoint({
+          name: name,
+          treatment: treatment,
+          checkpoint: checkpoint,
+          payload: payload
+        });
+      }
+
+      return this;
+    },
+    logStart: function logStart(payload) {
+      if (payload === void 0) {
+        payload = {};
+      }
+
+      started = true;
+      return this.log("start", payload);
+    },
+    logComplete: function logComplete(payload) {
+      if (payload === void 0) {
+        payload = {};
+      }
+
+      return this.log("complete", payload);
+    }
+  };
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/global.js
+
+function getGlobalNameSpace(_ref) {
+  var name = _ref.name,
+      _ref$version = _ref.version,
+      version = _ref$version === void 0 ? 'latest' : _ref$version;
+  var global = getGlobal();
+  var globalKey = "__" + name + "__" + version + "_global__";
+  var namespace = global[globalKey] = global[globalKey] || {};
+  return {
+    get: function get(key, defValue) {
+      // $FlowFixMe
+      defValue = defValue || {};
+      var item = namespace[key] = namespace[key] || defValue;
+      return item;
+    }
+  };
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/http.js
+
+var HEADERS = {
+  CONTENT_TYPE: 'content-type',
+  ACCEPT: 'accept'
+};
+var headerBuilders = [];
+
+function parseHeaders(rawHeaders) {
+  if (rawHeaders === void 0) {
+    rawHeaders = '';
+  }
+
+  var result = {};
+
+  for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split('\n'); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
+    var line = _rawHeaders$trim$spli2[_i2];
+
+    var _line$split = line.split(':'),
+        _key = _line$split[0],
+        values = _line$split.slice(1);
+
+    result[_key.toLowerCase()] = values.join(':').trim();
+  }
+
+  return result;
+}
+
+function request(_ref) {
+  var url = _ref.url,
+      _ref$method = _ref.method,
+      method = _ref$method === void 0 ? 'get' : _ref$method,
+      _ref$headers = _ref.headers,
+      headers = _ref$headers === void 0 ? {} : _ref$headers,
+      json = _ref.json,
+      data = _ref.data,
+      body = _ref.body,
+      _ref$win = _ref.win,
+      win = _ref$win === void 0 ? window : _ref$win,
+      _ref$timeout = _ref.timeout,
+      timeout = _ref$timeout === void 0 ? 0 : _ref$timeout;
+  return new src["a" /* ZalgoPromise */](function (resolve, reject) {
+    if (json && data || json && body || data && json) {
+      throw new Error("Only options.json or options.data or options.body should be passed");
+    }
+
+    var normalizedHeaders = {};
+
+    for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
+      var _key2 = _Object$keys2[_i4];
+      normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+    }
+
+    if (json) {
+      normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || 'application/json';
+    } else if (data || body) {
+      normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || 'application/x-www-form-urlencoded; charset=utf-8';
+    }
+
+    normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || 'application/json';
+
+    for (var _i6 = 0; _i6 < headerBuilders.length; _i6++) {
+      var headerBuilder = headerBuilders[_i6];
+      var builtHeaders = headerBuilder();
+
+      for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
+        var _key3 = _Object$keys4[_i8];
+        normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+      }
+    }
+
+    var xhr = new win.XMLHttpRequest();
+    xhr.addEventListener('load', function xhrLoad() {
+      var responseHeaders = parseHeaders(this.getAllResponseHeaders());
+
+      if (!this.status) {
+        return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
+      }
+
+      var contentType = responseHeaders['content-type'];
+      var isJSON = contentType && (contentType.indexOf('application/json') === 0 || contentType.indexOf('text/json') === 0);
+      var responseBody = this.responseText;
+
+      try {
+        responseBody = JSON.parse(responseBody);
+      } catch (err) {
+        if (isJSON) {
+          return reject(new Error("Invalid json: " + this.responseText + "."));
+        }
+      }
+
+      var res = {
+        status: this.status,
+        headers: responseHeaders,
+        body: responseBody
+      };
+      return resolve(res);
+    }, false);
+    xhr.addEventListener('error', function (evt) {
+      reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
+    }, false);
+    xhr.open(method, url, true);
+
+    for (var _key4 in normalizedHeaders) {
+      if (normalizedHeaders.hasOwnProperty(_key4)) {
+        xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+      }
+    }
+
+    if (json) {
+      body = JSON.stringify(json);
+    } else if (data) {
+      body = Object.keys(data).map(function (key) {
+        return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : '');
+      }).join('&');
+    }
+
+    xhr.timeout = timeout;
+
+    xhr.ontimeout = function xhrTimeout() {
+      reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+    };
+
+    xhr.send(body);
+  });
+}
+function addHeaderBuilder(method) {
+  headerBuilders.push(method);
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/types.js
+// export something to force webpack to see this as an ES module
+var TYPES = true;
+// CONCATENATED MODULE: ./node_modules/belter/src/decorators.js
+
+function memoized(target, name, descriptor) {
+  descriptor.value = memoize(descriptor.value, {
+    name: name,
+    thisNamespace: true
+  });
+}
+function decorators_promise(target, name, descriptor) {
+  descriptor.value = promisify(descriptor.value, {
+    name: name
+  });
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/css.js
+function isPerc(str) {
+  return typeof str === 'string' && /^[0-9]+%$/.test(str);
+}
+function isPx(str) {
+  return typeof str === 'string' && /^[0-9]+px$/.test(str);
+}
+function toNum(val) {
+  if (typeof val === 'number') {
+    return val;
+  }
+
+  var match = val.match(/^([0-9]+)(px|%)$/);
+
+  if (!match) {
+    throw new Error("Could not match css value from " + val);
+  }
+
+  return parseInt(match[1], 10);
+}
+function toPx(val) {
+  return toNum(val) + "px";
+}
+function toCSS(val) {
+  if (typeof val === 'number') {
+    return toPx(val);
+  }
+
+  return isPerc(val) ? val : toPx(val);
+}
+function percOf(num, perc) {
+  return parseInt(num * toNum(perc) / 100, 10);
+}
+function normalizeDimension(dim, max) {
+  if (typeof dim === 'number') {
+    return dim;
+  } else if (isPerc(dim)) {
+    return percOf(max, dim);
+  } else if (isPx(dim)) {
+    return toNum(dim);
+  } else {
+    throw new Error("Can not normalize dimension: " + dim);
+  }
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/test.js
+
+
+function wrapPromise(method, _temp) {
+  var _ref = _temp === void 0 ? {} : _temp,
+      _ref$timeout = _ref.timeout,
+      timeout = _ref$timeout === void 0 ? 5000 : _ref$timeout;
+
+  var expected = [];
+  var promises = [];
+  var timer = setTimeout(function () {
+    if (expected) {
+      promises.push(src["a" /* ZalgoPromise */].asyncReject(new Error("Expected " + expected[0] + " to be called")));
+    }
+  }, timeout);
+
+  var expect = function expect(name, fn) {
+    if (fn === void 0) {
+      fn = util_noop;
+    }
+
+    expected.push(name); // $FlowFixMe
+
+    return function expectWrapper() {
+      var _this = this;
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      removeFromArray(expected, name); // $FlowFixMe
+
+      var _tryCatch = tryCatch(function () {
+        var _fn;
+
+        return (_fn = fn).call.apply(_fn, [_this].concat(args));
+      }),
+          result = _tryCatch.result,
+          error = _tryCatch.error;
+
+      if (error) {
+        promises.push(src["a" /* ZalgoPromise */].asyncReject(error));
+        throw error;
+      }
+
+      promises.push(src["a" /* ZalgoPromise */].resolve(result));
+      return result;
+    };
+  };
+
+  var avoid = function avoid(name, fn) {
+    if (fn === void 0) {
+      fn = util_noop;
+    }
+
+    // $FlowFixMe
+    return function avoidWrapper() {
+      var _fn2;
+
+      promises.push(src["a" /* ZalgoPromise */].asyncReject(new Error("Expected " + name + " to not be called"))); // $FlowFixMe
+
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return (_fn2 = fn).call.apply(_fn2, [this].concat(args));
+    };
+  };
+
+  var expectError = function expectError(name, fn) {
+    if (fn === void 0) {
+      fn = util_noop;
+    }
+
+    expected.push(name); // $FlowFixMe
+
+    return function expectErrorWrapper() {
+      var _this2 = this;
+
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      removeFromArray(expected, name); // $FlowFixMe
+
+      var _tryCatch2 = tryCatch(function () {
+        var _fn3;
+
+        return (_fn3 = fn).call.apply(_fn3, [_this2].concat(args));
+      }),
+          result = _tryCatch2.result,
+          error = _tryCatch2.error;
+
+      if (error) {
+        throw error;
+      }
+
+      promises.push(src["a" /* ZalgoPromise */].resolve(result).then(function () {
+        throw new Error("Expected " + name + " to throw an error");
+      }, util_noop));
+      return result;
+    };
+  };
+
+  promises.push(src["a" /* ZalgoPromise */].try(function () {
+    return method({
+      expect: expect,
+      avoid: avoid,
+      expectError: expectError,
+      error: avoid
+    });
+  }));
+
+  var drain = function drain() {
+    return src["a" /* ZalgoPromise */].try(function () {
+      if (promises.length) {
+        return promises.pop();
+      }
+    }).then(function () {
+      if (promises.length) {
+        return drain();
+      }
+
+      if (expected.length) {
+        return src["a" /* ZalgoPromise */].delay(10).then(drain);
+      }
+    });
+  };
+
+  return drain().then(function () {
+    clearTimeout(timer);
+  });
+}
+// CONCATENATED MODULE: ./node_modules/belter/src/index.js
+/* concated harmony reexport getUserAgent */__webpack_require__.d(__webpack_exports__, "e", function() { return getUserAgent; });
+/* unused concated harmony import isDevice */
+/* unused concated harmony import isWebView */
+/* unused concated harmony import isStandAlone */
+/* unused concated harmony import isFacebookWebView */
+/* unused concated harmony import isFirefoxIOS */
+/* unused concated harmony import isEdgeIOS */
+/* unused concated harmony import isOperaMini */
+/* unused concated harmony import isAndroid */
+/* unused concated harmony import isIos */
+/* unused concated harmony import isGoogleSearchApp */
+/* unused concated harmony import isQQBrowser */
+/* unused concated harmony import isIosWebview */
+/* unused concated harmony import isAndroidWebview */
+/* unused concated harmony import isIE */
+/* unused concated harmony import isIECompHeader */
+/* unused concated harmony import isElectron */
+/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "h", function() { return isIEIntranet; });
+/* unused concated harmony import isMacOsCna */
+/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "u", function() { return supportsPopups; });
+/* unused concated harmony import isDocumentReady */
+/* unused concated harmony import urlEncode */
+/* unused concated harmony import waitForWindowReady */
+/* unused concated harmony import waitForDocumentReady */
+/* unused concated harmony import waitForDocumentBody */
+/* unused concated harmony import parseQuery */
+/* unused concated harmony import getQueryParam */
+/* unused concated harmony import urlWillRedirectPage */
+/* unused concated harmony import formatQuery */
+/* unused concated harmony import extendQuery */
+/* concated harmony reexport extendUrl */__webpack_require__.d(__webpack_exports__, "c", function() { return extendUrl; });
+/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "p", function() { return redirect; });
+/* unused concated harmony import hasMetaViewPort */
+/* unused concated harmony import isElementVisible */
+/* unused concated harmony import enablePerformance */
+/* concated harmony reexport getPageRenderTime */__webpack_require__.d(__webpack_exports__, "d", function() { return getPageRenderTime; });
+/* unused concated harmony import htmlEncode */
+/* concated harmony reexport isBrowser */__webpack_require__.d(__webpack_exports__, "g", function() { return isBrowser; });
+/* concated harmony reexport querySelectorAll */__webpack_require__.d(__webpack_exports__, "o", function() { return querySelectorAll; });
+/* concated harmony reexport onClick */__webpack_require__.d(__webpack_exports__, "l", function() { return onClick; });
+/* unused concated harmony import getScript */
+/* unused concated harmony import isLocalStorageEnabled */
+/* unused concated harmony import getBrowserLocales */
+/* unused concated harmony import appendChild */
+/* unused concated harmony import isElement */
+/* unused concated harmony import getElementSafe */
+/* unused concated harmony import getElement */
+/* unused concated harmony import elementReady */
+/* unused concated harmony import PopupOpenError */
+/* concated harmony reexport popup */__webpack_require__.d(__webpack_exports__, "m", function() { return popup; });
+/* unused concated harmony import writeToWindow */
+/* unused concated harmony import writeElementToWindow */
+/* unused concated harmony import setStyle */
+/* unused concated harmony import awaitFrameLoad */
+/* unused concated harmony import awaitFrameWindow */
+/* unused concated harmony import createElement */
+/* unused concated harmony import iframe */
+/* unused concated harmony import addEventListener */
+/* unused concated harmony import bindEvents */
+/* unused concated harmony import setVendorCSS */
+/* unused concated harmony import animate */
+/* unused concated harmony import makeElementVisible */
+/* unused concated harmony import makeElementInvisible */
+/* unused concated harmony import showElement */
+/* unused concated harmony import hideElement */
+/* unused concated harmony import destroyElement */
+/* unused concated harmony import showAndAnimate */
+/* unused concated harmony import animateAndHide */
+/* unused concated harmony import addClass */
+/* unused concated harmony import removeClass */
+/* unused concated harmony import isElementClosed */
+/* unused concated harmony import watchElementForClose */
+/* unused concated harmony import fixScripts */
+/* unused concated harmony import onResize */
+/* unused concated harmony import getResourceLoadTime */
+/* unused concated harmony import experiment */
+/* unused concated harmony import getGlobalNameSpace */
+/* unused concated harmony import getStorage */
+/* unused concated harmony import getFunctionName */
+/* unused concated harmony import setFunctionName */
+/* concated harmony reexport base64encode */__webpack_require__.d(__webpack_exports__, "a", function() { return base64encode; });
+/* unused concated harmony import base64decode */
+/* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "v", function() { return uniqueID; });
+/* unused concated harmony import getGlobal */
+/* unused concated harmony import getObjectID */
+/* concated harmony reexport memoize */__webpack_require__.d(__webpack_exports__, "i", function() { return memoize; });
+/* unused concated harmony import memoizePromise */
+/* unused concated harmony import promisify */
+/* concated harmony reexport inlineMemoize */__webpack_require__.d(__webpack_exports__, "f", function() { return inlineMemoize; });
+/* concated harmony reexport noop */__webpack_require__.d(__webpack_exports__, "j", function() { return util_noop; });
+/* unused concated harmony import once */
+/* unused concated harmony import hashStr */
+/* unused concated harmony import strHashStr */
+/* unused concated harmony import match */
+/* unused concated harmony import awaitKey */
+/* concated harmony reexport stringifyError */__webpack_require__.d(__webpack_exports__, "s", function() { return stringifyError; });
+/* concated harmony reexport stringifyErrorMessage */__webpack_require__.d(__webpack_exports__, "t", function() { return stringifyErrorMessage; });
+/* unused concated harmony import stringify */
+/* unused concated harmony import domainMatches */
+/* unused concated harmony import patchMethod */
+/* unused concated harmony import extend */
+/* unused concated harmony import values */
+/* unused concated harmony import perc */
+/* unused concated harmony import min */
+/* unused concated harmony import max */
+/* unused concated harmony import regexMap */
+/* unused concated harmony import svgToBase64 */
+/* concated harmony reexport objFilter */__webpack_require__.d(__webpack_exports__, "k", function() { return objFilter; });
+/* unused concated harmony import identity */
+/* unused concated harmony import regexTokenize */
+/* concated harmony reexport promiseDebounce */__webpack_require__.d(__webpack_exports__, "n", function() { return promiseDebounce; });
+/* concated harmony reexport safeInterval */__webpack_require__.d(__webpack_exports__, "r", function() { return safeInterval; });
+/* unused concated harmony import isInteger */
+/* unused concated harmony import isFloat */
+/* unused concated harmony import serializePrimitive */
+/* unused concated harmony import deserializePrimitive */
+/* unused concated harmony import dotify */
+/* unused concated harmony import undotify */
+/* unused concated harmony import eventEmitter */
+/* unused concated harmony import camelToDasherize */
+/* unused concated harmony import dasherizeToCamel */
+/* unused concated harmony import capitalizeFirstLetter */
+/* unused concated harmony import get */
+/* unused concated harmony import safeTimeout */
+/* unused concated harmony import defineLazyProp */
+/* unused concated harmony import arrayFrom */
+/* unused concated harmony import isObject */
+/* unused concated harmony import isObjectObject */
+/* unused concated harmony import isPlainObject */
+/* unused concated harmony import replaceObject */
+/* unused concated harmony import copyProp */
+/* unused concated harmony import regex */
+/* unused concated harmony import regexAll */
+/* unused concated harmony import isDefined */
+/* unused concated harmony import cycle */
+/* concated harmony reexport debounce */__webpack_require__.d(__webpack_exports__, "b", function() { return debounce; });
+/* unused concated harmony import isRegex */
+/* unused concated harmony import weakMapMemoize */
+/* unused concated harmony import weakMapMemoizePromise */
+/* unused concated harmony import getOrSet */
+/* unused concated harmony import cleanup */
+/* unused concated harmony import tryCatch */
+/* unused concated harmony import removeFromArray */
+/* unused concated harmony import assertExists */
+/* unused concated harmony import unique */
+/* concated harmony reexport request */__webpack_require__.d(__webpack_exports__, "q", function() { return request; });
+/* unused concated harmony import addHeaderBuilder */
+/* unused concated harmony import TYPES */
+/* unused concated harmony import memoized */
+/* unused concated harmony import promise */
+/* unused concated harmony import isPerc */
+/* unused concated harmony import isPx */
+/* unused concated harmony import toNum */
+/* unused concated harmony import toPx */
+/* unused concated harmony import toCSS */
+/* unused concated harmony import percOf */
+/* unused concated harmony import normalizeDimension */
+/* unused concated harmony import wrapPromise */
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXTERNAL MODULE: ./src/lib/util.js
+var util = __webpack_require__(11);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+var esm_extends = __webpack_require__(8);
+
+// EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
+var src = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
+var belter_src = __webpack_require__(3);
+
+// CONCATENATED MODULE: ./node_modules/beaver-logger/src/constants.js
+var LOG_LEVEL = {
+  DEBUG: 'debug',
+  INFO: 'info',
+  WARN: 'warn',
+  ERROR: 'error'
+};
+var PROTOCOL = {
+  FILE: 'file:'
+};
+// CONCATENATED MODULE: ./node_modules/beaver-logger/src/config.js
+
+var AUTO_FLUSH_LEVEL = [LOG_LEVEL.WARN, LOG_LEVEL.ERROR];
+var LOG_LEVEL_PRIORITY = [LOG_LEVEL.ERROR, LOG_LEVEL.WARN, LOG_LEVEL.INFO, LOG_LEVEL.DEBUG];
+var FLUSH_INTERVAL = 60 * 1000;
+var DEFAULT_LOG_LEVEL = LOG_LEVEL.WARN;
+// CONCATENATED MODULE: ./node_modules/beaver-logger/src/logger.js
+
+
+
+
+
+
+function httpTransport(_ref) {
+  var url = _ref.url,
+      method = _ref.method,
+      headers = _ref.headers,
+      json = _ref.json;
+  return Object(belter_src["q" /* request */])({
+    url: url,
+    method: method,
+    headers: headers,
+    json: json
+  }).then(belter_src["j" /* noop */]);
+}
+
+function extendIfDefined(target, source) {
+  for (var key in source) {
+    if (source.hasOwnProperty(key) && source[key] && !target[key]) {
+      target[key] = source[key];
+    }
+  }
+}
+
+function Logger(_ref2) {
+  var url = _ref2.url,
+      prefix = _ref2.prefix,
+      _ref2$logLevel = _ref2.logLevel,
+      logLevel = _ref2$logLevel === void 0 ? DEFAULT_LOG_LEVEL : _ref2$logLevel,
+      _ref2$transport = _ref2.transport,
+      transport = _ref2$transport === void 0 ? httpTransport : _ref2$transport,
+      _ref2$flushInterval = _ref2.flushInterval,
+      flushInterval = _ref2$flushInterval === void 0 ? FLUSH_INTERVAL : _ref2$flushInterval;
+  var events = [];
+  var tracking = [];
+  var payloadBuilders = [];
+  var metaBuilders = [];
+  var trackingBuilders = [];
+  var headerBuilders = [];
+
+  function print(level, event, payload) {
+    if (!Object(belter_src["g" /* isBrowser */])() || !window.console || !window.console.log) {
+      return;
+    }
+
+    var consoleLogLevel = logLevel;
+
+    if (window.LOG_LEVEL && LOG_LEVEL_PRIORITY.indexOf(window.LOG_LEVEL) !== -1) {
+      consoleLogLevel = window.LOG_LEVEL;
+    }
+
+    if (LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(consoleLogLevel)) {
+      return;
+    }
+
+    var args = [event];
+    args.push(payload);
+
+    if (payload.error || payload.warning) {
+      args.push('\n\n', payload.error || payload.warning);
+    }
+
+    try {
+      if (window.console[level] && window.console[level].apply) {
+        window.console[level].apply(window.console, args);
+      } else if (window.console.log && window.console.log.apply) {
+        window.console.log.apply(window.console, args);
+      }
+    } catch (err) {// pass
+    }
+  }
+
+  function immediateFlush() {
+    return src["a" /* ZalgoPromise */].try(function () {
+      if (!Object(belter_src["g" /* isBrowser */])() || window.location.protocol === PROTOCOL.FILE) {
+        return;
+      }
+
+      if (!events.length && !tracking.length) {
+        return;
+      }
+
+      var meta = {};
+
+      for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) {
+        var builder = metaBuilders[_i2];
+        extendIfDefined(meta, builder(meta));
+      }
+
+      var headers = {};
+
+      for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) {
+        var _builder = headerBuilders[_i4];
+        extendIfDefined(headers, _builder(headers));
+      }
+
+      var req = transport({
+        method: 'POST',
+        url: url,
+        headers: headers,
+        json: {
+          events: events,
+          meta: meta,
+          tracking: tracking
+        }
+      });
+      events = [];
+      tracking = [];
+      return req.then(belter_src["j" /* noop */]);
+    });
+  }
+
+  var flush = Object(belter_src["n" /* promiseDebounce */])(immediateFlush);
+
+  function enqueue(level, event, payload) {
+    events.push({
+      level: level,
+      event: event,
+      payload: payload
+    });
+
+    if (AUTO_FLUSH_LEVEL.indexOf(level) !== -1) {
+      flush();
+    }
+  }
+
+  function log(level, event, payload) {
+    if (payload === void 0) {
+      payload = {};
+    }
+
+    if (!Object(belter_src["g" /* isBrowser */])()) {
+      return logger; // eslint-disable-line no-use-before-define
+    }
+
+    if (prefix) {
+      event = prefix + "_" + event;
+    }
+
+    var logPayload = Object(esm_extends["a" /* default */])({}, Object(belter_src["k" /* objFilter */])(payload), {
+      timestamp: Date.now().toString()
+    });
+
+    for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) {
+      var builder = payloadBuilders[_i6];
+      extendIfDefined(logPayload, builder(logPayload));
+    }
+
+    enqueue(level, event, logPayload);
+    print(level, event, logPayload);
+    return logger; // eslint-disable-line no-use-before-define
+  }
+
+  function addBuilder(builders, builder) {
+    builders.push(builder);
+    return logger; // eslint-disable-line no-use-before-define
+  }
+
+  function addPayloadBuilder(builder) {
+    return addBuilder(payloadBuilders, builder);
+  }
+
+  function addMetaBuilder(builder) {
+    return addBuilder(metaBuilders, builder);
+  }
+
+  function addTrackingBuilder(builder) {
+    return addBuilder(trackingBuilders, builder);
+  }
+
+  function addHeaderBuilder(builder) {
+    return addBuilder(headerBuilders, builder);
+  }
+
+  function debug(event, payload) {
+    return log(LOG_LEVEL.DEBUG, event, payload);
+  }
+
+  function info(event, payload) {
+    return log(LOG_LEVEL.INFO, event, payload);
+  }
+
+  function warn(event, payload) {
+    return log(LOG_LEVEL.WARN, event, payload);
+  }
+
+  function error(event, payload) {
+    return log(LOG_LEVEL.ERROR, event, payload);
+  }
+
+  function track(payload) {
+    if (payload === void 0) {
+      payload = {};
+    }
+
+    if (!Object(belter_src["g" /* isBrowser */])()) {
+      return logger; // eslint-disable-line no-use-before-define
+    }
+
+    var trackingPayload = Object(belter_src["k" /* objFilter */])(payload);
+
+    for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) {
+      var builder = trackingBuilders[_i8];
+      extendIfDefined(trackingPayload, builder(trackingPayload));
+    }
+
+    print(LOG_LEVEL.DEBUG, 'track', trackingPayload);
+    tracking.push(trackingPayload);
+    return logger; // eslint-disable-line no-use-before-define
+  }
+
+  function setTransport(newTransport) {
+    transport = newTransport;
+    return logger; // eslint-disable-line no-use-before-define
+  }
+
+  if (Object(belter_src["g" /* isBrowser */])()) {
+    Object(belter_src["r" /* safeInterval */])(flush, flushInterval);
+  }
+
+  var logger = {
+    debug: debug,
+    info: info,
+    warn: warn,
+    error: error,
+    track: track,
+    flush: flush,
+    immediateFlush: immediateFlush,
+    addPayloadBuilder: addPayloadBuilder,
+    addMetaBuilder: addMetaBuilder,
+    addTrackingBuilder: addTrackingBuilder,
+    addHeaderBuilder: addHeaderBuilder,
+    setTransport: setTransport
+  };
+  return logger;
+}
+// CONCATENATED MODULE: ./node_modules/beaver-logger/src/index.js
+
+
+// EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
+var sdk_constants_src = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./src/config.js
+var config = __webpack_require__(6);
+
+// EXTERNAL MODULE: ./src/constants.js
+var constants = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./src/lib/logger.js
+
+
+
+
+
+
+function getLogger() {
+  return Object(belter_src["f" /* inlineMemoize */])(getLogger, function () {
+    return Logger({
+      url: config["g" /* LOGGER_URL */]
+    });
+  });
+}
+function setupLogger(_ref) {
+  var env = _ref.env,
+      sessionID = _ref.sessionID,
+      buttonSessionID = _ref.buttonSessionID,
+      clientID = _ref.clientID,
+      partnerAttributionID = _ref.partnerAttributionID,
+      commit = _ref.commit,
+      correlationID = _ref.correlationID,
+      locale = _ref.locale,
+      merchantID = _ref.merchantID,
+      merchantDomain = _ref.merchantDomain,
+      version = _ref.version;
+  var logger = getLogger();
+  logger.addPayloadBuilder(function () {
+    return {
+      referer: window.location.host,
+      uid: sessionID,
+      env: env
+    };
+  });
+  logger.addTrackingBuilder(function () {
+    var _ref2;
+
+    var lang = locale.lang,
+        country = locale.country;
+    return _ref2 = {}, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].BUTTON_SESSION_ID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = buttonSessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _ref2[sdk_constants_src["d" /* FPTI_KEY */].FEED] = sdk_constants_src["c" /* FPTI_FEED */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].DATA_SOURCE] = sdk_constants_src["b" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CLIENT_ID] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SELLER_ID] = merchantID[0], _ref2[sdk_constants_src["d" /* FPTI_KEY */].SESSION_UID] = sessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].REFERER] = window.location.host, _ref2[sdk_constants_src["d" /* FPTI_KEY */].MERCHANT_DOMAIN] = merchantDomain, _ref2[sdk_constants_src["d" /* FPTI_KEY */].LOCALE] = lang + "_" + country, _ref2[sdk_constants_src["d" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_NAME] = sdk_constants_src["e" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_VERSION] = version, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_ACTION] = commit ? sdk_constants_src["f" /* FPTI_USER_ACTION */].COMMIT : sdk_constants_src["f" /* FPTI_USER_ACTION */].CONTINUE, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_CORRID] = correlationID, _ref2;
+  });
+  src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
+    var _logger$track;
+
+    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'payments_sdk_error', _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["t" /* stringifyErrorMessage */])(err), _logger$track));
+    logger.error('unhandled_error', {
+      err: Object(belter_src["s" /* stringifyError */])(err)
+    }); // eslint-disable-next-line promise/no-promise-in-callback
+
+    logger.flush().catch(belter_src["j" /* noop */]);
+  });
+}
+// CONCATENATED MODULE: ./src/lib/index.js
+/* concated harmony reexport unresolvedPromise */__webpack_require__.d(__webpack_exports__, "g", function() { return util["f" /* unresolvedPromise */]; });
+/* concated harmony reexport promiseNoop */__webpack_require__.d(__webpack_exports__, "c", function() { return util["c" /* promiseNoop */]; });
+/* unused concated harmony import getBody */
+/* concated harmony reexport sendBeacon */__webpack_require__.d(__webpack_exports__, "e", function() { return util["e" /* sendBeacon */]; });
+/* concated harmony reexport fixClickFocus */__webpack_require__.d(__webpack_exports__, "a", function() { return util["a" /* fixClickFocus */]; });
+/* unused concated harmony import sleep */
+/* concated harmony reexport redirectTop */__webpack_require__.d(__webpack_exports__, "d", function() { return util["d" /* redirectTop */]; });
+/* unused concated harmony import loadScript */
+/* concated harmony reexport getLogger */__webpack_require__.d(__webpack_exports__, "b", function() { return getLogger; });
+/* concated harmony reexport setupLogger */__webpack_require__.d(__webpack_exports__, "f", function() { return setupLogger; });
+
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
+var src = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
+var belter_src = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./src/config.js
+var src_config = __webpack_require__(6);
+
+// EXTERNAL MODULE: ./src/lib/index.js + 5 modules
+var lib = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./src/api/api.js
+var api = __webpack_require__(7);
+
+// CONCATENATED MODULE: ./src/api/auth.js
+
+
+
+
+
+function createAccessToken(clientID) {
+  return Object(belter_src["f" /* inlineMemoize */])(createAccessToken, function () {
+    Object(lib["b" /* getLogger */])().info("rest_api_create_access_token");
+    var basicAuth = Object(belter_src["a" /* base64encode */])(clientID + ":");
+    return Object(belter_src["q" /* request */])({
+      method: "post",
+      url: src_config["a" /* AUTH_API_URL */],
+      headers: {
+        Authorization: "Basic " + basicAuth
+      },
+      data: {
+        grant_type: "client_credentials"
+      }
+    }).then(function (_ref) {
+      var body = _ref.body;
+
+      if (body && body.error === 'invalid_client') {
+        throw new Error("Auth Api invalid client id: " + clientID + ":\n\n" + JSON.stringify(body, null, 4));
+      }
+
+      if (!body || !body.access_token) {
+        throw new Error("Auth Api response error:\n\n" + JSON.stringify(body, null, 4));
+      }
+
+      return body.access_token;
+    });
+  }, [clientID]);
+}
+function getFirebaseSessionToken(sessionUID) {
+  return Object(api["a" /* callGraphQL */])({
+    query: "\n            query GetFireBaseSessionToken($sessionUID: String!) {\n                firebase {\n                    auth(sessionUID: $sessionUID) {\n                        sessionToken\n                    }\n                }\n            }\n        ",
+    variables: {
+      sessionUID: sessionUID
+    }
+  }).then(function (res) {
+    return res.data.firebase.auth.sessionToken;
+  });
+}
+// EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
+var sdk_constants_src = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./src/constants.js
+var constants = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./src/api/order.js
+
+
+
+
+
+
+function createOrderID(order, _ref) {
+  var _headers;
+
+  var facilitatorAccessToken = _ref.facilitatorAccessToken,
+      partnerAttributionID = _ref.partnerAttributionID;
+  Object(lib["b" /* getLogger */])().info("rest_api_create_order_id");
+  return Object(api["b" /* callRestAPI */])({
+    accessToken: facilitatorAccessToken,
+    method: "post",
+    url: "" + src_config["i" /* ORDERS_API_URL */],
+    data: order,
+    headers: (_headers = {}, _headers[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers)
+  }).then(function (body) {
+    var _getLogger$track;
+
+    var orderID = body && body.id;
+
+    if (!orderID) {
+      throw new Error("Order Api response error:\n\n" + JSON.stringify(body, null, 4));
+    }
+
+    Object(lib["b" /* getLogger */])().track((_getLogger$track = {}, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].CREATE_ORDER, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].ORDER_ID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TOKEN] = orderID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = orderID, _getLogger$track));
+    return orderID;
+  });
+}
+function getOrder(orderID, _ref2) {
+  var _headers2;
+
+  var facilitatorAccessToken = _ref2.facilitatorAccessToken,
+      buyerAccessToken = _ref2.buyerAccessToken,
+      partnerAttributionID = _ref2.partnerAttributionID;
+  return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
+    accessToken: buyerAccessToken,
+    url: src_config["j" /* SMART_API_URI */].ORDER + "/" + orderID
+  }) : Object(api["b" /* callRestAPI */])({
+    accessToken: facilitatorAccessToken,
+    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID,
+    headers: (_headers2 = {}, _headers2[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers2)
+  });
+}
+function captureOrder(orderID, _ref3) {
+  var _headers3;
+
+  var facilitatorAccessToken = _ref3.facilitatorAccessToken,
+      buyerAccessToken = _ref3.buyerAccessToken,
+      partnerAttributionID = _ref3.partnerAttributionID;
+  return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
+    accessToken: buyerAccessToken,
+    method: 'post',
+    url: src_config["j" /* SMART_API_URI */].ORDER + "/" + orderID + "/capture"
+  }) : Object(api["b" /* callRestAPI */])({
+    accessToken: facilitatorAccessToken,
+    method: "post",
+    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/capture",
+    headers: (_headers3 = {}, _headers3[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers3)
+  });
+}
+function authorizeOrder(orderID, _ref4) {
+  var _headers4;
+
+  var facilitatorAccessToken = _ref4.facilitatorAccessToken,
+      buyerAccessToken = _ref4.buyerAccessToken,
+      partnerAttributionID = _ref4.partnerAttributionID;
+  return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
+    accessToken: buyerAccessToken,
+    method: 'post',
+    url: src_config["j" /* SMART_API_URI */].ORDER + "/" + orderID + "/authorize"
+  }) : Object(api["b" /* callRestAPI */])({
+    accessToken: facilitatorAccessToken,
+    method: "post",
+    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/authorize",
+    headers: (_headers4 = {}, _headers4[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers4)
+  });
+}
+function patchOrder(orderID, data, _ref5) {
+  var _headers5;
+
+  var facilitatorAccessToken = _ref5.facilitatorAccessToken,
+      buyerAccessToken = _ref5.buyerAccessToken,
+      partnerAttributionID = _ref5.partnerAttributionID;
+  var patchData = Array.isArray(data) ? {
+    patch: data
+  } : data;
+  return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
+    accessToken: buyerAccessToken,
+    method: 'post',
+    url: src_config["j" /* SMART_API_URI */].ORDER + "/" + orderID + "/patch",
+    json: {
+      data: patchData
+    }
+  }) : Object(api["b" /* callRestAPI */])({
+    accessToken: facilitatorAccessToken,
+    method: "patch",
+    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID,
+    data: patchData,
+    headers: (_headers5 = {}, _headers5[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers5)
+  });
+}
+function getPayee(orderID) {
+  return Object(api["c" /* callSmartAPI */])({
+    url: src_config["j" /* SMART_API_URI */].CHECKOUT + "/" + orderID + "/payee"
+  });
+}
+var VALIDATE_CONTINGENCIES = {
+  THREE_DOMAIN_SECURE: '3D_SECURE'
+};
+function validatePaymentMethod(_ref6) {
+  var _headers6;
+
+  var clientAccessToken = _ref6.clientAccessToken,
+      orderID = _ref6.orderID,
+      paymentMethodID = _ref6.paymentMethodID,
+      enableThreeDomainSecure = _ref6.enableThreeDomainSecure,
+      partnerAttributionID = _ref6.partnerAttributionID,
+      buttonSessionID = _ref6.buttonSessionID;
+  Object(lib["b" /* getLogger */])().info("rest_api_create_order_token");
+  var headers = (_headers6 = {}, _headers6[constants["j" /* HEADERS */].AUTHORIZATION] = "Bearer " + clientAccessToken, _headers6[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _headers6[constants["j" /* HEADERS */].CLIENT_METADATA_ID] = buttonSessionID, _headers6);
+  var paymentSource = {
+    token: {
+      id: paymentMethodID,
+      type: 'NONCE'
+    }
+  };
+
+  if (enableThreeDomainSecure) {
+    paymentSource.contingencies = [VALIDATE_CONTINGENCIES.THREE_DOMAIN_SECURE];
+  }
+
+  var json = {
+    payment_source: paymentSource
+  };
+  return Object(belter_src["q" /* request */])({
+    method: "post",
+    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/" + src_config["k" /* VALIDATE_PAYMENT_METHOD_API */],
+    headers: headers,
+    json: json
+  });
+}
+function billingTokenToOrderID(billingToken) {
+  return Object(api["c" /* callSmartAPI */])({
+    method: 'post',
+    url: src_config["j" /* SMART_API_URI */].PAYMENT + "/" + billingToken + "/ectoken"
+  }).then(function (data) {
+    return data.token;
+  });
+}
+function subscriptionIdToCartId(subscriptionID) {
+  return Object(api["c" /* callSmartAPI */])({
+    method: 'post',
+    url: src_config["j" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID + "/cartid"
+  }).then(function (data) {
+    return data.token;
+  });
+}
+function enableVault(_ref7) {
+  var _headers7;
+
+  var orderID = _ref7.orderID,
+      clientAccessToken = _ref7.clientAccessToken;
+  return Object(api["a" /* callGraphQL */])({
+    query: "\n            mutation EnableVault(\n                $orderID : String!\n            ) {\n                enableVault(\n                    token: $orderID\n                )\n            }\n        ",
+    variables: {
+      orderID: orderID
+    },
+    headers: (_headers7 = {}, _headers7[constants["j" /* HEADERS */].ACCESS_TOKEN] = clientAccessToken, _headers7)
+  });
+}
+function deleteVault(_ref8) {
+  var _headers8;
+
+  var paymentMethodID = _ref8.paymentMethodID,
+      clientAccessToken = _ref8.clientAccessToken;
+  return Object(api["a" /* callGraphQL */])({
+    query: "\n            mutation DeleteVault(\n                $paymentMethodID : String!\n            ) {\n                deleteVault(\n                    paymentMethodID: $paymentMethodID\n                )\n            }\n        ",
+    variables: {
+      paymentMethodID: paymentMethodID
+    },
+    headers: (_headers8 = {}, _headers8[constants["j" /* HEADERS */].ACCESS_TOKEN] = clientAccessToken, _headers8)
+  });
+}
+function updateClientConfig(_ref9) {
+  var orderID = _ref9.orderID,
+      fundingSource = _ref9.fundingSource,
+      integrationArtifact = _ref9.integrationArtifact,
+      userExperienceFlow = _ref9.userExperienceFlow,
+      productFlow = _ref9.productFlow;
+  return Object(api["a" /* callGraphQL */])({
+    query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
+    variables: {
+      orderID: orderID,
+      fundingSource: fundingSource,
+      integrationArtifact: integrationArtifact,
+      userExperienceFlow: userExperienceFlow,
+      productFlow: productFlow
+    }
+  }).then(belter_src["j" /* noop */]);
+}
+// CONCATENATED MODULE: ./src/api/subscription.js
+
+
+
+
+function createSubscription(accessToken, subscriptionPayload, _ref) {
+  var partnerAttributionID = _ref.partnerAttributionID;
+  Object(lib["b" /* getLogger */])().info("rest_api_create_subscription_id");
+
+  if (!accessToken) {
+    throw new Error("Access token not passed");
+  }
+
+  if (!subscriptionPayload) {
+    throw new Error("Expected subscription payload to be passed");
+  }
+
+  var headers = {
+    'Authorization': "Bearer " + accessToken,
+    'PayPal-Partner-Attribution-Id': partnerAttributionID
+  };
+  return Object(belter_src["q" /* request */])({
+    method: "post",
+    url: src_config["c" /* CREATE_SUBSCRIPTIONS_API_URL */],
+    headers: headers,
+    json: subscriptionPayload
+  }).then(function (_ref2) {
+    var body = _ref2.body;
+
+    if (!body || !body.id) {
+      throw new Error("Create Subscription Api response error:\n\n" + JSON.stringify(body, null, 4));
+    }
+
+    return body.id;
+  });
+}
+function reviseSubscription(accessToken, subscriptionID, subscriptionPayload, _ref3) {
+  var partnerAttributionID = _ref3.partnerAttributionID;
+  Object(lib["b" /* getLogger */])().info("rest_api_create_subscription_id");
+
+  if (!accessToken) {
+    throw new Error("Access token not passed");
+  }
+
+  if (!subscriptionID) {
+    throw new Error("Expected subscription id to be passed as first argument to revise subscription api");
+  }
+
+  if (!subscriptionPayload) {
+    throw new Error("Expected subscription payload to be passed");
+  }
+
+  var headers = {
+    'Authorization': "Bearer " + accessToken,
+    'PayPal-Partner-Attribution-Id': partnerAttributionID
+  };
+  return Object(belter_src["q" /* request */])({
+    method: "post",
+    url: src_config["c" /* CREATE_SUBSCRIPTIONS_API_URL */] + "/" + subscriptionID + "/revise",
+    headers: headers,
+    json: subscriptionPayload
+  }).then(function (_ref4) {
+    var body = _ref4.body,
+        status = _ref4.status;
+
+    if (status !== 200) {
+      throw new Error("Revise Subscription Api HTTP-" + status + " response: error:\n\n" + JSON.stringify(body, null, 4));
+    } // for revision flow the same subscription id is returned
+
+
+    return subscriptionID;
+  });
+}
+function activateSubscription(subscriptionID, _ref5) {
+  var buyerAccessToken = _ref5.buyerAccessToken;
+  return Object(api["c" /* callSmartAPI */])({
+    accessToken: buyerAccessToken,
+    method: "post",
+    url: src_config["j" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID + "/activate"
+  });
+}
+function getSubscription(subscriptionID, _ref6) {
+  var buyerAccessToken = _ref6.buyerAccessToken;
+  return Object(api["c" /* callSmartAPI */])({
+    accessToken: buyerAccessToken,
+    url: src_config["j" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID
+  });
+}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+var esm_extends = __webpack_require__(8);
+
+// EXTERNAL MODULE: ./src/lib/util.js
+var util = __webpack_require__(11);
+
+// CONCATENATED MODULE: ./src/api/socket.js
+
+
+/* eslint unicorn/prefer-add-event-listener: off, max-lines: off */
+
+
+
+
+
+var MESSAGE_TYPE = {
+  REQUEST: 'request',
+  RESPONSE: 'response'
+};
+var RESPONSE_STATUS = {
+  SUCCESS: 'success',
+  ERROR: 'error'
+};
+function messageSocket(_ref) {
+  var sessionUID = _ref.sessionUID,
+      driver = _ref.driver,
+      sourceApp = _ref.sourceApp,
+      sourceAppVersion = _ref.sourceAppVersion,
+      targetApp = _ref.targetApp,
+      _ref$retry = _ref.retry,
+      retry = _ref$retry === void 0 ? true : _ref$retry;
+  var receivedMessages = {};
+  var requestListeners = {};
+  var responseListeners = {};
+
+  var sendMessage = function sendMessage(socket, data) {
+    var messageUID = Object(belter_src["v" /* uniqueID */])();
+    receivedMessages[messageUID] = true;
+
+    var message = Object(esm_extends["a" /* default */])({
+      message_uid: messageUID,
+      source_app: sourceApp,
+      source_app_version: sourceAppVersion,
+      target_app: targetApp
+    }, data);
+
+    socket.send(JSON.stringify(message));
+  };
+
+  var sendResponse = function sendResponse(socket, _ref2) {
+    var messageName = _ref2.messageName,
+        responseStatus = _ref2.responseStatus,
+        responseData = _ref2.responseData,
+        messageSessionUID = _ref2.messageSessionUID,
+        requestUID = _ref2.requestUID;
+
+    if (!socket.isOpen()) {
+      return;
+    }
+
+    return sendMessage(socket, {
+      session_uid: messageSessionUID,
+      request_uid: requestUID,
+      message_name: messageName,
+      message_status: responseStatus,
+      message_type: MESSAGE_TYPE.RESPONSE,
+      message_data: responseData
+    });
+  };
+
+  var onRequest = function onRequest(socket, _ref3) {
+    var messageSessionUID = _ref3.messageSessionUID,
+        requestUID = _ref3.requestUID,
+        messageName = _ref3.messageName,
+        messageData = _ref3.messageData;
+    return src["a" /* ZalgoPromise */].try(function () {
+      var requestListener = requestListeners[messageName];
+
+      if (!requestListener) {
+        throw new Error("No listener found for name: " + messageName);
+      }
+
+      var handler = requestListener.handler,
+          requireSessionUID = requestListener.requireSessionUID;
+
+      if (requireSessionUID && messageSessionUID !== sessionUID) {
+        throw new Error("Incorrect sessionUID: " + (messageSessionUID || 'undefined'));
+      }
+
+      return handler({
+        data: messageData
+      });
+    }).then(function (res) {
+      sendResponse(socket, {
+        responseStatus: RESPONSE_STATUS.SUCCESS,
+        responseData: res,
+        messageName: messageName,
+        messageSessionUID: messageSessionUID,
+        requestUID: requestUID
+      });
+    }, function (err) {
+      var res = {
+        message: err && err.message ? err.message : 'Unknown error'
+      };
+      sendResponse(socket, {
+        responseStatus: RESPONSE_STATUS.ERROR,
+        responseData: res,
+        messageName: messageName,
+        messageSessionUID: messageSessionUID,
+        requestUID: requestUID
+      });
+    });
+  };
+
+  var onResponse = function onResponse(_ref4) {
+    var requestUID = _ref4.requestUID,
+        messageSessionUID = _ref4.messageSessionUID,
+        responseStatus = _ref4.responseStatus,
+        messageData = _ref4.messageData;
+    var _responseListeners$re = responseListeners[requestUID],
+        listenerPromise = _responseListeners$re.listenerPromise,
+        requireSessionUID = _responseListeners$re.requireSessionUID;
+
+    if (!listenerPromise) {
+      throw new Error("Could not find response listener with id: " + requestUID);
+    }
+
+    if (requireSessionUID && messageSessionUID !== sessionUID) {
+      throw new Error("Incorrect sessionUID: " + (messageSessionUID || 'undefined'));
+    }
+
+    delete responseListeners[requestUID];
+
+    if (responseStatus === RESPONSE_STATUS.SUCCESS) {
+      listenerPromise.resolve({
+        data: messageData
+      });
+    } else if (responseStatus === RESPONSE_STATUS.ERROR) {
+      listenerPromise.reject(new Error(messageData.message));
+    } else {
+      throw new Error("Can not handle response status: " + (status || 'undefined'));
+    }
+  };
+
+  var onMessage = function onMessage(socket, rawData) {
+    var parsedData;
+
+    try {
+      parsedData = JSON.parse(rawData);
+    } catch (err) {
+      throw new Error("Could not parse socket message: " + rawData);
+    }
+
+    if (!parsedData) {
+      throw new Error("No data passed from socket message");
+    }
+
+    var _parsedData = parsedData,
+        messageSessionUID = _parsedData.session_uid,
+        requestUID = _parsedData.request_uid,
+        messageUID = _parsedData.message_uid,
+        messageName = _parsedData.message_name,
+        messageType = _parsedData.message_type,
+        messageData = _parsedData.message_data,
+        responseStatus = _parsedData.message_status,
+        messageTargetApp = _parsedData.target_app;
+
+    if (!messageUID || !requestUID || !messageName || !messageType || !messageTargetApp) {
+      throw new Error("Incomplete message: " + rawData);
+    }
+
+    if (receivedMessages[messageUID] || messageTargetApp !== sourceApp) {
+      return;
+    }
+
+    receivedMessages[messageUID] = true;
+
+    if (messageType === MESSAGE_TYPE.REQUEST) {
+      return onRequest(socket, {
+        messageSessionUID: messageSessionUID,
+        requestUID: requestUID,
+        messageName: messageName,
+        messageData: messageData
+      });
+    } else if (messageType === MESSAGE_TYPE.RESPONSE) {
+      return onResponse({
+        requestUID: requestUID,
+        messageSessionUID: messageSessionUID,
+        responseStatus: responseStatus,
+        messageData: messageData
+      });
+    } else {
+      throw new Error("Unhandleable message type: " + messageType);
+    }
+  };
+
+  var closed = false;
+  var retryDelay;
+
+  var updateRetryDelay = function updateRetryDelay() {
+    if (retry) {
+      retryDelay = retryDelay ? retryDelay * 2 : 1;
+    }
+  };
+
+  var socketPromise;
+  var retryPromise;
+
+  var init = function init() {
+    socketPromise = src["a" /* ZalgoPromise */].try(function () {
+      if (retryDelay) {
+        retryPromise = src["a" /* ZalgoPromise */].delay(retryDelay);
+        return retryPromise;
+      }
+    }).then(function () {
+      retryPromise = null;
+      var instance = driver();
+      var connectionPromise = new src["a" /* ZalgoPromise */](function (resolve, reject) {
+        instance.onOpen(function () {
+          closed = false;
+          retryDelay = 0;
+          resolve(instance);
+        });
+        instance.onClose(function (err) {
+          closed = true;
+          reject(err || new Error('socket closed'));
+
+          if (retry) {
+            updateRetryDelay();
+            init();
+          }
+        });
+        instance.onError(function (err) {
+          reject(err);
+        });
+      });
+      instance.onMessage(function (rawMessage) {
+        return connectionPromise.then(function (socket) {
+          return onMessage(socket, rawMessage);
+        });
+      });
+      return connectionPromise;
+    });
+    socketPromise.catch(belter_src["j" /* noop */]);
+  };
+
+  init();
+
+  var on = function on(name, handler, _temp) {
+    var _ref5 = _temp === void 0 ? {} : _temp,
+        _ref5$requireSessionU = _ref5.requireSessionUID,
+        requireSessionUID = _ref5$requireSessionU === void 0 ? true : _ref5$requireSessionU;
+
+    if (requestListeners[name]) {
+      throw new Error("Listener already registered for name: " + name);
+    }
+
+    requestListeners[name] = {
+      handler: handler,
+      requireSessionUID: requireSessionUID
+    };
+  };
+
+  var send = function send(messageName, messageData, _temp2) {
+    var _ref6 = _temp2 === void 0 ? {} : _temp2,
+        _ref6$requireSessionU = _ref6.requireSessionUID,
+        requireSessionUID = _ref6$requireSessionU === void 0 ? true : _ref6$requireSessionU,
+        _ref6$timeout = _ref6.timeout,
+        timeout = _ref6$timeout === void 0 ? 0 : _ref6$timeout;
+
+    return socketPromise.then(function (socket) {
+      var requestUID = Object(belter_src["v" /* uniqueID */])();
+      var listenerPromise = new src["a" /* ZalgoPromise */]();
+      responseListeners[requestUID] = {
+        listenerPromise: listenerPromise,
+        requireSessionUID: requireSessionUID
+      };
+      sendMessage(socket, {
+        request_uid: requestUID,
+        message_name: messageName,
+        message_type: MESSAGE_TYPE.REQUEST,
+        message_data: messageData
+      });
+
+      if (timeout) {
+        setTimeout(function () {
+          listenerPromise.reject(new Error("Timeoued out waiting for " + messageName + " response after " + timeout + "ms"));
+        }, timeout);
+      }
+
+      return listenerPromise;
+    });
+  };
+
+  var reconnect = function reconnect() {
+    return src["a" /* ZalgoPromise */].try(function () {
+      if (!closed) {
+        return socketPromise;
+      }
+
+      if (retryPromise) {
+        retryPromise.resolve();
+        return socketPromise;
+      }
+
+      retryDelay = 0;
+      return init();
+    });
+  };
+
+  var close = function close() {
+    retry = false;
+    socketPromise.then(function (socket) {
+      return socket.close();
+    }, belter_src["j" /* noop */]);
+  };
+
+  return {
+    on: on,
+    send: send,
+    reconnect: reconnect,
+    close: close
+  };
+}
+function webSocket(_ref7) {
+  var sessionUID = _ref7.sessionUID,
+      url = _ref7.url,
+      sourceApp = _ref7.sourceApp,
+      sourceAppVersion = _ref7.sourceAppVersion,
+      targetApp = _ref7.targetApp;
+
+  var driver = function driver() {
+    var socket = new WebSocket(url);
+    return {
+      send: function send(data) {
+        socket.send(data);
+      },
+      close: function close() {
+        socket.close();
+      },
+      onMessage: function onMessage(handler) {
+        socket.onmessage = function (event) {
+          var data = event.data;
+
+          if (typeof data !== 'string' || !data) {
+            throw new TypeError("Expected string data from web socket");
+          }
+
+          handler(data);
+        };
+      },
+      onError: function onError(handler) {
+        socket.onerror = function () {
+          handler(new Error("The socket encountered an error"));
+        };
+      },
+      onOpen: function onOpen(handler) {
+        socket.onopen = function () {
+          return handler();
+        };
+      },
+      onClose: function onClose(handler) {
+        socket.onclose = function () {
+          return handler(new Error("Websocket connection closed"));
+        };
+      },
+      isOpen: function isOpen() {
+        return socket.readyState === WebSocket.OPEN;
+      }
+    };
+  };
+
+  return messageSocket({
+    sessionUID: sessionUID,
+    driver: driver,
+    sourceApp: sourceApp,
+    sourceAppVersion: sourceAppVersion,
+    targetApp: targetApp
+  });
+}
+function firebaseSocket(_ref8) {
+  var sessionUID = _ref8.sessionUID,
+      config = _ref8.config,
+      sourceApp = _ref8.sourceApp,
+      sourceAppVersion = _ref8.sourceAppVersion,
+      targetApp = _ref8.targetApp;
+
+  var driver = function driver() {
+    var open = false;
+    var onMessageHandlers = [];
+    var onErrorHandlers = [];
+    var onCloseHandlers = [];
+    var onOpenHandlers = [];
+
+    var error = function error(err) {
+      for (var _i2 = 0; _i2 < onErrorHandlers.length; _i2++) {
+        var _handler = onErrorHandlers[_i2];
+
+        _handler(err);
+      }
+    };
+
+    var databasePromise = src["a" /* ZalgoPromise */].all([getFirebaseSessionToken(sessionUID), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]).then(function (_ref9) {
+      var sessionToken = _ref9[0];
+      window.firebase.initializeApp(config);
+      return window.firebase.auth().signInWithCustomToken(sessionToken).then(function () {
+        var database = window.firebase.database();
+        window.firebase.database.INTERNAL.forceWebSockets();
+        open = true;
+
+        for (var _i4 = 0; _i4 < onOpenHandlers.length; _i4++) {
+          var _handler2 = onOpenHandlers[_i4];
+
+          _handler2();
+        }
+
+        database.ref("users/" + sessionUID + "/messages").on('value', function (res) {
+          var messages = res.val() || {};
+
+          for (var _i6 = 0, _Object$keys2 = Object.keys(messages); _i6 < _Object$keys2.length; _i6++) {
+            var messageID = _Object$keys2[_i6];
+            var message = messages[messageID];
+
+            for (var _i8 = 0; _i8 < onMessageHandlers.length; _i8++) {
+              var _handler3 = onMessageHandlers[_i8];
+
+              _handler3(message);
             }
-        };
+          }
+        });
+        return database;
+      });
+    });
+    return {
+      send: function send(data) {
+        databasePromise.then(function (database) {
+          return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src["v" /* uniqueID */])()).set(data);
+        }).catch(error);
+      },
+      close: function close() {
+        databasePromise.then(function (database) {
+          database.goOffline();
+        });
+      },
+      onMessage: function onMessage(handler) {
+        onMessageHandlers.push(handler);
+      },
+      onError: function onError(handler) {
+        onErrorHandlers.push(handler);
+      },
+      onOpen: function onOpen(handler) {
+        if (open) {
+          handler();
+        } else {
+          onOpenHandlers.push(handler);
+        }
+      },
+      onClose: function onClose(handler) {
+        onCloseHandlers.push(handler);
+      },
+      isOpen: function isOpen() {
+        return open;
+      }
+    };
+  };
+
+  return messageSocket({
+    sessionUID: sessionUID,
+    driver: driver,
+    sourceApp: sourceApp,
+    sourceAppVersion: sourceAppVersion,
+    targetApp: targetApp
+  });
+}
+// CONCATENATED MODULE: ./src/api/eligibility.js
+
+
+
+function getNativeEligibility(_ref) {
+  var vault = _ref.vault,
+      shippingCallbackEnabled = _ref.shippingCallbackEnabled,
+      merchantID = _ref.merchantID,
+      clientID = _ref.clientID,
+      buyerCountry = _ref.buyerCountry,
+      currency = _ref.currency,
+      userAgent = _ref.userAgent,
+      buttonSessionID = _ref.buttonSessionID;
+  return Object(api["a" /* callGraphQL */])({
+    query: "\n            query NativeEligibility(\n                $vault : Boolean,\n                $shippingCallbackEnabled : Boolean,\n                $merchantID : String,\n                $facilitatorClientID : String,\n                $buyerCountry : String,\n                $currency : String,\n                $userAgent : String,\n                $buttonSessionID : string\n            ) {\n                mobileSDKEligibility(\n                    vault: $vault,\n                    shippingCallbackEnabled: $shippingCallbackEnabled,\n                    merchantID: $merchantID,\n                    facilitatorClientID: $facilitatorClientID,\n                    buyerCountry: $buyerCountry,\n                    currency: $currency,\n                    userAgent: $userAgent,\n                    buttonSessionID: $buttonSessionID\n                )\n            }\n        ",
+    variables: {
+      vault: vault,
+      shippingCallbackEnabled: shippingCallbackEnabled,
+      merchantID: merchantID[0],
+      facilitatorClientID: clientID,
+      buyerCountry: buyerCountry,
+      currency: currency,
+      userAgent: userAgent,
+      buttonSessionID: buttonSessionID
     }
-    function getOnCancel(xprops, _ref2) {
-        var createOrder = _ref2.createOrder, validationPromise = _ref2.validationPromise, _xprops$onCancel = xprops.onCancel, onCancel = void 0 === _xprops$onCancel ? belter_src__WEBPACK_IMPORTED_MODULE_0__.j : _xprops$onCancel, onError = xprops.onError, buttonSessionID = xprops.buttonSessionID;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function() {
-            return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__.a.try((function() {
-                return validationPromise || !0;
-            })).then((function(valid) {
-                if (valid) return createOrder().then((function(orderID) {
-                    var _getLogger$info$track;
-                    return Object(_lib__WEBPACK_IMPORTED_MODULE_3__.b)().info("button_cancel").track((_getLogger$info$track = {}, 
-                    _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__.g.BUTTON, 
-                    _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.h.CHECKOUT_CANCEL, 
-                    _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.BUTTON_SESSION_UID] = buttonSessionID, 
-                    _getLogger$info$track)).flush(), onCancel(buildXOnCancelData({
-                        orderID: orderID
-                    }), buildXOnCancelActions());
-                })).catch((function(err) {
-                    return onError(err);
-                }));
-            }));
+  }).then(function (res) {
+    return res.data.eligible;
+  });
+}
+// CONCATENATED MODULE: ./src/api/index.js
+/* concated harmony reexport createAccessToken */__webpack_require__.d(__webpack_exports__, "e", function() { return createAccessToken; });
+/* unused concated harmony import getFirebaseSessionToken */
+/* concated harmony reexport createOrderID */__webpack_require__.d(__webpack_exports__, "f", function() { return createOrderID; });
+/* concated harmony reexport getOrder */__webpack_require__.d(__webpack_exports__, "k", function() { return getOrder; });
+/* concated harmony reexport captureOrder */__webpack_require__.d(__webpack_exports__, "d", function() { return captureOrder; });
+/* concated harmony reexport authorizeOrder */__webpack_require__.d(__webpack_exports__, "b", function() { return authorizeOrder; });
+/* concated harmony reexport patchOrder */__webpack_require__.d(__webpack_exports__, "n", function() { return patchOrder; });
+/* concated harmony reexport getPayee */__webpack_require__.d(__webpack_exports__, "l", function() { return getPayee; });
+/* concated harmony reexport validatePaymentMethod */__webpack_require__.d(__webpack_exports__, "r", function() { return validatePaymentMethod; });
+/* concated harmony reexport billingTokenToOrderID */__webpack_require__.d(__webpack_exports__, "c", function() { return billingTokenToOrderID; });
+/* concated harmony reexport subscriptionIdToCartId */__webpack_require__.d(__webpack_exports__, "p", function() { return subscriptionIdToCartId; });
+/* concated harmony reexport enableVault */__webpack_require__.d(__webpack_exports__, "h", function() { return enableVault; });
+/* unused concated harmony import deleteVault */
+/* concated harmony reexport updateClientConfig */__webpack_require__.d(__webpack_exports__, "q", function() { return updateClientConfig; });
+/* concated harmony reexport createSubscription */__webpack_require__.d(__webpack_exports__, "g", function() { return createSubscription; });
+/* concated harmony reexport reviseSubscription */__webpack_require__.d(__webpack_exports__, "o", function() { return reviseSubscription; });
+/* concated harmony reexport activateSubscription */__webpack_require__.d(__webpack_exports__, "a", function() { return activateSubscription; });
+/* concated harmony reexport getSubscription */__webpack_require__.d(__webpack_exports__, "m", function() { return getSubscription; });
+/* unused concated harmony import messageSocket */
+/* unused concated harmony import webSocket */
+/* concated harmony reexport firebaseSocket */__webpack_require__.d(__webpack_exports__, "i", function() { return firebaseSocket; });
+/* concated harmony reexport getNativeEligibility */__webpack_require__.d(__webpack_exports__, "j", function() { return getNativeEligibility; });
+
+
+
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGGER_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ORDERS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return VALIDATE_PAYMENT_METHOD_API; });
+/* unused harmony export BASE_SMART_API_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return SMART_API_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GRAPHQL_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return EXPERIENCE_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return NATIVE_DETECTION_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
+var LOGGER_URL = '/xoplatform/logger/api/logger';
+var AUTH_API_URL = '/v1/oauth2/token';
+var ORDERS_API_URL = '/v2/checkout/orders';
+var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
+var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
+var BASE_SMART_API_URL = '/smart/api';
+var SMART_API_URI = {
+  AUTH: BASE_SMART_API_URL + "/auth",
+  CHECKOUT: BASE_SMART_API_URL + "/checkout",
+  ORDER: BASE_SMART_API_URL + "/order",
+  PAYMENT: BASE_SMART_API_URL + "/payment",
+  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
+};
+var GRAPHQL_URI = '/graphql';
+var EXPERIENCE_URI = {
+  CHECKOUT: '/checkoutnow',
+  NATIVE_CHECKOUT: '/smart/checkout/native'
+};
+var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
+var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
+var FIREBASE_SCRIPTS = {
+  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
+  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
+  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
+};
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return callRestAPI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return callSmartAPI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return callGraphQL; });
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(0);
+
+
+
+
+
+function callRestAPI(_ref) {
+  var _extends2;
+
+  var accessToken = _ref.accessToken,
+      method = _ref.method,
+      url = _ref.url,
+      data = _ref.data,
+      headers = _ref.headers;
+
+  if (!accessToken) {
+    throw new Error("No access token passed to " + url);
+  }
+
+  var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])((_extends2 = {}, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].AUTHORIZATION] = "Bearer " + accessToken, _extends2), headers);
+
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "q"])({
+    method: method,
+    url: url,
+    headers: requestHeaders,
+    json: data
+  }).then(function (_ref2) {
+    var status = _ref2.status,
+        body = _ref2.body,
+        responseHeaders = _ref2.headers;
+
+    if (status >= 300) {
+      throw new Error(url + " returned status: " + status + " (Corr ID: " + responseHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
+    }
+
+    return body;
+  });
+}
+function callSmartAPI(_ref3) {
+  var _reqHeaders;
+
+  var accessToken = _ref3.accessToken,
+      url = _ref3.url,
+      _ref3$method = _ref3.method,
+      method = _ref3$method === void 0 ? 'get' : _ref3$method,
+      json = _ref3.json;
+  var reqHeaders = (_reqHeaders = {}, _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].SOURCE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_BUTTONS */ "n"], _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_PAYMENT_BUTTONS */ "o"], _reqHeaders);
+
+  if (accessToken) {
+    reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].ACCESS_TOKEN] = accessToken;
+  }
+
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "q"])({
+    url: url,
+    method: method,
+    headers: reqHeaders,
+    json: json
+  }).then(function (_ref4) {
+    var status = _ref4.status,
+        body = _ref4.body,
+        headers = _ref4.headers;
+
+    if (body.ack === 'contingency') {
+      var err = new Error(body.contingency); // $FlowFixMe
+
+      err.data = body.data;
+      throw err;
+    }
+
+    if (status > 400) {
+      throw new Error("Api: " + url + " returned status code: " + status + " (Corr ID: " + headers[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
+    }
+
+    if (body.ack !== 'success') {
+      throw new Error("Api: " + url + " returned ack: " + body.ack + " (Corr ID: " + headers[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
+    }
+
+    return body.data;
+  });
+}
+function callGraphQL(_ref5) {
+  var query = _ref5.query,
+      _ref5$variables = _ref5.variables,
+      variables = _ref5$variables === void 0 ? {} : _ref5$variables,
+      _ref5$headers = _ref5.headers,
+      headers = _ref5$headers === void 0 ? {} : _ref5$headers;
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "q"])({
+    url: _config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"],
+    method: 'POST',
+    json: {
+      query: query,
+      variables: variables
+    },
+    headers: Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, headers)
+  }).then(function (_ref6) {
+    var status = _ref6.status,
+        body = _ref6.body;
+    var errors = body.errors || [];
+
+    if (errors.length) {
+      var message = errors[0].message || JSON.stringify(errors[0]);
+      throw new Error(message);
+    }
+
+    if (status !== 200) {
+      throw new Error(_config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"] + " returned status " + status);
+    }
+
+    return body;
+  });
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _extends; });
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/util.js
+function isRegex(item) {
+  return Object.prototype.toString.call(item) === '[object RegExp]';
+} // eslint-disable-next-line no-unused-vars
+
+function noop() {// pass
+}
+// CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/constants.js
+var PROTOCOL = {
+  MOCK: 'mock:',
+  FILE: 'file:',
+  ABOUT: 'about:'
+};
+var WILDCARD = '*';
+var WINDOW_TYPE = {
+  IFRAME: 'iframe',
+  POPUP: 'popup'
+};
+// CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/utils.js
+/* eslint max-lines: 0 */
+
+
+var IE_WIN_ACCESS_ERROR = 'Call was rejected by callee.\r\n';
+function isFileProtocol(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  return win.location.protocol === PROTOCOL.FILE;
+}
+function isAboutProtocol(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  return win.location.protocol === PROTOCOL.ABOUT;
+}
+function getParent(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  if (!win) {
+    return;
+  }
+
+  try {
+    if (win.parent && win.parent !== win) {
+      return win.parent;
+    }
+  } catch (err) {// pass
+  }
+}
+function getOpener(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  if (!win) {
+    return;
+  } // Make sure we're not actually an iframe which has had window.open() called on us
+
+
+  if (getParent(win)) {
+    return;
+  }
+
+  try {
+    return win.opener;
+  } catch (err) {// pass
+  }
+}
+function canReadFromWindow(win) {
+  try {
+    // $FlowFixMe
+    noop(win && win.location && win.location.href);
+    return true;
+  } catch (err) {// pass
+  }
+
+  return false;
+}
+function getActualDomain(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  var location = win.location;
+
+  if (!location) {
+    throw new Error("Can not read window location");
+  }
+
+  var protocol = location.protocol;
+
+  if (!protocol) {
+    throw new Error("Can not read window protocol");
+  }
+
+  if (protocol === PROTOCOL.FILE) {
+    return PROTOCOL.FILE + "//";
+  }
+
+  if (protocol === PROTOCOL.ABOUT) {
+    var parent = getParent(win);
+
+    if (parent && canReadFromWindow(parent)) {
+      // $FlowFixMe
+      return getActualDomain(parent);
+    }
+
+    return PROTOCOL.ABOUT + "//";
+  }
+
+  var host = location.host;
+
+  if (!host) {
+    throw new Error("Can not read window host");
+  }
+
+  return protocol + "//" + host;
+}
+function getDomain(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  var domain = getActualDomain(win);
+
+  if (domain && win.mockDomain && win.mockDomain.indexOf(PROTOCOL.MOCK) === 0) {
+    return win.mockDomain;
+  }
+
+  return domain;
+}
+function isBlankDomain(win) {
+  try {
+    // $FlowFixMe
+    if (!win.location.href) {
+      return true;
+    }
+
+    if (win.location.href === 'about:blank') {
+      return true;
+    }
+  } catch (err) {// pass
+  }
+
+  return false;
+}
+function isActuallySameDomain(win) {
+  try {
+    if (win === window) {
+      return true;
+    }
+  } catch (err) {// pass
+  }
+
+  try {
+    var desc = Object.getOwnPropertyDescriptor(win, 'location');
+
+    if (desc && desc.enumerable === false) {
+      return false;
+    }
+  } catch (err) {// pass
+  }
+
+  try {
+    // $FlowFixMe
+    if (isAboutProtocol(win) && canReadFromWindow(win)) {
+      return true;
+    }
+  } catch (err) {// pass
+  }
+
+  try {
+    // $FlowFixMe
+    if (getActualDomain(win) === getActualDomain(window)) {
+      return true;
+    }
+  } catch (err) {// pass
+  }
+
+  return false;
+}
+function isSameDomain(win) {
+  if (!isActuallySameDomain(win)) {
+    return false;
+  }
+
+  try {
+    if (win === window) {
+      return true;
+    } // $FlowFixMe
+
+
+    if (isAboutProtocol(win) && canReadFromWindow(win)) {
+      return true;
+    } // $FlowFixMe
+
+
+    if (getDomain(window) === getDomain(win)) {
+      return true;
+    }
+  } catch (err) {// pass
+  }
+
+  return false;
+}
+function assertSameDomain(win) {
+  if (!isSameDomain(win)) {
+    throw new Error("Expected window to be same domain");
+  } // $FlowFixMe
+
+
+  return win;
+}
+function getParents(win) {
+  var result = [];
+
+  try {
+    while (win.parent !== win) {
+      result.push(win.parent);
+      win = win.parent;
+    }
+  } catch (err) {// pass
+  }
+
+  return result;
+}
+function isAncestorParent(parent, child) {
+  if (!parent || !child) {
+    return false;
+  }
+
+  var childParent = getParent(child);
+
+  if (childParent) {
+    return childParent === parent;
+  }
+
+  if (getParents(child).indexOf(parent) !== -1) {
+    return true;
+  }
+
+  return false;
+}
+function getFrames(win) {
+  var result = [];
+  var frames;
+
+  try {
+    frames = win.frames;
+  } catch (err) {
+    frames = win;
+  }
+
+  var len;
+
+  try {
+    len = frames.length;
+  } catch (err) {// pass
+  }
+
+  if (len === 0) {
+    return result;
+  }
+
+  if (len) {
+    for (var i = 0; i < len; i++) {
+      var frame = void 0;
+
+      try {
+        frame = frames[i];
+      } catch (err) {
+        continue;
+      }
+
+      result.push(frame);
+    }
+
+    return result;
+  }
+
+  for (var _i = 0; _i < 100; _i++) {
+    var _frame = void 0;
+
+    try {
+      _frame = frames[_i];
+    } catch (err) {
+      return result;
+    }
+
+    if (!_frame) {
+      return result;
+    }
+
+    result.push(_frame);
+  }
+
+  return result;
+}
+function getAllChildFrames(win) {
+  var result = [];
+
+  for (var _i3 = 0, _getFrames2 = getFrames(win); _i3 < _getFrames2.length; _i3++) {
+    var frame = _getFrames2[_i3];
+    result.push(frame);
+
+    for (var _i5 = 0, _getAllChildFrames2 = getAllChildFrames(frame); _i5 < _getAllChildFrames2.length; _i5++) {
+      var childFrame = _getAllChildFrames2[_i5];
+      result.push(childFrame);
+    }
+  }
+
+  return result;
+}
+function getTop(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  try {
+    if (win.top) {
+      return win.top;
+    }
+  } catch (err) {// pass
+  }
+
+  if (getParent(win) === win) {
+    return win;
+  }
+
+  try {
+    if (isAncestorParent(window, win) && window.top) {
+      return window.top;
+    }
+  } catch (err) {// pass
+  }
+
+  try {
+    if (isAncestorParent(win, window) && window.top) {
+      return window.top;
+    }
+  } catch (err) {// pass
+  }
+
+  for (var _i7 = 0, _getAllChildFrames4 = getAllChildFrames(win); _i7 < _getAllChildFrames4.length; _i7++) {
+    var frame = _getAllChildFrames4[_i7];
+
+    try {
+      if (frame.top) {
+        return frame.top;
+      }
+    } catch (err) {// pass
+    }
+
+    if (getParent(frame) === frame) {
+      return frame;
+    }
+  }
+}
+function getNextOpener(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  return getOpener(getTop(win) || win);
+}
+function getUltimateTop(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  var opener = getNextOpener(win);
+
+  if (opener) {
+    return getUltimateTop(opener);
+  }
+
+  return top;
+}
+function getAllFramesInWindow(win) {
+  var top = getTop(win);
+
+  if (!top) {
+    throw new Error("Can not determine top window");
+  }
+
+  return [].concat(getAllChildFrames(top), [top]);
+}
+function getAllWindows(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  var frames = getAllFramesInWindow(win);
+  var opener = getNextOpener(win);
+
+  if (opener) {
+    return [].concat(getAllWindows(opener), frames);
+  } else {
+    return frames;
+  }
+}
+function isTop(win) {
+  return win === getTop(win);
+}
+function isFrameWindowClosed(frame) {
+  if (!frame.contentWindow) {
+    return true;
+  }
+
+  if (!frame.parentNode) {
+    return true;
+  }
+
+  var doc = frame.ownerDocument;
+
+  if (doc && doc.documentElement && !doc.documentElement.contains(frame)) {
+    return true;
+  }
+
+  return false;
+}
+
+function safeIndexOf(collection, item) {
+  for (var i = 0; i < collection.length; i++) {
+    try {
+      if (collection[i] === item) {
+        return i;
+      }
+    } catch (err) {// pass
+    }
+  }
+
+  return -1;
+}
+
+var iframeWindows = [];
+var iframeFrames = [];
+function isWindowClosed(win, allowMock) {
+  if (allowMock === void 0) {
+    allowMock = true;
+  }
+
+  try {
+    if (win === window) {
+      return false;
+    }
+  } catch (err) {
+    return true;
+  }
+
+  try {
+    if (!win) {
+      return true;
+    }
+  } catch (err) {
+    return true;
+  }
+
+  try {
+    if (win.closed) {
+      return true;
+    }
+  } catch (err) {
+    // I love you so much IE
+    if (err && err.message === IE_WIN_ACCESS_ERROR) {
+      return false;
+    }
+
+    return true;
+  }
+
+  if (allowMock && isSameDomain(win)) {
+    try {
+      // $FlowFixMe
+      if (win.mockclosed) {
+        return true;
+      }
+    } catch (err) {// pass
+    }
+  } // Mobile safari
+
+
+  try {
+    if (!win.parent || !win.top) {
+      return true;
+    }
+  } catch (err) {} // pass
+  // Yes, this actually happens in IE. win === win errors out when the window
+  // is from an iframe, and the iframe was removed from the page.
+
+
+  try {
+    noop(win === win); // eslint-disable-line no-self-compare
+  } catch (err) {
+    return true;
+  } // IE orphaned frame
+
+
+  var iframeIndex = safeIndexOf(iframeWindows, win);
+
+  if (iframeIndex !== -1) {
+    var frame = iframeFrames[iframeIndex];
+
+    if (frame && isFrameWindowClosed(frame)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function cleanIframes() {
+  for (var i = 0; i < iframeWindows.length; i++) {
+    var closed = false;
+
+    try {
+      closed = iframeWindows[i].closed;
+    } catch (err) {// pass
+    }
+
+    if (closed) {
+      iframeFrames.splice(i, 1);
+      iframeWindows.splice(i, 1);
+    }
+  }
+}
+
+function linkFrameWindow(frame) {
+  cleanIframes();
+
+  if (frame && frame.contentWindow) {
+    try {
+      iframeWindows.push(frame.contentWindow);
+      iframeFrames.push(frame);
+    } catch (err) {// pass
+    }
+  }
+}
+function getUserAgent(win) {
+  win = win || window;
+  return win.navigator.mockUserAgent || win.navigator.userAgent;
+}
+function getFrameByName(win, name) {
+  var winFrames = getFrames(win);
+
+  for (var _i9 = 0; _i9 < winFrames.length; _i9++) {
+    var childFrame = winFrames[_i9];
+
+    try {
+      // $FlowFixMe
+      if (isSameDomain(childFrame) && childFrame.name === name && winFrames.indexOf(childFrame) !== -1) {
+        return childFrame;
+      }
+    } catch (err) {// pass
+    }
+  }
+
+  try {
+    // $FlowFixMe
+    if (winFrames.indexOf(win.frames[name]) !== -1) {
+      // $FlowFixMe
+      return win.frames[name];
+    }
+  } catch (err) {// pass
+  }
+
+  try {
+    if (winFrames.indexOf(win[name]) !== -1) {
+      return win[name];
+    }
+  } catch (err) {// pass
+  }
+}
+function findChildFrameByName(win, name) {
+  var frame = getFrameByName(win, name);
+
+  if (frame) {
+    return frame;
+  }
+
+  for (var _i11 = 0, _getFrames4 = getFrames(win); _i11 < _getFrames4.length; _i11++) {
+    var childFrame = _getFrames4[_i11];
+    var namedFrame = findChildFrameByName(childFrame, name);
+
+    if (namedFrame) {
+      return namedFrame;
+    }
+  }
+}
+function findFrameByName(win, name) {
+  var frame;
+  frame = getFrameByName(win, name);
+
+  if (frame) {
+    return frame;
+  }
+
+  var top = getTop(win) || win;
+  return findChildFrameByName(top, name);
+}
+function isParent(win, frame) {
+  var frameParent = getParent(frame);
+
+  if (frameParent) {
+    return frameParent === win;
+  }
+
+  for (var _i13 = 0, _getFrames6 = getFrames(win); _i13 < _getFrames6.length; _i13++) {
+    var childFrame = _getFrames6[_i13];
+
+    if (childFrame === frame) {
+      return true;
+    }
+  }
+
+  return false;
+}
+function isOpener(parent, child) {
+  return parent === getOpener(child);
+}
+function getAncestor(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  win = win || window;
+  var opener = getOpener(win);
+
+  if (opener) {
+    return opener;
+  }
+
+  var parent = getParent(win);
+
+  if (parent) {
+    return parent;
+  }
+}
+function getAncestors(win) {
+  var results = [];
+  var ancestor = win;
+
+  while (ancestor) {
+    ancestor = getAncestor(ancestor);
+
+    if (ancestor) {
+      results.push(ancestor);
+    }
+  }
+
+  return results;
+}
+function isAncestor(parent, child) {
+  var actualParent = getAncestor(child);
+
+  if (actualParent) {
+    if (actualParent === parent) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (child === parent) {
+    return false;
+  }
+
+  if (getTop(child) === child) {
+    return false;
+  }
+
+  for (var _i15 = 0, _getFrames8 = getFrames(parent); _i15 < _getFrames8.length; _i15++) {
+    var frame = _getFrames8[_i15];
+
+    if (frame === child) {
+      return true;
+    }
+  }
+
+  return false;
+}
+function isPopup(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  return Boolean(getOpener(win));
+}
+function isIframe(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  return Boolean(getParent(win));
+}
+function isFullpage(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  return Boolean(!isIframe(win) && !isPopup(win));
+}
+
+function anyMatch(collection1, collection2) {
+  for (var _i17 = 0; _i17 < collection1.length; _i17++) {
+    var item1 = collection1[_i17];
+
+    for (var _i19 = 0; _i19 < collection2.length; _i19++) {
+      var item2 = collection2[_i19];
+
+      if (item1 === item2) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function getDistanceFromTop(win) {
+  if (win === void 0) {
+    win = window;
+  }
+
+  var distance = 0;
+  var parent = win;
+
+  while (parent) {
+    parent = getParent(parent);
+
+    if (parent) {
+      distance += 1;
+    }
+  }
+
+  return distance;
+}
+function getNthParent(win, n) {
+  if (n === void 0) {
+    n = 1;
+  }
+
+  var parent = win;
+
+  for (var i = 0; i < n; i++) {
+    if (!parent) {
+      return;
+    }
+
+    parent = getParent(parent);
+  }
+
+  return parent;
+}
+function getNthParentFromTop(win, n) {
+  if (n === void 0) {
+    n = 1;
+  }
+
+  return getNthParent(win, getDistanceFromTop(win) - n);
+}
+function isSameTopWindow(win1, win2) {
+  var top1 = getTop(win1) || win1;
+  var top2 = getTop(win2) || win2;
+
+  try {
+    if (top1 && top2) {
+      if (top1 === top2) {
+        return true;
+      }
+
+      return false;
+    }
+  } catch (err) {// pass
+  }
+
+  var allFrames1 = getAllFramesInWindow(win1);
+  var allFrames2 = getAllFramesInWindow(win2);
+
+  if (anyMatch(allFrames1, allFrames2)) {
+    return true;
+  }
+
+  var opener1 = getOpener(top1);
+  var opener2 = getOpener(top2);
+
+  if (opener1 && anyMatch(getAllFramesInWindow(opener1), allFrames2)) {
+    return false;
+  }
+
+  if (opener2 && anyMatch(getAllFramesInWindow(opener2), allFrames1)) {
+    return false;
+  }
+
+  return false;
+}
+function matchDomain(pattern, origin) {
+  if (typeof pattern === 'string') {
+    if (typeof origin === 'string') {
+      return pattern === WILDCARD || origin === pattern;
+    }
+
+    if (isRegex(origin)) {
+      return false;
+    }
+
+    if (Array.isArray(origin)) {
+      return false;
+    }
+  }
+
+  if (isRegex(pattern)) {
+    if (isRegex(origin)) {
+      return pattern.toString() === origin.toString();
+    }
+
+    if (Array.isArray(origin)) {
+      return false;
+    } // $FlowFixMe
+
+
+    return Boolean(origin.match(pattern));
+  }
+
+  if (Array.isArray(pattern)) {
+    if (Array.isArray(origin)) {
+      return JSON.stringify(pattern) === JSON.stringify(origin);
+    }
+
+    if (isRegex(origin)) {
+      return false;
+    }
+
+    return pattern.some(function (subpattern) {
+      return matchDomain(subpattern, origin);
+    });
+  }
+
+  return false;
+}
+function stringifyDomainPattern(pattern) {
+  if (Array.isArray(pattern)) {
+    return "(" + pattern.join(' | ') + ")";
+  } else if (isRegex(pattern)) {
+    return "RegExp(" + pattern.toString();
+  } else {
+    return pattern.toString();
+  }
+}
+function getDomainFromUrl(url) {
+  var domain;
+
+  if (url.match(/^(https?|mock|file):\/\//)) {
+    domain = url;
+  } else {
+    return getDomain();
+  }
+
+  domain = domain.split('/').slice(0, 3).join('/');
+  return domain;
+}
+function onCloseWindow(win, callback, delay, maxtime) {
+  if (delay === void 0) {
+    delay = 1000;
+  }
+
+  if (maxtime === void 0) {
+    maxtime = Infinity;
+  }
+
+  var timeout;
+
+  var check = function check() {
+    if (isWindowClosed(win)) {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+
+      return callback();
+    }
+
+    if (maxtime <= 0) {
+      clearTimeout(timeout);
+    } else {
+      maxtime -= delay;
+      timeout = setTimeout(check, delay);
+    }
+  };
+
+  check();
+  return {
+    cancel: function cancel() {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    }
+  };
+} // eslint-disable-next-line complexity
+
+function isWindow(obj) {
+  try {
+    if (obj === window) {
+      return true;
+    }
+  } catch (err) {
+    if (err && err.message === IE_WIN_ACCESS_ERROR) {
+      return true;
+    }
+  }
+
+  try {
+    if (Object.prototype.toString.call(obj) === '[object Window]') {
+      return true;
+    }
+  } catch (err) {
+    if (err && err.message === IE_WIN_ACCESS_ERROR) {
+      return true;
+    }
+  }
+
+  try {
+    if (window.Window && obj instanceof window.Window) {
+      return true;
+    }
+  } catch (err) {
+    if (err && err.message === IE_WIN_ACCESS_ERROR) {
+      return true;
+    }
+  }
+
+  try {
+    if (obj && obj.self === obj) {
+      return true;
+    }
+  } catch (err) {
+    if (err && err.message === IE_WIN_ACCESS_ERROR) {
+      return true;
+    }
+  }
+
+  try {
+    if (obj && obj.parent === obj) {
+      return true;
+    }
+  } catch (err) {
+    if (err && err.message === IE_WIN_ACCESS_ERROR) {
+      return true;
+    }
+  }
+
+  try {
+    if (obj && obj.top === obj) {
+      return true;
+    }
+  } catch (err) {
+    if (err && err.message === IE_WIN_ACCESS_ERROR) {
+      return true;
+    }
+  }
+
+  try {
+    if (noop(obj === obj) === '__unlikely_value__') {
+      // eslint-disable-line no-self-compare
+      return false;
+    }
+  } catch (err) {
+    return true;
+  }
+
+  try {
+    if (obj && obj.__cross_domain_utils_window_check__ === '__unlikely_value__') {
+      return false;
+    }
+  } catch (err) {
+    return true;
+  }
+
+  return false;
+}
+function isBrowser() {
+  return typeof window !== 'undefined' && typeof window.location !== 'undefined';
+}
+function isCurrentDomain(domain) {
+  if (!isBrowser()) {
+    return false;
+  }
+
+  return getDomain() === domain;
+}
+function isMockDomain(domain) {
+  return domain.indexOf(PROTOCOL.MOCK) === 0;
+}
+function normalizeMockUrl(url) {
+  if (!isMockDomain(getDomainFromUrl(url))) {
+    return url;
+  }
+
+  if (true) {
+    throw new Error("Mock urls not supported out of test mode");
+  }
+
+  return url.replace(/^mock:\/\/[^/]+/, getActualDomain(window));
+}
+function closeWindow(win) {
+  try {
+    win.close();
+  } catch (err) {// pass
+  }
+}
+// CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/types.js
+// export something to force webpack to see this as an ES module
+var TYPES = true;
+// CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/index.js
+/* unused concated harmony import isFileProtocol */
+/* unused concated harmony import isAboutProtocol */
+/* concated harmony reexport getParent */__webpack_require__.d(__webpack_exports__, "b", function() { return getParent; });
+/* unused concated harmony import getOpener */
+/* unused concated harmony import canReadFromWindow */
+/* unused concated harmony import getActualDomain */
+/* concated harmony reexport getDomain */__webpack_require__.d(__webpack_exports__, "a", function() { return getDomain; });
+/* concated harmony reexport isBlankDomain */__webpack_require__.d(__webpack_exports__, "d", function() { return isBlankDomain; });
+/* unused concated harmony import isActuallySameDomain */
+/* unused concated harmony import isSameDomain */
+/* unused concated harmony import assertSameDomain */
+/* unused concated harmony import getParents */
+/* unused concated harmony import isAncestorParent */
+/* unused concated harmony import getFrames */
+/* unused concated harmony import getAllChildFrames */
+/* concated harmony reexport getTop */__webpack_require__.d(__webpack_exports__, "c", function() { return getTop; });
+/* unused concated harmony import getNextOpener */
+/* unused concated harmony import getUltimateTop */
+/* unused concated harmony import getAllFramesInWindow */
+/* unused concated harmony import getAllWindows */
+/* unused concated harmony import isTop */
+/* unused concated harmony import isFrameWindowClosed */
+/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "f", function() { return isWindowClosed; });
+/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "g", function() { return linkFrameWindow; });
+/* unused concated harmony import getUserAgent */
+/* unused concated harmony import getFrameByName */
+/* unused concated harmony import findChildFrameByName */
+/* unused concated harmony import findFrameByName */
+/* unused concated harmony import isParent */
+/* unused concated harmony import isOpener */
+/* unused concated harmony import getAncestor */
+/* unused concated harmony import getAncestors */
+/* unused concated harmony import isAncestor */
+/* unused concated harmony import isPopup */
+/* unused concated harmony import isIframe */
+/* unused concated harmony import isFullpage */
+/* unused concated harmony import getDistanceFromTop */
+/* unused concated harmony import getNthParent */
+/* unused concated harmony import getNthParentFromTop */
+/* unused concated harmony import isSameTopWindow */
+/* unused concated harmony import matchDomain */
+/* unused concated harmony import stringifyDomainPattern */
+/* unused concated harmony import getDomainFromUrl */
+/* unused concated harmony import onCloseWindow */
+/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "e", function() { return isWindow; });
+/* unused concated harmony import isBrowser */
+/* unused concated harmony import isCurrentDomain */
+/* unused concated harmony import isMockDomain */
+/* unused concated harmony import normalizeMockUrl */
+/* unused concated harmony import closeWindow */
+/* unused concated harmony import TYPES */
+/* unused concated harmony import PROTOCOL */
+/* unused concated harmony import WILDCARD */
+/* unused concated harmony import WINDOW_TYPE */
+
+
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getButtons; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getSelectedFunding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return enableLoadingSpinner; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return disableLoadingSpinner; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getNonce; });
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+
+
+
+function getButtons() {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* querySelectorAll */ "o"])("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE + " ]");
+}
+function getSelectedFunding(button) {
+  var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE);
+  var paymentMethodID = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].PAYMENT_METHOD_ID);
+  var card = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].CARD); // $FlowFixMe
+
+  return {
+    fundingSource: fundingSource,
+    card: card,
+    paymentMethodID: paymentMethodID
+  };
+}
+function enableLoadingSpinner(button) {
+  button.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].LOADING);
+}
+function disableLoadingSpinner(button) {
+  button.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].LOADING);
+}
+function getNonce() {
+  var nonce = '';
+
+  if (document.body) {
+    nonce = document.body.getAttribute('data-nonce') || '';
+  }
+
+  return nonce;
+}
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return unresolvedPromise; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return promiseNoop; });
+/* unused harmony export getBody */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return sendBeacon; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return fixClickFocus; });
+/* unused harmony export sleep */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return redirectTop; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return loadScript; });
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+
+
+
+function unresolvedPromise() {
+  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "j"]);
+}
+function promiseNoop() {
+  // eslint-disable-line no-unused-vars
+  return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].resolve();
+}
+function getBody() {
+  var body = document.body;
+
+  if (!body) {
+    throw new Error("Document body not found");
+  }
+
+  return body;
+}
+function sendBeacon(url) {
+  var img = document.createElement('img');
+  img.src = url;
+  img.style.visibility = 'hidden';
+  img.style.position = 'absolute';
+
+  if (document.body) {
+    document.body.appendChild(img);
+  }
+}
+function fixClickFocus(el) {
+  el.addEventListener(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DOM_EVENT */ "d"].MOUSEDOWN, function () {
+    el.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].CLICKED);
+  });
+  el.addEventListener(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DOM_EVENT */ "d"].HOVER, function (event) {
+    if (el.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].CLICKED)) {
+      event.preventDefault();
+      el.blur();
+      el.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].CLICKED);
+    }
+  });
+}
+function sleep(time) {
+  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](function (resolve) {
+    setTimeout(resolve, time);
+  });
+}
+function redirectTop(url) {
+  if (false) {} else {
+    window.top.location = url;
+  }
+}
+function loadScript(url) {
+  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](function (resolve, reject) {
+    var container = document.body || document.head;
+
+    if (!container) {
+      return reject(new Error("Can not find container for script: " + url));
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', url);
+    script.addEventListener('load', function () {
+      return resolve(script);
+    }); // $FlowFixMe
+
+    script.addEventListener('error', function (err) {
+      return reject(err);
+    });
+    container.appendChild(script);
+  });
+}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return POPUP_BRIDGE_OPTYPE; });
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+var POPUP_BRIDGE_OPTYPE = {
+  PAYMENT: 'payment',
+  CANCEL: 'cancel'
+};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
+/* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGlobalProps", function() { return _props__WEBPACK_IMPORTED_MODULE_1__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getButtonCallbackProps", function() { return _props__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+
+/* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(15);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateOrderData", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["c"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildCreateOrder", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateOrderActions", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateOrder", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["d"]; });
+
+/* harmony import */ var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementData", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementActions", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateBillingAgreement", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["c"]; });
+
+/* harmony import */ var _createSubscription__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionData", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionActions", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateSubscription", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["c"]; });
+
+/* harmony import */ var _onApprove__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnApprove", function() { return _onApprove__WEBPACK_IMPORTED_MODULE_5__["a"]; });
+
+/* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(14);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnInitData", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnInitActions", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnInit", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["c"]; });
+
+/* harmony import */ var _onCancel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(17);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnCancelData", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnCancelActions", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnCancel", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["c"]; });
+
+/* harmony import */ var _onShippingChange__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(21);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnShippingChangeData", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXShippingChangeActions", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnShippingChange", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["c"]; });
+
+/* harmony import */ var _onClick__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(18);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnClickData", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnClickActions", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnClick", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["c"]; });
+
+/* harmony import */ var _onError__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(24);
+/* harmony import */ var _onError__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_onError__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _onError__WEBPACK_IMPORTED_MODULE_10__) if(["getGlobalProps","getButtonCallbackProps","buildXCreateOrderData","buildCreateOrder","buildXCreateOrderActions","getCreateOrder","buildXCreateBillingAgreementData","buildXCreateBillingAgreementActions","getCreateBillingAgreement","buildXCreateSubscriptionData","buildXCreateSubscriptionActions","getCreateSubscription","getOnApprove","buildXOnInitData","buildXOnInitActions","getOnInit","buildXOnCancelData","buildXOnCancelActions","getOnCancel","buildXOnShippingChangeData","buildXShippingChangeActions","getOnShippingChange","buildXOnClickData","buildXOnClickActions","getOnClick","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _onError__WEBPACK_IMPORTED_MODULE_10__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(12);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "POPUP_BRIDGE_OPTYPE", function() { return _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__["a"]; });
+
+/* harmony import */ var _rememberFunding__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(25);
+/* harmony import */ var _getPageUrl__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(26);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnInitData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnInitActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnInit; });
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+function buildXOnInitData() {
+  // $FlowFixMe
+  return {};
+}
+function buildXOnInitActions(set) {
+  return {
+    enable: function enable() {
+      return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
+        return set(true);
+      });
+    },
+    disable: function disable() {
+      return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
+        return set(false);
+      });
+    }
+  };
+}
+function getOnInit(xprops) {
+  var onInit = xprops.onInit;
+  return function () {
+    var enabled = true;
+    var initPromise = zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
+      if (onInit) {
+        return onInit(buildXOnInitData(), buildXOnInitActions(function (val) {
+          enabled = val;
         }));
+      }
+    });
+    return {
+      initPromise: initPromise,
+      isEnabled: function isEnabled() {
+        return enabled;
+      }
+    };
+  };
+}
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return buildXCreateOrderData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildCreateOrder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateOrderActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getCreateOrder; });
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(0);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4);
+
+
+
+
+
+
+
+function buildXCreateOrderData() {
+  // $FlowFixMe
+  return {};
+}
+function buildCreateOrder(_ref) {
+  var clientID = _ref.clientID,
+      intent = _ref.intent,
+      currency = _ref.currency,
+      merchantID = _ref.merchantID,
+      partnerAttributionID = _ref.partnerAttributionID;
+  return function (data) {
+    var order = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, data);
+
+    if (order.intent && order.intent.toLowerCase() !== intent) {
+      throw new Error("Unexpected intent: " + order.intent + " passed to order.create. Please ensure you are passing /sdk/js?" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + order.intent.toLowerCase() + " in the paypal script tag.");
     }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return buildXOnClickData;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return buildXOnClickActions;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return getOnClick;
-    }));
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
-    function buildXOnClickData(_ref) {
-        return {
-            fundingSource: _ref.fundingSource
-        };
+
+    order = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, order, {
+      intent: intent.toUpperCase()
+    });
+    order.purchase_units = order.purchase_units.map(function (unit) {
+      if (unit.amount.currency_code && unit.amount.currency_code !== currency) {
+        throw new Error("Unexpected currency: " + unit.amount.currency_code + " passed to order.create. Please ensure you are passing /sdk/js?" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* SDK_QUERY_KEYS */ "j"].CURRENCY + "=" + unit.amount.currency_code + " in the paypal script tag.");
+      }
+
+      var payee = unit.payee;
+
+      if (payee && merchantID && merchantID.length) {
+        if (!merchantID[0]) {
+          throw new Error("Pass " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* SDK_QUERY_KEYS */ "j"].MERCHANT_ID + "=XYZ in the paypal script tag.");
+        }
+
+        if (payee.merchant_id && payee.merchant_id !== merchantID[0]) {
+          throw new Error("Expected payee.merchant_id to be \"" + merchantID[0] + "\"");
+        }
+      }
+
+      if (merchantID) {
+        payee = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, payee, {
+          merchant_id: merchantID[0]
+        });
+      }
+
+      return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, unit, {
+        payee: payee,
+        amount: Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, unit.amount, {
+          currency_code: currency
+        })
+      });
+    });
+    order.application_context = order.application_context || {};
+    return Object(_api__WEBPACK_IMPORTED_MODULE_4__[/* createAccessToken */ "e"])(clientID).then(function (facilitatorAccessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_4__[/* createOrderID */ "f"])(order, {
+        facilitatorAccessToken: facilitatorAccessToken,
+        partnerAttributionID: partnerAttributionID
+      });
+    });
+  };
+}
+function buildXCreateOrderActions(_ref2) {
+  var clientID = _ref2.clientID,
+      intent = _ref2.intent,
+      currency = _ref2.currency,
+      merchantID = _ref2.merchantID,
+      partnerAttributionID = _ref2.partnerAttributionID;
+  var create = buildCreateOrder({
+    clientID: clientID,
+    intent: intent,
+    currency: currency,
+    merchantID: merchantID,
+    partnerAttributionID: partnerAttributionID
+  });
+  return {
+    order: {
+      create: create
     }
-    function buildXOnClickActions() {
-        return {
-            resolve: function() {
-                return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.try((function() {
-                    return !0;
-                }));
-            },
-            reject: function() {
-                return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.try((function() {
-                    return !1;
-                }));
+  };
+}
+function getCreateOrder(xprops, _ref3) {
+  var validationPromise = _ref3.validationPromise,
+      createBillingAgreement = _ref3.createBillingAgreement,
+      createSubscription = _ref3.createSubscription;
+  var createOrder = xprops.createOrder,
+      clientID = xprops.clientID,
+      buttonSessionID = xprops.buttonSessionID,
+      intent = xprops.intent,
+      currency = xprops.currency,
+      merchantID = xprops.merchantID,
+      partnerAttributionID = xprops.partnerAttributionID;
+  var data = buildXCreateOrderData();
+  var actions = buildXCreateOrderActions({
+    clientID: clientID,
+    intent: intent,
+    currency: currency,
+    merchantID: merchantID,
+    partnerAttributionID: partnerAttributionID
+  });
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "i"])(function () {
+    return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].try(function () {
+      return validationPromise || true;
+    }).then(function (valid) {
+      if (!valid) {
+        // Is there a nicer way to prevent this?
+        return Object(_lib__WEBPACK_IMPORTED_MODULE_6__[/* unresolvedPromise */ "g"])();
+      }
+
+      if (createBillingAgreement) {
+        return createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_4__[/* billingTokenToOrderID */ "c"]);
+      } else if (createSubscription) {
+        return createSubscription().then(_api__WEBPACK_IMPORTED_MODULE_4__[/* subscriptionIdToCartId */ "p"]);
+      } else if (createOrder) {
+        return createOrder(data, actions);
+      } else {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              currency_code: 'USD',
+              value: '0.01'
             }
-        };
+          }]
+        });
+      }
+    }).then(function (orderID) {
+      var _getLogger$track;
+
+      if (!orderID || typeof orderID !== 'string') {
+        throw new Error("Expected an order id to be passed");
+      }
+
+      if (orderID.indexOf('PAY-') === 0 || orderID.indexOf('PAYID-') === 0) {
+        throw new Error("Do not pass PAY-XXX or PAYID-XXX directly into createOrder. Pass the EC-XXX token instead");
+      }
+
+      Object(_lib__WEBPACK_IMPORTED_MODULE_6__[/* getLogger */ "b"])().track((_getLogger$track = {}, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_5__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_5__[/* FPTI_TRANSITION */ "h"].RECEIVE_ORDER, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_5__[/* FPTI_CONTEXT_TYPE */ "f"].ORDER_ID, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].CONTEXT_ID] = orderID, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$track)).flush();
+      return orderID;
+    });
+  });
+}
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getOnApprove; });
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
+
+
+
+
+
+
+function buildXApproveActions(_ref) {
+  var intent = _ref.intent,
+      orderID = _ref.orderID,
+      restart = _ref.restart,
+      subscriptionID = _ref.subscriptionID,
+      facilitatorAccessToken = _ref.facilitatorAccessToken,
+      buyerAccessToken = _ref.buyerAccessToken,
+      partnerAttributionID = _ref.partnerAttributionID;
+
+  var handleProcessorError = function handleProcessorError(err) {
+    // $FlowFixMe
+    var isProcessorDecline = err && err.data && err.data.details && err.data.details.some(function (detail) {
+      return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__[/* ORDER_API_ERROR */ "l"].INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__[/* ORDER_API_ERROR */ "l"].PAYER_ACTION_REQUIRED;
+    });
+
+    if (isProcessorDecline) {
+      return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__[/* unresolvedPromise */ "g"]);
     }
-    function getOnClick(xprops) {
-        var _xprops$onClick = xprops.onClick, onClick = void 0 === _xprops$onClick ? _lib__WEBPACK_IMPORTED_MODULE_2__.c : _xprops$onClick, buttonSessionID = xprops.buttonSessionID;
-        return function(_ref2) {
-            var _getLogger$info$track, fundingSource = _ref2.fundingSource;
-            return Object(_lib__WEBPACK_IMPORTED_MODULE_2__.b)().info("button_click").track((_getLogger$info$track = {}, 
-            _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__.g.BUTTON, 
-            _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__.h.BUTTON_CLICK, 
-            _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.BUTTON_SESSION_UID] = buttonSessionID, 
-            _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.CHOSEN_FUNDING] = fundingSource, 
-            _getLogger$info$track)).flush(), onClick(buildXOnClickData({
-                fundingSource: fundingSource
-            }), buildXOnClickActions()).then((function(valid) {
-                return !1 !== valid;
-            }));
-        };
+
+    throw new Error('Order could not be captured');
+  };
+
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getOrder */ "k"])(orderID, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID
+    });
+  });
+  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+    if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
+      throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return buildXCreateBillingAgreementData;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return buildXCreateBillingAgreementActions;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return getCreateBillingAgreement;
-    }));
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-    function buildXCreateBillingAgreementData() {
-        return {};
+
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* captureOrder */ "d"])(orderID, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID
+    }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
+  });
+  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+    if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
+      throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE + " to use client-side authorize");
     }
-    function buildXCreateBillingAgreementActions() {
-        return {};
+
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* authorizeOrder */ "b"])(orderID, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID
+    }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
+  });
+
+  var patch = function patch(data) {
+    if (data === void 0) {
+      data = {};
     }
-    function getCreateBillingAgreement(xprops) {
-        var createBillingAgreement = xprops.createBillingAgreement;
-        if (createBillingAgreement) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function() {
-            return createBillingAgreement({}, {}).then((function(billingToken) {
-                if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
-                return billingToken;
-            }));
+
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchOrder */ "n"])(orderID, data, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID
+    }).catch(function () {
+      throw new Error('Order could not be patched');
+    });
+  }; // Subscription GET Actions
+
+
+  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getSubscription */ "m"])(subscriptionID, {
+      buyerAccessToken: buyerAccessToken
+    });
+  });
+  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* activateSubscription */ "a"])(subscriptionID, {
+      buyerAccessToken: buyerAccessToken
+    });
+  });
+
+  var redirect = function redirect(url) {
+    if (!url) {
+      throw new Error("Expected redirect url");
+    }
+
+    if (url.indexOf('://') === -1) {
+      Object(_lib__WEBPACK_IMPORTED_MODULE_4__[/* getLogger */ "b"])().warn('redir_url_non_scheme', {
+        url: url
+      }).flush();
+      throw new Error("Invalid redirect url: " + url + " - must be fully qualified url");
+    } else if (!url.match(/^https?:\/\//)) {
+      Object(_lib__WEBPACK_IMPORTED_MODULE_4__[/* getLogger */ "b"])().warn('redir_url_non_http', {
+        url: url
+      }).flush();
+    }
+
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "p"])(url, window.top);
+  };
+
+  return {
+    order: {
+      capture: capture,
+      authorize: authorize,
+      patch: patch,
+      get: get
+    },
+    subscription: {
+      get: getSubscriptionApi,
+      activate: activateSubscriptionApi
+    },
+    restart: restart,
+    redirect: redirect
+  };
+}
+
+function getOnApprove(xprops, _ref2) {
+  var createOrder = _ref2.createOrder;
+  var onApprove = xprops.onApprove,
+      onError = xprops.onError,
+      intent = xprops.intent,
+      buttonSessionID = xprops.buttonSessionID,
+      partnerAttributionID = xprops.partnerAttributionID;
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function (_ref3, _ref4) {
+    var payerID = _ref3.payerID,
+        paymentID = _ref3.paymentID,
+        billingToken = _ref3.billingToken,
+        subscriptionID = _ref3.subscriptionID,
+        facilitatorAccessToken = _ref3.facilitatorAccessToken,
+        buyerAccessToken = _ref3.buyerAccessToken;
+    var restart = _ref4.restart;
+    return createOrder().then(function (orderID) {
+      var _getLogger$info$track;
+
+      Object(_lib__WEBPACK_IMPORTED_MODULE_4__[/* getLogger */ "b"])().info('button_authorize').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_TRANSITION */ "h"].CHECKOUT_AUTHORIZE, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+      var data = {
+        orderID: orderID,
+        payerID: payerID,
+        paymentID: paymentID,
+        billingToken: billingToken,
+        subscriptionID: subscriptionID
+      };
+      var actions = buildXApproveActions({
+        orderID: orderID,
+        intent: intent,
+        restart: restart,
+        subscriptionID: subscriptionID,
+        facilitatorAccessToken: facilitatorAccessToken,
+        buyerAccessToken: buyerAccessToken,
+        partnerAttributionID: partnerAttributionID
+      });
+
+      if (onApprove) {
+        return onApprove(data, actions).catch(onError);
+      } else {
+        if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
+          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "j"]);
+        } else if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
+          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "j"]);
+        }
+      }
+    });
+  });
+}
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnCancelData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnCancelActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnCancel; });
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(0);
+
+
+
+
+
+function buildXOnCancelData(_ref) {
+  var orderID = _ref.orderID;
+  return {
+    orderID: orderID
+  };
+}
+function buildXOnCancelActions() {
+  var redirect = function redirect(url) {
+    if (!url) {
+      throw new Error("Expected redirect url");
+    }
+
+    if (url.indexOf('://') === -1) {
+      Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().warn('redir_url_non_scheme', {
+        url: url
+      }).flush();
+      throw new Error("Invalid redirect url: " + url + " - must be fully qualified url");
+    } else if (!url.match(/^https?:\/\//)) {
+      Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().warn('redir_url_non_http', {
+        url: url
+      }).flush();
+    }
+
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "p"])(url, window.top);
+  }; // $FlowFixMe
+
+
+  return {
+    redirect: redirect
+  };
+}
+function getOnCancel(xprops, _ref2) {
+  var createOrder = _ref2.createOrder,
+      validationPromise = _ref2.validationPromise;
+  var _xprops$onCancel = xprops.onCancel,
+      onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "j"] : _xprops$onCancel,
+      onError = xprops.onError,
+      buttonSessionID = xprops.buttonSessionID;
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+    return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].try(function () {
+      return validationPromise || true;
+    }).then(function (valid) {
+      if (!valid) {
+        return;
+      }
+
+      return createOrder().then(function (orderID) {
+        var _getLogger$info$track;
+
+        Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().info('button_cancel').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_CANCEL, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+        return onCancel(buildXOnCancelData({
+          orderID: orderID
+        }), buildXOnCancelActions());
+      }).catch(function (err) {
+        return onError(err);
+      });
+    });
+  });
+}
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnClickData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnClickActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnClick; });
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
+
+
+
+
+function buildXOnClickData(_ref) {
+  var fundingSource = _ref.fundingSource;
+  return {
+    fundingSource: fundingSource
+  };
+}
+function buildXOnClickActions() {
+  return {
+    resolve: function resolve() {
+      return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
+        return true;
+      });
+    },
+    reject: function reject() {
+      return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
+        return false;
+      });
+    }
+  };
+}
+function getOnClick(xprops) {
+  var _xprops$onClick = xprops.onClick,
+      onClick = _xprops$onClick === void 0 ? _lib__WEBPACK_IMPORTED_MODULE_2__[/* promiseNoop */ "c"] : _xprops$onClick,
+      buttonSessionID = xprops.buttonSessionID;
+  return function (_ref2) {
+    var _getLogger$info$track;
+
+    var fundingSource = _ref2.fundingSource;
+    Object(_lib__WEBPACK_IMPORTED_MODULE_2__[/* getLogger */ "b"])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_TRANSITION */ "h"].BUTTON_CLICK, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
+    return onClick(buildXOnClickData({
+      fundingSource: fundingSource
+    }), buildXOnClickActions()).then(function (valid) {
+      return valid !== false;
+    });
+  };
+}
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateBillingAgreementData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXCreateBillingAgreementActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCreateBillingAgreement; });
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+
+function buildXCreateBillingAgreementData() {
+  // $FlowFixMe
+  return {};
+}
+function buildXCreateBillingAgreementActions() {
+  // $FlowFixMe
+  return {};
+}
+function getCreateBillingAgreement(xprops) {
+  var createBillingAgreement = xprops.createBillingAgreement;
+
+  if (createBillingAgreement) {
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+      return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions()).then(function (billingToken) {
+        if (!billingToken || typeof billingToken !== 'string') {
+          throw new Error("Expected a billing token to be passed to createBillingAgreement");
+        }
+
+        return billingToken;
+      });
+    });
+  }
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateSubscriptionData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXCreateSubscriptionActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCreateSubscription; });
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+
+
+function buildXCreateSubscriptionData() {
+  // $FlowFixMe
+  return {};
+}
+function buildXCreateSubscriptionActions(_ref) {
+  var clientID = _ref.clientID,
+      partnerAttributionID = _ref.partnerAttributionID;
+
+  var create = function create(data) {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* createAccessToken */ "e"])(clientID).then(function (accessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* createSubscription */ "g"])(accessToken, data, {
+        partnerAttributionID: partnerAttributionID
+      });
+    });
+  };
+
+  var revise = function revise(subscriptionID, data) {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* createAccessToken */ "e"])(clientID).then(function (accessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* reviseSubscription */ "o"])(accessToken, subscriptionID, data, {
+        partnerAttributionID: partnerAttributionID
+      });
+    });
+  };
+
+  return {
+    subscription: {
+      create: create,
+      revise: revise
+    }
+  };
+}
+function getCreateSubscription(xprops) {
+  var createSubscriptionFunc = xprops.createSubscription,
+      partnerAttributionID = xprops.partnerAttributionID;
+  var clientID = xprops.clientID;
+
+  if (createSubscriptionFunc) {
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+      return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({
+        clientID: clientID,
+        partnerAttributionID: partnerAttributionID
+      })).then(function (subscriptionID) {
+        if (!subscriptionID || typeof subscriptionID !== 'string') {
+          throw new Error("Expected an subscription id to be passed to createSubscription");
+        }
+
+        return subscriptionID;
+      });
+    });
+  }
+}
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+// EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
+var src = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
+var sdk_constants_src = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./src/api/index.js + 5 modules
+var api = __webpack_require__(5);
+
+// EXTERNAL MODULE: ./src/constants.js
+var constants = __webpack_require__(0);
+
+// EXTERNAL MODULE: ./src/lib/index.js + 5 modules
+var lib = __webpack_require__(4);
+
+// CONCATENATED MODULE: ./src/button/props/onShippingChange.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnShippingChangeData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXShippingChangeActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnShippingChange; });
+
+
+
+
+
+
+function buildXOnShippingChangeData(data) {
+  return data;
+}
+function buildXShippingChangeActions(_ref) {
+  var orderID = _ref.orderID,
+      actions = _ref.actions,
+      facilitatorAccessToken = _ref.facilitatorAccessToken,
+      buyerAccessToken = _ref.buyerAccessToken,
+      partnerAttributionID = _ref.partnerAttributionID;
+
+  var patch = function patch(data) {
+    if (data === void 0) {
+      data = {};
+    }
+
+    return Object(api["n" /* patchOrder */])(orderID, data, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID
+    }).catch(function () {
+      throw new Error('Order could not be patched');
+    });
+  };
+
+  var resolve = function resolve() {
+    return src["a" /* ZalgoPromise */].resolve();
+  };
+
+  var reject = actions.reject || function reject() {
+    throw new Error("Missing reject action callback");
+  };
+
+  return {
+    resolve: resolve,
+    reject: reject,
+    order: {
+      patch: patch
+    }
+  };
+}
+function getOnShippingChange(xprops, _ref2) {
+  var createOrder = _ref2.createOrder;
+  var onShippingChange = xprops.onShippingChange,
+      buttonSessionID = xprops.buttonSessionID,
+      partnerAttributionID = xprops.partnerAttributionID;
+
+  if (onShippingChange) {
+    return function (_ref3, actions) {
+      var facilitatorAccessToken = _ref3.facilitatorAccessToken,
+          buyerAccessToken = _ref3.buyerAccessToken,
+          data = _objectWithoutPropertiesLoose(_ref3, ["facilitatorAccessToken", "buyerAccessToken"]);
+
+      return createOrder().then(function (orderID) {
+        var _getLogger$info$track;
+
+        Object(lib["b" /* getLogger */])().info('button_shipping_change').track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].CHECKOUT_SHIPPING_CHANGE, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+        return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({
+          orderID: orderID,
+          facilitatorAccessToken: facilitatorAccessToken,
+          buyerAccessToken: buyerAccessToken,
+          actions: actions,
+          partnerAttributionID: partnerAttributionID
         }));
+      });
+    };
+  }
+}
+
+/***/ }),
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getGlobalProps; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getButtonCallbackProps; });
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+/* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
+/* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15);
+/* harmony import */ var _onApprove__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16);
+/* harmony import */ var _onCancel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17);
+/* harmony import */ var _onShippingChange__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(21);
+/* harmony import */ var _onClick__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(18);
+/* harmony import */ var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(19);
+/* harmony import */ var _createSubscription__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(20);
+
+
+
+
+
+
+
+
+
+
+
+function getGlobalProps(_ref) {
+  var xprops = _ref.xprops,
+      buyerGeoCountry = _ref.buyerGeoCountry,
+      cspNonce = _ref.cspNonce;
+  var env = xprops.env,
+      vault = xprops.vault,
+      commit = xprops.commit,
+      locale = xprops.locale,
+      platform = xprops.platform,
+      sessionID = xprops.sessionID,
+      buttonSessionID = xprops.buttonSessionID,
+      clientID = xprops.clientID,
+      partnerAttributionID = xprops.partnerAttributionID,
+      correlationID = xprops.correlationID,
+      getParentDomain = xprops.getParentDomain,
+      clientAccessToken = xprops.clientAccessToken,
+      _xprops$buyerCountry = xprops.buyerCountry,
+      buyerCountry = _xprops$buyerCountry === void 0 ? buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* COUNTRY */ "a"].US : _xprops$buyerCountry,
+      getPopupBridge = xprops.getPopupBridge,
+      getPrerenderDetails = xprops.getPrerenderDetails,
+      getPageUrl = xprops.getPageUrl,
+      enableThreeDomainSecure = xprops.enableThreeDomainSecure,
+      enableStandardCardFields = xprops.enableStandardCardFields,
+      _xprops$enableNativeC = xprops.enableNativeCheckout,
+      enableNativeCheckout = _xprops$enableNativeC === void 0 ? false : _xprops$enableNativeC,
+      rememberFunding = xprops.remember,
+      onError = xprops.onError,
+      stageHost = xprops.stageHost,
+      apiStageHost = xprops.apiStageHost,
+      style = xprops.style,
+      getParent = xprops.getParent,
+      currency = xprops.currency;
+  cspNonce = cspNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_2__[/* getNonce */ "d"])();
+  var onInit = Object(_onInit__WEBPACK_IMPORTED_MODULE_3__[/* getOnInit */ "c"])(xprops);
+  var merchantDomain = typeof getParentDomain === 'function' ? getParentDomain() : 'unknown';
+  var onClick = Object(_onClick__WEBPACK_IMPORTED_MODULE_8__[/* getOnClick */ "c"])(xprops);
+  return {
+    env: env,
+    style: style,
+    vault: vault,
+    commit: commit,
+    clientAccessToken: clientAccessToken,
+    buyerCountry: buyerCountry,
+    locale: locale,
+    cspNonce: cspNonce,
+    sessionID: sessionID,
+    buttonSessionID: buttonSessionID,
+    clientID: clientID,
+    partnerAttributionID: partnerAttributionID,
+    correlationID: correlationID,
+    merchantDomain: merchantDomain,
+    platform: platform,
+    currency: currency,
+    getPopupBridge: getPopupBridge,
+    getPrerenderDetails: getPrerenderDetails,
+    getPageUrl: getPageUrl,
+    rememberFunding: rememberFunding,
+    getParent: getParent,
+    enableThreeDomainSecure: enableThreeDomainSecure,
+    enableStandardCardFields: enableStandardCardFields,
+    enableNativeCheckout: enableNativeCheckout,
+    onClick: onClick,
+    onInit: onInit,
+    onError: onError,
+    stageHost: stageHost,
+    apiStageHost: apiStageHost
+  };
+}
+function getButtonCallbackProps(_ref2) {
+  var xprops = _ref2.xprops,
+      validationPromise = _ref2.validationPromise;
+
+  if (xprops.createBillingAgreement) {
+    if (xprops.createOrder) {
+      throw new Error("Do not pass both createBillingAgreement and createOrder");
     }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return buildXCreateSubscriptionData;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return buildXCreateSubscriptionActions;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return getCreateSubscription;
-    }));
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
-    function buildXCreateSubscriptionData() {
-        return {};
+
+    if (!xprops.vault) {
+      throw new Error("Must pass vault=true to sdk to use createBillingAgreement");
     }
-    function buildXCreateSubscriptionActions(_ref) {
-        var clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID;
+  }
+
+  if (xprops.createSubscription) {
+    if (xprops.createOrder) {
+      throw new Error("Do not pass both createSubscription and createOrder");
+    }
+
+    if (xprops.createOrder) {
+      throw new Error("Do not pass both createSubscription and createBillingAgreement");
+    }
+
+    if (!xprops.vault) {
+      throw new Error("Must pass vault=true to sdk to use createSubscription");
+    }
+  }
+
+  var createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__[/* getCreateBillingAgreement */ "c"])(xprops);
+  var createSubscription = Object(_createSubscription__WEBPACK_IMPORTED_MODULE_10__[/* getCreateSubscription */ "c"])(xprops);
+  var createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_4__[/* getCreateOrder */ "d"])(xprops, {
+    createBillingAgreement: createBillingAgreement,
+    createSubscription: createSubscription,
+    validationPromise: validationPromise
+  });
+  var onApprove = Object(_onApprove__WEBPACK_IMPORTED_MODULE_5__[/* getOnApprove */ "a"])(xprops, {
+    createOrder: createOrder
+  });
+  var onCancel = Object(_onCancel__WEBPACK_IMPORTED_MODULE_6__[/* getOnCancel */ "c"])(xprops, {
+    createOrder: createOrder,
+    validationPromise: validationPromise
+  });
+  var onShippingChange = Object(_onShippingChange__WEBPACK_IMPORTED_MODULE_7__[/* getOnShippingChange */ "c"])(xprops, {
+    createOrder: createOrder
+  });
+  return {
+    createOrder: createOrder,
+    createBillingAgreement: createBillingAgreement,
+    createSubscription: createSubscription,
+    onApprove: onApprove,
+    onCancel: onCancel,
+    onShippingChange: onShippingChange
+  };
+}
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
+var src = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
+var sdk_constants_src = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
+var zalgo_promise_src = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./src/lib/index.js + 5 modules
+var lib = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./src/api/index.js + 5 modules
+var api = __webpack_require__(5);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+var esm_extends = __webpack_require__(8);
+
+// EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js + 4 modules
+var cross_domain_utils_src = __webpack_require__(9);
+
+// EXTERNAL MODULE: ./src/constants.js
+var constants = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./src/payment-flows/checkout.js
+
+
+
+
+
+
+
+
+var checkoutOpen = false;
+var canRenderTop = false;
+
+function getRenderWindow() {
+  var top = Object(cross_domain_utils_src["c" /* getTop */])(window);
+
+  if (canRenderTop && top) {
+    return top;
+  } else {
+    return Object(cross_domain_utils_src["b" /* getParent */])();
+  }
+}
+
+function setupCheckout(_ref) {
+  var Checkout = _ref.Checkout;
+  checkoutOpen = false;
+  var _ref2 = [Object(cross_domain_utils_src["b" /* getParent */])(window), Object(cross_domain_utils_src["c" /* getTop */])(window)],
+      parent = _ref2[0],
+      top = _ref2[1];
+  var tasks = {};
+
+  if (top && parent && parent !== top) {
+    tasks.canRenderTo = Checkout.canRenderTo(top).then(function (result) {
+      canRenderTop = result;
+    });
+  }
+
+  return zalgo_promise_src["a" /* ZalgoPromise */].hash(tasks).then(src["j" /* noop */]);
+}
+
+function isVaultAutoSetupEligible(_ref3) {
+  var vault = _ref3.vault,
+      clientAccessToken = _ref3.clientAccessToken,
+      createBillingAgreement = _ref3.createBillingAgreement,
+      createSubscription = _ref3.createSubscription,
+      fundingSource = _ref3.fundingSource,
+      fundingEligibility = _ref3.fundingEligibility;
+
+  if (!clientAccessToken) {
+    return false;
+  }
+
+  if (createBillingAgreement || createSubscription) {
+    return false;
+  }
+
+  var fundingSourceEligible = Boolean(fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable);
+
+  if (vault && !fundingSourceEligible) {
+    throw new Error("SDK received " + sdk_constants_src["j" /* SDK_QUERY_KEYS */].VAULT + "=true parameter, but " + fundingSource + " is not vaultable.");
+  }
+
+  if (vault) {
+    return true;
+  }
+
+  if (fundingSourceEligible) {
+    return true;
+  }
+
+  return false;
+}
+
+function enableVaultSetup(_ref4) {
+  var orderID = _ref4.orderID,
+      vault = _ref4.vault,
+      clientAccessToken = _ref4.clientAccessToken,
+      createBillingAgreement = _ref4.createBillingAgreement,
+      createSubscription = _ref4.createSubscription,
+      fundingSource = _ref4.fundingSource,
+      fundingEligibility = _ref4.fundingEligibility;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    if (!clientAccessToken) {
+      return;
+    }
+
+    if (isVaultAutoSetupEligible({
+      vault: vault,
+      clientAccessToken: clientAccessToken,
+      createBillingAgreement: createBillingAgreement,
+      createSubscription: createSubscription,
+      fundingSource: fundingSource,
+      fundingEligibility: fundingEligibility
+    })) {
+      return Object(api["h" /* enableVault */])({
+        orderID: orderID,
+        clientAccessToken: clientAccessToken
+      }).catch(function (err) {
+        if (vault) {
+          throw err;
+        }
+      });
+    }
+  });
+}
+
+function getDefaultContext() {
+  return Object(src["u" /* supportsPopups */])() ? constants["b" /* CONTEXT */].POPUP : constants["b" /* CONTEXT */].IFRAME;
+}
+function initCheckout(props) {
+  var Checkout = props.Checkout,
+      clientID = props.clientID,
+      win = props.win,
+      buttonSessionID = props.buttonSessionID,
+      fundingSource = props.fundingSource,
+      card = props.card,
+      buyerCountry = props.buyerCountry,
+      _createOrder = props.createOrder,
+      _onApprove = props.onApprove,
+      _onCancel = props.onCancel,
+      onShippingChange = props.onShippingChange,
+      cspNonce = props.cspNonce,
+      context = props.context,
+      locale = props.locale,
+      commit = props.commit,
+      onError = props.onError,
+      vault = props.vault,
+      clientAccessToken = props.clientAccessToken,
+      fundingEligibility = props.fundingEligibility,
+      createBillingAgreement = props.createBillingAgreement,
+      createSubscription = props.createSubscription;
+
+  if (checkoutOpen) {
+    throw new Error("Checkout already rendered");
+  }
+
+  var approved = false;
+  var restart = Object(src["i" /* memoize */])(function () {
+    return initCheckout(Object(esm_extends["a" /* default */])({}, props, {
+      context: constants["b" /* CONTEXT */].IFRAME
+    })).start().finally(lib["g" /* unresolvedPromise */]);
+  });
+
+  var onClose = function onClose() {
+    checkoutOpen = false;
+
+    if (!approved) {
+      return _onCancel();
+    }
+  };
+
+  var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
+  var buyerAccessToken;
+
+  var _Checkout = Checkout({
+    window: win,
+    buttonSessionID: buttonSessionID,
+    clientAccessToken: clientAccessToken,
+    createOrder: function createOrder() {
+      return _createOrder().then(function (orderID) {
+        return enableVaultSetup({
+          orderID: orderID,
+          vault: vault,
+          clientAccessToken: clientAccessToken,
+          fundingEligibility: fundingEligibility,
+          fundingSource: fundingSource,
+          createBillingAgreement: createBillingAgreement,
+          createSubscription: createSubscription
+        }).then(function () {
+          return orderID;
+        });
+      });
+    },
+    onApprove: function onApprove(_ref5) {
+      var payerID = _ref5.payerID,
+          paymentID = _ref5.paymentID,
+          billingToken = _ref5.billingToken,
+          subscriptionID = _ref5.subscriptionID;
+      approved = true;
+      return zalgo_promise_src["a" /* ZalgoPromise */].hash({
+        facilitatorAccessToken: facilitatorAccessTokenPromise,
+        close: closeCheckout()
+      }).then(function (_ref6) {
+        var facilitatorAccessToken = _ref6.facilitatorAccessToken;
+        return _onApprove({
+          payerID: payerID,
+          paymentID: paymentID,
+          billingToken: billingToken,
+          subscriptionID: subscriptionID,
+          facilitatorAccessToken: facilitatorAccessToken,
+          buyerAccessToken: buyerAccessToken
+        }, {
+          restart: restart
+        });
+      });
+    },
+    onAuth: function onAuth(_ref7) {
+      var accessToken = _ref7.accessToken;
+      buyerAccessToken = accessToken;
+    },
+    onCancel: function onCancel() {
+      return closeCheckout().then(function () {
+        return _onCancel();
+      });
+    },
+    onShippingChange: onShippingChange ? function (data, actions) {
+      return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+        return onShippingChange(Object(esm_extends["a" /* default */])({
+          facilitatorAccessToken: facilitatorAccessToken,
+          buyerAccessToken: buyerAccessToken
+        }, data), actions);
+      });
+    } : null,
+    onError: onError,
+    onClose: onClose,
+    fundingSource: fundingSource,
+    card: card,
+    buyerCountry: buyerCountry,
+    locale: locale,
+    commit: commit,
+    cspNonce: cspNonce
+  }),
+      renderTo = _Checkout.renderTo,
+      closeCheckout = _Checkout.close,
+      triggerError = _Checkout.onError;
+
+  checkoutOpen = true;
+  var renderPromise = renderTo(getRenderWindow(), constants["p" /* TARGET_ELEMENT */].BODY, context);
+
+  var close = function close() {
+    checkoutOpen = false;
+    return closeCheckout();
+  };
+
+  var start = function start() {
+    return renderPromise.then(src["j" /* noop */]);
+  };
+
+  return {
+    start: start,
+    close: close,
+    triggerError: triggerError
+  };
+}
+// CONCATENATED MODULE: ./src/payment-flows/card-fields.js
+
+
+
+
+
+
+
+var cardFieldsOpen = false;
+function isCardFieldsEligible(_ref) {
+  var win = _ref.win,
+      vault = _ref.vault,
+      onShippingChange = _ref.onShippingChange,
+      fundingSource = _ref.fundingSource,
+      isCardFieldsExperimentEnabled = _ref.isCardFieldsExperimentEnabled,
+      enableStandardCardFields = _ref.enableStandardCardFields;
+
+  if (win) {
+    return false;
+  }
+
+  if (fundingSource !== sdk_constants_src["g" /* FUNDING */].CARD) {
+    return false;
+  }
+
+  if (vault) {
+    return false;
+  }
+
+  if (onShippingChange) {
+    return false;
+  } // if merchant opt-in inline guest, they will ALWAYS see inline guest guest
+
+
+  if (enableStandardCardFields === true) {
+    return true;
+  } // if merchant doesn't pass the inline guest flag, they will in the ramp
+
+
+  if (!enableStandardCardFields) {
+    if (!isCardFieldsExperimentEnabled) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  return true;
+}
+
+function highlightCard(card) {
+  Object(src["o" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
+    el.style.opacity = el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].CARD) === card ? '1' : '0.1';
+  });
+}
+
+function unhighlightCards() {
+  Object(src["o" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
+    el.style.opacity = '1';
+  });
+}
+
+var card_fields_getElements = function getElements() {
+  var buttonsContainer = document.querySelector('#buttons-container');
+  var cardButtonsContainer = document.querySelector("[data-funding-source=\"" + sdk_constants_src["g" /* FUNDING */].CARD + "\"]");
+  var cardFieldsContainer = document.querySelector('#card-fields-container');
+
+  if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) {
+    throw new Error("Did not find card fields elements");
+  }
+
+  return {
+    buttonsContainer: buttonsContainer,
+    cardButtonsContainer: cardButtonsContainer,
+    cardFieldsContainer: cardFieldsContainer
+  };
+};
+
+var card_fields_slideUpButtons = function slideUpButtons() {
+  var _getElements = card_fields_getElements(),
+      buttonsContainer = _getElements.buttonsContainer,
+      cardButtonsContainer = _getElements.cardButtonsContainer,
+      cardFieldsContainer = _getElements.cardFieldsContainer;
+
+  if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) {
+    throw new Error("Required elements not found");
+  }
+
+  cardFieldsContainer.style.minHeight = '0px';
+  cardFieldsContainer.style.display = 'block';
+
+  var recalculateMargin = function recalculateMargin() {
+    buttonsContainer.style.marginTop = buttonsContainer.offsetTop - cardButtonsContainer.offsetTop + "px";
+  };
+
+  window.addEventListener('resize', Object(src["b" /* debounce */])(function () {
+    buttonsContainer.style.transitionDuration = '0s';
+    recalculateMargin();
+  }));
+  recalculateMargin();
+};
+
+var slideDownButtons = function slideDownButtons() {
+  var _getElements2 = card_fields_getElements(),
+      buttonsContainer = _getElements2.buttonsContainer;
+
+  unhighlightCards();
+  buttonsContainer.style.marginTop = "0px";
+};
+
+function initCardFields(props) {
+  var CardFields = props.CardFields,
+      Checkout = props.Checkout,
+      fundingSource = props.fundingSource,
+      card = props.card,
+      buyerCountry = props.buyerCountry,
+      createOrder = props.createOrder,
+      _onApprove = props.onApprove,
+      onCancel = props.onCancel,
+      onShippingChange = props.onShippingChange,
+      cspNonce = props.cspNonce,
+      locale = props.locale,
+      commit = props.commit,
+      onError = props.onError,
+      buttonSessionID = props.buttonSessionID,
+      clientID = props.clientID,
+      vault = props.vault,
+      clientAccessToken = props.clientAccessToken,
+      fundingEligibility = props.fundingEligibility,
+      createBillingAgreement = props.createBillingAgreement,
+      createSubscription = props.createSubscription;
+
+  if (!card) {
+    throw new Error("Card required to render card fields");
+  }
+
+  if (cardFieldsOpen) {
+    highlightCard(card);
+    return {
+      start: lib["c" /* promiseNoop */],
+      close: lib["c" /* promiseNoop */],
+      triggerError: lib["c" /* promiseNoop */]
+    };
+  }
+
+  var restart = Object(src["i" /* memoize */])(function () {
+    return initCheckout({
+      Checkout: Checkout,
+      clientID: clientID,
+      buttonSessionID: buttonSessionID,
+      fundingSource: fundingSource,
+      card: card,
+      buyerCountry: buyerCountry,
+      createOrder: createOrder,
+      onApprove: _onApprove,
+      onCancel: onCancel,
+      onShippingChange: onShippingChange,
+      cspNonce: cspNonce,
+      locale: locale,
+      commit: commit,
+      onError: onError,
+      vault: vault,
+      clientAccessToken: clientAccessToken,
+      fundingEligibility: fundingEligibility,
+      createBillingAgreement: createBillingAgreement,
+      createSubscription: createSubscription,
+      context: constants["b" /* CONTEXT */].IFRAME
+    }).start().finally(lib["g" /* unresolvedPromise */]);
+  });
+
+  var onClose = function onClose() {
+    cardFieldsOpen = false;
+  };
+
+  var onCardTypeChange = function onCardTypeChange(_ref2) {
+    var cardType = _ref2.card;
+    highlightCard(cardType);
+  };
+
+  var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
+  var buyerAccessToken;
+
+  var _CardFields = CardFields({
+    createOrder: createOrder,
+    fundingSource: fundingSource,
+    card: card,
+    onApprove: function onApprove(_ref3) {
+      var payerID = _ref3.payerID,
+          paymentID = _ref3.paymentID,
+          billingToken = _ref3.billingToken;
+      return zalgo_promise_src["a" /* ZalgoPromise */].hash({
+        facilitatorAccessToken: facilitatorAccessTokenPromise,
+        close: close() // eslint-disable-line no-use-before-define
+
+      }).then(function (_ref4) {
+        var facilitatorAccessToken = _ref4.facilitatorAccessToken;
+        return _onApprove({
+          payerID: payerID,
+          paymentID: paymentID,
+          billingToken: billingToken,
+          facilitatorAccessToken: facilitatorAccessToken,
+          buyerAccessToken: buyerAccessToken
+        }, {
+          restart: restart
+        });
+      });
+    },
+    onAuth: function onAuth(_ref5) {
+      var accessToken = _ref5.accessToken;
+      buyerAccessToken = accessToken;
+    },
+    onCancel: onCancel,
+    onError: onError,
+    onClose: onClose,
+    onCardTypeChange: onCardTypeChange,
+    buttonSessionID: buttonSessionID,
+    buyerCountry: buyerCountry,
+    locale: locale,
+    commit: commit,
+    cspNonce: cspNonce
+  }),
+      render = _CardFields.render,
+      closeCardFields = _CardFields.close,
+      triggerError = _CardFields.onError;
+
+  cardFieldsOpen = true;
+
+  var start = function start() {
+    cardFieldsOpen = true;
+    var renderPromise = render('#card-fields-container');
+    card_fields_slideUpButtons();
+    highlightCard(card);
+    return renderPromise;
+  };
+
+  var close = function close() {
+    slideDownButtons();
+    return closeCardFields();
+  };
+
+  return {
+    start: start,
+    close: close,
+    triggerError: triggerError
+  };
+}
+// CONCATENATED MODULE: ./src/payment-flows/vault.js
+
+
+
+function isVaultCaptureEligible(_ref) {
+  var win = _ref.win,
+      paymentMethodID = _ref.paymentMethodID,
+      onShippingChange = _ref.onShippingChange;
+
+  if (win) {
+    return false;
+  }
+
+  if (!paymentMethodID) {
+    return false;
+  }
+
+  if (onShippingChange) {
+    return false;
+  }
+
+  return true;
+}
+
+function handleThreeDomainSecure(_ref2) {
+  var ThreeDomainSecure = _ref2.ThreeDomainSecure,
+      createOrder = _ref2.createOrder,
+      getParent = _ref2.getParent;
+  var promise = new zalgo_promise_src["a" /* ZalgoPromise */]();
+  var instance = ThreeDomainSecure({
+    createOrder: createOrder,
+    onSuccess: function onSuccess() {
+      return promise.resolve();
+    },
+    onCancel: function onCancel() {
+      return promise.reject(new Error("3DS cancelled"));
+    },
+    onError: function onError(err) {
+      return promise.reject(err);
+    }
+  });
+  return instance.renderTo(getParent(), constants["p" /* TARGET_ELEMENT */].BODY).then(function () {
+    return promise;
+  }).finally(instance.close);
+}
+
+function handleValidateResponse(_ref3) {
+  var ThreeDomainSecure = _ref3.ThreeDomainSecure,
+      status = _ref3.status,
+      body = _ref3.body,
+      createOrder = _ref3.createOrder,
+      getParent = _ref3.getParent;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    if (status === 422 && body.links && body.links.some(function (link) {
+      return link.rel === '3ds-contingency-resolution';
+    })) {
+      return handleThreeDomainSecure({
+        ThreeDomainSecure: ThreeDomainSecure,
+        createOrder: createOrder,
+        getParent: getParent
+      });
+    }
+
+    if (status !== 200) {
+      throw new Error("Validate payment failed with status: " + status);
+    }
+  });
+}
+
+function initVault(props) {
+  var ThreeDomainSecure = props.ThreeDomainSecure,
+      clientID = props.clientID,
+      createOrder = props.createOrder,
+      paymentMethodID = props.paymentMethodID,
+      onApprove = props.onApprove,
+      clientAccessToken = props.clientAccessToken,
+      enableThreeDomainSecure = props.enableThreeDomainSecure,
+      buttonSessionID = props.buttonSessionID,
+      partnerAttributionID = props.partnerAttributionID,
+      getParent = props.getParent;
+
+  if (!paymentMethodID) {
+    throw new Error("Payment method id required for vault capture");
+  }
+
+  if (!clientAccessToken) {
+    throw new Error("Client access token required for vault capture");
+  }
+
+  var restart = function restart() {
+    return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+      throw new Error("Vault capture restart not implemented");
+    });
+  };
+
+  var start = function start() {
+    var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
+    return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+      return createOrder();
+    }).then(function (orderID) {
+      return Object(api["r" /* validatePaymentMethod */])({
+        clientAccessToken: clientAccessToken,
+        orderID: orderID,
+        paymentMethodID: paymentMethodID,
+        enableThreeDomainSecure: enableThreeDomainSecure,
+        buttonSessionID: buttonSessionID,
+        partnerAttributionID: partnerAttributionID
+      });
+    }).then(function (_ref4) {
+      var status = _ref4.status,
+          body = _ref4.body;
+      return handleValidateResponse({
+        ThreeDomainSecure: ThreeDomainSecure,
+        status: status,
+        body: body,
+        createOrder: createOrder,
+        getParent: getParent
+      });
+    }).then(function () {
+      return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+        return onApprove({
+          facilitatorAccessToken: facilitatorAccessToken
+        }, {
+          restart: restart
+        });
+      });
+    });
+  };
+
+  return {
+    start: start,
+    close: function close() {
+      return zalgo_promise_src["a" /* ZalgoPromise */].resolve();
+    },
+    triggerError: function triggerError(err) {
+      throw err;
+    }
+  };
+}
+// CONCATENATED MODULE: ./src/payment-flows/index.js
+
+
+
+// EXTERNAL MODULE: ./src/config.js
+var config = __webpack_require__(6);
+
+// EXTERNAL MODULE: ./src/button/props/getPopupBridge.js
+var props_getPopupBridge = __webpack_require__(12);
+
+// CONCATENATED MODULE: ./src/payment-flows/popup-bridge.js
+
+
+
+
+
+
+
+
+
+var popup_bridge_popupBridge;
+function setupPopupBridge(_ref) {
+  var getPopupBridge = _ref.getPopupBridge;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    if (getPopupBridge) {
+      return getPopupBridge().then(function (bridge) {
+        popup_bridge_popupBridge = bridge;
+      });
+    }
+  });
+}
+function isPopupBridgeEligible(_ref2) {
+  var win = _ref2.win,
+      onShippingChange = _ref2.onShippingChange;
+
+  if (win) {
+    return false;
+  }
+
+  if (!popup_bridge_popupBridge) {
+    return false;
+  }
+
+  if (onShippingChange) {
+    return false;
+  }
+
+  return true;
+}
+function initPopupBridge(props) {
+  var clientID = props.clientID,
+      createOrder = props.createOrder,
+      onApprove = props.onApprove,
+      onCancel = props.onCancel,
+      commit = props.commit,
+      fundingSource = props.fundingSource;
+
+  var start = function start() {
+    var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
+    return createOrder().then(function (orderID) {
+      if (!popup_bridge_popupBridge) {
+        throw new Error("Popup bridge required");
+      }
+
+      var url = Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["a" /* getDomain */])() + config["d" /* EXPERIENCE_URI */].CHECKOUT, {
+        query: {
+          fundingSource: fundingSource,
+          token: orderID,
+          useraction: commit ? constants["q" /* USER_ACTION */].COMMIT : constants["q" /* USER_ACTION */].CONTINUE,
+          redirect_uri: popup_bridge_popupBridge.nativeUrl
+        }
+      });
+      return popup_bridge_popupBridge.start(url);
+    }).then(function (_ref3) {
+      var opType = _ref3.opType,
+          payerID = _ref3.PayerID,
+          paymentID = _ref3.paymentId,
+          billingToken = _ref3.ba_token;
+
+      if (opType === props_getPopupBridge["a" /* POPUP_BRIDGE_OPTYPE */].PAYMENT) {
+        return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+          return onApprove({
+            payerID: payerID,
+            paymentID: paymentID,
+            billingToken: billingToken,
+            facilitatorAccessToken: facilitatorAccessToken
+          }, {
+            restart: start
+          });
+        });
+      }
+
+      if (opType === props_getPopupBridge["a" /* POPUP_BRIDGE_OPTYPE */].CANCEL) {
+        return onCancel();
+      }
+
+      throw new Error("Unhandleable opType: " + opType);
+    });
+  };
+
+  return {
+    start: start,
+    close: lib["c" /* promiseNoop */],
+    triggerError: function triggerError(err) {
+      throw err;
+    }
+  };
+}
+// CONCATENATED MODULE: ./src/payment-flows/native.js
+
+
+
+
+
+
+
+
+
+var SOURCE_APP = 'paypal_smart_payment_buttons';
+var TARGET_APP = 'paypal_native_checkout_sdk';
+var MESSAGE = {
+  SET_PROPS: 'setProps',
+  GET_PROPS: 'getProps',
+  CLOSE: 'close',
+  ON_APPROVE: 'onApprove',
+  ON_CANCEL: 'onCancel',
+  ON_ERROR: 'onError'
+};
+var getNativeSocket = Object(src["i" /* memoize */])(function (_ref) {
+  var sessionUID = _ref.sessionUID,
+      firebaseConfig = _ref.firebaseConfig,
+      version = _ref.version;
+  return Object(api["i" /* firebaseSocket */])({
+    sessionUID: sessionUID,
+    sourceApp: SOURCE_APP,
+    sourceAppVersion: version,
+    targetApp: TARGET_APP,
+    config: firebaseConfig
+  });
+});
+var nativeInstalled = false;
+var nativeEligible = false;
+function setupNative(_ref2) {
+  var clientID = _ref2.clientID,
+      enableNativeCheckout = _ref2.enableNativeCheckout,
+      vault = _ref2.vault,
+      onShippingChange = _ref2.onShippingChange,
+      merchantID = _ref2.merchantID,
+      buyerCountry = _ref2.buyerCountry,
+      currency = _ref2.currency,
+      buttonSessionID = _ref2.buttonSessionID;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    if (!enableNativeCheckout) {
+      return;
+    }
+
+    Object(api["e" /* createAccessToken */])(clientID); // eslint-disable-next-line compat/compat
+
+    fetch(config["h" /* NATIVE_DETECTION_URL */]).then(function (res) {
+      if (res.status === 200) {
+        nativeInstalled = true;
+      }
+    }, src["j" /* noop */]);
+    var shippingCallbackEnabled = Boolean(onShippingChange);
+    var userAgent = Object(src["e" /* getUserAgent */])();
+    Object(api["j" /* getNativeEligibility */])({
+      vault: vault,
+      shippingCallbackEnabled: shippingCallbackEnabled,
+      merchantID: merchantID,
+      clientID: clientID,
+      buyerCountry: buyerCountry,
+      currency: currency,
+      userAgent: userAgent,
+      buttonSessionID: buttonSessionID
+    }).then(function (eligible) {
+      nativeEligible = eligible;
+    });
+  }).then(src["j" /* noop */]);
+}
+function isNativeEligible(_ref3) {
+  var win = _ref3.win,
+      platform = _ref3.platform,
+      fundingSource = _ref3.fundingSource,
+      onShippingChange = _ref3.onShippingChange,
+      createBillingAgreement = _ref3.createBillingAgreement,
+      createSubscription = _ref3.createSubscription,
+      enableNativeCheckout = _ref3.enableNativeCheckout,
+      firebaseConfig = _ref3.firebaseConfig;
+
+  if (win) {
+    return false;
+  }
+
+  if (platform !== sdk_constants_src["i" /* PLATFORM */].MOBILE) {
+    return false;
+  }
+
+  if (onShippingChange) {
+    return false;
+  }
+
+  if (fundingSource !== sdk_constants_src["g" /* FUNDING */].PAYPAL) {
+    return false;
+  }
+
+  if (createBillingAgreement || createSubscription) {
+    return false;
+  }
+
+  if (!Object(src["u" /* supportsPopups */])()) {
+    return false;
+  }
+
+  if (!firebaseConfig) {
+    return false;
+  }
+
+  if (enableNativeCheckout) {
+    return true;
+  }
+
+  return nativeEligible;
+}
+function initNative(props) {
+  var Checkout = props.Checkout,
+      createOrder = props.createOrder,
+      onApprove = props.onApprove,
+      onCancel = props.onCancel,
+      onError = props.onError,
+      commit = props.commit,
+      clientID = props.clientID,
+      getPageUrl = props.getPageUrl,
+      env = props.env,
+      stageHost = props.stageHost,
+      apiStageHost = props.apiStageHost,
+      buttonSessionID = props.buttonSessionID,
+      fundingSource = props.fundingSource,
+      card = props.card,
+      buyerCountry = props.buyerCountry,
+      onShippingChange = props.onShippingChange,
+      cspNonce = props.cspNonce,
+      locale = props.locale,
+      version = props.version,
+      vault = props.vault,
+      clientAccessToken = props.clientAccessToken,
+      fundingEligibility = props.fundingEligibility,
+      createBillingAgreement = props.createBillingAgreement,
+      createSubscription = props.createSubscription,
+      firebaseConfig = props.firebaseConfig;
+  var sessionUID = Object(src["v" /* uniqueID */])();
+  var _close = lib["c" /* promiseNoop */];
+
+  var _triggerError = function triggerError(err) {
+    throw err;
+  };
+
+  var fallbackToWebCheckout = function fallbackToWebCheckout(_ref4) {
+    var _ref4$context = _ref4.context,
+        context = _ref4$context === void 0 ? constants["b" /* CONTEXT */].POPUP : _ref4$context,
+        win = _ref4.win;
+
+    var _initCheckout = initCheckout({
+      Checkout: Checkout,
+      win: win,
+      context: context,
+      clientID: clientID,
+      buttonSessionID: buttonSessionID,
+      fundingSource: fundingSource,
+      card: card,
+      buyerCountry: buyerCountry,
+      createOrder: createOrder,
+      onApprove: onApprove,
+      onCancel: onCancel,
+      onShippingChange: onShippingChange,
+      cspNonce: cspNonce,
+      locale: locale,
+      commit: commit,
+      onError: onError,
+      vault: vault,
+      clientAccessToken: clientAccessToken,
+      fundingEligibility: fundingEligibility,
+      createBillingAgreement: createBillingAgreement,
+      createSubscription: createSubscription
+    }),
+        startCheckout = _initCheckout.start,
+        closeCheckout = _initCheckout.close,
+        triggerCheckoutError = _initCheckout.triggerError;
+
+    _close = closeCheckout;
+    _triggerError = triggerCheckoutError;
+    return startCheckout();
+  };
+
+  var startPromise = zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
+    var orderPromise = createOrder();
+    var pageUrlPromise = getPageUrl();
+
+    var getSDKProps = function getSDKProps() {
+      return zalgo_promise_src["a" /* ZalgoPromise */].all([facilitatorAccessTokenPromise, orderPromise, pageUrlPromise]).then(function (_ref5) {
+        var facilitatorAccessToken = _ref5[0],
+            orderID = _ref5[1],
+            pageUrl = _ref5[2];
+        var userAgent = Object(src["e" /* getUserAgent */])();
         return {
-            subscription: {
-                create: function(data) {
-                    return Object(_api__WEBPACK_IMPORTED_MODULE_1__.e)(clientID).then((function(accessToken) {
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_1__.g)(accessToken, data, {
-                            partnerAttributionID: partnerAttributionID
-                        });
-                    }));
-                },
-                revise: function(subscriptionID, data) {
-                    return Object(_api__WEBPACK_IMPORTED_MODULE_1__.e)(clientID).then((function(accessToken) {
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_1__.n)(accessToken, subscriptionID, data, {
-                            partnerAttributionID: partnerAttributionID
-                        });
-                    }));
-                }
+          orderID: orderID,
+          facilitatorAccessToken: facilitatorAccessToken,
+          pageUrl: pageUrl,
+          commit: commit,
+          userAgent: userAgent,
+          buttonSessionID: buttonSessionID,
+          env: env,
+          stageHost: stageHost,
+          apiStageHost: apiStageHost
+        };
+      });
+    };
+
+    var openCheckoutSocket = function openCheckoutSocket() {
+      var socket = getNativeSocket({
+        sessionUID: sessionUID,
+        firebaseConfig: firebaseConfig,
+        version: version
+      });
+      socket.on(MESSAGE.GET_PROPS, function () {
+        return getSDKProps();
+      });
+      socket.on(MESSAGE.ON_APPROVE, function (_ref6) {
+        var _ref6$data = _ref6.data,
+            payerID = _ref6$data.payerID,
+            paymentID = _ref6$data.paymentID,
+            billingToken = _ref6$data.billingToken;
+        socket.close();
+        return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+          var data = {
+            payerID: payerID,
+            paymentID: paymentID,
+            billingToken: billingToken,
+            facilitatorAccessToken: facilitatorAccessToken
+          };
+          var actions = {
+            restart: function restart() {
+              return fallbackToWebCheckout({
+                context: constants["b" /* CONTEXT */].IFRAME
+              });
             }
-        };
+          };
+          return onApprove(data, actions);
+        });
+      });
+      socket.on(MESSAGE.ON_CANCEL, function () {
+        socket.close();
+        return onCancel();
+      });
+      socket.on(MESSAGE.ON_ERROR, function (_ref7) {
+        var message = _ref7.data.message;
+        socket.close();
+        return onError(new Error(message));
+      });
+
+      _close = function close() {
+        return socket.send(MESSAGE.CLOSE);
+      };
+    };
+
+    var nativeUrl = Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["a" /* getDomain */])() + config["d" /* EXPERIENCE_URI */].NATIVE_CHECKOUT, {
+      query: {
+        sessionUID: sessionUID
+      }
+    });
+
+    if (nativeInstalled) {
+      Object(lib["d" /* redirectTop */])(nativeUrl);
+      return openCheckoutSocket();
     }
-    function getCreateSubscription(xprops) {
-        var createSubscriptionFunc = xprops.createSubscription, partnerAttributionID = xprops.partnerAttributionID, clientID = xprops.clientID;
-        if (createSubscriptionFunc) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.i)((function() {
-            return createSubscriptionFunc({}, buildXCreateSubscriptionActions({
-                clientID: clientID,
-                partnerAttributionID: partnerAttributionID
-            })).then((function(subscriptionID) {
-                if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
-                return subscriptionID;
-            }));
-        }));
+
+    var win = Object(src["m" /* popup */])(nativeUrl);
+    return orderPromise.then(function () {
+      if (!Object(cross_domain_utils_src["d" /* isBlankDomain */])(win)) {
+        return fallbackToWebCheckout({
+          win: win
+        });
+      }
+
+      win.close();
+      return openCheckoutSocket();
+    });
+  });
+  return {
+    start: function start() {
+      return startPromise;
+    },
+    close: function close() {
+      return zalgo_promise_src["a" /* ZalgoPromise */].try(_close);
+    },
+    triggerError: function triggerError(err) {
+      return _triggerError(err);
     }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var src = __webpack_require__(1), sdk_constants_src = __webpack_require__(2), api = __webpack_require__(5), constants = __webpack_require__(0), lib = __webpack_require__(4);
-    function buildXOnShippingChangeData(data) {
-        return data;
+  };
+}
+// EXTERNAL MODULE: ./src/button/props/index.js
+var button_props = __webpack_require__(13);
+
+// EXTERNAL MODULE: ./src/button/dom.js
+var dom = __webpack_require__(10);
+
+// EXTERNAL MODULE: ./src/api/api.js
+var api_api = __webpack_require__(7);
+
+// CONCATENATED MODULE: ./src/button/orders.js
+
+
+
+
+
+
+
+function updateButtonClientConfig(_ref) {
+  var orderID = _ref.orderID,
+      fundingSource = _ref.fundingSource,
+      isCardFields = _ref.isCardFields;
+  return Object(api["q" /* updateClientConfig */])({
+    orderID: orderID,
+    fundingSource: fundingSource,
+    integrationArtifact: constants["k" /* INTEGRATION_ARTIFACT */].PAYPAL_JS_SDK,
+    userExperienceFlow: isCardFields ? constants["r" /* USER_EXPERIENCE_FLOW */].INLINE : constants["r" /* USER_EXPERIENCE_FLOW */].INCONTEXT,
+    productFlow: constants["m" /* PRODUCT_FLOW */].SMART_PAYMENT_BUTTONS
+  });
+}
+function validateOrder(orderID, _ref2) {
+  var clientID = _ref2.clientID,
+      merchantID = _ref2.merchantID;
+  // $FlowFixMe
+  return zalgo_promise_src["a" /* ZalgoPromise */].all([Object(api_api["a" /* callGraphQL */])({
+    query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
+    variables: {
+      orderID: orderID
     }
-    function buildXShippingChangeActions(_ref) {
-        var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID;
-        return {
-            resolve: function() {
-                return src.a.resolve();
-            },
-            reject: _ref.actions.reject || function() {
-                throw new Error("Missing reject action callback");
-            },
-            order: {
-                patch: function(data) {
-                    return void 0 === data && (data = {}), Object(api.m)(orderID, data, {
-                        facilitatorAccessToken: facilitatorAccessToken,
-                        buyerAccessToken: buyerAccessToken,
-                        partnerAttributionID: partnerAttributionID
-                    }).catch((function() {
-                        throw new Error("Order could not be patched");
-                    }));
-                }
-            }
-        };
+  }), Object(api["l" /* getPayee */])(orderID)]).then(function (_ref3) {
+    var gql = _ref3[0],
+        payee = _ref3[1];
+    var cart = gql.data.checkoutSession.cart;
+    var intent = cart.intent.toLowerCase() === 'sale' ? sdk_constants_src["h" /* INTENT */].CAPTURE : cart.intent.toLowerCase();
+    var currency = cart.amounts && cart.amounts.total.currencyCode;
+    var expectedIntent = intent;
+    var expectedCurrency = currency;
+
+    if (intent !== expectedIntent) {
+      throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + sdk_constants_src["j" /* SDK_QUERY_KEYS */].INTENT + "=" + intent + " to the sdk");
     }
-    function getOnShippingChange(xprops, _ref2) {
-        var createOrder = _ref2.createOrder, onShippingChange = xprops.onShippingChange, buttonSessionID = xprops.buttonSessionID, partnerAttributionID = xprops.partnerAttributionID;
-        if (onShippingChange) return function(_ref3, actions) {
-            var facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, data = function(source, excluded) {
-                if (null == source) return {};
-                var key, i, target = {}, sourceKeys = Object.keys(source);
-                for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
-                return target;
-            }(_ref3, [ "facilitatorAccessToken", "buyerAccessToken" ]);
-            return createOrder().then((function(orderID) {
-                var _getLogger$info$track;
-                return Object(lib.b)().info("button_shipping_change").track((_getLogger$info$track = {}, 
-                _getLogger$info$track[sdk_constants_src.d.STATE] = constants.g.BUTTON, _getLogger$info$track[sdk_constants_src.d.TRANSITION] = constants.h.CHECKOUT_SHIPPING_CHANGE, 
-                _getLogger$info$track[sdk_constants_src.d.BUTTON_SESSION_UID] = buttonSessionID, 
-                _getLogger$info$track)).flush(), onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({
-                    orderID: orderID,
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    buyerAccessToken: buyerAccessToken,
-                    actions: actions,
-                    partnerAttributionID: partnerAttributionID
-                }));
-            }));
-        };
+
+    if (currency && currency !== expectedCurrency) {
+      throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + sdk_constants_src["j" /* SDK_QUERY_KEYS */].CURRENCY + "=" + currency + " to the sdk");
     }
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return buildXOnShippingChangeData;
-    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return buildXShippingChangeActions;
-    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return getOnShippingChange;
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__(2);
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return getGlobalProps;
-    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return getButtonCallbackProps;
-    }));
-    var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), _dom__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_require__(1), 
-    __webpack_require__(10)), _onInit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14), _createOrder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15), _onApprove__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16), _onCancel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17), _onShippingChange__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(21), _onClick__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(18), _createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(19), _createSubscription__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(20);
-    function getGlobalProps(_ref) {
-        var xprops = _ref.xprops, cspNonce = _ref.cspNonce, env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, correlationID = xprops.correlationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, _xprops$buyerCountry = xprops.buyerCountry, buyerCountry = void 0 === _xprops$buyerCountry ? _ref.buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.a.US : _xprops$buyerCountry, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableStandardCardFields = xprops.enableStandardCardFields, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent;
-        cspNonce = cspNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_2__.d)();
-        var onInit = Object(_onInit__WEBPACK_IMPORTED_MODULE_3__.c)(xprops);
-        return {
-            env: env,
-            style: style,
-            vault: vault,
-            commit: commit,
-            clientAccessToken: clientAccessToken,
-            buyerCountry: buyerCountry,
-            locale: locale,
-            cspNonce: cspNonce,
-            sessionID: sessionID,
-            buttonSessionID: buttonSessionID,
+
+    var payeeMerchantID = payee && payee.merchant && payee.merchant.id;
+    var actualMerchantID = merchantID && merchantID.length && merchantID[0];
+
+    if (!actualMerchantID) {
+      throw new Error("Could not determine correct merchant id");
+    }
+
+    if (!payeeMerchantID) {
+      throw new Error("No payee found in transaction. Expected " + actualMerchantID);
+    }
+
+    if (payeeMerchantID !== actualMerchantID) {
+      if (config["b" /* CLIENT_ID_PAYEE_NO_MATCH */].indexOf(clientID) === -1) {
+        Object(lib["b" /* getLogger */])().info("client_id_payee_no_match_" + clientID).flush(); // throw new Error(`Payee passed in transaction does not match expected merchant id: ${ actualMerchantID }`);
+      }
+    }
+
+    var xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
+
+    if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) {
+      throw new Error("Payee passed in transaction does not match expected merchant id: " + xpropMerchantID);
+    }
+  });
+}
+// CONCATENATED MODULE: ./src/button/logs.js
+
+
+
+
+
+function setupButtonLogs(_ref) {
+  var style = _ref.style;
+  var logger = Object(lib["b" /* getLogger */])();
+
+  if (Object(src["h" /* isIEIntranet */])()) {
+    logger.warn('button_child_intranet_mode');
+  }
+
+  return Object(src["d" /* getPageRenderTime */])().then(function (pageRenderTime) {
+    var _logger$track;
+
+    var fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "]")).map(function (el) {
+      return el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].CARD) || el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE);
+    }).filter(function (source) {
+      return source && source !== sdk_constants_src["g" /* FUNDING */].CARD;
+    });
+    var layout = style.layout,
+        color = style.color,
+        shape = style.shape,
+        label = style.label,
+        _style$tagline = style.tagline,
+        tagline = _style$tagline === void 0 ? true : _style$tagline;
+    logger.info("button_render_color_" + color);
+    logger.info("button_render_shape_" + shape);
+    logger.info("button_render_label_" + label);
+    logger.info("button_render_layout_" + layout);
+    logger.info("button_render_tagline_" + tagline.toString());
+    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_LOAD, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].FUNDING_LIST] = fundingSources.join(':'), _logger$track[sdk_constants_src["d" /* FPTI_KEY */].FUNDING_COUNT] = fundingSources.length.toString(), _logger$track[sdk_constants_src["d" /* FPTI_KEY */].PAGE_LOAD_TIME] = pageRenderTime ? pageRenderTime.toString() : '', _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_LAYOUT] = layout, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_COLOR] = color, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_SIZE] = 'responsive', _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_SHAPE] = shape, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_LABEL] = label, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_WIDTH] = window.innerWidth, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_TYPE] = constants["e" /* FPTI_BUTTON_TYPE */].IFRAME, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_TAGLINE_ENABLED] = tagline ? '1' : '0', _logger$track));
+    logger.flush();
+  });
+}
+// CONCATENATED MODULE: ./src/button/remember.js
+
+
+function setupRemember(_ref) {
+  var rememberFunding = _ref.rememberFunding,
+      fundingEligibility = _ref.fundingEligibility;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) {
+      return rememberFunding([sdk_constants_src["g" /* FUNDING */].VENMO]);
+    }
+  });
+}
+// CONCATENATED MODULE: ./src/button/button.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setupButton; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function setupButton(_ref) {
+  var fundingEligibility = _ref.fundingEligibility,
+      buyerGeoCountry = _ref.buyerCountry,
+      serverCSPNonce = _ref.cspNonce,
+      merchantID = _ref.merchantID,
+      personalization = _ref.personalization,
+      isCardFieldsExperimentEnabled = _ref.isCardFieldsExperimentEnabled,
+      firebaseConfig = _ref.firebaseConfig;
+
+  if (!window.paypal) {
+    throw new Error("PayPal SDK not loaded");
+  }
+
+  var xprops = window.xprops;
+  var _window$paypal = window.paypal,
+      version = _window$paypal.version,
+      Checkout = _window$paypal.Checkout,
+      CardFields = _window$paypal.CardFields,
+      ThreeDomainSecure = _window$paypal.ThreeDomainSecure;
+
+  var _getGlobalProps = Object(button_props["getGlobalProps"])({
+    xprops: xprops,
+    buyerGeoCountry: buyerGeoCountry,
+    cspNonce: serverCSPNonce
+  }),
+      env = _getGlobalProps.env,
+      stageHost = _getGlobalProps.stageHost,
+      apiStageHost = _getGlobalProps.apiStageHost,
+      buttonSessionID = _getGlobalProps.buttonSessionID,
+      style = _getGlobalProps.style,
+      currency = _getGlobalProps.currency,
+      vault = _getGlobalProps.vault,
+      commit = _getGlobalProps.commit,
+      clientAccessToken = _getGlobalProps.clientAccessToken,
+      buyerCountry = _getGlobalProps.buyerCountry,
+      locale = _getGlobalProps.locale,
+      cspNonce = _getGlobalProps.cspNonce,
+      platform = _getGlobalProps.platform,
+      sessionID = _getGlobalProps.sessionID,
+      clientID = _getGlobalProps.clientID,
+      partnerAttributionID = _getGlobalProps.partnerAttributionID,
+      correlationID = _getGlobalProps.correlationID,
+      enableThreeDomainSecure = _getGlobalProps.enableThreeDomainSecure,
+      merchantDomain = _getGlobalProps.merchantDomain,
+      getPopupBridge = _getGlobalProps.getPopupBridge,
+      getPrerenderDetails = _getGlobalProps.getPrerenderDetails,
+      getPageUrl = _getGlobalProps.getPageUrl,
+      rememberFunding = _getGlobalProps.rememberFunding,
+      onError = _getGlobalProps.onError,
+      onInit = _getGlobalProps.onInit,
+      enableStandardCardFields = _getGlobalProps.enableStandardCardFields,
+      enableNativeCheckout = _getGlobalProps.enableNativeCheckout,
+      onClick = _getGlobalProps.onClick,
+      getParent = _getGlobalProps.getParent;
+
+  Object(lib["f" /* setupLogger */])({
+    env: env,
+    version: version,
+    sessionID: sessionID,
+    clientID: clientID,
+    partnerAttributionID: partnerAttributionID,
+    commit: commit,
+    correlationID: correlationID,
+    locale: locale,
+    merchantID: merchantID,
+    buttonSessionID: buttonSessionID,
+    merchantDomain: merchantDomain
+  });
+
+  var _onInit = onInit(),
+      initPromise = _onInit.initPromise,
+      isEnabled = _onInit.isEnabled;
+
+  var buttonProcessing = false;
+  var popupBridge;
+
+  var pay = function pay(_ref2) {
+    var button = _ref2.button,
+        win = _ref2.win,
+        fundingSource = _ref2.fundingSource,
+        card = _ref2.card,
+        paymentMethodID = _ref2.paymentMethodID;
+    return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+      if (buttonProcessing) {
+        return;
+      }
+
+      buttonProcessing = true;
+      var validationPromise = onClick({
+        fundingSource: fundingSource
+      });
+
+      var _getButtonCallbackPro = Object(button_props["getButtonCallbackProps"])({
+        xprops: xprops,
+        validationPromise: validationPromise
+      }),
+          createOrder = _getButtonCallbackPro.createOrder,
+          createBillingAgreement = _getButtonCallbackPro.createBillingAgreement,
+          createSubscription = _getButtonCallbackPro.createSubscription,
+          onApprove = _getButtonCallbackPro.onApprove,
+          onCancel = _getButtonCallbackPro.onCancel,
+          onShippingChange = _getButtonCallbackPro.onShippingChange;
+
+      if (!isEnabled()) {
+        return win ? win.close() : null;
+      }
+
+      var isCardFields = isCardFieldsEligible({
+        win: win,
+        vault: vault,
+        onShippingChange: onShippingChange,
+        fundingSource: fundingSource,
+        isCardFieldsExperimentEnabled: isCardFieldsExperimentEnabled,
+        enableStandardCardFields: enableStandardCardFields
+      });
+      var isVaultCapture = isVaultCaptureEligible({
+        win: win,
+        paymentMethodID: paymentMethodID,
+        onShippingChange: onShippingChange
+      });
+      var isPopupBridge = isPopupBridgeEligible({
+        win: win,
+        onShippingChange: onShippingChange
+      });
+      var isNative = isNativeEligible({
+        win: win,
+        platform: platform,
+        fundingSource: fundingSource,
+        onShippingChange: onShippingChange,
+        createBillingAgreement: createBillingAgreement,
+        createSubscription: createSubscription,
+        enableNativeCheckout: enableNativeCheckout,
+        firebaseConfig: firebaseConfig
+      });
+      var isCheckout = !isCardFields && !isVaultCapture && !isPopupBridge && !isNative;
+
+      var _ref3 = function () {
+        if (isCheckout) {
+          return initCheckout({
+            Checkout: Checkout,
             clientID: clientID,
-            partnerAttributionID: partnerAttributionID,
-            correlationID: correlationID,
-            merchantDomain: "function" == typeof getParentDomain ? getParentDomain() : "unknown",
-            platform: platform,
-            getPopupBridge: getPopupBridge,
-            getPrerenderDetails: getPrerenderDetails,
-            getPageUrl: getPageUrl,
-            rememberFunding: rememberFunding,
-            getParent: getParent,
-            enableThreeDomainSecure: enableThreeDomainSecure,
-            enableStandardCardFields: enableStandardCardFields,
-            enableNativeCheckout: enableNativeCheckout,
-            onClick: Object(_onClick__WEBPACK_IMPORTED_MODULE_8__.c)(xprops),
-            onInit: onInit,
-            onError: onError,
-            stageHost: stageHost,
-            apiStageHost: apiStageHost
-        };
-    }
-    function getButtonCallbackProps(_ref2) {
-        var xprops = _ref2.xprops, validationPromise = _ref2.validationPromise;
-        if (xprops.createBillingAgreement) {
-            if (xprops.createOrder) throw new Error("Do not pass both createBillingAgreement and createOrder");
-            if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createBillingAgreement");
-        }
-        if (xprops.createSubscription) {
-            if (xprops.createOrder) throw new Error("Do not pass both createSubscription and createOrder");
-            if (xprops.createOrder) throw new Error("Do not pass both createSubscription and createBillingAgreement");
-            if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createSubscription");
-        }
-        var createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__.c)(xprops), createSubscription = Object(_createSubscription__WEBPACK_IMPORTED_MODULE_10__.c)(xprops), createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_4__.d)(xprops, {
-            createBillingAgreement: createBillingAgreement,
-            createSubscription: createSubscription,
-            validationPromise: validationPromise
-        });
-        return {
-            createOrder: createOrder,
-            createBillingAgreement: createBillingAgreement,
-            createSubscription: createSubscription,
-            onApprove: Object(_onApprove__WEBPACK_IMPORTED_MODULE_5__.a)(xprops, {
-                createOrder: createOrder
-            }),
-            onCancel: Object(_onCancel__WEBPACK_IMPORTED_MODULE_6__.c)(xprops, {
-                createOrder: createOrder,
-                validationPromise: validationPromise
-            }),
-            onShippingChange: Object(_onShippingChange__WEBPACK_IMPORTED_MODULE_7__.c)(xprops, {
-                createOrder: createOrder
-            })
-        };
-    }
-}, function(module, exports) {}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__(1), __webpack_require__(2);
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__(1);
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var src = __webpack_require__(3), sdk_constants_src = __webpack_require__(2), zalgo_promise_src = __webpack_require__(1), lib = __webpack_require__(4), api = __webpack_require__(5), esm_extends = __webpack_require__(8), cross_domain_utils_src = __webpack_require__(9), constants = __webpack_require__(0), checkoutOpen = !1, canRenderTop = !1;
-    function initCheckout(props) {
-        var Checkout = props.Checkout, clientID = props.clientID, win = props.win, buttonSessionID = props.buttonSessionID, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, context = props.context, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription;
-        if (checkoutOpen) throw new Error("Checkout already rendered");
-        var buyerAccessToken, approved = !1, restart = Object(src.i)((function() {
-            return initCheckout(Object(esm_extends.a)({}, props, {
-                context: constants.b.IFRAME
-            })).start().finally(lib.f);
-        })), facilitatorAccessTokenPromise = Object(api.e)(clientID), _Checkout = Checkout({
-            window: win,
+            win: win,
             buttonSessionID: buttonSessionID,
-            clientAccessToken: clientAccessToken,
-            createOrder: function() {
-                return _createOrder().then((function(orderID) {
-                    return function(_ref4) {
-                        var orderID = _ref4.orderID, vault = _ref4.vault, clientAccessToken = _ref4.clientAccessToken, createBillingAgreement = _ref4.createBillingAgreement, createSubscription = _ref4.createSubscription, fundingSource = _ref4.fundingSource, fundingEligibility = _ref4.fundingEligibility;
-                        return zalgo_promise_src.a.try((function() {
-                            if (clientAccessToken) return function(_ref3) {
-                                var vault = _ref3.vault, fundingSource = _ref3.fundingSource, fundingEligibility = _ref3.fundingEligibility;
-                                if (!_ref3.clientAccessToken) return !1;
-                                if (_ref3.createBillingAgreement || _ref3.createSubscription) return !1;
-                                var fundingSourceEligible = Boolean(fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable);
-                                if (vault && !fundingSourceEligible) throw new Error("SDK received " + sdk_constants_src.j.VAULT + "=true parameter, but " + fundingSource + " is not vaultable.");
-                                return !!vault || !!fundingSourceEligible;
-                            }({
-                                vault: vault,
-                                clientAccessToken: clientAccessToken,
-                                createBillingAgreement: createBillingAgreement,
-                                createSubscription: createSubscription,
-                                fundingSource: fundingSource,
-                                fundingEligibility: fundingEligibility
-                            }) ? Object(api.h)({
-                                orderID: orderID,
-                                clientAccessToken: clientAccessToken
-                            }).catch((function(err) {
-                                if (vault) throw err;
-                            })) : void 0;
-                        }));
-                    }({
-                        orderID: orderID,
-                        vault: vault,
-                        clientAccessToken: clientAccessToken,
-                        fundingEligibility: fundingEligibility,
-                        fundingSource: fundingSource,
-                        createBillingAgreement: createBillingAgreement,
-                        createSubscription: createSubscription
-                    }).then((function() {
-                        return orderID;
-                    }));
-                }));
-            },
-            onApprove: function(_ref5) {
-                var payerID = _ref5.payerID, paymentID = _ref5.paymentID, billingToken = _ref5.billingToken, subscriptionID = _ref5.subscriptionID;
-                return approved = !0, zalgo_promise_src.a.hash({
-                    facilitatorAccessToken: facilitatorAccessTokenPromise,
-                    close: closeCheckout()
-                }).then((function(_ref6) {
-                    return _onApprove({
-                        payerID: payerID,
-                        paymentID: paymentID,
-                        billingToken: billingToken,
-                        subscriptionID: subscriptionID,
-                        facilitatorAccessToken: _ref6.facilitatorAccessToken,
-                        buyerAccessToken: buyerAccessToken
-                    }, {
-                        restart: restart
-                    });
-                }));
-            },
-            onAuth: function(_ref7) {
-                buyerAccessToken = _ref7.accessToken;
-            },
-            onCancel: function() {
-                return closeCheckout().then((function() {
-                    return _onCancel();
-                }));
-            },
-            onShippingChange: onShippingChange ? function(data, actions) {
-                return facilitatorAccessTokenPromise.then((function(facilitatorAccessToken) {
-                    return onShippingChange(Object(esm_extends.a)({
-                        facilitatorAccessToken: facilitatorAccessToken,
-                        buyerAccessToken: buyerAccessToken
-                    }, data), actions);
-                }));
-            } : null,
-            onError: onError,
-            onClose: function() {
-                if (checkoutOpen = !1, !approved) return _onCancel();
-            },
             fundingSource: fundingSource,
             card: card,
             buyerCountry: buyerCountry,
+            createOrder: createOrder,
+            onApprove: onApprove,
+            onCancel: onCancel,
+            onShippingChange: onShippingChange,
+            cspNonce: cspNonce,
             locale: locale,
             commit: commit,
-            cspNonce: cspNonce
-        }), closeCheckout = _Checkout.close, triggerError = _Checkout.onError;
-        checkoutOpen = !0;
-        var renderPromise = (0, _Checkout.renderTo)(function() {
-            var top = Object(cross_domain_utils_src.c)(window);
-            return canRenderTop && top ? top : Object(cross_domain_utils_src.b)();
-        }(), constants.p.BODY, context);
-        return {
-            start: function() {
-                return renderPromise.then(src.j);
-            },
-            close: function() {
-                return checkoutOpen = !1, closeCheckout();
-            },
-            triggerError: triggerError
-        };
-    }
-    var cardFieldsOpen = !1;
-    function highlightCard(card) {
-        Object(src.o)("[" + constants.c.CARD + "]").forEach((function(el) {
-            el.style.opacity = el.getAttribute(constants.c.CARD) === card ? "1" : "0.1";
-        }));
-    }
-    var popup_bridge_popupBridge, card_fields_getElements = function() {
-        var buttonsContainer = document.querySelector("#buttons-container"), cardButtonsContainer = document.querySelector('[data-funding-source="' + sdk_constants_src.g.CARD + '"]'), cardFieldsContainer = document.querySelector("#card-fields-container");
-        if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) throw new Error("Did not find card fields elements");
-        return {
-            buttonsContainer: buttonsContainer,
-            cardButtonsContainer: cardButtonsContainer,
-            cardFieldsContainer: cardFieldsContainer
-        };
-    }, card_fields_slideUpButtons = function() {
-        var _getElements = card_fields_getElements(), buttonsContainer = _getElements.buttonsContainer, cardButtonsContainer = _getElements.cardButtonsContainer, cardFieldsContainer = _getElements.cardFieldsContainer;
-        if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) throw new Error("Required elements not found");
-        cardFieldsContainer.style.minHeight = "0px", cardFieldsContainer.style.display = "block";
-        var recalculateMargin = function() {
-            buttonsContainer.style.marginTop = buttonsContainer.offsetTop - cardButtonsContainer.offsetTop + "px";
-        };
-        window.addEventListener("resize", Object(src.b)((function() {
-            buttonsContainer.style.transitionDuration = "0s", recalculateMargin();
-        }))), recalculateMargin();
-    }, slideDownButtons = function() {
-        var buttonsContainer = card_fields_getElements().buttonsContainer;
-        Object(src.o)("[" + constants.c.CARD + "]").forEach((function(el) {
-            el.style.opacity = "1";
-        })), buttonsContainer.style.marginTop = "0px";
-    }, config = __webpack_require__(6), props_getPopupBridge = __webpack_require__(12), MESSAGE = {
-        SET_PROPS: "setProps",
-        GET_PROPS: "getProps",
-        CLOSE: "close",
-        ON_APPROVE: "onApprove",
-        ON_CANCEL: "onCancel",
-        ON_ERROR: "onError"
-    }, getNativeSocket = Object(src.i)((function(_ref2) {
-        var sessionUID = _ref2.sessionUID, firebaseConfig = _ref2.firebaseConfig, version = _ref2.version;
-        return Object(api.i)({
-            sessionUID: sessionUID,
-            sourceApp: "paypal_smart_payment_buttons",
-            sourceAppVersion: version,
-            targetApp: "paypal_native_checkout_sdk",
-            config: firebaseConfig
-        });
-    })), button_props = __webpack_require__(13), dom = __webpack_require__(10), api_api = __webpack_require__(7);
-    function setupButton(_ref) {
-        var fundingEligibility = _ref.fundingEligibility, buyerGeoCountry = _ref.buyerCountry, serverCSPNonce = _ref.cspNonce, merchantID = _ref.merchantID, personalization = _ref.personalization, isCardFieldsExperimentEnabled = _ref.isCardFieldsExperimentEnabled, firebaseConfig = _ref.firebaseConfig;
-        if (!window.paypal) throw new Error("PayPal SDK not loaded");
-        var xprops = window.xprops, _window$paypal = window.paypal, version = _window$paypal.version, Checkout = _window$paypal.Checkout, CardFields = _window$paypal.CardFields, ThreeDomainSecure = _window$paypal.ThreeDomainSecure, _getGlobalProps = Object(button_props.getGlobalProps)({
-            xprops: xprops,
-            buyerGeoCountry: buyerGeoCountry,
-            cspNonce: serverCSPNonce
-        }), env = _getGlobalProps.env, stageHost = _getGlobalProps.stageHost, apiStageHost = _getGlobalProps.apiStageHost, buttonSessionID = _getGlobalProps.buttonSessionID, style = _getGlobalProps.style, vault = _getGlobalProps.vault, commit = _getGlobalProps.commit, clientAccessToken = _getGlobalProps.clientAccessToken, buyerCountry = _getGlobalProps.buyerCountry, locale = _getGlobalProps.locale, cspNonce = _getGlobalProps.cspNonce, platform = _getGlobalProps.platform, sessionID = _getGlobalProps.sessionID, clientID = _getGlobalProps.clientID, partnerAttributionID = _getGlobalProps.partnerAttributionID, correlationID = _getGlobalProps.correlationID, enableThreeDomainSecure = _getGlobalProps.enableThreeDomainSecure, merchantDomain = _getGlobalProps.merchantDomain, getPopupBridge = _getGlobalProps.getPopupBridge, getPrerenderDetails = _getGlobalProps.getPrerenderDetails, getPageUrl = _getGlobalProps.getPageUrl, rememberFunding = _getGlobalProps.rememberFunding, onError = _getGlobalProps.onError, onInit = _getGlobalProps.onInit, enableStandardCardFields = _getGlobalProps.enableStandardCardFields, enableNativeCheckout = _getGlobalProps.enableNativeCheckout, onClick = _getGlobalProps.onClick, getParent = _getGlobalProps.getParent;
-        Object(lib.e)({
-            env: env,
-            version: version,
-            sessionID: sessionID,
+            onError: onError,
+            vault: vault,
+            clientAccessToken: clientAccessToken,
+            fundingEligibility: fundingEligibility,
+            createBillingAgreement: createBillingAgreement,
+            createSubscription: createSubscription
+          });
+        }
+
+        if (isVaultCapture) {
+          Object(dom["b" /* enableLoadingSpinner */])(button);
+          return initVault({
+            ThreeDomainSecure: ThreeDomainSecure,
             clientID: clientID,
-            partnerAttributionID: partnerAttributionID,
-            commit: commit,
-            correlationID: correlationID,
-            locale: locale,
-            merchantID: merchantID,
+            createOrder: createOrder,
+            paymentMethodID: paymentMethodID,
+            onApprove: onApprove,
+            clientAccessToken: clientAccessToken,
+            enableThreeDomainSecure: enableThreeDomainSecure,
             buttonSessionID: buttonSessionID,
-            merchantDomain: merchantDomain
-        });
-        var _onInit = onInit(), initPromise = _onInit.initPromise, isEnabled = _onInit.isEnabled, buttonProcessing = !1, pay = function(_ref2) {
-            var button = _ref2.button, win = _ref2.win, fundingSource = _ref2.fundingSource, card = _ref2.card, paymentMethodID = _ref2.paymentMethodID;
-            return zalgo_promise_src.a.try((function() {
-                if (!buttonProcessing) {
-                    buttonProcessing = !0;
-                    var validationPromise = onClick({
-                        fundingSource: fundingSource
-                    }), _getButtonCallbackPro = Object(button_props.getButtonCallbackProps)({
-                        xprops: xprops,
-                        validationPromise: validationPromise
-                    }), createOrder = _getButtonCallbackPro.createOrder, createBillingAgreement = _getButtonCallbackPro.createBillingAgreement, createSubscription = _getButtonCallbackPro.createSubscription, onApprove = _getButtonCallbackPro.onApprove, onCancel = _getButtonCallbackPro.onCancel, onShippingChange = _getButtonCallbackPro.onShippingChange;
-                    if (!isEnabled()) return win ? win.close() : null;
-                    var isCardFields = function(_ref) {
-                        var enableStandardCardFields = _ref.enableStandardCardFields;
-                        return !(_ref.win || _ref.fundingSource !== sdk_constants_src.g.CARD || _ref.vault || _ref.onShippingChange || !0 !== enableStandardCardFields && !enableStandardCardFields && !_ref.isCardFieldsExperimentEnabled);
-                    }({
-                        win: win,
-                        vault: vault,
-                        onShippingChange: onShippingChange,
-                        fundingSource: fundingSource,
-                        isCardFieldsExperimentEnabled: isCardFieldsExperimentEnabled,
-                        enableStandardCardFields: enableStandardCardFields
-                    }), isVaultCapture = function(_ref) {
-                        return !_ref.win && !!_ref.paymentMethodID && !_ref.onShippingChange;
-                    }({
-                        win: win,
-                        paymentMethodID: paymentMethodID,
-                        onShippingChange: onShippingChange
-                    }), isPopupBridge = function(_ref2) {
-                        return !_ref2.win && !!popup_bridge_popupBridge && !_ref2.onShippingChange;
-                    }({
-                        win: win,
-                        onShippingChange: onShippingChange
-                    }), isNative = function(_ref) {
-                        var enableNativeCheckout = _ref.enableNativeCheckout, firebaseConfig = _ref.firebaseConfig;
-                        return !(_ref.win || _ref.platform !== sdk_constants_src.i.MOBILE || _ref.onShippingChange || _ref.fundingSource !== sdk_constants_src.g.PAYPAL || _ref.createBillingAgreement || _ref.createSubscription || !Object(src.u)() || !firebaseConfig || !enableNativeCheckout);
-                    }({
-                        win: win,
-                        platform: platform,
-                        fundingSource: fundingSource,
-                        onShippingChange: onShippingChange,
-                        createBillingAgreement: createBillingAgreement,
-                        createSubscription: createSubscription,
-                        enableNativeCheckout: enableNativeCheckout,
-                        firebaseConfig: firebaseConfig
-                    }), isCheckout = !(isCardFields || isVaultCapture || isPopupBridge || isNative), _ref3 = function() {
-                        if (isCheckout) return initCheckout({
-                            Checkout: Checkout,
-                            clientID: clientID,
-                            win: win,
-                            buttonSessionID: buttonSessionID,
-                            fundingSource: fundingSource,
-                            card: card,
-                            buyerCountry: buyerCountry,
-                            createOrder: createOrder,
-                            onApprove: onApprove,
-                            onCancel: onCancel,
-                            onShippingChange: onShippingChange,
-                            cspNonce: cspNonce,
-                            locale: locale,
-                            commit: commit,
-                            onError: onError,
-                            vault: vault,
-                            clientAccessToken: clientAccessToken,
-                            fundingEligibility: fundingEligibility,
-                            createBillingAgreement: createBillingAgreement,
-                            createSubscription: createSubscription
-                        });
-                        if (isVaultCapture) return Object(dom.b)(button), function(props) {
-                            var ThreeDomainSecure = props.ThreeDomainSecure, clientID = props.clientID, createOrder = props.createOrder, paymentMethodID = props.paymentMethodID, onApprove = props.onApprove, clientAccessToken = props.clientAccessToken, enableThreeDomainSecure = props.enableThreeDomainSecure, buttonSessionID = props.buttonSessionID, partnerAttributionID = props.partnerAttributionID, getParent = props.getParent;
-                            if (!paymentMethodID) throw new Error("Payment method id required for vault capture");
-                            if (!clientAccessToken) throw new Error("Client access token required for vault capture");
-                            var restart = function() {
-                                return zalgo_promise_src.a.try((function() {
-                                    throw new Error("Vault capture restart not implemented");
-                                }));
-                            };
-                            return {
-                                start: function() {
-                                    var facilitatorAccessTokenPromise = Object(api.e)(clientID);
-                                    return zalgo_promise_src.a.try((function() {
-                                        return createOrder();
-                                    })).then((function(orderID) {
-                                        return Object(api.q)({
-                                            clientAccessToken: clientAccessToken,
-                                            orderID: orderID,
-                                            paymentMethodID: paymentMethodID,
-                                            enableThreeDomainSecure: enableThreeDomainSecure,
-                                            buttonSessionID: buttonSessionID,
-                                            partnerAttributionID: partnerAttributionID
-                                        });
-                                    })).then((function(_ref4) {
-                                        return function(_ref3) {
-                                            var ThreeDomainSecure = _ref3.ThreeDomainSecure, status = _ref3.status, body = _ref3.body, createOrder = _ref3.createOrder, getParent = _ref3.getParent;
-                                            return zalgo_promise_src.a.try((function() {
-                                                if (422 === status && body.links && body.links.some((function(link) {
-                                                    return "3ds-contingency-resolution" === link.rel;
-                                                }))) return function(_ref2) {
-                                                    var ThreeDomainSecure = _ref2.ThreeDomainSecure, createOrder = _ref2.createOrder, getParent = _ref2.getParent, promise = new zalgo_promise_src.a, instance = ThreeDomainSecure({
-                                                        createOrder: createOrder,
-                                                        onSuccess: function() {
-                                                            return promise.resolve();
-                                                        },
-                                                        onCancel: function() {
-                                                            return promise.reject(new Error("3DS cancelled"));
-                                                        },
-                                                        onError: function(err) {
-                                                            return promise.reject(err);
-                                                        }
-                                                    });
-                                                    return instance.renderTo(getParent(), constants.p.BODY).then((function() {
-                                                        return promise;
-                                                    })).finally(instance.close);
-                                                }({
-                                                    ThreeDomainSecure: ThreeDomainSecure,
-                                                    createOrder: createOrder,
-                                                    getParent: getParent
-                                                });
-                                                if (200 !== status) throw new Error("Validate payment failed with status: " + status);
-                                            }));
-                                        }({
-                                            ThreeDomainSecure: ThreeDomainSecure,
-                                            status: _ref4.status,
-                                            body: _ref4.body,
-                                            createOrder: createOrder,
-                                            getParent: getParent
-                                        });
-                                    })).then((function() {
-                                        return facilitatorAccessTokenPromise.then((function(facilitatorAccessToken) {
-                                            return onApprove({
-                                                facilitatorAccessToken: facilitatorAccessToken
-                                            }, {
-                                                restart: restart
-                                            });
-                                        }));
-                                    }));
-                                },
-                                close: function() {
-                                    return zalgo_promise_src.a.resolve();
-                                },
-                                triggerError: function(err) {
-                                    throw err;
-                                }
-                            };
-                        }({
-                            ThreeDomainSecure: ThreeDomainSecure,
-                            clientID: clientID,
-                            createOrder: createOrder,
-                            paymentMethodID: paymentMethodID,
-                            onApprove: onApprove,
-                            clientAccessToken: clientAccessToken,
-                            enableThreeDomainSecure: enableThreeDomainSecure,
-                            buttonSessionID: buttonSessionID,
-                            partnerAttributionID: partnerAttributionID,
-                            getParent: getParent
-                        });
-                        if (isCardFields) return function(props) {
-                            var CardFields = props.CardFields, Checkout = props.Checkout, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, locale = props.locale, commit = props.commit, onError = props.onError, buttonSessionID = props.buttonSessionID, clientID = props.clientID, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription;
-                            if (!card) throw new Error("Card required to render card fields");
-                            if (cardFieldsOpen) return highlightCard(card), {
-                                start: lib.c,
-                                close: lib.c,
-                                triggerError: lib.c
-                            };
-                            var buyerAccessToken, restart = Object(src.i)((function() {
-                                return initCheckout({
-                                    Checkout: Checkout,
-                                    clientID: clientID,
-                                    buttonSessionID: buttonSessionID,
-                                    fundingSource: fundingSource,
-                                    card: card,
-                                    buyerCountry: buyerCountry,
-                                    createOrder: createOrder,
-                                    onApprove: _onApprove,
-                                    onCancel: onCancel,
-                                    onShippingChange: onShippingChange,
-                                    cspNonce: cspNonce,
-                                    locale: locale,
-                                    commit: commit,
-                                    onError: onError,
-                                    vault: vault,
-                                    clientAccessToken: clientAccessToken,
-                                    fundingEligibility: fundingEligibility,
-                                    createBillingAgreement: createBillingAgreement,
-                                    createSubscription: createSubscription,
-                                    context: constants.b.IFRAME
-                                }).start().finally(lib.f);
-                            })), facilitatorAccessTokenPromise = Object(api.e)(clientID), _CardFields = CardFields({
-                                createOrder: createOrder,
-                                fundingSource: fundingSource,
-                                card: card,
-                                onApprove: function(_ref3) {
-                                    var payerID = _ref3.payerID, paymentID = _ref3.paymentID, billingToken = _ref3.billingToken;
-                                    return zalgo_promise_src.a.hash({
-                                        facilitatorAccessToken: facilitatorAccessTokenPromise,
-                                        close: close()
-                                    }).then((function(_ref4) {
-                                        return _onApprove({
-                                            payerID: payerID,
-                                            paymentID: paymentID,
-                                            billingToken: billingToken,
-                                            facilitatorAccessToken: _ref4.facilitatorAccessToken,
-                                            buyerAccessToken: buyerAccessToken
-                                        }, {
-                                            restart: restart
-                                        });
-                                    }));
-                                },
-                                onAuth: function(_ref5) {
-                                    buyerAccessToken = _ref5.accessToken;
-                                },
-                                onCancel: onCancel,
-                                onError: onError,
-                                onClose: function() {
-                                    cardFieldsOpen = !1;
-                                },
-                                onCardTypeChange: function(_ref2) {
-                                    highlightCard(_ref2.card);
-                                },
-                                buttonSessionID: buttonSessionID,
-                                buyerCountry: buyerCountry,
-                                locale: locale,
-                                commit: commit,
-                                cspNonce: cspNonce
-                            }), render = _CardFields.render, closeCardFields = _CardFields.close;
-                            cardFieldsOpen = !0;
-                            var close = function() {
-                                return slideDownButtons(), closeCardFields();
-                            };
-                            return {
-                                start: function() {
-                                    cardFieldsOpen = !0;
-                                    var renderPromise = render("#card-fields-container");
-                                    return card_fields_slideUpButtons(), highlightCard(card), renderPromise;
-                                },
-                                close: close,
-                                triggerError: _CardFields.onError
-                            };
-                        }({
-                            CardFields: CardFields,
-                            Checkout: Checkout,
-                            clientID: clientID,
-                            buttonSessionID: buttonSessionID,
-                            fundingSource: fundingSource,
-                            card: card,
-                            buyerCountry: buyerCountry,
-                            createOrder: createOrder,
-                            onApprove: onApprove,
-                            onCancel: onCancel,
-                            onShippingChange: onShippingChange,
-                            cspNonce: cspNonce,
-                            locale: locale,
-                            commit: commit,
-                            onError: onError,
-                            vault: vault,
-                            clientAccessToken: clientAccessToken,
-                            fundingEligibility: fundingEligibility,
-                            createBillingAgreement: createBillingAgreement,
-                            createSubscription: createSubscription
-                        });
-                        if (isPopupBridge) return Object(dom.b)(button), function(props) {
-                            var clientID = props.clientID, createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, commit = props.commit, fundingSource = props.fundingSource;
-                            return {
-                                start: function start() {
-                                    var facilitatorAccessTokenPromise = Object(api.e)(clientID);
-                                    return createOrder().then((function(orderID) {
-                                        if (!popup_bridge_popupBridge) throw new Error("Popup bridge required");
-                                        var url = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.d.CHECKOUT, {
-                                            query: {
-                                                fundingSource: fundingSource,
-                                                token: orderID,
-                                                useraction: commit ? constants.q.COMMIT : constants.q.CONTINUE,
-                                                redirect_uri: popup_bridge_popupBridge.nativeUrl
-                                            }
-                                        });
-                                        return popup_bridge_popupBridge.start(url);
-                                    })).then((function(_ref3) {
-                                        var opType = _ref3.opType, payerID = _ref3.PayerID, paymentID = _ref3.paymentId, billingToken = _ref3.ba_token;
-                                        if (opType === props_getPopupBridge.a.PAYMENT) return facilitatorAccessTokenPromise.then((function(facilitatorAccessToken) {
-                                            return onApprove({
-                                                payerID: payerID,
-                                                paymentID: paymentID,
-                                                billingToken: billingToken,
-                                                facilitatorAccessToken: facilitatorAccessToken
-                                            }, {
-                                                restart: start
-                                            });
-                                        }));
-                                        if (opType === props_getPopupBridge.a.CANCEL) return onCancel();
-                                        throw new Error("Unhandleable opType: " + opType);
-                                    }));
-                                },
-                                close: lib.c,
-                                triggerError: function(err) {
-                                    throw err;
-                                }
-                            };
-                        }({
-                            clientID: clientID,
-                            popupBridge: void 0,
-                            fundingSource: fundingSource,
-                            createOrder: createOrder,
-                            onApprove: onApprove,
-                            onCancel: onCancel,
-                            commit: commit
-                        });
-                        if (isNative) {
-                            if (!firebaseConfig) throw new Error("Firebase config required");
-                            return Object(dom.b)(button), function(props) {
-                                var Checkout = props.Checkout, createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, commit = props.commit, clientID = props.clientID, getPageUrl = props.getPageUrl, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost, buttonSessionID = props.buttonSessionID, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, locale = props.locale, version = props.version, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, firebaseConfig = props.firebaseConfig, sessionUID = Object(src.v)(), _close = lib.c, _triggerError = function(err) {
-                                    throw err;
-                                }, fallbackToWebCheckout = function(_ref4) {
-                                    var _ref4$context = _ref4.context, _initCheckout = initCheckout({
-                                        Checkout: Checkout,
-                                        win: _ref4.win,
-                                        context: void 0 === _ref4$context ? constants.b.POPUP : _ref4$context,
-                                        clientID: clientID,
-                                        buttonSessionID: buttonSessionID,
-                                        fundingSource: fundingSource,
-                                        card: card,
-                                        buyerCountry: buyerCountry,
-                                        createOrder: createOrder,
-                                        onApprove: onApprove,
-                                        onCancel: onCancel,
-                                        onShippingChange: onShippingChange,
-                                        cspNonce: cspNonce,
-                                        locale: locale,
-                                        commit: commit,
-                                        onError: onError,
-                                        vault: vault,
-                                        clientAccessToken: clientAccessToken,
-                                        fundingEligibility: fundingEligibility,
-                                        createBillingAgreement: createBillingAgreement,
-                                        createSubscription: createSubscription
-                                    });
-                                    return _close = _initCheckout.close, _triggerError = _initCheckout.triggerError, 
-                                    (0, _initCheckout.start)();
-                                }, startPromise = zalgo_promise_src.a.try((function() {
-                                    var facilitatorAccessTokenPromise = Object(api.e)(clientID), orderPromise = createOrder(), pageUrlPromise = getPageUrl(), getSDKProps = function() {
-                                        return zalgo_promise_src.a.all([ facilitatorAccessTokenPromise, orderPromise, pageUrlPromise ]).then((function(_ref5) {
-                                            var facilitatorAccessToken = _ref5[0], orderID = _ref5[1], pageUrl = _ref5[2], userAgent = Object(src.e)();
-                                            return {
-                                                orderID: orderID,
-                                                facilitatorAccessToken: facilitatorAccessToken,
-                                                pageUrl: pageUrl,
-                                                commit: commit,
-                                                userAgent: userAgent,
-                                                buttonSessionID: buttonSessionID,
-                                                env: env,
-                                                stageHost: stageHost,
-                                                apiStageHost: apiStageHost
-                                            };
-                                        }));
-                                    }, nativeUrl = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.d.NATIVE_CHECKOUT, {
-                                        query: {
-                                            sessionUID: sessionUID
-                                        }
-                                    }), win = Object(src.m)(nativeUrl);
-                                    return orderPromise.then((function() {
-                                        if (!Object(cross_domain_utils_src.d)(win)) return fallbackToWebCheckout({
-                                            win: win
-                                        });
-                                        win.close();
-                                        var socket, _openCheckoutSocket = ((socket = getNativeSocket({
-                                            sessionUID: sessionUID,
-                                            firebaseConfig: firebaseConfig,
-                                            version: version
-                                        })).on(MESSAGE.GET_PROPS, (function() {
-                                            return getSDKProps();
-                                        })), socket.on(MESSAGE.ON_APPROVE, (function(_ref6) {
-                                            var _ref6$data = _ref6.data, payerID = _ref6$data.payerID, paymentID = _ref6$data.paymentID, billingToken = _ref6$data.billingToken;
-                                            return socket.close(), facilitatorAccessTokenPromise.then((function(facilitatorAccessToken) {
-                                                return onApprove({
-                                                    payerID: payerID,
-                                                    paymentID: paymentID,
-                                                    billingToken: billingToken,
-                                                    facilitatorAccessToken: facilitatorAccessToken
-                                                }, {
-                                                    restart: function() {
-                                                        return fallbackToWebCheckout({
-                                                            context: constants.b.IFRAME
-                                                        });
-                                                    }
-                                                });
-                                            }));
-                                        })), socket.on(MESSAGE.ON_CANCEL, (function() {
-                                            return socket.close(), onCancel();
-                                        })), socket.on(MESSAGE.ON_ERROR, (function(_ref7) {
-                                            var message = _ref7.data.message;
-                                            return socket.close(), onError(new Error(message));
-                                        })), {
-                                            close: function() {
-                                                return socket.send(MESSAGE.CLOSE);
-                                            },
-                                            setProps: function() {
-                                                return socket.send(MESSAGE.SET_PROPS, getSDKProps());
-                                            }
-                                        });
-                                        _close = _openCheckoutSocket.close;
-                                    }));
-                                }));
-                                return {
-                                    start: function() {
-                                        return startPromise;
-                                    },
-                                    close: function() {
-                                        return zalgo_promise_src.a.try(_close);
-                                    },
-                                    triggerError: function(err) {
-                                        return _triggerError(err);
-                                    }
-                                };
-                            }({
-                                Checkout: Checkout,
-                                createOrder: createOrder,
-                                onApprove: onApprove,
-                                onCancel: onCancel,
-                                onError: onError,
-                                commit: commit,
-                                fundingSource: fundingSource,
-                                clientID: clientID,
-                                getPageUrl: getPageUrl,
-                                env: env,
-                                stageHost: stageHost,
-                                apiStageHost: apiStageHost,
-                                win: win,
-                                buttonSessionID: buttonSessionID,
-                                card: card,
-                                buyerCountry: buyerCountry,
-                                onShippingChange: onShippingChange,
-                                cspNonce: cspNonce,
-                                locale: locale,
-                                vault: vault,
-                                firebaseConfig: firebaseConfig,
-                                version: version,
-                                clientAccessToken: clientAccessToken,
-                                fundingEligibility: fundingEligibility,
-                                createBillingAgreement: createBillingAgreement,
-                                createSubscription: createSubscription
-                            });
-                        }
-                        throw new Error("No valid flow found");
-                    }(), start = _ref3.start, close = _ref3.close, triggerError = _ref3.triggerError;
-                    return validationPromise.then((function(valid) {
-                        return valid ? (createOrder().then((function(orderID) {
-                            return function(_ref) {
-                                var orderID = _ref.orderID, fundingSource = _ref.fundingSource, isCardFields = _ref.isCardFields;
-                                return Object(api.p)({
-                                    orderID: orderID,
-                                    fundingSource: fundingSource,
-                                    integrationArtifact: constants.k.PAYPAL_JS_SDK,
-                                    userExperienceFlow: isCardFields ? constants.r.INLINE : constants.r.INCONTEXT,
-                                    productFlow: constants.m.SMART_PAYMENT_BUTTONS
-                                });
-                            }({
-                                orderID: orderID,
-                                fundingSource: fundingSource,
-                                isCardFields: isCardFields
-                            });
-                        })), start().then((function() {
-                            return createOrder();
-                        })).then((function(orderID) {
-                            return function(orderID, _ref2) {
-                                var clientID = _ref2.clientID, merchantID = _ref2.merchantID;
-                                return zalgo_promise_src.a.all([ Object(api_api.a)({
-                                    query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
-                                    variables: {
-                                        orderID: orderID
-                                    }
-                                }), Object(api.k)(orderID) ]).then((function(_ref3) {
-                                    var payee = _ref3[1], cart = _ref3[0].data.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? sdk_constants_src.h.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, expectedCurrency = currency;
-                                    if (intent != intent) throw new Error("Expected intent from order api call to be " + intent + ", got " + intent + ". Please ensure you are passing " + sdk_constants_src.j.INTENT + "=" + intent + " to the sdk");
-                                    if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + sdk_constants_src.j.CURRENCY + "=" + currency + " to the sdk");
-                                    var payeeMerchantID = payee && payee.merchant && payee.merchant.id, actualMerchantID = merchantID && merchantID.length && merchantID[0];
-                                    if (!actualMerchantID) throw new Error("Could not determine correct merchant id");
-                                    if (!payeeMerchantID) throw new Error("No payee found in transaction. Expected " + actualMerchantID);
-                                    payeeMerchantID !== actualMerchantID && -1 === config.b.indexOf(clientID) && Object(lib.b)().info("client_id_payee_no_match_" + clientID).flush();
-                                    var xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
-                                    if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) throw new Error("Payee passed in transaction does not match expected merchant id: " + xpropMerchantID);
-                                }));
-                            }(orderID, {
-                                clientID: clientID,
-                                merchantID: merchantID
-                            });
-                        })).catch((function(err) {
-                            return zalgo_promise_src.a.all([ triggerError(err), close() ]);
-                        }))) : zalgo_promise_src.a.all([ close(), win && win.close() ]).then(src.j);
-                    }));
-                }
-            })).finally((function() {
-                buttonProcessing = !1, Object(dom.a)(button);
-            }));
-        };
-        Object(dom.c)().forEach((function(button) {
-            Object(lib.a)(button);
-            var _getSelectedFunding = Object(dom.e)(button), fundingSource = _getSelectedFunding.fundingSource, card = _getSelectedFunding.card, paymentMethodID = _getSelectedFunding.paymentMethodID;
-            Object(src.l)(button, (function(event) {
-                event.preventDefault(), event.stopPropagation();
-                var payPromise = pay({
-                    button: button,
-                    fundingSource: fundingSource,
-                    card: card,
-                    paymentMethodID: paymentMethodID
-                });
-                button.payPromise = payPromise, personalization && personalization.tagline && Object(lib.d)(personalization.tagline.tracking.click);
-            }));
-        }));
-        var setupPrerenderTask = initPromise.then((function() {
-            return getPrerenderDetails().then((function(prerenderDetails) {
-                if (prerenderDetails) {
-                    var win = prerenderDetails.win, fundingSource = prerenderDetails.fundingSource, card = prerenderDetails.card, button = document.querySelector("[" + constants.c.FUNDING_SOURCE + "=" + fundingSource + "]");
-                    if (!button) throw new Error("Can not find button element");
-                    return pay({
-                        button: button,
-                        win: win,
-                        fundingSource: fundingSource,
-                        card: card
-                    });
-                }
-            }));
-        })), setupRememberTask = function(_ref) {
-            var rememberFunding = _ref.rememberFunding, fundingEligibility = _ref.fundingEligibility;
-            return zalgo_promise_src.a.try((function() {
-                if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) return rememberFunding([ sdk_constants_src.g.VENMO ]);
-            }));
-        }({
-            rememberFunding: rememberFunding,
-            fundingEligibility: fundingEligibility
-        }), setupButtonLogsTask = function(_ref) {
-            var style = _ref.style, logger = Object(lib.b)();
-            return Object(src.h)() && logger.warn("button_child_intranet_mode"), Object(src.d)().then((function(pageRenderTime) {
-                var _logger$track, fundingSources = [].slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map((function(el) {
-                    return el.getAttribute(constants.c.CARD) || el.getAttribute(constants.c.FUNDING_SOURCE);
-                })).filter((function(source) {
-                    return source && source !== sdk_constants_src.g.CARD;
-                })), layout = style.layout, color = style.color, shape = style.shape, label = style.label, _style$tagline = style.tagline, tagline = void 0 === _style$tagline || _style$tagline;
-                logger.info("button_render_color_" + color), logger.info("button_render_shape_" + shape), 
-                logger.info("button_render_label_" + label), logger.info("button_render_layout_" + layout), 
-                logger.info("button_render_tagline_" + tagline.toString()), logger.track(((_logger$track = {})[sdk_constants_src.d.TRANSITION] = constants.h.BUTTON_LOAD, 
-                _logger$track[sdk_constants_src.d.FUNDING_LIST] = fundingSources.join(":"), _logger$track[sdk_constants_src.d.FUNDING_COUNT] = fundingSources.length.toString(), 
-                _logger$track[sdk_constants_src.d.PAGE_LOAD_TIME] = pageRenderTime ? pageRenderTime.toString() : "", 
-                _logger$track[constants.i.BUTTON_LAYOUT] = layout, _logger$track[constants.i.BUTTON_COLOR] = color, 
-                _logger$track[constants.i.BUTTON_SIZE] = "responsive", _logger$track[constants.i.BUTTON_SHAPE] = shape, 
-                _logger$track[constants.i.BUTTON_LABEL] = label, _logger$track[constants.i.BUTTON_WIDTH] = window.innerWidth, 
-                _logger$track[constants.i.BUTTON_TYPE] = constants.e.IFRAME, _logger$track[constants.i.BUTTON_TAGLINE_ENABLED] = tagline ? "1" : "0", 
-                _logger$track)), logger.flush();
-            }));
-        }({
-            style: style
-        }), setupCheckoutFlow = function(_ref) {
-            var Checkout = _ref.Checkout;
-            checkoutOpen = !1;
-            var _ref2 = [ Object(cross_domain_utils_src.b)(window), Object(cross_domain_utils_src.c)(window) ], parent = _ref2[0], top = _ref2[1], tasks = {};
-            return top && parent && parent !== top && (tasks.canRenderTo = Checkout.canRenderTo(top).then((function(result) {
-                canRenderTop = result;
-            }))), zalgo_promise_src.a.hash(tasks).then(src.j);
-        }({
-            Checkout: Checkout
-        }), setupPopupBridgeFlow = function(_ref) {
-            var getPopupBridge = _ref.getPopupBridge;
-            return zalgo_promise_src.a.try((function() {
-                if (getPopupBridge) return getPopupBridge().then((function(bridge) {
-                    popup_bridge_popupBridge = bridge;
-                }));
-            }));
-        }({
-            getPopupBridge: getPopupBridge
-        }), setupNativeFlow = function(_ref3) {
-            var clientID = _ref3.clientID, enableNativeCheckout = _ref3.enableNativeCheckout;
-            return zalgo_promise_src.a.try((function() {
-                if (enableNativeCheckout) return Object(api.e)(clientID);
-            })).then(src.j);
-        }({
+            partnerAttributionID: partnerAttributionID,
+            getParent: getParent
+          });
+        }
+
+        if (isCardFields) {
+          return initCardFields({
+            CardFields: CardFields,
+            Checkout: Checkout,
             clientID: clientID,
-            enableNativeCheckout: enableNativeCheckout
-        }), createFacilitatorAccessToken = Object(api.e)(clientID);
-        return zalgo_promise_src.a.hash({
-            initPromise: initPromise,
-            createFacilitatorAccessToken: createFacilitatorAccessToken,
-            setupButtonLogsTask: setupButtonLogsTask,
-            setupPrerenderTask: setupPrerenderTask,
-            setupRememberTask: setupRememberTask,
-            setupCheckoutFlow: setupCheckoutFlow,
-            setupNativeFlow: setupNativeFlow,
-            setupPopupBridgeFlow: setupPopupBridgeFlow
-        }).then(src.j);
-    }
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return setupButton;
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.r(__webpack_exports__);
-    var _button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
-    __webpack_require__.d(__webpack_exports__, "setupButton", (function() {
-        return _button__WEBPACK_IMPORTED_MODULE_0__.a;
-    }));
-    var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
-    for (var __WEBPACK_IMPORT_KEY__ in _props__WEBPACK_IMPORTED_MODULE_1__) [ "setupButton", "default" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
-        __webpack_require__.d(__webpack_exports__, key, (function() {
-            return _props__WEBPACK_IMPORTED_MODULE_1__[key];
-        }));
-    }(__WEBPACK_IMPORT_KEY__);
-} ]);
+            buttonSessionID: buttonSessionID,
+            fundingSource: fundingSource,
+            card: card,
+            buyerCountry: buyerCountry,
+            createOrder: createOrder,
+            onApprove: onApprove,
+            onCancel: onCancel,
+            onShippingChange: onShippingChange,
+            cspNonce: cspNonce,
+            locale: locale,
+            commit: commit,
+            onError: onError,
+            vault: vault,
+            clientAccessToken: clientAccessToken,
+            fundingEligibility: fundingEligibility,
+            createBillingAgreement: createBillingAgreement,
+            createSubscription: createSubscription
+          });
+        }
+
+        if (isPopupBridge) {
+          Object(dom["b" /* enableLoadingSpinner */])(button);
+          return initPopupBridge({
+            clientID: clientID,
+            popupBridge: popupBridge,
+            fundingSource: fundingSource,
+            createOrder: createOrder,
+            onApprove: onApprove,
+            onCancel: onCancel,
+            commit: commit
+          });
+        }
+
+        if (isNative) {
+          if (!firebaseConfig) {
+            throw new Error("Firebase config required");
+          }
+
+          Object(dom["b" /* enableLoadingSpinner */])(button);
+          return initNative({
+            Checkout: Checkout,
+            createOrder: createOrder,
+            onApprove: onApprove,
+            onCancel: onCancel,
+            onError: onError,
+            commit: commit,
+            fundingSource: fundingSource,
+            clientID: clientID,
+            getPageUrl: getPageUrl,
+            env: env,
+            stageHost: stageHost,
+            apiStageHost: apiStageHost,
+            win: win,
+            buttonSessionID: buttonSessionID,
+            card: card,
+            buyerCountry: buyerCountry,
+            onShippingChange: onShippingChange,
+            cspNonce: cspNonce,
+            locale: locale,
+            vault: vault,
+            firebaseConfig: firebaseConfig,
+            version: version,
+            clientAccessToken: clientAccessToken,
+            fundingEligibility: fundingEligibility,
+            createBillingAgreement: createBillingAgreement,
+            createSubscription: createSubscription
+          });
+        }
+
+        throw new Error("No valid flow found");
+      }(),
+          start = _ref3.start,
+          close = _ref3.close,
+          triggerError = _ref3.triggerError;
+
+      return validationPromise.then(function (valid) {
+        if (!valid) {
+          return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), win && win.close()]).then(src["j" /* noop */]);
+        }
+
+        createOrder().then(function (orderID) {
+          return updateButtonClientConfig({
+            orderID: orderID,
+            fundingSource: fundingSource,
+            isCardFields: isCardFields
+          });
+        });
+        return start().then(function () {
+          return createOrder();
+        }).then(function (orderID) {
+          return validateOrder(orderID, {
+            clientID: clientID,
+            merchantID: merchantID
+          });
+        }).catch(function (err) {
+          return zalgo_promise_src["a" /* ZalgoPromise */].all([triggerError(err), close()]);
+        });
+      });
+    }).finally(function () {
+      buttonProcessing = false;
+      Object(dom["a" /* disableLoadingSpinner */])(button);
+    });
+  };
+
+  Object(dom["c" /* getButtons */])().forEach(function (button) {
+    Object(lib["a" /* fixClickFocus */])(button);
+
+    var _getSelectedFunding = Object(dom["e" /* getSelectedFunding */])(button),
+        fundingSource = _getSelectedFunding.fundingSource,
+        card = _getSelectedFunding.card,
+        paymentMethodID = _getSelectedFunding.paymentMethodID;
+
+    Object(src["l" /* onClick */])(button, function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      var payPromise = pay({
+        button: button,
+        fundingSource: fundingSource,
+        card: card,
+        paymentMethodID: paymentMethodID
+      }); // $FlowFixMe
+
+      button.payPromise = payPromise;
+
+      if (personalization && personalization.tagline) {
+        Object(lib["e" /* sendBeacon */])(personalization.tagline.tracking.click);
+      }
+    });
+  });
+  var setupPrerenderTask = initPromise.then(function () {
+    return getPrerenderDetails().then(function (prerenderDetails) {
+      if (prerenderDetails) {
+        var win = prerenderDetails.win,
+            fundingSource = prerenderDetails.fundingSource,
+            card = prerenderDetails.card;
+        var button = document.querySelector("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "=" + fundingSource + "]");
+
+        if (!button) {
+          throw new Error("Can not find button element");
+        }
+
+        return pay({
+          button: button,
+          win: win,
+          fundingSource: fundingSource,
+          card: card
+        });
+      }
+    });
+  });
+  var setupRememberTask = setupRemember({
+    rememberFunding: rememberFunding,
+    fundingEligibility: fundingEligibility
+  });
+  var setupButtonLogsTask = setupButtonLogs({
+    style: style
+  });
+  var setupCheckoutFlow = setupCheckout({
+    Checkout: Checkout
+  });
+  var setupPopupBridgeFlow = setupPopupBridge({
+    getPopupBridge: getPopupBridge
+  });
+  var setupNativeFlow = setupNative({
+    clientID: clientID,
+    enableNativeCheckout: enableNativeCheckout,
+    vault: vault,
+    onShippingChange: window.xprops.onShippingChange,
+    merchantID: merchantID,
+    buyerCountry: buyerCountry,
+    currency: currency,
+    buttonSessionID: buttonSessionID
+  });
+  var createFacilitatorAccessToken = Object(api["e" /* createAccessToken */])(clientID);
+  return zalgo_promise_src["a" /* ZalgoPromise */].hash({
+    initPromise: initPromise,
+    createFacilitatorAccessToken: createFacilitatorAccessToken,
+    setupButtonLogsTask: setupButtonLogsTask,
+    setupPrerenderTask: setupPrerenderTask,
+    setupRememberTask: setupRememberTask,
+    setupCheckoutFlow: setupCheckoutFlow,
+    setupNativeFlow: setupNativeFlow,
+    setupPopupBridgeFlow: setupPopupBridgeFlow
+  }).then(src["j" /* noop */]);
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setupButton", function() { return _button__WEBPACK_IMPORTED_MODULE_0__["a"]; });
+
+/* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _props__WEBPACK_IMPORTED_MODULE_1__) if(["setupButton","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _props__WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+
+/***/ })
+/******/ ]);
 //# sourceMappingURL=smart-payment-buttons.js.map
