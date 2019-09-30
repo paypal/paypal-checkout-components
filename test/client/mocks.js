@@ -705,6 +705,12 @@ function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) :
         }
     };
 
+    window.firebase.database.INTERNAL = {
+        forceWebSockets: () => {
+            // pass
+        }
+    };
+
     const expect = () => {
         return {
             done: () => {

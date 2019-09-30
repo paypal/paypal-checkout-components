@@ -424,6 +424,8 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
 
             return window.firebase.auth().signInWithCustomToken(sessionToken).then(() => {
                 const database = window.firebase.database();
+                window.firebase.database.INTERNAL.forceWebSockets();
+
                 open = true;
     
                 for (const handler of onOpenHandlers) {
