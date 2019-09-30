@@ -3,45 +3,41 @@
 
 import { h, Fragment, type Node } from 'preact';
 
-/*
-window.xprops = {
-    choices: [
-        {
-            id:    'CHANGE_ACCOUNT',
-            label: 'Use a Different Account'
-        },
-        {
-            id:    'SELECT_FUNDING_SHIPPING',
-            label: 'Select Funding or Shipping'
-        },
-        {
-            id:    'DELETE_ACCOUNT',
-            label: 'Forget This Saved Account'
-        }
-    ],
-    onProps: () => {
-        // pass
-    },
-    onChoose: ({ id }) => {
-        console.warn('choose', id);
-    },
-    onBlur: () => {
-        console.warn('blur');
-    }
-};
-*/
+import { openPopup } from './popup';
+import { useAutoFocus } from './hooks';
 
 type MenuProps = {|
     cspNonce : string,
+    verticalOffset : number,
     choices : $ReadOnlyArray<{|
         id : string,
-        label : string
+        label : string,
+        popup? : {|
+            width : number,
+            height : number
+        |}
     |}>,
     onChoose : ({ id : string }) => void,
     onBlur : () => void
 |};
 
-export function Menu({ choices, onChoose, onBlur, cspNonce } : MenuProps) : Node {
+export function Menu({ choices, onChoose, onBlur, cspNonce, verticalOffset } : MenuProps) : Node {
+
+    const autoFocus = useAutoFocus();
+
+    const selectChoice = (choice) => {
+        let win;
+
+        if (choice.popup) {
+            win = openPopup({
+                width:  choice.popup.width,
+                height: choice.popup.height
+            });
+        }
+
+        return onChoose({ id: choice.id, win });
+    };
+
     return (
         <Fragment>
             <style nonce={ cspNonce }>
@@ -49,7 +45,7 @@ export function Menu({ choices, onChoose, onBlur, cspNonce } : MenuProps) : Node
                     .menu {
                         width: 100%;
                         z-index: 5000;
-                        background: rgba(255, 255, 255, 0.97);
+                        background: white;
                         border-radius: 3px;
                         font-family: Helvetica, sans-serif;
                         font-size: 14px;
@@ -57,6 +53,8 @@ export function Menu({ choices, onChoose, onBlur, cspNonce } : MenuProps) : Node
                         box-shadow: 0px 0px 3px 1px rgba(222,222,222,1);
                         outline-style: none;
                         user-select: none;
+                        text-align: center;
+                        margin-top: ${ verticalOffset }px;
                     }
                     
                     .menu-item {
@@ -72,14 +70,20 @@ export function Menu({ choices, onChoose, onBlur, cspNonce } : MenuProps) : Node
                     
                     .menu-item:hover {
                         background: #fcfcfc;
+                        text-decoration: underline;
                     }
                 `}
             </style>
 
-            <div class='menu' tabIndex='0' onBlur={ () => onBlur() }>
+            <div class='menu' tabIndex='0' onBlur={ onBlur } ref={ autoFocus }>
                 {
-                    choices.map(({ id, label }) =>
-                        <div class='menu-item' onClick={ () => onChoose({ id }) }>{ label }</div>)
+                    choices.map(choice => {
+                        return (
+                            <div class='menu-item' onClick={ () => selectChoice(choice) }>
+                                { choice.label }
+                            </div>
+                        );
+                    })
                 }
             </div>
         </Fragment>

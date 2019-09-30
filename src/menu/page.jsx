@@ -13,7 +13,15 @@ type PageProps = {|
 |};
 
 function Page({ cspNonce } : PageProps) : Node {
-    const { choices, onChoose, onBlur } = useXProps();
+    const { choices, onChoose, verticalOffset, hide } = useXProps();
+
+    if (!choices) {
+        return null;
+    }
+
+    const onBlur = () => {
+        hide();
+    };
 
     return (
         <Fragment>
@@ -29,14 +37,14 @@ function Page({ cspNonce } : PageProps) : Node {
                     }
 
                     body {
-                        padding: 5px;
+                        padding: 5px 20px;
                         display: inline-block;
                         width: 100%;
                     }
                 `}
             </style>
 
-            <Menu choices={ choices } onChoose={ onChoose } onBlur={ onBlur } cspNonce={ cspNonce } />
+            <Menu choices={ choices } onChoose={ onChoose } onBlur={ onBlur } cspNonce={ cspNonce } verticalOffset={ verticalOffset } />
         </Fragment>
     );
 }
