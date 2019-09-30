@@ -27,7 +27,7 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
                 $buyerCountry : String,
                 $currency : String,
                 $userAgent : String,
-                $buttonSessionID : string
+                $buttonSessionID : String
             ) {
                 mobileSDKEligibility(
                     vault: $vault,
