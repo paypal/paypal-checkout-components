@@ -13,7 +13,7 @@ import { type MenuProps } from './props';
 export function getMenuComponent() : ZoidComponent<MenuProps> {
     return inlineMemoize(getMenuComponent, () => {
         return create({
-            tag:    'paypal-button-menu',
+            tag:    'paypal-smart-menu',
             url:    getMenuUrl,
             domain: getPayPalDomainRegex(),
             
@@ -22,7 +22,16 @@ export function getMenuComponent() : ZoidComponent<MenuProps> {
                 height: true
             },
 
+            dimensions: {
+                width:  '100%',
+                height: '150px'
+            },
+
             logger: getLogger(),
+
+            prerenderTemplate: () => {
+                return null;
+            },
 
             attributes: {
                 iframe: {
