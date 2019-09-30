@@ -3,99 +3,21 @@
 
 import { base64encode } from 'belter/src';
 
-import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
-import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx';
+import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender, JsxHTMLNodeContainer } from '../../lib/jsx';
 import { fundingLogos, cardLogos } from '../../resources';
 import { validateButtonProps } from '../validate';
 import type { LocaleType, FundingSource, FundingSelection, FundingList, CheckoutCustomizationType } from '../../types';
 
+import { Tagline, Beacon, LoadingDots } from './miscComponent';
 import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
-function LoadingDots(delay) : JsxHTMLNode {
-    return (
-        <div>
-            <style innerHTML={ `
-                .loading-dots {
-                    color: rgba(0, 0, 0, 0.5);
-                    font-size: inherit;
-                    font-family: Arial, Helvetica, sans-serif;
-                    display: inline-block;
-                }
-
-                .loading-dot {
-                    opacity: 0;
-                    display: inline-block;
-                    animation-name: loading-dot;
-                    animation-duration: 1s;
-                    animation-fill-mode: forwards;
-                    animation-iteration-count: infinite;
-                    margin-right: 2px;
-                }
-
-                .loading-dot-0 {
-                    animation-delay: ${ delay.toFixed(1) }s;
-                }
-
-                .loading-dot-1 {
-                    animation-delay: ${ (delay * 2).toFixed(1) }s;
-                }
-
-                .loading-dot-2 {
-                    animation-delay: ${ (delay * 3).toFixed(1) }s;
-                }
-
-                @keyframes loading-dot {
-                    0% {
-                        opacity: 0;
-                    }
-                    20% {
-                        opacity: 1;
-                    }
-                    30% {
-                        opacity: 1;
-                    }
-                    40% {
-                        opacity: 0;
-                    }
-                    100% {
-                        opacity: 0;
-                    }
-                }
-            ` } />
-            <div class='loading-dots'>
-                {
-                    [ 0, 1, 2 ].map(i =>
-                        <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
-                }
-            </div>
-        </div>
-    );
-}
-
-function Tagline(tagColor : string, impression : ?string, text : string | JsxHTMLNode) : JsxHTMLNode {
-    return (
-        <div>
-            <style innerHTML={ `
-            .tracking-beacon {
-                visibility: hidden;
-                position: absolute;
-                height: 1px;
-                width: 1px;
-            }
-        ` } />
-            <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
-                <span>{ text }</span>
-                {
-                    impression  && <img class='tracking-beacon' src={ impression } />
-                }
-            </div>
-        </div>
-    );
-}
+const allowedPersonalizationLabels = [ BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY ];
+const delay = 0.2;
 
 function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
     return [
@@ -189,6 +111,52 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
     return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, size, layout }) }</div>;
 }
 
+// this function performs the first button render for eligible population
+function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : $Values<typeof BUTTON_LOGO_COLOR>, branding : boolean, label : string }) : JsxHTMLNode {
+    if (!logoColor) {
+        throw new Error(`Can not determine logo without logo color`);
+    }
+    if (!color) {
+        throw new Error(`Can not determine button without color`);
+    }
+    
+    const loadingDotsElement = (<span class={ `${ CLASS.TEXT }` }>{ LoadingDots(delay) }</span>);
+    
+    // this is specifically for the buynow button when the style.branding = false
+    if (!branding && label === BUTTON_LABEL.BUYNOW) {
+        return new JsxHTMLNodeContainer([ loadingDotsElement ]);
+    }
+    
+    const ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
+    const ppLogo =  typeof ppFundingLogo === 'function' ? ppFundingLogo({ logoColor }) : ppFundingLogo[logoColor];
+    const paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
+    const paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({ logoColor }) : paypalFundingLogo[logoColor];
+    const nodes = [];
+    nodes[0] = (
+        <img
+            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PP  } ${ CLASS.LOGO }-${ color }` }
+            src={ `data:image/svg+xml;base64,${ base64encode(ppLogo.toString()) }` }
+            alt={ BUTTON_LOGO.PP }
+        />);
+    
+    // for an intentional white space
+    nodes[1] = ' ';
+    
+    nodes[2] = (
+        <img
+            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } ${ CLASS.LOGO }-${ color }` }
+            src={ `data:image/svg+xml;base64,${ base64encode(paypalLogo.toString()) }` }
+            alt={ BUTTON_LOGO.PAYPAL }
+        />);
+    
+    // for an intentional white space
+    nodes[3] = ' ';
+    
+    nodes[4] = loadingDotsElement;
+    
+    return new JsxHTMLNodeContainer(nodes);
+}
+
 function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size } :
     { layout? : $Values<typeof BUTTON_LAYOUT>, size? : $Values<typeof BUTTON_SIZE>, label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : $ReadOnlyArray<string>, dynamicContent? : Object }) : JsxHTMLNode {
 
@@ -267,8 +235,8 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
     });
 }
 
-function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
-    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, installmentperiod : number }) : JsxHTMLNode {
+function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod, checkoutCustomization } :
+    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, installmentperiod : number }) : JsxHTMLNode {
 
     const logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -276,19 +244,29 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
 
     // If the determined button label matches up with the label passed by the merchant, use
     // the label template, otherwise use the logo template.
-    let contentText = (buttonLabel === label)
-        ? getButtonConfig(label, 'label')
-        : getButtonConfig(label, 'logoLabel');
-
+    let contentText;
+    let impression;
+    const morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+    if (buttonLabel === label) {
+        // checks for button label: pay, buynow, checkout, paypal, installment
+        if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText) {
+            contentText = morsText;
+            impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
+        } else {
+            contentText = getButtonConfig(label, 'label');
+        }
+    } else {
+        contentText = getButtonConfig(label, 'logoLabel');
+    }
 
     // Add all the variables in dynamic content required to be plugged in content
     const dynamicContent = {
         installmentperiod,
         locale
     };
-
-    contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
-    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
+    
+    contentText = (typeof contentText === 'function') ? contentText(dynamicContent) : contentText;
+    contentText = (__WEB__ && buttonLabel === label && allowedPersonalizationLabels.indexOf(label) !== -1) ? renderPPPayPalLoadingDots({ color, logoColor, branding, label }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
@@ -306,13 +284,14 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             tabindex={ hasTabIndex && 0 }>
             
             { contentText }
+            {
+                impression && Beacon(impression)
+            }
         </div>
     );
 }
 
 function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization, layout } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, layout : $Values<typeof BUTTON_LAYOUT> }) : ?JsxHTMLNode {
-    const delay = 0.2;
-    
     if (!tagline) {
         return;
     }
@@ -436,7 +415,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
             shape,
             cards,
             installmentperiod,
-            size
+            size,
+            checkoutCustomization
         }));
 
     const taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization, layout });

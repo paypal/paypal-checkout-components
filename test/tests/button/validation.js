@@ -807,6 +807,13 @@ const buttonConfigs = [
 
             {
                 layout: `vertical`,
+                label:  `oxxo`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
                 label:  `card`,
                 valid:  false
             }
@@ -1548,7 +1555,7 @@ const buttonConfigs = [
             {
                 desc: `opt-out of venmo`,
 
-                valid: false,
+                valid: true,
 
                 conf: {
                     payment:     noop,

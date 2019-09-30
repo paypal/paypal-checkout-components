@@ -142,7 +142,7 @@ export const Button : Component<ButtonOptions> = create({
 
     tag:  'paypal-button',
     name: 'ppbutton',
-    
+
     buildUrl(props) : string {
         const env = props.env || config.env;
         const url = config.buttonUrls[env];
@@ -529,7 +529,7 @@ export const Button : Component<ButtonOptions> = create({
                     }
                 }
 
-                const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.EPS, FUNDING.PAYU, FUNDING.VERKKOPANKKI, FUNDING.BLIK, FUNDING.TRUSTLY, FUNDING.MAXIMA, FUNDING.BOLETO ];
+                const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.EPS, FUNDING.PAYU, FUNDING.VERKKOPANKKI, FUNDING.BLIK, FUNDING.TRUSTLY, FUNDING.MAXIMA, FUNDING.BOLETO, FUNDING.OXXO ];
 
                 const apmFunding = APM_FUNDING.filter(source => (isApmEligible(source, props)));
 
@@ -993,8 +993,21 @@ export const Button : Component<ButtonOptions> = create({
                     shape:        BUTTON_SHAPE.PILL,
                     size:         BUTTON_SIZE.SMALL,
                     label:        BUTTON_LABEL.CHECKOUT,
-                    fundingicons: false
+                    fundingicons: false,
+                    layout:       BUTTON_LAYOUT.HORIZONTAL
                 };
+            },
+            
+            decorate(style : Object) : Object {
+                const { label, layout = BUTTON_LAYOUT.HORIZONTAL } = style;
+                if (!label && layout === BUTTON_LAYOUT.HORIZONTAL) {
+                    style.label = BUTTON_LABEL.CHECKOUT;
+                    return style;
+                } else if (!label && layout === BUTTON_LAYOUT.VERTICAL) {
+                    style.label = BUTTON_LABEL.PAYPAL;
+                    return style;
+                }
+                return style;
             },
 
             validate(style = {}, props) {

@@ -296,7 +296,7 @@ for (const color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.CREDIT, FUNDING.CARD, FUNDING.BOLETO ]
+                allowed: [ FUNDING.CREDIT, FUNDING.BOLETO, FUNDING.CARD ]
             }
         }
     });
@@ -432,7 +432,7 @@ for (const color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.P24, FUNDING.BLIK ]
+                allowed: [ FUNDING.BLIK, FUNDING.P24 ]
             }
         }
     });
@@ -463,6 +463,21 @@ for (const color of getButtonConfig('paypal', 'colors')) {
             },
             funding: {
                 allowed: [ FUNDING.MAXIMA ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'en_MX',
+            commit: true,
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.OXXO ]
             }
         }
     });

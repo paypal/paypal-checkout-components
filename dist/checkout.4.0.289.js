@@ -1393,7 +1393,7 @@ function proxyMethod(name, win, originalMethod) {
 var dom = __webpack_require__(24);
 
 // EXTERNAL MODULE: ./src/lib/security.js
-var security = __webpack_require__(26);
+var security = __webpack_require__(25);
 
 // CONCATENATED MODULE: ./src/lib/logger.js
 
@@ -2012,9 +2012,7 @@ function isPayPalObjects() {
   return Boolean(getCurrentScript());
 }
 function getScriptVersion() {
-  if ( true && isPayPalObjects()) {
-    return  false ? undefined : "4";
-  } else {
+  if (false) {} else {
     return  false ? undefined : "4.0.289";
   }
 }
@@ -2396,7 +2394,7 @@ function getDefaultEnv() {
 
 var config = {
   locales: constants["z" /* LOCALE */],
-  scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.js",
+  scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.4.0.289.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
   version: "4.0.289",
@@ -3869,7 +3867,7 @@ var zalgo_promise_src = __webpack_require__(2);
 var cross_domain_safe_weakmap_src = __webpack_require__(17);
 
 // EXTERNAL MODULE: ./node_modules/zoid/src/error.js
-var error = __webpack_require__(25);
+var error = __webpack_require__(26);
 
 // CONCATENATED MODULE: ./node_modules/zoid/src/lib/util.js
 /* eslint max-lines: off */
@@ -14855,7 +14853,7 @@ var cardLogos = (_cardLogos = {}, _cardLogos[constants["o" /* CARD */].VISA] = v
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
 /* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
-/* harmony import */ var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26);
+/* harmony import */ var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
 
 
 
@@ -15454,7 +15452,7 @@ function getPosition(_ref2) {
   };
 }
 // EXTERNAL MODULE: ./node_modules/zoid/src/error.js
-var src_error = __webpack_require__(25);
+var src_error = __webpack_require__(26);
 
 // CONCATENATED MODULE: ./node_modules/zoid/src/component/child/props.js
 
@@ -20286,27 +20284,6 @@ function htmlEncode(html) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return PopupOpenError; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IntegrationError; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return RenderError; });
-function PopupOpenError(message) {
-  this.message = message;
-}
-PopupOpenError.prototype = Object.create(Error.prototype);
-function IntegrationError(message) {
-  this.message = message;
-}
-IntegrationError.prototype = Object.create(Error.prototype);
-function RenderError(message) {
-  this.message = message;
-}
-RenderError.prototype = Object.create(Error.prototype);
-
-/***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return allowIframe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isPayPalDomain; });
 /* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
@@ -20339,6 +20316,27 @@ function allowIframe() {
 function isPayPalDomain() {
   return Boolean((window.location.protocol + "//" + window.location.host).match(_config__WEBPACK_IMPORTED_MODULE_1__[/* config */ "a"].paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
 }
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return PopupOpenError; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IntegrationError; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return RenderError; });
+function PopupOpenError(message) {
+  this.message = message;
+}
+PopupOpenError.prototype = Object.create(Error.prototype);
+function IntegrationError(message) {
+  this.message = message;
+}
+IntegrationError.prototype = Object.create(Error.prototype);
+function RenderError(message) {
+  this.message = message;
+}
+RenderError.prototype = Object.create(Error.prototype);
 
 /***/ }),
 /* 27 */
@@ -25713,13 +25711,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
 /* harmony import */ var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
 /* harmony import */ var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-/* harmony import */ var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26);
+/* harmony import */ var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
 
 
 
 
 
-if (false) {}
+if ( true && !Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__[/* isPayPalDomain */ "b"])() && !false) {
+  throw new Error("Do not integrate with versioned script url");
+}
 
 if (window.paypal && window.paypal.version === "4.0.289") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
@@ -38018,4 +38018,4 @@ Object(lib["K" /* onDocumentReady */])(function () {
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=checkout.js.map
+//# sourceMappingURL=checkout.4.0.289.js.map

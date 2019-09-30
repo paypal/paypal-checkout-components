@@ -20,7 +20,8 @@ export const FUNDING = {
     BLIK:         'blik',
     TRUSTLY:      'trustly',
     MAXIMA:       'maxima',
-    BOLETO:       'boleto'
+    BOLETO:       'boleto',
+    OXXO:         'oxxo'
 };
 
 export const CARD = {

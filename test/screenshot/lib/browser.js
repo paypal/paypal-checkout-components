@@ -34,7 +34,7 @@ export async function openPage(scriptURL : string) : Promise<Object> {
 
     await page.goto(`file://${ await createTempFile('puppeteer-blank.html') }`);
 
-    await page.addScriptTag(scriptURL);
+    await page.addScriptTag({ url: scriptURL });
 
     return { browser, page };
 }

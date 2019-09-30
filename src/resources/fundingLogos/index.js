@@ -15,6 +15,7 @@ import { blikLogo }         from './blik';
 import { trustlyLogo }      from './trustly';
 import { maximaLogo }       from './maxima';
 import { boletoLogo }       from './boleto';
+import { oxxoLogo }         from './oxxo';
 import pp_white     from './pp_white.svg';
 import pp_blue      from './pp_blue.svg';
 import pp_black     from './pp_black.svg';
@@ -75,6 +76,8 @@ export const fundingLogos = {
 
     [ BUTTON_LOGO.MAXIMA ]: maximaLogo,
 
-    [ BUTTON_LOGO.BOLETO ]: boletoLogo
+    [ BUTTON_LOGO.BOLETO ]: boletoLogo,
+
+    [ BUTTON_LOGO.OXXO ]: oxxoLogo
 
 };

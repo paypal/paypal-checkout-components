@@ -1,6 +1,6 @@
 {
   "name": "paypal-checkout",
-  "version": "4.0.286",
+  "version": "4.0.289",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -77,7 +77,7 @@
     "mocha": "^3.5.3",
     "pixelmatch": "^4.0.2",
     "pngjs": "^3.3.0",
-    "puppeteer": "^0.11.0",
+    "puppeteer": "^1",
     "serve": "^10.1.1",
     "sync-browser-mocks": "^1.0.43",
     "webpack-dev-server": "^3"
