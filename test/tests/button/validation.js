@@ -1555,7 +1555,7 @@ const buttonConfigs = [
             {
                 desc: `opt-out of venmo`,
 
-                valid: false,
+                valid: true,
 
                 conf: {
                     payment:     noop,
