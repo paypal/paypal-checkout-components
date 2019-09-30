@@ -126,11 +126,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       true,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     },
 
     [ FUNDING.ELV ]: {
@@ -152,11 +148,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       true,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     },
 
     [ FUNDING.GIROPAY ]: {
@@ -166,11 +158,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       true,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     },
 
     [ FUNDING.SOFORT ]: {
@@ -185,11 +173,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       true,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     },
 
     [ FUNDING.EPS ]: {
@@ -199,11 +183,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       true,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     },
 
     [ FUNDING.MYBANK ]: {
@@ -213,11 +193,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       true,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     },
     [ FUNDING.P24 ]: {
         allowedCountries: [
@@ -226,11 +202,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       true,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     },
     [ FUNDING.PAYU ]: {
         allowedCountries: [
@@ -276,11 +248,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       true,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     },
     [ FUNDING.MAXIMA ]: {
         allowedCountries: [
@@ -314,11 +282,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal:     false,
         allowVertical:       false,
-<<<<<<< HEAD
-        requireCommitAsTrue:    true
-=======
         requireCommitAsTrue: true
->>>>>>> upstream/v4
     }
 };
 
