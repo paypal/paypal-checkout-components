@@ -248,6 +248,26 @@ export function enableVault({ orderID, clientAccessToken } : { orderID : string,
     });
 }
 
+export function deleteVault({ paymentMethodID, clientAccessToken } : { paymentMethodID : string, clientAccessToken : string }) : ZalgoPromise<mixed> {
+    return callGraphQL({
+        query: `
+            mutation DeleteVault(
+                $paymentMethodID : String!
+            ) {
+                deleteVault(
+                    paymentMethodID: $paymentMethodID
+                )
+            }
+        `,
+        variables: {
+            paymentMethodID
+        },
+        headers: {
+            [ HEADERS.ACCESS_TOKEN ]: clientAccessToken
+        }
+    });
+}
+
 type ClientConfig = {|
     orderID : string,
     fundingSource : $Values<typeof FUNDING>,
