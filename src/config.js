@@ -22,8 +22,7 @@ export const EXPERIENCE_URI = {
     NATIVE_CHECKOUT: '/smart/checkout/native'
 };
 
-export const NATIVE_WEBSOCKET_URL = 'wss://127.0.0.1/paypal/native';
-export const HTTP_SOCKET_URL = 'https://www.paypal.com/smart/api/messages';
+export const NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
 
 export const CLIENT_ID_PAYEE_NO_MATCH = [
     'Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT',

@@ -7,8 +7,8 @@ import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-doma
 
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
 import type { ProxyWindow, LocaleType, FundingEligibilityType, CheckoutFlowType } from '../types';
-import { EXPERIENCE_URI } from '../config';
-import { promiseNoop } from '../lib';
+import { EXPERIENCE_URI, NATIVE_DETECTION_URL } from '../config';
+import { promiseNoop, redirectTop } from '../lib';
 import { createAccessToken, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { CONTEXT } from '../constants';
 
@@ -91,10 +91,19 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     });
 });
 
+let appInstalled = false;
+
 export function setupNative({ clientID, enableNativeCheckout } : { clientID : string, enableNativeCheckout : boolean }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         if (enableNativeCheckout) {
-            return createAccessToken(clientID);
+            createAccessToken(clientID);
+
+            // eslint-disable-next-line compat/compat
+            fetch(NATIVE_DETECTION_URL).then(res => {
+                if (res.status === 200) {
+                    appInstalled = true;
+                }
+            }, noop);
         }
     }).then(noop);
 }
@@ -217,13 +226,16 @@ export function initNative(props : NativeProps) : NativeInstance {
                 return onError(new Error(message));
             });
 
-            return {
-                close:    () => socket.send(MESSAGE.CLOSE),
-                setProps: () => socket.send(MESSAGE.SET_PROPS, getSDKProps())
-            };
+            close = () => socket.send(MESSAGE.CLOSE);
         };
 
         const nativeUrl = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
+
+        if (appInstalled) {
+            redirectTop(nativeUrl);
+            return openCheckoutSocket();
+        }
+
         const win = popup(nativeUrl);
 
         return orderPromise.then(() => {
@@ -232,8 +244,7 @@ export function initNative(props : NativeProps) : NativeInstance {
             }
 
             win.close();
-            const { close: closeNative } = openCheckoutSocket();
-            close = closeNative;
+            return openCheckoutSocket();
         });
     });
 
