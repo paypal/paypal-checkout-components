@@ -668,7 +668,7 @@ export function onElementResize(el : HTMLElement) : ZalgoPromise<void> {
         const interval = setInterval(() => {
             if (el.offsetWidth !== originalWidth || el.offsetHeight !== originalHeight) {
                 clearInterval(interval);
-                resolve();
+                setTimeout(resolve, 50);
             }
         }, 50);
     });
