@@ -76,5 +76,17 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     },
     zimpler: {
         eligible: false
+    },
+    payu: {
+        eligible: false
+    },
+    verkkopankki: {
+        eligible: false
+    },
+    blik: {
+        eligible: false
+    },
+    trustly: {
+        eligible: false
     }
 };

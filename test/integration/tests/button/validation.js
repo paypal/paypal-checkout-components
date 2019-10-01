@@ -630,7 +630,36 @@ const buttonConfigs = [
                 layout: `vertical`,
                 label:  `card`,
                 valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `payu`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `verkkopankki`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `blik`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `trustly`,
+                commit: true,
+                valid:  false
             }
+
 
         // $FlowFixMe
         ].map(({ layout, label, tagline, fundingicons, size, valid, commit }) => ({

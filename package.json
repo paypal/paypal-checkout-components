@@ -79,7 +79,7 @@
     "@paypal/funding-components": "^1.0.7",
     "@paypal/sdk-client": "^4.0.0",
     "@paypal/sdk-constants": "^1.0.1",
-    "@paypal/sdk-logos": "^1.0.1",
+    "@paypal/sdk-logos": "^1.0.17",
     "belter": "^1.0.2",
     "cross-domain-utils": "^2.0.1",
     "jsx-pragmatic": "^2",
