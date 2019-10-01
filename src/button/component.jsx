@@ -108,7 +108,7 @@ function isApmEligible(source, props) : boolean {
 
 let creditThrottle;
 
-const smartThrottle = getThrottle('smart_button_uri', 1);
+const smartThrottle = getThrottle('smart_button_uri', 5);
 
 type ButtonOptions = {|
     style : {|
@@ -591,6 +591,10 @@ export const Button : Component<ButtonOptions> = create({
                     pptm.listenForButtonRender();
                     pptm.reloadPptmScript(this.props.client[this.props.env]);
 
+                    smartThrottle.logStart({
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                    });
+
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER,
@@ -857,7 +861,7 @@ export const Button : Component<ButtonOptions> = create({
             decorate(original) : Function {
                 return function decorateOnClick(data : ?{ fundingSource : string, card? : string }) : void {
 
-                    smartThrottle.logStart({
+                    smartThrottle.log('click', {
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                     });
                     info('button_click');

@@ -34,13 +34,13 @@ export function getThrottle(name : string, sample : number) : Throttle {
 
     const uid = getStorageID();
 
-    const throttle = getThrottlePercentile(name);
+    const percentile = getThrottlePercentile(name);
 
     let group;
 
-    if (throttle < sample) {
+    if (percentile < sample) {
         group = THROTTLE_GROUP.TEST;
-    } else if ((sample >= 50) || ((sample <= throttle) && (throttle < (sample * 2)))) {
+    } else if ((sample >= 50) || ((sample <= percentile) && (percentile < (sample * 2)))) {
         group = THROTTLE_GROUP.CONTROL;
     } else {
         group = THROTTLE_GROUP.THROTTLE;
