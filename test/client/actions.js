@@ -3,9 +3,7 @@
 
 import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
-
-import { setupButton } from '../../src';
+import { FUNDING, INTENT, COUNTRY } from '@paypal/sdk-constants/src';
 
 import {
     mockAsyncProp,
@@ -23,7 +21,8 @@ import {
     getGetSubscriptionApiMock,
     getActivateSubscriptionIdApiMock,
     getReviseSubscriptionIdApiMock,
-    getGraphQLApiMock
+    getGraphQLApiMock,
+    mockSetupButton
 } from './mocks';
 
 describe('actions cases', () => {
@@ -86,7 +85,13 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({
+                merchantID:                    [ 'XYZ12345' ],
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -142,7 +147,13 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({
+                merchantID:                    [ 'XYZ12345' ],
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -198,7 +209,13 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({
+                merchantID:                    [ 'XYZ12345' ],
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -273,7 +290,13 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({
+                merchantID:                    [ 'XYZ12345' ],
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
 
             await clickButton(FUNDING.PAYPAL);
 
@@ -325,7 +348,13 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({
+                merchantID:                    [ 'XYZ12345' ],
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -351,7 +380,13 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({
+                merchantID:                    [ 'XYZ12345' ],
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -424,7 +459,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
             subscriptionIdToCartIdApiMock.expectCalls();
@@ -495,7 +530,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
             subscriptionIdToCartIdApiMock.expectCalls();

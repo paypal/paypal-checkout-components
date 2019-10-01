@@ -6,7 +6,9 @@ import { mockWebSocket, patchWebSocket } from 'sync-browser-mocks/src/webSocket'
 import { ZalgoPromise } from 'zalgo-promise';
 import { values, destroyElement, noop, uniqueID } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
-import { INTENT, CURRENCY, CARD, PLATFORM } from '@paypal/sdk-constants/src';
+import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY } from '@paypal/sdk-constants/src';
+
+import { setupButton } from '../../src';
 
 import { triggerKeyPress } from './util';
 
@@ -113,7 +115,6 @@ export function setupMocks() {
             lang:    'en'
         },
         onInit:    mockAsyncProp(noop),
-        onClick:   mockAsyncProp(noop),
         onApprove: mockAsyncProp(noop),
         onCancel:  mockAsyncProp(noop),
         onError:   mockAsyncProp((err) => {
@@ -423,6 +424,14 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                                 }
                             }
                         }
+                    }
+                };
+            }
+
+            if (data.query.includes('query NativeEligibility')) {
+                return {
+                    data: {
+                        eligible: false
                     }
                 };
             }
@@ -947,4 +956,15 @@ export function mockFirebaseScripts() : { done : () => void } {
             mockfirebaseDatabase.done();
         }
     };
+}
+
+export async function mockSetupButton(overrides? : Object = {}) : ZalgoPromise<void> {
+    await setupButton({
+        merchantID:                    [ 'XYZ12345' ],
+        fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+        personalization:               {},
+        buyerCountry:                  COUNTRY.US,
+        isCardFieldsExperimentEnabled: false,
+        ...overrides
+    });
 }

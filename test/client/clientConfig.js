@@ -4,9 +4,7 @@
 import { wrapPromise } from 'belter/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 
-import { setupButton } from '../../src';
-
-import { mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
 
 describe('client config cases', () => {
 
@@ -51,7 +49,7 @@ describe('client config cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -111,7 +109,7 @@ describe('client config cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.CARD, CARD.VISA);
         });
@@ -155,7 +153,7 @@ describe('client config cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(fundingSource);
         });
@@ -198,7 +196,7 @@ describe('client config cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(fundingSource);
         });
@@ -241,7 +239,7 @@ describe('client config cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(fundingSource);
         });

@@ -4,9 +4,7 @@
 import { wrapPromise } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { setupButton } from '../../src';
-
-import { mockAsyncProp } from './mocks';
+import { mockSetupButton, mockAsyncProp } from './mocks';
 
 describe('eligibility cases', () => {
 
@@ -19,7 +17,7 @@ describe('eligibility cases', () => {
                 }
             }));
 
-            await setupButton({
+            await mockSetupButton({
                 merchantID:         [ 'XYZ12345' ],
                 fundingEligibility: {
                     [ FUNDING.VENMO ]: {

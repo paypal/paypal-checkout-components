@@ -2,14 +2,21 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups } from 'belter/src';
-import { FUNDING, CARD, COUNTRY, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
+import { FUNDING, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { enableVault, createAccessToken } from '../api';
 import { CONTEXT, TARGET_ELEMENT } from '../constants';
 import { unresolvedPromise } from '../lib';
-import type { ProxyWindow, LocaleType, FundingEligibilityType, CheckoutFlowType } from '../types';
-import type { CreateOrder, OnApprove, OnCancel, OnShippingChange, CreateBillingAgreement, CreateSubscription } from '../button/props';
+import type { FundingEligibilityType, ProxyWindow } from '../types';
+import type { Props, Components, ServiceData, Config, CreateBillingAgreement, CreateSubscription } from '../button/props';
+
+import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
+
+export const CHECKOUT_POPUP_DIMENSIONS = {
+    WIDTH:  500,
+    HEIGHT: 590
+};
 
 let checkoutOpen = false;
 let canRenderTop = false;
@@ -23,7 +30,9 @@ function getRenderWindow() : Object {
     }
 }
 
-export function setupCheckout({ Checkout } : { Checkout : CheckoutFlowType }) : ZalgoPromise<void> {
+function setupCheckout({ components } : { components : Components }) : ZalgoPromise<void> {
+    const { Checkout } = components;
+
     checkoutOpen = false;
 
     const [ parent, top ] = [ getParent(window), getTop(window) ];
@@ -37,6 +46,10 @@ export function setupCheckout({ Checkout } : { Checkout : CheckoutFlowType }) : 
     }
 
     return ZalgoPromise.hash(tasks).then(noop);
+}
+
+function isCheckoutEligible() : boolean {
+    return true;
 }
 
 type VaultAutoSetupEligibleProps = {|
@@ -100,53 +113,38 @@ function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgre
     });
 }
 
-export function getDefaultContext() : $Values<typeof CONTEXT> {
-    return supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME;
+function getContext({ win, isClick } : { win : ?(CrossDomainWindowType | ProxyWindow), isClick : ?boolean }) : $Values<typeof CONTEXT> {
+    if (win) {
+        return CONTEXT.POPUP;
+    }
+
+    if (isClick && supportsPopups()) {
+        return CONTEXT.POPUP;
+    }
+
+    return CONTEXT.IFRAME;
 }
 
-type CheckoutProps= {|
-    Checkout : CheckoutFlowType,
-    clientID : string,
-    win? : ?(ProxyWindow | CrossDomainWindowType),
-    buttonSessionID : string,
-    context? : $Values<typeof CONTEXT>,
-    fundingSource : $Values<typeof FUNDING>,
-    card : ?$Values<typeof CARD>,
-    buyerCountry : $Values<typeof COUNTRY>,
-    createOrder : CreateOrder,
-    createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?CreateSubscription,
-    onApprove : OnApprove,
-    onCancel : OnCancel,
-    onShippingChange : ?OnShippingChange,
-    cspNonce : ?string,
-    locale : LocaleType,
-    commit : boolean,
-    onError : (mixed) => ZalgoPromise<void>,
-    vault : boolean,
-    clientAccessToken : ?string,
-    fundingEligibility : FundingEligibilityType
-|};
-
-type CheckoutInstance = {|
-    start : () => ZalgoPromise<void>,
-    close : () => ZalgoPromise<void>,
-    triggerError : (mixed) => ZalgoPromise<void>
-|};
-
-export function initCheckout(props : CheckoutProps) : CheckoutInstance {
-    const { Checkout, clientID, win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-        onShippingChange, cspNonce, context, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
-        createBillingAgreement, createSubscription } = props;
-
+function initCheckout({ props, components, serviceData, payment, config } : { props : Props, components : Components, serviceData : ServiceData, payment : Payment, config : Config }) : PaymentFlowInstance {
     if (checkoutOpen) {
         throw new Error(`Checkout already rendered`);
     }
 
+    const { Checkout } = components;
+    const { clientID, buttonSessionID, createOrder, onApprove, onCancel,
+        onShippingChange, locale, commit, onError, vault, clientAccessToken,
+        createBillingAgreement, createSubscription } = props;
+    const { button, win, fundingSource, card, isClick } = payment;
+    const { fundingEligibility, buyerCountry } = serviceData;
+    const { cspNonce } = config;
+
+    const context = getContext({ win, isClick });
+
     let approved = false;
 
     const restart = memoize(() : ZalgoPromise<void> =>
-        initCheckout({ ...props, context: CONTEXT.IFRAME }).start().finally(unresolvedPromise));
+        initCheckout({ props, components, serviceData, config, payment: { button, win, fundingSource, card } })
+            .start().finally(unresolvedPromise));
 
     const onClose = () => {
         checkoutOpen = false;
@@ -221,3 +219,10 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
 
     return { start, close, triggerError };
 }
+
+export const checkout : PaymentFlow = {
+    setup:      setupCheckout,
+    isEligible: isCheckoutEligible,
+    init:       initCheckout,
+    popup:      true
+};

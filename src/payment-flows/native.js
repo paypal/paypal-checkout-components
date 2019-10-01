@@ -2,17 +2,16 @@
 
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { ENV, PLATFORM, FUNDING, CARD, COUNTRY, CURRENCY } from '@paypal/sdk-constants/src';
+import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
 
-import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
-import type { ProxyWindow, LocaleType, FundingEligibilityType, CheckoutFlowType } from '../types';
+import type { Props, Components, Config, ServiceData } from '../button/props';
 import { EXPERIENCE_URI, NATIVE_DETECTION_URL } from '../config';
 import { promiseNoop, redirectTop } from '../lib';
 import { createAccessToken, firebaseSocket, type MessageSocket, type FirebaseConfig, getNativeEligibility } from '../api';
-import { CONTEXT } from '../constants';
 
-import { initCheckout } from './checkout';
+import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
+import { checkout } from './checkout';
 
 const SOURCE_APP = 'paypal_smart_payment_buttons';
 const TARGET_APP = 'paypal_native_checkout_sdk';
@@ -45,19 +44,11 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
 let nativeInstalled = false;
 let nativeEligible = false;
 
-type SetupNativeOptions = {|
-    clientID : string,
-    enableNativeCheckout : boolean,
-    vault : boolean,
-    onShippingChange : OnShippingChange,
-    merchantID : $ReadOnlyArray<string>,
-    buyerCountry : $Values<typeof COUNTRY>,
-    currency : $Values<typeof CURRENCY>,
-    buttonSessionID : string
-|};
-
-export function setupNative({ clientID, enableNativeCheckout, vault, onShippingChange, merchantID, buyerCountry, currency, buttonSessionID } : SetupNativeOptions) : ZalgoPromise<void> {
+function setupNative({ props, serviceData } : { props : Props, serviceData : ServiceData }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
+        const { clientID, enableNativeCheckout, vault, onShippingChange, currency, buttonSessionID } = props;
+        const { merchantID, buyerCountry } = serviceData;
+
         if (!enableNativeCheckout) {
             return;
         }
@@ -84,19 +75,13 @@ export function setupNative({ clientID, enableNativeCheckout, vault, onShippingC
     }).then(noop);
 }
 
-type NativeEligibleProps = {|
-    win : ?ProxyWindow,
-    platform : $Values<typeof PLATFORM>,
-    fundingSource : $Values<typeof FUNDING>,
-    onShippingChange : ?OnShippingChange,
-    createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?CreateSubscription,
-    enableNativeCheckout : ?boolean,
-    firebaseConfig : ?FirebaseConfig
-|};
+function isNativeEligible({ props, payment, config } : { props : Props, payment : Payment, config : Config }) : boolean {
 
-export function isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement,
-    createSubscription, enableNativeCheckout, firebaseConfig } : NativeEligibleProps) : boolean {
+    const { platform, onShippingChange, createBillingAgreement,
+        createSubscription, enableNativeCheckout } = props;
+    const { firebase: firebaseConfig } = config;
+
+    const { win, fundingSource } = payment;
 
     if (win) {
         return false;
@@ -133,43 +118,6 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
     return nativeEligible;
 }
 
-type NativeProps = {|
-    Checkout : CheckoutFlowType,
-    createOrder : CreateOrder,
-    onApprove : OnApprove,
-    onCancel : OnCancel,
-    onError : OnError,
-    commit : boolean,
-    clientID : string,
-    fundingSource : $Values<typeof FUNDING>,
-    getPageUrl : GetPageURL,
-    env : $Values<typeof ENV>,
-    stageHost : ?string,
-    apiStageHost : ?string,
-    win? : ?ProxyWindow,
-    buttonSessionID : string,
-    context? : $Values<typeof CONTEXT>,
-    card : ?$Values<typeof CARD>,
-    buyerCountry : $Values<typeof COUNTRY>,
-    createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?CreateSubscription,
-    onShippingChange : ?OnShippingChange,
-    cspNonce : ?string,
-    locale : LocaleType,
-    onError : (mixed) => ZalgoPromise<void>,
-    vault : boolean,
-    clientAccessToken : ?string,
-    fundingEligibility : FundingEligibilityType,
-    firebaseConfig : FirebaseConfig,
-    version : string
-|};
-
-type NativeInstance = {|
-    start : () => ZalgoPromise<void>,
-    close : () => ZalgoPromise<void>,
-    triggerError : (mixed) => ZalgoPromise<void>
-|};
-
 type NativeSDKProps = {|
     orderID : string,
     facilitatorAccessToken : string,
@@ -182,10 +130,10 @@ type NativeSDKProps = {|
     apiStageHost : ?string
 |};
 
-export function initNative(props : NativeProps) : NativeInstance {
-    const { Checkout, createOrder, onApprove, onCancel, onError, commit, clientID, getPageUrl, env, stageHost, apiStageHost,
-        buttonSessionID, fundingSource, card, buyerCountry, onShippingChange, cspNonce, locale, version,
-        vault, clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription, firebaseConfig } = props;
+function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
+    const { createOrder, onApprove, onCancel, onError, commit, clientID, getPageUrl,
+        buttonSessionID, env, stageHost, apiStageHost } = props;
+    const { version, firebase: firebaseConfig } = config;
 
     const sessionUID = uniqueID();
 
@@ -194,12 +142,8 @@ export function initNative(props : NativeProps) : NativeInstance {
         throw err;
     };
 
-    const fallbackToWebCheckout = ({ context = CONTEXT.POPUP, win } : { context? : $Values<typeof CONTEXT>, win? : CrossDomainWindowType }) => {
-        const { start: startCheckout, close: closeCheckout, triggerError: triggerCheckoutError } = initCheckout({
-            Checkout, win, context, clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-            onShippingChange, cspNonce, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
-            createBillingAgreement, createSubscription
-        });
+    const fallbackToWebCheckout = (win? : CrossDomainWindowType) => {
+        const { start: startCheckout, close: closeCheckout, triggerError: triggerCheckoutError } = checkout.init({ props, components, payment: { ...payment, win, isClick: false }, config, serviceData });
 
         close = closeCheckout;
         triggerError = triggerCheckoutError;
@@ -236,7 +180,7 @@ export function initNative(props : NativeProps) : NativeInstance {
                 socket.close();
                 return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
                     const data = { payerID, paymentID, billingToken, facilitatorAccessToken };
-                    const actions = { restart: () => fallbackToWebCheckout({ context: CONTEXT.IFRAME }) };
+                    const actions = { restart: () => fallbackToWebCheckout() };
                     return onApprove(data, actions);
                 });
             });
@@ -265,7 +209,7 @@ export function initNative(props : NativeProps) : NativeInstance {
 
         return orderPromise.then(() => {
             if (!isBlankDomain(win)) {
-                return fallbackToWebCheckout({ win });
+                return fallbackToWebCheckout(win);
             }
 
             win.close();
@@ -279,3 +223,10 @@ export function initNative(props : NativeProps) : NativeInstance {
         triggerError: err => triggerError(err)
     };
 }
+
+export const native : PaymentFlow = {
+    setup:      setupNative,
+    isEligible: isNativeEligible,
+    init:       initNative,
+    spinner:    true
+};

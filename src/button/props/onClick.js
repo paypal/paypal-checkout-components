@@ -3,7 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 
-import { promiseNoop, getLogger } from '../../lib';
+import { getLogger } from '../../lib';
 import { FPTI_STATE, FPTI_TRANSITION } from '../../constants';
 
 import type { XProps } from './types';
@@ -36,8 +36,12 @@ export type OnClickDataType = {|
 
 export type OnClick = (OnClickDataType) => ZalgoPromise<boolean>;
 
-export function getOnClick(xprops : XProps) : OnClick {
-    const { onClick = promiseNoop, buttonSessionID } = xprops;
+export function getOnClick(xprops : XProps) : OnClick | void {
+    const { onClick, buttonSessionID } = xprops;
+
+    if (!onClick) {
+        return;
+    }
 
     return ({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) => {
         getLogger().info('button_click').track({

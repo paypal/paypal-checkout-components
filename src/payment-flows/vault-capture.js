@@ -3,18 +3,21 @@
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import type { ProxyWindow, ThreeDomainSecureFlowType } from '../types';
+import type { ThreeDomainSecureFlowType } from '../types';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse, createAccessToken } from '../api';
-import type { CreateOrder, OnApprove, OnShippingChange } from '../button/props';
+import type { CreateOrder, Props, Components } from '../button/props';
 import { TARGET_ELEMENT } from '../constants';
 
-type VaultCaptureEligibleProps = {|
-    win : ?ProxyWindow,
-    paymentMethodID : ?string,
-    onShippingChange : ?OnShippingChange
-|};
+import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 
-export function isVaultCaptureEligible({ win, paymentMethodID, onShippingChange } : VaultCaptureEligibleProps) : boolean {
+function setupVaultCapture() {
+    // pass
+}
+
+function isVaultCaptureEligible({ props, payment } : { props : Props, payment : Payment }) : boolean {
+    const { win, paymentMethodID } = payment;
+    const { onShippingChange } = props;
+
     if (win) {
         return false;
     }
@@ -29,12 +32,6 @@ export function isVaultCaptureEligible({ win, paymentMethodID, onShippingChange 
 
     return true;
 }
-
-type VaultInstance = {|
-    start : () => ZalgoPromise<mixed>,
-    close : () => ZalgoPromise<void>,
-    triggerError : (mixed) => ZalgoPromise<void>
-|};
 
 type ThreeDomainSecureProps = {|
     ThreeDomainSecure : ThreeDomainSecureFlowType,
@@ -65,19 +62,6 @@ type HandleValidateResponse = {|
     getParent : () => CrossDomainWindowType
 |};
 
-type VaultProps = {|
-    ThreeDomainSecure : ThreeDomainSecureFlowType,
-    clientID : string,
-    createOrder : CreateOrder,
-    paymentMethodID : ?string,
-    onApprove : OnApprove,
-    clientAccessToken : ?string,
-    enableThreeDomainSecure : boolean,
-    buttonSessionID : string,
-    partnerAttributionID : ?string,
-    getParent : () => CrossDomainWindowType
-|};
-
 function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, getParent } : HandleValidateResponse) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         if (status === 422 && body.links && body.links.some(link => link.rel === '3ds-contingency-resolution')) {
@@ -90,9 +74,11 @@ function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, 
     });
 }
 
-export function initVault(props : VaultProps) : VaultInstance {
-    const { ThreeDomainSecure, clientID, createOrder, paymentMethodID, onApprove, clientAccessToken,
+function initVaultCapture({ props, components, payment } : { props : Props, components : Components, payment : Payment }) : PaymentFlowInstance {
+    const { clientID, createOrder, onApprove, clientAccessToken,
         enableThreeDomainSecure, buttonSessionID, partnerAttributionID, getParent } = props;
+    const { ThreeDomainSecure } = components;
+    const { paymentMethodID } = payment;
 
     if (!paymentMethodID) {
         throw new Error(`Payment method id required for vault capture`);
@@ -132,3 +118,11 @@ export function initVault(props : VaultProps) : VaultInstance {
         }
     };
 }
+
+export const vaultCapture : PaymentFlow = {
+    setup:      setupVaultCapture,
+    isEligible: isVaultCaptureEligible,
+    init:       initVaultCapture,
+    spinner:    true,
+    inline:     true
+};

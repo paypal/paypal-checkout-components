@@ -3,10 +3,9 @@
 import { FUNDING } from '@paypal/sdk-constants';
 import { wrapPromise } from 'belter/src';
 
-import { setupButton } from '../../src';
 import { promiseNoop } from '../../src/lib';
 
-import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
+import { mockSetupButton, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
 
 describe('funding source cases', () => {
 
@@ -26,7 +25,7 @@ describe('funding source cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(fundingSource);
         });
@@ -54,7 +53,7 @@ describe('funding source cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(fundingSource);
         });

@@ -1,7 +1,6 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
-import { memoize } from 'belter/src';
 
 import type { XProps } from './types';
 
@@ -31,7 +30,7 @@ export function getCreateBillingAgreement(xprops : XProps) : ?CreateBillingAgree
     const { createBillingAgreement } = xprops;
 
     if (createBillingAgreement) {
-        return memoize(() => {
+        return () => {
             return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions()).then(billingToken => {
                 if (!billingToken || typeof billingToken !== 'string') {
                     throw new Error(`Expected a billing token to be passed to createBillingAgreement`);
@@ -39,6 +38,6 @@ export function getCreateBillingAgreement(xprops : XProps) : ?CreateBillingAgree
 
                 return billingToken;
             });
-        });
+        };
     }
 }

@@ -4,9 +4,7 @@
 import { wrapPromise } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { setupButton } from '../../src';
-
-import { mockAsyncProp, createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock } from './mocks';
 
 describe('vault cases', () => {
 
@@ -51,7 +49,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -79,7 +77,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL).catch(expect('clickCatch'));
         });
@@ -125,7 +123,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -171,7 +169,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -223,7 +221,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -266,7 +264,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }][data-payment-method-id]`).click();
         });
@@ -317,7 +315,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             window.document.querySelector(`button[data-funding-source=${ FUNDING.CARD }][data-payment-method-id]`).click();
         });

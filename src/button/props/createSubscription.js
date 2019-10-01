@@ -1,7 +1,6 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
-import { memoize } from 'belter/src';
 
 import { createAccessToken, createSubscription, reviseSubscription } from '../../api';
 
@@ -47,7 +46,7 @@ export function getCreateSubscription(xprops : XProps) : ?CreateSubscription {
     const { createSubscription: createSubscriptionFunc, partnerAttributionID } = xprops;
     const { clientID } = xprops;
     if (createSubscriptionFunc) {
-        return memoize(() => {
+        return () => {
             return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ clientID, partnerAttributionID })).then(subscriptionID => {
                 if (!subscriptionID || typeof subscriptionID !== 'string') {
                     throw new Error(`Expected an subscription id to be passed to createSubscription`);
@@ -55,6 +54,6 @@ export function getCreateSubscription(xprops : XProps) : ?CreateSubscription {
 
                 return subscriptionID;
             });
-        });
+        };
     }
 }

@@ -79,7 +79,7 @@ export type XProps = {|
     onShippingChange : ?XOnShippingChange
 |};
 
-export type GlobalProps = {|
+export type Props = {|
     env : $Values<typeof ENV>,
     locale : LocaleType,
     style : ButtonStyle,
@@ -96,8 +96,6 @@ export type GlobalProps = {|
     currency : $Values<typeof CURRENCY>,
 
     clientAccessToken : ?string,
-    buyerCountry : $Values<typeof COUNTRY>,
-    cspNonce : ?string,
 
     getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
     getPopupBridge : GetPopupBridge,
@@ -113,11 +111,9 @@ export type GlobalProps = {|
 
     onInit : OnInit,
     onError : OnError,
-    onClick : OnClick,
-    enableStandardCardFields : ?boolean
-|};
+    onClick : ?OnClick,
+    enableStandardCardFields : ?boolean,
 
-export type ButtonCallbackProps = {|
     createOrder : CreateOrder,
     createBillingAgreement : ?CreateBillingAgreement,
     createSubscription : ?XCreateSubscription,

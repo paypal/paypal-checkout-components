@@ -6,7 +6,7 @@ import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY } from '@paypal/sdk-constant
 
 import { createAccessToken, createOrderID, billingTokenToOrderID, subscriptionIdToCartId } from '../../api';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../../constants';
-import { getLogger, unresolvedPromise } from '../../lib';
+import { getLogger } from '../../lib';
 
 import type { CreateSubscription } from './createSubscription';
 import type { CreateBillingAgreement } from './createBillingAgreement';
@@ -92,7 +92,7 @@ export function buildXCreateOrderActions({ clientID, intent, currency, merchantI
     };
 }
 
-export function getCreateOrder(xprops : XProps, { validationPromise, createBillingAgreement, createSubscription } : { createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription, validationPromise : ZalgoPromise<boolean> }) : CreateOrder {
+export function getCreateOrder(xprops : XProps, { createBillingAgreement, createSubscription } : { createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription }) : CreateOrder {
     const { createOrder, clientID, buttonSessionID, intent, currency, merchantID, partnerAttributionID } = xprops;
 
     const data = buildXCreateOrderData();
@@ -100,14 +100,6 @@ export function getCreateOrder(xprops : XProps, { validationPromise, createBilli
 
     return memoize(() => {
         return ZalgoPromise.try(() => {
-            return validationPromise || true;
-        }).then(valid => {
-
-            if (!valid) {
-                // Is there a nicer way to prevent this?
-                return unresolvedPromise();
-            }
-
             if (createBillingAgreement) {
                 return createBillingAgreement().then(billingTokenToOrderID);
             } else if (createSubscription) {
@@ -130,11 +122,11 @@ export function getCreateOrder(xprops : XProps, { validationPromise, createBilli
             if (!orderID || typeof orderID !== 'string') {
                 throw new Error(`Expected an order id to be passed`);
             }
-
+    
             if (orderID.indexOf('PAY-') === 0 || orderID.indexOf('PAYID-') === 0) {
                 throw new Error(`Do not pass PAY-XXX or PAYID-XXX directly into createOrder. Pass the EC-XXX token instead`);
             }
-
+    
             getLogger().track({
                 [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
@@ -142,7 +134,7 @@ export function getCreateOrder(xprops : XProps, { validationPromise, createBilli
                 [FPTI_KEY.CONTEXT_ID]:         orderID,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
             }).flush();
-
+    
             return orderID;
         });
     });

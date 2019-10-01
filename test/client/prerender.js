@@ -5,9 +5,7 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { setupButton } from '../../src';
-
-import { mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
 
 describe('prerender cases', () => {
 
@@ -40,7 +38,7 @@ describe('prerender cases', () => {
             }));
 
             createButtonHTML();
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -70,8 +68,10 @@ describe('prerender cases', () => {
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => ZalgoPromise.resolve(orderID)));
 
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove'));
+
             createButtonHTML();
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -101,7 +101,7 @@ describe('prerender cases', () => {
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             createButtonHTML();
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -134,8 +134,10 @@ describe('prerender cases', () => {
             window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => ZalgoPromise.resolve(orderID)));
 
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove'));
+
             createButtonHTML();
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -165,7 +167,7 @@ describe('prerender cases', () => {
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', () => ZalgoPromise.resolve()));
 
             createButtonHTML();
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -193,7 +195,7 @@ describe('prerender cases', () => {
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             createButtonHTML();
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 });

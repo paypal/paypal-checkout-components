@@ -1,11 +1,12 @@
 /* @flow */
 
 import { COUNTRY } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
 
+import type { FundingEligibilityType, CheckoutFlowType, CardFieldsFlowType, ThreeDomainSecureFlowType, PersonalizationType } from '../../types';
+import type { FirebaseConfig } from '../../api';
 import { getNonce } from '../dom';
 
-import type { XProps, GlobalProps, ButtonCallbackProps } from './types';
+import type { XProps, Props } from './types';
 import { getOnInit } from './onInit';
 import { getCreateOrder } from './createOrder';
 import { getOnApprove } from './onApprove';
@@ -15,7 +16,9 @@ import { getOnClick } from './onClick';
 import { getCreateBillingAgreement } from './createBillingAgreement';
 import { getCreateSubscription } from './createSubscription';
 
-export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops : XProps, buyerGeoCountry : ?$Values<typeof COUNTRY>, cspNonce : ?string |}) : GlobalProps {
+export function getProps() : Props {
+
+    const xprops : XProps = window.xprops;
 
     const {
         env,
@@ -30,7 +33,6 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         correlationID,
         getParentDomain,
         clientAccessToken,
-        buyerCountry = buyerGeoCountry || COUNTRY.US,
         getPopupBridge,
         getPrerenderDetails,
         getPageUrl,
@@ -46,52 +48,10 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         currency
     } = xprops;
 
-    cspNonce = cspNonce || getNonce();
     const onInit = getOnInit(xprops);
     const merchantDomain = (typeof getParentDomain === 'function') ? getParentDomain() : 'unknown';
 
     const onClick = getOnClick(xprops);
-
-    return {
-        env,
-        style,
-
-        vault,
-        commit,
-
-        clientAccessToken,
-        buyerCountry,
-        locale,
-        cspNonce,
-
-        sessionID,
-        buttonSessionID,
-        clientID,
-        partnerAttributionID,
-        correlationID,
-        merchantDomain,
-        platform,
-        currency,
-
-        getPopupBridge,
-        getPrerenderDetails,
-        getPageUrl,
-        rememberFunding,
-        getParent,
-
-        enableThreeDomainSecure,
-        enableStandardCardFields,
-        enableNativeCheckout,
-
-        onClick,
-        onInit,
-        onError,
-        stageHost,
-        apiStageHost
-    };
-}
-
-export function getButtonCallbackProps({ xprops, validationPromise } : {| xprops : XProps, validationPromise : ZalgoPromise<boolean> |}) : ButtonCallbackProps {
 
     if (xprops.createBillingAgreement) {
         if (xprops.createOrder) {
@@ -119,18 +79,103 @@ export function getButtonCallbackProps({ xprops, validationPromise } : {| xprops
 
     const createBillingAgreement = getCreateBillingAgreement(xprops);
     const createSubscription = getCreateSubscription(xprops);
-    const createOrder = getCreateOrder(xprops, { createBillingAgreement, createSubscription, validationPromise });
+    
+    const createOrder = getCreateOrder(xprops, { createBillingAgreement, createSubscription });
 
     const onApprove = getOnApprove(xprops, { createOrder });
-    const onCancel = getOnCancel(xprops, { createOrder, validationPromise });
+    const onCancel = getOnCancel(xprops, { createOrder });
     const onShippingChange = getOnShippingChange(xprops, { createOrder });
 
     return {
+        env,
+        style,
+
+        vault,
+        commit,
+
+        clientAccessToken,
+        locale,
+
+        sessionID,
+        buttonSessionID,
+        clientID,
+        partnerAttributionID,
+        correlationID,
+        merchantDomain,
+        platform,
+        currency,
+
+        getPopupBridge,
+        getPrerenderDetails,
+        getPageUrl,
+        rememberFunding,
+        getParent,
+
+        enableThreeDomainSecure,
+        enableStandardCardFields,
+        enableNativeCheckout,
+
+        onClick,
+        onInit,
+        onError,
+        stageHost,
+        apiStageHost,
+
         createOrder,
         createBillingAgreement,
         createSubscription,
         onApprove,
         onCancel,
         onShippingChange
+    };
+}
+
+export type Components = {|
+    Checkout : CheckoutFlowType,
+    CardFields : CardFieldsFlowType,
+    ThreeDomainSecure : ThreeDomainSecureFlowType
+|};
+
+export function getComponents() : Components {
+    const { Checkout, CardFields, ThreeDomainSecure } = window.paypal;
+    return { Checkout, CardFields, ThreeDomainSecure };
+}
+
+export type Config = {|
+    version : string,
+    cspNonce : ?string,
+    firebase : ?FirebaseConfig
+|};
+
+export function getConfig({ serverCSPNonce, firebaseConfig } : { serverCSPNonce : ?string, firebaseConfig : ?FirebaseConfig }) : Config {
+    const cspNonce = serverCSPNonce || getNonce();
+    const version = window.paypal.version;
+    
+    return {
+        version,
+        cspNonce,
+        firebase: firebaseConfig
+    };
+}
+
+export type ServiceData = {|
+    merchantID : $ReadOnlyArray<string>,
+    buyerCountry : $Values<typeof COUNTRY>,
+    fundingEligibility : FundingEligibilityType,
+    experiments : {
+        cardFields : boolean
+    },
+    personalization : PersonalizationType
+|};
+
+export function getServiceData({ buyerGeoCountry, isCardFieldsExperimentEnabled, fundingEligibility, personalization, serverMerchantID } : { buyerGeoCountry : $Values<typeof COUNTRY>, isCardFieldsExperimentEnabled : boolean, fundingEligibility : FundingEligibilityType, personalization : PersonalizationType, serverMerchantID : $ReadOnlyArray<string> }) : ServiceData {
+    return {
+        merchantID:   serverMerchantID,
+        buyerCountry: buyerGeoCountry || COUNTRY.US,
+        experiments:  {
+            cardFields: isCardFieldsExperimentEnabled
+        },
+        fundingEligibility,
+        personalization
     };
 }

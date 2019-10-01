@@ -5,9 +5,7 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 
-import { setupButton } from '../../src';
-
-import { mockAsyncProp, createButtonHTML, mockFunction, clickButton } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, mockFunction, clickButton } from './mocks';
 
 describe('card field cases', () => {
 
@@ -79,7 +77,7 @@ describe('card field cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.CARD, CARD.VISA);
         });

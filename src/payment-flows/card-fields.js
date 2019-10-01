@@ -1,58 +1,28 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 import { memoize, querySelectorAll, debounce } from 'belter/src';
 
-import { CONTEXT, DATA_ATTRIBUTES } from '../constants';
-import type { LocaleType, FundingEligibilityType, ProxyWindow, CardFieldsFlowType, CheckoutFlowType } from '../types';
+import type { Props, Config, ServiceData, Components } from '../button/props';
+import { DATA_ATTRIBUTES } from '../constants';
 import { unresolvedPromise, promiseNoop } from '../lib';
-import type { CreateOrder, OnApprove, OnCancel, OnShippingChange, OnError, CreateBillingAgreement, CreateSubscription } from '../button/props';
 import { createAccessToken } from '../api';
 
-import { initCheckout } from './checkout';
+import type { Payment, PaymentFlow, PaymentFlowInstance } from './types';
+import { checkout } from './checkout';
+
+function setupCardFields() {
+    // pass
+}
 
 let cardFieldsOpen = false;
 
-type CardFieldsProps = {|
-    CardFields : CardFieldsFlowType,
-    Checkout : CheckoutFlowType,
-    clientID : string,
-    buttonSessionID : string,
-    fundingSource : $Values<typeof FUNDING>,
-    card : ?$Values<typeof CARD>,
-    buyerCountry : $Values<typeof COUNTRY>,
-    createOrder : CreateOrder,
-    createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?CreateSubscription,
-    onApprove : OnApprove,
-    onCancel : OnCancel,
-    onShippingChange : ?OnShippingChange,
-    cspNonce : ?string,
-    locale : LocaleType,
-    commit : boolean,
-    onError : OnError,
-    vault : boolean,
-    clientAccessToken : ?string,
-    fundingEligibility : FundingEligibilityType
-|};
+function isCardFieldsEligible({ props, payment, serviceData } : { props : Props, payment : Payment, serviceData : ServiceData }) : boolean {
+    const { vault, onShippingChange, enableStandardCardFields } = props;
+    const { win, fundingSource } = payment;
+    const { experiments } = serviceData;
 
-type CardFieldsInstance = {|
-    start : () => ZalgoPromise<void>,
-    close : () => ZalgoPromise<void>,
-    triggerError : (mixed) => ZalgoPromise<void>
-|};
-
-type CardFieldsEligibleProps = {|
-    win : ?ProxyWindow,
-    vault : boolean,
-    fundingSource : $Values<typeof FUNDING>,
-    onShippingChange : ?OnShippingChange,
-    isCardFieldsExperimentEnabled? : boolean,
-    enableStandardCardFields : ?boolean
-|};
-
-export function isCardFieldsEligible({ win, vault, onShippingChange, fundingSource, isCardFieldsExperimentEnabled, enableStandardCardFields } : CardFieldsEligibleProps) : boolean {
     if (win) {
         return false;
     }
@@ -76,7 +46,7 @@ export function isCardFieldsEligible({ win, vault, onShippingChange, fundingSour
 
     // if merchant doesn't pass the inline guest flag, they will in the ramp
     if (!enableStandardCardFields) {
-        if (!isCardFieldsExperimentEnabled) {
+        if (!experiments.cardFields) {
             return false;
         } else {
             return true;
@@ -139,10 +109,13 @@ const slideDownButtons = () => {
     buttonsContainer.style.marginTop = `0px`;
 };
 
-export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
-    const { CardFields, Checkout, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-        onShippingChange, cspNonce, locale, commit, onError, buttonSessionID, clientID,
-        vault, clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription  } = props;
+function initCardFields({ props, components, payment, serviceData, config } : { props : Props, config : Config, components : Components, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
+    const { createOrder, onApprove, onCancel,
+        locale, commit, onError, buttonSessionID, clientID } = props;
+    const { CardFields } = components;
+    const { fundingSource, card } = payment;
+    const { cspNonce } = config;
+    const { buyerCountry } = serviceData;
 
     if (!card) {
         throw new Error(`Card required to render card fields`);
@@ -158,9 +131,8 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     }
 
     const restart = memoize(() : ZalgoPromise<void> =>
-        initCheckout({ Checkout, clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-            onShippingChange, cspNonce, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
-            createBillingAgreement, createSubscription, context: CONTEXT.IFRAME }).start().finally(unresolvedPromise));
+        checkout.init({ props, components, payment: { ...payment, isClick: false }, serviceData, config })
+            .start().finally(unresolvedPromise));
 
     const onClose = () => {
         cardFieldsOpen = false;
@@ -221,3 +193,11 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
 
     return { start, close, triggerError };
 }
+
+export const cardFields : PaymentFlow = {
+    setup:      setupCardFields,
+    isEligible: isCardFieldsEligible,
+    init:       initCardFields,
+    spinner:    true,
+    inline:     true
+};

@@ -50,30 +50,22 @@ export function buildXOnCancelActions() : XOnCancelActionsType {
 
 export type OnCancel = () => ZalgoPromise<void>;
 
-export function getOnCancel(xprops : XProps, { createOrder, validationPromise } : { createOrder : CreateOrder, validationPromise : ZalgoPromise<boolean> }) : OnCancel {
+export function getOnCancel(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : OnCancel {
     const { onCancel = noop, onError, buttonSessionID } = xprops;
 
     return memoize(() => {
-        return ZalgoPromise.try(() => {
-            return validationPromise || true;
-        }).then(valid => {
-            if (!valid) {
-                return;
-            }
+        return createOrder().then(orderID => {
+            getLogger()
+                .info('button_cancel')
+                .track({
+                    [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_CANCEL,
+                    [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+                }).flush();
 
-            return createOrder().then(orderID => {
-                getLogger()
-                    .info('button_cancel')
-                    .track({
-                        [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-                        [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_CANCEL,
-                        [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
-                    }).flush();
-
-                return onCancel(buildXOnCancelData({ orderID }), buildXOnCancelActions());
-            }).catch(err => {
-                return onError(err);
-            });
+            return onCancel(buildXOnCancelData({ orderID }), buildXOnCancelActions());
+        }).catch(err => {
+            return onError(err);
         });
     });
 }

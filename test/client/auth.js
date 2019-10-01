@@ -4,9 +4,7 @@
 import { wrapPromise } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { setupButton } from '../../src';
-
-import { mockAsyncProp, createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, MOCK_BUYER_ACCESS_TOKEN } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, MOCK_BUYER_ACCESS_TOKEN } from './mocks';
 
 describe('auth cases', () => {
 
@@ -55,7 +53,7 @@ describe('auth cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });
