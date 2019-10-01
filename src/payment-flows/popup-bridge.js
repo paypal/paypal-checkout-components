@@ -8,7 +8,6 @@ import { EXPERIENCE_URI } from '../config';
 import { promiseNoop } from '../lib';
 import { POPUP_BRIDGE_OPTYPE, type Props } from '../button/props';
 import { USER_ACTION } from '../constants';
-import { createAccessToken } from '../api';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 
@@ -45,12 +44,10 @@ function isPopupBridgeEligible({ props, payment } : { props : Props, payment : P
 }
 
 function initPopupBridge({ props, payment } : { props : Props, payment : Payment }) : PaymentFlowInstance {
-    const { clientID, createOrder, onApprove, onCancel, commit } = props;
+    const { createOrder, onApprove, onCancel, commit } = props;
     const { fundingSource } = payment;
 
     const start = () => {
-        const facilitatorAccessTokenPromise = createAccessToken(clientID);
-
         return createOrder().then(orderID => {
             if (!parentPopupBridge) {
                 throw new Error(`Popup bridge required`);
@@ -69,9 +66,7 @@ function initPopupBridge({ props, payment } : { props : Props, payment : Payment
 
         }).then(({ opType, PayerID: payerID, paymentId: paymentID, ba_token: billingToken }) => {
             if (opType === POPUP_BRIDGE_OPTYPE.PAYMENT) {
-                return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-                    return onApprove({ payerID, paymentID, billingToken, facilitatorAccessToken }, { restart: start });
-                });
+                return onApprove({ payerID, paymentID, billingToken }, { restart: start });
             }
 
             if (opType === POPUP_BRIDGE_OPTYPE.CANCEL) {

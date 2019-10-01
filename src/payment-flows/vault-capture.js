@@ -4,7 +4,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { ThreeDomainSecureFlowType } from '../types';
-import { validatePaymentMethod, type ValidatePaymentMethodResponse, createAccessToken } from '../api';
+import { validatePaymentMethod, type ValidatePaymentMethodResponse } from '../api';
 import type { CreateOrder, Props, Components } from '../button/props';
 import { TARGET_ELEMENT } from '../constants';
 
@@ -75,7 +75,7 @@ function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, 
 }
 
 function initVaultCapture({ props, components, payment } : { props : Props, components : Components, payment : Payment }) : PaymentFlowInstance {
-    const { clientID, createOrder, onApprove, clientAccessToken,
+    const { createOrder, onApprove, clientAccessToken,
         enableThreeDomainSecure, buttonSessionID, partnerAttributionID, getParent } = props;
     const { ThreeDomainSecure } = components;
     const { paymentMethodID } = payment;
@@ -95,8 +95,6 @@ function initVaultCapture({ props, components, payment } : { props : Props, comp
     };
 
     const start = () => {
-        const facilitatorAccessTokenPromise = createAccessToken(clientID);
-
         return ZalgoPromise.try(() => {
             return createOrder();
         }).then((orderID) => {
@@ -104,9 +102,7 @@ function initVaultCapture({ props, components, payment } : { props : Props, comp
         }).then(({ status, body }) => {
             return handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, getParent });
         }).then(() => {
-            return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-                return onApprove({ facilitatorAccessToken }, { restart });
-            });
+            return onApprove({}, { restart });
         });
     };
 

@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize } from 'belter/src';
 import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY } from '@paypal/sdk-constants/src';
 
-import { createAccessToken, createOrderID, billingTokenToOrderID, subscriptionIdToCartId } from '../../api';
+import { createOrderID, billingTokenToOrderID, subscriptionIdToCartId } from '../../api';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../../constants';
 import { getLogger } from '../../lib';
 
@@ -31,14 +31,14 @@ export function buildXCreateOrderData() : XCreateOrderDataType {
 }
 
 type OrderOptions = {|
-    clientID : string,
+    facilitatorAccessTokenPromise : ZalgoPromise<string>,
     intent : $Values<typeof INTENT>,
     currency : $Values<typeof CURRENCY>,
     merchantID : $ReadOnlyArray<string>,
     partnerAttributionID : ?string
 |};
 
-export function buildCreateOrder({ clientID, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : CreateOrder {
+export function buildCreateOrder({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : CreateOrder {
     return (data) => {
     
         let order : Object = { ...data };
@@ -78,25 +78,25 @@ export function buildCreateOrder({ clientID, intent, currency, merchantID, partn
     
         order.application_context = order.application_context || {};
 
-        return createAccessToken(clientID).then(facilitatorAccessToken => {
+        return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
             return createOrderID(order, { facilitatorAccessToken, partnerAttributionID });
         });
     };
 }
 
-export function buildXCreateOrderActions({ clientID, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : XCreateOrderActionsType {
-    const create = buildCreateOrder({ clientID, intent, currency, merchantID, partnerAttributionID });
+export function buildXCreateOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : XCreateOrderActionsType {
+    const create = buildCreateOrder({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
 
     return {
         order: { create }
     };
 }
 
-export function getCreateOrder(xprops : XProps, { createBillingAgreement, createSubscription } : { createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription }) : CreateOrder {
-    const { createOrder, clientID, buttonSessionID, intent, currency, merchantID, partnerAttributionID } = xprops;
+export function getCreateOrder(xprops : XProps, { facilitatorAccessTokenPromise, createBillingAgreement, createSubscription } : { facilitatorAccessTokenPromise : ZalgoPromise<string>, createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription }) : CreateOrder {
+    const { createOrder, buttonSessionID, intent, currency, merchantID, partnerAttributionID } = xprops;
 
     const data = buildXCreateOrderData();
-    const actions = buildXCreateOrderActions({ clientID, intent, currency, merchantID, partnerAttributionID });
+    const actions = buildXCreateOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
 
     return memoize(() => {
         return ZalgoPromise.try(() => {

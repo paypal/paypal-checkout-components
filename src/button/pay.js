@@ -36,7 +36,8 @@ export function getPaymentFlow({ props, payment, config, components, serviceData
 let paymentProcessing = false;
 
 export function launchPaymentFlow({ flow, payment, config, components, serviceData } : { flow : PaymentFlow, payment : Payment, config : Config, components : Components, serviceData : ServiceData }) : ZalgoPromise<void> {
-    const props = getProps();
+    const { facilitatorAccessTokenPromise } = serviceData;
+    const props = getProps({ facilitatorAccessTokenPromise });
     
     const { button, fundingSource } = payment;
     const { clientID, createOrder } = props;

@@ -1,9 +1,10 @@
 /* @flow */
 
 import { COUNTRY } from '@paypal/sdk-constants/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, CheckoutFlowType, CardFieldsFlowType, ThreeDomainSecureFlowType, PersonalizationType } from '../../types';
-import type { FirebaseConfig } from '../../api';
+import { createAccessToken, type FirebaseConfig } from '../../api';
 import { getNonce } from '../dom';
 
 import type { XProps, Props } from './types';
@@ -16,7 +17,7 @@ import { getOnClick } from './onClick';
 import { getCreateBillingAgreement } from './createBillingAgreement';
 import { getCreateSubscription } from './createSubscription';
 
-export function getProps() : Props {
+export function getProps({ facilitatorAccessTokenPromise } : { facilitatorAccessTokenPromise : ZalgoPromise<string> }) : Props {
 
     const xprops : XProps = window.xprops;
 
@@ -78,13 +79,13 @@ export function getProps() : Props {
     }
 
     const createBillingAgreement = getCreateBillingAgreement(xprops);
-    const createSubscription = getCreateSubscription(xprops);
+    const createSubscription = getCreateSubscription(xprops, { facilitatorAccessTokenPromise });
     
-    const createOrder = getCreateOrder(xprops, { createBillingAgreement, createSubscription });
+    const createOrder = getCreateOrder(xprops, { facilitatorAccessTokenPromise, createBillingAgreement, createSubscription });
 
-    const onApprove = getOnApprove(xprops, { createOrder });
-    const onCancel = getOnCancel(xprops, { createOrder });
-    const onShippingChange = getOnShippingChange(xprops, { createOrder });
+    const onApprove = getOnApprove(xprops, { facilitatorAccessTokenPromise, createOrder });
+    const onCancel = getOnCancel(xprops, { facilitatorAccessTokenPromise, createOrder });
+    const onShippingChange = getOnShippingChange(xprops, { facilitatorAccessTokenPromise, createOrder });
 
     return {
         env,
@@ -165,10 +166,23 @@ export type ServiceData = {|
     experiments : {
         cardFields : boolean
     },
-    personalization : PersonalizationType
+    personalization : PersonalizationType,
+    facilitatorAccessTokenPromise : ZalgoPromise<string>
 |};
 
-export function getServiceData({ buyerGeoCountry, isCardFieldsExperimentEnabled, fundingEligibility, personalization, serverMerchantID } : { buyerGeoCountry : $Values<typeof COUNTRY>, isCardFieldsExperimentEnabled : boolean, fundingEligibility : FundingEligibilityType, personalization : PersonalizationType, serverMerchantID : $ReadOnlyArray<string> }) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, clientID, buyerGeoCountry, isCardFieldsExperimentEnabled, fundingEligibility, personalization, serverMerchantID } : { facilitatorAccessToken : ?string, clientID : ?string, buyerGeoCountry : $Values<typeof COUNTRY>, isCardFieldsExperimentEnabled : boolean, fundingEligibility : FundingEligibilityType, personalization : PersonalizationType, serverMerchantID : $ReadOnlyArray<string> }) : ServiceData {
+    
+    let facilitatorAccessTokenPromise : ZalgoPromise<string>;
+
+    if (facilitatorAccessToken) {
+        facilitatorAccessTokenPromise = ZalgoPromise.resolve(facilitatorAccessToken);
+    } else if (clientID) {
+        facilitatorAccessTokenPromise = createAccessToken(clientID);
+    } else {
+        // $FlowFixMe
+        facilitatorAccessToken = ZalgoPromise.asyncReject(new Error(`No access token found`));
+    }
+    
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
@@ -176,6 +190,8 @@ export function getServiceData({ buyerGeoCountry, isCardFieldsExperimentEnabled,
             cardFields: isCardFieldsExperimentEnabled
         },
         fundingEligibility,
-        personalization
+        personalization,
+        // $FlowFixMe
+        facilitatorAccessTokenPromise
     };
 }

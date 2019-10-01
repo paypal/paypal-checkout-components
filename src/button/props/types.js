@@ -40,7 +40,7 @@ export type XProps = {|
 
     sessionID : string,
     buttonSessionID : string,
-    clientID : string,
+    clientID : ?string,
     partnerAttributionID : string,
     correlationID : string,
     platform : $Values<typeof PLATFORM>,
@@ -86,7 +86,7 @@ export type Props = {|
 
     sessionID : string,
     buttonSessionID : string,
-    clientID : string,
+    clientID : ?string,
     partnerAttributionID : string,
     correlationID : string,
     platform : $Values<typeof PLATFORM>,

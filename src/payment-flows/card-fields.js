@@ -7,7 +7,6 @@ import { memoize, querySelectorAll, debounce } from 'belter/src';
 import type { Props, Config, ServiceData, Components } from '../button/props';
 import { DATA_ATTRIBUTES } from '../constants';
 import { unresolvedPromise, promiseNoop } from '../lib';
-import { createAccessToken } from '../api';
 
 import type { Payment, PaymentFlow, PaymentFlowInstance } from './types';
 import { checkout } from './checkout';
@@ -111,7 +110,7 @@ const slideDownButtons = () => {
 
 function initCardFields({ props, components, payment, serviceData, config } : { props : Props, config : Config, components : Components, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel,
-        locale, commit, onError, buttonSessionID, clientID } = props;
+        locale, commit, onError, buttonSessionID } = props;
     const { CardFields } = components;
     const { fundingSource, card } = payment;
     const { cspNonce } = config;
@@ -142,7 +141,6 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
         highlightCard(cardType);
     };
 
-    const facilitatorAccessTokenPromise = createAccessToken(clientID);
     let buyerAccessToken;
 
     const { render, close: closeCardFields, onError: triggerError } = CardFields({
@@ -152,11 +150,9 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
         card,
 
         onApprove: ({ payerID, paymentID, billingToken }) => {
-            return ZalgoPromise.hash({
-                facilitatorAccessToken: facilitatorAccessTokenPromise,
-                close:                  close() // eslint-disable-line no-use-before-define
-            }).then(({ facilitatorAccessToken }) => {
-                return onApprove({ payerID, paymentID, billingToken, facilitatorAccessToken, buyerAccessToken }, { restart });
+            // eslint-disable-next-line no-use-before-define
+            return close().then(() => {
+                return onApprove({ payerID, paymentID, billingToken, buyerAccessToken }, { restart });
             });
         },
 

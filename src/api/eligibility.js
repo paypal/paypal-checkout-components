@@ -9,7 +9,7 @@ type NativeEligibilityProps = {|
     vault : boolean,
     shippingCallbackEnabled : boolean,
     merchantID : $ReadOnlyArray<string>,
-    clientID : string,
+    clientID : ?string,
     buyerCountry : $Values<typeof COUNTRY>,
     currency : $Values<typeof CURRENCY>,
     userAgent : string,

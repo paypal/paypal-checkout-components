@@ -102,6 +102,7 @@ export function setupMocks() {
     };
 
     window.xprops = {
+        clientID:    'xyz123',
         platform:    PLATFORM.DESKTOP,
         intent:      INTENT.CAPTURE,
         currency:    CURRENCY.USD,

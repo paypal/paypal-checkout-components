@@ -5,7 +5,7 @@ import { memoize, noop, supportsPopups } from 'belter/src';
 import { FUNDING, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { enableVault, createAccessToken } from '../api';
+import { enableVault } from '../api';
 import { CONTEXT, TARGET_ELEMENT } from '../constants';
 import { unresolvedPromise } from '../lib';
 import type { FundingEligibilityType, ProxyWindow } from '../types';
@@ -131,7 +131,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     }
 
     const { Checkout } = components;
-    const { clientID, buttonSessionID, createOrder, onApprove, onCancel,
+    const { buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription } = props;
     const { button, win, fundingSource, card, isClick } = payment;
@@ -153,7 +153,6 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
         }
     };
 
-    const facilitatorAccessTokenPromise = createAccessToken(clientID);
     let buyerAccessToken;
 
     const { renderTo, close: closeCheckout, onError: triggerError } = Checkout({
@@ -172,8 +171,8 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
         onApprove: ({ payerID, paymentID, billingToken, subscriptionID }) => {
             approved = true;
 
-            return ZalgoPromise.hash({ facilitatorAccessToken: facilitatorAccessTokenPromise, close: closeCheckout() }).then(({ facilitatorAccessToken }) => {
-                return onApprove({ payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken, buyerAccessToken }, { restart });
+            return closeCheckout().then(() => {
+                return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart });
             });
         },
 
@@ -189,9 +188,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
 
         onShippingChange: onShippingChange
             ? (data, actions) => {
-                return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-                    return onShippingChange({ facilitatorAccessToken, buyerAccessToken, ...data }, actions);
-                });
+                return onShippingChange({ buyerAccessToken, ...data }, actions);
             } : null,
 
         onError,

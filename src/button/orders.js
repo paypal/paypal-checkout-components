@@ -19,7 +19,7 @@ export function updateButtonClientConfig({ orderID, fundingSource, inline = fals
     });
 }
 
-export function validateOrder(orderID : string, { clientID, merchantID } : { clientID : string, merchantID : $ReadOnlyArray<string> }) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { clientID, merchantID } : { clientID : ?string, merchantID : $ReadOnlyArray<string> }) : ZalgoPromise<void> {
     
     // $FlowFixMe
     return ZalgoPromise.all([
@@ -74,7 +74,7 @@ export function validateOrder(orderID : string, { clientID, merchantID } : { cli
         }
 
         if (payeeMerchantID !== actualMerchantID) {
-            if (CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) === -1) {
+            if (clientID && CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) === -1) {
                 getLogger().info(`client_id_payee_no_match_${ clientID }`).flush();
                 // throw new Error(`Payee passed in transaction does not match expected merchant id: ${ actualMerchantID }`);
             }

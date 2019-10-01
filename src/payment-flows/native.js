@@ -8,7 +8,7 @@ import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-doma
 import type { Props, Components, Config, ServiceData } from '../button/props';
 import { EXPERIENCE_URI, NATIVE_DETECTION_URL } from '../config';
 import { promiseNoop, redirectTop } from '../lib';
-import { createAccessToken, firebaseSocket, type MessageSocket, type FirebaseConfig, getNativeEligibility } from '../api';
+import { firebaseSocket, type MessageSocket, type FirebaseConfig, getNativeEligibility } from '../api';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 import { checkout } from './checkout';
@@ -52,8 +52,6 @@ function setupNative({ props, serviceData } : { props : Props, serviceData : Ser
         if (!enableNativeCheckout) {
             return;
         }
-
-        createAccessToken(clientID);
 
         // eslint-disable-next-line compat/compat
         fetch(NATIVE_DETECTION_URL).then(res => {
@@ -131,9 +129,10 @@ type NativeSDKProps = {|
 |};
 
 function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
-    const { createOrder, onApprove, onCancel, onError, commit, clientID, getPageUrl,
+    const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
         buttonSessionID, env, stageHost, apiStageHost } = props;
     const { version, firebase: firebaseConfig } = config;
+    const { facilitatorAccessTokenPromise } = serviceData;
 
     const sessionUID = uniqueID();
 
@@ -152,14 +151,15 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     };
 
     const startPromise = ZalgoPromise.try(() => {
-        const facilitatorAccessTokenPromise = createAccessToken(clientID);
         const orderPromise = createOrder();
         const pageUrlPromise = getPageUrl();
 
         const getSDKProps = () => {
-            return ZalgoPromise.all([
-                facilitatorAccessTokenPromise, orderPromise, pageUrlPromise
-            ]).then(([ facilitatorAccessToken, orderID, pageUrl ]) => {
+            return ZalgoPromise.hash({
+                facilitatorAccessToken: facilitatorAccessTokenPromise,
+                orderID:                orderPromise,
+                pageUrl:                pageUrlPromise
+            }).then(({ facilitatorAccessToken, orderID, pageUrl }) => {
                 const userAgent = getUserAgent();
     
                 return {
@@ -178,11 +178,9 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     
             socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
                 socket.close();
-                return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-                    const data = { payerID, paymentID, billingToken, facilitatorAccessToken };
-                    const actions = { restart: () => fallbackToWebCheckout() };
-                    return onApprove(data, actions);
-                });
+                const data = { payerID, paymentID, billingToken };
+                const actions = { restart: () => fallbackToWebCheckout() };
+                return onApprove(data, actions);
             });
     
             socket.on(MESSAGE.ON_CANCEL, () => {

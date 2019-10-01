@@ -19,7 +19,7 @@ export function getLogger() : LoggerType {
 type LoggerOptions = {|
     env : $Values<typeof ENV>,
     sessionID : string,
-    clientID : string,
+    clientID : ?string,
     partnerAttributionID : ?string,
     commit : boolean,
     correlationID : string,
