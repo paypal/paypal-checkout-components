@@ -2,7 +2,7 @@
 /* eslint unicorn/prefer-add-event-listener: off, max-lines: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { uniqueID, noop } from 'belter/src';
+import { uniqueID, noop, memoize } from 'belter/src';
 
 import { FIREBASE_SCRIPTS } from '../config';
 import { loadScript } from '../lib/util';
@@ -399,6 +399,14 @@ export type FirebaseSocketOptions = {|
     targetApp : string
 |};
 
+export const loadFirebaseScripts = memoize(() => {
+    return ZalgoPromise.all([
+        loadScript(FIREBASE_SCRIPTS.APP),
+        loadScript(FIREBASE_SCRIPTS.AUTH),
+        loadScript(FIREBASE_SCRIPTS.DATABASE)
+    ]);
+});
+
 export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion, targetApp } : FirebaseSocketOptions) : MessageSocket {
     const driver = () => {
         let open = false;
@@ -416,9 +424,7 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
 
         const databasePromise = ZalgoPromise.all([
             getFirebaseSessionToken(sessionUID),
-            loadScript(FIREBASE_SCRIPTS.APP),
-            loadScript(FIREBASE_SCRIPTS.AUTH),
-            loadScript(FIREBASE_SCRIPTS.DATABASE)
+            loadFirebaseScripts()
         ]).then(([ sessionToken ]) => {
             window.firebase.initializeApp(config);
 
