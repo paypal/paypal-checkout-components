@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { request } from 'belter/src';
 
 import { GRAPHQL_URI } from '../config';
-import { HEADERS, SMART_BUTTONS, SMART_PAYMENT_BUTTONS } from '../constants';
+import { HEADERS, SMART_PAYMENT_BUTTONS } from '../constants';
 
 type RESTAPIParams<D> = {|
     accessToken : string,
@@ -49,7 +49,6 @@ type APIRequest = {|
 export function callSmartAPI({ accessToken, url, method = 'get', json } : APIRequest) : ZalgoPromise<Object> {
 
     const reqHeaders : { [string] : string } = {
-        [ HEADERS.SOURCE ]:       SMART_BUTTONS,
         [ HEADERS.REQUESTED_BY ]: SMART_PAYMENT_BUTTONS
     };
 
@@ -87,6 +86,7 @@ export function callGraphQL<T>({ query, variables = {}, headers = {} } : { query
             variables
         },
         headers: {
+            'x-app-name': SMART_PAYMENT_BUTTONS,
             ...headers
         }
     }).then(({ status, body }) => {
