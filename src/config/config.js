@@ -555,6 +555,10 @@ export const config = {
         
         '1aauto.com': {
             disable_venmo: true
+        },
+
+        'greatwolf.com': {
+            disable_venmo: true
         }
     },
 
