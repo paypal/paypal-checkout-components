@@ -1,3 +1,18 @@
+## <small>5.0.59 (2019-10-02)</small>
+
+* Add new funding types ([790ee87](http://github.paypal.com/paypal/paypal-checkout/commit/790ee87))
+* Add oxxo, boleto and maxima new funding (#1212) ([4acfa24](http://github.paypal.com/paypal/paypal-checkout/commit/4acfa24)), closes [#1212](http://github.paypal.com/paypal/paypal-checkout/issues/1212)
+* Add tests for native component ([1b2399d](http://github.paypal.com/paypal/paypal-checkout/commit/1b2399d))
+* adding Q3 payment methods [payu, blik,trustly and verkkopankki] (#1160) ([7595f56](http://github.paypal.com/paypal/paypal-checkout/commit/7595f56)), closes [#1160](http://github.paypal.com/paypal/paypal-checkout/issues/1160)
+* Disable react/no-unused-prop-types ([5d422c9](http://github.paypal.com/paypal/paypal-checkout/commit/5d422c9))
+* Increase popup size ([ffbfbd6](http://github.paypal.com/paypal/paypal-checkout/commit/ffbfbd6))
+* Minor fixes for smart menu ([cb5880b](http://github.paypal.com/paypal/paypal-checkout/commit/cb5880b))
+* Remove native code from sdk layer ([23f812b](http://github.paypal.com/paypal/paypal-checkout/commit/23f812b))
+* Trustly bug fix and blik priority increased above p24 (#1220) ([66e83cf](http://github.paypal.com/paypal/paypal-checkout/commit/66e83cf)), closes [#1220](http://github.paypal.com/paypal/paypal-checkout/issues/1220)
+* Use spinner page from common components ([147e573](http://github.paypal.com/paypal/paypal-checkout/commit/147e573))
+
+
+
 ## <small>5.0.58 (2019-09-18)</small>
 
 * Add Native component ([3f85901](http://github.paypal.com/paypal/paypal-checkout/commit/3f85901))
