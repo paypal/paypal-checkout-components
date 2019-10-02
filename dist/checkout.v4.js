@@ -3846,7 +3846,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.v4.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.290",
+  version: "4.0.291",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -12612,7 +12612,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.290";
+    payload.version = "4.0.291";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -12668,7 +12668,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.290".replace(/[^0-9]+/g, '_');
+      var version = "4.0.291".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -12685,7 +12685,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.290",
+    v: "checkout.js." + "4.0.291",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -14083,17 +14083,17 @@ __webpack_require__.r(__webpack_exports__);
 
 if (false) {}
 
-if (window.paypal && window.paypal.version === "4.0.290") {
+if (window.paypal && window.paypal.version === "4.0.291") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.290"
+    version: "4.0.291"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.290" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.290" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.291" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.291" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.290"
+    version: "4.0.291"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.290");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.291");
 } else {
   try {
     var _interface = __webpack_require__(56);
@@ -18369,7 +18369,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(lib_session["c" /* getSessionID */])(),
-      ver: "4.0.290"
+      ver: "4.0.291"
     };
   });
   Object(beaver_logger_client["a" /* addHeaderBuilder */])(function () {
@@ -18819,9 +18819,13 @@ var THROTTLE_GROUP = {
   CONTROL: 'control',
   THROTTLE: 'throttle'
 };
-function getThrottle(name, sample) {
+function getThrottle(name, sample, sticky) {
+  if (sticky === void 0) {
+    sticky = true;
+  }
+
   var uid = Object(lib_session["e" /* getStorageID */])();
-  var percentile = getThrottlePercentile(name);
+  var percentile = sticky ? getThrottlePercentile(name) : Math.floor(Math.random() * 100);
   var group;
 
   if (percentile < sample) {
@@ -18938,7 +18942,7 @@ function getScriptVersion() {
   if ( true && isPayPalObjects()) {
     return  false ? undefined : "4";
   } else {
-    return  false ? undefined : "4.0.290";
+    return  false ? undefined : "4.0.291";
   }
 }
 function getCurrentScriptUrl() {
@@ -18954,7 +18958,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.290" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.291" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -34347,7 +34351,7 @@ function componentTemplate_componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(props_normalizeProps(props)) : null;
-  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.290", _ref19), {
+  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.291", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -34591,7 +34595,7 @@ function isApmEligible(source, props) {
 }
 
 var creditThrottle;
-var smartThrottle = getThrottle('smart_button_uri', 5);
+var smartThrottle = getThrottle('smart_button_uri_2', 5, false);
 var component_Button = interface_create({
   tag: 'paypal-button',
   name: 'ppbutton',
@@ -36178,7 +36182,7 @@ var interface_postRobot = src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.290";
+var interface_version = "4.0.291";
 var interface_checkout;
 var apps;
 
