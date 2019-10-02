@@ -1,10 +1,11 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { inlineMemoize, base64encode, request } from 'belter/src';
+import { inlineMemoize, base64encode, request, noop } from 'belter/src';
 
 import { AUTH_API_URL } from '../config';
 import { getLogger } from '../lib';
+import { HEADERS } from '../constants';
 
 import { callGraphQL } from './api';
 
@@ -56,4 +57,26 @@ export function getFirebaseSessionToken(sessionUID : string) : ZalgoPromise<stri
     }).then(res => {
         return res.data.firebase.auth.sessionToken;
     });
+}
+
+export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, { buyerAccessToken, orderID } : { buyerAccessToken : string, orderID : string }) : ZalgoPromise<void> {
+    return callGraphQL({
+        headers: {
+            [ HEADERS.ACCESS_TOKEN ]: buyerAccessToken
+        },
+        query: `
+            mutation UpgradeFacilitatorAccessToken(
+                $orderID: String!
+                $buyerAccessToken: String!
+                $facilitatorAccessToken: String!
+            ) {
+                upgradeLowScopeAccessToken(
+                    token: $orderID
+                    buyerAccessToken: $buyerAccessToken
+                    merchantLSAT: $facilitatorAccessToken
+                )
+            }
+        `,
+        variables: { facilitatorAccessToken, buyerAccessToken, orderID }
+    }).then(noop);
 }
