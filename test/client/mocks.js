@@ -430,14 +430,6 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                 };
             }
 
-            if (data.query.includes('query NativeEligibility')) {
-                return {
-                    data: {
-                        eligible: false
-                    }
-                };
-            }
-
             return {};
         },
         ...options
@@ -968,6 +960,11 @@ export async function mockSetupButton(overrides? : Object = {}) : ZalgoPromise<v
         personalization:               {},
         buyerCountry:                  COUNTRY.US,
         isCardFieldsExperimentEnabled: false,
+        firebaseConfig:                MOCK_FIREBASE_CONFIG,
+        eligibility:                   {
+            cardFields: false,
+            native:     false
+        },
         ...overrides
     });
 }

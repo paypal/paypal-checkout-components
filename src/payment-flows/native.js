@@ -61,12 +61,16 @@ function setupNative({ props } : { props : Props }) : ZalgoPromise<void> {
     }).then(noop);
 }
 
-function isNativeEligible({ props, payment, config } : { props : Props, payment : Payment, config : Config, serviceData : ServiceData }) : boolean {
+function isNativeEligible({ props, payment, config, serviceData } : { props : Props, payment : Payment, config : Config, serviceData : ServiceData }) : boolean {
+
+    if (window.xprops.forceNativeEligible) {
+        return true;
+    }
 
     const { platform, onShippingChange, createBillingAgreement,
         createSubscription, enableNativeCheckout } = props;
     const { firebase: firebaseConfig } = config;
-    // const { eligibility } = serviceData;
+    const { eligibility } = serviceData;
 
     const { win, fundingSource } = payment;
 
@@ -99,12 +103,10 @@ function isNativeEligible({ props, payment, config } : { props : Props, payment 
     }
 
     if (enableNativeCheckout) {
-        return true;
+        return eligibility.native;
     }
 
     return false;
-
-    // return eligibility.native;
 }
 
 type NativeSDKProps = {|

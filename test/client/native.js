@@ -5,8 +5,8 @@ import { wrapPromise, parseQuery, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, DEFAULT_FUNDING_ELIGIBILITY,
-    mockFunction, MOCK_FIREBASE_CONFIG, getNativeFirebaseMock, getGraphQLApiMock, mockFirebaseScripts } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton,
+    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, mockFirebaseScripts } from './mocks';
 
 describe('native cases', () => {
 
@@ -114,7 +114,13 @@ describe('native cases', () => {
 
             createButtonHTML();
 
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY, firebaseConfig: MOCK_FIREBASE_CONFIG });
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
             await clickButton(FUNDING.PAYPAL);
 
             gqlMock.done();
@@ -221,7 +227,13 @@ describe('native cases', () => {
 
             createButtonHTML();
 
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY, firebaseConfig: MOCK_FIREBASE_CONFIG });
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
             await clickButton(FUNDING.PAYPAL);
 
             gqlMock.done();
@@ -324,7 +336,13 @@ describe('native cases', () => {
 
             createButtonHTML();
 
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY, firebaseConfig: MOCK_FIREBASE_CONFIG });
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
             await clickButton(FUNDING.PAYPAL);
 
             gqlMock.done();
@@ -413,7 +431,12 @@ describe('native cases', () => {
 
             createButtonHTML();
 
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY, firebaseConfig: MOCK_FIREBASE_CONFIG });
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
 
             await clickButton(FUNDING.PAYPAL);
         });
