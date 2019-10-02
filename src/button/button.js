@@ -8,7 +8,7 @@ import type { FundingEligibilityType, PersonalizationType } from '../types';
 import { setupLogger, sendBeacon, fixClickFocus } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES } from '../constants';
-import { openPopup } from '../menu/popup';
+import { openPopup } from '../ui';
 import { CHECKOUT_POPUP_DIMENSIONS, type Payment } from '../payment-flows';
 
 import { getProps, getConfig, getComponents, getServiceData } from './props';

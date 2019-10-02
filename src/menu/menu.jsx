@@ -3,7 +3,8 @@
 
 import { h, Fragment, type Node } from 'preact';
 
-import { openPopup } from './popup';
+import { openPopup } from '../ui';
+
 import { useAutoFocus } from './hooks';
 
 type MenuProps = {|
