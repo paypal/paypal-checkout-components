@@ -103,6 +103,10 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
                 if (personalization && personalization.tagline) {
                     sendBeacon(personalization.tagline.tracking.click);
                 }
+
+                if (personalization && personalization.buttonText) {
+                    sendBeacon(personalization.buttonText.tracking.click);
+                }
             });
         });
     };

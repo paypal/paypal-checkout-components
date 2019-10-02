@@ -16,6 +16,13 @@ export type LocaleType = {|
 |};
 
 export type PersonalizationType = {|
+    buttonText? : {|
+        text : string,
+        tracking : {
+            impression : string,
+            click : string
+        }
+    |},
     tagline? : {|
         text : string,
         tracking : {
