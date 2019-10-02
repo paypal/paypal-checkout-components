@@ -30,11 +30,11 @@ const THROTTLE_GROUP = {
     THROTTLE: 'throttle'
 };
 
-export function getThrottle(name : string, sample : number) : Throttle {
+export function getThrottle(name : string, sample : number, sticky : boolean = true) : Throttle {
 
     const uid = getStorageID();
 
-    const percentile = getThrottlePercentile(name);
+    const percentile = sticky ? getThrottlePercentile(name) : Math.floor(Math.random() * 100);
 
     let group;
 
