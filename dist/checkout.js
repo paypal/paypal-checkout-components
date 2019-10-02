@@ -127,7 +127,8 @@ var BUTTON_LABEL = {
   BLIK: 'blik',
   TRUSTLY: 'trustly',
   MAXIMA: 'maxima',
-  BOLETO: 'boleto'
+  BOLETO: 'boleto',
+  OXXO: 'oxxo'
 };
 var BUTTON_COLOR = {
   GOLD: 'gold',
@@ -191,7 +192,8 @@ var BUTTON_LOGO = {
   BLIK: 'blik',
   TRUSTLY: 'trustly',
   MAXIMA: 'maxima',
-  BOLETO: 'boleto'
+  BOLETO: 'boleto',
+  OXXO: 'oxxo'
 };
 // CONCATENATED MODULE: ./src/constants/checkout.js
 var CHECKOUT_OVERLAY_COLOR = {
@@ -219,7 +221,8 @@ var FUNDING = {
   BLIK: 'blik',
   TRUSTLY: 'trustly',
   MAXIMA: 'maxima',
-  BOLETO: 'boleto'
+  BOLETO: 'boleto',
+  OXXO: 'oxxo'
 };
 var CARD = {
   VISA: 'visa',
@@ -1355,7 +1358,7 @@ var session = __webpack_require__(19);
 
 
 function proxyMethod(name, win, originalMethod) {
-  if (win && Object(cross_domain_utils_src["g" /* getDomain */])() === config["a" /* config */].paypalDomain && !Object(cross_domain_utils_src["u" /* isSameDomain */])(win)) {
+  if (win && Object(cross_domain_utils_src["h" /* getDomain */])() === config["a" /* config */].paypalDomain && !Object(cross_domain_utils_src["v" /* isSameDomain */])(win)) {
     if (win) {
       Object(src["send"])(win, "proxy_" + name, {
         originalMethod: originalMethod
@@ -1377,7 +1380,7 @@ function proxyMethod(name, win, originalMethod) {
         _arguments = arguments;
 
     methods = methods.filter(function (method) {
-      return !Object(cross_domain_utils_src["y" /* isWindowClosed */])(method.source);
+      return !Object(cross_domain_utils_src["z" /* isWindowClosed */])(method.source);
     });
 
     if (methods.length) {
@@ -1412,7 +1415,7 @@ function getRefererDomain() {
 }
 
 var setupProxyLogTransport = Object(util["k" /* once */])(function () {
-  Object(client["o" /* setTransport */])(proxyMethod('log', Object(cross_domain_utils_src["m" /* getParent */])(window), Object(client["i" /* getTransport */])()));
+  Object(client["o" /* setTransport */])(proxyMethod('log', Object(cross_domain_utils_src["n" /* getParent */])(window), Object(client["i" /* getTransport */])()));
 });
 
 function getToken() {
@@ -1440,7 +1443,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(session["c" /* getSessionID */])(),
-      ver: "4.0.289"
+      ver: "4.0.290"
     };
   });
   Object(client["a" /* addHeaderBuilder */])(function () {
@@ -1898,12 +1901,12 @@ var THROTTLE_GROUP = {
 };
 function getThrottle(name, sample) {
   var uid = Object(session["e" /* getStorageID */])();
-  var throttle = getThrottlePercentile(name);
+  var percentile = getThrottlePercentile(name);
   var group;
 
-  if (throttle < sample) {
+  if (percentile < sample) {
     group = THROTTLE_GROUP.TEST;
-  } else if (sample >= 50 || sample <= throttle && throttle < sample * 2) {
+  } else if (sample >= 50 || sample <= percentile && percentile < sample * 2) {
     group = THROTTLE_GROUP.CONTROL;
   } else {
     group = THROTTLE_GROUP.THROTTLE;
@@ -2015,7 +2018,7 @@ function getScriptVersion() {
   if ( true && isPayPalObjects()) {
     return  false ? undefined : "4";
   } else {
-    return  false ? undefined : "4.0.289";
+    return  false ? undefined : "4.0.290";
   }
 }
 function getCurrentScriptUrl() {
@@ -2031,10 +2034,10 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.289" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.290" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
-  var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["g" /* getDomain */])();
+  var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
 
   if (config["a" /* config */].domain_settings) {
     for (var _i4 = 0, _Object$keys2 = Object.keys(config["a" /* config */].domain_settings); _i4 < _Object$keys2.length; _i4++) {
@@ -2399,7 +2402,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.289",
+  version: "4.0.290",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -2791,6 +2794,9 @@ var config = {
       disable_venmo: true
     },
     '1aauto.com': {
+      disable_venmo: true
+    },
+    'greatwolf.com': {
       disable_venmo: true
     }
   },
@@ -4624,7 +4630,7 @@ function popup(url, options) {
     throw new error["b" /* PopupOpenError */]("Can not open popup window - " + (err.stack || err.message));
   }
 
-  if (Object(src["y" /* isWindowClosed */])(win)) {
+  if (Object(src["z" /* isWindowClosed */])(win)) {
     var err = new error["b" /* PopupOpenError */]("Can not open popup window - blocked");
     throw err;
   }
@@ -4742,7 +4748,7 @@ function awaitFrameLoad(frame) {
 
   var promise = new zalgo_promise_src["a" /* ZalgoPromise */](function (resolve, reject) {
     frame.addEventListener('load', function () {
-      Object(src["z" /* linkFrameWindow */])(frame);
+      Object(src["A" /* linkFrameWindow */])(frame);
       resolve(frame);
     });
     frame.addEventListener('error', function (err) {
@@ -5620,7 +5626,7 @@ var constants = __webpack_require__(8);
 
 
 function globalFor(win) {
-  if (!Object(src["u" /* isSameDomain */])(win)) {
+  if (!Object(src["v" /* isSameDomain */])(win)) {
     return;
   }
 
@@ -6776,49 +6782,49 @@ var TYPES = true;
 // CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/index.js
 /* unused concated harmony import isFileProtocol */
 /* unused concated harmony import isAboutProtocol */
-/* concated harmony reexport getParent */__webpack_require__.d(__webpack_exports__, "m", function() { return getParent; });
-/* concated harmony reexport getOpener */__webpack_require__.d(__webpack_exports__, "l", function() { return getOpener; });
+/* concated harmony reexport getParent */__webpack_require__.d(__webpack_exports__, "n", function() { return getParent; });
+/* concated harmony reexport getOpener */__webpack_require__.d(__webpack_exports__, "m", function() { return getOpener; });
 /* unused concated harmony import canReadFromWindow */
-/* concated harmony reexport getActualDomain */__webpack_require__.d(__webpack_exports__, "c", function() { return getActualDomain; });
-/* concated harmony reexport getDomain */__webpack_require__.d(__webpack_exports__, "g", function() { return getDomain; });
+/* concated harmony reexport getActualDomain */__webpack_require__.d(__webpack_exports__, "d", function() { return getActualDomain; });
+/* concated harmony reexport getDomain */__webpack_require__.d(__webpack_exports__, "h", function() { return getDomain; });
 /* unused concated harmony import isBlankDomain */
-/* concated harmony reexport isActuallySameDomain */__webpack_require__.d(__webpack_exports__, "p", function() { return isActuallySameDomain; });
-/* concated harmony reexport isSameDomain */__webpack_require__.d(__webpack_exports__, "u", function() { return isSameDomain; });
-/* unused concated harmony import assertSameDomain */
+/* concated harmony reexport isActuallySameDomain */__webpack_require__.d(__webpack_exports__, "q", function() { return isActuallySameDomain; });
+/* concated harmony reexport isSameDomain */__webpack_require__.d(__webpack_exports__, "v", function() { return isSameDomain; });
+/* concated harmony reexport assertSameDomain */__webpack_require__.d(__webpack_exports__, "b", function() { return assertSameDomain; });
 /* unused concated harmony import getParents */
 /* unused concated harmony import isAncestorParent */
-/* concated harmony reexport getFrames */__webpack_require__.d(__webpack_exports__, "j", function() { return getFrames; });
+/* concated harmony reexport getFrames */__webpack_require__.d(__webpack_exports__, "k", function() { return getFrames; });
 /* unused concated harmony import getAllChildFrames */
-/* concated harmony reexport getTop */__webpack_require__.d(__webpack_exports__, "n", function() { return getTop; });
+/* concated harmony reexport getTop */__webpack_require__.d(__webpack_exports__, "o", function() { return getTop; });
 /* unused concated harmony import getNextOpener */
 /* unused concated harmony import getUltimateTop */
-/* concated harmony reexport getAllFramesInWindow */__webpack_require__.d(__webpack_exports__, "d", function() { return getAllFramesInWindow; });
+/* concated harmony reexport getAllFramesInWindow */__webpack_require__.d(__webpack_exports__, "e", function() { return getAllFramesInWindow; });
 /* unused concated harmony import getAllWindows */
-/* concated harmony reexport isTop */__webpack_require__.d(__webpack_exports__, "w", function() { return isTop; });
+/* concated harmony reexport isTop */__webpack_require__.d(__webpack_exports__, "x", function() { return isTop; });
 /* unused concated harmony import isFrameWindowClosed */
-/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "y", function() { return isWindowClosed; });
-/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "z", function() { return linkFrameWindow; });
-/* concated harmony reexport getUserAgent */__webpack_require__.d(__webpack_exports__, "o", function() { return getUserAgent; });
-/* concated harmony reexport getFrameByName */__webpack_require__.d(__webpack_exports__, "i", function() { return getFrameByName; });
+/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "z", function() { return isWindowClosed; });
+/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "A", function() { return linkFrameWindow; });
+/* concated harmony reexport getUserAgent */__webpack_require__.d(__webpack_exports__, "p", function() { return getUserAgent; });
+/* concated harmony reexport getFrameByName */__webpack_require__.d(__webpack_exports__, "j", function() { return getFrameByName; });
 /* unused concated harmony import findChildFrameByName */
-/* concated harmony reexport findFrameByName */__webpack_require__.d(__webpack_exports__, "b", function() { return findFrameByName; });
+/* concated harmony reexport findFrameByName */__webpack_require__.d(__webpack_exports__, "c", function() { return findFrameByName; });
 /* unused concated harmony import isParent */
-/* concated harmony reexport isOpener */__webpack_require__.d(__webpack_exports__, "s", function() { return isOpener; });
-/* concated harmony reexport getAncestor */__webpack_require__.d(__webpack_exports__, "e", function() { return getAncestor; });
+/* concated harmony reexport isOpener */__webpack_require__.d(__webpack_exports__, "t", function() { return isOpener; });
+/* concated harmony reexport getAncestor */__webpack_require__.d(__webpack_exports__, "f", function() { return getAncestor; });
 /* unused concated harmony import getAncestors */
-/* concated harmony reexport isAncestor */__webpack_require__.d(__webpack_exports__, "q", function() { return isAncestor; });
-/* concated harmony reexport isPopup */__webpack_require__.d(__webpack_exports__, "t", function() { return isPopup; });
-/* concated harmony reexport isIframe */__webpack_require__.d(__webpack_exports__, "r", function() { return isIframe; });
+/* concated harmony reexport isAncestor */__webpack_require__.d(__webpack_exports__, "r", function() { return isAncestor; });
+/* concated harmony reexport isPopup */__webpack_require__.d(__webpack_exports__, "u", function() { return isPopup; });
+/* concated harmony reexport isIframe */__webpack_require__.d(__webpack_exports__, "s", function() { return isIframe; });
 /* unused concated harmony import isFullpage */
-/* concated harmony reexport getDistanceFromTop */__webpack_require__.d(__webpack_exports__, "f", function() { return getDistanceFromTop; });
+/* concated harmony reexport getDistanceFromTop */__webpack_require__.d(__webpack_exports__, "g", function() { return getDistanceFromTop; });
 /* unused concated harmony import getNthParent */
-/* concated harmony reexport getNthParentFromTop */__webpack_require__.d(__webpack_exports__, "k", function() { return getNthParentFromTop; });
-/* concated harmony reexport isSameTopWindow */__webpack_require__.d(__webpack_exports__, "v", function() { return isSameTopWindow; });
-/* concated harmony reexport matchDomain */__webpack_require__.d(__webpack_exports__, "A", function() { return matchDomain; });
-/* concated harmony reexport stringifyDomainPattern */__webpack_require__.d(__webpack_exports__, "C", function() { return stringifyDomainPattern; });
-/* concated harmony reexport getDomainFromUrl */__webpack_require__.d(__webpack_exports__, "h", function() { return getDomainFromUrl; });
-/* concated harmony reexport onCloseWindow */__webpack_require__.d(__webpack_exports__, "B", function() { return onCloseWindow; });
-/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "x", function() { return isWindow; });
+/* concated harmony reexport getNthParentFromTop */__webpack_require__.d(__webpack_exports__, "l", function() { return getNthParentFromTop; });
+/* concated harmony reexport isSameTopWindow */__webpack_require__.d(__webpack_exports__, "w", function() { return isSameTopWindow; });
+/* concated harmony reexport matchDomain */__webpack_require__.d(__webpack_exports__, "B", function() { return matchDomain; });
+/* concated harmony reexport stringifyDomainPattern */__webpack_require__.d(__webpack_exports__, "D", function() { return stringifyDomainPattern; });
+/* concated harmony reexport getDomainFromUrl */__webpack_require__.d(__webpack_exports__, "i", function() { return getDomainFromUrl; });
+/* concated harmony reexport onCloseWindow */__webpack_require__.d(__webpack_exports__, "C", function() { return onCloseWindow; });
+/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "y", function() { return isWindow; });
 /* unused concated harmony import isBrowser */
 /* unused concated harmony import isCurrentDomain */
 /* unused concated harmony import isMockDomain */
@@ -7525,12 +7531,12 @@ SEND_MESSAGE_STRATEGIES[conf["b" /* CONSTANTS */].SEND_STRATEGIES.POST_MESSAGE] 
         return conf["b" /* CONSTANTS */].WILDCARD;
       }
 
-      if (!Object(src["p" /* isActuallySameDomain */])(win)) {
+      if (!Object(src["q" /* isActuallySameDomain */])(win)) {
         throw new Error("Attempting to send messsage to mock domain " + dom + ", but window is actually cross-domain");
       } // $FlowFixMe
 
 
-      return Object(src["c" /* getActualDomain */])(win);
+      return Object(src["d" /* getActualDomain */])(win);
     }
 
     if (dom.indexOf(conf["b" /* CONSTANTS */].FILE_PROTOCOL) === 0) {
@@ -7555,11 +7561,11 @@ if (true) {
       return;
     }
 
-    if (Object(src["u" /* isSameDomain */])(win)) {
+    if (Object(src["v" /* isSameDomain */])(win)) {
       throw new Error("Post message through bridge disabled between same domain windows");
     }
 
-    if (Object(src["v" /* isSameTopWindow */])(window, win) !== false) {
+    if (Object(src["w" /* isSameTopWindow */])(window, win) !== false) {
       throw new Error("Can only use bridge to communicate between two different windows, not between frames");
     }
 
@@ -7573,11 +7579,11 @@ if (true) {
       return;
     }
 
-    if (!Object(src["u" /* isSameDomain */])(win)) {
+    if (!Object(src["v" /* isSameDomain */])(win)) {
       throw new Error("Post message through global disabled between different domain windows");
     }
 
-    if (Object(src["v" /* isSameTopWindow */])(window, win) !== false) {
+    if (Object(src["w" /* isSameTopWindow */])(window, win) !== false) {
       throw new Error("Can only use global to communicate between two different windows, not between frames");
     } // $FlowFixMe
 
@@ -7590,7 +7596,7 @@ if (true) {
 
     return foreignGlobal.receiveMessage({
       source: window,
-      origin: Object(src["g" /* getDomain */])(),
+      origin: Object(src["h" /* getDomain */])(),
       data: serializedMessage
     });
   };
@@ -7610,7 +7616,7 @@ function buildMessage(win, message, options) {
 
   var id = Object(lib["q" /* uniqueID */])();
   var type = Object(lib["c" /* getWindowType */])();
-  var sourceDomain = Object(src["g" /* getDomain */])(window);
+  var sourceDomain = Object(src["h" /* getDomain */])(window);
   return Object(esm_extends["a" /* default */])({}, message, {}, options, {
     sourceDomain: sourceDomain,
     id: message.id || id,
@@ -7634,7 +7640,7 @@ function sendMessage(win, message, domain) {
       throw new Error('Attemping to send message to self');
     }
 
-    if (Object(src["y" /* isWindowClosed */])(win)) {
+    if (Object(src["z" /* isWindowClosed */])(win)) {
       throw new Error('Window is closed');
     }
 
@@ -7741,7 +7747,7 @@ function getRequestListener(_ref) {
               regex = _winListeners$__DOMAI3.regex,
               listener = _winListeners$__DOMAI3.listener;
 
-          if (Object(src["A" /* matchDomain */])(regex, domain)) {
+          if (Object(src["B" /* matchDomain */])(regex, domain)) {
             return listener;
           }
         }
@@ -7906,7 +7912,7 @@ var RECEIVE_MESSAGE_TYPES = (_RECEIVE_MESSAGE_TYPE = {}, _RECEIVE_MESSAGE_TYPE[c
     throw new Error("No handler found for post message ack for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
   }
 
-  if (!Object(src["A" /* matchDomain */])(options.domain, origin)) {
+  if (!Object(src["B" /* matchDomain */])(options.domain, origin)) {
     throw new Error("Ack origin " + origin + " does not match domain " + options.domain.toString());
   }
 
@@ -7919,7 +7925,7 @@ var RECEIVE_MESSAGE_TYPES = (_RECEIVE_MESSAGE_TYPE = {}, _RECEIVE_MESSAGE_TYPE[c
   });
 
   function respond(data) {
-    if (message.fireAndForget || Object(src["y" /* isWindowClosed */])(source)) {
+    if (message.fireAndForget || Object(src["z" /* isWindowClosed */])(source)) {
       return zalgo_promise_src["a" /* ZalgoPromise */].resolve();
     }
 
@@ -7937,7 +7943,7 @@ var RECEIVE_MESSAGE_TYPES = (_RECEIVE_MESSAGE_TYPE = {}, _RECEIVE_MESSAGE_TYPE[c
       throw new Error("No handler found for post message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
     }
 
-    if (!Object(src["A" /* matchDomain */])(options.domain, origin)) {
+    if (!Object(src["B" /* matchDomain */])(options.domain, origin)) {
       throw new Error("Request origin " + origin + " does not match domain " + options.domain.toString());
     }
 
@@ -7981,8 +7987,8 @@ var RECEIVE_MESSAGE_TYPES = (_RECEIVE_MESSAGE_TYPE = {}, _RECEIVE_MESSAGE_TYPE[c
     throw new Error("No handler found for post message response for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
   }
 
-  if (!Object(src["A" /* matchDomain */])(options.domain, origin)) {
-    throw new Error("Response origin " + origin + " does not match domain " + Object(src["C" /* stringifyDomainPattern */])(options.domain));
+  if (!Object(src["B" /* matchDomain */])(options.domain, origin)) {
+    throw new Error("Response origin " + origin + " does not match domain " + Object(src["D" /* stringifyDomainPattern */])(options.domain));
   }
 
   deleteResponseListener(message.hash);
@@ -8085,7 +8091,7 @@ function receiveMessage(event) {
 
   if (false) { var level; }
 
-  if (Object(src["y" /* isWindowClosed */])(source) && !message.fireAndForget) {
+  if (Object(src["z" /* isWindowClosed */])(source) && !message.fireAndForget) {
     return;
   }
 
@@ -8189,7 +8195,7 @@ function request(options) {
     domain = options.domain || conf["b" /* CONSTANTS */].WILDCARD;
     var hash = options.name + "_" + Object(lib["q" /* uniqueID */])();
 
-    if (Object(src["y" /* isWindowClosed */])(win)) {
+    if (Object(src["z" /* isWindowClosed */])(win)) {
       throw new Error('Target window is closed');
     }
 
@@ -8202,7 +8208,7 @@ function request(options) {
     }
 
     var requestPromise = zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-      if (Object(src["q" /* isAncestor */])(window, win)) {
+      if (Object(src["r" /* isAncestor */])(window, win)) {
         return Object(lib["k" /* onChildWindowReady */])(win, options.timeout || conf["a" /* CONFIG */].CHILD_WINDOW_TIMEOUT);
       }
     }).then(function (_temp) {
@@ -8217,7 +8223,7 @@ function request(options) {
           origin = _ref2.origin;
 
       if (Object(lib["e" /* isRegex */])(domain)) {
-        if (!Object(src["A" /* matchDomain */])(domain, origin)) {
+        if (!Object(src["B" /* matchDomain */])(domain, origin)) {
           throw new Error("Remote window domain " + origin + " does not match regex: " + domain.toString());
         }
 
@@ -8274,7 +8280,7 @@ function request(options) {
             return;
           }
 
-          if (Object(src["y" /* isWindowClosed */])(win)) {
+          if (Object(src["z" /* isWindowClosed */])(win)) {
             if (!responseListener.ack) {
               return reject(new Error("Window closed for " + name + " before ack"));
             }
@@ -8297,9 +8303,9 @@ function request(options) {
 
             cycleTime = Math.min(resTimeout, 2000);
           } else if (ackTimeout === 0) {
-            return reject(new Error("No ack for postMessage " + name + " in " + Object(src["g" /* getDomain */])() + " in " + conf["a" /* CONFIG */].ACK_TIMEOUT + "ms"));
+            return reject(new Error("No ack for postMessage " + name + " in " + Object(src["h" /* getDomain */])() + " in " + conf["a" /* CONFIG */].ACK_TIMEOUT + "ms"));
           } else if (resTimeout === 0) {
-            return reject(new Error("No response for postMessage " + name + " in " + Object(src["g" /* getDomain */])() + " in " + (options.timeout || conf["a" /* CONFIG */].RES_TIMEOUT) + "ms"));
+            return reject(new Error("No response for postMessage " + name + " in " + Object(src["h" /* getDomain */])() + " in " + (options.timeout || conf["a" /* CONFIG */].RES_TIMEOUT) + "ms"));
           }
 
           setTimeout(cycle, cycleTime);
@@ -8328,7 +8334,7 @@ function _send(window, name, data, options) {
 
 
 function sendToParent(name, data, options) {
-  var win = Object(src["e" /* getAncestor */])();
+  var win = Object(src["f" /* getAncestor */])();
 
   if (!win) {
     return new zalgo_promise_src["a" /* ZalgoPromise */](function (resolve, reject) {
@@ -8399,7 +8405,7 @@ function listen(options) {
 
   if (listenerOptions.window && options.errorOnClose) {
     var interval = Object(lib["m" /* safeInterval */])(function () {
-      if (win && typeof win === 'object' && Object(src["y" /* isWindowClosed */])(win)) {
+      if (win && typeof win === 'object' && Object(src["z" /* isWindowClosed */])(win)) {
         interval.cancel();
         listenerOptions.handleError(new Error('Post message target window is closed'));
       }
@@ -8489,7 +8495,7 @@ function disable() {
 
 
 
-var public_parent = Object(src["e" /* getAncestor */])();
+var public_parent = Object(src["f" /* getAncestor */])();
 // CONCATENATED MODULE: ./node_modules/post-robot/src/clean.js
 
 function cleanUpWindow(win) {
@@ -8766,11 +8772,11 @@ var util_weakMapMemoize = function weakMapMemoize(method) {
   };
 };
 function getWindowType() {
-  if (Object(cross_domain_utils_src["t" /* isPopup */])()) {
+  if (Object(cross_domain_utils_src["u" /* isPopup */])()) {
     return conf["b" /* CONSTANTS */].WINDOW_TYPES.POPUP;
   }
 
-  if (Object(cross_domain_utils_src["r" /* isIframe */])()) {
+  if (Object(cross_domain_utils_src["s" /* isIframe */])()) {
     return conf["b" /* CONSTANTS */].WINDOW_TYPES.IFRAME;
   }
 
@@ -8828,7 +8834,7 @@ function jsonParse(item) {
   return JSON.parse(item);
 }
 function needsGlobalMessagingForBrowser() {
-  if (Object(cross_domain_utils_src["o" /* getUserAgent */])(window).match(/MSIE|trident|edge\/12|edge\/13/i)) {
+  if (Object(cross_domain_utils_src["p" /* getUserAgent */])(window).match(/MSIE|trident|edge\/12|edge\/13/i)) {
     return true;
   }
 
@@ -8871,7 +8877,7 @@ var listenForMethods = once(function () {
       throw new Error("Could not find method with id: " + data.id);
     }
 
-    if (!Object(cross_domain_utils_src["A" /* matchDomain */])(meth.domain, origin)) {
+    if (!Object(cross_domain_utils_src["B" /* matchDomain */])(meth.domain, origin)) {
       throw new Error("Method domain " + meth.domain + " does not match origin " + origin);
     }
 
@@ -9098,7 +9104,7 @@ function initOnReady() {
     });
     global["a" /* global */].readyPromises.set(source, promise);
   });
-  var parent = Object(cross_domain_utils_src["e" /* getAncestor */])();
+  var parent = Object(cross_domain_utils_src["f" /* getAncestor */])();
 
   if (parent) {
     sayHello(parent).catch(noop);
@@ -10795,7 +10801,7 @@ function popup(url, options) {
     throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
   }
 
-  if (Object(cross_domain_utils_src["y" /* isWindowClosed */])(win)) {
+  if (Object(cross_domain_utils_src["z" /* isWindowClosed */])(win)) {
     var err = new PopupOpenError("Can not open popup window - blocked");
     throw err;
   }
@@ -10863,7 +10869,7 @@ function awaitFrameLoad(frame) {
 
   var promise = new src["a" /* ZalgoPromise */](function (resolve, reject) {
     frame.addEventListener('load', function () {
-      Object(cross_domain_utils_src["z" /* linkFrameWindow */])(frame);
+      Object(cross_domain_utils_src["A" /* linkFrameWindow */])(frame);
       resolve(frame);
     });
     frame.addEventListener('error', function (err) {
@@ -12674,13 +12680,13 @@ var Checkout = Object(zoid_src["c" /* create */])({
     if (Object(lib["z" /* isDevice */])()) {
       return {
         width: '100%',
-        height: '535px'
+        height: '590px'
       };
     }
 
     return {
-      width: '450px',
-      height: '535px'
+      width: '500px',
+      height: '590px'
     };
   }
 
@@ -12847,7 +12853,7 @@ function () {
     for (var i = 0; i < keys.length; i++) {
       var value = keys[i];
 
-      if (Object(src["x" /* isWindow */])(value) && Object(src["y" /* isWindowClosed */])(value)) {
+      if (Object(src["y" /* isWindow */])(value) && Object(src["z" /* isWindowClosed */])(value)) {
         if (weakmap) {
           try {
             weakmap.delete(value);
@@ -12863,7 +12869,7 @@ function () {
   };
 
   _proto.isSafeToReadWrite = function isSafeToReadWrite(key) {
-    if (Object(src["x" /* isWindow */])(key)) {
+    if (Object(src["y" /* isWindow */])(key)) {
       return false;
     }
 
@@ -13610,14 +13616,20 @@ var _PAYU_LOGO_COLORS;
 
 
 var PAYU_LOGO_COLORS = (_PAYU_LOGO_COLORS = {}, _PAYU_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].DEFAULT] = {
-  primary: '#B2D235',
-  secondary: '#7CAD0B'
+  primary: '#A6d71c',
+  secondary: '#3C932A',
+  tertiary: '#6CC62E',
+  quaternary: '#278D30'
 }, _PAYU_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = {
-  primary: '#B2D235',
-  secondary: '#7CAD0B'
+  primary: '#FFFFFF',
+  secondary: '#FFFFFF',
+  tertiary: '#000000',
+  quaternary: '#FFFFFF'
 }, _PAYU_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].BLACK] = {
-  primary: '#B2D235',
-  secondary: '#7CAD0B'
+  primary: '#A6d71c',
+  secondary: '#3C932A',
+  tertiary: '#6CC62E',
+  quaternary: '#278D30'
 }, _PAYU_LOGO_COLORS);
 function payuLogo(_ref) {
   var logoColor = _ref.logoColor;
@@ -13628,77 +13640,67 @@ function payuLogo(_ref) {
 
   var _PAYU_LOGO_COLORS$log = PAYU_LOGO_COLORS[logoColor],
       primary = _PAYU_LOGO_COLORS$log.primary,
-      secondary = _PAYU_LOGO_COLORS$log.secondary;
+      secondary = _PAYU_LOGO_COLORS$log.secondary,
+      tertiary = _PAYU_LOGO_COLORS$log.tertiary,
+      quaternary = _PAYU_LOGO_COLORS$log.quaternary;
   return Object(jsx["c" /* jsxToHTML */])("svg", {
-    width: "64px",
-    height: "32px",
-    viewBox: "0 0 64 32",
     version: "1.1",
-    xmlns: "http://www.w3.org/2000/svg"
-  }, Object(jsx["c" /* jsxToHTML */])("defs", null, Object(jsx["c" /* jsxToHTML */])("path", {
-    d: "M3.16476404,0.248177778 C0.975820225,0.248177778 0,1.21315556 0,3.37777778 L0,3.37777778 L0,17.2807111 C0,18.1166222 0.271101124,18.3850667 1.1171236,18.3850667 L1.1171236,18.3850667 L1.39361798,18.3850667 C2.2392809,18.3850667 2.51074157,18.1166222 2.51074157,17.2807111 L2.51074157,17.2807111 L2.51074157,11.8716444 L7.26076404,11.8716444 C11.4782921,11.8716444 13.4421573,10.0248889 13.4421573,6.06008889 L13.4421573,6.06008889 C13.4421573,2.09493333 11.4782921,0.248177778 7.26076404,0.248177778 L7.26076404,0.248177778 L3.16476404,0.248177778 Z M2.51074157,3.70631111 C2.51074157,2.89564444 2.81564045,2.59413333 3.63541573,2.59413333 L3.63541573,2.59413333 L7.26076404,2.59413333 C9.58561798,2.59413333 10.9317753,3.16124444 10.9317753,6.06008889 L10.9317753,6.06008889 C10.9317753,8.32568889 10.3467865,9.55271111 7.26076404,9.55271111 L7.26076404,9.55271111 L2.51074157,9.55271111 L2.51074157,3.70631111 Z M54.168809,0.251733333 C52.4566292,0.251733333 51.8195056,0.530844444 51.8195056,2.07324444 L51.8195056,2.07324444 L51.8195056,5.68213333 C51.8191461,5.68995556 51.8187865,5.69742222 51.8187865,5.70524444 L51.8187865,5.70524444 L51.8187865,6.496 C51.8180674,6.52373333 51.8162697,6.54897778 51.8162697,6.57706667 L51.8162697,6.57706667 L51.8162697,11.6199111 C51.8162697,12.2360889 51.6961798,12.7264 51.448809,13.1072 L51.448809,13.1072 C50.9817528,13.8183111 50.0577079,14.1418667 48.5788764,14.1436444 L48.5788764,14.1436444 C47.100764,14.1418667 46.1763596,13.8190222 45.7096629,13.1079111 L45.7096629,13.1079111 C45.4612135,12.7267556 45.340764,12.2364444 45.340764,11.6199111 L45.340764,11.6199111 L45.340764,6.57706667 C45.340764,6.54897778 45.3393258,6.52373333 45.3389663,6.496 L45.3389663,6.496 L45.3389663,5.70524444 C45.3389663,5.69742222 45.3378876,5.68995556 45.3375281,5.68213333 L45.3375281,5.68213333 L45.3375281,2.07324444 C45.3375281,0.530844444 44.700764,0.251733333 42.9885843,0.251733333 L42.9885843,0.251733333 L42.449618,0.251733333 C40.7370787,0.251733333 40.1006742,0.530844444 40.1006742,2.07324444 L40.1006742,2.07324444 L40.1006742,5.70524444 L40.1006742,9.52604444 L40.1006742,11.6199111 C40.1006742,13.1555556 40.4508764,14.4561778 41.127191,15.504 L41.127191,15.504 C42.4345169,17.5352889 44.9661124,18.6172444 48.565573,18.6172444 L48.565573,18.6172444 C48.5698876,18.6172444 48.5742022,18.6168889 48.5788764,18.6168889 L48.5788764,18.6168889 C48.5828315,18.6168889 48.5875056,18.6172444 48.5918202,18.6172444 L48.5918202,18.6172444 C52.1909213,18.6172444 54.7228764,17.5352889 56.0294831,15.504 L56.0294831,15.504 C56.7065169,14.4561778 57.0567191,13.1555556 57.0567191,11.6199111 L57.0567191,11.6199111 L57.0567191,9.52604444 L57.0567191,5.70524444 L57.0567191,2.07324444 C57.0567191,0.530844444 56.4203146,0.251733333 54.7077753,0.251733333 L54.7077753,0.251733333 L54.168809,0.251733333 Z M15.6911461,4.51235556 C15.008,4.6592 14.7225169,4.8448 14.7225169,5.6128 L14.7225169,5.6128 L14.7225169,5.83217778 C14.7225169,6.13297778 14.7674607,6.34168889 14.8641798,6.48853333 L14.8641798,6.48853333 C14.9770787,6.6592 15.1582921,6.74595556 15.4035056,6.74595556 L15.4035056,6.74595556 C15.5228764,6.74595556 15.6616629,6.72604444 15.8270562,6.68515556 L15.8270562,6.68515556 C16.2171685,6.5888 17.4640899,6.38933333 18.8285843,6.38933333 L18.8285843,6.38933333 C21.2782022,6.38933333 22.2777528,7.06026667 22.2777528,8.70577778 L22.2777528,8.70577778 L22.2777528,10.1731556 L19.1881348,10.1731556 C15.2165393,10.1731556 13.3662921,11.4983111 13.3662921,14.3431111 L13.3662921,14.3431111 C13.3662921,17.1029333 15.2765843,18.6222222 18.7451685,18.6222222 L18.7451685,18.6222222 C22.8670562,18.6222222 24.7054382,17.2352 24.7054382,14.1244444 L24.7054382,14.1244444 L24.7054382,8.70577778 C24.7054382,5.69742222 22.7469663,4.23466667 18.7178427,4.23466667 L18.7178427,4.23466667 C17.0941124,4.23466667 16.0773034,4.43626667 15.6911461,4.51235556 L15.6911461,4.51235556 Z M15.7939775,14.3431111 C15.7939775,12.7552 16.753618,12.1365333 19.2158202,12.1365333 L19.2158202,12.1365333 L22.2777528,12.1365333 L22.2777528,14.0419556 C22.2777528,15.5960889 21.6952809,16.4952889 18.7178427,16.4952889 L18.7178427,16.4952889 C16.750382,16.4952889 15.7939775,15.7916444 15.7939775,14.3431111 L15.7939775,14.3431111 Z M37.2037753,4.63573333 C36.3775281,4.63573333 36.0532135,4.88746667 35.8702022,5.67217778 L35.8702022,5.67217778 L33.5737528,15.1132444 C33.2868315,16.2734222 32.8841348,16.4856889 32.1948764,16.4856889 L32.1948764,16.4856889 C31.3510112,16.4856889 31.0130337,16.2862222 30.6764944,15.1089778 L30.6764944,15.1089778 L28.0751461,5.6672 C27.8601348,4.87644444 27.5422921,4.63573333 26.7149663,4.63573333 L26.7149663,4.63573333 L26.4938427,4.63573333 C26.1601798,4.63573333 25.8275955,4.6656 25.656809,4.88604444 L25.656809,4.88604444 C25.486382,5.10648889 25.5439101,5.43573333 25.632,5.75857778 L25.632,5.75857778 L28.2610337,15.2814222 C28.7539775,17.1036444 29.3404045,18.6126222 31.530427,18.6126222 L31.530427,18.6126222 C31.9395955,18.6126222 32.3178427,18.5564444 32.6320899,18.4515556 L32.6320899,18.4515556 C31.968,20.5176889 31.2920449,21.4289778 29.2994157,21.6316444 L29.2994157,21.6316444 C28.8949213,21.6647111 28.6320899,21.7216 28.4853933,21.9160889 L28.4853933,21.9160889 C28.3333034,22.1176889 28.3678202,22.4056889 28.4224719,22.6631111 L28.4224719,22.6631111 L28.4774831,22.9073778 C28.5961348,23.4723556 28.7985618,23.8222222 29.4396404,23.8222222 L29.4396404,23.8222222 C29.5068764,23.8222222 29.5795056,23.8190222 29.6575281,23.8122667 L29.6575281,23.8122667 C32.632809,23.6195556 34.2274157,22.0352 35.1604494,18.3438222 L35.1604494,18.3438222 L38.3442697,5.75182222 C38.4194157,5.42897778 38.4650787,5.09973333 38.2903371,4.88284444 L38.2903371,4.88284444 C38.1155955,4.6656 37.784809,4.63573333 37.4529438,4.63573333 L37.4529438,4.63573333 L37.2037753,4.63573333 Z",
-    id: "path-1"
-  }), Object(jsx["c" /* jsxToHTML */])("linearGradient", {
-    x1: "50.000037%",
-    y1: "21.1036869%",
-    x2: "50.000037%",
-    y2: "122.837593%",
-    id: "linearGradient-3"
+    id: "Layer_1",
+    xmlns: "http://www.w3.org/2000/svg",
+    x: "0px",
+    y: "0px",
+    viewBox: "0 0 385.6 192.4",
+    width: "70",
+    height: "32"
+  }, Object(jsx["c" /* jsxToHTML */])("style", {
+    type: "text/css"
+  }), Object(jsx["c" /* jsxToHTML */])("g", null, Object(jsx["c" /* jsxToHTML */])("path", {
+    fill: primary,
+    d: "M382.2,40.3l-17.1,0c-1.9,0-3.4-1.5-3.4-3.4l0-17.3c0-1.9,1.5-3.4,3.4-3.4l17.1,0c1.9,0,3.4,1.5,3.4,3.4 l0,17.3C385.6,38.8,384.1,40.3,382.2,40.3"
+  }), Object(jsx["c" /* jsxToHTML */])("path", {
+    fill: primary,
+    d: "M359.5,16.3l-11.6,0c-1.3,0-2.3-1-2.3-2.3l0-11.7c0-1.3,1-2.3,2.3-2.3l11.6,0c1.3,0,2.3,1,2.3,2.3l0,11.7 C361.8,15.3,360.8,16.3,359.5,16.3"
+  }), Object(jsx["c" /* jsxToHTML */])("g", null, Object(jsx["c" /* jsxToHTML */])("g", null, Object(jsx["c" /* jsxToHTML */])("path", {
+    fill: primary,
+    d: "M178.3,192.4c-3.9,0-5.1-2.1-5.8-5.6l-0.3-1.5c-0.3-1.6-0.5-3.3,0.4-4.6c0.9-1.2,2.5-1.5,4.9-1.7 c12.1-1.2,16.2-6.8,20.2-19.5c-1.9,0.6-4.2,1-6.7,1c-13.3,0-16.8-9.2-19.8-20.4l-15.9-58.3c-0.5-2-0.9-4,0.2-5.3 c1-1.3,3-1.5,5.1-1.5h1.3c5,0,6.9,1.5,8.2,6.3l15.8,57.8c2,7.2,4.1,8.4,9.2,8.4c4.2,0,6.6-1.3,8.4-8.4l13.9-57.8 c1.1-4.8,3.1-6.3,8.1-6.3h1.5c2,0,4,0.2,5.1,1.5c1.1,1.3,0.8,3.3,0.3,5.3L213,158.9c-5.7,22.6-15.3,32.3-33.3,33.5 C179.2,192.4,178.7,192.4,178.3,192.4 M113.5,160.6c-21,0-32.6-9.3-32.6-26.2c0-17.4,11.2-25.5,35.3-25.5h18.7v-9 c0-10.1-6.1-14.2-20.9-14.2c-8.3,0-15.8,1.2-18.2,1.8c-1,0.2-1.8,0.4-2.6,0.4c-1.5,0-2.6-0.5-3.3-1.6c-0.6-0.9-0.9-2.2-0.9-4 v-1.3c0-4.7,1.7-5.8,5.9-6.7c2.3-0.5,8.5-1.7,18.3-1.7c24.4,0,36.3,9,36.3,27.4V133C149.6,152.1,138.5,160.6,113.5,160.6 M116.4,120.8c-14.9,0-20.7,3.8-20.7,13.5c0,8.9,5.8,13.2,17.7,13.2c18,0,21.6-5.5,21.6-15v-11.7H116.4 M294.3,160.5 L294.3,160.5h-0.2c-21.8,0-37.1-6.6-45.1-19.1c-4.1-6.4-6.2-14.4-6.2-23.8v-12.8V81.4V59.2c0-9.4,3.9-11.2,14.2-11.2h3.3 c10.4,0,14.2,1.7,14.2,11.2v22.1l0,0.1v4.8c0,0.2,0,0.3,0,0.5v30.9c0,3.8,0.7,6.8,2.2,9.1c2.8,4.4,8.4,6.3,17.4,6.3 c9,0,14.6-2,17.4-6.3c1.5-2.3,2.2-5.3,2.2-9.1V86.8c0-0.2,0-0.3,0-0.5v-4.8l0-0.1V59.2c0-9.4,3.9-11.2,14.2-11.2h1.7l0,20 c0,2.5,2,4.5,4.5,4.5l11.3,0v8.8v23.4v12.8c0,9.4-2.1,17.4-6.2,23.8C331.5,153.9,316.1,160.5,294.3,160.5 M8.4,159.1H6.8 c-5.1,0-6.8-1.6-6.8-6.8V67.2C0,53.9,5.9,48,19.2,48H44c25.5,0,37.4,11.3,37.4,35.6c0,24.3-11.9,35.6-37.4,35.6H15.2v33.1 C15.2,157.5,13.6,159.1,8.4,159.1 M22,62.4c-5,0-6.8,1.8-6.8,6.8V105H44c18.7,0,22.2-7.5,22.2-21.4c0-17.8-8.2-21.2-22.2-21.2 H22"
+  }), Object(jsx["c" /* jsxToHTML */])("g", null, Object(jsx["c" /* jsxToHTML */])("linearGradient", {
+    id: "SVGID_3_",
+    gradientUnits: "userSpaceOnUse",
+    x1: "-487.0462",
+    y1: "484.3289",
+    x2: "-486.0462",
+    y2: "484.3289",
+    gradientTransform: "matrix(0 146.8947 146.8947 0 -70972.5312 71622.9766)"
   }, Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#B1D134",
-    offset: "0%"
+    offset: "0",
+    "stop-color": primary
   }), Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#3B9138",
-    offset: "100%"
-  }))), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Page-1",
-    stroke: "none",
-    "stroke-width": "1",
-    fill: "none",
-    "fill-rule": "evenodd"
-  }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "SPB_&_AltPay_NewAssets",
-    transform: "translate(-228.000000, -536.000000)"
-  }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-14-Copy",
-    transform: "translate(228.000000, 536.000000)"
-  }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-5",
-    transform: "translate(56.808989, 0.124978)",
-    fill: primary
-  }, Object(jsx["c" /* jsxToHTML */])("path", {
-    d: "M6.2990382,6.81365333 L3.48267865,6.81258667 C3.17562247,6.81258667 2.92681348,6.56618667 2.92681348,6.26218667 L2.92789213,3.44298667 C2.92789213,3.13898667 3.17706067,2.89294222 3.48411685,2.89329739 L6.3004764,2.89400889 C6.60753258,2.89436444 6.85670112,3.14040889 6.85634196,3.44405333 L6.85562247,6.26360889 C6.85526292,6.56760889 6.60609438,6.81365333 6.2990382,6.81365333",
-    id: "Fill-1"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
-    d: "M2.54622921,2.89315612 L0.633420225,2.8928 C0.424880899,2.89244444 0.255532584,2.72533333 0.255891563,2.51875556 L0.256251685,0.604088889 C0.256611236,0.397511111 0.4256,0.230755556 0.634498876,0.230755556 L2.54694831,0.231466667 C2.75584719,0.231466667 2.92483596,0.398577778 2.92483596,0.6048 L2.92411685,2.51982222 C2.92411685,2.72604444 2.75476854,2.89351111 2.54622921,2.89315612",
-    id: "Fill-3"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-8",
-    transform: "translate(0.000000, 7.947200)"
-  }, Object(jsx["c" /* jsxToHTML */])("mask", {
-    id: "mask-2",
-    fill: "white"
-  }, Object(jsx["c" /* jsxToHTML */])("use", {
-    href: "#path-1"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-7"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
-    d: "M3.16476404,0.248177778 C0.975820225,0.248177778 0,1.21315556 0,3.37777778 L0,3.37777778 L0,17.2807111 C0,18.1166222 0.271101124,18.3850667 1.1171236,18.3850667 L1.1171236,18.3850667 L1.39361798,18.3850667 C2.2392809,18.3850667 2.51074157,18.1166222 2.51074157,17.2807111 L2.51074157,17.2807111 L2.51074157,11.8716444 L7.26076404,11.8716444 C11.4782921,11.8716444 13.4421573,10.0248889 13.4421573,6.06008889 L13.4421573,6.06008889 C13.4421573,2.09493333 11.4782921,0.248177778 7.26076404,0.248177778 L7.26076404,0.248177778 L3.16476404,0.248177778 Z M2.51074157,3.70631111 C2.51074157,2.89564444 2.81564045,2.59413333 3.63541573,2.59413333 L3.63541573,2.59413333 L7.26076404,2.59413333 C9.58561798,2.59413333 10.9317753,3.16124444 10.9317753,6.06008889 L10.9317753,6.06008889 C10.9317753,8.32568889 10.3467865,9.55271111 7.26076404,9.55271111 L7.26076404,9.55271111 L2.51074157,9.55271111 L2.51074157,3.70631111 Z M54.168809,0.251733333 C52.4566292,0.251733333 51.8195056,0.530844444 51.8195056,2.07324444 L51.8195056,2.07324444 L51.8195056,5.68213333 C51.8191461,5.68995556 51.8187865,5.69742222 51.8187865,5.70524444 L51.8187865,5.70524444 L51.8187865,6.496 C51.8180674,6.52373333 51.8162697,6.54897778 51.8162697,6.57706667 L51.8162697,6.57706667 L51.8162697,11.6199111 C51.8162697,12.2360889 51.6961798,12.7264 51.448809,13.1072 L51.448809,13.1072 C50.9817528,13.8183111 50.0577079,14.1418667 48.5788764,14.1436444 L48.5788764,14.1436444 C47.100764,14.1418667 46.1763596,13.8190222 45.7096629,13.1079111 L45.7096629,13.1079111 C45.4612135,12.7267556 45.340764,12.2364444 45.340764,11.6199111 L45.340764,11.6199111 L45.340764,6.57706667 C45.340764,6.54897778 45.3393258,6.52373333 45.3389663,6.496 L45.3389663,6.496 L45.3389663,5.70524444 C45.3389663,5.69742222 45.3378876,5.68995556 45.3375281,5.68213333 L45.3375281,5.68213333 L45.3375281,2.07324444 C45.3375281,0.530844444 44.700764,0.251733333 42.9885843,0.251733333 L42.9885843,0.251733333 L42.449618,0.251733333 C40.7370787,0.251733333 40.1006742,0.530844444 40.1006742,2.07324444 L40.1006742,2.07324444 L40.1006742,5.70524444 L40.1006742,9.52604444 L40.1006742,11.6199111 C40.1006742,13.1555556 40.4508764,14.4561778 41.127191,15.504 L41.127191,15.504 C42.4345169,17.5352889 44.9661124,18.6172444 48.565573,18.6172444 L48.565573,18.6172444 C48.5698876,18.6172444 48.5742022,18.6168889 48.5788764,18.6168889 L48.5788764,18.6168889 C48.5828315,18.6168889 48.5875056,18.6172444 48.5918202,18.6172444 L48.5918202,18.6172444 C52.1909213,18.6172444 54.7228764,17.5352889 56.0294831,15.504 L56.0294831,15.504 C56.7065169,14.4561778 57.0567191,13.1555556 57.0567191,11.6199111 L57.0567191,11.6199111 L57.0567191,9.52604444 L57.0567191,5.70524444 L57.0567191,2.07324444 C57.0567191,0.530844444 56.4203146,0.251733333 54.7077753,0.251733333 L54.7077753,0.251733333 L54.168809,0.251733333 Z M15.6911461,4.51235556 C15.008,4.6592 14.7225169,4.8448 14.7225169,5.6128 L14.7225169,5.6128 L14.7225169,5.83217778 C14.7225169,6.13297778 14.7674607,6.34168889 14.8641798,6.48853333 L14.8641798,6.48853333 C14.9770787,6.6592 15.1582921,6.74595556 15.4035056,6.74595556 L15.4035056,6.74595556 C15.5228764,6.74595556 15.6616629,6.72604444 15.8270562,6.68515556 L15.8270562,6.68515556 C16.2171685,6.5888 17.4640899,6.38933333 18.8285843,6.38933333 L18.8285843,6.38933333 C21.2782022,6.38933333 22.2777528,7.06026667 22.2777528,8.70577778 L22.2777528,8.70577778 L22.2777528,10.1731556 L19.1881348,10.1731556 C15.2165393,10.1731556 13.3662921,11.4983111 13.3662921,14.3431111 L13.3662921,14.3431111 C13.3662921,17.1029333 15.2765843,18.6222222 18.7451685,18.6222222 L18.7451685,18.6222222 C22.8670562,18.6222222 24.7054382,17.2352 24.7054382,14.1244444 L24.7054382,14.1244444 L24.7054382,8.70577778 C24.7054382,5.69742222 22.7469663,4.23466667 18.7178427,4.23466667 L18.7178427,4.23466667 C17.0941124,4.23466667 16.0773034,4.43626667 15.6911461,4.51235556 L15.6911461,4.51235556 Z M15.7939775,14.3431111 C15.7939775,12.7552 16.753618,12.1365333 19.2158202,12.1365333 L19.2158202,12.1365333 L22.2777528,12.1365333 L22.2777528,14.0419556 C22.2777528,15.5960889 21.6952809,16.4952889 18.7178427,16.4952889 L18.7178427,16.4952889 C16.750382,16.4952889 15.7939775,15.7916444 15.7939775,14.3431111 L15.7939775,14.3431111 Z M37.2037753,4.63573333 C36.3775281,4.63573333 36.0532135,4.88746667 35.8702022,5.67217778 L35.8702022,5.67217778 L33.5737528,15.1132444 C33.2868315,16.2734222 32.8841348,16.4856889 32.1948764,16.4856889 L32.1948764,16.4856889 C31.3510112,16.4856889 31.0130337,16.2862222 30.6764944,15.1089778 L30.6764944,15.1089778 L28.0751461,5.6672 C27.8601348,4.87644444 27.5422921,4.63573333 26.7149663,4.63573333 L26.7149663,4.63573333 L26.4938427,4.63573333 C26.1601798,4.63573333 25.8275955,4.6656 25.656809,4.88604444 L25.656809,4.88604444 C25.486382,5.10648889 25.5439101,5.43573333 25.632,5.75857778 L25.632,5.75857778 L28.2610337,15.2814222 C28.7539775,17.1036444 29.3404045,18.6126222 31.530427,18.6126222 L31.530427,18.6126222 C31.9395955,18.6126222 32.3178427,18.5564444 32.6320899,18.4515556 L32.6320899,18.4515556 C31.968,20.5176889 31.2920449,21.4289778 29.2994157,21.6316444 L29.2994157,21.6316444 C28.8949213,21.6647111 28.6320899,21.7216 28.4853933,21.9160889 L28.4853933,21.9160889 C28.3333034,22.1176889 28.3678202,22.4056889 28.4224719,22.6631111 L28.4224719,22.6631111 L28.4774831,22.9073778 C28.5961348,23.4723556 28.7985618,23.8222222 29.4396404,23.8222222 L29.4396404,23.8222222 C29.5068764,23.8222222 29.5795056,23.8190222 29.6575281,23.8122667 L29.6575281,23.8122667 C32.632809,23.6195556 34.2274157,22.0352 35.1604494,18.3438222 L35.1604494,18.3438222 L38.3442697,5.75182222 C38.4194157,5.42897778 38.4650787,5.09973333 38.2903371,4.88284444 L38.2903371,4.88284444 C38.1155955,4.6656 37.784809,4.63573333 37.4529438,4.63573333 L37.4529438,4.63573333 L37.2037753,4.63573333 Z",
-    id: "Fill-6",
-    fill: "url(#linearGradient-3)",
-    mask: "url(#mask-2)"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-13",
-    transform: "translate(54.292135, 6.880533)"
-  }, Object(jsx["c" /* jsxToHTML */])("path", {
-    d: "M4.69195506,5.33308444 L0.900134831,5.33166222 C0.486651685,5.33166222 0.151191011,4.99992889 0.151550273,4.59104 L0.152629213,0.794773333 C0.152988764,0.385884444 0.488449438,0.0541511111 0.901932584,0.0545063811 L4.69375281,0.0559288889 C5.10723596,0.0559288889 5.44233708,0.387662222 5.44233708,0.796551111 L5.44089888,4.59281778 C5.44089888,5.00170667 5.1054382,5.33308444 4.69195506,5.33308444",
-    id: "Fill-9",
-    fill: primary
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
-    d: "M0.415640449,1.31818667 L0.152808989,1.31818667 L0.151370787,4.59107556 C0.151370787,4.99996444 0.48647191,5.33169778 0.899955056,5.33169778 L2.76458427,5.33240889 L2.76458427,3.13969778 C2.76458427,1.59729778 2.12782022,1.31818667 0.415640449,1.31818667",
-    id: "Fill-11",
-    fill: secondary
-  }))))));
+    offset: "1",
+    "stop-color": secondary
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
+    style: "fill:url(#SVGID_3_)",
+    d: "M178.3,192.4c-3.9,0-5.1-2.1-5.8-5.6l-0.3-1.5c-0.3-1.6-0.5-3.3,0.4-4.6c0.9-1.2,2.5-1.5,4.9-1.7 c12.1-1.2,16.2-6.8,20.2-19.5c-1.9,0.6-4.2,1-6.7,1c-13.3,0-16.8-9.2-19.8-20.4l-15.9-58.3c-0.5-2-0.9-4,0.2-5.3 c1-1.3,3-1.5,5.1-1.5h1.3c5,0,6.9,1.5,8.2,6.3l15.8,57.8c2,7.2,4.1,8.4,9.2,8.4c4.2,0,6.6-1.3,8.4-8.4l13.9-57.8 c1.1-4.8,3.1-6.3,8.1-6.3h1.5c2,0,4,0.2,5.1,1.5c1.1,1.3,0.8,3.3,0.3,5.3L213,158.9c-5.7,22.6-15.3,32.3-33.3,33.5 C179.2,192.4,178.7,192.4,178.3,192.4 M113.5,160.6c-21,0-32.6-9.3-32.6-26.2c0-17.4,11.2-25.5,35.3-25.5h18.7v-9 c0-10.1-6.1-14.2-20.9-14.2c-8.3,0-15.8,1.2-18.2,1.8c-1,0.2-1.8,0.4-2.6,0.4c-1.5,0-2.6-0.5-3.3-1.6c-0.6-0.9-0.9-2.2-0.9-4 v-1.3c0-4.7,1.7-5.8,5.9-6.7c2.3-0.5,8.5-1.7,18.3-1.7c24.4,0,36.3,9,36.3,27.4V133C149.6,152.1,138.5,160.6,113.5,160.6 M116.4,120.8c-14.9,0-20.7,3.8-20.7,13.5c0,8.9,5.8,13.2,17.7,13.2c18,0,21.6-5.5,21.6-15v-11.7H116.4 M294.3,160.5 L294.3,160.5h-0.2c-21.8,0-37.1-6.6-45.1-19.1c-4.1-6.4-6.2-14.4-6.2-23.8v-12.8V81.4V59.2c0-9.4,3.9-11.2,14.2-11.2h3.3 c10.4,0,14.2,1.7,14.2,11.2v22.1l0,0.1v4.8c0,0.2,0,0.3,0,0.5v30.9c0,3.8,0.7,6.8,2.2,9.1c2.8,4.4,8.4,6.3,17.4,6.3 c9,0,14.6-2,17.4-6.3c1.5-2.3,2.2-5.3,2.2-9.1V86.8c0-0.2,0-0.3,0-0.5v-4.8l0-0.1V59.2c0-9.4,3.9-11.2,14.2-11.2h1.7l0,20 c0,2.5,2,4.5,4.5,4.5l11.3,0v8.8v23.4v12.8c0,9.4-2.1,17.4-6.2,23.8C331.5,153.9,316.1,160.5,294.3,160.5 M8.4,159.1H6.8 c-5.1,0-6.8-1.6-6.8-6.8V67.2C0,53.9,5.9,48,19.2,48H44c25.5,0,37.4,11.3,37.4,35.6c0,24.3-11.9,35.6-37.4,35.6H15.2v33.1 C15.2,157.5,13.6,159.1,8.4,159.1 M22,62.4c-5,0-6.8,1.8-6.8,6.8V105H44c18.7,0,22.2-7.5,22.2-21.4c0-17.8-8.2-21.2-22.2-21.2 H22"
+  })))), Object(jsx["c" /* jsxToHTML */])("path", {
+    fill: primary,
+    d: "M357.3,72.6C357.3,72.6,357.3,72.6,357.3,72.6l-11.7,0V59.2c0-9.4-3.9-11.2-14.2-11.2h-1.6l0-3.2 c0-2.5,2-4.5,4.5-4.5l23,0c2.5,0,4.5,2,4.5,4.5l0,23.3C361.8,70.6,359.8,72.6,357.3,72.6"
+  }), Object(jsx["c" /* jsxToHTML */])("g", null, Object(jsx["c" /* jsxToHTML */])("linearGradient", {
+    id: "SVGID_4_",
+    gradientUnits: "userSpaceOnUse",
+    x1: "-487.0462",
+    y1: "485.4514",
+    x2: "-486.0462",
+    y2: "485.4514",
+    gradientTransform: "matrix(0 146.8947 146.8947 0 -70972.5312 71622.9766)"
+  }, Object(jsx["c" /* jsxToHTML */])("stop", {
+    offset: "0",
+    "stop-color": tertiary
+  }), Object(jsx["c" /* jsxToHTML */])("stop", {
+    offset: "1",
+    "stop-color": quaternary
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
+    style: "fill:url(#SVGID_4_)",
+    d: "M345.6,72.6l-11.3,0c-2.5,0-4.5-2-4.5-4.5l0-20h1.6c10.4,0,14.2,1.7,14.2,11.2V72.6"
+  }))));
 }
 // CONCATENATED MODULE: ./src/resources/fundingLogos/verkkopankki.jsx
 var _VERKKOPANKKI_LOGO_CO;
@@ -13707,14 +13709,26 @@ var _VERKKOPANKKI_LOGO_CO;
 
 
 var VERKKOPANKKI_LOGO_COLORS = (_VERKKOPANKKI_LOGO_CO = {}, _VERKKOPANKKI_LOGO_CO[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = {
-  primary: '#4E4E4E',
-  secondary: '#1B4482'
+  primary: '#FFFFFF',
+  secondary: '#FFFFFF',
+  tertiary: '#000000',
+  quaternary: '#000000',
+  quinary: '#FFFFFF',
+  senary: '#FFFFFF'
 }, _VERKKOPANKKI_LOGO_CO[constants["i" /* BUTTON_LOGO_COLOR */].ANY] = {
-  primary: '#4E4E4E',
-  secondary: '#1B4482'
+  primary: '#FFFFFF',
+  secondary: '#CACCC8',
+  tertiary: '#2D59A1',
+  quaternary: '#1F3364',
+  quinary: '#4E4E4E',
+  senary: '#1B4482'
 }, _VERKKOPANKKI_LOGO_CO[constants["i" /* BUTTON_LOGO_COLOR */].BLACK] = {
-  primary: '#4E4E4E',
-  secondary: '#1B4482'
+  primary: '#FFFFFF',
+  secondary: '#CACCC8',
+  tertiary: '#2D59A1',
+  quaternary: '#1F3364',
+  quinary: '#4E4E4E',
+  senary: '#1B4482'
 }, _VERKKOPANKKI_LOGO_CO);
 function verkkopankkiLogo(_ref) {
   var logoColor = _ref.logoColor;
@@ -13725,7 +13739,11 @@ function verkkopankkiLogo(_ref) {
 
   var _VERKKOPANKKI_LOGO_CO2 = VERKKOPANKKI_LOGO_COLORS[logoColor],
       primary = _VERKKOPANKKI_LOGO_CO2.primary,
-      secondary = _VERKKOPANKKI_LOGO_CO2.secondary;
+      secondary = _VERKKOPANKKI_LOGO_CO2.secondary,
+      tertiary = _VERKKOPANKKI_LOGO_CO2.tertiary,
+      quaternary = _VERKKOPANKKI_LOGO_CO2.quaternary,
+      quinary = _VERKKOPANKKI_LOGO_CO2.quinary,
+      senary = _VERKKOPANKKI_LOGO_CO2.senary;
   return Object(jsx["c" /* jsxToHTML */])("svg", {
     width: "83px",
     height: "32px",
@@ -13742,10 +13760,10 @@ function verkkopankkiLogo(_ref) {
     y2: "97.2445831%",
     id: "linearGradient-3"
   }, Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#FFFFFF",
+    "stop-color": primary,
     offset: "0%"
   }), Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#CACCC8",
+    "stop-color": secondary,
     offset: "100%"
   })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M6.6155,0.206459259 C3.04575,0.206459259 0.125,2.97576296 0.125,6.36041481 L0.125,6.36041481 L0.125,23.6821333 C0.125,27.0670222 3.04575,29.8360889 6.6155,29.8360889 L6.6155,29.8360889 L24.8845,29.8360889 C28.45425,29.8360889 31.375,27.0670222 31.375,23.6821333 L31.375,23.6821333 L31.375,6.36041481 C31.375,2.97576296 28.45425,0.206459259 24.8845,0.206459259 L24.8845,0.206459259 L6.6155,0.206459259 Z",
@@ -13757,10 +13775,10 @@ function verkkopankkiLogo(_ref) {
     y2: "10.5354941%",
     id: "linearGradient-6"
   }, Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#FFFFFF",
+    "stop-color": primary,
     offset: "0%"
   }), Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#CACCC8",
+    "stop-color": secondary,
     offset: "100%"
   })), Object(jsx["c" /* jsxToHTML */])("polygon", {
     id: "path-7",
@@ -13772,10 +13790,10 @@ function verkkopankkiLogo(_ref) {
     y2: "17.635184%",
     id: "linearGradient-9"
   }, Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#2D59A1",
+    "stop-color": tertiary,
     offset: "0%"
   }), Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#1F3364",
+    "stop-color": quaternary,
     offset: "100%"
   })), Object(jsx["c" /* jsxToHTML */])("polygon", {
     id: "path-10",
@@ -13796,295 +13814,226 @@ function verkkopankkiLogo(_ref) {
     id: "path-20",
     points: "0 31.762963 82.90525 31.762963 82.90525 0.228266667 0 0.228266667"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Page-1",
     stroke: "none",
     "stroke-width": "1",
     fill: "none",
     "fill-rule": "evenodd"
   }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "SPB_&_AltPay_NewAssets",
     transform: "translate(-219.000000, -536.000000)"
   }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-70-Copy-2",
     transform: "translate(219.000000, 536.000000)"
   }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-3",
     transform: "translate(0.000000, 0.482844)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
-    id: "mask-2",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-1"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-2"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M6.75,0.0879407407 C3.0375,0.0879407407 0,2.96794074 0,6.48794074 L0,6.48794074 L0,24.5027556 C0,28.0227556 3.0375,30.9027556 6.75,30.9027556 L6.75,30.9027556 L25.75025,30.9027556 C29.4625,30.9027556 32.5,28.0227556 32.5,24.5027556 L32.5,24.5027556 L32.5,6.48794074 C32.5,2.96794074 29.4625,0.0879407407 25.75025,0.0879407407 L25.75025,0.0879407407 L6.75,0.0879407407 Z",
-    id: "Fill-1",
     fill: "url(#linearGradient-3)",
     mask: "url(#mask-2)"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-6",
     transform: "translate(0.500000, 0.956919)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
-    id: "mask-5",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-4"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-5"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M6.6155,0.206459259 C3.04575,0.206459259 0.125,2.97576296 0.125,6.36041481 L0.125,6.36041481 L0.125,23.6821333 C0.125,27.0670222 3.04575,29.8360889 6.6155,29.8360889 L6.6155,29.8360889 L24.8845,29.8360889 C28.45425,29.8360889 31.375,27.0670222 31.375,23.6821333 L31.375,23.6821333 L31.375,6.36041481 C31.375,2.97576296 28.45425,0.206459259 24.8845,0.206459259 L24.8845,0.206459259 L6.6155,0.206459259 Z",
-    id: "Fill-4",
     fill: "url(#linearGradient-6)",
     mask: "url(#mask-5)"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-9",
     transform: "translate(0.500000, 0.956919)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-8",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-7"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-8"
-  }), Object(jsx["c" /* jsxToHTML */])("polygon", {
+  })), Object(jsx["c" /* jsxToHTML */])("polygon", {
     id: "Fill-7",
     fill: "url(#linearGradient-9)",
     mask: "url(#mask-8)",
     points: "6.5 0.206459259 6.5 10.8330667 0.125 10.8330667 0.125 19.129363 6.5 19.129363 6.5 29.8360889 15.25 29.8360889 15.25 19.129363 31.375 19.129363 31.375 10.8330667 15.25 10.8330667 15.25 0.206459259"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-69",
     transform: "translate(0.000000, 0.008770)"
   }, Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M41.86625,0.448142222 L41.4055,0.448142222 C41.353,0.448142222 41.30625,0.480142222 41.2895,0.527312593 L39.593,5.31949037 L37.89675,0.527312593 C37.88,0.480142222 37.83325,0.448142222 37.7805,0.448142222 L37.312,0.448142222 C37.2725,0.448142222 37.2355,0.466157037 37.2125,0.496734815 C37.1895,0.527075556 37.1835,0.566186667 37.196,0.601505185 L39.18525,6.16926815 C39.202,6.21643852 39.24875,6.24820148 39.30125,6.24820148 L39.877,6.24820148 C39.9295,6.24820148 39.97625,6.21643852 39.993,6.16926815 L41.98225,0.601505185 C41.995,0.566186667 41.9887546,0.527075556 41.96575,0.496734815 C41.94275,0.466157037 41.90575,0.448142222 41.86625,0.448142222",
-    id: "Fill-10",
-    fill: primary
+    fill: quinary
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M42.770925,3.87662222 C42.776925,3.51656296 42.812175,3.23591111 42.875675,3.04106667 C42.940925,2.84148148 43.045425,2.7058963 43.194675,2.62648889 C43.352175,2.54305185 43.589175,2.50085926 43.899175,2.50085926 C44.163925,2.50085926 44.371675,2.52764444 44.515675,2.58026667 C44.645425,2.62767407 44.736675,2.70684444 44.795175,2.82228148 C44.858175,2.94625185 44.890175,3.12853333 44.890175,3.3632 C44.890175,3.5634963 44.845925,3.69884444 44.758675,3.76616296 C44.663925,3.83964444 44.498675,3.87662222 44.267925,3.87662222 L42.770925,3.87662222 Z M45.209425,4.16983704 C45.430425,3.99845926 45.542675,3.72681481 45.542675,3.3632 C45.542675,3.01238519 45.483675,2.72865185 45.366925,2.52005926 C45.245425,2.30364444 45.058675,2.14767407 44.811175,2.05641481 C44.578175,1.97084444 44.271425,1.92722963 43.899175,1.92722963 C43.455925,1.92722963 43.099425,1.99312593 42.840175,2.12278519 C42.569425,2.25742222 42.372675,2.48995556 42.255175,2.81374815 C42.143675,3.12047407 42.087175,3.55306667 42.087175,4.09896296 C42.087175,4.64035556 42.140925,5.07105185 42.246925,5.37896296 C42.358175,5.70417778 42.548675,5.94168889 42.813175,6.08462222 C43.068925,6.22305185 43.426425,6.29345185 43.876175,6.29345185 C44.339425,6.29345185 44.832675,6.26500741 45.341925,6.2093037 C45.403675,6.20266667 45.450425,6.15312593 45.450425,6.09386667 L45.450425,5.82838519 C45.450425,5.76438519 45.395425,5.71223704 45.327925,5.71223704 L43.975925,5.71223704 C43.640425,5.71223704 43.385175,5.66767407 43.217675,5.57925926 C43.057675,5.49463704 42.949425,5.36260741 42.886925,5.17511111 C42.826425,4.99377778 42.790425,4.74014815 42.780175,4.41991111 L44.298675,4.41991111 C44.689925,4.41991111 44.996175,4.33576296 45.209425,4.16983704 L45.209425,4.16983704 Z",
-    id: "Fill-12",
-    fill: primary
+    fill: quinary
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M48.8798,1.97755259 C48.7618,1.94413037 48.6158,1.92730074 48.4458,1.92730074 C48.1323,1.92730074 47.8433,2.00196741 47.58705,2.14893037 C47.40355,2.25441185 47.2248,2.39118222 47.0538,2.55734519 L46.97705,2.0716563 C46.96805,2.01476741 46.9163,1.97257481 46.8558,1.97257481 L46.52555,1.97257481 C46.4578,1.97257481 46.40305,2.02472296 46.40305,2.08896 L46.40305,6.1318637 C46.40305,6.19610074 46.4578,6.24824889 46.52555,6.24824889 L46.97105,6.24824889 C47.0388,6.24824889 47.09355,6.19610074 47.09355,6.1318637 L47.09355,3.20730074 C47.32605,2.99610074 47.5388,2.84178963 47.7263,2.74934519 C47.9178,2.65476741 48.1468,2.60712296 48.40705,2.60712296 C48.5178,2.60712296 48.65755,2.62181926 48.82255,2.65073778 C48.85805,2.65713778 48.8953,2.64789333 48.9233,2.62584889 C48.95105,2.60380444 48.96755,2.57109333 48.96755,2.53648593 L48.96755,2.08896 C48.96755,2.03752296 48.9318,1.99224889 48.8798,1.97755259",
-    id: "Fill-14",
-    fill: primary
+    fill: quinary
   }), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-18",
     transform: "translate(49.500000, 0.000000)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-11",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-10"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-17"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M1.301675,3.9731437 L3.039925,2.16715852 C3.072675,2.13302519 3.080925,2.08395852 3.061425,2.04200296 C3.041925,2.00004741 2.997925,1.97278815 2.949425,1.97278815 L2.373425,1.97278815 C2.338925,1.97278815 2.306425,1.98629926 2.283175,2.01047704 L0.797175,3.54979556 L0.797175,0.344343704 C0.797175,0.280343704 0.742425,0.228195556 0.674675,0.228195556 L0.229175,0.228195556 C0.161425,0.228195556 0.106675,0.280343704 0.106675,0.344343704 L0.106675,6.13184 C0.106675,6.19607704 0.161425,6.24822519 0.229175,6.24822519 L0.674675,6.24822519 C0.742425,6.24822519 0.797175,6.19607704 0.797175,6.13184 L0.797175,4.41948444 L2.370925,6.20650667 C2.394175,6.23281778 2.428675,6.24822519 2.464925,6.24822519 L3.049925,6.24822519 C3.097675,6.24822519 3.140675,6.22191407 3.160925,6.18090667 C3.181175,6.14037333 3.174425,6.09178074 3.143925,6.05741037 L1.301675,3.9731437 Z",
-    id: "Fill-16",
-    fill: primary,
+    fill: quinary,
     mask: "url(#mask-11)"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-21",
     transform: "translate(53.250000, 0.000000)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-13",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-12"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-20"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M1.4384,3.9731437 L3.1764,2.16715852 C3.20915,2.13302519 3.2174,2.08395852 3.1979,2.04200296 C3.1784,2.00004741 3.1344,1.97278815 3.0859,1.97278815 L2.51015,1.97278815 C2.47565,1.97278815 2.44315,1.98629926 2.4199,2.01047704 L0.9339,3.54979556 L0.9339,0.344343704 C0.9339,0.280343704 0.87915,0.228195556 0.8114,0.228195556 L0.3659,0.228195556 C0.29815,0.228195556 0.2434,0.280343704 0.2434,0.344343704 L0.2434,6.13184 C0.2434,6.19607704 0.29815,6.24822519 0.3659,6.24822519 L0.8114,6.24822519 C0.87915,6.24822519 0.9339,6.19607704 0.9339,6.13184 L0.9339,4.41948444 L2.5074,6.20650667 C2.53065,6.23281778 2.56515,6.24822519 2.6014,6.24822519 L3.18665,6.24822519 C3.2344,6.24822519 3.2774,6.22191407 3.29765,6.18090667 C3.3179,6.14037333 3.31115,6.09178074 3.28065,6.05741037 L1.4384,3.9731437 Z",
-    id: "Fill-19",
-    fill: primary,
+    fill: quinary,
     mask: "url(#mask-13)"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-24",
     transform: "translate(74.500000, 0.000000)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-15",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-14"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-23"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M1.2404,3.9731437 L2.9784,2.16715852 C3.01115,2.13302519 3.0194,2.08395852 2.9999,2.04200296 C2.9804,2.00004741 2.9364,1.97278815 2.8879,1.97278815 L2.3119,1.97278815 C2.2774,1.97278815 2.2449,1.98629926 2.22165,2.01047704 L0.7359,3.54955852 L0.7359,0.344343704 C0.7359,0.280343704 0.68115,0.228195556 0.6134,0.228195556 L0.1679,0.228195556 C0.10015,0.228195556 0.0454,0.280343704 0.0454,0.344343704 L0.0454,6.13184 C0.0454,6.19607704 0.10015,6.24822519 0.1679,6.24822519 L0.6134,6.24822519 C0.68115,6.24822519 0.7359,6.19607704 0.7359,6.13184 L0.7359,4.41995852 L2.3094,6.20650667 C2.33265,6.23281778 2.36715,6.24822519 2.4034,6.24822519 L2.9884,6.24822519 C3.03615,6.24822519 3.07915,6.22191407 3.09965,6.18090667 C3.11965,6.14037333 3.1129,6.09178074 3.0824,6.05741037 L1.2404,3.9731437 Z",
-    id: "Fill-22",
-    fill: primary,
+    fill: quinary,
     mask: "url(#mask-15)"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-27",
     transform: "translate(78.250000, 0.000000)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-17",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-16"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-26"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M1.377125,3.9731437 L3.115125,2.16715852 C3.147875,2.13302519 3.156125,2.08395852 3.136625,2.04200296 C3.117125,2.00004741 3.073125,1.97278815 3.024625,1.97278815 L2.448625,1.97278815 C2.414125,1.97278815 2.381625,1.98629926 2.358375,2.01047704 L0.872375,3.54979556 L0.872375,0.344343704 C0.872375,0.280343704 0.817625,0.228195556 0.749875,0.228195556 L0.304375,0.228195556 C0.236625,0.228195556 0.181875,0.280343704 0.181875,0.344343704 L0.181875,6.13184 C0.181875,6.19607704 0.236625,6.24822519 0.304375,6.24822519 L0.749875,6.24822519 C0.817625,6.24822519 0.872375,6.19607704 0.872375,6.13184 L0.872375,4.41948444 L2.446125,6.20650667 C2.469375,6.23281778 2.503875,6.24822519 2.540125,6.24822519 L3.125125,6.24822519 C3.172875,6.24822519 3.215875,6.22191407 3.236375,6.18090667 C3.256375,6.14037333 3.249625,6.09178074 3.219125,6.05741037 L1.377125,3.9731437 Z",
-    id: "Fill-25",
-    fill: primary,
+    fill: quinary,
     mask: "url(#mask-17)"
   })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M58.732575,5.68936296 C58.439825,5.68936296 58.209325,5.65238519 58.047825,5.57937778 C57.899325,5.51253333 57.782075,5.37078519 57.699325,5.15863704 C57.610075,4.9298963 57.564825,4.576 57.564825,4.10642963 C57.564825,3.63733333 57.610075,3.28201481 57.699325,3.05042963 C57.781825,2.83685926 57.898825,2.69534815 58.046575,2.63063704 C58.209075,2.55952593 58.439825,2.52373333 58.732575,2.52373333 C59.020325,2.52373333 59.250075,2.55952593 59.415075,2.63063704 C59.565825,2.69582222 59.685075,2.83757037 59.769575,3.05161481 C59.861575,3.28248889 59.907825,3.63733333 59.907825,4.10642963 C59.907825,4.57576296 59.861575,4.92942222 59.769825,5.15768889 C59.685075,5.37007407 59.565075,5.51205926 59.414325,5.57914074 C59.249825,5.65238519 59.020575,5.68936296 58.732575,5.68936296 M59.771825,2.10512593 C59.508075,1.98731852 59.158325,1.92734815 58.732575,1.92734815 C58.306325,1.92734815 57.958325,1.9858963 57.697825,2.1010963 C57.424575,2.22222222 57.215075,2.44835556 57.075325,2.77333333 C56.942075,3.08432593 56.874325,3.5328 56.874325,4.10642963 C56.874325,4.6701037 56.942075,5.11478519 57.075325,5.42814815 C57.214825,5.7554963 57.425075,5.98542222 57.700075,6.11128889 C57.964575,6.23217778 58.311575,6.29357037 58.732575,6.29357037 C59.158575,6.29357037 59.508575,6.23217778 59.772825,6.11128889 C60.048325,5.98518519 60.258325,5.75668148 60.397325,5.43217778 C60.530575,5.12118519 60.598575,4.67508148 60.598575,4.10642963 C60.598575,3.53848889 60.530575,3.09238519 60.397325,2.78068148 C60.258075,2.45617778 60.047825,2.22885926 59.771825,2.10512593",
-    id: "Fill-28",
-    fill: primary
+    fill: quinary
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M64.20645,4.09908148 C64.20645,5.1693037 63.87745,5.68936296 63.19995,5.68936296 C62.8272,5.68936296 62.43195,5.5808 62.0247,5.36651852 L62.0247,2.85771852 C62.2282,2.75958519 62.4192,2.67922963 62.59295,2.61902222 C62.7757,2.5554963 62.97995,2.52373333 63.19995,2.52373333 C63.4832,2.52373333 63.7147,2.64557037 63.90745,2.89682963 C64.10595,3.15591111 64.20645,3.56077037 64.20645,4.09908148 M63.2997,1.92734815 C63.0547,1.92734815 62.78745,1.98115556 62.5057,2.08734815 C62.30445,2.16296296 62.12945,2.24284444 61.9832,2.32533333 L61.92195,2.06364444 C61.9097,2.01031111 61.8597,1.97262222 61.80245,1.97262222 L61.4567,1.97262222 C61.38895,1.97262222 61.3342,2.02477037 61.3342,2.08900741 L61.3342,7.9296 C61.3342,7.99383704 61.38895,8.04574815 61.4567,8.04574815 L61.9022,8.04574815 C61.96995,8.04574815 62.0247,7.99383704 62.0247,7.9296 L62.0247,5.96077037 C62.19345,6.04562963 62.3712,6.11721481 62.55545,6.17386667 C62.8122,6.25327407 63.0627,6.29357037 63.2997,6.29357037 C64.35945,6.29357037 64.8972,5.5552 64.8972,4.09908148 C64.8972,3.49985185 64.77145,2.98808889 64.52345,2.57754074 C64.2632,2.14613333 63.85145,1.92734815 63.2997,1.92734815",
-    id: "Fill-30",
-    fill: primary
+    fill: quinary
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M67.38835,5.62915556 C66.91085,5.75265185 66.61485,5.74459259 66.3756,5.56325926 C66.2516,5.46915556 66.19135,5.31531852 66.19135,5.0925037 L66.19135,4.90311111 C66.19135,4.69973333 66.25035,4.54234074 66.37235,4.42216296 C66.4921,4.30364444 66.6886,4.23917037 66.95685,4.23016296 L68.2581,4.18204444 L68.2581,5.35348148 L67.9846,5.45042963 C67.8086,5.51253333 67.6081,5.5725037 67.38835,5.62915556 M67.4206,1.90435556 C66.95785,1.90435556 66.46885,1.93801481 65.96735,2.00414815 C65.90685,2.01220741 65.86185,2.06127407 65.86185,2.11911111 L65.86185,2.38459259 C65.86185,2.44882963 65.9166,2.50097778 65.98435,2.50097778 L67.26685,2.50097778 C67.6521,2.50097778 67.9166,2.56379259 68.05385,2.68847407 C68.18935,2.8114963 68.2581,3.00562963 68.2581,3.26447407 L68.2581,3.70962963 L66.8831,3.70962963 C66.4486,3.70962963 66.1066,3.81700741 65.86635,4.02915556 C65.62385,4.2432 65.50085,4.53475556 65.50085,4.89528889 L65.50085,5.16859259 C65.50085,5.51324444 65.61035,5.7901037 65.8256,5.99087407 C66.04035,6.19164444 66.3211,6.29357037 66.66035,6.29357037 C66.8921,6.29357037 67.14185,6.2546963 67.40285,6.17813333 C67.65735,6.10394074 67.88985,6.02168889 68.0931,5.93422222 C68.1851,5.89463704 68.2541,5.86405926 68.30635,5.83988148 L68.3676,6.15324444 C68.37835,6.208 68.42885,6.24805926 68.48785,6.24805926 L68.82585,6.24805926 C68.8936,6.24805926 68.94835,6.19614815 68.94835,6.13191111 L68.94835,3.24195556 C68.94835,2.79585185 68.8216,2.45712593 68.5716,2.23573333 C68.32385,2.016 67.93635,1.90435556 67.4206,1.90435556",
-    id: "Fill-32",
-    fill: primary
+    fill: quinary
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M72.05925,1.90440296 C71.77425,1.90440296 71.48575,1.95702519 71.20125,2.0601363 C70.9805,2.14049185 70.7715,2.2393363 70.5785,2.35477333 L70.50425,2.06179556 C70.49125,2.00941037 70.44175,1.97266963 70.38525,1.97266963 L70.055,1.97266963 C69.9875,1.97266963 69.9325,2.02481778 69.9325,2.08881778 L69.9325,6.13195852 C69.9325,6.19595852 69.9875,6.24810667 70.055,6.24810667 L70.5005,6.24810667 C70.568,6.24810667 70.623,6.19595852 70.623,6.13195852 L70.623,2.91536593 C70.86175,2.78926222 71.07525,2.69515852 71.2585,2.63471407 C71.4525,2.57118815 71.6805,2.53895111 71.9365,2.53895111 C72.18875,2.53895111 72.3835,2.61646222 72.53225,2.77646222 C72.68475,2.94049185 72.75875,3.14481778 72.75875,3.40105481 L72.75875,6.13195852 C72.75875,6.19595852 72.81375,6.24810667 72.88125,6.24810667 L73.3265,6.24810667 C73.39425,6.24810667 73.44925,6.19595852 73.44925,6.13195852 L73.44925,3.3555437 C73.44925,2.9561363 73.33025,2.61243259 73.096,2.33462519 C72.855,2.04923259 72.506,1.90440296 72.05925,1.90440296",
-    id: "Fill-34",
-    fill: primary
+    fill: quinary
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M82.751875,1.97269333 L82.306375,1.97269333 C82.238625,1.97269333 82.183875,2.02484148 82.183875,2.08884148 L82.183875,6.13198222 C82.183875,6.19598222 82.238625,6.24813037 82.306375,6.24813037 L82.751875,6.24813037 C82.819625,6.24813037 82.874375,6.19598222 82.874375,6.13198222 L82.874375,2.08884148 C82.874375,2.02484148 82.819625,1.97269333 82.751875,1.97269333",
-    id: "Fill-36",
-    fill: primary
+    fill: quinary
   }), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-40",
     transform: "translate(82.000000, 0.237037)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-19",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-18"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-39"
-  }), Object(jsx["c" /* jsxToHTML */])("path", {
+  })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M0.68275,0.211057778 L0.38325,0.211057778 C0.239,0.211057778 0.1455,0.301368889 0.1455,0.441220741 L0.1455,0.979531852 C0.1455,1.0617837 0.1805,1.11393185 0.21,1.14308741 C0.2405,1.17342815 0.29525,1.20969481 0.38325,1.20969481 L0.68275,1.20969481 C0.78525,1.20969481 0.90525,1.14925037 0.90525,0.979531852 L0.90525,0.441220741 C0.90525,0.271502222 0.78525,0.211057778 0.68275,0.211057778 L0.68275,0.211057778 Z",
-    id: "Fill-38",
-    fill: primary,
+    fill: quinary,
     mask: "url(#mask-19)"
   })), Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-41",
-    fill: secondary,
+    fill: senary,
     points: "54.410575 25.6368119 53.503075 25.6368119 51.980825 27.2138193 51.980825 23.8924563 51.290325 23.8924563 51.290325 29.9122489 51.980825 29.9122489 51.980825 28.0835081 53.591325 29.9122489 54.496075 29.9122489 52.485575 27.6371674"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M38.2935,12.7641126 L40.91225,12.7261867 L40.91225,12.171283 L38.2935,12.133357 L38.2935,10.654957 C38.2935,10.4489719 38.344,10.2948978 38.4435,10.1967644 C38.5435,10.098157 38.68275,10.0505126 38.86975,10.0505126 L41.235,10.0505126 L41.235,9.48233481 L41.1185,9.47688296 C40.2725,9.43658667 39.47975,9.41596444 38.76225,9.41596444 C38.44075,9.41596444 38.16525,9.51149037 37.9435,9.69969778 C37.7175,9.89146074 37.603,10.1948681 37.603,10.6016237 L37.603,15.2160237 L38.2935,15.2160237 L38.2935,12.7641126 Z",
-    id: "Fill-43",
-    fill: secondary
+    fill: senary
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M42.21085,10.3483733 C42.24135,10.3787141 42.2961,10.4145067 42.3836,10.4145067 L42.68335,10.4145067 C42.78585,10.4145067 42.9056,10.3540622 42.9056,10.1845807 L42.9056,9.64603259 C42.9056,9.47631407 42.78585,9.41586963 42.68335,9.41586963 L42.3836,9.41586963 C42.23935,9.41586963 42.1461,9.50618074 42.1461,9.64603259 L42.1461,10.1845807 C42.1461,10.2665956 42.1811,10.3189807 42.2106,10.3481363 L42.21085,10.3483733 Z",
-    id: "Fill-45",
-    fill: secondary
+    fill: senary
   }), Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-21",
-    fill: "white"
+    fill: primary
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-20"
-  })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Clip-48"
-  }), Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-47",
-    fill: secondary,
+  })), Object(jsx["c" /* jsxToHTML */])("polygon", {
+    fill: senary,
     mask: "url(#mask-21)",
     points: "42.1845 15.2158815 42.875 15.2158815 42.875 10.9404444 42.1845 10.9404444"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M47.4611,15.2159763 L47.4611,12.3236504 C47.4611,11.9240059 47.3421,11.5805393 47.10785,11.3027319 C46.86635,11.0171022 46.5176,10.8722726 46.07085,10.8722726 C45.78635,10.8722726 45.4976,10.9246578 45.21335,11.0280059 C44.9921,11.1083615 44.7831,11.2072059 44.59035,11.322643 L44.49335,10.9405393 L43.94435,10.9405393 L43.94435,15.2159763 L44.6346,15.2159763 L44.6346,11.8829985 C44.8736,11.7568948 45.08735,11.6627911 45.2701,11.6028207 C45.46435,11.5388207 45.6926,11.5068207 45.9481,11.5068207 C46.20035,11.5068207 46.39535,11.5843319 46.5441,11.7443319 C46.6966,11.9083615 46.7706,12.1126874 46.7706,12.3689244 L46.7706,15.2159763 L47.4611,15.2159763 Z",
-    id: "Fill-49",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M51.33365,15.2159763 L52.02415,15.2159763 L52.02415,12.3236504 C52.02415,11.9240059 51.90515,11.5805393 51.67115,11.3027319 C51.42965,11.0171022 51.0809,10.8722726 50.63415,10.8722726 C50.34915,10.8722726 50.06065,10.9246578 49.7764,11.0280059 C49.5554,11.1083615 49.3464,11.2072059 49.1534,11.322643 L49.05665,10.9405393 L48.50715,10.9405393 L48.50715,15.2159763 L49.1979,15.2159763 L49.1979,11.8829985 C49.4369,11.7568948 49.65065,11.6627911 49.83365,11.6028207 C50.02715,11.5388207 50.2554,11.5068207 50.5114,11.5068207 C50.76365,11.5068207 50.9584,11.5843319 51.10715,11.7443319 C51.25965,11.9083615 51.33365,12.1126874 51.33365,12.3689244 L51.33365,15.2159763 Z",
-    id: "Fill-50",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-51",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)",
     points: "53.07025 15.2158815 53.761 15.2158815 53.761 10.9404444 53.07025 10.9404444"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M53.2697,10.4145778 L53.5692,10.4145778 C53.6717,10.4145778 53.7917,10.3541333 53.7917,10.1844148 L53.7917,9.6461037 C53.7917,9.47638519 53.6717,9.41594074 53.5692,9.41594074 L53.2697,9.41594074 C53.12545,9.41594074 53.03195,9.50625185 53.03195,9.6461037 L53.03195,10.1844148 C53.03195,10.2666667 53.06695,10.3190519 53.0967,10.3482074 C53.1272,10.3785481 53.1817,10.4145778 53.2697,10.4145778",
     id: "Fill-52",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M55.15935,13.1527822 C55.3896,13.3137304 55.7216,13.3952711 56.1461,13.3952711 L56.6991,13.3952711 C56.9451,13.3952711 57.12785,13.4412563 57.24285,13.5318044 C57.3526,13.6180859 57.40585,13.7439526 57.40585,13.9165156 L57.40585,14.1137304 C57.40585,14.3467378 57.34735,14.4984415 57.23135,14.5638637 C57.0951,14.6409007 56.87735,14.6800119 56.5836,14.6800119 L54.82535,14.6800119 L54.82535,15.1588267 L54.9261,15.1761304 C55.0501,15.1972267 55.28985,15.2164267 55.65985,15.2346785 C56.0211,15.2522193 56.3111,15.2614637 56.52235,15.2614637 C56.99485,15.2614637 57.36685,15.1813452 57.6286,15.0234785 C57.90835,14.8549452 58.05035,14.5565156 58.05035,14.1362489 L58.05035,13.8785896 C58.05035,13.5313304 57.93135,13.2580267 57.6966,13.0662637 C57.46735,12.8790044 57.15235,12.7837156 56.76035,12.7837156 L56.19985,12.7837156 C55.9266,12.7837156 55.7246,12.7474489 55.59885,12.6751526 C55.49285,12.6147081 55.43935,12.4812563 55.43935,12.2781156 L55.43935,12.1034193 C55.43935,11.8753896 55.4986,11.717997 55.6161,11.6357452 C55.74485,11.54496 55.95435,11.4989748 56.2381,11.4989748 L57.8966,11.4989748 L57.8966,11.0111526 L57.7936,10.9952711 C57.6266,10.9696711 57.3876,10.9473896 57.08285,10.9293748 C56.77935,10.9118341 56.5161,10.9028267 56.29985,10.9028267 C55.78935,10.9028267 55.42085,10.9971674 55.17335,11.1910637 C54.92235,11.3880415 54.79485,11.6950044 54.79485,12.1034193 L54.79485,12.3082193 C54.79485,12.6998044 54.9176,12.9840119 55.15935,13.1527822",
-    id: "Fill-53",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M61.668375,12.3615763 L61.668375,15.2159763 L62.358875,15.2159763 L62.358875,12.3236504 C62.358875,11.9138133 62.238125,11.5672652 62.000375,11.2939615 C61.756875,11.0140207 61.409875,10.8722726 60.968875,10.8722726 C60.683875,10.8722726 60.394125,10.9246578 60.107625,11.0277689 C59.902625,11.1017244 59.709875,11.1910874 59.532625,11.2944356 L59.532625,9.1961837 L58.841875,9.1961837 L58.841875,15.2159763 L59.532625,15.2159763 L59.532625,11.8829985 C59.771625,11.7571319 59.985125,11.6630281 60.167875,11.6028207 C60.361625,11.5388207 60.590125,11.5068207 60.846125,11.5068207 C61.098375,11.5068207 61.293125,11.5843319 61.441625,11.7440948 C61.594125,11.9085985 61.668375,12.1105541 61.668375,12.3615763",
-    id: "Fill-54",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M41.2896,19.6944356 C41.2896,20.3666726 41.2346,20.874643 41.1261,21.2031763 C41.0241,21.5127467 40.8696,21.7208652 40.66735,21.821843 C40.45385,21.9285096 40.13585,21.9825541 39.72235,21.9825541 C39.2936,21.9825541 38.96785,21.9285096 38.7541,21.821843 C38.5526,21.7211022 38.40235,21.515117 38.3076,21.2093393 C38.20635,20.8829393 38.1551,20.3730726 38.1551,19.6944356 C38.1551,19.0020504 38.2151,18.4784356 38.33335,18.1380504 C38.44535,17.815443 38.6046,17.6018726 38.80685,17.5032652 C39.0211,17.3982578 39.3291,17.3453985 39.72235,17.3453985 C40.13585,17.3453985 40.4541,17.3982578 40.6686,17.5032652 C40.86985,17.6013985 41.02385,17.8116504 41.12585,18.1280948 C41.23435,18.4646874 41.2896,18.9916207 41.2896,19.6944356 M41.01035,16.9474133 C40.6946,16.7957096 40.26135,16.7184356 39.72235,16.7184356 C39.19885,16.7184356 38.77185,16.7957096 38.45385,16.9471763 C38.1241,17.1045689 37.87285,17.4070281 37.70635,17.8460207 C37.5461,18.2684207 37.46485,18.8904059 37.46485,19.6944356 C37.46485,20.4982281 37.54485,21.1149985 37.7026,21.527917 C37.86685,21.9579022 38.11535,22.2501689 38.44085,22.3971319 C38.75285,22.5379319 39.18385,22.609517 39.72235,22.609517 C40.2606,22.609517 40.6916,22.5379319 41.00385,22.3971319 C41.3296,22.2499319 41.57785,21.9576652 41.7421,21.527917 C41.89985,21.1149985 41.97985,20.4982281 41.97985,19.6944356 C41.97985,18.8863763 41.90135,18.263443 41.74635,17.8429393 C41.5851,17.406317 41.3376,17.1048059 41.01035,16.9474133",
-    id: "Fill-55",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M45.212575,18.2203733 C44.927325,18.2203733 44.638825,18.2729956 44.354825,18.3761067 C44.133575,18.4564622 43.924825,18.5553067 43.731825,18.6705067 L43.634825,18.28864 L43.085575,18.28864 L43.085575,22.564077 L43.776325,22.564077 L43.776325,19.2313363 C44.015325,19.1049956 44.228825,19.0108919 44.411825,18.9509215 C44.605575,18.8871585 44.833825,18.8549215 45.089825,18.8549215 C45.342325,18.8549215 45.536825,18.9324326 45.685575,19.0924326 C45.838075,19.2566993 45.912325,19.4610252 45.912325,19.7170252 L45.912325,22.564077 L46.602825,22.564077 L46.602825,19.6717511 C46.602825,19.2723437 46.483825,18.928877 46.249075,18.6508326 C46.007825,18.365203 45.658825,18.2203733 45.212575,18.2203733",
-    id: "Fill-56",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M50.09245,16.7641126 L49.79295,16.7641126 C49.64845,16.7641126 49.55495,16.8544237 49.55495,16.9942756 L49.55495,17.5325867 C49.55495,17.6143644 49.5897,17.6665126 49.61895,17.6959052 L49.61995,17.6968533 C49.65045,17.726957 49.70545,17.7627496 49.79295,17.7627496 L50.09245,17.7627496 C50.19495,17.7627496 50.31495,17.7023052 50.31495,17.5325867 L50.31495,16.9942756 C50.31495,16.824557 50.19495,16.7641126 50.09245,16.7641126",
     id: "Fill-57",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-58",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)",
     points: "49.59325 22.5640296 50.284 22.5640296 50.284 18.2885926 49.59325 18.2885926"
   }), Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-59",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)",
     points: "47.71725 22.5640296 48.408 22.5640296 48.408 16.544 47.71725 16.544"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M53.753575,18.2203733 C53.468325,18.2203733 53.179825,18.2729956 52.895825,18.3761067 C52.674575,18.4564622 52.465825,18.5553067 52.272825,18.6705067 L52.175825,18.28864 L51.626575,18.28864 L51.626575,22.564077 L52.317325,22.564077 L52.317325,19.2313363 C52.556325,19.1052326 52.769575,19.0111289 52.952575,18.9509215 C53.146325,18.8871585 53.374575,18.8549215 53.630825,18.8549215 C53.883075,18.8549215 54.077575,18.9324326 54.226325,19.0924326 C54.378825,19.2566993 54.453075,19.4610252 54.453075,19.7170252 L54.453075,22.564077 L55.143575,22.564077 L55.143575,19.6717511 C55.143575,19.2723437 55.024575,18.928877 54.790075,18.6508326 C54.548825,18.365203 54.200075,18.2203733 53.753575,18.2203733",
-    id: "Fill-60",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M58.651775,19.6791704 C58.651775,19.8792296 58.607525,20.0148148 58.520275,20.0821333 C58.425525,20.1556148 58.260275,20.1925926 58.029275,20.1925926 L56.532025,20.1925926 C56.538275,19.8330074 56.573525,19.5523556 56.637025,19.357037 C56.702275,19.1572148 56.806525,19.0218667 56.956025,18.9426963 C57.114025,18.8590222 57.351025,18.8168296 57.660775,18.8168296 C57.925525,18.8168296 58.133025,18.8436148 58.276775,18.896237 C58.406775,18.9438815 58.498025,19.0230519 58.556275,19.1382519 C58.619775,19.2629333 58.651775,19.4452148 58.651775,19.6791704 M59.103275,22.5252741 L59.211525,22.5134222 L59.211525,22.0282074 L57.737525,22.0282074 C57.401775,22.0282074 57.146525,21.9836444 56.979025,21.8952296 C56.818775,21.8106074 56.710775,21.6785778 56.648275,21.4913185 C56.588025,21.3095111 56.552275,21.0558815 56.541775,20.7361185 L58.060275,20.7361185 C58.451025,20.7361185 58.757525,20.6519704 58.970775,20.4858074 C59.191775,20.3146667 59.303775,20.0430222 59.303775,19.6791704 C59.303775,19.3285926 59.244775,19.0446222 59.128275,18.8360296 C59.007025,18.6196148 58.820275,18.4636444 58.572775,18.3723852 C58.339025,18.2868148 58.032275,18.2432 57.660775,18.2432 C57.217775,18.2432 56.861275,18.3090963 56.601275,18.4387556 C56.330525,18.5741037 56.133775,18.8064 56.016775,19.1294815 C55.905275,19.4359704 55.848525,19.868563 55.848525,20.4149333 C55.848525,20.9563259 55.902275,21.3867852 56.008275,21.6949333 C56.119775,22.0203852 56.310525,22.2578963 56.574525,22.4008296 C56.830275,22.5392593 57.188025,22.6094222 57.637525,22.6094222 C58.101025,22.6094222 58.594025,22.5809778 59.103275,22.5252741",
-    id: "Fill-61",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M38.2935,26.6307793 L38.2935,24.7392237 L39.707,24.7392237 C40.294,24.7392237 40.5675,25.0253274 40.5675,25.6392533 C40.5675,25.94432 40.489,26.1901274 40.334,26.3700385 C40.183,26.545683 39.993,26.6307793 39.753,26.6307793 L38.2935,26.6307793 Z M38.2935,27.2195793 L39.7685,27.2195793 C40.061,27.2195793 40.29575,27.3034904 40.4865,27.4755793 C40.6755,27.646483 40.76725,27.87712 40.76725,28.1805274 C40.76725,28.6060089 40.68275,28.8994607 40.51625,29.0528237 C40.349,29.2071348 40.09725,29.285357 39.7685,29.285357 L38.2935,29.285357 L38.2935,27.2195793 Z M40.63425,26.8919941 C40.76925,26.8064237 40.88875,26.6893274 40.99175,26.5416533 C41.158,26.3034311 41.2425,26.0023941 41.2425,25.6470756 C41.2425,24.6429867 40.71425,24.1124978 39.71475,24.1124978 L37.603,24.1124978 L37.603,29.91232 L39.77625,29.91232 C40.313,29.91232 40.7285,29.7857422 41.0115,29.5361422 C41.29725,29.2844089 41.44225,28.8513422 41.44225,28.2487941 C41.44225,27.8166756 41.327,27.4762904 41.0995,27.2380681 C40.95575,27.0873126 40.80025,26.9714015 40.63425,26.8919941 L40.63425,26.8919941 Z",
-    id: "Fill-62",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M44.049475,29.2935111 C43.567225,29.4170074 43.274725,29.4084741 43.036725,29.2276148 C42.912725,29.1337481 42.852725,28.9801481 42.852725,28.7568593 L42.852725,28.5674667 C42.852725,28.3636148 42.911725,28.2064593 43.033475,28.0862815 C43.152975,27.968 43.349475,27.9035259 43.617975,27.8945185 L44.919225,27.8464 L44.919225,29.017837 L44.645225,29.1145481 C44.471975,29.1759407 44.271725,29.2361481 44.049475,29.2935111 M44.081725,25.5687111 C43.617225,25.5687111 43.128225,25.6023704 42.628475,25.6685037 L42.522975,25.6827259 L42.522975,26.1653333 L43.927975,26.1653333 C44.313225,26.1653333 44.577975,26.2281481 44.714975,26.3528296 C44.850475,26.4758519 44.919225,26.6699852 44.919225,26.9288296 L44.919225,27.3739852 L43.544225,27.3739852 C43.109475,27.3739852 42.767475,27.4816 42.527475,27.6935111 C42.284975,27.9073185 42.161975,28.1988741 42.161975,28.5596444 L42.161975,28.8329481 C42.161975,29.1771259 42.271225,29.4537481 42.486475,29.6549926 C42.701475,29.856 42.982475,29.9579259 43.321475,29.9579259 C43.552225,29.9579259 43.801975,29.9190519 44.063975,29.8424889 C44.318475,29.7682963 44.550975,29.6860444 44.754475,29.5985778 C44.846475,29.5589926 44.915225,29.5281778 44.967475,29.504237 L45.047225,29.9121778 L45.609475,29.9121778 L45.609475,26.9063111 C45.609475,26.4602074 45.482725,26.1214815 45.232725,25.8998519 C44.984975,25.6801185 44.597725,25.5687111 44.081725,25.5687111",
-    id: "Fill-63",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M48.907625,25.5687585 C48.622625,25.5687585 48.334125,25.6213807 48.049875,25.7244919 C47.828875,25.8046104 47.620125,25.9034548 47.426875,26.0191289 L47.329875,25.6370252 L46.780625,25.6370252 L46.780625,29.9122252 L47.471375,29.9122252 L47.471375,26.5797215 C47.709125,26.4538548 47.922875,26.3597511 48.107125,26.2990696 C48.300125,26.2355437 48.528125,26.2033067 48.784875,26.2033067 C49.037125,26.2033067 49.231875,26.2808178 49.380625,26.4408178 C49.533125,26.6046104 49.607125,26.8089363 49.607125,27.0654104 L49.607125,29.9122252 L50.297625,29.9122252 L50.297625,27.0198993 C50.297625,26.6204919 50.178625,26.2772622 49.944375,25.9989807 C49.703375,25.7135881 49.354375,25.5687585 48.907625,25.5687585",
-    id: "Fill-64",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-65",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)",
     points: "55.21725 29.9121778 55.908 29.9121778 55.908 25.6369778 55.21725 25.6369778"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M55.716225,24.1124978 L55.416725,24.1124978 C55.272475,24.1124978 55.178975,24.2028089 55.178975,24.3424237 L55.178975,24.8809719 C55.178975,24.9632237 55.213975,25.0153719 55.243475,25.0445274 C55.273975,25.0751052 55.328475,25.1108978 55.416725,25.1108978 L55.716225,25.1108978 C55.818725,25.1108978 55.938725,25.0506904 55.938725,24.8809719 L55.938725,24.3424237 C55.938725,24.1727052 55.818725,24.1124978 55.716225,24.1124978",
-    id: "Fill-66",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M59.166675,25.5687585 C58.881425,25.5687585 58.592925,25.6213807 58.308925,25.7244919 C58.087675,25.8048474 57.878675,25.9036919 57.685675,26.0191289 L57.588675,25.6370252 L57.039675,25.6370252 L57.039675,29.9122252 L57.730425,29.9122252 L57.730425,26.5797215 C57.967675,26.4540919 58.181175,26.3599881 58.365675,26.2990696 C58.559175,26.2355437 58.787175,26.2033067 59.043925,26.2033067 C59.296175,26.2033067 59.490675,26.2808178 59.639425,26.4408178 C59.791925,26.6046104 59.865925,26.8089363 59.865925,27.0654104 L59.865925,29.9122252 L60.556425,29.9122252 L60.556425,27.0198993 C60.556425,26.6204919 60.437425,26.2767881 60.203175,25.9989807 C59.962175,25.7135881 59.613175,25.5687585 59.166675,25.5687585",
-    id: "Fill-67",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M62.08805,30.3800889 C62.08805,30.1537185 62.16505,29.9894519 62.32305,29.8778074 C62.49205,29.7581037 62.6943,29.7000296 62.94105,29.7000296 L64.07005,29.7000296 C64.4113,29.7000296 64.65005,29.7550222 64.7798,29.8640593 C64.90705,29.9707259 64.9688,30.1274074 64.9688,30.342163 L64.9688,30.5166222 C64.9688,30.7420444 64.89005,30.9063111 64.7278,31.0179556 C64.55505,31.1367111 64.3028,31.1969185 63.97805,31.1969185 L62.98705,31.1969185 C62.6868,31.1969185 62.4558,31.1454815 62.30055,31.0433185 C62.1573,30.9489778 62.08805,30.7941926 62.08805,30.5697185 L62.08805,30.3800889 Z M64.54655,27.1184593 C64.54655,27.6655407 64.2463,27.9201185 63.60155,27.9201185 L63.13305,27.9201185 C62.5773,27.9201185 62.31855,27.6463407 62.31855,27.0577778 C62.31855,26.7550815 62.3953,26.5367704 62.5463,26.4087704 C62.7018,26.2772148 62.93555,26.2106074 63.24055,26.2106074 L63.6783,26.2106074 C64.27055,26.2106074 64.54655,26.4990815 64.54655,27.1184593 L64.54655,27.1184593 Z M65.62855,25.6293926 L63.3248,25.6293926 C61.9478,25.6293926 61.6588,26.3978667 61.6588,27.0426074 C61.6588,27.3180444 61.72155,27.5721481 61.8453,27.7980444 C61.9318,27.9552 62.05855,28.0865185 62.22355,28.1912889 C61.8153,28.3617185 61.72005,28.6679704 61.72005,28.9161481 C61.72005,29.0702222 61.76205,29.2079407 61.8443,29.3257481 C61.88505,29.3838222 61.9348,29.4359704 61.9928,29.4814815 C61.85355,29.561363 61.73455,29.6623407 61.6378,29.7825185 C61.4938,29.9614815 61.42055,30.1831111 61.42055,30.4407704 L61.42055,30.6379852 C61.42055,31.0037333 61.56005,31.2874667 61.8348,31.481837 C62.0983,31.6683852 62.45505,31.762963 62.89505,31.762963 L64.01605,31.762963 C64.52405,31.762963 64.92255,31.6532148 65.20005,31.4368 C65.4843,31.2146963 65.62855,30.8977778 65.62855,30.4938667 L65.62855,30.3118222 C65.62855,29.9185778 65.50005,29.6168296 65.24705,29.4153481 C64.99955,29.2183704 64.6218,29.1185778 64.1238,29.1185778 L62.6953,29.1185778 C62.59755,29.1185778 62.51655,29.0958222 62.4473,29.049363 C62.41205,29.0251852 62.36455,28.9796741 62.36455,28.8632889 C62.36455,28.6926222 62.4413,28.6312296 62.49905,28.5997037 C62.61005,28.5394963 62.78455,28.5089185 63.01805,28.5089185 L63.64755,28.5089185 C64.1883,28.5089185 64.58855,28.3761778 64.8368,28.1137778 C65.08205,27.8554074 65.2063,27.5358815 65.2063,27.1642074 C65.2063,26.918163 65.1723,26.7121778 65.1053,26.5521778 C65.03605,26.3872 64.95555,26.2665481 64.85905,26.1833481 C64.8503,26.1755259 64.8413,26.1677037 64.83205,26.1601185 L65.62855,26.1124741 L65.62855,25.6293926 Z",
-    id: "Fill-68",
-    fill: secondary,
+    fill: senary,
     mask: "url(#mask-21)"
   }))))));
 }
@@ -14095,11 +14044,26 @@ var _BLIK_LOGO_COLORS;
 
 
 var BLIK_LOGO_COLORS = (_BLIK_LOGO_COLORS = {}, _BLIK_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = {
-  primary: '#ffffff'
+  primary: '#FFFFFF',
+  secondary: '#FFFFFF',
+  tertiary: '#000000',
+  quaternary: '#000000',
+  quinary: '#000000',
+  senary: '#000000'
 }, _BLIK_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].ANY] = {
-  primary: '#FFFFFF'
+  primary: '#4D4D4F',
+  secondary: '#000000',
+  tertiary: '#FF0000',
+  quaternary: '#E83E49',
+  quinary: '#FF00FF',
+  senary: '#FFFFFF'
 }, _BLIK_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].BLACK] = {
-  primary: '#FFFFFF'
+  primary: '#4D4D4F',
+  secondary: '#000000',
+  tertiary: '#FF0000',
+  quaternary: '#E83E49',
+  quinary: '#FF00FF',
+  senary: '#FFFFFF'
 }, _BLIK_LOGO_COLORS);
 function blikLogo(_ref) {
   var logoColor = _ref.logoColor;
@@ -14108,7 +14072,13 @@ function blikLogo(_ref) {
     throw new Error("No " + logoColor + " blik logo available");
   }
 
-  var primary = BLIK_LOGO_COLORS[logoColor].primary;
+  var _BLIK_LOGO_COLORS$log = BLIK_LOGO_COLORS[logoColor],
+      primary = _BLIK_LOGO_COLORS$log.primary,
+      secondary = _BLIK_LOGO_COLORS$log.secondary,
+      tertiary = _BLIK_LOGO_COLORS$log.tertiary,
+      quaternary = _BLIK_LOGO_COLORS$log.quaternary,
+      quinary = _BLIK_LOGO_COLORS$log.quinary,
+      senary = _BLIK_LOGO_COLORS$log.senary;
   return Object(jsx["c" /* jsxToHTML */])("svg", {
     width: "58px",
     height: "30px",
@@ -14125,10 +14095,10 @@ function blikLogo(_ref) {
     y2: "0%",
     id: "linearGradient-3"
   }, Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#4D4D4F",
+    "stop-color": primary,
     offset: "0%"
   }), Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#000000",
+    "stop-color": secondary,
     offset: "100%"
   })), Object(jsx["c" /* jsxToHTML */])("radialGradient", {
     cx: "20.3705659%",
@@ -14139,32 +14109,27 @@ function blikLogo(_ref) {
     gradientTransform: "translate(0.203706,0.180871),scale(0.983106,1.000000),rotate(54.479781),translate(-0.203706,-0.180871)",
     id: "radialGradient-4"
   }, Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#FF0000",
+    "stop-color": tertiary,
     offset: "0%"
   }), Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#E83E49",
+    "stop-color": quaternary,
     offset: "55.9042441%"
   }), Object(jsx["c" /* jsxToHTML */])("stop", {
-    "stop-color": "#FF00FF",
+    "stop-color": quinary,
     offset: "100%"
   })), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M3.67238562,6.95664596 C5.60913072,6.95664596 7.17892157,5.41322981 7.17892157,3.50925466 C7.17892157,1.60546584 5.60913072,0.0620496894 3.67238562,0.0620496894 C1.73564052,0.0620496894 0.165849673,1.60546584 0.165849673,3.50925466 C0.165849673,5.41322981 1.73564052,6.95664596 3.67238562,6.95664596 Z",
     id: "path-5"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Page-1",
     stroke: "none",
     "stroke-width": "1",
     fill: "none",
     "fill-rule": "evenodd"
   }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "SPB_&_AltPay_NewAssets",
     transform: "translate(-100.000000, -159.000000)"
   }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Blik-logo",
     transform: "translate(100.000000, 159.000000)"
-  }, Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-3"
-  }, Object(jsx["c" /* jsxToHTML */])("mask", {
+  }, Object(jsx["c" /* jsxToHTML */])("g", null, Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-2",
     fill: "white"
   }, Object(jsx["c" /* jsxToHTML */])("use", {
@@ -14173,27 +14138,20 @@ function blikLogo(_ref) {
     id: "Clip-2"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M4.81760131,0 C2.15699346,0 0,2.12049689 0,4.73608696 L0,4.73608696 L0,25.263913 C0,27.8795031 2.15699346,30 4.81760131,30 L4.81760131,30 L53.1823987,30 C55.8430065,30 58,27.8795031 58,25.263913 L58,25.263913 L58,4.73608696 C58,2.12049689 55.8430065,0 53.1823987,0 L53.1823987,0 L4.81760131,0 Z",
-    id: "Fill-1",
     fill: "url(#linearGradient-3)",
     mask: "url(#mask-2)"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-9",
     transform: "translate(6.254902, 4.472050)",
-    fill: primary
+    fill: senary
   }, Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-4",
     points: "17.627451 21.6769565 21.5604575 21.6769565 21.5604575 0.0154658385 17.627451 0.0154658385"
   }), Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-6",
     points: "24.9248366 21.6769565 28.8578431 21.6769565 28.8578431 7.32913043 24.9248366 7.32913043"
   }), Object(jsx["c" /* jsxToHTML */])("polygon", {
-    id: "Fill-7",
     points: "46.4852941 21.6770124 40.5751699 14.0838447 46.0114379 7.32918634 41.3676471 7.32918634 36.1552288 13.8822298 36.1552288 0.0155217391 32.2222222 0.0155217391 32.2222222 21.6770124 36.1552288 21.6770124 36.1552288 14.3106149 41.3676471 21.6770124"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
-    d: "M7.60539216,17.9735963 C5.65575817,17.9735963 4.0751634,16.4197453 4.0751634,14.5030994 C4.0751634,12.5864534 5.65575817,11.0326025 7.60539216,11.0326025 C9.55502614,11.0326025 11.1356209,12.5864534 11.1356209,14.5030994 C11.1356209,16.4197453 9.55502614,17.9735963 7.60539216,17.9735963 M7.60539216,7.16614286 C6.3282549,7.16614286 5.12636601,7.4821677 4.0751634,8.03800621 L4.0751634,0.0155217391 L0.142156863,0.0155217391 L0.142156863,14.5030994 C0.142156863,18.5551491 3.48360131,21.8400559 7.60539216,21.8400559 C11.727183,21.8400559 15.0686275,18.5551491 15.0686275,14.5030994 C15.0686275,10.4510497 11.727183,7.16614286 7.60539216,7.16614286",
-    id: "Fill-8"
+    d: "M7.60539216,17.9735963 C5.65575817,17.9735963 4.0751634,16.4197453 4.0751634,14.5030994 C4.0751634,12.5864534 5.65575817,11.0326025 7.60539216,11.0326025 C9.55502614,11.0326025 11.1356209,12.5864534 11.1356209,14.5030994 C11.1356209,16.4197453 9.55502614,17.9735963 7.60539216,17.9735963 M7.60539216,7.16614286 C6.3282549,7.16614286 5.12636601,7.4821677 4.0751634,8.03800621 L4.0751634,0.0155217391 L0.142156863,0.0155217391 L0.142156863,14.5030994 C0.142156863,18.5551491 3.48360131,21.8400559 7.60539216,21.8400559 C11.727183,21.8400559 15.0686275,18.5551491 15.0686275,14.5030994 C15.0686275,10.4510497 11.727183,7.16614286 7.60539216,7.16614286"
   })), Object(jsx["c" /* jsxToHTML */])("g", {
-    id: "Group-12",
     transform: "translate(14.026144, 3.354037)"
   }, Object(jsx["c" /* jsxToHTML */])("mask", {
     id: "mask-6",
@@ -14201,12 +14159,10 @@ function blikLogo(_ref) {
   }, Object(jsx["c" /* jsxToHTML */])("use", {
     href: "#path-5"
   })), Object(jsx["c" /* jsxToHTML */])("use", {
-    id: "Clip-11",
     fill: "url(#radialGradient-4)",
     href: "#path-5"
   }), Object(jsx["c" /* jsxToHTML */])("path", {
     d: "M3.67238562,6.95664596 C5.60913072,6.95664596 7.17892157,5.41322981 7.17892157,3.50925466 C7.17892157,1.60546584 5.60913072,0.0620496894 3.67238562,0.0620496894 C1.73564052,0.0620496894 0.165849673,1.60546584 0.165849673,3.50925466 C0.165849673,5.41322981 1.73564052,6.95664596 3.67238562,6.95664596 Z",
-    id: "Fill-10",
     mask: "url(#mask-6)"
   }))))));
 }
@@ -14217,8 +14173,8 @@ var _TRUSTLY_LOGO_COLORS;
 
 
 var TRUSTLY_LOGO_COLORS = (_TRUSTLY_LOGO_COLORS = {}, _TRUSTLY_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = {
-  primary: '#020202',
-  secondary: '#64CC07'
+  primary: '#FFFFFF',
+  secondary: '#FFFFFF'
 }, _TRUSTLY_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].ANY] = {
   primary: '#020202',
   secondary: '#64CC07'
@@ -14598,6 +14554,72 @@ function boletoLogo(_ref) {
     fill: primary
   })))));
 }
+// CONCATENATED MODULE: ./src/resources/fundingLogos/oxxo.jsx
+var _OXXO_LOGO_COLORS;
+
+/** @jsx jsxToHTML */
+
+
+var OXXO_LOGO_COLORS = (_OXXO_LOGO_COLORS = {}, _OXXO_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = {
+  primary: '#EC1D24',
+  secondary: '#EDA42D'
+}, _OXXO_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].ANY] = {
+  primary: '#EC1D24',
+  secondary: '#EDA42D'
+}, _OXXO_LOGO_COLORS[constants["i" /* BUTTON_LOGO_COLOR */].BLACK] = {
+  primary: '#EC1D24',
+  secondary: '#EDA42D'
+}, _OXXO_LOGO_COLORS);
+function oxxoLogo(_ref) {
+  var logoColor = _ref.logoColor;
+
+  if (!OXXO_LOGO_COLORS[logoColor]) {
+    throw new Error("No " + logoColor + " oxxo logo available");
+  }
+
+  var _OXXO_LOGO_COLORS$log = OXXO_LOGO_COLORS[logoColor],
+      primary = _OXXO_LOGO_COLORS$log.primary,
+      secondary = _OXXO_LOGO_COLORS$log.secondary;
+  return Object(jsx["c" /* jsxToHTML */])("svg", {
+    width: "42px",
+    height: "20px",
+    viewBox: "0 0 42 20",
+    version: "1.1",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, Object(jsx["c" /* jsxToHTML */])("g", {
+    id: "Page-1",
+    stroke: "none",
+    "stroke-width": "1",
+    fill: "none",
+    "fill-rule": "evenodd"
+  }, Object(jsx["c" /* jsxToHTML */])("g", {
+    id: "SPB_&_AltPay_NewAssets",
+    transform: "translate(-100.000000, -159.000000)"
+  }, Object(jsx["c" /* jsxToHTML */])("g", {
+    id: "logo-OXXO",
+    transform: "translate(100.000000, 159.000000)"
+  }, Object(jsx["c" /* jsxToHTML */])("path", {
+    d: "M0.142456528,1.48437917 C0.142456528,0.77043992 0.728159303,0.186243119 1.44446761,0.186243119 L40.6503931,0.186243119 C41.3667014,0.186243119 41.9524042,0.77043992 41.9524042,1.48437917 L41.9524042,18.1011373 C41.9524042,18.8150765 41.3667014,19.3990362 40.6503931,19.3990362 L1.44446761,19.3990362 C0.728159303,19.3990362 0.142456528,18.8150765 0.142456528,18.1011373 L0.142456528,1.48437917 Z",
+    id: "Fill-2",
+    fill: secondary
+  }), Object(jsx["c" /* jsxToHTML */])("polygon", {
+    id: "Fill-4",
+    fill: "#FEFEFE",
+    points: "0.142480318 17.5124813 41.952428 17.5124813 41.952428 2.07265562 0.142480318 2.07265562"
+  }), Object(jsx["c" /* jsxToHTML */])("path", {
+    d: "M35.5752619,6.08262231 C33.662331,6.08262231 32.1029152,7.63763417 32.1029152,9.54463469 C32.1029152,11.4511608 33.662331,13.0064099 35.5752619,13.0064099 C37.4877171,13.0064099 39.0471329,11.4511608 39.0471329,9.54463469 C39.0471329,7.63763417 37.4877171,6.08262231 35.5752619,6.08262231",
+    id: "Fill-6",
+    fill: primary
+  }), Object(jsx["c" /* jsxToHTML */])("path", {
+    d: "M6.95585459,6.08262231 C5.04268574,6.08262231 3.48326994,7.63763417 3.48326994,9.54463469 C3.48326994,11.4511608 5.04268574,13.0064099 6.95585459,13.0064099 C8.86807185,13.0064099 10.4277255,11.4511608 10.4277255,9.54463469 C10.4277255,7.63763417 8.86807185,6.08262231 6.95585459,6.08262231",
+    id: "Fill-7",
+    fill: primary
+  }), Object(jsx["c" /* jsxToHTML */])("path", {
+    d: "M35.5752619,15.0141446 C32.5537303,15.0141446 30.0893537,12.5573397 30.0893537,9.54480072 C30.0893537,6.53155015 32.5537303,4.07521964 35.5752619,4.07521964 C38.5970315,4.07521964 41.0609322,6.53155015 41.0609322,9.54480072 C41.0609322,12.5573397 38.5970315,15.0141446 35.5752619,15.0141446 Z M12.4411918,9.54480072 C12.4411918,12.5573397 9.97729109,15.0141446 6.95575943,15.0141446 C3.93351408,15.0141446 1.46985124,12.5573397 1.46985124,9.54480072 C1.46985124,6.53155015 3.93351408,4.07521964 6.95575943,4.07521964 C9.97729109,4.07521964 12.4411918,6.53155015 12.4411918,9.54480072 Z M35.3028697,3.03585692 C32.0884035,2.9620911 30.5772808,5.01709763 28.384107,7.55170056 L26.3151155,9.94232969 L29.591435,13.8526295 C30.3719756,15.0542296 28.8822636,16.2465793 27.9580332,15.1472077 L24.9288888,11.5447794 L21.9772989,14.9562705 C21.0373673,16.0421223 19.5645461,14.8288999 20.3617394,13.6386849 L23.5659761,9.92382894 L21.4667717,7.42693908 L22.8173138,5.75949957 L24.9522028,8.31639828 L26.7923372,6.18217058 C27.6953948,5.13569219 28.6162946,3.74884741 29.8098246,3.03585692 L0.142385159,3.03585692 L0.142385159,16.549707 L7.07875226,16.549707 C10.2934564,16.549707 11.7529554,14.6332189 13.8866549,12.0492806 L15.8999784,9.61097649 L12.5334959,5.77752594 C11.726073,4.59418943 13.1874752,3.36815887 14.1371606,4.44594623 L17.2483795,7.9779294 L20.1209875,4.49931378 C21.0354641,3.39164059 22.5356435,4.57118208 21.7662842,5.77942346 L18.6486421,9.56757088 L20.8051797,12.0153626 L19.4463112,13.6197098 L17.2997653,11.2058361 L15.5095892,13.3813347 C14.6310351,14.4484486 13.7415376,15.8094397 12.5646605,16.549707 L41.9523328,16.549707 L41.9523328,3.03585692 L35.3028697,3.03585692 Z",
+    id: "Fill-8",
+    fill: primary
+  })))));
+}
 // EXTERNAL MODULE: ./src/resources/fundingLogos/pp_white.svg
 var pp_white = __webpack_require__(44);
 var pp_white_default = /*#__PURE__*/__webpack_require__.n(pp_white);
@@ -14783,7 +14805,8 @@ var _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ITAU, _BUTTON_LOGO$ELV, _f
 
 
 
-var fundingLogos = (_fundingLogos = {}, _fundingLogos[constants["h" /* BUTTON_LOGO */].PP] = (_BUTTON_LOGO$PP = {}, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = pp_white_default.a, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].BLACK] = pp_black_default.a, _BUTTON_LOGO$PP), _fundingLogos[constants["h" /* BUTTON_LOGO */].PAYPAL] = paypalLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].CREDIT] = creditLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].VENMO] = (_BUTTON_LOGO$VENMO = {}, _BUTTON_LOGO$VENMO[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = venmo_white_default.a, _BUTTON_LOGO$VENMO[constants["i" /* BUTTON_LOGO_COLOR */].BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), _fundingLogos[constants["h" /* BUTTON_LOGO */].ITAU] = (_BUTTON_LOGO$ITAU = {}, _BUTTON_LOGO$ITAU[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = itau_default.a, _BUTTON_LOGO$ITAU), _fundingLogos[constants["h" /* BUTTON_LOGO */].IDEAL] = idealLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].ELV] = (_BUTTON_LOGO$ELV = {}, _BUTTON_LOGO$ELV[constants["i" /* BUTTON_LOGO_COLOR */].ANY] = elv_default.a, _BUTTON_LOGO$ELV[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[constants["h" /* BUTTON_LOGO */].BANCONTACT] = bancontactLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].GIROPAY] = giropayLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].SOFORT] = sofortLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].EPS] = epsLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].MYBANK] = mybankLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].P24] = p24Logo, _fundingLogos[constants["h" /* BUTTON_LOGO */].PAYU] = payuLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].VERKKOPANKKI] = verkkopankkiLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].BLIK] = blikLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].TRUSTLY] = trustlyLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].MAXIMA] = maximaLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].BOLETO] = boletoLogo, _fundingLogos);
+
+var fundingLogos = (_fundingLogos = {}, _fundingLogos[constants["h" /* BUTTON_LOGO */].PP] = (_BUTTON_LOGO$PP = {}, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = pp_white_default.a, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[constants["i" /* BUTTON_LOGO_COLOR */].BLACK] = pp_black_default.a, _BUTTON_LOGO$PP), _fundingLogos[constants["h" /* BUTTON_LOGO */].PAYPAL] = paypalLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].CREDIT] = creditLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].VENMO] = (_BUTTON_LOGO$VENMO = {}, _BUTTON_LOGO$VENMO[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = venmo_white_default.a, _BUTTON_LOGO$VENMO[constants["i" /* BUTTON_LOGO_COLOR */].BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), _fundingLogos[constants["h" /* BUTTON_LOGO */].ITAU] = (_BUTTON_LOGO$ITAU = {}, _BUTTON_LOGO$ITAU[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = itau_default.a, _BUTTON_LOGO$ITAU), _fundingLogos[constants["h" /* BUTTON_LOGO */].IDEAL] = idealLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].ELV] = (_BUTTON_LOGO$ELV = {}, _BUTTON_LOGO$ELV[constants["i" /* BUTTON_LOGO_COLOR */].ANY] = elv_default.a, _BUTTON_LOGO$ELV[constants["i" /* BUTTON_LOGO_COLOR */].WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[constants["h" /* BUTTON_LOGO */].BANCONTACT] = bancontactLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].GIROPAY] = giropayLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].SOFORT] = sofortLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].EPS] = epsLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].MYBANK] = mybankLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].P24] = p24Logo, _fundingLogos[constants["h" /* BUTTON_LOGO */].PAYU] = payuLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].VERKKOPANKKI] = verkkopankkiLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].BLIK] = blikLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].TRUSTLY] = trustlyLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].MAXIMA] = maximaLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].BOLETO] = boletoLogo, _fundingLogos[constants["h" /* BUTTON_LOGO */].OXXO] = oxxoLogo, _fundingLogos);
 // EXTERNAL MODULE: ./src/resources/cardLogos/visa.svg
 var visa = __webpack_require__(52);
 var visa_default = /*#__PURE__*/__webpack_require__.n(visa);
@@ -15282,7 +15305,7 @@ function window_buildChildWindowName(name, version, options) {
   }
 
   options.id = Object(lib["U" /* uniqueID */])();
-  options.domain = Object(cross_domain_utils_src["g" /* getDomain */])(window);
+  options.domain = Object(cross_domain_utils_src["h" /* getDomain */])(window);
   var encodedName = normalize(name);
   var encodedVersion = normalize(version);
   var encodedOptions = encode(JSON.stringify(options));
@@ -15356,22 +15379,22 @@ function getWindowByRef(_ref) {
   var result;
 
   if (ref === constants["WINDOW_REFERENCES"].OPENER) {
-    result = Object(cross_domain_utils_src["l" /* getOpener */])(window);
+    result = Object(cross_domain_utils_src["m" /* getOpener */])(window);
   } else if (ref === constants["WINDOW_REFERENCES"].TOP) {
-    result = Object(cross_domain_utils_src["n" /* getTop */])(window);
+    result = Object(cross_domain_utils_src["o" /* getTop */])(window);
   } else if (ref === constants["WINDOW_REFERENCES"].PARENT) {
     if (distance) {
-      result = Object(cross_domain_utils_src["k" /* getNthParentFromTop */])(window, distance);
+      result = Object(cross_domain_utils_src["l" /* getNthParentFromTop */])(window, distance);
     } else {
-      result = Object(cross_domain_utils_src["m" /* getParent */])(window);
+      result = Object(cross_domain_utils_src["n" /* getParent */])(window);
     }
   }
 
   if (ref === constants["WINDOW_REFERENCES"].GLOBAL) {
-    var ancestor = Object(cross_domain_utils_src["e" /* getAncestor */])(window);
+    var ancestor = Object(cross_domain_utils_src["f" /* getAncestor */])(window);
 
     if (ancestor) {
-      for (var _i2 = 0, _getAllFramesInWindow2 = Object(cross_domain_utils_src["d" /* getAllFramesInWindow */])(ancestor); _i2 < _getAllFramesInWindow2.length; _i2++) {
+      for (var _i2 = 0, _getAllFramesInWindow2 = Object(cross_domain_utils_src["e" /* getAllFramesInWindow */])(ancestor); _i2 < _getAllFramesInWindow2.length; _i2++) {
         var frame = _getAllFramesInWindow2[_i2];
         var global = Object(lib["w" /* globalFor */])(frame);
 
@@ -15488,7 +15511,7 @@ function normalizeChildProps(component, props, origin, required) {
     var prop = component.getProp(key);
     var value = props[key];
 
-    if (prop && prop.sameDomain && origin !== Object(cross_domain_utils_src["g" /* getDomain */])(window)) {
+    if (prop && prop.sameDomain && origin !== Object(cross_domain_utils_src["h" /* getDomain */])(window)) {
       continue;
     }
 
@@ -15641,7 +15664,7 @@ function (_BaseComponent) {
   var _proto = ChildComponent.prototype;
 
   _proto.hasValidParentDomain = function hasValidParentDomain() {
-    return Object(cross_domain_utils_src["A" /* matchDomain */])(this.component.allowedParentDomains, this.getParentDomain());
+    return Object(cross_domain_utils_src["B" /* matchDomain */])(this.component.allowedParentDomains, this.getParentDomain());
   };
 
   _proto.init = function init() {
@@ -15675,12 +15698,12 @@ function (_BaseComponent) {
     } else if (props.type === constants["INITIAL_PROPS"].UID) {
       var parentComponentWindow = window_getParentComponentWindow();
 
-      if (!Object(cross_domain_utils_src["u" /* isSameDomain */])(parentComponentWindow)) {
+      if (!Object(cross_domain_utils_src["v" /* isSameDomain */])(parentComponentWindow)) {
         if (window.location.protocol === 'file:') {
           throw new Error("Can not get props from file:// domain");
         }
 
-        throw new Error("Parent component window is on a different domain - expected " + Object(cross_domain_utils_src["g" /* getDomain */])() + " - can not retrieve props");
+        throw new Error("Parent component window is on a different domain - expected " + Object(cross_domain_utils_src["h" /* getDomain */])() + " - can not retrieve props");
       }
 
       var global = Object(lib["w" /* globalFor */])(parentComponentWindow);
@@ -16148,7 +16171,7 @@ RENDER_DRIVERS[constants["CONTEXT_TYPES"].IFRAME] = {
         var _this4 = this;
 
         return override.apply(this, arguments).then(function () {
-          _this4.clean.set('window', Object(cross_domain_utils_src["b" /* findFrameByName */])(window_getParentComponentWindow(), _this4.childWindowName));
+          _this4.clean.set('window', Object(cross_domain_utils_src["c" /* findFrameByName */])(window_getParentComponentWindow(), _this4.childWindowName));
 
           if (!_this4.window) {
             throw new Error("Unable to find parent component iframe window");
@@ -16271,7 +16294,7 @@ if (true) {
       getOutlet: constants["DELEGATE"].CALL_ORIGINAL
     },
     loadUrl: function loadUrl(url) {
-      if (Object(cross_domain_utils_src["u" /* isSameDomain */])(this.window)) {
+      if (Object(cross_domain_utils_src["v" /* isSameDomain */])(this.window)) {
         try {
           if (this.window.location && this.window.location.replace) {
             this.window.location.replace(url);
@@ -16286,6 +16309,7 @@ if (true) {
   };
 }
 // CONCATENATED MODULE: ./node_modules/zoid/src/component/parent/validate.js
+/* eslint complexity: off */
 // $FlowFixMe
 function validateProp(prop, key, value, props, required) {
   if (required === void 0) {
@@ -16316,10 +16340,12 @@ function validateProp(prop, key, value, props, required) {
     }
   } else if (prop.type === 'object') {
     // Since we're sending everything by post-message, everything must be json serializable
-    try {
-      JSON.stringify(value);
-    } catch (err) {
-      throw new Error("Unable to serialize prop: " + key);
+    if (prop.sendToChild !== false) {
+      try {
+        JSON.stringify(value);
+      } catch (err) {
+        throw new Error("Unable to serialize prop: " + key);
+      }
     }
   } else if (prop.type === 'number') {
     if (isNaN(parseInt(value, 10))) {
@@ -16845,9 +16871,9 @@ function (_BaseComponent) {
   };
 
   _proto.validateParentDomain = function validateParentDomain() {
-    var domain = Object(cross_domain_utils_src["g" /* getDomain */])();
+    var domain = Object(cross_domain_utils_src["h" /* getDomain */])();
 
-    if (!Object(cross_domain_utils_src["A" /* matchDomain */])(this.component.allowedParentDomains, domain)) {
+    if (!Object(cross_domain_utils_src["B" /* matchDomain */])(this.component.allowedParentDomains, domain)) {
       throw new src_error["c" /* RenderError */]("Can not be rendered by domain: " + domain);
     }
   };
@@ -16860,7 +16886,7 @@ function (_BaseComponent) {
         return _this3.render(element);
       }
 
-      if (!Object(cross_domain_utils_src["v" /* isSameTopWindow */])(window, win)) {
+      if (!Object(cross_domain_utils_src["w" /* isSameTopWindow */])(window, win)) {
         throw new Error("Can only renderTo an adjacent frame");
       }
 
@@ -16919,18 +16945,18 @@ function (_BaseComponent) {
       throw this.component.createError("Must pass window to renderTo");
     }
 
-    if (Object(cross_domain_utils_src["u" /* isSameDomain */])(win)) {
+    if (Object(cross_domain_utils_src["v" /* isSameDomain */])(win)) {
       return;
     }
 
-    var origin = Object(cross_domain_utils_src["g" /* getDomain */])();
+    var origin = Object(cross_domain_utils_src["h" /* getDomain */])();
     var domain = this.component.getDomain(null, this.props.env);
 
     if (!domain) {
       throw new Error("Could not determine domain to allow remote render");
     }
 
-    if (Object(cross_domain_utils_src["A" /* matchDomain */])(domain, origin)) {
+    if (Object(cross_domain_utils_src["B" /* matchDomain */])(domain, origin)) {
       return;
     }
 
@@ -16949,7 +16975,7 @@ function (_BaseComponent) {
   _proto.getComponentParentRef = function getComponentParentRef() {
     var domain = this.component.getDomain(null, this.props.env);
 
-    if (domain === Object(cross_domain_utils_src["g" /* getDomain */])(window)) {
+    if (domain === Object(cross_domain_utils_src["h" /* getDomain */])(window)) {
       var uid = Object(lib["U" /* uniqueID */])();
       lib["v" /* global */].windows = lib["v" /* global */].windows || {};
       lib["v" /* global */].windows[uid] = window;
@@ -16968,7 +16994,7 @@ function (_BaseComponent) {
       };
     }
 
-    if (Object(cross_domain_utils_src["w" /* isTop */])(window)) {
+    if (Object(cross_domain_utils_src["x" /* isTop */])(window)) {
       return {
         ref: constants["WINDOW_REFERENCES"].TOP
       };
@@ -16976,7 +17002,7 @@ function (_BaseComponent) {
 
     return {
       ref: constants["WINDOW_REFERENCES"].PARENT,
-      distance: Object(cross_domain_utils_src["f" /* getDistanceFromTop */])(window)
+      distance: Object(cross_domain_utils_src["g" /* getDistanceFromTop */])(window)
     };
   };
 
@@ -17006,7 +17032,7 @@ function (_BaseComponent) {
         renderTo = _ref6$renderTo === void 0 ? window : _ref6$renderTo;
 
     var childDomain = this.component.getDomain(null, this.props.env);
-    var sameDomain = Object(cross_domain_utils_src["u" /* isSameDomain */])(renderTo);
+    var sameDomain = Object(cross_domain_utils_src["v" /* isSameDomain */])(renderTo);
     var uid = Object(lib["U" /* uniqueID */])();
     var tag = this.component.tag;
     var sProps = Object(lib["N" /* serializeFunctions */])(this.getPropsForChild());
@@ -17233,6 +17259,13 @@ function (_BaseComponent) {
         windowName: _this11.childWindowName
       });
 
+      if (_this11.props.win) {
+        _this11.clean.set('window', _this11.props.win);
+
+        Object(cross_domain_utils_src["b" /* assertSameDomain */])(_this11.window).name = _this11.childWindowName;
+        return;
+      }
+
       return _this11.driver.open.call(_this11);
     });
   };
@@ -17288,7 +17321,7 @@ function (_BaseComponent) {
         context: this.context,
         childWindowName: this.childWindowName,
         isWindowClosed: function isWindowClosed() {
-          return Object(cross_domain_utils_src["y" /* isWindowClosed */])(_this14.window);
+          return Object(cross_domain_utils_src["z" /* isWindowClosed */])(_this14.window);
         },
         props: props,
         overrides: {
@@ -17367,7 +17400,7 @@ function (_BaseComponent) {
   _proto.watchForClose = function watchForClose() {
     var _this16 = this;
 
-    var closeWindowListener = Object(cross_domain_utils_src["B" /* onCloseWindow */])(this.window, function () {
+    var closeWindowListener = Object(cross_domain_utils_src["C" /* onCloseWindow */])(this.window, function () {
       _this16.component.log("detect_close_child");
 
       return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
@@ -17539,7 +17572,7 @@ function (_BaseComponent) {
   _proto.checkClose = function checkClose() {
     var _this22 = this;
 
-    var closeWindowListener = Object(cross_domain_utils_src["B" /* onCloseWindow */])(this.window, function () {
+    var closeWindowListener = Object(cross_domain_utils_src["C" /* onCloseWindow */])(this.window, function () {
       _this22.userClose();
     }, 50, 500);
     this.clean.register(closeWindowListener.cancel);
@@ -17624,7 +17657,7 @@ function (_BaseComponent) {
       return _this26.destroyComponent();
     }).then(function () {
       // IE in metro mode -- child window needs to close itself, or close will hang
-      if (_this26.childExports && _this26.context === constants["CONTEXT_TYPES"].POPUP && !Object(cross_domain_utils_src["y" /* isWindowClosed */])(win)) {
+      if (_this26.childExports && _this26.context === constants["CONTEXT_TYPES"].POPUP && !Object(cross_domain_utils_src["z" /* isWindowClosed */])(win)) {
         _this26.childExports.close().catch(lib["F" /* noop */]);
       }
     });
@@ -17695,7 +17728,7 @@ function (_BaseComponent) {
   ;
 
   _proto.focus = function focus() {
-    if (this.window && !Object(cross_domain_utils_src["y" /* isWindowClosed */])(this.window)) {
+    if (this.window && !Object(cross_domain_utils_src["z" /* isWindowClosed */])(this.window)) {
       this.component.log("focus");
       this.window.focus();
     } else {
@@ -18069,7 +18102,7 @@ function (_BaseComponent) {
   _proto.watchForClose = function watchForClose() {
     var _this2 = this;
 
-    var closeWindowListener = Object(cross_domain_utils_src["B" /* onCloseWindow */])(this.source, function () {
+    var closeWindowListener = Object(cross_domain_utils_src["C" /* onCloseWindow */])(this.source, function () {
       return _this2.destroy();
     }, 3000);
     this.clean.register('destroyCloseWindowListener', closeWindowListener.cancel);
@@ -18318,6 +18351,11 @@ function getInternalProps() {
       type: 'string',
       required: false,
       promise: true,
+      sendToChild: false
+    },
+    win: {
+      type: 'object',
+      required: false,
       sendToChild: false
     },
     dimensions: {
@@ -18657,7 +18695,7 @@ function (_BaseComponent) {
         throw new Error("Could not determine domain to allow remote render");
       }
 
-      if (!Object(cross_domain_utils_src["A" /* matchDomain */])(domain, origin)) {
+      if (!Object(cross_domain_utils_src["B" /* matchDomain */])(domain, origin)) {
         throw new Error("Can not render from " + origin + " - expected " + domain.toString());
       }
 
@@ -18686,7 +18724,7 @@ function (_BaseComponent) {
       return;
     }
 
-    var domain = Object(cross_domain_utils_src["h" /* getDomainFromUrl */])(url);
+    var domain = Object(cross_domain_utils_src["i" /* getDomainFromUrl */])(url);
 
     if (typeof this.domain === 'string' && domain === this.domain) {
       return domain;
@@ -18727,11 +18765,11 @@ function (_BaseComponent) {
 
     if (envUrl) {
       // $FlowFixMe
-      return Object(cross_domain_utils_src["h" /* getDomainFromUrl */])(envUrl);
+      return Object(cross_domain_utils_src["i" /* getDomainFromUrl */])(envUrl);
     }
 
     if (url) {
-      return Object(cross_domain_utils_src["h" /* getDomainFromUrl */])(url);
+      return Object(cross_domain_utils_src["i" /* getDomainFromUrl */])(url);
     }
   };
 
@@ -18774,7 +18812,7 @@ function (_BaseComponent) {
     var bridgeUrl = this.getBridgeUrl(env);
 
     if (bridgeUrl) {
-      return Object(cross_domain_utils_src["h" /* getDomainFromUrl */])(bridgeUrl);
+      return Object(cross_domain_utils_src["i" /* getDomainFromUrl */])(bridgeUrl);
     }
   };
 
@@ -18807,7 +18845,7 @@ function (_BaseComponent) {
         tag = _getComponentMeta.tag,
         childDomain = _getComponentMeta.childDomain;
 
-    if (childDomain && childDomain !== Object(cross_domain_utils_src["g" /* getDomain */])()) {
+    if (childDomain && childDomain !== Object(cross_domain_utils_src["h" /* getDomain */])()) {
       return false;
     }
 
@@ -19081,7 +19119,7 @@ function isDevice() {
 }
 function isInsidePopup() {
   // Checks to see if the top-most window is a pop-up
-  return Boolean(Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getOpener */ "l"])(Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getTop */ "n"])(window) || window));
+  return Boolean(Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getOpener */ "m"])(Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getTop */ "o"])(window) || window));
 }
 function isStandAlone() {
   // Chrome interprets pop-up windows as standalone windows
@@ -19330,7 +19368,7 @@ function cleanTunnelWindows() {
       continue;
     }
 
-    if (Object(src["y" /* isWindowClosed */])(tunnelWindow.source)) {
+    if (Object(src["z" /* isWindowClosed */])(tunnelWindow.source)) {
       deleteTunnelWindow(key);
     }
   }
@@ -19361,7 +19399,7 @@ global["a" /* global */].openTunnelToParent = function openTunnelToParent(_ref2)
       source = _ref2.source,
       canary = _ref2.canary,
       sendMessage = _ref2.sendMessage;
-  var parentWindow = Object(src["m" /* getParent */])(window);
+  var parentWindow = Object(src["n" /* getParent */])(window);
 
   if (!parentWindow) {
     throw new Error("No parent window found to open tunnel to");
@@ -19386,7 +19424,7 @@ global["a" /* global */].openTunnelToParent = function openTunnelToParent(_ref2)
         return;
       }
 
-      if (!tunnelWindow || !tunnelWindow.source || Object(src["y" /* isWindowClosed */])(tunnelWindow.source)) {
+      if (!tunnelWindow || !tunnelWindow.source || Object(src["z" /* isWindowClosed */])(tunnelWindow.source)) {
         return;
       }
 
@@ -19415,7 +19453,7 @@ var cross_domain_safe_weakmap_src = __webpack_require__(17);
 
 
 function needsBridgeForBrowser() {
-  if (Object(src["o" /* getUserAgent */])(window).match(/MSIE|trident|edge\/12|edge\/13/i)) {
+  if (Object(src["p" /* getUserAgent */])(window).match(/MSIE|trident|edge\/12|edge\/13/i)) {
     return true;
   }
 
@@ -19426,7 +19464,7 @@ function needsBridgeForBrowser() {
   return false;
 }
 function needsBridgeForWin(win) {
-  if (!Object(src["v" /* isSameTopWindow */])(window, win)) {
+  if (!Object(src["w" /* isSameTopWindow */])(window, win)) {
     return true;
   }
 
@@ -19434,11 +19472,11 @@ function needsBridgeForWin(win) {
 }
 function needsBridgeForDomain(domain, win) {
   if (domain) {
-    if (Object(src["g" /* getDomain */])() !== Object(src["h" /* getDomainFromUrl */])(domain)) {
+    if (Object(src["h" /* getDomain */])() !== Object(src["i" /* getDomainFromUrl */])(domain)) {
       return true;
     }
   } else if (win) {
-    if (!Object(src["u" /* isSameDomain */])(win)) {
+    if (!Object(src["v" /* isSameDomain */])(win)) {
       return true;
     }
   }
@@ -19464,13 +19502,13 @@ function needsBridge(_ref) {
   return true;
 }
 function getBridgeName(domain) {
-  domain = domain || Object(src["h" /* getDomainFromUrl */])(domain);
+  domain = domain || Object(src["i" /* getDomainFromUrl */])(domain);
   var sanitizedDomain = domain.replace(/[^a-zA-Z0-9]+/g, '_');
   var id = conf["b" /* CONSTANTS */].BRIDGE_NAME_PREFIX + "_" + sanitizedDomain;
   return id;
 }
 function isBridge() {
-  return Boolean(window.name && window.name === getBridgeName(Object(src["g" /* getDomain */])()));
+  return Boolean(window.name && window.name === getBridgeName(Object(src["h" /* getDomain */])()));
 }
 var documentBodyReady = new zalgo_promise_src["a" /* ZalgoPromise */](function (resolve) {
   if (window.document && window.document.body) {
@@ -19505,7 +19543,7 @@ function registerRemoteSendMessage(win, domain, sendMessage) {
       throw new Error("Remote window does not match window");
     }
 
-    if (!Object(src["A" /* matchDomain */])(remoteDomain, domain)) {
+    if (!Object(src["B" /* matchDomain */])(remoteDomain, domain)) {
       throw new Error("Remote domain " + remoteDomain + " does not match domain " + domain);
     }
 
@@ -19525,8 +19563,8 @@ function rejectRemoteSendMessage(win, err) {
   remoteWindow.sendMessagePromise.asyncReject(err);
 }
 function sendBridgeMessage(win, message, domain) {
-  var messagingChild = Object(src["s" /* isOpener */])(window, win);
-  var messagingParent = Object(src["s" /* isOpener */])(win, window);
+  var messagingChild = Object(src["t" /* isOpener */])(window, win);
+  var messagingParent = Object(src["t" /* isOpener */])(win, window);
 
   if (!messagingChild && !messagingParent) {
     throw new Error("Can only send messages to and from parent and popup windows");
@@ -19551,12 +19589,12 @@ function sendBridgeMessage(win, message, domain) {
 
 var awaitRemoteBridgeForWindow = Object(lib["r" /* weakMapMemoize */])(function (win) {
   return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    for (var _i2 = 0, _getFrames2 = Object(src["j" /* getFrames */])(win); _i2 < _getFrames2.length; _i2++) {
+    for (var _i2 = 0, _getFrames2 = Object(src["k" /* getFrames */])(win); _i2 < _getFrames2.length; _i2++) {
       var frame = _getFrames2[_i2];
 
       try {
         // $FlowFixMe
-        if (frame && frame !== window && Object(src["u" /* isSameDomain */])(frame) && frame[conf["b" /* CONSTANTS */].WINDOW_PROPS.POSTROBOT]) {
+        if (frame && frame !== window && Object(src["v" /* isSameDomain */])(frame) && frame[conf["b" /* CONSTANTS */].WINDOW_PROPS.POSTROBOT]) {
           return frame;
         }
       } catch (err) {
@@ -19565,14 +19603,14 @@ var awaitRemoteBridgeForWindow = Object(lib["r" /* weakMapMemoize */])(function 
     }
 
     try {
-      var _frame = Object(src["i" /* getFrameByName */])(win, getBridgeName(Object(src["g" /* getDomain */])()));
+      var _frame = Object(src["j" /* getFrameByName */])(win, getBridgeName(Object(src["h" /* getDomain */])()));
 
       if (!_frame) {
         return;
       } // $FlowFixMe
 
 
-      if (Object(src["u" /* isSameDomain */])(_frame) && _frame[conf["b" /* CONSTANTS */].WINDOW_PROPS.POSTROBOT]) {
+      if (Object(src["v" /* isSameDomain */])(_frame) && _frame[conf["b" /* CONSTANTS */].WINDOW_PROPS.POSTROBOT]) {
         return _frame;
       }
 
@@ -19581,7 +19619,7 @@ var awaitRemoteBridgeForWindow = Object(lib["r" /* weakMapMemoize */])(function 
         var timeout;
         interval = setInterval(function () {
           // $FlowFixMe
-          if (_frame && Object(src["u" /* isSameDomain */])(_frame) && _frame[conf["b" /* CONSTANTS */].WINDOW_PROPS.POSTROBOT]) {
+          if (_frame && Object(src["v" /* isSameDomain */])(_frame) && _frame[conf["b" /* CONSTANTS */].WINDOW_PROPS.POSTROBOT]) {
             clearInterval(interval);
             clearTimeout(timeout);
             return resolve(_frame);
@@ -19598,7 +19636,7 @@ var awaitRemoteBridgeForWindow = Object(lib["r" /* weakMapMemoize */])(function 
 });
 function openTunnelToOpener() {
   return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    var opener = Object(src["l" /* getOpener */])(window);
+    var opener = Object(src["m" /* getOpener */])(window);
 
     if (!opener) {
       return;
@@ -19753,23 +19791,23 @@ function openBridgeFrame(name, url) {
 }
 
 function hasBridge(url, domain) {
-  domain = domain || Object(src["h" /* getDomainFromUrl */])(url);
+  domain = domain || Object(src["i" /* getDomainFromUrl */])(url);
   return Boolean(global["a" /* global */].bridges[domain]);
 }
 function openBridge(url, domain) {
-  domain = domain || Object(src["h" /* getDomainFromUrl */])(url);
+  domain = domain || Object(src["i" /* getDomainFromUrl */])(url);
 
   if (global["a" /* global */].bridges[domain]) {
     return global["a" /* global */].bridges[domain];
   }
 
   global["a" /* global */].bridges[domain] = zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    if (Object(src["g" /* getDomain */])() === domain) {
+    if (Object(src["h" /* getDomain */])() === domain) {
       throw new Error("Can not open bridge on the same domain as current domain: " + domain);
     }
 
     var name = getBridgeName(domain);
-    var frame = Object(src["i" /* getFrameByName */])(window, name);
+    var frame = Object(src["j" /* getFrameByName */])(window, name);
 
     if (frame) {
       throw new Error("Frame with name " + name + " already exists on page");
@@ -19806,7 +19844,7 @@ window.open = function windowOpenWrapper(url, name, options, last) {
   }
 
   if (domain) {
-    domain = Object(src["h" /* getDomainFromUrl */])(domain);
+    domain = Object(src["i" /* getDomainFromUrl */])(domain);
   }
 
   var win = windowOpen.call(this, url, name, options, last);
@@ -19822,7 +19860,7 @@ window.open = function windowOpenWrapper(url, name, options, last) {
   for (var _i2 = 0, _Object$keys2 = Object.keys(global["a" /* global */].popupWindowsByName); _i2 < _Object$keys2.length; _i2++) {
     var winName = _Object$keys2[_i2];
 
-    if (Object(src["y" /* isWindowClosed */])(global["a" /* global */].popupWindowsByName[winName].win)) {
+    if (Object(src["z" /* isWindowClosed */])(global["a" /* global */].popupWindowsByName[winName].win)) {
       delete global["a" /* global */].popupWindowsByName[winName];
     }
   }
@@ -19843,7 +19881,7 @@ function linkUrl(win, url) {
   var winOptions = global["a" /* global */].popupWindowsByWin.get(win);
 
   if (winOptions) {
-    winOptions.domain = Object(src["h" /* getDomainFromUrl */])(url);
+    winOptions.domain = Object(src["i" /* getDomainFromUrl */])(url);
     registerRemoteWindow(win);
   }
 }
@@ -20320,15 +20358,15 @@ function allowIframe() {
     return true;
   }
 
-  var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getParent */ "m"])(window);
+  var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* getParent */ "n"])(window);
 
-  if (parentWindow && Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* isSameDomain */ "u"])(parentWindow)) {
+  if (parentWindow && Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* isSameDomain */ "v"])(parentWindow)) {
     return true;
   }
 
   var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
 
-  if (parentComponentWindow && Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* isSameDomain */ "u"])(parentComponentWindow)) {
+  if (parentComponentWindow && Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__[/* isSameDomain */ "v"])(parentComponentWindow)) {
     return true;
   }
 
@@ -20526,7 +20564,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.289";
+    payload.version = "4.0.290";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -20582,7 +20620,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.289".replace(/[^0-9]+/g, '_');
+      var version = "4.0.290".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -20599,7 +20637,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.289",
+    v: "checkout.js." + "4.0.290",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -20665,7 +20703,7 @@ var src = __webpack_require__(15);
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
 var zalgo_promise_src = __webpack_require__(2);
 
-// EXTERNAL MODULE: ./src/resources/index.js + 17 modules
+// EXTERNAL MODULE: ./src/resources/index.js + 18 modules
 var resources = __webpack_require__(18);
 
 // EXTERNAL MODULE: ./src/constants/index.js + 7 modules
@@ -20865,7 +20903,7 @@ function determineUrl(env, fundingSource, payment) {
     return _config__WEBPACK_IMPORTED_MODULE_0__[/* config */ "a"].guestUrls[env];
   }
 
-  if (fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].BOLETO) {
+  if (fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__[/* FUNDING */ "v"].OXXO) {
     return _config__WEBPACK_IMPORTED_MODULE_0__[/* config */ "a"].altpayUrls[env];
   }
 
@@ -25346,7 +25384,7 @@ var conf = __webpack_require__(10);
 
 function emulateIERestrictions(sourceWindow, targetWindow) {
   if (!conf["a" /* CONFIG */].ALLOW_POSTMESSAGE_POPUP) {
-    if (Object(src["v" /* isSameTopWindow */])(sourceWindow, targetWindow) === false) {
+    if (Object(src["w" /* isSameTopWindow */])(sourceWindow, targetWindow) === false) {
       throw new Error("Can not send and receive post messages between two different windows (disabled to emulate IE)");
     }
   }
@@ -25721,17 +25759,17 @@ __webpack_require__.r(__webpack_exports__);
 
 if (false) {}
 
-if (window.paypal && window.paypal.version === "4.0.289") {
+if (window.paypal && window.paypal.version === "4.0.290") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.289"
+    version: "4.0.290"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.289" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.289" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.290" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.290" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.289"
+    version: "4.0.290"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.289");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.290");
 } else {
   try {
     var _interface = __webpack_require__(66);
@@ -25864,7 +25902,7 @@ var constants = __webpack_require__(0);
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__(4);
 
-// EXTERNAL MODULE: ./src/resources/index.js + 17 modules
+// EXTERNAL MODULE: ./src/resources/index.js + 18 modules
 var resources = __webpack_require__(18);
 
 // EXTERNAL MODULE: ./src/checkout/template/containerContent.js
@@ -26746,7 +26784,7 @@ var rest = {
   }
 };
 var PROXY_REST = "proxy_rest";
-var parentWin = Object(cross_domain_utils_src["e" /* getAncestor */])();
+var parentWin = Object(cross_domain_utils_src["f" /* getAncestor */])();
 Object(post_robot_src["on"])(PROXY_REST, {
   domain: config["a" /* config */].paypal_domain_regex
 }, function (_ref) {
@@ -26754,7 +26792,7 @@ Object(post_robot_src["on"])(PROXY_REST, {
   proxyRest = data;
 });
 
-if (parentWin && Object(lib["G" /* isPayPalDomain */])() && !Object(cross_domain_utils_src["u" /* isSameDomain */])(parentWin)) {
+if (parentWin && Object(lib["G" /* isPayPalDomain */])() && !Object(cross_domain_utils_src["v" /* isSameDomain */])(parentWin)) {
   Object(post_robot_src["send"])(parentWin, PROXY_REST, {
     createAccessToken: createAccessToken,
     createExperienceProfile: createExperienceProfile,
@@ -27110,8 +27148,8 @@ var _FUNDING_CONFIG, _CARD_CONFIG;
 
 /* global __paypal_checkout__*/
 
-var FUNDING_PRIORITY = [constants["v" /* FUNDING */].PAYPAL, constants["v" /* FUNDING */].VENMO, constants["v" /* FUNDING */].ITAU, constants["v" /* FUNDING */].CREDIT, constants["v" /* FUNDING */].CARD, constants["v" /* FUNDING */].IDEAL, constants["v" /* FUNDING */].ELV, constants["v" /* FUNDING */].BANCONTACT, constants["v" /* FUNDING */].GIROPAY, constants["v" /* FUNDING */].EPS, constants["v" /* FUNDING */].SOFORT, constants["v" /* FUNDING */].MYBANK, constants["v" /* FUNDING */].P24, constants["v" /* FUNDING */].PAYU, constants["v" /* FUNDING */].VERKKOPANKKI, constants["v" /* FUNDING */].BLIK, constants["v" /* FUNDING */].TRUSTLY, constants["v" /* FUNDING */].MAXIMA, constants["v" /* FUNDING */].BOLETO];
-var FUNDING_ORDER = [constants["v" /* FUNDING */].PAYPAL, constants["v" /* FUNDING */].VENMO, constants["v" /* FUNDING */].ITAU, constants["v" /* FUNDING */].CREDIT, constants["v" /* FUNDING */].IDEAL, constants["v" /* FUNDING */].ELV, constants["v" /* FUNDING */].BANCONTACT, constants["v" /* FUNDING */].GIROPAY, constants["v" /* FUNDING */].EPS, constants["v" /* FUNDING */].SOFORT, constants["v" /* FUNDING */].MYBANK, constants["v" /* FUNDING */].P24, constants["v" /* FUNDING */].PAYU, constants["v" /* FUNDING */].VERKKOPANKKI, constants["v" /* FUNDING */].BLIK, constants["v" /* FUNDING */].TRUSTLY, constants["v" /* FUNDING */].MAXIMA, constants["v" /* FUNDING */].BOLETO, constants["v" /* FUNDING */].CARD];
+var FUNDING_PRIORITY = [constants["v" /* FUNDING */].PAYPAL, constants["v" /* FUNDING */].VENMO, constants["v" /* FUNDING */].ITAU, constants["v" /* FUNDING */].CREDIT, constants["v" /* FUNDING */].CARD, constants["v" /* FUNDING */].IDEAL, constants["v" /* FUNDING */].ELV, constants["v" /* FUNDING */].BANCONTACT, constants["v" /* FUNDING */].GIROPAY, constants["v" /* FUNDING */].EPS, constants["v" /* FUNDING */].SOFORT, constants["v" /* FUNDING */].MYBANK, constants["v" /* FUNDING */].BLIK, constants["v" /* FUNDING */].P24, constants["v" /* FUNDING */].PAYU, constants["v" /* FUNDING */].VERKKOPANKKI, constants["v" /* FUNDING */].TRUSTLY, constants["v" /* FUNDING */].MAXIMA, constants["v" /* FUNDING */].BOLETO, constants["v" /* FUNDING */].OXXO];
+var FUNDING_ORDER = [constants["v" /* FUNDING */].PAYPAL, constants["v" /* FUNDING */].VENMO, constants["v" /* FUNDING */].ITAU, constants["v" /* FUNDING */].CREDIT, constants["v" /* FUNDING */].IDEAL, constants["v" /* FUNDING */].ELV, constants["v" /* FUNDING */].BANCONTACT, constants["v" /* FUNDING */].GIROPAY, constants["v" /* FUNDING */].EPS, constants["v" /* FUNDING */].SOFORT, constants["v" /* FUNDING */].MYBANK, constants["v" /* FUNDING */].BLIK, constants["v" /* FUNDING */].P24, constants["v" /* FUNDING */].PAYU, constants["v" /* FUNDING */].VERKKOPANKKI, constants["v" /* FUNDING */].TRUSTLY, constants["v" /* FUNDING */].MAXIMA, constants["v" /* FUNDING */].BOLETO, constants["v" /* FUNDING */].OXXO, constants["v" /* FUNDING */].CARD];
 var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[constants["s" /* DEFAULT */]] = {
   enabled: true,
   allowOptIn: true,
@@ -27132,7 +27170,7 @@ var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[constants["s" /* DEF
   allowHorizontal: false,
   allowVertical: true
 }, _FUNDING_CONFIG[constants["v" /* FUNDING */].VENMO] = {
-  allowOptOut: false,
+  allowOptOut: true,
   allowedCountries: [constants["r" /* COUNTRY */].US],
   allowHorizontal: true,
   allowVertical: true
@@ -27189,30 +27227,40 @@ var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[constants["s" /* DEF
   allowVertical: true,
   requireCommitAsTrue: true
 }, _FUNDING_CONFIG[constants["v" /* FUNDING */].PAYU] = {
-  allowedCountries: [constants["r" /* COUNTRY */].PL, constants["r" /* COUNTRY */].CZ],
+  allowedCountries: [constants["r" /* COUNTRY */].CZ],
   allowHorizontal: false,
-  allowVertical: true
+  allowVertical: true,
+  requireCommitAsTrue: true
 }, _FUNDING_CONFIG[constants["v" /* FUNDING */].VERKKOPANKKI] = {
   allowedCountries: [constants["r" /* COUNTRY */].FI],
   allowHorizontal: false,
-  allowVertical: true
+  allowVertical: true,
+  requireCommitAsTrue: true
 }, _FUNDING_CONFIG[constants["v" /* FUNDING */].BLIK] = {
   allowedCountries: [constants["r" /* COUNTRY */].PL],
   allowHorizontal: false,
-  allowVertical: true
+  allowVertical: true,
+  requireCommitAsTrue: true
 }, _FUNDING_CONFIG[constants["v" /* FUNDING */].TRUSTLY] = {
-  allowedCountries: [constants["r" /* COUNTRY */].DE, constants["r" /* COUNTRY */].DK, constants["r" /* COUNTRY */].EE, constants["r" /* COUNTRY */].ES, constants["r" /* COUNTRY */].FI, constants["r" /* COUNTRY */].GB, constants["r" /* COUNTRY */].IT, constants["r" /* COUNTRY */].MT, constants["r" /* COUNTRY */].NL, constants["r" /* COUNTRY */].NO, constants["r" /* COUNTRY */].PL, constants["r" /* COUNTRY */].SE],
+  allowedCountries: [constants["r" /* COUNTRY */].DE, constants["r" /* COUNTRY */].DK, constants["r" /* COUNTRY */].EE, constants["r" /* COUNTRY */].ES, constants["r" /* COUNTRY */].FI, constants["r" /* COUNTRY */].GB, constants["r" /* COUNTRY */].IT, constants["r" /* COUNTRY */].MT, constants["r" /* COUNTRY */].NL, constants["r" /* COUNTRY */].NO, constants["r" /* COUNTRY */].SE],
   allowHorizontal: false,
   allowVertical: true,
   requireCommitAsTrue: true
 }, _FUNDING_CONFIG[constants["v" /* FUNDING */].MAXIMA] = {
   allowedCountries: [constants["r" /* COUNTRY */].LT],
   allowHorizontal: false,
-  allowVertical: true
+  allowVertical: true,
+  requireCommitAsTrue: true
 }, _FUNDING_CONFIG[constants["v" /* FUNDING */].BOLETO] = {
   allowedCountries: [constants["r" /* COUNTRY */].BR],
   allowHorizontal: false,
-  allowVertical: true
+  allowVertical: true,
+  requireCommitAsTrue: true
+}, _FUNDING_CONFIG[constants["v" /* FUNDING */].OXXO] = {
+  allowedCountries: [constants["r" /* COUNTRY */].MX],
+  allowHorizontal: false,
+  allowVertical: true,
+  requireCommitAsTrue: true
 }, _FUNDING_CONFIG[constants["v" /* FUNDING */].ZIMPLER] = {
   allowedCountries: [],
   allowHorizontal: false,
@@ -27486,7 +27534,7 @@ function logFundingEligibility() {
 // CONCATENATED MODULE: ./src/funding/index.js
 
 // CONCATENATED MODULE: ./src/button/config.js
-var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _logoColors19, _secondaryColors19, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
+var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _logoColors19, _secondaryColors19, _logoColors20, _secondaryColors20, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
 
 /* eslint no-template-curly-in-string: off, max-lines: off */
 
@@ -27750,19 +27798,29 @@ var BUTTON_CONFIG = (_BUTTON_CONFIG = {}, _BUTTON_CONFIG[constants["s" /* DEFAUL
   allowPrimary: false,
   allowPrimaryVertical: false,
   allowPrimaryHorizontal: false
+}, _BUTTON_CONFIG[constants["f" /* BUTTON_LABEL */].OXXO] = {
+  label: "{ logo: " + constants["h" /* BUTTON_LOGO */].OXXO + " }",
+  logoLabel: "{ logo: " + constants["h" /* BUTTON_LOGO */].OXXO + " }",
+  defaultColor: constants["e" /* BUTTON_COLOR */].SILVER,
+  colors: [constants["e" /* BUTTON_COLOR */].SILVER, constants["e" /* BUTTON_COLOR */].BLACK, constants["e" /* BUTTON_COLOR */].WHITE],
+  logoColors: (_logoColors19 = {}, _logoColors19[constants["e" /* BUTTON_COLOR */].SILVER] = constants["i" /* BUTTON_LOGO_COLOR */].BLACK, _logoColors19[constants["e" /* BUTTON_COLOR */].BLACK] = constants["i" /* BUTTON_LOGO_COLOR */].WHITE, _logoColors19[constants["e" /* BUTTON_COLOR */].WHITE] = constants["i" /* BUTTON_LOGO_COLOR */].BLACK, _logoColors19),
+  secondaryColors: (_secondaryColors19 = {}, _secondaryColors19[constants["e" /* BUTTON_COLOR */].GOLD] = constants["e" /* BUTTON_COLOR */].SILVER, _secondaryColors19[constants["e" /* BUTTON_COLOR */].BLUE] = constants["e" /* BUTTON_COLOR */].SILVER, _secondaryColors19[constants["e" /* BUTTON_COLOR */].SILVER] = constants["e" /* BUTTON_COLOR */].SILVER, _secondaryColors19[constants["e" /* BUTTON_COLOR */].BLACK] = constants["e" /* BUTTON_COLOR */].BLACK, _secondaryColors19[constants["e" /* BUTTON_COLOR */].DARKBLUE] = constants["e" /* BUTTON_COLOR */].SILVER, _secondaryColors19[constants["e" /* BUTTON_COLOR */].WHITE] = constants["e" /* BUTTON_COLOR */].WHITE, _secondaryColors19),
+  allowPrimary: false,
+  allowPrimaryVertical: false,
+  allowPrimaryHorizontal: false
 }, _BUTTON_CONFIG[constants["f" /* BUTTON_LABEL */].CARD] = {
   label: "{ cards }",
   logoLabel: "{ cards }",
   defaultColor: constants["e" /* BUTTON_COLOR */].SILVER,
   colors: [constants["e" /* BUTTON_COLOR */].TRANSPARENT],
-  logoColors: (_logoColors19 = {}, _logoColors19[constants["e" /* BUTTON_COLOR */].TRANSPARENT] = constants["i" /* BUTTON_LOGO_COLOR */].BLACK, _logoColors19),
-  secondaryColors: (_secondaryColors19 = {}, _secondaryColors19[constants["e" /* BUTTON_COLOR */].GOLD] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors19[constants["e" /* BUTTON_COLOR */].BLUE] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors19[constants["e" /* BUTTON_COLOR */].SILVER] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors19[constants["e" /* BUTTON_COLOR */].BLACK] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors19[constants["e" /* BUTTON_COLOR */].DARKBLUE] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors19[constants["e" /* BUTTON_COLOR */].WHITE] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors19),
+  logoColors: (_logoColors20 = {}, _logoColors20[constants["e" /* BUTTON_COLOR */].TRANSPARENT] = constants["i" /* BUTTON_LOGO_COLOR */].BLACK, _logoColors20),
+  secondaryColors: (_secondaryColors20 = {}, _secondaryColors20[constants["e" /* BUTTON_COLOR */].GOLD] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors20[constants["e" /* BUTTON_COLOR */].BLUE] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors20[constants["e" /* BUTTON_COLOR */].SILVER] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors20[constants["e" /* BUTTON_COLOR */].BLACK] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors20[constants["e" /* BUTTON_COLOR */].DARKBLUE] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors20[constants["e" /* BUTTON_COLOR */].WHITE] = constants["e" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors20),
   allowPrimary: false,
   allowPrimaryVertical: false,
   allowPrimaryHorizontal: false
 }, _BUTTON_CONFIG);
-var FUNDING_TO_DEFAULT_LABEL = (_FUNDING_TO_DEFAULT_L = {}, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].PAYPAL] = constants["f" /* BUTTON_LABEL */].PAYPAL, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].VENMO] = constants["f" /* BUTTON_LABEL */].VENMO, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].ITAU] = constants["f" /* BUTTON_LABEL */].ITAU, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].CARD] = constants["f" /* BUTTON_LABEL */].CARD, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].CREDIT] = constants["f" /* BUTTON_LABEL */].CREDIT, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].IDEAL] = constants["f" /* BUTTON_LABEL */].IDEAL, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].ELV] = constants["f" /* BUTTON_LABEL */].ELV, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].BANCONTACT] = constants["f" /* BUTTON_LABEL */].BANCONTACT, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].GIROPAY] = constants["f" /* BUTTON_LABEL */].GIROPAY, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].SOFORT] = constants["f" /* BUTTON_LABEL */].SOFORT, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].EPS] = constants["f" /* BUTTON_LABEL */].EPS, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].P24] = constants["f" /* BUTTON_LABEL */].P24, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].MYBANK] = constants["f" /* BUTTON_LABEL */].MYBANK, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].PAYU] = constants["f" /* BUTTON_LABEL */].PAYU, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].VERKKOPANKKI] = constants["f" /* BUTTON_LABEL */].VERKKOPANKKI, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].BLIK] = constants["f" /* BUTTON_LABEL */].BLIK, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].TRUSTLY] = constants["f" /* BUTTON_LABEL */].TRUSTLY, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].MAXIMA] = constants["f" /* BUTTON_LABEL */].MAXIMA, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].BOLETO] = constants["f" /* BUTTON_LABEL */].BOLETO, _FUNDING_TO_DEFAULT_L);
-var LABEL_TO_FUNDING = (_LABEL_TO_FUNDING = {}, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].PAYPAL] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].CHECKOUT] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].PAY] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].BUYNOW] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].INSTALLMENT] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].CARD] = constants["v" /* FUNDING */].CARD, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].CREDIT] = constants["v" /* FUNDING */].CREDIT, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].VENMO] = constants["v" /* FUNDING */].VENMO, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].ITAU] = constants["v" /* FUNDING */].ITAU, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].IDEAL] = constants["v" /* FUNDING */].IDEAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].BANCONTACT] = constants["v" /* FUNDING */].BANCONTACT, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].GIROPAY] = constants["v" /* FUNDING */].GIROPAY, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].EPS] = constants["v" /* FUNDING */].EPS, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].SOFORT] = constants["v" /* FUNDING */].SOFORT, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].P24] = constants["v" /* FUNDING */].P24, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].MYBANK] = constants["v" /* FUNDING */].MYBANK, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].PAYU] = constants["v" /* FUNDING */].PAYU, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].VERKKOPANKKI] = constants["v" /* FUNDING */].VERKKOPANKKI, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].BLIK] = constants["v" /* FUNDING */].BLIK, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].TRUSTLY] = constants["v" /* FUNDING */].TRUSTLY, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].MAXIMA] = constants["v" /* FUNDING */].MAXIMA, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].BOLETO] = constants["v" /* FUNDING */].BOLETO, _LABEL_TO_FUNDING);
+var FUNDING_TO_DEFAULT_LABEL = (_FUNDING_TO_DEFAULT_L = {}, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].PAYPAL] = constants["f" /* BUTTON_LABEL */].PAYPAL, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].VENMO] = constants["f" /* BUTTON_LABEL */].VENMO, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].ITAU] = constants["f" /* BUTTON_LABEL */].ITAU, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].CARD] = constants["f" /* BUTTON_LABEL */].CARD, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].CREDIT] = constants["f" /* BUTTON_LABEL */].CREDIT, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].IDEAL] = constants["f" /* BUTTON_LABEL */].IDEAL, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].ELV] = constants["f" /* BUTTON_LABEL */].ELV, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].BANCONTACT] = constants["f" /* BUTTON_LABEL */].BANCONTACT, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].GIROPAY] = constants["f" /* BUTTON_LABEL */].GIROPAY, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].SOFORT] = constants["f" /* BUTTON_LABEL */].SOFORT, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].EPS] = constants["f" /* BUTTON_LABEL */].EPS, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].P24] = constants["f" /* BUTTON_LABEL */].P24, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].MYBANK] = constants["f" /* BUTTON_LABEL */].MYBANK, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].PAYU] = constants["f" /* BUTTON_LABEL */].PAYU, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].VERKKOPANKKI] = constants["f" /* BUTTON_LABEL */].VERKKOPANKKI, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].BLIK] = constants["f" /* BUTTON_LABEL */].BLIK, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].TRUSTLY] = constants["f" /* BUTTON_LABEL */].TRUSTLY, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].MAXIMA] = constants["f" /* BUTTON_LABEL */].MAXIMA, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].BOLETO] = constants["f" /* BUTTON_LABEL */].BOLETO, _FUNDING_TO_DEFAULT_L[constants["v" /* FUNDING */].OXXO] = constants["f" /* BUTTON_LABEL */].OXXO, _FUNDING_TO_DEFAULT_L);
+var LABEL_TO_FUNDING = (_LABEL_TO_FUNDING = {}, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].PAYPAL] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].CHECKOUT] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].PAY] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].BUYNOW] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].INSTALLMENT] = constants["v" /* FUNDING */].PAYPAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].CARD] = constants["v" /* FUNDING */].CARD, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].CREDIT] = constants["v" /* FUNDING */].CREDIT, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].VENMO] = constants["v" /* FUNDING */].VENMO, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].ITAU] = constants["v" /* FUNDING */].ITAU, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].IDEAL] = constants["v" /* FUNDING */].IDEAL, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].BANCONTACT] = constants["v" /* FUNDING */].BANCONTACT, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].GIROPAY] = constants["v" /* FUNDING */].GIROPAY, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].EPS] = constants["v" /* FUNDING */].EPS, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].SOFORT] = constants["v" /* FUNDING */].SOFORT, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].P24] = constants["v" /* FUNDING */].P24, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].MYBANK] = constants["v" /* FUNDING */].MYBANK, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].PAYU] = constants["v" /* FUNDING */].PAYU, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].VERKKOPANKKI] = constants["v" /* FUNDING */].VERKKOPANKKI, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].BLIK] = constants["v" /* FUNDING */].BLIK, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].TRUSTLY] = constants["v" /* FUNDING */].TRUSTLY, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].MAXIMA] = constants["v" /* FUNDING */].MAXIMA, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].BOLETO] = constants["v" /* FUNDING */].BOLETO, _LABEL_TO_FUNDING[constants["f" /* BUTTON_LABEL */].OXXO] = constants["v" /* FUNDING */].OXXO, _LABEL_TO_FUNDING);
 var BUTTON_RELATIVE_STYLE = {
   FUNDINGICONS: 100,
   TAGLINE: 50,
@@ -34877,7 +34935,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.289", _ref19), {
+  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.290", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -35084,7 +35142,7 @@ function isCreditDualEligible(props) {
     return false;
   }
 
-  var domain = Object(cross_domain_utils_src["g" /* getDomain */])().replace(/^https?:\/\//, '').replace(/^www\./, '');
+  var domain = Object(cross_domain_utils_src["h" /* getDomain */])().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
   if (config["a" /* config */].creditTestDomains.indexOf(domain) === -1) {
     return false;
@@ -35094,7 +35152,7 @@ function isCreditDualEligible(props) {
 }
 
 var isDomainAllowed = Object(lib["I" /* memoize */])(function () {
-  var domain = Object(cross_domain_utils_src["g" /* getDomain */])().replace(/^https?:\/\//, '').replace(/^www\./, '');
+  var domain = Object(cross_domain_utils_src["h" /* getDomain */])().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
   if (!config["a" /* config */].apmTestDomains.some(function (allowDomain) {
     var regex = new RegExp("[^a-zA-Z\\d\\-]*" + allowDomain.replace(/\./g, '\\.') + "$"); // eslint-disable-line security/detect-non-literal-regexp
@@ -35121,7 +35179,7 @@ function isApmEligible(source, props) {
 }
 
 var creditThrottle;
-var smartThrottle = Object(lib["x" /* getThrottle */])('smart_button_uri', 1);
+var smartThrottle = Object(lib["x" /* getThrottle */])('smart_button_uri', 5);
 var component_Button = Object(src["c" /* create */])({
   tag: 'paypal-button',
   name: 'ppbutton',
@@ -35129,7 +35187,7 @@ var component_Button = Object(src["c" /* create */])({
     var env = props.env || config["a" /* config */].env;
     var url = config["a" /* config */].buttonUrls[env];
 
-    if (smartThrottle.isEnabled() || props.enableNativeCheckout) {
+    if (smartThrottle.isEnabled() || props.enableNativeCheckout || env !== constants["t" /* ENV */].PRODUCTION) {
       return url.replace('/webapps/hermes/button', '/smart/button');
     }
 
@@ -35245,6 +35303,13 @@ var component_Button = Object(src["c" /* create */])({
       required: false,
       def: function def() {
         return {};
+      }
+    },
+    enableNativeCheckout: {
+      type: 'boolean',
+      required: false,
+      def: function def() {
+        return false;
       }
     },
     client: {
@@ -35480,7 +35545,7 @@ var component_Button = Object(src["c" /* create */])({
           }
         }
 
-        var APM_FUNDING = [constants["v" /* FUNDING */].IDEAL, constants["v" /* FUNDING */].SOFORT, constants["v" /* FUNDING */].GIROPAY, constants["v" /* FUNDING */].BANCONTACT, constants["v" /* FUNDING */].P24, constants["v" /* FUNDING */].MYBANK, constants["v" /* FUNDING */].EPS, constants["v" /* FUNDING */].PAYU, constants["v" /* FUNDING */].VERKKOPANKKI, constants["v" /* FUNDING */].BLIK, constants["v" /* FUNDING */].TRUSTLY, constants["v" /* FUNDING */].MAXIMA, constants["v" /* FUNDING */].BOLETO];
+        var APM_FUNDING = [constants["v" /* FUNDING */].IDEAL, constants["v" /* FUNDING */].SOFORT, constants["v" /* FUNDING */].GIROPAY, constants["v" /* FUNDING */].BANCONTACT, constants["v" /* FUNDING */].P24, constants["v" /* FUNDING */].MYBANK, constants["v" /* FUNDING */].EPS, constants["v" /* FUNDING */].PAYU, constants["v" /* FUNDING */].VERKKOPANKKI, constants["v" /* FUNDING */].BLIK, constants["v" /* FUNDING */].TRUSTLY, constants["v" /* FUNDING */].MAXIMA, constants["v" /* FUNDING */].BOLETO, constants["v" /* FUNDING */].OXXO];
         var apmFunding = APM_FUNDING.filter(function (source) {
           return isApmEligible(source, props);
         });
@@ -35526,7 +35591,7 @@ var component_Button = Object(src["c" /* create */])({
       noop: true,
       decorate: function decorate(original) {
         return function decorateOnRender() {
-          var _track3;
+          var _smartThrottle$logSta, _track3;
 
           var _getBrowser = Object(lib["h" /* getBrowser */])(),
               _getBrowser$browser = _getBrowser.browser,
@@ -35546,6 +35611,7 @@ var component_Button = Object(src["c" /* create */])({
           Object(beaver_logger_client["k" /* info */])("button_render_tagline_" + (style.tagline || 'default'));
           pptm.listenForButtonRender();
           pptm.reloadPptmScript(this.props.client[this.props.env]);
+          smartThrottle.logStart((_smartThrottle$logSta = {}, _smartThrottle$logSta[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$logSta));
           Object(beaver_logger_client["p" /* track */])((_track3 = {}, _track3[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.LOAD, _track3[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_RENDER, _track3[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track3[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3[constants["u" /* FPTI */].KEY.BUTTON_SOURCE] = this.props.source, _track3));
 
           if (Object(lib["E" /* isIEIntranet */])()) {
@@ -35783,9 +35849,9 @@ var component_Button = Object(src["c" /* create */])({
       noop: true,
       decorate: function decorate(original) {
         return function decorateOnClick(data) {
-          var _smartThrottle$logSta, _track8;
+          var _smartThrottle$log, _track8;
 
-          smartThrottle.logStart((_smartThrottle$logSta = {}, _smartThrottle$logSta[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$logSta));
+          smartThrottle.log('click', (_smartThrottle$log = {}, _smartThrottle$log[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$log));
           Object(beaver_logger_client["k" /* info */])('button_click');
           Object(beaver_logger_client["p" /* track */])((_track8 = {}, _track8[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.BUTTON, _track8[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_CLICK, _track8[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track8[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track8[constants["u" /* FPTI */].KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), _track8));
 
@@ -35972,6 +36038,16 @@ var component_Button = Object(src["c" /* create */])({
         return awaitPopupBridge(component_Button);
       }
     },
+    getPageUrl: {
+      type: 'function',
+      queryParam: false,
+      required: false,
+      def: function def() {
+        return function () {
+          return window.location.href;
+        };
+      }
+    },
     test: {
       type: 'object',
       required: false,
@@ -36026,8 +36102,8 @@ if (Object(lib["D" /* isIE */])() && Object(lib["m" /* getDomainSetting */])('ie
   };
 }
 
-var hacks_parent = Object(cross_domain_utils_src["m" /* getParent */])(window);
-var hacks_top = Object(cross_domain_utils_src["n" /* getTop */])(window);
+var hacks_parent = Object(cross_domain_utils_src["n" /* getParent */])(window);
+var hacks_top = Object(cross_domain_utils_src["o" /* getTop */])(window);
 
 if (hacks_top && hacks_parent) {
   var canRenderTop = hacks_top === hacks_parent;
@@ -36045,7 +36121,7 @@ if (hacks_top && hacks_parent) {
           context = _ref.context;
 
       if (!canRenderTop) {
-        win = Object(cross_domain_utils_src["m" /* getParent */])(window);
+        win = Object(cross_domain_utils_src["n" /* getParent */])(window);
       }
 
       return original.call(context, win, props, el);
@@ -36690,7 +36766,7 @@ var postRobot = post_robot_src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.289";
+var interface_version = "4.0.290";
 var interface_checkout;
 var apps;
 
