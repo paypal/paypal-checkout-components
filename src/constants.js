@@ -4,6 +4,7 @@ export const SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
 
 export const HEADERS = {
     AUTHORIZATION: 'authorization',
+    CONTENT_TYPE:  'content-type',
 
     ACCESS_TOKEN:  'x-paypal-internal-euat',
     CSRF_TOKEN:    'x-csrf-jwt',

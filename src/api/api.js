@@ -22,6 +22,7 @@ export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : 
 
     const requestHeaders = {
         [ HEADERS.AUTHORIZATION ]: `Bearer ${ accessToken }`,
+        [ HEADERS.CONTENT_TYPE ]:  `application/json`,
         ...headers
     };
 
