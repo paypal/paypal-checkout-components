@@ -1059,6 +1059,15 @@ export const Button : Component<ButtonOptions> = create({
             value:    () => awaitPopupBridge(Button)
         },
 
+        getPageUrl: {
+            type:        'function',
+            queryParam:  false,
+            required:    false,
+            def:         () => {
+                return () => window.location.href;
+            }
+        },
+
         test: {
             type:     'object',
             required: false,
