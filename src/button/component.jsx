@@ -147,7 +147,7 @@ export const Button : Component<ButtonOptions> = create({
         const env = props.env || config.env;
         const url = config.buttonUrls[env];
 
-        if (smartThrottle.isEnabled() || props.enableNativeCheckout) {
+        if (smartThrottle.isEnabled() || props.enableNativeCheckout || env !== ENV.PRODUCTION) {
             return url.replace('/webapps/hermes/button', '/smart/button');
         }
 
