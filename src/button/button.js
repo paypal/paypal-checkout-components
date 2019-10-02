@@ -8,14 +8,14 @@ import type { FundingEligibilityType, PersonalizationType } from '../types';
 import { setupLogger, sendBeacon, fixClickFocus } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES } from '../constants';
-import { openPopup } from '../ui';
-import { CHECKOUT_POPUP_DIMENSIONS, type Payment } from '../payment-flows';
+import { type Payment } from '../payment-flows';
 
 import { getProps, getConfig, getComponents, getServiceData } from './props';
-import { getSelectedFunding, getButtons } from './dom';
+import { getSelectedFunding, getButtons, enableLoadingSpinner, disableLoadingSpinner } from './dom';
 import { setupButtonLogs } from './logs';
 import { setupRemember } from './remember';
-import { launchPaymentFlow, setupPaymentFlows, getPaymentFlow } from './pay';
+import { setupPaymentFlows, getPaymentFlow } from './pay';
+import { validateOrder, updateButtonClientConfig } from './orders';
 
 type ButtonOpts = {|
     fundingEligibility : FundingEligibilityType,
@@ -42,7 +42,7 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
     const serviceData = getServiceData({ clientID, eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization, isCardFieldsExperimentEnabled });
     const { merchantID, facilitatorAccessTokenPromise } = serviceData;
 
-    const props = getProps({ facilitatorAccessTokenPromise });
+    let props = getProps({ facilitatorAccessTokenPromise });
     const { env, sessionID, partnerAttributionID, commit, correlationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding,
         style, onClick } = props;
@@ -57,57 +57,87 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
 
     const { initPromise, isEnabled } = onInit();
 
+    const sendPersonalizationBeacons = () => {
+        if (personalization && personalization.tagline) {
+            sendBeacon(personalization.tagline.tracking.click);
+        }
+
+        if (personalization && personalization.buttonText) {
+            sendBeacon(personalization.buttonText.tracking.click);
+        }
+    };
+
+    let paymentProcessing = false;
+
     const handleButtonClick = (payment : Payment) => {
+        const { button, win, fundingSource } = payment;
+
         return ZalgoPromise.try(() => {
-            let { button, win, fundingSource } = payment;
+            if (paymentProcessing) {
+                return;
+            }
 
-            const flow = getPaymentFlow({ props, payment, config, components, serviceData });
+            paymentProcessing = true;
 
-            // Always call onClick if passed
-            const clickPromise = onClick
-                ? onClick({ fundingSource })
-                : ZalgoPromise.resolve(true);
+            props = getProps({ facilitatorAccessTokenPromise });
 
-            // If flow has been disabled by merchant, halt and close any window
             if (!isEnabled()) {
                 if (win) {
                     win.close();
                 }
 
+                if (onClick) {
+                    onClick({ fundingSource });
+                }
+
                 return;
             }
 
-            // If onClick was passed, immediately open a window
-            if (onClick && flow.popup) {
-                win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
-            }
+            const { init, inline, spinner } = getPaymentFlow({ props, payment, config, components, serviceData });
+            const { click, start, close } = init({ props, config, serviceData, components, payment });
 
-            // Wait for the result of merchant validation
-            return clickPromise.then(valid => {
+            // $FlowFixMe
+            button.payPromise = ZalgoPromise.try(() => {
+                sendPersonalizationBeacons();
 
-                // If not valid, halt and close any window
+                if (click) {
+                    return click();
+                } else if (onClick) {
+                    return onClick({ fundingSource });
+                } else {
+                    return true;
+                }
+
+            }).then(valid => {
                 if (!valid) {
-                    if (win) {
-                        win.close();
-                    }
-
                     return;
                 }
 
-                // Launch the payment flow
-                const payPromise = launchPaymentFlow({ flow, config, serviceData, components, payment });
-
-                // $FlowFixMe
-                button.payPromise = payPromise;
-
-                if (personalization && personalization.tagline) {
-                    sendBeacon(personalization.tagline.tracking.click);
+                const { createOrder } = props;
+        
+                if (spinner) {
+                    enableLoadingSpinner(button);
                 }
-
-                if (personalization && personalization.buttonText) {
-                    sendBeacon(personalization.buttonText.tracking.click);
-                }
+            
+                createOrder().then(orderID =>
+                    updateButtonClientConfig({ orderID, fundingSource, inline }));
+            
+                return start()
+                    .then(() => createOrder())
+                    .then(orderID => validateOrder(orderID, { clientID, merchantID }))
+                    .catch(err => {
+                        return ZalgoPromise.all([
+                            close(),
+                            ZalgoPromise.reject(err)
+                        ]);
+                    }).then(noop);
             });
+
+            return button.payPromise;
+            
+        }).finally(() => {
+            paymentProcessing = false;
+            disableLoadingSpinner(button);
         });
     };
 

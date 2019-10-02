@@ -5,9 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { checkout, cardFields, native, vaultCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
 
-import { type Props, type Config, type ServiceData, type Components, getProps } from './props';
-import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
-import { updateButtonClientConfig, validateOrder } from './orders';
+import { type Props, type Config, type ServiceData, type Components } from './props';
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     cardFields,
@@ -31,48 +29,4 @@ export function getPaymentFlow({ props, payment, config, components, serviceData
     }
 
     throw new Error(`Could not find eligible payment flow`);
-}
-
-let paymentProcessing = false;
-
-export function launchPaymentFlow({ flow, payment, config, components, serviceData } : { flow : PaymentFlow, payment : Payment, config : Config, components : Components, serviceData : ServiceData }) : ZalgoPromise<void> {
-    const { facilitatorAccessTokenPromise } = serviceData;
-    const props = getProps({ facilitatorAccessTokenPromise });
-    
-    const { button, fundingSource } = payment;
-    const { clientID, createOrder } = props;
-    const { merchantID } = serviceData;
-    
-    return ZalgoPromise.try(() => {
-        if (paymentProcessing) {
-            return;
-        }
-
-        paymentProcessing = true;
-
-        const { init, inline, spinner } = flow;
-
-        if (spinner) {
-            enableLoadingSpinner(button);
-        }
-
-        const { start, close } = init({ props, config, serviceData, components, payment });
-
-        createOrder().then(orderID =>
-            updateButtonClientConfig({ orderID, fundingSource, inline }));
-
-        return start()
-            .then(() => createOrder())
-            .then(orderID => validateOrder(orderID, { clientID, merchantID }))
-            .catch(err => {
-                return ZalgoPromise.all([
-                    close(),
-                    ZalgoPromise.reject(err)
-                ]);
-            }).then(noop);
-
-    }).finally(() => {
-        paymentProcessing = false;
-        disableLoadingSpinner(button);
-    });
 }

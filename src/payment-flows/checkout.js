@@ -5,11 +5,12 @@ import { memoize, noop, supportsPopups } from 'belter/src';
 import { FUNDING, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
+import type { FundingEligibilityType, ProxyWindow } from '../types';
+import type { Props, Components, ServiceData, Config, CreateBillingAgreement, CreateSubscription } from '../button/props';
 import { enableVault } from '../api';
 import { CONTEXT, TARGET_ELEMENT } from '../constants';
 import { unresolvedPromise } from '../lib';
-import type { FundingEligibilityType, ProxyWindow } from '../types';
-import type { Props, Components, ServiceData, Config, CreateBillingAgreement, CreateSubscription } from '../button/props';
+import { openPopup } from '../ui';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 
@@ -25,8 +26,10 @@ function getRenderWindow() : Object {
     const top = getTop(window);
     if (canRenderTop && top) {
         return top;
-    } else {
+    } else if (getParent()) {
         return getParent();
+    } else {
+        return window;
     }
 }
 
@@ -133,8 +136,8 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     const { Checkout } = components;
     const { buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
-        createBillingAgreement, createSubscription } = props;
-    const { button, win, fundingSource, card, isClick } = payment;
+        createBillingAgreement, createSubscription, onClick } = props;
+    let { button, win, fundingSource, card, isClick } = payment;
     const { fundingEligibility, buyerCountry } = serviceData;
     const { cspNonce } = config;
 
@@ -143,7 +146,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     let approved = false;
 
     const restart = memoize(() : ZalgoPromise<void> =>
-        initCheckout({ props, components, serviceData, config, payment: { button, win, fundingSource, card } })
+        initCheckout({ props, components, serviceData, config, payment: { button, win, fundingSource, card, isClick: false } })
             .start().finally(unresolvedPromise));
 
     const onClose = () => {
@@ -155,71 +158,93 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
 
     let buyerAccessToken;
 
-    const { renderTo, close: closeCheckout } = Checkout({
-        window: win,
-        buttonSessionID,
-        clientAccessToken,
-
-        createOrder: () => {
-            return createOrder().then(orderID => {
-                return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription }).then(() => {
-                    return orderID;
+    const init = () => {
+        return Checkout({
+            window: win,
+            buttonSessionID,
+            clientAccessToken,
+    
+            createOrder: () => {
+                return createOrder().then(orderID => {
+                    return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription }).then(() => {
+                        return orderID;
+                    });
                 });
-            });
-        },
+            },
+    
+            onApprove: ({ payerID, paymentID, billingToken, subscriptionID }) => {
+                approved = true;
+    
+                // eslint-disable-next-line no-use-before-define
+                return closeCheckout().then(() => {
+                    return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart });
+                });
+            },
+    
+            onAuth: ({ accessToken }) => {
+                buyerAccessToken = accessToken;
+            },
+    
+            onCancel: () => {
+                // eslint-disable-next-line no-use-before-define
+                return closeCheckout().then(() => {
+                    return onCancel();
+                });
+            },
+    
+            onShippingChange: onShippingChange
+                ? (data, actions) => {
+                    return onShippingChange({ buyerAccessToken, ...data }, actions);
+                } : null,
+    
+            onError,
+            onClose,
+    
+            fundingSource,
+            card,
+            buyerCountry,
+            locale,
+            commit,
+            cspNonce
+        });
+    };
 
-        onApprove: ({ payerID, paymentID, billingToken, subscriptionID }) => {
-            approved = true;
-
-            return closeCheckout().then(() => {
-                return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart });
-            });
-        },
-
-        onAuth: ({ accessToken }) => {
-            buyerAccessToken = accessToken;
-        },
-
-        onCancel: () => {
-            return closeCheckout().then(() => {
-                return onCancel();
-            });
-        },
-
-        onShippingChange: onShippingChange
-            ? (data, actions) => {
-                return onShippingChange({ buyerAccessToken, ...data }, actions);
-            } : null,
-
-        onError,
-        onClose,
-
-        fundingSource,
-        card,
-        buyerCountry,
-        locale,
-        commit,
-        cspNonce
-    });
-
-    checkoutOpen = true;
-    const renderPromise = renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
+    const { renderTo, close: closeCheckout } = init();
 
     const close = () => {
         checkoutOpen = false;
         return closeCheckout();
     };
 
-    const start = () => {
-        return renderPromise.then(noop);
+    const start = memoize(() => {
+        return renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
+    });
+
+    const click = () => {
+        return ZalgoPromise.try(() => {
+            if (!onClick) {
+                start();
+                return true;
+            }
+    
+            win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+
+            return onClick({ fundingSource }).then(valid => {
+
+                if (win && !valid) {
+                    win.close();
+                }
+
+                return valid;
+            });
+        });
     };
 
-    return { start, close };
+    return { click, start, close };
 }
 
 export const checkout : PaymentFlow = {
     setup:      setupCheckout,
     isEligible: isCheckoutEligible,
-    init:       initCheckout,
-    popup:      true
+    init:       initCheckout
 };

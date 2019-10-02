@@ -430,6 +430,19 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                 };
             }
 
+            if (data.query.includes('query GetFireBaseSessionToken')) {
+                return {
+                    data: {
+                        firebase: {
+                            auth: {
+                                sessionUID:   data.variables.sessionUID,
+                                sessionToken: 'abc1234'
+                            }
+                        }
+                    }
+                };
+            }
+
             return {};
         },
         ...options
@@ -727,7 +740,7 @@ function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) :
     return { send, expect };
 }
 
-export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () => string }) : NativeMockWebSocket {
+export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSessionUID : () => string, extraHandler? : Function }) : NativeMockWebSocket {
     let props;
 
     let getPropsRequestID;
@@ -740,6 +753,8 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
     const { send, expect } = mockFirebase({
         handler: ({ data }) => {
             for (const id of Object.keys(data)) {
+                const message = JSON.parse(data[id]);
+
                 const {
                     request_uid:    requestUID,
                     message_uid:    messageUID,
@@ -747,13 +762,17 @@ export function getNativeFirebaseMock({ getSessionUID } : { getSessionUID : () =
                     message_status: messageStatus,
                     message_name:   messageName,
                     message_data:   messageData
-                } = JSON.parse(data[id]);
+                } = message;
 
                 if (received[messageUID]) {
                     continue;
                 }
 
                 received[messageUID] = true;
+
+                if (extraHandler) {
+                    extraHandler(message);
+                }
     
                 if (messageType === 'response' && messageStatus === 'error') {
                     throw new Error(messageData.message);

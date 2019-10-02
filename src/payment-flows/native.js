@@ -1,14 +1,14 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, noop } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
-import { EXPERIENCE_URI, NATIVE_DETECTION_URL } from '../config';
-import { promiseNoop, redirectTop } from '../lib';
+import { EXPERIENCE_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
+import { promiseNoop } from '../lib';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 import { checkout } from './checkout';
@@ -41,24 +41,10 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     });
 });
 
-let nativeInstalled = false;
-
-function setupNative({ props } : { props : Props }) : ZalgoPromise<void> {
+function setupNative() : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        const { enableNativeCheckout } = props;
-
-        if (!enableNativeCheckout) {
-            return;
-        }
-
-        // eslint-disable-next-line compat/compat
-        fetch(NATIVE_DETECTION_URL).then(res => {
-            if (res.status === 200) {
-                nativeInstalled = true;
-            }
-        }, noop);
-
-    }).then(noop);
+        // pass
+    });
 }
 
 function isNativeEligible({ props, payment, config, serviceData } : { props : Props, payment : Payment, config : Config, serviceData : ServiceData }) : boolean {
@@ -123,9 +109,10 @@ type NativeSDKProps = {|
 
 function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
-        buttonSessionID, env, stageHost, apiStageHost } = props;
+        buttonSessionID, env, stageHost, apiStageHost, onClick } = props;
     const { version, firebase: firebaseConfig } = config;
     const { facilitatorAccessTokenPromise } = serviceData;
+    const { fundingSource } = payment;
 
     const sessionUID = uniqueID();
 
@@ -137,73 +124,106 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return startCheckout();
     };
 
-    const startPromise = ZalgoPromise.try(() => {
-        const orderPromise = createOrder();
-        const pageUrlPromise = getPageUrl();
+    const getNativeUrl = () => {
+        return extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
+    };
 
-        const getSDKProps = () => {
-            return ZalgoPromise.hash({
-                facilitatorAccessToken: facilitatorAccessTokenPromise,
-                orderID:                orderPromise,
-                pageUrl:                pageUrlPromise
-            }).then(({ facilitatorAccessToken, orderID, pageUrl }) => {
-                const userAgent = getUserAgent();
-    
-                return {
-                    orderID, facilitatorAccessToken, pageUrl, commit,
-                    userAgent, buttonSessionID, env, stageHost, apiStageHost
-                };
-            });
-        };
+    const getSDKProps = () => {
+        return ZalgoPromise.hash({
+            facilitatorAccessToken: facilitatorAccessTokenPromise,
+            orderID:                createOrder(),
+            pageUrl:                getPageUrl()
+        }).then(({ facilitatorAccessToken, orderID, pageUrl }) => {
+            const userAgent = getUserAgent();
 
-        const openCheckoutSocket = () => {
-            const socket = getNativeSocket({ sessionUID, firebaseConfig, version });
-
-            socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
-                return getSDKProps();
-            });
-    
-            socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
-                socket.close();
-                const data = { payerID, paymentID, billingToken };
-                const actions = { restart: () => fallbackToWebCheckout() };
-                return onApprove(data, actions);
-            });
-    
-            socket.on(MESSAGE.ON_CANCEL, () => {
-                socket.close();
-                return onCancel();
-            });
-    
-            socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
-                socket.close();
-                return onError(new Error(message));
-            });
-
-            close = () => socket.send(MESSAGE.CLOSE);
-        };
-
-        const nativeUrl = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
-
-        if (nativeInstalled) {
-            redirectTop(nativeUrl);
-            return openCheckoutSocket();
-        }
-
-        const win = popup(nativeUrl);
-
-        return orderPromise.then(() => {
-            if (!isBlankDomain(win)) {
-                return fallbackToWebCheckout(win);
-            }
-
-            win.close();
-            return openCheckoutSocket();
+            return {
+                orderID, facilitatorAccessToken, pageUrl, commit,
+                userAgent, buttonSessionID, env, stageHost, apiStageHost
+            };
         });
+    };
+
+    const openCheckoutSocket = () => {
+        const socket = getNativeSocket({ sessionUID, firebaseConfig, version });
+
+        socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
+            return getSDKProps();
+        });
+
+        socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
+            socket.close();
+            const data = { payerID, paymentID, billingToken };
+            const actions = { restart: () => fallbackToWebCheckout() };
+            return onApprove(data, actions);
+        });
+
+        socket.on(MESSAGE.ON_CANCEL, () => {
+            socket.close();
+            return onCancel();
+        });
+
+        socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
+            socket.close();
+            return onError(new Error(message));
+        });
+
+        close = () => {
+            return socket.send(MESSAGE.CLOSE);
+        };
+        
+        return { close };
+    };
+
+    let startPromise;
+
+    const start = memoize(() => {
+        return startPromise;
     });
 
+    const click = () => {
+        const win = popup(getNativeUrl());
+
+        return ZalgoPromise.try(() => {
+            if (!onClick) {
+                return true;
+            }
+
+            return onClick({ fundingSource }).then(valid => {
+                if (!valid) {
+                    close();
+                }
+
+                return valid;
+            });
+        }).then(valid => {
+
+            startPromise = ZalgoPromise.try(() => {
+                return valid ? createOrder() : ZalgoPromise.delay(500);
+            }).then(() => {
+                if (isBlankDomain(win)) {
+                    win.close();
+                    const { close: closeNative } = openCheckoutSocket();
+                    close = closeNative;
+
+                    if (!valid) {
+                        close();
+                    }
+                } else {
+                    if (valid) {
+                        return fallbackToWebCheckout(win);
+                    } else {
+                        close();
+                    }
+                }
+            });
+
+            return valid;
+        });
+    };
+
     return {
-        start: () => startPromise,
+        click,
+        start,
         close: () => ZalgoPromise.try(close)
     };
 }

@@ -19,14 +19,19 @@ export type XOnClickActionsType = {|
 
 export type XOnClick = (XOnClickDataType, XOnClickActionsType) => ZalgoPromise<boolean | void>;
 
+export const CLICK_VALID = {
+    VALID:   (true : true),
+    INVALID: (false : false)
+};
+
 export function buildXOnClickData({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) : XOnClickDataType {
     return { fundingSource };
 }
 
 export function buildXOnClickActions() : XOnClickActionsType {
     return {
-        resolve: () => ZalgoPromise.try(() => true),
-        reject:  () => ZalgoPromise.try(() => false)
+        resolve: () => ZalgoPromise.try(() => CLICK_VALID.VALID),
+        reject:  () => ZalgoPromise.try(() => CLICK_VALID.INVALID)
     };
 }
 
@@ -52,7 +57,7 @@ export function getOnClick(xprops : XProps) : OnClick | void {
         }).flush();
         
         return onClick(buildXOnClickData({ fundingSource }), buildXOnClickActions()).then(valid => {
-            return (valid !== false);
+            return (valid !== CLICK_VALID.INVALID);
         });
     };
 }
