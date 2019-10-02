@@ -286,6 +286,14 @@ export const Button : Component<ButtonOptions> = create({
             }
         },
 
+        enableNativeCheckout: {
+            type:     'boolean',
+            required: false,
+            def() : boolean {
+                return false;
+            }
+        },
+
         client: {
             type:     'object',
             required: false,
