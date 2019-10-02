@@ -43,6 +43,20 @@ describe('happy cases', () => {
                 const checkoutInstance = CheckoutOriginal(props);
 
                 mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    const [ win, element, context ] = args;
+
+                    if (!win) {
+                        throw new Error(`Expected window to be passed to renderTo`);
+                    }
+
+                    if (!element || typeof element !== 'string') {
+                        throw new Error(`Expected string element to be passed to renderTo`);
+                    }
+
+                    if (context !== 'popup') {
+                        throw new Error(`Expected context to be popup, got ${ context }`);
+                    }
+
                     return props.createOrder().then(id => {
                         if (id !== orderID) {
                             throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);

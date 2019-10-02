@@ -116,7 +116,7 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
             event.preventDefault();
             event.stopPropagation();
 
-            handleButtonClick({ button, fundingSource, card, paymentMethodID });
+            handleButtonClick({ button, fundingSource, card, paymentMethodID, isClick: true });
         });
     });
 
