@@ -56,7 +56,7 @@ export function launchPaymentFlow({ flow, payment, config, components, serviceDa
             enableLoadingSpinner(button);
         }
 
-        const { start, close, triggerError } = init({ props, config, serviceData, components, payment });
+        const { start, close } = init({ props, config, serviceData, components, payment });
 
         createOrder().then(orderID =>
             updateButtonClientConfig({ orderID, fundingSource, inline }));
@@ -66,8 +66,8 @@ export function launchPaymentFlow({ flow, payment, config, components, serviceDa
             .then(orderID => validateOrder(orderID, { clientID, merchantID }))
             .catch(err => {
                 return ZalgoPromise.all([
-                    triggerError(err),
-                    close()
+                    close(),
+                    ZalgoPromise.reject(err)
                 ]);
             }).then(noop);
 

@@ -155,7 +155,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
 
     let buyerAccessToken;
 
-    const { renderTo, close: closeCheckout, onError: triggerError } = Checkout({
+    const { renderTo, close: closeCheckout } = Checkout({
         window: win,
         buttonSessionID,
         clientAccessToken,
@@ -214,7 +214,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
         return renderPromise.then(noop);
     };
 
-    return { start, close, triggerError };
+    return { start, close };
 }
 
 export const checkout : PaymentFlow = {

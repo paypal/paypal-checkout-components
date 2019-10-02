@@ -114,9 +114,8 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
     if (cardFieldsOpen) {
         highlightCard(card);
         return {
-            start:        promiseNoop,
-            close:        promiseNoop,
-            triggerError: promiseNoop
+            start: promiseNoop,
+            close: promiseNoop
         };
     }
 
@@ -134,7 +133,7 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
 
     let buyerAccessToken;
 
-    const { render, close: closeCardFields, onError: triggerError } = CardFields({
+    const { render, close: closeCardFields } = CardFields({
         createOrder,
 
         fundingSource,
@@ -178,7 +177,7 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
         return closeCardFields();
     };
 
-    return { start, close, triggerError };
+    return { start, close };
 }
 
 export const cardFields : PaymentFlow = {

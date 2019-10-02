@@ -79,10 +79,7 @@ function initPopupBridge({ props, payment } : { props : Props, payment : Payment
 
     return {
         start,
-        close:        promiseNoop,
-        triggerError: err => {
-            throw err;
-        }
+        close: promiseNoop
     };
 }
 

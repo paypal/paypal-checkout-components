@@ -9,8 +9,7 @@ import type { ProxyWindow } from '../types';
 
 export type PaymentFlowInstance = {|
     start : () => ZalgoPromise<void>,
-    close : () => ZalgoPromise<void>,
-    triggerError : (mixed) => ZalgoPromise<void>
+    close : () => ZalgoPromise<void>
 |};
 
 export type Payment = {|

@@ -130,16 +130,10 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const sessionUID = uniqueID();
 
     let close = promiseNoop;
-    let triggerError = (err) => {
-        throw err;
-    };
 
     const fallbackToWebCheckout = (win? : CrossDomainWindowType) => {
-        const { start: startCheckout, close: closeCheckout, triggerError: triggerCheckoutError } = checkout.init({ props, components, payment: { ...payment, win, isClick: false }, config, serviceData });
-
+        const { start: startCheckout, close: closeCheckout } = checkout.init({ props, components, payment: { ...payment, win, isClick: false }, config, serviceData });
         close = closeCheckout;
-        triggerError = triggerCheckoutError;
-
         return startCheckout();
     };
 
@@ -209,9 +203,8 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     });
 
     return {
-        start:        () => startPromise,
-        close:        () => ZalgoPromise.try(close),
-        triggerError: err => triggerError(err)
+        start: () => startPromise,
+        close: () => ZalgoPromise.try(close)
     };
 }
 

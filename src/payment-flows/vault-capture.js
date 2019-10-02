@@ -108,10 +108,7 @@ function initVaultCapture({ props, components, payment } : { props : Props, comp
 
     return {
         start,
-        close:        () => ZalgoPromise.resolve(),
-        triggerError: err => {
-            throw err;
-        }
+        close: () => ZalgoPromise.resolve()
     };
 }
 
