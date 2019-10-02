@@ -46,7 +46,7 @@ export function validateOrder(orderID : string, { clientID, merchantID } : { cli
 
     ]).then(([ gql, payee ]) => {
 
-        const cart = gql.data.checkoutSession.cart;
+        const cart = gql.checkoutSession.cart;
 
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
         const currency = cart.amounts && cart.amounts.total.currencyCode;

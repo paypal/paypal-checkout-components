@@ -55,7 +55,7 @@ export function getFirebaseSessionToken(sessionUID : string) : ZalgoPromise<stri
         `,
         variables: { sessionUID }
     }).then(res => {
-        return res.data.firebase.auth.sessionToken;
+        return res.firebase.auth.sessionToken;
     });
 }
 

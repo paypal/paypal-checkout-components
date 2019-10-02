@@ -101,6 +101,6 @@ export function callGraphQL<T>({ query, variables = {}, headers = {} } : { query
             throw new Error(`${ GRAPHQL_URI } returned status ${ status }`);
         }
 
-        return body;
+        return body.data;
     });
 }
