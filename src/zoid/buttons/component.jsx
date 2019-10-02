@@ -4,12 +4,12 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
-    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, createExperiment } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { isDevice, uniqueID, inlineMemoize } from 'belter/src';
-import { FUNDING, PLATFORM, QUERY_BOOL } from '@paypal/sdk-constants/src';
+import { isDevice, uniqueID, inlineMemoize, experiment } from 'belter/src';
+import { FUNDING, PLATFORM, QUERY_BOOL, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl } from '../../config';
@@ -110,7 +110,28 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 onApprove: {
                     type:     'function',
-                    required: false
+                    required: false,
+                    decorate: ({ value, state, props }) => {
+                        return (...args) => {
+                            state.cardButtonExperiment.logComplete({
+                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
+                            });
+
+                            if (value) {
+                                return value(...args);
+                            }
+                        };
+                    }
+                },
+
+                cardButtonExperiment: {
+                    type: 'boolean',
+                    queryParam: true,
+                    value: ({ state }) => {
+                        // Set up a new experiment at 10%
+                        state.cardButtonExperiment = state.cardButtonExperiment || createExperiment('some_experiment', 10);
+                        return state.cardButtonExperiment.isEnabled();
+                    }
                 },
 
                 onShippingChange: {
@@ -125,6 +146,22 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 onCancel: {
                     type:     'function',
                     required: false
+                },
+
+                onInit: {
+                    type:     'function',
+                    required: false,
+                    decorate: ({ value, state, props }) => {
+                        return (...args) => {
+                            state.cardButtonExperiment.logStart({
+                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
+                            });
+
+                            if (value) {
+                                return value(...args);
+                            }
+                        };
+                    }
                 },
 
                 onClick: {
