@@ -25,17 +25,21 @@ type ButtonOpts = {|
     personalization : PersonalizationType,
     isCardFieldsExperimentEnabled : boolean,
     firebaseConfig? : FirebaseConfig,
-    facilitatorAccessToken? : string
+    facilitatorAccessToken? : string,
+    eligibility : ?{
+        cardFields : boolean,
+        native : boolean
+    }
 |};
 
-export function setupButton({ facilitatorAccessToken, fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig } : ButtonOpts) : ZalgoPromise<void> {
+export function setupButton({ facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig } : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal SDK not loaded`);
     }
 
     const clientID = window.xprops.clientID;
 
-    const serviceData = getServiceData({ clientID, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization, isCardFieldsExperimentEnabled });
+    const serviceData = getServiceData({ clientID, eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization, isCardFieldsExperimentEnabled });
     const { merchantID, facilitatorAccessTokenPromise } = serviceData;
 
     const props = getProps({ facilitatorAccessTokenPromise });

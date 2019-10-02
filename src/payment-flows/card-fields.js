@@ -20,7 +20,7 @@ let cardFieldsOpen = false;
 function isCardFieldsEligible({ props, payment, serviceData } : { props : Props, payment : Payment, serviceData : ServiceData }) : boolean {
     const { vault, onShippingChange, enableStandardCardFields } = props;
     const { win, fundingSource } = payment;
-    const { experiments } = serviceData;
+    const { eligibility } = serviceData;
 
     if (win) {
         return false;
@@ -39,20 +39,11 @@ function isCardFieldsEligible({ props, payment, serviceData } : { props : Props,
     }
 
     // if merchant opt-in inline guest, they will ALWAYS see inline guest guest
-    if (enableStandardCardFields === true) {
+    if (enableStandardCardFields) {
         return true;
     }
 
-    // if merchant doesn't pass the inline guest flag, they will in the ramp
-    if (!enableStandardCardFields) {
-        if (!experiments.cardFields) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    return true;
+    return eligibility.cardFields;
 }
 
 function highlightCard(card : $Values<typeof CARD>) {

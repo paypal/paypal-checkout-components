@@ -11,25 +11,24 @@ const app = express();
 const PORT = process.env.PORT || 8003;
 
 const buttonMiddleware = getButtonMiddleware({
-    getFundingEligibility: () => {
-        return Promise.resolve({
-            paypal: {
-                eligible: true
+    graphQL: () => {
+        // $FlowFixMe
+        return Promise.resolve([
+            {
+                paypal: {
+                    eligible: true
+                }
+            },
+            {
+                
             }
-        });
+        ]);
     },
-    clientIDToMerchantID: () => {
+    getAccessToken: () => {
         return Promise.resolve('XYZ12345');
     },
-    getPersonalization: () => {
-        return Promise.resolve({
-            tagline: {
-                text:     'foo',
-                tracking: {
-                    impression: 'https://www.google.com/foobar'
-                }
-            }
-        });
+    getMerchantID: () => {
+        return Promise.resolve('XYZ12345');
     }
 });
 
@@ -56,7 +55,6 @@ app.get('/smart/menu', (req : ExpressRequest, res : ExpressResponse) => {
 
     return menuMiddleware(req, res);
 });
-
 
 app.listen(PORT, () => {
     // eslint-disable-next-line no-console

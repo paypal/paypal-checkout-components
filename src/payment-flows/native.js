@@ -8,7 +8,7 @@ import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-doma
 import type { Props, Components, Config, ServiceData } from '../button/props';
 import { EXPERIENCE_URI, NATIVE_DETECTION_URL } from '../config';
 import { promiseNoop, redirectTop } from '../lib';
-import { firebaseSocket, type MessageSocket, type FirebaseConfig, getNativeEligibility } from '../api';
+import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 import { checkout } from './checkout';
@@ -42,12 +42,10 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
 });
 
 let nativeInstalled = false;
-let nativeEligible = false;
 
-function setupNative({ props, serviceData } : { props : Props, serviceData : ServiceData }) : ZalgoPromise<void> {
+function setupNative({ props } : { props : Props }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        const { clientID, enableNativeCheckout, vault, onShippingChange, currency, buttonSessionID } = props;
-        const { merchantID, buyerCountry } = serviceData;
+        const { enableNativeCheckout } = props;
 
         if (!enableNativeCheckout) {
             return;
@@ -60,24 +58,15 @@ function setupNative({ props, serviceData } : { props : Props, serviceData : Ser
             }
         }, noop);
 
-        const shippingCallbackEnabled = Boolean(onShippingChange);
-        const userAgent = getUserAgent();
-
-        getNativeEligibility({
-            vault, shippingCallbackEnabled, merchantID, clientID, buyerCountry,
-            currency, userAgent, buttonSessionID
-        }).then(eligible => {
-            nativeEligible = eligible;
-        });
-
     }).then(noop);
 }
 
-function isNativeEligible({ props, payment, config } : { props : Props, payment : Payment, config : Config }) : boolean {
+function isNativeEligible({ props, payment, config, serviceData } : { props : Props, payment : Payment, config : Config, serviceData : ServiceData }) : boolean {
 
     const { platform, onShippingChange, createBillingAgreement,
         createSubscription, enableNativeCheckout } = props;
     const { firebase: firebaseConfig } = config;
+    const { eligibility } = serviceData;
 
     const { win, fundingSource } = payment;
 
@@ -113,7 +102,7 @@ function isNativeEligible({ props, payment, config } : { props : Props, payment 
         return true;
     }
 
-    return nativeEligible;
+    return eligibility.native;
 }
 
 type NativeSDKProps = {|

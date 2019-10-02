@@ -16,6 +16,11 @@ function getNonce(res : ExpressResponse) : string {
     return nonce;
 }
 
+type StyleType = {|
+    label? : string,
+    period? : ?number
+|};
+
 type ParamsType = {|
     env : $Values<typeof ENV>,
     clientID : string,
@@ -30,7 +35,9 @@ type ParamsType = {|
     merchantID? : $ReadOnlyArray<string>,
     buttonSessionID : string,
     clientAccessToken? : string,
-    debug? : boolean
+    debug? : boolean,
+    style : ?StyleType,
+    onShippingChange? : boolean
 |};
 
 type RequestParams = {|
@@ -49,7 +56,12 @@ type RequestParams = {|
     cspNonce : string,
     defaultFundingEligibility : FundingEligibility,
     locale : LocaleType,
-    debug : boolean
+    debug : boolean,
+    style : {
+        label : string,
+        period : ?number
+    },
+    onShippingChange : boolean
 |};
 
 function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibility {
@@ -79,12 +91,14 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         intent,
         commit,
         vault,
+        style: buttonStyle,
         disableFunding,
         disableCard,
         merchantID,
         buttonSessionID,
         clientAccessToken,
-        debug = false
+        debug = false,
+        onShippingChange = false
     } = params;
 
     const {
@@ -95,6 +109,12 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
     const cspNonce = getNonce(res);
 
     const defaultFundingEligibility = getFundingEligibilityParam(req);
+
+    const {
+        label = 'paypal',
+        period
+    } = buttonStyle || {};
+    const style = { label, period };
 
     return {
         env,
@@ -113,6 +133,8 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         defaultFundingEligibility,
         cspNonce,
         debug,
+        style,
+        onShippingChange,
         // $FlowFixMe
         locale: { country, lang }
     };

@@ -2,9 +2,9 @@
 
 import { html } from 'jsx-pragmatic';
 
-import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware } from '../../lib';
-import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization } from '../../service';
-import type { LoggerType, CacheType, ClientIDToMerchantID, ExpressRequest, FirebaseConfig } from '../../types';
+import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
+import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization, resolveNativeEligibility, resolveMerchantID } from '../../service';
+import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { EVENT } from './constants';
@@ -13,58 +13,72 @@ import { buttonStyle } from './style';
 
 type ButtonMiddlewareOptions = {|
     logger? : LoggerType,
-    getFundingEligibility : Function,
-    getPersonalization : Function,
-    clientIDToMerchantID : ClientIDToMerchantID,
+    graphQL : GraphQL,
+    getAccessToken : (ExpressRequest, string) => Promise<string>,
+    getMerchantID : (ExpressRequest, string) => Promise<string>,
     getInlineGuestExperiment? : (req : ExpressRequest, params : Object) => Promise<boolean>,
     cache? : CacheType,
     firebaseConfig? : FirebaseConfig
 |};
 
-export function getButtonMiddleware({ logger = defaultLogger, cache, getFundingEligibility, getPersonalization, clientIDToMerchantID, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+export function getButtonMiddleware({ logger = defaultLogger, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     return sdkMiddleware({ logger, cache }, async ({ req, res, params, meta, logBuffer }) => {
         logger.info(req, EVENT.RENDER);
         if (logBuffer) {
             logBuffer.flush(req);
         }
 
-        let { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard,
-            merchantID, currency, intent, commit, vault, clientAccessToken, defaultFundingEligibility, locale } = getParams(params, req, res);
-
-        const [ client, render, isCardFieldsExperimentEnabled ] = await Promise.all([
-            getSmartPaymentButtonsClientScript({ debug, logBuffer, cache }),
-            getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache }),
-            getInlineGuestExperiment(
-                req,
-                getParams(params, req, res),
-            )
-        ]);
-
-        logger.info(req, `button_client_version_${ client.version }`);
-        logger.info(req, `button_render_version_${ render.version }`);
+        const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, style,
+            merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, defaultFundingEligibility, locale, onShippingChange } = getParams(params, req, res);
+        const { label, period } = style;
+        
         logger.info(req, `button_params`, { params: JSON.stringify(params) });
 
         if (!clientID) {
             return clientErrorResponse(res, 'Please provide a clientID query parameter');
         }
+        
 
-        const [ fundingEligibility, personalization, clientMerchantID ] = await Promise.all([
-            resolveFundingEligibility(req, {
-                getFundingEligibility, logger, clientID, merchantID, buttonSessionID,
-                currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, defaultFundingEligibility
-            }),
+        const facilitatorAccessTokenPromise = getAccessToken(req, clientID);
+        const merchantIDPromise = facilitatorAccessTokenPromise.then(facilitatorAccessToken => resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken }));
+        const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
+        const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache });
+        const isCardFieldsExperimentEnabledPromise = getInlineGuestExperiment(req, getParams(params, req, res));
 
-            resolvePersonalization(req, {
-                getPersonalization, logger, clientID, merchantID, buyerCountry, locale, buttonSessionID,
-                currency, intent, commit, vault
-            }),
+        const merchantID = await merchantIDPromise;
+        const gqlBatch = graphQLBatch(req, graphQL);
 
-            merchantID ? null : clientIDToMerchantID(req, clientID)
-        ]);
+        const nativeEligibilityPromise = resolveNativeEligibility(req, gqlBatch, {
+            logger, clientID, merchantID, buttonSessionID, currency, vault,
+            buyerCountry, onShippingChange
+        });
 
-        if (!merchantID && clientMerchantID) {
-            merchantID = [ clientMerchantID ];
-        }
+        const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
+            logger, clientID, merchantID, buttonSessionID, currency, intent, commit, vault,
+            disableFunding, disableCard, clientAccessToken, buyerCountry, defaultFundingEligibility
+        });
+
+        const personalizationPromise = resolvePersonalization(req, gqlBatch, {
+            logger, clientID, merchantID, buyerCountry, locale, buttonSessionID,
+            currency, intent, commit, vault, label, period
+        });
+
+        gqlBatch.flush();
+
+        const render = await renderPromise;
+        const client = await clientPromise;
+        const fundingEligibility = await fundingEligibilityPromise;
+        const personalization = await personalizationPromise;
+        const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
+        const facilitatorAccessToken = await facilitatorAccessTokenPromise;
+
+        const eligibility = {
+            native:     await nativeEligibilityPromise,
+            cardFields: await isCardFieldsExperimentEnabledPromise
+        };
+
+        logger.info(req, `button_render_version_${ render.version }`);
+        logger.info(req, `button_client_version_${ client.version }`);
 
         const buttonHTML = render.button.Buttons({
             ...params, nonce: cspNonce, csp:   { nonce: cspNonce }, fundingEligibility, personalization
@@ -81,7 +95,7 @@ export function getButtonMiddleware({ logger = defaultLogger, cache, getFundingE
 
                 ${ meta.getSDKLoader({ nonce: cspNonce }) }
                 <script nonce="${ cspNonce }">${ client.script }</script>
-                <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig }) })</script>
+                <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility }) })</script>
                 ${ shouldRenderFraudnet({ fundingEligibility }) ? renderFraudnetScript({ id: buttonSessionID, cspNonce, env }) : '' }
             </body>
         `;

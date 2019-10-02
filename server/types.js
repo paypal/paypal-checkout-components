@@ -27,8 +27,6 @@ export type LocaleType = {|
     lang : $Values<typeof LANG>
 |};
 
-export type ClientIDToMerchantID = (ExpressRequest, string) => Promise<string>;
-
 export type FirebaseConfig = {|
     apiKey : string,
     authDomain : string,

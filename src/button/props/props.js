@@ -163,14 +163,29 @@ export type ServiceData = {|
     merchantID : $ReadOnlyArray<string>,
     buyerCountry : $Values<typeof COUNTRY>,
     fundingEligibility : FundingEligibilityType,
-    experiments : {
-        cardFields : boolean
-    },
     personalization : PersonalizationType,
-    facilitatorAccessTokenPromise : ZalgoPromise<string>
+    facilitatorAccessTokenPromise : ZalgoPromise<string>,
+    eligibility : {
+        cardFields : boolean,
+        native : boolean
+    }
 |};
 
-export function getServiceData({ facilitatorAccessToken, clientID, buyerGeoCountry, isCardFieldsExperimentEnabled, fundingEligibility, personalization, serverMerchantID } : { facilitatorAccessToken : ?string, clientID : ?string, buyerGeoCountry : $Values<typeof COUNTRY>, isCardFieldsExperimentEnabled : boolean, fundingEligibility : FundingEligibilityType, personalization : PersonalizationType, serverMerchantID : $ReadOnlyArray<string> }) : ServiceData {
+type ServiceDataOptions = {|
+    facilitatorAccessToken : ?string,
+    clientID : ?string,
+    buyerGeoCountry : $Values<typeof COUNTRY>,
+    isCardFieldsExperimentEnabled : boolean,
+    fundingEligibility : FundingEligibilityType,
+    personalization : PersonalizationType,
+    serverMerchantID : $ReadOnlyArray<string>,
+    eligibility : ?{
+        native : boolean,
+        cardFields : boolean
+    }
+|};
+
+export function getServiceData({ facilitatorAccessToken, clientID, buyerGeoCountry, isCardFieldsExperimentEnabled, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     
     let facilitatorAccessTokenPromise : ZalgoPromise<string>;
 
@@ -186,12 +201,13 @@ export function getServiceData({ facilitatorAccessToken, clientID, buyerGeoCount
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
-        experiments:  {
-            cardFields: isCardFieldsExperimentEnabled
-        },
         fundingEligibility,
         personalization,
         // $FlowFixMe
-        facilitatorAccessTokenPromise
+        facilitatorAccessTokenPromise,
+        eligibility:  {
+            cardFields: isCardFieldsExperimentEnabled,
+            native:     eligibility ? eligibility.native : false
+        }
     };
 }

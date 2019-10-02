@@ -65,86 +65,111 @@ export function mockRes(opts : Object = {}) : MockRes {
 }
 
 // eslint-disable-next-line require-await
-export async function getFundingEligibility() : Promise<Object> {
-    return Promise.resolve({
-        bancontact: {
-            eligible: false
-        },
-        card: {
-            eligible: true,
-            branded:  true,
-        
-            vendors: {
-                visa: {
-                    eligible: true
-                },
-                mastercard: {
-                    eligible: true
-                },
-                amex: {
-                    eligible: true
-                },
-                discover: {
-                    eligible: true
-                },
-                hiper: {
-                    eligible: false
-                },
-                elo: {
-                    eligible: false
-                },
-                jcb: {
-                    eligible: false
+export async function graphQL(req, payload) : Promise<Object> {
+    return Promise.resolve(payload.map(request => {
+        if (request.query.match(/FundingEligibility/)) {
+            return {
+                fundingEligibility: {
+                    bancontact: {
+                        eligible: false
+                    },
+                    card: {
+                        eligible: true,
+                        branded:  true,
+
+                        vendors: {
+                            visa: {
+                                eligible: true
+                            },
+                            mastercard: {
+                                eligible: true
+                            },
+                            amex: {
+                                eligible: true
+                            },
+                            discover: {
+                                eligible: true
+                            },
+                            hiper: {
+                                eligible: false
+                            },
+                            elo: {
+                                eligible: false
+                            },
+                            jcb: {
+                                eligible: false
+                            }
+                        }
+                    },
+                    credit: {
+                        eligible: false
+                    },
+                    sepa: {
+                        eligible: false
+                    },
+                    eps: {
+                        eligible: false
+                    },
+                    giropay: {
+                        eligible: false
+                    },
+                    ideal: {
+                        eligible: false
+                    },
+                    mybank: {
+                        eligible: false
+                    },
+                    p24: {
+                        eligible: false
+                    },
+                    paypal: {
+                        eligible: true
+                    },
+                    sofort: {
+                        eligible: false
+                    },
+                    venmo: {
+                        eligible: false
+                    },
+                    wechatpay: {
+                        eligible: false
+                    },
+                    zimpler: {
+                        eligible: false
+                    }
                 }
-            }
-        },
-        credit: {
-            eligible: false
-        },
-        sepa: {
-            eligible: false
-        },
-        eps: {
-            eligible: false
-        },
-        giropay: {
-            eligible: false
-        },
-        ideal: {
-            eligible: false
-        },
-        mybank: {
-            eligible: false
-        },
-        p24: {
-            eligible: false
-        },
-        paypal: {
-            eligible: true
-        },
-        sofort: {
-            eligible: false
-        },
-        venmo: {
-            eligible: false
-        },
-        wechatpay: {
-            eligible: false
-        },
-        zimpler: {
-            eligible: false
+            };
         }
-    });
+
+        if (request.query.match(/CheckoutCustomization/)) {
+            return {
+                checkoutCustomization: {
+                    buttonText: {
+                        text: 'foobar'
+                    },
+                    tagline: {
+                        text: 'foobar'
+                    }
+                }
+            };
+        }
+
+        if (request.query.match(/NativeEligibility/)) {
+            return {
+                mobileSDKEligibility: {
+                    eligible: true
+                }
+            };
+        }
+
+        throw new Error(`Unmatched query: ${ request.query }`);
+    }));
 }
 
-export function getPersonalization() : Promise<Object> {
-    return Promise.resolve({
-        tagline: {
-            text: 'This is the tagline'
-        }
-    });
+export function getAccessToken() : Promise<string> {
+    return Promise.resolve('ABCDEF12345');
 }
 
-export function clientIDToMerchantID() : Promise<string> {
+export function getMerchantID() : Promise<string> {
     return Promise.resolve('ABCDEF12345');
 }
