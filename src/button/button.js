@@ -58,11 +58,11 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
     const { initPromise, isEnabled } = onInit();
 
     const sendPersonalizationBeacons = () => {
-        if (personalization && personalization.tagline) {
+        if (personalization && personalization.tagline && personalization.tagline.tracking) {
             sendBeacon(personalization.tagline.tracking.click);
         }
 
-        if (personalization && personalization.buttonText) {
+        if (personalization && personalization.buttonText && personalization.buttonText.tracking) {
             sendBeacon(personalization.buttonText.tracking.click);
         }
     };
