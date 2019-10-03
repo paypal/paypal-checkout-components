@@ -9,7 +9,7 @@ import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
-import { loadFirebaseScripts } from '../../src/api';
+import { loadFirebaseSDK } from '../../src/api';
 
 import { triggerKeyPress } from './util';
 
@@ -943,7 +943,7 @@ document.createElement = function mockCreateElement(name : string) : HTMLElement
 };
 
 export function mockFirebaseScripts() : { done : () => void } {
-    loadFirebaseScripts.reset();
+    loadFirebaseSDK.reset();
 
     const mockfirebaseApp = mockScript({
         src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',

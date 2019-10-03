@@ -3,10 +3,12 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize } from 'belter/src';
 import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY } from '@paypal/sdk-constants/src';
+import { getDomain } from 'cross-domain-utils/src';
 
-import { createOrderID, billingTokenToOrderID, subscriptionIdToCartId } from '../../api';
+import { createOrderID, billingTokenToOrderID, subscriptionIdToCartId, createPaymentToken } from '../../api';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../../constants';
 import { getLogger } from '../../lib';
+import { ENABLE_PAYMENT_API } from '../../config';
 
 import type { CreateSubscription } from './createSubscription';
 import type { CreateBillingAgreement } from './createBillingAgreement';
@@ -15,10 +17,17 @@ import type { XProps } from './types';
 
 export type XCreateOrderDataType = {||};
 
+type OrderActions = {|
+    create : (Object) => ZalgoPromise<string>
+|};
+
+type PaymentActions = {|
+    create : (Object) => ZalgoPromise<string>
+|};
+
 export type XCreateOrderActionsType = {|
-    order : {
-        create : (Object) => ZalgoPromise<string>
-    }
+    order : OrderActions,
+    payment : ?PaymentActions
 |};
 
 export type XCreateOrder = (XCreateOrderDataType, XCreateOrderActionsType) => ZalgoPromise<string>;
@@ -38,8 +47,8 @@ type OrderOptions = {|
     partnerAttributionID : ?string
 |};
 
-export function buildCreateOrder({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : CreateOrder {
-    return (data) => {
+export function buildOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : OrderActions {
+    const create = (data) => {
     
         let order : Object = { ...data };
     
@@ -82,13 +91,71 @@ export function buildCreateOrder({ facilitatorAccessTokenPromise, intent, curren
             return createOrderID(order, { facilitatorAccessToken, partnerAttributionID });
         });
     };
+
+    return { create };
+}
+
+export function buildPaymentActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : PaymentActions {
+    const create = (data) => {
+
+        let payment : Object = { ...data };
+
+        const expectedIntent = (intent === INTENT.CAPTURE ? 'sale' : intent);
+
+        if (payment.intent && payment.intent !== expectedIntent) {
+            throw new Error(`Unexpected intent: ${ payment.intent } passed to order.create. Expected ${ expectedIntent }`);
+        }
+
+        payment = { ...payment, intent: expectedIntent };
+
+        payment.transactions = payment.transactions.map(transaction => {
+            if (transaction.amount.currency && transaction.amount.currency !== currency) {
+                throw new Error(`Unexpected currency: ${ transaction.amount.currency } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.CURRENCY }=${ transaction.amount.currency } in the paypal script tag.`);
+            }
+
+            let payee = transaction.payee;
+
+            if (payee && merchantID && merchantID.length) {
+                if (!merchantID[0]) {
+                    throw new Error(`Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=XYZ in the paypal script tag.`);
+                }
+
+                if (payee.merchant_id && payee.merchant_id !== merchantID[0]) {
+                    throw new Error(`Expected payee.merchant_id to be "${ merchantID[0] }"`);
+                }
+            }
+
+            if (merchantID) {
+                payee = {
+                    ...payee,
+                    merchant_id: merchantID[0]
+                };
+            }
+
+            return { ...transaction, payee, amount: { ...transaction.amount, currency } };
+        });
+
+        payment.redirect_urls = payment.redirect_urls || {};
+        payment.redirect_urls.return_url = payment.redirect_urls.return_url || `${ getDomain() }/checkoutnow/error`;
+        payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || `${ getDomain() }/checkoutnow/error`;
+        payment.payer = payment.payer || {};
+        payment.payer.payment_method = payment.payer.payment_method || 'paypal';
+
+        return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
+            return createPaymentToken(payment, { facilitatorAccessToken, partnerAttributionID });
+        });
+    };
+
+    return { create };
 }
 
 export function buildXCreateOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : XCreateOrderActionsType {
-    const create = buildCreateOrder({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
+    const order = buildOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
+    const payment = buildPaymentActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
 
     return {
-        order: { create }
+        order,
+        payment: ENABLE_PAYMENT_API ? payment : null
     };
 }
 

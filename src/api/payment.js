@@ -86,7 +86,7 @@ export function getPayment(paymentID : string, { facilitatorAccessToken, buyerAc
     return buyerAccessToken
         ? callSmartAPI({
             accessToken: buyerAccessToken,
-            url:         `${ SMART_API_URI.ORDER }/${ paymentID }`
+            url:         `${ SMART_API_URI.PAYMENT }/${ paymentID }`
         })
         : callRestAPI({
             accessToken: facilitatorAccessToken,
@@ -97,19 +97,27 @@ export function getPayment(paymentID : string, { facilitatorAccessToken, buyerAc
         });
 }
 
-export function capturePayment(paymentID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : PaymentAPIOptions) : ZalgoPromise<PaymentResponse> {
+export function executePayment(paymentID : string, payerID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : PaymentAPIOptions) : ZalgoPromise<PaymentResponse> {
     return buyerAccessToken
         ? callSmartAPI({
             accessToken: buyerAccessToken,
             method:      'post',
-            url:         `${ SMART_API_URI.ORDER }/${ paymentID }/capture`
+            url:         `${ SMART_API_URI.PAYMENT }/${ paymentID }/execute`,
+            json:        {
+                data: {
+                    payer_id: payerID
+                }
+            }
         })
         : callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `post`,
-            url:         `${ PAYMENTS_API_URL }/${ paymentID }/capture`,
+            url:         `${ PAYMENTS_API_URL }/${ paymentID }/execute`,
             headers:     {
                 [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
+            },
+            data: {
+                payer_id: payerID
             }
         });
 }

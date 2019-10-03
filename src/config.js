@@ -3,7 +3,7 @@
 export const LOGGER_URL = '/xoplatform/logger/api/logger';
 export const AUTH_API_URL = '/v1/oauth2/token';
 export const ORDERS_API_URL = '/v2/checkout/orders';
-export const PAYMENTS_API_URL = '/v1/payments';
+export const PAYMENTS_API_URL = '/v1/payments/payment';
 export const CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
 export const VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
 
@@ -47,3 +47,5 @@ export const FIREBASE_SCRIPTS = {
     AUTH:     'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
     DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
 };
+
+export const ENABLE_PAYMENT_API = false;
