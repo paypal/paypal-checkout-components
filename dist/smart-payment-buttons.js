@@ -82,114 +82,11 @@ window["spb"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 28);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return SMART_BUTTONS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return SMART_PAYMENT_BUTTONS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return HEADERS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DATA_ATTRIBUTES; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CLASS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return ORDER_API_ERROR; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CONTEXT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return TARGET_ELEMENT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return INTEGRATION_ARTIFACT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return USER_EXPERIENCE_FLOW; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return DOM_EVENT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return PRODUCT_FLOW; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_CONTEXT_TYPE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_STATE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return FPTI_TRANSITION; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_BUTTON_TYPE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return FTPI_BUTTON_KEY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return USER_ACTION; });
-var SMART_BUTTONS = 'smart_buttons';
-var SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
-var HEADERS = {
-  AUTHORIZATION: 'authorization',
-  ACCESS_TOKEN: 'x-paypal-internal-euat',
-  CSRF_TOKEN: 'x-csrf-jwt',
-  SOURCE: 'x-source',
-  REQUESTED_BY: 'x-requested-by',
-  PARTNER_ATTRIBUTION_ID: 'paypal-partner-attribution-id',
-  CLIENT_METADATA_ID: 'paypal-client-metadata-id',
-  PAYPAL_DEBUG_ID: 'paypal-debug-id'
-};
-var DATA_ATTRIBUTES = {
-  FUNDING_SOURCE: 'data-funding-source',
-  CARD: 'data-card',
-  PAYMENT_METHOD_ID: 'data-payment-method-id'
-};
-var CLASS = {
-  LOADING: 'paypal-button-loading',
-  CLICKED: 'paypal-button-clicked'
-};
-var ORDER_API_ERROR = {
-  INSTRUMENT_DECLINED: 'INSTRUMENT_DECLINED',
-  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
-};
-var CONTEXT = {
-  IFRAME: 'iframe',
-  POPUP: 'popup'
-};
-var TARGET_ELEMENT = {
-  BODY: 'body'
-};
-var INTEGRATION_ARTIFACT = {
-  PAYPAL_JS_SDK: 'PAYPAL_JS_SDK'
-};
-var USER_EXPERIENCE_FLOW = {
-  INCONTEXT: 'INCONTEXT',
-  INLINE: 'INLINE'
-};
-var DOM_EVENT = {
-  MOUSEDOWN: 'mousedown',
-  HOVER: 'hover'
-};
-var PRODUCT_FLOW = {
-  SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
-};
-var FPTI_CONTEXT_TYPE = {
-  BUTTON_SESSION_ID: 'button_session_id',
-  ORDER_ID: 'EC-Token'
-};
-var FPTI_STATE = {
-  BUTTON: 'smart_button'
-};
-var FPTI_TRANSITION = {
-  BUTTON_LOAD: 'process_button_load',
-  BUTTON_CLICK: 'process_button_click',
-  CREATE_ORDER: 'process_create_order',
-  RECEIVE_ORDER: 'process_receive_order',
-  CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
-  CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
-  CHECKOUT_CANCEL: 'process_checkout_cancel'
-};
-var FPTI_BUTTON_TYPE = {
-  IFRAME: 'iframe'
-};
-var FTPI_BUTTON_KEY = {
-  BUTTON_LAYOUT: 'button_layout',
-  BUTTON_COLOR: 'button_color',
-  BUTTON_SIZE: 'button_size',
-  BUTTON_SHAPE: 'button_shape',
-  BUTTON_LABEL: 'button_label',
-  BUTTON_WIDTH: 'button_width',
-  BUTTON_TYPE: 'button_type',
-  BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled'
-};
-var USER_ACTION = {
-  COMMIT: 'commit',
-  CONTINUE: 'continue'
-};
-
-/***/ }),
-/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -700,6 +597,108 @@ function () {
 // CONCATENATED MODULE: ./node_modules/zalgo-promise/src/index.js
 /* concated harmony reexport ZalgoPromise */__webpack_require__.d(__webpack_exports__, "a", function() { return promise_ZalgoPromise; });
 
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return SMART_PAYMENT_BUTTONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return HEADERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DATA_ATTRIBUTES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CLASS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return ORDER_API_ERROR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CONTEXT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return TARGET_ELEMENT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return INTEGRATION_ARTIFACT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return USER_EXPERIENCE_FLOW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return DOM_EVENT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return PRODUCT_FLOW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_CONTEXT_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_STATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return FPTI_TRANSITION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_BUTTON_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return FTPI_BUTTON_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return USER_ACTION; });
+var SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
+var HEADERS = {
+  AUTHORIZATION: 'authorization',
+  CONTENT_TYPE: 'content-type',
+  ACCESS_TOKEN: 'x-paypal-internal-euat',
+  CSRF_TOKEN: 'x-csrf-jwt',
+  SOURCE: 'x-source',
+  REQUESTED_BY: 'x-requested-by',
+  PARTNER_ATTRIBUTION_ID: 'paypal-partner-attribution-id',
+  CLIENT_METADATA_ID: 'paypal-client-metadata-id',
+  PAYPAL_DEBUG_ID: 'paypal-debug-id'
+};
+var DATA_ATTRIBUTES = {
+  FUNDING_SOURCE: 'data-funding-source',
+  CARD: 'data-card',
+  PAYMENT_METHOD_ID: 'data-payment-method-id'
+};
+var CLASS = {
+  LOADING: 'paypal-button-loading',
+  CLICKED: 'paypal-button-clicked'
+};
+var ORDER_API_ERROR = {
+  INSTRUMENT_DECLINED: 'INSTRUMENT_DECLINED',
+  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
+};
+var CONTEXT = {
+  IFRAME: 'iframe',
+  POPUP: 'popup'
+};
+var TARGET_ELEMENT = {
+  BODY: 'body'
+};
+var INTEGRATION_ARTIFACT = {
+  PAYPAL_JS_SDK: 'PAYPAL_JS_SDK'
+};
+var USER_EXPERIENCE_FLOW = {
+  INCONTEXT: 'INCONTEXT',
+  INLINE: 'INLINE'
+};
+var DOM_EVENT = {
+  MOUSEDOWN: 'mousedown',
+  HOVER: 'hover'
+};
+var PRODUCT_FLOW = {
+  SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
+};
+var FPTI_CONTEXT_TYPE = {
+  BUTTON_SESSION_ID: 'button_session_id',
+  ORDER_ID: 'EC-Token'
+};
+var FPTI_STATE = {
+  BUTTON: 'smart_button'
+};
+var FPTI_TRANSITION = {
+  BUTTON_LOAD: 'process_button_load',
+  BUTTON_CLICK: 'process_button_click',
+  CREATE_ORDER: 'process_create_order',
+  RECEIVE_ORDER: 'process_receive_order',
+  CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
+  CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
+  CHECKOUT_CANCEL: 'process_checkout_cancel'
+};
+var FPTI_BUTTON_TYPE = {
+  IFRAME: 'iframe'
+};
+var FTPI_BUTTON_KEY = {
+  BUTTON_LAYOUT: 'button_layout',
+  BUTTON_COLOR: 'button_color',
+  BUTTON_SIZE: 'button_size',
+  BUTTON_SHAPE: 'button_shape',
+  BUTTON_LABEL: 'button_label',
+  BUTTON_WIDTH: 'button_width',
+  BUTTON_TYPE: 'button_type',
+  BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled'
+};
+var USER_ACTION = {
+  COMMIT: 'commit',
+  CONTINUE: 'continue'
+};
 
 /***/ }),
 /* 2 */
@@ -1572,10 +1571,10 @@ function supportsPopups(ua) {
   return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(8);
+var esm_extends = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var src = __webpack_require__(1);
+var src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js + 4 modules
 var cross_domain_utils_src = __webpack_require__(9);
@@ -1657,7 +1656,7 @@ function () {
     for (var i = 0; i < keys.length; i++) {
       var value = keys[i];
 
-      if (Object(cross_domain_utils_src["e" /* isWindow */])(value) && Object(cross_domain_utils_src["f" /* isWindowClosed */])(value)) {
+      if (Object(cross_domain_utils_src["f" /* isWindow */])(value) && Object(cross_domain_utils_src["g" /* isWindowClosed */])(value)) {
         if (weakmap) {
           try {
             weakmap.delete(value);
@@ -1673,7 +1672,7 @@ function () {
   };
 
   _proto.isSafeToReadWrite = function isSafeToReadWrite(key) {
-    if (Object(cross_domain_utils_src["e" /* isWindow */])(key)) {
+    if (Object(cross_domain_utils_src["f" /* isWindow */])(key)) {
       return false;
     }
 
@@ -3319,7 +3318,7 @@ function popup(url, options) {
     throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
   }
 
-  if (Object(cross_domain_utils_src["f" /* isWindowClosed */])(win)) {
+  if (Object(cross_domain_utils_src["g" /* isWindowClosed */])(win)) {
     var err = new PopupOpenError("Can not open popup window - blocked");
     throw err;
   }
@@ -3387,7 +3386,7 @@ function awaitFrameLoad(frame) {
 
   var promise = new src["a" /* ZalgoPromise */](function (resolve, reject) {
     frame.addEventListener('load', function () {
-      Object(cross_domain_utils_src["g" /* linkFrameWindow */])(frame);
+      Object(cross_domain_utils_src["h" /* linkFrameWindow */])(frame);
       resolve(frame);
     });
     frame.addEventListener('error', function (err) {
@@ -4404,7 +4403,7 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import PopupOpenError */
 /* concated harmony reexport popup */__webpack_require__.d(__webpack_exports__, "m", function() { return popup; });
 /* unused concated harmony import writeToWindow */
-/* unused concated harmony import writeElementToWindow */
+/* concated harmony reexport writeElementToWindow */__webpack_require__.d(__webpack_exports__, "w", function() { return writeElementToWindow; });
 /* unused concated harmony import setStyle */
 /* unused concated harmony import awaitFrameLoad */
 /* unused concated harmony import awaitFrameWindow */
@@ -4530,13 +4529,13 @@ function wrapPromise(method, _temp) {
 "use strict";
 
 // EXTERNAL MODULE: ./src/lib/util.js
-var util = __webpack_require__(11);
+var util = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(8);
+var esm_extends = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var src = __webpack_require__(1);
+var src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
 var belter_src = __webpack_require__(3);
@@ -4804,10 +4803,10 @@ function Logger(_ref2) {
 var sdk_constants_src = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/config.js
-var config = __webpack_require__(6);
+var config = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/constants.js
-var constants = __webpack_require__(0);
+var constants = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./src/lib/logger.js
 
@@ -4862,16 +4861,16 @@ function setupLogger(_ref) {
   });
 }
 // CONCATENATED MODULE: ./src/lib/index.js
-/* concated harmony reexport unresolvedPromise */__webpack_require__.d(__webpack_exports__, "g", function() { return util["f" /* unresolvedPromise */]; });
+/* concated harmony reexport unresolvedPromise */__webpack_require__.d(__webpack_exports__, "f", function() { return util["e" /* unresolvedPromise */]; });
 /* concated harmony reexport promiseNoop */__webpack_require__.d(__webpack_exports__, "c", function() { return util["c" /* promiseNoop */]; });
 /* unused concated harmony import getBody */
-/* concated harmony reexport sendBeacon */__webpack_require__.d(__webpack_exports__, "e", function() { return util["e" /* sendBeacon */]; });
+/* concated harmony reexport sendBeacon */__webpack_require__.d(__webpack_exports__, "d", function() { return util["d" /* sendBeacon */]; });
 /* concated harmony reexport fixClickFocus */__webpack_require__.d(__webpack_exports__, "a", function() { return util["a" /* fixClickFocus */]; });
 /* unused concated harmony import sleep */
-/* concated harmony reexport redirectTop */__webpack_require__.d(__webpack_exports__, "d", function() { return util["d" /* redirectTop */]; });
+/* unused concated harmony import redirectTop */
 /* unused concated harmony import loadScript */
 /* concated harmony reexport getLogger */__webpack_require__.d(__webpack_exports__, "b", function() { return getLogger; });
-/* concated harmony reexport setupLogger */__webpack_require__.d(__webpack_exports__, "f", function() { return setupLogger; });
+/* concated harmony reexport setupLogger */__webpack_require__.d(__webpack_exports__, "e", function() { return setupLogger; });
 
 
 
@@ -4880,23 +4879,70 @@ function setupLogger(_ref) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGGER_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return ORDERS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return VALIDATE_PAYMENT_METHOD_API; });
+/* unused harmony export BASE_SMART_API_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return SMART_API_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GRAPHQL_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return EXPERIENCE_URI; });
+/* unused harmony export NATIVE_DETECTION_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
+var LOGGER_URL = '/xoplatform/logger/api/logger';
+var AUTH_API_URL = '/v1/oauth2/token';
+var ORDERS_API_URL = '/v2/checkout/orders';
+var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
+var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
+var BASE_SMART_API_URL = '/smart/api';
+var SMART_API_URI = {
+  AUTH: BASE_SMART_API_URL + "/auth",
+  CHECKOUT: BASE_SMART_API_URL + "/checkout",
+  ORDER: BASE_SMART_API_URL + "/order",
+  PAYMENT: BASE_SMART_API_URL + "/payment",
+  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
+};
+var GRAPHQL_URI = '/graphql';
+var EXPERIENCE_URI = {
+  CHECKOUT: '/checkoutnow',
+  NATIVE_CHECKOUT: '/smart/checkout/native'
+};
+var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
+var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
+var FIREBASE_SCRIPTS = {
+  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
+  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
+  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var src = __webpack_require__(1);
+var src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
 var belter_src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/config.js
-var src_config = __webpack_require__(6);
+var src_config = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/lib/index.js + 5 modules
 var lib = __webpack_require__(4);
 
+// EXTERNAL MODULE: ./src/constants.js
+var constants = __webpack_require__(1);
+
 // EXTERNAL MODULE: ./src/api/api.js
-var api = __webpack_require__(7);
+var api = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./src/api/auth.js
+
 
 
 
@@ -4937,14 +4983,26 @@ function getFirebaseSessionToken(sessionUID) {
       sessionUID: sessionUID
     }
   }).then(function (res) {
-    return res.data.firebase.auth.sessionToken;
+    return res.firebase.auth.sessionToken;
   });
+}
+function upgradeFacilitatorAccessToken(facilitatorAccessToken, _ref2) {
+  var _headers;
+
+  var buyerAccessToken = _ref2.buyerAccessToken,
+      orderID = _ref2.orderID;
+  return Object(api["a" /* callGraphQL */])({
+    headers: (_headers = {}, _headers[constants["j" /* HEADERS */].ACCESS_TOKEN] = buyerAccessToken, _headers),
+    query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
+    variables: {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      orderID: orderID
+    }
+  }).then(belter_src["j" /* noop */]);
 }
 // EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
 var sdk_constants_src = __webpack_require__(2);
-
-// EXTERNAL MODULE: ./src/constants.js
-var constants = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./src/api/order.js
 
@@ -4962,7 +5020,7 @@ function createOrderID(order, _ref) {
   return Object(api["b" /* callRestAPI */])({
     accessToken: facilitatorAccessToken,
     method: "post",
-    url: "" + src_config["i" /* ORDERS_API_URL */],
+    url: "" + src_config["h" /* ORDERS_API_URL */],
     data: order,
     headers: (_headers = {}, _headers[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers)
   }).then(function (body) {
@@ -4986,10 +5044,10 @@ function getOrder(orderID, _ref2) {
       partnerAttributionID = _ref2.partnerAttributionID;
   return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
-    url: src_config["j" /* SMART_API_URI */].ORDER + "/" + orderID
+    url: src_config["i" /* SMART_API_URI */].ORDER + "/" + orderID
   }) : Object(api["b" /* callRestAPI */])({
     accessToken: facilitatorAccessToken,
-    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID,
+    url: src_config["h" /* ORDERS_API_URL */] + "/" + orderID,
     headers: (_headers2 = {}, _headers2[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers2)
   });
 }
@@ -5002,11 +5060,11 @@ function captureOrder(orderID, _ref3) {
   return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
     method: 'post',
-    url: src_config["j" /* SMART_API_URI */].ORDER + "/" + orderID + "/capture"
+    url: src_config["i" /* SMART_API_URI */].ORDER + "/" + orderID + "/capture"
   }) : Object(api["b" /* callRestAPI */])({
     accessToken: facilitatorAccessToken,
     method: "post",
-    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/capture",
+    url: src_config["h" /* ORDERS_API_URL */] + "/" + orderID + "/capture",
     headers: (_headers3 = {}, _headers3[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers3)
   });
 }
@@ -5019,11 +5077,11 @@ function authorizeOrder(orderID, _ref4) {
   return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
     method: 'post',
-    url: src_config["j" /* SMART_API_URI */].ORDER + "/" + orderID + "/authorize"
+    url: src_config["i" /* SMART_API_URI */].ORDER + "/" + orderID + "/authorize"
   }) : Object(api["b" /* callRestAPI */])({
     accessToken: facilitatorAccessToken,
     method: "post",
-    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/authorize",
+    url: src_config["h" /* ORDERS_API_URL */] + "/" + orderID + "/authorize",
     headers: (_headers4 = {}, _headers4[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers4)
   });
 }
@@ -5039,21 +5097,21 @@ function patchOrder(orderID, data, _ref5) {
   return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
     method: 'post',
-    url: src_config["j" /* SMART_API_URI */].ORDER + "/" + orderID + "/patch",
+    url: src_config["i" /* SMART_API_URI */].ORDER + "/" + orderID + "/patch",
     json: {
       data: patchData
     }
   }) : Object(api["b" /* callRestAPI */])({
     accessToken: facilitatorAccessToken,
     method: "patch",
-    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID,
+    url: src_config["h" /* ORDERS_API_URL */] + "/" + orderID,
     data: patchData,
     headers: (_headers5 = {}, _headers5[constants["j" /* HEADERS */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers5)
   });
 }
 function getPayee(orderID) {
   return Object(api["c" /* callSmartAPI */])({
-    url: src_config["j" /* SMART_API_URI */].CHECKOUT + "/" + orderID + "/payee"
+    url: src_config["i" /* SMART_API_URI */].CHECKOUT + "/" + orderID + "/payee"
   });
 }
 var VALIDATE_CONTINGENCIES = {
@@ -5086,7 +5144,7 @@ function validatePaymentMethod(_ref6) {
   };
   return Object(belter_src["q" /* request */])({
     method: "post",
-    url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/" + src_config["k" /* VALIDATE_PAYMENT_METHOD_API */],
+    url: src_config["h" /* ORDERS_API_URL */] + "/" + orderID + "/" + src_config["j" /* VALIDATE_PAYMENT_METHOD_API */],
     headers: headers,
     json: json
   });
@@ -5094,7 +5152,7 @@ function validatePaymentMethod(_ref6) {
 function billingTokenToOrderID(billingToken) {
   return Object(api["c" /* callSmartAPI */])({
     method: 'post',
-    url: src_config["j" /* SMART_API_URI */].PAYMENT + "/" + billingToken + "/ectoken"
+    url: src_config["i" /* SMART_API_URI */].PAYMENT + "/" + billingToken + "/ectoken"
   }).then(function (data) {
     return data.token;
   });
@@ -5102,7 +5160,7 @@ function billingTokenToOrderID(billingToken) {
 function subscriptionIdToCartId(subscriptionID) {
   return Object(api["c" /* callSmartAPI */])({
     method: 'post',
-    url: src_config["j" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID + "/cartid"
+    url: src_config["i" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID + "/cartid"
   }).then(function (data) {
     return data.token;
   });
@@ -5228,21 +5286,21 @@ function activateSubscription(subscriptionID, _ref5) {
   return Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
     method: "post",
-    url: src_config["j" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID + "/activate"
+    url: src_config["i" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID + "/activate"
   });
 }
 function getSubscription(subscriptionID, _ref6) {
   var buyerAccessToken = _ref6.buyerAccessToken;
   return Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
-    url: src_config["j" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID
+    url: src_config["i" /* SMART_API_URI */].SUBSCRIPTION + "/" + subscriptionID
   });
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(8);
+var esm_extends = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./src/lib/util.js
-var util = __webpack_require__(11);
+var util = __webpack_require__(12);
 
 // CONCATENATED MODULE: ./src/api/socket.js
 
@@ -5272,6 +5330,7 @@ function messageSocket(_ref) {
   var receivedMessages = {};
   var requestListeners = {};
   var responseListeners = {};
+  var activeRequests = [];
 
   var sendMessage = function sendMessage(socket, data) {
     var messageUID = Object(belter_src["v" /* uniqueID */])();
@@ -5313,7 +5372,7 @@ function messageSocket(_ref) {
         requestUID = _ref3.requestUID,
         messageName = _ref3.messageName,
         messageData = _ref3.messageData;
-    return src["a" /* ZalgoPromise */].try(function () {
+    var requestPromise = src["a" /* ZalgoPromise */].try(function () {
       var requestListener = requestListeners[messageName];
 
       if (!requestListener) {
@@ -5350,6 +5409,11 @@ function messageSocket(_ref) {
         requestUID: requestUID
       });
     });
+    activeRequests.push(requestPromise);
+    requestPromise.finally(function () {
+      activeRequests.splice(activeRequests.indexOf(requestPromise), 1);
+    });
+    return requestPromise;
   };
 
   var onResponse = function onResponse(_ref4) {
@@ -5550,9 +5614,18 @@ function messageSocket(_ref) {
 
   var close = function close() {
     retry = false;
-    socketPromise.then(function (socket) {
-      return socket.close();
-    }, belter_src["j" /* noop */]);
+
+    for (var _i2 = 0, _Object$keys2 = Object.keys(responseListeners); _i2 < _Object$keys2.length; _i2++) {
+      var requestUID = _Object$keys2[_i2];
+      var listenerPromise = responseListeners[requestUID].listenerPromise;
+      listenerPromise.asyncReject(new Error("Socket closed"));
+    }
+
+    src["a" /* ZalgoPromise */].all(activeRequests).then(function () {
+      return socketPromise.then(function (socket) {
+        return socket.close();
+      }, belter_src["j" /* noop */]);
+    });
   };
 
   return {
@@ -5618,6 +5691,9 @@ function webSocket(_ref7) {
     targetApp: targetApp
   });
 }
+var loadFirebaseScripts = Object(belter_src["i" /* memoize */])(function () {
+  return src["a" /* ZalgoPromise */].all([Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]);
+});
 function firebaseSocket(_ref8) {
   var sessionUID = _ref8.sessionUID,
       config = _ref8.config,
@@ -5633,14 +5709,14 @@ function firebaseSocket(_ref8) {
     var onOpenHandlers = [];
 
     var error = function error(err) {
-      for (var _i2 = 0; _i2 < onErrorHandlers.length; _i2++) {
-        var _handler = onErrorHandlers[_i2];
+      for (var _i4 = 0; _i4 < onErrorHandlers.length; _i4++) {
+        var _handler = onErrorHandlers[_i4];
 
         _handler(err);
       }
     };
 
-    var databasePromise = src["a" /* ZalgoPromise */].all([getFirebaseSessionToken(sessionUID), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]).then(function (_ref9) {
+    var databasePromise = src["a" /* ZalgoPromise */].all([getFirebaseSessionToken(sessionUID), loadFirebaseScripts()]).then(function (_ref9) {
       var sessionToken = _ref9[0];
       window.firebase.initializeApp(config);
       return window.firebase.auth().signInWithCustomToken(sessionToken).then(function () {
@@ -5648,8 +5724,8 @@ function firebaseSocket(_ref8) {
         window.firebase.database.INTERNAL.forceWebSockets();
         open = true;
 
-        for (var _i4 = 0; _i4 < onOpenHandlers.length; _i4++) {
-          var _handler2 = onOpenHandlers[_i4];
+        for (var _i6 = 0; _i6 < onOpenHandlers.length; _i6++) {
+          var _handler2 = onOpenHandlers[_i6];
 
           _handler2();
         }
@@ -5657,12 +5733,12 @@ function firebaseSocket(_ref8) {
         database.ref("users/" + sessionUID + "/messages").on('value', function (res) {
           var messages = res.val() || {};
 
-          for (var _i6 = 0, _Object$keys2 = Object.keys(messages); _i6 < _Object$keys2.length; _i6++) {
-            var messageID = _Object$keys2[_i6];
+          for (var _i8 = 0, _Object$keys4 = Object.keys(messages); _i8 < _Object$keys4.length; _i8++) {
+            var messageID = _Object$keys4[_i8];
             var message = messages[messageID];
 
-            for (var _i8 = 0; _i8 < onMessageHandlers.length; _i8++) {
-              var _handler3 = onMessageHandlers[_i8];
+            for (var _i10 = 0; _i10 < onMessageHandlers.length; _i10++) {
+              var _handler3 = onMessageHandlers[_i10];
 
               _handler3(message);
             }
@@ -5712,120 +5788,72 @@ function firebaseSocket(_ref8) {
     targetApp: targetApp
   });
 }
-// CONCATENATED MODULE: ./src/api/eligibility.js
-
-
-
-function getNativeEligibility(_ref) {
-  var vault = _ref.vault,
-      shippingCallbackEnabled = _ref.shippingCallbackEnabled,
-      merchantID = _ref.merchantID,
-      clientID = _ref.clientID,
-      buyerCountry = _ref.buyerCountry,
-      currency = _ref.currency,
-      userAgent = _ref.userAgent,
-      buttonSessionID = _ref.buttonSessionID;
-  return Object(api["a" /* callGraphQL */])({
-    query: "\n            query NativeEligibility(\n                $vault : Boolean,\n                $shippingCallbackEnabled : Boolean,\n                $merchantID : String,\n                $facilitatorClientID : String,\n                $buyerCountry : String,\n                $currency : String,\n                $userAgent : String,\n                $buttonSessionID : string\n            ) {\n                mobileSDKEligibility(\n                    vault: $vault,\n                    shippingCallbackEnabled: $shippingCallbackEnabled,\n                    merchantID: $merchantID,\n                    facilitatorClientID: $facilitatorClientID,\n                    buyerCountry: $buyerCountry,\n                    currency: $currency,\n                    userAgent: $userAgent,\n                    buttonSessionID: $buttonSessionID\n                )\n            }\n        ",
-    variables: {
-      vault: vault,
-      shippingCallbackEnabled: shippingCallbackEnabled,
-      merchantID: merchantID[0],
-      facilitatorClientID: clientID,
-      buyerCountry: buyerCountry,
-      currency: currency,
-      userAgent: userAgent,
-      buttonSessionID: buttonSessionID
-    }
-  }).then(function (res) {
-    return res.data.eligible;
-  });
-}
 // CONCATENATED MODULE: ./src/api/index.js
 /* concated harmony reexport createAccessToken */__webpack_require__.d(__webpack_exports__, "e", function() { return createAccessToken; });
 /* unused concated harmony import getFirebaseSessionToken */
+/* unused concated harmony import upgradeFacilitatorAccessToken */
 /* concated harmony reexport createOrderID */__webpack_require__.d(__webpack_exports__, "f", function() { return createOrderID; });
-/* concated harmony reexport getOrder */__webpack_require__.d(__webpack_exports__, "k", function() { return getOrder; });
+/* concated harmony reexport getOrder */__webpack_require__.d(__webpack_exports__, "j", function() { return getOrder; });
 /* concated harmony reexport captureOrder */__webpack_require__.d(__webpack_exports__, "d", function() { return captureOrder; });
 /* concated harmony reexport authorizeOrder */__webpack_require__.d(__webpack_exports__, "b", function() { return authorizeOrder; });
-/* concated harmony reexport patchOrder */__webpack_require__.d(__webpack_exports__, "n", function() { return patchOrder; });
-/* concated harmony reexport getPayee */__webpack_require__.d(__webpack_exports__, "l", function() { return getPayee; });
-/* concated harmony reexport validatePaymentMethod */__webpack_require__.d(__webpack_exports__, "r", function() { return validatePaymentMethod; });
+/* concated harmony reexport patchOrder */__webpack_require__.d(__webpack_exports__, "m", function() { return patchOrder; });
+/* concated harmony reexport getPayee */__webpack_require__.d(__webpack_exports__, "k", function() { return getPayee; });
+/* concated harmony reexport validatePaymentMethod */__webpack_require__.d(__webpack_exports__, "q", function() { return validatePaymentMethod; });
 /* concated harmony reexport billingTokenToOrderID */__webpack_require__.d(__webpack_exports__, "c", function() { return billingTokenToOrderID; });
-/* concated harmony reexport subscriptionIdToCartId */__webpack_require__.d(__webpack_exports__, "p", function() { return subscriptionIdToCartId; });
+/* concated harmony reexport subscriptionIdToCartId */__webpack_require__.d(__webpack_exports__, "o", function() { return subscriptionIdToCartId; });
 /* concated harmony reexport enableVault */__webpack_require__.d(__webpack_exports__, "h", function() { return enableVault; });
 /* unused concated harmony import deleteVault */
-/* concated harmony reexport updateClientConfig */__webpack_require__.d(__webpack_exports__, "q", function() { return updateClientConfig; });
+/* concated harmony reexport updateClientConfig */__webpack_require__.d(__webpack_exports__, "p", function() { return updateClientConfig; });
 /* concated harmony reexport createSubscription */__webpack_require__.d(__webpack_exports__, "g", function() { return createSubscription; });
-/* concated harmony reexport reviseSubscription */__webpack_require__.d(__webpack_exports__, "o", function() { return reviseSubscription; });
+/* concated harmony reexport reviseSubscription */__webpack_require__.d(__webpack_exports__, "n", function() { return reviseSubscription; });
 /* concated harmony reexport activateSubscription */__webpack_require__.d(__webpack_exports__, "a", function() { return activateSubscription; });
-/* concated harmony reexport getSubscription */__webpack_require__.d(__webpack_exports__, "m", function() { return getSubscription; });
+/* concated harmony reexport getSubscription */__webpack_require__.d(__webpack_exports__, "l", function() { return getSubscription; });
 /* unused concated harmony import messageSocket */
 /* unused concated harmony import webSocket */
+/* unused concated harmony import loadFirebaseScripts */
 /* concated harmony reexport firebaseSocket */__webpack_require__.d(__webpack_exports__, "i", function() { return firebaseSocket; });
-/* concated harmony reexport getNativeEligibility */__webpack_require__.d(__webpack_exports__, "j", function() { return getNativeEligibility; });
 
 
 
 
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGGER_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ORDERS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return VALIDATE_PAYMENT_METHOD_API; });
-/* unused harmony export BASE_SMART_API_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return SMART_API_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GRAPHQL_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return EXPERIENCE_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return NATIVE_DETECTION_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
-var LOGGER_URL = '/xoplatform/logger/api/logger';
-var AUTH_API_URL = '/v1/oauth2/token';
-var ORDERS_API_URL = '/v2/checkout/orders';
-var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
-var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
-var BASE_SMART_API_URL = '/smart/api';
-var SMART_API_URI = {
-  AUTH: BASE_SMART_API_URL + "/auth",
-  CHECKOUT: BASE_SMART_API_URL + "/checkout",
-  ORDER: BASE_SMART_API_URL + "/order",
-  PAYMENT: BASE_SMART_API_URL + "/payment",
-  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
-};
-var GRAPHQL_URI = '/graphql';
-var EXPERIENCE_URI = {
-  CHECKOUT: '/checkoutnow',
-  NATIVE_CHECKOUT: '/smart/checkout/native'
-};
-var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
-var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
-var FIREBASE_SCRIPTS = {
-  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
-  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
-  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
-};
 
 /***/ }),
 /* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _extends; });
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return callRestAPI; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return callSmartAPI; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return callGraphQL; });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(0);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
 
 
 
@@ -5844,7 +5872,7 @@ function callRestAPI(_ref) {
     throw new Error("No access token passed to " + url);
   }
 
-  var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])((_extends2 = {}, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].AUTHORIZATION] = "Bearer " + accessToken, _extends2), headers);
+  var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])((_extends2 = {}, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].AUTHORIZATION] = "Bearer " + accessToken, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].CONTENT_TYPE] = "application/json", _extends2), headers);
 
   return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "q"])({
     method: method,
@@ -5871,7 +5899,7 @@ function callSmartAPI(_ref3) {
       _ref3$method = _ref3.method,
       method = _ref3$method === void 0 ? 'get' : _ref3$method,
       json = _ref3.json;
-  var reqHeaders = (_reqHeaders = {}, _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].SOURCE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_BUTTONS */ "n"], _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_PAYMENT_BUTTONS */ "o"], _reqHeaders);
+  var reqHeaders = (_reqHeaders = {}, _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_PAYMENT_BUTTONS */ "n"], _reqHeaders);
 
   if (accessToken) {
     reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].ACCESS_TOKEN] = accessToken;
@@ -5918,7 +5946,9 @@ function callGraphQL(_ref5) {
       query: query,
       variables: variables
     },
-    headers: Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, headers)
+    headers: Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
+      'x-app-name': _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_PAYMENT_BUTTONS */ "n"]
+    }, headers)
   }).then(function (_ref6) {
     var status = _ref6.status,
         body = _ref6.body;
@@ -5933,32 +5963,8 @@ function callGraphQL(_ref5) {
       throw new Error(_config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"] + " returned status " + status);
     }
 
-    return body;
+    return body.data;
   });
-}
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _extends; });
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
 }
 
 /***/ }),
@@ -6986,28 +6992,28 @@ var TYPES = true;
 // CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/index.js
 /* unused concated harmony import isFileProtocol */
 /* unused concated harmony import isAboutProtocol */
-/* concated harmony reexport getParent */__webpack_require__.d(__webpack_exports__, "b", function() { return getParent; });
+/* concated harmony reexport getParent */__webpack_require__.d(__webpack_exports__, "c", function() { return getParent; });
 /* unused concated harmony import getOpener */
 /* unused concated harmony import canReadFromWindow */
 /* unused concated harmony import getActualDomain */
-/* concated harmony reexport getDomain */__webpack_require__.d(__webpack_exports__, "a", function() { return getDomain; });
-/* concated harmony reexport isBlankDomain */__webpack_require__.d(__webpack_exports__, "d", function() { return isBlankDomain; });
+/* concated harmony reexport getDomain */__webpack_require__.d(__webpack_exports__, "b", function() { return getDomain; });
+/* concated harmony reexport isBlankDomain */__webpack_require__.d(__webpack_exports__, "e", function() { return isBlankDomain; });
 /* unused concated harmony import isActuallySameDomain */
 /* unused concated harmony import isSameDomain */
-/* unused concated harmony import assertSameDomain */
+/* concated harmony reexport assertSameDomain */__webpack_require__.d(__webpack_exports__, "a", function() { return assertSameDomain; });
 /* unused concated harmony import getParents */
 /* unused concated harmony import isAncestorParent */
 /* unused concated harmony import getFrames */
 /* unused concated harmony import getAllChildFrames */
-/* concated harmony reexport getTop */__webpack_require__.d(__webpack_exports__, "c", function() { return getTop; });
+/* concated harmony reexport getTop */__webpack_require__.d(__webpack_exports__, "d", function() { return getTop; });
 /* unused concated harmony import getNextOpener */
 /* unused concated harmony import getUltimateTop */
 /* unused concated harmony import getAllFramesInWindow */
 /* unused concated harmony import getAllWindows */
 /* unused concated harmony import isTop */
 /* unused concated harmony import isFrameWindowClosed */
-/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "f", function() { return isWindowClosed; });
-/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "g", function() { return linkFrameWindow; });
+/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "g", function() { return isWindowClosed; });
+/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "h", function() { return linkFrameWindow; });
 /* unused concated harmony import getUserAgent */
 /* unused concated harmony import getFrameByName */
 /* unused concated harmony import findChildFrameByName */
@@ -7028,7 +7034,7 @@ var TYPES = true;
 /* unused concated harmony import stringifyDomainPattern */
 /* unused concated harmony import getDomainFromUrl */
 /* unused concated harmony import onCloseWindow */
-/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "e", function() { return isWindow; });
+/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "f", function() { return isWindow; });
 /* unused concated harmony import isBrowser */
 /* unused concated harmony import isCurrentDomain */
 /* unused concated harmony import isMockDomain */
@@ -7047,6 +7053,101 @@ var TYPES = true;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
+/* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getProps", function() { return _props__WEBPACK_IMPORTED_MODULE_1__["c"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getComponents", function() { return _props__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getConfig", function() { return _props__WEBPACK_IMPORTED_MODULE_1__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getServiceData", function() { return _props__WEBPACK_IMPORTED_MODULE_1__["d"]; });
+
+/* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateOrderData", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["c"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildCreateOrder", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateOrderActions", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateOrder", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["d"]; });
+
+/* harmony import */ var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementData", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementActions", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateBillingAgreement", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["c"]; });
+
+/* harmony import */ var _createSubscription__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionData", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionActions", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateSubscription", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["c"]; });
+
+/* harmony import */ var _onApprove__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(15);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnApprove", function() { return _onApprove__WEBPACK_IMPORTED_MODULE_5__["a"]; });
+
+/* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(13);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnInitData", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnInitActions", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnInit", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["c"]; });
+
+/* harmony import */ var _onCancel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(16);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnCancelData", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnCancelActions", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnCancel", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["c"]; });
+
+/* harmony import */ var _onShippingChange__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(17);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnShippingChangeData", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXShippingChangeActions", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnShippingChange", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["c"]; });
+
+/* harmony import */ var _onClick__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(18);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CLICK_VALID", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["a"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnClickData", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["c"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnClickActions", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnClick", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["d"]; });
+
+/* harmony import */ var _onError__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(24);
+/* harmony import */ var _onError__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_onError__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _onError__WEBPACK_IMPORTED_MODULE_10__) if(["getProps","getComponents","getConfig","getServiceData","buildXCreateOrderData","buildCreateOrder","buildXCreateOrderActions","getCreateOrder","buildXCreateBillingAgreementData","buildXCreateBillingAgreementActions","getCreateBillingAgreement","buildXCreateSubscriptionData","buildXCreateSubscriptionActions","getCreateSubscription","getOnApprove","buildXOnInitData","buildXOnInitActions","getOnInit","buildXOnCancelData","buildXOnCancelActions","getOnCancel","buildXOnShippingChangeData","buildXShippingChangeActions","getOnShippingChange","CLICK_VALID","buildXOnClickData","buildXOnClickActions","getOnClick","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _onError__WEBPACK_IMPORTED_MODULE_10__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(25);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "POPUP_BRIDGE_OPTYPE", function() { return _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__["a"]; });
+
+/* harmony import */ var _rememberFunding__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(26);
+/* harmony import */ var _getPageUrl__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(27);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getButtons; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getSelectedFunding; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return enableLoadingSpinner; });
@@ -7054,7 +7155,7 @@ var TYPES = true;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getNonce; });
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 
 
 
@@ -7089,21 +7190,21 @@ function getNonce() {
 }
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return unresolvedPromise; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return unresolvedPromise; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return promiseNoop; });
 /* unused harmony export getBody */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return sendBeacon; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return sendBeacon; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return fixClickFocus; });
 /* unused harmony export sleep */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return redirectTop; });
+/* unused harmony export redirectTop */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return loadScript; });
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 
 
 
@@ -7177,116 +7278,14 @@ function loadScript(url) {
 }
 
 /***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return POPUP_BRIDGE_OPTYPE; });
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-
-var POPUP_BRIDGE_OPTYPE = {
-  PAYMENT: 'payment',
-  CANCEL: 'cancel'
-};
-
-/***/ }),
 /* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
-/* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGlobalProps", function() { return _props__WEBPACK_IMPORTED_MODULE_1__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getButtonCallbackProps", function() { return _props__WEBPACK_IMPORTED_MODULE_1__["a"]; });
-
-/* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(15);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateOrderData", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["c"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildCreateOrder", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateOrderActions", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateOrder", function() { return _createOrder__WEBPACK_IMPORTED_MODULE_2__["d"]; });
-
-/* harmony import */ var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementData", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementActions", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateBillingAgreement", function() { return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__["c"]; });
-
-/* harmony import */ var _createSubscription__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionData", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionActions", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCreateSubscription", function() { return _createSubscription__WEBPACK_IMPORTED_MODULE_4__["c"]; });
-
-/* harmony import */ var _onApprove__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnApprove", function() { return _onApprove__WEBPACK_IMPORTED_MODULE_5__["a"]; });
-
-/* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(14);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnInitData", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnInitActions", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnInit", function() { return _onInit__WEBPACK_IMPORTED_MODULE_6__["c"]; });
-
-/* harmony import */ var _onCancel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(17);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnCancelData", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnCancelActions", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnCancel", function() { return _onCancel__WEBPACK_IMPORTED_MODULE_7__["c"]; });
-
-/* harmony import */ var _onShippingChange__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(21);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnShippingChangeData", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXShippingChangeActions", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnShippingChange", function() { return _onShippingChange__WEBPACK_IMPORTED_MODULE_8__["c"]; });
-
-/* harmony import */ var _onClick__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(18);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnClickData", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildXOnClickActions", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getOnClick", function() { return _onClick__WEBPACK_IMPORTED_MODULE_9__["c"]; });
-
-/* harmony import */ var _onError__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(24);
-/* harmony import */ var _onError__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_onError__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _onError__WEBPACK_IMPORTED_MODULE_10__) if(["getGlobalProps","getButtonCallbackProps","buildXCreateOrderData","buildCreateOrder","buildXCreateOrderActions","getCreateOrder","buildXCreateBillingAgreementData","buildXCreateBillingAgreementActions","getCreateBillingAgreement","buildXCreateSubscriptionData","buildXCreateSubscriptionActions","getCreateSubscription","getOnApprove","buildXOnInitData","buildXOnInitActions","getOnInit","buildXOnCancelData","buildXOnCancelActions","getOnCancel","buildXOnShippingChangeData","buildXShippingChangeActions","getOnShippingChange","buildXOnClickData","buildXOnClickActions","getOnClick","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _onError__WEBPACK_IMPORTED_MODULE_10__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(12);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "POPUP_BRIDGE_OPTYPE", function() { return _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__["a"]; });
-
-/* harmony import */ var _rememberFunding__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(25);
-/* harmony import */ var _getPageUrl__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(26);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***/ }),
-/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnInitData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnInitActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnInit; });
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 
 function buildXOnInitData() {
   // $FlowFixMe
@@ -7327,7 +7326,7 @@ function getOnInit(xprops) {
 }
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7335,12 +7334,12 @@ function getOnInit(xprops) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildCreateOrder; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateOrderActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getCreateOrder; });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(0);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(6);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4);
 
 
@@ -7354,7 +7353,7 @@ function buildXCreateOrderData() {
   return {};
 }
 function buildCreateOrder(_ref) {
-  var clientID = _ref.clientID,
+  var facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
       intent = _ref.intent,
       currency = _ref.currency,
       merchantID = _ref.merchantID,
@@ -7400,7 +7399,7 @@ function buildCreateOrder(_ref) {
       });
     });
     order.application_context = order.application_context || {};
-    return Object(_api__WEBPACK_IMPORTED_MODULE_4__[/* createAccessToken */ "e"])(clientID).then(function (facilitatorAccessToken) {
+    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
       return Object(_api__WEBPACK_IMPORTED_MODULE_4__[/* createOrderID */ "f"])(order, {
         facilitatorAccessToken: facilitatorAccessToken,
         partnerAttributionID: partnerAttributionID
@@ -7409,13 +7408,13 @@ function buildCreateOrder(_ref) {
   };
 }
 function buildXCreateOrderActions(_ref2) {
-  var clientID = _ref2.clientID,
+  var facilitatorAccessTokenPromise = _ref2.facilitatorAccessTokenPromise,
       intent = _ref2.intent,
       currency = _ref2.currency,
       merchantID = _ref2.merchantID,
       partnerAttributionID = _ref2.partnerAttributionID;
   var create = buildCreateOrder({
-    clientID: clientID,
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
     intent: intent,
     currency: currency,
     merchantID: merchantID,
@@ -7428,11 +7427,10 @@ function buildXCreateOrderActions(_ref2) {
   };
 }
 function getCreateOrder(xprops, _ref3) {
-  var validationPromise = _ref3.validationPromise,
+  var facilitatorAccessTokenPromise = _ref3.facilitatorAccessTokenPromise,
       createBillingAgreement = _ref3.createBillingAgreement,
       createSubscription = _ref3.createSubscription;
   var createOrder = xprops.createOrder,
-      clientID = xprops.clientID,
       buttonSessionID = xprops.buttonSessionID,
       intent = xprops.intent,
       currency = xprops.currency,
@@ -7440,7 +7438,7 @@ function getCreateOrder(xprops, _ref3) {
       partnerAttributionID = xprops.partnerAttributionID;
   var data = buildXCreateOrderData();
   var actions = buildXCreateOrderActions({
-    clientID: clientID,
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
     intent: intent,
     currency: currency,
     merchantID: merchantID,
@@ -7448,17 +7446,10 @@ function getCreateOrder(xprops, _ref3) {
   });
   return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "i"])(function () {
     return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].try(function () {
-      return validationPromise || true;
-    }).then(function (valid) {
-      if (!valid) {
-        // Is there a nicer way to prevent this?
-        return Object(_lib__WEBPACK_IMPORTED_MODULE_6__[/* unresolvedPromise */ "g"])();
-      }
-
       if (createBillingAgreement) {
         return createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_4__[/* billingTokenToOrderID */ "c"]);
       } else if (createSubscription) {
-        return createSubscription().then(_api__WEBPACK_IMPORTED_MODULE_4__[/* subscriptionIdToCartId */ "p"]);
+        return createSubscription().then(_api__WEBPACK_IMPORTED_MODULE_4__[/* subscriptionIdToCartId */ "o"]);
       } else if (createOrder) {
         return createOrder(data, actions);
       } else {
@@ -7489,15 +7480,15 @@ function getCreateOrder(xprops, _ref3) {
 }
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getOnApprove; });
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
 
 
@@ -7510,7 +7501,7 @@ function buildXApproveActions(_ref) {
       orderID = _ref.orderID,
       restart = _ref.restart,
       subscriptionID = _ref.subscriptionID,
-      facilitatorAccessToken = _ref.facilitatorAccessToken,
+      facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
       buyerAccessToken = _ref.buyerAccessToken,
       partnerAttributionID = _ref.partnerAttributionID;
 
@@ -7521,17 +7512,19 @@ function buildXApproveActions(_ref) {
     });
 
     if (isProcessorDecline) {
-      return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__[/* unresolvedPromise */ "g"]);
+      return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__[/* unresolvedPromise */ "f"]);
     }
 
     throw new Error('Order could not be captured');
   };
 
   var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getOrder */ "k"])(orderID, {
-      facilitatorAccessToken: facilitatorAccessToken,
-      buyerAccessToken: buyerAccessToken,
-      partnerAttributionID: partnerAttributionID
+    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getOrder */ "j"])(orderID, {
+        facilitatorAccessToken: facilitatorAccessToken,
+        buyerAccessToken: buyerAccessToken,
+        partnerAttributionID: partnerAttributionID
+      });
     });
   });
   var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
@@ -7539,22 +7532,26 @@ function buildXApproveActions(_ref) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
 
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* captureOrder */ "d"])(orderID, {
-      facilitatorAccessToken: facilitatorAccessToken,
-      buyerAccessToken: buyerAccessToken,
-      partnerAttributionID: partnerAttributionID
-    }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
+    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* captureOrder */ "d"])(orderID, {
+        facilitatorAccessToken: facilitatorAccessToken,
+        buyerAccessToken: buyerAccessToken,
+        partnerAttributionID: partnerAttributionID
+      }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
+    });
   });
   var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE + " to use client-side authorize");
     }
 
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* authorizeOrder */ "b"])(orderID, {
-      facilitatorAccessToken: facilitatorAccessToken,
-      buyerAccessToken: buyerAccessToken,
-      partnerAttributionID: partnerAttributionID
-    }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
+    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* authorizeOrder */ "b"])(orderID, {
+        facilitatorAccessToken: facilitatorAccessToken,
+        buyerAccessToken: buyerAccessToken,
+        partnerAttributionID: partnerAttributionID
+      }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
+    });
   });
 
   var patch = function patch(data) {
@@ -7562,18 +7559,20 @@ function buildXApproveActions(_ref) {
       data = {};
     }
 
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchOrder */ "n"])(orderID, data, {
-      facilitatorAccessToken: facilitatorAccessToken,
-      buyerAccessToken: buyerAccessToken,
-      partnerAttributionID: partnerAttributionID
-    }).catch(function () {
-      throw new Error('Order could not be patched');
+    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchOrder */ "m"])(orderID, data, {
+        facilitatorAccessToken: facilitatorAccessToken,
+        buyerAccessToken: buyerAccessToken,
+        partnerAttributionID: partnerAttributionID
+      }).catch(function () {
+        throw new Error('Order could not be patched');
+      });
     });
   }; // Subscription GET Actions
 
 
   var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getSubscription */ "m"])(subscriptionID, {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getSubscription */ "l"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
   });
@@ -7619,7 +7618,8 @@ function buildXApproveActions(_ref) {
 }
 
 function getOnApprove(xprops, _ref2) {
-  var createOrder = _ref2.createOrder;
+  var facilitatorAccessTokenPromise = _ref2.facilitatorAccessTokenPromise,
+      createOrder = _ref2.createOrder;
   var onApprove = xprops.onApprove,
       onError = xprops.onError,
       intent = xprops.intent,
@@ -7630,7 +7630,6 @@ function getOnApprove(xprops, _ref2) {
         paymentID = _ref3.paymentID,
         billingToken = _ref3.billingToken,
         subscriptionID = _ref3.subscriptionID,
-        facilitatorAccessToken = _ref3.facilitatorAccessToken,
         buyerAccessToken = _ref3.buyerAccessToken;
     var restart = _ref4.restart;
     return createOrder().then(function (orderID) {
@@ -7649,7 +7648,7 @@ function getOnApprove(xprops, _ref2) {
         intent: intent,
         restart: restart,
         subscriptionID: subscriptionID,
-        facilitatorAccessToken: facilitatorAccessToken,
+        facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
         buyerAccessToken: buyerAccessToken,
         partnerAttributionID: partnerAttributionID
       });
@@ -7668,7 +7667,7 @@ function getOnApprove(xprops, _ref2) {
 }
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7676,10 +7675,10 @@ function getOnApprove(xprops, _ref2) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnCancelActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnCancel; });
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(0);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
 
 
 
@@ -7717,225 +7716,39 @@ function buildXOnCancelActions() {
   };
 }
 function getOnCancel(xprops, _ref2) {
-  var createOrder = _ref2.createOrder,
-      validationPromise = _ref2.validationPromise;
+  var createOrder = _ref2.createOrder;
   var _xprops$onCancel = xprops.onCancel,
       onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "j"] : _xprops$onCancel,
       onError = xprops.onError,
       buttonSessionID = xprops.buttonSessionID;
   return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
-    return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].try(function () {
-      return validationPromise || true;
-    }).then(function (valid) {
-      if (!valid) {
-        return;
-      }
+    return createOrder().then(function (orderID) {
+      var _getLogger$info$track;
 
-      return createOrder().then(function (orderID) {
-        var _getLogger$info$track;
-
-        Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().info('button_cancel').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_CANCEL, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
-        return onCancel(buildXOnCancelData({
-          orderID: orderID
-        }), buildXOnCancelActions());
-      }).catch(function (err) {
-        return onError(err);
-      });
+      Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().info('button_cancel').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_CANCEL, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+      return onCancel(buildXOnCancelData({
+        orderID: orderID
+      }), buildXOnCancelActions());
+    }).catch(function (err) {
+      return onError(err);
     });
   });
 }
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnClickData; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnClickActions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnClick; });
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
-
-
-
-
-function buildXOnClickData(_ref) {
-  var fundingSource = _ref.fundingSource;
-  return {
-    fundingSource: fundingSource
-  };
-}
-function buildXOnClickActions() {
-  return {
-    resolve: function resolve() {
-      return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
-        return true;
-      });
-    },
-    reject: function reject() {
-      return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
-        return false;
-      });
-    }
-  };
-}
-function getOnClick(xprops) {
-  var _xprops$onClick = xprops.onClick,
-      onClick = _xprops$onClick === void 0 ? _lib__WEBPACK_IMPORTED_MODULE_2__[/* promiseNoop */ "c"] : _xprops$onClick,
-      buttonSessionID = xprops.buttonSessionID;
-  return function (_ref2) {
-    var _getLogger$info$track;
-
-    var fundingSource = _ref2.fundingSource;
-    Object(_lib__WEBPACK_IMPORTED_MODULE_2__[/* getLogger */ "b"])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_TRANSITION */ "h"].BUTTON_CLICK, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
-    return onClick(buildXOnClickData({
-      fundingSource: fundingSource
-    }), buildXOnClickActions()).then(function (valid) {
-      return valid !== false;
-    });
-  };
-}
-
-/***/ }),
-/* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateBillingAgreementData; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXCreateBillingAgreementActions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCreateBillingAgreement; });
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-
-function buildXCreateBillingAgreementData() {
-  // $FlowFixMe
-  return {};
-}
-function buildXCreateBillingAgreementActions() {
-  // $FlowFixMe
-  return {};
-}
-function getCreateBillingAgreement(xprops) {
-  var createBillingAgreement = xprops.createBillingAgreement;
-
-  if (createBillingAgreement) {
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
-      return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions()).then(function (billingToken) {
-        if (!billingToken || typeof billingToken !== 'string') {
-          throw new Error("Expected a billing token to be passed to createBillingAgreement");
-        }
-
-        return billingToken;
-      });
-    });
-  }
-}
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateSubscriptionData; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXCreateSubscriptionActions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCreateSubscription; });
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
-
-
-function buildXCreateSubscriptionData() {
-  // $FlowFixMe
-  return {};
-}
-function buildXCreateSubscriptionActions(_ref) {
-  var clientID = _ref.clientID,
-      partnerAttributionID = _ref.partnerAttributionID;
-
-  var create = function create(data) {
-    return Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* createAccessToken */ "e"])(clientID).then(function (accessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* createSubscription */ "g"])(accessToken, data, {
-        partnerAttributionID: partnerAttributionID
-      });
-    });
-  };
-
-  var revise = function revise(subscriptionID, data) {
-    return Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* createAccessToken */ "e"])(clientID).then(function (accessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* reviseSubscription */ "o"])(accessToken, subscriptionID, data, {
-        partnerAttributionID: partnerAttributionID
-      });
-    });
-  };
-
-  return {
-    subscription: {
-      create: create,
-      revise: revise
-    }
-  };
-}
-function getCreateSubscription(xprops) {
-  var createSubscriptionFunc = xprops.createSubscription,
-      partnerAttributionID = xprops.partnerAttributionID;
-  var clientID = xprops.clientID;
-
-  if (createSubscriptionFunc) {
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
-      return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({
-        clientID: clientID,
-        partnerAttributionID: partnerAttributionID
-      })).then(function (subscriptionID) {
-        if (!subscriptionID || typeof subscriptionID !== 'string') {
-          throw new Error("Expected an subscription id to be passed to createSubscription");
-        }
-
-        return subscriptionID;
-      });
-    });
-  }
-}
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-// EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var src = __webpack_require__(1);
-
-// EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
-var sdk_constants_src = __webpack_require__(2);
-
-// EXTERNAL MODULE: ./src/api/index.js + 5 modules
-var api = __webpack_require__(5);
-
-// EXTERNAL MODULE: ./src/constants.js
-var constants = __webpack_require__(0);
-
-// EXTERNAL MODULE: ./src/lib/index.js + 5 modules
-var lib = __webpack_require__(4);
-
-// CONCATENATED MODULE: ./src/button/props/onShippingChange.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnShippingChangeData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXShippingChangeActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnShippingChange; });
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
 
 
 
@@ -7948,7 +7761,7 @@ function buildXOnShippingChangeData(data) {
 function buildXShippingChangeActions(_ref) {
   var orderID = _ref.orderID,
       actions = _ref.actions,
-      facilitatorAccessToken = _ref.facilitatorAccessToken,
+      facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
       buyerAccessToken = _ref.buyerAccessToken,
       partnerAttributionID = _ref.partnerAttributionID;
 
@@ -7957,17 +7770,19 @@ function buildXShippingChangeActions(_ref) {
       data = {};
     }
 
-    return Object(api["n" /* patchOrder */])(orderID, data, {
-      facilitatorAccessToken: facilitatorAccessToken,
-      buyerAccessToken: buyerAccessToken,
-      partnerAttributionID: partnerAttributionID
-    }).catch(function () {
-      throw new Error('Order could not be patched');
+    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* patchOrder */ "m"])(orderID, data, {
+        facilitatorAccessToken: facilitatorAccessToken,
+        buyerAccessToken: buyerAccessToken,
+        partnerAttributionID: partnerAttributionID
+      }).catch(function () {
+        throw new Error('Order could not be patched');
+      });
     });
   };
 
   var resolve = function resolve() {
-    return src["a" /* ZalgoPromise */].resolve();
+    return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].resolve();
   };
 
   var reject = actions.reject || function reject() {
@@ -7983,24 +7798,24 @@ function buildXShippingChangeActions(_ref) {
   };
 }
 function getOnShippingChange(xprops, _ref2) {
-  var createOrder = _ref2.createOrder;
+  var facilitatorAccessTokenPromise = _ref2.facilitatorAccessTokenPromise,
+      createOrder = _ref2.createOrder;
   var onShippingChange = xprops.onShippingChange,
       buttonSessionID = xprops.buttonSessionID,
       partnerAttributionID = xprops.partnerAttributionID;
 
   if (onShippingChange) {
     return function (_ref3, actions) {
-      var facilitatorAccessToken = _ref3.facilitatorAccessToken,
-          buyerAccessToken = _ref3.buyerAccessToken,
-          data = _objectWithoutPropertiesLoose(_ref3, ["facilitatorAccessToken", "buyerAccessToken"]);
+      var buyerAccessToken = _ref3.buyerAccessToken,
+          data = Object(_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(_ref3, ["buyerAccessToken"]);
 
       return createOrder().then(function (orderID) {
         var _getLogger$info$track;
 
-        Object(lib["b" /* getLogger */])().info('button_shipping_change').track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].CHECKOUT_SHIPPING_CHANGE, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+        Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().info('button_shipping_change').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_SHIPPING_CHANGE, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
         return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({
           orderID: orderID,
-          facilitatorAccessToken: facilitatorAccessToken,
+          facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
           buyerAccessToken: buyerAccessToken,
           actions: actions,
           partnerAttributionID: partnerAttributionID
@@ -8008,6 +7823,183 @@ function getOnShippingChange(xprops, _ref2) {
       });
     };
   }
+}
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CLICK_VALID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return buildXOnClickData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnClickActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getOnClick; });
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
+
+
+
+
+var CLICK_VALID = {
+  VALID: true,
+  INVALID: false
+};
+function buildXOnClickData(_ref) {
+  var fundingSource = _ref.fundingSource;
+  return {
+    fundingSource: fundingSource
+  };
+}
+function buildXOnClickActions() {
+  return {
+    resolve: function resolve() {
+      return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
+        return CLICK_VALID.VALID;
+      });
+    },
+    reject: function reject() {
+      return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
+        return CLICK_VALID.INVALID;
+      });
+    }
+  };
+}
+function getOnClick(xprops) {
+  var onClick = xprops.onClick,
+      buttonSessionID = xprops.buttonSessionID;
+
+  if (!onClick) {
+    return;
+  }
+
+  return function (_ref2) {
+    var _getLogger$info$track;
+
+    var fundingSource = _ref2.fundingSource;
+    Object(_lib__WEBPACK_IMPORTED_MODULE_2__[/* getLogger */ "b"])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_TRANSITION */ "h"].BUTTON_CLICK, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
+    return onClick(buildXOnClickData({
+      fundingSource: fundingSource
+    }), buildXOnClickActions()).then(function (valid) {
+      return valid !== CLICK_VALID.INVALID;
+    });
+  };
+}
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateBillingAgreementData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXCreateBillingAgreementActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCreateBillingAgreement; });
+function buildXCreateBillingAgreementData() {
+  // $FlowFixMe
+  return {};
+}
+function buildXCreateBillingAgreementActions() {
+  // $FlowFixMe
+  return {};
+}
+function getCreateBillingAgreement(xprops) {
+  var createBillingAgreement = xprops.createBillingAgreement;
+
+  if (createBillingAgreement) {
+    return function () {
+      return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions()).then(function (billingToken) {
+        if (!billingToken || typeof billingToken !== 'string') {
+          throw new Error("Expected a billing token to be passed to createBillingAgreement");
+        }
+
+        return billingToken;
+      });
+    };
+  }
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateSubscriptionData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXCreateSubscriptionActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCreateSubscription; });
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+
+function buildXCreateSubscriptionData() {
+  // $FlowFixMe
+  return {};
+}
+function buildXCreateSubscriptionActions(_ref) {
+  var facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
+      partnerAttributionID = _ref.partnerAttributionID;
+
+  var create = function create(data) {
+    return facilitatorAccessTokenPromise.then(function (accessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* createSubscription */ "g"])(accessToken, data, {
+        partnerAttributionID: partnerAttributionID
+      });
+    });
+  };
+
+  var revise = function revise(subscriptionID, data) {
+    return facilitatorAccessTokenPromise.then(function (accessToken) {
+      return Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* reviseSubscription */ "n"])(accessToken, subscriptionID, data, {
+        partnerAttributionID: partnerAttributionID
+      });
+    });
+  };
+
+  return {
+    subscription: {
+      create: create,
+      revise: revise
+    }
+  };
+}
+function getCreateSubscription(xprops, _ref2) {
+  var facilitatorAccessTokenPromise = _ref2.facilitatorAccessTokenPromise;
+  var createSubscriptionFunc = xprops.createSubscription,
+      partnerAttributionID = xprops.partnerAttributionID;
+
+  if (createSubscriptionFunc) {
+    return function () {
+      return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({
+        facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+        partnerAttributionID: partnerAttributionID
+      })).then(function (subscriptionID) {
+        if (!subscriptionID || typeof subscriptionID !== 'string') {
+          throw new Error("Expected an subscription id to be passed to createSubscription");
+        }
+
+        return subscriptionID;
+      });
+    };
+  }
+}
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _objectWithoutPropertiesLoose; });
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
 }
 
 /***/ }),
@@ -8023,19 +8015,22 @@ function getOnShippingChange(xprops, _ref2) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getGlobalProps; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getButtonCallbackProps; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getProps; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getComponents; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getConfig; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getServiceData; });
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
-/* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
-/* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15);
-/* harmony import */ var _onApprove__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16);
-/* harmony import */ var _onCancel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17);
-/* harmony import */ var _onShippingChange__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(21);
-/* harmony import */ var _onClick__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(18);
-/* harmony import */ var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(19);
-/* harmony import */ var _createSubscription__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(20);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(11);
+/* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(13);
+/* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
+/* harmony import */ var _onApprove__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(15);
+/* harmony import */ var _onCancel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(16);
+/* harmony import */ var _onShippingChange__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(17);
+/* harmony import */ var _onClick__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(18);
+/* harmony import */ var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(19);
+/* harmony import */ var _createSubscription__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(20);
 
 
 
@@ -8047,10 +8042,10 @@ function getOnShippingChange(xprops, _ref2) {
 
 
 
-function getGlobalProps(_ref) {
-  var xprops = _ref.xprops,
-      buyerGeoCountry = _ref.buyerGeoCountry,
-      cspNonce = _ref.cspNonce;
+
+function getProps(_ref) {
+  var facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise;
+  var xprops = window.xprops;
   var env = xprops.env,
       vault = xprops.vault,
       commit = xprops.commit,
@@ -8063,8 +8058,6 @@ function getGlobalProps(_ref) {
       correlationID = xprops.correlationID,
       getParentDomain = xprops.getParentDomain,
       clientAccessToken = xprops.clientAccessToken,
-      _xprops$buyerCountry = xprops.buyerCountry,
-      buyerCountry = _xprops$buyerCountry === void 0 ? buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* COUNTRY */ "a"].US : _xprops$buyerCountry,
       getPopupBridge = xprops.getPopupBridge,
       getPrerenderDetails = xprops.getPrerenderDetails,
       getPageUrl = xprops.getPageUrl,
@@ -8079,45 +8072,9 @@ function getGlobalProps(_ref) {
       style = xprops.style,
       getParent = xprops.getParent,
       currency = xprops.currency;
-  cspNonce = cspNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_2__[/* getNonce */ "d"])();
-  var onInit = Object(_onInit__WEBPACK_IMPORTED_MODULE_3__[/* getOnInit */ "c"])(xprops);
+  var onInit = Object(_onInit__WEBPACK_IMPORTED_MODULE_4__[/* getOnInit */ "c"])(xprops);
   var merchantDomain = typeof getParentDomain === 'function' ? getParentDomain() : 'unknown';
-  var onClick = Object(_onClick__WEBPACK_IMPORTED_MODULE_8__[/* getOnClick */ "c"])(xprops);
-  return {
-    env: env,
-    style: style,
-    vault: vault,
-    commit: commit,
-    clientAccessToken: clientAccessToken,
-    buyerCountry: buyerCountry,
-    locale: locale,
-    cspNonce: cspNonce,
-    sessionID: sessionID,
-    buttonSessionID: buttonSessionID,
-    clientID: clientID,
-    partnerAttributionID: partnerAttributionID,
-    correlationID: correlationID,
-    merchantDomain: merchantDomain,
-    platform: platform,
-    currency: currency,
-    getPopupBridge: getPopupBridge,
-    getPrerenderDetails: getPrerenderDetails,
-    getPageUrl: getPageUrl,
-    rememberFunding: rememberFunding,
-    getParent: getParent,
-    enableThreeDomainSecure: enableThreeDomainSecure,
-    enableStandardCardFields: enableStandardCardFields,
-    enableNativeCheckout: enableNativeCheckout,
-    onClick: onClick,
-    onInit: onInit,
-    onError: onError,
-    stageHost: stageHost,
-    apiStageHost: apiStageHost
-  };
-}
-function getButtonCallbackProps(_ref2) {
-  var xprops = _ref2.xprops,
-      validationPromise = _ref2.validationPromise;
+  var onClick = Object(_onClick__WEBPACK_IMPORTED_MODULE_9__[/* getOnClick */ "d"])(xprops);
 
   if (xprops.createBillingAgreement) {
     if (xprops.createOrder) {
@@ -8143,30 +8100,116 @@ function getButtonCallbackProps(_ref2) {
     }
   }
 
-  var createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__[/* getCreateBillingAgreement */ "c"])(xprops);
-  var createSubscription = Object(_createSubscription__WEBPACK_IMPORTED_MODULE_10__[/* getCreateSubscription */ "c"])(xprops);
-  var createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_4__[/* getCreateOrder */ "d"])(xprops, {
-    createBillingAgreement: createBillingAgreement,
-    createSubscription: createSubscription,
-    validationPromise: validationPromise
+  var createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_10__[/* getCreateBillingAgreement */ "c"])(xprops);
+  var createSubscription = Object(_createSubscription__WEBPACK_IMPORTED_MODULE_11__[/* getCreateSubscription */ "c"])(xprops, {
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise
   });
-  var onApprove = Object(_onApprove__WEBPACK_IMPORTED_MODULE_5__[/* getOnApprove */ "a"])(xprops, {
+  var createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_5__[/* getCreateOrder */ "d"])(xprops, {
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    createBillingAgreement: createBillingAgreement,
+    createSubscription: createSubscription
+  });
+  var onApprove = Object(_onApprove__WEBPACK_IMPORTED_MODULE_6__[/* getOnApprove */ "a"])(xprops, {
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
     createOrder: createOrder
   });
-  var onCancel = Object(_onCancel__WEBPACK_IMPORTED_MODULE_6__[/* getOnCancel */ "c"])(xprops, {
-    createOrder: createOrder,
-    validationPromise: validationPromise
+  var onCancel = Object(_onCancel__WEBPACK_IMPORTED_MODULE_7__[/* getOnCancel */ "c"])(xprops, {
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    createOrder: createOrder
   });
-  var onShippingChange = Object(_onShippingChange__WEBPACK_IMPORTED_MODULE_7__[/* getOnShippingChange */ "c"])(xprops, {
+  var onShippingChange = Object(_onShippingChange__WEBPACK_IMPORTED_MODULE_8__[/* getOnShippingChange */ "c"])(xprops, {
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
     createOrder: createOrder
   });
   return {
+    env: env,
+    style: style,
+    vault: vault,
+    commit: commit,
+    clientAccessToken: clientAccessToken,
+    locale: locale,
+    sessionID: sessionID,
+    buttonSessionID: buttonSessionID,
+    clientID: clientID,
+    partnerAttributionID: partnerAttributionID,
+    correlationID: correlationID,
+    merchantDomain: merchantDomain,
+    platform: platform,
+    currency: currency,
+    getPopupBridge: getPopupBridge,
+    getPrerenderDetails: getPrerenderDetails,
+    getPageUrl: getPageUrl,
+    rememberFunding: rememberFunding,
+    getParent: getParent,
+    enableThreeDomainSecure: enableThreeDomainSecure,
+    enableStandardCardFields: enableStandardCardFields,
+    enableNativeCheckout: enableNativeCheckout,
+    onClick: onClick,
+    onInit: onInit,
+    onError: onError,
+    stageHost: stageHost,
+    apiStageHost: apiStageHost,
     createOrder: createOrder,
     createBillingAgreement: createBillingAgreement,
     createSubscription: createSubscription,
     onApprove: onApprove,
     onCancel: onCancel,
     onShippingChange: onShippingChange
+  };
+}
+function getComponents() {
+  var _window$paypal = window.paypal,
+      Checkout = _window$paypal.Checkout,
+      CardFields = _window$paypal.CardFields,
+      ThreeDomainSecure = _window$paypal.ThreeDomainSecure;
+  return {
+    Checkout: Checkout,
+    CardFields: CardFields,
+    ThreeDomainSecure: ThreeDomainSecure
+  };
+}
+function getConfig(_ref2) {
+  var serverCSPNonce = _ref2.serverCSPNonce,
+      firebaseConfig = _ref2.firebaseConfig;
+  var cspNonce = serverCSPNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_3__[/* getNonce */ "d"])();
+  var version = window.paypal.version;
+  return {
+    version: version,
+    cspNonce: cspNonce,
+    firebase: firebaseConfig
+  };
+}
+function getServiceData(_ref3) {
+  var facilitatorAccessToken = _ref3.facilitatorAccessToken,
+      clientID = _ref3.clientID,
+      buyerGeoCountry = _ref3.buyerGeoCountry,
+      isCardFieldsExperimentEnabled = _ref3.isCardFieldsExperimentEnabled,
+      fundingEligibility = _ref3.fundingEligibility,
+      personalization = _ref3.personalization,
+      serverMerchantID = _ref3.serverMerchantID,
+      eligibility = _ref3.eligibility;
+  var facilitatorAccessTokenPromise;
+
+  if (facilitatorAccessToken) {
+    facilitatorAccessTokenPromise = zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].resolve(facilitatorAccessToken);
+  } else if (clientID) {
+    facilitatorAccessTokenPromise = Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* createAccessToken */ "e"])(clientID);
+  } else {
+    // $FlowFixMe
+    facilitatorAccessToken = zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].asyncReject(new Error("No access token found"));
+  }
+
+  return {
+    merchantID: serverMerchantID,
+    buyerCountry: buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* COUNTRY */ "a"].US,
+    fundingEligibility: fundingEligibility,
+    personalization: personalization,
+    // $FlowFixMe
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    eligibility: {
+      cardFields: isCardFieldsExperimentEnabled,
+      native: eligibility ? eligibility.native : false
+    }
   };
 }
 
@@ -8181,21 +8224,34 @@ function getButtonCallbackProps(_ref2) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return POPUP_BRIDGE_OPTYPE; });
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 
-
+var POPUP_BRIDGE_OPTYPE = {
+  PAYMENT: 'payment',
+  CANCEL: 'cancel'
+};
 
 /***/ }),
 /* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+
 
 
 /***/ }),
 /* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+
+
+/***/ }),
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8207,22 +8263,665 @@ var src = __webpack_require__(3);
 var sdk_constants_src = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var zalgo_promise_src = __webpack_require__(1);
+var zalgo_promise_src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./src/lib/index.js + 5 modules
 var lib = __webpack_require__(4);
 
-// EXTERNAL MODULE: ./src/api/index.js + 5 modules
-var api = __webpack_require__(5);
+// EXTERNAL MODULE: ./src/constants.js
+var constants = __webpack_require__(1);
 
+// EXTERNAL MODULE: ./src/button/props/index.js
+var button_props = __webpack_require__(10);
+
+// EXTERNAL MODULE: ./src/button/dom.js
+var dom = __webpack_require__(11);
+
+// CONCATENATED MODULE: ./src/button/logs.js
+
+
+
+
+
+function setupButtonLogs(_ref) {
+  var style = _ref.style;
+  var logger = Object(lib["b" /* getLogger */])();
+
+  if (Object(src["h" /* isIEIntranet */])()) {
+    logger.warn('button_child_intranet_mode');
+  }
+
+  return Object(src["d" /* getPageRenderTime */])().then(function (pageRenderTime) {
+    var _logger$track;
+
+    var fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "]")).map(function (el) {
+      return el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].CARD) || el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE);
+    }).filter(function (source) {
+      return source && source !== sdk_constants_src["g" /* FUNDING */].CARD;
+    });
+    var layout = style.layout,
+        color = style.color,
+        shape = style.shape,
+        label = style.label,
+        _style$tagline = style.tagline,
+        tagline = _style$tagline === void 0 ? true : _style$tagline;
+    logger.info("button_render_color_" + color);
+    logger.info("button_render_shape_" + shape);
+    logger.info("button_render_label_" + label);
+    logger.info("button_render_layout_" + layout);
+    logger.info("button_render_tagline_" + tagline.toString());
+    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_LOAD, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].FUNDING_LIST] = fundingSources.join(':'), _logger$track[sdk_constants_src["d" /* FPTI_KEY */].FUNDING_COUNT] = fundingSources.length.toString(), _logger$track[sdk_constants_src["d" /* FPTI_KEY */].PAGE_LOAD_TIME] = pageRenderTime ? pageRenderTime.toString() : '', _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_LAYOUT] = layout, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_COLOR] = color, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_SIZE] = 'responsive', _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_SHAPE] = shape, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_LABEL] = label, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_WIDTH] = window.innerWidth, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_TYPE] = constants["e" /* FPTI_BUTTON_TYPE */].IFRAME, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_TAGLINE_ENABLED] = tagline ? '1' : '0', _logger$track));
+    logger.flush();
+  });
+}
+// CONCATENATED MODULE: ./src/button/remember.js
+
+
+function setupRemember(_ref) {
+  var rememberFunding = _ref.rememberFunding,
+      fundingEligibility = _ref.fundingEligibility;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) {
+      return rememberFunding([sdk_constants_src["g" /* FUNDING */].VENMO]);
+    }
+  });
+}
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(8);
+var esm_extends = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js + 4 modules
 var cross_domain_utils_src = __webpack_require__(9);
 
-// EXTERNAL MODULE: ./src/constants.js
-var constants = __webpack_require__(0);
+// EXTERNAL MODULE: ./src/api/index.js + 4 modules
+var api = __webpack_require__(6);
+
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/constants.js
+var NODE_TYPE = {
+  ELEMENT: 'element',
+  TEXT: 'text',
+  COMPONENT: 'component',
+  FRAGMENT: 'fragment'
+};
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/node.js
+
+
+function _renderChildren(children, renderer) {
+  // eslint-disable-line no-use-before-define
+  var result = [];
+
+  for (var _i2 = 0; _i2 < children.length; _i2++) {
+    var child = children[_i2];
+    var renderedChild = child.render(renderer);
+
+    if (!renderedChild) {
+      continue;
+    } else if (Array.isArray(renderedChild)) {
+      for (var _i4 = 0; _i4 < renderedChild.length; _i4++) {
+        var subchild = renderedChild[_i4];
+
+        if (subchild) {
+          result.push(subchild);
+        }
+      }
+    } else {
+      result.push(renderedChild);
+    }
+  }
+
+  return result;
+}
+
+var node_ElementNode =
+/*#__PURE__*/
+function () {
+  // eslint-disable-line no-use-before-define
+  // eslint-disable-line no-undef
+  function ElementNode(name, props, children) {
+    this.type = NODE_TYPE.ELEMENT;
+    this.name = void 0;
+    this.props = void 0;
+    this.children = void 0;
+    this.onRender = void 0;
+    // eslint-disable-line no-use-before-define
+    this.name = name;
+    this.props = props;
+    this.children = children;
+    var onRender = props.onRender;
+
+    if (typeof onRender === 'function') {
+      this.onRender = onRender;
+      delete props.onRender;
+    }
+  }
+
+  var _proto = ElementNode.prototype;
+
+  _proto.render = function render(renderer) {
+    var el = renderer(this);
+
+    if (this.onRender) {
+      this.onRender(el);
+    }
+
+    return el;
+  };
+
+  _proto.renderChildren = function renderChildren(renderer) {
+    return _renderChildren(this.children, renderer);
+  };
+
+  return ElementNode;
+}();
+var node_FragmentNode =
+/*#__PURE__*/
+function () {
+  // eslint-disable-line no-use-before-define
+  function FragmentNode(children) {
+    this.type = NODE_TYPE.FRAGMENT;
+    this.children = void 0;
+    // eslint-disable-line no-use-before-define
+    this.children = children;
+  }
+
+  var _proto2 = FragmentNode.prototype;
+
+  _proto2.render = function render(renderer) {
+    return _renderChildren(this.children, renderer);
+  };
+
+  return FragmentNode;
+}();
+var node_TextNode =
+/*#__PURE__*/
+function () {
+  function TextNode(text) {
+    this.type = NODE_TYPE.TEXT;
+    this.text = void 0;
+    this.text = text;
+  }
+
+  var _proto3 = TextNode.prototype;
+
+  _proto3.render = function render(renderer) {
+    return renderer(this);
+  };
+
+  return TextNode;
+}();
+var node_ComponentNode =
+/*#__PURE__*/
+function () {
+  function ComponentNode(component, props, children) {
+    this.type = NODE_TYPE.COMPONENT;
+    this.component = void 0;
+    this.props = void 0;
+    this.children = void 0;
+    this.component = component;
+    this.props = props;
+    this.children = children;
+  }
+
+  var _proto4 = ComponentNode.prototype;
+
+  _proto4.renderComponent = function renderComponent(renderer) {
+    // $FlowFixMe
+    var props = this.props;
+    var child = normalizeChild(this.component(props, this.children)); // eslint-disable-line no-use-before-define
+
+    if (child) {
+      return child.render(renderer);
+    }
+  };
+
+  _proto4.render = function render(renderer) {
+    return renderer(this);
+  };
+
+  _proto4.renderChildren = function renderChildren(renderer) {
+    return _renderChildren(this.children, renderer);
+  };
+
+  return ComponentNode;
+}();
+
+function normalizeChildren(children) {
+  var result = [];
+
+  for (var _i6 = 0; _i6 < children.length; _i6++) {
+    var child = children[_i6];
+
+    if (!child) {
+      continue;
+    } else if (typeof child === 'string') {
+      result.push(new node_TextNode(child));
+    } else if (Array.isArray(child)) {
+      for (var _i8 = 0, _normalizeChildren2 = normalizeChildren(child); _i8 < _normalizeChildren2.length; _i8++) {
+        var subchild = _normalizeChildren2[_i8];
+        result.push(subchild);
+      }
+    } else if (child && (child.type === NODE_TYPE.ELEMENT || child.type === NODE_TYPE.TEXT || child.type === NODE_TYPE.COMPONENT)) {
+      result.push(child);
+    } else {
+      throw new TypeError("Unrecognized node type: " + typeof child);
+    }
+  }
+
+  return result;
+}
+
+function normalizeChild(child) {
+  var children = normalizeChildren(Array.isArray(child) ? child : [child]);
+
+  if (children.length === 1) {
+    return children[0];
+  } else if (children.length > 1) {
+    return new node_FragmentNode(children);
+  }
+}
+
+var node_node = function node(element, props) {
+  for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    children[_key - 2] = arguments[_key];
+  }
+
+  // $FlowFixMe
+  props = props || {};
+  children = normalizeChildren(children);
+
+  if (typeof element === 'string') {
+    // $FlowFixMe
+    return new node_ElementNode(element, props, children);
+  }
+
+  if (typeof element === 'function') {
+    // $FlowFixMe
+    return new node_ComponentNode(element, props, children);
+  }
+
+  throw new TypeError("Expected jsx element to be a string or a function");
+};
+var Fragment = function Fragment(props, children) {
+  if (props && Object.keys(props).length) {
+    throw new Error("Do not pass props to Fragment");
+  }
+
+  return children;
+};
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/util.js
+var ALPHA_CHARS = '0123456789abcdef';
+function uniqueID() {
+  return 'xxxxxxxxxx'.replace(/./g, function () {
+    return ALPHA_CHARS.charAt(Math.floor(Math.random() * ALPHA_CHARS.length));
+  });
+}
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/renderers/dom.js
+var _ADD_CHILDREN;
+
+
+
+
+var ELEMENT_TAG = {
+  HTML: 'html',
+  IFRAME: 'iframe',
+  SCRIPT: 'script',
+  NODE: 'node',
+  DEFAULT: 'default'
+};
+var ELEMENT_PROP = {
+  ID: 'id',
+  INNER_HTML: 'innerHTML',
+  EL: 'el'
+};
+
+function fixScripts(el, doc) {
+  if (doc === void 0) {
+    doc = window.document;
+  }
+
+  for (var _i2 = 0, _el$querySelectorAll2 = el.querySelectorAll('script'); _i2 < _el$querySelectorAll2.length; _i2++) {
+    var script = _el$querySelectorAll2[_i2];
+    var parentNode = script.parentNode;
+
+    if (!parentNode) {
+      continue;
+    }
+
+    var newScript = doc.createElement('script'); // $FlowFixMe
+
+    newScript.text = script.textContent;
+    parentNode.replaceChild(newScript, script);
+  }
+}
+
+function createElement(doc, node) {
+  if (node.props[ELEMENT_PROP.EL]) {
+    // $FlowFixMe
+    return node.props[ELEMENT_PROP.EL];
+  }
+
+  return doc.createElement(node.name);
+}
+
+function createTextElement(doc, node) {
+  return doc.createTextNode(node.text);
+}
+
+function addProps(el, node) {
+  var props = node.props;
+
+  for (var _i4 = 0, _Object$keys2 = Object.keys(props); _i4 < _Object$keys2.length; _i4++) {
+    var prop = _Object$keys2[_i4];
+    var val = props[prop];
+
+    if (val === null || typeof val === 'undefined' || prop === ELEMENT_PROP.EL || prop === ELEMENT_PROP.INNER_HTML) {
+      continue;
+    }
+
+    if (prop.match(/^on[A-Z][a-z]/) && typeof val === 'function') {
+      el.addEventListener(prop.slice(2).toLowerCase(), val);
+    } else if (typeof val === 'string' || typeof val === 'number') {
+      el.setAttribute(prop, val.toString());
+    } else if (typeof val === 'boolean') {
+      if (val === true) {
+        el.setAttribute(prop, '');
+      }
+    }
+  }
+
+  if (el.tagName.toLowerCase() === ELEMENT_TAG.IFRAME && !props.id) {
+    el.setAttribute(ELEMENT_PROP.ID, "jsx-iframe-" + uniqueID());
+  }
+}
+
+var ADD_CHILDREN = (_ADD_CHILDREN = {}, _ADD_CHILDREN[ELEMENT_TAG.IFRAME] = function (el, node) {
+  var firstChild = node.children[0];
+
+  if (node.children.length !== 1 || !(firstChild && firstChild.type === NODE_TYPE.ELEMENT) || firstChild.name !== ELEMENT_TAG.HTML) {
+    throw new Error("Expected only single html element node as child of " + ELEMENT_TAG.IFRAME + " element");
+  }
+
+  el.addEventListener('load', function () {
+    // $FlowFixMe
+    var win = el.contentWindow;
+
+    if (!win) {
+      throw new Error("Expected frame to have contentWindow");
+    }
+
+    var doc = win.document;
+    var docElement = doc.documentElement;
+
+    while (docElement.children && docElement.children.length) {
+      docElement.removeChild(docElement.children[0]);
+    } // eslint-disable-next-line no-use-before-define
+
+
+    var child = firstChild.render(dom_dom({
+      doc: doc
+    }));
+
+    while (child.children.length) {
+      docElement.appendChild(child.children[0]);
+    }
+  });
+}, _ADD_CHILDREN[ELEMENT_TAG.SCRIPT] = function (el, node) {
+  var firstChild = node.children[0];
+
+  if (node.children.length !== 1 || !(firstChild && firstChild.type === NODE_TYPE.TEXT)) {
+    throw new Error("Expected only single text node as child of " + ELEMENT_TAG.SCRIPT + " element");
+  } // $FlowFixMe
+
+
+  el.text = firstChild.text;
+}, _ADD_CHILDREN[ELEMENT_TAG.DEFAULT] = function (el, node, renderer) {
+  for (var _i6 = 0, _node$renderChildren2 = node.renderChildren(renderer); _i6 < _node$renderChildren2.length; _i6++) {
+    var child = _node$renderChildren2[_i6];
+    el.appendChild(child);
+  }
+}, _ADD_CHILDREN);
+
+function addChildren(el, node, doc, renderer) {
+  if (node.props.hasOwnProperty(ELEMENT_PROP.INNER_HTML)) {
+    if (node.children.length) {
+      throw new Error("Expected no children to be passed when " + ELEMENT_PROP.INNER_HTML + " prop is set");
+    }
+
+    var html = node.props[ELEMENT_PROP.INNER_HTML];
+
+    if (typeof html !== 'string') {
+      throw new TypeError(ELEMENT_PROP.INNER_HTML + " prop must be string");
+    }
+
+    if (node.name === ELEMENT_TAG.SCRIPT) {
+      // $FlowFixMe
+      el.text = html;
+    } else {
+      el.innerHTML = html;
+      fixScripts(el, doc);
+    }
+  } else {
+    var addChildrenToElement = ADD_CHILDREN[node.name] || ADD_CHILDREN[ELEMENT_TAG.DEFAULT];
+    addChildrenToElement(el, node, renderer);
+  }
+}
+
+function dom_dom(opts) {
+  if (opts === void 0) {
+    opts = {};
+  }
+
+  var _opts = opts,
+      _opts$doc = _opts.doc,
+      doc = _opts$doc === void 0 ? document : _opts$doc;
+
+  var domRenderer = function domRenderer(node) {
+    if (node.type === NODE_TYPE.COMPONENT) {
+      return node.renderComponent(domRenderer);
+    }
+
+    if (node.type === NODE_TYPE.TEXT) {
+      // $FlowFixMe
+      return createTextElement(doc, node);
+    }
+
+    if (node.type === NODE_TYPE.ELEMENT) {
+      var el = createElement(doc, node);
+      addProps(el, node);
+      addChildren(el, node, doc, domRenderer); // $FlowFixMe
+
+      return el;
+    }
+
+    throw new TypeError("Unhandleable node");
+  };
+
+  return domRenderer;
+}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
+var objectWithoutPropertiesLoose = __webpack_require__(21);
+
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/renderers/react.js
+
+
+// eslint-disable-line import/no-unresolved
+
+
+
+function mapReactProps(props) {
+  var innerHTML = props.innerHTML,
+      remainingProps = Object(objectWithoutPropertiesLoose["a" /* default */])(props, ["innerHTML"]);
+
+  var dangerouslySetInnerHTML = innerHTML ? {
+    __html: innerHTML
+  } : null;
+  return Object(esm_extends["a" /* default */])({
+    dangerouslySetInnerHTML: dangerouslySetInnerHTML
+  }, remainingProps);
+}
+
+function react(_temp) {
+  var _ref = _temp === void 0 ? {} : _temp,
+      React = _ref.React;
+
+  if (!React) {
+    throw new Error("Must pass React library to react renderer");
+  }
+
+  var reactRenderer = function reactRenderer(node) {
+    if (node.type === NODE_TYPE.COMPONENT) {
+      return React.createElement.apply(React, [function () {
+        return node.renderComponent(reactRenderer) || null;
+      }, node.props].concat(node.renderChildren(reactRenderer)));
+    }
+
+    if (node.type === NODE_TYPE.ELEMENT) {
+      return React.createElement.apply(React, [node.name, mapReactProps(node.props)].concat(node.renderChildren(reactRenderer)));
+    }
+
+    if (node.type === NODE_TYPE.TEXT) {
+      return node.text;
+    }
+
+    throw new TypeError("Unhandleable node");
+  };
+
+  return reactRenderer;
+}
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/renderers/html.js
+
+
+var html_ELEMENT_PROP = {
+  INNER_HTML: 'innerHTML'
+};
+var SELF_CLOSING_TAGS = {
+  br: true
+};
+
+function htmlEncode(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/\//g, '&#x2F;');
+}
+
+function propsToHTML(props) {
+  var keys = Object.keys(props).filter(function (key) {
+    var val = props[key];
+
+    if (key === html_ELEMENT_PROP.INNER_HTML) {
+      return false;
+    }
+
+    if (!val) {
+      return false;
+    }
+
+    if (typeof val === 'string' || typeof val === 'number' || val === true) {
+      return true;
+    }
+
+    return false;
+  });
+
+  if (!keys.length) {
+    return '';
+  }
+
+  var pairs = keys.map(function (key) {
+    var val = props[key];
+
+    if (val === true) {
+      return "" + htmlEncode(key);
+    }
+
+    if (typeof val !== 'string' && typeof val !== 'number') {
+      throw new TypeError("Unexpected prop type: " + typeof val);
+    }
+
+    return htmlEncode(key) + "=\"" + htmlEncode(val.toString()) + "\"";
+  });
+  return " " + pairs.join(' ');
+}
+
+function html() {
+  var htmlRenderer = function htmlRenderer(node) {
+    if (node.type === NODE_TYPE.COMPONENT) {
+      return [].concat(node.renderComponent(htmlRenderer)).join('');
+    }
+
+    if (node.type === NODE_TYPE.ELEMENT) {
+      var renderedProps = propsToHTML(node.props);
+
+      if (SELF_CLOSING_TAGS[node.name]) {
+        return "<" + node.name + renderedProps + " />";
+      } else {
+        var renderedChildren = typeof node.props[html_ELEMENT_PROP.INNER_HTML] === 'string' ? node.props[html_ELEMENT_PROP.INNER_HTML] : node.renderChildren(htmlRenderer).join('');
+        return "<" + node.name + renderedProps + ">" + renderedChildren + "</" + node.name + ">";
+      }
+    }
+
+    if (node.type === NODE_TYPE.TEXT) {
+      return htmlEncode(node.text);
+    }
+
+    throw new TypeError("Unhandleable node: " + node.type);
+  };
+
+  return htmlRenderer;
+}
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/renderers/index.js
+
+
+
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/index.js
+
+
+
+// CONCATENATED MODULE: ./node_modules/@paypal/common-components/src/ui/spinnerPage.jsx
+/** @jsx node */
+
+var spinnerStyle = "\n\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10\n    }\n\n    .spinner .spinWrap {\n        width: 200px;\n        height: 100px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin-left: -100px;\n        margin-top: -50px\n    }\n\n    .spinner .loader,\n    .spinner .spinnerImage {\n        height: 100px;\n        width: 100px;\n        position: absolute;\n        top: 0;\n        left: 50%;\n        opacity: 1;\n        filter: alpha(opacity=100)\n    }\n\n    .spinner .spinnerImage {\n        margin: 28px 0 0 -25px;\n        background: url(https://www.paypalobjects.com/images/checkout/hermes/icon_ot_spin_lock_skinny.png) no-repeat\n    }\n\n    .spinner .loader {\n        margin: 0 0 0 -55px;\n        background-color: transparent;\n        animation: rotation .7s infinite linear;\n        border-left: 5px solid #cbcbca;\n        border-right: 5px solid #cbcbca;\n        border-bottom: 5px solid #cbcbca;\n        border-top: 5px solid #2380be;\n        border-radius: 100%\n    }\n\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n";
+function SpinnerPage(_ref) {
+  var nonce = _ref.nonce;
+  return node_node("html", null, node_node("head", null, node_node("title", null, "PayPal"), node_node("meta", {
+    name: "viewport",
+    content: "width=device-width, initial-scale=1"
+  })), node_node("body", null, node_node("div", {
+    class: "preloader spinner"
+  }, node_node("style", {
+    nonce: nonce,
+    innerHTML: spinnerStyle
+  }), node_node("div", {
+    class: "spinWrap"
+  }, node_node("p", {
+    class: "spinnerImage"
+  }), node_node("p", {
+    class: "loader"
+  })))));
+}
+// CONCATENATED MODULE: ./node_modules/@paypal/common-components/src/ui/index.js
+
+// CONCATENATED MODULE: ./src/ui/popup.jsx
+/** @jsx node */
+
+
+
+
+
+function openPopup(_ref) {
+  var width = _ref.width,
+      height = _ref.height;
+  var win = Object(cross_domain_utils_src["a" /* assertSameDomain */])(Object(src["m" /* popup */])('', {
+    width: width,
+    height: height
+  }));
+  var doc = win.document;
+  var spinner = node_node(SpinnerPage, {
+    nonce: Object(dom["d" /* getNonce */])()
+  }).render(dom_dom({
+    doc: doc
+  }));
+  Object(src["w" /* writeElementToWindow */])(win, spinner);
+  return win;
+}
+// CONCATENATED MODULE: ./src/ui/index.js
 
 // CONCATENATED MODULE: ./src/payment-flows/checkout.js
 
@@ -8233,23 +8932,31 @@ var constants = __webpack_require__(0);
 
 
 
+
+var CHECKOUT_POPUP_DIMENSIONS = {
+  WIDTH: 500,
+  HEIGHT: 590
+};
 var checkoutOpen = false;
 var canRenderTop = false;
 
 function getRenderWindow() {
-  var top = Object(cross_domain_utils_src["c" /* getTop */])(window);
+  var top = Object(cross_domain_utils_src["d" /* getTop */])(window);
 
   if (canRenderTop && top) {
     return top;
+  } else if (Object(cross_domain_utils_src["c" /* getParent */])()) {
+    return Object(cross_domain_utils_src["c" /* getParent */])();
   } else {
-    return Object(cross_domain_utils_src["b" /* getParent */])();
+    return window;
   }
 }
 
 function setupCheckout(_ref) {
-  var Checkout = _ref.Checkout;
+  var components = _ref.components;
+  var Checkout = components.Checkout;
   checkoutOpen = false;
-  var _ref2 = [Object(cross_domain_utils_src["b" /* getParent */])(window), Object(cross_domain_utils_src["c" /* getTop */])(window)],
+  var _ref2 = [Object(cross_domain_utils_src["c" /* getParent */])(window), Object(cross_domain_utils_src["d" /* getTop */])(window)],
       parent = _ref2[0],
       top = _ref2[1];
   var tasks = {};
@@ -8261,6 +8968,10 @@ function setupCheckout(_ref) {
   }
 
   return zalgo_promise_src["a" /* ZalgoPromise */].hash(tasks).then(src["j" /* noop */]);
+}
+
+function isCheckoutEligible() {
+  return true;
 }
 
 function isVaultAutoSetupEligible(_ref3) {
@@ -8329,41 +9040,73 @@ function enableVaultSetup(_ref4) {
   });
 }
 
-function getDefaultContext() {
-  return Object(src["u" /* supportsPopups */])() ? constants["b" /* CONTEXT */].POPUP : constants["b" /* CONTEXT */].IFRAME;
+function getContext(_ref5) {
+  var win = _ref5.win,
+      isClick = _ref5.isClick;
+
+  if (win) {
+    return constants["b" /* CONTEXT */].POPUP;
+  }
+
+  if (isClick && Object(src["u" /* supportsPopups */])()) {
+    return constants["b" /* CONTEXT */].POPUP;
+  }
+
+  return constants["b" /* CONTEXT */].IFRAME;
 }
-function initCheckout(props) {
-  var Checkout = props.Checkout,
-      clientID = props.clientID,
-      win = props.win,
-      buttonSessionID = props.buttonSessionID,
-      fundingSource = props.fundingSource,
-      card = props.card,
-      buyerCountry = props.buyerCountry,
-      _createOrder = props.createOrder,
-      _onApprove = props.onApprove,
-      _onCancel = props.onCancel,
-      onShippingChange = props.onShippingChange,
-      cspNonce = props.cspNonce,
-      context = props.context,
-      locale = props.locale,
-      commit = props.commit,
-      onError = props.onError,
-      vault = props.vault,
-      clientAccessToken = props.clientAccessToken,
-      fundingEligibility = props.fundingEligibility,
-      createBillingAgreement = props.createBillingAgreement,
-      createSubscription = props.createSubscription;
+
+function initCheckout(_ref6) {
+  var props = _ref6.props,
+      components = _ref6.components,
+      serviceData = _ref6.serviceData,
+      payment = _ref6.payment,
+      config = _ref6.config;
 
   if (checkoutOpen) {
     throw new Error("Checkout already rendered");
   }
 
+  var Checkout = components.Checkout;
+  var buttonSessionID = props.buttonSessionID,
+      _createOrder = props.createOrder,
+      _onApprove = props.onApprove,
+      _onCancel = props.onCancel,
+      onShippingChange = props.onShippingChange,
+      locale = props.locale,
+      commit = props.commit,
+      onError = props.onError,
+      vault = props.vault,
+      clientAccessToken = props.clientAccessToken,
+      createBillingAgreement = props.createBillingAgreement,
+      createSubscription = props.createSubscription,
+      onClick = props.onClick;
+  var button = payment.button,
+      win = payment.win,
+      fundingSource = payment.fundingSource,
+      card = payment.card,
+      isClick = payment.isClick;
+  var fundingEligibility = serviceData.fundingEligibility,
+      buyerCountry = serviceData.buyerCountry;
+  var cspNonce = config.cspNonce;
+  var context = getContext({
+    win: win,
+    isClick: isClick
+  });
   var approved = false;
   var restart = Object(src["i" /* memoize */])(function () {
-    return initCheckout(Object(esm_extends["a" /* default */])({}, props, {
-      context: constants["b" /* CONTEXT */].IFRAME
-    })).start().finally(lib["g" /* unresolvedPromise */]);
+    return initCheckout({
+      props: props,
+      components: components,
+      serviceData: serviceData,
+      config: config,
+      payment: {
+        button: button,
+        win: win,
+        fundingSource: fundingSource,
+        card: card,
+        isClick: false
+      }
+    }).start().finally(lib["f" /* unresolvedPromise */]);
   });
 
   var onClose = function onClose() {
@@ -8374,99 +9117,121 @@ function initCheckout(props) {
     }
   };
 
-  var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
   var buyerAccessToken;
 
-  var _Checkout = Checkout({
-    window: win,
-    buttonSessionID: buttonSessionID,
-    clientAccessToken: clientAccessToken,
-    createOrder: function createOrder() {
-      return _createOrder().then(function (orderID) {
-        return enableVaultSetup({
-          orderID: orderID,
-          vault: vault,
-          clientAccessToken: clientAccessToken,
-          fundingEligibility: fundingEligibility,
-          fundingSource: fundingSource,
-          createBillingAgreement: createBillingAgreement,
-          createSubscription: createSubscription
-        }).then(function () {
-          return orderID;
+  var init = function init() {
+    return Checkout({
+      window: win,
+      buttonSessionID: buttonSessionID,
+      clientAccessToken: clientAccessToken,
+      createOrder: function createOrder() {
+        return _createOrder().then(function (orderID) {
+          return enableVaultSetup({
+            orderID: orderID,
+            vault: vault,
+            clientAccessToken: clientAccessToken,
+            fundingEligibility: fundingEligibility,
+            fundingSource: fundingSource,
+            createBillingAgreement: createBillingAgreement,
+            createSubscription: createSubscription
+          }).then(function () {
+            return orderID;
+          });
         });
-      });
-    },
-    onApprove: function onApprove(_ref5) {
-      var payerID = _ref5.payerID,
-          paymentID = _ref5.paymentID,
-          billingToken = _ref5.billingToken,
-          subscriptionID = _ref5.subscriptionID;
-      approved = true;
-      return zalgo_promise_src["a" /* ZalgoPromise */].hash({
-        facilitatorAccessToken: facilitatorAccessTokenPromise,
-        close: closeCheckout()
-      }).then(function (_ref6) {
-        var facilitatorAccessToken = _ref6.facilitatorAccessToken;
-        return _onApprove({
-          payerID: payerID,
-          paymentID: paymentID,
-          billingToken: billingToken,
-          subscriptionID: subscriptionID,
-          facilitatorAccessToken: facilitatorAccessToken,
-          buyerAccessToken: buyerAccessToken
-        }, {
-          restart: restart
+      },
+      onApprove: function onApprove(_ref7) {
+        var payerID = _ref7.payerID,
+            paymentID = _ref7.paymentID,
+            billingToken = _ref7.billingToken,
+            subscriptionID = _ref7.subscriptionID;
+        approved = true; // eslint-disable-next-line no-use-before-define
+
+        return closeCheckout().then(function () {
+          return _onApprove({
+            payerID: payerID,
+            paymentID: paymentID,
+            billingToken: billingToken,
+            subscriptionID: subscriptionID,
+            buyerAccessToken: buyerAccessToken
+          }, {
+            restart: restart
+          });
         });
-      });
-    },
-    onAuth: function onAuth(_ref7) {
-      var accessToken = _ref7.accessToken;
-      buyerAccessToken = accessToken;
-    },
-    onCancel: function onCancel() {
-      return closeCheckout().then(function () {
-        return _onCancel();
-      });
-    },
-    onShippingChange: onShippingChange ? function (data, actions) {
-      return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
+      },
+      onAuth: function onAuth(_ref8) {
+        var accessToken = _ref8.accessToken;
+        buyerAccessToken = accessToken;
+      },
+      onCancel: function onCancel() {
+        // eslint-disable-next-line no-use-before-define
+        return closeCheckout().then(function () {
+          return _onCancel();
+        });
+      },
+      onShippingChange: onShippingChange ? function (data, actions) {
         return onShippingChange(Object(esm_extends["a" /* default */])({
-          facilitatorAccessToken: facilitatorAccessToken,
           buyerAccessToken: buyerAccessToken
         }, data), actions);
-      });
-    } : null,
-    onError: onError,
-    onClose: onClose,
-    fundingSource: fundingSource,
-    card: card,
-    buyerCountry: buyerCountry,
-    locale: locale,
-    commit: commit,
-    cspNonce: cspNonce
-  }),
-      renderTo = _Checkout.renderTo,
-      closeCheckout = _Checkout.close,
-      triggerError = _Checkout.onError;
+      } : null,
+      onError: onError,
+      onClose: onClose,
+      fundingSource: fundingSource,
+      card: card,
+      buyerCountry: buyerCountry,
+      locale: locale,
+      commit: commit,
+      cspNonce: cspNonce
+    });
+  };
 
-  checkoutOpen = true;
-  var renderPromise = renderTo(getRenderWindow(), constants["p" /* TARGET_ELEMENT */].BODY, context);
+  var _init = init(),
+      renderTo = _init.renderTo,
+      closeCheckout = _init.close;
 
   var close = function close() {
     checkoutOpen = false;
     return closeCheckout();
   };
 
-  var start = function start() {
-    return renderPromise.then(src["j" /* noop */]);
+  var start = Object(src["i" /* memoize */])(function () {
+    return renderTo(getRenderWindow(), constants["o" /* TARGET_ELEMENT */].BODY, context);
+  });
+
+  var click = function click() {
+    return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+      if (!onClick) {
+        start();
+        return true;
+      }
+
+      win = win || openPopup({
+        width: CHECKOUT_POPUP_DIMENSIONS.WIDTH,
+        height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
+      });
+      return onClick({
+        fundingSource: fundingSource
+      }).then(function (valid) {
+        if (win && !valid) {
+          win.close();
+        }
+
+        return valid;
+      });
+    });
   };
 
   return {
+    click: click,
     start: start,
-    close: close,
-    triggerError: triggerError
+    close: close
   };
 }
+
+var checkout = {
+  setup: setupCheckout,
+  isEligible: isCheckoutEligible,
+  init: initCheckout
+};
 // CONCATENATED MODULE: ./src/payment-flows/card-fields.js
 
 
@@ -8475,14 +9240,22 @@ function initCheckout(props) {
 
 
 
+
+function setupCardFields() {// pass
+}
+
 var cardFieldsOpen = false;
+
 function isCardFieldsEligible(_ref) {
-  var win = _ref.win,
-      vault = _ref.vault,
-      onShippingChange = _ref.onShippingChange,
-      fundingSource = _ref.fundingSource,
-      isCardFieldsExperimentEnabled = _ref.isCardFieldsExperimentEnabled,
-      enableStandardCardFields = _ref.enableStandardCardFields;
+  var props = _ref.props,
+      payment = _ref.payment,
+      serviceData = _ref.serviceData;
+  var vault = props.vault,
+      onShippingChange = props.onShippingChange,
+      enableStandardCardFields = props.enableStandardCardFields;
+  var win = payment.win,
+      fundingSource = payment.fundingSource;
+  var eligibility = serviceData.eligibility;
 
   if (win) {
     return false;
@@ -8501,20 +9274,11 @@ function isCardFieldsEligible(_ref) {
   } // if merchant opt-in inline guest, they will ALWAYS see inline guest guest
 
 
-  if (enableStandardCardFields === true) {
+  if (enableStandardCardFields) {
     return true;
-  } // if merchant doesn't pass the inline guest flag, they will in the ramp
-
-
-  if (!enableStandardCardFields) {
-    if (!isCardFieldsExperimentEnabled) {
-      return false;
-    } else {
-      return true;
-    }
   }
 
-  return true;
+  return eligibility.cardFields;
 }
 
 function highlightCard(card) {
@@ -8577,27 +9341,24 @@ var slideDownButtons = function slideDownButtons() {
   buttonsContainer.style.marginTop = "0px";
 };
 
-function initCardFields(props) {
-  var CardFields = props.CardFields,
-      Checkout = props.Checkout,
-      fundingSource = props.fundingSource,
-      card = props.card,
-      buyerCountry = props.buyerCountry,
-      createOrder = props.createOrder,
+function initCardFields(_ref2) {
+  var props = _ref2.props,
+      components = _ref2.components,
+      payment = _ref2.payment,
+      serviceData = _ref2.serviceData,
+      config = _ref2.config;
+  var createOrder = props.createOrder,
       _onApprove = props.onApprove,
       onCancel = props.onCancel,
-      onShippingChange = props.onShippingChange,
-      cspNonce = props.cspNonce,
       locale = props.locale,
       commit = props.commit,
       onError = props.onError,
-      buttonSessionID = props.buttonSessionID,
-      clientID = props.clientID,
-      vault = props.vault,
-      clientAccessToken = props.clientAccessToken,
-      fundingEligibility = props.fundingEligibility,
-      createBillingAgreement = props.createBillingAgreement,
-      createSubscription = props.createSubscription;
+      buttonSessionID = props.buttonSessionID;
+  var CardFields = components.CardFields;
+  var fundingSource = payment.fundingSource,
+      card = payment.card;
+  var cspNonce = config.cspNonce;
+  var buyerCountry = serviceData.buyerCountry;
 
   if (!card) {
     throw new Error("Card required to render card fields");
@@ -8607,67 +9368,47 @@ function initCardFields(props) {
     highlightCard(card);
     return {
       start: lib["c" /* promiseNoop */],
-      close: lib["c" /* promiseNoop */],
-      triggerError: lib["c" /* promiseNoop */]
+      close: lib["c" /* promiseNoop */]
     };
   }
 
   var restart = Object(src["i" /* memoize */])(function () {
-    return initCheckout({
-      Checkout: Checkout,
-      clientID: clientID,
-      buttonSessionID: buttonSessionID,
-      fundingSource: fundingSource,
-      card: card,
-      buyerCountry: buyerCountry,
-      createOrder: createOrder,
-      onApprove: _onApprove,
-      onCancel: onCancel,
-      onShippingChange: onShippingChange,
-      cspNonce: cspNonce,
-      locale: locale,
-      commit: commit,
-      onError: onError,
-      vault: vault,
-      clientAccessToken: clientAccessToken,
-      fundingEligibility: fundingEligibility,
-      createBillingAgreement: createBillingAgreement,
-      createSubscription: createSubscription,
-      context: constants["b" /* CONTEXT */].IFRAME
-    }).start().finally(lib["g" /* unresolvedPromise */]);
+    return checkout.init({
+      props: props,
+      components: components,
+      payment: Object(esm_extends["a" /* default */])({}, payment, {
+        isClick: false
+      }),
+      serviceData: serviceData,
+      config: config
+    }).start().finally(lib["f" /* unresolvedPromise */]);
   });
 
   var onClose = function onClose() {
     cardFieldsOpen = false;
   };
 
-  var onCardTypeChange = function onCardTypeChange(_ref2) {
-    var cardType = _ref2.card;
+  var onCardTypeChange = function onCardTypeChange(_ref3) {
+    var cardType = _ref3.card;
     highlightCard(cardType);
   };
 
-  var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
   var buyerAccessToken;
 
   var _CardFields = CardFields({
     createOrder: createOrder,
     fundingSource: fundingSource,
     card: card,
-    onApprove: function onApprove(_ref3) {
-      var payerID = _ref3.payerID,
-          paymentID = _ref3.paymentID,
-          billingToken = _ref3.billingToken;
-      return zalgo_promise_src["a" /* ZalgoPromise */].hash({
-        facilitatorAccessToken: facilitatorAccessTokenPromise,
-        close: close() // eslint-disable-line no-use-before-define
-
-      }).then(function (_ref4) {
-        var facilitatorAccessToken = _ref4.facilitatorAccessToken;
+    onApprove: function onApprove(_ref4) {
+      var payerID = _ref4.payerID,
+          paymentID = _ref4.paymentID,
+          billingToken = _ref4.billingToken;
+      // eslint-disable-next-line no-use-before-define
+      return close().then(function () {
         return _onApprove({
           payerID: payerID,
           paymentID: paymentID,
           billingToken: billingToken,
-          facilitatorAccessToken: facilitatorAccessToken,
           buyerAccessToken: buyerAccessToken
         }, {
           restart: restart
@@ -8689,8 +9430,7 @@ function initCardFields(props) {
     cspNonce: cspNonce
   }),
       render = _CardFields.render,
-      closeCardFields = _CardFields.close,
-      triggerError = _CardFields.onError;
+      closeCardFields = _CardFields.close;
 
   cardFieldsOpen = true;
 
@@ -8709,18 +9449,31 @@ function initCardFields(props) {
 
   return {
     start: start,
-    close: close,
-    triggerError: triggerError
+    close: close
   };
 }
-// CONCATENATED MODULE: ./src/payment-flows/vault.js
+
+var cardFields = {
+  setup: setupCardFields,
+  isEligible: isCardFieldsEligible,
+  init: initCardFields,
+  spinner: true,
+  inline: true
+};
+// CONCATENATED MODULE: ./src/payment-flows/vault-capture.js
 
 
+
+
+function setupVaultCapture() {// pass
+}
 
 function isVaultCaptureEligible(_ref) {
-  var win = _ref.win,
-      paymentMethodID = _ref.paymentMethodID,
-      onShippingChange = _ref.onShippingChange;
+  var props = _ref.props,
+      payment = _ref.payment;
+  var win = payment.win,
+      paymentMethodID = payment.paymentMethodID;
+  var onShippingChange = props.onShippingChange;
 
   if (win) {
     return false;
@@ -8754,7 +9507,7 @@ function handleThreeDomainSecure(_ref2) {
       return promise.reject(err);
     }
   });
-  return instance.renderTo(getParent(), constants["p" /* TARGET_ELEMENT */].BODY).then(function () {
+  return instance.renderTo(getParent(), constants["o" /* TARGET_ELEMENT */].BODY).then(function () {
     return promise;
   }).finally(instance.close);
 }
@@ -8782,17 +9535,19 @@ function handleValidateResponse(_ref3) {
   });
 }
 
-function initVault(props) {
-  var ThreeDomainSecure = props.ThreeDomainSecure,
-      clientID = props.clientID,
-      createOrder = props.createOrder,
-      paymentMethodID = props.paymentMethodID,
+function initVaultCapture(_ref4) {
+  var props = _ref4.props,
+      components = _ref4.components,
+      payment = _ref4.payment;
+  var createOrder = props.createOrder,
       onApprove = props.onApprove,
       clientAccessToken = props.clientAccessToken,
       enableThreeDomainSecure = props.enableThreeDomainSecure,
       buttonSessionID = props.buttonSessionID,
       partnerAttributionID = props.partnerAttributionID,
       getParent = props.getParent;
+  var ThreeDomainSecure = components.ThreeDomainSecure;
+  var paymentMethodID = payment.paymentMethodID;
 
   if (!paymentMethodID) {
     throw new Error("Payment method id required for vault capture");
@@ -8809,11 +9564,10 @@ function initVault(props) {
   };
 
   var start = function start() {
-    var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
       return createOrder();
     }).then(function (orderID) {
-      return Object(api["r" /* validatePaymentMethod */])({
+      return Object(api["q" /* validatePaymentMethod */])({
         clientAccessToken: clientAccessToken,
         orderID: orderID,
         paymentMethodID: paymentMethodID,
@@ -8821,9 +9575,9 @@ function initVault(props) {
         buttonSessionID: buttonSessionID,
         partnerAttributionID: partnerAttributionID
       });
-    }).then(function (_ref4) {
-      var status = _ref4.status,
-          body = _ref4.body;
+    }).then(function (_ref5) {
+      var status = _ref5.status,
+          body = _ref5.body;
       return handleValidateResponse({
         ThreeDomainSecure: ThreeDomainSecure,
         status: status,
@@ -8832,12 +9586,8 @@ function initVault(props) {
         getParent: getParent
       });
     }).then(function () {
-      return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-        return onApprove({
-          facilitatorAccessToken: facilitatorAccessToken
-        }, {
-          restart: restart
-        });
+      return onApprove({}, {
+        restart: restart
       });
     });
   };
@@ -8846,120 +9596,20 @@ function initVault(props) {
     start: start,
     close: function close() {
       return zalgo_promise_src["a" /* ZalgoPromise */].resolve();
-    },
-    triggerError: function triggerError(err) {
-      throw err;
     }
   };
 }
-// CONCATENATED MODULE: ./src/payment-flows/index.js
 
-
-
+var vaultCapture = {
+  setup: setupVaultCapture,
+  isEligible: isVaultCaptureEligible,
+  init: initVaultCapture,
+  spinner: true,
+  inline: true
+};
 // EXTERNAL MODULE: ./src/config.js
-var config = __webpack_require__(6);
+var src_config = __webpack_require__(5);
 
-// EXTERNAL MODULE: ./src/button/props/getPopupBridge.js
-var props_getPopupBridge = __webpack_require__(12);
-
-// CONCATENATED MODULE: ./src/payment-flows/popup-bridge.js
-
-
-
-
-
-
-
-
-
-var popup_bridge_popupBridge;
-function setupPopupBridge(_ref) {
-  var getPopupBridge = _ref.getPopupBridge;
-  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    if (getPopupBridge) {
-      return getPopupBridge().then(function (bridge) {
-        popup_bridge_popupBridge = bridge;
-      });
-    }
-  });
-}
-function isPopupBridgeEligible(_ref2) {
-  var win = _ref2.win,
-      onShippingChange = _ref2.onShippingChange;
-
-  if (win) {
-    return false;
-  }
-
-  if (!popup_bridge_popupBridge) {
-    return false;
-  }
-
-  if (onShippingChange) {
-    return false;
-  }
-
-  return true;
-}
-function initPopupBridge(props) {
-  var clientID = props.clientID,
-      createOrder = props.createOrder,
-      onApprove = props.onApprove,
-      onCancel = props.onCancel,
-      commit = props.commit,
-      fundingSource = props.fundingSource;
-
-  var start = function start() {
-    var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
-    return createOrder().then(function (orderID) {
-      if (!popup_bridge_popupBridge) {
-        throw new Error("Popup bridge required");
-      }
-
-      var url = Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["a" /* getDomain */])() + config["d" /* EXPERIENCE_URI */].CHECKOUT, {
-        query: {
-          fundingSource: fundingSource,
-          token: orderID,
-          useraction: commit ? constants["q" /* USER_ACTION */].COMMIT : constants["q" /* USER_ACTION */].CONTINUE,
-          redirect_uri: popup_bridge_popupBridge.nativeUrl
-        }
-      });
-      return popup_bridge_popupBridge.start(url);
-    }).then(function (_ref3) {
-      var opType = _ref3.opType,
-          payerID = _ref3.PayerID,
-          paymentID = _ref3.paymentId,
-          billingToken = _ref3.ba_token;
-
-      if (opType === props_getPopupBridge["a" /* POPUP_BRIDGE_OPTYPE */].PAYMENT) {
-        return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-          return onApprove({
-            payerID: payerID,
-            paymentID: paymentID,
-            billingToken: billingToken,
-            facilitatorAccessToken: facilitatorAccessToken
-          }, {
-            restart: start
-          });
-        });
-      }
-
-      if (opType === props_getPopupBridge["a" /* POPUP_BRIDGE_OPTYPE */].CANCEL) {
-        return onCancel();
-      }
-
-      throw new Error("Unhandleable opType: " + opType);
-    });
-  };
-
-  return {
-    start: start,
-    close: lib["c" /* promiseNoop */],
-    triggerError: function triggerError(err) {
-      throw err;
-    }
-  };
-}
 // CONCATENATED MODULE: ./src/payment-flows/native.js
 
 
@@ -8992,54 +9642,31 @@ var getNativeSocket = Object(src["i" /* memoize */])(function (_ref) {
     config: firebaseConfig
   });
 });
-var nativeInstalled = false;
-var nativeEligible = false;
-function setupNative(_ref2) {
-  var clientID = _ref2.clientID,
-      enableNativeCheckout = _ref2.enableNativeCheckout,
-      vault = _ref2.vault,
-      onShippingChange = _ref2.onShippingChange,
-      merchantID = _ref2.merchantID,
-      buyerCountry = _ref2.buyerCountry,
-      currency = _ref2.currency,
-      buttonSessionID = _ref2.buttonSessionID;
-  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    if (!enableNativeCheckout) {
-      return;
-    }
 
-    Object(api["e" /* createAccessToken */])(clientID); // eslint-disable-next-line compat/compat
-
-    fetch(config["h" /* NATIVE_DETECTION_URL */]).then(function (res) {
-      if (res.status === 200) {
-        nativeInstalled = true;
-      }
-    }, src["j" /* noop */]);
-    var shippingCallbackEnabled = Boolean(onShippingChange);
-    var userAgent = Object(src["e" /* getUserAgent */])();
-    Object(api["j" /* getNativeEligibility */])({
-      vault: vault,
-      shippingCallbackEnabled: shippingCallbackEnabled,
-      merchantID: merchantID,
-      clientID: clientID,
-      buyerCountry: buyerCountry,
-      currency: currency,
-      userAgent: userAgent,
-      buttonSessionID: buttonSessionID
-    }).then(function (eligible) {
-      nativeEligible = eligible;
-    });
-  }).then(src["j" /* noop */]);
+function setupNative() {
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {// pass
+  });
 }
-function isNativeEligible(_ref3) {
-  var win = _ref3.win,
-      platform = _ref3.platform,
-      fundingSource = _ref3.fundingSource,
-      onShippingChange = _ref3.onShippingChange,
-      createBillingAgreement = _ref3.createBillingAgreement,
-      createSubscription = _ref3.createSubscription,
-      enableNativeCheckout = _ref3.enableNativeCheckout,
-      firebaseConfig = _ref3.firebaseConfig;
+
+function isNativeEligible(_ref2) {
+  var props = _ref2.props,
+      payment = _ref2.payment,
+      config = _ref2.config,
+      serviceData = _ref2.serviceData;
+
+  if (window.xprops.forceNativeEligible) {
+    return true;
+  }
+
+  var platform = props.platform,
+      onShippingChange = props.onShippingChange,
+      createBillingAgreement = props.createBillingAgreement,
+      createSubscription = props.createSubscription,
+      enableNativeCheckout = props.enableNativeCheckout;
+  var firebaseConfig = config.firebase;
+  var eligibility = serviceData.eligibility;
+  var win = payment.win,
+      fundingSource = payment.fundingSource;
 
   if (win) {
     return false;
@@ -9070,196 +9697,352 @@ function isNativeEligible(_ref3) {
   }
 
   if (enableNativeCheckout) {
-    return true;
+    return eligibility.native;
   }
 
-  return nativeEligible;
+  return false;
 }
-function initNative(props) {
-  var Checkout = props.Checkout,
-      createOrder = props.createOrder,
+
+function initNative(_ref3) {
+  var props = _ref3.props,
+      components = _ref3.components,
+      config = _ref3.config,
+      payment = _ref3.payment,
+      serviceData = _ref3.serviceData;
+  var createOrder = props.createOrder,
       onApprove = props.onApprove,
       onCancel = props.onCancel,
       onError = props.onError,
       commit = props.commit,
-      clientID = props.clientID,
       getPageUrl = props.getPageUrl,
+      buttonSessionID = props.buttonSessionID,
       env = props.env,
       stageHost = props.stageHost,
       apiStageHost = props.apiStageHost,
-      buttonSessionID = props.buttonSessionID,
-      fundingSource = props.fundingSource,
-      card = props.card,
-      buyerCountry = props.buyerCountry,
-      onShippingChange = props.onShippingChange,
-      cspNonce = props.cspNonce,
-      locale = props.locale,
-      version = props.version,
-      vault = props.vault,
-      clientAccessToken = props.clientAccessToken,
-      fundingEligibility = props.fundingEligibility,
-      createBillingAgreement = props.createBillingAgreement,
-      createSubscription = props.createSubscription,
-      firebaseConfig = props.firebaseConfig;
+      onClick = props.onClick;
+  var version = config.version,
+      firebaseConfig = config.firebase;
+  var facilitatorAccessTokenPromise = serviceData.facilitatorAccessTokenPromise;
+  var fundingSource = payment.fundingSource;
   var sessionUID = Object(src["v" /* uniqueID */])();
   var _close = lib["c" /* promiseNoop */];
 
-  var _triggerError = function triggerError(err) {
-    throw err;
-  };
-
-  var fallbackToWebCheckout = function fallbackToWebCheckout(_ref4) {
-    var _ref4$context = _ref4.context,
-        context = _ref4$context === void 0 ? constants["b" /* CONTEXT */].POPUP : _ref4$context,
-        win = _ref4.win;
-
-    var _initCheckout = initCheckout({
-      Checkout: Checkout,
-      win: win,
-      context: context,
-      clientID: clientID,
-      buttonSessionID: buttonSessionID,
-      fundingSource: fundingSource,
-      card: card,
-      buyerCountry: buyerCountry,
-      createOrder: createOrder,
-      onApprove: onApprove,
-      onCancel: onCancel,
-      onShippingChange: onShippingChange,
-      cspNonce: cspNonce,
-      locale: locale,
-      commit: commit,
-      onError: onError,
-      vault: vault,
-      clientAccessToken: clientAccessToken,
-      fundingEligibility: fundingEligibility,
-      createBillingAgreement: createBillingAgreement,
-      createSubscription: createSubscription
+  var fallbackToWebCheckout = function fallbackToWebCheckout(win) {
+    var _checkout$init = checkout.init({
+      props: props,
+      components: components,
+      payment: Object(esm_extends["a" /* default */])({}, payment, {
+        win: win,
+        isClick: false
+      }),
+      config: config,
+      serviceData: serviceData
     }),
-        startCheckout = _initCheckout.start,
-        closeCheckout = _initCheckout.close,
-        triggerCheckoutError = _initCheckout.triggerError;
+        startCheckout = _checkout$init.start,
+        closeCheckout = _checkout$init.close;
 
     _close = closeCheckout;
-    _triggerError = triggerCheckoutError;
     return startCheckout();
   };
 
-  var startPromise = zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    var facilitatorAccessTokenPromise = Object(api["e" /* createAccessToken */])(clientID);
-    var orderPromise = createOrder();
-    var pageUrlPromise = getPageUrl();
-
-    var getSDKProps = function getSDKProps() {
-      return zalgo_promise_src["a" /* ZalgoPromise */].all([facilitatorAccessTokenPromise, orderPromise, pageUrlPromise]).then(function (_ref5) {
-        var facilitatorAccessToken = _ref5[0],
-            orderID = _ref5[1],
-            pageUrl = _ref5[2];
-        var userAgent = Object(src["e" /* getUserAgent */])();
-        return {
-          orderID: orderID,
-          facilitatorAccessToken: facilitatorAccessToken,
-          pageUrl: pageUrl,
-          commit: commit,
-          userAgent: userAgent,
-          buttonSessionID: buttonSessionID,
-          env: env,
-          stageHost: stageHost,
-          apiStageHost: apiStageHost
-        };
-      });
-    };
-
-    var openCheckoutSocket = function openCheckoutSocket() {
-      var socket = getNativeSocket({
-        sessionUID: sessionUID,
-        firebaseConfig: firebaseConfig,
-        version: version
-      });
-      socket.on(MESSAGE.GET_PROPS, function () {
-        return getSDKProps();
-      });
-      socket.on(MESSAGE.ON_APPROVE, function (_ref6) {
-        var _ref6$data = _ref6.data,
-            payerID = _ref6$data.payerID,
-            paymentID = _ref6$data.paymentID,
-            billingToken = _ref6$data.billingToken;
-        socket.close();
-        return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-          var data = {
-            payerID: payerID,
-            paymentID: paymentID,
-            billingToken: billingToken,
-            facilitatorAccessToken: facilitatorAccessToken
-          };
-          var actions = {
-            restart: function restart() {
-              return fallbackToWebCheckout({
-                context: constants["b" /* CONTEXT */].IFRAME
-              });
-            }
-          };
-          return onApprove(data, actions);
-        });
-      });
-      socket.on(MESSAGE.ON_CANCEL, function () {
-        socket.close();
-        return onCancel();
-      });
-      socket.on(MESSAGE.ON_ERROR, function (_ref7) {
-        var message = _ref7.data.message;
-        socket.close();
-        return onError(new Error(message));
-      });
-
-      _close = function close() {
-        return socket.send(MESSAGE.CLOSE);
-      };
-    };
-
-    var nativeUrl = Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["a" /* getDomain */])() + config["d" /* EXPERIENCE_URI */].NATIVE_CHECKOUT, {
+  var getNativeUrl = function getNativeUrl() {
+    return Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["d" /* EXPERIENCE_URI */].NATIVE_CHECKOUT, {
       query: {
         sessionUID: sessionUID
       }
     });
+  };
 
-    if (nativeInstalled) {
-      Object(lib["d" /* redirectTop */])(nativeUrl);
-      return openCheckoutSocket();
-    }
+  var getSDKProps = function getSDKProps() {
+    return zalgo_promise_src["a" /* ZalgoPromise */].hash({
+      facilitatorAccessToken: facilitatorAccessTokenPromise,
+      orderID: createOrder(),
+      pageUrl: getPageUrl()
+    }).then(function (_ref4) {
+      var facilitatorAccessToken = _ref4.facilitatorAccessToken,
+          orderID = _ref4.orderID,
+          pageUrl = _ref4.pageUrl;
+      var userAgent = Object(src["e" /* getUserAgent */])();
+      return {
+        orderID: orderID,
+        facilitatorAccessToken: facilitatorAccessToken,
+        pageUrl: pageUrl,
+        commit: commit,
+        userAgent: userAgent,
+        buttonSessionID: buttonSessionID,
+        env: env,
+        stageHost: stageHost,
+        apiStageHost: apiStageHost
+      };
+    });
+  };
 
-    var win = Object(src["m" /* popup */])(nativeUrl);
-    return orderPromise.then(function () {
-      if (!Object(cross_domain_utils_src["d" /* isBlankDomain */])(win)) {
-        return fallbackToWebCheckout({
-          win: win
-        });
+  var openCheckoutSocket = function openCheckoutSocket() {
+    var socket = getNativeSocket({
+      sessionUID: sessionUID,
+      firebaseConfig: firebaseConfig,
+      version: version
+    });
+    socket.on(MESSAGE.GET_PROPS, function () {
+      return getSDKProps();
+    });
+    socket.on(MESSAGE.ON_APPROVE, function (_ref5) {
+      var _ref5$data = _ref5.data,
+          payerID = _ref5$data.payerID,
+          paymentID = _ref5$data.paymentID,
+          billingToken = _ref5$data.billingToken;
+      socket.close();
+      var data = {
+        payerID: payerID,
+        paymentID: paymentID,
+        billingToken: billingToken
+      };
+      var actions = {
+        restart: function restart() {
+          return fallbackToWebCheckout();
+        }
+      };
+      return onApprove(data, actions);
+    });
+    socket.on(MESSAGE.ON_CANCEL, function () {
+      socket.close();
+      return onCancel();
+    });
+    socket.on(MESSAGE.ON_ERROR, function (_ref6) {
+      var message = _ref6.data.message;
+      socket.close();
+      return onError(new Error(message));
+    });
+
+    _close = function close() {
+      return socket.send(MESSAGE.CLOSE);
+    };
+
+    return {
+      close: _close
+    };
+  };
+
+  var startPromise;
+  var start = Object(src["i" /* memoize */])(function () {
+    return startPromise;
+  });
+
+  var click = function click() {
+    var win = Object(src["m" /* popup */])(getNativeUrl());
+    return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+      if (!onClick) {
+        return true;
       }
 
-      win.close();
-      return openCheckoutSocket();
+      return onClick({
+        fundingSource: fundingSource
+      }).then(function (valid) {
+        if (!valid) {
+          _close();
+        }
+
+        return valid;
+      });
+    }).then(function (valid) {
+      startPromise = zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+        return valid ? createOrder() : zalgo_promise_src["a" /* ZalgoPromise */].delay(500);
+      }).then(function () {
+        if (Object(cross_domain_utils_src["e" /* isBlankDomain */])(win)) {
+          win.close();
+
+          var _openCheckoutSocket = openCheckoutSocket(),
+              closeNative = _openCheckoutSocket.close;
+
+          _close = closeNative;
+
+          if (!valid) {
+            _close();
+          }
+        } else {
+          if (valid) {
+            return fallbackToWebCheckout(win);
+          } else {
+            _close();
+          }
+        }
+      });
+      return valid;
     });
-  });
+  };
+
   return {
-    start: function start() {
-      return startPromise;
-    },
+    click: click,
+    start: start,
     close: function close() {
       return zalgo_promise_src["a" /* ZalgoPromise */].try(_close);
-    },
-    triggerError: function triggerError(err) {
-      return _triggerError(err);
     }
   };
 }
-// EXTERNAL MODULE: ./src/button/props/index.js
-var button_props = __webpack_require__(13);
 
-// EXTERNAL MODULE: ./src/button/dom.js
-var dom = __webpack_require__(10);
+var native_native = {
+  setup: setupNative,
+  isEligible: isNativeEligible,
+  init: initNative,
+  spinner: true
+};
+// CONCATENATED MODULE: ./src/payment-flows/popup-bridge.js
 
+
+
+
+
+
+
+var parentPopupBridge;
+
+function setupPopupBridge(_ref) {
+  var props = _ref.props;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    var getPopupBridge = props.getPopupBridge;
+
+    if (getPopupBridge) {
+      return getPopupBridge().then(function (bridge) {
+        parentPopupBridge = bridge;
+      });
+    }
+  });
+}
+
+function isPopupBridgeEligible(_ref2) {
+  var props = _ref2.props,
+      payment = _ref2.payment;
+  var win = payment.win;
+  var onShippingChange = props.onShippingChange;
+
+  if (win) {
+    return false;
+  }
+
+  if (!parentPopupBridge) {
+    return false;
+  }
+
+  if (onShippingChange) {
+    return false;
+  }
+
+  return true;
+}
+
+function initPopupBridge(_ref3) {
+  var props = _ref3.props,
+      payment = _ref3.payment;
+  var createOrder = props.createOrder,
+      onApprove = props.onApprove,
+      onCancel = props.onCancel,
+      commit = props.commit;
+  var fundingSource = payment.fundingSource;
+
+  var start = function start() {
+    return createOrder().then(function (orderID) {
+      if (!parentPopupBridge) {
+        throw new Error("Popup bridge required");
+      }
+
+      var url = Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["d" /* EXPERIENCE_URI */].CHECKOUT, {
+        query: {
+          fundingSource: fundingSource,
+          token: orderID,
+          useraction: commit ? constants["p" /* USER_ACTION */].COMMIT : constants["p" /* USER_ACTION */].CONTINUE,
+          redirect_uri: parentPopupBridge.nativeUrl
+        }
+      });
+      return parentPopupBridge.start(url);
+    }).then(function (_ref4) {
+      var opType = _ref4.opType,
+          payerID = _ref4.PayerID,
+          paymentID = _ref4.paymentId,
+          billingToken = _ref4.ba_token;
+
+      if (opType === button_props["POPUP_BRIDGE_OPTYPE"].PAYMENT) {
+        return onApprove({
+          payerID: payerID,
+          paymentID: paymentID,
+          billingToken: billingToken
+        }, {
+          restart: start
+        });
+      }
+
+      if (opType === button_props["POPUP_BRIDGE_OPTYPE"].CANCEL) {
+        return onCancel();
+      }
+
+      throw new Error("Unhandleable opType: " + opType);
+    });
+  };
+
+  return {
+    start: start,
+    close: lib["c" /* promiseNoop */]
+  };
+}
+
+var popupBridge = {
+  setup: setupPopupBridge,
+  isEligible: isPopupBridgeEligible,
+  init: initPopupBridge,
+  spinner: true
+};
+// CONCATENATED MODULE: ./src/payment-flows/types.js
+
+// CONCATENATED MODULE: ./src/payment-flows/index.js
+
+
+
+
+
+
+// CONCATENATED MODULE: ./src/button/pay.js
+
+
+
+var PAYMENT_FLOWS = [cardFields, vaultCapture, popupBridge, native_native, checkout];
+function setupPaymentFlows(_ref) {
+  var props = _ref.props,
+      config = _ref.config,
+      serviceData = _ref.serviceData,
+      components = _ref.components;
+  return zalgo_promise_src["a" /* ZalgoPromise */].all(PAYMENT_FLOWS.map(function (flow) {
+    return flow.setup({
+      props: props,
+      config: config,
+      serviceData: serviceData,
+      components: components
+    });
+  })).then(src["j" /* noop */]);
+}
+function getPaymentFlow(_ref2) {
+  var props = _ref2.props,
+      payment = _ref2.payment,
+      config = _ref2.config,
+      components = _ref2.components,
+      serviceData = _ref2.serviceData;
+
+  for (var _i2 = 0; _i2 < PAYMENT_FLOWS.length; _i2++) {
+    var flow = PAYMENT_FLOWS[_i2];
+
+    if (flow.isEligible({
+      props: props,
+      payment: payment,
+      config: config,
+      components: components,
+      serviceData: serviceData
+    })) {
+      return flow;
+    }
+  }
+
+  throw new Error("Could not find eligible payment flow");
+}
 // EXTERNAL MODULE: ./src/api/api.js
-var api_api = __webpack_require__(7);
+var api_api = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./src/button/orders.js
 
@@ -9272,12 +10055,13 @@ var api_api = __webpack_require__(7);
 function updateButtonClientConfig(_ref) {
   var orderID = _ref.orderID,
       fundingSource = _ref.fundingSource,
-      isCardFields = _ref.isCardFields;
-  return Object(api["q" /* updateClientConfig */])({
+      _ref$inline = _ref.inline,
+      inline = _ref$inline === void 0 ? false : _ref$inline;
+  return Object(api["p" /* updateClientConfig */])({
     orderID: orderID,
     fundingSource: fundingSource,
     integrationArtifact: constants["k" /* INTEGRATION_ARTIFACT */].PAYPAL_JS_SDK,
-    userExperienceFlow: isCardFields ? constants["r" /* USER_EXPERIENCE_FLOW */].INLINE : constants["r" /* USER_EXPERIENCE_FLOW */].INCONTEXT,
+    userExperienceFlow: inline ? constants["q" /* USER_EXPERIENCE_FLOW */].INLINE : constants["q" /* USER_EXPERIENCE_FLOW */].INCONTEXT,
     productFlow: constants["m" /* PRODUCT_FLOW */].SMART_PAYMENT_BUTTONS
   });
 }
@@ -9290,10 +10074,10 @@ function validateOrder(orderID, _ref2) {
     variables: {
       orderID: orderID
     }
-  }), Object(api["l" /* getPayee */])(orderID)]).then(function (_ref3) {
+  }), Object(api["k" /* getPayee */])(orderID)]).then(function (_ref3) {
     var gql = _ref3[0],
         payee = _ref3[1];
-    var cart = gql.data.checkoutSession.cart;
+    var cart = gql.checkoutSession.cart;
     var intent = cart.intent.toLowerCase() === 'sale' ? sdk_constants_src["h" /* INTENT */].CAPTURE : cart.intent.toLowerCase();
     var currency = cart.amounts && cart.amounts.total.currencyCode;
     var expectedIntent = intent;
@@ -9319,7 +10103,7 @@ function validateOrder(orderID, _ref2) {
     }
 
     if (payeeMerchantID !== actualMerchantID) {
-      if (config["b" /* CLIENT_ID_PAYEE_NO_MATCH */].indexOf(clientID) === -1) {
+      if (clientID && src_config["b" /* CLIENT_ID_PAYEE_NO_MATCH */].indexOf(clientID) === -1) {
         Object(lib["b" /* getLogger */])().info("client_id_payee_no_match_" + clientID).flush(); // throw new Error(`Payee passed in transaction does not match expected merchant id: ${ actualMerchantID }`);
       }
     }
@@ -9328,55 +10112,6 @@ function validateOrder(orderID, _ref2) {
 
     if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) {
       throw new Error("Payee passed in transaction does not match expected merchant id: " + xpropMerchantID);
-    }
-  });
-}
-// CONCATENATED MODULE: ./src/button/logs.js
-
-
-
-
-
-function setupButtonLogs(_ref) {
-  var style = _ref.style;
-  var logger = Object(lib["b" /* getLogger */])();
-
-  if (Object(src["h" /* isIEIntranet */])()) {
-    logger.warn('button_child_intranet_mode');
-  }
-
-  return Object(src["d" /* getPageRenderTime */])().then(function (pageRenderTime) {
-    var _logger$track;
-
-    var fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "]")).map(function (el) {
-      return el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].CARD) || el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE);
-    }).filter(function (source) {
-      return source && source !== sdk_constants_src["g" /* FUNDING */].CARD;
-    });
-    var layout = style.layout,
-        color = style.color,
-        shape = style.shape,
-        label = style.label,
-        _style$tagline = style.tagline,
-        tagline = _style$tagline === void 0 ? true : _style$tagline;
-    logger.info("button_render_color_" + color);
-    logger.info("button_render_shape_" + shape);
-    logger.info("button_render_label_" + label);
-    logger.info("button_render_layout_" + layout);
-    logger.info("button_render_tagline_" + tagline.toString());
-    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_LOAD, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].FUNDING_LIST] = fundingSources.join(':'), _logger$track[sdk_constants_src["d" /* FPTI_KEY */].FUNDING_COUNT] = fundingSources.length.toString(), _logger$track[sdk_constants_src["d" /* FPTI_KEY */].PAGE_LOAD_TIME] = pageRenderTime ? pageRenderTime.toString() : '', _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_LAYOUT] = layout, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_COLOR] = color, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_SIZE] = 'responsive', _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_SHAPE] = shape, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_LABEL] = label, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_WIDTH] = window.innerWidth, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_TYPE] = constants["e" /* FPTI_BUTTON_TYPE */].IFRAME, _logger$track[constants["i" /* FTPI_BUTTON_KEY */].BUTTON_TAGLINE_ENABLED] = tagline ? '1' : '0', _logger$track));
-    logger.flush();
-  });
-}
-// CONCATENATED MODULE: ./src/button/remember.js
-
-
-function setupRemember(_ref) {
-  var rememberFunding = _ref.rememberFunding,
-      fundingEligibility = _ref.fundingEligibility;
-  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) {
-      return rememberFunding([sdk_constants_src["g" /* FUNDING */].VENMO]);
     }
   });
 }
@@ -9393,14 +10128,13 @@ function setupRemember(_ref) {
 
 
 
-
-
-
 function setupButton(_ref) {
-  var fundingEligibility = _ref.fundingEligibility,
+  var facilitatorAccessToken = _ref.facilitatorAccessToken,
+      eligibility = _ref.eligibility,
+      fundingEligibility = _ref.fundingEligibility,
       buyerGeoCountry = _ref.buyerCountry,
       serverCSPNonce = _ref.cspNonce,
-      merchantID = _ref.merchantID,
+      serverMerchantID = _ref.merchantID,
       personalization = _ref.personalization,
       isCardFieldsExperimentEnabled = _ref.isCardFieldsExperimentEnabled,
       firebaseConfig = _ref.firebaseConfig;
@@ -9409,49 +10143,43 @@ function setupButton(_ref) {
     throw new Error("PayPal SDK not loaded");
   }
 
-  var xprops = window.xprops;
-  var _window$paypal = window.paypal,
-      version = _window$paypal.version,
-      Checkout = _window$paypal.Checkout,
-      CardFields = _window$paypal.CardFields,
-      ThreeDomainSecure = _window$paypal.ThreeDomainSecure;
-
-  var _getGlobalProps = Object(button_props["getGlobalProps"])({
-    xprops: xprops,
+  var clientID = window.xprops.clientID;
+  var serviceData = Object(button_props["getServiceData"])({
+    clientID: clientID,
+    eligibility: eligibility,
+    facilitatorAccessToken: facilitatorAccessToken,
     buyerGeoCountry: buyerGeoCountry,
-    cspNonce: serverCSPNonce
-  }),
-      env = _getGlobalProps.env,
-      stageHost = _getGlobalProps.stageHost,
-      apiStageHost = _getGlobalProps.apiStageHost,
-      buttonSessionID = _getGlobalProps.buttonSessionID,
-      style = _getGlobalProps.style,
-      currency = _getGlobalProps.currency,
-      vault = _getGlobalProps.vault,
-      commit = _getGlobalProps.commit,
-      clientAccessToken = _getGlobalProps.clientAccessToken,
-      buyerCountry = _getGlobalProps.buyerCountry,
-      locale = _getGlobalProps.locale,
-      cspNonce = _getGlobalProps.cspNonce,
-      platform = _getGlobalProps.platform,
-      sessionID = _getGlobalProps.sessionID,
-      clientID = _getGlobalProps.clientID,
-      partnerAttributionID = _getGlobalProps.partnerAttributionID,
-      correlationID = _getGlobalProps.correlationID,
-      enableThreeDomainSecure = _getGlobalProps.enableThreeDomainSecure,
-      merchantDomain = _getGlobalProps.merchantDomain,
-      getPopupBridge = _getGlobalProps.getPopupBridge,
-      getPrerenderDetails = _getGlobalProps.getPrerenderDetails,
-      getPageUrl = _getGlobalProps.getPageUrl,
-      rememberFunding = _getGlobalProps.rememberFunding,
-      onError = _getGlobalProps.onError,
-      onInit = _getGlobalProps.onInit,
-      enableStandardCardFields = _getGlobalProps.enableStandardCardFields,
-      enableNativeCheckout = _getGlobalProps.enableNativeCheckout,
-      onClick = _getGlobalProps.onClick,
-      getParent = _getGlobalProps.getParent;
-
-  Object(lib["f" /* setupLogger */])({
+    serverMerchantID: serverMerchantID,
+    fundingEligibility: fundingEligibility,
+    personalization: personalization,
+    isCardFieldsExperimentEnabled: isCardFieldsExperimentEnabled
+  });
+  var merchantID = serviceData.merchantID,
+      facilitatorAccessTokenPromise = serviceData.facilitatorAccessTokenPromise;
+  var props = Object(button_props["getProps"])({
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise
+  });
+  var _props = props,
+      env = _props.env,
+      sessionID = _props.sessionID,
+      partnerAttributionID = _props.partnerAttributionID,
+      commit = _props.commit,
+      correlationID = _props.correlationID,
+      locale = _props.locale,
+      buttonSessionID = _props.buttonSessionID,
+      merchantDomain = _props.merchantDomain,
+      onInit = _props.onInit,
+      getPrerenderDetails = _props.getPrerenderDetails,
+      rememberFunding = _props.rememberFunding,
+      style = _props.style,
+      onClick = _props.onClick;
+  var config = Object(button_props["getConfig"])({
+    serverCSPNonce: serverCSPNonce,
+    firebaseConfig: firebaseConfig
+  });
+  var version = config.version;
+  var components = Object(button_props["getComponents"])();
+  Object(lib["e" /* setupLogger */])({
     env: env,
     version: version,
     sessionID: sessionID,
@@ -9469,201 +10197,98 @@ function setupButton(_ref) {
       initPromise = _onInit.initPromise,
       isEnabled = _onInit.isEnabled;
 
-  var buttonProcessing = false;
-  var popupBridge;
+  var sendPersonalizationBeacons = function sendPersonalizationBeacons() {
+    if (personalization && personalization.tagline) {
+      Object(lib["d" /* sendBeacon */])(personalization.tagline.tracking.click);
+    }
 
-  var pay = function pay(_ref2) {
-    var button = _ref2.button,
-        win = _ref2.win,
-        fundingSource = _ref2.fundingSource,
-        card = _ref2.card,
-        paymentMethodID = _ref2.paymentMethodID;
+    if (personalization && personalization.buttonText) {
+      Object(lib["d" /* sendBeacon */])(personalization.buttonText.tracking.click);
+    }
+  };
+
+  var paymentProcessing = false;
+
+  var handleButtonClick = function handleButtonClick(payment) {
+    var button = payment.button,
+        win = payment.win,
+        fundingSource = payment.fundingSource;
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-      if (buttonProcessing) {
+      if (paymentProcessing) {
         return;
       }
 
-      buttonProcessing = true;
-      var validationPromise = onClick({
-        fundingSource: fundingSource
+      paymentProcessing = true;
+      props = Object(button_props["getProps"])({
+        facilitatorAccessTokenPromise: facilitatorAccessTokenPromise
       });
-
-      var _getButtonCallbackPro = Object(button_props["getButtonCallbackProps"])({
-        xprops: xprops,
-        validationPromise: validationPromise
-      }),
-          createOrder = _getButtonCallbackPro.createOrder,
-          createBillingAgreement = _getButtonCallbackPro.createBillingAgreement,
-          createSubscription = _getButtonCallbackPro.createSubscription,
-          onApprove = _getButtonCallbackPro.onApprove,
-          onCancel = _getButtonCallbackPro.onCancel,
-          onShippingChange = _getButtonCallbackPro.onShippingChange;
 
       if (!isEnabled()) {
-        return win ? win.close() : null;
+        if (win) {
+          win.close();
+        }
+
+        if (onClick) {
+          onClick({
+            fundingSource: fundingSource
+          });
+        }
+
+        return;
       }
 
-      var isCardFields = isCardFieldsEligible({
-        win: win,
-        vault: vault,
-        onShippingChange: onShippingChange,
-        fundingSource: fundingSource,
-        isCardFieldsExperimentEnabled: isCardFieldsExperimentEnabled,
-        enableStandardCardFields: enableStandardCardFields
-      });
-      var isVaultCapture = isVaultCaptureEligible({
-        win: win,
-        paymentMethodID: paymentMethodID,
-        onShippingChange: onShippingChange
-      });
-      var isPopupBridge = isPopupBridgeEligible({
-        win: win,
-        onShippingChange: onShippingChange
-      });
-      var isNative = isNativeEligible({
-        win: win,
-        platform: platform,
-        fundingSource: fundingSource,
-        onShippingChange: onShippingChange,
-        createBillingAgreement: createBillingAgreement,
-        createSubscription: createSubscription,
-        enableNativeCheckout: enableNativeCheckout,
-        firebaseConfig: firebaseConfig
-      });
-      var isCheckout = !isCardFields && !isVaultCapture && !isPopupBridge && !isNative;
+      var _getPaymentFlow = getPaymentFlow({
+        props: props,
+        payment: payment,
+        config: config,
+        components: components,
+        serviceData: serviceData
+      }),
+          init = _getPaymentFlow.init,
+          inline = _getPaymentFlow.inline,
+          spinner = _getPaymentFlow.spinner;
 
-      var _ref3 = function () {
-        if (isCheckout) {
-          return initCheckout({
-            Checkout: Checkout,
-            clientID: clientID,
-            win: win,
-            buttonSessionID: buttonSessionID,
-            fundingSource: fundingSource,
-            card: card,
-            buyerCountry: buyerCountry,
-            createOrder: createOrder,
-            onApprove: onApprove,
-            onCancel: onCancel,
-            onShippingChange: onShippingChange,
-            cspNonce: cspNonce,
-            locale: locale,
-            commit: commit,
-            onError: onError,
-            vault: vault,
-            clientAccessToken: clientAccessToken,
-            fundingEligibility: fundingEligibility,
-            createBillingAgreement: createBillingAgreement,
-            createSubscription: createSubscription
+      var _init = init({
+        props: props,
+        config: config,
+        serviceData: serviceData,
+        components: components,
+        payment: payment
+      }),
+          click = _init.click,
+          start = _init.start,
+          close = _init.close; // $FlowFixMe
+
+
+      button.payPromise = zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+        sendPersonalizationBeacons();
+
+        if (click) {
+          return click();
+        } else if (onClick) {
+          return onClick({
+            fundingSource: fundingSource
           });
+        } else {
+          return true;
         }
-
-        if (isVaultCapture) {
-          Object(dom["b" /* enableLoadingSpinner */])(button);
-          return initVault({
-            ThreeDomainSecure: ThreeDomainSecure,
-            clientID: clientID,
-            createOrder: createOrder,
-            paymentMethodID: paymentMethodID,
-            onApprove: onApprove,
-            clientAccessToken: clientAccessToken,
-            enableThreeDomainSecure: enableThreeDomainSecure,
-            buttonSessionID: buttonSessionID,
-            partnerAttributionID: partnerAttributionID,
-            getParent: getParent
-          });
-        }
-
-        if (isCardFields) {
-          return initCardFields({
-            CardFields: CardFields,
-            Checkout: Checkout,
-            clientID: clientID,
-            buttonSessionID: buttonSessionID,
-            fundingSource: fundingSource,
-            card: card,
-            buyerCountry: buyerCountry,
-            createOrder: createOrder,
-            onApprove: onApprove,
-            onCancel: onCancel,
-            onShippingChange: onShippingChange,
-            cspNonce: cspNonce,
-            locale: locale,
-            commit: commit,
-            onError: onError,
-            vault: vault,
-            clientAccessToken: clientAccessToken,
-            fundingEligibility: fundingEligibility,
-            createBillingAgreement: createBillingAgreement,
-            createSubscription: createSubscription
-          });
-        }
-
-        if (isPopupBridge) {
-          Object(dom["b" /* enableLoadingSpinner */])(button);
-          return initPopupBridge({
-            clientID: clientID,
-            popupBridge: popupBridge,
-            fundingSource: fundingSource,
-            createOrder: createOrder,
-            onApprove: onApprove,
-            onCancel: onCancel,
-            commit: commit
-          });
-        }
-
-        if (isNative) {
-          if (!firebaseConfig) {
-            throw new Error("Firebase config required");
-          }
-
-          Object(dom["b" /* enableLoadingSpinner */])(button);
-          return initNative({
-            Checkout: Checkout,
-            createOrder: createOrder,
-            onApprove: onApprove,
-            onCancel: onCancel,
-            onError: onError,
-            commit: commit,
-            fundingSource: fundingSource,
-            clientID: clientID,
-            getPageUrl: getPageUrl,
-            env: env,
-            stageHost: stageHost,
-            apiStageHost: apiStageHost,
-            win: win,
-            buttonSessionID: buttonSessionID,
-            card: card,
-            buyerCountry: buyerCountry,
-            onShippingChange: onShippingChange,
-            cspNonce: cspNonce,
-            locale: locale,
-            vault: vault,
-            firebaseConfig: firebaseConfig,
-            version: version,
-            clientAccessToken: clientAccessToken,
-            fundingEligibility: fundingEligibility,
-            createBillingAgreement: createBillingAgreement,
-            createSubscription: createSubscription
-          });
-        }
-
-        throw new Error("No valid flow found");
-      }(),
-          start = _ref3.start,
-          close = _ref3.close,
-          triggerError = _ref3.triggerError;
-
-      return validationPromise.then(function (valid) {
+      }).then(function (valid) {
         if (!valid) {
-          return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), win && win.close()]).then(src["j" /* noop */]);
+          return;
+        }
+
+        var _props2 = props,
+            createOrder = _props2.createOrder;
+
+        if (spinner) {
+          Object(dom["b" /* enableLoadingSpinner */])(button);
         }
 
         createOrder().then(function (orderID) {
           return updateButtonClientConfig({
             orderID: orderID,
             fundingSource: fundingSource,
-            isCardFields: isCardFields
+            inline: inline
           });
         });
         return start().then(function () {
@@ -9674,11 +10299,12 @@ function setupButton(_ref) {
             merchantID: merchantID
           });
         }).catch(function (err) {
-          return zalgo_promise_src["a" /* ZalgoPromise */].all([triggerError(err), close()]);
-        });
+          return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), zalgo_promise_src["a" /* ZalgoPromise */].reject(err)]);
+        }).then(src["j" /* noop */]);
       });
+      return button.payPromise;
     }).finally(function () {
-      buttonProcessing = false;
+      paymentProcessing = false;
       Object(dom["a" /* disableLoadingSpinner */])(button);
     });
   };
@@ -9694,39 +10320,41 @@ function setupButton(_ref) {
     Object(src["l" /* onClick */])(button, function (event) {
       event.preventDefault();
       event.stopPropagation();
-      var payPromise = pay({
+      handleButtonClick({
         button: button,
         fundingSource: fundingSource,
         card: card,
-        paymentMethodID: paymentMethodID
-      }); // $FlowFixMe
-
-      button.payPromise = payPromise;
-
-      if (personalization && personalization.tagline) {
-        Object(lib["e" /* sendBeacon */])(personalization.tagline.tracking.click);
-      }
+        paymentMethodID: paymentMethodID,
+        isClick: true
+      });
     });
   });
   var setupPrerenderTask = initPromise.then(function () {
-    return getPrerenderDetails().then(function (prerenderDetails) {
-      if (prerenderDetails) {
-        var win = prerenderDetails.win,
-            fundingSource = prerenderDetails.fundingSource,
-            card = prerenderDetails.card;
-        var button = document.querySelector("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "=" + fundingSource + "]");
+    return zalgo_promise_src["a" /* ZalgoPromise */].hash({
+      prerenderDetails: getPrerenderDetails(),
+      initPromise: initPromise
+    }).then(function (_ref2) {
+      var prerenderDetails = _ref2.prerenderDetails;
 
-        if (!button) {
-          throw new Error("Can not find button element");
-        }
-
-        return pay({
-          button: button,
-          win: win,
-          fundingSource: fundingSource,
-          card: card
-        });
+      if (!prerenderDetails) {
+        return;
       }
+
+      var win = prerenderDetails.win,
+          fundingSource = prerenderDetails.fundingSource,
+          card = prerenderDetails.card;
+      var button = document.querySelector("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "=" + fundingSource + "]");
+
+      if (!button) {
+        throw new Error("Can not find button element");
+      }
+
+      handleButtonClick({
+        win: win,
+        button: button,
+        fundingSource: fundingSource,
+        card: card
+      });
     });
   });
   var setupRememberTask = setupRemember({
@@ -9736,45 +10364,32 @@ function setupButton(_ref) {
   var setupButtonLogsTask = setupButtonLogs({
     style: style
   });
-  var setupCheckoutFlow = setupCheckout({
-    Checkout: Checkout
+  var setupPaymentFlowsTask = setupPaymentFlows({
+    props: props,
+    config: config,
+    serviceData: serviceData,
+    components: components
   });
-  var setupPopupBridgeFlow = setupPopupBridge({
-    getPopupBridge: getPopupBridge
-  });
-  var setupNativeFlow = setupNative({
-    clientID: clientID,
-    enableNativeCheckout: enableNativeCheckout,
-    vault: vault,
-    onShippingChange: window.xprops.onShippingChange,
-    merchantID: merchantID,
-    buyerCountry: buyerCountry,
-    currency: currency,
-    buttonSessionID: buttonSessionID
-  });
-  var createFacilitatorAccessToken = Object(api["e" /* createAccessToken */])(clientID);
   return zalgo_promise_src["a" /* ZalgoPromise */].hash({
     initPromise: initPromise,
-    createFacilitatorAccessToken: createFacilitatorAccessToken,
+    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
     setupButtonLogsTask: setupButtonLogsTask,
     setupPrerenderTask: setupPrerenderTask,
     setupRememberTask: setupRememberTask,
-    setupCheckoutFlow: setupCheckoutFlow,
-    setupNativeFlow: setupNativeFlow,
-    setupPopupBridgeFlow: setupPopupBridgeFlow
+    setupPaymentFlowsTask: setupPaymentFlowsTask
   }).then(src["j" /* noop */]);
 }
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+/* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setupButton", function() { return _button__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
-/* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _props__WEBPACK_IMPORTED_MODULE_1__) if(["setupButton","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _props__WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
 
