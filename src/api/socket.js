@@ -415,14 +415,23 @@ export type FirebaseSocketOptions = {|
     targetApp : string
 |};
 
-export const loadFirebaseScripts = memoize(() => {
+export const loadFirebaseSDK = memoize((config) => {
     return ZalgoPromise.all([
         loadScript(FIREBASE_SCRIPTS.APP),
         loadScript(FIREBASE_SCRIPTS.AUTH),
         loadScript(FIREBASE_SCRIPTS.DATABASE)
-    ]);
-});
+    ]).then(() => {
+        const firebase = window.firebase;
 
+        if (!firebase) {
+            throw new Error(`Firebase failed to load`);
+        }
+
+        firebase.initializeApp(config);
+        return firebase;
+    });
+});
+        
 export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion, targetApp } : FirebaseSocketOptions) : MessageSocket {
     const driver = () => {
         let open = false;
@@ -439,14 +448,12 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
         };
 
         const databasePromise = ZalgoPromise.all([
-            getFirebaseSessionToken(sessionUID),
-            loadFirebaseScripts()
-        ]).then(([ sessionToken ]) => {
-            window.firebase.initializeApp(config);
-
-            return window.firebase.auth().signInWithCustomToken(sessionToken).then(() => {
-                const database = window.firebase.database();
-                window.firebase.database.INTERNAL.forceWebSockets();
+            loadFirebaseSDK(config),
+            getFirebaseSessionToken(sessionUID)
+        ]).then(([ firebase, sessionToken ]) => {
+            return firebase.auth().signInWithCustomToken(sessionToken).then(() => {
+                const database = firebase.database();
+                firebase.database.INTERNAL.forceWebSockets();
 
                 open = true;
     
