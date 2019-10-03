@@ -5,7 +5,7 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton, mockFunction } from './mocks';
 
 describe('validation cases', () => {
 
@@ -86,6 +86,14 @@ describe('validation cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                if (!props.window) {
+                    throw new Error(`Expected window to be passed to Checkout`);
+                }
+
+                return CheckoutOriginal(props);
+            }));
+
             window.xprops.onClick = mockAsyncProp(expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.resolve());
             }));
@@ -120,6 +128,14 @@ describe('validation cases', () => {
 
             onClick = mockAsyncProp(expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.reject());
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                if (!props.window) {
+                    throw new Error(`Expected window to be passed to Checkout`);
+                }
+
+                return CheckoutOriginal(props);
             }));
 
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));

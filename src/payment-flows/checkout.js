@@ -176,7 +176,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
                 approved = true;
     
                 // eslint-disable-next-line no-use-before-define
-                return closeCheckout().then(() => {
+                return close().then(() => {
                     return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart });
                 });
             },
@@ -187,7 +187,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     
             onCancel: () => {
                 // eslint-disable-next-line no-use-before-define
-                return closeCheckout().then(() => {
+                return close().then(() => {
                     return onCancel();
                 });
             },
@@ -209,15 +209,22 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
         });
     };
 
-    const { renderTo, close: closeCheckout } = init();
+    let instance;
+
+    // const { renderTo, close: closeCheckout } = init();
 
     const close = () => {
         checkoutOpen = false;
-        return closeCheckout();
+        return ZalgoPromise.try(() => {
+            if (instance) {
+                return instance.close();
+            }
+        });
     };
 
     const start = memoize(() => {
-        return renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
+        instance = init();
+        return instance.renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
     });
 
     const click = () => {
