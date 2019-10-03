@@ -3,6 +3,7 @@
 export const LOGGER_URL = '/xoplatform/logger/api/logger';
 export const AUTH_API_URL = '/v1/oauth2/token';
 export const ORDERS_API_URL = '/v2/checkout/orders';
+export const PAYMENTS_API_URL = '/v1/payments';
 export const CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
 export const VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
 
