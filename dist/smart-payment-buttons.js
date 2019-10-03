@@ -9146,7 +9146,7 @@ function initCheckout(_ref6) {
             subscriptionID = _ref7.subscriptionID;
         approved = true; // eslint-disable-next-line no-use-before-define
 
-        return closeCheckout().then(function () {
+        return close().then(function () {
           return _onApprove({
             payerID: payerID,
             paymentID: paymentID,
@@ -9164,7 +9164,7 @@ function initCheckout(_ref6) {
       },
       onCancel: function onCancel() {
         // eslint-disable-next-line no-use-before-define
-        return closeCheckout().then(function () {
+        return close().then(function () {
           return _onCancel();
         });
       },
@@ -9184,17 +9184,20 @@ function initCheckout(_ref6) {
     });
   };
 
-  var _init = init(),
-      renderTo = _init.renderTo,
-      closeCheckout = _init.close;
+  var instance; // const { renderTo, close: closeCheckout } = init();
 
   var close = function close() {
     checkoutOpen = false;
-    return closeCheckout();
+    return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+      if (instance) {
+        return instance.close();
+      }
+    });
   };
 
   var start = Object(src["i" /* memoize */])(function () {
-    return renderTo(getRenderWindow(), constants["o" /* TARGET_ELEMENT */].BODY, context);
+    instance = init();
+    return instance.renderTo(getRenderWindow(), constants["o" /* TARGET_ELEMENT */].BODY, context);
   });
 
   var click = function click() {
