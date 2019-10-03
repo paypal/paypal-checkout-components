@@ -88,6 +88,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
     const receivedMessages = {};
     const requestListeners = {};
     const responseListeners = {};
+    const activeRequests = [];
 
     const sendMessage = (socket, data) => {
         const messageUID = uniqueID();
@@ -120,7 +121,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
     };
 
     const onRequest = (socket, { messageSessionUID, requestUID, messageName, messageData }) => {
-        return ZalgoPromise.try(() => {
+        const requestPromise = ZalgoPromise.try(() => {
             const requestListener = requestListeners[messageName];
 
             if (!requestListener) {
@@ -140,6 +141,13 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
             const res = { message: (err && err.message) ? err.message : 'Unknown error' };
             sendResponse(socket, { responseStatus: RESPONSE_STATUS.ERROR, responseData: res, messageName, messageSessionUID, requestUID });
         });
+
+        activeRequests.push(requestPromise);
+        requestPromise.finally(() => {
+            activeRequests.splice(activeRequests.indexOf(requestPromise), 1);
+        });
+
+        return requestPromise;
     };
 
     const onResponse = ({ requestUID, messageSessionUID, responseStatus, messageData }) => {
@@ -321,10 +329,18 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
     const close = () => {
         retry = false;
-        socketPromise.then(
-            socket => socket.close(),
-            noop
-        );
+
+        for (const requestUID of Object.keys(responseListeners)) {
+            const { listenerPromise } = responseListeners[requestUID];
+            listenerPromise.asyncReject(new Error(`Socket closed`));
+        }
+
+        ZalgoPromise.all(activeRequests).then(() => {
+            return socketPromise.then(
+                socket => socket.close(),
+                noop
+            );
+        });
     };
 
     return { on, send, reconnect, close };
