@@ -7,8 +7,8 @@ import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } fro
 
 const fundingEligibilityReasons = [];
 
-export function isFundingIneligible(source : FundingSource, { locale, funding, layout, commit } :
-    { locale : LocaleType, funding : FundingSelection, layout : string, commit? : boolean }) : ?string {
+export function isFundingIneligible(source : FundingSource, { locale, funding, layout, commit, env } :
+    { locale : LocaleType, funding : FundingSelection, layout : string, commit? : boolean, env : string }) : ?string {
 
     const isVertical = layout === BUTTON_LAYOUT.VERTICAL;
     const allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
@@ -34,6 +34,11 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
 
     if (getFundingConfig(source, 'requireCommitAsTrue') && !commit) {
         return FUNDING_ELIGIBILITY_REASON.COMMIT_NOT_SET;
+    }
+
+    const allowedEnvs = getFundingConfig(source, 'allowedEnvs');
+    if (allowedEnvs && allowedEnvs.indexOf(env) === -1) {
+        return FUNDING_ELIGIBILITY_REASON.INVALID_ENV;
     }
 }
 
@@ -72,7 +77,7 @@ export function isFundingEligible(source : FundingSource, { locale, funding, env
         }
     }
 
-    const ineligibleReason = isFundingIneligible(source, { locale, funding, layout, commit });
+    const ineligibleReason = isFundingIneligible(source, { locale, funding, layout, commit, env });
 
     if (ineligibleReason) {
         return { eligible: false, reason: ineligibleReason };

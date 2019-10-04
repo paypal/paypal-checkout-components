@@ -36,7 +36,7 @@ pptm.listenForLoadWithNoContent();
 
 function isCreditDualEligible(props) : boolean {
 
-    const { label, funding, layout, locale, max, sources } = normalizeProps(props, { locale: getBrowserLocale() });
+    const { label, funding, layout, locale, max, sources, env } = normalizeProps(props, { locale: getBrowserLocale() });
     const { allowed } = funding;
     const { country } = locale;
 
@@ -60,7 +60,7 @@ function isCreditDualEligible(props) : boolean {
         return false;
     }
 
-    if (isFundingIneligible(FUNDING.CREDIT, { funding, locale, layout })) {
+    if (isFundingIneligible(FUNDING.CREDIT, { funding, locale, layout, env })) {
         return false;
     }
 
