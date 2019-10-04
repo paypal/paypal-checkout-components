@@ -4631,7 +4631,8 @@ var PRODUCT_FLOW = {
 };
 var FPTI_CONTEXT_TYPE = {
   BUTTON_SESSION_ID: 'button_session_id',
-  ORDER_ID: 'EC-Token'
+  ORDER_ID: 'EC-Token',
+  PAYMENT_ID: 'Pay-ID'
 };
 var FPTI_STATE = {
   BUTTON: 'smart_button'
@@ -4641,6 +4642,7 @@ var FPTI_TRANSITION = {
   BUTTON_CLICK: 'process_button_click',
   CREATE_ORDER: 'process_create_order',
   RECEIVE_ORDER: 'process_receive_order',
+  CREATE_PAYMENT: 'process_create_payment',
   CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
   CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
   CHECKOUT_CANCEL: 'process_checkout_cancel'
@@ -5661,6 +5663,7 @@ var DEFAULT_DEBUG = DEBUG.FALSE;
 var LOGGER_URL = '/xoplatform/logger/api/logger';
 var AUTH_API_URL = '/v1/oauth2/token';
 var ORDERS_API_URL = '/v2/checkout/orders';
+var PAYMENTS_API_URL = '/v1/payments/payment';
 var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
 var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
 var BASE_SMART_API_URL = '/smart/api';
@@ -5683,6 +5686,7 @@ var FIREBASE_SCRIPTS = {
   AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
   DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
 };
+var ENABLE_PAYMENT_API = false;
 // CONCATENATED MODULE: ./src/lib/logger.js
 
 
