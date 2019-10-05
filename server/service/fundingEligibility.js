@@ -80,6 +80,18 @@ export type FundingEligibility = {|
         eligible : boolean,
         vaultable : boolean
     },
+    oxxo : {
+        eligible : boolean,
+        vaultable : boolean
+    },
+    maxima : {
+        eligible : boolean,
+        vaultable : boolean
+    },
+    boleto : {
+        eligible : boolean,
+        vaultable : boolean
+    },
     card : {
         eligible : boolean,
         branded : boolean,
@@ -260,6 +272,18 @@ const FUNDING_ELIGIBILITY_QUERY = `
                 vaultable
             }
             trustly {
+                eligible
+                vaultable
+            }
+            oxxo {
+                eligible
+                vaultable
+            }
+            maxima {
+                eligible
+                vaultable
+            }
+            boleto {
                 eligible
                 vaultable
             }
