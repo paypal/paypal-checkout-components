@@ -121,6 +121,8 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
     };
 
     const onRequest = (socket, { messageSessionUID, requestUID, messageName, messageData }) => {
+        const activeRequest = new ZalgoPromise();
+
         const requestPromise = ZalgoPromise.try(() => {
             const requestListener = requestListeners[messageName];
 
@@ -140,9 +142,11 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         }, err => {
             const res = { message: (err && err.message) ? err.message : 'Unknown error' };
             sendResponse(socket, { responseStatus: RESPONSE_STATUS.ERROR, responseData: res, messageName, messageSessionUID, requestUID });
+        }).finally(() => {
+            activeRequest.resolve();
         });
 
-        activeRequests.push(requestPromise);
+        activeRequests.push(activeRequest);
         requestPromise.finally(() => {
             activeRequests.splice(activeRequests.indexOf(requestPromise), 1);
         });
@@ -471,6 +475,7 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
                     }
                 });
 
+                database.goOnline();
                 return database;
             });
         });

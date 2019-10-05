@@ -661,6 +661,8 @@ type MockFirebase = {|
     |}
 |};
 
+let firebaseOffline = false;
+
 function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) : MockFirebase {
 
     let hasCalls = false;
@@ -700,6 +702,10 @@ function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) :
                 ref: (path) => {
                     return {
                         set: (data) => {
+                            if (firebaseOffline) {
+                                return;
+                            }
+
                             hasCalls = true;
                             const { namespace } = splitPath(path);
                             send(path, data);
@@ -710,12 +716,19 @@ function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) :
                         },
                         on: (item, onHandler) => {
                             listeners[path] = listeners[path] || [];
-                            listeners[path].push(onHandler);
+                            listeners[path].push((...args) => {
+                                if (!firebaseOffline) {
+                                    onHandler(...args);
+                                }
+                            });
                         }
                     };
                 },
                 goOffline: () => {
-                    // pass
+                    firebaseOffline = true;
+                },
+                goOnline: () => {
+                    firebaseOffline = false;
                 }
             };
         }
