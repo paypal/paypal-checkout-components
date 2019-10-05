@@ -5656,7 +5656,8 @@ function messageSocket(_ref) {
         messageName = _ref3.messageName,
         messageData = _ref3.messageData;
     var activeRequest = new src["a" /* ZalgoPromise */]();
-    var requestPromise = src["a" /* ZalgoPromise */].try(function () {
+    activeRequests.push(activeRequest);
+    return src["a" /* ZalgoPromise */].try(function () {
       var requestListener = requestListeners[messageName];
 
       if (!requestListener) {
@@ -5694,12 +5695,8 @@ function messageSocket(_ref) {
       });
     }).finally(function () {
       activeRequest.resolve();
+      activeRequests.splice(activeRequests.indexOf(activeRequest), 1);
     });
-    activeRequests.push(activeRequest);
-    requestPromise.finally(function () {
-      activeRequests.splice(activeRequests.indexOf(requestPromise), 1);
-    });
-    return requestPromise;
   };
 
   var onResponse = function onResponse(_ref4) {
