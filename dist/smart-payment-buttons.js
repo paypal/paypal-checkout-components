@@ -5655,6 +5655,7 @@ function messageSocket(_ref) {
         requestUID = _ref3.requestUID,
         messageName = _ref3.messageName,
         messageData = _ref3.messageData;
+    var activeRequest = new src["a" /* ZalgoPromise */]();
     var requestPromise = src["a" /* ZalgoPromise */].try(function () {
       var requestListener = requestListeners[messageName];
 
@@ -5691,8 +5692,10 @@ function messageSocket(_ref) {
         messageSessionUID: messageSessionUID,
         requestUID: requestUID
       });
+    }).finally(function () {
+      activeRequest.resolve();
     });
-    activeRequests.push(requestPromise);
+    activeRequests.push(activeRequest);
     requestPromise.finally(function () {
       activeRequests.splice(activeRequests.indexOf(requestPromise), 1);
     });
@@ -6036,6 +6039,7 @@ function firebaseSocket(_ref8) {
             }
           }
         });
+        database.goOnline();
         return database;
       });
     });
