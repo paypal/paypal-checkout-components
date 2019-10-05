@@ -70,9 +70,7 @@ describe('native cases', () => {
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
-                mockWebSocketServer.done();
-
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -80,6 +78,10 @@ describe('native cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
+
+                ZalgoPromise.try(expect('postOnApprove'), async () => {
+                    await mockWebSocketServer.done();
+                });
             }));
 
             const windowOpen = window.open;
@@ -188,11 +190,13 @@ describe('native cases', () => {
             window.xprops.onApprove = avoid('onApprove');
 
             window.xprops.onCancel = mockAsyncProp(expect('onCancel', (data) => {
-                mockWebSocketServer.done();
-
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
+
+                ZalgoPromise.try(expect('postOnCancel'), async () => {
+                    await mockWebSocketServer.done();
+                });
             }));
 
             const windowOpen = window.open;
@@ -301,7 +305,9 @@ describe('native cases', () => {
             window.xprops.onApprove = avoid('onApprove');
             window.xprops.onCancel = avoid('onCancel');
             window.xprops.onError = expect('onError', () => {
-                mockWebSocketServer.done();
+                ZalgoPromise.try(expect('postOnError'), async () => {
+                    await mockWebSocketServer.done();
+                });
             });
 
             const windowOpen = window.open;
@@ -506,9 +512,7 @@ describe('native cases', () => {
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
-                mockWebSocketServer.done();
-
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -516,6 +520,10 @@ describe('native cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
+
+                ZalgoPromise.try(expect('postOnApprove'), async () => {
+                    await mockWebSocketServer.done();
+                });
             }));
 
             const windowOpen = window.open;
@@ -671,7 +679,7 @@ describe('native cases', () => {
 
             gqlMock.done();
             firebaseScripts.done();
-            mockWebSocketServer.done();
+            await mockWebSocketServer.done();
 
             if (!closeMessageSent) {
                 throw new Error(`Expected close message to be sent`);

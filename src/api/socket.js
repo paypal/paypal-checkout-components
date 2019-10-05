@@ -122,8 +122,9 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
     const onRequest = (socket, { messageSessionUID, requestUID, messageName, messageData }) => {
         const activeRequest = new ZalgoPromise();
+        activeRequests.push(activeRequest);
 
-        const requestPromise = ZalgoPromise.try(() => {
+        return ZalgoPromise.try(() => {
             const requestListener = requestListeners[messageName];
 
             if (!requestListener) {
@@ -144,14 +145,8 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
             sendResponse(socket, { responseStatus: RESPONSE_STATUS.ERROR, responseData: res, messageName, messageSessionUID, requestUID });
         }).finally(() => {
             activeRequest.resolve();
+            activeRequests.splice(activeRequests.indexOf(activeRequest), 1);
         });
-
-        activeRequests.push(activeRequest);
-        requestPromise.finally(() => {
-            activeRequests.splice(activeRequests.indexOf(requestPromise), 1);
-        });
-
-        return requestPromise;
     };
 
     const onResponse = ({ requestUID, messageSessionUID, responseStatus, messageData }) => {

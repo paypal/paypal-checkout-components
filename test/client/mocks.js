@@ -502,7 +502,7 @@ getPayeeApiMock().listen();
 
 type NativeMockWebSocket = {|
     expect : () => {|
-        done : () => void
+        done : () => ZalgoPromise<void>
     |},
     getProps : () => void,
     onApprove : () => void,
@@ -762,8 +762,9 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
     let onErrorRequestID;
 
     const received = {};
+    const waitingForResponse = [];
 
-    const { send, expect } = mockFirebase({
+    const { send, expect: expectFirebase } = mockFirebase({
         handler: ({ data }) => {
             for (const id of Object.keys(data)) {
                 const message = JSON.parse(data[id]);
@@ -782,6 +783,10 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
                 }
 
                 received[messageUID] = true;
+
+                if (messageType === 'response' && waitingForResponse.indexOf(requestUID) !== -1) {
+                    waitingForResponse.splice(waitingForResponse.indexOf(requestUID), 1);
+                }
 
                 if (extraHandler) {
                     extraHandler(message);
@@ -820,7 +825,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
     });
 
     const getProps = () => {
-        getPropsRequestID = uniqueID();
+        getPropsRequestID = `${ uniqueID()  }_getProps`;
 
         send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        getSessionUID(),
@@ -832,6 +837,8 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
             message_type:       'request',
             message_name:       'getProps'
         }));
+
+        waitingForResponse.push(getPropsRequestID);
     };
 
     const onApprove = () => {
@@ -839,7 +846,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
             throw new Error(`Can not approve without getting props`);
         }
 
-        onApproveRequestID = uniqueID();
+        onApproveRequestID = `${ uniqueID()  }_onApprove`;
 
         send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        getSessionUID(),
@@ -855,6 +862,8 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
                 payerID: 'XXYYZZ123456'
             }
         }));
+
+        waitingForResponse.push(onApproveRequestID);
     };
 
     const onCancel = () => {
@@ -862,7 +871,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
             throw new Error(`Can not approve without getting props`);
         }
 
-        onCancelRequestID = uniqueID();
+        onCancelRequestID = `${ uniqueID()  }_onCancel`;
 
         send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        getSessionUID(),
@@ -877,10 +886,12 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
                 orderID: props.orderID
             }
         }));
+
+        waitingForResponse.push(onCancelRequestID);
     };
 
     const onError = () => {
-        onErrorRequestID = uniqueID();
+        onErrorRequestID = `${ uniqueID()  }_onError`;
 
         send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        getSessionUID(),
@@ -895,6 +906,26 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
                 message: 'Something went wrong'
             }
         }));
+
+        waitingForResponse.push(onErrorRequestID);
+    };
+
+    const expect = () => {
+        const { done: firebaseDone } = expectFirebase();
+
+        return {
+            done: async () => {
+                firebaseDone();
+
+                if (waitingForResponse.length) {
+                    await ZalgoPromise.delay(0);
+                }
+
+                if (waitingForResponse.length) {
+                    throw new Error(`Waiting for responses from firebase: ${  waitingForResponse.join(', ') }`);
+                }
+            }
+        };
     };
 
     return {
