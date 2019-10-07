@@ -1,13 +1,22 @@
 /* @flow */
+/** @jsx node */
 
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT } from '@paypal/sdk-constants';
+import { node, type ComponentFunctionType } from 'jsx-pragmatic';
+import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos';
 
-import type { GraphQLBatch } from '../lib';
+import { placeholderToJSX, type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LocaleType, LoggerType } from '../types';
+
+type PersonalizationComponentProps = {|
+   logoColor : $Values<typeof LOGO_COLOR>,
+   period : ?number
+|};
 
 type Personalization = {|
     buttonText? : {|
         text : string,
+        Component : ?ComponentFunctionType<PersonalizationComponentProps>,
         tracking : {|
             impression : string,
             click : string
@@ -15,6 +24,7 @@ type Personalization = {|
     |},
     tagline? : {|
         text : string,
+        Component : ?ComponentFunctionType<PersonalizationComponentProps>,
         tracking : {|
             impression : string,
             click : string
@@ -93,6 +103,28 @@ function getDefaultPersonalization() : Personalization {
     return {};
 }
 
+const CLASS = {
+    TEXT: ('paypal-button-text' : 'paypal-button-text')
+};
+
+function contentToJSX(content : string) : ComponentFunctionType<PersonalizationComponentProps> {
+    content = content.replace(/\{logo:/g, '{');
+
+    return ({ logoColor, period } : PersonalizationComponentProps = {}) => {
+        try {
+            return placeholderToJSX(content, {
+                text:   (token) => <span class={ CLASS.TEXT }>{token}</span>,
+                pp:     () => <PPLogo logoColor={ logoColor } />,
+                paypal: () => <PayPalLogo logoColor={ logoColor } />,
+                br:     () => <br />,
+                period: () => { return period ? period.toString() : null; }
+            });
+        } catch (err) {
+            return null;
+        }
+    };
+}
+
 export async function resolvePersonalization(req : ExpressRequest, gqlBatch : GraphQLBatch, personalizationOptions : PersonalizationOptions) : Promise<Personalization> {
     let { logger, clientID, merchantID, locale, buyerCountry, buttonSessionID, currency,
         intent, commit, vault, label, period } = personalizationOptions;
@@ -113,7 +145,17 @@ export async function resolvePersonalization(req : ExpressRequest, gqlBatch : Gr
             }
         });
 
-        return result.checkoutCustomization;
+        const personalization = result.checkoutCustomization;
+
+        if (personalization && personalization.tagline && personalization.tagline.text) {
+            personalization.tagline.Component = contentToJSX(personalization.tagline.text);
+        }
+
+        if (personalization && personalization.buttonText && personalization.buttonText.text) {
+            personalization.buttonText.Component = contentToJSX(personalization.buttonText.text);
+        }
+
+        return personalization;
 
     } catch (err) {
         logger.error(req, 'personalization_error_fallback', { err: err.stack ? err.stack : err.toString() });

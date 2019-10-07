@@ -1,7 +1,11 @@
 /* @flow */
 
+import { dirname } from 'path';
+
 import { webpackCompile } from 'webpack-mem-compile';
 import webpack from 'webpack';
+import { regexTokenize } from 'belter';
+import { type ChildType, type NullableChildType } from 'jsx-pragmatic/src';
 
 import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from '../config';
 import type { ExpressRequest, ExpressResponse, LoggerType, LoggerPayload } from '../types';
@@ -55,8 +59,8 @@ export function babelRegister(dir : string) {
 }
 
 export function babelRequire<T>(path : string) : T {
-    babelRegister(path);
-
+    babelRegister(dirname(path));
+    
     // $FlowFixMe
     return require(path); // eslint-disable-line security/detect-non-literal-require
 }
@@ -117,4 +121,18 @@ export function getLogBuffer(logger : LoggerType) : LoggerBufferType {
     return {
         debug, info, warn, error, flush
     };
+}
+
+export function placeholderToJSX(text : string, placeholders : { [string] : (?string) => NullableChildType }) : ChildType {
+    return regexTokenize(text, /(\{[a-z]+\})|([^{}]+)/g)
+        .map(token => {
+            const match = token.match(/^{([a-z]+)}$/);
+            if (match) {
+                return placeholders[match[1]]();
+            } else if (placeholders.text) {
+                return placeholders.text(token);
+            } else {
+                return token;
+            }
+        }).filter(Boolean);
 }

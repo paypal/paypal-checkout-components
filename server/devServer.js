@@ -11,18 +11,52 @@ const app = express();
 const PORT = process.env.PORT || 8003;
 
 const buttonMiddleware = getButtonMiddleware({
-    graphQL: () => {
+    graphQL: (req, payload) => {
         // $FlowFixMe
-        return Promise.resolve([
-            {
-                paypal: {
-                    eligible: true
-                }
-            },
-            {
-                
+        return Promise.resolve(payload.map(({ query }) => {
+            if (query.match(/query GetFundingEligibility/)) {
+                return {
+                    fundingEligibility: {
+                        paypal: {
+                            eligible: true
+                        }
+                    }
+                };
             }
-        ]);
+
+            if (query.match(/query GetPersonalization/)) {
+                return {
+                    checkoutCustomization: {
+                        tagline: {
+                            text:     'Get $5 off your order!',
+                            tracking: {
+                                impression: 'http://www.paypal.com/tracking?foo=bar',
+                                click:      'http://www.paypal.com/tracking?foo=bar'
+                            }
+                        },
+                        buttonText: {
+                            text:     'PAY! {logo:pp} {logo:paypal} {logo:pp}',
+                            tracking: {
+                                impression: 'http://www.paypal.com/tracking?foo=bar',
+                                click:      'http://www.paypal.com/tracking?foo=bar'
+                            }
+                        }
+                    }
+                };
+            }
+
+            if (query.match(/query NativeEligibility/)) {
+                return {
+                    mobileSDKEligibility: {
+                        eligible: true
+                    }
+                };
+            }
+
+            return {
+                data: {}
+            };
+        }));
     },
     getAccessToken: () => {
         return Promise.resolve('XYZ12345');

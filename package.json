@@ -16,7 +16,7 @@
   "scripts": {
     "start": "babel-node ./server/devServer",
     "setup": "npm install && npm run flow-typed",
-    "lint": "eslint src/ server/ test/ *.js",
+    "lint": "eslint --ext .js --ext .jsx src/ server/ test/ *.js",
     "flow-typed": "rm -rf ./flow-typed && flow-typed install --ignoreDeps peer && flow-typed install jest@22 mocha@3 && flow-typed install express@4.16 && sed -i -e 's/http$IncomingMessage,/http$IncomingMessage<>,/g' ./flow-typed/npm/express_v4.16.x.js",
     "flow": "flow",
     "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
@@ -43,6 +43,7 @@
     "@paypal/checkout-components": "^5.0.30",
     "@paypal/sdk-client": "^4.0.27",
     "@paypal/sdk-constants": "^1.0.27",
+    "@paypal/sdk-logos": "^1.0.17",
     "belter": "^1.0.19",
     "cross-domain-utils": "^2.0.16",
     "grabthar": "^3",
