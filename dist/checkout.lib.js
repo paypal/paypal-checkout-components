@@ -261,7 +261,8 @@ var FUNDING_ELIGIBILITY_REASON = {
   DEFAULT: 'The funding source is enabled by default for all users',
   REMEMBERED: 'The funding source was remembered for the current user',
   NEED_OPT_IN: 'The funding source needs to be allowed in funding.allowed',
-  COMMIT_NOT_SET: 'The funding source is not enabled when commit is not set as true'
+  COMMIT_NOT_SET: 'The funding source is not enabled when commit is not set as true',
+  INVALID_ENV: 'The funding source is not supported in this environment'
 };
 var CARD_PRIORITY = [CARD.VISA, CARD.MASTERCARD, CARD.AMEX, CARD.DISCOVER, CARD.SWITCH, CARD.MAESTRO, CARD.HIPER, CARD.ELO, CARD.JCB, CARD.CUP, CARD.COFINOGA, CARD.COFIDIS, CARD.CETELEM, CARD.CBNATIONALE];
 // CONCATENATED MODULE: ./src/constants/misc.js
@@ -2136,7 +2137,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: getSessionID(),
-      ver: "4.0.291"
+      ver: "4.0.292"
     };
   });
   Object(client["a" /* addHeaderBuilder */])(function () {
@@ -2580,7 +2581,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.291";
+    payload.version = "4.0.292";
     payload.host = window.location.host;
     payload.uid = getSessionID();
     payload.appName = APP_NAME;
@@ -2636,7 +2637,7 @@ function beacon_checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.291".replace(/[^0-9]+/g, '_');
+      var version = "4.0.292".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -2653,7 +2654,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.291",
+    v: "checkout.js." + "4.0.292",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -2866,7 +2867,7 @@ function isPayPalObjects() {
 }
 function getScriptVersion() {
   if (false) {} else {
-    return  false ? undefined : "4.0.291";
+    return  false ? undefined : "4.0.292";
   }
 }
 function getCurrentScriptUrl() {
@@ -2882,7 +2883,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.291" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.292" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -3250,7 +3251,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.lib.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.291",
+  version: "4.0.292",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -27159,7 +27160,8 @@ function isFundingIneligible(source, _ref) {
   var locale = _ref.locale,
       funding = _ref.funding,
       layout = _ref.layout,
-      commit = _ref.commit;
+      commit = _ref.commit,
+      env = _ref.env;
   var isVertical = layout === constants["g" /* BUTTON_LAYOUT */].VERTICAL;
   var allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
 
@@ -27185,6 +27187,12 @@ function isFundingIneligible(source, _ref) {
 
   if (getFundingConfig(source, 'requireCommitAsTrue') && !commit) {
     return constants["w" /* FUNDING_ELIGIBILITY_REASON */].COMMIT_NOT_SET;
+  }
+
+  var allowedEnvs = getFundingConfig(source, 'allowedEnvs');
+
+  if (allowedEnvs && allowedEnvs.indexOf(env) === -1) {
+    return constants["w" /* FUNDING_ELIGIBILITY_REASON */].INVALID_ENV;
   }
 }
 function isFundingAutoEligible(source, _ref2) {
@@ -27237,7 +27245,8 @@ function isFundingEligible(source, _ref3) {
     locale: locale,
     funding: funding,
     layout: layout,
-    commit: commit
+    commit: commit,
+    env: env
   });
 
   if (ineligibleReason) {
@@ -34780,7 +34789,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.291", _ref19), {
+  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.292", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -34942,7 +34951,8 @@ function isCreditDualEligible(props) {
       layout = _normalizeProps.layout,
       locale = _normalizeProps.locale,
       max = _normalizeProps.max,
-      sources = _normalizeProps.sources;
+      sources = _normalizeProps.sources,
+      env = _normalizeProps.env;
 
   var allowed = funding.allowed;
   var country = locale.country;
@@ -34970,7 +34980,8 @@ function isCreditDualEligible(props) {
   if (isFundingIneligible(constants["v" /* FUNDING */].CREDIT, {
     funding: funding,
     locale: locale,
-    layout: layout
+    layout: layout,
+    env: env
   })) {
     return false;
   }
@@ -35032,7 +35043,7 @@ var component_Button = Object(src["c" /* create */])({
     var env = props.env || config["a" /* config */].env;
     var url = config["a" /* config */].buttonUrls[env];
 
-    if (smartThrottle.isEnabled() || props.enableNativeCheckout || env !== constants["t" /* ENV */].PRODUCTION) {
+    if (props.enableNativeCheckout) {
       return url.replace('/webapps/hermes/button', '/smart/button');
     }
 
@@ -36611,7 +36622,7 @@ var postRobot = post_robot_src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.291";
+var interface_version = "4.0.292";
 var interface_checkout;
 var apps;
 

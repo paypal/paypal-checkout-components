@@ -4840,7 +4840,8 @@ var FUNDING_ELIGIBILITY_REASON = {
   DEFAULT: 'The funding source is enabled by default for all users',
   REMEMBERED: 'The funding source was remembered for the current user',
   NEED_OPT_IN: 'The funding source needs to be allowed in funding.allowed',
-  COMMIT_NOT_SET: 'The funding source is not enabled when commit is not set as true'
+  COMMIT_NOT_SET: 'The funding source is not enabled when commit is not set as true',
+  INVALID_ENV: 'The funding source is not supported in this environment'
 };
 var CARD_PRIORITY = [CARD.VISA, CARD.MASTERCARD, CARD.AMEX, CARD.DISCOVER, CARD.SWITCH, CARD.MAESTRO, CARD.HIPER, CARD.ELO, CARD.JCB, CARD.CUP, CARD.COFINOGA, CARD.COFIDIS, CARD.CETELEM, CARD.CBNATIONALE];
 // CONCATENATED MODULE: ./src/constants/misc.js
@@ -5764,7 +5765,8 @@ function isFundingIneligible(source, _ref) {
   var locale = _ref.locale,
       funding = _ref.funding,
       layout = _ref.layout,
-      commit = _ref.commit;
+      commit = _ref.commit,
+      env = _ref.env;
   var isVertical = layout === BUTTON_LAYOUT.VERTICAL;
   var allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
 
@@ -5790,6 +5792,12 @@ function isFundingIneligible(source, _ref) {
 
   if (getFundingConfig(source, 'requireCommitAsTrue') && !commit) {
     return FUNDING_ELIGIBILITY_REASON.COMMIT_NOT_SET;
+  }
+
+  var allowedEnvs = getFundingConfig(source, 'allowedEnvs');
+
+  if (allowedEnvs && allowedEnvs.indexOf(env) === -1) {
+    return FUNDING_ELIGIBILITY_REASON.INVALID_ENV;
   }
 }
 function isFundingAutoEligible(source, _ref2) {
@@ -5842,7 +5850,8 @@ function isFundingEligible(source, _ref3) {
     locale: locale,
     funding: funding,
     layout: layout,
-    commit: commit
+    commit: commit,
+    env: env
   });
 
   if (ineligibleReason) {
@@ -15277,7 +15286,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.291", _ref19), {
+  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.292", _ref19), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
