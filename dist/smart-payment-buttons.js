@@ -9279,7 +9279,7 @@ function openPopup(_ref) {
 
 
 var CHECKOUT_POPUP_DIMENSIONS = {
-  WIDTH: 500,
+  WIDTH: 480,
   HEIGHT: 590
 };
 var checkoutOpen = false;
