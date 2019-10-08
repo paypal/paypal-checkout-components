@@ -53,10 +53,11 @@ type ActionOptions = {|
     subscriptionID : string,
     facilitatorAccessTokenPromise : ZalgoPromise<string>,
     buyerAccessToken : ?string,
-    partnerAttributionID : ?string
+    partnerAttributionID : ?string,
+    isNativeTransaction : boolean
 |};
 
-function buildOrderActions({ intent, orderID, restart, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID } : ActionOptions) : OrderActions {
+function buildOrderActions({ intent, orderID, restart, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID, isNativeTransaction } : ActionOptions) : OrderActions {
     
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
         // $FlowFixMe
@@ -73,7 +74,7 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessTokenPro
     
     const get = memoize(() => {
         return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID });
+            return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction });
         });
     });
 
@@ -83,7 +84,7 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessTokenPro
         }
 
         return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID })
+            return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction })
                 .finally(get.reset)
                 .finally(capture.reset)
                 .catch(handleProcessorError);
@@ -96,7 +97,7 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessTokenPro
         }
 
         return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return authorizeOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID })
+            return authorizeOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction })
                 .finally(get.reset)
                 .finally(authorize.reset)
                 .catch(handleProcessorError);
@@ -105,7 +106,7 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessTokenPro
 
     const patch = (data = {}) => {
         return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID }).catch(() => {
+            return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction }).catch(() => {
                 throw new Error('Order could not be patched');
             });
         });
@@ -165,7 +166,7 @@ function buildPaymentActions({ intent, paymentID, payerID, restart, facilitatorA
 
 export type XOnApprove = (XOnApproveDataType, XOnApproveActionsType) => ZalgoPromise<void>;
 
-function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, subscriptionID, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID } : ActionOptions) : XOnApproveActionsType {
+function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, subscriptionID, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID, isNativeTransaction } : ActionOptions) : XOnApproveActionsType {
 
     // Subscription GET Actions
     const getSubscriptionApi = memoize(() => getSubscription(subscriptionID, { buyerAccessToken }));
@@ -186,8 +187,8 @@ function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, su
         return redir(url, window.top);
     };
 
-    const order = buildOrderActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID });
-    const payment = buildPaymentActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID });
+    const order = buildOrderActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID, isNativeTransaction });
+    const payment = buildPaymentActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID, isNativeTransaction });
 
     return {
         order,
@@ -203,7 +204,8 @@ export type OnApproveData = {|
     paymentID ? : ? string,
     billingToken ? : ? string,
     subscriptionID ? : ?string,
-    buyerAccessToken? : ?string
+    buyerAccessToken? : ?string,
+    isNativeTransaction? : boolean
 |};
 
 export type OnApproveActions = {|
@@ -215,7 +217,7 @@ export type OnApprove = (OnApproveData, OnApproveActions) => ZalgoPromise<void>;
 export function getOnApprove(xprops : XProps, { facilitatorAccessTokenPromise, createOrder } : { facilitatorAccessTokenPromise : ZalgoPromise<string>, createOrder : CreateOrder }) : OnApprove {
     const { onApprove, onError, intent, buttonSessionID, partnerAttributionID } = xprops;
 
-    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart }) => {
+    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, isNativeTransaction = false }, { restart }) => {
         return createOrder().then(orderID => {
 
             getLogger()
@@ -227,7 +229,7 @@ export function getOnApprove(xprops : XProps, { facilitatorAccessTokenPromise, c
                 }).flush();
 
             const data = { orderID, payerID, paymentID, billingToken, subscriptionID };
-            const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID });
+            const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID, isNativeTransaction });
 
             if (onApprove) {
                 return onApprove(data, actions).catch(onError);

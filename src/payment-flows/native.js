@@ -152,7 +152,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
         socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
             socket.close();
-            const data = { payerID, paymentID, billingToken };
+            const data = { payerID, paymentID, billingToken, isNativeTransaction: true };
             const actions = { restart: () => fallbackToWebCheckout() };
             return onApprove(data, actions);
         });

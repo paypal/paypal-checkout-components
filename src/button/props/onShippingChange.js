@@ -40,7 +40,7 @@ export function buildXShippingChangeActions({ orderID, actions, facilitatorAcces
 
     const patch = (data = {}) => {
         return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID }).catch(() => {
+            return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction: false }).catch(() => {
                 throw new Error('Order could not be patched');
             });
         });

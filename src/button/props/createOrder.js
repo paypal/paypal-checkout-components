@@ -88,7 +88,7 @@ export function buildOrderActions({ facilitatorAccessTokenPromise, intent, curre
         order.application_context = order.application_context || {};
 
         return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return createOrderID(order, { facilitatorAccessToken, partnerAttributionID });
+            return createOrderID(order, { facilitatorAccessToken, partnerAttributionID, isNativeTransaction: false });
         });
     };
 
