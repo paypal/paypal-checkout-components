@@ -15,7 +15,7 @@ import { openPopup } from '../ui';
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 
 export const CHECKOUT_POPUP_DIMENSIONS = {
-    WIDTH:  480,
+    WIDTH:  500,
     HEIGHT: 590
 };
 
