@@ -8,7 +8,7 @@ import { noop } from 'belter/src';
 
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER } from '../../constants';
 import { getFundingConfig } from '../../funding';
-import { type ButtonStyle } from '../../zoid/buttons/props';
+import { type ButtonStyle, type Personalization } from '../../zoid/buttons/props';
 import type { FundingEligibilityType } from '../../types';
 
 import { Spinner } from './spinner';
@@ -23,10 +23,11 @@ type BasicButtonProps = {|
     fundingEligibility : FundingEligibilityType,
     i : number,
     nonce : string,
-    clientAccessToken : ?string
+    clientAccessToken : ?string,
+    personalization : Personalization
 |};
 
-export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, onClick = noop } : BasicButtonProps) : ElementNode {
+export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop } : BasicButtonProps) : ElementNode {
 
     let { color, period, label } = style;
 
@@ -100,6 +101,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 fundingEligibility={ fundingEligibility }
                 onClick={ clickHandler }
                 clientAccessToken={ clientAccessToken }
+                personalization={ personalization }
             />
 
             <Spinner />

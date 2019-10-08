@@ -7,6 +7,8 @@ import { type OrderCreateRequest,
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
+import { LOGO_COLOR } from '@paypal/sdk-logos/src';
+import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../../constants';
 import { getFundingConfig } from '../../funding';
@@ -137,12 +139,27 @@ export type ButtonStyleInputs = {|
     height? : $PropertyType<ButtonStyle, 'height'> | void
 |};
 
+type PersonalizationComponentProps = {|
+   logoColor : $Values<typeof LOGO_COLOR>,
+   period : ?number
+|};
+
 export type Personalization = {|
+    buttonText? : {|
+        text : string,
+        Component : ?ComponentFunctionType<PersonalizationComponentProps>,
+        tracking : {|
+            impression : string,
+            click : string
+        |}
+    |},
     tagline? : {|
         text : string,
-        tracking : {
-            impression : ?string
-        }
+        Component : ?ComponentFunctionType<PersonalizationComponentProps>,
+        tracking : {|
+            impression : string,
+            click : string
+        |}
     |}
 |};
 

@@ -65,7 +65,7 @@ export function getPayPalConfig() : FundingSourceConfig {
             );
         },
 
-        Label: ({ logo, label, locale: { lang }, period, layout, multiple, clientAccessToken }) => {
+        Label: ({ logo, label, locale: { lang }, logoColor, period, layout, multiple, clientAccessToken, personalization }) => {
             if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
                 return logo;
             }
@@ -81,6 +81,10 @@ export function getPayPalConfig() : FundingSourceConfig {
                 }
 
                 return logo;
+            }
+
+            if (personalization && personalization.buttonText && personalization.buttonText.Component) {
+                return <personalization.buttonText.Component logoColor={ logoColor } period={ period } />;
             }
 
             const { Checkout, Pay, BuyNow, Installment } = componentContent[lang];

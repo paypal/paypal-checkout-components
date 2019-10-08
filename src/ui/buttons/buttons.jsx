@@ -67,6 +67,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         fundingEligibility={ fundingEligibility }
                         onClick={ onClick }
                         clientAccessToken={ clientAccessToken }
+                        personalization={ personalization }
                     />
                 ))
             }

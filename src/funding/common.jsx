@@ -8,6 +8,7 @@ import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
 import type { FundingEligibilityType } from '../types';
+import type { Personalization } from '../zoid/buttons/props';
 
 
 export type CardConfig = {|
@@ -29,7 +30,6 @@ export type FundingSourceConfig = {|
         optional? : boolean,
         fundingEligibility : FundingEligibilityType,
         onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
-
     |}) => ChildType,
     Label : ({|
         logo : ChildType,
@@ -42,7 +42,8 @@ export type FundingSourceConfig = {|
         optional? : boolean,
         onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
         layout : $Values<typeof BUTTON_LAYOUT>,
-        clientAccessToken : ?string
+        clientAccessToken : ?string,
+        personalization : Personalization
     |}) => ChildType,
     VaultLabel? : ({|
         logoColor : $Values<typeof LOGO_COLOR>,
