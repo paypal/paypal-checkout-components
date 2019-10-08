@@ -5197,8 +5197,10 @@ function getOrder(orderID, _ref2) {
 
   var facilitatorAccessToken = _ref2.facilitatorAccessToken,
       buyerAccessToken = _ref2.buyerAccessToken,
-      partnerAttributionID = _ref2.partnerAttributionID;
-  return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
+      partnerAttributionID = _ref2.partnerAttributionID,
+      _ref2$isNativeTransac = _ref2.isNativeTransaction,
+      isNativeTransaction = _ref2$isNativeTransac === void 0 ? false : _ref2$isNativeTransac;
+  return buyerAccessToken || !isNativeTransaction ? Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
     url: src_config["k" /* SMART_API_URI */].ORDER + "/" + orderID
   }) : Object(api["b" /* callRestAPI */])({
@@ -5212,8 +5214,10 @@ function captureOrder(orderID, _ref3) {
 
   var facilitatorAccessToken = _ref3.facilitatorAccessToken,
       buyerAccessToken = _ref3.buyerAccessToken,
-      partnerAttributionID = _ref3.partnerAttributionID;
-  return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
+      partnerAttributionID = _ref3.partnerAttributionID,
+      _ref3$isNativeTransac = _ref3.isNativeTransaction,
+      isNativeTransaction = _ref3$isNativeTransac === void 0 ? false : _ref3$isNativeTransac;
+  return buyerAccessToken || !isNativeTransaction ? Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
     method: 'post',
     url: src_config["k" /* SMART_API_URI */].ORDER + "/" + orderID + "/capture"
@@ -5229,8 +5233,10 @@ function authorizeOrder(orderID, _ref4) {
 
   var facilitatorAccessToken = _ref4.facilitatorAccessToken,
       buyerAccessToken = _ref4.buyerAccessToken,
-      partnerAttributionID = _ref4.partnerAttributionID;
-  return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
+      partnerAttributionID = _ref4.partnerAttributionID,
+      _ref4$isNativeTransac = _ref4.isNativeTransaction,
+      isNativeTransaction = _ref4$isNativeTransac === void 0 ? false : _ref4$isNativeTransac;
+  return buyerAccessToken || !isNativeTransaction ? Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
     method: 'post',
     url: src_config["k" /* SMART_API_URI */].ORDER + "/" + orderID + "/authorize"
@@ -5246,11 +5252,13 @@ function patchOrder(orderID, data, _ref5) {
 
   var facilitatorAccessToken = _ref5.facilitatorAccessToken,
       buyerAccessToken = _ref5.buyerAccessToken,
-      partnerAttributionID = _ref5.partnerAttributionID;
+      partnerAttributionID = _ref5.partnerAttributionID,
+      _ref5$isNativeTransac = _ref5.isNativeTransaction,
+      isNativeTransaction = _ref5$isNativeTransac === void 0 ? false : _ref5$isNativeTransac;
   var patchData = Array.isArray(data) ? {
     patch: data
   } : data;
-  return buyerAccessToken ? Object(api["c" /* callSmartAPI */])({
+  return buyerAccessToken || !isNativeTransaction ? Object(api["c" /* callSmartAPI */])({
     accessToken: buyerAccessToken,
     method: 'post',
     url: src_config["k" /* SMART_API_URI */].ORDER + "/" + orderID + "/patch",
@@ -7560,7 +7568,8 @@ function buildOrderActions(_ref) {
     return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
       return Object(_api__WEBPACK_IMPORTED_MODULE_5__[/* createOrderID */ "f"])(order, {
         facilitatorAccessToken: facilitatorAccessToken,
-        partnerAttributionID: partnerAttributionID
+        partnerAttributionID: partnerAttributionID,
+        isNativeTransaction: false
       });
     });
   };
@@ -7738,7 +7747,8 @@ function buildOrderActions(_ref) {
       restart = _ref.restart,
       facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
       buyerAccessToken = _ref.buyerAccessToken,
-      partnerAttributionID = _ref.partnerAttributionID;
+      partnerAttributionID = _ref.partnerAttributionID,
+      isNativeTransaction = _ref.isNativeTransaction;
 
   var handleProcessorError = function handleProcessorError(err) {
     // $FlowFixMe
@@ -7758,7 +7768,8 @@ function buildOrderActions(_ref) {
       return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getOrder */ "l"])(orderID, {
         facilitatorAccessToken: facilitatorAccessToken,
         buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
+        partnerAttributionID: partnerAttributionID,
+        isNativeTransaction: isNativeTransaction
       });
     });
   });
@@ -7771,7 +7782,8 @@ function buildOrderActions(_ref) {
       return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* captureOrder */ "d"])(orderID, {
         facilitatorAccessToken: facilitatorAccessToken,
         buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
+        partnerAttributionID: partnerAttributionID,
+        isNativeTransaction: isNativeTransaction
       }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
     });
   });
@@ -7784,7 +7796,8 @@ function buildOrderActions(_ref) {
       return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* authorizeOrder */ "b"])(orderID, {
         facilitatorAccessToken: facilitatorAccessToken,
         buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
+        partnerAttributionID: partnerAttributionID,
+        isNativeTransaction: isNativeTransaction
       }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
     });
   });
@@ -7798,7 +7811,8 @@ function buildOrderActions(_ref) {
       return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchOrder */ "p"])(orderID, data, {
         facilitatorAccessToken: facilitatorAccessToken,
         buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
+        partnerAttributionID: partnerAttributionID,
+        isNativeTransaction: isNativeTransaction
       }).catch(function () {
         throw new Error('Order could not be patched');
       });
@@ -7894,7 +7908,8 @@ function buildXApproveActions(_ref3) {
       subscriptionID = _ref3.subscriptionID,
       facilitatorAccessTokenPromise = _ref3.facilitatorAccessTokenPromise,
       buyerAccessToken = _ref3.buyerAccessToken,
-      partnerAttributionID = _ref3.partnerAttributionID;
+      partnerAttributionID = _ref3.partnerAttributionID,
+      isNativeTransaction = _ref3.isNativeTransaction;
   // Subscription GET Actions
   var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getSubscription */ "o"])(subscriptionID, {
@@ -7935,7 +7950,8 @@ function buildXApproveActions(_ref3) {
     restart: restart,
     facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
     buyerAccessToken: buyerAccessToken,
-    partnerAttributionID: partnerAttributionID
+    partnerAttributionID: partnerAttributionID,
+    isNativeTransaction: isNativeTransaction
   });
   var payment = buildPaymentActions({
     intent: intent,
@@ -7946,7 +7962,8 @@ function buildXApproveActions(_ref3) {
     restart: restart,
     facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
     buyerAccessToken: buyerAccessToken,
-    partnerAttributionID: partnerAttributionID
+    partnerAttributionID: partnerAttributionID,
+    isNativeTransaction: isNativeTransaction
   });
   return {
     order: order,
@@ -7973,7 +7990,9 @@ function getOnApprove(xprops, _ref4) {
         paymentID = _ref5.paymentID,
         billingToken = _ref5.billingToken,
         subscriptionID = _ref5.subscriptionID,
-        buyerAccessToken = _ref5.buyerAccessToken;
+        buyerAccessToken = _ref5.buyerAccessToken,
+        _ref5$isNativeTransac = _ref5.isNativeTransaction,
+        isNativeTransaction = _ref5$isNativeTransac === void 0 ? false : _ref5$isNativeTransac;
     var restart = _ref6.restart;
     return createOrder().then(function (orderID) {
       var _getLogger$info$track;
@@ -7995,7 +8014,8 @@ function getOnApprove(xprops, _ref4) {
         subscriptionID: subscriptionID,
         facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
         buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
+        partnerAttributionID: partnerAttributionID,
+        isNativeTransaction: isNativeTransaction
       });
 
       if (onApprove) {
@@ -8119,7 +8139,8 @@ function buildXShippingChangeActions(_ref) {
       return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* patchOrder */ "p"])(orderID, data, {
         facilitatorAccessToken: facilitatorAccessToken,
         buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
+        partnerAttributionID: partnerAttributionID,
+        isNativeTransaction: false
       }).catch(function () {
         throw new Error('Order could not be patched');
       });
@@ -9279,7 +9300,7 @@ function openPopup(_ref) {
 
 
 var CHECKOUT_POPUP_DIMENSIONS = {
-  WIDTH: 480,
+  WIDTH: 500,
   HEIGHT: 590
 };
 var checkoutOpen = false;
@@ -10143,7 +10164,8 @@ function initNative(_ref3) {
       var data = {
         payerID: payerID,
         paymentID: paymentID,
-        billingToken: billingToken
+        billingToken: billingToken,
+        isNativeTransaction: true
       };
       var actions = {
         restart: function restart() {
