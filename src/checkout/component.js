@@ -578,7 +578,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
         }
 
         return {
-            width:  '480px',
+            width:  '500px',
             height: '590px'
         };
     }
