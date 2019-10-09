@@ -1,3 +1,9 @@
+## <small>5.0.60 (2019-10-09)</small>
+
+* Consume personalized tagline and button text components ([74a08eb](http://github.paypal.com/paypal/paypal-checkout/commit/74a08eb))
+
+
+
 ## <small>5.0.59 (2019-10-02)</small>
 
 * Add new funding types ([790ee87](http://github.paypal.com/paypal/paypal-checkout/commit/790ee87))
