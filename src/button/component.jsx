@@ -108,7 +108,7 @@ function isApmEligible(source, props) : boolean {
 
 let creditThrottle;
 
-const smartThrottle = getThrottle('smart_button_uri_2', 5, false);
+const smartThrottle = getThrottle('smart_button_uri_2', 20, false);
 
 type ButtonOptions = {|
     style : {|
