@@ -37,15 +37,16 @@ export function getButtonMiddleware({ logger = defaultLogger, graphQL, getAccess
         if (!clientID) {
             return clientErrorResponse(res, 'Please provide a clientID query parameter');
         }
-        
 
         const facilitatorAccessTokenPromise = getAccessToken(req, clientID);
         const merchantIDPromise = facilitatorAccessTokenPromise.then(facilitatorAccessToken => resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken }));
         const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
         const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache });
-        const isCardFieldsExperimentEnabledPromise = getInlineGuestExperiment(req, getParams(params, req, res));
 
         const merchantID = await merchantIDPromise;
+
+        const isCardFieldsExperimentEnabledPromise = getInlineGuestExperiment(req, { merchantID, ...getParams(params, req, res) });
+
         const gqlBatch = graphQLBatch(req, graphQL);
 
         const nativeEligibilityPromise = resolveNativeEligibility(req, gqlBatch, {
