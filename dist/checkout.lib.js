@@ -345,7 +345,8 @@ var FPTI = {
     VERSION: 'checkoutjs_version',
     MAX_BUTTONS: 'max_buttons',
     FUNDING_REMEMBERED: 'funding_remembered',
-    BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled'
+    BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled',
+    RESPONSE_DURATION: 'response_duration'
   },
   BUTTON_TYPE: {
     IFRAME: 'iframe',
@@ -2137,7 +2138,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: getSessionID(),
-      ver: "4.0.293"
+      ver: "4.0.294"
     };
   });
   Object(client["a" /* addHeaderBuilder */])(function () {
@@ -2581,7 +2582,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.293";
+    payload.version = "4.0.294";
     payload.host = window.location.host;
     payload.uid = getSessionID();
     payload.appName = APP_NAME;
@@ -2637,7 +2638,7 @@ function beacon_checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.293".replace(/[^0-9]+/g, '_');
+      var version = "4.0.294".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -2654,7 +2655,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.293",
+    v: "checkout.js." + "4.0.294",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -2867,7 +2868,7 @@ function isPayPalObjects() {
 }
 function getScriptVersion() {
   if (false) {} else {
-    return  false ? undefined : "4.0.293";
+    return  false ? undefined : "4.0.294";
   }
 }
 function getCurrentScriptUrl() {
@@ -2883,7 +2884,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.293" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.294" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -3251,7 +3252,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.lib.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.293",
+  version: "4.0.294",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -34789,7 +34790,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.293", _ref19), {
+  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.294", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -35035,7 +35036,7 @@ function isApmEligible(source, props) {
 }
 
 var creditThrottle;
-var smartThrottle = Object(lib["x" /* getThrottle */])('smart_button_uri_2', 5, false);
+var smartThrottle = Object(lib["x" /* getThrottle */])('smart_button_uri_2', 20, false);
 var component_Button = Object(src["c" /* create */])({
   tag: 'paypal-button',
   name: 'ppbutton',
@@ -35329,6 +35330,7 @@ var component_Button = Object(src["c" /* create */])({
           }
 
           this.memoizedToken = zalgo_promise_src["a" /* ZalgoPromise */].try(original, this, [data, actions]);
+          var startTime = Date.now();
           this.memoizedToken = this.memoizedToken.then(function (token) {
             var _track2;
 
@@ -35337,7 +35339,8 @@ var component_Button = Object(src["c" /* create */])({
               throw new Error("No value passed to payment");
             }
 
-            Object(beaver_logger_client["p" /* track */])((_track2 = {}, _track2[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track2[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.RECIEVE_PAYMENT, _track2[constants["u" /* FPTI */].KEY.CONTEXT_TYPE] = constants["u" /* FPTI */].CONTEXT_TYPE[Object(integrations["d" /* getPaymentType */])(token)], _track2[constants["u" /* FPTI */].KEY.CONTEXT_ID] = token, _track2[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, _track2));
+            var elapsed = Date.now() - startTime;
+            Object(beaver_logger_client["p" /* track */])((_track2 = {}, _track2[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track2[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.RECIEVE_PAYMENT, _track2[constants["u" /* FPTI */].KEY.CONTEXT_TYPE] = constants["u" /* FPTI */].CONTEXT_TYPE[Object(integrations["d" /* getPaymentType */])(token)], _track2[constants["u" /* FPTI */].KEY.CONTEXT_ID] = token, _track2[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, _track2[constants["u" /* FPTI */].KEY.RESPONSE_DURATION] = elapsed, _track2));
             Object(beaver_logger_client["h" /* flush */])();
             return token;
           });
@@ -36623,7 +36626,7 @@ var postRobot = post_robot_src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.293";
+var interface_version = "4.0.294";
 var interface_checkout;
 var apps;
 
