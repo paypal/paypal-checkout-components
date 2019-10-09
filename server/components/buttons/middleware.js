@@ -43,24 +43,22 @@ export function getButtonMiddleware({ logger = defaultLogger, graphQL, getAccess
         const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
         const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache });
 
-        const merchantID = await merchantIDPromise;
-
-        const isCardFieldsExperimentEnabledPromise = getInlineGuestExperiment(req, { merchantID, ...getParams(params, req, res) });
+        const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID, ...getParams(params, req, res) }));
 
         const gqlBatch = graphQLBatch(req, graphQL);
 
         const nativeEligibilityPromise = resolveNativeEligibility(req, gqlBatch, {
-            logger, clientID, merchantID, buttonSessionID, currency, vault,
+            logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, vault,
             buyerCountry, onShippingChange
         });
 
         const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
-            logger, clientID, merchantID, buttonSessionID, currency, intent, commit, vault,
+            logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
             disableFunding, disableCard, clientAccessToken, buyerCountry, defaultFundingEligibility
         });
 
         const personalizationPromise = resolvePersonalization(req, gqlBatch, {
-            logger, clientID, merchantID, buyerCountry, locale, buttonSessionID,
+            logger, clientID, merchantID: sdkMerchantID, buyerCountry, locale, buttonSessionID,
             currency, intent, commit, vault, label, period
         });
 
@@ -72,6 +70,7 @@ export function getButtonMiddleware({ logger = defaultLogger, graphQL, getAccess
         const personalization = await personalizationPromise;
         const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
         const facilitatorAccessToken = await facilitatorAccessTokenPromise;
+        const merchantID = await merchantIDPromise;
 
         const eligibility = {
             native:     await nativeEligibilityPromise,

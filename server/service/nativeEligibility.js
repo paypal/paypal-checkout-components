@@ -37,7 +37,7 @@ export type NativeEligibilityOptions = {|
     buyerCountry : ?$Values<typeof COUNTRY>,
     currency : $Values<typeof CURRENCY>,
     vault : $Values<typeof VAULT>,
-    merchantID : $ReadOnlyArray<string>,
+    merchantID : ?$ReadOnlyArray<string>,
     buttonSessionID : string,
     onShippingChange : boolean
 |};
@@ -50,7 +50,7 @@ export async function resolveNativeEligibility(req : ExpressRequest, gqlBatch : 
         const shippingCallbackEnabled = onShippingChange;
         
         const facilitatorClientID = clientID;
-        merchantID = merchantID[0];
+        merchantID = merchantID && merchantID[0];
         
         const result = await gqlBatch({
             query:     NATIVE_ELIGIBILITY_QUERY,
