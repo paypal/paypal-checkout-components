@@ -166,6 +166,8 @@ export function getCreateOrder(xprops : XProps, { facilitatorAccessTokenPromise,
     const actions = buildXCreateOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
 
     return memoize(() => {
+        const startTime = Date.now();
+
         return ZalgoPromise.try(() => {
             if (createBillingAgreement) {
                 return createBillingAgreement().then(billingTokenToOrderID);
@@ -193,13 +195,16 @@ export function getCreateOrder(xprops : XProps, { facilitatorAccessTokenPromise,
             if (orderID.indexOf('PAY-') === 0 || orderID.indexOf('PAYID-') === 0) {
                 throw new Error(`Do not pass PAY-XXX or PAYID-XXX directly into createOrder. Pass the EC-XXX token instead`);
             }
+
+            const duration = Date.now() - startTime;
     
             getLogger().track({
                 [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
                 [FPTI_KEY.CONTEXT_TYPE]:       FPTI_CONTEXT_TYPE.ORDER_ID,
                 [FPTI_KEY.CONTEXT_ID]:         orderID,
-                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+                [FPTI_KEY.RESPONSE_DURATION]:  duration.toString()
             }).flush();
     
             return orderID;
