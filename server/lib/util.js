@@ -5,7 +5,7 @@ import { dirname } from 'path';
 import { webpackCompile } from 'webpack-mem-compile';
 import webpack from 'webpack';
 import { regexTokenize } from 'belter';
-import { type ChildType, type NullableChildType } from 'jsx-pragmatic/src';
+import type { ChildType, NullableChildType } from 'jsx-pragmatic/src';
 
 import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from '../config';
 import type { ExpressRequest, ExpressResponse, LoggerType, LoggerPayload } from '../types';

@@ -343,7 +343,6 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         const cookies = req.get('cookie') || '';
         const userAgent = req.get('user-agent') || '';
 
-        // $FlowFixMe
         intent = intent ? intent.toUpperCase() : intent;
         // $FlowFixMe
         disableFunding = disableFunding ? disableFunding.map(source => source.toUpperCase()) : disableFunding;

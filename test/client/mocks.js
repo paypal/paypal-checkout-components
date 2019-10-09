@@ -189,8 +189,7 @@ export const DEFAULT_FUNDING_ELIGIBILITY = {
 
 export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_ELIGIBILITY) {
     const buttons = [];
-
-    // $FlowFixMe
+    
     for (const fundingSource of values(FUNDING)) {
         const fundingConfig = fundingEligibility[fundingSource];
 

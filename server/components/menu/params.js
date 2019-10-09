@@ -49,7 +49,6 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         clientID,
         cspNonce,
         debug,
-        // $FlowFixMe
         locale: { country, lang }
     };
 }

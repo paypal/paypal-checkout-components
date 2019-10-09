@@ -119,7 +119,6 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
     return {
         env,
         clientID,
-        // $FlowFixMe
         buyerCountry,
         currency,
         intent,
@@ -135,7 +134,6 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         debug,
         style,
         onShippingChange,
-        // $FlowFixMe
         locale: { country, lang }
     };
 }

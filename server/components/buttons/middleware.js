@@ -1,6 +1,7 @@
 /* @flow */
 
 import { html } from 'jsx-pragmatic';
+import { COUNTRY, LANG } from '@paypal/sdk-constants';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization, resolveNativeEligibility, resolveMerchantID } from '../../service';
@@ -11,12 +12,22 @@ import { EVENT } from './constants';
 import { getParams } from './params';
 import { buttonStyle } from './style';
 
+type InlineGuestElmoParams = {|
+    merchantID : string,
+    buttonSessionID : string,
+    locale : {|
+        lang : $Values<typeof COUNTRY>,
+        country : $Values<typeof LANG>
+    |},
+    buyerCountry : $Values<typeof COUNTRY>
+|};
+
 type ButtonMiddlewareOptions = {|
     logger? : LoggerType,
     graphQL : GraphQL,
     getAccessToken : (ExpressRequest, string) => Promise<string>,
     getMerchantID : (ExpressRequest, string) => Promise<string>,
-    getInlineGuestExperiment? : (req : ExpressRequest, params : Object) => Promise<boolean>,
+    getInlineGuestExperiment ? : (req : ExpressRequest, params : InlineGuestElmoParams) => Promise<boolean>,
     cache? : CacheType,
     firebaseConfig? : FirebaseConfig
 |};
@@ -43,7 +54,7 @@ export function getButtonMiddleware({ logger = defaultLogger, graphQL, getAccess
         const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
         const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache });
 
-        const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID, ...getParams(params, req, res) }));
+        const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry }));
 
         const gqlBatch = graphQLBatch(req, graphQL);
 
