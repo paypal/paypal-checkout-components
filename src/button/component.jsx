@@ -476,6 +476,8 @@ export const Button : Component<ButtonOptions> = create({
 
                     this.memoizedToken = ZalgoPromise.try(original, this, [ data, actions ]);
 
+                    const startTime = Date.now();
+
                     this.memoizedToken = this.memoizedToken.then(token => {
 
                         if (!token) {
@@ -483,12 +485,15 @@ export const Button : Component<ButtonOptions> = create({
                             throw new Error(`No value passed to payment`);
                         }
 
+                        const elapsed = Date.now() - startTime;
+
                         track({
                             [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                             [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.RECIEVE_PAYMENT,
                             [ FPTI.KEY.CONTEXT_TYPE ]:       FPTI.CONTEXT_TYPE[getPaymentType(token)],
                             [ FPTI.KEY.CONTEXT_ID ]:         token,
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                            [ FPTI.KEY.RESPONSE_DURATION ]:  elapsed
                         });
 
                         flushLogs();
