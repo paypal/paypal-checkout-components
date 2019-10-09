@@ -5540,7 +5540,11 @@ var FPTI_KEY = {
   USER_ACTION: 'user_action',
   CONTEXT_CORRID: 'context_correlation_id',
   SDK_CACHE: 'sdk_cache',
-  SDK_LOAD_TIME: 'sdk_load_time'
+  SDK_LOAD_TIME: 'sdk_load_time',
+  IS_VAULT: 'is_vault',
+  DISABLE_FUNDING: 'disable_funding',
+  DISABLE_CARD: 'disable_card',
+  RESPONSE_DURATION: 'response_duration'
 };
 var FPTI_USER_ACTION = {
   COMMIT: 'commit',

@@ -636,7 +636,11 @@ var FPTI_KEY = {
   USER_ACTION: 'user_action',
   CONTEXT_CORRID: 'context_correlation_id',
   SDK_CACHE: 'sdk_cache',
-  SDK_LOAD_TIME: 'sdk_load_time'
+  SDK_LOAD_TIME: 'sdk_load_time',
+  IS_VAULT: 'is_vault',
+  DISABLE_FUNDING: 'disable_funding',
+  DISABLE_CARD: 'disable_card',
+  RESPONSE_DURATION: 'response_duration'
 };
 var FPTI_USER_ACTION = {
   COMMIT: 'commit',
@@ -7688,6 +7692,7 @@ function getCreateOrder(xprops, _ref4) {
     partnerAttributionID: partnerAttributionID
   });
   return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "i"])(function () {
+    var startTime = Date.now();
     return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].try(function () {
       if (createBillingAgreement) {
         return createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_5__[/* billingTokenToOrderID */ "c"]);
@@ -7716,7 +7721,8 @@ function getCreateOrder(xprops, _ref4) {
         throw new Error("Do not pass PAY-XXX or PAYID-XXX directly into createOrder. Pass the EC-XXX token instead");
       }
 
-      Object(_lib__WEBPACK_IMPORTED_MODULE_7__[/* getLogger */ "b"])().track((_getLogger$track = {}, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_6__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_6__[/* FPTI_TRANSITION */ "h"].RECEIVE_ORDER, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_6__[/* FPTI_CONTEXT_TYPE */ "f"].ORDER_ID, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].CONTEXT_ID] = orderID, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$track)).flush();
+      var duration = Date.now() - startTime;
+      Object(_lib__WEBPACK_IMPORTED_MODULE_7__[/* getLogger */ "b"])().track((_getLogger$track = {}, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_6__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_6__[/* FPTI_TRANSITION */ "h"].RECEIVE_ORDER, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_6__[/* FPTI_CONTEXT_TYPE */ "f"].ORDER_ID, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].CONTEXT_ID] = orderID, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_KEY */ "d"].RESPONSE_DURATION] = duration.toString(), _getLogger$track)).flush();
       return orderID;
     });
   });
