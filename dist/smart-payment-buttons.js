@@ -7706,7 +7706,7 @@ function getCreateOrder(xprops, _ref4) {
         return actions.order.create({
           purchase_units: [{
             amount: {
-              currency_code: 'USD',
+              currency_code: currency,
               value: '0.01'
             }
           }]
@@ -9558,7 +9558,7 @@ function initCheckout(_ref6) {
     });
   };
 
-  var instance; // const { renderTo, close: closeCheckout } = init();
+  var instance;
 
   var close = function close() {
     checkoutOpen = false;
@@ -10592,6 +10592,8 @@ function setupButton(_ref) {
         win = payment.win,
         fundingSource = payment.fundingSource;
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+      var _getLogger$info$track;
+
       if (paymentProcessing) {
         return;
       }
@@ -10614,6 +10616,8 @@ function setupButton(_ref) {
 
         return;
       }
+
+      Object(lib["b" /* getLogger */])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
 
       var _getPaymentFlow = getPaymentFlow({
         props: props,
