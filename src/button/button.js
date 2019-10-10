@@ -1,13 +1,13 @@
 /* @flow */
 
 import { onClick as onElementClick, noop } from 'belter/src';
-import { COUNTRY } from '@paypal/sdk-constants/src';
+import { COUNTRY, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, PersonalizationType } from '../types';
-import { setupLogger, sendBeacon, fixClickFocus } from '../lib';
+import { setupLogger, sendBeacon, fixClickFocus, getLogger } from '../lib';
 import { type FirebaseConfig } from '../api';
-import { DATA_ATTRIBUTES } from '../constants';
+import { DATA_ATTRIBUTES, FPTI_STATE, FPTI_TRANSITION } from '../constants';
 import { type Payment } from '../payment-flows';
 
 import { getProps, getConfig, getComponents, getServiceData } from './props';
@@ -92,6 +92,13 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
 
                 return;
             }
+
+            getLogger().info('button_click').track({
+                [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+                [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource
+            }).flush();
 
             const { init, inline, spinner } = getPaymentFlow({ props, payment, config, components, serviceData });
             const { click, start, close } = init({ props, config, serviceData, components, payment });
