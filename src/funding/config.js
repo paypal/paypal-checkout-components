@@ -1,7 +1,7 @@
 /* @flow */
 /* global __paypal_checkout__*/
 
-import { FUNDING, COUNTRY, CARD, PLATFORM, DEFAULT } from '../constants';
+import { FUNDING, COUNTRY, CARD, PLATFORM, DEFAULT, ENV } from '../constants';
 
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
@@ -255,6 +255,11 @@ export const FUNDING_CONFIG = {
             COUNTRY.LT
         ],
 
+        allowedEnvs: [
+            ENV.LOCAL,
+            ENV.STAGE
+        ],
+
         allowHorizontal:     false,
         allowVertical:       true,
         requireCommitAsTrue: true
@@ -264,6 +269,11 @@ export const FUNDING_CONFIG = {
             COUNTRY.BR
         ],
 
+        allowedEnvs: [
+            ENV.LOCAL,
+            ENV.STAGE
+        ],
+
         allowHorizontal:     false,
         allowVertical:       true,
         requireCommitAsTrue: true
@@ -271,6 +281,11 @@ export const FUNDING_CONFIG = {
     [ FUNDING.OXXO ]: {
         allowedCountries: [
             COUNTRY.MX
+        ],
+
+        allowedEnvs: [
+            ENV.LOCAL,
+            ENV.STAGE
         ],
 
         allowHorizontal:     false,
