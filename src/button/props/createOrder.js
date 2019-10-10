@@ -180,7 +180,7 @@ export function getCreateOrder(xprops : XProps, { facilitatorAccessTokenPromise,
                     purchase_units: [
                         {
                             amount: {
-                                currency_code: 'USD',
+                                currency_code: currency,
                                 value:         '0.01'
                             }
                         }
