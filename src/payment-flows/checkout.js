@@ -211,8 +211,6 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
 
     let instance;
 
-    // const { renderTo, close: closeCheckout } = init();
-
     const close = () => {
         checkoutOpen = false;
         return ZalgoPromise.try(() => {
