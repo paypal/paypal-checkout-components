@@ -8,15 +8,22 @@ export type GraphQL = <V, R>(ExpressRequest, $ReadOnlyArray<{ query : string, va
 // eslint-disable-next-line flowtype/require-exact-type
 export type GraphQLBatch = {
     // eslint-disable-next-line no-undef
-    <V, R>({ query : string, variables : V }) : Promise<R>,
+    <V, R>({ query : string, variables : V, accessToken? : ?string }) : Promise<R>,
     flush : () => void
 };
 
 export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLBatch {
     const batch = [];
+    let accessToken;
 
-    const batchedGraphQL = async ({ query, variables }) => {
+    const batchedGraphQL = async ({ query, variables, accessToken: callerAccessToken }) => {
         return await new Promise((resolve, reject) => {
+            if (accessToken && accessToken !== callerAccessToken) {
+                throw new Error(`Access token for graphql call already set`);
+            }
+
+            accessToken = callerAccessToken;
+
             batch.push({ query, variables, resolve, reject });
         });
     };
@@ -30,7 +37,7 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
         let error;
 
         try {
-            response = await graphQL(req, payload);
+            response = await graphQL(req, payload, { accessToken });
         } catch (err) {
             error = err;
         }

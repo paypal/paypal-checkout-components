@@ -353,8 +353,9 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
             query:     FUNDING_ELIGIBILITY_QUERY,
             variables: {
                 clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
-                vault, disableFunding, disableCard, userAgent, buttonSessionID, clientAccessToken
-            }
+                vault, disableFunding, disableCard, userAgent, buttonSessionID
+            },
+            accessToken: clientAccessToken
         });
 
         return result.fundingEligibility;
