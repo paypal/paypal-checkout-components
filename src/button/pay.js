@@ -8,8 +8,8 @@ import { checkout, cardFields, native, vaultCapture, popupBridge, type Payment, 
 import { type Props, type Config, type ServiceData, type Components } from './props';
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
-    cardFields,
     vaultCapture,
+    cardFields,
     popupBridge,
     native,
     checkout
