@@ -1,5 +1,7 @@
 /* @flow */
 
+import { FUNDING } from '@paypal/sdk-constants/src';
+
 export const LOGGER_URL = '/xoplatform/logger/api/logger';
 export const AUTH_API_URL = '/v1/oauth2/token';
 export const ORDERS_API_URL = '/v2/checkout/orders';
@@ -18,9 +20,11 @@ export const SMART_API_URI = {
 
 export const GRAPHQL_URI = '/graphql';
 
-export const EXPERIENCE_URI = {
-    CHECKOUT:        '/checkoutnow',
-    NATIVE_CHECKOUT: '/smart/checkout/native'
+export const WEB_CHECKOUT_URI = '/checkoutnow';
+
+export const NATIVE_CHECKOUT_URI : { [ $Values<typeof FUNDING> ] : string } = {
+    [ FUNDING.PAYPAL ]: '/smart/checkout/native',
+    [ FUNDING.VENMO ]:  '/smart/checkout/venmo'
 };
 
 export const NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';

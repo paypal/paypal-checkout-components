@@ -6,7 +6,7 @@ import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
-import { EXPERIENCE_URI } from '../config';
+import { NATIVE_CHECKOUT_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { promiseNoop } from '../lib';
 
@@ -87,7 +87,7 @@ function isNativePaymentEligible({ payment } : { payment : Payment }) : boolean 
         return false;
     }
 
-    if (fundingSource !== FUNDING.PAYPAL) {
+    if (fundingSource !== FUNDING.PAYPAL && fundingSource !== FUNDING.VENMO) {
         return false;
     }
 
@@ -143,7 +143,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     };
 
     const getNativeUrl = () => {
-        return extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, {
+        return extendUrl(`${ getDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: { sessionUID, pageUrl: initialPageUrl }
         });
     };

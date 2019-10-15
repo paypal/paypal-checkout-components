@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { getDomain } from 'cross-domain-utils/src';
 import { extendUrl } from 'belter/src';
 
-import { EXPERIENCE_URI } from '../config';
+import { WEB_CHECKOUT_URI } from '../config';
 import { promiseNoop } from '../lib';
 import { POPUP_BRIDGE_OPTYPE, type Props } from '../button/props';
 import { USER_ACTION } from '../constants';
@@ -58,7 +58,7 @@ function initPopupBridge({ props, payment } : { props : Props, payment : Payment
                 throw new Error(`Popup bridge required`);
             }
             
-            const url = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.CHECKOUT }`, {
+            const url = extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
                 query: {
                     fundingSource,
                     token:        orderID,
