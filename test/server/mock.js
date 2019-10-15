@@ -136,6 +136,15 @@ export async function graphQL(req : {}, payload : $ReadOnlyArray<{ query : strin
                     },
                     zimpler: {
                         eligible: false
+                    },
+                    payu: {
+                        eligible: false
+                    },
+                    blik: {
+                        eligible: false
+                    },
+                    trustly: {
+                        eligible: false
                     }
                 }
             };

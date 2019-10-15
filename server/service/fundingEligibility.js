@@ -68,6 +68,18 @@ export type FundingEligibility = {|
         eligible : boolean,
         vaultable : boolean
     },
+    payu : {
+        eligible : boolean,
+        vaultable : boolean
+    },
+    trustly : {
+        eligible : boolean,
+        vaultable : boolean
+    },
+    blik : {
+        eligible : boolean,
+        vaultable : boolean
+    },
     card : {
         eligible : boolean,
         branded : boolean,
@@ -236,6 +248,18 @@ const FUNDING_ELIGIBILITY_QUERY = `
                 vaultable
             }
             wechatpay {
+                eligible
+                vaultable
+            }
+            payu {
+                eligible
+                vaultable
+            }
+            blik {
+                eligible
+                vaultable
+            }
+            trustly {
                 eligible
                 vaultable
             }
