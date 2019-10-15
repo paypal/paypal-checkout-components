@@ -4535,53 +4535,6 @@ function wrapPromise(method, _temp) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return LOGGER_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ORDERS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return PAYMENTS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return VALIDATE_PAYMENT_METHOD_API; });
-/* unused harmony export BASE_SMART_API_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return SMART_API_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return GRAPHQL_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return EXPERIENCE_URI; });
-/* unused harmony export NATIVE_DETECTION_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FIREBASE_SCRIPTS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ENABLE_PAYMENT_API; });
-var LOGGER_URL = '/xoplatform/logger/api/logger';
-var AUTH_API_URL = '/v1/oauth2/token';
-var ORDERS_API_URL = '/v2/checkout/orders';
-var PAYMENTS_API_URL = '/v1/payments/payment';
-var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
-var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
-var BASE_SMART_API_URL = '/smart/api';
-var SMART_API_URI = {
-  AUTH: BASE_SMART_API_URL + "/auth",
-  CHECKOUT: BASE_SMART_API_URL + "/checkout",
-  ORDER: BASE_SMART_API_URL + "/order",
-  PAYMENT: BASE_SMART_API_URL + "/payment",
-  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
-};
-var GRAPHQL_URI = '/graphql';
-var EXPERIENCE_URI = {
-  CHECKOUT: '/checkoutnow',
-  NATIVE_CHECKOUT: '/smart/checkout/native'
-};
-var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
-var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
-var FIREBASE_SCRIPTS = {
-  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
-  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
-  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
-};
-var ENABLE_PAYMENT_API = false;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 
 // EXTERNAL MODULE: ./src/lib/util.js
 var util = __webpack_require__(12);
@@ -4858,7 +4811,7 @@ function Logger(_ref2) {
 var sdk_constants_src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./src/config.js
-var config = __webpack_require__(4);
+var config = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
@@ -4873,7 +4826,7 @@ var constants = __webpack_require__(1);
 function getLogger() {
   return Object(belter_src["f" /* inlineMemoize */])(getLogger, function () {
     return Logger({
-      url: config["h" /* LOGGER_URL */]
+      url: config["g" /* LOGGER_URL */]
     });
   });
 }
@@ -4930,6 +4883,56 @@ function setupLogger(_ref) {
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGGER_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ORDERS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return PAYMENTS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return VALIDATE_PAYMENT_METHOD_API; });
+/* unused harmony export BASE_SMART_API_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return SMART_API_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GRAPHQL_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return WEB_CHECKOUT_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return NATIVE_CHECKOUT_URI; });
+/* unused harmony export NATIVE_DETECTION_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ENABLE_PAYMENT_API; });
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+var _NATIVE_CHECKOUT_URI;
+
+
+var LOGGER_URL = '/xoplatform/logger/api/logger';
+var AUTH_API_URL = '/v1/oauth2/token';
+var ORDERS_API_URL = '/v2/checkout/orders';
+var PAYMENTS_API_URL = '/v1/payments/payment';
+var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
+var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
+var BASE_SMART_API_URL = '/smart/api';
+var SMART_API_URI = {
+  AUTH: BASE_SMART_API_URL + "/auth",
+  CHECKOUT: BASE_SMART_API_URL + "/checkout",
+  ORDER: BASE_SMART_API_URL + "/order",
+  PAYMENT: BASE_SMART_API_URL + "/payment",
+  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
+};
+var GRAPHQL_URI = '/graphql';
+var WEB_CHECKOUT_URI = '/checkoutnow';
+var NATIVE_CHECKOUT_URI = (_NATIVE_CHECKOUT_URI = {}, _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].PAYPAL] = '/smart/checkout/native', _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].VENMO] = '/smart/checkout/venmo', _NATIVE_CHECKOUT_URI);
+var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
+var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
+var FIREBASE_SCRIPTS = {
+  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
+  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
+  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
+};
+var ENABLE_PAYMENT_API = false;
+
+/***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4940,7 +4943,7 @@ function setupLogger(_ref) {
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
 
 
@@ -5028,7 +5031,7 @@ function callGraphQL(_ref5) {
       _ref5$headers = _ref5.headers,
       headers = _ref5$headers === void 0 ? {} : _ref5$headers;
   return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "q"])({
-    url: _config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "g"],
+    url: _config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"],
     method: 'POST',
     json: {
       query: query,
@@ -5048,7 +5051,7 @@ function callGraphQL(_ref5) {
     }
 
     if (status !== 200) {
-      throw new Error(_config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "g"] + " returned status " + status);
+      throw new Error(_config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"] + " returned status " + status);
     }
 
     return body.data;
@@ -5092,10 +5095,10 @@ var src = __webpack_require__(2);
 var belter_src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/config.js
-var src_config = __webpack_require__(4);
+var src_config = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/lib/index.js + 5 modules
-var lib = __webpack_require__(5);
+var lib = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
@@ -5860,6 +5863,11 @@ function messageSocket(_ref) {
       handler: handler,
       requireSessionUID: requireSessionUID
     };
+    return {
+      cancel: function cancel() {
+        delete requestListeners[name];
+      }
+    };
   };
 
   var send = function send(messageName, messageData, _temp2) {
@@ -5911,6 +5919,7 @@ function messageSocket(_ref) {
 
   var close = function close() {
     retry = false;
+    requestListeners = {};
 
     for (var _i2 = 0, _Object$keys2 = Object.keys(responseListeners); _i2 < _Object$keys2.length; _i2++) {
       var requestUID = _Object$keys2[_i2];
@@ -5989,7 +5998,7 @@ function webSocket(_ref7) {
   });
 }
 var loadFirebaseSDK = Object(belter_src["i" /* memoize */])(function (config) {
-  return src["a" /* ZalgoPromise */].all([Object(util["b" /* loadScript */])(src_config["f" /* FIREBASE_SCRIPTS */].APP), Object(util["b" /* loadScript */])(src_config["f" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["f" /* FIREBASE_SCRIPTS */].DATABASE)]).then(function () {
+  return src["a" /* ZalgoPromise */].all([Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]).then(function () {
     var firebase = window.firebase;
 
     if (!firebase) {
@@ -6054,6 +6063,7 @@ function firebaseSocket(_ref8) {
         return database;
       });
     });
+    databasePromise.catch(belter_src["j" /* noop */]);
     return {
       send: function send(data) {
         databasePromise.then(function (database) {
@@ -7508,8 +7518,8 @@ function getOnInit(xprops) {
 /* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(8);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(5);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(4);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(4);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(5);
 
 
 
@@ -7740,8 +7750,8 @@ function getCreateOrder(xprops, _ref4) {
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5);
 
 
 
@@ -8050,7 +8060,7 @@ function getOnApprove(xprops, _ref4) {
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
 
 
@@ -8121,7 +8131,7 @@ function getOnCancel(xprops, _ref2) {
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
 
 
 
@@ -8210,8 +8220,10 @@ function getOnShippingChange(xprops, _ref2) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getOnClick; });
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+
 
 
 
@@ -8248,17 +8260,17 @@ function getOnClick(xprops) {
     return;
   }
 
-  return function (_ref2) {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "i"])(function (_ref2) {
     var _getLogger$info$track;
 
     var fundingSource = _ref2.fundingSource;
-    Object(_lib__WEBPACK_IMPORTED_MODULE_2__[/* getLogger */ "b"])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_TRANSITION */ "h"].BUTTON_CLICK, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
+    Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].BUTTON_CLICK, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
     return onClick(buildXOnClickData({
       fundingSource: fundingSource
     }), buildXOnClickActions()).then(function (valid) {
       return valid !== CLICK_VALID.INVALID;
     });
-  };
+  });
 }
 
 /***/ }),
@@ -8640,7 +8652,7 @@ var sdk_constants_src = __webpack_require__(0);
 var zalgo_promise_src = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/lib/index.js + 5 modules
-var lib = __webpack_require__(5);
+var lib = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
@@ -9348,6 +9360,10 @@ function isCheckoutEligible() {
   return true;
 }
 
+function isCheckoutPaymentEligible() {
+  return true;
+}
+
 function isVaultAutoSetupEligible(_ref3) {
   var vault = _ref3.vault,
       clientAccessToken = _ref3.clientAccessToken,
@@ -9458,7 +9474,8 @@ function initCheckout(_ref6) {
       win = payment.win,
       fundingSource = payment.fundingSource,
       card = payment.card,
-      isClick = payment.isClick;
+      isClick = payment.isClick,
+      buyerAccessToken = payment.buyerAccessToken;
   var fundingEligibility = serviceData.fundingEligibility,
       buyerCountry = serviceData.buyerCountry;
   var cspNonce = config.cspNonce;
@@ -9491,13 +9508,12 @@ function initCheckout(_ref6) {
     }
   };
 
-  var buyerAccessToken;
-
   var init = function init() {
     return Checkout({
       window: win,
       buttonSessionID: buttonSessionID,
       clientAccessToken: clientAccessToken,
+      buyerAccessToken: buyerAccessToken,
       createOrder: function createOrder() {
         return _createOrder().then(function (orderID) {
           return enableVaultSetup({
@@ -9575,25 +9591,23 @@ function initCheckout(_ref6) {
   });
 
   var click = function click() {
+    if (!onClick) {
+      start();
+      return;
+    }
+
+    win = win || openPopup({
+      width: CHECKOUT_POPUP_DIMENSIONS.WIDTH,
+      height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
+    });
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-      if (!onClick) {
-        start();
-        return true;
-      }
-
-      win = win || openPopup({
-        width: CHECKOUT_POPUP_DIMENSIONS.WIDTH,
-        height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
-      });
-      return onClick({
+      return onClick ? onClick({
         fundingSource: fundingSource
-      }).then(function (valid) {
-        if (win && !valid) {
-          win.close();
-        }
-
-        return valid;
-      });
+      }) : true;
+    }).then(function (valid) {
+      if (win && !valid) {
+        win.close();
+      }
     });
   };
 
@@ -9607,6 +9621,7 @@ function initCheckout(_ref6) {
 var checkout = {
   setup: setupCheckout,
   isEligible: isCheckoutEligible,
+  isPaymentEligible: isCheckoutPaymentEligible,
   init: initCheckout
 };
 // CONCATENATED MODULE: ./src/payment-flows/card-fields.js
@@ -9625,22 +9640,11 @@ var cardFieldsOpen = false;
 
 function isCardFieldsEligible(_ref) {
   var props = _ref.props,
-      payment = _ref.payment,
       serviceData = _ref.serviceData;
   var vault = props.vault,
       onShippingChange = props.onShippingChange,
       enableStandardCardFields = props.enableStandardCardFields;
-  var win = payment.win,
-      fundingSource = payment.fundingSource;
   var eligibility = serviceData.eligibility;
-
-  if (win) {
-    return false;
-  }
-
-  if (fundingSource !== sdk_constants_src["g" /* FUNDING */].CARD) {
-    return false;
-  }
 
   if (vault) {
     return false;
@@ -9656,6 +9660,24 @@ function isCardFieldsEligible(_ref) {
   }
 
   return eligibility.cardFields;
+}
+
+function isCardFieldsPaymentEligible(_ref2) {
+  var payment = _ref2.payment;
+
+  var _ref3 = payment || {},
+      win = _ref3.win,
+      fundingSource = _ref3.fundingSource;
+
+  if (win) {
+    return false;
+  }
+
+  if (fundingSource && fundingSource !== sdk_constants_src["g" /* FUNDING */].CARD) {
+    return false;
+  }
+
+  return true;
 }
 
 function highlightCard(card) {
@@ -9718,12 +9740,12 @@ var slideDownButtons = function slideDownButtons() {
   buttonsContainer.style.marginTop = "0px";
 };
 
-function initCardFields(_ref2) {
-  var props = _ref2.props,
-      components = _ref2.components,
-      payment = _ref2.payment,
-      serviceData = _ref2.serviceData,
-      config = _ref2.config;
+function initCardFields(_ref4) {
+  var props = _ref4.props,
+      components = _ref4.components,
+      payment = _ref4.payment,
+      serviceData = _ref4.serviceData,
+      config = _ref4.config;
   var createOrder = props.createOrder,
       _onApprove = props.onApprove,
       onCancel = props.onCancel,
@@ -9765,8 +9787,8 @@ function initCardFields(_ref2) {
     cardFieldsOpen = false;
   };
 
-  var onCardTypeChange = function onCardTypeChange(_ref3) {
-    var cardType = _ref3.card;
+  var onCardTypeChange = function onCardTypeChange(_ref5) {
+    var cardType = _ref5.card;
     highlightCard(cardType);
   };
 
@@ -9776,10 +9798,10 @@ function initCardFields(_ref2) {
     createOrder: createOrder,
     fundingSource: fundingSource,
     card: card,
-    onApprove: function onApprove(_ref4) {
-      var payerID = _ref4.payerID,
-          paymentID = _ref4.paymentID,
-          billingToken = _ref4.billingToken;
+    onApprove: function onApprove(_ref6) {
+      var payerID = _ref6.payerID,
+          paymentID = _ref6.paymentID,
+          billingToken = _ref6.billingToken;
       // eslint-disable-next-line no-use-before-define
       return close().then(function () {
         return _onApprove({
@@ -9792,8 +9814,8 @@ function initCardFields(_ref2) {
         });
       });
     },
-    onAuth: function onAuth(_ref5) {
-      var accessToken = _ref5.accessToken;
+    onAuth: function onAuth(_ref7) {
+      var accessToken = _ref7.accessToken;
       buyerAccessToken = accessToken;
     },
     onCancel: onCancel,
@@ -9833,8 +9855,8 @@ function initCardFields(_ref2) {
 var cardFields = {
   setup: setupCardFields,
   isEligible: isCardFieldsEligible,
+  isPaymentEligible: isCardFieldsPaymentEligible,
   init: initCardFields,
-  spinner: true,
   inline: true
 };
 // CONCATENATED MODULE: ./src/payment-flows/vault-capture.js
@@ -9846,11 +9868,22 @@ function setupVaultCapture() {// pass
 }
 
 function isVaultCaptureEligible(_ref) {
-  var props = _ref.props,
-      payment = _ref.payment;
-  var win = payment.win,
-      paymentMethodID = payment.paymentMethodID;
+  var props = _ref.props;
   var onShippingChange = props.onShippingChange;
+
+  if (onShippingChange) {
+    return false;
+  }
+
+  return true;
+}
+
+function isVaultCapturePaymentEligible(_ref2) {
+  var payment = _ref2.payment;
+
+  var _ref3 = payment || {},
+      win = _ref3.win,
+      paymentMethodID = _ref3.paymentMethodID;
 
   if (win) {
     return false;
@@ -9860,17 +9893,13 @@ function isVaultCaptureEligible(_ref) {
     return false;
   }
 
-  if (onShippingChange) {
-    return false;
-  }
-
   return true;
 }
 
-function handleThreeDomainSecure(_ref2) {
-  var ThreeDomainSecure = _ref2.ThreeDomainSecure,
-      createOrder = _ref2.createOrder,
-      getParent = _ref2.getParent;
+function handleThreeDomainSecure(_ref4) {
+  var ThreeDomainSecure = _ref4.ThreeDomainSecure,
+      createOrder = _ref4.createOrder,
+      getParent = _ref4.getParent;
   var promise = new zalgo_promise_src["a" /* ZalgoPromise */]();
   var instance = ThreeDomainSecure({
     createOrder: createOrder,
@@ -9889,12 +9918,12 @@ function handleThreeDomainSecure(_ref2) {
   }).finally(instance.close);
 }
 
-function handleValidateResponse(_ref3) {
-  var ThreeDomainSecure = _ref3.ThreeDomainSecure,
-      status = _ref3.status,
-      body = _ref3.body,
-      createOrder = _ref3.createOrder,
-      getParent = _ref3.getParent;
+function handleValidateResponse(_ref5) {
+  var ThreeDomainSecure = _ref5.ThreeDomainSecure,
+      status = _ref5.status,
+      body = _ref5.body,
+      createOrder = _ref5.createOrder,
+      getParent = _ref5.getParent;
   return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
     if (status === 422 && body.links && body.links.some(function (link) {
       return link.rel === '3ds-contingency-resolution';
@@ -9912,10 +9941,10 @@ function handleValidateResponse(_ref3) {
   });
 }
 
-function initVaultCapture(_ref4) {
-  var props = _ref4.props,
-      components = _ref4.components,
-      payment = _ref4.payment;
+function initVaultCapture(_ref6) {
+  var props = _ref6.props,
+      components = _ref6.components,
+      payment = _ref6.payment;
   var createOrder = props.createOrder,
       onApprove = props.onApprove,
       clientAccessToken = props.clientAccessToken,
@@ -9952,9 +9981,9 @@ function initVaultCapture(_ref4) {
         buttonSessionID: buttonSessionID,
         partnerAttributionID: partnerAttributionID
       });
-    }).then(function (_ref5) {
-      var status = _ref5.status,
-          body = _ref5.body;
+    }).then(function (_ref7) {
+      var status = _ref7.status,
+          body = _ref7.body;
       return handleValidateResponse({
         ThreeDomainSecure: ThreeDomainSecure,
         status: status,
@@ -9980,12 +10009,13 @@ function initVaultCapture(_ref4) {
 var vaultCapture = {
   setup: setupVaultCapture,
   isEligible: isVaultCaptureEligible,
+  isPaymentEligible: isVaultCapturePaymentEligible,
   init: initVaultCapture,
   spinner: true,
   inline: true
 };
 // EXTERNAL MODULE: ./src/config.js
-var src_config = __webpack_require__(4);
+var src_config = __webpack_require__(5);
 
 // CONCATENATED MODULE: ./src/payment-flows/native.js
 
@@ -10003,6 +10033,7 @@ var MESSAGE = {
   SET_PROPS: 'setProps',
   GET_PROPS: 'getProps',
   CLOSE: 'close',
+  FALLBACK: 'fallback',
   ON_APPROVE: 'onApprove',
   ON_CANCEL: 'onCancel',
   ON_ERROR: 'onError'
@@ -10020,14 +10051,8 @@ var getNativeSocket = Object(src["i" /* memoize */])(function (_ref) {
   });
 });
 
-function setupNative() {
-  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {// pass
-  });
-}
-
 function isNativeEligible(_ref2) {
   var props = _ref2.props,
-      payment = _ref2.payment,
       config = _ref2.config,
       serviceData = _ref2.serviceData;
 
@@ -10042,22 +10067,12 @@ function isNativeEligible(_ref2) {
       enableNativeCheckout = props.enableNativeCheckout;
   var firebaseConfig = config.firebase;
   var eligibility = serviceData.eligibility;
-  var win = payment.win,
-      fundingSource = payment.fundingSource;
-
-  if (win) {
-    return false;
-  }
 
   if (platform !== sdk_constants_src["i" /* PLATFORM */].MOBILE) {
     return false;
   }
 
   if (onShippingChange) {
-    return false;
-  }
-
-  if (fundingSource !== sdk_constants_src["g" /* FUNDING */].PAYPAL) {
     return false;
   }
 
@@ -10080,12 +10095,55 @@ function isNativeEligible(_ref2) {
   return false;
 }
 
-function initNative(_ref3) {
-  var props = _ref3.props,
-      components = _ref3.components,
-      config = _ref3.config,
-      payment = _ref3.payment,
-      serviceData = _ref3.serviceData;
+function isNativePaymentEligible(_ref3) {
+  var payment = _ref3.payment;
+  var win = payment.win,
+      fundingSource = payment.fundingSource;
+
+  if (win) {
+    return false;
+  }
+
+  if (fundingSource !== sdk_constants_src["g" /* FUNDING */].PAYPAL && fundingSource !== sdk_constants_src["g" /* FUNDING */].VENMO) {
+    return false;
+  }
+
+  return true;
+}
+
+var native_sessionUID;
+var nativeSocket;
+var initialPageUrl;
+
+function setupNative(_ref4) {
+  var config = _ref4.config,
+      props = _ref4.props;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    var version = config.version,
+        firebaseConfig = config.firebase;
+    var getPageUrl = props.getPageUrl;
+    native_sessionUID = Object(src["v" /* uniqueID */])();
+    nativeSocket = getNativeSocket({
+      sessionUID: native_sessionUID,
+      firebaseConfig: firebaseConfig,
+      version: version
+    });
+    return getPageUrl().then(function (pageUrl) {
+      initialPageUrl = pageUrl;
+    });
+  });
+}
+
+function didAppSwitchHappen(win) {
+  return Object(cross_domain_utils_src["e" /* isBlankDomain */])(win);
+}
+
+function initNative(_ref5) {
+  var props = _ref5.props,
+      components = _ref5.components,
+      config = _ref5.config,
+      payment = _ref5.payment,
+      serviceData = _ref5.serviceData;
   var createOrder = props.createOrder,
       onApprove = props.onApprove,
       onCancel = props.onCancel,
@@ -10097,35 +10155,38 @@ function initNative(_ref3) {
       stageHost = props.stageHost,
       apiStageHost = props.apiStageHost,
       onClick = props.onClick;
-  var version = config.version,
-      firebaseConfig = config.firebase;
   var facilitatorAccessTokenPromise = serviceData.facilitatorAccessTokenPromise;
   var fundingSource = payment.fundingSource;
-  var sessionUID = Object(src["v" /* uniqueID */])();
-  var _close = lib["c" /* promiseNoop */];
+  var instance = {
+    close: lib["c" /* promiseNoop */]
+  };
 
-  var fallbackToWebCheckout = function fallbackToWebCheckout(win) {
-    var _checkout$init = checkout.init({
+  var fallbackToWebCheckout = function fallbackToWebCheckout(_temp) {
+    var _ref6 = _temp === void 0 ? {} : _temp,
+        win = _ref6.win,
+        buyerAccessToken = _ref6.buyerAccessToken;
+
+    var checkoutPayment = Object(esm_extends["a" /* default */])({}, payment, {
+      buyerAccessToken: buyerAccessToken,
+      win: win,
+      isClick: false
+    });
+
+    instance = checkout.init({
       props: props,
       components: components,
-      payment: Object(esm_extends["a" /* default */])({}, payment, {
-        win: win,
-        isClick: false
-      }),
+      payment: checkoutPayment,
       config: config,
       serviceData: serviceData
-    }),
-        startCheckout = _checkout$init.start,
-        closeCheckout = _checkout$init.close;
-
-    _close = closeCheckout;
-    return startCheckout();
+    });
+    return instance.start();
   };
 
   var getNativeUrl = function getNativeUrl() {
-    return Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["e" /* EXPERIENCE_URI */].NATIVE_CHECKOUT, {
+    return Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["h" /* NATIVE_CHECKOUT_URI */][fundingSource], {
       query: {
-        sessionUID: sessionUID
+        sessionUID: native_sessionUID,
+        pageUrl: initialPageUrl
       }
     });
   };
@@ -10135,10 +10196,10 @@ function initNative(_ref3) {
       facilitatorAccessToken: facilitatorAccessTokenPromise,
       orderID: createOrder(),
       pageUrl: getPageUrl()
-    }).then(function (_ref4) {
-      var facilitatorAccessToken = _ref4.facilitatorAccessToken,
-          orderID = _ref4.orderID,
-          pageUrl = _ref4.pageUrl;
+    }).then(function (_ref7) {
+      var facilitatorAccessToken = _ref7.facilitatorAccessToken,
+          orderID = _ref7.orderID,
+          pageUrl = _ref7.pageUrl;
       var userAgent = Object(src["e" /* getUserAgent */])();
       return {
         orderID: orderID,
@@ -10154,21 +10215,16 @@ function initNative(_ref3) {
     });
   };
 
-  var openCheckoutSocket = function openCheckoutSocket() {
-    var socket = getNativeSocket({
-      sessionUID: sessionUID,
-      firebaseConfig: firebaseConfig,
-      version: version
-    });
-    socket.on(MESSAGE.GET_PROPS, function () {
+  var connectNative = function connectNative() {
+    nativeSocket.on(MESSAGE.GET_PROPS, function () {
       return getSDKProps();
     });
-    socket.on(MESSAGE.ON_APPROVE, function (_ref5) {
-      var _ref5$data = _ref5.data,
-          payerID = _ref5$data.payerID,
-          paymentID = _ref5$data.paymentID,
-          billingToken = _ref5$data.billingToken;
-      socket.close();
+    nativeSocket.on(MESSAGE.ON_APPROVE, function (_ref8) {
+      var _ref8$data = _ref8.data,
+          payerID = _ref8$data.payerID,
+          paymentID = _ref8$data.paymentID,
+          billingToken = _ref8$data.billingToken;
+      nativeSocket.close();
       var data = {
         payerID: payerID,
         paymentID: paymentID,
@@ -10182,70 +10238,74 @@ function initNative(_ref3) {
       };
       return onApprove(data, actions);
     });
-    socket.on(MESSAGE.ON_CANCEL, function () {
-      socket.close();
+    nativeSocket.on(MESSAGE.ON_CANCEL, function () {
+      nativeSocket.close();
       return onCancel();
     });
-    socket.on(MESSAGE.ON_ERROR, function (_ref6) {
-      var message = _ref6.data.message;
-      socket.close();
+    nativeSocket.on(MESSAGE.ON_ERROR, function (_ref9) {
+      var message = _ref9.data.message;
+      nativeSocket.close();
       return onError(new Error(message));
     });
+    nativeSocket.on(MESSAGE.FALLBACK, function (_ref10) {
+      var buyerAccessToken = _ref10.data.buyerAccessToken;
+      nativeSocket.close();
+      return fallbackToWebCheckout({
+        buyerAccessToken: buyerAccessToken
+      });
+    });
 
-    _close = function close() {
-      return socket.send(MESSAGE.CLOSE);
+    var setProps = function setProps() {
+      return getSDKProps().then(function (sdkProps) {
+        return nativeSocket.send(MESSAGE.SET_PROPS, sdkProps);
+      });
     };
 
+    var closeNative = function closeNative() {
+      return nativeSocket.send(MESSAGE.CLOSE).then(function () {
+        nativeSocket.close();
+      });
+    };
+
+    nativeSocket.reconnect();
     return {
-      close: _close
+      setProps: setProps,
+      close: closeNative
     };
   };
 
-  var startPromise;
+  var win;
   var start = Object(src["i" /* memoize */])(function () {
-    return startPromise;
+    return createOrder().then(function () {
+      if (didAppSwitchHappen(win)) {
+        win.close();
+        instance = connectNative();
+        return instance.setProps();
+      } else {
+        return fallbackToWebCheckout({
+          win: win
+        });
+      }
+    });
   });
 
   var click = function click() {
-    var win = Object(src["m" /* popup */])(getNativeUrl());
+    win = Object(src["m" /* popup */])(getNativeUrl());
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-      if (!onClick) {
-        return true;
-      }
-
-      return onClick({
+      return onClick ? onClick({
         fundingSource: fundingSource
-      }).then(function (valid) {
-        if (!valid) {
-          _close();
-        }
-
-        return valid;
-      });
+      }) : true;
     }).then(function (valid) {
-      startPromise = zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-        return valid ? createOrder() : zalgo_promise_src["a" /* ZalgoPromise */].delay(500);
-      }).then(function () {
-        if (Object(cross_domain_utils_src["e" /* isBlankDomain */])(win)) {
-          win.close();
-
-          var _openCheckoutSocket = openCheckoutSocket(),
-              closeNative = _openCheckoutSocket.close;
-
-          _close = closeNative;
-
-          if (!valid) {
-            _close();
-          }
-        } else {
-          if (valid) {
-            return fallbackToWebCheckout(win);
+      if (!valid) {
+        return zalgo_promise_src["a" /* ZalgoPromise */].delay(500).then(function () {
+          if (didAppSwitchHappen(win)) {
+            win.close();
+            return connectNative().close();
           } else {
-            _close();
+            win.close();
           }
-        }
-      });
-      return valid;
+        });
+      }
     });
   };
 
@@ -10253,7 +10313,7 @@ function initNative(_ref3) {
     click: click,
     start: start,
     close: function close() {
-      return zalgo_promise_src["a" /* ZalgoPromise */].try(_close);
+      return instance.close();
     }
   };
 }
@@ -10261,6 +10321,7 @@ function initNative(_ref3) {
 var native_native = {
   setup: setupNative,
   isEligible: isNativeEligible,
+  isPaymentEligible: isNativePaymentEligible,
   init: initNative,
   spinner: true
 };
@@ -10288,10 +10349,19 @@ function setupPopupBridge(_ref) {
 }
 
 function isPopupBridgeEligible(_ref2) {
-  var props = _ref2.props,
-      payment = _ref2.payment;
-  var win = payment.win;
+  var props = _ref2.props;
   var onShippingChange = props.onShippingChange;
+
+  if (onShippingChange) {
+    return false;
+  }
+
+  return true;
+}
+
+function isPopupBridgePaymentEligible(_ref3) {
+  var payment = _ref3.payment;
+  var win = payment.win;
 
   if (win) {
     return false;
@@ -10301,16 +10371,12 @@ function isPopupBridgeEligible(_ref2) {
     return false;
   }
 
-  if (onShippingChange) {
-    return false;
-  }
-
   return true;
 }
 
-function initPopupBridge(_ref3) {
-  var props = _ref3.props,
-      payment = _ref3.payment;
+function initPopupBridge(_ref4) {
+  var props = _ref4.props,
+      payment = _ref4.payment;
   var createOrder = props.createOrder,
       onApprove = props.onApprove,
       onCancel = props.onCancel,
@@ -10323,7 +10389,7 @@ function initPopupBridge(_ref3) {
         throw new Error("Popup bridge required");
       }
 
-      var url = Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["e" /* EXPERIENCE_URI */].CHECKOUT, {
+      var url = Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
         query: {
           fundingSource: fundingSource,
           token: orderID,
@@ -10332,11 +10398,11 @@ function initPopupBridge(_ref3) {
         }
       });
       return parentPopupBridge.start(url);
-    }).then(function (_ref4) {
-      var opType = _ref4.opType,
-          payerID = _ref4.PayerID,
-          paymentID = _ref4.paymentId,
-          billingToken = _ref4.ba_token;
+    }).then(function (_ref5) {
+      var opType = _ref5.opType,
+          payerID = _ref5.PayerID,
+          paymentID = _ref5.paymentId,
+          billingToken = _ref5.ba_token;
 
       if (opType === button_props["POPUP_BRIDGE_OPTYPE"].PAYMENT) {
         return onApprove({
@@ -10365,6 +10431,7 @@ function initPopupBridge(_ref3) {
 var popupBridge = {
   setup: setupPopupBridge,
   isEligible: isPopupBridgeEligible,
+  isPaymentEligible: isPopupBridgePaymentEligible,
   init: initPopupBridge,
   spinner: true
 };
@@ -10388,12 +10455,17 @@ function setupPaymentFlows(_ref) {
       serviceData = _ref.serviceData,
       components = _ref.components;
   return zalgo_promise_src["a" /* ZalgoPromise */].all(PAYMENT_FLOWS.map(function (flow) {
-    return flow.setup({
+    return flow.isEligible({
       props: props,
       config: config,
       serviceData: serviceData,
       components: components
-    });
+    }) ? flow.setup({
+      props: props,
+      config: config,
+      serviceData: serviceData,
+      components: components
+    }) : null;
   })).then(src["j" /* noop */]);
 }
 function getPaymentFlow(_ref2) {
@@ -10407,6 +10479,11 @@ function getPaymentFlow(_ref2) {
     var flow = PAYMENT_FLOWS[_i2];
 
     if (flow.isEligible({
+      props: props,
+      config: config,
+      components: components,
+      serviceData: serviceData
+    }) && flow.isPaymentEligible({
       props: props,
       payment: payment,
       config: config,
@@ -10549,8 +10626,7 @@ function setupButton(_ref) {
       onInit = _props.onInit,
       getPrerenderDetails = _props.getPrerenderDetails,
       rememberFunding = _props.rememberFunding,
-      style = _props.style,
-      onClick = _props.onClick;
+      style = _props.style;
   var config = Object(button_props["getConfig"])({
     serverCSPNonce: serverCSPNonce,
     firebaseConfig: firebaseConfig
@@ -10602,6 +10678,9 @@ function setupButton(_ref) {
       props = Object(button_props["getProps"])({
         facilitatorAccessTokenPromise: facilitatorAccessTokenPromise
       });
+      var _props2 = props,
+          onClick = _props2.onClick,
+          createOrder = _props2.createOrder;
 
       if (!isEnabled()) {
         if (win) {
@@ -10617,6 +10696,7 @@ function setupButton(_ref) {
         return;
       }
 
+      sendPersonalizationBeacons();
       Object(lib["b" /* getLogger */])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
 
       var _getPaymentFlow = getPaymentFlow({
@@ -10637,30 +10717,23 @@ function setupButton(_ref) {
         components: components,
         payment: payment
       }),
-          click = _init.click,
+          _init$click = _init.click,
+          click = _init$click === void 0 ? lib["c" /* promiseNoop */] : _init$click,
           start = _init.start,
-          close = _init.close; // $FlowFixMe
+          close = _init.close;
 
+      var clickPromise = click(); // $FlowFixMe
 
-      button.payPromise = zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-        sendPersonalizationBeacons();
+      button.payPromise = zalgo_promise_src["a" /* ZalgoPromise */].hash({
+        valid: onClick ? onClick({
+          fundingSource: fundingSource
+        }) : true
+      }).then(function (_ref2) {
+        var valid = _ref2.valid;
 
-        if (click) {
-          return click();
-        } else if (onClick) {
-          return onClick({
-            fundingSource: fundingSource
-          });
-        } else {
-          return true;
-        }
-      }).then(function (valid) {
         if (!valid) {
           return;
         }
-
-        var _props2 = props,
-            createOrder = _props2.createOrder;
 
         if (spinner) {
           Object(dom["b" /* enableLoadingSpinner */])(button);
@@ -10680,6 +10753,8 @@ function setupButton(_ref) {
             clientID: clientID,
             merchantID: merchantID
           });
+        }).then(function () {
+          return clickPromise;
         }).catch(function (err) {
           return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), zalgo_promise_src["a" /* ZalgoPromise */].reject(err)]);
         }).then(src["j" /* noop */]);
@@ -10715,8 +10790,8 @@ function setupButton(_ref) {
     return zalgo_promise_src["a" /* ZalgoPromise */].hash({
       prerenderDetails: getPrerenderDetails(),
       initPromise: initPromise
-    }).then(function (_ref2) {
-      var prerenderDetails = _ref2.prerenderDetails;
+    }).then(function (_ref3) {
+      var prerenderDetails = _ref3.prerenderDetails;
 
       if (!prerenderDetails) {
         return;

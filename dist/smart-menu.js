@@ -5666,6 +5666,9 @@ var DEFAULT_DEBUG = DEBUG.FALSE;
 
 
 // CONCATENATED MODULE: ./src/config.js
+var _NATIVE_CHECKOUT_URI;
+
+
 var LOGGER_URL = '/xoplatform/logger/api/logger';
 var AUTH_API_URL = '/v1/oauth2/token';
 var ORDERS_API_URL = '/v2/checkout/orders';
@@ -5681,10 +5684,8 @@ var SMART_API_URI = {
   SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
 };
 var GRAPHQL_URI = '/graphql';
-var EXPERIENCE_URI = {
-  CHECKOUT: '/checkoutnow',
-  NATIVE_CHECKOUT: '/smart/checkout/native'
-};
+var WEB_CHECKOUT_URI = '/checkoutnow';
+var NATIVE_CHECKOUT_URI = (_NATIVE_CHECKOUT_URI = {}, _NATIVE_CHECKOUT_URI[FUNDING.PAYPAL] = '/smart/checkout/native', _NATIVE_CHECKOUT_URI[FUNDING.VENMO] = '/smart/checkout/venmo', _NATIVE_CHECKOUT_URI);
 var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
 var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
 var FIREBASE_SCRIPTS = {
