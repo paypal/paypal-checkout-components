@@ -10381,7 +10381,7 @@ var popupBridge = {
 
 
 
-var PAYMENT_FLOWS = [cardFields, vaultCapture, popupBridge, native_native, checkout];
+var PAYMENT_FLOWS = [vaultCapture, cardFields, popupBridge, native_native, checkout];
 function setupPaymentFlows(_ref) {
   var props = _ref.props,
       config = _ref.config,
