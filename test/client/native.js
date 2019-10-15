@@ -877,4 +877,148 @@ describe('native cases', () => {
             await clickButton(FUNDING.PAYPAL);
         });
     });
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path, then fall back from native', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+
+            const firebaseScripts = mockFirebaseScripts();
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (!data.query.includes('query GetFireBaseSessionToken')) {
+                        return;
+                    }
+
+                    if (!data.variables.sessionUID) {
+                        throw new Error(`Expected sessionUID to be passed`);
+                    }
+
+                    return {
+                        data: {
+                            firebase: {
+                                auth: {
+                                    sessionUID: data.variables.sessionUID,
+                                    sessionToken
+                                }
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            let sessionUID;
+
+            const { expect: expectSocket, fallback } = getNativeFirebaseMock({
+                getSessionUID: () => {
+                    if (!sessionUID) {
+                        throw new Error(`Session UID not present`);
+                    }
+
+                    return sessionUID;
+                }
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'AAABBBCCC';
+            const buyerAccessToken = '534dfrthtr4334t';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+
+                ZalgoPromise.try(expect('postOnApprove'), async () => {
+                    await mockWebSocketServer.done();
+                });
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
+                if (checkoutProps.buyerAccessToken !== buyerAccessToken) {
+                    throw new Error(`Expected buyerAccessToken to be passed in fallback checkout render as ${ buyerAccessToken } - got ${ checkoutProps.buyerAccessToken }`);
+                }
+
+                const checkoutInstance = CheckoutOriginal(checkoutProps);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return checkoutProps.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            const windowOpen = window.open;
+            window.open = expect('windowOpen', (url) => {
+                window.open = windowOpen;
+
+                if (!url) {
+                    throw new Error(`Expected url to be immediately passed to window.open`);
+                }
+
+                const query = parseQuery(url.split('?')[1]);
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
+
+                if (!sessionUID) {
+                    throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
+                }
+
+                const win : Object = {
+                    location: {
+                        href: 'about:blank'
+                    },
+                    closed: false,
+                    close:  expect('close', () => {
+                        ZalgoPromise.delay(50)
+                            .then(() => ZalgoPromise.delay(50))
+                            .then(() => fallback({ buyerAccessToken }));
+                    })
+                };
+
+                win.parent = win.top = win;
+                return win;
+            });
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
+            firebaseScripts.done();
+        });
+    });
 });

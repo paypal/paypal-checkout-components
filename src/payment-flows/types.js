@@ -19,7 +19,8 @@ export type Payment = {|
     fundingSource : $Values<typeof FUNDING>,
     card : ?$Values<typeof CARD>,
     paymentMethodID? : ?string,
-    isClick? : boolean
+    isClick? : boolean,
+    buyerAccessToken? : ?string
 |};
 
 export type PaymentFlow = {|

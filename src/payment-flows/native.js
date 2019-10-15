@@ -20,6 +20,7 @@ const MESSAGE = {
     SET_PROPS:  'setProps',
     GET_PROPS:  'getProps',
     CLOSE:      'close',
+    FALLBACK:   'fallback',
     ON_APPROVE: 'onApprove',
     ON_CANCEL:  'onCancel',
     ON_ERROR:   'onError'
@@ -135,8 +136,9 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     let instance : { close : () => ZalgoPromise<void> } = { close: promiseNoop };
 
-    const fallbackToWebCheckout = (win? : CrossDomainWindowType) => {
-        instance = checkout.init({ props, components, payment: { ...payment, win, isClick: false }, config, serviceData });
+    const fallbackToWebCheckout = ({ win, buyerAccessToken } : { win? : CrossDomainWindowType, buyerAccessToken? : string } = {}) => {
+        const checkoutPayment = { ...payment, buyerAccessToken, win, isClick: false };
+        instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData });
         return instance.start();
     };
 
@@ -183,6 +185,11 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return onError(new Error(message));
         });
 
+        nativeSocket.on(MESSAGE.FALLBACK, ({ data: { buyerAccessToken } }) => {
+            nativeSocket.close();
+            return fallbackToWebCheckout({ buyerAccessToken });
+        });
+
         const setProps = () => {
             return getSDKProps().then(sdkProps => {
                 return nativeSocket.send(MESSAGE.SET_PROPS, sdkProps);
@@ -209,7 +216,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 instance = connectNative();
                 return instance.setProps();
             } else {
-                return fallbackToWebCheckout(win);
+                return fallbackToWebCheckout({ win });
             }
         });
     });

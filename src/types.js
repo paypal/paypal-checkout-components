@@ -229,7 +229,8 @@ export type CheckoutFlowType = {|
         buyerCountry : $Values<typeof COUNTRY>,
         locale : LocaleType,
         commit : boolean,
-        cspNonce : ?string
+        cspNonce : ?string,
+        buyerAccessToken : ?string
     |}) : ZoidComponent
 |};
 

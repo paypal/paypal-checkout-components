@@ -509,7 +509,8 @@ type NativeMockWebSocket = {|
     // getProps : () => void,
     onApprove : () => void,
     onCancel : () => void,
-    onError : () => void
+    onError : () => void,
+    fallback : ({ buyerAccessToken : string }) => void
 |};
 
 export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () => ?string }) : NativeMockWebSocket {
@@ -645,7 +646,7 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
     };
 
     return {
-        expect, onApprove, onCancel, onError
+        expect, onApprove, onCancel, onError, fallback: noop
     };
 }
 
@@ -766,6 +767,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
     let onApproveRequestID;
     let onCancelRequestID;
     let onErrorRequestID;
+    let fallbackRequestID;
 
     const received = {};
     const waitingForResponse = [];
@@ -963,6 +965,24 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
         waitingForResponse.push(onErrorRequestID);
     };
 
+    const fallback = ({ buyerAccessToken } : { buyerAccessToken : string }) => {
+        fallbackRequestID = `${ uniqueID() }_fallback`;
+
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        fallbackRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'fallback',
+            message_data:       { buyerAccessToken }
+        }));
+
+        waitingForResponse.push(onErrorRequestID);
+    };
+
     const expect = () => {
         const { done: firebaseDone } = expectFirebase();
 
@@ -982,7 +1002,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
     };
 
     return {
-        expect, onApprove, onCancel, onError
+        expect, onApprove, onCancel, onError, fallback
     };
 }
 
