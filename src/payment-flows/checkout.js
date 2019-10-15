@@ -55,6 +55,10 @@ function isCheckoutEligible() : boolean {
     return true;
 }
 
+function isCheckoutPaymentEligible() : boolean {
+    return true;
+}
+
 type VaultAutoSetupEligibleProps = {|
     vault : boolean,
     clientAccessToken : ?string,
@@ -249,7 +253,8 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
 }
 
 export const checkout : PaymentFlow = {
-    setup:      setupCheckout,
-    isEligible: isCheckoutEligible,
-    init:       initCheckout
+    setup:             setupCheckout,
+    isEligible:        isCheckoutEligible,
+    isPaymentEligible: isCheckoutPaymentEligible,
+    init:              initCheckout
 };

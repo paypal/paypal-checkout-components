@@ -24,19 +24,24 @@ function setupPopupBridge({ props } : { props : Props }) : ZalgoPromise<void> {
     });
 }
 
-function isPopupBridgeEligible({ props, payment } : { props : Props, payment : Payment }) : boolean {
-    const { win } = payment;
+function isPopupBridgeEligible({ props } : { props : Props }) : boolean {
     const { onShippingChange } = props;
+
+    if (onShippingChange) {
+        return false;
+    }
+
+    return true;
+}
+
+function isPopupBridgePaymentEligible({ payment } : { payment : Payment }) : boolean {
+    const { win } = payment;
 
     if (win) {
         return false;
     }
 
     if (!parentPopupBridge) {
-        return false;
-    }
-
-    if (onShippingChange) {
         return false;
     }
 
@@ -84,8 +89,9 @@ function initPopupBridge({ props, payment } : { props : Props, payment : Payment
 }
 
 export const popupBridge : PaymentFlow = {
-    setup:      setupPopupBridge,
-    isEligible: isPopupBridgeEligible,
-    init:       initPopupBridge,
-    spinner:    true
+    setup:             setupPopupBridge,
+    isEligible:        isPopupBridgeEligible,
+    isPaymentEligible: isPopupBridgePaymentEligible,
+    init:              initPopupBridge,
+    spinner:           true
 };

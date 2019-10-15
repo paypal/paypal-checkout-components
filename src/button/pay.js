@@ -17,13 +17,15 @@ const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
 
 export function setupPaymentFlows({ props, config, serviceData, components } : { props : Props, config : Config, serviceData : ServiceData, components : Components }) : ZalgoPromise<void> {
     return ZalgoPromise.all(PAYMENT_FLOWS.map(flow => {
-        return flow.setup({ props, config, serviceData, components });
+        return flow.isEligible({ props, config, serviceData, components })
+            ? flow.setup({ props, config, serviceData, components })
+            : null;
     })).then(noop);
 }
 
 export function getPaymentFlow({ props, payment, config, components, serviceData } : { props : Props, payment : Payment, config : Config, components : Components, serviceData : ServiceData }) : PaymentFlow {
     for (const flow of PAYMENT_FLOWS) {
-        if (flow.isEligible({ props, payment, config, components, serviceData })) {
+        if (flow.isEligible({ props, config, components, serviceData }) && flow.isPaymentEligible({ props, payment, config, components, serviceData })) {
             return flow;
         }
     }

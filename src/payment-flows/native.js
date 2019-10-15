@@ -41,13 +41,7 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     });
 });
 
-function setupNative() : ZalgoPromise<void> {
-    return ZalgoPromise.try(() => {
-        // pass
-    });
-}
-
-function isNativeEligible({ props, payment, config, serviceData } : { props : Props, payment : Payment, config : Config, serviceData : ServiceData }) : boolean {
+function isNativeEligible({ props, config, serviceData } : { props : Props, config : Config, serviceData : ServiceData }) : boolean {
 
     if (window.xprops.forceNativeEligible) {
         return true;
@@ -58,21 +52,11 @@ function isNativeEligible({ props, payment, config, serviceData } : { props : Pr
     const { firebase: firebaseConfig } = config;
     const { eligibility } = serviceData;
 
-    const { win, fundingSource } = payment;
-
-    if (win) {
-        return false;
-    }
-
     if (platform !== PLATFORM.MOBILE) {
         return false;
     }
 
     if (onShippingChange) {
-        return false;
-    }
-
-    if (fundingSource !== FUNDING.PAYPAL) {
         return false;
     }
 
@@ -93,6 +77,26 @@ function isNativeEligible({ props, payment, config, serviceData } : { props : Pr
     }
 
     return false;
+}
+
+function isNativePaymentEligible({ payment } : { payment : Payment }) : boolean {
+    const { win, fundingSource } = payment;
+
+    if (win) {
+        return false;
+    }
+
+    if (fundingSource !== FUNDING.PAYPAL) {
+        return false;
+    }
+
+    return true;
+}
+
+function setupNative() : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
+        // pass
+    });
 }
 
 type NativeSDKProps = {|
@@ -229,8 +233,9 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 }
 
 export const native : PaymentFlow = {
-    setup:      setupNative,
-    isEligible: isNativeEligible,
-    init:       initNative,
-    spinner:    true
+    setup:             setupNative,
+    isEligible:        isNativeEligible,
+    isPaymentEligible: isNativePaymentEligible,
+    init:              initNative,
+    spinner:           true
 };

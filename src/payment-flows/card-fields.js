@@ -17,18 +17,9 @@ function setupCardFields() {
 
 let cardFieldsOpen = false;
 
-function isCardFieldsEligible({ props, payment, serviceData } : { props : Props, payment : Payment, serviceData : ServiceData }) : boolean {
+function isCardFieldsEligible({ props, serviceData } : { props : Props, serviceData : ServiceData }) : boolean {
     const { vault, onShippingChange, enableStandardCardFields } = props;
-    const { win, fundingSource } = payment;
     const { eligibility } = serviceData;
-
-    if (win) {
-        return false;
-    }
-
-    if (fundingSource !== FUNDING.CARD) {
-        return false;
-    }
 
     if (vault) {
         return false;
@@ -44,6 +35,20 @@ function isCardFieldsEligible({ props, payment, serviceData } : { props : Props,
     }
 
     return eligibility.cardFields;
+}
+
+function isCardFieldsPaymentEligible({ payment } : { payment : Payment }) : boolean {
+    const { win, fundingSource } = payment || {};
+
+    if (win) {
+        return false;
+    }
+
+    if (fundingSource && fundingSource !== FUNDING.CARD) {
+        return false;
+    }
+
+    return true;
 }
 
 function highlightCard(card : $Values<typeof CARD>) {
@@ -181,8 +186,9 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
 }
 
 export const cardFields : PaymentFlow = {
-    setup:      setupCardFields,
-    isEligible: isCardFieldsEligible,
-    init:       initCardFields,
-    inline:     true
+    setup:             setupCardFields,
+    isEligible:        isCardFieldsEligible,
+    isPaymentEligible: isCardFieldsPaymentEligible,
+    init:              initCardFields,
+    inline:            true
 };

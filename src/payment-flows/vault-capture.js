@@ -14,19 +14,24 @@ function setupVaultCapture() {
     // pass
 }
 
-function isVaultCaptureEligible({ props, payment } : { props : Props, payment : Payment }) : boolean {
-    const { win, paymentMethodID } = payment;
+function isVaultCaptureEligible({ props } : { props : Props }) : boolean {
     const { onShippingChange } = props;
+
+    if (onShippingChange) {
+        return false;
+    }
+
+    return true;
+}
+
+function isVaultCapturePaymentEligible({ payment } : { payment : Payment }) : boolean {
+    const { win, paymentMethodID } = payment || {};
 
     if (win) {
         return false;
     }
-    
-    if (!paymentMethodID) {
-        return false;
-    }
 
-    if (onShippingChange) {
+    if (!paymentMethodID) {
         return false;
     }
 
@@ -113,9 +118,10 @@ function initVaultCapture({ props, components, payment } : { props : Props, comp
 }
 
 export const vaultCapture : PaymentFlow = {
-    setup:      setupVaultCapture,
-    isEligible: isVaultCaptureEligible,
-    init:       initVaultCapture,
-    spinner:    true,
-    inline:     true
+    setup:             setupVaultCapture,
+    isEligible:        isVaultCaptureEligible,
+    isPaymentEligible: isVaultCapturePaymentEligible,
+    init:              initVaultCapture,
+    spinner:           true,
+    inline:            true
 };
