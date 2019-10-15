@@ -70,7 +70,9 @@ export type MessageSocket = {|
         opts? : {|
             requireSessionUID? : boolean
         |}
-    ) => void,
+    ) => {|
+        cancel : () => void
+    |},
     send : <T, R>( // eslint-disable-line no-undef
         name : string,
         data : T, // eslint-disable-line no-undef
@@ -86,7 +88,7 @@ export type MessageSocket = {|
 export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion, targetApp, retry = true } : MessageSocketOptions) : MessageSocket {
 
     const receivedMessages = {};
-    const requestListeners = {};
+    let requestListeners = {};
     const responseListeners = {};
     const activeRequests = [];
 
@@ -281,6 +283,12 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
             handler,
             requireSessionUID
         };
+
+        return {
+            cancel: () => {
+                delete requestListeners[name];
+            }
+        };
     };
 
     const send = <T, R>(messageName, messageData : T, { requireSessionUID = true, timeout = 0 } = {}) : ZalgoPromise<R> => {
@@ -328,6 +336,8 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
     const close = () => {
         retry = false;
+
+        requestListeners = {};
 
         for (const requestUID of Object.keys(responseListeners)) {
             const { listenerPromise } = responseListeners[requestUID];
@@ -474,6 +484,8 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
                 return database;
             });
         });
+
+        databasePromise.catch(noop);
 
         return {
             send: (data) => {

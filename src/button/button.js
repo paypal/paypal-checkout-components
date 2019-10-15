@@ -5,7 +5,7 @@ import { COUNTRY, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, PersonalizationType } from '../types';
-import { setupLogger, sendBeacon, fixClickFocus, getLogger } from '../lib';
+import { setupLogger, sendBeacon, fixClickFocus, getLogger, promiseNoop } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, FPTI_STATE, FPTI_TRANSITION } from '../constants';
 import { type Payment } from '../payment-flows';
@@ -45,7 +45,7 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
     let props = getProps({ facilitatorAccessTokenPromise });
     const { env, sessionID, partnerAttributionID, commit, correlationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding,
-        style, onClick } = props;
+        style } = props;
         
     const config = getConfig({ serverCSPNonce, firebaseConfig });
     const { version } = config;
@@ -80,6 +80,7 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
             paymentProcessing = true;
 
             props = getProps({ facilitatorAccessTokenPromise });
+            const { onClick, createOrder } = props;
 
             if (!isEnabled()) {
                 if (win) {
@@ -93,6 +94,8 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
                 return;
             }
 
+            sendPersonalizationBeacons();
+
             getLogger().info('button_click').track({
                 [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
@@ -101,26 +104,17 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
             }).flush();
 
             const { init, inline, spinner } = getPaymentFlow({ props, payment, config, components, serviceData });
-            const { click, start, close } = init({ props, config, serviceData, components, payment });
+            const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
+
+            const clickPromise = click();
 
             // $FlowFixMe
-            button.payPromise = ZalgoPromise.try(() => {
-                sendPersonalizationBeacons();
-
-                if (click) {
-                    return click();
-                } else if (onClick) {
-                    return onClick({ fundingSource });
-                } else {
-                    return true;
-                }
-
-            }).then(valid => {
+            button.payPromise = ZalgoPromise.hash({
+                valid: onClick ? onClick({ fundingSource }) : true
+            }).then(({ valid }) => {
                 if (!valid) {
                     return;
                 }
-
-                const { createOrder } = props;
         
                 if (spinner) {
                     enableLoadingSpinner(button);
@@ -132,6 +126,7 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
                 return start()
                     .then(() => createOrder())
                     .then(orderID => validateOrder(orderID, { clientID, merchantID }))
+                    .then(() => clickPromise)
                     .catch(err => {
                         return ZalgoPromise.all([
                             close(),

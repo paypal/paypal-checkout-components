@@ -2,6 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
+import { memoize } from 'belter/src';
 
 import { getLogger } from '../../lib';
 import { FPTI_STATE, FPTI_TRANSITION } from '../../constants';
@@ -48,7 +49,7 @@ export function getOnClick(xprops : XProps) : OnClick | void {
         return;
     }
 
-    return ({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) => {
+    return memoize(({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) => {
         getLogger().info('button_click').track({
             [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
@@ -59,5 +60,5 @@ export function getOnClick(xprops : XProps) : OnClick | void {
         return onClick(buildXOnClickData({ fundingSource }), buildXOnClickActions()).then(valid => {
             return (valid !== CLICK_VALID.INVALID);
         });
-    };
+    });
 }

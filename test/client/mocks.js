@@ -102,11 +102,14 @@ export function setupMocks() {
     };
 
     window.xprops = {
-        clientID:    'xyz123',
-        platform:    PLATFORM.DESKTOP,
-        intent:      INTENT.CAPTURE,
-        currency:    CURRENCY.USD,
-        createOrder: mockAsyncProp(() => {
+        clientID:        'xyz123',
+        platform:        PLATFORM.DESKTOP,
+        intent:          INTENT.CAPTURE,
+        currency:        CURRENCY.USD,
+        commit:          true,
+        env:             'test',
+        buttonSessionID: uniqueID(),
+        createOrder:     mockAsyncProp(() => {
             return 'XXXXXXXXXX';
         }),
         style: {
@@ -503,7 +506,7 @@ type NativeMockWebSocket = {|
     expect : () => {|
         done : () => ZalgoPromise<void>
     |},
-    getProps : () => void,
+    // getProps : () => void,
     onApprove : () => void,
     onCancel : () => void,
     onError : () => void
@@ -559,6 +562,8 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
         }
     });
 
+    /*
+
     const getProps = () => {
         getPropsRequestID = uniqueID();
 
@@ -573,6 +578,8 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
             message_name:       'getProps'
         }));
     };
+
+    */
 
     const onApprove = () => {
         if (!props) {
@@ -638,7 +645,7 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
     };
 
     return {
-        expect, getProps, onApprove, onCancel, onError
+        expect, onApprove, onCancel, onError
     };
 }
 
@@ -764,6 +771,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
     const waitingForResponse = [];
 
     const { send, expect: expectFirebase } = mockFirebase({
+        // eslint-disable-next-line complexity
         handler: ({ data }) => {
             for (const id of Object.keys(data)) {
                 const message = JSON.parse(data[id]);
@@ -789,6 +797,48 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
 
                 if (extraHandler) {
                     extraHandler(message);
+                }
+
+                if (messageType === 'request'  && messageName === 'setProps') {
+                    const {
+                        orderID, facilitatorAccessToken, pageUrl, commit,
+                        userAgent, buttonSessionID, env
+                    } = messageData;
+
+                    if (!orderID || !facilitatorAccessToken || !pageUrl || !commit || !userAgent || !buttonSessionID || !env) {
+                        throw new Error(`Missing props`);
+                    }
+
+                    send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
+                        session_uid:        getSessionUID(),
+                        source_app:         'paypal_native_checkout_sdk',
+                        source_app_version: '1.2.3',
+                        target_app:         'paypal_smart_payment_buttons',
+                        request_uid:        requestUID,
+                        message_uid:        uniqueID(),
+                        message_type:       'response',
+                        message_name:       'setProps',
+                        message_status:     'success',
+                        message_data:       {}
+                    }));
+
+
+                    props = messageData;
+                }
+
+                if (messageType === 'request' && messageName === 'close') {
+                    send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
+                        session_uid:        getSessionUID(),
+                        source_app:         'paypal_native_checkout_sdk',
+                        source_app_version: '1.2.3',
+                        target_app:         'paypal_smart_payment_buttons',
+                        request_uid:        requestUID,
+                        message_uid:        uniqueID(),
+                        message_type:       'response',
+                        message_name:       'close',
+                        message_status:     'success',
+                        message_data:       {}
+                    }));
                 }
     
                 if (messageType === 'response' && messageStatus === 'error') {
@@ -823,6 +873,8 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
         }
     });
 
+    /*
+
     const getProps = () => {
         getPropsRequestID = `${ uniqueID()  }_getProps`;
 
@@ -839,6 +891,8 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
 
         waitingForResponse.push(getPropsRequestID);
     };
+
+    */
 
     const onApprove = () => {
         if (!props) {
@@ -928,7 +982,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
     };
 
     return {
-        expect, getProps, onApprove, onCancel, onError
+        expect, onApprove, onCancel, onError
     };
 }
 

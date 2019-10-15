@@ -8,7 +8,7 @@ import type { Props, Components, ServiceData, Config } from '../button/props';
 import type { ProxyWindow } from '../types';
 
 export type PaymentFlowInstance = {|
-    click? : () => ZalgoPromise<boolean>,
+    click? : () => ?ZalgoPromise<void>,
     start : () => ZalgoPromise<void>,
     close : () => ZalgoPromise<void>
 |};

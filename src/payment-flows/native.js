@@ -93,9 +93,15 @@ function isNativePaymentEligible({ payment } : { payment : Payment }) : boolean 
     return true;
 }
 
-function setupNative() : ZalgoPromise<void> {
+let sessionUID;
+let nativeSocket;
+
+function setupNative({ config } : { config : Config }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        // pass
+        const { version, firebase: firebaseConfig } = config;
+
+        sessionUID = uniqueID();
+        nativeSocket = getNativeSocket({ sessionUID, firebaseConfig, version });
     });
 }
 
@@ -111,21 +117,21 @@ type NativeSDKProps = {|
     apiStageHost : ?string
 |};
 
+function didAppSwitchHappen(win : CrossDomainWindowType) : boolean {
+    return isBlankDomain(win);
+}
+
 function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
         buttonSessionID, env, stageHost, apiStageHost, onClick } = props;
-    const { version, firebase: firebaseConfig } = config;
     const { facilitatorAccessTokenPromise } = serviceData;
     const { fundingSource } = payment;
 
-    const sessionUID = uniqueID();
-
-    let close = promiseNoop;
+    let instance : { close : () => ZalgoPromise<void> } = { close: promiseNoop };
 
     const fallbackToWebCheckout = (win? : CrossDomainWindowType) => {
-        const { start: startCheckout, close: closeCheckout } = checkout.init({ props, components, payment: { ...payment, win, isClick: false }, config, serviceData });
-        close = closeCheckout;
-        return startCheckout();
+        instance = checkout.init({ props, components, payment: { ...payment, win, isClick: false }, config, serviceData });
+        return instance.start();
     };
 
     const getNativeUrl = () => {
@@ -147,88 +153,82 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     };
 
-    const openCheckoutSocket = () => {
-        const socket = getNativeSocket({ sessionUID, firebaseConfig, version });
-
-        socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
+    const connectNative = () => {
+        nativeSocket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
             return getSDKProps();
         });
 
-        socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
-            socket.close();
+        nativeSocket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
+            nativeSocket.close();
             const data = { payerID, paymentID, billingToken, isNativeTransaction: true };
             const actions = { restart: () => fallbackToWebCheckout() };
             return onApprove(data, actions);
         });
 
-        socket.on(MESSAGE.ON_CANCEL, () => {
-            socket.close();
+        nativeSocket.on(MESSAGE.ON_CANCEL, () => {
+            nativeSocket.close();
             return onCancel();
         });
 
-        socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
-            socket.close();
+        nativeSocket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
+            nativeSocket.close();
             return onError(new Error(message));
         });
 
-        close = () => {
-            return socket.send(MESSAGE.CLOSE);
+        const setProps = () => {
+            return getSDKProps().then(sdkProps => {
+                return nativeSocket.send(MESSAGE.SET_PROPS, sdkProps);
+            });
         };
+
+        const closeNative = () => {
+            return nativeSocket.send(MESSAGE.CLOSE).then(() => {
+                nativeSocket.close();
+            });
+        };
+
+        nativeSocket.reconnect();
         
-        return { close };
+        return { setProps, close: closeNative };
     };
 
-    let startPromise;
+    let win;
 
     const start = memoize(() => {
-        return startPromise;
+        return createOrder().then(() => {
+            if (didAppSwitchHappen(win)) {
+                win.close();
+                instance = connectNative();
+                return instance.setProps();
+            } else {
+                return fallbackToWebCheckout(win);
+            }
+        });
     });
 
     const click = () => {
-        const win = popup(getNativeUrl());
+        win = popup(getNativeUrl());
 
         return ZalgoPromise.try(() => {
-            if (!onClick) {
-                return true;
-            }
-
-            return onClick({ fundingSource }).then(valid => {
-                if (!valid) {
-                    close();
-                }
-
-                return valid;
-            });
+            return onClick ? onClick({ fundingSource }) : true;
         }).then(valid => {
-
-            startPromise = ZalgoPromise.try(() => {
-                return valid ? createOrder() : ZalgoPromise.delay(500);
-            }).then(() => {
-                if (isBlankDomain(win)) {
-                    win.close();
-                    const { close: closeNative } = openCheckoutSocket();
-                    close = closeNative;
-
-                    if (!valid) {
-                        close();
-                    }
-                } else {
-                    if (valid) {
-                        return fallbackToWebCheckout(win);
+            if (!valid) {
+                return ZalgoPromise.delay(500).then(() => {
+                    if (didAppSwitchHappen(win)) {
+                        win.close();
+                        return connectNative().close();
                     } else {
-                        close();
+                        win.close();
                     }
-                }
-            });
-
-            return valid;
+                });
+            }
         });
     };
 
     return {
         click,
         start,
-        close: () => ZalgoPromise.try(close)
+        close: () => instance.close()
     };
 }
 

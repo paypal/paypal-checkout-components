@@ -230,22 +230,19 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     });
 
     const click = () => {
+        if (!onClick) {
+            start();
+            return;
+        }
+
+        win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+
         return ZalgoPromise.try(() => {
-            if (!onClick) {
-                start();
-                return true;
+            return onClick ? onClick({ fundingSource }) : true;
+        }).then(valid => {
+            if (win && !valid) {
+                win.close();
             }
-    
-            win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
-
-            return onClick({ fundingSource }).then(valid => {
-
-                if (win && !valid) {
-                    win.close();
-                }
-
-                return valid;
-            });
         });
     };
 

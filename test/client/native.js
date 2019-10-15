@@ -47,7 +47,7 @@ describe('native cases', () => {
 
             let sessionUID;
 
-            const { expect: expectSocket, getProps, onApprove } = getNativeFirebaseMock({
+            const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
                 getSessionUID: () => {
                     if (!sessionUID) {
                         throw new Error(`Session UID not present`);
@@ -106,7 +106,6 @@ describe('native cases', () => {
                     closed: false,
                     close:  expect('close', () => {
                         ZalgoPromise.delay(50)
-                            .then(getProps)
                             .then(() => ZalgoPromise.delay(50))
                             .then(onApprove);
                     })
@@ -167,7 +166,7 @@ describe('native cases', () => {
 
             let sessionUID;
 
-            const { expect: expectSocket, getProps, onCancel } = getNativeFirebaseMock({
+            const { expect: expectSocket, onCancel } = getNativeFirebaseMock({
                 getSessionUID: () => {
                     if (!sessionUID) {
                         throw new Error(`Session UID not present`);
@@ -221,7 +220,6 @@ describe('native cases', () => {
                     closed: false,
                     close:  expect('close', () => {
                         ZalgoPromise.delay(50)
-                            .then(getProps)
                             .then(() => ZalgoPromise.delay(50))
                             .then(onCancel);
                     })
@@ -282,7 +280,7 @@ describe('native cases', () => {
 
             let sessionUID;
 
-            const { expect: expectSocket, getProps, onError } = getNativeFirebaseMock({
+            const { expect: expectSocket, onError } = getNativeFirebaseMock({
                 getSessionUID: () => {
                     if (!sessionUID) {
                         throw new Error(`Session UID not present`);
@@ -332,7 +330,6 @@ describe('native cases', () => {
                     closed: false,
                     close:  expect('close', () => {
                         ZalgoPromise.delay(50)
-                            .then(getProps)
                             .then(() => ZalgoPromise.delay(50))
                             .then(onError);
                     })
@@ -485,7 +482,7 @@ describe('native cases', () => {
 
             let sessionUID;
 
-            const { expect: expectSocket, getProps, onApprove } = getNativeFirebaseMock({
+            const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
                 getSessionUID: () => {
                     if (!sessionUID) {
                         throw new Error(`Session UID not present`);
@@ -548,7 +545,6 @@ describe('native cases', () => {
                     closed: false,
                     close:  expect('close', () => {
                         ZalgoPromise.delay(50)
-                            .then(getProps)
                             .then(() => ZalgoPromise.delay(50))
                             .then(onApprove);
                     })
@@ -684,6 +680,164 @@ describe('native cases', () => {
             if (!closeMessageSent) {
                 throw new Error(`Expected close message to be sent`);
             }
+        });
+    });
+
+    it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to web path', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'AAABBBCCC';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onClick = mockAsyncProp(expect('onClick', async (data, actions) => {
+                return actions.resolve();
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            let win : Object;
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
+
+                if (checkoutProps.window !== win) {
+                    throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
+                }
+
+                const checkoutInstance = CheckoutOriginal(checkoutProps);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return checkoutProps.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+
+            const windowOpen = window.open;
+            window.open = expect('windowOpen', (url) => {
+                window.open = windowOpen;
+
+                if (!url) {
+                    throw new Error(`Expected url to be immediately passed to window.open`);
+                }
+
+                const query = parseQuery(url.split('?')[1]);
+                const sessionUID = query.sessionUID;
+
+                if (!sessionUID) {
+                    throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                win = {
+                    location: {
+                        href: url
+                    },
+                    closed: false,
+                    close:  avoid('close')
+                };
+
+                // $FlowFixMe
+                win.parent = win.top = win;
+
+                return win;
+            });
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to web path', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            window.xprops.createOrder = mockAsyncProp(avoid('createOrder'));
+
+            window.xprops.onClick = mockAsyncProp(expect('onClick', async (data, actions) => {
+                return actions.reject();
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(avoid('onApprove'));
+
+            let win : Object;
+
+            mockFunction(window.paypal, 'Checkout', avoid('Checkout'));
+
+            const windowOpen = window.open;
+            window.open = expect('windowOpen', (url) => {
+                window.open = windowOpen;
+
+                if (!url) {
+                    throw new Error(`Expected url to be immediately passed to window.open`);
+                }
+
+                const query = parseQuery(url.split('?')[1]);
+                const sessionUID = query.sessionUID;
+
+                if (!sessionUID) {
+                    throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                win = {
+                    location: {
+                        href: url
+                    },
+                    closed: false,
+                    close:  expect('close')
+                };
+
+                // $FlowFixMe
+                win.parent = win.top = win;
+
+                return win;
+            });
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 });
