@@ -93,10 +93,15 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                sessionUID = query.sessionUID;
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
                 const win : Object = {
@@ -207,10 +212,15 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                sessionUID = query.sessionUID;
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
                 const win : Object = {
@@ -317,10 +327,15 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                sessionUID = query.sessionUID;
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
                 const win : Object = {
@@ -414,10 +429,14 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                const sessionUID = query.sessionUID;
+                const { sessionUID, pageUrl } = query;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
                 win = {
@@ -532,10 +551,15 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                sessionUID = query.sessionUID;
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
                 const win : Object = {
@@ -642,10 +666,15 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                sessionUID = query.sessionUID;
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
                 const win : Object = {
@@ -746,10 +775,14 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                const sessionUID = query.sessionUID;
+                const { sessionUID, pageUrl } = query;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
                 win = {
@@ -808,12 +841,16 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                const sessionUID = query.sessionUID;
+                const { sessionUID, pageUrl } = query;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
                 }
 
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
+                }
+                
                 win = {
                     location: {
                         href: url

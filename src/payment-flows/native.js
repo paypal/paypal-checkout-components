@@ -95,13 +95,19 @@ function isNativePaymentEligible({ payment } : { payment : Payment }) : boolean 
 
 let sessionUID;
 let nativeSocket;
+let initialPageUrl;
 
-function setupNative({ config } : { config : Config }) : ZalgoPromise<void> {
+function setupNative({ config, props } : { config : Config, props : Props }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { version, firebase: firebaseConfig } = config;
+        const { getPageUrl } = props;
 
         sessionUID = uniqueID();
         nativeSocket = getNativeSocket({ sessionUID, firebaseConfig, version });
+
+        return getPageUrl().then(pageUrl => {
+            initialPageUrl = pageUrl;
+        });
     });
 }
 
@@ -135,7 +141,9 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     };
 
     const getNativeUrl = () => {
-        return extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
+        return extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, {
+            query: { sessionUID, pageUrl: initialPageUrl }
+        });
     };
 
     const getSDKProps = () => {
