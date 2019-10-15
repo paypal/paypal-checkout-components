@@ -184,6 +184,5 @@ export const cardFields : PaymentFlow = {
     setup:      setupCardFields,
     isEligible: isCardFieldsEligible,
     init:       initCardFields,
-    spinner:    true,
     inline:     true
 };
