@@ -5700,16 +5700,19 @@ var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[DEFAULT] = {
   requireCommitAsTrue: true
 }, _FUNDING_CONFIG[FUNDING.MAXIMA] = {
   allowedCountries: [COUNTRY.LT],
+  allowedEnvs: [ENV.LOCAL, ENV.STAGE, ENV.TEST],
   allowHorizontal: false,
   allowVertical: true,
   requireCommitAsTrue: true
 }, _FUNDING_CONFIG[FUNDING.BOLETO] = {
   allowedCountries: [COUNTRY.BR],
+  allowedEnvs: [ENV.LOCAL, ENV.STAGE, ENV.TEST],
   allowHorizontal: false,
   allowVertical: true,
   requireCommitAsTrue: true
 }, _FUNDING_CONFIG[FUNDING.OXXO] = {
   allowedCountries: [COUNTRY.MX],
+  allowedEnvs: [ENV.LOCAL, ENV.STAGE, ENV.TEST],
   allowHorizontal: false,
   allowVertical: true,
   requireCommitAsTrue: true
@@ -15287,7 +15290,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.295", _ref19), {
+  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.296", _ref19), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,

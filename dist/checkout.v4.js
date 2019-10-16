@@ -3848,7 +3848,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.v4.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.295",
+  version: "4.0.296",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -11256,27 +11256,27 @@ function getGlobalState(handler) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getUserAgent; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isDevice; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isDevice; });
 /* unused harmony export isInsidePopup */
 /* unused harmony export isStandAlone */
 /* unused harmony export isFacebookWebView */
 /* unused harmony export isFirefoxIOS */
 /* unused harmony export isEdgeIOS */
 /* unused harmony export isOperaMini */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isAndroid; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return isIos; });
+/* unused harmony export isAndroid */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return isIos; });
 /* unused harmony export isGoogleSearchApp */
 /* unused harmony export isQQBrowser */
 /* unused harmony export isIosWebview */
 /* unused harmony export isAndroidWebview */
 /* unused harmony export isWebView */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isIE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isIE; });
 /* unused harmony export isIE11 */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isIECompHeader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isIECompHeader; });
 /* unused harmony export isElectron */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return isIEIntranet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isIEIntranet; });
 /* unused harmony export isMacOsCna */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return supportsPopups; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return supportsPopups; });
 /* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 
 function getUserAgent() {
@@ -12378,7 +12378,7 @@ function redirect(win, url) {
 function hasMetaViewPort() {
   var meta = document.querySelector('meta[name=viewport]');
 
-  if (Object(_device__WEBPACK_IMPORTED_MODULE_5__[/* isDevice */ "c"])() && window.screen.width < 660 && !meta) {
+  if (Object(_device__WEBPACK_IMPORTED_MODULE_5__[/* isDevice */ "b"])() && window.screen.width < 660 && !meta) {
     return false;
   }
 
@@ -12528,7 +12528,7 @@ RenderError.prototype = Object.create(Error.prototype);
 
 
 function allowIframe() {
-  if (!Object(_device__WEBPACK_IMPORTED_MODULE_2__[/* supportsPopups */ "h"])()) {
+  if (!Object(_device__WEBPACK_IMPORTED_MODULE_2__[/* supportsPopups */ "g"])()) {
     return true;
   }
 
@@ -12614,7 +12614,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.295";
+    payload.version = "4.0.296";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -12670,7 +12670,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.295".replace(/[^0-9]+/g, '_');
+      var version = "4.0.296".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -12687,7 +12687,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.295",
+    v: "checkout.js." + "4.0.296",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -14085,17 +14085,17 @@ __webpack_require__.r(__webpack_exports__);
 
 if (false) {}
 
-if (window.paypal && window.paypal.version === "4.0.295") {
+if (window.paypal && window.paypal.version === "4.0.296") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.295"
+    version: "4.0.296"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.295" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.295" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.296" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.296" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.295"
+    version: "4.0.296"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.295");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.296");
 } else {
   try {
     var _interface = __webpack_require__(56);
@@ -18371,7 +18371,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(lib_session["c" /* getSessionID */])(),
-      ver: "4.0.295"
+      ver: "4.0.296"
     };
   });
   Object(beaver_logger_client["a" /* addHeaderBuilder */])(function () {
@@ -18472,7 +18472,7 @@ function getBrowser() {
 }
 
 function isBrowserEligible() {
-  if (Object(device["f" /* isIEIntranet */])()) {
+  if (Object(device["e" /* isIEIntranet */])()) {
     return false;
   }
 
@@ -18491,7 +18491,7 @@ function isBrowserEligible() {
 
 var eligibilityResults = {};
 function isEligible() {
-  if (Object(device["f" /* isIEIntranet */])()) {
+  if (Object(device["e" /* isIEIntranet */])()) {
     return false;
   }
 
@@ -18560,11 +18560,11 @@ function checkForCommonErrors() {
     Object(beaver_logger_client["p" /* warn */])("json_stringify_object_broken");
   }
 
-  if (Object(device["f" /* isIEIntranet */])()) {
+  if (Object(device["e" /* isIEIntranet */])()) {
     Object(beaver_logger_client["p" /* warn */])("ie_intranet_mode");
   }
 
-  if (Object(device["d" /* isIE */])() && !Object(device["e" /* isIECompHeader */])()) {
+  if (Object(device["c" /* isIE */])() && !Object(device["d" /* isIECompHeader */])()) {
     Object(beaver_logger_client["p" /* warn */])("ie_meta_compatibility_header_missing", {
       message: "Drop tag: <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"
     });
@@ -18944,7 +18944,7 @@ function getScriptVersion() {
   if ( true && isPayPalObjects()) {
     return  false ? undefined : "4";
   } else {
-    return  false ? undefined : "4.0.295";
+    return  false ? undefined : "4.0.296";
   }
 }
 function getCurrentScriptUrl() {
@@ -18960,7 +18960,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.295" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.296" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -18991,7 +18991,7 @@ var openMetaFrame = Object(util["i" /* memoize */])(function (env) {
   }
 
   return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    if (Object(device["f" /* isIEIntranet */])()) {
+    if (Object(device["e" /* isIEIntranet */])()) {
       return {
         iframeEligible: false,
         iframeEligibleReason: 'ie_intranet',
@@ -19106,7 +19106,7 @@ function rememberFunding(sources) {
     for (var _i4 = 0; _i4 < sources.length; _i4++) {
       var source = sources[_i4];
 
-      if (source === src_constants["v" /* FUNDING */].VENMO && !Object(device["c" /* isDevice */])()) {
+      if (source === src_constants["v" /* FUNDING */].VENMO && !Object(device["b" /* isDevice */])()) {
         continue;
       }
 
@@ -24677,7 +24677,7 @@ function containerTemplate(_ref) {
     event.preventDefault();
     event.stopPropagation();
 
-    if (Object(device["g" /* isIos */])()) {
+    if (Object(device["f" /* isIos */])()) {
       // eslint-disable-next-line no-alert
       window.alert('Please switch tabs to reactivate the PayPal window');
     } else {
@@ -24819,7 +24819,7 @@ var component_Checkout = interface_create({
   },
 
   contexts: {
-    iframe: !Object(device["h" /* supportsPopups */])(),
+    iframe: !Object(device["g" /* supportsPopups */])(),
     popup: true
   },
 
@@ -25259,7 +25259,7 @@ var component_Checkout = interface_create({
   },
 
   get dimensions() {
-    if (Object(device["c" /* isDevice */])()) {
+    if (Object(device["b" /* isDevice */])()) {
       return {
         width: '100%',
         height: '590px'
@@ -25403,7 +25403,7 @@ function containerTemplate_containerTemplate(_ref) {
     event.preventDefault();
     event.stopPropagation();
 
-    if (Object(device["g" /* isIos */])()) {
+    if (Object(device["f" /* isIos */])()) {
       // eslint-disable-next-line no-alert
       window.alert('Please switch tabs to reactivate the PayPal window');
     } else {
@@ -26672,16 +26672,19 @@ var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[src_constants["s" /*
   requireCommitAsTrue: true
 }, _FUNDING_CONFIG[src_constants["v" /* FUNDING */].MAXIMA] = {
   allowedCountries: [src_constants["r" /* COUNTRY */].LT],
+  allowedEnvs: [src_constants["t" /* ENV */].LOCAL, src_constants["t" /* ENV */].STAGE, src_constants["t" /* ENV */].TEST],
   allowHorizontal: false,
   allowVertical: true,
   requireCommitAsTrue: true
 }, _FUNDING_CONFIG[src_constants["v" /* FUNDING */].BOLETO] = {
   allowedCountries: [src_constants["r" /* COUNTRY */].BR],
+  allowedEnvs: [src_constants["t" /* ENV */].LOCAL, src_constants["t" /* ENV */].STAGE, src_constants["t" /* ENV */].TEST],
   allowHorizontal: false,
   allowVertical: true,
   requireCommitAsTrue: true
 }, _FUNDING_CONFIG[src_constants["v" /* FUNDING */].OXXO] = {
   allowedCountries: [src_constants["r" /* COUNTRY */].MX],
+  allowedEnvs: [src_constants["t" /* ENV */].LOCAL, src_constants["t" /* ENV */].STAGE, src_constants["t" /* ENV */].TEST],
   allowHorizontal: false,
   allowVertical: true,
   requireCommitAsTrue: true
@@ -34361,7 +34364,7 @@ function componentTemplate_componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(props_normalizeProps(props)) : null;
-  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.295", _ref19), {
+  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.296", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -34616,7 +34619,7 @@ var component_Button = interface_create({
     var url = config["a" /* config */].buttonUrls[env];
     var smartUrl = url.replace('/webapps/hermes/button', '/smart/button');
 
-    if (smartThrottle.isEnabled() || props.enableNativeCheckout || env !== src_constants["t" /* ENV */].PRODUCTION || Object(device["b" /* isAndroid */])()) {
+    if (smartThrottle.isEnabled() || props.enableNativeCheckout || env !== src_constants["t" /* ENV */].PRODUCTION || Object(device["b" /* isDevice */])() || props.style && props.style.label === 'installment') {
       return smartUrl;
     }
 
@@ -34646,7 +34649,7 @@ var component_Button = interface_create({
     template.addEventListener('click', function () {
       Object(beaver_logger_client["p" /* warn */])('button_pre_template_click');
 
-      if (Object(device["f" /* isIEIntranet */])()) {
+      if (Object(device["e" /* isIEIntranet */])()) {
         var _track;
 
         Object(beaver_logger_client["p" /* warn */])("button_pre_template_click_intranet_mode");
@@ -34985,7 +34988,7 @@ var component_Button = interface_create({
           return sources;
         });
 
-        if (!Object(device["c" /* isDevice */])() || getDomainSetting('disable_venmo')) {
+        if (!Object(device["b" /* isDevice */])() || getDomainSetting('disable_venmo')) {
           if (remembered && remembered.indexOf(src_constants["v" /* FUNDING */].VENMO) !== -1) {
             remembered = remembered.filter(function (source) {
               return source !== src_constants["v" /* FUNDING */].VENMO;
@@ -35030,7 +35033,7 @@ var component_Button = interface_create({
               _getBrowser$version = _getBrowser.version,
               version = _getBrowser$version === void 0 ? 'unrecognized' : _getBrowser$version;
 
-          Object(beaver_logger_client["k" /* info */])("button_render_browser_" + browser + "_" + (Object(device["c" /* isDevice */])() ? 'mobile' : 'desktop') + "_" + version);
+          Object(beaver_logger_client["k" /* info */])("button_render_browser_" + browser + "_" + (Object(device["b" /* isDevice */])() ? 'mobile' : 'desktop') + "_" + version);
           var style = this.props.style || {};
           Object(beaver_logger_client["k" /* info */])("button_render");
           Object(beaver_logger_client["k" /* info */])("button_render_color_" + (style.color || 'default'));
@@ -35045,7 +35048,7 @@ var component_Button = interface_create({
           smartThrottle.logStart((_smartThrottle$logSta = {}, _smartThrottle$logSta[src_constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$logSta));
           Object(beaver_logger_client["o" /* track */])((_track3 = {}, _track3[src_constants["u" /* FPTI */].KEY.STATE] = src_constants["u" /* FPTI */].STATE.LOAD, _track3[src_constants["u" /* FPTI */].KEY.TRANSITION] = src_constants["u" /* FPTI */].TRANSITION.BUTTON_RENDER, _track3[src_constants["u" /* FPTI */].KEY.BUTTON_TYPE] = src_constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track3[src_constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3[src_constants["u" /* FPTI */].KEY.BUTTON_SOURCE] = this.props.source, _track3));
 
-          if (Object(device["f" /* isIEIntranet */])()) {
+          if (Object(device["e" /* isIEIntranet */])()) {
             var _track4;
 
             Object(beaver_logger_client["p" /* warn */])("button_render_intranet_mode");
@@ -35084,7 +35087,7 @@ var component_Button = interface_create({
           smartThrottle.logComplete((_smartThrottle$logCom = {}, _smartThrottle$logCom[src_constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$logCom));
           Object(beaver_logger_client["o" /* track */])((_track5 = {}, _track5[src_constants["u" /* FPTI */].KEY.STATE] = src_constants["u" /* FPTI */].STATE.CHECKOUT, _track5[src_constants["u" /* FPTI */].KEY.TRANSITION] = src_constants["u" /* FPTI */].TRANSITION.CHECKOUT_AUTHORIZE, _track5[src_constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5));
 
-          if (Object(device["f" /* isIEIntranet */])()) {
+          if (Object(device["e" /* isIEIntranet */])()) {
             Object(beaver_logger_client["p" /* warn */])("button_authorize_intranet_mode");
           }
 
@@ -35239,7 +35242,7 @@ var component_Button = interface_create({
       once: true,
       def: function def() {
         return function onError(err) {
-          if (Object(device["f" /* isIEIntranet */])()) {
+          if (Object(device["e" /* isIEIntranet */])()) {
             Object(beaver_logger_client["p" /* warn */])("button_error_intranet_mode");
             Object(beaver_logger_client["h" /* flush */])(); // eslint-disable-next-line no-alert
 
@@ -35286,7 +35289,7 @@ var component_Button = interface_create({
           Object(beaver_logger_client["k" /* info */])('button_click');
           Object(beaver_logger_client["o" /* track */])((_track8 = {}, _track8[src_constants["u" /* FPTI */].KEY.STATE] = src_constants["u" /* FPTI */].STATE.BUTTON, _track8[src_constants["u" /* FPTI */].KEY.TRANSITION] = src_constants["u" /* FPTI */].TRANSITION.BUTTON_CLICK, _track8[src_constants["u" /* FPTI */].KEY.BUTTON_TYPE] = src_constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track8[src_constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track8[src_constants["u" /* FPTI */].KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), _track8));
 
-          if (Object(device["f" /* isIEIntranet */])()) {
+          if (Object(device["e" /* isIEIntranet */])()) {
             var _track9;
 
             Object(beaver_logger_client["p" /* warn */])('button_click_intranet_mode');
@@ -35508,7 +35511,7 @@ if (component_Button.isChild()) {
 
 
 
-if (Object(device["d" /* isIE */])() && getDomainSetting('ie_full_page')) {
+if (Object(device["c" /* isIE */])() && getDomainSetting('ie_full_page')) {
   // $FlowFixMe
   component_Checkout.renderTo = function (win) {
     Object(beaver_logger_client["k" /* info */])('force_ie_full_page');
@@ -36197,7 +36200,7 @@ var interface_postRobot = src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.295";
+var interface_version = "4.0.296";
 var interface_checkout;
 var apps;
 
