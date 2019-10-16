@@ -201,7 +201,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
             throw new Error(`Incomplete message: ${ rawData }`);
         }
 
-        if (receivedMessages[messageUID] || messageTargetApp !== sourceApp) {
+        if (receivedMessages[messageUID]) {
             return;
         }
 

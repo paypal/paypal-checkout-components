@@ -15,7 +15,7 @@ import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 import { checkout } from './checkout';
 
 const SOURCE_APP = 'paypal_smart_payment_buttons';
-const TARGET_APP = 'paypal_native_checkout_sdk';
+const TARGET_APP = 'paypal_native_checkout';
 
 const MESSAGE = {
     SET_PROPS:  'setProps',
