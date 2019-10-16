@@ -1091,6 +1091,7 @@ export function mockFirebaseScripts() : { done : () => void } {
 
 export async function mockSetupButton(overrides? : Object = {}) : ZalgoPromise<void> {
     await setupButton({
+        facilitatorAccessToken:        'QQQ123000',
         merchantID:                    [ 'XYZ12345' ],
         fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
         personalization:               {},

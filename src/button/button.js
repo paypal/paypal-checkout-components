@@ -25,7 +25,7 @@ type ButtonOpts = {|
     personalization : PersonalizationType,
     isCardFieldsExperimentEnabled : boolean,
     firebaseConfig? : FirebaseConfig,
-    facilitatorAccessToken? : string,
+    facilitatorAccessToken : string,
     eligibility : ?{
         cardFields : boolean,
         native : boolean
@@ -39,10 +39,10 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
 
     const clientID = window.xprops.clientID;
 
-    const serviceData = getServiceData({ clientID, eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization, isCardFieldsExperimentEnabled });
-    const { merchantID, facilitatorAccessTokenPromise } = serviceData;
+    const serviceData = getServiceData({ eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization, isCardFieldsExperimentEnabled });
+    const { merchantID } = serviceData;
 
-    let props = getProps({ facilitatorAccessTokenPromise });
+    let props = getProps({ facilitatorAccessToken });
     const { env, sessionID, partnerAttributionID, commit, correlationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding,
         style } = props;
@@ -79,7 +79,7 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
 
             paymentProcessing = true;
 
-            props = getProps({ facilitatorAccessTokenPromise });
+            props = getProps({ facilitatorAccessToken });
             const { onClick, createOrder } = props;
 
             if (!isEnabled()) {
@@ -178,7 +178,7 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
     const setupPaymentFlowsTask = setupPaymentFlows({ props, config, serviceData, components });
 
     return ZalgoPromise.hash({
-        initPromise, facilitatorAccessTokenPromise,
+        initPromise, facilitatorAccessToken,
         setupButtonLogsTask, setupPrerenderTask, setupRememberTask,
         setupPaymentFlowsTask
     }).then(noop);

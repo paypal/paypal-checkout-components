@@ -1,10 +1,9 @@
 /* @flow */
 
 import { COUNTRY } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, CheckoutFlowType, CardFieldsFlowType, ThreeDomainSecureFlowType, PersonalizationType } from '../../types';
-import { createAccessToken, type FirebaseConfig } from '../../api';
+import { type FirebaseConfig } from '../../api';
 import { getNonce } from '../dom';
 
 import type { XProps, Props } from './types';
@@ -17,7 +16,7 @@ import { getOnClick } from './onClick';
 import { getCreateBillingAgreement } from './createBillingAgreement';
 import { getCreateSubscription } from './createSubscription';
 
-export function getProps({ facilitatorAccessTokenPromise } : { facilitatorAccessTokenPromise : ZalgoPromise<string> }) : Props {
+export function getProps({ facilitatorAccessToken } : { facilitatorAccessToken : string }) : Props {
 
     const xprops : XProps = window.xprops;
 
@@ -79,13 +78,13 @@ export function getProps({ facilitatorAccessTokenPromise } : { facilitatorAccess
     }
 
     const createBillingAgreement = getCreateBillingAgreement(xprops);
-    const createSubscription = getCreateSubscription(xprops, { facilitatorAccessTokenPromise });
+    const createSubscription = getCreateSubscription(xprops, { facilitatorAccessToken });
     
-    const createOrder = getCreateOrder(xprops, { facilitatorAccessTokenPromise, createBillingAgreement, createSubscription });
+    const createOrder = getCreateOrder(xprops, { facilitatorAccessToken, createBillingAgreement, createSubscription });
 
-    const onApprove = getOnApprove(xprops, { facilitatorAccessTokenPromise, createOrder });
-    const onCancel = getOnCancel(xprops, { facilitatorAccessTokenPromise, createOrder });
-    const onShippingChange = getOnShippingChange(xprops, { facilitatorAccessTokenPromise, createOrder });
+    const onApprove = getOnApprove(xprops, { facilitatorAccessToken, createOrder });
+    const onCancel = getOnCancel(xprops, { facilitatorAccessToken, createOrder });
+    const onShippingChange = getOnShippingChange(xprops, { facilitatorAccessToken, createOrder });
 
     return {
         env,
@@ -164,7 +163,7 @@ export type ServiceData = {|
     buyerCountry : $Values<typeof COUNTRY>,
     fundingEligibility : FundingEligibilityType,
     personalization : PersonalizationType,
-    facilitatorAccessTokenPromise : ZalgoPromise<string>,
+    facilitatorAccessToken : string,
     eligibility : {
         cardFields : boolean,
         native : boolean
@@ -172,8 +171,7 @@ export type ServiceData = {|
 |};
 
 type ServiceDataOptions = {|
-    facilitatorAccessToken : ?string,
-    clientID : ?string,
+    facilitatorAccessToken : string,
     buyerGeoCountry : $Values<typeof COUNTRY>,
     isCardFieldsExperimentEnabled : boolean,
     fundingEligibility : FundingEligibilityType,
@@ -185,26 +183,13 @@ type ServiceDataOptions = {|
     }
 |};
 
-export function getServiceData({ facilitatorAccessToken, clientID, buyerGeoCountry, isCardFieldsExperimentEnabled, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
-    
-    let facilitatorAccessTokenPromise : ZalgoPromise<string>;
-
-    if (facilitatorAccessToken) {
-        facilitatorAccessTokenPromise = ZalgoPromise.resolve(facilitatorAccessToken);
-    } else if (clientID) {
-        facilitatorAccessTokenPromise = createAccessToken(clientID);
-    } else {
-        // $FlowFixMe
-        facilitatorAccessToken = ZalgoPromise.asyncReject(new Error(`No access token found`));
-    }
-    
+export function getServiceData({ facilitatorAccessToken, buyerGeoCountry, isCardFieldsExperimentEnabled, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
         fundingEligibility,
         personalization,
-        // $FlowFixMe
-        facilitatorAccessTokenPromise,
+        facilitatorAccessToken,
         eligibility:  {
             cardFields: isCardFieldsExperimentEnabled,
             native:     eligibility ? eligibility.native : false

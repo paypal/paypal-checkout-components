@@ -40,14 +40,14 @@ export function buildXCreateOrderData() : XCreateOrderDataType {
 }
 
 type OrderOptions = {|
-    facilitatorAccessTokenPromise : ZalgoPromise<string>,
+    facilitatorAccessToken : string,
     intent : $Values<typeof INTENT>,
     currency : $Values<typeof CURRENCY>,
     merchantID : $ReadOnlyArray<string>,
     partnerAttributionID : ?string
 |};
 
-export function buildOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : OrderActions {
+export function buildOrderActions({ facilitatorAccessToken, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : OrderActions {
     const create = (data) => {
     
         let order : Object = { ...data };
@@ -87,15 +87,13 @@ export function buildOrderActions({ facilitatorAccessTokenPromise, intent, curre
     
         order.application_context = order.application_context || {};
 
-        return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return createOrderID(order, { facilitatorAccessToken, partnerAttributionID, isNativeTransaction: false });
-        });
+        return createOrderID(order, { facilitatorAccessToken, partnerAttributionID, isNativeTransaction: false });
     };
 
     return { create };
 }
 
-export function buildPaymentActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : PaymentActions {
+export function buildPaymentActions({ facilitatorAccessToken, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : PaymentActions {
     const create = (data) => {
 
         let payment : Object = { ...data };
@@ -141,17 +139,15 @@ export function buildPaymentActions({ facilitatorAccessTokenPromise, intent, cur
         payment.payer = payment.payer || {};
         payment.payer.payment_method = payment.payer.payment_method || 'paypal';
 
-        return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return createPaymentToken(payment, { facilitatorAccessToken, partnerAttributionID });
-        });
+        return createPaymentToken(payment, { facilitatorAccessToken, partnerAttributionID });
     };
 
     return { create };
 }
 
-export function buildXCreateOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : XCreateOrderActionsType {
-    const order = buildOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
-    const payment = buildPaymentActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
+export function buildXCreateOrderActions({ facilitatorAccessToken, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : XCreateOrderActionsType {
+    const order = buildOrderActions({ facilitatorAccessToken, intent, currency, merchantID, partnerAttributionID });
+    const payment = buildPaymentActions({ facilitatorAccessToken, intent, currency, merchantID, partnerAttributionID });
 
     return {
         order,
@@ -159,11 +155,11 @@ export function buildXCreateOrderActions({ facilitatorAccessTokenPromise, intent
     };
 }
 
-export function getCreateOrder(xprops : XProps, { facilitatorAccessTokenPromise, createBillingAgreement, createSubscription } : { facilitatorAccessTokenPromise : ZalgoPromise<string>, createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription }) : CreateOrder {
+export function getCreateOrder(xprops : XProps, { facilitatorAccessToken, createBillingAgreement, createSubscription } : { facilitatorAccessToken : string, createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription }) : CreateOrder {
     const { createOrder, buttonSessionID, intent, currency, merchantID, partnerAttributionID } = xprops;
 
     const data = buildXCreateOrderData();
-    const actions = buildXCreateOrderActions({ facilitatorAccessTokenPromise, intent, currency, merchantID, partnerAttributionID });
+    const actions = buildXCreateOrderActions({ facilitatorAccessToken, intent, currency, merchantID, partnerAttributionID });
 
     return memoize(() => {
         const startTime = Date.now();

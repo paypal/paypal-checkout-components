@@ -22,17 +22,13 @@ export function buildXCreateSubscriptionData() : XCreateSubscriptionDataType {
     return {};
 }
 
-export function buildXCreateSubscriptionActions({ facilitatorAccessTokenPromise, partnerAttributionID } : { facilitatorAccessTokenPromise : ZalgoPromise<string>, partnerAttributionID : ?string }) : XCreateSubscriptionActionsType {
+export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID } : { facilitatorAccessToken : string, partnerAttributionID : ?string }) : XCreateSubscriptionActionsType {
     const create = (data) => {
-        return facilitatorAccessTokenPromise.then(accessToken => {
-            return createSubscription(accessToken, data, { partnerAttributionID });
-        });
+        return createSubscription(facilitatorAccessToken, data, { partnerAttributionID });
     };
 
     const revise = (subscriptionID : string, data) => {
-        return facilitatorAccessTokenPromise.then(accessToken => {
-            return reviseSubscription(accessToken, subscriptionID, data, { partnerAttributionID });
-        });
+        return reviseSubscription(facilitatorAccessToken, subscriptionID, data, { partnerAttributionID });
     };
 
     return {
@@ -42,11 +38,11 @@ export function buildXCreateSubscriptionActions({ facilitatorAccessTokenPromise,
 
 export type CreateSubscription = XCreateSubscription;
 
-export function getCreateSubscription(xprops : XProps, { facilitatorAccessTokenPromise } : { facilitatorAccessTokenPromise : ZalgoPromise<string> }) : ?CreateSubscription {
+export function getCreateSubscription(xprops : XProps, { facilitatorAccessToken } : { facilitatorAccessToken : string }) : ?CreateSubscription {
     const { createSubscription: createSubscriptionFunc, partnerAttributionID } = xprops;
     if (createSubscriptionFunc) {
         return () => {
-            return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ facilitatorAccessTokenPromise, partnerAttributionID })).then(subscriptionID => {
+            return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID })).then(subscriptionID => {
                 if (!subscriptionID || typeof subscriptionID !== 'string') {
                     throw new Error(`Expected an subscription id to be passed to createSubscription`);
                 }

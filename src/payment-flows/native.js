@@ -133,7 +133,7 @@ function didAppSwitchHappen(win : CrossDomainWindowType) : boolean {
 function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
         buttonSessionID, env, stageHost, apiStageHost, onClick } = props;
-    const { facilitatorAccessTokenPromise } = serviceData;
+    const { facilitatorAccessToken } = serviceData;
     const { fundingSource } = payment;
 
     let instance : { close : () => ZalgoPromise<void> } = { close: promiseNoop };
@@ -152,10 +152,9 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const getSDKProps = () => {
         return ZalgoPromise.hash({
-            facilitatorAccessToken: facilitatorAccessTokenPromise,
-            orderID:                createOrder(),
-            pageUrl:                getPageUrl()
-        }).then(({ facilitatorAccessToken, orderID, pageUrl }) => {
+            orderID: createOrder(),
+            pageUrl: getPageUrl()
+        }).then(({ orderID, pageUrl }) => {
             const userAgent = getUserAgent();
             const webCheckoutUrl = extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
                 query: {

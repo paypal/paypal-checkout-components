@@ -36,13 +36,11 @@ export type OnShippingChangeActionsType = {|
     reject : () => ZalgoPromise<void>
 |};
 
-export function buildXShippingChangeActions({ orderID, actions, facilitatorAccessTokenPromise, buyerAccessToken, partnerAttributionID } : { orderID : string, actions : OnShippingChangeActionsType, facilitatorAccessTokenPromise : ZalgoPromise<string>, buyerAccessToken : ?string, partnerAttributionID : ?string }) : XOnShippingChangeActionsType {
+export function buildXShippingChangeActions({ orderID, actions, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : { orderID : string, actions : OnShippingChangeActionsType, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string }) : XOnShippingChangeActionsType {
 
     const patch = (data = {}) => {
-        return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-            return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction: false }).catch(() => {
-                throw new Error('Order could not be patched');
-            });
+        return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction: false }).catch(() => {
+            throw new Error('Order could not be patched');
         });
     };
 
@@ -60,7 +58,7 @@ export function buildXShippingChangeActions({ orderID, actions, facilitatorAcces
 
 export type OnShippingChange = (OnShippingChangeData, OnShippingChangeActionsType) => ZalgoPromise<void>;
 
-export function getOnShippingChange(xprops : XProps, { facilitatorAccessTokenPromise, createOrder } : { facilitatorAccessTokenPromise : ZalgoPromise<string>, createOrder : CreateOrder }) : ?OnShippingChange {
+export function getOnShippingChange(xprops : XProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : ?OnShippingChange {
     const { onShippingChange, buttonSessionID, partnerAttributionID } = xprops;
 
     if (onShippingChange) {
@@ -74,7 +72,7 @@ export function getOnShippingChange(xprops : XProps, { facilitatorAccessTokenPro
                         [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
                     }).flush();
 
-                return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, facilitatorAccessTokenPromise, buyerAccessToken, actions, partnerAttributionID }));
+                return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, facilitatorAccessToken, buyerAccessToken, actions, partnerAttributionID }));
             });
         };
     }
