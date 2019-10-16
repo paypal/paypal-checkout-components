@@ -96,6 +96,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             onClick={ handleClick ? null : clickHandler }
             onKeyPress={ handleClick ? null : keyboardAccessibilityHandler }
             tabindex={ handleClick ? '-1' : '0' }>
+
             <Label
                 logo={ logo }
                 label={ label }
