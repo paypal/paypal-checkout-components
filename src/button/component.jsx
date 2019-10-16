@@ -18,7 +18,7 @@ import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible, getCurrentScriptUrl,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser, isAndroid } from '../lib';
+    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -149,7 +149,7 @@ export const Button : Component<ButtonOptions> = create({
 
         const smartUrl = url.replace('/webapps/hermes/button', '/smart/button');
         
-        if (smartThrottle.isEnabled() || props.enableNativeCheckout || env !== ENV.PRODUCTION || isAndroid()) {
+        if (smartThrottle.isEnabled() || props.enableNativeCheckout || env !== ENV.PRODUCTION || isDevice()) {
             return smartUrl;
         }
 
