@@ -23,11 +23,10 @@ type BasicButtonProps = {|
     fundingEligibility : FundingEligibilityType,
     i : number,
     nonce : string,
-    clientAccessToken : ?string,
-    keyboardAccessibility : ?$ReadOnlyArray<number>
+    clientAccessToken : ?string
 |};
 
-export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, keyboardAccessibility, onClick = noop } : BasicButtonProps) : ElementNode {
+export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, onClick = noop } : BasicButtonProps) : ElementNode {
     let { color, period, label } = style;
     const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -55,7 +54,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
     };
 
     const keyboardAccessibilityHandler = (event, opts) => {
-        if (keyboardAccessibility && keyboardAccessibility.includes(event.keyCode)) {
+        if (event.keyCode === 13 || event.keyCode === 32) {
             clickHandler(event, opts);
         }
     };
@@ -126,11 +125,10 @@ type VaultedButtonProps = {|
     nonce : string,
     vendor : $Values<typeof CARD>,
     label : string,
-    paymentMethodID : string,
-    keyboardAccessibility : ?$ReadOnlyArray<number>
+    paymentMethodID : string
 |};
 
-export function VaultedButton({ fundingSource, paymentMethodID, style, multiple, env, nonce, vendor, label, keyboardAccessibility, onClick = noop } : VaultedButtonProps) : ElementNode {
+export function VaultedButton({ fundingSource, paymentMethodID, style, multiple, env, nonce, vendor, label, onClick = noop } : VaultedButtonProps) : ElementNode {
 
     const clickHandler = (event, opts) => {
         event.preventDefault();
@@ -140,10 +138,8 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
     };
 
     const keyboardAccessibilityHandler = (event, opts) => {
-        if (keyboardAccessibility && keyboardAccessibility.includes(event.keyCode)) {
-            if (keyboardAccessibility && keyboardAccessibility.includes(event.keyCode)) {
-                clickHandler(event, opts);
-            }
+        if (event.keyCode === 13 || event.keyCode === 32) {
+            clickHandler(event, opts);
         }
     };
 

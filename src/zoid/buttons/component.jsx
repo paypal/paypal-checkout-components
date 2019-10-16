@@ -317,12 +317,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             action: 'checkout'
                         };
                     }
-                },
-
-                keyboardAccessibility: {
-                    type:       'array',
-                    queryParam: true,
-                    required:   false
                 }
             }
         });

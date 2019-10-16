@@ -198,8 +198,7 @@ export type ButtonProps = {|
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
     clientAccessToken : ?string,
-    nonce : string,
-    keyboardAccessibility : ?$ReadOnlyArray<number>
+    nonce : string
 |};
 
 export type ButtonPropsInputs = {|
@@ -224,8 +223,7 @@ export type ButtonPropsInputs = {|
     clientAccessToken? : string,
     csp? : {
         nonce? : string
-    },
-    keyboardAccessibility : ?$ReadOnlyArray<number>
+    }
 |};
 
 export const DEFAULT_STYLE = {
