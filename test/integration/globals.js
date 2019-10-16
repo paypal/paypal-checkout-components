@@ -65,7 +65,28 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     wechatpay: {
         eligible: false
     },
+    oxxo: {
+        eligible: false
+    },
+    boleto: {
+        eligible: false
+    },
+    maxima: {
+        eligible: false
+    },
     zimpler: {
+        eligible: false
+    },
+    payu: {
+        eligible: false
+    },
+    verkkopankki: {
+        eligible: false
+    },
+    blik: {
+        eligible: false
+    },
+    trustly: {
         eligible: false
     }
 };

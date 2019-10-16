@@ -34,7 +34,13 @@ export function TagLine({ fundingSource, style, locale, multiple, nonce, persona
                 (tagline && !multiple)
                     ? (
                         <Fragment>
-                            <span>{ tagline.text }</span>
+                            <span>
+                                {
+                                    tagline.Component
+                                        ? <tagline.Component />
+                                        : tagline.text
+                                }
+                            </span>
                             {
                                 tagline.tracking && tagline.tracking.impression &&
                                     <TrackingBeacon url={ tagline.tracking.impression } nonce={ nonce } />

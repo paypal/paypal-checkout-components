@@ -2,7 +2,7 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getPayPalDomainRegex } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize } from 'belter/src';
 
@@ -13,7 +13,7 @@ import { type MenuProps } from './props';
 export function getMenuComponent() : ZoidComponent<MenuProps> {
     return inlineMemoize(getMenuComponent, () => {
         return create({
-            tag:    'paypal-button-menu',
+            tag:    'paypal-smart-menu',
             url:    getMenuUrl,
             domain: getPayPalDomainRegex(),
             
@@ -22,7 +22,16 @@ export function getMenuComponent() : ZoidComponent<MenuProps> {
                 height: true
             },
 
+            dimensions: {
+                width:  '100%',
+                height: '150px'
+            },
+
             logger: getLogger(),
+
+            prerenderTemplate: () => {
+                return null;
+            },
 
             attributes: {
                 iframe: {
@@ -31,7 +40,17 @@ export function getMenuComponent() : ZoidComponent<MenuProps> {
             },
 
             props: {
+                sdkMeta: {
+                    type:        'string',
+                    queryParam:  true,
+                    sendToChild: false,
+                    value:       getSDKMeta
+                },
                 
+                clientID: {
+                    type:       'string',
+                    queryParam: true
+                }
             }
         });
     });

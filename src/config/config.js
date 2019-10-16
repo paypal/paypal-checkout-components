@@ -3,7 +3,7 @@
 import { getPayPalDomain } from '@paypal/sdk-client/src';
 
 export function getCheckoutUrl() : string {
-    return `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`;
+    return `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`;
 }
 
 export function getButtonUrl() : string {
@@ -19,6 +19,6 @@ export function getMenuUrl() : string {
 }
 
 export const DEFAULT_POPUP_SIZE = {
-    WIDTH:  450,
-    HEIGHT: 535
+    WIDTH:  500,
+    HEIGHT: 590
 };
