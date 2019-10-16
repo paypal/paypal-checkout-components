@@ -27,7 +27,9 @@ type BasicButtonProps = {|
 |};
 
 export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, onClick = noop } : BasicButtonProps) : ElementNode {
+
     let { color, period, label } = style;
+    
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
