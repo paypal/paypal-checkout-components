@@ -6,9 +6,10 @@ import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
-import { NATIVE_CHECKOUT_URI } from '../config';
+import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { promiseNoop } from '../lib';
+import { USER_ACTION } from '../constants';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 import { checkout } from './checkout';
@@ -120,6 +121,7 @@ type NativeSDKProps = {|
     userAgent : string,
     buttonSessionID : string,
     env : $Values<typeof ENV>,
+    webCheckoutUrl : string,
     stageHost : ?string,
     apiStageHost : ?string
 |};
@@ -155,9 +157,17 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             pageUrl:                getPageUrl()
         }).then(({ facilitatorAccessToken, orderID, pageUrl }) => {
             const userAgent = getUserAgent();
+            const webCheckoutUrl = extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
+                query: {
+                    token:        orderID,
+                    native_xo:    '1',
+                    fundingSource,
+                    useraction:   commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE
+                }
+            });
 
             return {
-                orderID, facilitatorAccessToken, pageUrl, commit,
+                orderID, facilitatorAccessToken, pageUrl, commit, webCheckoutUrl,
                 userAgent, buttonSessionID, env, stageHost, apiStageHost
             };
         });

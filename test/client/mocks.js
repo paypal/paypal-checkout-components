@@ -804,10 +804,10 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
                 if (messageType === 'request'  && messageName === 'setProps') {
                     const {
                         orderID, facilitatorAccessToken, pageUrl, commit,
-                        userAgent, buttonSessionID, env
+                        userAgent, buttonSessionID, env, webCheckoutUrl
                     } = messageData;
 
-                    if (!orderID || !facilitatorAccessToken || !pageUrl || !commit || !userAgent || !buttonSessionID || !env) {
+                    if (!orderID || !facilitatorAccessToken || !pageUrl || !commit || !userAgent || !buttonSessionID || !env || !webCheckoutUrl) {
                         throw new Error(`Missing props`);
                     }
 
