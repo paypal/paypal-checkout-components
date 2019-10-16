@@ -1,11 +1,8 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 import { memoize } from 'belter/src';
-
-import { getLogger } from '../../lib';
-import { FPTI_STATE, FPTI_TRANSITION } from '../../constants';
 
 import type { XProps } from './types';
 
@@ -43,20 +40,13 @@ export type OnClickDataType = {|
 export type OnClick = (OnClickDataType) => ZalgoPromise<boolean>;
 
 export function getOnClick(xprops : XProps) : OnClick | void {
-    const { onClick, buttonSessionID } = xprops;
+    const { onClick } = xprops;
 
     if (!onClick) {
         return;
     }
 
     return memoize(({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) => {
-        getLogger().info('button_click').track({
-            [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-            [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
-            [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-            [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource
-        }).flush();
-        
         return onClick(buildXOnClickData({ fundingSource }), buildXOnClickActions()).then(valid => {
             return (valid !== CLICK_VALID.INVALID);
         });
