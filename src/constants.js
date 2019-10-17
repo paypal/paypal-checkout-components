@@ -19,7 +19,9 @@ export const HEADERS = {
 export const DATA_ATTRIBUTES = {
     FUNDING_SOURCE:    'data-funding-source',
     CARD:              'data-card',
-    PAYMENT_METHOD_ID: 'data-payment-method-id'
+    PAYMENT_METHOD_ID: 'data-payment-method-id',
+    MENU:              'data-menu',
+    NONCE:             'data-nonce'
 };
 
 export const CLASS = {

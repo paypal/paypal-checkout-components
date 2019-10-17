@@ -4,7 +4,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 
-import type { Props, Components, ServiceData, Config } from '../button/props';
+import type { Props, Components, ServiceData, Config, CreateOrder } from '../button/props';
 import type { ProxyWindow } from '../types';
 
 export type PaymentFlowInstance = {|
@@ -20,7 +20,8 @@ export type Payment = {|
     card : ?$Values<typeof CARD>,
     paymentMethodID? : ?string,
     isClick? : boolean,
-    buyerAccessToken? : ?string
+    buyerAccessToken? : ?string,
+    decorateCreateOrder? : (CreateOrder) => CreateOrder
 |};
 
 export type PaymentFlow = {|

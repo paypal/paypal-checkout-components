@@ -1,21 +1,21 @@
 /* @flow */
 
 import { onClick as onElementClick, noop } from 'belter/src';
-import { COUNTRY, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, PersonalizationType } from '../types';
-import { setupLogger, sendBeacon, fixClickFocus, getLogger, promiseNoop } from '../lib';
+import { setupLogger, fixClickFocus } from '../lib';
 import { type FirebaseConfig } from '../api';
-import { DATA_ATTRIBUTES, FPTI_STATE, FPTI_TRANSITION } from '../constants';
+import { DATA_ATTRIBUTES } from '../constants';
 import { type Payment } from '../payment-flows';
 
 import { getProps, getConfig, getComponents, getServiceData } from './props';
-import { getSelectedFunding, getButtons, enableLoadingSpinner, disableLoadingSpinner } from './dom';
+import { getSelectedFunding, getButtons } from './dom';
 import { setupButtonLogs } from './logs';
 import { setupRemember } from './remember';
-import { setupPaymentFlows, getPaymentFlow } from './pay';
-import { validateOrder, updateButtonClientConfig } from './orders';
+import { setupPaymentFlows, initiatePayment } from './pay';
+import { renderButtonDropdown } from './menu';
 
 type ButtonOpts = {|
     fundingEligibility : FundingEligibilityType,
@@ -57,102 +57,48 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
 
     const { initPromise, isEnabled } = onInit();
 
-    const sendPersonalizationBeacons = () => {
-        if (personalization && personalization.tagline && personalization.tagline.tracking) {
-            sendBeacon(personalization.tagline.tracking.click);
-        }
-
-        if (personalization && personalization.buttonText && personalization.buttonText.tracking) {
-            sendBeacon(personalization.buttonText.tracking.click);
-        }
-    };
-
     let paymentProcessing = false;
 
-    const handleButtonClick = (payment : Payment) => {
-        const { button, win, fundingSource } = payment;
-
+    function handlePaymentClick({ payment } : { payment : Payment }) : ZalgoPromise<void> {
         return ZalgoPromise.try(() => {
             if (paymentProcessing) {
                 return;
             }
 
-            paymentProcessing = true;
-
             props = getProps({ facilitatorAccessToken });
-            const { onClick, createOrder } = props;
 
-            if (!isEnabled()) {
+            const { win, fundingSource } = payment;
+            const { onClick } = props;
+
+            if (onClick) {
+                onClick({ fundingSource });
+            }
+
+            if (isEnabled()) {
+                paymentProcessing = true;
+
+                return initiatePayment({ payment, config, serviceData, components, props }).finally(() => {
+                    paymentProcessing = false;
+                });
+            } else  {
                 if (win) {
                     win.close();
                 }
-
-                if (onClick) {
-                    onClick({ fundingSource });
-                }
-
-                return;
             }
-
-            sendPersonalizationBeacons();
-
-            getLogger().info('button_click').track({
-                [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
-                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-                [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource
-            }).flush();
-
-            const { init, inline, spinner } = getPaymentFlow({ props, payment, config, components, serviceData });
-            const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
-
-            const clickPromise = click();
-
-            // $FlowFixMe
-            button.payPromise = ZalgoPromise.hash({
-                valid: onClick ? onClick({ fundingSource }) : true
-            }).then(({ valid }) => {
-                if (!valid) {
-                    return;
-                }
-        
-                if (spinner) {
-                    enableLoadingSpinner(button);
-                }
-            
-                createOrder().then(orderID =>
-                    updateButtonClientConfig({ orderID, fundingSource, inline }));
-            
-                return start()
-                    .then(() => createOrder())
-                    .then(orderID => validateOrder(orderID, { clientID, merchantID }))
-                    .then(() => clickPromise)
-                    .catch(err => {
-                        return ZalgoPromise.all([
-                            close(),
-                            ZalgoPromise.reject(err)
-                        ]);
-                    }).then(noop);
-            });
-
-            return button.payPromise;
-            
-        }).finally(() => {
-            paymentProcessing = false;
-            disableLoadingSpinner(button);
         });
-    };
+    }
 
     getButtons().forEach(button => {
-        fixClickFocus(button);
-
         const { fundingSource, card, paymentMethodID } = getSelectedFunding(button);
-
+        const payment = { button, fundingSource, card, paymentMethodID, isClick: true };
+        
+        fixClickFocus(button);
+        renderButtonDropdown({ props, payment, handlePaymentClick });
+        
         onElementClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
-
-            handleButtonClick({ button, fundingSource, card, paymentMethodID, isClick: true });
+            handlePaymentClick({ payment });
         });
     });
 
@@ -169,7 +115,8 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
                 throw new Error(`Can not find button element`);
             }
 
-            handleButtonClick({ win, button, fundingSource, card });
+            const payment = { win, button, fundingSource, card };
+            handlePaymentClick({ payment });
         });
     });
 

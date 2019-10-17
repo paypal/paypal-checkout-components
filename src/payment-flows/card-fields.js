@@ -65,7 +65,7 @@ function unhighlightCards() {
 
 const getElements = () : { buttonsContainer : HTMLElement, cardButtonsContainer : HTMLElement, cardFieldsContainer : HTMLElement } => {
     const buttonsContainer = document.querySelector('#buttons-container');
-    const cardButtonsContainer = document.querySelector(`[data-funding-source="${ FUNDING.CARD }"]`);
+    const cardButtonsContainer = document.querySelector(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }="${ FUNDING.CARD }"]`);
     const cardFieldsContainer = document.querySelector('#card-fields-container');
 
     if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) {

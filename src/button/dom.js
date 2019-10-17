@@ -29,7 +29,7 @@ export function disableLoadingSpinner(button : HTMLElement) {
 export function getNonce() : string {
     let nonce = '';
     if (document.body) {
-        nonce = document.body.getAttribute('data-nonce') || '';
+        nonce = document.body.getAttribute(`${ DATA_ATTRIBUTES.NONCE }`) || '';
     }
     return nonce;
 }

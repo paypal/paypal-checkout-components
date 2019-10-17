@@ -1,11 +1,16 @@
 /* @flow */
 
-import { noop } from 'belter/src';
+import { noop, identity } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { checkout, cardFields, native, vaultCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
+import { sendBeacon, getLogger, promiseNoop } from '../lib';
+import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
 import { type Props, type Config, type ServiceData, type Components } from './props';
+import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
+import { updateButtonClientConfig, validateOrder } from './orders';
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     vaultCapture,
@@ -31,4 +36,78 @@ export function getPaymentFlow({ props, payment, config, components, serviceData
     }
 
     throw new Error(`Could not find eligible payment flow`);
+}
+
+const sendPersonalizationBeacons = (personalization) => {
+    if (personalization && personalization.tagline && personalization.tagline.tracking) {
+        sendBeacon(personalization.tagline.tracking.click);
+    }
+    if (personalization && personalization.buttonText && personalization.buttonText.tracking) {
+        sendBeacon(personalization.buttonText.tracking.click);
+    }
+};
+
+type InitiatePaymentType = {|
+    payment : Payment,
+    props : Props,
+    serviceData : ServiceData,
+    config : Config,
+    components : Components
+|};
+
+export function initiatePayment({ payment, serviceData, config, components, props } : InitiatePaymentType) : ZalgoPromise<void> {
+    const { button, fundingSource, decorateCreateOrder = identity } = payment;
+
+    return ZalgoPromise.try(() => {
+        const { personalization, merchantID } = serviceData;
+        let { clientID, onClick, createOrder, buttonSessionID } = props;
+
+        createOrder = decorateCreateOrder(createOrder);
+
+        sendPersonalizationBeacons(personalization);
+
+        getLogger().info('button_click').track({
+            [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+            [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
+            [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+            [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource
+        }).flush();
+
+        const { init, inline, spinner } = getPaymentFlow({ props, payment, config, components, serviceData });
+        const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
+
+        const clickPromise = click();
+
+        // $FlowFixMe
+        button.payPromise = ZalgoPromise.hash({
+            valid: onClick ? onClick({ fundingSource }) : true
+        }).then(({ valid }) => {
+            if (!valid) {
+                return;
+            }
+
+            if (spinner) {
+                enableLoadingSpinner(button);
+            }
+
+            createOrder().then(orderID =>
+                updateButtonClientConfig({ orderID, fundingSource, inline }));
+
+            return start()
+                .then(() => createOrder())
+                .then(orderID => validateOrder(orderID, { clientID, merchantID }))
+                .then(() => clickPromise)
+                .catch(err => {
+                    return ZalgoPromise.all([
+                        close(),
+                        ZalgoPromise.reject(err)
+                    ]);
+                }).then(noop);
+        });
+
+        return button.payPromise;
+
+    }).finally(() => {
+        disableLoadingSpinner(button);
+    });
 }
