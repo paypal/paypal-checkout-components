@@ -1,6 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { memoize } from 'belter/src';
 
 import type { ProxyWindow } from '../types';
 
@@ -34,17 +35,14 @@ export function renderSmartMenu({ clientID } : SmartMenuProps) : SmartMenu {
         throw new Error(`Menu component not found`);
     }
 
-    const { renderTo, updateProps, show, hide } = window.paypal.Menu({
-        clientID,
-        onBlur: () => hide()
+    const { renderTo, updateProps, show, hide } = window.paypal.Menu({ clientID });
+
+    const render = memoize(() => {
+        return renderTo(window.xprops.getParent(), '#smart-menu');
     });
 
-    hide();
-
-    const renderPromise = renderTo(window.xprops.getParent(), '#smart-menu');
-
     const display = ({ choices, verticalOffset, onChoose }) => {
-        return renderPromise.then(() => {
+        return render().then(() => {
             return updateProps({
                 verticalOffset,
                 choices,
@@ -57,6 +55,9 @@ export function renderSmartMenu({ clientID } : SmartMenuProps) : SmartMenu {
             return show();
         });
     };
+
+    hide();
+    render();
 
     return { display };
 }

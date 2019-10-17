@@ -2,6 +2,8 @@
 /** @jsx h */
 
 import { h, render, Fragment, type Node } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
+import { noop } from 'belter/src';
 
 import { getBody } from '../lib';
 
@@ -13,14 +15,26 @@ type PageProps = {|
 |};
 
 function Page({ cspNonce } : PageProps) : Node {
-    const { choices, onChoose, verticalOffset, hide } = useXProps();
+    const { choices, onChoose, verticalOffset, hide, onBlur = noop } = useXProps();
+    const [ visible, setVisible ] = useState(false);
 
-    if (!choices) {
+    useEffect(() => {
+        setVisible(Boolean(choices && choices.length));
+    }, [ choices ]);
+
+    if (!choices || !visible) {
         return null;
     }
 
-    const onBlur = () => {
-        hide();
+    const onChooseHandler = ({ id, win }) => {
+        setVisible(false);
+        return onChoose({ id, win });
+    };
+
+    const onBlurHandler = () => {
+        setVisible(false);
+        onBlur();
+        return hide();
     };
 
     return (
@@ -44,7 +58,9 @@ function Page({ cspNonce } : PageProps) : Node {
                 `}
             </style>
 
-            <Menu choices={ choices } onChoose={ onChoose } onBlur={ onBlur } cspNonce={ cspNonce } verticalOffset={ verticalOffset } />
+            <Menu
+                choices={ choices } onChoose={ onChooseHandler } onBlur={ onBlurHandler }
+                cspNonce={ cspNonce } verticalOffset={ verticalOffset } />
         </Fragment>
     );
 }

@@ -14,7 +14,9 @@ export function useAutoFocus() : Object {
     const ref = useRef();
 
     useEffect(() => {
-        ref.current.focus();
+        if (ref.current) {
+            ref.current.focus();
+        }
     });
 
     return ref;
