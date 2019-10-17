@@ -63,6 +63,7 @@ export function Menu({ choices, onChoose, onBlur, cspNonce, verticalOffset } : M
                         padding: 14px 18px;
                         color: #0070ba;
                         cursor: pointer;
+                        line-height: 18px;
                     }
                     
                     .menu-item:first-child {
