@@ -56,6 +56,12 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
         onClick(event, { fundingSource, ...opts });
     };
 
+    const keyboardAccessibilityHandler = (event, opts) => {
+        if (event.keyCode === 13 || event.keyCode === 32) {
+            clickHandler(event, opts);
+        }
+    };
+
     const { layout, shape } = style;
 
     const logo = (
@@ -65,6 +71,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             logoColor={ logoColor }
             fundingEligibility={ fundingEligibility }
             onClick={ clickHandler }
+            onKeyPress={ keyboardAccessibilityHandler }
         />
     );
 
@@ -87,6 +94,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             ].join(' ') }
             aria-label={ fundingSource }
             onClick={ handleClick ? null : clickHandler }
+            onKeyPress={ handleClick ? null : keyboardAccessibilityHandler }
             tabindex={ handleClick ? '-1' : '0' }>
 
             <Label
@@ -100,6 +108,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 multiple={ multiple }
                 fundingEligibility={ fundingEligibility }
                 onClick={ clickHandler }
+                onKeyPress={ keyboardAccessibilityHandler }
                 clientAccessToken={ clientAccessToken }
                 personalization={ personalization }
             />
@@ -131,6 +140,12 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
         event.stopPropagation();
         event.target.blur();
         onClick(event, { fundingSource, ...opts });
+    };
+
+    const keyboardAccessibilityHandler = (event, opts) => {
+        if (event.keyCode === 13 || event.keyCode === 32) {
+            clickHandler(event, opts);
+        }
     };
 
     let { layout, shape, color } = style;
@@ -168,7 +183,8 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
             ].join(' ') }
             aria-label={ fundingSource }
             tabIndex='0'
-            onClick={ clickHandler } >
+            onClick={ clickHandler }
+            onKeyPress={ keyboardAccessibilityHandler } >
 
             <VaultLabel
                 nonce={ nonce }
