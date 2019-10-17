@@ -63,6 +63,18 @@ const buttonMiddleware = getButtonMiddleware({
     },
     getMerchantID: () => {
         return Promise.resolve('XYZ12345');
+    },
+    content: {
+        US: {
+            en: {
+                instantlyPayWith:     'Pay instantly with',
+                poweredBy:            'Powered by PayPal',
+                chooseCardOrShipping: 'Choose card or shipping',
+                useDifferentAccount:  'Use different account',
+                deleteVaultedAccount: 'Forget this account',
+                deleteVaultedCard:    'Forget this card'
+            }
+        }
     }
 });
 

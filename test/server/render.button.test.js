@@ -5,7 +5,7 @@ import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
 
-import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID } from './mock';
+import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID, mockContent } from './mock';
 
 function getRenderedFundingSources(template) : $ReadOnlyArray<string> {
     return regexMap(template, / data-funding-source="([^"]+)"/g, (result, group1) => group1);
@@ -15,7 +15,7 @@ jest.setTimeout(300000);
 
 afterAll(cancelWatchers);
 
-const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID });
+const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent });
 
 test('should do a basic button render and succeed', async () => {
 
@@ -90,7 +90,8 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
         },
         getMerchantID: () => {
             return Promise.resolve('ABC123');
-        }
+        },
+        content: mockContent
     });
     // $FlowFixMe
     await errButtonMiddleware(req, res);

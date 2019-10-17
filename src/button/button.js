@@ -4,7 +4,7 @@ import { onClick as onElementClick, noop } from 'belter/src';
 import { COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import type { FundingEligibilityType, PersonalizationType } from '../types';
+import type { FundingEligibilityType, PersonalizationType, ContentType } from '../types';
 import { setupLogger, fixClickFocus } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES } from '../constants';
@@ -26,16 +26,20 @@ type ButtonOpts = {|
     isCardFieldsExperimentEnabled : boolean,
     firebaseConfig? : FirebaseConfig,
     facilitatorAccessToken : string,
+    content : ContentType,
     eligibility : ?{
         cardFields : boolean,
         native : boolean
     }
 |};
 
-export function setupButton({ facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig } : ButtonOpts) : ZalgoPromise<void> {
+export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal SDK not loaded`);
     }
+
+    const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, content,
+        cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig } = opts;
 
     const clientID = window.xprops.clientID;
 
@@ -93,7 +97,7 @@ export function setupButton({ facilitatorAccessToken, eligibility, fundingEligib
         const payment = { button, fundingSource, card, paymentMethodID, isClick: true };
         
         fixClickFocus(button);
-        renderButtonDropdown({ props, payment, handlePaymentClick });
+        renderButtonDropdown({ props, payment, content, handlePaymentClick });
         
         onElementClick(button, event => {
             event.preventDefault();

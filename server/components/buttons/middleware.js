@@ -29,10 +29,17 @@ type ButtonMiddlewareOptions = {|
     getMerchantID : (ExpressRequest, string) => Promise<string>,
     getInlineGuestExperiment ? : (req : ExpressRequest, params : InlineGuestElmoParams) => Promise<boolean>,
     cache? : CacheType,
-    firebaseConfig? : FirebaseConfig
+    firebaseConfig? : FirebaseConfig,
+    content : {
+        [$Values<typeof COUNTRY>] : {
+            [$Values<typeof LANG>] : {
+                [string] : string
+            }
+        }
+    }
 |};
 
-export function getButtonMiddleware({ logger = defaultLogger, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     return sdkMiddleware({ logger, cache }, async ({ req, res, params, meta, logBuffer }) => {
         logger.info(req, EVENT.RENDER);
         if (logBuffer) {
@@ -95,6 +102,12 @@ export function getButtonMiddleware({ logger = defaultLogger, graphQL, getAccess
             ...params, nonce: cspNonce, csp:   { nonce: cspNonce }, fundingEligibility, personalization
         }).render(html());
 
+        const content = smartContent[locale.country][locale.lang];
+        const setupParams = {
+            fundingEligibility, buyerCountry, cspNonce, merchantID, personalization,
+            isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content
+        };
+
         const pageHTML = `
             <!DOCTYPE html>
             <head></head>
@@ -106,7 +119,7 @@ export function getButtonMiddleware({ logger = defaultLogger, graphQL, getAccess
 
                 ${ meta.getSDKLoader({ nonce: cspNonce }) }
                 <script nonce="${ cspNonce }">${ client.script }</script>
-                <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility }) })</script>
+                <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON(setupParams) })</script>
                 ${ shouldRenderFraudnet({ fundingEligibility }) ? renderFraudnetScript({ id: buttonSessionID, cspNonce, env }) : '' }
             </body>
         `;

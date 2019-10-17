@@ -191,3 +191,16 @@ export function getAccessToken() : Promise<string> {
 export function getMerchantID() : Promise<string> {
     return Promise.resolve('ABCDEF12345');
 }
+
+export const mockContent = {
+    US: {
+        en: {
+            instantlyPayWith:     'Pay instantly with',
+            poweredBy:            'Powered by PayPal',
+            chooseCardOrShipping: 'Choose card or shipping',
+            useDifferentAccount:  'Use different account',
+            deleteVaultedAccount: 'Forget this account',
+            deleteVaultedCard:    'Forget this card'
+        }
+    }
+};

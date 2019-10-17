@@ -4,6 +4,7 @@ import { onClick as onElementClick, destroyElement, memoize } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
+import type { ContentType } from '../types';
 import { renderSmartMenu } from '../menu/interface';
 import { CHECKOUT_POPUP_DIMENSIONS, type Payment } from '../payment-flows';
 import { deleteVault, validatePaymentMethod } from '../api';
@@ -23,39 +24,16 @@ const popup = {
     height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
 };
 
-const PAYPAL_CHOICES = [
-    {
-        id:    MENU_CHOICE.SELECT_FUNDING_SHIPPING,
-        label: 'Choose card or shipping address',
-        popup
-    },
-    {
-        id:    MENU_CHOICE.CHANGE_ACCOUNT,
-        label: 'Use a different account',
-        popup
-    },
-    {
-        id:    MENU_CHOICE.DELETE_VAULT,
-        label: 'Unlink your saved account'
-    }
-];
-
-const CARD_CHOICES = [
-    {
-        id:    MENU_CHOICE.DELETE_VAULT,
-        label: 'Unlink your saved card'
-    }
-];
-
 type ButtonDropdownProps = {|
     payment : Payment,
     props : Props,
+    content : ContentType,
     handlePaymentClick : ({ payment : Payment }) => ZalgoPromise<void>
 |};
 
 let smartMenu;
 
-export function renderButtonDropdown({ props, payment, handlePaymentClick } : ButtonDropdownProps) {
+export function renderButtonDropdown({ props, payment, content, handlePaymentClick } : ButtonDropdownProps) {
     const { clientID, clientAccessToken, enableThreeDomainSecure, buttonSessionID, partnerAttributionID } = props;
     const { button, fundingSource, paymentMethodID } = payment;
     const menuToggle = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
@@ -66,6 +44,30 @@ export function renderButtonDropdown({ props, payment, handlePaymentClick } : Bu
         onElementClick(menuToggle, event => {
             event.preventDefault();
             event.stopPropagation();
+
+            const PAYPAL_CHOICES = [
+                {
+                    id:    MENU_CHOICE.SELECT_FUNDING_SHIPPING,
+                    label: content.chooseCardOrShipping,
+                    popup
+                },
+                {
+                    id:    MENU_CHOICE.CHANGE_ACCOUNT,
+                    label: content.useDifferentAccount,
+                    popup
+                },
+                {
+                    id:    MENU_CHOICE.DELETE_VAULT,
+                    label: content.deleteVaultedAccount
+                }
+            ];
+
+            const CARD_CHOICES = [
+                {
+                    id:    MENU_CHOICE.DELETE_VAULT,
+                    label: content.deleteVaultedCard
+                }
+            ];
 
             const choices = (fundingSource === FUNDING.PAYPAL)
                 ? PAYPAL_CHOICES

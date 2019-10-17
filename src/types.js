@@ -265,3 +265,12 @@ export type ThreeDomainSecureFlowType = {|
         onError : (mixed) => ZalgoPromise<void> | void
     |}) : ZoidComponent
 |};
+
+export type ContentType = {|
+    instantlyPayWith : string,
+    poweredBy : string,
+    chooseCardOrShipping : string,
+    useDifferentAccount : string,
+    deleteVaultedAccount : string,
+    deleteVaultedCard : string
+|};
