@@ -38,7 +38,9 @@ export function renderButtonDropdown({ props, payment, content, handlePaymentCli
     const { button, fundingSource, paymentMethodID } = payment;
     const menuToggle = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
 
-    if (clientID && menuToggle && paymentMethodID && clientAccessToken) {
+    const buttonParent = button.parentElement;
+
+    if (clientID && buttonParent && menuToggle && paymentMethodID && clientAccessToken) {
         smartMenu = smartMenu || renderSmartMenu({ clientID });
 
         onElementClick(menuToggle, event => {
@@ -92,6 +94,13 @@ export function renderButtonDropdown({ props, payment, content, handlePaymentCli
                         return deleteVault({ paymentMethodID, clientAccessToken }).then(() => {
                             disableLoadingSpinner(button);
                             destroyElement(button);
+
+                            if (buttonParent.querySelectorAll(`[${ DATA_ATTRIBUTES.PAYMENT_METHOD_ID }]`).length === 0) {
+                                const payInstantlyHeader = buttonParent.querySelector('.paypal-vault-header');
+                                if (payInstantlyHeader) {
+                                    destroyElement(payInstantlyHeader);
+                                }
+                            }
                         });
 
                     } else if (id === MENU_CHOICE.SELECT_FUNDING_SHIPPING) {
