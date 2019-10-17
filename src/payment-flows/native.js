@@ -146,7 +146,18 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const getNativeUrl = () => {
         return extendUrl(`${ getDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
-            query: { sessionUID, pageUrl: initialPageUrl }
+            query: { sessionUID, buttonSessionID, pageUrl: initialPageUrl }
+        });
+    };
+
+    const getWebCheckoutFallbackUrl = ({ orderID }) => {
+        return extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
+            query: {
+                token:      orderID,
+                native_xo:  '1',
+                fundingSource,
+                useraction: commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE
+            }
         });
     };
 
@@ -156,14 +167,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             pageUrl: getPageUrl()
         }).then(({ orderID, pageUrl }) => {
             const userAgent = getUserAgent();
-            const webCheckoutUrl = extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
-                query: {
-                    token:        orderID,
-                    native_xo:    '1',
-                    fundingSource,
-                    useraction:   commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE
-                }
-            });
+            const webCheckoutUrl = getWebCheckoutFallbackUrl({ orderID });
 
             return {
                 orderID, facilitatorAccessToken, pageUrl, commit, webCheckoutUrl,
