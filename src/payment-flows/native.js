@@ -162,7 +162,11 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     };
 
     const getNativeUrl = () => {
-        return extendUrl(`${ getDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
+        const domain = (fundingSource === FUNDING.VENMO)
+            ? getDomain().replace('sandbox.', '')
+            : getDomain();
+
+        return extendUrl(`${ domain }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: { sessionUID, buttonSessionID, pageUrl: initialPageUrl }
         });
     };
