@@ -43,14 +43,31 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     });
 });
 
+function isNativeOptedIn({ props } : { props : Props }) : boolean {
+    const { enableNativeCheckout } = props;
+
+    if (enableNativeCheckout) {
+        return true;
+    }
+
+    try {
+        if (window.localStorage.get('__native_checkout__')) {
+            return true;
+        }
+    } catch (err) {
+        // pass
+    }
+
+    return false;
+}
+
 function isNativeEligible({ props, config, serviceData } : { props : Props, config : Config, serviceData : ServiceData }) : boolean {
 
     if (window.xprops.forceNativeEligible) {
         return true;
     }
 
-    const { platform, onShippingChange, createBillingAgreement,
-        createSubscription, enableNativeCheckout } = props;
+    const { platform, onShippingChange, createBillingAgreement, createSubscription } = props;
     const { firebase: firebaseConfig } = config;
     const { eligibility } = serviceData;
 
@@ -74,7 +91,7 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
         return false;
     }
 
-    if (enableNativeCheckout) {
+    if (isNativeOptedIn({ props })) {
         return eligibility.native;
     }
 
