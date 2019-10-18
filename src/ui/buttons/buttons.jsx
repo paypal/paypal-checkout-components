@@ -85,13 +85,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
-                (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
-                    ? <PoweredByPayPal
-                        locale={ locale }
-                    /> : null
-            }
-
-            {
                 vaultedFunding.length
                     ? <p class={ `${ CLASS.VAULT_HEADER } ${ CLASS.TEXT }` }><PayInstantly /></p>
                     : null
@@ -111,6 +104,13 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         paymentMethodID={ paymentMethodID }
                     />
                 ))
+            }
+
+            {
+                (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
+                    ? <PoweredByPayPal
+                        locale={ locale }
+                    /> : null
             }
 
             <Script

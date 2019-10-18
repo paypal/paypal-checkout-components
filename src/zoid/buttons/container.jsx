@@ -14,7 +14,12 @@ const CLASS = {
     VISIBLE:         'visible',
     INVISIBLE:       'invisible',
     COMPONENT_FRAME: 'component-frame',
-    PRERENDER_FRAME: 'prerender-frame'
+    PRERENDER_FRAME: 'prerender-frame',
+    SMART_MENU:      'smart-menu'
+};
+
+const ID = {
+    SMART_MENU: 'smart-menu'
 };
 
 export function containerTemplate({ uid, props, tag, context, frame, prerenderFrame, doc, container, event } : RenderOptionsType<ButtonProps>) : ?HTMLElement {
@@ -79,7 +84,6 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
 
     const element = (
         <div id={ uid } onRender={ setupAutoResize } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
-
             <style>
                 {`
                     #${ uid } {
@@ -116,16 +120,26 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                         opacity: 0;
                         pointer-events: none;
                     }
+
+                    #${ uid } > .${ CLASS.SMART_MENU } {
+                        position: absolute;
+                        z-index: 300;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                    }
                 `}
             </style>
 
             <node el={ frame } />
             <node el={ prerenderFrame } />
+
+            <div id={ ID.SMART_MENU } class={ CLASS.SMART_MENU } />
         </div>
     ).render(dom({ doc }));
 
     event.on(EVENT.RENDERED, () => {
-        element.style.transition = 'all 0.5s ease-in-out';
+        element.style.transition = 'all 0.2s ease-in-out';
     });
 
     return element;

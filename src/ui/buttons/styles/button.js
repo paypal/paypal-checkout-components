@@ -121,7 +121,7 @@ export const buttonStyle = `
     }
 
     .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .${ CLASS.POWERED_BY } > .${ CLASS.TEXT } {

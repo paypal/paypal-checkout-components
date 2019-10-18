@@ -10,6 +10,7 @@ export const CLASS = {
     LAYOUT:     ('paypal-button-layout' : 'paypal-button-layout'),
     NUMBER:     ('paypal-button-number' : 'paypal-button-number'),
     ENV:        ('paypal-button-env' : 'paypal-button-env'),
+    VAULT:      ('paypal-button-vault' : 'paypal-button-vault'),
 
     LOADING:    ('paypal-button-loading' : 'paypal-button-loading'),
     SPINNER:    ('paypal-button-spinner' : 'paypal-button-spinner'),
@@ -23,6 +24,8 @@ export const CLASS = {
     
     VAULT_LABEL:  ('paypal-vault-label' : 'paypal-vault-label'),
     VAULT_HEADER: ('paypal-vault-header' : 'paypal-vault-header'),
+
+    MENU_TOGGLE: ('menu-toggle' : 'menu-toggle'),
 
     SEPARATOR: ('paypal-separator' : 'paypal-separator')
 };

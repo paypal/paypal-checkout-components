@@ -88,6 +88,27 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                 .${ CLASS.BUTTON } .${ CLASS.CARD } img {
                     width: 100%;
                 }
+
+                .${ CLASS.MENU_TOGGLE } {
+                    position: absolute;
+                    height: 100%;
+                    right: 0;
+                    top: 0;
+                    width: ${ buttonHeight }px;
+                    border-left: 1px solid rgba(100, 100, 100, 0.1);
+                }
+
+                .${ CLASS.MENU_TOGGLE }:hover {
+                    background: rgba(100, 100, 100, 0.1);
+                }
+
+                .${ CLASS.MENU_TOGGLE } img {
+                    width: 30%;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(-50%);
+                }
             }
 
             @media only screen and (min-width: ${ style.minWidth }px) and (max-width: ${ minDualWidth }px) {

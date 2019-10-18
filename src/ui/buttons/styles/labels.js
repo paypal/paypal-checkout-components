@@ -6,7 +6,7 @@ import { CLASS, ATTRIBUTE } from '../../../constants';
 
 export const labelStyle = `
 
-    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] {
+    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }]:not(.${ CLASS.VAULT }) {
         border-radius: 0 !important;
     }
 
@@ -15,6 +15,5 @@ export const labelStyle = `
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        margin-left: 4px;
     }
 `;

@@ -12,6 +12,9 @@ import { type ButtonStyle, type Personalization } from '../../zoid/buttons/props
 import type { FundingEligibilityType } from '../../types';
 
 import { Spinner } from './spinner';
+import { MenuButton } from './menu';
+
+const ENABLE_VAULT_DROPDOWN = true;
 
 type BasicButtonProps = {|
     style : ButtonStyle,
@@ -175,6 +178,7 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
             } }
             class={ [
                 CLASS.BUTTON,
+                CLASS.VAULT,
                 `${ CLASS.LAYOUT }-${ layout }`,
                 `${ CLASS.SHAPE }-${ shape }`,
                 `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
@@ -194,6 +198,7 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
             />
 
             <Spinner />
+            { ENABLE_VAULT_DROPDOWN ? <MenuButton /> : null }
         </div>
     );
 }
