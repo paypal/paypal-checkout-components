@@ -350,7 +350,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         nonce = '',
         onShippingChange,
         personalization,
-        clientAccessToken
+        clientAccessToken,
+        cardButtonExperiment
     } = props;
 
     const { country, lang } = locale;
@@ -386,5 +387,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     style = normalizeButtonStyle(style);
 
     return { clientID, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization };
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, cardButtonExperiment };
 }

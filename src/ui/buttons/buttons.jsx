@@ -22,7 +22,7 @@ type ButtonsProps = ButtonPropsInputs & {|
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
     const { style, locale, remembered, env, fundingEligibility, platform,
-        nonce, components, onShippingChange, personalization, clientAccessToken } = normalizeButtonProps(props);
+        nonce, components, onShippingChange, personalization, clientAccessToken, cardButtonExperiment } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
     const { lang } = locale;
 
@@ -68,6 +68,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         onClick={ onClick }
                         clientAccessToken={ clientAccessToken }
                         personalization={ personalization }
+                        cardButtonExperiment={ cardButtonExperiment }
                     />
                 ))
             }
