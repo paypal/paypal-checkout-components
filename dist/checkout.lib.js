@@ -2138,7 +2138,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: getSessionID(),
-      ver: "4.0.297"
+      ver: "4.0.298"
     };
   });
   Object(client["a" /* addHeaderBuilder */])(function () {
@@ -2582,7 +2582,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.297";
+    payload.version = "4.0.298";
     payload.host = window.location.host;
     payload.uid = getSessionID();
     payload.appName = APP_NAME;
@@ -2638,7 +2638,7 @@ function beacon_checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.297".replace(/[^0-9]+/g, '_');
+      var version = "4.0.298".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -2655,7 +2655,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.297",
+    v: "checkout.js." + "4.0.298",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -2868,7 +2868,7 @@ function isPayPalObjects() {
 }
 function getScriptVersion() {
   if (false) {} else {
-    return  false ? undefined : "4.0.297";
+    return  false ? undefined : "4.0.298";
   }
 }
 function getCurrentScriptUrl() {
@@ -2884,7 +2884,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.297" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.298" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -3252,7 +3252,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.lib.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.297",
+  version: "4.0.298",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -10338,6 +10338,10 @@ function memoize(method, options) {
   };
 
   return setFunctionName(memoizedFunction, getFunctionName(method) + "::memoized");
+}
+function promiseIdentity(item) {
+  // $FlowFixMe
+  return src["a" /* ZalgoPromise */].resolve(item);
 } // eslint-disable-next-line flowtype/no-weak-types
 
 function memoizePromise(method) {
@@ -12312,7 +12316,8 @@ function experiment(_ref) {
       if (isEventUnique(name + "_" + treatment)) {
         logTreatment({
           name: name,
-          treatment: treatment
+          treatment: treatment,
+          payload: payload
         });
       }
 
@@ -12562,7 +12567,7 @@ function wrapPromise(method, _temp) {
   var expected = [];
   var promises = [];
   var timer = setTimeout(function () {
-    if (expected) {
+    if (expected.length) {
       promises.push(src["a" /* ZalgoPromise */].asyncReject(new Error("Expected " + expected[0] + " to be called")));
     }
   }, timeout);
@@ -12771,6 +12776,7 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import getGlobal */
 /* unused concated harmony import getObjectID */
 /* unused concated harmony import memoize */
+/* unused concated harmony import promiseIdentity */
 /* unused concated harmony import memoizePromise */
 /* unused concated harmony import promisify */
 /* unused concated harmony import inlineMemoize */
@@ -34793,7 +34799,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.297", _ref19), {
+  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.298", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -36629,7 +36635,7 @@ var postRobot = post_robot_src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.297";
+var interface_version = "4.0.298";
 var interface_checkout;
 var apps;
 
