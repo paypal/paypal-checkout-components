@@ -128,7 +128,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type: 'boolean',
                     queryParam: true,
                     value: ({ state }) => {
-                        // Set up a new experiment at 10%
+                        // Set up a new experiment at 50%
                         state.cardButtonExperiment = state.cardButtonExperiment || createExperiment('inline_blk_btn', 50);
                         return state.cardButtonExperiment.isEnabled();
                     }
