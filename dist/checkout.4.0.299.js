@@ -1445,7 +1445,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(session["c" /* getSessionID */])(),
-      ver: "4.0.298"
+      ver: "4.0.299"
     };
   });
   Object(client["a" /* addHeaderBuilder */])(function () {
@@ -2022,7 +2022,7 @@ function isPayPalObjects() {
 }
 function getScriptVersion() {
   if (false) {} else {
-    return  false ? undefined : "4.0.298";
+    return  false ? undefined : "4.0.299";
   }
 }
 function getCurrentScriptUrl() {
@@ -2038,7 +2038,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.298" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.299" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -2403,10 +2403,10 @@ function getDefaultEnv() {
 
 var config = {
   locales: constants["z" /* LOCALE */],
-  scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.4.0.298.js",
+  scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.4.0.299.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.298",
+  version: "4.0.299",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -2895,7 +2895,7 @@ var config = {
   altpayUris: (_altpayUris = {}, _altpayUris[constants["t" /* ENV */].LOCAL] = "/latinumcheckout", _altpayUris[constants["t" /* ENV */].STAGE] = "/latinumcheckout", _altpayUris[constants["t" /* ENV */].SANDBOX] = "/latinumcheckout", _altpayUris[constants["t" /* ENV */].PRODUCTION] = "/latinumcheckout", _altpayUris[constants["t" /* ENV */].TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", _altpayUris[constants["t" /* ENV */].DEMO] = "/demo/dev/checkout.htm", _altpayUris),
   guestUris: (_guestUris = {}, _guestUris[constants["t" /* ENV */].LOCAL] = "/webapps/xoonboarding", _guestUris[constants["t" /* ENV */].STAGE] = "/webapps/xoonboarding", _guestUris[constants["t" /* ENV */].SANDBOX] = "/webapps/xoonboarding", _guestUris[constants["t" /* ENV */].PRODUCTION] = "/webapps/xoonboarding", _guestUris[constants["t" /* ENV */].TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", _guestUris[constants["t" /* ENV */].DEMO] = "/demo/dev/guest.htm", _guestUris),
   billingUris: (_billingUris = {}, _billingUris[constants["t" /* ENV */].LOCAL] = "/webapps/hermes/agreements", _billingUris[constants["t" /* ENV */].STAGE] = "/webapps/hermes/agreements", _billingUris[constants["t" /* ENV */].SANDBOX] = "/agreements/approve", _billingUris[constants["t" /* ENV */].PRODUCTION] = "/agreements/approve", _billingUris[constants["t" /* ENV */].TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", _billingUris[constants["t" /* ENV */].DEMO] = "/demo/dev/checkout.htm", _billingUris),
-  buttonUris: (_buttonUris = {}, _buttonUris[constants["t" /* ENV */].LOCAL] = "/webapps/hermes/button", _buttonUris[constants["t" /* ENV */].STAGE] = "/webapps/hermes/button", _buttonUris[constants["t" /* ENV */].SANDBOX] = "/webapps/hermes/button", _buttonUris[constants["t" /* ENV */].PRODUCTION] = "/webapps/hermes/button", _buttonUris[constants["t" /* ENV */].TEST] = "/base/test/windows/button/index.htm", _buttonUris[constants["t" /* ENV */].DEMO] = "/demo/dev/button.htm", _buttonUris),
+  buttonUris: (_buttonUris = {}, _buttonUris[constants["t" /* ENV */].LOCAL] = "/smart/button", _buttonUris[constants["t" /* ENV */].STAGE] = "/smart/button", _buttonUris[constants["t" /* ENV */].SANDBOX] = "/smart/button", _buttonUris[constants["t" /* ENV */].PRODUCTION] = "/smart/button", _buttonUris[constants["t" /* ENV */].TEST] = "/base/test/windows/button/index.htm", _buttonUris[constants["t" /* ENV */].DEMO] = "/demo/dev/button.htm", _buttonUris),
   inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _inlinedCardFieldUris[constants["t" /* ENV */].LOCAL] = "/smart/card-fields", _inlinedCardFieldUris[constants["t" /* ENV */].STAGE] = "/smart/card-fields", _inlinedCardFieldUris[constants["t" /* ENV */].SANDBOX] = "/smart/card-fields", _inlinedCardFieldUris[constants["t" /* ENV */].PRODUCTION] = "/smart/card-fields", _inlinedCardFieldUris[constants["t" /* ENV */].TEST] = "/base/test/windows/card-fields/index.htm", _inlinedCardFieldUris[constants["t" /* ENV */].DEMO] = "/demo/dev/card.htm", _inlinedCardFieldUris),
   postBridgeUris: (_postBridgeUris = {}, _postBridgeUris[constants["t" /* ENV */].LOCAL] = "/webapps/hermes/component-meta", _postBridgeUris[constants["t" /* ENV */].STAGE] = "/webapps/hermes/component-meta", _postBridgeUris[constants["t" /* ENV */].SANDBOX] = "/webapps/hermes/component-meta", _postBridgeUris[constants["t" /* ENV */].PRODUCTION] = "/webapps/hermes/component-meta", _postBridgeUris[constants["t" /* ENV */].TEST] = "/base/test/windows/component-meta/index.htm", _postBridgeUris[constants["t" /* ENV */].DEMO] = "/demo/dev/bridge.htm", _postBridgeUris),
   legacyCheckoutUris: (_legacyCheckoutUris = {}, _legacyCheckoutUris[constants["t" /* ENV */].LOCAL] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", _legacyCheckoutUris[constants["t" /* ENV */].STAGE] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", _legacyCheckoutUris[constants["t" /* ENV */].SANDBOX] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", _legacyCheckoutUris[constants["t" /* ENV */].PRODUCTION] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", _legacyCheckoutUris[constants["t" /* ENV */].TEST] = "#fallback", _legacyCheckoutUris),
@@ -12491,7 +12491,7 @@ var Checkout = Object(zoid_src["c" /* create */])({
 
             return src["a" /* ZalgoPromise */].try(function () {
               try {
-                var isButton = window.location.href.indexOf('/webapps/hermes/button') !== -1;
+                var isButton = window.location.href.indexOf('/smart/button') !== -1;
                 var isGuest = _this.window.location.href.indexOf('/webapps/xoonboarding') !== -1;
 
                 if (isButton && isGuest) {
@@ -20574,7 +20574,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.298";
+    payload.version = "4.0.299";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -20630,7 +20630,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.298".replace(/[^0-9]+/g, '_');
+      var version = "4.0.299".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -20647,7 +20647,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.298",
+    v: "checkout.js." + "4.0.299",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -25771,17 +25771,17 @@ if ( true && !Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__[/* isPayPalDomai
   throw new Error("Do not integrate with versioned script url");
 }
 
-if (window.paypal && window.paypal.version === "4.0.298") {
+if (window.paypal && window.paypal.version === "4.0.299") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.298"
+    version: "4.0.299"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.298" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.298" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.299" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.299" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.298"
+    version: "4.0.299"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.298");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.299");
 } else {
   try {
     var _interface = __webpack_require__(66);
@@ -34958,7 +34958,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.298", _ref19), {
+  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.299", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -35211,12 +35211,6 @@ var component_Button = Object(src["c" /* create */])({
   buildUrl: function buildUrl(props) {
     var env = props.env || config["a" /* config */].env;
     var url = config["a" /* config */].buttonUrls[env];
-    var smartUrl = url.replace('/webapps/hermes/button', '/smart/button');
-
-    if (smartThrottle.isEnabled() || props.enableNativeCheckout || env !== constants["t" /* ENV */].PRODUCTION || Object(lib["z" /* isDevice */])() || props.style && props.style.label === 'installment') {
-      return smartUrl;
-    }
-
     return url;
   },
   contexts: {
@@ -36794,7 +36788,7 @@ var postRobot = post_robot_src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.298";
+var interface_version = "4.0.299";
 var interface_checkout;
 var apps;
 
@@ -38122,4 +38116,4 @@ Object(lib["K" /* onDocumentReady */])(function () {
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=checkout.4.0.298.js.map
+//# sourceMappingURL=checkout.4.0.299.js.map
