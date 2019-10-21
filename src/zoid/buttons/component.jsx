@@ -8,7 +8,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { isDevice, uniqueID, inlineMemoize, experiment } from 'belter/src';
+import { isDevice, uniqueID, inlineMemoize } from 'belter/src';
 import { FUNDING, PLATFORM, QUERY_BOOL, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
@@ -125,9 +125,9 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 },
 
                 cardButtonExperiment: {
-                    type: 'boolean',
-                    queryParam: true,
-                    value: ({ state }) => {
+                    type:         'boolean',
+                    queryParam:   true,
+                    value:        ({ state }) => {
                         // Set up a new experiment at 50%
                         state.cardButtonExperiment = state.cardButtonExperiment || createExperiment('inline_blk_btn', 50);
                         return state.cardButtonExperiment.isEnabled();
