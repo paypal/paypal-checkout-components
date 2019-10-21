@@ -833,7 +833,9 @@ var HEADERS = {
 var DATA_ATTRIBUTES = {
   FUNDING_SOURCE: 'data-funding-source',
   CARD: 'data-card',
-  PAYMENT_METHOD_ID: 'data-payment-method-id'
+  PAYMENT_METHOD_ID: 'data-payment-method-id',
+  MENU: 'data-menu',
+  NONCE: 'data-nonce'
 };
 var CLASS = {
   LOADING: 'paypal-button-loading',
@@ -902,519 +904,6 @@ var USER_ACTION = {
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/utils.js
-function utils_isPromise(item) {
-  try {
-    if (!item) {
-      return false;
-    }
-
-    if (typeof Promise !== 'undefined' && item instanceof Promise) {
-      return true;
-    }
-
-    if (typeof window !== 'undefined' && typeof window.Window === 'function' && item instanceof window.Window) {
-      return false;
-    }
-
-    if (typeof window !== 'undefined' && typeof window.constructor === 'function' && item instanceof window.constructor) {
-      return false;
-    }
-
-    var _toString = {}.toString;
-
-    if (_toString) {
-      var name = _toString.call(item);
-
-      if (name === '[object Window]' || name === '[object global]' || name === '[object DOMWindow]') {
-        return false;
-      }
-    }
-
-    if (typeof item.then === 'function') {
-      return true;
-    }
-  } catch (err) {
-    return false;
-  }
-
-  return false;
-}
-// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/exceptions.js
-var dispatchedErrors = [];
-var possiblyUnhandledPromiseHandlers = [];
-function dispatchPossiblyUnhandledError(err, promise) {
-  if (dispatchedErrors.indexOf(err) !== -1) {
-    return;
-  }
-
-  dispatchedErrors.push(err);
-  setTimeout(function () {
-    if (false) {}
-
-    throw err;
-  }, 1);
-
-  for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) {
-    // $FlowFixMe
-    possiblyUnhandledPromiseHandlers[j](err, promise);
-  }
-}
-function exceptions_onPossiblyUnhandledException(handler) {
-  possiblyUnhandledPromiseHandlers.push(handler);
-  return {
-    cancel: function cancel() {
-      possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
-    }
-  };
-}
-// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/flush.js
-var activeCount = 0;
-var flushPromise;
-
-function flushActive() {
-  if (!activeCount && flushPromise) {
-    var promise = flushPromise;
-    flushPromise = null;
-    promise.resolve();
-  }
-}
-
-function startActive() {
-  activeCount += 1;
-}
-function endActive() {
-  activeCount -= 1;
-  flushActive();
-}
-function awaitActive(Zalgo) {
-  // eslint-disable-line no-undef
-  var promise = flushPromise = flushPromise || new Zalgo();
-  flushActive();
-  return promise;
-}
-// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/promise.js
-
-
-
-var promise_ZalgoPromise =
-/*#__PURE__*/
-function () {
-  function ZalgoPromise(handler) {
-    var _this = this;
-
-    this.resolved = void 0;
-    this.rejected = void 0;
-    this.errorHandled = void 0;
-    this.value = void 0;
-    this.error = void 0;
-    this.handlers = void 0;
-    this.dispatching = void 0;
-    this.stack = void 0;
-    this.resolved = false;
-    this.rejected = false;
-    this.errorHandled = false;
-    this.handlers = [];
-
-    if (handler) {
-      var _result;
-
-      var _error;
-
-      var resolved = false;
-      var rejected = false;
-      var isAsync = false;
-      startActive();
-
-      try {
-        handler(function (res) {
-          if (isAsync) {
-            _this.resolve(res);
-          } else {
-            resolved = true;
-            _result = res;
-          }
-        }, function (err) {
-          if (isAsync) {
-            _this.reject(err);
-          } else {
-            rejected = true;
-            _error = err;
-          }
-        });
-      } catch (err) {
-        endActive();
-        this.reject(err);
-        return;
-      }
-
-      endActive();
-      isAsync = true;
-
-      if (resolved) {
-        // $FlowFixMe
-        this.resolve(_result);
-      } else if (rejected) {
-        this.reject(_error);
-      }
-    }
-
-    if (false) {}
-  }
-
-  var _proto = ZalgoPromise.prototype;
-
-  _proto.resolve = function resolve(result) {
-    if (this.resolved || this.rejected) {
-      return this;
-    }
-
-    if (utils_isPromise(result)) {
-      throw new Error('Can not resolve promise with another promise');
-    }
-
-    this.resolved = true;
-    this.value = result;
-    this.dispatch();
-    return this;
-  };
-
-  _proto.reject = function reject(error) {
-    var _this2 = this;
-
-    if (this.resolved || this.rejected) {
-      return this;
-    }
-
-    if (utils_isPromise(error)) {
-      throw new Error('Can not reject promise with another promise');
-    }
-
-    if (!error) {
-      // $FlowFixMe
-      var _err = error && typeof error.toString === 'function' ? error.toString() : Object.prototype.toString.call(error);
-
-      error = new Error("Expected reject to be called with Error, got " + _err);
-    }
-
-    this.rejected = true;
-    this.error = error;
-
-    if (!this.errorHandled) {
-      setTimeout(function () {
-        if (!_this2.errorHandled) {
-          dispatchPossiblyUnhandledError(error, _this2);
-        }
-      }, 1);
-    }
-
-    this.dispatch();
-    return this;
-  };
-
-  _proto.asyncReject = function asyncReject(error) {
-    this.errorHandled = true;
-    this.reject(error);
-    return this;
-  };
-
-  _proto.dispatch = function dispatch() {
-    var dispatching = this.dispatching,
-        resolved = this.resolved,
-        rejected = this.rejected,
-        handlers = this.handlers;
-
-    if (dispatching) {
-      return;
-    }
-
-    if (!resolved && !rejected) {
-      return;
-    }
-
-    this.dispatching = true;
-    startActive();
-
-    var chain = function chain(firstPromise, secondPromise) {
-      return firstPromise.then(function (res) {
-        secondPromise.resolve(res);
-      }, function (err) {
-        secondPromise.reject(err);
-      });
-    };
-
-    for (var i = 0; i < handlers.length; i++) {
-      var _handlers$i = handlers[i],
-          onSuccess = _handlers$i.onSuccess,
-          onError = _handlers$i.onError,
-          promise = _handlers$i.promise;
-
-      var _result2 = void 0;
-
-      if (resolved) {
-        try {
-          _result2 = onSuccess ? onSuccess(this.value) : this.value;
-        } catch (err) {
-          promise.reject(err);
-          continue;
-        }
-      } else if (rejected) {
-        if (!onError) {
-          promise.reject(this.error);
-          continue;
-        }
-
-        try {
-          _result2 = onError(this.error);
-        } catch (err) {
-          promise.reject(err);
-          continue;
-        }
-      }
-
-      if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
-        if (_result2.resolved) {
-          promise.resolve(_result2.value);
-        } else {
-          promise.reject(_result2.error);
-        }
-
-        _result2.errorHandled = true;
-      } else if (utils_isPromise(_result2)) {
-        if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
-          if (_result2.resolved) {
-            promise.resolve(_result2.value);
-          } else {
-            promise.reject(_result2.error);
-          }
-        } else {
-          // $FlowFixMe
-          chain(_result2, promise);
-        }
-      } else {
-        promise.resolve(_result2);
-      }
-    }
-
-    handlers.length = 0;
-    this.dispatching = false;
-    endActive();
-  };
-
-  _proto.then = function then(onSuccess, onError) {
-    if (onSuccess && typeof onSuccess !== 'function' && !onSuccess.call) {
-      throw new Error('Promise.then expected a function for success handler');
-    }
-
-    if (onError && typeof onError !== 'function' && !onError.call) {
-      throw new Error('Promise.then expected a function for error handler');
-    }
-
-    var promise = new ZalgoPromise();
-    this.handlers.push({
-      promise: promise,
-      onSuccess: onSuccess,
-      onError: onError
-    });
-    this.errorHandled = true;
-    this.dispatch();
-    return promise;
-  };
-
-  _proto.catch = function _catch(onError) {
-    return this.then(undefined, onError);
-  };
-
-  _proto.finally = function _finally(onFinally) {
-    if (onFinally && typeof onFinally !== 'function' && !onFinally.call) {
-      throw new Error('Promise.finally expected a function');
-    }
-
-    return this.then(function (result) {
-      return ZalgoPromise.try(onFinally).then(function () {
-        return result;
-      });
-    }, function (err) {
-      return ZalgoPromise.try(onFinally).then(function () {
-        throw err;
-      });
-    });
-  };
-
-  _proto.timeout = function timeout(time, err) {
-    var _this3 = this;
-
-    if (this.resolved || this.rejected) {
-      return this;
-    }
-
-    var timeout = setTimeout(function () {
-      if (_this3.resolved || _this3.rejected) {
-        return;
-      }
-
-      _this3.reject(err || new Error("Promise timed out after " + time + "ms"));
-    }, time);
-    return this.then(function (result) {
-      clearTimeout(timeout);
-      return result;
-    });
-  } // $FlowFixMe
-  ;
-
-  _proto.toPromise = function toPromise() {
-    // $FlowFixMe
-    if (typeof Promise === 'undefined') {
-      throw new TypeError("Could not find Promise");
-    } // $FlowFixMe
-
-
-    return Promise.resolve(this); // eslint-disable-line compat/compat
-  };
-
-  ZalgoPromise.resolve = function resolve(value) {
-    if (value instanceof ZalgoPromise) {
-      return value;
-    }
-
-    if (utils_isPromise(value)) {
-      // $FlowFixMe
-      return new ZalgoPromise(function (resolve, reject) {
-        return value.then(resolve, reject);
-      });
-    }
-
-    return new ZalgoPromise().resolve(value);
-  };
-
-  ZalgoPromise.reject = function reject(error) {
-    return new ZalgoPromise().reject(error);
-  };
-
-  ZalgoPromise.asyncReject = function asyncReject(error) {
-    return new ZalgoPromise().asyncReject(error);
-  };
-
-  ZalgoPromise.all = function all(promises) {
-    // eslint-disable-line no-undef
-    var promise = new ZalgoPromise();
-    var count = promises.length;
-    var results = [];
-
-    if (!count) {
-      promise.resolve(results);
-      return promise;
-    }
-
-    var chain = function chain(i, firstPromise, secondPromise) {
-      return firstPromise.then(function (res) {
-        results[i] = res;
-        count -= 1;
-
-        if (count === 0) {
-          promise.resolve(results);
-        }
-      }, function (err) {
-        secondPromise.reject(err);
-      });
-    };
-
-    for (var i = 0; i < promises.length; i++) {
-      var prom = promises[i];
-
-      if (prom instanceof ZalgoPromise) {
-        if (prom.resolved) {
-          results[i] = prom.value;
-          count -= 1;
-          continue;
-        }
-      } else if (!utils_isPromise(prom)) {
-        results[i] = prom;
-        count -= 1;
-        continue;
-      }
-
-      chain(i, ZalgoPromise.resolve(prom), promise);
-    }
-
-    if (count === 0) {
-      promise.resolve(results);
-    }
-
-    return promise;
-  };
-
-  ZalgoPromise.hash = function hash(promises) {
-    // eslint-disable-line no-undef
-    var result = {};
-    return ZalgoPromise.all(Object.keys(promises).map(function (key) {
-      return ZalgoPromise.resolve(promises[key]).then(function (value) {
-        result[key] = value;
-      });
-    })).then(function () {
-      return result;
-    });
-  };
-
-  ZalgoPromise.map = function map(items, method) {
-    // $FlowFixMe
-    return ZalgoPromise.all(items.map(method));
-  };
-
-  ZalgoPromise.onPossiblyUnhandledException = function onPossiblyUnhandledException(handler) {
-    return exceptions_onPossiblyUnhandledException(handler);
-  };
-
-  ZalgoPromise.try = function _try(method, context, args) {
-    if (method && typeof method !== 'function' && !method.call) {
-      throw new Error('Promise.try expected a function');
-    }
-
-    var result;
-    startActive();
-
-    try {
-      // $FlowFixMe
-      result = method.apply(context, args || []);
-    } catch (err) {
-      endActive();
-      return ZalgoPromise.reject(err);
-    }
-
-    endActive();
-    return ZalgoPromise.resolve(result);
-  };
-
-  ZalgoPromise.delay = function delay(_delay) {
-    return new ZalgoPromise(function (resolve) {
-      setTimeout(resolve, _delay);
-    });
-  };
-
-  ZalgoPromise.isPromise = function isPromise(value) {
-    if (value && value instanceof ZalgoPromise) {
-      return true;
-    }
-
-    return utils_isPromise(value);
-  };
-
-  ZalgoPromise.flush = function flush() {
-    return awaitActive(ZalgoPromise);
-  };
-
-  return ZalgoPromise;
-}();
-// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/index.js
-/* concated harmony reexport ZalgoPromise */__webpack_require__.d(__webpack_exports__, "a", function() { return promise_ZalgoPromise; });
-
-
-/***/ }),
-/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1579,10 +1068,10 @@ function supportsPopups(ua) {
   return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(7);
+var esm_extends = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var src = __webpack_require__(2);
+var src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js + 4 modules
 var cross_domain_utils_src = __webpack_require__(9);
@@ -2013,6 +1502,10 @@ function memoize(method, options) {
   };
 
   return setFunctionName(memoizedFunction, getFunctionName(method) + "::memoized");
+}
+function promiseIdentity(item) {
+  // $FlowFixMe
+  return src["a" /* ZalgoPromise */].resolve(item);
 } // eslint-disable-next-line flowtype/no-weak-types
 
 function memoizePromise(method) {
@@ -4237,7 +3730,7 @@ function wrapPromise(method, _temp) {
   var expected = [];
   var promises = [];
   var timer = setTimeout(function () {
-    if (expected) {
+    if (expected.length) {
       promises.push(src["a" /* ZalgoPromise */].asyncReject(new Error("Expected " + expected[0] + " to be called")));
     }
   }, timeout);
@@ -4360,7 +3853,7 @@ function wrapPromise(method, _temp) {
   });
 }
 // CONCATENATED MODULE: ./node_modules/belter/src/index.js
-/* concated harmony reexport getUserAgent */__webpack_require__.d(__webpack_exports__, "e", function() { return getUserAgent; });
+/* concated harmony reexport getUserAgent */__webpack_require__.d(__webpack_exports__, "f", function() { return getUserAgent; });
 /* unused concated harmony import isDevice */
 /* unused concated harmony import isWebView */
 /* unused concated harmony import isStandAlone */
@@ -4377,9 +3870,9 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import isIE */
 /* unused concated harmony import isIECompHeader */
 /* unused concated harmony import isElectron */
-/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "h", function() { return isIEIntranet; });
+/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "j", function() { return isIEIntranet; });
 /* unused concated harmony import isMacOsCna */
-/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "u", function() { return supportsPopups; });
+/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "w", function() { return supportsPopups; });
 /* unused concated harmony import isDocumentReady */
 /* unused concated harmony import urlEncode */
 /* unused concated harmony import waitForWindowReady */
@@ -4390,16 +3883,16 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import urlWillRedirectPage */
 /* unused concated harmony import formatQuery */
 /* unused concated harmony import extendQuery */
-/* concated harmony reexport extendUrl */__webpack_require__.d(__webpack_exports__, "c", function() { return extendUrl; });
-/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "p", function() { return redirect; });
+/* concated harmony reexport extendUrl */__webpack_require__.d(__webpack_exports__, "d", function() { return extendUrl; });
+/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "r", function() { return redirect; });
 /* unused concated harmony import hasMetaViewPort */
 /* unused concated harmony import isElementVisible */
 /* unused concated harmony import enablePerformance */
-/* concated harmony reexport getPageRenderTime */__webpack_require__.d(__webpack_exports__, "d", function() { return getPageRenderTime; });
+/* concated harmony reexport getPageRenderTime */__webpack_require__.d(__webpack_exports__, "e", function() { return getPageRenderTime; });
 /* unused concated harmony import htmlEncode */
-/* concated harmony reexport isBrowser */__webpack_require__.d(__webpack_exports__, "g", function() { return isBrowser; });
-/* concated harmony reexport querySelectorAll */__webpack_require__.d(__webpack_exports__, "o", function() { return querySelectorAll; });
-/* concated harmony reexport onClick */__webpack_require__.d(__webpack_exports__, "l", function() { return onClick; });
+/* concated harmony reexport isBrowser */__webpack_require__.d(__webpack_exports__, "i", function() { return isBrowser; });
+/* concated harmony reexport querySelectorAll */__webpack_require__.d(__webpack_exports__, "q", function() { return querySelectorAll; });
+/* concated harmony reexport onClick */__webpack_require__.d(__webpack_exports__, "n", function() { return onClick; });
 /* unused concated harmony import getScript */
 /* unused concated harmony import isLocalStorageEnabled */
 /* unused concated harmony import getBrowserLocales */
@@ -4409,9 +3902,9 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import getElement */
 /* unused concated harmony import elementReady */
 /* unused concated harmony import PopupOpenError */
-/* concated harmony reexport popup */__webpack_require__.d(__webpack_exports__, "m", function() { return popup; });
+/* concated harmony reexport popup */__webpack_require__.d(__webpack_exports__, "o", function() { return popup; });
 /* unused concated harmony import writeToWindow */
-/* concated harmony reexport writeElementToWindow */__webpack_require__.d(__webpack_exports__, "w", function() { return writeElementToWindow; });
+/* concated harmony reexport writeElementToWindow */__webpack_require__.d(__webpack_exports__, "y", function() { return writeElementToWindow; });
 /* unused concated harmony import setStyle */
 /* unused concated harmony import awaitFrameLoad */
 /* unused concated harmony import awaitFrameWindow */
@@ -4425,7 +3918,7 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import makeElementInvisible */
 /* unused concated harmony import showElement */
 /* unused concated harmony import hideElement */
-/* unused concated harmony import destroyElement */
+/* concated harmony reexport destroyElement */__webpack_require__.d(__webpack_exports__, "c", function() { return destroyElement; });
 /* unused concated harmony import showAndAnimate */
 /* unused concated harmony import animateAndHide */
 /* unused concated harmony import addClass */
@@ -4442,21 +3935,22 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import setFunctionName */
 /* concated harmony reexport base64encode */__webpack_require__.d(__webpack_exports__, "a", function() { return base64encode; });
 /* unused concated harmony import base64decode */
-/* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "v", function() { return uniqueID; });
+/* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "x", function() { return uniqueID; });
 /* unused concated harmony import getGlobal */
 /* unused concated harmony import getObjectID */
-/* concated harmony reexport memoize */__webpack_require__.d(__webpack_exports__, "i", function() { return memoize; });
+/* concated harmony reexport memoize */__webpack_require__.d(__webpack_exports__, "k", function() { return memoize; });
+/* unused concated harmony import promiseIdentity */
 /* unused concated harmony import memoizePromise */
 /* unused concated harmony import promisify */
-/* concated harmony reexport inlineMemoize */__webpack_require__.d(__webpack_exports__, "f", function() { return inlineMemoize; });
-/* concated harmony reexport noop */__webpack_require__.d(__webpack_exports__, "j", function() { return util_noop; });
+/* concated harmony reexport inlineMemoize */__webpack_require__.d(__webpack_exports__, "h", function() { return inlineMemoize; });
+/* concated harmony reexport noop */__webpack_require__.d(__webpack_exports__, "l", function() { return util_noop; });
 /* unused concated harmony import once */
 /* unused concated harmony import hashStr */
 /* unused concated harmony import strHashStr */
 /* unused concated harmony import match */
 /* unused concated harmony import awaitKey */
-/* concated harmony reexport stringifyError */__webpack_require__.d(__webpack_exports__, "s", function() { return stringifyError; });
-/* concated harmony reexport stringifyErrorMessage */__webpack_require__.d(__webpack_exports__, "t", function() { return stringifyErrorMessage; });
+/* concated harmony reexport stringifyError */__webpack_require__.d(__webpack_exports__, "u", function() { return stringifyError; });
+/* concated harmony reexport stringifyErrorMessage */__webpack_require__.d(__webpack_exports__, "v", function() { return stringifyErrorMessage; });
 /* unused concated harmony import stringify */
 /* unused concated harmony import domainMatches */
 /* unused concated harmony import patchMethod */
@@ -4467,11 +3961,11 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import max */
 /* unused concated harmony import regexMap */
 /* unused concated harmony import svgToBase64 */
-/* concated harmony reexport objFilter */__webpack_require__.d(__webpack_exports__, "k", function() { return objFilter; });
-/* unused concated harmony import identity */
+/* concated harmony reexport objFilter */__webpack_require__.d(__webpack_exports__, "m", function() { return objFilter; });
+/* concated harmony reexport identity */__webpack_require__.d(__webpack_exports__, "g", function() { return identity; });
 /* unused concated harmony import regexTokenize */
-/* concated harmony reexport promiseDebounce */__webpack_require__.d(__webpack_exports__, "n", function() { return promiseDebounce; });
-/* concated harmony reexport safeInterval */__webpack_require__.d(__webpack_exports__, "r", function() { return safeInterval; });
+/* concated harmony reexport promiseDebounce */__webpack_require__.d(__webpack_exports__, "p", function() { return promiseDebounce; });
+/* concated harmony reexport safeInterval */__webpack_require__.d(__webpack_exports__, "t", function() { return safeInterval; });
 /* unused concated harmony import isInteger */
 /* unused concated harmony import isFloat */
 /* unused concated harmony import serializePrimitive */
@@ -4505,7 +3999,7 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import removeFromArray */
 /* unused concated harmony import assertExists */
 /* unused concated harmony import unique */
-/* concated harmony reexport request */__webpack_require__.d(__webpack_exports__, "q", function() { return request; });
+/* concated harmony reexport request */__webpack_require__.d(__webpack_exports__, "s", function() { return request; });
 /* unused concated harmony import addHeaderBuilder */
 /* unused concated harmony import TYPES */
 /* unused concated harmony import memoized */
@@ -4531,7 +4025,570 @@ function wrapPromise(method, _temp) {
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/utils.js
+function utils_isPromise(item) {
+  try {
+    if (!item) {
+      return false;
+    }
+
+    if (typeof Promise !== 'undefined' && item instanceof Promise) {
+      return true;
+    }
+
+    if (typeof window !== 'undefined' && typeof window.Window === 'function' && item instanceof window.Window) {
+      return false;
+    }
+
+    if (typeof window !== 'undefined' && typeof window.constructor === 'function' && item instanceof window.constructor) {
+      return false;
+    }
+
+    var _toString = {}.toString;
+
+    if (_toString) {
+      var name = _toString.call(item);
+
+      if (name === '[object Window]' || name === '[object global]' || name === '[object DOMWindow]') {
+        return false;
+      }
+    }
+
+    if (typeof item.then === 'function') {
+      return true;
+    }
+  } catch (err) {
+    return false;
+  }
+
+  return false;
+}
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/exceptions.js
+var dispatchedErrors = [];
+var possiblyUnhandledPromiseHandlers = [];
+function dispatchPossiblyUnhandledError(err, promise) {
+  if (dispatchedErrors.indexOf(err) !== -1) {
+    return;
+  }
+
+  dispatchedErrors.push(err);
+  setTimeout(function () {
+    if (false) {}
+
+    throw err;
+  }, 1);
+
+  for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) {
+    // $FlowFixMe
+    possiblyUnhandledPromiseHandlers[j](err, promise);
+  }
+}
+function exceptions_onPossiblyUnhandledException(handler) {
+  possiblyUnhandledPromiseHandlers.push(handler);
+  return {
+    cancel: function cancel() {
+      possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+    }
+  };
+}
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/flush.js
+var activeCount = 0;
+var flushPromise;
+
+function flushActive() {
+  if (!activeCount && flushPromise) {
+    var promise = flushPromise;
+    flushPromise = null;
+    promise.resolve();
+  }
+}
+
+function startActive() {
+  activeCount += 1;
+}
+function endActive() {
+  activeCount -= 1;
+  flushActive();
+}
+function awaitActive(Zalgo) {
+  // eslint-disable-line no-undef
+  var promise = flushPromise = flushPromise || new Zalgo();
+  flushActive();
+  return promise;
+}
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/promise.js
+
+
+
+var promise_ZalgoPromise =
+/*#__PURE__*/
+function () {
+  function ZalgoPromise(handler) {
+    var _this = this;
+
+    this.resolved = void 0;
+    this.rejected = void 0;
+    this.errorHandled = void 0;
+    this.value = void 0;
+    this.error = void 0;
+    this.handlers = void 0;
+    this.dispatching = void 0;
+    this.stack = void 0;
+    this.resolved = false;
+    this.rejected = false;
+    this.errorHandled = false;
+    this.handlers = [];
+
+    if (handler) {
+      var _result;
+
+      var _error;
+
+      var resolved = false;
+      var rejected = false;
+      var isAsync = false;
+      startActive();
+
+      try {
+        handler(function (res) {
+          if (isAsync) {
+            _this.resolve(res);
+          } else {
+            resolved = true;
+            _result = res;
+          }
+        }, function (err) {
+          if (isAsync) {
+            _this.reject(err);
+          } else {
+            rejected = true;
+            _error = err;
+          }
+        });
+      } catch (err) {
+        endActive();
+        this.reject(err);
+        return;
+      }
+
+      endActive();
+      isAsync = true;
+
+      if (resolved) {
+        // $FlowFixMe
+        this.resolve(_result);
+      } else if (rejected) {
+        this.reject(_error);
+      }
+    }
+
+    if (false) {}
+  }
+
+  var _proto = ZalgoPromise.prototype;
+
+  _proto.resolve = function resolve(result) {
+    if (this.resolved || this.rejected) {
+      return this;
+    }
+
+    if (utils_isPromise(result)) {
+      throw new Error('Can not resolve promise with another promise');
+    }
+
+    this.resolved = true;
+    this.value = result;
+    this.dispatch();
+    return this;
+  };
+
+  _proto.reject = function reject(error) {
+    var _this2 = this;
+
+    if (this.resolved || this.rejected) {
+      return this;
+    }
+
+    if (utils_isPromise(error)) {
+      throw new Error('Can not reject promise with another promise');
+    }
+
+    if (!error) {
+      // $FlowFixMe
+      var _err = error && typeof error.toString === 'function' ? error.toString() : Object.prototype.toString.call(error);
+
+      error = new Error("Expected reject to be called with Error, got " + _err);
+    }
+
+    this.rejected = true;
+    this.error = error;
+
+    if (!this.errorHandled) {
+      setTimeout(function () {
+        if (!_this2.errorHandled) {
+          dispatchPossiblyUnhandledError(error, _this2);
+        }
+      }, 1);
+    }
+
+    this.dispatch();
+    return this;
+  };
+
+  _proto.asyncReject = function asyncReject(error) {
+    this.errorHandled = true;
+    this.reject(error);
+    return this;
+  };
+
+  _proto.dispatch = function dispatch() {
+    var dispatching = this.dispatching,
+        resolved = this.resolved,
+        rejected = this.rejected,
+        handlers = this.handlers;
+
+    if (dispatching) {
+      return;
+    }
+
+    if (!resolved && !rejected) {
+      return;
+    }
+
+    this.dispatching = true;
+    startActive();
+
+    var chain = function chain(firstPromise, secondPromise) {
+      return firstPromise.then(function (res) {
+        secondPromise.resolve(res);
+      }, function (err) {
+        secondPromise.reject(err);
+      });
+    };
+
+    for (var i = 0; i < handlers.length; i++) {
+      var _handlers$i = handlers[i],
+          onSuccess = _handlers$i.onSuccess,
+          onError = _handlers$i.onError,
+          promise = _handlers$i.promise;
+
+      var _result2 = void 0;
+
+      if (resolved) {
+        try {
+          _result2 = onSuccess ? onSuccess(this.value) : this.value;
+        } catch (err) {
+          promise.reject(err);
+          continue;
+        }
+      } else if (rejected) {
+        if (!onError) {
+          promise.reject(this.error);
+          continue;
+        }
+
+        try {
+          _result2 = onError(this.error);
+        } catch (err) {
+          promise.reject(err);
+          continue;
+        }
+      }
+
+      if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
+        if (_result2.resolved) {
+          promise.resolve(_result2.value);
+        } else {
+          promise.reject(_result2.error);
+        }
+
+        _result2.errorHandled = true;
+      } else if (utils_isPromise(_result2)) {
+        if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
+          if (_result2.resolved) {
+            promise.resolve(_result2.value);
+          } else {
+            promise.reject(_result2.error);
+          }
+        } else {
+          // $FlowFixMe
+          chain(_result2, promise);
+        }
+      } else {
+        promise.resolve(_result2);
+      }
+    }
+
+    handlers.length = 0;
+    this.dispatching = false;
+    endActive();
+  };
+
+  _proto.then = function then(onSuccess, onError) {
+    if (onSuccess && typeof onSuccess !== 'function' && !onSuccess.call) {
+      throw new Error('Promise.then expected a function for success handler');
+    }
+
+    if (onError && typeof onError !== 'function' && !onError.call) {
+      throw new Error('Promise.then expected a function for error handler');
+    }
+
+    var promise = new ZalgoPromise();
+    this.handlers.push({
+      promise: promise,
+      onSuccess: onSuccess,
+      onError: onError
+    });
+    this.errorHandled = true;
+    this.dispatch();
+    return promise;
+  };
+
+  _proto.catch = function _catch(onError) {
+    return this.then(undefined, onError);
+  };
+
+  _proto.finally = function _finally(onFinally) {
+    if (onFinally && typeof onFinally !== 'function' && !onFinally.call) {
+      throw new Error('Promise.finally expected a function');
+    }
+
+    return this.then(function (result) {
+      return ZalgoPromise.try(onFinally).then(function () {
+        return result;
+      });
+    }, function (err) {
+      return ZalgoPromise.try(onFinally).then(function () {
+        throw err;
+      });
+    });
+  };
+
+  _proto.timeout = function timeout(time, err) {
+    var _this3 = this;
+
+    if (this.resolved || this.rejected) {
+      return this;
+    }
+
+    var timeout = setTimeout(function () {
+      if (_this3.resolved || _this3.rejected) {
+        return;
+      }
+
+      _this3.reject(err || new Error("Promise timed out after " + time + "ms"));
+    }, time);
+    return this.then(function (result) {
+      clearTimeout(timeout);
+      return result;
+    });
+  } // $FlowFixMe
+  ;
+
+  _proto.toPromise = function toPromise() {
+    // $FlowFixMe
+    if (typeof Promise === 'undefined') {
+      throw new TypeError("Could not find Promise");
+    } // $FlowFixMe
+
+
+    return Promise.resolve(this); // eslint-disable-line compat/compat
+  };
+
+  ZalgoPromise.resolve = function resolve(value) {
+    if (value instanceof ZalgoPromise) {
+      return value;
+    }
+
+    if (utils_isPromise(value)) {
+      // $FlowFixMe
+      return new ZalgoPromise(function (resolve, reject) {
+        return value.then(resolve, reject);
+      });
+    }
+
+    return new ZalgoPromise().resolve(value);
+  };
+
+  ZalgoPromise.reject = function reject(error) {
+    return new ZalgoPromise().reject(error);
+  };
+
+  ZalgoPromise.asyncReject = function asyncReject(error) {
+    return new ZalgoPromise().asyncReject(error);
+  };
+
+  ZalgoPromise.all = function all(promises) {
+    // eslint-disable-line no-undef
+    var promise = new ZalgoPromise();
+    var count = promises.length;
+    var results = [];
+
+    if (!count) {
+      promise.resolve(results);
+      return promise;
+    }
+
+    var chain = function chain(i, firstPromise, secondPromise) {
+      return firstPromise.then(function (res) {
+        results[i] = res;
+        count -= 1;
+
+        if (count === 0) {
+          promise.resolve(results);
+        }
+      }, function (err) {
+        secondPromise.reject(err);
+      });
+    };
+
+    for (var i = 0; i < promises.length; i++) {
+      var prom = promises[i];
+
+      if (prom instanceof ZalgoPromise) {
+        if (prom.resolved) {
+          results[i] = prom.value;
+          count -= 1;
+          continue;
+        }
+      } else if (!utils_isPromise(prom)) {
+        results[i] = prom;
+        count -= 1;
+        continue;
+      }
+
+      chain(i, ZalgoPromise.resolve(prom), promise);
+    }
+
+    if (count === 0) {
+      promise.resolve(results);
+    }
+
+    return promise;
+  };
+
+  ZalgoPromise.hash = function hash(promises) {
+    // eslint-disable-line no-undef
+    var result = {};
+    return ZalgoPromise.all(Object.keys(promises).map(function (key) {
+      return ZalgoPromise.resolve(promises[key]).then(function (value) {
+        result[key] = value;
+      });
+    })).then(function () {
+      return result;
+    });
+  };
+
+  ZalgoPromise.map = function map(items, method) {
+    // $FlowFixMe
+    return ZalgoPromise.all(items.map(method));
+  };
+
+  ZalgoPromise.onPossiblyUnhandledException = function onPossiblyUnhandledException(handler) {
+    return exceptions_onPossiblyUnhandledException(handler);
+  };
+
+  ZalgoPromise.try = function _try(method, context, args) {
+    if (method && typeof method !== 'function' && !method.call) {
+      throw new Error('Promise.try expected a function');
+    }
+
+    var result;
+    startActive();
+
+    try {
+      // $FlowFixMe
+      result = method.apply(context, args || []);
+    } catch (err) {
+      endActive();
+      return ZalgoPromise.reject(err);
+    }
+
+    endActive();
+    return ZalgoPromise.resolve(result);
+  };
+
+  ZalgoPromise.delay = function delay(_delay) {
+    return new ZalgoPromise(function (resolve) {
+      setTimeout(resolve, _delay);
+    });
+  };
+
+  ZalgoPromise.isPromise = function isPromise(value) {
+    if (value && value instanceof ZalgoPromise) {
+      return true;
+    }
+
+    return utils_isPromise(value);
+  };
+
+  ZalgoPromise.flush = function flush() {
+    return awaitActive(ZalgoPromise);
+  };
+
+  return ZalgoPromise;
+}();
+// CONCATENATED MODULE: ./node_modules/zalgo-promise/src/index.js
+/* concated harmony reexport ZalgoPromise */__webpack_require__.d(__webpack_exports__, "a", function() { return promise_ZalgoPromise; });
+
+
+/***/ }),
 /* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGGER_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ORDERS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return PAYMENTS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return VALIDATE_PAYMENT_METHOD_API; });
+/* unused harmony export BASE_SMART_API_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return SMART_API_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GRAPHQL_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return WEB_CHECKOUT_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return NATIVE_CHECKOUT_URI; });
+/* unused harmony export NATIVE_DETECTION_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ENABLE_PAYMENT_API; });
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+var _NATIVE_CHECKOUT_URI;
+
+
+var LOGGER_URL = '/xoplatform/logger/api/logger';
+var AUTH_API_URL = '/v1/oauth2/token';
+var ORDERS_API_URL = '/v2/checkout/orders';
+var PAYMENTS_API_URL = '/v1/payments/payment';
+var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
+var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
+var BASE_SMART_API_URL = '/smart/api';
+var SMART_API_URI = {
+  AUTH: BASE_SMART_API_URL + "/auth",
+  CHECKOUT: BASE_SMART_API_URL + "/checkout",
+  ORDER: BASE_SMART_API_URL + "/order",
+  PAYMENT: BASE_SMART_API_URL + "/payment",
+  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
+};
+var GRAPHQL_URI = '/graphql';
+var WEB_CHECKOUT_URI = '/checkoutnow';
+var NATIVE_CHECKOUT_URI = (_NATIVE_CHECKOUT_URI = {}, _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].PAYPAL] = '/smart/checkout/native', _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].VENMO] = '/smart/checkout/venmo', _NATIVE_CHECKOUT_URI);
+var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
+var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
+var FIREBASE_SCRIPTS = {
+  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
+  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
+  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
+};
+var ENABLE_PAYMENT_API = false;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4540,13 +4597,13 @@ function wrapPromise(method, _temp) {
 var util = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(7);
+var esm_extends = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var src = __webpack_require__(2);
+var src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var belter_src = __webpack_require__(3);
+var belter_src = __webpack_require__(2);
 
 // CONCATENATED MODULE: ./node_modules/beaver-logger/src/constants.js
 var LOG_LEVEL = {
@@ -4576,12 +4633,12 @@ function httpTransport(_ref) {
       method = _ref.method,
       headers = _ref.headers,
       json = _ref.json;
-  return Object(belter_src["q" /* request */])({
+  return Object(belter_src["s" /* request */])({
     url: url,
     method: method,
     headers: headers,
     json: json
-  }).then(belter_src["j" /* noop */]);
+  }).then(belter_src["l" /* noop */]);
 }
 
 function extendIfDefined(target, source) {
@@ -4609,7 +4666,7 @@ function Logger(_ref2) {
   var headerBuilders = [];
 
   function print(level, event, payload) {
-    if (!Object(belter_src["g" /* isBrowser */])() || !window.console || !window.console.log) {
+    if (!Object(belter_src["i" /* isBrowser */])() || !window.console || !window.console.log) {
       return;
     }
 
@@ -4642,7 +4699,7 @@ function Logger(_ref2) {
 
   function immediateFlush() {
     return src["a" /* ZalgoPromise */].try(function () {
-      if (!Object(belter_src["g" /* isBrowser */])() || window.location.protocol === PROTOCOL.FILE) {
+      if (!Object(belter_src["i" /* isBrowser */])() || window.location.protocol === PROTOCOL.FILE) {
         return;
       }
 
@@ -4676,11 +4733,11 @@ function Logger(_ref2) {
       });
       events = [];
       tracking = [];
-      return req.then(belter_src["j" /* noop */]);
+      return req.then(belter_src["l" /* noop */]);
     });
   }
 
-  var flush = Object(belter_src["n" /* promiseDebounce */])(immediateFlush);
+  var flush = Object(belter_src["p" /* promiseDebounce */])(immediateFlush);
 
   function enqueue(level, event, payload) {
     events.push({
@@ -4699,7 +4756,7 @@ function Logger(_ref2) {
       payload = {};
     }
 
-    if (!Object(belter_src["g" /* isBrowser */])()) {
+    if (!Object(belter_src["i" /* isBrowser */])()) {
       return logger; // eslint-disable-line no-use-before-define
     }
 
@@ -4707,7 +4764,7 @@ function Logger(_ref2) {
       event = prefix + "_" + event;
     }
 
-    var logPayload = Object(esm_extends["a" /* default */])({}, Object(belter_src["k" /* objFilter */])(payload), {
+    var logPayload = Object(esm_extends["a" /* default */])({}, Object(belter_src["m" /* objFilter */])(payload), {
       timestamp: Date.now().toString()
     });
 
@@ -4763,11 +4820,11 @@ function Logger(_ref2) {
       payload = {};
     }
 
-    if (!Object(belter_src["g" /* isBrowser */])()) {
+    if (!Object(belter_src["i" /* isBrowser */])()) {
       return logger; // eslint-disable-line no-use-before-define
     }
 
-    var trackingPayload = Object(belter_src["k" /* objFilter */])(payload);
+    var trackingPayload = Object(belter_src["m" /* objFilter */])(payload);
 
     for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) {
       var builder = trackingBuilders[_i8];
@@ -4784,8 +4841,8 @@ function Logger(_ref2) {
     return logger; // eslint-disable-line no-use-before-define
   }
 
-  if (Object(belter_src["g" /* isBrowser */])()) {
-    Object(belter_src["r" /* safeInterval */])(flush, flushInterval);
+  if (Object(belter_src["i" /* isBrowser */])()) {
+    Object(belter_src["t" /* safeInterval */])(flush, flushInterval);
   }
 
   var logger = {
@@ -4811,7 +4868,7 @@ function Logger(_ref2) {
 var sdk_constants_src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./src/config.js
-var config = __webpack_require__(5);
+var config = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
@@ -4824,7 +4881,7 @@ var constants = __webpack_require__(1);
 
 
 function getLogger() {
-  return Object(belter_src["f" /* inlineMemoize */])(getLogger, function () {
+  return Object(belter_src["h" /* inlineMemoize */])(getLogger, function () {
     return Logger({
       url: config["g" /* LOGGER_URL */]
     });
@@ -4860,12 +4917,12 @@ function setupLogger(_ref) {
   src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
     var _logger$track;
 
-    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'payments_sdk_error', _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["t" /* stringifyErrorMessage */])(err), _logger$track));
+    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'payments_sdk_error', _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["v" /* stringifyErrorMessage */])(err), _logger$track));
     logger.error('unhandled_error', {
-      err: Object(belter_src["s" /* stringifyError */])(err)
+      err: Object(belter_src["u" /* stringifyError */])(err)
     }); // eslint-disable-next-line promise/no-promise-in-callback
 
-    logger.flush().catch(belter_src["j" /* noop */]);
+    logger.flush().catch(belter_src["l" /* noop */]);
   });
 }
 // CONCATENATED MODULE: ./src/lib/index.js
@@ -4883,183 +4940,7 @@ function setupLogger(_ref) {
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGGER_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ORDERS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return PAYMENTS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return VALIDATE_PAYMENT_METHOD_API; });
-/* unused harmony export BASE_SMART_API_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return SMART_API_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GRAPHQL_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return WEB_CHECKOUT_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return NATIVE_CHECKOUT_URI; });
-/* unused harmony export NATIVE_DETECTION_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ENABLE_PAYMENT_API; });
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-var _NATIVE_CHECKOUT_URI;
-
-
-var LOGGER_URL = '/xoplatform/logger/api/logger';
-var AUTH_API_URL = '/v1/oauth2/token';
-var ORDERS_API_URL = '/v2/checkout/orders';
-var PAYMENTS_API_URL = '/v1/payments/payment';
-var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
-var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
-var BASE_SMART_API_URL = '/smart/api';
-var SMART_API_URI = {
-  AUTH: BASE_SMART_API_URL + "/auth",
-  CHECKOUT: BASE_SMART_API_URL + "/checkout",
-  ORDER: BASE_SMART_API_URL + "/order",
-  PAYMENT: BASE_SMART_API_URL + "/payment",
-  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
-};
-var GRAPHQL_URI = '/graphql';
-var WEB_CHECKOUT_URI = '/checkoutnow';
-var NATIVE_CHECKOUT_URI = (_NATIVE_CHECKOUT_URI = {}, _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].PAYPAL] = '/smart/checkout/native', _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].VENMO] = '/smart/checkout/venmo', _NATIVE_CHECKOUT_URI);
-var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
-var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
-var FIREBASE_SCRIPTS = {
-  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
-  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
-  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
-};
-var ENABLE_PAYMENT_API = false;
-
-/***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return callRestAPI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return callSmartAPI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return callGraphQL; });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
-
-
-
-
-
-function callRestAPI(_ref) {
-  var _extends2;
-
-  var accessToken = _ref.accessToken,
-      method = _ref.method,
-      url = _ref.url,
-      data = _ref.data,
-      headers = _ref.headers;
-
-  if (!accessToken) {
-    throw new Error("No access token passed to " + url);
-  }
-
-  var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])((_extends2 = {}, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].AUTHORIZATION] = "Bearer " + accessToken, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].CONTENT_TYPE] = "application/json", _extends2), headers);
-
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "q"])({
-    method: method,
-    url: url,
-    headers: requestHeaders,
-    json: data
-  }).then(function (_ref2) {
-    var status = _ref2.status,
-        body = _ref2.body,
-        responseHeaders = _ref2.headers;
-
-    if (status >= 300) {
-      throw new Error(url + " returned status: " + status + " (Corr ID: " + responseHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
-    }
-
-    return body;
-  });
-}
-function callSmartAPI(_ref3) {
-  var _reqHeaders;
-
-  var accessToken = _ref3.accessToken,
-      url = _ref3.url,
-      _ref3$method = _ref3.method,
-      method = _ref3$method === void 0 ? 'get' : _ref3$method,
-      json = _ref3.json;
-  var reqHeaders = (_reqHeaders = {}, _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_PAYMENT_BUTTONS */ "n"], _reqHeaders);
-
-  if (accessToken) {
-    reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].ACCESS_TOKEN] = accessToken;
-  }
-
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "q"])({
-    url: url,
-    method: method,
-    headers: reqHeaders,
-    json: json
-  }).then(function (_ref4) {
-    var status = _ref4.status,
-        body = _ref4.body,
-        headers = _ref4.headers;
-
-    if (body.ack === 'contingency') {
-      var err = new Error(body.contingency); // $FlowFixMe
-
-      err.data = body.data;
-      throw err;
-    }
-
-    if (status > 400) {
-      throw new Error("Api: " + url + " returned status code: " + status + " (Corr ID: " + headers[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
-    }
-
-    if (body.ack !== 'success') {
-      throw new Error("Api: " + url + " returned ack: " + body.ack + " (Corr ID: " + headers[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
-    }
-
-    return body.data;
-  });
-}
-function callGraphQL(_ref5) {
-  var query = _ref5.query,
-      _ref5$variables = _ref5.variables,
-      variables = _ref5$variables === void 0 ? {} : _ref5$variables,
-      _ref5$headers = _ref5.headers,
-      headers = _ref5$headers === void 0 ? {} : _ref5$headers;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "q"])({
-    url: _config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"],
-    method: 'POST',
-    json: {
-      query: query,
-      variables: variables
-    },
-    headers: Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
-      'x-app-name': _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_PAYMENT_BUTTONS */ "n"]
-    }, headers)
-  }).then(function (_ref6) {
-    var status = _ref6.status,
-        body = _ref6.body;
-    var errors = body.errors || [];
-
-    if (errors.length) {
-      var message = errors[0].message || JSON.stringify(errors[0]);
-      throw new Error(message);
-    }
-
-    if (status !== 200) {
-      throw new Error(_config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"] + " returned status " + status);
-    }
-
-    return body.data;
-  });
-}
-
-/***/ }),
-/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5083,28 +4964,28 @@ function _extends() {
 }
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var src = __webpack_require__(2);
+var src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var belter_src = __webpack_require__(3);
+var belter_src = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/config.js
-var src_config = __webpack_require__(5);
+var src_config = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/lib/index.js + 5 modules
-var lib = __webpack_require__(4);
+var lib = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./src/api/api.js
-var api = __webpack_require__(6);
+var api = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./src/api/auth.js
 
@@ -5114,10 +4995,10 @@ var api = __webpack_require__(6);
 
 
 function createAccessToken(clientID) {
-  return Object(belter_src["f" /* inlineMemoize */])(createAccessToken, function () {
+  return Object(belter_src["h" /* inlineMemoize */])(createAccessToken, function () {
     Object(lib["b" /* getLogger */])().info("rest_api_create_access_token");
     var basicAuth = Object(belter_src["a" /* base64encode */])(clientID + ":");
-    return Object(belter_src["q" /* request */])({
+    return Object(belter_src["s" /* request */])({
       method: "post",
       url: src_config["a" /* AUTH_API_URL */],
       headers: {
@@ -5164,7 +5045,7 @@ function upgradeFacilitatorAccessToken(facilitatorAccessToken, _ref2) {
       buyerAccessToken: buyerAccessToken,
       orderID: orderID
     }
-  }).then(belter_src["j" /* noop */]);
+  }).then(belter_src["l" /* noop */]);
 }
 // EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
 var sdk_constants_src = __webpack_require__(0);
@@ -5315,7 +5196,7 @@ function validatePaymentMethod(_ref6) {
   var json = {
     payment_source: paymentSource
   };
-  return Object(belter_src["q" /* request */])({
+  return Object(belter_src["s" /* request */])({
     method: "post",
     url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/" + src_config["l" /* VALIDATE_PAYMENT_METHOD_API */],
     headers: headers,
@@ -5379,7 +5260,7 @@ function updateClientConfig(_ref9) {
       userExperienceFlow: userExperienceFlow,
       productFlow: productFlow
     }
-  }).then(belter_src["j" /* noop */]);
+  }).then(belter_src["l" /* noop */]);
 }
 // CONCATENATED MODULE: ./src/api/payment.js
 
@@ -5529,7 +5410,7 @@ function createSubscription(accessToken, subscriptionPayload, _ref) {
     'Authorization': "Bearer " + accessToken,
     'PayPal-Partner-Attribution-Id': partnerAttributionID
   };
-  return Object(belter_src["q" /* request */])({
+  return Object(belter_src["s" /* request */])({
     method: "post",
     url: src_config["c" /* CREATE_SUBSCRIPTIONS_API_URL */],
     headers: headers,
@@ -5564,7 +5445,7 @@ function reviseSubscription(accessToken, subscriptionID, subscriptionPayload, _r
     'Authorization': "Bearer " + accessToken,
     'PayPal-Partner-Attribution-Id': partnerAttributionID
   };
-  return Object(belter_src["q" /* request */])({
+  return Object(belter_src["s" /* request */])({
     method: "post",
     url: src_config["c" /* CREATE_SUBSCRIPTIONS_API_URL */] + "/" + subscriptionID + "/revise",
     headers: headers,
@@ -5597,7 +5478,7 @@ function getSubscription(subscriptionID, _ref6) {
   });
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(7);
+var esm_extends = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./src/lib/util.js
 var util = __webpack_require__(12);
@@ -5633,7 +5514,7 @@ function messageSocket(_ref) {
   var activeRequests = [];
 
   var sendMessage = function sendMessage(socket, data) {
-    var messageUID = Object(belter_src["v" /* uniqueID */])();
+    var messageUID = Object(belter_src["x" /* uniqueID */])();
     receivedMessages[messageUID] = true;
 
     var message = Object(esm_extends["a" /* default */])({
@@ -5773,7 +5654,7 @@ function messageSocket(_ref) {
       throw new Error("Incomplete message: " + rawData);
     }
 
-    if (receivedMessages[messageUID] || messageTargetApp !== sourceApp) {
+    if (receivedMessages[messageUID]) {
       return;
     }
 
@@ -5845,7 +5726,7 @@ function messageSocket(_ref) {
       });
       return connectionPromise;
     });
-    socketPromise.catch(belter_src["j" /* noop */]);
+    socketPromise.catch(belter_src["l" /* noop */]);
   };
 
   init();
@@ -5878,7 +5759,7 @@ function messageSocket(_ref) {
         timeout = _ref6$timeout === void 0 ? 0 : _ref6$timeout;
 
     return socketPromise.then(function (socket) {
-      var requestUID = Object(belter_src["v" /* uniqueID */])();
+      var requestUID = Object(belter_src["x" /* uniqueID */])();
       var listenerPromise = new src["a" /* ZalgoPromise */]();
       responseListeners[requestUID] = {
         listenerPromise: listenerPromise,
@@ -5930,7 +5811,7 @@ function messageSocket(_ref) {
     src["a" /* ZalgoPromise */].all(activeRequests).then(function () {
       return socketPromise.then(function (socket) {
         return socket.close();
-      }, belter_src["j" /* noop */]);
+      }, belter_src["l" /* noop */]);
     });
   };
 
@@ -5997,7 +5878,7 @@ function webSocket(_ref7) {
     targetApp: targetApp
   });
 }
-var loadFirebaseSDK = Object(belter_src["i" /* memoize */])(function (config) {
+var loadFirebaseSDK = Object(belter_src["k" /* memoize */])(function (config) {
   return src["a" /* ZalgoPromise */].all([Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]).then(function () {
     var firebase = window.firebase;
 
@@ -6063,11 +5944,11 @@ function firebaseSocket(_ref8) {
         return database;
       });
     });
-    databasePromise.catch(belter_src["j" /* noop */]);
+    databasePromise.catch(belter_src["l" /* noop */]);
     return {
       send: function send(data) {
         databasePromise.then(function (database) {
-          return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src["v" /* uniqueID */])()).set(data);
+          return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src["x" /* uniqueID */])()).set(data);
         }).catch(error);
       },
       close: function close() {
@@ -6106,10 +5987,10 @@ function firebaseSocket(_ref8) {
   });
 }
 // CONCATENATED MODULE: ./src/api/index.js
-/* concated harmony reexport createAccessToken */__webpack_require__.d(__webpack_exports__, "e", function() { return createAccessToken; });
+/* unused concated harmony import createAccessToken */
 /* unused concated harmony import getFirebaseSessionToken */
 /* unused concated harmony import upgradeFacilitatorAccessToken */
-/* concated harmony reexport createOrderID */__webpack_require__.d(__webpack_exports__, "f", function() { return createOrderID; });
+/* concated harmony reexport createOrderID */__webpack_require__.d(__webpack_exports__, "e", function() { return createOrderID; });
 /* concated harmony reexport getOrder */__webpack_require__.d(__webpack_exports__, "l", function() { return getOrder; });
 /* concated harmony reexport captureOrder */__webpack_require__.d(__webpack_exports__, "d", function() { return captureOrder; });
 /* concated harmony reexport authorizeOrder */__webpack_require__.d(__webpack_exports__, "b", function() { return authorizeOrder; });
@@ -6119,15 +6000,15 @@ function firebaseSocket(_ref8) {
 /* concated harmony reexport billingTokenToOrderID */__webpack_require__.d(__webpack_exports__, "c", function() { return billingTokenToOrderID; });
 /* concated harmony reexport subscriptionIdToCartId */__webpack_require__.d(__webpack_exports__, "s", function() { return subscriptionIdToCartId; });
 /* concated harmony reexport enableVault */__webpack_require__.d(__webpack_exports__, "i", function() { return enableVault; });
-/* unused concated harmony import deleteVault */
+/* concated harmony reexport deleteVault */__webpack_require__.d(__webpack_exports__, "h", function() { return deleteVault; });
 /* concated harmony reexport updateClientConfig */__webpack_require__.d(__webpack_exports__, "t", function() { return updateClientConfig; });
 /* unused concated harmony import createPayment */
 /* unused concated harmony import createPaymentID */
-/* concated harmony reexport createPaymentToken */__webpack_require__.d(__webpack_exports__, "g", function() { return createPaymentToken; });
+/* concated harmony reexport createPaymentToken */__webpack_require__.d(__webpack_exports__, "f", function() { return createPaymentToken; });
 /* concated harmony reexport getPayment */__webpack_require__.d(__webpack_exports__, "n", function() { return getPayment; });
 /* concated harmony reexport executePayment */__webpack_require__.d(__webpack_exports__, "j", function() { return executePayment; });
 /* concated harmony reexport patchPayment */__webpack_require__.d(__webpack_exports__, "q", function() { return patchPayment; });
-/* concated harmony reexport createSubscription */__webpack_require__.d(__webpack_exports__, "h", function() { return createSubscription; });
+/* concated harmony reexport createSubscription */__webpack_require__.d(__webpack_exports__, "g", function() { return createSubscription; });
 /* concated harmony reexport reviseSubscription */__webpack_require__.d(__webpack_exports__, "r", function() { return reviseSubscription; });
 /* concated harmony reexport activateSubscription */__webpack_require__.d(__webpack_exports__, "a", function() { return activateSubscription; });
 /* concated harmony reexport getSubscription */__webpack_require__.d(__webpack_exports__, "o", function() { return getSubscription; });
@@ -6140,6 +6021,132 @@ function firebaseSocket(_ref8) {
 
 
 
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return callRestAPI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return callSmartAPI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return callGraphQL; });
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+
+
+
+
+
+function callRestAPI(_ref) {
+  var _extends2;
+
+  var accessToken = _ref.accessToken,
+      method = _ref.method,
+      url = _ref.url,
+      data = _ref.data,
+      headers = _ref.headers;
+
+  if (!accessToken) {
+    throw new Error("No access token passed to " + url);
+  }
+
+  var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])((_extends2 = {}, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].AUTHORIZATION] = "Bearer " + accessToken, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].CONTENT_TYPE] = "application/json", _extends2), headers);
+
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "s"])({
+    method: method,
+    url: url,
+    headers: requestHeaders,
+    json: data
+  }).then(function (_ref2) {
+    var status = _ref2.status,
+        body = _ref2.body,
+        responseHeaders = _ref2.headers;
+
+    if (status >= 300) {
+      throw new Error(url + " returned status: " + status + " (Corr ID: " + responseHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
+    }
+
+    return body;
+  });
+}
+function callSmartAPI(_ref3) {
+  var _reqHeaders;
+
+  var accessToken = _ref3.accessToken,
+      url = _ref3.url,
+      _ref3$method = _ref3.method,
+      method = _ref3$method === void 0 ? 'get' : _ref3$method,
+      json = _ref3.json;
+  var reqHeaders = (_reqHeaders = {}, _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_PAYMENT_BUTTONS */ "n"], _reqHeaders);
+
+  if (accessToken) {
+    reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].ACCESS_TOKEN] = accessToken;
+  }
+
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "s"])({
+    url: url,
+    method: method,
+    headers: reqHeaders,
+    json: json
+  }).then(function (_ref4) {
+    var status = _ref4.status,
+        body = _ref4.body,
+        headers = _ref4.headers;
+
+    if (body.ack === 'contingency') {
+      var err = new Error(body.contingency); // $FlowFixMe
+
+      err.data = body.data;
+      throw err;
+    }
+
+    if (status > 400) {
+      throw new Error("Api: " + url + " returned status code: " + status + " (Corr ID: " + headers[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
+    }
+
+    if (body.ack !== 'success') {
+      throw new Error("Api: " + url + " returned ack: " + body.ack + " (Corr ID: " + headers[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].PAYPAL_DEBUG_ID] + ")");
+    }
+
+    return body.data;
+  });
+}
+function callGraphQL(_ref5) {
+  var query = _ref5.query,
+      _ref5$variables = _ref5.variables,
+      variables = _ref5$variables === void 0 ? {} : _ref5$variables,
+      _ref5$headers = _ref5.headers,
+      headers = _ref5$headers === void 0 ? {} : _ref5$headers;
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "s"])({
+    url: _config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"],
+    method: 'POST',
+    json: {
+      query: query,
+      variables: variables
+    },
+    headers: Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
+      'x-app-name': _constants__WEBPACK_IMPORTED_MODULE_4__[/* SMART_PAYMENT_BUTTONS */ "n"]
+    }, headers)
+  }).then(function (_ref6) {
+    var status = _ref6.status,
+        body = _ref6.body;
+    var errors = body.errors || [];
+
+    if (errors.length) {
+      var message = errors[0].message || JSON.stringify(errors[0]);
+      throw new Error(message);
+    }
+
+    if (status !== 200) {
+      throw new Error(_config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"] + " returned status " + status);
+    }
+
+    return body.data;
+  });
+}
 
 /***/ }),
 /* 9 */
@@ -7227,6 +7234,52 @@ var TYPES = true;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getButtons; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getSelectedFunding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return enableLoadingSpinner; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return disableLoadingSpinner; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getNonce; });
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+
+
+
+function getButtons() {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* querySelectorAll */ "q"])("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE + " ]");
+}
+function getSelectedFunding(button) {
+  var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE);
+  var paymentMethodID = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].PAYMENT_METHOD_ID);
+  var card = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].CARD); // $FlowFixMe
+
+  return {
+    fundingSource: fundingSource,
+    card: card,
+    paymentMethodID: paymentMethodID
+  };
+}
+function enableLoadingSpinner(button) {
+  button.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].LOADING);
+}
+function disableLoadingSpinner(button) {
+  button.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].LOADING);
+}
+function getNonce() {
+  var nonce = '';
+
+  if (document.body) {
+    nonce = document.body.getAttribute("" + _constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].NONCE) || '';
+  }
+
+  return nonce;
+}
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
 /* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23);
@@ -7320,52 +7373,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getButtons; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getSelectedFunding; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return enableLoadingSpinner; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return disableLoadingSpinner; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getNonce; });
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
-
-
-
-function getButtons() {
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* querySelectorAll */ "o"])("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE + " ]");
-}
-function getSelectedFunding(button) {
-  var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE);
-  var paymentMethodID = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].PAYMENT_METHOD_ID);
-  var card = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].CARD); // $FlowFixMe
-
-  return {
-    fundingSource: fundingSource,
-    card: card,
-    paymentMethodID: paymentMethodID
-  };
-}
-function enableLoadingSpinner(button) {
-  button.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].LOADING);
-}
-function disableLoadingSpinner(button) {
-  button.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__[/* CLASS */ "a"].LOADING);
-}
-function getNonce() {
-  var nonce = '';
-
-  if (document.body) {
-    nonce = document.body.getAttribute('data-nonce') || '';
-  }
-
-  return nonce;
-}
-
-/***/ }),
 /* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7378,14 +7385,14 @@ function getNonce() {
 /* unused harmony export sleep */
 /* unused harmony export redirectTop */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return loadScript; });
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 
 
 
 function unresolvedPromise() {
-  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "j"]);
+  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "l"]);
 }
 function promiseNoop() {
   // eslint-disable-line no-unused-vars
@@ -7461,7 +7468,7 @@ function loadScript(url) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnInitData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnInitActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnInit; });
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 
 function buildXOnInitData() {
   // $FlowFixMe
@@ -7511,15 +7518,15 @@ function getOnInit(xprops) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildPaymentActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return buildXCreateOrderActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getCreateOrder; });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
 /* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(8);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(4);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(5);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(5);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(4);
 
 
 
@@ -7534,7 +7541,7 @@ function buildXCreateOrderData() {
   return {};
 }
 function buildOrderActions(_ref) {
-  var facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
+  var facilitatorAccessToken = _ref.facilitatorAccessToken,
       intent = _ref.intent,
       currency = _ref.currency,
       merchantID = _ref.merchantID,
@@ -7581,12 +7588,10 @@ function buildOrderActions(_ref) {
       });
     });
     order.application_context = order.application_context || {};
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_5__[/* createOrderID */ "f"])(order, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        partnerAttributionID: partnerAttributionID,
-        isNativeTransaction: false
-      });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_5__[/* createOrderID */ "e"])(order, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      partnerAttributionID: partnerAttributionID,
+      isNativeTransaction: false
     });
   };
 
@@ -7595,7 +7600,7 @@ function buildOrderActions(_ref) {
   };
 }
 function buildPaymentActions(_ref2) {
-  var facilitatorAccessTokenPromise = _ref2.facilitatorAccessTokenPromise,
+  var facilitatorAccessToken = _ref2.facilitatorAccessToken,
       intent = _ref2.intent,
       currency = _ref2.currency,
       merchantID = _ref2.merchantID,
@@ -7648,11 +7653,9 @@ function buildPaymentActions(_ref2) {
     payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_4__[/* getDomain */ "b"])() + "/checkoutnow/error";
     payment.payer = payment.payer || {};
     payment.payer.payment_method = payment.payer.payment_method || 'paypal';
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_5__[/* createPaymentToken */ "g"])(payment, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        partnerAttributionID: partnerAttributionID
-      });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_5__[/* createPaymentToken */ "f"])(payment, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      partnerAttributionID: partnerAttributionID
     });
   };
 
@@ -7661,20 +7664,20 @@ function buildPaymentActions(_ref2) {
   };
 }
 function buildXCreateOrderActions(_ref3) {
-  var facilitatorAccessTokenPromise = _ref3.facilitatorAccessTokenPromise,
+  var facilitatorAccessToken = _ref3.facilitatorAccessToken,
       intent = _ref3.intent,
       currency = _ref3.currency,
       merchantID = _ref3.merchantID,
       partnerAttributionID = _ref3.partnerAttributionID;
   var order = buildOrderActions({
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    facilitatorAccessToken: facilitatorAccessToken,
     intent: intent,
     currency: currency,
     merchantID: merchantID,
     partnerAttributionID: partnerAttributionID
   });
   var payment = buildPaymentActions({
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    facilitatorAccessToken: facilitatorAccessToken,
     intent: intent,
     currency: currency,
     merchantID: merchantID,
@@ -7686,7 +7689,7 @@ function buildXCreateOrderActions(_ref3) {
   };
 }
 function getCreateOrder(xprops, _ref4) {
-  var facilitatorAccessTokenPromise = _ref4.facilitatorAccessTokenPromise,
+  var facilitatorAccessToken = _ref4.facilitatorAccessToken,
       createBillingAgreement = _ref4.createBillingAgreement,
       createSubscription = _ref4.createSubscription;
   var createOrder = xprops.createOrder,
@@ -7697,13 +7700,13 @@ function getCreateOrder(xprops, _ref4) {
       partnerAttributionID = xprops.partnerAttributionID;
   var data = buildXCreateOrderData();
   var actions = buildXCreateOrderActions({
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    facilitatorAccessToken: facilitatorAccessToken,
     intent: intent,
     currency: currency,
     merchantID: merchantID,
     partnerAttributionID: partnerAttributionID
   });
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "i"])(function () {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "k"])(function () {
     var startTime = Date.now();
     return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].try(function () {
       if (createBillingAgreement) {
@@ -7746,12 +7749,12 @@ function getCreateOrder(xprops, _ref4) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getOnApprove; });
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
 
 
 
@@ -7763,7 +7766,7 @@ function buildOrderActions(_ref) {
   var intent = _ref.intent,
       orderID = _ref.orderID,
       restart = _ref.restart,
-      facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
+      facilitatorAccessToken = _ref.facilitatorAccessToken,
       buyerAccessToken = _ref.buyerAccessToken,
       partnerAttributionID = _ref.partnerAttributionID,
       isNativeTransaction = _ref.isNativeTransaction;
@@ -7781,43 +7784,37 @@ function buildOrderActions(_ref) {
     throw new Error('Order could not be captured');
   };
 
-  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getOrder */ "l"])(orderID, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID,
-        isNativeTransaction: isNativeTransaction
-      });
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getOrder */ "l"])(orderID, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID,
+      isNativeTransaction: isNativeTransaction
     });
   });
-  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
 
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* captureOrder */ "d"])(orderID, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID,
-        isNativeTransaction: isNativeTransaction
-      }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
-    });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* captureOrder */ "d"])(orderID, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID,
+      isNativeTransaction: isNativeTransaction
+    }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
   });
-  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE + " to use client-side authorize");
     }
 
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* authorizeOrder */ "b"])(orderID, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID,
-        isNativeTransaction: isNativeTransaction
-      }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
-    });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* authorizeOrder */ "b"])(orderID, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID,
+      isNativeTransaction: isNativeTransaction
+    }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
   });
 
   var patch = function patch(data) {
@@ -7825,15 +7822,13 @@ function buildOrderActions(_ref) {
       data = {};
     }
 
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchOrder */ "p"])(orderID, data, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID,
-        isNativeTransaction: isNativeTransaction
-      }).catch(function () {
-        throw new Error('Order could not be patched');
-      });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchOrder */ "p"])(orderID, data, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID,
+      isNativeTransaction: isNativeTransaction
+    }).catch(function () {
+      throw new Error('Order could not be patched');
     });
   };
 
@@ -7850,7 +7845,7 @@ function buildPaymentActions(_ref2) {
       paymentID = _ref2.paymentID,
       payerID = _ref2.payerID,
       restart = _ref2.restart,
-      facilitatorAccessTokenPromise = _ref2.facilitatorAccessTokenPromise,
+      facilitatorAccessToken = _ref2.facilitatorAccessToken,
       buyerAccessToken = _ref2.buyerAccessToken,
       partnerAttributionID = _ref2.partnerAttributionID;
 
@@ -7871,27 +7866,23 @@ function buildPaymentActions(_ref2) {
     throw new Error('Order could not be captured');
   };
 
-  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getPayment */ "n"])(paymentID, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
-      });
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getPayment */ "n"])(paymentID, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID
     });
   });
-  var execute = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+  var execute = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
 
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* executePayment */ "j"])(paymentID, payerID, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
-      }).finally(get.reset).finally(execute.reset).catch(handleProcessorError);
-    });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* executePayment */ "j"])(paymentID, payerID, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID
+    }).finally(get.reset).finally(execute.reset).catch(handleProcessorError);
   });
 
   var patch = function patch(data) {
@@ -7899,14 +7890,12 @@ function buildPaymentActions(_ref2) {
       data = {};
     }
 
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchPayment */ "q"])(paymentID, data, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID
-      }).catch(function () {
-        throw new Error('Order could not be patched');
-      });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchPayment */ "q"])(paymentID, data, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID
+    }).catch(function () {
+      throw new Error('Order could not be patched');
     });
   };
 
@@ -7924,17 +7913,17 @@ function buildXApproveActions(_ref3) {
       payerID = _ref3.payerID,
       restart = _ref3.restart,
       subscriptionID = _ref3.subscriptionID,
-      facilitatorAccessTokenPromise = _ref3.facilitatorAccessTokenPromise,
+      facilitatorAccessToken = _ref3.facilitatorAccessToken,
       buyerAccessToken = _ref3.buyerAccessToken,
       partnerAttributionID = _ref3.partnerAttributionID,
       isNativeTransaction = _ref3.isNativeTransaction;
   // Subscription GET Actions
-  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getSubscription */ "o"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
   });
-  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* activateSubscription */ "a"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
@@ -7956,7 +7945,7 @@ function buildXApproveActions(_ref3) {
       }).flush();
     }
 
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "p"])(url, window.top);
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "r"])(url, window.top);
   };
 
   var order = buildOrderActions({
@@ -7966,7 +7955,7 @@ function buildXApproveActions(_ref3) {
     payerID: payerID,
     subscriptionID: subscriptionID,
     restart: restart,
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    facilitatorAccessToken: facilitatorAccessToken,
     buyerAccessToken: buyerAccessToken,
     partnerAttributionID: partnerAttributionID,
     isNativeTransaction: isNativeTransaction
@@ -7978,7 +7967,7 @@ function buildXApproveActions(_ref3) {
     payerID: payerID,
     subscriptionID: subscriptionID,
     restart: restart,
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    facilitatorAccessToken: facilitatorAccessToken,
     buyerAccessToken: buyerAccessToken,
     partnerAttributionID: partnerAttributionID,
     isNativeTransaction: isNativeTransaction
@@ -7996,14 +7985,14 @@ function buildXApproveActions(_ref3) {
 }
 
 function getOnApprove(xprops, _ref4) {
-  var facilitatorAccessTokenPromise = _ref4.facilitatorAccessTokenPromise,
+  var facilitatorAccessToken = _ref4.facilitatorAccessToken,
       createOrder = _ref4.createOrder;
   var onApprove = xprops.onApprove,
       onError = xprops.onError,
       intent = xprops.intent,
       buttonSessionID = xprops.buttonSessionID,
       partnerAttributionID = xprops.partnerAttributionID;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function (_ref5, _ref6) {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function (_ref5, _ref6) {
     var payerID = _ref5.payerID,
         paymentID = _ref5.paymentID,
         billingToken = _ref5.billingToken,
@@ -8030,7 +8019,7 @@ function getOnApprove(xprops, _ref4) {
         intent: intent,
         restart: restart,
         subscriptionID: subscriptionID,
-        facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+        facilitatorAccessToken: facilitatorAccessToken,
         buyerAccessToken: buyerAccessToken,
         partnerAttributionID: partnerAttributionID,
         isNativeTransaction: isNativeTransaction
@@ -8040,9 +8029,9 @@ function getOnApprove(xprops, _ref4) {
         return onApprove(data, actions).catch(onError);
       } else {
         if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
-          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "j"]);
+          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "l"]);
         } else if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
-          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "j"]);
+          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "l"]);
         }
       }
     });
@@ -8057,10 +8046,10 @@ function getOnApprove(xprops, _ref4) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnCancelData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnCancelActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnCancel; });
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
 
 
@@ -8090,7 +8079,7 @@ function buildXOnCancelActions() {
       }).flush();
     }
 
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "p"])(url, window.top);
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "r"])(url, window.top);
   }; // $FlowFixMe
 
 
@@ -8101,10 +8090,10 @@ function buildXOnCancelActions() {
 function getOnCancel(xprops, _ref2) {
   var createOrder = _ref2.createOrder;
   var _xprops$onCancel = xprops.onCancel,
-      onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "j"] : _xprops$onCancel,
+      onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "l"] : _xprops$onCancel,
       onError = xprops.onError,
       buttonSessionID = xprops.buttonSessionID;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "i"])(function () {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
     return createOrder().then(function (orderID) {
       var _getLogger$info$track;
 
@@ -8127,11 +8116,11 @@ function getOnCancel(xprops, _ref2) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXShippingChangeActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnShippingChange; });
 /* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5);
 
 
 
@@ -8144,7 +8133,7 @@ function buildXOnShippingChangeData(data) {
 function buildXShippingChangeActions(_ref) {
   var orderID = _ref.orderID,
       actions = _ref.actions,
-      facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
+      facilitatorAccessToken = _ref.facilitatorAccessToken,
       buyerAccessToken = _ref.buyerAccessToken,
       partnerAttributionID = _ref.partnerAttributionID;
 
@@ -8153,15 +8142,13 @@ function buildXShippingChangeActions(_ref) {
       data = {};
     }
 
-    return facilitatorAccessTokenPromise.then(function (facilitatorAccessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* patchOrder */ "p"])(orderID, data, {
-        facilitatorAccessToken: facilitatorAccessToken,
-        buyerAccessToken: buyerAccessToken,
-        partnerAttributionID: partnerAttributionID,
-        isNativeTransaction: false
-      }).catch(function () {
-        throw new Error('Order could not be patched');
-      });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* patchOrder */ "p"])(orderID, data, {
+      facilitatorAccessToken: facilitatorAccessToken,
+      buyerAccessToken: buyerAccessToken,
+      partnerAttributionID: partnerAttributionID,
+      isNativeTransaction: false
+    }).catch(function () {
+      throw new Error('Order could not be patched');
     });
   };
 
@@ -8182,7 +8169,7 @@ function buildXShippingChangeActions(_ref) {
   };
 }
 function getOnShippingChange(xprops, _ref2) {
-  var facilitatorAccessTokenPromise = _ref2.facilitatorAccessTokenPromise,
+  var facilitatorAccessToken = _ref2.facilitatorAccessToken,
       createOrder = _ref2.createOrder;
   var onShippingChange = xprops.onShippingChange,
       buttonSessionID = xprops.buttonSessionID,
@@ -8199,7 +8186,7 @@ function getOnShippingChange(xprops, _ref2) {
         Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().info('button_shipping_change').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_SHIPPING_CHANGE, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
         return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({
           orderID: orderID,
-          facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+          facilitatorAccessToken: facilitatorAccessToken,
           buyerAccessToken: buyerAccessToken,
           actions: actions,
           partnerAttributionID: partnerAttributionID
@@ -8218,13 +8205,9 @@ function getOnShippingChange(xprops, _ref2) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return buildXOnClickData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnClickActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getOnClick; });
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
-
-
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 
 
 
@@ -8253,18 +8236,14 @@ function buildXOnClickActions() {
   };
 }
 function getOnClick(xprops) {
-  var onClick = xprops.onClick,
-      buttonSessionID = xprops.buttonSessionID;
+  var onClick = xprops.onClick;
 
   if (!onClick) {
     return;
   }
 
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "i"])(function (_ref2) {
-    var _getLogger$info$track;
-
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "k"])(function (_ref2) {
     var fundingSource = _ref2.fundingSource;
-    Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].BUTTON_CLICK, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
     return onClick(buildXOnClickData({
       fundingSource: fundingSource
     }), buildXOnClickActions()).then(function (valid) {
@@ -8313,29 +8292,25 @@ function getCreateBillingAgreement(xprops) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXCreateSubscriptionData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXCreateSubscriptionActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCreateSubscription; });
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 
 function buildXCreateSubscriptionData() {
   // $FlowFixMe
   return {};
 }
 function buildXCreateSubscriptionActions(_ref) {
-  var facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise,
+  var facilitatorAccessToken = _ref.facilitatorAccessToken,
       partnerAttributionID = _ref.partnerAttributionID;
 
   var create = function create(data) {
-    return facilitatorAccessTokenPromise.then(function (accessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* createSubscription */ "h"])(accessToken, data, {
-        partnerAttributionID: partnerAttributionID
-      });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* createSubscription */ "g"])(facilitatorAccessToken, data, {
+      partnerAttributionID: partnerAttributionID
     });
   };
 
   var revise = function revise(subscriptionID, data) {
-    return facilitatorAccessTokenPromise.then(function (accessToken) {
-      return Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* reviseSubscription */ "r"])(accessToken, subscriptionID, data, {
-        partnerAttributionID: partnerAttributionID
-      });
+    return Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* reviseSubscription */ "r"])(facilitatorAccessToken, subscriptionID, data, {
+      partnerAttributionID: partnerAttributionID
     });
   };
 
@@ -8347,14 +8322,14 @@ function buildXCreateSubscriptionActions(_ref) {
   };
 }
 function getCreateSubscription(xprops, _ref2) {
-  var facilitatorAccessTokenPromise = _ref2.facilitatorAccessTokenPromise;
+  var facilitatorAccessToken = _ref2.facilitatorAccessToken;
   var createSubscriptionFunc = xprops.createSubscription,
       partnerAttributionID = xprops.partnerAttributionID;
 
   if (createSubscriptionFunc) {
     return function () {
       return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({
-        facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+        facilitatorAccessToken: facilitatorAccessToken,
         partnerAttributionID: partnerAttributionID
       })).then(function (subscriptionID) {
         if (!subscriptionID || typeof subscriptionID !== 'string') {
@@ -8406,19 +8381,15 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getConfig; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getServiceData; });
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
-/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(11);
-/* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(13);
-/* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
-/* harmony import */ var _onApprove__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(15);
-/* harmony import */ var _onCancel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(16);
-/* harmony import */ var _onShippingChange__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(17);
-/* harmony import */ var _onClick__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(18);
-/* harmony import */ var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(19);
-/* harmony import */ var _createSubscription__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(20);
-
-
+/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
+/* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
+/* harmony import */ var _onApprove__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15);
+/* harmony import */ var _onCancel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16);
+/* harmony import */ var _onShippingChange__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17);
+/* harmony import */ var _onClick__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(18);
+/* harmony import */ var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19);
+/* harmony import */ var _createSubscription__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(20);
 
 
 
@@ -8430,7 +8401,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 
 
 function getProps(_ref) {
-  var facilitatorAccessTokenPromise = _ref.facilitatorAccessTokenPromise;
+  var facilitatorAccessToken = _ref.facilitatorAccessToken;
   var xprops = window.xprops;
   var env = xprops.env,
       vault = xprops.vault,
@@ -8458,9 +8429,9 @@ function getProps(_ref) {
       style = xprops.style,
       getParent = xprops.getParent,
       currency = xprops.currency;
-  var onInit = Object(_onInit__WEBPACK_IMPORTED_MODULE_4__[/* getOnInit */ "c"])(xprops);
+  var onInit = Object(_onInit__WEBPACK_IMPORTED_MODULE_2__[/* getOnInit */ "c"])(xprops);
   var merchantDomain = typeof getParentDomain === 'function' ? getParentDomain() : 'unknown';
-  var onClick = Object(_onClick__WEBPACK_IMPORTED_MODULE_9__[/* getOnClick */ "d"])(xprops);
+  var onClick = Object(_onClick__WEBPACK_IMPORTED_MODULE_7__[/* getOnClick */ "d"])(xprops);
 
   if (xprops.createBillingAgreement) {
     if (xprops.createOrder) {
@@ -8486,25 +8457,25 @@ function getProps(_ref) {
     }
   }
 
-  var createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_10__[/* getCreateBillingAgreement */ "c"])(xprops);
-  var createSubscription = Object(_createSubscription__WEBPACK_IMPORTED_MODULE_11__[/* getCreateSubscription */ "c"])(xprops, {
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise
+  var createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_8__[/* getCreateBillingAgreement */ "c"])(xprops);
+  var createSubscription = Object(_createSubscription__WEBPACK_IMPORTED_MODULE_9__[/* getCreateSubscription */ "c"])(xprops, {
+    facilitatorAccessToken: facilitatorAccessToken
   });
-  var createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_5__[/* getCreateOrder */ "e"])(xprops, {
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+  var createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_3__[/* getCreateOrder */ "e"])(xprops, {
+    facilitatorAccessToken: facilitatorAccessToken,
     createBillingAgreement: createBillingAgreement,
     createSubscription: createSubscription
   });
-  var onApprove = Object(_onApprove__WEBPACK_IMPORTED_MODULE_6__[/* getOnApprove */ "a"])(xprops, {
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+  var onApprove = Object(_onApprove__WEBPACK_IMPORTED_MODULE_4__[/* getOnApprove */ "a"])(xprops, {
+    facilitatorAccessToken: facilitatorAccessToken,
     createOrder: createOrder
   });
-  var onCancel = Object(_onCancel__WEBPACK_IMPORTED_MODULE_7__[/* getOnCancel */ "c"])(xprops, {
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+  var onCancel = Object(_onCancel__WEBPACK_IMPORTED_MODULE_5__[/* getOnCancel */ "c"])(xprops, {
+    facilitatorAccessToken: facilitatorAccessToken,
     createOrder: createOrder
   });
-  var onShippingChange = Object(_onShippingChange__WEBPACK_IMPORTED_MODULE_8__[/* getOnShippingChange */ "c"])(xprops, {
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+  var onShippingChange = Object(_onShippingChange__WEBPACK_IMPORTED_MODULE_6__[/* getOnShippingChange */ "c"])(xprops, {
+    facilitatorAccessToken: facilitatorAccessToken,
     createOrder: createOrder
   });
   return {
@@ -8557,7 +8528,7 @@ function getComponents() {
 function getConfig(_ref2) {
   var serverCSPNonce = _ref2.serverCSPNonce,
       firebaseConfig = _ref2.firebaseConfig;
-  var cspNonce = serverCSPNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_3__[/* getNonce */ "d"])();
+  var cspNonce = serverCSPNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_1__[/* getNonce */ "d"])();
   var version = window.paypal.version;
   return {
     version: version,
@@ -8567,31 +8538,18 @@ function getConfig(_ref2) {
 }
 function getServiceData(_ref3) {
   var facilitatorAccessToken = _ref3.facilitatorAccessToken,
-      clientID = _ref3.clientID,
       buyerGeoCountry = _ref3.buyerGeoCountry,
       isCardFieldsExperimentEnabled = _ref3.isCardFieldsExperimentEnabled,
       fundingEligibility = _ref3.fundingEligibility,
       personalization = _ref3.personalization,
       serverMerchantID = _ref3.serverMerchantID,
       eligibility = _ref3.eligibility;
-  var facilitatorAccessTokenPromise;
-
-  if (facilitatorAccessToken) {
-    facilitatorAccessTokenPromise = zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].resolve(facilitatorAccessToken);
-  } else if (clientID) {
-    facilitatorAccessTokenPromise = Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* createAccessToken */ "e"])(clientID);
-  } else {
-    // $FlowFixMe
-    facilitatorAccessToken = zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].asyncReject(new Error("No access token found"));
-  }
-
   return {
     merchantID: serverMerchantID,
     buyerCountry: buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* COUNTRY */ "a"].US,
     fundingEligibility: fundingEligibility,
     personalization: personalization,
-    // $FlowFixMe
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    facilitatorAccessToken: facilitatorAccessToken,
     eligibility: {
       cardFields: isCardFieldsExperimentEnabled,
       native: eligibility ? eligibility.native : false
@@ -8611,7 +8569,7 @@ function getServiceData(_ref3) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return POPUP_BRIDGE_OPTYPE; });
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 
 var POPUP_BRIDGE_OPTYPE = {
   PAYMENT: 'payment',
@@ -8623,7 +8581,7 @@ var POPUP_BRIDGE_OPTYPE = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 
 
@@ -8633,7 +8591,7 @@ var POPUP_BRIDGE_OPTYPE = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 
 
 /***/ }),
@@ -8643,25 +8601,25 @@ var POPUP_BRIDGE_OPTYPE = {
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var src = __webpack_require__(3);
+var src = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
 var sdk_constants_src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
-var zalgo_promise_src = __webpack_require__(2);
+var zalgo_promise_src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/lib/index.js + 5 modules
-var lib = __webpack_require__(4);
+var lib = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./src/button/props/index.js
-var button_props = __webpack_require__(10);
+var button_props = __webpack_require__(11);
 
 // EXTERNAL MODULE: ./src/button/dom.js
-var dom = __webpack_require__(11);
+var dom = __webpack_require__(10);
 
 // CONCATENATED MODULE: ./src/button/logs.js
 
@@ -8673,11 +8631,11 @@ function setupButtonLogs(_ref) {
   var style = _ref.style;
   var logger = Object(lib["b" /* getLogger */])();
 
-  if (Object(src["h" /* isIEIntranet */])()) {
+  if (Object(src["j" /* isIEIntranet */])()) {
     logger.warn('button_child_intranet_mode');
   }
 
-  return Object(src["d" /* getPageRenderTime */])().then(function (pageRenderTime) {
+  return Object(src["e" /* getPageRenderTime */])().then(function (pageRenderTime) {
     var _logger$track;
 
     var fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "]")).map(function (el) {
@@ -8713,13 +8671,13 @@ function setupRemember(_ref) {
   });
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(7);
+var esm_extends = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js + 4 modules
 var cross_domain_utils_src = __webpack_require__(9);
 
 // EXTERNAL MODULE: ./src/api/index.js + 5 modules
-var api = __webpack_require__(8);
+var api = __webpack_require__(7);
 
 // CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/constants.js
 var NODE_TYPE = {
@@ -9294,7 +9252,7 @@ function SpinnerPage(_ref) {
 function openPopup(_ref) {
   var width = _ref.width,
       height = _ref.height;
-  var win = Object(cross_domain_utils_src["a" /* assertSameDomain */])(Object(src["m" /* popup */])('', {
+  var win = Object(cross_domain_utils_src["a" /* assertSameDomain */])(Object(src["o" /* popup */])('', {
     width: width,
     height: height
   }));
@@ -9304,7 +9262,7 @@ function openPopup(_ref) {
   }).render(dom_dom({
     doc: doc
   }));
-  Object(src["w" /* writeElementToWindow */])(win, spinner);
+  Object(src["y" /* writeElementToWindow */])(win, spinner);
   return win;
 }
 // CONCATENATED MODULE: ./src/ui/index.js
@@ -9353,7 +9311,7 @@ function setupCheckout(_ref) {
     });
   }
 
-  return zalgo_promise_src["a" /* ZalgoPromise */].hash(tasks).then(src["j" /* noop */]);
+  return zalgo_promise_src["a" /* ZalgoPromise */].hash(tasks).then(src["l" /* noop */]);
 }
 
 function isCheckoutEligible() {
@@ -9438,7 +9396,7 @@ function getContext(_ref5) {
     return constants["b" /* CONTEXT */].POPUP;
   }
 
-  if (isClick && Object(src["u" /* supportsPopups */])()) {
+  if (isClick && Object(src["w" /* supportsPopups */])()) {
     return constants["b" /* CONTEXT */].POPUP;
   }
 
@@ -9484,7 +9442,7 @@ function initCheckout(_ref6) {
     isClick: isClick
   });
   var approved = false;
-  var restart = Object(src["i" /* memoize */])(function () {
+  var restart = Object(src["k" /* memoize */])(function () {
     return initCheckout({
       props: props,
       components: components,
@@ -9585,7 +9543,7 @@ function initCheckout(_ref6) {
     });
   };
 
-  var start = Object(src["i" /* memoize */])(function () {
+  var start = Object(src["k" /* memoize */])(function () {
     instance = init();
     return instance.renderTo(getRenderWindow(), constants["o" /* TARGET_ELEMENT */].BODY, context);
   });
@@ -9681,20 +9639,20 @@ function isCardFieldsPaymentEligible(_ref2) {
 }
 
 function highlightCard(card) {
-  Object(src["o" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
+  Object(src["q" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
     el.style.opacity = el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].CARD) === card ? '1' : '0.1';
   });
 }
 
 function unhighlightCards() {
-  Object(src["o" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
+  Object(src["q" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
     el.style.opacity = '1';
   });
 }
 
 var card_fields_getElements = function getElements() {
   var buttonsContainer = document.querySelector('#buttons-container');
-  var cardButtonsContainer = document.querySelector("[data-funding-source=\"" + sdk_constants_src["g" /* FUNDING */].CARD + "\"]");
+  var cardButtonsContainer = document.querySelector("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "=\"" + sdk_constants_src["g" /* FUNDING */].CARD + "\"]");
   var cardFieldsContainer = document.querySelector('#card-fields-container');
 
   if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) {
@@ -9771,7 +9729,7 @@ function initCardFields(_ref4) {
     };
   }
 
-  var restart = Object(src["i" /* memoize */])(function () {
+  var restart = Object(src["k" /* memoize */])(function () {
     return checkout.init({
       props: props,
       components: components,
@@ -10015,7 +9973,7 @@ var vaultCapture = {
   inline: true
 };
 // EXTERNAL MODULE: ./src/config.js
-var src_config = __webpack_require__(5);
+var src_config = __webpack_require__(4);
 
 // CONCATENATED MODULE: ./src/payment-flows/native.js
 
@@ -10027,8 +9985,9 @@ var src_config = __webpack_require__(5);
 
 
 
+
 var SOURCE_APP = 'paypal_smart_payment_buttons';
-var TARGET_APP = 'paypal_native_checkout_sdk';
+var TARGET_APP = 'paypal_native_checkout';
 var MESSAGE = {
   SET_PROPS: 'setProps',
   GET_PROPS: 'getProps',
@@ -10038,7 +9997,7 @@ var MESSAGE = {
   ON_CANCEL: 'onCancel',
   ON_ERROR: 'onError'
 };
-var getNativeSocket = Object(src["i" /* memoize */])(function (_ref) {
+var getNativeSocket = Object(src["k" /* memoize */])(function (_ref) {
   var sessionUID = _ref.sessionUID,
       firebaseConfig = _ref.firebaseConfig,
       version = _ref.version;
@@ -10051,10 +10010,28 @@ var getNativeSocket = Object(src["i" /* memoize */])(function (_ref) {
   });
 });
 
-function isNativeEligible(_ref2) {
-  var props = _ref2.props,
-      config = _ref2.config,
-      serviceData = _ref2.serviceData;
+function isNativeOptedIn(_ref2) {
+  var props = _ref2.props;
+  var enableNativeCheckout = props.enableNativeCheckout;
+
+  if (enableNativeCheckout) {
+    return true;
+  }
+
+  try {
+    if (window.localStorage.get('__native_checkout__')) {
+      return true;
+    }
+  } catch (err) {// pass
+  }
+
+  return false;
+}
+
+function isNativeEligible(_ref3) {
+  var props = _ref3.props,
+      config = _ref3.config,
+      serviceData = _ref3.serviceData;
 
   if (window.xprops.forceNativeEligible) {
     return true;
@@ -10063,8 +10040,7 @@ function isNativeEligible(_ref2) {
   var platform = props.platform,
       onShippingChange = props.onShippingChange,
       createBillingAgreement = props.createBillingAgreement,
-      createSubscription = props.createSubscription,
-      enableNativeCheckout = props.enableNativeCheckout;
+      createSubscription = props.createSubscription;
   var firebaseConfig = config.firebase;
   var eligibility = serviceData.eligibility;
 
@@ -10080,7 +10056,7 @@ function isNativeEligible(_ref2) {
     return false;
   }
 
-  if (!Object(src["u" /* supportsPopups */])()) {
+  if (!Object(src["w" /* supportsPopups */])()) {
     return false;
   }
 
@@ -10088,15 +10064,17 @@ function isNativeEligible(_ref2) {
     return false;
   }
 
-  if (enableNativeCheckout) {
+  if (isNativeOptedIn({
+    props: props
+  })) {
     return eligibility.native;
   }
 
   return false;
 }
 
-function isNativePaymentEligible(_ref3) {
-  var payment = _ref3.payment;
+function isNativePaymentEligible(_ref4) {
+  var payment = _ref4.payment;
   var win = payment.win,
       fundingSource = payment.fundingSource;
 
@@ -10115,14 +10093,14 @@ var native_sessionUID;
 var nativeSocket;
 var initialPageUrl;
 
-function setupNative(_ref4) {
-  var config = _ref4.config,
-      props = _ref4.props;
+function setupNative(_ref5) {
+  var config = _ref5.config,
+      props = _ref5.props;
   return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
     var version = config.version,
         firebaseConfig = config.firebase;
     var getPageUrl = props.getPageUrl;
-    native_sessionUID = Object(src["v" /* uniqueID */])();
+    native_sessionUID = Object(src["x" /* uniqueID */])();
     nativeSocket = getNativeSocket({
       sessionUID: native_sessionUID,
       firebaseConfig: firebaseConfig,
@@ -10138,12 +10116,12 @@ function didAppSwitchHappen(win) {
   return Object(cross_domain_utils_src["e" /* isBlankDomain */])(win);
 }
 
-function initNative(_ref5) {
-  var props = _ref5.props,
-      components = _ref5.components,
-      config = _ref5.config,
-      payment = _ref5.payment,
-      serviceData = _ref5.serviceData;
+function initNative(_ref6) {
+  var props = _ref6.props,
+      components = _ref6.components,
+      config = _ref6.config,
+      payment = _ref6.payment,
+      serviceData = _ref6.serviceData;
   var createOrder = props.createOrder,
       onApprove = props.onApprove,
       onCancel = props.onCancel,
@@ -10155,16 +10133,16 @@ function initNative(_ref5) {
       stageHost = props.stageHost,
       apiStageHost = props.apiStageHost,
       onClick = props.onClick;
-  var facilitatorAccessTokenPromise = serviceData.facilitatorAccessTokenPromise;
+  var facilitatorAccessToken = serviceData.facilitatorAccessToken;
   var fundingSource = payment.fundingSource;
   var instance = {
     close: lib["c" /* promiseNoop */]
   };
 
   var fallbackToWebCheckout = function fallbackToWebCheckout(_temp) {
-    var _ref6 = _temp === void 0 ? {} : _temp,
-        win = _ref6.win,
-        buyerAccessToken = _ref6.buyerAccessToken;
+    var _ref7 = _temp === void 0 ? {} : _temp,
+        win = _ref7.win,
+        buyerAccessToken = _ref7.buyerAccessToken;
 
     var checkoutPayment = Object(esm_extends["a" /* default */])({}, payment, {
       buyerAccessToken: buyerAccessToken,
@@ -10183,29 +10161,45 @@ function initNative(_ref5) {
   };
 
   var getNativeUrl = function getNativeUrl() {
-    return Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["h" /* NATIVE_CHECKOUT_URI */][fundingSource], {
+    var domain = fundingSource === sdk_constants_src["g" /* FUNDING */].VENMO ? Object(cross_domain_utils_src["b" /* getDomain */])().replace('sandbox.', '') : Object(cross_domain_utils_src["b" /* getDomain */])();
+    return Object(src["d" /* extendUrl */])("" + domain + src_config["h" /* NATIVE_CHECKOUT_URI */][fundingSource], {
       query: {
         sessionUID: native_sessionUID,
+        buttonSessionID: buttonSessionID,
         pageUrl: initialPageUrl
+      }
+    });
+  };
+
+  var getWebCheckoutFallbackUrl = function getWebCheckoutFallbackUrl(_ref8) {
+    var orderID = _ref8.orderID;
+    return Object(src["d" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
+      query: {
+        token: orderID,
+        native_xo: '1',
+        fundingSource: fundingSource,
+        useraction: commit ? constants["p" /* USER_ACTION */].COMMIT : constants["p" /* USER_ACTION */].CONTINUE
       }
     });
   };
 
   var getSDKProps = function getSDKProps() {
     return zalgo_promise_src["a" /* ZalgoPromise */].hash({
-      facilitatorAccessToken: facilitatorAccessTokenPromise,
       orderID: createOrder(),
       pageUrl: getPageUrl()
-    }).then(function (_ref7) {
-      var facilitatorAccessToken = _ref7.facilitatorAccessToken,
-          orderID = _ref7.orderID,
-          pageUrl = _ref7.pageUrl;
-      var userAgent = Object(src["e" /* getUserAgent */])();
+    }).then(function (_ref9) {
+      var orderID = _ref9.orderID,
+          pageUrl = _ref9.pageUrl;
+      var userAgent = Object(src["f" /* getUserAgent */])();
+      var webCheckoutUrl = getWebCheckoutFallbackUrl({
+        orderID: orderID
+      });
       return {
         orderID: orderID,
         facilitatorAccessToken: facilitatorAccessToken,
         pageUrl: pageUrl,
         commit: commit,
+        webCheckoutUrl: webCheckoutUrl,
         userAgent: userAgent,
         buttonSessionID: buttonSessionID,
         env: env,
@@ -10219,11 +10213,11 @@ function initNative(_ref5) {
     nativeSocket.on(MESSAGE.GET_PROPS, function () {
       return getSDKProps();
     });
-    nativeSocket.on(MESSAGE.ON_APPROVE, function (_ref8) {
-      var _ref8$data = _ref8.data,
-          payerID = _ref8$data.payerID,
-          paymentID = _ref8$data.paymentID,
-          billingToken = _ref8$data.billingToken;
+    nativeSocket.on(MESSAGE.ON_APPROVE, function (_ref10) {
+      var _ref10$data = _ref10.data,
+          payerID = _ref10$data.payerID,
+          paymentID = _ref10$data.paymentID,
+          billingToken = _ref10$data.billingToken;
       nativeSocket.close();
       var data = {
         payerID: payerID,
@@ -10242,13 +10236,13 @@ function initNative(_ref5) {
       nativeSocket.close();
       return onCancel();
     });
-    nativeSocket.on(MESSAGE.ON_ERROR, function (_ref9) {
-      var message = _ref9.data.message;
+    nativeSocket.on(MESSAGE.ON_ERROR, function (_ref11) {
+      var message = _ref11.data.message;
       nativeSocket.close();
       return onError(new Error(message));
     });
-    nativeSocket.on(MESSAGE.FALLBACK, function (_ref10) {
-      var buyerAccessToken = _ref10.data.buyerAccessToken;
+    nativeSocket.on(MESSAGE.FALLBACK, function (_ref12) {
+      var buyerAccessToken = _ref12.data.buyerAccessToken;
       nativeSocket.close();
       return fallbackToWebCheckout({
         buyerAccessToken: buyerAccessToken
@@ -10275,7 +10269,7 @@ function initNative(_ref5) {
   };
 
   var win;
-  var start = Object(src["i" /* memoize */])(function () {
+  var start = Object(src["k" /* memoize */])(function () {
     return createOrder().then(function () {
       if (didAppSwitchHappen(win)) {
         win.close();
@@ -10290,7 +10284,7 @@ function initNative(_ref5) {
   });
 
   var click = function click() {
-    win = Object(src["m" /* popup */])(getNativeUrl());
+    win = Object(src["o" /* popup */])(getNativeUrl());
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
       return onClick ? onClick({
         fundingSource: fundingSource
@@ -10389,7 +10383,7 @@ function initPopupBridge(_ref4) {
         throw new Error("Popup bridge required");
       }
 
-      var url = Object(src["c" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
+      var url = Object(src["d" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
         query: {
           fundingSource: fundingSource,
           token: orderID,
@@ -10444,60 +10438,8 @@ var popupBridge = {
 
 
 
-// CONCATENATED MODULE: ./src/button/pay.js
-
-
-
-var PAYMENT_FLOWS = [vaultCapture, cardFields, popupBridge, native_native, checkout];
-function setupPaymentFlows(_ref) {
-  var props = _ref.props,
-      config = _ref.config,
-      serviceData = _ref.serviceData,
-      components = _ref.components;
-  return zalgo_promise_src["a" /* ZalgoPromise */].all(PAYMENT_FLOWS.map(function (flow) {
-    return flow.isEligible({
-      props: props,
-      config: config,
-      serviceData: serviceData,
-      components: components
-    }) ? flow.setup({
-      props: props,
-      config: config,
-      serviceData: serviceData,
-      components: components
-    }) : null;
-  })).then(src["j" /* noop */]);
-}
-function getPaymentFlow(_ref2) {
-  var props = _ref2.props,
-      payment = _ref2.payment,
-      config = _ref2.config,
-      components = _ref2.components,
-      serviceData = _ref2.serviceData;
-
-  for (var _i2 = 0; _i2 < PAYMENT_FLOWS.length; _i2++) {
-    var flow = PAYMENT_FLOWS[_i2];
-
-    if (flow.isEligible({
-      props: props,
-      config: config,
-      components: components,
-      serviceData: serviceData
-    }) && flow.isPaymentEligible({
-      props: props,
-      payment: payment,
-      config: config,
-      components: components,
-      serviceData: serviceData
-    })) {
-      return flow;
-    }
-  }
-
-  throw new Error("Could not find eligible payment flow");
-}
 // EXTERNAL MODULE: ./src/api/api.js
-var api_api = __webpack_require__(6);
+var api_api = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./src/button/orders.js
 
@@ -10570,6 +10512,355 @@ function validateOrder(orderID, _ref2) {
     }
   });
 }
+// CONCATENATED MODULE: ./src/button/pay.js
+
+
+
+
+
+
+
+
+var PAYMENT_FLOWS = [vaultCapture, cardFields, popupBridge, native_native, checkout];
+function setupPaymentFlows(_ref) {
+  var props = _ref.props,
+      config = _ref.config,
+      serviceData = _ref.serviceData,
+      components = _ref.components;
+  return zalgo_promise_src["a" /* ZalgoPromise */].all(PAYMENT_FLOWS.map(function (flow) {
+    return flow.isEligible({
+      props: props,
+      config: config,
+      serviceData: serviceData,
+      components: components
+    }) ? flow.setup({
+      props: props,
+      config: config,
+      serviceData: serviceData,
+      components: components
+    }) : null;
+  })).then(src["l" /* noop */]);
+}
+function getPaymentFlow(_ref2) {
+  var props = _ref2.props,
+      payment = _ref2.payment,
+      config = _ref2.config,
+      components = _ref2.components,
+      serviceData = _ref2.serviceData;
+
+  for (var _i2 = 0; _i2 < PAYMENT_FLOWS.length; _i2++) {
+    var flow = PAYMENT_FLOWS[_i2];
+
+    if (flow.isEligible({
+      props: props,
+      config: config,
+      components: components,
+      serviceData: serviceData
+    }) && flow.isPaymentEligible({
+      props: props,
+      payment: payment,
+      config: config,
+      components: components,
+      serviceData: serviceData
+    })) {
+      return flow;
+    }
+  }
+
+  throw new Error("Could not find eligible payment flow");
+}
+
+var pay_sendPersonalizationBeacons = function sendPersonalizationBeacons(personalization) {
+  if (personalization && personalization.tagline && personalization.tagline.tracking) {
+    Object(lib["d" /* sendBeacon */])(personalization.tagline.tracking.click);
+  }
+
+  if (personalization && personalization.buttonText && personalization.buttonText.tracking) {
+    Object(lib["d" /* sendBeacon */])(personalization.buttonText.tracking.click);
+  }
+};
+
+function initiatePayment(_ref3) {
+  var payment = _ref3.payment,
+      serviceData = _ref3.serviceData,
+      config = _ref3.config,
+      components = _ref3.components,
+      props = _ref3.props;
+  var button = payment.button,
+      fundingSource = payment.fundingSource,
+      _payment$decorateCrea = payment.decorateCreateOrder,
+      decorateCreateOrder = _payment$decorateCrea === void 0 ? src["g" /* identity */] : _payment$decorateCrea;
+  return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
+    var _getLogger$info$track;
+
+    var personalization = serviceData.personalization,
+        merchantID = serviceData.merchantID;
+    var clientID = props.clientID,
+        onClick = props.onClick,
+        createOrder = props.createOrder,
+        buttonSessionID = props.buttonSessionID;
+    createOrder = decorateCreateOrder(createOrder);
+    pay_sendPersonalizationBeacons(personalization);
+    Object(lib["b" /* getLogger */])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
+
+    var _getPaymentFlow = getPaymentFlow({
+      props: props,
+      payment: payment,
+      config: config,
+      components: components,
+      serviceData: serviceData
+    }),
+        init = _getPaymentFlow.init,
+        inline = _getPaymentFlow.inline,
+        spinner = _getPaymentFlow.spinner;
+
+    var _init = init({
+      props: props,
+      config: config,
+      serviceData: serviceData,
+      components: components,
+      payment: payment
+    }),
+        _init$click = _init.click,
+        click = _init$click === void 0 ? lib["c" /* promiseNoop */] : _init$click,
+        start = _init.start,
+        close = _init.close;
+
+    var clickPromise = click(); // $FlowFixMe
+
+    button.payPromise = zalgo_promise_src["a" /* ZalgoPromise */].hash({
+      valid: onClick ? onClick({
+        fundingSource: fundingSource
+      }) : true
+    }).then(function (_ref4) {
+      var valid = _ref4.valid;
+
+      if (!valid) {
+        return;
+      }
+
+      if (spinner) {
+        Object(dom["b" /* enableLoadingSpinner */])(button);
+      }
+
+      createOrder().then(function (orderID) {
+        return updateButtonClientConfig({
+          orderID: orderID,
+          fundingSource: fundingSource,
+          inline: inline
+        });
+      });
+      return start().then(function () {
+        return createOrder();
+      }).then(function (orderID) {
+        return validateOrder(orderID, {
+          clientID: clientID,
+          merchantID: merchantID
+        });
+      }).then(function () {
+        return clickPromise;
+      }).catch(function (err) {
+        return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), zalgo_promise_src["a" /* ZalgoPromise */].reject(err)]);
+      }).then(src["l" /* noop */]);
+    });
+    return button.payPromise;
+  }).finally(function () {
+    Object(dom["a" /* disableLoadingSpinner */])(button);
+  });
+}
+// CONCATENATED MODULE: ./src/menu/interface.js
+
+
+function renderSmartMenu(_ref) {
+  var clientID = _ref.clientID;
+  var Menu = window.paypal.Menu;
+
+  if (!Menu) {
+    throw new Error("Menu component not found");
+  }
+
+  var _window$paypal$Menu = window.paypal.Menu({
+    clientID: clientID
+  }),
+      renderTo = _window$paypal$Menu.renderTo,
+      updateProps = _window$paypal$Menu.updateProps,
+      show = _window$paypal$Menu.show,
+      hide = _window$paypal$Menu.hide;
+
+  var render = Object(src["k" /* memoize */])(function () {
+    return renderTo(window.xprops.getParent(), '#smart-menu');
+  });
+
+  var display = function display(_ref2) {
+    var choices = _ref2.choices,
+        verticalOffset = _ref2.verticalOffset,
+        _onChoose = _ref2.onChoose;
+    return render().then(function () {
+      return updateProps({
+        verticalOffset: verticalOffset,
+        choices: choices,
+        onChoose: function onChoose(_ref3) {
+          var id = _ref3.id,
+              win = _ref3.win;
+          hide();
+          return _onChoose({
+            id: id,
+            win: win
+          });
+        }
+      });
+    }).then(function () {
+      return show();
+    });
+  };
+
+  hide();
+  render();
+  return {
+    display: display
+  };
+}
+// CONCATENATED MODULE: ./src/button/menu.js
+
+
+
+
+
+
+
+
+
+var MENU_CHOICE = {
+  DELETE_VAULT: 'DELETE_VAULT',
+  SELECT_FUNDING_SHIPPING: 'SELECT_FUNDING_SHIPPING',
+  CHANGE_ACCOUNT: 'CHANGE_ACCOUNT'
+};
+var popup = {
+  width: CHECKOUT_POPUP_DIMENSIONS.WIDTH,
+  height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
+};
+var smartMenu;
+function renderButtonDropdown(_ref) {
+  var props = _ref.props,
+      payment = _ref.payment,
+      content = _ref.content,
+      handlePaymentClick = _ref.handlePaymentClick;
+  var clientID = props.clientID,
+      clientAccessToken = props.clientAccessToken,
+      enableThreeDomainSecure = props.enableThreeDomainSecure,
+      buttonSessionID = props.buttonSessionID,
+      partnerAttributionID = props.partnerAttributionID;
+  var button = payment.button,
+      fundingSource = payment.fundingSource,
+      paymentMethodID = payment.paymentMethodID;
+  var menuToggle = button.querySelector("[" + constants["c" /* DATA_ATTRIBUTES */].MENU + "]");
+  var buttonParent = button.parentElement;
+
+  if (clientID && buttonParent && menuToggle && paymentMethodID && clientAccessToken) {
+    smartMenu = smartMenu || renderSmartMenu({
+      clientID: clientID
+    });
+    Object(src["n" /* onClick */])(menuToggle, function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      var PAYPAL_CHOICES = [{
+        id: MENU_CHOICE.SELECT_FUNDING_SHIPPING,
+        label: content.chooseCardOrShipping,
+        popup: popup
+      }, {
+        id: MENU_CHOICE.CHANGE_ACCOUNT,
+        label: content.useDifferentAccount,
+        popup: popup
+      }, {
+        id: MENU_CHOICE.DELETE_VAULT,
+        label: content.deleteVaultedAccount
+      }];
+      var CARD_CHOICES = [{
+        id: MENU_CHOICE.DELETE_VAULT,
+        label: content.deleteVaultedCard
+      }];
+      var choices = fundingSource === sdk_constants_src["g" /* FUNDING */].PAYPAL ? PAYPAL_CHOICES : CARD_CHOICES;
+      var verticalOffset = button.getBoundingClientRect().bottom;
+      var loadingTimeout = setTimeout(function () {
+        return Object(dom["b" /* enableLoadingSpinner */])(button);
+      }, 50);
+      smartMenu.display({
+        choices: choices,
+        verticalOffset: verticalOffset,
+        onChoose: function onChoose(_ref2) {
+          var id = _ref2.id,
+              win = _ref2.win;
+
+          if (id === MENU_CHOICE.CHANGE_ACCOUNT) {
+            return handlePaymentClick({
+              payment: Object(esm_extends["a" /* default */])({}, payment, {
+                win: win
+              })
+            });
+          } else if (id === MENU_CHOICE.DELETE_VAULT) {
+            if (!clientAccessToken || !paymentMethodID) {
+              throw new Error("Can not delete vault without client access token and payment method id");
+            }
+
+            Object(dom["b" /* enableLoadingSpinner */])(button);
+            return Object(api["h" /* deleteVault */])({
+              paymentMethodID: paymentMethodID,
+              clientAccessToken: clientAccessToken
+            }).then(function () {
+              Object(dom["a" /* disableLoadingSpinner */])(button);
+              Object(src["c" /* destroyElement */])(button);
+
+              if (buttonParent.querySelectorAll("[" + constants["c" /* DATA_ATTRIBUTES */].PAYMENT_METHOD_ID + "]").length === 0) {
+                var payInstantlyHeader = buttonParent.querySelector('.paypal-vault-header');
+
+                if (payInstantlyHeader) {
+                  Object(src["c" /* destroyElement */])(payInstantlyHeader);
+                }
+              }
+            });
+          } else if (id === MENU_CHOICE.SELECT_FUNDING_SHIPPING) {
+            if (!clientAccessToken || !paymentMethodID) {
+              throw new Error("Can not change funding or shipping without client access token and payment method id");
+            }
+
+            var decorateCreateOrder = function decorateCreateOrder(createOrder) {
+              return Object(src["k" /* memoize */])(function () {
+                return createOrder().then(function (orderID) {
+                  return Object(api["u" /* validatePaymentMethod */])({
+                    clientAccessToken: clientAccessToken,
+                    orderID: orderID,
+                    paymentMethodID: paymentMethodID,
+                    enableThreeDomainSecure: enableThreeDomainSecure,
+                    buttonSessionID: buttonSessionID,
+                    partnerAttributionID: partnerAttributionID
+                  }).then(function (_ref3) {
+                    var status = _ref3.status;
+
+                    if (status !== 200) {
+                      throw new Error("Validate payment failed with status: " + status);
+                    }
+
+                    return orderID;
+                  });
+                });
+              });
+            };
+
+            return handlePaymentClick({
+              payment: Object(esm_extends["a" /* default */])({}, payment, {
+                win: win,
+                decorateCreateOrder: decorateCreateOrder
+              })
+            });
+          }
+        }
+      }).then(function () {
+        clearTimeout(loadingTimeout);
+        Object(dom["a" /* disableLoadingSpinner */])(button);
+      });
+    });
+  }
+}
 // CONCATENATED MODULE: ./src/button/button.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setupButton; });
 
@@ -10583,24 +10874,23 @@ function validateOrder(orderID, _ref2) {
 
 
 
-function setupButton(_ref) {
-  var facilitatorAccessToken = _ref.facilitatorAccessToken,
-      eligibility = _ref.eligibility,
-      fundingEligibility = _ref.fundingEligibility,
-      buyerGeoCountry = _ref.buyerCountry,
-      serverCSPNonce = _ref.cspNonce,
-      serverMerchantID = _ref.merchantID,
-      personalization = _ref.personalization,
-      isCardFieldsExperimentEnabled = _ref.isCardFieldsExperimentEnabled,
-      firebaseConfig = _ref.firebaseConfig;
-
+function setupButton(opts) {
   if (!window.paypal) {
     throw new Error("PayPal SDK not loaded");
   }
 
+  var facilitatorAccessToken = opts.facilitatorAccessToken,
+      eligibility = opts.eligibility,
+      fundingEligibility = opts.fundingEligibility,
+      buyerGeoCountry = opts.buyerCountry,
+      content = opts.content,
+      serverCSPNonce = opts.cspNonce,
+      serverMerchantID = opts.merchantID,
+      personalization = opts.personalization,
+      isCardFieldsExperimentEnabled = opts.isCardFieldsExperimentEnabled,
+      firebaseConfig = opts.firebaseConfig;
   var clientID = window.xprops.clientID;
   var serviceData = Object(button_props["getServiceData"])({
-    clientID: clientID,
     eligibility: eligibility,
     facilitatorAccessToken: facilitatorAccessToken,
     buyerGeoCountry: buyerGeoCountry,
@@ -10609,10 +10899,9 @@ function setupButton(_ref) {
     personalization: personalization,
     isCardFieldsExperimentEnabled: isCardFieldsExperimentEnabled
   });
-  var merchantID = serviceData.merchantID,
-      facilitatorAccessTokenPromise = serviceData.facilitatorAccessTokenPromise;
+  var merchantID = serviceData.merchantID;
   var props = Object(button_props["getProps"])({
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise
+    facilitatorAccessToken: facilitatorAccessToken
   });
   var _props = props,
       env = _props.env,
@@ -10651,138 +10940,73 @@ function setupButton(_ref) {
       initPromise = _onInit.initPromise,
       isEnabled = _onInit.isEnabled;
 
-  var sendPersonalizationBeacons = function sendPersonalizationBeacons() {
-    if (personalization && personalization.tagline && personalization.tagline.tracking) {
-      Object(lib["d" /* sendBeacon */])(personalization.tagline.tracking.click);
-    }
-
-    if (personalization && personalization.buttonText && personalization.buttonText.tracking) {
-      Object(lib["d" /* sendBeacon */])(personalization.buttonText.tracking.click);
-    }
-  };
-
   var paymentProcessing = false;
 
-  var handleButtonClick = function handleButtonClick(payment) {
-    var button = payment.button,
-        win = payment.win,
-        fundingSource = payment.fundingSource;
+  function handlePaymentClick(_ref) {
+    var payment = _ref.payment;
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-      var _getLogger$info$track;
-
       if (paymentProcessing) {
         return;
       }
 
-      paymentProcessing = true;
       props = Object(button_props["getProps"])({
-        facilitatorAccessTokenPromise: facilitatorAccessTokenPromise
+        facilitatorAccessToken: facilitatorAccessToken
       });
+      var win = payment.win,
+          fundingSource = payment.fundingSource;
       var _props2 = props,
-          onClick = _props2.onClick,
-          createOrder = _props2.createOrder;
+          onClick = _props2.onClick;
 
-      if (!isEnabled()) {
+      if (onClick) {
+        onClick({
+          fundingSource: fundingSource
+        });
+      }
+
+      if (isEnabled()) {
+        paymentProcessing = true;
+        return initiatePayment({
+          payment: payment,
+          config: config,
+          serviceData: serviceData,
+          components: components,
+          props: props
+        }).finally(function () {
+          paymentProcessing = false;
+        });
+      } else {
         if (win) {
           win.close();
         }
-
-        if (onClick) {
-          onClick({
-            fundingSource: fundingSource
-          });
-        }
-
-        return;
       }
-
-      sendPersonalizationBeacons();
-      Object(lib["b" /* getLogger */])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
-
-      var _getPaymentFlow = getPaymentFlow({
-        props: props,
-        payment: payment,
-        config: config,
-        components: components,
-        serviceData: serviceData
-      }),
-          init = _getPaymentFlow.init,
-          inline = _getPaymentFlow.inline,
-          spinner = _getPaymentFlow.spinner;
-
-      var _init = init({
-        props: props,
-        config: config,
-        serviceData: serviceData,
-        components: components,
-        payment: payment
-      }),
-          _init$click = _init.click,
-          click = _init$click === void 0 ? lib["c" /* promiseNoop */] : _init$click,
-          start = _init.start,
-          close = _init.close;
-
-      var clickPromise = click(); // $FlowFixMe
-
-      button.payPromise = zalgo_promise_src["a" /* ZalgoPromise */].hash({
-        valid: onClick ? onClick({
-          fundingSource: fundingSource
-        }) : true
-      }).then(function (_ref2) {
-        var valid = _ref2.valid;
-
-        if (!valid) {
-          return;
-        }
-
-        if (spinner) {
-          Object(dom["b" /* enableLoadingSpinner */])(button);
-        }
-
-        createOrder().then(function (orderID) {
-          return updateButtonClientConfig({
-            orderID: orderID,
-            fundingSource: fundingSource,
-            inline: inline
-          });
-        });
-        return start().then(function () {
-          return createOrder();
-        }).then(function (orderID) {
-          return validateOrder(orderID, {
-            clientID: clientID,
-            merchantID: merchantID
-          });
-        }).then(function () {
-          return clickPromise;
-        }).catch(function (err) {
-          return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), zalgo_promise_src["a" /* ZalgoPromise */].reject(err)]);
-        }).then(src["j" /* noop */]);
-      });
-      return button.payPromise;
-    }).finally(function () {
-      paymentProcessing = false;
-      Object(dom["a" /* disableLoadingSpinner */])(button);
     });
-  };
+  }
 
   Object(dom["c" /* getButtons */])().forEach(function (button) {
-    Object(lib["a" /* fixClickFocus */])(button);
-
     var _getSelectedFunding = Object(dom["e" /* getSelectedFunding */])(button),
         fundingSource = _getSelectedFunding.fundingSource,
         card = _getSelectedFunding.card,
         paymentMethodID = _getSelectedFunding.paymentMethodID;
 
-    Object(src["l" /* onClick */])(button, function (event) {
+    var payment = {
+      button: button,
+      fundingSource: fundingSource,
+      card: card,
+      paymentMethodID: paymentMethodID,
+      isClick: true
+    };
+    Object(lib["a" /* fixClickFocus */])(button);
+    renderButtonDropdown({
+      props: props,
+      payment: payment,
+      content: content,
+      handlePaymentClick: handlePaymentClick
+    });
+    Object(src["n" /* onClick */])(button, function (event) {
       event.preventDefault();
       event.stopPropagation();
-      handleButtonClick({
-        button: button,
-        fundingSource: fundingSource,
-        card: card,
-        paymentMethodID: paymentMethodID,
-        isClick: true
+      handlePaymentClick({
+        payment: payment
       });
     });
   });
@@ -10790,8 +11014,8 @@ function setupButton(_ref) {
     return zalgo_promise_src["a" /* ZalgoPromise */].hash({
       prerenderDetails: getPrerenderDetails(),
       initPromise: initPromise
-    }).then(function (_ref3) {
-      var prerenderDetails = _ref3.prerenderDetails;
+    }).then(function (_ref2) {
+      var prerenderDetails = _ref2.prerenderDetails;
 
       if (!prerenderDetails) {
         return;
@@ -10806,11 +11030,14 @@ function setupButton(_ref) {
         throw new Error("Can not find button element");
       }
 
-      handleButtonClick({
+      var payment = {
         win: win,
         button: button,
         fundingSource: fundingSource,
         card: card
+      };
+      handlePaymentClick({
+        payment: payment
       });
     });
   });
@@ -10829,12 +11056,12 @@ function setupButton(_ref) {
   });
   return zalgo_promise_src["a" /* ZalgoPromise */].hash({
     initPromise: initPromise,
-    facilitatorAccessTokenPromise: facilitatorAccessTokenPromise,
+    facilitatorAccessToken: facilitatorAccessToken,
     setupButtonLogsTask: setupButtonLogsTask,
     setupPrerenderTask: setupPrerenderTask,
     setupRememberTask: setupRememberTask,
     setupPaymentFlowsTask: setupPaymentFlowsTask
-  }).then(src["j" /* noop */]);
+  }).then(src["l" /* noop */]);
 }
 
 /***/ }),
@@ -10846,7 +11073,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setupButton", function() { return _button__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
-/* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _props__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _props__WEBPACK_IMPORTED_MODULE_1__) if(["setupButton","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _props__WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
 
