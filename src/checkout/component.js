@@ -359,7 +359,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
                         return ZalgoPromise.try(() => {
 
                             try {
-                                const isButton = window.location.href.indexOf('/webapps/hermes/button') !== -1;
+                                const isButton = window.location.href.indexOf('/smart/button') !== -1;
                                 const isGuest  = this.window.location.href.indexOf('/webapps/xoonboarding') !== -1;
 
                                 if (isButton && isGuest) {
