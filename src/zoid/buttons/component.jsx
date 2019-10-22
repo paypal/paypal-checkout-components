@@ -113,10 +113,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     required: false,
                     decorate: ({ value, state, props }) => {
                         return (...args) => {
-                            state.cardButtonExperiment.logComplete({
-                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                            });
-
                             if (value) {
                                 return value(...args);
                             }
@@ -154,13 +150,15 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     required: false,
                     decorate: ({ value, state, props }) => {
                         return (...args) => {
-                            const isBlackButtonEnabled = state.cardButtonExperiment.isEnabled();
-                            state.cardButtonExperiment.logStart({
-                                [ FPTI_KEY.CONTEXT_ID ]:       props.buttonSessionID,
-                                [ FPTI_KEY.CONTEXT_TYPE ]:     FPTI_KEY.BUTTON_SESSION_UID,
-                                [ FPTI_KEY.EXPERIMENT_NAME ]:  'inline_blk_btn',
-                                [ FPTI_KEY.TREATMENT_NAME ]:   isBlackButtonEnabled ? 'inline_blk_btn_test' : 'inline_blk_btn_control'
-                            });
+                            if (props.locale && props.locale.lang === 'en' && props.locale.country === 'US') {
+                                const isBlackButtonEnabled = state.cardButtonExperiment.isEnabled();
+                                state.cardButtonExperiment.logStart({
+                                    [ FPTI_KEY.CONTEXT_ID ]:       props.buttonSessionID,
+                                    [ FPTI_KEY.CONTEXT_TYPE ]:     FPTI_KEY.BUTTON_SESSION_UID,
+                                    [ FPTI_KEY.EXPERIMENT_NAME ]:  'inline_blk_btn',
+                                    [ FPTI_KEY.TREATMENT_NAME ]:   isBlackButtonEnabled ? 'inline_blk_btn_test' : 'inline_blk_btn_control'
+                                });
+                            }
                             if (value) {
                                 return value(...args);
                             }
