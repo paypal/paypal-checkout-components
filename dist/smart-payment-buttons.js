@@ -7988,10 +7988,10 @@ function getOnApprove(xprops, _ref4) {
   var facilitatorAccessToken = _ref4.facilitatorAccessToken,
       createOrder = _ref4.createOrder;
   var onApprove = xprops.onApprove,
-      onError = xprops.onError,
       intent = xprops.intent,
       buttonSessionID = xprops.buttonSessionID,
-      partnerAttributionID = xprops.partnerAttributionID;
+      partnerAttributionID = xprops.partnerAttributionID,
+      onError = xprops.onError;
   return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function (_ref5, _ref6) {
     var payerID = _ref5.payerID,
         paymentID = _ref5.paymentID,
@@ -8026,7 +8026,11 @@ function getOnApprove(xprops, _ref4) {
       });
 
       if (onApprove) {
-        return onApprove(data, actions).catch(onError);
+        return onApprove(data, actions).catch(function (err) {
+          return onError(err).then(function () {
+            throw err;
+          });
+        });
       } else {
         if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
           return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "l"]);
@@ -10019,7 +10023,7 @@ function isNativeOptedIn(_ref2) {
   }
 
   try {
-    if (window.localStorage.get('__native_checkout__')) {
+    if (window.localStorage.getItem('__native_checkout__')) {
       return true;
     }
   } catch (err) {// pass
@@ -10280,6 +10284,12 @@ function initNative(_ref6) {
           win: win
         });
       }
+    }).catch(function (err) {
+      if (win) {
+        win.close();
+      }
+
+      throw err;
     });
   });
 
@@ -10300,6 +10310,12 @@ function initNative(_ref6) {
           }
         });
       }
+    }).catch(function (err) {
+      if (win) {
+        win.close();
+      }
+
+      throw err;
     });
   };
 
