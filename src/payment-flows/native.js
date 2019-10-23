@@ -252,6 +252,12 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             } else {
                 return fallbackToWebCheckout({ win });
             }
+        }).catch(err => {
+            if (win) {
+                win.close();
+            }
+
+            throw err;
         });
     });
 
@@ -271,6 +277,12 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                     }
                 });
             }
+        }).catch(err => {
+            if (win) {
+                win.close();
+            }
+
+            throw err;
         });
     };
 
