@@ -51,7 +51,7 @@ function isNativeOptedIn({ props } : { props : Props }) : boolean {
     }
 
     try {
-        if (window.localStorage.get('__native_checkout__')) {
+        if (window.localStorage.getItem('__native_checkout__')) {
             return true;
         }
     } catch (err) {
