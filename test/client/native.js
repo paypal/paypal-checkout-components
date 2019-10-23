@@ -1189,4 +1189,150 @@ describe('native cases', () => {
             firebaseScripts.done();
         });
     });
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path with error in onApprove', async () => {
+        return await wrapPromise(async ({ expect, expectError, avoid }) => {
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+
+            const firebaseScripts = mockFirebaseScripts();
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (!data.query.includes('query GetFireBaseSessionToken')) {
+                        return;
+                    }
+
+                    if (!data.variables.sessionUID) {
+                        throw new Error(`Expected sessionUID to be passed`);
+                    }
+
+                    return {
+                        data: {
+                            firebase: {
+                                auth: {
+                                    sessionUID: data.variables.sessionUID,
+                                    sessionToken
+                                }
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            const err = new Error('Something went wrong');
+
+            let sessionUID;
+            let gotOnApproveError = false;
+
+            const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
+                getSessionUID: () => {
+                    if (!sessionUID) {
+                        throw new Error(`Session UID not present`);
+                    }
+
+                    return sessionUID;
+                },
+                extraHandler: expect('firebaseExtraHandler', ({ message_name, message_status }) => {
+                    if (message_name === 'onApprove' && message_status === 'error') {
+                        gotOnApproveError = true;
+                    }
+                })
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = 'XXXXXXXXXX';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            
+            window.xprops.onApprove = expectError('onApprove', () => {
+                return ZalgoPromise.delay(50).then(() => {
+                    throw err;
+                });
+            });
+
+            window.xprops.onError = mockAsyncProp(expect('onError', (errObj) => {
+                mockWebSocketServer.done();
+                
+                if (!errObj || !(errObj instanceof Error)) {
+                    throw new Error(`Expected onError to be passed error`);
+                }
+
+                if (errObj.message !== err.message) {
+                    throw new Error(`Expected error message to be ${ err.message }, got ${ errObj.message }`);
+                }
+            }));
+
+            const windowOpen = window.open;
+            window.open = expect('windowOpen', (url) => {
+                window.open = windowOpen;
+
+                if (!url) {
+                    throw new Error(`Expected url to be immediately passed to window.open`);
+                }
+
+                if (url.indexOf('/smart/checkout/native') === -1) {
+                    throw new Error(`Expected paypal native url`);
+                }
+
+                const query = parseQuery(url.split('?')[1]);
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
+
+                if (!sessionUID) {
+                    throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
+                }
+
+                const win : Object = {
+                    location: {
+                        href: 'about:blank'
+                    },
+                    closed: false,
+                    close:  expect('close', () => {
+                        return ZalgoPromise.delay(50)
+                            .then(() => ZalgoPromise.delay(50))
+                            .then(onApprove)
+                            .then(() => ZalgoPromise.delay(100))
+                            .finally(expect('final', () => {
+                                if (!gotOnApproveError) {
+                                    throw new Error(`Expected child window to get onApprove error`);
+                                }
+                            }));
+                    })
+                };
+
+                win.parent = win.top = win;
+                return win;
+            });
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
+            firebaseScripts.done();
+        });
+    });
 });

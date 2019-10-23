@@ -201,7 +201,7 @@ export type OnApproveActions = {|
 export type OnApprove = (OnApproveData, OnApproveActions) => ZalgoPromise<void>;
 
 export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : OnApprove {
-    const { onApprove, onError, intent, buttonSessionID, partnerAttributionID } = xprops;
+    const { onApprove, intent, buttonSessionID, partnerAttributionID, onError } = xprops;
 
     return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, isNativeTransaction = false }, { restart }) => {
         return createOrder().then(orderID => {
@@ -218,7 +218,11 @@ export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOr
             const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction });
 
             if (onApprove) {
-                return onApprove(data, actions).catch(onError);
+                return onApprove(data, actions).catch(err => {
+                    return onError(err).then(() => {
+                        throw err;
+                    });
+                });
             } else {
                 if (intent === INTENT.CAPTURE) {
                     return actions.order.capture().then(noop);

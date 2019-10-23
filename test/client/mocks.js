@@ -57,6 +57,8 @@ export function setupMocks() {
                             return props.onApprove({
                                 orderID,
                                 payerID: 'AAABBBCCC'
+                            }).catch(err => {
+                                return props.onError(err);
                             });
                         });
                     });
@@ -844,7 +846,23 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
                 }
     
                 if (messageType === 'response' && messageStatus === 'error') {
-                    throw new Error(messageData.message);
+                    if (messageName === 'onError') {
+                        throw new Error(messageData.message);
+                    }
+
+                    send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
+                        session_uid:        getSessionUID(),
+                        source_app:         'paypal_native_checkout_sdk',
+                        source_app_version: '1.2.3',
+                        target_app:         'paypal_smart_payment_buttons',
+                        request_uid:        onApproveRequestID,
+                        message_uid:        uniqueID(),
+                        message_type:       'request',
+                        message_name:       'onError',
+                        message_data:       {
+                            message: messageData.message
+                        }
+                    }));
                 }
     
                 if (messageType === 'response' && messageName === 'getProps') {
