@@ -214,7 +214,9 @@ export const FUNDING_CONFIG = {
         requireCommitAsTrue: true
     },
     [ FUNDING.VERKKOPANKKI ]: {
-        allowedCountries: [],
+        allowedCountries: [
+            COUNTRY.FI
+        ],
 
         allowHorizontal:     false,
         allowVertical:       true,
