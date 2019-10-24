@@ -1,6 +1,7 @@
 /* @flow */
 
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal/sdk-constants';
+import { params, types, query } from 'typed-graphqlify';
 
 import type { GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
@@ -170,202 +171,100 @@ export type FundingEligibility = {|
     }
 |};
 
-const FUNDING_ELIGIBILITY_QUERY = `
-    query GetFundingEligibility(
-        $clientID: String,
-        $buyerCountry: CountryCodes,
-        $ip: String,
-        $cookies: String,
-        $currency: SupportedCountryCurrencies,
-        $intent: FundingEligibilityIntent,
-        $commit: Boolean,
-        $vault: Boolean,
-        $disableFunding: [SupportedPaymentMethodsType],
-        $disableCard: [SupportedCardsType],
-        $merchantID: [String],
-        $buttonSessionID: String,
-        $userAgent: String
-    ) {
-        fundingEligibility(
-            clientId: $clientID
-            buyerCountry: $buyerCountry,
-            ip: $ip,
-            cookies: $cookies,
-            currency: $currency,
-            intent: $intent,
-            commit: $commit,
-            vault: $vault,
-            disableFunding: $disableFunding,
-            disableCard: $disableCard,
-            merchantId: $merchantID,
-            buttonSessionId: $buttonSessionID,
-            userAgent: $userAgent
-        ) {
-            paypal {
-                eligible
-                vaultable
-                vaultedInstruments {
-                    id
-                    label {
-                        description
-                    }
-                }
-            }
-            venmo {
-                eligible
-                vaultable
-            }
-            itau {
-                eligible
-                vaultable
-            }
-            credit {
-                eligible
-                vaultable
-            }
-            sepa {
-                eligible
-                vaultable
-            }
-            ideal {
-                eligible
-                vaultable
-            }
-            bancontact {
-                eligible
-                vaultable
-            }
-            giropay {
-                eligible
-                vaultable
-            }
-            eps {
-                eligible
-                vaultable
-            }
-            sofort {
-                eligible
-                vaultable
-            }
-            mybank {
-                eligible
-                vaultable
-            }
-            p24 {
-                eligible
-                vaultable
-            }
-            zimpler {
-                eligible
-                vaultable
-            }
-            wechatpay {
-                eligible
-                vaultable
-            }
-            payu {
-                eligible
-                vaultable
-            }
-            blik {
-                eligible
-                vaultable
-            }
-            trustly {
-                eligible
-                vaultable
-            }
-            oxxo {
-                eligible
-                vaultable
-            }
-            maxima {
-                eligible
-                vaultable
-            }
-            boleto {
-                eligible
-                vaultable
-            }
-            card {
-                eligible
-                branded
-                vendors {
-                    visa {
-                        eligible
-                        vaultable
-                        vaultedInstruments {
-                            id
-                            label {
-                                description
-                            }
-                        }
-                    }
-                    mastercard {
-                        eligible
-                        vaultable
-                        vaultedInstruments {
-                            id
-                            label {
-                                description
-                            }
-                        }
-                    }
-                    amex {
-                        eligible
-                        vaultable
-                        vaultedInstruments {
-                            id
-                            label {
-                                description
-                            }
-                        }
-                    }
-                    discover {
-                        eligible
-                        vaultable
-                        vaultedInstruments {
-                            id
-                            label {
-                                description
-                            }
-                        }
-                    }
-                    hiper {
-                        eligible
-                        vaultable
-                        vaultedInstruments {
-                            id
-                            label {
-                                description
-                            }
-                        }
-                    }
-                    elo {
-                        eligible
-                        vaultable
-                        vaultedInstruments {
-                            id
-                            label {
-                                description
-                            }
-                        }
-                    }
-                    jcb {
-                        eligible
-                        vaultable
-                        vaultedInstruments {
-                            id
-                            label {
-                                description
-                            }
-                        }
-                    }
-                }
-            }
+function buildFundingEligibilityQuery() : string {
+    const InputTypes = {
+        $clientID:        'String',
+        $buyerCountry:    'CountryCodes',
+        $ip:              'String',
+        $cookies:         'String',
+        $currency:        'SupportedCountryCurrencies',
+        $intent:          'FundingEligibilityIntent',
+        $commit:          'Boolean',
+        $vault:           'Boolean',
+        $disableFunding:  '[ SupportedPaymentMethodsType ]',
+        $disableCard:     '[ SupportedCardsType ]',
+        $merchantID:      '[ String ]',
+        $buttonSessionID: 'String',
+        $userAgent:       'String'
+    };
+
+    const Inputs = {
+        clientID:        '$clientID',
+        buyerCountry:    '$buyerCountry',
+        ip:              '$ip',
+        cookies:         '$cookies',
+        currency:        '$currency',
+        intent:          '$intent',
+        commit:          '$commit',
+        vault:           '$vault',
+        disableFunding:  '$disableFunding',
+        disableCard:     '$disableCard',
+        merchantId:      '$merchantID',
+        buttonSessionId: '$buttonSessionID',
+        userAgent:       '$userAgent'
+    };
+
+    const VaultedInstrumentQuery = {
+        id:    types.string,
+        label: {
+            description: types.string
         }
-    }
-`;
+    };
+
+    const BasicFundingEligibilityQuery = {
+        eligible: types.boolean
+    };
+
+    const BasicCardVendorQuery = {
+        eligible:           types.boolean,
+        vaultable:          types.boolean,
+        vaultedInstruments: VaultedInstrumentQuery
+    };
+
+    const Query = {
+        [ FUNDING.PAYPAL ]: {
+            eligible:           types.boolean,
+            vaultable:          types.boolean,
+            vaultedInstruments: VaultedInstrumentQuery
+        },
+        [ FUNDING.CARD ]: {
+            eligible:  types.boolean,
+            vaultable: types.boolean,
+            vendors:   {
+                [ CARD.VISA ]:       BasicCardVendorQuery,
+                [ CARD.MASTERCARD ]: BasicCardVendorQuery,
+                [ CARD.AMEX ]:       BasicCardVendorQuery,
+                [ CARD.DISCOVER ]:   BasicCardVendorQuery,
+                [ CARD.HIPER ]:      BasicCardVendorQuery,
+                [ CARD.ELO ]:        BasicCardVendorQuery,
+                [ CARD.JCB ]:        BasicCardVendorQuery
+            }
+        },
+        [ FUNDING.VENMO ]:      BasicFundingEligibilityQuery,
+        [ FUNDING.ITAU ]:       BasicFundingEligibilityQuery,
+        [ FUNDING.CREDIT ]:     BasicFundingEligibilityQuery,
+        [ FUNDING.SEPA ]:       BasicFundingEligibilityQuery,
+        [ FUNDING.IDEAL ]:      BasicFundingEligibilityQuery,
+        [ FUNDING.BANCONTACT ]: BasicFundingEligibilityQuery,
+        [ FUNDING.GIROPAY ]:    BasicFundingEligibilityQuery,
+        [ FUNDING.EPS ]:        BasicFundingEligibilityQuery,
+        [ FUNDING.SOFORT ]:     BasicFundingEligibilityQuery,
+        [ FUNDING.MYBANK ]:     BasicFundingEligibilityQuery,
+        [ FUNDING.P24 ]:        BasicFundingEligibilityQuery,
+        [ FUNDING.ZIMPLER ]:    BasicFundingEligibilityQuery,
+        [ FUNDING.WECHATPAY ]:  BasicFundingEligibilityQuery,
+        [ FUNDING.PAYU ]:       BasicFundingEligibilityQuery,
+        [ FUNDING.BLIK ]:       BasicFundingEligibilityQuery,
+        [ FUNDING.TRUSTLY ]:    BasicFundingEligibilityQuery,
+        [ FUNDING.OXXO ]:       BasicFundingEligibilityQuery,
+        [ FUNDING.MAXIMA ]:     BasicFundingEligibilityQuery,
+        [ FUNDING.BOLETO ]:     BasicFundingEligibilityQuery
+    };
+
+    return query('GetFundingEligibility', params(InputTypes, {
+        fundingEligibility: params(Inputs, Query)
+    }));
+}
 
 export type FundingEligibilityOptions = {|
     logger : LoggerType,
@@ -398,7 +297,7 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
         const result = await gqlBatch({
-            query:     FUNDING_ELIGIBILITY_QUERY,
+            query:     buildFundingEligibilityQuery(),
             variables: {
                 clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
                 vault, disableFunding, disableCard, userAgent, buttonSessionID

@@ -50,6 +50,7 @@
     "cross-domain-utils": "^2.0.16",
     "grabthar": "^3",
     "jsx-pragmatic": "^2",
+    "typed-graphqlify": "^2.2.3",
     "zalgo-promise": "^1.0.28"
   },
   "devDependencies": {
