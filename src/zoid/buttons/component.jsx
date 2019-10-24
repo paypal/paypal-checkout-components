@@ -111,7 +111,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 onApprove: {
                     type:     'function',
                     required: false,
-                    decorate: ({ value, state, props }) => {
+                    decorate: ({ value }) => {
                         return (...args) => {
                             if (value) {
                                 return value(...args);
