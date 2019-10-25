@@ -241,7 +241,8 @@ export type ButtonPropsInputs = {|
     clientAccessToken? : string,
     csp? : {
         nonce? : string
-    }
+    },
+    cardButtonExperiment? : boolean
 |};
 
 export const DEFAULT_STYLE = {
