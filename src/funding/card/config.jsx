@@ -99,20 +99,32 @@ export function getCardConfig() : FundingSourceConfig {
 
         handleClick: true,
 
-        Logo: ({ fundingEligibility, locale, onClick, cardButtonExperiment }) => {
+        Logo: ({ fundingEligibility, locale, onClick, cardButtonExperiment, nonce }) => {
             // Testing for Inline Guest black button
             if (cardButtonExperiment && locale.lang === 'en' && locale.country === 'US') {
                 return (
-                    <button
-                        type="button"
-                        onClick={ event => onClick(event) }
-                        style="background: #000; color: #fff; font-size: 1.15em; border-radius: 4px !important;"
-                        class={ `${ CLASS.BUTTON }` }
-                        { ...{
-                            [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
-                        } }>
-                        Debit or Credit Card
-                    </button>
+                    <div>
+                        <style
+                            nonce={ nonce }
+                            innerHTML={ `
+                                #black-credit-card-button {
+                                    background: #000;
+                                    color: #fff;
+                                    font-size: 1.15em;
+                                    border-radius: 4px !important;
+                                }
+                            ` } />
+                        <button
+                            type="button"
+                            id="black-credit-card-button"
+                            onClick={ event => onClick(event) }
+                            class={ `${ CLASS.BUTTON }` }
+                            { ...{
+                                [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
+                            } }>
+                            Debit or Credit Card
+                        </button>
+                    </div>
                 );
             }
 

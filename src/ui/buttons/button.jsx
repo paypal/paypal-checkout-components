@@ -77,6 +77,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             onClick={ clickHandler }
             onKeyPress={ keyboardAccessibilityHandler }
             cardButtonExperiment={ cardButtonExperiment }
+            nonce={ nonce }
         />
     );
 
