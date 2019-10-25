@@ -81,6 +81,7 @@ export type MessageSocket = {|
             requireSessionUID? : boolean
         |}
     ) => ZalgoPromise<R>, // eslint-disable-line no-undef
+    onError : ((mixed) => void) => void,
     reconnect : () => ZalgoPromise<void>,
     close : () => void
 |};
@@ -88,9 +89,11 @@ export type MessageSocket = {|
 export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion, targetApp, retry = true } : MessageSocketOptions) : MessageSocket {
 
     const receivedMessages = {};
-    let requestListeners = {};
     const responseListeners = {};
     const activeRequests = [];
+
+    let requestListeners = {};
+    let errorListeners = [];
 
     const sendMessage = (socket, data) => {
         const messageUID = uniqueID();
@@ -257,6 +260,10 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         
                 instance.onError(err => {
                     reject(err);
+
+                    for (const errorListener of errorListeners) {
+                        errorListener(err);
+                    }
                 });
             });
 
@@ -338,6 +345,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         retry = false;
 
         requestListeners = {};
+        errorListeners = [];
 
         for (const requestUID of Object.keys(responseListeners)) {
             const { listenerPromise } = responseListeners[requestUID];
@@ -352,7 +360,11 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         });
     };
 
-    return { on, send, reconnect, close };
+    const onError = (handler) => {
+        errorListeners.push(handler);
+    };
+        
+    return { on, send, onError, reconnect, close };
 }
 
 type WebSocketOptions = {|
@@ -478,6 +490,8 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
                             handler(message);
                         }
                     }
+                }, err => {
+                    error(err);
                 });
 
                 database.goOnline();

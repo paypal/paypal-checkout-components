@@ -1,6 +1,6 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
@@ -8,7 +8,7 @@ import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-doma
 import type { Props, Components, Config, ServiceData } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
-import { promiseNoop } from '../lib';
+import { promiseNoop, getLogger } from '../lib';
 import { USER_ACTION } from '../constants';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
@@ -61,6 +61,10 @@ function isNativeOptedIn({ props } : { props : Props }) : boolean {
     return false;
 }
 
+let sessionUID;
+let nativeSocket;
+let initialPageUrl;
+
 function isNativeEligible({ props, config, serviceData } : { props : Props, config : Config, serviceData : ServiceData }) : boolean {
 
     if (window.xprops.forceNativeEligible) {
@@ -109,12 +113,12 @@ function isNativePaymentEligible({ payment } : { payment : Payment }) : boolean 
         return false;
     }
 
+    if (!nativeSocket) {
+        return false;
+    }
+
     return true;
 }
-
-let sessionUID;
-let nativeSocket;
-let initialPageUrl;
 
 function setupNative({ config, props } : { config : Config, props : Props }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
@@ -122,7 +126,14 @@ function setupNative({ config, props } : { config : Config, props : Props }) : Z
         const { getPageUrl } = props;
 
         sessionUID = uniqueID();
-        nativeSocket = getNativeSocket({ sessionUID, firebaseConfig, version });
+        nativeSocket = getNativeSocket({
+            sessionUID, firebaseConfig, version
+        });
+
+        nativeSocket.onError(err => {
+            nativeSocket = null;
+            getLogger().error('native_socket_error', { err: stringifyError(err) });
+        });
 
         return getPageUrl().then(pageUrl => {
             initialPageUrl = pageUrl;
@@ -198,45 +209,51 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     };
 
     const connectNative = () => {
-        nativeSocket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
+        const socket = nativeSocket;
+
+        if (!socket) {
+            throw new Error(`Native socket connection not established`);
+        }
+
+        socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
             return getSDKProps();
         });
 
-        nativeSocket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
-            nativeSocket.close();
+        socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
+            socket.close();
             const data = { payerID, paymentID, billingToken, isNativeTransaction: true };
             const actions = { restart: () => fallbackToWebCheckout() };
             return onApprove(data, actions);
         });
 
-        nativeSocket.on(MESSAGE.ON_CANCEL, () => {
-            nativeSocket.close();
+        socket.on(MESSAGE.ON_CANCEL, () => {
+            socket.close();
             return onCancel();
         });
 
-        nativeSocket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
-            nativeSocket.close();
+        socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
+            socket.close();
             return onError(new Error(message));
         });
 
-        nativeSocket.on(MESSAGE.FALLBACK, ({ data: { buyerAccessToken } }) => {
-            nativeSocket.close();
+        socket.on(MESSAGE.FALLBACK, ({ data: { buyerAccessToken } }) => {
+            socket.close();
             return fallbackToWebCheckout({ buyerAccessToken });
         });
 
         const setProps = () => {
             return getSDKProps().then(sdkProps => {
-                return nativeSocket.send(MESSAGE.SET_PROPS, sdkProps);
+                return socket.send(MESSAGE.SET_PROPS, sdkProps);
             });
         };
 
         const closeNative = () => {
-            return nativeSocket.send(MESSAGE.CLOSE).then(() => {
-                nativeSocket.close();
+            return socket.send(MESSAGE.CLOSE).then(() => {
+                socket.close();
             });
         };
 
-        nativeSocket.reconnect();
+        socket.reconnect();
         
         return { setProps, close: closeNative };
     };
