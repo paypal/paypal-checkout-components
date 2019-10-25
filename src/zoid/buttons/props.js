@@ -180,7 +180,8 @@ export type RenderButtonProps = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?OnShippingChange,
     personalization : ?Personalization,
-    clientAccessToken : ?string
+    clientAccessToken : ?string,
+    cardButtonExperiment? : boolean
 |};
 
 export type PrerenderDetails = {|
@@ -240,7 +241,8 @@ export type ButtonPropsInputs = {|
     clientAccessToken? : string,
     csp? : {
         nonce? : string
-    }
+    },
+    cardButtonExperiment? : boolean
 |};
 
 export const DEFAULT_STYLE = {
@@ -350,7 +352,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         nonce = '',
         onShippingChange,
         personalization,
-        clientAccessToken
+        clientAccessToken,
+        cardButtonExperiment
     } = props;
 
     const { country, lang } = locale;
@@ -386,5 +389,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     style = normalizeButtonStyle(style);
 
     return { clientID, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization };
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, cardButtonExperiment };
 }

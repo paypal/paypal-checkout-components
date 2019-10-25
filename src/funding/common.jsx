@@ -29,7 +29,9 @@ export type FundingSourceConfig = {|
         logoColor : $Values<typeof LOGO_COLOR>,
         optional? : boolean,
         fundingEligibility : FundingEligibilityType,
-        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
+        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
+        nonce : string,
+        cardButtonExperiment? : boolean
     |}) => ChildType,
     Label : ({|
         logo : ChildType,
