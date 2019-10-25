@@ -180,7 +180,8 @@ export type RenderButtonProps = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?OnShippingChange,
     personalization : ?Personalization,
-    clientAccessToken : ?string
+    clientAccessToken : ?string,
+    cardButtonExperiment? : boolean
 |};
 
 export type PrerenderDetails = {|
