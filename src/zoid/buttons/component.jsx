@@ -110,14 +110,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 onApprove: {
                     type:     'function',
-                    required: false,
-                    decorate: ({ value }) => {
-                        return (...args) => {
-                            if (value) {
-                                return value(...args);
-                            }
-                        };
-                    }
+                    required: false
                 },
 
                 cardButtonExperiment: {

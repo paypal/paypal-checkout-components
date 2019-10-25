@@ -25,11 +25,6 @@ type PrerenderedButtonsProps = {|
 export function PrerenderedButtons({ nonce, onRenderCheckout, props } : PrerenderedButtonsProps) : ChildType {
 
     const handleClick = (event, { fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
-        if (fundingSource === FUNDING.CARD) {
-            onRenderCheckout({ fundingSource, card });
-            return;
-        }
-
         if (supportsPopups()) {
             const win = assertSameDomain(popup('', {
                 width:  DEFAULT_POPUP_SIZE.WIDTH,
