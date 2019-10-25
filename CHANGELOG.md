@@ -1,3 +1,11 @@
+## <small>5.0.61 (2019-10-25)</small>
+
+* Add vault dropdown menu button ([32d3d83](http://github.paypal.com/paypal/paypal-checkout/commit/32d3d83))
+* Work on Inline Guest black button (#1233) ([3b53bfc](http://github.paypal.com/paypal/paypal-checkout/commit/3b53bfc)), closes [#1233](http://github.paypal.com/paypal/paypal-checkout/issues/1233)
+* feat(*): add onKeyPress event to BasicButton and VaultedButton (#1181) ([1c7dab4](http://github.paypal.com/paypal/paypal-checkout/commit/1c7dab4)), closes [#1181](http://github.paypal.com/paypal/paypal-checkout/issues/1181)
+
+
+
 ## <small>5.0.60 (2019-10-09)</small>
 
 * Consume personalized tagline and button text components ([74a08eb](http://github.paypal.com/paypal/paypal-checkout/commit/74a08eb))
