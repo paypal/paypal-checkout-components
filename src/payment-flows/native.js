@@ -1,6 +1,6 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, PopupOpenError } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
@@ -154,8 +154,8 @@ type NativeSDKProps = {|
     apiStageHost : ?string
 |};
 
-function didAppSwitchHappen(win : CrossDomainWindowType) : boolean {
-    return isBlankDomain(win);
+function didAppSwitchHappen(win : ?CrossDomainWindowType) : boolean {
+    return !win || isBlankDomain(win);
 }
 
 function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
@@ -258,16 +258,24 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return { setProps, close: closeNative };
     };
 
-    let win;
+    let win : ?CrossDomainWindowType;
+
+    const closeWin = () => {
+        if (win) {
+            win.close();
+        }
+    };
 
     const start = memoize(() => {
         return createOrder().then(() => {
             if (didAppSwitchHappen(win)) {
-                win.close();
+                closeWin();
                 instance = connectNative();
                 return instance.setProps();
-            } else {
+            } else if (win) {
                 return fallbackToWebCheckout({ win });
+            } else {
+                throw new Error(`No window available to fall back to`);
             }
         }).catch(err => {
             if (win) {
@@ -279,7 +287,13 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     });
 
     const click = () => {
-        win = popup(getNativeUrl());
+        try {
+            win = popup(getNativeUrl());
+        } catch (err) {
+            if (!(err instanceof PopupOpenError)) {
+                throw err;
+            }
+        }
 
         return ZalgoPromise.try(() => {
             return onClick ? onClick({ fundingSource }) : true;
@@ -287,10 +301,10 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             if (!valid) {
                 return ZalgoPromise.delay(500).then(() => {
                     if (didAppSwitchHappen(win)) {
-                        win.close();
+                        closeWin();
                         return connectNative().close();
                     } else {
-                        win.close();
+                        closeWin();
                     }
                 });
             }
