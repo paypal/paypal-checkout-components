@@ -101,7 +101,7 @@ export function getCardConfig() : FundingSourceConfig {
 
         Logo: ({ fundingEligibility, locale, onClick, cardButtonExperiment, nonce }) => {
             // Testing for Inline Guest black button
-            if (cardButtonExperiment && locale.lang === 'en' && locale.country === 'US') {
+            if (cardButtonExperiment && locale.lang === 'en' && locale.country === 'US' && !__TEST__) {
                 return (
                     <div>
                         <style
