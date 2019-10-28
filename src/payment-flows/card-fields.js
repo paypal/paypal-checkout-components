@@ -51,7 +51,10 @@ function isCardFieldsPaymentEligible({ payment } : { payment : Payment }) : bool
     return true;
 }
 
-function highlightCard(card : $Values<typeof CARD>) {
+function highlightCard(card : ?$Values<typeof CARD>) {
+    if (!card) {
+        return;
+    }
     querySelectorAll(`[${ DATA_ATTRIBUTES.CARD }]`).forEach(el => {
         el.style.opacity = (el.getAttribute(DATA_ATTRIBUTES.CARD) === card) ? '1' : '0.1';
     });
@@ -111,10 +114,6 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
     const { fundingSource, card } = payment;
     const { cspNonce } = config;
     const { buyerCountry } = serviceData;
-
-    if (!card) {
-        throw new Error(`Card required to render card fields`);
-    }
 
     if (cardFieldsOpen) {
         highlightCard(card);
