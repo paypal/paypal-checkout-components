@@ -1,3 +1,9 @@
+## <small>5.0.62 (2019-10-28)</small>
+
+* Ramp down card button experiment ([669880f](http://github.paypal.com/paypal/paypal-checkout/commit/669880f))
+
+
+
 ## <small>5.0.61 (2019-10-25)</small>
 
 * Add vault dropdown menu button ([32d3d83](http://github.paypal.com/paypal/paypal-checkout/commit/32d3d83))
