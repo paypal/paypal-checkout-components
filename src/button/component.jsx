@@ -81,20 +81,6 @@ function isCreditDualEligible(props) : boolean {
     return true;
 }
 
-const isDomainAllowed = memoize(() : boolean => {
-
-    const domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
-
-    if (!config.apmTestDomains.some(allowDomain => {
-        const regex = new RegExp(`[^a-zA-Z\\d\\-]*${ allowDomain.replace(/\./g, '\\.') }$`);  // eslint-disable-line security/detect-non-literal-regexp
-        return (domain.match(regex) !== null);
-    })) {
-        return false;
-    }
-
-    return true;
-});
-
 function isApmEligible(source, props) : boolean {
 
     const { locale } = normalizeProps(props, { locale: getBrowserLocale() });
@@ -103,7 +89,7 @@ function isApmEligible(source, props) : boolean {
         return false;
     }
 
-    return isDomainAllowed();
+    return true;
 }
 
 let creditThrottle;

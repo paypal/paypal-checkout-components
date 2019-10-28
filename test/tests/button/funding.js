@@ -874,6 +874,49 @@ describe(`paypal button component funding mix`, () => {
 
         }, '#testContainer');
     });
+    
+    it('should not render ideal when commit = false', (done) => {
+
+        window.paypal.Button.render({
+
+            test: {
+                onRender({ fundingSources }) {
+                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) !== -1) {
+                        throw new Error(`Expected ideal to not be offered, got ${ JSON.stringify(fundingSources) }`);
+                    }
+
+                    done();
+                }
+            },
+
+            commit: false,
+
+            style: {
+                layout: 'vertical'
+            },
+
+            funding: {
+                disallowed: [ window.paypal.FUNDING.IDEAL ]
+            },
+
+            locale: 'nl_NL',
+
+            payment() : string | ZalgoPromise<string> {
+                throw new Error('Expected payment to not be called');
+            },
+
+            onAuthorize() {
+                throw new Error('Expected onAuthorize to not be called');
+            },
+
+            onCancel() {
+                throw new Error('Expected onCancel to not be called');
+            },
+
+            onError: done
+
+        }, '#testContainer');
+    });
 
     it('should not render ideal for a non-eligible locale', (done) => {
 

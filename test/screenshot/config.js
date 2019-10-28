@@ -447,7 +447,7 @@ for (const color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.TRUSTLY ]
+                allowed: [ FUNDING.TRUSTLY, FUNDING.VERKKOPANKKI ]
             }
         }
     });
@@ -482,15 +482,6 @@ for (const color of getButtonConfig('paypal', 'colors')) {
         }
     });
 
-    // buttonConfigs.push({
-    //     button: {
-    //         locale: 'zh_CN',
-    //         commit: true,
-    //         style:  {
-    //             layout:     'vertical'
-    //         }
-    //     }
-    // });
 }
 
 
