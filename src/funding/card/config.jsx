@@ -120,8 +120,7 @@ export function getCardConfig() : FundingSourceConfig {
                             onClick={ event => onClick(event) }
                             class={ `${ CLASS.BUTTON }` }
                             { ...{
-                                [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD,
-                                [ ATTRIBUTE.CARD ]: FUNDING.CARD
+                                [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
                             } }>
                             Debit or Credit Card
                         </button>
