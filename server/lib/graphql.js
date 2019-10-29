@@ -34,23 +34,35 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
         });
 
         let response : $ReadOnlyArray<Object>;
-        let error;
+        let gqlError;
 
         try {
             response = await graphQL(req, payload, { accessToken });
         } catch (err) {
-            error = err;
+            gqlError = err;
         }
 
         for (let i = 0; i < batch.length; i++) {
             const { resolve, reject } = batch[i];
 
-            if (error) {
-                reject(error);
-            } else if (!response || !response[i]) {
+            if (gqlError) {
+                reject(gqlError);
+                continue;
+            }
+
+            const batchItem = response && response[i];
+
+            if (!batchItem) {
                 reject(new Error(`No response from gql`));
+                continue;
+            }
+
+            const { result, error } = batchItem;
+
+            if (gqlError || error) {
+                reject(gqlError || error);
             } else {
-                resolve(response[i]);
+                resolve(result);
             }
         }
     };
