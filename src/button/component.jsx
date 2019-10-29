@@ -25,7 +25,6 @@ import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
 import { awaitPopupBridge } from '../integrations/popupBridge';
 import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
-import { getFundingConfig } from '../funding/config';
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
@@ -75,17 +74,6 @@ function isCreditDualEligible(props) : boolean {
     const domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
     if (config.creditTestDomains.indexOf(domain) === -1) {
-        return false;
-    }
-
-    return true;
-}
-
-function isApmEligible(source, props) : boolean {
-
-    const { locale } = normalizeProps(props, { locale: getBrowserLocale() });
-
-    if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
         return false;
     }
 
@@ -522,12 +510,6 @@ export const Button : Component<ButtonOptions> = create({
                         allowed = [ ...allowed, FUNDING.CREDIT ];
                     }
                 }
-
-                const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.EPS, FUNDING.PAYU, FUNDING.VERKKOPANKKI, FUNDING.BLIK, FUNDING.TRUSTLY, FUNDING.MAXIMA, FUNDING.BOLETO, FUNDING.OXXO ];
-
-                const apmFunding = APM_FUNDING.filter(source => (isApmEligible(source, props)));
-
-                allowed = allowed.concat(apmFunding);
 
                 let remembered = getRememberedFunding(sources => sources);
 
