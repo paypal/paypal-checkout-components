@@ -34,7 +34,7 @@
     "jest": "jest test/server --collectCoverage --env=node --no-cache --silent",
     "cover": "echo no-cover",
     "prepublish": "in-publish && npm run babel || not-in-publish",
-    "postpublish": "git checkout ."
+    "postpublish": "git clean -f && git checkout ."
   },
   "peerDependencies": {
     "express": "^4.16.3"
