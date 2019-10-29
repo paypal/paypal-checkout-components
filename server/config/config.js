@@ -21,5 +21,5 @@ export const BUTTON_RENDER_JS = 'dist/button.js';
 export const BUTTON_CLIENT_JS = 'dist/smart-payment-buttons.js';
 export const BUTTON_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
 
-export const MENU_CLIENT_JS = 'dist/smart-payment-buttons.js';
-export const MENU_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
+export const MENU_CLIENT_JS = 'dist/smart-menu.js';
+export const MENU_CLIENT_MIN_JS = 'dist/smart-menu.min.js';
