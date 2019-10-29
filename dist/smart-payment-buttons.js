@@ -3853,7 +3853,7 @@ function wrapPromise(method, _temp) {
   });
 }
 // CONCATENATED MODULE: ./node_modules/belter/src/index.js
-/* concated harmony reexport getUserAgent */__webpack_require__.d(__webpack_exports__, "f", function() { return getUserAgent; });
+/* concated harmony reexport getUserAgent */__webpack_require__.d(__webpack_exports__, "g", function() { return getUserAgent; });
 /* unused concated harmony import isDevice */
 /* unused concated harmony import isWebView */
 /* unused concated harmony import isStandAlone */
@@ -3870,9 +3870,9 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import isIE */
 /* unused concated harmony import isIECompHeader */
 /* unused concated harmony import isElectron */
-/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "j", function() { return isIEIntranet; });
+/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "k", function() { return isIEIntranet; });
 /* unused concated harmony import isMacOsCna */
-/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "w", function() { return supportsPopups; });
+/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "x", function() { return supportsPopups; });
 /* unused concated harmony import isDocumentReady */
 /* unused concated harmony import urlEncode */
 /* unused concated harmony import waitForWindowReady */
@@ -3883,16 +3883,16 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import urlWillRedirectPage */
 /* unused concated harmony import formatQuery */
 /* unused concated harmony import extendQuery */
-/* concated harmony reexport extendUrl */__webpack_require__.d(__webpack_exports__, "d", function() { return extendUrl; });
-/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "r", function() { return redirect; });
+/* concated harmony reexport extendUrl */__webpack_require__.d(__webpack_exports__, "e", function() { return extendUrl; });
+/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "s", function() { return redirect; });
 /* unused concated harmony import hasMetaViewPort */
 /* unused concated harmony import isElementVisible */
 /* unused concated harmony import enablePerformance */
-/* concated harmony reexport getPageRenderTime */__webpack_require__.d(__webpack_exports__, "e", function() { return getPageRenderTime; });
+/* concated harmony reexport getPageRenderTime */__webpack_require__.d(__webpack_exports__, "f", function() { return getPageRenderTime; });
 /* unused concated harmony import htmlEncode */
-/* concated harmony reexport isBrowser */__webpack_require__.d(__webpack_exports__, "i", function() { return isBrowser; });
-/* concated harmony reexport querySelectorAll */__webpack_require__.d(__webpack_exports__, "q", function() { return querySelectorAll; });
-/* concated harmony reexport onClick */__webpack_require__.d(__webpack_exports__, "n", function() { return onClick; });
+/* concated harmony reexport isBrowser */__webpack_require__.d(__webpack_exports__, "j", function() { return isBrowser; });
+/* concated harmony reexport querySelectorAll */__webpack_require__.d(__webpack_exports__, "r", function() { return querySelectorAll; });
+/* concated harmony reexport onClick */__webpack_require__.d(__webpack_exports__, "o", function() { return onClick; });
 /* unused concated harmony import getScript */
 /* unused concated harmony import isLocalStorageEnabled */
 /* unused concated harmony import getBrowserLocales */
@@ -3901,10 +3901,10 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import getElementSafe */
 /* unused concated harmony import getElement */
 /* unused concated harmony import elementReady */
-/* unused concated harmony import PopupOpenError */
-/* concated harmony reexport popup */__webpack_require__.d(__webpack_exports__, "o", function() { return popup; });
+/* concated harmony reexport PopupOpenError */__webpack_require__.d(__webpack_exports__, "a", function() { return PopupOpenError; });
+/* concated harmony reexport popup */__webpack_require__.d(__webpack_exports__, "p", function() { return popup; });
 /* unused concated harmony import writeToWindow */
-/* concated harmony reexport writeElementToWindow */__webpack_require__.d(__webpack_exports__, "y", function() { return writeElementToWindow; });
+/* concated harmony reexport writeElementToWindow */__webpack_require__.d(__webpack_exports__, "z", function() { return writeElementToWindow; });
 /* unused concated harmony import setStyle */
 /* unused concated harmony import awaitFrameLoad */
 /* unused concated harmony import awaitFrameWindow */
@@ -3918,7 +3918,7 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import makeElementInvisible */
 /* unused concated harmony import showElement */
 /* unused concated harmony import hideElement */
-/* concated harmony reexport destroyElement */__webpack_require__.d(__webpack_exports__, "c", function() { return destroyElement; });
+/* concated harmony reexport destroyElement */__webpack_require__.d(__webpack_exports__, "d", function() { return destroyElement; });
 /* unused concated harmony import showAndAnimate */
 /* unused concated harmony import animateAndHide */
 /* unused concated harmony import addClass */
@@ -3933,24 +3933,24 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import getStorage */
 /* unused concated harmony import getFunctionName */
 /* unused concated harmony import setFunctionName */
-/* concated harmony reexport base64encode */__webpack_require__.d(__webpack_exports__, "a", function() { return base64encode; });
+/* concated harmony reexport base64encode */__webpack_require__.d(__webpack_exports__, "b", function() { return base64encode; });
 /* unused concated harmony import base64decode */
-/* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "x", function() { return uniqueID; });
+/* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "y", function() { return uniqueID; });
 /* unused concated harmony import getGlobal */
 /* unused concated harmony import getObjectID */
-/* concated harmony reexport memoize */__webpack_require__.d(__webpack_exports__, "k", function() { return memoize; });
+/* concated harmony reexport memoize */__webpack_require__.d(__webpack_exports__, "l", function() { return memoize; });
 /* unused concated harmony import promiseIdentity */
 /* unused concated harmony import memoizePromise */
 /* unused concated harmony import promisify */
-/* concated harmony reexport inlineMemoize */__webpack_require__.d(__webpack_exports__, "h", function() { return inlineMemoize; });
-/* concated harmony reexport noop */__webpack_require__.d(__webpack_exports__, "l", function() { return util_noop; });
+/* concated harmony reexport inlineMemoize */__webpack_require__.d(__webpack_exports__, "i", function() { return inlineMemoize; });
+/* concated harmony reexport noop */__webpack_require__.d(__webpack_exports__, "m", function() { return util_noop; });
 /* unused concated harmony import once */
 /* unused concated harmony import hashStr */
 /* unused concated harmony import strHashStr */
 /* unused concated harmony import match */
 /* unused concated harmony import awaitKey */
-/* concated harmony reexport stringifyError */__webpack_require__.d(__webpack_exports__, "u", function() { return stringifyError; });
-/* concated harmony reexport stringifyErrorMessage */__webpack_require__.d(__webpack_exports__, "v", function() { return stringifyErrorMessage; });
+/* concated harmony reexport stringifyError */__webpack_require__.d(__webpack_exports__, "v", function() { return stringifyError; });
+/* concated harmony reexport stringifyErrorMessage */__webpack_require__.d(__webpack_exports__, "w", function() { return stringifyErrorMessage; });
 /* unused concated harmony import stringify */
 /* unused concated harmony import domainMatches */
 /* unused concated harmony import patchMethod */
@@ -3961,11 +3961,11 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import max */
 /* unused concated harmony import regexMap */
 /* unused concated harmony import svgToBase64 */
-/* concated harmony reexport objFilter */__webpack_require__.d(__webpack_exports__, "m", function() { return objFilter; });
-/* concated harmony reexport identity */__webpack_require__.d(__webpack_exports__, "g", function() { return identity; });
+/* concated harmony reexport objFilter */__webpack_require__.d(__webpack_exports__, "n", function() { return objFilter; });
+/* concated harmony reexport identity */__webpack_require__.d(__webpack_exports__, "h", function() { return identity; });
 /* unused concated harmony import regexTokenize */
-/* concated harmony reexport promiseDebounce */__webpack_require__.d(__webpack_exports__, "p", function() { return promiseDebounce; });
-/* concated harmony reexport safeInterval */__webpack_require__.d(__webpack_exports__, "t", function() { return safeInterval; });
+/* concated harmony reexport promiseDebounce */__webpack_require__.d(__webpack_exports__, "q", function() { return promiseDebounce; });
+/* concated harmony reexport safeInterval */__webpack_require__.d(__webpack_exports__, "u", function() { return safeInterval; });
 /* unused concated harmony import isInteger */
 /* unused concated harmony import isFloat */
 /* unused concated harmony import serializePrimitive */
@@ -3989,7 +3989,7 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import regexAll */
 /* unused concated harmony import isDefined */
 /* unused concated harmony import cycle */
-/* concated harmony reexport debounce */__webpack_require__.d(__webpack_exports__, "b", function() { return debounce; });
+/* concated harmony reexport debounce */__webpack_require__.d(__webpack_exports__, "c", function() { return debounce; });
 /* unused concated harmony import isRegex */
 /* unused concated harmony import weakMapMemoize */
 /* unused concated harmony import weakMapMemoizePromise */
@@ -3999,7 +3999,7 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import removeFromArray */
 /* unused concated harmony import assertExists */
 /* unused concated harmony import unique */
-/* concated harmony reexport request */__webpack_require__.d(__webpack_exports__, "s", function() { return request; });
+/* concated harmony reexport request */__webpack_require__.d(__webpack_exports__, "t", function() { return request; });
 /* unused concated harmony import addHeaderBuilder */
 /* unused concated harmony import TYPES */
 /* unused concated harmony import memoized */
@@ -4633,12 +4633,12 @@ function httpTransport(_ref) {
       method = _ref.method,
       headers = _ref.headers,
       json = _ref.json;
-  return Object(belter_src["s" /* request */])({
+  return Object(belter_src["t" /* request */])({
     url: url,
     method: method,
     headers: headers,
     json: json
-  }).then(belter_src["l" /* noop */]);
+  }).then(belter_src["m" /* noop */]);
 }
 
 function extendIfDefined(target, source) {
@@ -4666,7 +4666,7 @@ function Logger(_ref2) {
   var headerBuilders = [];
 
   function print(level, event, payload) {
-    if (!Object(belter_src["i" /* isBrowser */])() || !window.console || !window.console.log) {
+    if (!Object(belter_src["j" /* isBrowser */])() || !window.console || !window.console.log) {
       return;
     }
 
@@ -4699,7 +4699,7 @@ function Logger(_ref2) {
 
   function immediateFlush() {
     return src["a" /* ZalgoPromise */].try(function () {
-      if (!Object(belter_src["i" /* isBrowser */])() || window.location.protocol === PROTOCOL.FILE) {
+      if (!Object(belter_src["j" /* isBrowser */])() || window.location.protocol === PROTOCOL.FILE) {
         return;
       }
 
@@ -4733,11 +4733,11 @@ function Logger(_ref2) {
       });
       events = [];
       tracking = [];
-      return req.then(belter_src["l" /* noop */]);
+      return req.then(belter_src["m" /* noop */]);
     });
   }
 
-  var flush = Object(belter_src["p" /* promiseDebounce */])(immediateFlush);
+  var flush = Object(belter_src["q" /* promiseDebounce */])(immediateFlush);
 
   function enqueue(level, event, payload) {
     events.push({
@@ -4756,7 +4756,7 @@ function Logger(_ref2) {
       payload = {};
     }
 
-    if (!Object(belter_src["i" /* isBrowser */])()) {
+    if (!Object(belter_src["j" /* isBrowser */])()) {
       return logger; // eslint-disable-line no-use-before-define
     }
 
@@ -4764,7 +4764,7 @@ function Logger(_ref2) {
       event = prefix + "_" + event;
     }
 
-    var logPayload = Object(esm_extends["a" /* default */])({}, Object(belter_src["m" /* objFilter */])(payload), {
+    var logPayload = Object(esm_extends["a" /* default */])({}, Object(belter_src["n" /* objFilter */])(payload), {
       timestamp: Date.now().toString()
     });
 
@@ -4820,11 +4820,11 @@ function Logger(_ref2) {
       payload = {};
     }
 
-    if (!Object(belter_src["i" /* isBrowser */])()) {
+    if (!Object(belter_src["j" /* isBrowser */])()) {
       return logger; // eslint-disable-line no-use-before-define
     }
 
-    var trackingPayload = Object(belter_src["m" /* objFilter */])(payload);
+    var trackingPayload = Object(belter_src["n" /* objFilter */])(payload);
 
     for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) {
       var builder = trackingBuilders[_i8];
@@ -4841,8 +4841,8 @@ function Logger(_ref2) {
     return logger; // eslint-disable-line no-use-before-define
   }
 
-  if (Object(belter_src["i" /* isBrowser */])()) {
-    Object(belter_src["t" /* safeInterval */])(flush, flushInterval);
+  if (Object(belter_src["j" /* isBrowser */])()) {
+    Object(belter_src["u" /* safeInterval */])(flush, flushInterval);
   }
 
   var logger = {
@@ -4881,7 +4881,7 @@ var constants = __webpack_require__(1);
 
 
 function getLogger() {
-  return Object(belter_src["h" /* inlineMemoize */])(getLogger, function () {
+  return Object(belter_src["i" /* inlineMemoize */])(getLogger, function () {
     return Logger({
       url: config["g" /* LOGGER_URL */]
     });
@@ -4917,12 +4917,12 @@ function setupLogger(_ref) {
   src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
     var _logger$track;
 
-    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'payments_sdk_error', _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["v" /* stringifyErrorMessage */])(err), _logger$track));
+    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'payments_sdk_error', _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["w" /* stringifyErrorMessage */])(err), _logger$track));
     logger.error('unhandled_error', {
-      err: Object(belter_src["u" /* stringifyError */])(err)
+      err: Object(belter_src["v" /* stringifyError */])(err)
     }); // eslint-disable-next-line promise/no-promise-in-callback
 
-    logger.flush().catch(belter_src["l" /* noop */]);
+    logger.flush().catch(belter_src["m" /* noop */]);
   });
 }
 // CONCATENATED MODULE: ./src/lib/index.js
@@ -4995,10 +4995,10 @@ var api = __webpack_require__(8);
 
 
 function createAccessToken(clientID) {
-  return Object(belter_src["h" /* inlineMemoize */])(createAccessToken, function () {
+  return Object(belter_src["i" /* inlineMemoize */])(createAccessToken, function () {
     Object(lib["b" /* getLogger */])().info("rest_api_create_access_token");
-    var basicAuth = Object(belter_src["a" /* base64encode */])(clientID + ":");
-    return Object(belter_src["s" /* request */])({
+    var basicAuth = Object(belter_src["b" /* base64encode */])(clientID + ":");
+    return Object(belter_src["t" /* request */])({
       method: "post",
       url: src_config["a" /* AUTH_API_URL */],
       headers: {
@@ -5045,7 +5045,7 @@ function upgradeFacilitatorAccessToken(facilitatorAccessToken, _ref2) {
       buyerAccessToken: buyerAccessToken,
       orderID: orderID
     }
-  }).then(belter_src["l" /* noop */]);
+  }).then(belter_src["m" /* noop */]);
 }
 // EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
 var sdk_constants_src = __webpack_require__(0);
@@ -5196,7 +5196,7 @@ function validatePaymentMethod(_ref6) {
   var json = {
     payment_source: paymentSource
   };
-  return Object(belter_src["s" /* request */])({
+  return Object(belter_src["t" /* request */])({
     method: "post",
     url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/" + src_config["l" /* VALIDATE_PAYMENT_METHOD_API */],
     headers: headers,
@@ -5260,7 +5260,7 @@ function updateClientConfig(_ref9) {
       userExperienceFlow: userExperienceFlow,
       productFlow: productFlow
     }
-  }).then(belter_src["l" /* noop */]);
+  }).then(belter_src["m" /* noop */]);
 }
 // CONCATENATED MODULE: ./src/api/payment.js
 
@@ -5410,7 +5410,7 @@ function createSubscription(accessToken, subscriptionPayload, _ref) {
     'Authorization': "Bearer " + accessToken,
     'PayPal-Partner-Attribution-Id': partnerAttributionID
   };
-  return Object(belter_src["s" /* request */])({
+  return Object(belter_src["t" /* request */])({
     method: "post",
     url: src_config["c" /* CREATE_SUBSCRIPTIONS_API_URL */],
     headers: headers,
@@ -5445,7 +5445,7 @@ function reviseSubscription(accessToken, subscriptionID, subscriptionPayload, _r
     'Authorization': "Bearer " + accessToken,
     'PayPal-Partner-Attribution-Id': partnerAttributionID
   };
-  return Object(belter_src["s" /* request */])({
+  return Object(belter_src["t" /* request */])({
     method: "post",
     url: src_config["c" /* CREATE_SUBSCRIPTIONS_API_URL */] + "/" + subscriptionID + "/revise",
     headers: headers,
@@ -5509,12 +5509,13 @@ function messageSocket(_ref) {
       _ref$retry = _ref.retry,
       retry = _ref$retry === void 0 ? true : _ref$retry;
   var receivedMessages = {};
-  var requestListeners = {};
   var responseListeners = {};
   var activeRequests = [];
+  var requestListeners = {};
+  var errorListeners = [];
 
   var sendMessage = function sendMessage(socket, data) {
-    var messageUID = Object(belter_src["x" /* uniqueID */])();
+    var messageUID = Object(belter_src["y" /* uniqueID */])();
     receivedMessages[messageUID] = true;
 
     var message = Object(esm_extends["a" /* default */])({
@@ -5717,6 +5718,11 @@ function messageSocket(_ref) {
         });
         instance.onError(function (err) {
           reject(err);
+
+          for (var _i2 = 0, _errorListeners2 = errorListeners; _i2 < _errorListeners2.length; _i2++) {
+            var errorListener = _errorListeners2[_i2];
+            errorListener(err);
+          }
         });
       });
       instance.onMessage(function (rawMessage) {
@@ -5726,7 +5732,7 @@ function messageSocket(_ref) {
       });
       return connectionPromise;
     });
-    socketPromise.catch(belter_src["l" /* noop */]);
+    socketPromise.catch(belter_src["m" /* noop */]);
   };
 
   init();
@@ -5759,7 +5765,7 @@ function messageSocket(_ref) {
         timeout = _ref6$timeout === void 0 ? 0 : _ref6$timeout;
 
     return socketPromise.then(function (socket) {
-      var requestUID = Object(belter_src["x" /* uniqueID */])();
+      var requestUID = Object(belter_src["y" /* uniqueID */])();
       var listenerPromise = new src["a" /* ZalgoPromise */]();
       responseListeners[requestUID] = {
         listenerPromise: listenerPromise,
@@ -5801,9 +5807,10 @@ function messageSocket(_ref) {
   var close = function close() {
     retry = false;
     requestListeners = {};
+    errorListeners = [];
 
-    for (var _i2 = 0, _Object$keys2 = Object.keys(responseListeners); _i2 < _Object$keys2.length; _i2++) {
-      var requestUID = _Object$keys2[_i2];
+    for (var _i4 = 0, _Object$keys2 = Object.keys(responseListeners); _i4 < _Object$keys2.length; _i4++) {
+      var requestUID = _Object$keys2[_i4];
       var listenerPromise = responseListeners[requestUID].listenerPromise;
       listenerPromise.asyncReject(new Error("Socket closed"));
     }
@@ -5811,13 +5818,18 @@ function messageSocket(_ref) {
     src["a" /* ZalgoPromise */].all(activeRequests).then(function () {
       return socketPromise.then(function (socket) {
         return socket.close();
-      }, belter_src["l" /* noop */]);
+      }, belter_src["m" /* noop */]);
     });
+  };
+
+  var onError = function onError(handler) {
+    errorListeners.push(handler);
   };
 
   return {
     on: on,
     send: send,
+    onError: onError,
     reconnect: reconnect,
     close: close
   };
@@ -5878,7 +5890,7 @@ function webSocket(_ref7) {
     targetApp: targetApp
   });
 }
-var loadFirebaseSDK = Object(belter_src["k" /* memoize */])(function (config) {
+var loadFirebaseSDK = Object(belter_src["l" /* memoize */])(function (config) {
   return src["a" /* ZalgoPromise */].all([Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]).then(function () {
     var firebase = window.firebase;
 
@@ -5905,8 +5917,8 @@ function firebaseSocket(_ref8) {
     var onOpenHandlers = [];
 
     var error = function error(err) {
-      for (var _i4 = 0; _i4 < onErrorHandlers.length; _i4++) {
-        var _handler = onErrorHandlers[_i4];
+      for (var _i6 = 0; _i6 < onErrorHandlers.length; _i6++) {
+        var _handler = onErrorHandlers[_i6];
 
         _handler(err);
       }
@@ -5920,8 +5932,8 @@ function firebaseSocket(_ref8) {
         firebase.database.INTERNAL.forceWebSockets();
         open = true;
 
-        for (var _i6 = 0; _i6 < onOpenHandlers.length; _i6++) {
-          var _handler2 = onOpenHandlers[_i6];
+        for (var _i8 = 0; _i8 < onOpenHandlers.length; _i8++) {
+          var _handler2 = onOpenHandlers[_i8];
 
           _handler2();
         }
@@ -5929,26 +5941,28 @@ function firebaseSocket(_ref8) {
         database.ref("users/" + sessionUID + "/messages").on('value', function (res) {
           var messages = res.val() || {};
 
-          for (var _i8 = 0, _Object$keys4 = Object.keys(messages); _i8 < _Object$keys4.length; _i8++) {
-            var messageID = _Object$keys4[_i8];
+          for (var _i10 = 0, _Object$keys4 = Object.keys(messages); _i10 < _Object$keys4.length; _i10++) {
+            var messageID = _Object$keys4[_i10];
             var message = messages[messageID];
 
-            for (var _i10 = 0; _i10 < onMessageHandlers.length; _i10++) {
-              var _handler3 = onMessageHandlers[_i10];
+            for (var _i12 = 0; _i12 < onMessageHandlers.length; _i12++) {
+              var _handler3 = onMessageHandlers[_i12];
 
               _handler3(message);
             }
           }
+        }, function (err) {
+          error(err);
         });
         database.goOnline();
         return database;
       });
     });
-    databasePromise.catch(belter_src["l" /* noop */]);
+    databasePromise.catch(belter_src["m" /* noop */]);
     return {
       send: function send(data) {
         databasePromise.then(function (database) {
-          return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src["x" /* uniqueID */])()).set(data);
+          return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src["y" /* uniqueID */])()).set(data);
         }).catch(error);
       },
       close: function close() {
@@ -6055,7 +6069,7 @@ function callRestAPI(_ref) {
 
   var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])((_extends2 = {}, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].AUTHORIZATION] = "Bearer " + accessToken, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].CONTENT_TYPE] = "application/json", _extends2), headers);
 
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "s"])({
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "t"])({
     method: method,
     url: url,
     headers: requestHeaders,
@@ -6086,7 +6100,7 @@ function callSmartAPI(_ref3) {
     reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].ACCESS_TOKEN] = accessToken;
   }
 
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "s"])({
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "t"])({
     url: url,
     method: method,
     headers: reqHeaders,
@@ -6120,7 +6134,7 @@ function callGraphQL(_ref5) {
       variables = _ref5$variables === void 0 ? {} : _ref5$variables,
       _ref5$headers = _ref5.headers,
       headers = _ref5$headers === void 0 ? {} : _ref5$headers;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "s"])({
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "t"])({
     url: _config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"],
     method: 'POST',
     json: {
@@ -7246,7 +7260,7 @@ var TYPES = true;
 
 
 function getButtons() {
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* querySelectorAll */ "q"])("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE + " ]");
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* querySelectorAll */ "r"])("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE + " ]");
 }
 function getSelectedFunding(button) {
   var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE);
@@ -7392,7 +7406,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function unresolvedPromise() {
-  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "l"]);
+  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "m"]);
 }
 function promiseNoop() {
   // eslint-disable-line no-unused-vars
@@ -7706,7 +7720,7 @@ function getCreateOrder(xprops, _ref4) {
     merchantID: merchantID,
     partnerAttributionID: partnerAttributionID
   });
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "k"])(function () {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "l"])(function () {
     var startTime = Date.now();
     return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].try(function () {
       if (createBillingAgreement) {
@@ -7784,7 +7798,7 @@ function buildOrderActions(_ref) {
     throw new Error('Order could not be captured');
   };
 
-  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getOrder */ "l"])(orderID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
@@ -7792,7 +7806,7 @@ function buildOrderActions(_ref) {
       isNativeTransaction: isNativeTransaction
     });
   });
-  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
@@ -7804,7 +7818,7 @@ function buildOrderActions(_ref) {
       isNativeTransaction: isNativeTransaction
     }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
   });
-  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE + " to use client-side authorize");
     }
@@ -7866,14 +7880,14 @@ function buildPaymentActions(_ref2) {
     throw new Error('Order could not be captured');
   };
 
-  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getPayment */ "n"])(paymentID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID
     });
   });
-  var execute = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+  var execute = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
@@ -7918,12 +7932,12 @@ function buildXApproveActions(_ref3) {
       partnerAttributionID = _ref3.partnerAttributionID,
       isNativeTransaction = _ref3.isNativeTransaction;
   // Subscription GET Actions
-  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getSubscription */ "o"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
   });
-  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* activateSubscription */ "a"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
@@ -7945,7 +7959,7 @@ function buildXApproveActions(_ref3) {
       }).flush();
     }
 
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "r"])(url, window.top);
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "s"])(url, window.top);
   };
 
   var order = buildOrderActions({
@@ -7992,7 +8006,7 @@ function getOnApprove(xprops, _ref4) {
       buttonSessionID = xprops.buttonSessionID,
       partnerAttributionID = xprops.partnerAttributionID,
       onError = xprops.onError;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function (_ref5, _ref6) {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function (_ref5, _ref6) {
     var payerID = _ref5.payerID,
         paymentID = _ref5.paymentID,
         billingToken = _ref5.billingToken,
@@ -8033,9 +8047,9 @@ function getOnApprove(xprops, _ref4) {
         });
       } else {
         if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
-          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "l"]);
+          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "m"]);
         } else if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
-          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "l"]);
+          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "m"]);
         }
       }
     });
@@ -8083,7 +8097,7 @@ function buildXOnCancelActions() {
       }).flush();
     }
 
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "r"])(url, window.top);
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "s"])(url, window.top);
   }; // $FlowFixMe
 
 
@@ -8094,10 +8108,10 @@ function buildXOnCancelActions() {
 function getOnCancel(xprops, _ref2) {
   var createOrder = _ref2.createOrder;
   var _xprops$onCancel = xprops.onCancel,
-      onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "l"] : _xprops$onCancel,
+      onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "m"] : _xprops$onCancel,
       onError = xprops.onError,
       buttonSessionID = xprops.buttonSessionID;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "k"])(function () {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
     return createOrder().then(function (orderID) {
       var _getLogger$info$track;
 
@@ -8246,7 +8260,7 @@ function getOnClick(xprops) {
     return;
   }
 
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "k"])(function (_ref2) {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "l"])(function (_ref2) {
     var fundingSource = _ref2.fundingSource;
     return onClick(buildXOnClickData({
       fundingSource: fundingSource
@@ -8635,11 +8649,11 @@ function setupButtonLogs(_ref) {
   var style = _ref.style;
   var logger = Object(lib["b" /* getLogger */])();
 
-  if (Object(src["j" /* isIEIntranet */])()) {
+  if (Object(src["k" /* isIEIntranet */])()) {
     logger.warn('button_child_intranet_mode');
   }
 
-  return Object(src["e" /* getPageRenderTime */])().then(function (pageRenderTime) {
+  return Object(src["f" /* getPageRenderTime */])().then(function (pageRenderTime) {
     var _logger$track;
 
     var fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants["c" /* DATA_ATTRIBUTES */].FUNDING_SOURCE + "]")).map(function (el) {
@@ -9256,7 +9270,7 @@ function SpinnerPage(_ref) {
 function openPopup(_ref) {
   var width = _ref.width,
       height = _ref.height;
-  var win = Object(cross_domain_utils_src["a" /* assertSameDomain */])(Object(src["o" /* popup */])('', {
+  var win = Object(cross_domain_utils_src["a" /* assertSameDomain */])(Object(src["p" /* popup */])('', {
     width: width,
     height: height
   }));
@@ -9266,7 +9280,7 @@ function openPopup(_ref) {
   }).render(dom_dom({
     doc: doc
   }));
-  Object(src["y" /* writeElementToWindow */])(win, spinner);
+  Object(src["z" /* writeElementToWindow */])(win, spinner);
   return win;
 }
 // CONCATENATED MODULE: ./src/ui/index.js
@@ -9315,7 +9329,7 @@ function setupCheckout(_ref) {
     });
   }
 
-  return zalgo_promise_src["a" /* ZalgoPromise */].hash(tasks).then(src["l" /* noop */]);
+  return zalgo_promise_src["a" /* ZalgoPromise */].hash(tasks).then(src["m" /* noop */]);
 }
 
 function isCheckoutEligible() {
@@ -9400,7 +9414,7 @@ function getContext(_ref5) {
     return constants["b" /* CONTEXT */].POPUP;
   }
 
-  if (isClick && Object(src["w" /* supportsPopups */])()) {
+  if (isClick && Object(src["x" /* supportsPopups */])()) {
     return constants["b" /* CONTEXT */].POPUP;
   }
 
@@ -9446,7 +9460,7 @@ function initCheckout(_ref6) {
     isClick: isClick
   });
   var approved = false;
-  var restart = Object(src["k" /* memoize */])(function () {
+  var restart = Object(src["l" /* memoize */])(function () {
     return initCheckout({
       props: props,
       components: components,
@@ -9547,7 +9561,7 @@ function initCheckout(_ref6) {
     });
   };
 
-  var start = Object(src["k" /* memoize */])(function () {
+  var start = Object(src["l" /* memoize */])(function () {
     instance = init();
     return instance.renderTo(getRenderWindow(), constants["o" /* TARGET_ELEMENT */].BODY, context);
   });
@@ -9643,13 +9657,17 @@ function isCardFieldsPaymentEligible(_ref2) {
 }
 
 function highlightCard(card) {
-  Object(src["q" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
+  if (!card) {
+    return;
+  }
+
+  Object(src["r" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
     el.style.opacity = el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].CARD) === card ? '1' : '0.1';
   });
 }
 
 function unhighlightCards() {
-  Object(src["q" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
+  Object(src["r" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
     el.style.opacity = '1';
   });
 }
@@ -9687,7 +9705,7 @@ var card_fields_slideUpButtons = function slideUpButtons() {
     buttonsContainer.style.marginTop = buttonsContainer.offsetTop - cardButtonsContainer.offsetTop + "px";
   };
 
-  window.addEventListener('resize', Object(src["b" /* debounce */])(function () {
+  window.addEventListener('resize', Object(src["c" /* debounce */])(function () {
     buttonsContainer.style.transitionDuration = '0s';
     recalculateMargin();
   }));
@@ -9721,10 +9739,6 @@ function initCardFields(_ref4) {
   var cspNonce = config.cspNonce;
   var buyerCountry = serviceData.buyerCountry;
 
-  if (!card) {
-    throw new Error("Card required to render card fields");
-  }
-
   if (cardFieldsOpen) {
     highlightCard(card);
     return {
@@ -9733,7 +9747,7 @@ function initCardFields(_ref4) {
     };
   }
 
-  var restart = Object(src["k" /* memoize */])(function () {
+  var restart = Object(src["l" /* memoize */])(function () {
     return checkout.init({
       props: props,
       components: components,
@@ -10001,7 +10015,7 @@ var MESSAGE = {
   ON_CANCEL: 'onCancel',
   ON_ERROR: 'onError'
 };
-var getNativeSocket = Object(src["k" /* memoize */])(function (_ref) {
+var getNativeSocket = Object(src["l" /* memoize */])(function (_ref) {
   var sessionUID = _ref.sessionUID,
       firebaseConfig = _ref.firebaseConfig,
       version = _ref.version;
@@ -10032,6 +10046,10 @@ function isNativeOptedIn(_ref2) {
   return false;
 }
 
+var native_sessionUID;
+var nativeSocket;
+var initialPageUrl;
+
 function isNativeEligible(_ref3) {
   var props = _ref3.props,
       config = _ref3.config,
@@ -10060,7 +10078,7 @@ function isNativeEligible(_ref3) {
     return false;
   }
 
-  if (!Object(src["w" /* supportsPopups */])()) {
+  if (!Object(src["x" /* supportsPopups */])()) {
     return false;
   }
 
@@ -10090,12 +10108,12 @@ function isNativePaymentEligible(_ref4) {
     return false;
   }
 
+  if (!nativeSocket) {
+    return false;
+  }
+
   return true;
 }
-
-var native_sessionUID;
-var nativeSocket;
-var initialPageUrl;
 
 function setupNative(_ref5) {
   var config = _ref5.config,
@@ -10104,11 +10122,17 @@ function setupNative(_ref5) {
     var version = config.version,
         firebaseConfig = config.firebase;
     var getPageUrl = props.getPageUrl;
-    native_sessionUID = Object(src["x" /* uniqueID */])();
+    native_sessionUID = Object(src["y" /* uniqueID */])();
     nativeSocket = getNativeSocket({
       sessionUID: native_sessionUID,
       firebaseConfig: firebaseConfig,
       version: version
+    });
+    nativeSocket.onError(function (err) {
+      nativeSocket = null;
+      Object(lib["b" /* getLogger */])().error('native_socket_error', {
+        err: Object(src["v" /* stringifyError */])(err)
+      });
     });
     return getPageUrl().then(function (pageUrl) {
       initialPageUrl = pageUrl;
@@ -10117,7 +10141,7 @@ function setupNative(_ref5) {
 }
 
 function didAppSwitchHappen(win) {
-  return Object(cross_domain_utils_src["e" /* isBlankDomain */])(win);
+  return !win || Object(cross_domain_utils_src["e" /* isBlankDomain */])(win);
 }
 
 function initNative(_ref6) {
@@ -10166,7 +10190,7 @@ function initNative(_ref6) {
 
   var getNativeUrl = function getNativeUrl() {
     var domain = fundingSource === sdk_constants_src["g" /* FUNDING */].VENMO ? Object(cross_domain_utils_src["b" /* getDomain */])().replace('sandbox.', '') : Object(cross_domain_utils_src["b" /* getDomain */])();
-    return Object(src["d" /* extendUrl */])("" + domain + src_config["h" /* NATIVE_CHECKOUT_URI */][fundingSource], {
+    return Object(src["e" /* extendUrl */])("" + domain + src_config["h" /* NATIVE_CHECKOUT_URI */][fundingSource], {
       query: {
         sessionUID: native_sessionUID,
         buttonSessionID: buttonSessionID,
@@ -10177,7 +10201,7 @@ function initNative(_ref6) {
 
   var getWebCheckoutFallbackUrl = function getWebCheckoutFallbackUrl(_ref8) {
     var orderID = _ref8.orderID;
-    return Object(src["d" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
+    return Object(src["e" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
       query: {
         token: orderID,
         native_xo: '1',
@@ -10194,7 +10218,7 @@ function initNative(_ref6) {
     }).then(function (_ref9) {
       var orderID = _ref9.orderID,
           pageUrl = _ref9.pageUrl;
-      var userAgent = Object(src["f" /* getUserAgent */])();
+      var userAgent = Object(src["g" /* getUserAgent */])();
       var webCheckoutUrl = getWebCheckoutFallbackUrl({
         orderID: orderID
       });
@@ -10214,15 +10238,21 @@ function initNative(_ref6) {
   };
 
   var connectNative = function connectNative() {
-    nativeSocket.on(MESSAGE.GET_PROPS, function () {
+    var socket = nativeSocket;
+
+    if (!socket) {
+      throw new Error("Native socket connection not established");
+    }
+
+    socket.on(MESSAGE.GET_PROPS, function () {
       return getSDKProps();
     });
-    nativeSocket.on(MESSAGE.ON_APPROVE, function (_ref10) {
+    socket.on(MESSAGE.ON_APPROVE, function (_ref10) {
       var _ref10$data = _ref10.data,
           payerID = _ref10$data.payerID,
           paymentID = _ref10$data.paymentID,
           billingToken = _ref10$data.billingToken;
-      nativeSocket.close();
+      socket.close();
       var data = {
         payerID: payerID,
         paymentID: paymentID,
@@ -10236,18 +10266,18 @@ function initNative(_ref6) {
       };
       return onApprove(data, actions);
     });
-    nativeSocket.on(MESSAGE.ON_CANCEL, function () {
-      nativeSocket.close();
+    socket.on(MESSAGE.ON_CANCEL, function () {
+      socket.close();
       return onCancel();
     });
-    nativeSocket.on(MESSAGE.ON_ERROR, function (_ref11) {
+    socket.on(MESSAGE.ON_ERROR, function (_ref11) {
       var message = _ref11.data.message;
-      nativeSocket.close();
+      socket.close();
       return onError(new Error(message));
     });
-    nativeSocket.on(MESSAGE.FALLBACK, function (_ref12) {
+    socket.on(MESSAGE.FALLBACK, function (_ref12) {
       var buyerAccessToken = _ref12.data.buyerAccessToken;
-      nativeSocket.close();
+      socket.close();
       return fallbackToWebCheckout({
         buyerAccessToken: buyerAccessToken
       });
@@ -10255,17 +10285,17 @@ function initNative(_ref6) {
 
     var setProps = function setProps() {
       return getSDKProps().then(function (sdkProps) {
-        return nativeSocket.send(MESSAGE.SET_PROPS, sdkProps);
+        return socket.send(MESSAGE.SET_PROPS, sdkProps);
       });
     };
 
     var closeNative = function closeNative() {
-      return nativeSocket.send(MESSAGE.CLOSE).then(function () {
-        nativeSocket.close();
+      return socket.send(MESSAGE.CLOSE).then(function () {
+        socket.close();
       });
     };
 
-    nativeSocket.reconnect();
+    socket.reconnect();
     return {
       setProps: setProps,
       close: closeNative
@@ -10273,16 +10303,25 @@ function initNative(_ref6) {
   };
 
   var win;
-  var start = Object(src["k" /* memoize */])(function () {
+
+  var closeWin = function closeWin() {
+    if (win) {
+      win.close();
+    }
+  };
+
+  var start = Object(src["l" /* memoize */])(function () {
     return createOrder().then(function () {
       if (didAppSwitchHappen(win)) {
-        win.close();
+        closeWin();
         instance = connectNative();
         return instance.setProps();
-      } else {
+      } else if (win) {
         return fallbackToWebCheckout({
           win: win
         });
+      } else {
+        throw new Error("No window available to fall back to");
       }
     }).catch(function (err) {
       if (win) {
@@ -10294,7 +10333,14 @@ function initNative(_ref6) {
   });
 
   var click = function click() {
-    win = Object(src["o" /* popup */])(getNativeUrl());
+    try {
+      win = Object(src["p" /* popup */])(getNativeUrl());
+    } catch (err) {
+      if (!(err instanceof src["a" /* PopupOpenError */])) {
+        throw err;
+      }
+    }
+
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
       return onClick ? onClick({
         fundingSource: fundingSource
@@ -10303,10 +10349,10 @@ function initNative(_ref6) {
       if (!valid) {
         return zalgo_promise_src["a" /* ZalgoPromise */].delay(500).then(function () {
           if (didAppSwitchHappen(win)) {
-            win.close();
+            closeWin();
             return connectNative().close();
           } else {
-            win.close();
+            closeWin();
           }
         });
       }
@@ -10399,7 +10445,7 @@ function initPopupBridge(_ref4) {
         throw new Error("Popup bridge required");
       }
 
-      var url = Object(src["d" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
+      var url = Object(src["e" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
         query: {
           fundingSource: fundingSource,
           token: orderID,
@@ -10555,7 +10601,7 @@ function setupPaymentFlows(_ref) {
       serviceData: serviceData,
       components: components
     }) : null;
-  })).then(src["l" /* noop */]);
+  })).then(src["m" /* noop */]);
 }
 function getPaymentFlow(_ref2) {
   var props = _ref2.props,
@@ -10605,7 +10651,7 @@ function initiatePayment(_ref3) {
   var button = payment.button,
       fundingSource = payment.fundingSource,
       _payment$decorateCrea = payment.decorateCreateOrder,
-      decorateCreateOrder = _payment$decorateCrea === void 0 ? src["g" /* identity */] : _payment$decorateCrea;
+      decorateCreateOrder = _payment$decorateCrea === void 0 ? src["h" /* identity */] : _payment$decorateCrea;
   return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
     var _getLogger$info$track;
 
@@ -10677,7 +10723,7 @@ function initiatePayment(_ref3) {
         return clickPromise;
       }).catch(function (err) {
         return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), zalgo_promise_src["a" /* ZalgoPromise */].reject(err)]);
-      }).then(src["l" /* noop */]);
+      }).then(src["m" /* noop */]);
     });
     return button.payPromise;
   }).finally(function () {
@@ -10703,7 +10749,7 @@ function renderSmartMenu(_ref) {
       show = _window$paypal$Menu.show,
       hide = _window$paypal$Menu.hide;
 
-  var render = Object(src["k" /* memoize */])(function () {
+  var render = Object(src["l" /* memoize */])(function () {
     return renderTo(window.xprops.getParent(), '#smart-menu');
   });
 
@@ -10776,14 +10822,18 @@ function renderButtonDropdown(_ref) {
     smartMenu = smartMenu || renderSmartMenu({
       clientID: clientID
     });
-    Object(src["n" /* onClick */])(menuToggle, function (event) {
+    Object(src["o" /* onClick */])(menuToggle, function (event) {
       event.preventDefault();
       event.stopPropagation();
-      var PAYPAL_CHOICES = [{
-        id: MENU_CHOICE.SELECT_FUNDING_SHIPPING,
-        label: content.chooseCardOrShipping,
-        popup: popup
-      }, {
+      var PAYPAL_CHOICES = [
+      /*
+      {
+          id:    MENU_CHOICE.SELECT_FUNDING_SHIPPING,
+          label: content.chooseCardOrShipping,
+          popup
+      },
+      */
+      {
         id: MENU_CHOICE.CHANGE_ACCOUNT,
         label: content.useDifferentAccount,
         popup: popup
@@ -10824,13 +10874,13 @@ function renderButtonDropdown(_ref) {
               clientAccessToken: clientAccessToken
             }).then(function () {
               Object(dom["a" /* disableLoadingSpinner */])(button);
-              Object(src["c" /* destroyElement */])(button);
+              Object(src["d" /* destroyElement */])(button);
 
               if (buttonParent.querySelectorAll("[" + constants["c" /* DATA_ATTRIBUTES */].PAYMENT_METHOD_ID + "]").length === 0) {
                 var payInstantlyHeader = buttonParent.querySelector('.paypal-vault-header');
 
                 if (payInstantlyHeader) {
-                  Object(src["c" /* destroyElement */])(payInstantlyHeader);
+                  Object(src["d" /* destroyElement */])(payInstantlyHeader);
                 }
               }
             });
@@ -10840,7 +10890,7 @@ function renderButtonDropdown(_ref) {
             }
 
             var decorateCreateOrder = function decorateCreateOrder(createOrder) {
-              return Object(src["k" /* memoize */])(function () {
+              return Object(src["l" /* memoize */])(function () {
                 return createOrder().then(function (orderID) {
                   return Object(api["u" /* validatePaymentMethod */])({
                     clientAccessToken: clientAccessToken,
@@ -11018,7 +11068,7 @@ function setupButton(opts) {
       content: content,
       handlePaymentClick: handlePaymentClick
     });
-    Object(src["n" /* onClick */])(button, function (event) {
+    Object(src["o" /* onClick */])(button, function (event) {
       event.preventDefault();
       event.stopPropagation();
       handlePaymentClick({
@@ -11077,7 +11127,7 @@ function setupButton(opts) {
     setupPrerenderTask: setupPrerenderTask,
     setupRememberTask: setupRememberTask,
     setupPaymentFlowsTask: setupPaymentFlowsTask
-  }).then(src["l" /* noop */]);
+  }).then(src["m" /* noop */]);
 }
 
 /***/ }),
