@@ -189,7 +189,7 @@ function buildFundingEligibilityQuery() : string {
     };
 
     const Inputs = {
-        clientID:        '$clientID',
+        clientId:        '$clientID',
         buyerCountry:    '$buyerCountry',
         ip:              '$ip',
         cookies:         '$cookies',
@@ -229,7 +229,7 @@ function buildFundingEligibilityQuery() : string {
         },
         [ FUNDING.CARD ]: {
             eligible:  types.boolean,
-            vaultable: types.boolean,
+            branded:   types.boolean,
             vendors:   {
                 [ CARD.VISA ]:       BasicCardVendorQuery,
                 [ CARD.MASTERCARD ]: BasicCardVendorQuery,
