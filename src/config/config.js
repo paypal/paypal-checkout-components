@@ -559,6 +559,10 @@ export const config = {
 
         'greatwolf.com': {
             disable_venmo: true
+        },
+
+        'cvs.com': {
+            disable_venmo: true
         }
     },
 
