@@ -67,10 +67,10 @@ let initialPageUrl;
 
 function isNativeEligible({ props, config, serviceData } : { props : Props, config : Config, serviceData : ServiceData }) : boolean {
 
-    if (window.xprops.forceNativeEligible) {
+    if (isNativeOptedIn({ props })) {
         return true;
     }
-
+    
     const { platform, onShippingChange, createBillingAgreement, createSubscription } = props;
     const { firebase: firebaseConfig } = config;
     const { eligibility } = serviceData;
@@ -151,7 +151,8 @@ type NativeSDKProps = {|
     env : $Values<typeof ENV>,
     webCheckoutUrl : string,
     stageHost : ?string,
-    apiStageHost : ?string
+    apiStageHost : ?string,
+    forceEligible : boolean
 |};
 
 function didAppSwitchHappen(win : ?CrossDomainWindowType) : boolean {
@@ -172,7 +173,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return instance.start();
     };
 
-    const getNativeUrl = () => {
+    const getNativeUrl = () : string => {
         const domain = (fundingSource === FUNDING.VENMO)
             ? getDomain().replace('sandbox.', '')
             : getDomain();
@@ -182,7 +183,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     };
 
-    const getWebCheckoutFallbackUrl = ({ orderID }) => {
+    const getWebCheckoutFallbackUrl = ({ orderID }) : string => {
         return extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
             query: {
                 token:      orderID,
@@ -193,17 +194,18 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     };
 
-    const getSDKProps = () => {
+    const getSDKProps = () : ZalgoPromise<NativeSDKProps> => {
         return ZalgoPromise.hash({
             orderID: createOrder(),
             pageUrl: getPageUrl()
         }).then(({ orderID, pageUrl }) => {
             const userAgent = getUserAgent();
             const webCheckoutUrl = getWebCheckoutFallbackUrl({ orderID });
+            const forceEligible = isNativeOptedIn({ props });
 
             return {
                 orderID, facilitatorAccessToken, pageUrl, commit, webCheckoutUrl,
-                userAgent, buttonSessionID, env, stageHost, apiStageHost
+                userAgent, buttonSessionID, env, stageHost, apiStageHost, forceEligible
             };
         });
     };
