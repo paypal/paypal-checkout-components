@@ -1,3 +1,9 @@
+## <small>5.0.63 (2019-10-30)</small>
+
+* Fix the missing data attr for the black button (#1242) ([870d70a](http://github.paypal.com/paypal/paypal-checkout/commit/870d70a)), closes [#1242](http://github.paypal.com/paypal/paypal-checkout/issues/1242)
+
+
+
 ## <small>5.0.62 (2019-10-28)</small>
 
 * Ramp down card button experiment ([669880f](http://github.paypal.com/paypal/paypal-checkout/commit/669880f))
