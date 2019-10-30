@@ -1345,7 +1345,7 @@ describe('native cases', () => {
             const err = new Error('Something went wrong');
 
             let sessionUID;
-            let gotOnApproveError = false;
+            let gotOnApproveResponse = false;
 
             const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
                 getSessionUID: () => {
@@ -1355,9 +1355,9 @@ describe('native cases', () => {
 
                     return sessionUID;
                 },
-                extraHandler: expect('firebaseExtraHandler', ({ message_name, message_status }) => {
-                    if (message_name === 'onApprove' && message_status === 'error') {
-                        gotOnApproveError = true;
+                extraHandler: expect('firebaseExtraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'onApprove' && message_type === 'response') {
+                        gotOnApproveResponse = true;
                     }
                 })
             });
@@ -1428,8 +1428,8 @@ describe('native cases', () => {
                             .then(onApprove)
                             .then(() => ZalgoPromise.delay(100))
                             .finally(expect('final', () => {
-                                if (!gotOnApproveError) {
-                                    throw new Error(`Expected child window to get onApprove error`);
+                                if (!gotOnApproveResponse) {
+                                    throw new Error(`Expected child window to get onApprove response`);
                                 }
                             }));
                     })

@@ -219,9 +219,7 @@ export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOr
 
             if (onApprove) {
                 return onApprove(data, actions).catch(err => {
-                    return onError(err).then(() => {
-                        throw err;
-                    });
+                    return onError(err);
                 });
             } else {
                 if (intent === INTENT.CAPTURE) {
