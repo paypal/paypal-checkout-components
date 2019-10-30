@@ -66,10 +66,6 @@ let nativeSocket;
 let initialPageUrl;
 
 function isNativeEligible({ props, config, serviceData } : { props : Props, config : Config, serviceData : ServiceData }) : boolean {
-
-    if (isNativeOptedIn({ props })) {
-        return true;
-    }
     
     const { platform, onShippingChange, createBillingAgreement, createSubscription } = props;
     const { firebase: firebaseConfig } = config;
@@ -96,7 +92,11 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
     }
 
     if (isNativeOptedIn({ props })) {
-        return eligibility.native;
+        if (eligibility.native) {
+            return eligibility.native;
+        } else {
+            return true;
+        }
     }
 
     return false;
