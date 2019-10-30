@@ -2,8 +2,10 @@
 
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal/sdk-constants';
 import { params, types, query } from 'typed-graphqlify';
+import { values } from 'belter';
+import { strictMerge } from 'strict-merge';
 
-import type { GraphQLBatch } from '../lib';
+import { isDefined, type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
 
 export type FundingEligibility = {|
@@ -171,7 +173,7 @@ export type FundingEligibility = {|
     }
 |};
 
-function buildFundingEligibilityQuery() : string {
+function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibility) : string {
     const InputTypes = {
         $clientID:        'String',
         $buyerCountry:    'CountryCodes',
@@ -204,65 +206,130 @@ function buildFundingEligibilityQuery() : string {
         userAgent:       '$userAgent'
     };
 
-    const VaultedInstrumentQuery = {
-        id:    types.string,
-        label: {
-            description: types.string
-        }
+    const getVaultedInstrumentQuery = () => {
+        return {
+            id:    types.string,
+            label: {
+                description: types.string
+            }
+        };
     };
 
-    const BasicFundingEligibilityQuery = {
-        eligible: types.boolean
+    const getBasicFundingEligibilityQuery = () => {
+        return {
+            eligible: types.boolean
+        };
     };
 
-    const BasicCardVendorQuery = {
-        eligible:           types.boolean,
-        vaultable:          types.boolean,
-        vaultedInstruments: VaultedInstrumentQuery
-    };
-
-    const Query = {
-        [ FUNDING.PAYPAL ]: {
+    const getBasicCardVendorQuery = () => {
+        return {
             eligible:           types.boolean,
             vaultable:          types.boolean,
-            vaultedInstruments: VaultedInstrumentQuery
-        },
-        [ FUNDING.CARD ]: {
-            eligible:  types.boolean,
-            branded:   types.boolean,
-            vendors:   {
-                [ CARD.VISA ]:       BasicCardVendorQuery,
-                [ CARD.MASTERCARD ]: BasicCardVendorQuery,
-                [ CARD.AMEX ]:       BasicCardVendorQuery,
-                [ CARD.DISCOVER ]:   BasicCardVendorQuery,
-                [ CARD.HIPER ]:      BasicCardVendorQuery,
-                [ CARD.ELO ]:        BasicCardVendorQuery,
-                [ CARD.JCB ]:        BasicCardVendorQuery
-            }
-        },
-        [ FUNDING.VENMO ]:      BasicFundingEligibilityQuery,
-        [ FUNDING.ITAU ]:       BasicFundingEligibilityQuery,
-        [ FUNDING.CREDIT ]:     BasicFundingEligibilityQuery,
-        [ FUNDING.SEPA ]:       BasicFundingEligibilityQuery,
-        [ FUNDING.IDEAL ]:      BasicFundingEligibilityQuery,
-        [ FUNDING.BANCONTACT ]: BasicFundingEligibilityQuery,
-        [ FUNDING.GIROPAY ]:    BasicFundingEligibilityQuery,
-        [ FUNDING.EPS ]:        BasicFundingEligibilityQuery,
-        [ FUNDING.SOFORT ]:     BasicFundingEligibilityQuery,
-        [ FUNDING.MYBANK ]:     BasicFundingEligibilityQuery,
-        [ FUNDING.P24 ]:        BasicFundingEligibilityQuery,
-        [ FUNDING.ZIMPLER ]:    BasicFundingEligibilityQuery,
-        [ FUNDING.WECHATPAY ]:  BasicFundingEligibilityQuery,
-        [ FUNDING.PAYU ]:       BasicFundingEligibilityQuery,
-        [ FUNDING.BLIK ]:       BasicFundingEligibilityQuery,
-        [ FUNDING.TRUSTLY ]:    BasicFundingEligibilityQuery,
-        [ FUNDING.OXXO ]:       BasicFundingEligibilityQuery,
-        [ FUNDING.MAXIMA ]:     BasicFundingEligibilityQuery,
-        [ FUNDING.BOLETO ]:     BasicFundingEligibilityQuery
+            vaultedInstruments: getVaultedInstrumentQuery()
+        };
     };
 
+    const getVendorQuery = () => {
+        return {
+            [CARD.VISA]:       getBasicCardVendorQuery(),
+            [CARD.MASTERCARD]: getBasicCardVendorQuery(),
+            [CARD.AMEX]:       getBasicCardVendorQuery(),
+            [CARD.DISCOVER]:   getBasicCardVendorQuery(),
+            [CARD.HIPER]:      getBasicCardVendorQuery(),
+            [CARD.ELO]:        getBasicCardVendorQuery(),
+            [CARD.JCB]:        getBasicCardVendorQuery()
+        };
+    };
+
+    const getPayPalQuery = () => {
+        return {
+            eligible:           types.boolean,
+            vaultable:          types.boolean,
+            vaultedInstruments: getVaultedInstrumentQuery()
+        };
+    };
+
+    const getCardQuery = () => {
+        return {
+            eligible: types.boolean,
+            branded:  types.boolean,
+            vendors:  getVendorQuery()
+        };
+    };
+
+    const fundingQuery = {
+        [ FUNDING.PAYPAL ]:     getPayPalQuery(),
+        [ FUNDING.CARD ]:       getCardQuery(),
+        [ FUNDING.VENMO ]:      getBasicFundingEligibilityQuery(),
+        [ FUNDING.ITAU ]:       getBasicFundingEligibilityQuery(),
+        [ FUNDING.CREDIT ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.SEPA ]:       getBasicFundingEligibilityQuery(),
+        [ FUNDING.IDEAL ]:      getBasicFundingEligibilityQuery(),
+        [ FUNDING.BANCONTACT ]: getBasicFundingEligibilityQuery(),
+        [ FUNDING.GIROPAY ]:    getBasicFundingEligibilityQuery(),
+        [ FUNDING.EPS ]:        getBasicFundingEligibilityQuery(),
+        [ FUNDING.SOFORT ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.MYBANK ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.P24 ]:        getBasicFundingEligibilityQuery(),
+        [ FUNDING.ZIMPLER ]:    getBasicFundingEligibilityQuery(),
+        [ FUNDING.WECHATPAY ]:  getBasicFundingEligibilityQuery(),
+        [ FUNDING.PAYU ]:       getBasicFundingEligibilityQuery(),
+        [ FUNDING.BLIK ]:       getBasicFundingEligibilityQuery(),
+        [ FUNDING.TRUSTLY ]:    getBasicFundingEligibilityQuery(),
+        [ FUNDING.OXXO ]:       getBasicFundingEligibilityQuery(),
+        [ FUNDING.MAXIMA ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.BOLETO ]:     getBasicFundingEligibilityQuery()
+    };
+
+    const basicCardEligibility = basicFundingEligibility[FUNDING.CARD] && basicFundingEligibility[FUNDING.CARD].vendors;
+    const vendorsQuery = fundingQuery[FUNDING.CARD].vendors;
+
+    for (const card of values(CARD)) {
+        if (basicCardEligibility && basicCardEligibility[card] && vendorsQuery[card]) {
+            if (isDefined(basicCardEligibility[card].eligible)) {
+                delete vendorsQuery[card].eligible;
+            }
+
+            if (isDefined(basicCardEligibility[card].vaultable)) {
+                delete vendorsQuery[card].vaultable;
+            }
+
+            if (!Object.keys(vendorsQuery[card]).length) {
+                delete vendorsQuery[card];
+            }
+        }
+    }
+
+    if (!Object.keys(vendorsQuery).length) {
+        delete fundingQuery[FUNDING.CARD].vendors;
+    }
+
+    for (const fundingSource of values(FUNDING)) {
+        if ([ FUNDING.VENMO, FUNDING.ITAU ].includes(fundingSource)) {
+            continue;
+        }
+
+        if (basicFundingEligibility[fundingSource] && fundingQuery[fundingSource]) {
+            if (isDefined(basicFundingEligibility[fundingSource].eligible)) {
+                delete fundingQuery[fundingSource].eligible;
+            }
+
+            if (isDefined(basicFundingEligibility[fundingSource].vaultable)) {
+                delete fundingQuery[fundingSource].vaultable;
+            }
+
+            if (isDefined(basicFundingEligibility[fundingSource].branded)) {
+                delete fundingQuery[fundingSource].branded;
+            }
+
+            if (!Object.keys(fundingQuery[fundingSource]).length) {
+                delete fundingQuery[fundingSource];
+            }
+        }
+    }
+
     return query('GetFundingEligibility', params(InputTypes, {
-        fundingEligibility: params(Inputs, Query)
+        fundingEligibility: params(Inputs, fundingQuery)
     }));
 }
 
@@ -279,11 +346,11 @@ export type FundingEligibilityOptions = {|
     merchantID : ?$ReadOnlyArray<string>,
     buttonSessionID : string,
     clientAccessToken : ?string,
-    defaultFundingEligibility : FundingEligibility
+    basicFundingEligibility : FundingEligibility
 |};
 
 export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, defaultFundingEligibility } : FundingEligibilityOptions) : Promise<FundingEligibility> {
+    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility } : FundingEligibilityOptions) : Promise<FundingEligibility> {
 
     try {
         const ip = req.ip;
@@ -297,7 +364,7 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
         const result = await gqlBatch({
-            query:     buildFundingEligibilityQuery(),
+            query:     buildFundingEligibilityQuery(basicFundingEligibility),
             variables: {
                 clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
                 vault, disableFunding, disableCard, userAgent, buttonSessionID
@@ -305,11 +372,12 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
             accessToken: clientAccessToken
         });
 
-        return result.fundingEligibility;
+        return strictMerge(basicFundingEligibility, result.fundingEligibility, (first, second) => {
+            return second;
+        });
 
     } catch (err) {
         logger.error(req, 'funding_eligibility_error_fallback', { err: err.stack ? err.stack : err.toString() });
-        return defaultFundingEligibility;
+        return basicFundingEligibility;
     }
-
 }

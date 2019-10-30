@@ -54,7 +54,7 @@ type RequestParams = {|
     buttonSessionID : string,
     clientAccessToken : ?string,
     cspNonce : string,
-    defaultFundingEligibility : FundingEligibility,
+    basicFundingEligibility : FundingEligibility,
     locale : LocaleType,
     debug : boolean,
     style : {
@@ -108,7 +108,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
 
     const cspNonce = getNonce(res);
 
-    const defaultFundingEligibility = getFundingEligibilityParam(req);
+    const basicFundingEligibility = getFundingEligibilityParam(req);
 
     const {
         label = 'paypal',
@@ -129,7 +129,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         merchantID,
         buttonSessionID,
         clientAccessToken,
-        defaultFundingEligibility,
+        basicFundingEligibility,
         cspNonce,
         debug,
         style,

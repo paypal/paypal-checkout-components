@@ -47,7 +47,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
         }
 
         const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, style,
-            merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, defaultFundingEligibility, locale, onShippingChange } = getParams(params, req, res);
+            merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale, onShippingChange } = getParams(params, req, res);
         const { label, period } = style;
         
         logger.info(req, `button_params`, { params: JSON.stringify(params) });
@@ -72,7 +72,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
         const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
             logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
-            disableFunding, disableCard, clientAccessToken, buyerCountry, defaultFundingEligibility
+            disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility
         });
 
         const personalizationPromise = resolvePersonalization(req, gqlBatch, {

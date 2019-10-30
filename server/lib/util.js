@@ -136,3 +136,7 @@ export function placeholderToJSX(text : string, placeholders : { [string] : (?st
             }
         }).filter(Boolean);
 }
+
+export function isDefined(item : mixed) : boolean {
+    return (item !== null && typeof item !== 'undefined');
+}
