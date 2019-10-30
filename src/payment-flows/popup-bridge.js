@@ -89,6 +89,7 @@ function initPopupBridge({ props, payment } : { props : Props, payment : Payment
 }
 
 export const popupBridge : PaymentFlow = {
+    name:              'popup_bridge',
     setup:             setupPopupBridge,
     isEligible:        isPopupBridgeEligible,
     isPaymentEligible: isPopupBridgePaymentEligible,

@@ -66,17 +66,17 @@ export function initiatePayment({ payment, serviceData, config, components, prop
 
         sendPersonalizationBeacons(personalization);
 
-        getLogger().info('button_click').track({
+        const { name, init, inline, spinner } = getPaymentFlow({ props, payment, config, components, serviceData });
+        const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
+
+        const clickPromise = click();
+
+        getLogger().info(`button_click`).info(`pay_flow_${ name }`).track({
             [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
             [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
             [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource
         }).flush();
-
-        const { init, inline, spinner } = getPaymentFlow({ props, payment, config, components, serviceData });
-        const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
-
-        const clickPromise = click();
 
         // $FlowFixMe
         button.payPromise = ZalgoPromise.hash({

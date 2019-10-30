@@ -25,6 +25,7 @@ export type Payment = {|
 |};
 
 export type PaymentFlow = {|
+    name : string,
     setup : ({ props : Props, serviceData : ServiceData, config : Config, components : Components }) => ZalgoPromise<void> | void,
     isEligible : ({ props : Props, serviceData : ServiceData, components : Components, config : Config }) => boolean,
     isPaymentEligible : ({ props : Props, serviceData : ServiceData, payment : Payment, components : Components, config : Config }) => boolean,

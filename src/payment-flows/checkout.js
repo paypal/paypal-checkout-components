@@ -249,6 +249,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
 }
 
 export const checkout : PaymentFlow = {
+    name:              'checkout',
     setup:             setupCheckout,
     isEligible:        isCheckoutEligible,
     isPaymentEligible: isCheckoutPaymentEligible,

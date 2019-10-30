@@ -118,6 +118,7 @@ function initVaultCapture({ props, components, payment } : { props : Props, comp
 }
 
 export const vaultCapture : PaymentFlow = {
+    name:              'vault_capture',
     setup:             setupVaultCapture,
     isEligible:        isVaultCaptureEligible,
     isPaymentEligible: isVaultCapturePaymentEligible,

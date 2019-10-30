@@ -185,6 +185,7 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
 }
 
 export const cardFields : PaymentFlow = {
+    name:              'card_fields',
     setup:             setupCardFields,
     isEligible:        isCardFieldsEligible,
     isPaymentEligible: isCardFieldsPaymentEligible,

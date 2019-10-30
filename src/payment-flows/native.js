@@ -325,6 +325,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 }
 
 export const native : PaymentFlow = {
+    name:              'native',
     setup:             setupNative,
     isEligible:        isNativeEligible,
     isPaymentEligible: isNativePaymentEligible,
