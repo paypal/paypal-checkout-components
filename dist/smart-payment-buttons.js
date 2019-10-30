@@ -10057,13 +10057,6 @@ function isNativeEligible(_ref3) {
   var props = _ref3.props,
       config = _ref3.config,
       serviceData = _ref3.serviceData;
-
-  if (isNativeOptedIn({
-    props: props
-  })) {
-    return true;
-  }
-
   var platform = props.platform,
       onShippingChange = props.onShippingChange,
       createBillingAgreement = props.createBillingAgreement,
@@ -10094,7 +10087,11 @@ function isNativeEligible(_ref3) {
   if (isNativeOptedIn({
     props: props
   })) {
-    return eligibility.native;
+    if (eligibility.native) {
+      return eligibility.native;
+    } else {
+      return true;
+    }
   }
 
   return false;
