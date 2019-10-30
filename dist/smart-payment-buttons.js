@@ -8041,9 +8041,7 @@ function getOnApprove(xprops, _ref4) {
 
       if (onApprove) {
         return onApprove(data, actions).catch(function (err) {
-          return onError(err).then(function () {
-            throw err;
-          });
+          return onError(err);
         });
       } else {
         if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
