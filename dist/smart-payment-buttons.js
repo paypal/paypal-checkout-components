@@ -9595,6 +9595,7 @@ function initCheckout(_ref6) {
 }
 
 var checkout = {
+  name: 'checkout',
   setup: setupCheckout,
   isEligible: isCheckoutEligible,
   isPaymentEligible: isCheckoutPaymentEligible,
@@ -9829,6 +9830,7 @@ function initCardFields(_ref4) {
 }
 
 var cardFields = {
+  name: 'card_fields',
   setup: setupCardFields,
   isEligible: isCardFieldsEligible,
   isPaymentEligible: isCardFieldsPaymentEligible,
@@ -9983,6 +9985,7 @@ function initVaultCapture(_ref6) {
 }
 
 var vaultCapture = {
+  name: 'vault_capture',
   setup: setupVaultCapture,
   isEligible: isVaultCaptureEligible,
   isPaymentEligible: isVaultCapturePaymentEligible,
@@ -10055,7 +10058,9 @@ function isNativeEligible(_ref3) {
       config = _ref3.config,
       serviceData = _ref3.serviceData;
 
-  if (window.xprops.forceNativeEligible) {
+  if (isNativeOptedIn({
+    props: props
+  })) {
     return true;
   }
 
@@ -10222,6 +10227,9 @@ function initNative(_ref6) {
       var webCheckoutUrl = getWebCheckoutFallbackUrl({
         orderID: orderID
       });
+      var forceEligible = isNativeOptedIn({
+        props: props
+      });
       return {
         orderID: orderID,
         facilitatorAccessToken: facilitatorAccessToken,
@@ -10232,7 +10240,8 @@ function initNative(_ref6) {
         buttonSessionID: buttonSessionID,
         env: env,
         stageHost: stageHost,
-        apiStageHost: apiStageHost
+        apiStageHost: apiStageHost,
+        forceEligible: forceEligible
       };
     });
   };
@@ -10375,6 +10384,7 @@ function initNative(_ref6) {
 }
 
 var native_native = {
+  name: 'native',
   setup: setupNative,
   isEligible: isNativeEligible,
   isPaymentEligible: isNativePaymentEligible,
@@ -10485,6 +10495,7 @@ function initPopupBridge(_ref4) {
 }
 
 var popupBridge = {
+  name: 'popup_bridge',
   setup: setupPopupBridge,
   isEligible: isPopupBridgeEligible,
   isPaymentEligible: isPopupBridgePaymentEligible,
@@ -10653,7 +10664,7 @@ function initiatePayment(_ref3) {
       _payment$decorateCrea = payment.decorateCreateOrder,
       decorateCreateOrder = _payment$decorateCrea === void 0 ? src["h" /* identity */] : _payment$decorateCrea;
   return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-    var _getLogger$info$track;
+    var _getLogger$info$info$;
 
     var personalization = serviceData.personalization,
         merchantID = serviceData.merchantID;
@@ -10663,7 +10674,6 @@ function initiatePayment(_ref3) {
         buttonSessionID = props.buttonSessionID;
     createOrder = decorateCreateOrder(createOrder);
     pay_sendPersonalizationBeacons(personalization);
-    Object(lib["b" /* getLogger */])().info('button_click').track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$track)).flush();
 
     var _getPaymentFlow = getPaymentFlow({
       props: props,
@@ -10672,6 +10682,7 @@ function initiatePayment(_ref3) {
       components: components,
       serviceData: serviceData
     }),
+        name = _getPaymentFlow.name,
         init = _getPaymentFlow.init,
         inline = _getPaymentFlow.inline,
         spinner = _getPaymentFlow.spinner;
@@ -10688,7 +10699,8 @@ function initiatePayment(_ref3) {
         start = _init.start,
         close = _init.close;
 
-    var clickPromise = click(); // $FlowFixMe
+    var clickPromise = click();
+    Object(lib["b" /* getLogger */])().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$info$)).flush(); // $FlowFixMe
 
     button.payPromise = zalgo_promise_src["a" /* ZalgoPromise */].hash({
       valid: onClick ? onClick({
