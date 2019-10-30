@@ -3848,7 +3848,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.v4.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.299",
+  version: "4.0.300",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -4244,10 +4244,12 @@ var config = {
     },
     'greatwolf.com': {
       disable_venmo: true
+    },
+    'cvs.com': {
+      disable_venmo: true
     }
   },
   creditTestDomains: ['bluesuncorp.co.uk', 'nationsphotolab.com', 'plexusworldwide.com', 'nshss.org', 'bissell.com', 'mobstub.com', 'vuoriclothing.com', 'tape4backup.com', 'avivamiento.com', 'rhododendron.org', 'whiterabbitjapan.com', 'atsracing.net', 'thehilltopgallery.com', 'weedtraqr.com', 'worldpantry.com', 'ciraconnect.com', 'mymalls.com', 'prowinch.com', 'zodiacpoolsystems.com', 'everlywell.com', 'candlewarmers.com', 'chop.edu', 'incruises.com', 'flikn.com', 'didforsale.com', 'mcc.org', 'sygu.net', 'merchbar.com', 'eduinconline.com', 'us.livebetterwith.com', 'bakemeawish.com', 'judolaunch.com', 'eventcartel.com', 'tapatalk.com', 'telescope.com', 'covenant.edu', 'aquatruwater.com', 'spingo.com', 'usu.edu', 'getcelerity.com', 'brandless.com', 'saberigniter.com', 'euromodeltrains.com', 'gofasttrader.com', 'megamodzplanet.com', 'draftanalyzer.com', 'lovewithoutboundaries.com', 'filterpop.com', 'seekverify.com', 'photoandgo.com', 'sightseeingpass.com', 'bigoanddukes.com', 'thethirstyduck.com', 'thebrushguys.com', '907delivery.com', 'mauisails.com', 'drive.net', 'channelmax.net', 'modernrebelco.com', 'enchanteddiamonds.com', 'ibabbleon.com', 'fullgenomes.com', 'conn-comp.com', 'wingware.com', 'paradigmgoods.com', 'theneptunegroup.com', 'kidzartworks.com', 'unirealm.com', 'ncfarmsinc.com', 'oneofakindantiques.com', 'servers4less.com', 'stumpthespread.com', 'marketwagon.com', 'monsterhouseplans.com', 'canterburychoral.org', 'teacupnordic.org', 'thethirstyduck.com', 'medialoot.com', 'theartistunion.com', 'yourglamourzone.com', 'breckstables.com', 'mackephotography.com', 'dsaj.org', 'massluminosity.com', 'tespa.org', 'versatilearts.net', 'yecup.org', 'divinebusinessmanagement.com', 'captivatebeautyservices.com', 'class4me.com', 'wcsonlineuniversity.com', 'pvplive.com', 'kyneteks.com', 'rare-paper.com', 'bpg.bpgsim.biz', 'geodegallery.com', 'way.com', 'kringle.com', 'talentedmrsalas.ph', 'litcharts.com', 'purpletreephotography.com', 'apache.org', 'neopackage.com', 'globaldance.tv', 'integral.studio', 'airdoctorpro.com', 'ivoryandiron.com', 'yuengling.com', 'averysbranchfarms.com', 'amberreinink.com', 'skinnymechocolate.com', 'bmbl.net', 'ncwatercolor.net', 'astrograph.com', 'localadventures.mx', 'ripcurl.com', 'worldfootbrakechallenge.com', 'shespeakssales.com', 'obrienguitars.com', 'jadenikkolephoto.com', 'americavoice.com', 'cassiexie.com', 'aamastateconvention.org', 'rellesflorist.com', 'passionnobby.com', 'bodybyheidi.com', 'roqos.com', 'prijector.com', 'maryswanson.net', 'tsghobbies.com', 'erinlaytonphotography.com', 'darter.org', 'fountainpenhospital.com', 'myzestfullife.com', 'pcog.org', 'alisabethdesigns.com', 'katiemathisphoto.com', 'strictlybellaphotography.com', 'maptools.com', 'sites.google.com', 'gallerr.com', 'southfloridatrikke.com', 'caviar.tv', 'mintingmasters.com', 'prospectorsguild.com', 'inktale.com', 'prettygirlgoods.com', 'laceycahill.com', 'daniellenowak.com', 't212.org', 'scmsinc.com', 'babypaloozanc.com', 'tetrisonline.com', 'grdd.net', 'cdspg.info', 'airshipapparel.com', 'waft.com', 'extendpets.com', 'supplyhub.com', 'hlbsusa.com', 'jaderollerbeauty.com', 'theparentingjunkie.com', 'schagringas.com', 'yourscribemate.com', 'sportscollectibles.com', 'thedivinenoise.com', 'hometeamsonline.com', 'trademarkpress.com', 'destinationenglish.us', 'jacquesflowers.com', 'aliszhatchphotography.com', 'rusticfoundry.com', 'ahhhmassage.net', 'frezzor.com', 'mandelininc.com', 'kayleejackson.com', 'monkinstitute.org', 'eddiebsbbq.com', 'morningstarmediaservices.com', 'kinevative.com', 'orivet.com', 'digitalprinthouse.net', 'dynamicgenius.com', 'allpartsusa.com', 'flowersbydavid.net', 'nwvoices.org', 'leaptrade.com', 'tulsaschoolpics.com', 'alioth.io', 'windowflair.com', 'vitcom.net', 'simplybeautifulfashions.com', 'christinabenton.com', 'fromthedaughter.com', 'hometowngraphics.net', 'fibanalysis.com', 'creativejobscentral.com', 'sandbox.gg', 'jt-digitalmedia.com', 'kodable.com', 'birthingstone.com', 'taranicholephoto.com', 'hillyfieldsflorist.com', 'charitynoelphoto.com', 'auxdelicesfoods.com', 'terilynnphotography.com', 'folieadeuxevents.com', 'karensfloral.com', 'montgomerydiveclub.com', 'rainbowplastics.com', 'confettionthedancefloor.com', 'vomozmedia.com', 'neatmod.com', 'getnaturafled.com', 'callingpost.com', 'iamfamily.org', 'pedigreeonline.com', 'typeboost.io', 'in-n-outpetdoor.com', 'nerdstockgc.com', 'keiadmin.com', 'createdbykaui.com', 'aikophoto.com', 'lonestar.ink', 'stlfurs.com', 'treasurelistings.com', 'thecubicle.us', 'redclaypaper.com', 'blushhousemedia.com', 'documentsanddesigns.com', 'whitneyleighphotography.shootproof.com', 'amaryllisday.com', 'hermanproav.com', 'felicemedia.com', 'withloveplacenta.com', 'store.brgadgets.co', 'klowephoto.com', 'spenceraustinconsulting.com', 'sno-eagles.org', 'dsatallahassee.org', 'bakupages.com', 'neswc.com', 'josiebrooksphotography.com', 'brisksale.com', 'legalwhoosh.com', 'jasmineeaster.com', 'swatstudios.com', 'facebook.com', 'shakershell.com', 'alexiswinslow.com', 'mixeddimensions.com', 'sweetpproductions.com', 'lbeaphotography.com', 'otlseatfillers.com', 'jdtickets.com', 'catholicar.com', 'masque.com', 'smalltownstudio.net', 'goherbalife.com', 'itzyourz.com', 'magazinespeedloader.com', 'dreammachines.io', 'dallasdieteticalliance.org', 'http:', 'medair.org', 'unbridledambition.com', 'sarasprints.com', 'wiperecord.com', 'showmyrabbit.com', 'cctrendsshop.com', 'rachelalessandra.com', 'otherworld-apothecary.com', 'melissaannphoto.com', 'girlceo.co', 'seasidemexico.com', 'telosid.com', 'instin.com', 'marinecorpsmustang.org', 'lancityconnect.com', 'hps1.org', 'karenware.com', 'livecurriculum.com', 'spellingstars.com', 'vektorfootball.com', 'zaltv.com', 'nebraskamayflower.org', 'ethiopianspices.com', 'immitranslate.com', 'rafaelmagic.com.com', 'bahc1.org', 'newenamel.com', 'bhchp.org', 'buybulkamerica.com', 'sourcepoint.com', 'squarestripsports.com', 'wix.com', 'wilderootsphotography.com', 'goodsalt.com', 'systemongrid.com', 'designmil.org', 'freshtrendhq.com', 'valisimofashions.com', 'buyneatly.com', 'getbeauty.us', 'intellimidia.com'],
-  apmTestDomains: ['agsm.it', 'ls-felgendesign.de', 'domecgo.com', 'raffaeleinghilterra.it', 'hills4me.com', 'anastasis.it', 'liberidallavoro.org', 'lgancce.com', 'fiat.com', 'amnesty.de', 'raftingcenter.it', 'myrabona.it', 'firabarcelona.com', 'elidentsrl.it', 'sprayplanet.es', 'cutipol.pt', 'newslist.it', 'bamboomt2.eu', 'gisa.net', 'italialaser.org', 'hydeofficialstore.com', 'huber-verlag.de', 'joomlacontenteditor.net', 'kletterzentrum-innsbruck.at', 'knobmusiciandesign.com', 'shipstage.com', 'whatsmonitor.com', 'napoleonx.ai', 'activitiesbookingsystem.com', 'spider-slacklines.com', 'sononato.it', 'alpi4000.it', 'penimaster.de', 'sportbionier.com', 'bioseme.it', 'ilpaninotondo.it', 'meyer-menue.de', 'uni-heidelberg.de', 'cameo.it', 'pasteleriabuenavista.com', 'wuv.de', 'papacheck.de', 'traderlink.com', 'agcalabrese.it', 'smatchfe.club', 'sarastro-stauden.com', 'vandenberg-berlin.com', 't-shirtprinting.it', 'raftingrepublic.com', 'cityspeeddating.at', 'euroval.com', 'albero-dellavita.it', 'mediumelisa.it', 'inkmaster.it', 'run-healthy.com', 'cna.it', 'mufight2.com', 'louvardgame.be', 'pruefungsdoc.de', 'europublishing.it', 'edaiperiodici.it', 'day.it', 'delinero.de', 'unicocampania.it', 'blumediterraneosas.com', 'rustv.it', 'geldverstehen.de', 'skiclubfossoasd.it', 'panorama-restaurant-stuttgart.de', 'movember.com', 'ombrellibolero.it', 'devoto-oli.it', 'el-teatro.de', 'ittshop.com', 'team-f.de', 'ferien.events', 'newnailssystem.com', 'softwarevenere.com', 'stikid.com', 'evocoach.it', 'caffepiansa.com', 'epsoprep.com', 'brickowl.com', 'one28racing.com', 'chogusto.com', 'centrostudiliberale.it', 'biotech-shop.nl', 'knightonline-myko.net', 'rad-germany.de', 'damascus-store.com', 'valkhair.nl', 'tu-darmstadt.de', 'lemediatv.fr', 'mondoevacanze.it', 'golfinthesun.org', 'altinotravel.gr', 'nsk.si', 'humanhuman.com', 'conento.com', 'encuentratupsicologo.com', 'onlainez.net', 'bp-tools.de', 'bestrongforkids.de', 'cloudboxes.io', 'creatone.de', 'nethserver.com', 'kulturstiftung-koelnerdom.de', 'ixso.eu', 'modulus.gr', 'aerbrava.com', 'allgrass.net', 'artfloral.org', 'studyclix.ie', 'esthergarciaboutique.com', 'abookforthat.com', 'aurarium.ch', 'tippevent.de', 'musicspoon.io', 'h10hotels.com', 'frizzoshopping.com', 'stargift.ro', 'svojtka.sk', 'salvadori.me', 'sfmc.eu', 'parsifalpark.it', 'exilux.de', 'brothausmoberg.com', 'opificiografico.com', 'lalibertadivolare.it', 'airportfreewifi.it', 'diemagnetisten.de', 'shbook.it', 'vallandry-sports.com', 'crowdcoinage.com', 'dresscodeboutique.fr', 'talhita.it', 'corticle.com', 'anymator.de', 'legalizer.it', 'handmadefantasyworld.com', '1001-sushi-bordeaux.com', 'elarconte.com', 'sushiathome.pt', 'associazionecest.it', 'traduzioni-legalizzate.it', 'janvas.com', 'bluemeusb.nl', 'lacala.es', 'speironcompany.com', 'flam-racing.fr', '1thebrand.com', 'kidooland.com', 'beneathmysins.com', 'linelab.eu', 'afroonatural.com', 'azurewebsites.net', 'munich-ski-shuttle.com', 'euroservizi2012.it', 'radiostim.com', 'cbibikia.com', 'nadur8k.com', 'custom-hookah.de', 'imexlicensing.com', 'belts-parma.it', 'generated4u.com', 'pilarsantisteban.com', 'consulenzeagroalimentari.it', 'lavilladeipini.com', 'burgershacklennep.de', 'vmlens.com', 'xoring.com', 'moto4.it', 'parospark.com', 'commentme.com', 'antoniodalessandro.it', 'kinarecords.com', 'bybus.pt', 'parquecerdeira.com', 'cineclaqueta.com', 'saddolls.net', 'mydamart.fr', 'rfbnet.nl', 'netsons.org', 'rebrickable.com', 'portodoavesso.com', 'leobridge.net', 'mikros.co', 'bekinky.net', 'pix4u.one', 'smtperformances.fr', 'siiturista.it', 'gorrasbebe.es', 'cbd-laden.at', 'tobiaswaelde.de', 'veneziaradiotv.it', 'sopimuspohja.com', 'cristianalopes.ddns.net', 'saliyafoundation.de', 'robertocosentino.it', 'billy-white.de', 'johndixt.it', 'alexmas.cloud', 'things-to-do-in-gran-canaria.com', 'rroseselavy.it', 'paradigmpalace.com', 'chardez.be', 'online-rechnungen.de', 'vip-urlaub.de', 'lyrau.com', 'perfectiptv3006.000webhostapp.com', 'seminarsincyprus.com', 'snapandprint.com', 'le-heron.net', 'need4tech.gr', 'eurolamps.eu', 'paygety.ee', 'gestionaliprosoft.it', 'decoindustriel.fr', 'acmo.corsica', 'slovakforaday.com', 'vhlave.sk', 'hughmcgovernwriting.com', 'nowgaming.fr', 'divecentercorralejo.com', 'mobile.de', 'skebby.it'],
   customCountry: false,
   SUPPORTED_BROWSERS: {
     msie: '11',
@@ -5595,6 +5597,19 @@ function closeWindow(win) {
   } catch (err) {// pass
   }
 }
+function getFrameForWindow(win) {
+  if (isSameDomain(win)) {
+    return assertSameDomain(win).frameElement;
+  }
+
+  for (var _i21 = 0, _document$querySelect2 = document.querySelectorAll('iframe'); _i21 < _document$querySelect2.length; _i21++) {
+    var frame = _document$querySelect2[_i21];
+
+    if (frame && frame.contentWindow && frame.contentWindow === win) {
+      return frame;
+    }
+  }
+}
 // CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/types.js
 // export something to force webpack to see this as an ES module
 var TYPES = true;
@@ -5649,6 +5664,7 @@ var TYPES = true;
 /* unused concated harmony import isMockDomain */
 /* unused concated harmony import normalizeMockUrl */
 /* unused concated harmony import closeWindow */
+/* unused concated harmony import getFrameForWindow */
 /* unused concated harmony import TYPES */
 /* concated harmony reexport PROTOCOL */__webpack_require__.d(__webpack_exports__, "a", function() { return PROTOCOL; });
 /* unused concated harmony import WILDCARD */
@@ -6874,7 +6890,7 @@ function parseMessage(message) {
 
 function receiveMessage(event) {
   if (!window || window.closed) {
-    throw new Error("Message recieved in closed window");
+    return;
   }
 
   try {
@@ -10282,7 +10298,7 @@ function experiment(_ref) {
         return this;
       }
 
-      if (isEventUnique(name + "_" + treatment)) {
+      if (isEventUnique(name + "_" + treatment + "_" + JSON.stringify(payload))) {
         logTreatment({
           name: name,
           treatment: treatment,
@@ -10290,7 +10306,7 @@ function experiment(_ref) {
         });
       }
 
-      if (isEventUnique(name + "_" + treatment + "_" + checkpoint)) {
+      if (isEventUnique(name + "_" + treatment + "_" + checkpoint + "_" + JSON.stringify(payload))) {
         logCheckpoint({
           name: name,
           treatment: treatment,
@@ -12620,7 +12636,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.299";
+    payload.version = "4.0.300";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -12676,7 +12692,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.299".replace(/[^0-9]+/g, '_');
+      var version = "4.0.300".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -12693,7 +12709,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.299",
+    v: "checkout.js." + "4.0.300",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -14091,17 +14107,17 @@ __webpack_require__.r(__webpack_exports__);
 
 if (false) {}
 
-if (window.paypal && window.paypal.version === "4.0.299") {
+if (window.paypal && window.paypal.version === "4.0.300") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.299"
+    version: "4.0.300"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.299" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.299" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.300" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.300" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.299"
+    version: "4.0.300"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.299");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.300");
 } else {
   try {
     var _interface = __webpack_require__(56);
@@ -18377,7 +18393,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(lib_session["c" /* getSessionID */])(),
-      ver: "4.0.299"
+      ver: "4.0.300"
     };
   });
   Object(beaver_logger_client["a" /* addHeaderBuilder */])(function () {
@@ -18950,7 +18966,7 @@ function getScriptVersion() {
   if ( true && isPayPalObjects()) {
     return  false ? undefined : "4";
   } else {
-    return  false ? undefined : "4.0.299";
+    return  false ? undefined : "4.0.300";
   }
 }
 function getCurrentScriptUrl() {
@@ -18966,7 +18982,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.299" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.300" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -34370,7 +34386,7 @@ function componentTemplate_componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(props_normalizeProps(props)) : null;
-  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.299", _ref19), {
+  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.300", _ref19), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -34520,7 +34536,6 @@ function setupButtonChild(ButtonComponent) {
 
 
 
-
 pptm.listenForLoadWithNoContent();
 
 function isCreditDualEligible(props) {
@@ -34586,33 +34601,6 @@ function isCreditDualEligible(props) {
   }
 
   return true;
-}
-
-var isDomainAllowed = Object(util["i" /* memoize */])(function () {
-  var domain = Object(cross_domain_utils_src["h" /* getDomain */])().replace(/^https?:\/\//, '').replace(/^www\./, '');
-
-  if (!config["a" /* config */].apmTestDomains.some(function (allowDomain) {
-    var regex = new RegExp("[^a-zA-Z\\d\\-]*" + allowDomain.replace(/\./g, '\\.') + "$"); // eslint-disable-line security/detect-non-literal-regexp
-
-    return domain.match(regex) !== null;
-  })) {
-    return false;
-  }
-
-  return true;
-});
-
-function isApmEligible(source, props) {
-  var _normalizeProps2 = props_normalizeProps(props, {
-    locale: Object(dom["b" /* getBrowserLocale */])()
-  }),
-      locale = _normalizeProps2.locale;
-
-  if (getFundingConfig(source, 'allowedCountries', [locale.country]).indexOf(locale.country) === -1) {
-    return false;
-  }
-
-  return isDomainAllowed();
 }
 
 var creditThrottle;
@@ -34979,11 +34967,6 @@ var component_Button = interface_create({
           }
         }
 
-        var APM_FUNDING = [src_constants["v" /* FUNDING */].IDEAL, src_constants["v" /* FUNDING */].SOFORT, src_constants["v" /* FUNDING */].GIROPAY, src_constants["v" /* FUNDING */].BANCONTACT, src_constants["v" /* FUNDING */].P24, src_constants["v" /* FUNDING */].MYBANK, src_constants["v" /* FUNDING */].EPS, src_constants["v" /* FUNDING */].PAYU, src_constants["v" /* FUNDING */].VERKKOPANKKI, src_constants["v" /* FUNDING */].BLIK, src_constants["v" /* FUNDING */].TRUSTLY, src_constants["v" /* FUNDING */].MAXIMA, src_constants["v" /* FUNDING */].BOLETO, src_constants["v" /* FUNDING */].OXXO];
-        var apmFunding = APM_FUNDING.filter(function (source) {
-          return isApmEligible(source, props);
-        });
-        allowed = allowed.concat(apmFunding);
         var remembered = getRememberedFunding(function (sources) {
           return sources;
         });
@@ -36112,53 +36095,6 @@ if (!Object(security["b" /* isPayPalDomain */])()) {
     }
 
     Object(beaver_logger_client["o" /* track */])((setup_track2 = {}, setup_track2[src_constants["u" /* FPTI */].KEY.STATE] = src_constants["u" /* FPTI */].STATE.LOAD, setup_track2[src_constants["u" /* FPTI */].KEY.TRANSITION] = src_constants["u" /* FPTI */].TRANSITION.SCRIPT_LOAD, setup_track2[src_constants["u" /* FPTI */].KEY.TRANSITION_TIME] = loadTime, setup_track2[src_constants["u" /* FPTI */].KEY.FUNDING_REMEMBERED] = getRememberedFunding().join(','), setup_track2));
-
-    try {
-      var applePay = 'unavailable';
-      var paymentRequest = 'unavailable';
-
-      if (window.ApplePaySession && window.ApplePaySession.canMakePayments && window.ApplePaySession.canMakePayments()) {
-        applePay = 'available';
-      }
-
-      if (window.PaymentRequest) {
-        paymentRequest = 'available';
-      }
-
-      zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
-        if (window.PaymentRequest) {
-          var paymentReq = new window.PaymentRequest([{
-            supportedMethods: 'basic-card'
-          }], {
-            total: {
-              label: 'Total',
-              amount: {
-                currency: 'USD',
-                value: '1.00'
-              }
-            }
-          });
-          return paymentReq.canMakePayment();
-        }
-
-        return false;
-      }).catch(function () {
-        return false;
-      }).then(function (result) {
-        if (result) {
-          paymentRequest = 'available_with_funding_sources';
-        }
-
-        Object(beaver_logger_client["o" /* track */])({
-          apple_pay: applePay,
-          payment_request_api: paymentRequest
-        });
-        Object(beaver_logger_client["k" /* info */])("apple_pay_" + applePay);
-        Object(beaver_logger_client["k" /* info */])("payment_request_" + paymentRequest);
-        Object(beaver_logger_client["h" /* flush */])();
-      }).catch(util["j" /* noop */]);
-    } catch (err) {// pass
-    }
   } else {
     var setup_track3;
 
@@ -36200,7 +36136,7 @@ var interface_postRobot = src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.299";
+var interface_version = "4.0.300";
 var interface_checkout;
 var apps;
 

@@ -1888,6 +1888,19 @@ function closeWindow(win) {
   } catch (err) {// pass
   }
 }
+function getFrameForWindow(win) {
+  if (isSameDomain(win)) {
+    return assertSameDomain(win).frameElement;
+  }
+
+  for (var _i21 = 0, _document$querySelect2 = document.querySelectorAll('iframe'); _i21 < _document$querySelect2.length; _i21++) {
+    var frame = _document$querySelect2[_i21];
+
+    if (frame && frame.contentWindow && frame.contentWindow === win) {
+      return frame;
+    }
+  }
+}
 // CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/types.js
 // export something to force webpack to see this as an ES module
 var TYPES = true;
@@ -4296,7 +4309,7 @@ function experiment(_ref) {
         return this;
       }
 
-      if (isEventUnique(name + "_" + treatment)) {
+      if (isEventUnique(name + "_" + treatment + "_" + JSON.stringify(payload))) {
         logTreatment({
           name: name,
           treatment: treatment,
@@ -4304,7 +4317,7 @@ function experiment(_ref) {
         });
       }
 
-      if (isEventUnique(name + "_" + treatment + "_" + checkpoint)) {
+      if (isEventUnique(name + "_" + treatment + "_" + checkpoint + "_" + JSON.stringify(payload))) {
         logCheckpoint({
           name: name,
           treatment: treatment,
@@ -15295,7 +15308,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.299", _ref19), {
+  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.300", _ref19), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
