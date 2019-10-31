@@ -5891,7 +5891,9 @@ function webSocket(_ref7) {
   });
 }
 var loadFirebaseSDK = Object(belter_src["l" /* memoize */])(function (config) {
-  return src["a" /* ZalgoPromise */].all([Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]).then(function () {
+  return Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP).then(function () {
+    return src["a" /* ZalgoPromise */].all([Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]);
+  }).then(function () {
     var firebase = window.firebase;
 
     if (!firebase) {
@@ -10189,7 +10191,7 @@ function initNative(_ref6) {
   };
 
   var getNativeUrl = function getNativeUrl() {
-    var domain = fundingSource === sdk_constants_src["g" /* FUNDING */].VENMO ? Object(cross_domain_utils_src["b" /* getDomain */])().replace('sandbox.', '') : Object(cross_domain_utils_src["b" /* getDomain */])();
+    var domain = fundingSource === sdk_constants_src["g" /* FUNDING */].VENMO ? 'https://www.paypal.com' : Object(cross_domain_utils_src["b" /* getDomain */])();
     return Object(src["e" /* extendUrl */])("" + domain + src_config["h" /* NATIVE_CHECKOUT_URI */][fundingSource], {
       query: {
         sessionUID: native_sessionUID,
