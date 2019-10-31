@@ -175,7 +175,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const getNativeUrl = () : string => {
         const domain = (fundingSource === FUNDING.VENMO)
-            ? getDomain().replace('sandbox.', '')
+            ? 'https://www.paypal.com'
             : getDomain();
 
         return extendUrl(`${ domain }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
