@@ -10099,6 +10099,12 @@ function isNativeEligible(_ref3) {
     return false;
   }
 
+  if (isNativeOptedIn({
+    props: props
+  })) {
+    return true;
+  }
+
   return eligibility.native;
 }
 
