@@ -91,6 +91,10 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
         return false;
     }
 
+    if (isNativeOptedIn({ props })) {
+        return true;
+    }
+
     return eligibility.native;
 }
 
