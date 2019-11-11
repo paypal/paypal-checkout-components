@@ -1795,6 +1795,19 @@ function closeWindow(win) {
   } catch (err) {// pass
   }
 }
+function getFrameForWindow(win) {
+  if (isSameDomain(win)) {
+    return assertSameDomain(win).frameElement;
+  }
+
+  for (var _i21 = 0, _document$querySelect2 = document.querySelectorAll('iframe'); _i21 < _document$querySelect2.length; _i21++) {
+    var frame = _document$querySelect2[_i21];
+
+    if (frame && frame.contentWindow && frame.contentWindow === win) {
+      return frame;
+    }
+  }
+}
 // CONCATENATED MODULE: ./node_modules/cross-domain-utils/src/types.js
 // export something to force webpack to see this as an ES module
 var TYPES = true;
@@ -2238,8 +2251,8 @@ function memoizePromise(method) {
   var cache = {}; // eslint-disable-next-line flowtype/no-weak-types
 
   function memoizedPromiseFunction() {
-    var _this2 = this,
-        _arguments = arguments;
+    var _arguments = arguments,
+        _this2 = this;
 
     for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
       args[_key2] = arguments[_key2];
@@ -2452,8 +2465,8 @@ function patchMethod(obj, name, handler) {
   var original = obj[name];
 
   obj[name] = function patchedMethod() {
-    var _this3 = this,
-        _arguments2 = arguments;
+    var _arguments2 = arguments,
+        _this3 = this;
 
     return handler({
       context: this,
@@ -2986,8 +2999,8 @@ function debounce(method, time) {
   var timeout;
 
   var debounceWrapper = function debounceWrapper() {
-    var _this4 = this,
-        _arguments3 = arguments;
+    var _arguments3 = arguments,
+        _this4 = this;
 
     clearTimeout(timeout);
     timeout = setTimeout(function () {
@@ -4203,14 +4216,15 @@ function experiment(_ref) {
         return this;
       }
 
-      if (isEventUnique(name + "_" + treatment)) {
+      if (isEventUnique(name + "_" + treatment + "_" + JSON.stringify(payload))) {
         logTreatment({
           name: name,
-          treatment: treatment
+          treatment: treatment,
+          payload: payload
         });
       }
 
-      if (isEventUnique(name + "_" + treatment + "_" + checkpoint)) {
+      if (isEventUnique(name + "_" + treatment + "_" + checkpoint + "_" + JSON.stringify(payload))) {
         logCheckpoint({
           name: name,
           treatment: treatment,
