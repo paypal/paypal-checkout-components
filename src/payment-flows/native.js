@@ -91,15 +91,7 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
         return false;
     }
 
-    if (isNativeOptedIn({ props })) {
-        if (eligibility.native) {
-            return eligibility.native;
-        } else {
-            return true;
-        }
-    }
-
-    return false;
+    return eligibility.native;
 }
 
 function isNativePaymentEligible({ payment } : { payment : Payment }) : boolean {
