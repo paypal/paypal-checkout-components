@@ -98,7 +98,7 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
     return eligibility.native;
 }
 
-function isNativePaymentEligible({ payment } : { payment : Payment }) : boolean {
+function isNativePaymentEligible({ payment, props } : { payment : Payment, props : Props }) : boolean {
     const { win, fundingSource } = payment;
 
     if (win) {
@@ -110,6 +110,10 @@ function isNativePaymentEligible({ payment } : { payment : Payment }) : boolean 
     }
 
     if (!nativeSocket) {
+        return false;
+    }
+
+    if (fundingSource === FUNDING.VENMO && !isNativeOptedIn({ props })) {
         return false;
     }
 
