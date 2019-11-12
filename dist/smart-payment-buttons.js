@@ -10109,7 +10109,8 @@ function isNativeEligible(_ref3) {
 }
 
 function isNativePaymentEligible(_ref4) {
-  var payment = _ref4.payment;
+  var payment = _ref4.payment,
+      props = _ref4.props;
   var win = payment.win,
       fundingSource = payment.fundingSource;
 
@@ -10122,6 +10123,12 @@ function isNativePaymentEligible(_ref4) {
   }
 
   if (!nativeSocket) {
+    return false;
+  }
+
+  if (fundingSource === sdk_constants_src["g" /* FUNDING */].VENMO && !isNativeOptedIn({
+    props: props
+  })) {
     return false;
   }
 
