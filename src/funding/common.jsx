@@ -15,6 +15,43 @@ export type CardConfig = {|
     Label : () => ChildType
 |};
 
+export type LogoOptions = {|
+    locale : LocaleType,
+    label : ?$Values<typeof BUTTON_LABEL>,
+    logoColor : $Values<typeof LOGO_COLOR>,
+    optional? : boolean,
+    fundingEligibility : FundingEligibilityType,
+    onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
+    nonce : string,
+    cardButtonExperiment? : boolean
+|};
+
+export type LabelOptions = {|
+    logo : ChildType,
+    label : ?$Values<typeof BUTTON_LABEL>,
+    locale : LocaleType,
+    logoColor : $Values<typeof LOGO_COLOR>,
+    multiple : boolean,
+    period? : number,
+    fundingEligibility : FundingEligibilityType,
+    optional? : boolean,
+    onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
+    layout : $Values<typeof BUTTON_LAYOUT>,
+    clientAccessToken : ?string,
+    personalization : Personalization
+|};
+
+export type VaultLabelOptions = {|
+    logoColor : $Values<typeof LOGO_COLOR>,
+    label : string,
+    vendor? : $Values<typeof CARD>
+|};
+
+export type TagOptions = {|
+    locale : LocaleType,
+    multiple : boolean
+|};
+
 export type FundingSourceConfig = {|
     shippingChange? : boolean,
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
@@ -23,39 +60,10 @@ export type FundingSourceConfig = {|
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
     eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType }) => boolean,
-    Logo : ({|
-        locale : LocaleType,
-        label : ?$Values<typeof BUTTON_LABEL>,
-        logoColor : $Values<typeof LOGO_COLOR>,
-        optional? : boolean,
-        fundingEligibility : FundingEligibilityType,
-        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
-        nonce : string,
-        cardButtonExperiment? : boolean
-    |}) => ChildType,
-    Label : ({|
-        logo : ChildType,
-        label : ?$Values<typeof BUTTON_LABEL>,
-        locale : LocaleType,
-        logoColor : $Values<typeof LOGO_COLOR>,
-        multiple : boolean,
-        period? : number,
-        fundingEligibility : FundingEligibilityType,
-        optional? : boolean,
-        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
-        layout : $Values<typeof BUTTON_LAYOUT>,
-        clientAccessToken : ?string,
-        personalization : Personalization
-    |}) => ChildType,
-    VaultLabel? : ({|
-        logoColor : $Values<typeof LOGO_COLOR>,
-        label : string,
-        vendor? : $Values<typeof CARD>
-    |}) => ChildType,
-    Tag? : ({|
-        locale : LocaleType,
-        multiple : boolean
-    |}) => ChildType,
+    Logo : (LogoOptions) => ChildType,
+    Label : (LabelOptions) => ChildType,
+    VaultLabel? : (VaultLabelOptions) => ChildType,
+    Tag? : (TagOptions) => ChildType,
     handleClick : boolean,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
