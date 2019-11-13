@@ -189,7 +189,8 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 token:      orderID,
                 native_xo:  '1',
                 fundingSource,
-                useraction: commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE
+                useraction: commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
+                facilitatorAccessToken
             }
         });
     };
