@@ -180,7 +180,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     
                 // eslint-disable-next-line no-use-before-define
                 return close().then(() => {
-                    return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart });
+                    return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart }).catch(noop);
                 });
             },
     

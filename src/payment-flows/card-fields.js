@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
-import { memoize, querySelectorAll, debounce } from 'belter/src';
+import { memoize, querySelectorAll, debounce, noop } from 'belter/src';
 
 import type { Props, Config, ServiceData, Components } from '../button/props';
 import { DATA_ATTRIBUTES } from '../constants';
@@ -146,7 +146,7 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
         onApprove: ({ payerID, paymentID, billingToken }) => {
             // eslint-disable-next-line no-use-before-define
             return close().then(() => {
-                return onApprove({ payerID, paymentID, billingToken, buyerAccessToken }, { restart });
+                return onApprove({ payerID, paymentID, billingToken, buyerAccessToken }, { restart }).catch(noop);
             });
         },
 

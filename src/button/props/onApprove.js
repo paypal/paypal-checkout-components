@@ -1,6 +1,6 @@
 /* @flow */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, redirect as redir, noop } from 'belter/src';
 import { INTENT, SDK_QUERY_KEYS, FPTI_KEY } from '@paypal/sdk-constants/src';
 
@@ -219,7 +219,11 @@ export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOr
 
             if (onApprove) {
                 return onApprove(data, actions).catch(err => {
-                    return onError(err);
+                    return ZalgoPromise.try(() => {
+                        return onError(err);
+                    }).then(() => {
+                        throw err;
+                    });
                 });
             } else {
                 if (intent === INTENT.CAPTURE) {
