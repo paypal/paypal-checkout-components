@@ -1,8 +1,8 @@
 /* @flow */
 
 import { max, perc } from 'belter/src';
-import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
+import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from '../../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
@@ -32,21 +32,30 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     min-height: ${ height || style.minHeight }px;
                     max-height: ${ height || style.maxHeight }px;
                 }
-
+                
                 .${ CLASS.BUTTON } .${ CLASS.SPINNER } {
                     height: ${ perc(buttonHeight, 50) }px;
                     width: ${ perc(buttonHeight, 50) }px;
                 }
 
-                .${ CLASS.BUTTON } > .${ LOGO_CLASS.LOGO },
-                .${ CLASS.BUTTON } > .${ LOGO_CLASS.CARD } {
+                .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
                     height: ${ perc(buttonHeight, 35) + 5 }px;
                     max-height: ${ perc(buttonHeight, 60) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;
                 }
+
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }]:not([${ ATTRIBUTE.PAYMENT_METHOD_ID }]) .${ CLASS.BUTTON_LABEL } {
+                    height: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                }
+
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }] .${ LOGO_CLASS.LOGO } {
+                    zmargin-bottom: 2px;
+                }
                 
-                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ LOGO_CLASS.LOGO },
-                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ LOGO_CLASS.LOGO } {
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL },
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ CLASS.BUTTON_LABEL } {
                     height: ${ perc(buttonHeight, 50) + 5 }px;
                     max-height: ${ perc(buttonHeight, 70) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;

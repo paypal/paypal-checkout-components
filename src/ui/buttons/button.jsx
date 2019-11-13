@@ -103,21 +103,23 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             onKeyPress={ handleClick ? null : keyboardAccessibilityHandler }
             tabindex={ handleClick ? '-1' : '0' }>
 
-            <Label
-                logo={ logo }
-                label={ label }
-                nonce={ nonce }
-                locale={ locale }
-                logoColor={ logoColor }
-                period={ period }
-                layout={ layout }
-                multiple={ multiple }
-                fundingEligibility={ fundingEligibility }
-                onClick={ clickHandler }
-                onKeyPress={ keyboardAccessibilityHandler }
-                clientAccessToken={ clientAccessToken }
-                personalization={ personalization }
-            />
+            <div class={ CLASS.BUTTON_LABEL }>
+                <Label
+                    logo={ logo }
+                    label={ label }
+                    nonce={ nonce }
+                    locale={ locale }
+                    logoColor={ logoColor }
+                    period={ period }
+                    layout={ layout }
+                    multiple={ multiple }
+                    fundingEligibility={ fundingEligibility }
+                    onClick={ clickHandler }
+                    onKeyPress={ keyboardAccessibilityHandler }
+                    clientAccessToken={ clientAccessToken }
+                    personalization={ personalization }
+                />
+            </div>
 
             <Spinner />
         </div>
@@ -193,12 +195,14 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
             onClick={ clickHandler }
             onKeyPress={ keyboardAccessibilityHandler } >
 
-            <VaultLabel
-                nonce={ nonce }
-                logoColor={ logoColor }
-                vendor={ vendor }
-                label={ label }
-            />
+            <div class={ CLASS.BUTTON_LABEL }>
+                <VaultLabel
+                    nonce={ nonce }
+                    logoColor={ logoColor }
+                    vendor={ vendor }
+                    label={ label }
+                />
+            </div>
 
             <Spinner />
             { ENABLE_VAULT_DROPDOWN ? <MenuButton /> : null }

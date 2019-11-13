@@ -13,7 +13,7 @@ import { BasicButton, VaultedButton } from './button';
 import { TagLine } from './tagline';
 import { Script } from './script';
 import { buttonContent } from './content';
-import { PoweredByPayPal } from './poweredByPayPal';
+import { PoweredByPayPal } from './poweredBy';
 
 type ButtonsProps = ButtonPropsInputs & {|
     onClick? : Function

@@ -1,8 +1,9 @@
 /* @flow */
 
 export const CLASS = {
-    CONTAINER: ('paypal-button-container' : 'paypal-button-container'),
-    BUTTON:    ('paypal-button' : 'paypal-button'),
+    CONTAINER:    ('paypal-button-container' : 'paypal-button-container'),
+    BUTTON:       ('paypal-button' : 'paypal-button'),
+    BUTTON_LABEL: ('paypal-button-label-container' : 'paypal-button-label-container'),
 
     LABEL:      ('paypal-button-label' : 'paypal-button-label'),
     COLOR:      ('paypal-button-color' : 'paypal-button-color'),

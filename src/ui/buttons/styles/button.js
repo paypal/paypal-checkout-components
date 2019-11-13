@@ -67,16 +67,18 @@ export const buttonStyle = `
         white-space: pre-wrap;
     }
 
-    .${ CLASS.BUTTON } > .${ LOGO_CLASS.LOGO },
-    .${ CLASS.BUTTON } > .${ LOGO_CLASS.CARD },
-    .${ CLASS.BUTTON } > .${ CLASS.TEXT } {
-        vertical-align: top;
+    .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
         position: relative;
         top: 50%;
         transform: translateY(-50%);
-        text-align: left;
     }
 
+    .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } > * {
+        vertical-align: top;
+        height: 100%;
+        text-align: left;
+    }
+    
     .${ CLASS.TAGLINE } {
         max-width: 100%;
         font-weight: normal;
@@ -122,15 +124,5 @@ export const buttonStyle = `
 
     .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
         margin-top: 10px;
-    }
-
-    .${ CLASS.POWERED_BY } > .${ CLASS.TEXT } {
-        vertical-align: top;
-        line-height: 18px;
-    }
-
-    .${ CLASS.POWERED_BY } > .${ LOGO_CLASS.LOGO } {
-        height: 16px;
-        min-height: 16px;
     }
 `;

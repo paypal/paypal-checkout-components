@@ -8,6 +8,10 @@ function getComponentScript() : () => void {
     /* istanbul ignore next */
     return () => {
 
+        const ATTRIBUTE = {
+            OPTIONAL: 'optional'
+        };
+
         const STYLE = {
             BLOCK:        'block',
             INLINE_BLOCK: 'inline-block',
@@ -17,17 +21,23 @@ function getComponentScript() : () => void {
         };
 
         const SELECTOR = {
+            ALL:      '*',
             IMG:      'img',
-            OPTIONAL: '[optional]'
+            OPTIONAL: `[${ ATTRIBUTE.OPTIONAL }]`
         };
+
+        // eslint-disable-next-line flowtype/no-mutable-array
+        function toArray<T>(item) : Array<T> {
+            return Array.prototype.slice.call(item);
+        }
 
         function getElements(selector, parent) : $ReadOnlyArray<HTMLElement> {
             parent = parent || document;
-            return Array.prototype.slice.call(parent.querySelectorAll(selector));
+            return toArray(parent.querySelectorAll(selector));
         }
 
-        function showElement(el : HTMLElement, displayType : string = STYLE.INLINE_BLOCK) {
-            el.style.display = displayType;
+        function showElement(el : HTMLElement) {
+            el.style.display = '';
         }
 
         function hideElement(el : HTMLElement) {
@@ -35,41 +45,11 @@ function getComponentScript() : () => void {
         }
 
         function makeElementVisible(el : HTMLElement) {
-            el.style.visibility = STYLE.VISIBLE;
+            el.style.visibility = '';
         }
 
         function makeElementInvisible(el : HTMLElement) {
             el.style.visibility = STYLE.HIDDEN;
-        }
-
-        function hasDimensions(el : HTMLElement) : boolean {
-            const rect = el.getBoundingClientRect();
-            return Boolean(rect.height && rect.width);
-        }
-
-        function isHidden(el : HTMLElement) : boolean {
-            const computedStyle = window.getComputedStyle(el);
-            return (!computedStyle || computedStyle.display === STYLE.NONE);
-        }
-
-        function displayedElementsHaveDimensions(elements : $ReadOnlyArray<HTMLElement>) : boolean {
-            return elements.every(el => {
-                return hasDimensions(el) || isHidden(el);
-            });
-        }
-
-        function onDisplay(elements, method) {
-            if (displayedElementsHaveDimensions(elements)) {
-                method();
-                return;
-            }
-
-            const interval = setInterval(() => {
-                if (displayedElementsHaveDimensions(elements)) {
-                    clearInterval(interval);
-                    method();
-                }
-            }, 5);
         }
 
         function pxToInt(val : string | number) : number {
@@ -133,36 +113,41 @@ function getComponentScript() : () => void {
             return false;
         }
 
-        const allImages = getElements(SELECTOR.IMG);
-        const optionals = getElements(SELECTOR.OPTIONAL);
-        const optionalParents = unique(optionals.map(optional => optional.parentElement).filter(Boolean));
+        const optionalParents = unique(getElements(SELECTOR.OPTIONAL).map(optional => optional.parentElement).filter(Boolean));
+
+        const children = optionalParents.map(optionalParent => {
+            const allChildren = getElements(SELECTOR.ALL, optionalParent);
+
+            const optionalChildren = toArray(getElements(SELECTOR.OPTIONAL, optionalParent)).sort((first, second) => {
+                return parseInt(second.getAttribute(ATTRIBUTE.OPTIONAL) || 0, 10) - parseInt(first.getAttribute(ATTRIBUTE.OPTIONAL) || 0, 10);
+            });
+
+            return {
+                allChildren,
+                optionalChildren
+            };
+        });
 
         function toggleOptionals() {
-            optionalParents.forEach(optionalParent => {
-                const parentChildren = Array.prototype.slice.call(optionalParent.children);
-                const optionalChildren = getElements(SELECTOR.OPTIONAL, optionalParent);
+            for (const { allChildren, optionalChildren } of children) {
+                optionalChildren.forEach(showElement);
 
-                parentChildren.forEach(el => showElement(el));
-
-                if (parentChildren.some(isOverflowing)) {
-                    optionalChildren.forEach(hideElement);
-                    optionalChildren.forEach(makeElementInvisible);
-                } else {
-                    optionalChildren.forEach(makeElementVisible);
+                for (const optionalChild of optionalChildren) {
+                    if (allChildren.some(isOverflowing)) {
+                        hideElement(optionalChild);
+                        makeElementInvisible(optionalChild);
+                    } else {
+                        makeElementVisible(optionalChild);
+                    }
                 }
-            });
+            }
         }
 
         toggleOptionals();
 
-        onDisplay(allImages, () => {
-            allImages.forEach(makeElementVisible);
-            toggleOptionals();
-
-            document.addEventListener('DOMContentLoaded', toggleOptionals);
-            window.addEventListener('load', toggleOptionals);
-            window.addEventListener('resize', toggleOptionals);
-        });
+        document.addEventListener('DOMContentLoaded', toggleOptionals);
+        window.addEventListener('load', toggleOptionals);
+        window.addEventListener('resize', toggleOptionals);
     };
 }
 

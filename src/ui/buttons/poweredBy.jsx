@@ -3,7 +3,7 @@
 
 import { node, type ChildType } from 'jsx-pragmatic/src';
 import { type LocaleType } from '@paypal/sdk-constants/src';
-import { LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { CLASS } from '../../constants';
 
@@ -25,6 +25,14 @@ const POWERED_BY_PAYPAL_STYLE = `
         position: relative;
         margin-right: 3px;
         bottom: 3px;
+    }
+    
+    .${ CLASS.POWERED_BY } > .${ CLASS.TEXT },
+    .${ CLASS.POWERED_BY } > .${ LOGO_CLASS.LOGO } {
+        display: inline-block;
+        vertical-align: middle;
+        height: 16px;
+        line-height: 16px;
     }
 `;
 
