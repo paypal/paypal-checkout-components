@@ -269,7 +269,6 @@ export const Button : Component<ButtonOptions> = create({
             def() : Object {
                 return {};
             },
-            sendToChild: false,
 
             validate(client, props) {
                 const env = props.env || config.env;
