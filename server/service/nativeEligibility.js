@@ -2,7 +2,7 @@
 
 import { COUNTRY, CURRENCY, VAULT } from '@paypal/sdk-constants';
 
-import type { GraphQLBatch } from '../lib';
+import { getCookieString, type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
 
 const NATIVE_ELIGIBILITY_QUERY = `
@@ -14,7 +14,8 @@ const NATIVE_ELIGIBILITY_QUERY = `
         $buyerCountry : String,
         $currency : String,
         $userAgent : String,
-        $buttonSessionID : String
+        $buttonSessionID : String,
+        $cookies : String
     ) {
         mobileSDKEligibility(
             vault: $vault,
@@ -24,9 +25,17 @@ const NATIVE_ELIGIBILITY_QUERY = `
             buyerCountry: $buyerCountry,
             currency: $currency,
             userAgent: $userAgent,
-            buttonSessionID: $buttonSessionID
+            buttonSessionID: $buttonSessionID,
+            cookies: $cookies
         ) {
-            eligible
+            paypal {
+                eligibility
+                ineligibilityReason
+            }
+            venmo {
+                eligibility
+                ineligibilityReason
+            }
         }
     }
 `;
@@ -42,12 +51,18 @@ export type NativeEligibilityOptions = {|
     onShippingChange : boolean
 |};
 
-export async function resolveNativeEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, nativeEligibilityOptions : NativeEligibilityOptions) : Promise<boolean> {
+export type NativeEligibility = {|
+    paypal : boolean,
+    venmo : boolean
+|};
+
+export async function resolveNativeEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, nativeEligibilityOptions : NativeEligibilityOptions) : Promise<NativeEligibility> {
     let { logger, clientID, merchantID, buttonSessionID, currency, vault, buyerCountry, onShippingChange } = nativeEligibilityOptions;
 
     try {
         const userAgent = req.get('user-agent') || '';
         const shippingCallbackEnabled = onShippingChange;
+        const cookies = getCookieString(req);
         
         const facilitatorClientID = clientID;
         merchantID = merchantID && merchantID[0];
@@ -55,15 +70,24 @@ export async function resolveNativeEligibility(req : ExpressRequest, gqlBatch : 
         const result = await gqlBatch({
             query:     NATIVE_ELIGIBILITY_QUERY,
             variables: {
-                vault, shippingCallbackEnabled, merchantID, facilitatorClientID, buyerCountry, currency, userAgent, buttonSessionID
+                vault, shippingCallbackEnabled, merchantID, facilitatorClientID,
+                buyerCountry, currency, userAgent, buttonSessionID, cookies
             }
         });
 
-        return result.mobileSDKEligibility.eligible;
+        const paypal = result.mobileSDKEligibility && result.mobileSDKEligibility.paypal && result.mobileSDKEligibility.paypal.eligibility;
+        const venmo = result.mobileSDKEligibility && result.mobileSDKEligibility.venmo && result.mobileSDKEligibility.venmo.eligibility;
+
+        return {
+            paypal: paypal || false,
+            venmo:  venmo || false
+        };
 
     } catch (err) {
         logger.error(req, 'native_eligibility_error_fallback', { err: err.stack ? err.stack : err.toString() });
-        return false;
+        return {
+            paypal: false,
+            venmo:  false
+        };
     }
-
 }

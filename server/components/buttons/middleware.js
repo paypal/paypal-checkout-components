@@ -90,9 +90,12 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
         const facilitatorAccessToken = await facilitatorAccessTokenPromise;
         const merchantID = await merchantIDPromise;
 
+        const { paypal, venmo } = await nativeEligibilityPromise;
+
         const eligibility = {
-            native:     await nativeEligibilityPromise,
-            cardFields: await isCardFieldsExperimentEnabledPromise
+            native:         paypal,
+            nativeCheckout: { paypal, venmo },
+            cardFields:     await isCardFieldsExperimentEnabledPromise
         };
 
         logger.info(req, `button_render_version_${ render.version }`);

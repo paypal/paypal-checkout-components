@@ -140,3 +140,14 @@ export function placeholderToJSX(text : string, placeholders : { [string] : (?st
 export function isDefined(item : mixed) : boolean {
     return (item !== null && typeof item !== 'undefined');
 }
+
+export function getCookieString(req : ExpressRequest) : string {
+    if (!req.cookies) {
+        return '';
+    }
+
+    return Object.keys(req.cookies).map(key => {
+        const value = req.cookies[key];
+        return `${ key }=${ value };`;
+    }).join('');
+}
