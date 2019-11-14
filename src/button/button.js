@@ -14,7 +14,7 @@ import { getProps, getConfig, getComponents, getServiceData } from './props';
 import { getSelectedFunding, getButtons } from './dom';
 import { setupButtonLogs } from './logs';
 import { setupRemember } from './remember';
-import { setupPaymentFlows, initiatePayment } from './pay';
+import { setupPaymentFlows, initiatePaymentFlow } from './pay';
 import { renderButtonDropdown } from './menu';
 
 type ButtonOpts = {|
@@ -63,7 +63,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
     let paymentProcessing = false;
 
-    function handlePaymentClick({ payment } : { payment : Payment }) : ZalgoPromise<void> {
+    function initiatePayment({ payment } : { payment : Payment }) : ZalgoPromise<void> {
         return ZalgoPromise.try(() => {
             if (paymentProcessing) {
                 return;
@@ -81,7 +81,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             if (isEnabled()) {
                 paymentProcessing = true;
 
-                return initiatePayment({ payment, config, serviceData, components, props }).finally(() => {
+                return initiatePaymentFlow({ payment, config, serviceData, components, props }).finally(() => {
                     paymentProcessing = false;
                 });
             } else  {
@@ -97,12 +97,16 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         const payment = { button, fundingSource, card, paymentMethodID, isClick: true };
         
         fixClickFocus(button);
-        renderButtonDropdown({ props, payment, content, handlePaymentClick });
+        renderButtonDropdown({ props, payment, content, initiatePayment });
         
         onElementClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
-            handlePaymentClick({ payment });
+
+            const payPromise = initiatePayment({ payment });
+
+            // $FlowFixMe
+            button.payPromise = payPromise;
         });
     });
 
@@ -120,7 +124,10 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             }
 
             const payment = { win, button, fundingSource, card };
-            handlePaymentClick({ payment });
+            const payPromise = initiatePayment({ payment });
+
+            // $FlowFixMe
+            button.payPromise = payPromise;
         });
     });
 

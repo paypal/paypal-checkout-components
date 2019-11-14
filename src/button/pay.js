@@ -1,6 +1,6 @@
 /* @flow */
 
-import { noop, identity } from 'belter/src';
+import { noop, identity, stringifyError } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
@@ -55,7 +55,7 @@ type InitiatePaymentType = {|
     components : Components
 |};
 
-export function initiatePayment({ payment, serviceData, config, components, props } : InitiatePaymentType) : ZalgoPromise<void> {
+export function initiatePaymentFlow({ payment, serviceData, config, components, props } : InitiatePaymentType) : ZalgoPromise<void> {
     const { button, fundingSource, decorateCreateOrder = identity } = payment;
 
     return ZalgoPromise.try(() => {
@@ -78,8 +78,7 @@ export function initiatePayment({ payment, serviceData, config, components, prop
             [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource
         }).flush();
 
-        // $FlowFixMe
-        button.payPromise = ZalgoPromise.hash({
+        return ZalgoPromise.hash({
             valid: onClick ? onClick({ fundingSource }) : true
         }).then(({ valid }) => {
             if (!valid) {
@@ -90,8 +89,9 @@ export function initiatePayment({ payment, serviceData, config, components, prop
                 enableLoadingSpinner(button);
             }
 
-            createOrder().then(orderID =>
-                updateButtonClientConfig({ orderID, fundingSource, inline }));
+            createOrder()
+                .then(orderID => updateButtonClientConfig({ orderID, fundingSource, inline }))
+                .catch(err => getLogger().error('update_client_config_error', { err: stringifyError(err) }));
 
             return start()
                 .then(() => createOrder())
@@ -104,8 +104,6 @@ export function initiatePayment({ payment, serviceData, config, components, prop
                     ]);
                 }).then(noop);
         });
-
-        return button.payPromise;
 
     }).finally(() => {
         disableLoadingSpinner(button);

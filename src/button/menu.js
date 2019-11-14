@@ -28,12 +28,12 @@ type ButtonDropdownProps = {|
     payment : Payment,
     props : Props,
     content : ContentType,
-    handlePaymentClick : ({ payment : Payment }) => ZalgoPromise<void>
+    initiatePayment : ({ payment : Payment }) => ZalgoPromise<void>
 |};
 
 let smartMenu;
 
-export function renderButtonDropdown({ props, payment, content, handlePaymentClick } : ButtonDropdownProps) {
+export function renderButtonDropdown({ props, payment, content, initiatePayment } : ButtonDropdownProps) {
     const { clientID, clientAccessToken, enableThreeDomainSecure, buttonSessionID, partnerAttributionID } = props;
     const { button, fundingSource, paymentMethodID } = payment;
     const menuToggle = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
@@ -85,7 +85,7 @@ export function renderButtonDropdown({ props, payment, content, handlePaymentCli
                 verticalOffset,
                 onChoose: ({ id, win }) => {
                     if (id === MENU_CHOICE.CHANGE_ACCOUNT) {
-                        return handlePaymentClick({ payment: { ...payment, win } });
+                        return initiatePayment({ payment: { ...payment, win } });
 
                     } else if (id === MENU_CHOICE.DELETE_VAULT) {
                         if (!clientAccessToken || !paymentMethodID) {
@@ -126,7 +126,7 @@ export function renderButtonDropdown({ props, payment, content, handlePaymentCli
                             });
                         };
 
-                        return handlePaymentClick({ payment: { ...payment, win, decorateCreateOrder } });
+                        return initiatePayment({ payment: { ...payment, win, decorateCreateOrder } });
                     }
                 }
             }).then(() => {

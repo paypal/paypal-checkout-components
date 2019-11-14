@@ -269,6 +269,16 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         }
     };
 
+    const closeNative = () => {
+        return ZalgoPromise.delay(500).then(() => {
+            if (didAppSwitchHappen(win)) {
+                connectNative().close();
+            }
+
+            closeWin();
+        });
+    };
+
     const start = memoize(() => {
         return createOrder().then(() => {
             if (didAppSwitchHappen(win)) {
@@ -281,10 +291,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 throw new Error(`No window available to fall back to`);
             }
         }).catch(err => {
-            if (win) {
-                win.close();
-            }
-
+            closeNative();
             throw err;
         });
     });
@@ -302,20 +309,10 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return onClick ? onClick({ fundingSource }) : true;
         }).then(valid => {
             if (!valid) {
-                return ZalgoPromise.delay(500).then(() => {
-                    if (didAppSwitchHappen(win)) {
-                        closeWin();
-                        return connectNative().close();
-                    } else {
-                        closeWin();
-                    }
-                });
+                closeNative();
             }
-        }).catch(err => {
-            if (win) {
-                win.close();
-            }
-
+        }, err => {
+            closeNative();
             throw err;
         });
     };
