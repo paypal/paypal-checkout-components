@@ -20,6 +20,8 @@ export function mockAsyncProp(handler : Function) : Function {
 }
 
 export function setupMocks() {
+    delete window.navigator.mockUserAgent;
+
     const body = document.body;
 
     if (!body) {

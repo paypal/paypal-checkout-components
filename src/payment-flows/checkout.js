@@ -234,7 +234,9 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
             return;
         }
 
-        win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+        if (supportsPopups()) {
+            win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+        }
 
         return ZalgoPromise.try(() => {
             return onClick ? onClick({ fundingSource }) : true;

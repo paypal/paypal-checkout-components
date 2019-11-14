@@ -158,4 +158,45 @@ describe('validation cases', () => {
             await clickButton(FUNDING.PAYPAL);
         });
     });
+
+    it('should render a button in a webview, and resolve in onClick', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.navigator.mockUserAgent = 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 5 Build/LMY48B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/43.0.2357.65 Mobile Safari/537.36';
+
+            const orderID = 'XXXXXXXXXX';
+
+            let windowOpenCalled = false;
+
+            const windowOpen = window.open;
+            window.open = function winOpen() : Object {
+                windowOpenCalled = true;
+                return windowOpen.apply(this, arguments);
+            };
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                if (props.window) {
+                    throw new Error(`Expected window to not be passed to Checkout`);
+                }
+
+                return CheckoutOriginal(props);
+            }));
+
+            window.xprops.onClick = mockAsyncProp(expect('onClick', (data, actions) => {
+                return ZalgoPromise.delay(50).then(() => actions.resolve());
+            }));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', () => ZalgoPromise.delay(50).then(() => orderID)));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', () => ZalgoPromise.resolve()));
+
+            createButtonHTML();
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await clickButton(FUNDING.PAYPAL);
+
+            window.open = windowOpen;
+
+            if (windowOpenCalled) {
+                throw new Error(`Expected window.open to not be called`);
+            }
+        });
+    });
 });
