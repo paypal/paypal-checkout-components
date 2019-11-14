@@ -22,7 +22,7 @@
     "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
     "babel": "babel server --exclude=node_modules --out-dir server && babel webpack.config.js --out-dir .",
     "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress",
-    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run karma && npm run jest; fi;",
+    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow check && npm run karma && npm run jest; fi;",
     "build": "npm run test && npm run webpack",
     "release": "./publish.sh",
     "release:patch": "./publish.sh patch",
