@@ -7780,12 +7780,14 @@ function getCreateOrder(xprops, _ref4) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getOnApprove; });
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
+/* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4);
+
 
 
 
@@ -7805,42 +7807,42 @@ function buildOrderActions(_ref) {
   var handleProcessorError = function handleProcessorError(err) {
     // $FlowFixMe
     var isProcessorDecline = err && err.data && err.data.details && err.data.details.some(function (detail) {
-      return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__[/* ORDER_API_ERROR */ "l"].INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__[/* ORDER_API_ERROR */ "l"].PAYER_ACTION_REQUIRED;
+      return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_4__[/* ORDER_API_ERROR */ "l"].INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_4__[/* ORDER_API_ERROR */ "l"].PAYER_ACTION_REQUIRED;
     });
 
     if (isProcessorDecline) {
-      return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__[/* unresolvedPromise */ "f"]);
+      return restart().then(_lib__WEBPACK_IMPORTED_MODULE_5__[/* unresolvedPromise */ "f"]);
     }
 
     throw new Error('Order could not be captured');
   };
 
-  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getOrder */ "l"])(orderID, {
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* getOrder */ "l"])(orderID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID,
       isNativeTransaction: isNativeTransaction
     });
   });
-  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
-    if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
-      throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
+  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+    if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE) {
+      throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
 
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* captureOrder */ "d"])(orderID, {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* captureOrder */ "d"])(orderID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID,
       isNativeTransaction: isNativeTransaction
     }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
   });
-  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
-    if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
-      throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE + " to use client-side authorize");
+  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+    if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].AUTHORIZE) {
+      throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].AUTHORIZE + " to use client-side authorize");
     }
 
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* authorizeOrder */ "b"])(orderID, {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* authorizeOrder */ "b"])(orderID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID,
@@ -7853,7 +7855,7 @@ function buildOrderActions(_ref) {
       data = {};
     }
 
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchOrder */ "p"])(orderID, data, {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* patchOrder */ "p"])(orderID, data, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID,
@@ -7887,29 +7889,29 @@ function buildPaymentActions(_ref2) {
   var handleProcessorError = function handleProcessorError(err) {
     // $FlowFixMe
     var isProcessorDecline = err && err.data && err.data.details && err.data.details.some(function (detail) {
-      return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__[/* ORDER_API_ERROR */ "l"].INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__[/* ORDER_API_ERROR */ "l"].PAYER_ACTION_REQUIRED;
+      return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_4__[/* ORDER_API_ERROR */ "l"].INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_4__[/* ORDER_API_ERROR */ "l"].PAYER_ACTION_REQUIRED;
     });
 
     if (isProcessorDecline) {
-      return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__[/* unresolvedPromise */ "f"]);
+      return restart().then(_lib__WEBPACK_IMPORTED_MODULE_5__[/* unresolvedPromise */ "f"]);
     }
 
     throw new Error('Order could not be captured');
   };
 
-  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getPayment */ "n"])(paymentID, {
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* getPayment */ "n"])(paymentID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID
     });
   });
-  var execute = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
-    if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
-      throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
+  var execute = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+    if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE) {
+      throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
 
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* executePayment */ "j"])(paymentID, payerID, {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* executePayment */ "j"])(paymentID, payerID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID
@@ -7921,7 +7923,7 @@ function buildPaymentActions(_ref2) {
       data = {};
     }
 
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* patchPayment */ "q"])(paymentID, data, {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* patchPayment */ "q"])(paymentID, data, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID
@@ -7949,13 +7951,13 @@ function buildXApproveActions(_ref3) {
       partnerAttributionID = _ref3.partnerAttributionID,
       isNativeTransaction = _ref3.isNativeTransaction;
   // Subscription GET Actions
-  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* getSubscription */ "o"])(subscriptionID, {
+  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* getSubscription */ "o"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
   });
-  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
-    return Object(_api__WEBPACK_IMPORTED_MODULE_2__[/* activateSubscription */ "a"])(subscriptionID, {
+  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+    return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* activateSubscription */ "a"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
   });
@@ -7966,17 +7968,17 @@ function buildXApproveActions(_ref3) {
     }
 
     if (url.indexOf('://') === -1) {
-      Object(_lib__WEBPACK_IMPORTED_MODULE_4__[/* getLogger */ "b"])().warn('redir_url_non_scheme', {
+      Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().warn('redir_url_non_scheme', {
         url: url
       }).flush();
       throw new Error("Invalid redirect url: " + url + " - must be fully qualified url");
     } else if (!url.match(/^https?:\/\//)) {
-      Object(_lib__WEBPACK_IMPORTED_MODULE_4__[/* getLogger */ "b"])().warn('redir_url_non_http', {
+      Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().warn('redir_url_non_http', {
         url: url
       }).flush();
     }
 
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "s"])(url, window.top);
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* redirect */ "s"])(url, window.top);
   };
 
   var order = buildOrderActions({
@@ -8005,7 +8007,7 @@ function buildXApproveActions(_ref3) {
   });
   return {
     order: order,
-    payment: _config__WEBPACK_IMPORTED_MODULE_5__[/* ENABLE_PAYMENT_API */ "d"] ? payment : null,
+    payment: _config__WEBPACK_IMPORTED_MODULE_6__[/* ENABLE_PAYMENT_API */ "d"] ? payment : null,
     subscription: {
       get: getSubscriptionApi,
       activate: activateSubscriptionApi
@@ -8023,7 +8025,7 @@ function getOnApprove(xprops, _ref4) {
       buttonSessionID = xprops.buttonSessionID,
       partnerAttributionID = xprops.partnerAttributionID,
       onError = xprops.onError;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function (_ref5, _ref6) {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function (_ref5, _ref6) {
     var payerID = _ref5.payerID,
         paymentID = _ref5.paymentID,
         billingToken = _ref5.billingToken,
@@ -8035,7 +8037,7 @@ function getOnApprove(xprops, _ref4) {
     return createOrder().then(function (orderID) {
       var _getLogger$info$track;
 
-      Object(_lib__WEBPACK_IMPORTED_MODULE_4__[/* getLogger */ "b"])().info('button_authorize').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__[/* FPTI_TRANSITION */ "h"].CHECKOUT_AUTHORIZE, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+      Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().info('button_authorize').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_AUTHORIZE, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
       var data = {
         orderID: orderID,
         payerID: payerID,
@@ -8058,13 +8060,17 @@ function getOnApprove(xprops, _ref4) {
 
       if (onApprove) {
         return onApprove(data, actions).catch(function (err) {
-          return onError(err);
+          return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"].try(function () {
+            return onError(err);
+          }).then(function () {
+            throw err;
+          });
         });
       } else {
-        if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].CAPTURE) {
-          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "m"]);
-        } else if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__[/* INTENT */ "h"].AUTHORIZE) {
-          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "m"]);
+        if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE) {
+          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "m"]);
+        } else if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].AUTHORIZE) {
+          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "m"]);
         }
       }
     });
@@ -9536,7 +9542,7 @@ function initCheckout(_ref6) {
             buyerAccessToken: buyerAccessToken
           }, {
             restart: restart
-          });
+          }).catch(src["m" /* noop */]);
         });
       },
       onAuth: function onAuth(_ref8) {
@@ -9803,7 +9809,7 @@ function initCardFields(_ref4) {
           buyerAccessToken: buyerAccessToken
         }, {
           restart: restart
-        });
+        }).catch(src["m" /* noop */]);
       });
     },
     onAuth: function onAuth(_ref7) {
@@ -10226,7 +10232,8 @@ function initNative(_ref6) {
         token: orderID,
         native_xo: '1',
         fundingSource: fundingSource,
-        useraction: commit ? constants["p" /* USER_ACTION */].COMMIT : constants["p" /* USER_ACTION */].CONTINUE
+        useraction: commit ? constants["p" /* USER_ACTION */].COMMIT : constants["p" /* USER_ACTION */].CONTINUE,
+        facilitatorAccessToken: facilitatorAccessToken
       }
     });
   };
