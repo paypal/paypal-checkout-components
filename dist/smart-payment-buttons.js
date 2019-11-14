@@ -4543,56 +4543,6 @@ function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGGER_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ORDERS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return PAYMENTS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return VALIDATE_PAYMENT_METHOD_API; });
-/* unused harmony export BASE_SMART_API_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return SMART_API_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GRAPHQL_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return WEB_CHECKOUT_URI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return NATIVE_CHECKOUT_URI; });
-/* unused harmony export NATIVE_DETECTION_URL */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ENABLE_PAYMENT_API; });
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-var _NATIVE_CHECKOUT_URI;
-
-
-var LOGGER_URL = '/xoplatform/logger/api/logger';
-var AUTH_API_URL = '/v1/oauth2/token';
-var ORDERS_API_URL = '/v2/checkout/orders';
-var PAYMENTS_API_URL = '/v1/payments/payment';
-var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
-var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
-var BASE_SMART_API_URL = '/smart/api';
-var SMART_API_URI = {
-  AUTH: BASE_SMART_API_URL + "/auth",
-  CHECKOUT: BASE_SMART_API_URL + "/checkout",
-  ORDER: BASE_SMART_API_URL + "/order",
-  PAYMENT: BASE_SMART_API_URL + "/payment",
-  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
-};
-var GRAPHQL_URI = '/graphql';
-var WEB_CHECKOUT_URI = '/checkoutnow';
-var NATIVE_CHECKOUT_URI = (_NATIVE_CHECKOUT_URI = {}, _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].PAYPAL] = '/smart/checkout/native', _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].VENMO] = '/smart/checkout/venmo', _NATIVE_CHECKOUT_URI);
-var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
-var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
-var FIREBASE_SCRIPTS = {
-  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
-  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
-  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
-};
-var ENABLE_PAYMENT_API = false;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 
 // EXTERNAL MODULE: ./src/lib/util.js
 var util = __webpack_require__(12);
@@ -4869,7 +4819,7 @@ function Logger(_ref2) {
 var sdk_constants_src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./src/config.js
-var config = __webpack_require__(4);
+var config = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
@@ -4941,6 +4891,56 @@ function setupLogger(_ref) {
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGGER_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ORDERS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return PAYMENTS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CREATE_SUBSCRIPTIONS_API_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return VALIDATE_PAYMENT_METHOD_API; });
+/* unused harmony export BASE_SMART_API_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return SMART_API_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GRAPHQL_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return WEB_CHECKOUT_URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return NATIVE_CHECKOUT_URI; });
+/* unused harmony export NATIVE_DETECTION_URL */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ENABLE_PAYMENT_API; });
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+var _NATIVE_CHECKOUT_URI;
+
+
+var LOGGER_URL = '/xoplatform/logger/api/logger';
+var AUTH_API_URL = '/v1/oauth2/token';
+var ORDERS_API_URL = '/v2/checkout/orders';
+var PAYMENTS_API_URL = '/v1/payments/payment';
+var CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
+var VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
+var BASE_SMART_API_URL = '/smart/api';
+var SMART_API_URI = {
+  AUTH: BASE_SMART_API_URL + "/auth",
+  CHECKOUT: BASE_SMART_API_URL + "/checkout",
+  ORDER: BASE_SMART_API_URL + "/order",
+  PAYMENT: BASE_SMART_API_URL + "/payment",
+  SUBSCRIPTION: BASE_SMART_API_URL + "/billagmt/subscriptions"
+};
+var GRAPHQL_URI = '/graphql';
+var WEB_CHECKOUT_URI = '/checkoutnow';
+var NATIVE_CHECKOUT_URI = (_NATIVE_CHECKOUT_URI = {}, _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].PAYPAL] = '/smart/checkout/native', _NATIVE_CHECKOUT_URI[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* FUNDING */ "g"].VENMO] = '/smart/checkout/venmo', _NATIVE_CHECKOUT_URI);
+var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
+var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
+var FIREBASE_SCRIPTS = {
+  APP: 'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
+  AUTH: 'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
+  DATABASE: 'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js'
+};
+var ENABLE_PAYMENT_API = false;
+
+/***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4977,10 +4977,10 @@ var src = __webpack_require__(3);
 var belter_src = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/config.js
-var src_config = __webpack_require__(4);
+var src_config = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/lib/index.js + 5 modules
-var lib = __webpack_require__(5);
+var lib = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
@@ -6050,7 +6050,7 @@ function firebaseSocket(_ref8) {
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
 
 
@@ -7556,8 +7556,8 @@ function getOnInit(xprops) {
 /* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(5);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(4);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(4);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(5);
 
 
 
@@ -7785,8 +7785,8 @@ function getCreateOrder(xprops, _ref4) {
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5);
 
 
 
@@ -8088,7 +8088,7 @@ function getOnApprove(xprops, _ref4) {
 /* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
 
 
@@ -8159,7 +8159,7 @@ function getOnCancel(xprops, _ref2) {
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
 
 
 
@@ -8649,7 +8649,7 @@ var sdk_constants_src = __webpack_require__(0);
 var zalgo_promise_src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/lib/index.js + 5 modules
-var lib = __webpack_require__(5);
+var lib = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/constants.js
 var constants = __webpack_require__(1);
@@ -10015,7 +10015,7 @@ var vaultCapture = {
   inline: true
 };
 // EXTERNAL MODULE: ./src/config.js
-var src_config = __webpack_require__(4);
+var src_config = __webpack_require__(5);
 
 // CONCATENATED MODULE: ./src/payment-flows/native.js
 
@@ -10341,6 +10341,16 @@ function initNative(_ref6) {
     }
   };
 
+  var closeNative = function closeNative() {
+    return zalgo_promise_src["a" /* ZalgoPromise */].delay(500).then(function () {
+      if (didAppSwitchHappen(win)) {
+        connectNative().close();
+      }
+
+      closeWin();
+    });
+  };
+
   var start = Object(src["l" /* memoize */])(function () {
     return createOrder().then(function () {
       if (didAppSwitchHappen(win)) {
@@ -10355,10 +10365,7 @@ function initNative(_ref6) {
         throw new Error("No window available to fall back to");
       }
     }).catch(function (err) {
-      if (win) {
-        win.close();
-      }
-
+      closeNative();
       throw err;
     });
   });
@@ -10378,20 +10385,10 @@ function initNative(_ref6) {
       }) : true;
     }).then(function (valid) {
       if (!valid) {
-        return zalgo_promise_src["a" /* ZalgoPromise */].delay(500).then(function () {
-          if (didAppSwitchHappen(win)) {
-            closeWin();
-            return connectNative().close();
-          } else {
-            closeWin();
-          }
-        });
+        closeNative();
       }
-    }).catch(function (err) {
-      if (win) {
-        win.close();
-      }
-
+    }, function (err) {
+      closeNative();
       throw err;
     });
   };
@@ -10675,7 +10672,7 @@ var pay_sendPersonalizationBeacons = function sendPersonalizationBeacons(persona
   }
 };
 
-function initiatePayment(_ref3) {
+function initiatePaymentFlow(_ref3) {
   var payment = _ref3.payment,
       serviceData = _ref3.serviceData,
       config = _ref3.config,
@@ -10722,9 +10719,8 @@ function initiatePayment(_ref3) {
         close = _init.close;
 
     var clickPromise = click();
-    Object(lib["b" /* getLogger */])().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$info$)).flush(); // $FlowFixMe
-
-    button.payPromise = zalgo_promise_src["a" /* ZalgoPromise */].hash({
+    Object(lib["b" /* getLogger */])().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$info$)).flush();
+    return zalgo_promise_src["a" /* ZalgoPromise */].hash({
       valid: onClick ? onClick({
         fundingSource: fundingSource
       }) : true
@@ -10745,6 +10741,10 @@ function initiatePayment(_ref3) {
           fundingSource: fundingSource,
           inline: inline
         });
+      }).catch(function (err) {
+        return Object(lib["b" /* getLogger */])().error('update_client_config_error', {
+          err: Object(src["v" /* stringifyError */])(err)
+        });
       });
       return start().then(function () {
         return createOrder();
@@ -10759,7 +10759,6 @@ function initiatePayment(_ref3) {
         return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), zalgo_promise_src["a" /* ZalgoPromise */].reject(err)]);
       }).then(src["m" /* noop */]);
     });
-    return button.payPromise;
   }).finally(function () {
     Object(dom["a" /* disableLoadingSpinner */])(button);
   });
@@ -10840,7 +10839,7 @@ function renderButtonDropdown(_ref) {
   var props = _ref.props,
       payment = _ref.payment,
       content = _ref.content,
-      handlePaymentClick = _ref.handlePaymentClick;
+      initiatePayment = _ref.initiatePayment;
   var clientID = props.clientID,
       clientAccessToken = props.clientAccessToken,
       enableThreeDomainSecure = props.enableThreeDomainSecure,
@@ -10892,7 +10891,7 @@ function renderButtonDropdown(_ref) {
               win = _ref2.win;
 
           if (id === MENU_CHOICE.CHANGE_ACCOUNT) {
-            return handlePaymentClick({
+            return initiatePayment({
               payment: Object(esm_extends["a" /* default */])({}, payment, {
                 win: win
               })
@@ -10946,7 +10945,7 @@ function renderButtonDropdown(_ref) {
               });
             };
 
-            return handlePaymentClick({
+            return initiatePayment({
               payment: Object(esm_extends["a" /* default */])({}, payment, {
                 win: win,
                 decorateCreateOrder: decorateCreateOrder
@@ -11042,7 +11041,7 @@ function setupButton(opts) {
 
   var paymentProcessing = false;
 
-  function handlePaymentClick(_ref) {
+  function initiatePayment(_ref) {
     var payment = _ref.payment;
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
       if (paymentProcessing) {
@@ -11065,7 +11064,7 @@ function setupButton(opts) {
 
       if (isEnabled()) {
         paymentProcessing = true;
-        return initiatePayment({
+        return initiatePaymentFlow({
           payment: payment,
           config: config,
           serviceData: serviceData,
@@ -11100,14 +11099,16 @@ function setupButton(opts) {
       props: props,
       payment: payment,
       content: content,
-      handlePaymentClick: handlePaymentClick
+      initiatePayment: initiatePayment
     });
     Object(src["o" /* onClick */])(button, function (event) {
       event.preventDefault();
       event.stopPropagation();
-      handlePaymentClick({
+      var payPromise = initiatePayment({
         payment: payment
-      });
+      }); // $FlowFixMe
+
+      button.payPromise = payPromise;
     });
   });
   var setupPrerenderTask = initPromise.then(function () {
@@ -11136,9 +11137,11 @@ function setupButton(opts) {
         fundingSource: fundingSource,
         card: card
       };
-      handlePaymentClick({
+      var payPromise = initiatePayment({
         payment: payment
-      });
+      }); // $FlowFixMe
+
+      button.payPromise = payPromise;
     });
   });
   var setupRememberTask = setupRemember({
