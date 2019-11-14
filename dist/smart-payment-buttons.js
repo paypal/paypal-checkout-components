@@ -9593,10 +9593,13 @@ function initCheckout(_ref6) {
       return;
     }
 
-    win = win || openPopup({
-      width: CHECKOUT_POPUP_DIMENSIONS.WIDTH,
-      height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
-    });
+    if (Object(src["x" /* supportsPopups */])()) {
+      win = win || openPopup({
+        width: CHECKOUT_POPUP_DIMENSIONS.WIDTH,
+        height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
+      });
+    }
+
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
       return onClick ? onClick({
         fundingSource: fundingSource
