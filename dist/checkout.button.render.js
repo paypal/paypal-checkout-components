@@ -4943,7 +4943,8 @@ var FPTI = {
     MAX_BUTTONS: 'max_buttons',
     FUNDING_REMEMBERED: 'funding_remembered',
     BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled',
-    RESPONSE_DURATION: 'response_duration'
+    RESPONSE_DURATION: 'response_duration',
+    PAYMENT_FLOW: 'payment_flow'
   },
   BUTTON_TYPE: {
     IFRAME: 'iframe',
@@ -15308,7 +15309,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.301", _ref19), {
+  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.302", _ref19), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
