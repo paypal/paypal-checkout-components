@@ -138,10 +138,10 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     }
 
     const { Checkout } = components;
-    const { buttonSessionID, createOrder, onApprove, onCancel,
+    const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick } = props;
-    let { button, win, fundingSource, card, isClick, buyerAccessToken } = payment;
+    let { button, win, fundingSource, card, isClick, buyerAccessToken, venmoPayloadID } = payment;
     const { fundingEligibility, buyerCountry } = serviceData;
     const { cspNonce } = config;
 
@@ -163,9 +163,11 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     const init = () => {
         return Checkout({
             window: win,
+            sessionID,
             buttonSessionID,
             clientAccessToken,
             buyerAccessToken,
+            venmoPayloadID,
     
             createOrder: () => {
                 return createOrder().then(orderID => {

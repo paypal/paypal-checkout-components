@@ -215,6 +215,7 @@ export type CheckoutFlowType = {|
     canRenderTo : (CrossDomainWindowType) => ZalgoPromise<boolean>,
     ({|
         window? : ?(ProxyWindow | CrossDomainWindowType),
+        sessionID : string,
         buttonSessionID : string,
         clientAccessToken? : ?string,
         createOrder : () => ZalgoPromise<string>,
@@ -230,7 +231,8 @@ export type CheckoutFlowType = {|
         locale : LocaleType,
         commit : boolean,
         cspNonce : ?string,
-        buyerAccessToken : ?string
+        buyerAccessToken : ?string,
+        venmoPayloadID? : ?string
     |}) : ZoidComponent
 |};
 
@@ -238,6 +240,7 @@ export type CardFieldsFlowType = {|
     canRenderTo : (CrossDomainWindowType) => ZalgoPromise<boolean>,
     ({|
         window? : ?(ProxyWindow | CrossDomainWindowType),
+        sessionID : string,
         buttonSessionID : string,
         clientAccessToken? : ?string,
         createOrder : () => ZalgoPromise<string>,

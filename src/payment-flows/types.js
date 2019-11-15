@@ -21,6 +21,7 @@ export type Payment = {|
     paymentMethodID? : ?string,
     isClick? : boolean,
     buyerAccessToken? : ?string,
+    venmoPayloadID? : string,
     decorateCreateOrder? : (CreateOrder) => CreateOrder
 |};
 

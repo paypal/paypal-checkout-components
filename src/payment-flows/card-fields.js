@@ -109,7 +109,7 @@ const slideDownButtons = () => {
 
 function initCardFields({ props, components, payment, serviceData, config } : { props : Props, config : Config, components : Components, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel,
-        locale, commit, onError, buttonSessionID } = props;
+        locale, commit, onError, sessionID, buttonSessionID } = props;
     const { CardFields } = components;
     const { fundingSource, card } = payment;
     const { cspNonce } = config;
@@ -159,6 +159,7 @@ function initCardFields({ props, components, payment, serviceData, config } : { 
         onClose,
         onCardTypeChange,
 
+        sessionID,
         buttonSessionID,
         buyerCountry,
         locale,
