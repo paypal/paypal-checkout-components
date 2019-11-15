@@ -2344,8 +2344,8 @@ function memoizePromise(method) {
   var cache = {}; // eslint-disable-next-line flowtype/no-weak-types
 
   function memoizedPromiseFunction() {
-    var _this2 = this,
-        _arguments = arguments;
+    var _arguments = arguments,
+        _this2 = this;
 
     for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
       args[_key2] = arguments[_key2];
@@ -2558,8 +2558,8 @@ function patchMethod(obj, name, handler) {
   var original = obj[name];
 
   obj[name] = function patchedMethod() {
-    var _this3 = this,
-        _arguments2 = arguments;
+    var _arguments2 = arguments,
+        _this3 = this;
 
     return handler({
       context: this,
@@ -3092,8 +3092,8 @@ function debounce(method, time) {
   var timeout;
 
   var debounceWrapper = function debounceWrapper() {
-    var _this4 = this,
-        _arguments3 = arguments;
+    var _arguments3 = arguments,
+        _this4 = this;
 
     clearTimeout(timeout);
     timeout = setTimeout(function () {
@@ -6252,8 +6252,8 @@ function util_patchMethod(obj, name, handler) {
   var original = obj[name];
 
   obj[name] = function patchedMethod() {
-    var _this = this,
-        _arguments = arguments;
+    var _arguments = arguments,
+        _this = this;
 
     return handler({
       context: this,
@@ -8724,17 +8724,6 @@ function getComponentScript() {
       HIDDEN: 'hidden'
     };
 
-    function loop(method, delay, instances) {
-      setTimeout(function () {
-        method();
-        instances -= 1;
-
-        if (instances) {
-          loop(method, delay, instances);
-        }
-      }, delay);
-    }
-
     function getElements(selector, parent) {
       parent = parent || document;
       return Array.prototype.slice.call(parent.querySelectorAll(selector));
@@ -8758,36 +8747,6 @@ function getComponentScript() {
 
     function makeElementInvisible(el) {
       el.style.visibility = STYLE.HIDDEN;
-    }
-
-    function hasDimensions(el) {
-      var rect = el.getBoundingClientRect();
-      return Boolean(rect.height && rect.width);
-    }
-
-    function isHidden(el) {
-      var computedStyle = window.getComputedStyle(el);
-      return !computedStyle || computedStyle.display === STYLE.NONE;
-    }
-
-    function displayedElementsHaveDimensions(elements) {
-      return elements.every(function (el) {
-        return hasDimensions(el) || isHidden(el);
-      });
-    }
-
-    function onDisplay(elements, method) {
-      if (displayedElementsHaveDimensions(elements)) {
-        method();
-        return;
-      }
-
-      var interval = setInterval(function () {
-        if (displayedElementsHaveDimensions(elements)) {
-          clearInterval(interval);
-          method();
-        }
-      }, 5);
     }
 
     function isOverflowing(el) {
@@ -8875,14 +8834,9 @@ function getComponentScript() {
 
     toggleOptionals();
     setupTabOutlineEvent();
-    onDisplay(images, function () {
-      images.forEach(makeElementVisible);
-      toggleOptionals();
-      document.addEventListener('DOMContentLoaded', toggleOptionals);
-      window.addEventListener('load', toggleOptionals);
-      window.addEventListener('resize', toggleOptionals);
-      loop(toggleOptionals, 10, 10);
-    });
+    document.addEventListener('DOMContentLoaded', toggleOptionals);
+    window.addEventListener('load', toggleOptionals);
+    window.addEventListener('resize', toggleOptionals);
   };
 }
 // CONCATENATED MODULE: ./src/button/template/content.js
@@ -15309,7 +15263,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.302", _ref19), {
+  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.303", _ref19), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
