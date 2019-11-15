@@ -38,7 +38,8 @@ export const FPTI = {
         MAX_BUTTONS:            'max_buttons',
         FUNDING_REMEMBERED:     'funding_remembered',
         BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled',
-        RESPONSE_DURATION:      'response_duration'
+        RESPONSE_DURATION:      'response_duration',
+        PAYMENT_FLOW:           'payment_flow'
     },
 
     BUTTON_TYPE: {

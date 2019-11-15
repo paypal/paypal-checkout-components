@@ -834,7 +834,7 @@ export const Button : Component<ButtonOptions> = create({
             required: false,
             noop:     true,
             decorate(original) : Function {
-                return function decorateOnClick(data : ?{ fundingSource : string, card? : string }) : void {
+                return function decorateOnClick(data : ?{ fundingSource : string, card? : string, flow? : string }) : void {
 
                     smartThrottle.log('click', {
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
@@ -846,7 +846,8 @@ export const Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
                         [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
-                        [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
+                        [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource),
+                        [ FPTI.KEY.PAYMENT_FLOW ]:       data && data.flow
                     });
 
                     if (isIEIntranet()) {
