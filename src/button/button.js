@@ -1,11 +1,11 @@
 /* @flow */
 
-import { onClick as onElementClick, noop } from 'belter/src';
-import { COUNTRY } from '@paypal/sdk-constants/src';
+import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError } from 'belter/src';
+import { COUNTRY, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, PersonalizationType, ContentType } from '../types';
-import { setupLogger, fixClickFocus } from '../lib';
+import { setupLogger, fixClickFocus, getLogger } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES } from '../constants';
 import { type Payment } from '../payment-flows';
@@ -89,6 +89,16 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
                     win.close();
                 }
             }
+        }).catch(err => {
+            
+            getLogger()
+                .info('smart_buttons_payment_error', { err: stringifyError(err) })
+                .track({
+                    [FPTI_KEY.ERROR_CODE]: 'smart_buttons_payment_error',
+                    [FPTI_KEY.ERROR_DESC]: stringifyErrorMessage(err)
+                });
+
+            throw err;
         });
     }
 

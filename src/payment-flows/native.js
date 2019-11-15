@@ -282,10 +282,12 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const start = memoize(() => {
         return createOrder().then(() => {
             if (didAppSwitchHappen(win)) {
+                getLogger().info(`native_app_switch`).flush();
                 closeWin();
                 instance = connectNative();
                 return instance.setProps();
             } else if (win) {
+                getLogger().info(`native_app_web_fallback`).flush();
                 return fallbackToWebCheckout({ win });
             } else {
                 throw new Error(`No window available to fall back to`);

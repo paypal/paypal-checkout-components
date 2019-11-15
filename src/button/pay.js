@@ -75,7 +75,8 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
             [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-            [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource
+            [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource,
+            [FPTI_KEY.PAYMENT_FLOW]:       name
         }).flush();
 
         return ZalgoPromise.hash({
