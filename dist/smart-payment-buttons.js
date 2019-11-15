@@ -642,7 +642,8 @@ var FPTI_KEY = {
   DISABLE_FUNDING: 'disable_funding',
   DISABLE_CARD: 'disable_card',
   RESPONSE_DURATION: 'response_duration',
-  SDK_INTEGRATION_SOURCE: 'sdk_integration_source'
+  SDK_INTEGRATION_SOURCE: 'sdk_integration_source',
+  PAYMENT_FLOW: 'payment_flow'
 };
 var FPTI_USER_ACTION = {
   COMMIT: 'commit',
@@ -798,112 +799,6 @@ var DEFAULT_DEBUG = DEBUG.FALSE;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return SMART_PAYMENT_BUTTONS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return HEADERS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DATA_ATTRIBUTES; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CLASS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return ORDER_API_ERROR; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CONTEXT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return TARGET_ELEMENT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return INTEGRATION_ARTIFACT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return USER_EXPERIENCE_FLOW; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return DOM_EVENT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return PRODUCT_FLOW; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_CONTEXT_TYPE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_STATE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return FPTI_TRANSITION; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_BUTTON_TYPE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return FTPI_BUTTON_KEY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return USER_ACTION; });
-var SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
-var HEADERS = {
-  AUTHORIZATION: 'authorization',
-  CONTENT_TYPE: 'content-type',
-  ACCESS_TOKEN: 'x-paypal-internal-euat',
-  CSRF_TOKEN: 'x-csrf-jwt',
-  SOURCE: 'x-source',
-  REQUESTED_BY: 'x-requested-by',
-  PARTNER_ATTRIBUTION_ID: 'paypal-partner-attribution-id',
-  CLIENT_METADATA_ID: 'paypal-client-metadata-id',
-  PAYPAL_DEBUG_ID: 'paypal-debug-id'
-};
-var DATA_ATTRIBUTES = {
-  FUNDING_SOURCE: 'data-funding-source',
-  CARD: 'data-card',
-  PAYMENT_METHOD_ID: 'data-payment-method-id',
-  MENU: 'data-menu',
-  NONCE: 'data-nonce'
-};
-var CLASS = {
-  LOADING: 'paypal-button-loading',
-  CLICKED: 'paypal-button-clicked'
-};
-var ORDER_API_ERROR = {
-  INSTRUMENT_DECLINED: 'INSTRUMENT_DECLINED',
-  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
-};
-var CONTEXT = {
-  IFRAME: 'iframe',
-  POPUP: 'popup'
-};
-var TARGET_ELEMENT = {
-  BODY: 'body'
-};
-var INTEGRATION_ARTIFACT = {
-  PAYPAL_JS_SDK: 'PAYPAL_JS_SDK'
-};
-var USER_EXPERIENCE_FLOW = {
-  INCONTEXT: 'INCONTEXT',
-  INLINE: 'INLINE'
-};
-var DOM_EVENT = {
-  MOUSEDOWN: 'mousedown',
-  HOVER: 'hover'
-};
-var PRODUCT_FLOW = {
-  SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
-};
-var FPTI_CONTEXT_TYPE = {
-  BUTTON_SESSION_ID: 'button_session_id',
-  ORDER_ID: 'EC-Token',
-  PAYMENT_ID: 'Pay-ID'
-};
-var FPTI_STATE = {
-  BUTTON: 'smart_button'
-};
-var FPTI_TRANSITION = {
-  BUTTON_LOAD: 'process_button_load',
-  BUTTON_CLICK: 'process_button_click',
-  CREATE_ORDER: 'process_create_order',
-  RECEIVE_ORDER: 'process_receive_order',
-  CREATE_PAYMENT: 'process_create_payment',
-  CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
-  CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
-  CHECKOUT_CANCEL: 'process_checkout_cancel'
-};
-var FPTI_BUTTON_TYPE = {
-  IFRAME: 'iframe'
-};
-var FTPI_BUTTON_KEY = {
-  BUTTON_LAYOUT: 'button_layout',
-  BUTTON_COLOR: 'button_color',
-  BUTTON_SIZE: 'button_size',
-  BUTTON_SHAPE: 'button_shape',
-  BUTTON_LABEL: 'button_label',
-  BUTTON_WIDTH: 'button_width',
-  BUTTON_TYPE: 'button_type',
-  BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled'
-};
-var USER_ACTION = {
-  COMMIT: 'commit',
-  CONTINUE: 'continue'
-};
-
-/***/ }),
-/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4026,6 +3921,112 @@ function wrapPromise(method, _temp) {
 
 
 /***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return SMART_PAYMENT_BUTTONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return HEADERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DATA_ATTRIBUTES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CLASS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return ORDER_API_ERROR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CONTEXT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return TARGET_ELEMENT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return INTEGRATION_ARTIFACT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return USER_EXPERIENCE_FLOW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return DOM_EVENT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return PRODUCT_FLOW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_CONTEXT_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_STATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return FPTI_TRANSITION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_BUTTON_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return FTPI_BUTTON_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return USER_ACTION; });
+var SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
+var HEADERS = {
+  AUTHORIZATION: 'authorization',
+  CONTENT_TYPE: 'content-type',
+  ACCESS_TOKEN: 'x-paypal-internal-euat',
+  CSRF_TOKEN: 'x-csrf-jwt',
+  SOURCE: 'x-source',
+  REQUESTED_BY: 'x-requested-by',
+  PARTNER_ATTRIBUTION_ID: 'paypal-partner-attribution-id',
+  CLIENT_METADATA_ID: 'paypal-client-metadata-id',
+  PAYPAL_DEBUG_ID: 'paypal-debug-id'
+};
+var DATA_ATTRIBUTES = {
+  FUNDING_SOURCE: 'data-funding-source',
+  CARD: 'data-card',
+  PAYMENT_METHOD_ID: 'data-payment-method-id',
+  MENU: 'data-menu',
+  NONCE: 'data-nonce'
+};
+var CLASS = {
+  LOADING: 'paypal-button-loading',
+  CLICKED: 'paypal-button-clicked'
+};
+var ORDER_API_ERROR = {
+  INSTRUMENT_DECLINED: 'INSTRUMENT_DECLINED',
+  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
+};
+var CONTEXT = {
+  IFRAME: 'iframe',
+  POPUP: 'popup'
+};
+var TARGET_ELEMENT = {
+  BODY: 'body'
+};
+var INTEGRATION_ARTIFACT = {
+  PAYPAL_JS_SDK: 'PAYPAL_JS_SDK'
+};
+var USER_EXPERIENCE_FLOW = {
+  INCONTEXT: 'INCONTEXT',
+  INLINE: 'INLINE'
+};
+var DOM_EVENT = {
+  MOUSEDOWN: 'mousedown',
+  HOVER: 'hover'
+};
+var PRODUCT_FLOW = {
+  SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
+};
+var FPTI_CONTEXT_TYPE = {
+  BUTTON_SESSION_ID: 'button_session_id',
+  ORDER_ID: 'EC-Token',
+  PAYMENT_ID: 'Pay-ID'
+};
+var FPTI_STATE = {
+  BUTTON: 'smart_button'
+};
+var FPTI_TRANSITION = {
+  BUTTON_LOAD: 'process_button_load',
+  BUTTON_CLICK: 'process_button_click',
+  CREATE_ORDER: 'process_create_order',
+  RECEIVE_ORDER: 'process_receive_order',
+  CREATE_PAYMENT: 'process_create_payment',
+  CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
+  CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
+  CHECKOUT_CANCEL: 'process_checkout_cancel'
+};
+var FPTI_BUTTON_TYPE = {
+  IFRAME: 'iframe'
+};
+var FTPI_BUTTON_KEY = {
+  BUTTON_LAYOUT: 'button_layout',
+  BUTTON_COLOR: 'button_color',
+  BUTTON_SIZE: 'button_size',
+  BUTTON_SHAPE: 'button_shape',
+  BUTTON_LABEL: 'button_label',
+  BUTTON_WIDTH: 'button_width',
+  BUTTON_TYPE: 'button_type',
+  BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled'
+};
+var USER_ACTION = {
+  COMMIT: 'commit',
+  CONTINUE: 'continue'
+};
+
+/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4554,7 +4555,7 @@ var esm_extends = __webpack_require__(6);
 var src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var belter_src = __webpack_require__(2);
+var belter_src = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./node_modules/beaver-logger/src/constants.js
 var LOG_LEVEL = {
@@ -4822,7 +4823,7 @@ var sdk_constants_src = __webpack_require__(0);
 var config = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./src/constants.js
-var constants = __webpack_require__(1);
+var constants = __webpack_require__(2);
 
 // CONCATENATED MODULE: ./src/lib/logger.js
 
@@ -4974,7 +4975,7 @@ function _extends() {
 var src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var belter_src = __webpack_require__(2);
+var belter_src = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./src/config.js
 var src_config = __webpack_require__(5);
@@ -4983,7 +4984,7 @@ var src_config = __webpack_require__(5);
 var lib = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/constants.js
-var constants = __webpack_require__(1);
+var constants = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/api/api.js
 var api = __webpack_require__(8);
@@ -6049,9 +6050,9 @@ function firebaseSocket(_ref8) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return callGraphQL; });
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 
 
 
@@ -7271,8 +7272,8 @@ var TYPES = true;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return disableLoadingSpinner; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getNonce; });
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 
 
 
@@ -7417,8 +7418,8 @@ __webpack_require__.r(__webpack_exports__);
 /* unused harmony export redirectTop */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return loadScript; });
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 
 
 
@@ -7551,11 +7552,11 @@ function getOnInit(xprops) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getCreateOrder; });
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
 /* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(7);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(2);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(4);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(5);
 
@@ -7781,10 +7782,10 @@ function getCreateOrder(xprops, _ref4) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getOnApprove; });
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5);
 
@@ -8085,11 +8086,11 @@ function getOnApprove(xprops, _ref4) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnCancelData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnCancelActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnCancel; });
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 
 
 
@@ -8158,7 +8159,7 @@ function getOnCancel(xprops, _ref2) {
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
 
 
@@ -8246,7 +8247,7 @@ function getOnShippingChange(xprops, _ref2) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getOnClick; });
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 
 
 
@@ -8640,7 +8641,7 @@ var POPUP_BRIDGE_OPTYPE = {
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var src = __webpack_require__(2);
+var src = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
 var sdk_constants_src = __webpack_require__(0);
@@ -8652,7 +8653,7 @@ var zalgo_promise_src = __webpack_require__(3);
 var lib = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/constants.js
-var constants = __webpack_require__(1);
+var constants = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/button/props/index.js
 var button_props = __webpack_require__(11);
@@ -10357,10 +10358,12 @@ function initNative(_ref6) {
   var start = Object(src["l" /* memoize */])(function () {
     return createOrder().then(function () {
       if (didAppSwitchHappen(win)) {
+        Object(lib["b" /* getLogger */])().info("native_app_switch").flush();
         closeWin();
         instance = connectNative();
         return instance.setProps();
       } else if (win) {
+        Object(lib["b" /* getLogger */])().info("native_app_web_fallback").flush();
         return fallbackToWebCheckout({
           win: win
         });
@@ -10722,7 +10725,7 @@ function initiatePaymentFlow(_ref3) {
         close = _init.close;
 
     var clickPromise = click();
-    Object(lib["b" /* getLogger */])().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$info$)).flush();
+    Object(lib["b" /* getLogger */])().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].PAYMENT_FLOW] = name, _getLogger$info$info$)).flush();
     return zalgo_promise_src["a" /* ZalgoPromise */].hash({
       valid: onClick ? onClick({
         fundingSource: fundingSource
@@ -11081,6 +11084,13 @@ function setupButton(opts) {
           win.close();
         }
       }
+    }).catch(function (err) {
+      var _getLogger$info$track;
+
+      Object(lib["b" /* getLogger */])().info('smart_buttons_payment_error', {
+        err: Object(src["v" /* stringifyError */])(err)
+      }).track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'smart_buttons_payment_error', _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(src["w" /* stringifyErrorMessage */])(err), _getLogger$info$track));
+      throw err;
     });
   }
 
