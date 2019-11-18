@@ -9455,7 +9455,8 @@ function initCheckout(_ref6) {
   }
 
   var Checkout = components.Checkout;
-  var buttonSessionID = props.buttonSessionID,
+  var sessionID = props.sessionID,
+      buttonSessionID = props.buttonSessionID,
       _createOrder = props.createOrder,
       _onApprove = props.onApprove,
       _onCancel = props.onCancel,
@@ -9473,7 +9474,8 @@ function initCheckout(_ref6) {
       fundingSource = payment.fundingSource,
       card = payment.card,
       isClick = payment.isClick,
-      buyerAccessToken = payment.buyerAccessToken;
+      buyerAccessToken = payment.buyerAccessToken,
+      venmoPayloadID = payment.venmoPayloadID;
   var fundingEligibility = serviceData.fundingEligibility,
       buyerCountry = serviceData.buyerCountry;
   var cspNonce = config.cspNonce;
@@ -9509,9 +9511,11 @@ function initCheckout(_ref6) {
   var init = function init() {
     return Checkout({
       window: win,
+      sessionID: sessionID,
       buttonSessionID: buttonSessionID,
       clientAccessToken: clientAccessToken,
       buyerAccessToken: buyerAccessToken,
+      venmoPayloadID: venmoPayloadID,
       createOrder: function createOrder() {
         return _createOrder().then(function (orderID) {
           return enableVaultSetup({
@@ -9758,6 +9762,7 @@ function initCardFields(_ref4) {
       locale = props.locale,
       commit = props.commit,
       onError = props.onError,
+      sessionID = props.sessionID,
       buttonSessionID = props.buttonSessionID;
   var CardFields = components.CardFields;
   var fundingSource = payment.fundingSource,
@@ -9824,6 +9829,7 @@ function initCardFields(_ref4) {
     onError: onError,
     onClose: onClose,
     onCardTypeChange: onCardTypeChange,
+    sessionID: sessionID,
     buttonSessionID: buttonSessionID,
     buyerCountry: buyerCountry,
     locale: locale,
@@ -10200,10 +10206,12 @@ function initNative(_ref6) {
   var fallbackToWebCheckout = function fallbackToWebCheckout(_temp) {
     var _ref7 = _temp === void 0 ? {} : _temp,
         win = _ref7.win,
-        buyerAccessToken = _ref7.buyerAccessToken;
+        buyerAccessToken = _ref7.buyerAccessToken,
+        venmoPayloadID = _ref7.venmoPayloadID;
 
     var checkoutPayment = Object(esm_extends["a" /* default */])({}, payment, {
       buyerAccessToken: buyerAccessToken,
+      venmoPayloadID: venmoPayloadID,
       win: win,
       isClick: false
     });
@@ -10233,11 +10241,12 @@ function initNative(_ref6) {
     var orderID = _ref8.orderID;
     return Object(src["e" /* extendUrl */])("" + Object(cross_domain_utils_src["b" /* getDomain */])() + src_config["m" /* WEB_CHECKOUT_URI */], {
       query: {
-        token: orderID,
-        native_xo: '1',
         fundingSource: fundingSource,
+        facilitatorAccessToken: facilitatorAccessToken,
+        token: orderID,
         useraction: commit ? constants["p" /* USER_ACTION */].COMMIT : constants["p" /* USER_ACTION */].CONTINUE,
-        facilitatorAccessToken: facilitatorAccessToken
+        native_xo: '1',
+        venmoOverride: fundingSource === sdk_constants_src["g" /* FUNDING */].VENMO ? '1' : '0'
       }
     });
   };
@@ -10280,6 +10289,7 @@ function initNative(_ref6) {
     }
 
     socket.on(MESSAGE.GET_PROPS, function () {
+      Object(lib["b" /* getLogger */])().info("native_message_getprops").flush();
       return getSDKProps();
     });
     socket.on(MESSAGE.ON_APPROVE, function (_ref10) {
@@ -10287,6 +10297,7 @@ function initNative(_ref6) {
           payerID = _ref10$data.payerID,
           paymentID = _ref10$data.paymentID,
           billingToken = _ref10$data.billingToken;
+      Object(lib["b" /* getLogger */])().info("native_message_onapprove").flush();
       socket.close();
       var data = {
         payerID: payerID,
@@ -10302,30 +10313,43 @@ function initNative(_ref6) {
       return onApprove(data, actions);
     });
     socket.on(MESSAGE.ON_CANCEL, function () {
+      Object(lib["b" /* getLogger */])().info("native_message_oncancel").flush();
       socket.close();
       return onCancel();
     });
     socket.on(MESSAGE.ON_ERROR, function (_ref11) {
       var message = _ref11.data.message;
+      Object(lib["b" /* getLogger */])().info("native_message_onerror", {
+        err: message
+      }).flush();
       socket.close();
       return onError(new Error(message));
     });
     socket.on(MESSAGE.FALLBACK, function (_ref12) {
-      var buyerAccessToken = _ref12.data.buyerAccessToken;
+      var _ref12$data = _ref12.data,
+          buyerAccessToken = _ref12$data.buyerAccessToken,
+          venmoPayloadID = _ref12$data.venmoPayloadID;
+      Object(lib["b" /* getLogger */])().info("native_message_fallback").flush();
       socket.close();
       return fallbackToWebCheckout({
-        buyerAccessToken: buyerAccessToken
+        buyerAccessToken: buyerAccessToken,
+        venmoPayloadID: venmoPayloadID
       });
     });
 
     var setProps = function setProps() {
       return getSDKProps().then(function (sdkProps) {
+        Object(lib["b" /* getLogger */])().info("native_message_setprops").flush();
         return socket.send(MESSAGE.SET_PROPS, sdkProps);
+      }).then(function () {
+        Object(lib["b" /* getLogger */])().info("native_response_setprops").flush();
       });
     };
 
     var closeNative = function closeNative() {
+      Object(lib["b" /* getLogger */])().info("native_message_close").flush();
       return socket.send(MESSAGE.CLOSE).then(function () {
+        Object(lib["b" /* getLogger */])().info("native_response_close").flush();
         socket.close();
       });
     };
