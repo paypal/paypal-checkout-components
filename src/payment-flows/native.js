@@ -219,10 +219,12 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         }
 
         socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
+            getLogger().info(`native_message_getprops`).flush();
             return getSDKProps();
         });
 
         socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
+            getLogger().info(`native_message_onapprove`).flush();
             socket.close();
             const data = { payerID, paymentID, billingToken, isNativeTransaction: true };
             const actions = { restart: () => fallbackToWebCheckout() };
@@ -230,28 +232,36 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
 
         socket.on(MESSAGE.ON_CANCEL, () => {
+            getLogger().info(`native_message_oncancel`).flush();
             socket.close();
             return onCancel();
         });
 
         socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
+            getLogger().info(`native_message_onerror`, { err: message }).flush();
             socket.close();
             return onError(new Error(message));
         });
 
         socket.on(MESSAGE.FALLBACK, ({ data: { buyerAccessToken, venmoPayloadID } }) => {
+            getLogger().info(`native_message_fallback`).flush();
             socket.close();
             return fallbackToWebCheckout({ buyerAccessToken, venmoPayloadID });
         });
 
         const setProps = () => {
             return getSDKProps().then(sdkProps => {
+                getLogger().info(`native_message_setprops`).flush();
                 return socket.send(MESSAGE.SET_PROPS, sdkProps);
+            }).then(() => {
+                getLogger().info(`native_response_setprops`).flush();
             });
         };
 
         const closeNative = () => {
+            getLogger().info(`native_message_close`).flush();
             return socket.send(MESSAGE.CLOSE).then(() => {
+                getLogger().info(`native_response_close`).flush();
                 socket.close();
             });
         };
