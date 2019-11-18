@@ -186,11 +186,12 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const getWebCheckoutFallbackUrl = ({ orderID }) : string => {
         return extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
             query: {
-                token:      orderID,
-                native_xo:  '1',
                 fundingSource,
-                useraction: commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
-                facilitatorAccessToken
+                facilitatorAccessToken,
+                token:         orderID,
+                useraction:    commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
+                native_xo:     '1',
+                venmoOverride: (fundingSource === FUNDING.VENMO) ? '1' : '0'
             }
         });
     };
