@@ -63,7 +63,7 @@ export type FundingSourceConfig = {|
     Logo : (LogoOptions) => ChildType,
     Label : (LabelOptions) => ChildType,
     VaultLabel? : (VaultLabelOptions) => ChildType,
-    Tag? : (TagOptions) => ChildType,
+    Tag? : (TagOptions) => ?ChildType,
     handleClick : boolean,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },

@@ -8,7 +8,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import type { LogoOptions, LabelOptions, VaultLabelOptions, TagOptions } from '../common';
 import { BUTTON_LABEL, BUTTON_LAYOUT, CLASS, ATTRIBUTE } from '../../constants';
 import { componentContent } from '../content';
-import { Text, Space, LoadingDots } from '../../ui';
+import { Text, Space } from '../../ui';
 
 export function Logo({ logoColor } : LogoOptions) : ChildType {
     return (
@@ -180,9 +180,9 @@ export function VaultLabel({ logoColor, label } : VaultLabelOptions) : ChildType
     );
 }
 
-export function Tag({ multiple, locale: { lang } } : TagOptions) : ChildType {
+export function Tag({ multiple, locale: { lang } } : TagOptions) : ?ChildType {
     if (__WEB__) {
-        return <LoadingDots />;
+        return null;
     }
     
     const { DualTag, SaferTag } = componentContent[lang];

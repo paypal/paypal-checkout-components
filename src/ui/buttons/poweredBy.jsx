@@ -7,7 +7,7 @@ import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { CLASS } from '../../constants';
 
-import { LoadingDots, Text } from '..';
+import { Text } from '..';
 
 import { buttonContent } from './content';
 
@@ -47,7 +47,7 @@ export function PoweredByPayPal({ locale: { lang } } : PoweredByPayPalProps) : C
         <div class={ CLASS.POWERED_BY }>
             <style innerHTML={ POWERED_BY_PAYPAL_STYLE } />
             { __WEB__
-                ? <Text><LoadingDots /></Text>
+                ? <Text />
                 : <PoweredBy logoColor={ LOGO_COLOR.BLUE } />
             }
         </div>
