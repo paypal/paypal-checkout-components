@@ -16,6 +16,7 @@ import { DEFAULT_POPUP_SIZE, getCheckoutUrl } from '../../config';
 
 import type { CheckoutPropsType } from './props';
 import { containerContent } from './content';
+import { fixCreditRedirect } from './hacks';
 
 export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
     return inlineMemoize(getCheckoutComponent, () => {
@@ -196,6 +197,8 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                 show:  noop,
                 hide:  noop
             };
+
+            fixCreditRedirect();
         }
     
         return component;
