@@ -1,3 +1,15 @@
+## <small>5.0.64 (2019-11-20)</small>
+
+* Add sdkMeta param during credit redirect ([f3253cd](http://github.paypal.com/paypal/paypal-checkout/commit/f3253cd))
+* Factor out loading dots for tagline ([0810270](http://github.paypal.com/paypal/paypal-checkout/commit/0810270))
+* Ramp black button to 100% only for US (for now) (#1257) ([978021c](http://github.paypal.com/paypal/paypal-checkout/commit/978021c)), closes [#1257](http://github.paypal.com/paypal/paypal-checkout/issues/1257)
+* Remove redundant flowfixmes ([c32c0fe](http://github.paypal.com/paypal/paypal-checkout/commit/c32c0fe))
+* Slide transition for button label ([a2ee53b](http://github.paypal.com/paypal/paypal-checkout/commit/a2ee53b))
+* Split out paypal button templates ([f31fbda](http://github.paypal.com/paypal/paypal-checkout/commit/f31fbda))
+* Use box-sizing: border-box across all button elements ([84fda1a](http://github.paypal.com/paypal/paypal-checkout/commit/84fda1a))
+
+
+
 ## <small>5.0.63 (2019-10-30)</small>
 
 * Fix the missing data attr for the black button (#1242) ([870d70a](http://github.paypal.com/paypal/paypal-checkout/commit/870d70a)), closes [#1242](http://github.paypal.com/paypal/paypal-checkout/issues/1242)
