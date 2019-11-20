@@ -259,6 +259,20 @@ function supportsPopups(ua) {
 
   return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
+function isChrome(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Chrome|Chromium|CriOS/.test(ua);
+}
+function isSafari(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Safari/.test(ua) && !isChrome(ua);
+}
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
 function _extends() {
   _extends = Object.assign || function (target) {

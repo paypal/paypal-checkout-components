@@ -962,6 +962,20 @@ function supportsPopups(ua) {
 
   return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
+function isChrome(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Chrome|Chromium|CriOS/.test(ua);
+}
+function isSafari(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Safari/.test(ua) && !isChrome(ua);
+}
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
 var esm_extends = __webpack_require__(6);
 
@@ -3769,6 +3783,8 @@ function wrapPromise(method, _temp) {
 /* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "k", function() { return isIEIntranet; });
 /* unused concated harmony import isMacOsCna */
 /* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "x", function() { return supportsPopups; });
+/* unused concated harmony import isChrome */
+/* unused concated harmony import isSafari */
 /* unused concated harmony import isDocumentReady */
 /* unused concated harmony import urlEncode */
 /* unused concated harmony import waitForWindowReady */
@@ -5521,6 +5537,7 @@ function messageSocket(_ref) {
     receivedMessages[messageUID] = true;
 
     var message = Object(esm_extends["a" /* default */])({
+      session_uid: sessionUID,
       message_uid: messageUID,
       source_app: sourceApp,
       source_app_version: sourceAppVersion,
@@ -5534,7 +5551,6 @@ function messageSocket(_ref) {
     var messageName = _ref2.messageName,
         responseStatus = _ref2.responseStatus,
         responseData = _ref2.responseData,
-        messageSessionUID = _ref2.messageSessionUID,
         requestUID = _ref2.requestUID;
 
     if (!socket.isOpen()) {
@@ -5542,7 +5558,6 @@ function messageSocket(_ref) {
     }
 
     return sendMessage(socket, {
-      session_uid: messageSessionUID,
       request_uid: requestUID,
       message_name: messageName,
       message_status: responseStatus,
@@ -5580,7 +5595,6 @@ function messageSocket(_ref) {
         responseStatus: RESPONSE_STATUS.SUCCESS,
         responseData: res,
         messageName: messageName,
-        messageSessionUID: messageSessionUID,
         requestUID: requestUID
       });
     }, function (err) {
