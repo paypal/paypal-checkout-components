@@ -100,6 +100,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         receivedMessages[messageUID] = true;
 
         const message = {
+            session_uid:        sessionUID,
             message_uid:        messageUID,
             source_app:         sourceApp,
             source_app_version: sourceAppVersion,
@@ -110,13 +111,12 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         socket.send(JSON.stringify(message));
     };
 
-    const sendResponse = (socket, { messageName, responseStatus, responseData, messageSessionUID, requestUID }) => {
+    const sendResponse = (socket, { messageName, responseStatus, responseData, requestUID }) => {
         if (!socket.isOpen()) {
             return;
         }
         
         return sendMessage(socket, {
-            session_uid:        messageSessionUID,
             request_uid:        requestUID,
             message_name:       messageName,
             message_status:     responseStatus,
@@ -144,7 +144,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
             return handler({ data: messageData });
         }).then(res => {
-            sendResponse(socket, { responseStatus: RESPONSE_STATUS.SUCCESS, responseData: res, messageName, messageSessionUID, requestUID  });
+            sendResponse(socket, { responseStatus: RESPONSE_STATUS.SUCCESS, responseData: res, messageName, requestUID  });
         }, err => {
             const res = { message: (err && err.message) ? err.message : 'Unknown error' };
             sendResponse(socket, { responseStatus: RESPONSE_STATUS.ERROR, responseData: res, messageName, messageSessionUID, requestUID });
