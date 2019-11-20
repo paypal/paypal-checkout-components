@@ -19,5 +19,6 @@ export const pageStyle = `
         touch-callout: none;
         user-select: none;
         cursor: default;
+        box-sizing: border-box;
     }
 `;
