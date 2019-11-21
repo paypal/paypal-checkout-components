@@ -28,5 +28,7 @@ export const CLASS = {
 
     MENU_TOGGLE: ('menu-toggle' : 'menu-toggle'),
 
-    SEPARATOR: ('paypal-separator' : 'paypal-separator')
+    SEPARATOR: ('paypal-separator' : 'paypal-separator'),
+
+    HIDDEN:  ('hidden' : 'hidden')
 };

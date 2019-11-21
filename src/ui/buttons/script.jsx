@@ -12,19 +12,39 @@ function getComponentScript() : () => void {
             OPTIONAL: 'optional'
         };
 
-        const STYLE = {
-            BLOCK:        'block',
-            INLINE_BLOCK: 'inline-block',
-            NONE:         'none',
-            VISIBLE:      'visible',
-            HIDDEN:       'hidden'
+        const CLASS = {
+            HIDDEN:    'hidden',
+            DOM_READY: 'dom-ready'
         };
 
         const SELECTOR = {
             ALL:      '*',
-            IMG:      'img',
             OPTIONAL: `[${ ATTRIBUTE.OPTIONAL }]`
         };
+
+        const TAG = {
+            STYLE: 'style'
+        };
+
+        function once(handler : Function) : Function {
+            let called = false;
+            return (...args) => {
+                if (!called) {
+                    called = true;
+                    handler(...args);
+                }
+            };
+        }
+
+        function debounce(handler : Function, time : number = 50) : Function {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    handler(...args);
+                }, time);
+            };
+        }
 
         // eslint-disable-next-line flowtype/no-mutable-array
         function toArray<T>(item) : Array<T> {
@@ -33,34 +53,30 @@ function getComponentScript() : () => void {
 
         function getElements(selector, parent) : $ReadOnlyArray<HTMLElement> {
             parent = parent || document;
-            return toArray(parent.querySelectorAll(selector));
+            return toArray(parent.querySelectorAll(selector)).filter(el => {
+                return el.tagName.toLowerCase() !== TAG.STYLE;
+            });
+        }
+
+        function getParent(element : HTMLElement) : HTMLElement {
+            // $FlowFixMe
+            return element.parentElement;
         }
 
         function showElement(el : HTMLElement) {
-            el.style.display = '';
+            el.classList.remove(CLASS.HIDDEN);
         }
 
         function hideElement(el : HTMLElement) {
-            el.style.display = STYLE.NONE;
+            el.classList.add(CLASS.HIDDEN);
         }
 
-        function makeElementVisible(el : HTMLElement) {
-            el.style.visibility = '';
-        }
-
-        function makeElementInvisible(el : HTMLElement) {
-            el.style.visibility = STYLE.HIDDEN;
-        }
-
-        function pxToInt(val : string | number) : number {
-            if (typeof val === 'number') {
-                return val;
+        function sum(arr : $ReadOnlyArray<number>) : number {
+            let result = 0;
+            for (const item of arr) {
+                result += item;
             }
-            const match = val.match(/^([0-9]+)px$/);
-            if (!match) {
-                throw new Error(`Could not match css value from ${  val }`);
-            }
-            return parseInt(match[1], 10);
+            return result;
         }
 
         function unique<T>(arr : $ReadOnlyArray<T>) : $ReadOnlyArray<T> {
@@ -75,79 +91,72 @@ function getComponentScript() : () => void {
             return result;
         }
 
-        function isOverflowing(el : HTMLElement) : boolean {
-
-            if (!el.offsetWidth || !el.offsetHeight) {
-                return false;
-            }
-
-            if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
-                return true;
-            }
-
-            const parent = el.parentNode;
-
-            if (!parent) {
-                return false;
-            }
-
-            let { top: elementTop, bottom: elementBottom, left: elementLeft, right: elementRight } = el.getBoundingClientRect();
-            // $FlowFixMe
-            const { top: containerTop, bottom: containerBottom, left: containerLeft, right: containerRight } = parent.getBoundingClientRect();
-            const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
-            
-            const { paddingTop: elementPaddingTop, paddingLeft: elementPaddingLeft, paddingRight: elementPaddingRight, paddingBottom: elementPaddingBottom } = window.getComputedStyle(el);
-            elementTop += pxToInt(elementPaddingTop);
-            elementLeft += pxToInt(elementPaddingLeft);
-            elementRight += pxToInt(elementPaddingRight);
-            elementBottom += pxToInt(elementPaddingBottom);
-
-            if (elementTop < containerTop || elementLeft < containerLeft || elementRight > containerRight || elementBottom > containerBottom) {
-                return true;
-            }
-
-            if (elementTop < 0 || elementTop < 0 || elementRight > windowWidth || elementBottom > windowHeight) {
-                return true;
-            }
-
-            return false;
+        function getAllChildren(element : HTMLElement) : $ReadOnlyArray<HTMLElement> {
+            return getElements(SELECTOR.ALL, element);
         }
 
-        const optionalParents = unique(getElements(SELECTOR.OPTIONAL).map(optional => optional.parentElement).filter(Boolean));
+        function getOptionalIndex(element : HTMLElement) : number {
+            return parseInt(element.getAttribute(ATTRIBUTE.OPTIONAL) || 0, 10);
+        }
 
-        const children = optionalParents.map(optionalParent => {
-            const allChildren = getElements(SELECTOR.ALL, optionalParent);
+        function getElementsTotalWidth(elements : $ReadOnlyArray<HTMLElement>) : number {
+            return sum(elements.map(child => child.offsetWidth));
+        }
 
-            const optionalChildren = toArray(getElements(SELECTOR.OPTIONAL, optionalParent)).sort((first, second) => {
-                return parseInt(second.getAttribute(ATTRIBUTE.OPTIONAL) || 0, 10) - parseInt(first.getAttribute(ATTRIBUTE.OPTIONAL) || 0, 10);
+        function getOptionalParents() : $ReadOnlyArray<HTMLElement> {
+            return unique(getElements(SELECTOR.OPTIONAL).map(getParent).filter(Boolean));
+        }
+
+        function getOptionalChildren(parent : HTMLElement) : $ReadOnlyArray<HTMLElement> {
+            return toArray(getElements(SELECTOR.OPTIONAL, parent)).sort((first, second) => {
+                return getOptionalIndex(first) - getOptionalIndex(second);
             });
+        }
+
+        const children = getOptionalParents().map(optionalParent => {
+            const allChildren = getAllChildren(optionalParent);
+            const optionalChildren = getOptionalChildren(optionalParent);
 
             return {
+                optionalParent,
                 allChildren,
                 optionalChildren
             };
         });
 
         function toggleOptionals() {
-            for (const { allChildren, optionalChildren } of children) {
-                optionalChildren.forEach(showElement);
+            for (const { optionalParent, allChildren, optionalChildren } of children) {
+                const parentWidth = optionalParent.offsetWidth;
+                let usedWidth = getElementsTotalWidth(allChildren) - getElementsTotalWidth(optionalChildren);
 
                 for (const optionalChild of optionalChildren) {
-                    if (allChildren.some(isOverflowing)) {
+                    usedWidth += optionalChild.offsetWidth;
+
+                    if (usedWidth > parentWidth) {
                         hideElement(optionalChild);
-                        makeElementInvisible(optionalChild);
                     } else {
-                        makeElementVisible(optionalChild);
+                        showElement(optionalChild);
                     }
                 }
             }
         }
 
-        toggleOptionals();
+        const setDomReady = once(debounce(() => {
+            window.addEventListener('resize', toggleOptionals);
+            if (document.body) {
+                document.body.classList.add(CLASS.DOM_READY);
+            }
+        }));
 
-        document.addEventListener('DOMContentLoaded', toggleOptionals);
-        window.addEventListener('load', toggleOptionals);
-        window.addEventListener('resize', toggleOptionals);
+        const load = () => {
+            toggleOptionals();
+            setDomReady();
+        };
+
+        toggleOptionals();
+        document.addEventListener('DOMContentLoaded', load);
+        window.addEventListener('load', load);
+        window.addEventListener('resize', load);
     };
 }
 

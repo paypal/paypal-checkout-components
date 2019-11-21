@@ -12,5 +12,5 @@ export function Text({ optional, className = [] } : { optional? : boolean, class
 }
 
 export function Space() : ChildType {
-    return <Text className={ [ CLASS.SPACE ] }> </Text>;
+    return <span class={ [ CLASS.SPACE ].join(' ') }>{' '}</span>;
 }

@@ -1,5 +1,7 @@
 /* @flow */
 
+import { CLASS } from '../../../constants';
+
 export const pageStyle = `
     html, body {
         padding: 0;
@@ -20,5 +22,10 @@ export const pageStyle = `
         user-select: none;
         cursor: default;
         box-sizing: border-box;
+    }
+
+    .${ CLASS.HIDDEN } {
+        position: absolute;
+        visibility: hidden;
     }
 `;

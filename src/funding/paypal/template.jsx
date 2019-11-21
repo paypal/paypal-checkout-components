@@ -44,72 +44,95 @@ function getButtonStyle(opts : LabelOptions) : ?ChildType {
     const MIN_WIDTH = 300;
     const LABEL_DURATION = 1;
     const PERSONALIZATION_DURATION = 5;
-    const DELAY = 0.3;
+    const DELAY = 0;
 
-    const HIDE = `
+    const COMPRESSED = `
         max-width: 0%;
         opacity: 0;
     `;
 
-    const SHOW = `
+    const EXPANDED = `
         max-width: 100%;
         opacity: 1;
     `;
 
+    const HIDDEN = `
+        position: absolute;
+        visibility: hidden;
+    `;
+
+    const VISIBLE = `
+        position: static;
+        visibility: visible;
+    `;
+
+    const DOM_READY = '.dom-ready';
+    const PAYPAL_BUTTON = `.${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }]`;
+
+    const PAYPAL_LOGO = `${ PAYPAL_BUTTON } .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ FUNDING.PAYPAL }`;
+    const BUTTON_TEXT = `${ PAYPAL_BUTTON } .${ CLASS.TEXT }:not(.personalization-text)`;
+    const PERSONALIZATION_TEXT = `${ PAYPAL_BUTTON } .personalization-text`;
+    
     return (
         <style innerHTML={ `
-            .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }] .${ CLASS.TEXT }:not(.${ CLASS.SPACE }):not(.personalizationText) {
+
+            ${ BUTTON_TEXT }, ${ PERSONALIZATION_TEXT } {
+                ${ HIDDEN }
+            }
+
+            ${ DOM_READY } ${ BUTTON_TEXT }:not(.${ CLASS.HIDDEN }) {
+                ${ VISIBLE }
+                ${ COMPRESSED }
                 animation: show-text ${ LABEL_DURATION }s ${ DELAY }s forwards;
             }
 
-            .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }] .${ CLASS.TEXT }:not(.${ CLASS.SPACE }) {
-                white-space: pre;
-                ${ HIDE }
-            }
-
             @media only screen and (max-width: ${ MIN_WIDTH }px) {
-                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }] .personalizationText {
-                    display: none;
+                ${ DOM_READY } ${ PERSONALIZATION_TEXT } {
+                    ${ HIDDEN }
                 }
             }
 
             @media only screen and (min-width: ${ MIN_WIDTH }px) {
-                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }] .${ CLASS.TEXT }:not(.${ CLASS.SPACE }):not(.personalizationText) {
-                    animation: ${ personalizationText ? `show-text-delayed ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `show-text ${ LABEL_DURATION }s ${ DELAY }s forwards` };
-                }
-
-                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }] .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ FUNDING.PAYPAL } {
+                ${ DOM_READY } ${ PAYPAL_LOGO } {
                     animation: ${ personalizationText ? `toggle-paypal-logo ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `none` };
                 }
 
-                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }] .personalizationText {
+                ${ DOM_READY } ${ BUTTON_TEXT }:not(.${ CLASS.HIDDEN }) {
+                    ${ COMPRESSED }
+                    ${ VISIBLE }
+                    animation: ${ personalizationText ? `show-text-delayed ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `show-text ${ LABEL_DURATION }s ${ DELAY }s forwards` };
+                }
+
+                ${ DOM_READY } ${ PERSONALIZATION_TEXT } {
+                    ${ COMPRESSED }
+                    ${ VISIBLE }
                     animation: show-personalization-text ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards;
                 }
             }
 
             @keyframes show-text {
-                0% { ${ HIDE } }
-                100% { ${ SHOW } }
+                0% { ${ COMPRESSED } }
+                100% { ${ EXPANDED } }
             }
 
             @keyframes toggle-paypal-logo {
-                0% { ${ SHOW } }
-                8% { ${ HIDE } }
-                85% { ${ HIDE } }
-                100% { ${ SHOW } }
+                0% { ${ EXPANDED } }
+                8% { ${ COMPRESSED } }
+                85% { ${ COMPRESSED } }
+                100% { ${ EXPANDED } }
             }
 
             @keyframes show-text-delayed {
-                0% { ${ HIDE } }
-                85% { ${ HIDE } }
-                100% { ${ SHOW } }
+                0% { ${ COMPRESSED } }
+                85% { ${ COMPRESSED } }
+                100% { ${ EXPANDED } }
             }
 
             @keyframes show-personalization-text {
-                0% { ${ HIDE } }
-                25% { ${ SHOW } }
-                75% { ${ SHOW } }
-                100% { ${ HIDE } }
+                0% { ${ COMPRESSED } }
+                25% { ${ EXPANDED } }
+                75% { ${ EXPANDED } }
+                100% { ${ COMPRESSED } }
             }
         ` } />
     );
@@ -157,7 +180,7 @@ function getButtonPersonalization(opts : LabelOptions) : ?ChildType {
     }
 
     return (
-        <Text className="personalizationText" optional={ 2 }>{ personalizationText }</Text>
+        <Text className="personalization-text" optional={ 2 }>{ personalizationText }</Text>
     );
 }
 

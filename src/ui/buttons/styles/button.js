@@ -43,7 +43,7 @@ export const buttonStyle = `
         cursor: pointer;
     }
 
-    .${ CLASS.CONTAINER }.${ CLASS.ENV }-${ ENV.TEST } .${ CLASS.TEXT }:not(.${ CLASS.SPACE }) {
+    .${ CLASS.CONTAINER }.${ CLASS.ENV }-${ ENV.TEST } .${ CLASS.TEXT } {
         font-family: Arial !important;
         background: rgba(0, 0, 0, 0.5) !important;
         color: transparent  !important;
@@ -62,9 +62,9 @@ export const buttonStyle = `
         width: auto;
     }
 
-    .${ CLASS.TEXT } {
+    .${ CLASS.TEXT }, .${ CLASS.SPACE } {
         display: inline-block;
-        white-space: pre-wrap;
+        white-space: pre;
     }
 
     .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {

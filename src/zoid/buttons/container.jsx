@@ -90,6 +90,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                         position: relative;
                         display: inline-block;
                         width: 100%;
+                        min-height: ${ BUTTON_SIZE_STYLE[minimumSize].minHeight }px;
                         min-width: ${ BUTTON_SIZE_STYLE[minimumSize].minWidth }px;
                         max-width: ${ BUTTON_SIZE_STYLE[maximumSize].maxWidth }px;
                         font-size: 0;
@@ -139,7 +140,9 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
     ).render(dom({ doc }));
 
     event.on(EVENT.RENDERED, () => {
-        element.style.transition = 'all 0.2s ease-in-out';
+        setTimeout(() => {
+            element.style.transition = 'all 0.2s ease-in-out';
+        }, 1000);
     });
 
     return element;

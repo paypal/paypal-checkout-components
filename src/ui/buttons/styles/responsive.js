@@ -2,7 +2,6 @@
 
 import { max, perc } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from '../../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
@@ -48,10 +47,6 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     height: 100%;
                     min-height: 100%;
                     max-height: 100%;
-                }
-
-                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }] .${ LOGO_CLASS.LOGO } {
-                    zmargin-bottom: 2px;
                 }
                 
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL },
