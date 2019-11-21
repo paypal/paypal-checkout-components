@@ -38,7 +38,8 @@ export type LabelOptions = {|
     onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
     layout : $Values<typeof BUTTON_LAYOUT>,
     clientAccessToken : ?string,
-    personalization : Personalization
+    personalization : Personalization,
+    nonce : ?string
 |};
 
 export type VaultLabelOptions = {|

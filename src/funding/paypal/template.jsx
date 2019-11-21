@@ -9,6 +9,7 @@ import type { LogoOptions, LabelOptions, VaultLabelOptions, TagOptions } from '.
 import { BUTTON_LABEL, BUTTON_LAYOUT, CLASS, ATTRIBUTE } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space } from '../../ui';
+import { TrackingBeacon } from '../../ui/tracking';
 
 export function Logo({ logoColor } : LogoOptions) : ChildType {
     return (
@@ -32,6 +33,16 @@ function getPersonalizationText({ personalization } : LabelOptions) : ?string {
     }
 
     return personalizationText;
+}
+
+function getPersonalizationTracker({ personalization } : LabelOptions) : ?string {
+    const personalizationTracker = personalization && personalization.buttonText && personalization.buttonText.tracking && personalization.buttonText.tracking.impression;
+
+    if (!personalizationTracker) {
+        return;
+    }
+
+    return personalizationTracker;
 }
 
 function getButtonStyle(opts : LabelOptions) : ?ChildType {
@@ -173,14 +184,24 @@ function getButtonPersonalization(opts : LabelOptions) : ?ChildType {
         return;
     }
 
+    const { nonce } = opts;
+
     const personalizationText = getPersonalizationText(opts);
+    const personalizationTracker = getPersonalizationTracker(opts);
 
     if (!personalizationText) {
         return;
     }
 
     return (
-        <Text className="personalization-text" optional={ 2 }>{ personalizationText }</Text>
+        <Fragment>
+            <Text className="personalization-text" optional={ 2 }>{ personalizationText }</Text>
+            {
+                personalizationTracker &&
+                    <TrackingBeacon url={ personalizationTracker } nonce={ nonce } />
+            }
+        </Fragment>
+        
     );
 }
 
