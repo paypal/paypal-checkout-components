@@ -1,3 +1,9 @@
+## <small>5.0.66 (2019-11-21)</small>
+
+* Do not add sdkMeta to credit url with sdkMeta already set ([e5f2599](http://github.paypal.com/paypal/paypal-checkout/commit/e5f2599))
+
+
+
 ## <small>5.0.65 (2019-11-21)</small>
 
 * Add tracking beacon to personalization button text ([6902854](http://github.paypal.com/paypal/paypal-checkout/commit/6902854))
