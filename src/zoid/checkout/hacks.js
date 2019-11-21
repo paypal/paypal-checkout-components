@@ -21,7 +21,7 @@ export function fixCreditRedirect() {
         $util.redirect = function overrideRedirect(url, ...args) : ZalgoPromise<void> {
 
             try {
-                if (url.indexOf('/ppcreditapply') !== -1 && url.indexOf('key=') !== -1) {
+                if (url.indexOf('/ppcreditapply') !== -1 && url.indexOf('key=') !== -1 && url.indexOf('sdkMeta') === -1) {
                     url += `&sdkMeta=${ getSDKMeta() }`;
                 }
                 
