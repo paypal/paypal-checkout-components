@@ -840,7 +840,9 @@ export const Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                     });
                     info('button_click');
-                    info(`pay_flow_${ data && data.flow }`);
+                    if (data && data.flow) {
+                        info(`pay_flow_${ data.flow }`);
+                    }
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
