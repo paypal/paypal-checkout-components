@@ -72,7 +72,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     margin-bottom: 0;
                 }
                 
-                .${ CLASS.TAGLINE } {
+                .${ CLASS.TAGLINE } .${ CLASS.TEXT } {
                     height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
                     line-height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
                 }
