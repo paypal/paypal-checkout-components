@@ -91,718 +91,6 @@ window["spb"] =
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/locale.js
-/* eslint max-lines: 0 */
-var COUNTRY = {
-  AD: 'AD',
-  AE: 'AE',
-  AG: 'AG',
-  AI: 'AI',
-  AL: 'AL',
-  AM: 'AM',
-  AN: 'AN',
-  AO: 'AO',
-  AR: 'AR',
-  AT: 'AT',
-  AU: 'AU',
-  AW: 'AW',
-  AZ: 'AZ',
-  BA: 'BA',
-  BB: 'BB',
-  BE: 'BE',
-  BF: 'BF',
-  BG: 'BG',
-  BH: 'BH',
-  BI: 'BI',
-  BJ: 'BJ',
-  BM: 'BM',
-  BN: 'BN',
-  BO: 'BO',
-  BR: 'BR',
-  BS: 'BS',
-  BT: 'BT',
-  BW: 'BW',
-  BY: 'BY',
-  BZ: 'BZ',
-  CA: 'CA',
-  CD: 'CD',
-  CG: 'CG',
-  CH: 'CH',
-  CI: 'CI',
-  CK: 'CK',
-  CL: 'CL',
-  CM: 'CM',
-  CN: 'CN',
-  CO: 'CO',
-  CR: 'CR',
-  CV: 'CV',
-  CY: 'CY',
-  CZ: 'CZ',
-  DE: 'DE',
-  DJ: 'DJ',
-  DK: 'DK',
-  DM: 'DM',
-  DO: 'DO',
-  DZ: 'DZ',
-  EC: 'EC',
-  EE: 'EE',
-  EG: 'EG',
-  ER: 'ER',
-  ES: 'ES',
-  ET: 'ET',
-  FI: 'FI',
-  FJ: 'FJ',
-  FK: 'FK',
-  FM: 'FM',
-  FO: 'FO',
-  FR: 'FR',
-  GA: 'GA',
-  GB: 'GB',
-  GD: 'GD',
-  GE: 'GE',
-  GF: 'GF',
-  GI: 'GI',
-  GL: 'GL',
-  GM: 'GM',
-  GN: 'GN',
-  GP: 'GP',
-  GR: 'GR',
-  GT: 'GT',
-  GW: 'GW',
-  GY: 'GY',
-  HK: 'HK',
-  HN: 'HN',
-  HR: 'HR',
-  HU: 'HU',
-  ID: 'ID',
-  IE: 'IE',
-  IL: 'IL',
-  IN: 'IN',
-  IS: 'IS',
-  IT: 'IT',
-  JM: 'JM',
-  JO: 'JO',
-  JP: 'JP',
-  KE: 'KE',
-  KG: 'KG',
-  KH: 'KH',
-  KI: 'KI',
-  KM: 'KM',
-  KN: 'KN',
-  KR: 'KR',
-  KW: 'KW',
-  KY: 'KY',
-  KZ: 'KZ',
-  LA: 'LA',
-  LC: 'LC',
-  LI: 'LI',
-  LK: 'LK',
-  LS: 'LS',
-  LT: 'LT',
-  LU: 'LU',
-  LV: 'LV',
-  MA: 'MA',
-  MC: 'MC',
-  MD: 'MD',
-  ME: 'ME',
-  MG: 'MG',
-  MH: 'MH',
-  MK: 'MK',
-  ML: 'ML',
-  MN: 'MN',
-  MQ: 'MQ',
-  MR: 'MR',
-  MS: 'MS',
-  MT: 'MT',
-  MU: 'MU',
-  MV: 'MV',
-  MW: 'MW',
-  MX: 'MX',
-  MY: 'MY',
-  MZ: 'MZ',
-  NA: 'NA',
-  NC: 'NC',
-  NE: 'NE',
-  NF: 'NF',
-  NG: 'NG',
-  NI: 'NI',
-  NL: 'NL',
-  NO: 'NO',
-  NP: 'NP',
-  NR: 'NR',
-  NU: 'NU',
-  NZ: 'NZ',
-  OM: 'OM',
-  PA: 'PA',
-  PE: 'PE',
-  PF: 'PF',
-  PG: 'PG',
-  PH: 'PH',
-  PL: 'PL',
-  PM: 'PM',
-  PN: 'PN',
-  PT: 'PT',
-  PW: 'PW',
-  PY: 'PY',
-  QA: 'QA',
-  RE: 'RE',
-  RO: 'RO',
-  RS: 'RS',
-  RU: 'RU',
-  RW: 'RW',
-  SA: 'SA',
-  SB: 'SB',
-  SC: 'SC',
-  SE: 'SE',
-  SG: 'SG',
-  SH: 'SH',
-  SI: 'SI',
-  SJ: 'SJ',
-  SK: 'SK',
-  SL: 'SL',
-  SM: 'SM',
-  SN: 'SN',
-  SO: 'SO',
-  SR: 'SR',
-  ST: 'ST',
-  SV: 'SV',
-  SZ: 'SZ',
-  TC: 'TC',
-  TD: 'TD',
-  TG: 'TG',
-  TH: 'TH',
-  TJ: 'TJ',
-  TM: 'TM',
-  TN: 'TN',
-  TO: 'TO',
-  TR: 'TR',
-  TT: 'TT',
-  TV: 'TV',
-  TW: 'TW',
-  TZ: 'TZ',
-  UA: 'UA',
-  UG: 'UG',
-  US: 'US',
-  UY: 'UY',
-  VA: 'VA',
-  VC: 'VC',
-  VE: 'VE',
-  VG: 'VG',
-  VN: 'VN',
-  VU: 'VU',
-  WF: 'WF',
-  WS: 'WS',
-  YE: 'YE',
-  YT: 'YT',
-  ZA: 'ZA',
-  ZM: 'ZM',
-  ZW: 'ZW'
-};
-var LANG = {
-  AR: 'ar',
-  CS: 'cs',
-  DA: 'da',
-  DE: 'de',
-  EL: 'el',
-  EN: 'en',
-  ES: 'es',
-  FI: 'fi',
-  FR: 'fr',
-  HE: 'he',
-  HU: 'hu',
-  ID: 'id',
-  IT: 'it',
-  JA: 'ja',
-  KO: 'ko',
-  NL: 'nl',
-  NO: 'no',
-  PL: 'pl',
-  PT: 'pt',
-  RU: 'ru',
-  SK: 'sk',
-  SV: 'sv',
-  TH: 'th',
-  TR: 'tr',
-  ZH: 'zh'
-};
-var COUNTRY_LANGS = {
-  AD: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  AE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR],
-  AG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  AI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  AL: [LANG.EN],
-  AM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  AN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  AO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  AR: [LANG.ES, LANG.EN],
-  AT: [LANG.DE, LANG.EN],
-  AU: [LANG.EN],
-  AW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  AZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  BA: [LANG.EN],
-  BB: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  BE: [LANG.EN, LANG.NL, LANG.FR],
-  BF: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  BG: [LANG.EN],
-  BH: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  BI: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  BJ: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  BM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  BN: [LANG.EN],
-  BO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  BR: [LANG.PT, LANG.EN],
-  BS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  BT: [LANG.EN],
-  BW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  BY: [LANG.EN],
-  BZ: [LANG.EN, LANG.ES, LANG.FR, LANG.ZH],
-  CA: [LANG.EN, LANG.FR],
-  CD: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  CG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  CH: [LANG.DE, LANG.FR, LANG.EN],
-  CI: [LANG.FR, LANG.EN],
-  CK: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  CL: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  CM: [LANG.FR, LANG.EN],
-  CN: [LANG.ZH],
-  CO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  CR: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  CV: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  CY: [LANG.EN],
-  CZ: [LANG.CS, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  DE: [LANG.DE, LANG.EN],
-  DJ: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  DK: [LANG.DA, LANG.EN],
-  DM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  DO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  DZ: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  EC: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  EE: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
-  EG: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  ER: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  ES: [LANG.ES, LANG.EN],
-  ET: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  FI: [LANG.FI, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  FJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  FK: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  FM: [LANG.EN],
-  FO: [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  FR: [LANG.FR, LANG.EN],
-  GA: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  GB: [LANG.EN],
-  GD: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GL: [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GN: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  GP: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GR: [LANG.EL, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GT: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  GW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  GY: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  HK: [LANG.EN, LANG.ZH],
-  HN: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  HR: [LANG.EN],
-  HU: [LANG.HU, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  ID: [LANG.ID, LANG.EN],
-  IE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  IL: [LANG.HE, LANG.EN],
-  IN: [LANG.EN],
-  IS: [LANG.EN],
-  IT: [LANG.IT, LANG.EN],
-  JM: [LANG.EN, LANG.ES, LANG.FR, LANG.ZH],
-  JO: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  JP: [LANG.JA, LANG.EN],
-  KE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  KG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  KH: [LANG.EN],
-  KI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  KM: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  KN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  KR: [LANG.KO, LANG.EN],
-  KW: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  KY: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  KZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  LA: [LANG.EN],
-  LC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  LI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  LK: [LANG.EN],
-  LS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  LT: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
-  LU: [LANG.EN, LANG.DE, LANG.FR, LANG.ES, LANG.ZH],
-  LV: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
-  MA: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  MC: [LANG.FR, LANG.EN],
-  MD: [LANG.EN],
-  ME: [LANG.EN],
-  MG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  MH: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  MK: [LANG.EN],
-  ML: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  MN: [LANG.EN],
-  MQ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  MR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  MS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  MT: [LANG.EN],
-  MU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  MV: [LANG.EN],
-  MW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  MX: [LANG.ES, LANG.EN],
-  MY: [LANG.EN],
-  MZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  NA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  NC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  NE: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  NF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  NG: [LANG.EN],
-  NI: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  NL: [LANG.NL, LANG.EN],
-  NO: [LANG.NO, LANG.EN],
-  NP: [LANG.EN],
-  NR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  NU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  NZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  OM: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  PA: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  PE: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  PF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  PG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  PH: [LANG.EN],
-  PL: [LANG.PL, LANG.EN],
-  PM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  PN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  PT: [LANG.PT, LANG.EN],
-  PW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  PY: [LANG.ES, LANG.EN],
-  QA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR],
-  RE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  RO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  RS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  RU: [LANG.RU, LANG.EN],
-  RW: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  SA: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SB: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SC: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  SE: [LANG.SV, LANG.EN],
-  SG: [LANG.EN],
-  SH: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SK: [LANG.SK, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SL: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SN: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  SO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  ST: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  SV: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  SZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  TC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  TD: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  TG: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
-  TH: [LANG.TH, LANG.EN],
-  TJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  TM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  TN: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  TO: [LANG.EN],
-  TR: [LANG.TR, LANG.EN],
-  TT: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  TV: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  TW: [LANG.ZH, LANG.EN],
-  TZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  UA: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
-  UG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  US: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  UY: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  VA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  VC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  VE: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
-  VG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  VN: [LANG.EN],
-  VU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  WF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  WS: [LANG.EN],
-  YE: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  YT: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  ZA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  ZM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
-  ZW: [LANG.EN]
-};
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/params.js
-var SDK_PATH = '/sdk/js';
-var SDK_SETTINGS = {
-  NAMESPACE: 'data-namespace',
-  CLIENT_TOKEN: 'data-client-token',
-  PARTNER_ATTRIBUTION_ID: 'data-partner-attribution-id',
-  STAGE_HOST: 'data-stage-host',
-  API_STAGE_HOST: 'data-api-stage-host',
-  CSP_NONCE: 'data-csp-nonce',
-  ENABLE_3DS: 'data-enable-3ds',
-  SDK_INTEGRATION_SOURCE: 'data-sdk-integration-source'
-};
-var SDK_QUERY_KEYS = {
-  COMPONENTS: 'components',
-  ENV: 'env',
-  DEBUG: 'debug',
-  CACHEBUST: 'cachebust',
-  CLIENT_ID: 'client-id',
-  MERCHANT_ID: 'merchant-id',
-  MERCHANT_EMAIL_HASH: 'merchant-email-hash',
-  LOCALE: 'locale',
-  CURRENCY: 'currency',
-  INTENT: 'intent',
-  COMMIT: 'commit',
-  VAULT: 'vault',
-  BUYER_COUNTRY: 'buyer-country',
-  DISABLE_FUNDING: 'disable-funding',
-  DISABLE_CARD: 'disable-card',
-  LOCALE_COUNTRY: 'locale-country',
-  LOCALE_LANG: 'locale-lang',
-  FRAMEWORK: 'framework',
-  INTEGRATION_DATE: 'integration-date',
-  ORDER_CURRENCY: 'order-currency',
-  ORDER_INTENT: 'order-intent',
-  ORDER_COMMIT: 'order-commit',
-  ORDER_VAULT: 'order-vault'
-};
-var COMPONENTS = {
-  BUTTONS: 'buttons',
-  HOSTED_FIELDS: 'hosted-fields'
-};
-var FRAMEWORK = {
-  ANGULARJS: 'angularjs',
-  ANGULAR: 'angular',
-  REACT: 'react',
-  VUE: 'vue'
-};
-var DEBUG = {
-  TRUE: true,
-  FALSE: false
-};
-var QUERY_BOOL = {
-  TRUE: 'true',
-  FALSE: 'false'
-};
-var UNKNOWN = 'unknown';
-var PROTOCOL = {
-  HTTP: 'http',
-  HTTPS: 'https'
-};
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/env.js
-var ENV = {
-  LOCAL: 'local',
-  STAGE: 'stage',
-  SANDBOX: 'sandbox',
-  PRODUCTION: 'production',
-  TEST: 'test'
-};
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/fpti.js
-var FPTI_KEY = {
-  FEED: 'feed_name',
-  STATE: 'state_name',
-  TRANSITION: 'transition_name',
-  BUTTON_TYPE: 'button_type',
-  SESSION_UID: 'page_session_id',
-  BUTTON_SESSION_UID: 'button_session_id',
-  TOKEN: 'token',
-  CONTEXT_ID: 'context_id',
-  CONTEXT_TYPE: 'context_type',
-  REFERER: 'referer_url',
-  MERCHANT_DOMAIN: 'merchant_domain',
-  PAY_ID: 'pay_id',
-  SELLER_ID: 'seller_id',
-  CLIENT_ID: 'client_id',
-  DATA_SOURCE: 'serverside_data_source',
-  BUTTON_SOURCE: 'button_source',
-  ERROR_CODE: 'ext_error_code',
-  ERROR_DESC: 'ext_error_desc',
-  PAGE_LOAD_TIME: 'page_load_time',
-  EXPERIMENT_NAME: 'pxp_exp_id',
-  TREATMENT_NAME: 'pxp_trtmnt_id',
-  TRANSITION_TIME: 'transition_time',
-  FUNDING_LIST: 'eligible_payment_methods',
-  FUNDING_COUNT: 'eligible_payment_count',
-  CHOSEN_FUNDING: 'selected_payment_method',
-  BUTTON_LAYOUT: 'button_layout',
-  VERSION: 'checkoutjs_version',
-  LOCALE: 'locale',
-  BUYER_COUNTRY: 'buyer_cntry',
-  INTEGRATION_IDENTIFIER: 'integration_identifier',
-  PARTNER_ATTRIBUTION_ID: 'bn_code',
-  SDK_NAME: 'sdk_name',
-  SDK_VERSION: 'sdk_version',
-  USER_AGENT: 'user_agent',
-  USER_ACTION: 'user_action',
-  CONTEXT_CORRID: 'context_correlation_id',
-  SDK_CACHE: 'sdk_cache',
-  SDK_LOAD_TIME: 'sdk_load_time',
-  IS_VAULT: 'is_vault',
-  DISABLE_FUNDING: 'disable_funding',
-  DISABLE_CARD: 'disable_card',
-  RESPONSE_DURATION: 'response_duration',
-  SDK_INTEGRATION_SOURCE: 'sdk_integration_source',
-  PAYMENT_FLOW: 'payment_flow'
-};
-var FPTI_USER_ACTION = {
-  COMMIT: 'commit',
-  CONTINUE: 'continue'
-};
-var FPTI_DATA_SOURCE = {
-  PAYMENTS_SDK: 'checkout'
-};
-var FPTI_FEED = {
-  PAYMENTS_SDK: 'payments_sdk'
-};
-var FPTI_SDK_NAME = {
-  PAYMENTS_SDK: 'payments_sdk'
-};
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/order.js
-var INTENT = {
-  CAPTURE: 'capture',
-  AUTHORIZE: 'authorize',
-  ORDER: 'order'
-};
-var COMMIT = {
-  TRUE: true,
-  FALSE: false
-};
-var VAULT = {
-  TRUE: true,
-  FALSE: false
-};
-var CURRENCY = {
-  AUD: 'AUD',
-  BRL: 'BRL',
-  CAD: 'CAD',
-  CZK: 'CZK',
-  DKK: 'DKK',
-  EUR: 'EUR',
-  HKD: 'HKD',
-  HUF: 'HUF',
-  INR: 'INR',
-  ILS: 'ILS',
-  JPY: 'JPY',
-  MUR: 'MUR',
-  MYR: 'MYR',
-  MXN: 'MXN',
-  TWD: 'TWD',
-  NZD: 'NZD',
-  NOK: 'NOK',
-  PHP: 'PHP',
-  PLN: 'PLN',
-  GBP: 'GBP',
-  RUB: 'RUB',
-  SGD: 'SGD',
-  SEK: 'SEK',
-  CHF: 'CHF',
-  THB: 'THB',
-  USD: 'USD'
-};
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/platform.js
-var PLATFORM = {
-  DESKTOP: 'desktop',
-  MOBILE: 'mobile'
-};
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/funding.js
-var FUNDING = {
-  PAYPAL: 'paypal',
-  VENMO: 'venmo',
-  ITAU: 'itau',
-  CREDIT: 'credit',
-  CARD: 'card',
-  IDEAL: 'ideal',
-  SEPA: 'sepa',
-  BANCONTACT: 'bancontact',
-  GIROPAY: 'giropay',
-  SOFORT: 'sofort',
-  EPS: 'eps',
-  MYBANK: 'mybank',
-  P24: 'p24',
-  VERKKOPANKKI: 'verkkopankki',
-  PAYU: 'payu',
-  BLIK: 'blik',
-  TRUSTLY: 'trustly',
-  ZIMPLER: 'zimpler',
-  MAXIMA: 'maxima',
-  OXXO: 'oxxo',
-  BOLETO: 'boleto',
-  WECHATPAY: 'wechatpay'
-};
-var CARD = {
-  VISA: 'visa',
-  MASTERCARD: 'mastercard',
-  AMEX: 'amex',
-  DISCOVER: 'discover',
-  HIPER: 'hiper',
-  ELO: 'elo',
-  JCB: 'jcb',
-  CUP: 'cup'
-};
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/defaults.js
-
-
-
-var DEFAULT_COUNTRY = COUNTRY.US;
-var DEFAULT_CURRENCY = CURRENCY.USD;
-var DEFAULT_INTENT = INTENT.CAPTURE;
-var DEFAULT_COMMIT = COMMIT.TRUE;
-var DEFAULT_SALE_COMMIT = COMMIT.TRUE;
-var DEFAULT_NONSALE_COMMIT = COMMIT.TRUE;
-var DEFAULT_VAULT = VAULT.FALSE;
-var DEFAULT_COMPONENTS = COMPONENTS.BUTTONS;
-var DEFAULT_DEBUG = DEBUG.FALSE;
-// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/index.js
-/* concated harmony reexport COUNTRY */__webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY; });
-/* unused concated harmony import LANG */
-/* unused concated harmony import COUNTRY_LANGS */
-/* unused concated harmony import SDK_PATH */
-/* unused concated harmony import SDK_SETTINGS */
-/* concated harmony reexport SDK_QUERY_KEYS */__webpack_require__.d(__webpack_exports__, "j", function() { return SDK_QUERY_KEYS; });
-/* unused concated harmony import COMPONENTS */
-/* unused concated harmony import FRAMEWORK */
-/* unused concated harmony import DEBUG */
-/* unused concated harmony import QUERY_BOOL */
-/* unused concated harmony import UNKNOWN */
-/* unused concated harmony import PROTOCOL */
-/* unused concated harmony import ENV */
-/* concated harmony reexport FPTI_KEY */__webpack_require__.d(__webpack_exports__, "d", function() { return FPTI_KEY; });
-/* concated harmony reexport FPTI_USER_ACTION */__webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_USER_ACTION; });
-/* concated harmony reexport FPTI_DATA_SOURCE */__webpack_require__.d(__webpack_exports__, "b", function() { return FPTI_DATA_SOURCE; });
-/* concated harmony reexport FPTI_FEED */__webpack_require__.d(__webpack_exports__, "c", function() { return FPTI_FEED; });
-/* concated harmony reexport FPTI_SDK_NAME */__webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_SDK_NAME; });
-/* concated harmony reexport INTENT */__webpack_require__.d(__webpack_exports__, "h", function() { return INTENT; });
-/* unused concated harmony import COMMIT */
-/* unused concated harmony import VAULT */
-/* unused concated harmony import CURRENCY */
-/* concated harmony reexport PLATFORM */__webpack_require__.d(__webpack_exports__, "i", function() { return PLATFORM; });
-/* concated harmony reexport FUNDING */__webpack_require__.d(__webpack_exports__, "g", function() { return FUNDING; });
-/* unused concated harmony import CARD */
-/* unused concated harmony import DEFAULT_COUNTRY */
-/* unused concated harmony import DEFAULT_CURRENCY */
-/* unused concated harmony import DEFAULT_INTENT */
-/* unused concated harmony import DEFAULT_COMMIT */
-/* unused concated harmony import DEFAULT_SALE_COMMIT */
-/* unused concated harmony import DEFAULT_NONSALE_COMMIT */
-/* unused concated harmony import DEFAULT_VAULT */
-/* unused concated harmony import DEFAULT_COMPONENTS */
-/* unused concated harmony import DEFAULT_DEBUG */
-
-
-
-
-
-
-
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
 // CONCATENATED MODULE: ./node_modules/belter/src/device.js
 function getUserAgent() {
   return window.navigator.mockUserAgent || window.navigator.userAgent;
@@ -1062,7 +350,7 @@ function () {
     for (var i = 0; i < keys.length; i++) {
       var value = keys[i];
 
-      if (Object(cross_domain_utils_src["f" /* isWindow */])(value) && Object(cross_domain_utils_src["g" /* isWindowClosed */])(value)) {
+      if (Object(cross_domain_utils_src["e" /* isWindow */])(value) && Object(cross_domain_utils_src["f" /* isWindowClosed */])(value)) {
         if (weakmap) {
           try {
             weakmap.delete(value);
@@ -1078,7 +366,7 @@ function () {
   };
 
   _proto.isSafeToReadWrite = function isSafeToReadWrite(key) {
-    if (Object(cross_domain_utils_src["f" /* isWindow */])(key)) {
+    if (Object(cross_domain_utils_src["e" /* isWindow */])(key)) {
       return false;
     }
 
@@ -2728,7 +2016,7 @@ function popup(url, options) {
     throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
   }
 
-  if (Object(cross_domain_utils_src["g" /* isWindowClosed */])(win)) {
+  if (Object(cross_domain_utils_src["f" /* isWindowClosed */])(win)) {
     var err = new PopupOpenError("Can not open popup window - blocked");
     throw err;
   }
@@ -2796,7 +2084,7 @@ function awaitFrameLoad(frame) {
 
   var promise = new src["a" /* ZalgoPromise */](function (resolve, reject) {
     frame.addEventListener('load', function () {
-      Object(cross_domain_utils_src["h" /* linkFrameWindow */])(frame);
+      Object(cross_domain_utils_src["g" /* linkFrameWindow */])(frame);
       resolve(frame);
     });
     frame.addEventListener('error', function (err) {
@@ -3771,8 +3059,8 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import isFirefoxIOS */
 /* unused concated harmony import isEdgeIOS */
 /* unused concated harmony import isOperaMini */
-/* unused concated harmony import isAndroid */
-/* unused concated harmony import isIos */
+/* concated harmony reexport isAndroid */__webpack_require__.d(__webpack_exports__, "j", function() { return isAndroid; });
+/* concated harmony reexport isIos */__webpack_require__.d(__webpack_exports__, "n", function() { return isIos; });
 /* unused concated harmony import isGoogleSearchApp */
 /* unused concated harmony import isQQBrowser */
 /* unused concated harmony import isIosWebview */
@@ -3780,11 +3068,11 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import isIE */
 /* unused concated harmony import isIECompHeader */
 /* unused concated harmony import isElectron */
-/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "k", function() { return isIEIntranet; });
+/* concated harmony reexport isIEIntranet */__webpack_require__.d(__webpack_exports__, "m", function() { return isIEIntranet; });
 /* unused concated harmony import isMacOsCna */
-/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "x", function() { return supportsPopups; });
-/* unused concated harmony import isChrome */
-/* unused concated harmony import isSafari */
+/* concated harmony reexport supportsPopups */__webpack_require__.d(__webpack_exports__, "B", function() { return supportsPopups; });
+/* concated harmony reexport isChrome */__webpack_require__.d(__webpack_exports__, "l", function() { return isChrome; });
+/* concated harmony reexport isSafari */__webpack_require__.d(__webpack_exports__, "o", function() { return isSafari; });
 /* unused concated harmony import isDocumentReady */
 /* unused concated harmony import urlEncode */
 /* unused concated harmony import waitForWindowReady */
@@ -3796,15 +3084,15 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import formatQuery */
 /* unused concated harmony import extendQuery */
 /* concated harmony reexport extendUrl */__webpack_require__.d(__webpack_exports__, "e", function() { return extendUrl; });
-/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "s", function() { return redirect; });
+/* concated harmony reexport redirect */__webpack_require__.d(__webpack_exports__, "w", function() { return redirect; });
 /* unused concated harmony import hasMetaViewPort */
 /* unused concated harmony import isElementVisible */
 /* unused concated harmony import enablePerformance */
 /* concated harmony reexport getPageRenderTime */__webpack_require__.d(__webpack_exports__, "f", function() { return getPageRenderTime; });
 /* unused concated harmony import htmlEncode */
-/* concated harmony reexport isBrowser */__webpack_require__.d(__webpack_exports__, "j", function() { return isBrowser; });
-/* concated harmony reexport querySelectorAll */__webpack_require__.d(__webpack_exports__, "r", function() { return querySelectorAll; });
-/* concated harmony reexport onClick */__webpack_require__.d(__webpack_exports__, "o", function() { return onClick; });
+/* concated harmony reexport isBrowser */__webpack_require__.d(__webpack_exports__, "k", function() { return isBrowser; });
+/* concated harmony reexport querySelectorAll */__webpack_require__.d(__webpack_exports__, "v", function() { return querySelectorAll; });
+/* concated harmony reexport onClick */__webpack_require__.d(__webpack_exports__, "s", function() { return onClick; });
 /* unused concated harmony import getScript */
 /* unused concated harmony import isLocalStorageEnabled */
 /* unused concated harmony import getBrowserLocales */
@@ -3814,9 +3102,9 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import getElement */
 /* unused concated harmony import elementReady */
 /* concated harmony reexport PopupOpenError */__webpack_require__.d(__webpack_exports__, "a", function() { return PopupOpenError; });
-/* concated harmony reexport popup */__webpack_require__.d(__webpack_exports__, "p", function() { return popup; });
+/* concated harmony reexport popup */__webpack_require__.d(__webpack_exports__, "t", function() { return popup; });
 /* unused concated harmony import writeToWindow */
-/* concated harmony reexport writeElementToWindow */__webpack_require__.d(__webpack_exports__, "z", function() { return writeElementToWindow; });
+/* concated harmony reexport writeElementToWindow */__webpack_require__.d(__webpack_exports__, "D", function() { return writeElementToWindow; });
 /* unused concated harmony import setStyle */
 /* unused concated harmony import awaitFrameLoad */
 /* unused concated harmony import awaitFrameWindow */
@@ -3847,22 +3135,22 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import setFunctionName */
 /* concated harmony reexport base64encode */__webpack_require__.d(__webpack_exports__, "b", function() { return base64encode; });
 /* unused concated harmony import base64decode */
-/* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "y", function() { return uniqueID; });
+/* concated harmony reexport uniqueID */__webpack_require__.d(__webpack_exports__, "C", function() { return uniqueID; });
 /* unused concated harmony import getGlobal */
 /* unused concated harmony import getObjectID */
-/* concated harmony reexport memoize */__webpack_require__.d(__webpack_exports__, "l", function() { return memoize; });
+/* concated harmony reexport memoize */__webpack_require__.d(__webpack_exports__, "p", function() { return memoize; });
 /* unused concated harmony import promiseIdentity */
 /* unused concated harmony import memoizePromise */
 /* unused concated harmony import promisify */
 /* concated harmony reexport inlineMemoize */__webpack_require__.d(__webpack_exports__, "i", function() { return inlineMemoize; });
-/* concated harmony reexport noop */__webpack_require__.d(__webpack_exports__, "m", function() { return util_noop; });
+/* concated harmony reexport noop */__webpack_require__.d(__webpack_exports__, "q", function() { return util_noop; });
 /* unused concated harmony import once */
 /* unused concated harmony import hashStr */
 /* unused concated harmony import strHashStr */
 /* unused concated harmony import match */
 /* unused concated harmony import awaitKey */
-/* concated harmony reexport stringifyError */__webpack_require__.d(__webpack_exports__, "v", function() { return stringifyError; });
-/* concated harmony reexport stringifyErrorMessage */__webpack_require__.d(__webpack_exports__, "w", function() { return stringifyErrorMessage; });
+/* concated harmony reexport stringifyError */__webpack_require__.d(__webpack_exports__, "z", function() { return stringifyError; });
+/* concated harmony reexport stringifyErrorMessage */__webpack_require__.d(__webpack_exports__, "A", function() { return stringifyErrorMessage; });
 /* unused concated harmony import stringify */
 /* unused concated harmony import domainMatches */
 /* unused concated harmony import patchMethod */
@@ -3873,11 +3161,11 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import max */
 /* unused concated harmony import regexMap */
 /* unused concated harmony import svgToBase64 */
-/* concated harmony reexport objFilter */__webpack_require__.d(__webpack_exports__, "n", function() { return objFilter; });
+/* concated harmony reexport objFilter */__webpack_require__.d(__webpack_exports__, "r", function() { return objFilter; });
 /* concated harmony reexport identity */__webpack_require__.d(__webpack_exports__, "h", function() { return identity; });
 /* unused concated harmony import regexTokenize */
-/* concated harmony reexport promiseDebounce */__webpack_require__.d(__webpack_exports__, "q", function() { return promiseDebounce; });
-/* concated harmony reexport safeInterval */__webpack_require__.d(__webpack_exports__, "u", function() { return safeInterval; });
+/* concated harmony reexport promiseDebounce */__webpack_require__.d(__webpack_exports__, "u", function() { return promiseDebounce; });
+/* concated harmony reexport safeInterval */__webpack_require__.d(__webpack_exports__, "y", function() { return safeInterval; });
 /* unused concated harmony import isInteger */
 /* unused concated harmony import isFloat */
 /* unused concated harmony import serializePrimitive */
@@ -3911,7 +3199,7 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import removeFromArray */
 /* unused concated harmony import assertExists */
 /* unused concated harmony import unique */
-/* concated harmony reexport request */__webpack_require__.d(__webpack_exports__, "t", function() { return request; });
+/* concated harmony reexport request */__webpack_require__.d(__webpack_exports__, "x", function() { return request; });
 /* unused concated harmony import addHeaderBuilder */
 /* unused concated harmony import TYPES */
 /* unused concated harmony import memoized */
@@ -3927,6 +3215,718 @@ function wrapPromise(method, _temp) {
 
 
 
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/locale.js
+/* eslint max-lines: 0 */
+var COUNTRY = {
+  AD: 'AD',
+  AE: 'AE',
+  AG: 'AG',
+  AI: 'AI',
+  AL: 'AL',
+  AM: 'AM',
+  AN: 'AN',
+  AO: 'AO',
+  AR: 'AR',
+  AT: 'AT',
+  AU: 'AU',
+  AW: 'AW',
+  AZ: 'AZ',
+  BA: 'BA',
+  BB: 'BB',
+  BE: 'BE',
+  BF: 'BF',
+  BG: 'BG',
+  BH: 'BH',
+  BI: 'BI',
+  BJ: 'BJ',
+  BM: 'BM',
+  BN: 'BN',
+  BO: 'BO',
+  BR: 'BR',
+  BS: 'BS',
+  BT: 'BT',
+  BW: 'BW',
+  BY: 'BY',
+  BZ: 'BZ',
+  CA: 'CA',
+  CD: 'CD',
+  CG: 'CG',
+  CH: 'CH',
+  CI: 'CI',
+  CK: 'CK',
+  CL: 'CL',
+  CM: 'CM',
+  CN: 'CN',
+  CO: 'CO',
+  CR: 'CR',
+  CV: 'CV',
+  CY: 'CY',
+  CZ: 'CZ',
+  DE: 'DE',
+  DJ: 'DJ',
+  DK: 'DK',
+  DM: 'DM',
+  DO: 'DO',
+  DZ: 'DZ',
+  EC: 'EC',
+  EE: 'EE',
+  EG: 'EG',
+  ER: 'ER',
+  ES: 'ES',
+  ET: 'ET',
+  FI: 'FI',
+  FJ: 'FJ',
+  FK: 'FK',
+  FM: 'FM',
+  FO: 'FO',
+  FR: 'FR',
+  GA: 'GA',
+  GB: 'GB',
+  GD: 'GD',
+  GE: 'GE',
+  GF: 'GF',
+  GI: 'GI',
+  GL: 'GL',
+  GM: 'GM',
+  GN: 'GN',
+  GP: 'GP',
+  GR: 'GR',
+  GT: 'GT',
+  GW: 'GW',
+  GY: 'GY',
+  HK: 'HK',
+  HN: 'HN',
+  HR: 'HR',
+  HU: 'HU',
+  ID: 'ID',
+  IE: 'IE',
+  IL: 'IL',
+  IN: 'IN',
+  IS: 'IS',
+  IT: 'IT',
+  JM: 'JM',
+  JO: 'JO',
+  JP: 'JP',
+  KE: 'KE',
+  KG: 'KG',
+  KH: 'KH',
+  KI: 'KI',
+  KM: 'KM',
+  KN: 'KN',
+  KR: 'KR',
+  KW: 'KW',
+  KY: 'KY',
+  KZ: 'KZ',
+  LA: 'LA',
+  LC: 'LC',
+  LI: 'LI',
+  LK: 'LK',
+  LS: 'LS',
+  LT: 'LT',
+  LU: 'LU',
+  LV: 'LV',
+  MA: 'MA',
+  MC: 'MC',
+  MD: 'MD',
+  ME: 'ME',
+  MG: 'MG',
+  MH: 'MH',
+  MK: 'MK',
+  ML: 'ML',
+  MN: 'MN',
+  MQ: 'MQ',
+  MR: 'MR',
+  MS: 'MS',
+  MT: 'MT',
+  MU: 'MU',
+  MV: 'MV',
+  MW: 'MW',
+  MX: 'MX',
+  MY: 'MY',
+  MZ: 'MZ',
+  NA: 'NA',
+  NC: 'NC',
+  NE: 'NE',
+  NF: 'NF',
+  NG: 'NG',
+  NI: 'NI',
+  NL: 'NL',
+  NO: 'NO',
+  NP: 'NP',
+  NR: 'NR',
+  NU: 'NU',
+  NZ: 'NZ',
+  OM: 'OM',
+  PA: 'PA',
+  PE: 'PE',
+  PF: 'PF',
+  PG: 'PG',
+  PH: 'PH',
+  PL: 'PL',
+  PM: 'PM',
+  PN: 'PN',
+  PT: 'PT',
+  PW: 'PW',
+  PY: 'PY',
+  QA: 'QA',
+  RE: 'RE',
+  RO: 'RO',
+  RS: 'RS',
+  RU: 'RU',
+  RW: 'RW',
+  SA: 'SA',
+  SB: 'SB',
+  SC: 'SC',
+  SE: 'SE',
+  SG: 'SG',
+  SH: 'SH',
+  SI: 'SI',
+  SJ: 'SJ',
+  SK: 'SK',
+  SL: 'SL',
+  SM: 'SM',
+  SN: 'SN',
+  SO: 'SO',
+  SR: 'SR',
+  ST: 'ST',
+  SV: 'SV',
+  SZ: 'SZ',
+  TC: 'TC',
+  TD: 'TD',
+  TG: 'TG',
+  TH: 'TH',
+  TJ: 'TJ',
+  TM: 'TM',
+  TN: 'TN',
+  TO: 'TO',
+  TR: 'TR',
+  TT: 'TT',
+  TV: 'TV',
+  TW: 'TW',
+  TZ: 'TZ',
+  UA: 'UA',
+  UG: 'UG',
+  US: 'US',
+  UY: 'UY',
+  VA: 'VA',
+  VC: 'VC',
+  VE: 'VE',
+  VG: 'VG',
+  VN: 'VN',
+  VU: 'VU',
+  WF: 'WF',
+  WS: 'WS',
+  YE: 'YE',
+  YT: 'YT',
+  ZA: 'ZA',
+  ZM: 'ZM',
+  ZW: 'ZW'
+};
+var LANG = {
+  AR: 'ar',
+  CS: 'cs',
+  DA: 'da',
+  DE: 'de',
+  EL: 'el',
+  EN: 'en',
+  ES: 'es',
+  FI: 'fi',
+  FR: 'fr',
+  HE: 'he',
+  HU: 'hu',
+  ID: 'id',
+  IT: 'it',
+  JA: 'ja',
+  KO: 'ko',
+  NL: 'nl',
+  NO: 'no',
+  PL: 'pl',
+  PT: 'pt',
+  RU: 'ru',
+  SK: 'sk',
+  SV: 'sv',
+  TH: 'th',
+  TR: 'tr',
+  ZH: 'zh'
+};
+var COUNTRY_LANGS = {
+  AD: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR],
+  AG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AL: [LANG.EN],
+  AM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AR: [LANG.ES, LANG.EN],
+  AT: [LANG.DE, LANG.EN],
+  AU: [LANG.EN],
+  AW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  AZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BA: [LANG.EN],
+  BB: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BE: [LANG.EN, LANG.NL, LANG.FR],
+  BF: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  BG: [LANG.EN],
+  BH: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BI: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  BJ: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  BM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BN: [LANG.EN],
+  BO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  BR: [LANG.PT, LANG.EN],
+  BS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BT: [LANG.EN],
+  BW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  BY: [LANG.EN],
+  BZ: [LANG.EN, LANG.ES, LANG.FR, LANG.ZH],
+  CA: [LANG.EN, LANG.FR],
+  CD: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  CG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  CH: [LANG.DE, LANG.FR, LANG.EN],
+  CI: [LANG.FR, LANG.EN],
+  CK: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  CL: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  CM: [LANG.FR, LANG.EN],
+  CN: [LANG.ZH],
+  CO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  CR: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  CV: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  CY: [LANG.EN],
+  CZ: [LANG.CS, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  DE: [LANG.DE, LANG.EN],
+  DJ: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  DK: [LANG.DA, LANG.EN],
+  DM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  DO: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  DZ: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  EC: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  EE: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
+  EG: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ER: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ES: [LANG.ES, LANG.EN],
+  ET: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FI: [LANG.FI, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FK: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FM: [LANG.EN],
+  FO: [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  FR: [LANG.FR, LANG.EN],
+  GA: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  GB: [LANG.EN],
+  GD: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GL: [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GN: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  GP: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GR: [LANG.EL, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GT: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  GW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  GY: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  HK: [LANG.EN, LANG.ZH],
+  HN: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  HR: [LANG.EN],
+  HU: [LANG.HU, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ID: [LANG.ID, LANG.EN],
+  IE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  IL: [LANG.HE, LANG.EN],
+  IN: [LANG.EN],
+  IS: [LANG.EN],
+  IT: [LANG.IT, LANG.EN],
+  JM: [LANG.EN, LANG.ES, LANG.FR, LANG.ZH],
+  JO: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  JP: [LANG.JA, LANG.EN],
+  KE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KH: [LANG.EN],
+  KI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KM: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  KN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KR: [LANG.KO, LANG.EN],
+  KW: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KY: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  KZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  LA: [LANG.EN],
+  LC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  LI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  LK: [LANG.EN],
+  LS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  LT: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
+  LU: [LANG.EN, LANG.DE, LANG.FR, LANG.ES, LANG.ZH],
+  LV: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
+  MA: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MC: [LANG.FR, LANG.EN],
+  MD: [LANG.EN],
+  ME: [LANG.EN],
+  MG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MH: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MK: [LANG.EN],
+  ML: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  MN: [LANG.EN],
+  MQ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MT: [LANG.EN],
+  MU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MV: [LANG.EN],
+  MW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  MX: [LANG.ES, LANG.EN],
+  MY: [LANG.EN],
+  MZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NE: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  NF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NG: [LANG.EN],
+  NI: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  NL: [LANG.NL, LANG.EN],
+  NO: [LANG.NO, LANG.EN],
+  NP: [LANG.EN],
+  NR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  NZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  OM: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PA: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  PE: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  PF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PH: [LANG.EN],
+  PL: [LANG.PL, LANG.EN],
+  PM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PN: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PT: [LANG.PT, LANG.EN],
+  PW: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  PY: [LANG.ES, LANG.EN],
+  QA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR],
+  RE: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  RO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  RS: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  RU: [LANG.RU, LANG.EN],
+  RW: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  SA: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SB: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SC: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  SE: [LANG.SV, LANG.EN],
+  SG: [LANG.EN],
+  SH: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SI: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SK: [LANG.SK, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SL: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SN: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  SO: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SR: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ST: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  SV: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  SZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TD: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  TG: [LANG.FR, LANG.EN, LANG.ES, LANG.ZH],
+  TH: [LANG.TH, LANG.EN],
+  TJ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TN: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TO: [LANG.EN],
+  TR: [LANG.TR, LANG.EN],
+  TT: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TV: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  TW: [LANG.ZH, LANG.EN],
+  TZ: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  UA: [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH],
+  UG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  US: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  UY: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  VA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  VC: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  VE: [LANG.ES, LANG.EN, LANG.FR, LANG.ZH],
+  VG: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  VN: [LANG.EN],
+  VU: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  WF: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  WS: [LANG.EN],
+  YE: [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  YT: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ZA: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ZM: [LANG.EN, LANG.FR, LANG.ES, LANG.ZH],
+  ZW: [LANG.EN]
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/params.js
+var SDK_PATH = '/sdk/js';
+var SDK_SETTINGS = {
+  NAMESPACE: 'data-namespace',
+  CLIENT_TOKEN: 'data-client-token',
+  PARTNER_ATTRIBUTION_ID: 'data-partner-attribution-id',
+  STAGE_HOST: 'data-stage-host',
+  API_STAGE_HOST: 'data-api-stage-host',
+  CSP_NONCE: 'data-csp-nonce',
+  ENABLE_3DS: 'data-enable-3ds',
+  SDK_INTEGRATION_SOURCE: 'data-sdk-integration-source'
+};
+var SDK_QUERY_KEYS = {
+  COMPONENTS: 'components',
+  ENV: 'env',
+  DEBUG: 'debug',
+  CACHEBUST: 'cachebust',
+  CLIENT_ID: 'client-id',
+  MERCHANT_ID: 'merchant-id',
+  MERCHANT_EMAIL_HASH: 'merchant-email-hash',
+  LOCALE: 'locale',
+  CURRENCY: 'currency',
+  INTENT: 'intent',
+  COMMIT: 'commit',
+  VAULT: 'vault',
+  BUYER_COUNTRY: 'buyer-country',
+  DISABLE_FUNDING: 'disable-funding',
+  DISABLE_CARD: 'disable-card',
+  LOCALE_COUNTRY: 'locale-country',
+  LOCALE_LANG: 'locale-lang',
+  FRAMEWORK: 'framework',
+  INTEGRATION_DATE: 'integration-date',
+  ORDER_CURRENCY: 'order-currency',
+  ORDER_INTENT: 'order-intent',
+  ORDER_COMMIT: 'order-commit',
+  ORDER_VAULT: 'order-vault'
+};
+var COMPONENTS = {
+  BUTTONS: 'buttons',
+  HOSTED_FIELDS: 'hosted-fields'
+};
+var FRAMEWORK = {
+  ANGULARJS: 'angularjs',
+  ANGULAR: 'angular',
+  REACT: 'react',
+  VUE: 'vue'
+};
+var DEBUG = {
+  TRUE: true,
+  FALSE: false
+};
+var QUERY_BOOL = {
+  TRUE: 'true',
+  FALSE: 'false'
+};
+var UNKNOWN = 'unknown';
+var PROTOCOL = {
+  HTTP: 'http',
+  HTTPS: 'https'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/env.js
+var ENV = {
+  LOCAL: 'local',
+  STAGE: 'stage',
+  SANDBOX: 'sandbox',
+  PRODUCTION: 'production',
+  TEST: 'test'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/fpti.js
+var FPTI_KEY = {
+  FEED: 'feed_name',
+  STATE: 'state_name',
+  TRANSITION: 'transition_name',
+  BUTTON_TYPE: 'button_type',
+  SESSION_UID: 'page_session_id',
+  BUTTON_SESSION_UID: 'button_session_id',
+  TOKEN: 'token',
+  CONTEXT_ID: 'context_id',
+  CONTEXT_TYPE: 'context_type',
+  REFERER: 'referer_url',
+  MERCHANT_DOMAIN: 'merchant_domain',
+  PAY_ID: 'pay_id',
+  SELLER_ID: 'seller_id',
+  CLIENT_ID: 'client_id',
+  DATA_SOURCE: 'serverside_data_source',
+  BUTTON_SOURCE: 'button_source',
+  ERROR_CODE: 'ext_error_code',
+  ERROR_DESC: 'ext_error_desc',
+  PAGE_LOAD_TIME: 'page_load_time',
+  EXPERIMENT_NAME: 'pxp_exp_id',
+  TREATMENT_NAME: 'pxp_trtmnt_id',
+  TRANSITION_TIME: 'transition_time',
+  FUNDING_LIST: 'eligible_payment_methods',
+  FUNDING_COUNT: 'eligible_payment_count',
+  CHOSEN_FUNDING: 'selected_payment_method',
+  BUTTON_LAYOUT: 'button_layout',
+  VERSION: 'checkoutjs_version',
+  LOCALE: 'locale',
+  BUYER_COUNTRY: 'buyer_cntry',
+  INTEGRATION_IDENTIFIER: 'integration_identifier',
+  PARTNER_ATTRIBUTION_ID: 'bn_code',
+  SDK_NAME: 'sdk_name',
+  SDK_VERSION: 'sdk_version',
+  USER_AGENT: 'user_agent',
+  USER_ACTION: 'user_action',
+  CONTEXT_CORRID: 'context_correlation_id',
+  SDK_CACHE: 'sdk_cache',
+  SDK_LOAD_TIME: 'sdk_load_time',
+  IS_VAULT: 'is_vault',
+  DISABLE_FUNDING: 'disable_funding',
+  DISABLE_CARD: 'disable_card',
+  RESPONSE_DURATION: 'response_duration',
+  SDK_INTEGRATION_SOURCE: 'sdk_integration_source',
+  PAYMENT_FLOW: 'payment_flow'
+};
+var FPTI_USER_ACTION = {
+  COMMIT: 'commit',
+  CONTINUE: 'continue'
+};
+var FPTI_DATA_SOURCE = {
+  PAYMENTS_SDK: 'checkout'
+};
+var FPTI_FEED = {
+  PAYMENTS_SDK: 'payments_sdk'
+};
+var FPTI_SDK_NAME = {
+  PAYMENTS_SDK: 'payments_sdk'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/order.js
+var INTENT = {
+  CAPTURE: 'capture',
+  AUTHORIZE: 'authorize',
+  ORDER: 'order'
+};
+var COMMIT = {
+  TRUE: true,
+  FALSE: false
+};
+var VAULT = {
+  TRUE: true,
+  FALSE: false
+};
+var CURRENCY = {
+  AUD: 'AUD',
+  BRL: 'BRL',
+  CAD: 'CAD',
+  CZK: 'CZK',
+  DKK: 'DKK',
+  EUR: 'EUR',
+  HKD: 'HKD',
+  HUF: 'HUF',
+  INR: 'INR',
+  ILS: 'ILS',
+  JPY: 'JPY',
+  MUR: 'MUR',
+  MYR: 'MYR',
+  MXN: 'MXN',
+  TWD: 'TWD',
+  NZD: 'NZD',
+  NOK: 'NOK',
+  PHP: 'PHP',
+  PLN: 'PLN',
+  GBP: 'GBP',
+  RUB: 'RUB',
+  SGD: 'SGD',
+  SEK: 'SEK',
+  CHF: 'CHF',
+  THB: 'THB',
+  USD: 'USD'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/platform.js
+var PLATFORM = {
+  DESKTOP: 'desktop',
+  MOBILE: 'mobile'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/funding.js
+var FUNDING = {
+  PAYPAL: 'paypal',
+  VENMO: 'venmo',
+  ITAU: 'itau',
+  CREDIT: 'credit',
+  CARD: 'card',
+  IDEAL: 'ideal',
+  SEPA: 'sepa',
+  BANCONTACT: 'bancontact',
+  GIROPAY: 'giropay',
+  SOFORT: 'sofort',
+  EPS: 'eps',
+  MYBANK: 'mybank',
+  P24: 'p24',
+  VERKKOPANKKI: 'verkkopankki',
+  PAYU: 'payu',
+  BLIK: 'blik',
+  TRUSTLY: 'trustly',
+  ZIMPLER: 'zimpler',
+  MAXIMA: 'maxima',
+  OXXO: 'oxxo',
+  BOLETO: 'boleto',
+  WECHATPAY: 'wechatpay'
+};
+var CARD = {
+  VISA: 'visa',
+  MASTERCARD: 'mastercard',
+  AMEX: 'amex',
+  DISCOVER: 'discover',
+  HIPER: 'hiper',
+  ELO: 'elo',
+  JCB: 'jcb',
+  CUP: 'cup'
+};
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/defaults.js
+
+
+
+var DEFAULT_COUNTRY = COUNTRY.US;
+var DEFAULT_CURRENCY = CURRENCY.USD;
+var DEFAULT_INTENT = INTENT.CAPTURE;
+var DEFAULT_COMMIT = COMMIT.TRUE;
+var DEFAULT_SALE_COMMIT = COMMIT.TRUE;
+var DEFAULT_NONSALE_COMMIT = COMMIT.TRUE;
+var DEFAULT_VAULT = VAULT.FALSE;
+var DEFAULT_COMPONENTS = COMPONENTS.BUTTONS;
+var DEFAULT_DEBUG = DEBUG.FALSE;
+// CONCATENATED MODULE: ./node_modules/@paypal/sdk-constants/src/index.js
+/* concated harmony reexport COUNTRY */__webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY; });
+/* unused concated harmony import LANG */
+/* unused concated harmony import COUNTRY_LANGS */
+/* unused concated harmony import SDK_PATH */
+/* unused concated harmony import SDK_SETTINGS */
+/* concated harmony reexport SDK_QUERY_KEYS */__webpack_require__.d(__webpack_exports__, "j", function() { return SDK_QUERY_KEYS; });
+/* unused concated harmony import COMPONENTS */
+/* unused concated harmony import FRAMEWORK */
+/* unused concated harmony import DEBUG */
+/* unused concated harmony import QUERY_BOOL */
+/* unused concated harmony import UNKNOWN */
+/* unused concated harmony import PROTOCOL */
+/* unused concated harmony import ENV */
+/* concated harmony reexport FPTI_KEY */__webpack_require__.d(__webpack_exports__, "d", function() { return FPTI_KEY; });
+/* concated harmony reexport FPTI_USER_ACTION */__webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_USER_ACTION; });
+/* concated harmony reexport FPTI_DATA_SOURCE */__webpack_require__.d(__webpack_exports__, "b", function() { return FPTI_DATA_SOURCE; });
+/* concated harmony reexport FPTI_FEED */__webpack_require__.d(__webpack_exports__, "c", function() { return FPTI_FEED; });
+/* concated harmony reexport FPTI_SDK_NAME */__webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_SDK_NAME; });
+/* concated harmony reexport INTENT */__webpack_require__.d(__webpack_exports__, "h", function() { return INTENT; });
+/* unused concated harmony import COMMIT */
+/* unused concated harmony import VAULT */
+/* unused concated harmony import CURRENCY */
+/* concated harmony reexport PLATFORM */__webpack_require__.d(__webpack_exports__, "i", function() { return PLATFORM; });
+/* concated harmony reexport FUNDING */__webpack_require__.d(__webpack_exports__, "g", function() { return FUNDING; });
+/* unused concated harmony import CARD */
+/* unused concated harmony import DEFAULT_COUNTRY */
+/* unused concated harmony import DEFAULT_CURRENCY */
+/* unused concated harmony import DEFAULT_INTENT */
+/* unused concated harmony import DEFAULT_COMMIT */
+/* unused concated harmony import DEFAULT_SALE_COMMIT */
+/* unused concated harmony import DEFAULT_NONSALE_COMMIT */
+/* unused concated harmony import DEFAULT_VAULT */
+/* unused concated harmony import DEFAULT_COMPONENTS */
+/* unused concated harmony import DEFAULT_DEBUG */
 
 
 
@@ -4571,7 +4571,7 @@ var esm_extends = __webpack_require__(6);
 var src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var belter_src = __webpack_require__(1);
+var belter_src = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./node_modules/beaver-logger/src/constants.js
 var LOG_LEVEL = {
@@ -4601,12 +4601,12 @@ function httpTransport(_ref) {
       method = _ref.method,
       headers = _ref.headers,
       json = _ref.json;
-  return Object(belter_src["t" /* request */])({
+  return Object(belter_src["x" /* request */])({
     url: url,
     method: method,
     headers: headers,
     json: json
-  }).then(belter_src["m" /* noop */]);
+  }).then(belter_src["q" /* noop */]);
 }
 
 function extendIfDefined(target, source) {
@@ -4634,7 +4634,7 @@ function Logger(_ref2) {
   var headerBuilders = [];
 
   function print(level, event, payload) {
-    if (!Object(belter_src["j" /* isBrowser */])() || !window.console || !window.console.log) {
+    if (!Object(belter_src["k" /* isBrowser */])() || !window.console || !window.console.log) {
       return;
     }
 
@@ -4667,7 +4667,7 @@ function Logger(_ref2) {
 
   function immediateFlush() {
     return src["a" /* ZalgoPromise */].try(function () {
-      if (!Object(belter_src["j" /* isBrowser */])() || window.location.protocol === PROTOCOL.FILE) {
+      if (!Object(belter_src["k" /* isBrowser */])() || window.location.protocol === PROTOCOL.FILE) {
         return;
       }
 
@@ -4701,11 +4701,11 @@ function Logger(_ref2) {
       });
       events = [];
       tracking = [];
-      return req.then(belter_src["m" /* noop */]);
+      return req.then(belter_src["q" /* noop */]);
     });
   }
 
-  var flush = Object(belter_src["q" /* promiseDebounce */])(immediateFlush);
+  var flush = Object(belter_src["u" /* promiseDebounce */])(immediateFlush);
 
   function enqueue(level, event, payload) {
     events.push({
@@ -4724,7 +4724,7 @@ function Logger(_ref2) {
       payload = {};
     }
 
-    if (!Object(belter_src["j" /* isBrowser */])()) {
+    if (!Object(belter_src["k" /* isBrowser */])()) {
       return logger; // eslint-disable-line no-use-before-define
     }
 
@@ -4732,7 +4732,7 @@ function Logger(_ref2) {
       event = prefix + "_" + event;
     }
 
-    var logPayload = Object(esm_extends["a" /* default */])({}, Object(belter_src["n" /* objFilter */])(payload), {
+    var logPayload = Object(esm_extends["a" /* default */])({}, Object(belter_src["r" /* objFilter */])(payload), {
       timestamp: Date.now().toString()
     });
 
@@ -4788,11 +4788,11 @@ function Logger(_ref2) {
       payload = {};
     }
 
-    if (!Object(belter_src["j" /* isBrowser */])()) {
+    if (!Object(belter_src["k" /* isBrowser */])()) {
       return logger; // eslint-disable-line no-use-before-define
     }
 
-    var trackingPayload = Object(belter_src["n" /* objFilter */])(payload);
+    var trackingPayload = Object(belter_src["r" /* objFilter */])(payload);
 
     for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) {
       var builder = trackingBuilders[_i8];
@@ -4809,8 +4809,8 @@ function Logger(_ref2) {
     return logger; // eslint-disable-line no-use-before-define
   }
 
-  if (Object(belter_src["j" /* isBrowser */])()) {
-    Object(belter_src["u" /* safeInterval */])(flush, flushInterval);
+  if (Object(belter_src["k" /* isBrowser */])()) {
+    Object(belter_src["y" /* safeInterval */])(flush, flushInterval);
   }
 
   var logger = {
@@ -4833,7 +4833,7 @@ function Logger(_ref2) {
 
 
 // EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
-var sdk_constants_src = __webpack_require__(0);
+var sdk_constants_src = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./src/config.js
 var config = __webpack_require__(5);
@@ -4885,12 +4885,12 @@ function setupLogger(_ref) {
   src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
     var _logger$track;
 
-    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'payments_sdk_error', _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["w" /* stringifyErrorMessage */])(err), _logger$track));
+    logger.track((_logger$track = {}, _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'payments_sdk_error', _logger$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["A" /* stringifyErrorMessage */])(err), _logger$track));
     logger.error('unhandled_error', {
-      err: Object(belter_src["v" /* stringifyError */])(err)
+      err: Object(belter_src["z" /* stringifyError */])(err)
     }); // eslint-disable-next-line promise/no-promise-in-callback
 
-    logger.flush().catch(belter_src["m" /* noop */]);
+    logger.flush().catch(belter_src["q" /* noop */]);
   });
 }
 // CONCATENATED MODULE: ./src/lib/index.js
@@ -4927,7 +4927,7 @@ function setupLogger(_ref) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CLIENT_ID_PAYEE_NO_MATCH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FIREBASE_SCRIPTS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ENABLE_PAYMENT_API; });
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 var _NATIVE_CHECKOUT_URI;
 
 
@@ -4991,7 +4991,7 @@ function _extends() {
 var src = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var belter_src = __webpack_require__(1);
+var belter_src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./src/config.js
 var src_config = __webpack_require__(5);
@@ -5016,7 +5016,7 @@ function createAccessToken(clientID) {
   return Object(belter_src["i" /* inlineMemoize */])(createAccessToken, function () {
     Object(lib["b" /* getLogger */])().info("rest_api_create_access_token");
     var basicAuth = Object(belter_src["b" /* base64encode */])(clientID + ":");
-    return Object(belter_src["t" /* request */])({
+    return Object(belter_src["x" /* request */])({
       method: "post",
       url: src_config["a" /* AUTH_API_URL */],
       headers: {
@@ -5063,10 +5063,10 @@ function upgradeFacilitatorAccessToken(facilitatorAccessToken, _ref2) {
       buyerAccessToken: buyerAccessToken,
       orderID: orderID
     }
-  }).then(belter_src["m" /* noop */]);
+  }).then(belter_src["q" /* noop */]);
 }
 // EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
-var sdk_constants_src = __webpack_require__(0);
+var sdk_constants_src = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./src/api/order.js
 
@@ -5214,7 +5214,7 @@ function validatePaymentMethod(_ref6) {
   var json = {
     payment_source: paymentSource
   };
-  return Object(belter_src["t" /* request */])({
+  return Object(belter_src["x" /* request */])({
     method: "post",
     url: src_config["i" /* ORDERS_API_URL */] + "/" + orderID + "/" + src_config["l" /* VALIDATE_PAYMENT_METHOD_API */],
     headers: headers,
@@ -5278,7 +5278,7 @@ function updateClientConfig(_ref9) {
       userExperienceFlow: userExperienceFlow,
       productFlow: productFlow
     }
-  }).then(belter_src["m" /* noop */]);
+  }).then(belter_src["q" /* noop */]);
 }
 // CONCATENATED MODULE: ./src/api/payment.js
 
@@ -5428,7 +5428,7 @@ function createSubscription(accessToken, subscriptionPayload, _ref) {
     'Authorization': "Bearer " + accessToken,
     'PayPal-Partner-Attribution-Id': partnerAttributionID
   };
-  return Object(belter_src["t" /* request */])({
+  return Object(belter_src["x" /* request */])({
     method: "post",
     url: src_config["c" /* CREATE_SUBSCRIPTIONS_API_URL */],
     headers: headers,
@@ -5463,7 +5463,7 @@ function reviseSubscription(accessToken, subscriptionID, subscriptionPayload, _r
     'Authorization': "Bearer " + accessToken,
     'PayPal-Partner-Attribution-Id': partnerAttributionID
   };
-  return Object(belter_src["t" /* request */])({
+  return Object(belter_src["x" /* request */])({
     method: "post",
     url: src_config["c" /* CREATE_SUBSCRIPTIONS_API_URL */] + "/" + subscriptionID + "/revise",
     headers: headers,
@@ -5533,7 +5533,7 @@ function messageSocket(_ref) {
   var errorListeners = [];
 
   var sendMessage = function sendMessage(socket, data) {
-    var messageUID = Object(belter_src["y" /* uniqueID */])();
+    var messageUID = Object(belter_src["C" /* uniqueID */])();
     receivedMessages[messageUID] = true;
 
     var message = Object(esm_extends["a" /* default */])({
@@ -5748,7 +5748,7 @@ function messageSocket(_ref) {
       });
       return connectionPromise;
     });
-    socketPromise.catch(belter_src["m" /* noop */]);
+    socketPromise.catch(belter_src["q" /* noop */]);
   };
 
   init();
@@ -5781,7 +5781,7 @@ function messageSocket(_ref) {
         timeout = _ref6$timeout === void 0 ? 0 : _ref6$timeout;
 
     return socketPromise.then(function (socket) {
-      var requestUID = Object(belter_src["y" /* uniqueID */])();
+      var requestUID = Object(belter_src["C" /* uniqueID */])();
       var listenerPromise = new src["a" /* ZalgoPromise */]();
       responseListeners[requestUID] = {
         listenerPromise: listenerPromise,
@@ -5834,7 +5834,7 @@ function messageSocket(_ref) {
     src["a" /* ZalgoPromise */].all(activeRequests).then(function () {
       return socketPromise.then(function (socket) {
         return socket.close();
-      }, belter_src["m" /* noop */]);
+      }, belter_src["q" /* noop */]);
     });
   };
 
@@ -5906,7 +5906,7 @@ function webSocket(_ref7) {
     targetApp: targetApp
   });
 }
-var loadFirebaseSDK = Object(belter_src["l" /* memoize */])(function (config) {
+var loadFirebaseSDK = Object(belter_src["p" /* memoize */])(function (config) {
   return Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].APP).then(function () {
     return src["a" /* ZalgoPromise */].all([Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].AUTH), Object(util["b" /* loadScript */])(src_config["e" /* FIREBASE_SCRIPTS */].DATABASE)]);
   }).then(function () {
@@ -5976,11 +5976,11 @@ function firebaseSocket(_ref8) {
         return database;
       });
     });
-    databasePromise.catch(belter_src["m" /* noop */]);
+    databasePromise.catch(belter_src["q" /* noop */]);
     return {
       send: function send(data) {
         databasePromise.then(function (database) {
-          return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src["y" /* uniqueID */])()).set(data);
+          return database.ref("users/" + sessionUID + "/messages/" + Object(belter_src["C" /* uniqueID */])()).set(data);
         }).catch(error);
       },
       close: function close() {
@@ -6064,7 +6064,7 @@ function firebaseSocket(_ref8) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return callGraphQL; });
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 
@@ -6087,7 +6087,7 @@ function callRestAPI(_ref) {
 
   var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])((_extends2 = {}, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].AUTHORIZATION] = "Bearer " + accessToken, _extends2[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].CONTENT_TYPE] = "application/json", _extends2), headers);
 
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "t"])({
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "x"])({
     method: method,
     url: url,
     headers: requestHeaders,
@@ -6118,7 +6118,7 @@ function callSmartAPI(_ref3) {
     reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__[/* HEADERS */ "j"].ACCESS_TOKEN] = accessToken;
   }
 
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "t"])({
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "x"])({
     url: url,
     method: method,
     headers: reqHeaders,
@@ -6152,7 +6152,7 @@ function callGraphQL(_ref5) {
       variables = _ref5$variables === void 0 ? {} : _ref5$variables,
       _ref5$headers = _ref5.headers,
       headers = _ref5$headers === void 0 ? {} : _ref5$headers;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "t"])({
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* request */ "x"])({
     url: _config__WEBPACK_IMPORTED_MODULE_3__[/* GRAPHQL_URI */ "f"],
     method: 'POST',
     json: {
@@ -7223,7 +7223,7 @@ var TYPES = true;
 /* unused concated harmony import canReadFromWindow */
 /* unused concated harmony import getActualDomain */
 /* concated harmony reexport getDomain */__webpack_require__.d(__webpack_exports__, "b", function() { return getDomain; });
-/* concated harmony reexport isBlankDomain */__webpack_require__.d(__webpack_exports__, "e", function() { return isBlankDomain; });
+/* unused concated harmony import isBlankDomain */
 /* unused concated harmony import isActuallySameDomain */
 /* unused concated harmony import isSameDomain */
 /* concated harmony reexport assertSameDomain */__webpack_require__.d(__webpack_exports__, "a", function() { return assertSameDomain; });
@@ -7238,8 +7238,8 @@ var TYPES = true;
 /* unused concated harmony import getAllWindows */
 /* unused concated harmony import isTop */
 /* unused concated harmony import isFrameWindowClosed */
-/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "g", function() { return isWindowClosed; });
-/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "h", function() { return linkFrameWindow; });
+/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "f", function() { return isWindowClosed; });
+/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "g", function() { return linkFrameWindow; });
 /* unused concated harmony import getUserAgent */
 /* unused concated harmony import getFrameByName */
 /* unused concated harmony import findChildFrameByName */
@@ -7260,7 +7260,7 @@ var TYPES = true;
 /* unused concated harmony import stringifyDomainPattern */
 /* unused concated harmony import getDomainFromUrl */
 /* unused concated harmony import onCloseWindow */
-/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "f", function() { return isWindow; });
+/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "e", function() { return isWindow; });
 /* unused concated harmony import isBrowser */
 /* unused concated harmony import isCurrentDomain */
 /* unused concated harmony import isMockDomain */
@@ -7285,14 +7285,14 @@ var TYPES = true;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return enableLoadingSpinner; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return disableLoadingSpinner; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getNonce; });
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 
 
 
 function getButtons() {
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* querySelectorAll */ "r"])("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE + " ]");
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* querySelectorAll */ "v"])("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE + " ]");
 }
 function getSelectedFunding(button) {
   var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__[/* DATA_ATTRIBUTES */ "c"].FUNDING_SOURCE);
@@ -7432,13 +7432,13 @@ __webpack_require__.r(__webpack_exports__);
 /* unused harmony export redirectTop */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return loadScript; });
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 
 
 
 function unresolvedPromise() {
-  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "m"]);
+  return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__[/* ZalgoPromise */ "a"](belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "q"]);
 }
 function promiseNoop() {
   // eslint-disable-line no-unused-vars
@@ -7566,8 +7566,8 @@ function getOnInit(xprops) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getCreateOrder; });
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
 /* harmony import */ var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(2);
@@ -7752,7 +7752,7 @@ function getCreateOrder(xprops, _ref4) {
     merchantID: merchantID,
     partnerAttributionID: partnerAttributionID
   });
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "l"])(function () {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "p"])(function () {
     var startTime = Date.now();
     return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__[/* ZalgoPromise */ "a"].try(function () {
       if (createBillingAgreement) {
@@ -7796,8 +7796,8 @@ function getCreateOrder(xprops, _ref4) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getOnApprove; });
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
@@ -7832,7 +7832,7 @@ function buildOrderActions(_ref) {
     throw new Error('Order could not be captured');
   };
 
-  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* getOrder */ "l"])(orderID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
@@ -7840,7 +7840,7 @@ function buildOrderActions(_ref) {
       isNativeTransaction: isNativeTransaction
     });
   });
-  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+  var capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
@@ -7852,7 +7852,7 @@ function buildOrderActions(_ref) {
       isNativeTransaction: isNativeTransaction
     }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
   });
-  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+  var authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].AUTHORIZE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].AUTHORIZE + " to use client-side authorize");
     }
@@ -7914,14 +7914,14 @@ function buildPaymentActions(_ref2) {
     throw new Error('Order could not be captured');
   };
 
-  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+  var get = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* getPayment */ "n"])(paymentID, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
       partnerAttributionID: partnerAttributionID
     });
   });
-  var execute = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+  var execute = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function () {
     if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE) {
       throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* SDK_QUERY_KEYS */ "j"].INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE + " to use client-side capture");
     }
@@ -7966,12 +7966,12 @@ function buildXApproveActions(_ref3) {
       partnerAttributionID = _ref3.partnerAttributionID,
       isNativeTransaction = _ref3.isNativeTransaction;
   // Subscription GET Actions
-  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+  var getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* getSubscription */ "o"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
   });
-  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function () {
+  var activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function () {
     return Object(_api__WEBPACK_IMPORTED_MODULE_3__[/* activateSubscription */ "a"])(subscriptionID, {
       buyerAccessToken: buyerAccessToken
     });
@@ -7993,7 +7993,7 @@ function buildXApproveActions(_ref3) {
       }).flush();
     }
 
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* redirect */ "s"])(url, window.top);
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* redirect */ "w"])(url, window.top);
   };
 
   var order = buildOrderActions({
@@ -8040,7 +8040,7 @@ function getOnApprove(xprops, _ref4) {
       buttonSessionID = xprops.buttonSessionID,
       partnerAttributionID = xprops.partnerAttributionID,
       onError = xprops.onError;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "l"])(function (_ref5, _ref6) {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function (_ref5, _ref6) {
     var payerID = _ref5.payerID,
         paymentID = _ref5.paymentID,
         billingToken = _ref5.billingToken,
@@ -8083,9 +8083,9 @@ function getOnApprove(xprops, _ref4) {
         });
       } else {
         if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].CAPTURE) {
-          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "m"]);
+          return actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "q"]);
         } else if (intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* INTENT */ "h"].AUTHORIZE) {
-          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "m"]);
+          return actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* noop */ "q"]);
         }
       }
     });
@@ -8100,9 +8100,9 @@ function getOnApprove(xprops, _ref4) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnCancelData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildXOnCancelActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnCancel; });
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 
@@ -8133,7 +8133,7 @@ function buildXOnCancelActions() {
       }).flush();
     }
 
-    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "s"])(url, window.top);
+    return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* redirect */ "w"])(url, window.top);
   }; // $FlowFixMe
 
 
@@ -8144,10 +8144,10 @@ function buildXOnCancelActions() {
 function getOnCancel(xprops, _ref2) {
   var createOrder = _ref2.createOrder;
   var _xprops$onCancel = xprops.onCancel,
-      onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "m"] : _xprops$onCancel,
+      onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "q"] : _xprops$onCancel,
       onError = xprops.onError,
       buttonSessionID = xprops.buttonSessionID;
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "l"])(function () {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "p"])(function () {
     return createOrder().then(function (orderID) {
       var _getLogger$info$track;
 
@@ -8171,7 +8171,7 @@ function getOnCancel(xprops, _ref2) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getOnShippingChange; });
 /* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
@@ -8260,8 +8260,8 @@ function getOnShippingChange(xprops, _ref2) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return buildXOnClickActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getOnClick; });
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
-/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var belter_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 
 
 
@@ -8296,7 +8296,7 @@ function getOnClick(xprops) {
     return;
   }
 
-  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "l"])(function (_ref2) {
+  return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__[/* memoize */ "p"])(function (_ref2) {
     var fundingSource = _ref2.fundingSource;
     return onClick(buildXOnClickData({
       fundingSource: fundingSource
@@ -8422,7 +8422,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 
 /***/ }),
@@ -8434,7 +8434,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getComponents; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getConfig; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getServiceData; });
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
 /* harmony import */ var _onInit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 /* harmony import */ var _createOrder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
@@ -8636,7 +8636,7 @@ var POPUP_BRIDGE_OPTYPE = {
 
 "use strict";
 /* harmony import */ var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+/* harmony import */ var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 
 
 
@@ -8655,10 +8655,10 @@ var POPUP_BRIDGE_OPTYPE = {
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js + 16 modules
-var src = __webpack_require__(1);
+var src = __webpack_require__(0);
 
 // EXTERNAL MODULE: ./node_modules/@paypal/sdk-constants/src/index.js + 8 modules
-var sdk_constants_src = __webpack_require__(0);
+var sdk_constants_src = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
 var zalgo_promise_src = __webpack_require__(3);
@@ -8685,7 +8685,7 @@ function setupButtonLogs(_ref) {
   var style = _ref.style;
   var logger = Object(lib["b" /* getLogger */])();
 
-  if (Object(src["k" /* isIEIntranet */])()) {
+  if (Object(src["m" /* isIEIntranet */])()) {
     logger.warn('button_child_intranet_mode');
   }
 
@@ -9306,7 +9306,7 @@ function SpinnerPage(_ref) {
 function openPopup(_ref) {
   var width = _ref.width,
       height = _ref.height;
-  var win = Object(cross_domain_utils_src["a" /* assertSameDomain */])(Object(src["p" /* popup */])('', {
+  var win = Object(cross_domain_utils_src["a" /* assertSameDomain */])(Object(src["t" /* popup */])('', {
     width: width,
     height: height
   }));
@@ -9316,7 +9316,7 @@ function openPopup(_ref) {
   }).render(dom_dom({
     doc: doc
   }));
-  Object(src["z" /* writeElementToWindow */])(win, spinner);
+  Object(src["D" /* writeElementToWindow */])(win, spinner);
   return win;
 }
 // CONCATENATED MODULE: ./src/ui/index.js
@@ -9365,7 +9365,7 @@ function setupCheckout(_ref) {
     });
   }
 
-  return zalgo_promise_src["a" /* ZalgoPromise */].hash(tasks).then(src["m" /* noop */]);
+  return zalgo_promise_src["a" /* ZalgoPromise */].hash(tasks).then(src["q" /* noop */]);
 }
 
 function isCheckoutEligible() {
@@ -9450,7 +9450,7 @@ function getContext(_ref5) {
     return constants["b" /* CONTEXT */].POPUP;
   }
 
-  if (isClick && Object(src["x" /* supportsPopups */])()) {
+  if (isClick && Object(src["B" /* supportsPopups */])()) {
     return constants["b" /* CONTEXT */].POPUP;
   }
 
@@ -9498,7 +9498,7 @@ function initCheckout(_ref6) {
     isClick: isClick
   });
   var approved = false;
-  var restart = Object(src["l" /* memoize */])(function () {
+  var restart = Object(src["p" /* memoize */])(function () {
     return initCheckout({
       props: props,
       components: components,
@@ -9561,7 +9561,7 @@ function initCheckout(_ref6) {
             buyerAccessToken: buyerAccessToken
           }, {
             restart: restart
-          }).catch(src["m" /* noop */]);
+          }).catch(src["q" /* noop */]);
         });
       },
       onAuth: function onAuth(_ref8) {
@@ -9601,7 +9601,7 @@ function initCheckout(_ref6) {
     });
   };
 
-  var start = Object(src["l" /* memoize */])(function () {
+  var start = Object(src["p" /* memoize */])(function () {
     instance = init();
     return instance.renderTo(getRenderWindow(), constants["o" /* TARGET_ELEMENT */].BODY, context);
   });
@@ -9612,7 +9612,7 @@ function initCheckout(_ref6) {
       return;
     }
 
-    if (Object(src["x" /* supportsPopups */])()) {
+    if (Object(src["B" /* supportsPopups */])()) {
       win = win || openPopup({
         width: CHECKOUT_POPUP_DIMENSIONS.WIDTH,
         height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
@@ -9705,13 +9705,13 @@ function highlightCard(card) {
     return;
   }
 
-  Object(src["r" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
+  Object(src["v" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
     el.style.opacity = el.getAttribute(constants["c" /* DATA_ATTRIBUTES */].CARD) === card ? '1' : '0.1';
   });
 }
 
 function unhighlightCards() {
-  Object(src["r" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
+  Object(src["v" /* querySelectorAll */])("[" + constants["c" /* DATA_ATTRIBUTES */].CARD + "]").forEach(function (el) {
     el.style.opacity = '1';
   });
 }
@@ -9792,7 +9792,7 @@ function initCardFields(_ref4) {
     };
   }
 
-  var restart = Object(src["l" /* memoize */])(function () {
+  var restart = Object(src["p" /* memoize */])(function () {
     return checkout.init({
       props: props,
       components: components,
@@ -9832,7 +9832,7 @@ function initCardFields(_ref4) {
           buyerAccessToken: buyerAccessToken
         }, {
           restart: restart
-        }).catch(src["m" /* noop */]);
+        }).catch(src["q" /* noop */]);
       });
     },
     onAuth: function onAuth(_ref7) {
@@ -10063,7 +10063,7 @@ var MESSAGE = {
   ON_CANCEL: 'onCancel',
   ON_ERROR: 'onError'
 };
-var getNativeSocket = Object(src["l" /* memoize */])(function (_ref) {
+var getNativeSocket = Object(src["p" /* memoize */])(function (_ref) {
   var sessionUID = _ref.sessionUID,
       firebaseConfig = _ref.firebaseConfig,
       version = _ref.version;
@@ -10121,11 +10121,23 @@ function isNativeEligible(_ref3) {
     return false;
   }
 
-  if (!Object(src["x" /* supportsPopups */])()) {
+  if (!Object(src["B" /* supportsPopups */])()) {
     return false;
   }
 
   if (!firebaseConfig) {
+    return false;
+  }
+
+  if (Object(src["n" /* isIos */])()) {
+    if (!Object(src["o" /* isSafari */])()) {
+      return false;
+    }
+  } else if (Object(src["j" /* isAndroid */])()) {
+    if (!Object(src["l" /* isChrome */])()) {
+      return false;
+    }
+  } else {
     return false;
   }
 
@@ -10172,7 +10184,7 @@ function setupNative(_ref5) {
     var version = config.version,
         firebaseConfig = config.firebase;
     var getPageUrl = props.getPageUrl;
-    native_sessionUID = Object(src["y" /* uniqueID */])();
+    native_sessionUID = Object(src["C" /* uniqueID */])();
     nativeSocket = getNativeSocket({
       sessionUID: native_sessionUID,
       firebaseConfig: firebaseConfig,
@@ -10181,7 +10193,7 @@ function setupNative(_ref5) {
     nativeSocket.onError(function (err) {
       nativeSocket = null;
       Object(lib["b" /* getLogger */])().error('native_socket_error', {
-        err: Object(src["v" /* stringifyError */])(err)
+        err: Object(src["z" /* stringifyError */])(err)
       });
     });
     return getPageUrl().then(function (pageUrl) {
@@ -10190,8 +10202,59 @@ function setupNative(_ref5) {
   });
 }
 
-function didAppSwitchHappen(win) {
-  return !win || Object(cross_domain_utils_src["e" /* isBlankDomain */])(win);
+function onWindowUnload(win, handler) {
+  try {
+    // $FlowFixMe
+    win.addEventListener('unload', function () {
+      return handler();
+    });
+  } catch (err) {// pass
+  }
+}
+
+function appSwitchPopup(url) {
+  var win;
+  var appSwitched = false;
+
+  try {
+    win = Object(src["t" /* popup */])(url);
+  } catch (err) {
+    if (err instanceof src["a" /* PopupOpenError */] && Object(src["n" /* isIos */])() && Object(src["o" /* isSafari */])()) {
+      appSwitched = true;
+    } else {
+      throw err;
+    }
+  }
+
+  if (Object(src["j" /* isAndroid */])() && Object(src["l" /* isChrome */])() && win) {
+    onWindowUnload(win, function () {
+      onWindowUnload(win, function () {
+        if (Object(cross_domain_utils_src["f" /* isWindowClosed */])(win)) {
+          appSwitched = true;
+        }
+      });
+    });
+  }
+
+  var getWindow = function getWindow() {
+    return win;
+  };
+
+  var didSwitch = function didSwitch() {
+    return appSwitched;
+  };
+
+  var close = function close() {
+    if (win) {
+      win.close();
+    }
+  };
+
+  return {
+    getWindow: getWindow,
+    didSwitch: didSwitch,
+    close: close
+  };
 }
 
 function initNative(_ref6) {
@@ -10375,68 +10438,57 @@ function initNative(_ref6) {
     };
   };
 
-  var win;
+  var appSwitch;
 
-  var closeWin = function closeWin() {
-    if (win) {
-      win.close();
-    }
+  var open = function open() {
+    appSwitch = appSwitchPopup(getNativeUrl());
   };
 
-  var closeNative = function closeNative() {
+  var close = function close() {
     return zalgo_promise_src["a" /* ZalgoPromise */].delay(500).then(function () {
-      if (didAppSwitchHappen(win)) {
+      if (appSwitch.didSwitch()) {
         connectNative().close();
       }
 
-      closeWin();
+      if (appSwitch) {
+        appSwitch.close();
+      }
     });
   };
 
-  var start = Object(src["l" /* memoize */])(function () {
-    return createOrder().then(function () {
-      if (didAppSwitchHappen(win)) {
-        Object(lib["b" /* getLogger */])().info("native_app_switch").flush();
-        closeWin();
-        instance = connectNative();
-        return instance.setProps();
-      } else if (win) {
-        Object(lib["b" /* getLogger */])().info("native_app_web_fallback").flush();
-        return fallbackToWebCheckout({
-          win: win
-        });
-      } else {
-        throw new Error("No window available to fall back to");
-      }
-    }).catch(function (err) {
-      closeNative();
-      throw err;
-    });
-  });
-
   var click = function click() {
-    try {
-      win = Object(src["p" /* popup */])(getNativeUrl());
-    } catch (err) {
-      if (!(err instanceof src["a" /* PopupOpenError */])) {
-        throw err;
-      }
-    }
-
+    open();
     return zalgo_promise_src["a" /* ZalgoPromise */].try(function () {
       return onClick ? onClick({
         fundingSource: fundingSource
       }) : true;
     }).then(function (valid) {
       if (!valid) {
-        closeNative();
+        close();
       }
     }, function (err) {
-      closeNative();
+      close();
       throw err;
     });
   };
 
+  var start = Object(src["p" /* memoize */])(function () {
+    return createOrder().then(function () {
+      if (appSwitch.didSwitch()) {
+        Object(lib["b" /* getLogger */])().info("native_app_switch").flush();
+        instance = connectNative();
+        return instance.setProps();
+      } else {
+        Object(lib["b" /* getLogger */])().info("native_app_web_fallback").flush();
+        return fallbackToWebCheckout({
+          win: appSwitch.getWindow()
+        });
+      }
+    }).catch(function (err) {
+      close();
+      throw err;
+    });
+  });
   return {
     click: click,
     start: start,
@@ -10675,7 +10727,7 @@ function setupPaymentFlows(_ref) {
       serviceData: serviceData,
       components: components
     }) : null;
-  })).then(src["m" /* noop */]);
+  })).then(src["q" /* noop */]);
 }
 function getPaymentFlow(_ref2) {
   var props = _ref2.props,
@@ -10787,7 +10839,7 @@ function initiatePaymentFlow(_ref3) {
         });
       }).catch(function (err) {
         return Object(lib["b" /* getLogger */])().error('update_client_config_error', {
-          err: Object(src["v" /* stringifyError */])(err)
+          err: Object(src["z" /* stringifyError */])(err)
         });
       });
       return start().then(function () {
@@ -10801,7 +10853,7 @@ function initiatePaymentFlow(_ref3) {
         return clickPromise;
       }).catch(function (err) {
         return zalgo_promise_src["a" /* ZalgoPromise */].all([close(), zalgo_promise_src["a" /* ZalgoPromise */].reject(err)]);
-      }).then(src["m" /* noop */]);
+      }).then(src["q" /* noop */]);
     });
   }).finally(function () {
     Object(dom["a" /* disableLoadingSpinner */])(button);
@@ -10826,7 +10878,7 @@ function renderSmartMenu(_ref) {
       show = _window$paypal$Menu.show,
       hide = _window$paypal$Menu.hide;
 
-  var render = Object(src["l" /* memoize */])(function () {
+  var render = Object(src["p" /* memoize */])(function () {
     return renderTo(window.xprops.getParent(), '#smart-menu');
   });
 
@@ -10899,7 +10951,7 @@ function renderButtonDropdown(_ref) {
     smartMenu = smartMenu || renderSmartMenu({
       clientID: clientID
     });
-    Object(src["o" /* onClick */])(menuToggle, function (event) {
+    Object(src["s" /* onClick */])(menuToggle, function (event) {
       event.preventDefault();
       event.stopPropagation();
       var PAYPAL_CHOICES = [
@@ -10967,7 +11019,7 @@ function renderButtonDropdown(_ref) {
             }
 
             var decorateCreateOrder = function decorateCreateOrder(createOrder) {
-              return Object(src["l" /* memoize */])(function () {
+              return Object(src["p" /* memoize */])(function () {
                 return createOrder().then(function (orderID) {
                   return Object(api["u" /* validatePaymentMethod */])({
                     clientAccessToken: clientAccessToken,
@@ -11126,8 +11178,8 @@ function setupButton(opts) {
       var _getLogger$info$track;
 
       Object(lib["b" /* getLogger */])().info('smart_buttons_payment_error', {
-        err: Object(src["v" /* stringifyError */])(err)
-      }).track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'smart_buttons_payment_error', _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(src["w" /* stringifyErrorMessage */])(err), _getLogger$info$track));
+        err: Object(src["z" /* stringifyError */])(err)
+      }).track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'smart_buttons_payment_error', _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(src["A" /* stringifyErrorMessage */])(err), _getLogger$info$track));
       throw err;
     });
   }
@@ -11152,7 +11204,7 @@ function setupButton(opts) {
       content: content,
       initiatePayment: initiatePayment
     });
-    Object(src["o" /* onClick */])(button, function (event) {
+    Object(src["s" /* onClick */])(button, function (event) {
       event.preventDefault();
       event.stopPropagation();
       var payPromise = initiatePayment({
@@ -11215,7 +11267,7 @@ function setupButton(opts) {
     setupPrerenderTask: setupPrerenderTask,
     setupRememberTask: setupRememberTask,
     setupPaymentFlowsTask: setupPaymentFlowsTask
-  }).then(src["m" /* noop */]);
+  }).then(src["q" /* noop */]);
 }
 
 /***/ }),
