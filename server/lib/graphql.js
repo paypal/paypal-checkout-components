@@ -18,7 +18,7 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
 
     const batchedGraphQL = async ({ query, variables, accessToken: callerAccessToken }) => {
         return await new Promise((resolve, reject) => {
-            if (accessToken && accessToken !== callerAccessToken) {
+            if (accessToken && callerAccessToken && accessToken !== callerAccessToken) {
                 throw new Error(`Access token for graphql call already set`);
             }
 
