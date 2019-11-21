@@ -1,3 +1,11 @@
+## <small>5.0.65 (2019-11-21)</small>
+
+* Add tracking beacon to personalization button text ([6902854](http://github.paypal.com/paypal/paypal-checkout/commit/6902854))
+* Personalization animation fixes ([2fe2a89](http://github.paypal.com/paypal/paypal-checkout/commit/2fe2a89))
+* Remove tagline height when no tagline displayed ([72fda11](http://github.paypal.com/paypal/paypal-checkout/commit/72fda11))
+
+
+
 ## <small>5.0.64 (2019-11-20)</small>
 
 * Add sdkMeta param during credit redirect ([f3253cd](http://github.paypal.com/paypal/paypal-checkout/commit/f3253cd))
