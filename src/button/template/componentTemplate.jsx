@@ -3,21 +3,21 @@
 
 import { base64encode } from 'belter/src';
 
-import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
-import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender, JsxHTMLNodeContainer } from '../../lib/jsx';
+import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx';
 import { fundingLogos, cardLogos } from '../../resources';
 import { validateButtonProps } from '../validate';
 import type { LocaleType, FundingSource, FundingSelection, FundingList, CheckoutCustomizationType } from '../../types';
 
-import { Tagline, Beacon, LoadingDots } from './miscComponent';
+import { Tagline, Beacon } from './miscComponent';
 import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
 const allowedPersonalizationLabels = [ BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY ];
-const delay = 0.2;
+// const delay = 0.2;
 
 function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
     return [
@@ -111,6 +111,7 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
     return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, size, layout }) }</div>;
 }
 
+/*
 // this function performs the first button render for eligible population
 function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : $Values<typeof BUTTON_LOGO_COLOR>, branding : boolean, label : string }) : JsxHTMLNode {
     if (!logoColor) {
@@ -156,6 +157,7 @@ function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { col
     
     return new JsxHTMLNodeContainer(nodes);
 }
+*/
 
 function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size } :
     { layout? : $Values<typeof BUTTON_LAYOUT>, size? : $Values<typeof BUTTON_SIZE>, label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : $ReadOnlyArray<string>, dynamicContent? : Object }) : JsxHTMLNode {
@@ -246,7 +248,8 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     // the label template, otherwise use the logo template.
     let contentText;
     let impression;
-    const morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+    // suppressing consumption of mors text
+    let morsText; // checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
     if (buttonLabel === label) {
         // checks for button label: pay, buynow, checkout, paypal, installment
         if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText) {
@@ -266,7 +269,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     };
     
     contentText = (typeof contentText === 'function') ? contentText(dynamicContent) : contentText;
-    contentText = (__WEB__ && buttonLabel === label && allowedPersonalizationLabels.indexOf(label) !== -1) ? renderPPPayPalLoadingDots({ color, logoColor, branding, label }) : renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
+    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
@@ -296,9 +299,12 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
         return;
     }
   
+    
     if (__WEB__ && layout !== BUTTON_LAYOUT.VERTICAL) {
-        return LoadingDots(delay);
+        return;
+        // return LoadingDots(delay);
     }
+    
     
     const tag = multiple
         ? (getButtonConfig(label, 'dualTag') || getButtonConfig(label, 'tag'))
