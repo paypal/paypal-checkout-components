@@ -1,9 +1,9 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, PopupOpenError } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, PopupOpenError, isIos, isAndroid, isSafari, isChrome } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
-import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
+import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI } from '../config';
@@ -91,6 +91,18 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
         return false;
     }
 
+    if (isIos()) {
+        if (!isSafari()) {
+            return false;
+        }
+    } else if (isAndroid()) {
+        if (!isChrome()) {
+            return false;
+        }
+    } else {
+        return false;
+    }
+
     if (isNativeOptedIn({ props })) {
         return true;
     }
@@ -155,8 +167,55 @@ type NativeSDKProps = {|
     forceEligible : boolean
 |};
 
-function didAppSwitchHappen(win : ?CrossDomainWindowType) : boolean {
-    return !win || isBlankDomain(win);
+type AppSwitchPopup = {|
+    getWindow : () => CrossDomainWindowType,
+    didSwitch : () => boolean,
+    close : () => void
+|};
+
+function onWindowUnload(win : CrossDomainWindowType, handler : () => void) {
+    try {
+        // $FlowFixMe
+        win.addEventListener('unload', () => handler());
+    } catch (err) {
+        // pass
+    }
+}
+
+function appSwitchPopup(url : string) : AppSwitchPopup {
+
+    let win;
+    let appSwitched = false;
+
+    try {
+        win = popup(url);
+    } catch (err) {
+        if (err instanceof PopupOpenError && isIos() && isSafari()) {
+            appSwitched = true;
+        } else {
+            throw err;
+        }
+    }
+    
+    if (isAndroid() && isChrome() && win) {
+        onWindowUnload(win, () => {
+            onWindowUnload(win, () => {
+                if (isWindowClosed(win)) {
+                    appSwitched = true;
+                }
+            });
+        });
+    }
+
+    const getWindow = () => win;
+    const didSwitch = () => appSwitched;
+    const close = () => {
+        if (win) {
+            win.close();
+        }
+    };
+
+    return { getWindow, didSwitch, close };
 }
 
 function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
@@ -272,63 +331,55 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return { setProps, close: closeNative };
     };
 
-    let win : ?CrossDomainWindowType;
+    let appSwitch : AppSwitchPopup;
 
-    const closeWin = () => {
-        if (win) {
-            win.close();
-        }
+    const open = () => {
+        appSwitch = appSwitchPopup(getNativeUrl());
     };
-
-    const closeNative = () => {
+    
+    const close = () => {
         return ZalgoPromise.delay(500).then(() => {
-            if (didAppSwitchHappen(win)) {
+            if (appSwitch.didSwitch()) {
                 connectNative().close();
             }
 
-            closeWin();
+            if (appSwitch) {
+                appSwitch.close();
+            }
         });
     };
 
-    const start = memoize(() => {
-        return createOrder().then(() => {
-            if (didAppSwitchHappen(win)) {
-                getLogger().info(`native_app_switch`).flush();
-                closeWin();
-                instance = connectNative();
-                return instance.setProps();
-            } else if (win) {
-                getLogger().info(`native_app_web_fallback`).flush();
-                return fallbackToWebCheckout({ win });
-            } else {
-                throw new Error(`No window available to fall back to`);
-            }
-        }).catch(err => {
-            closeNative();
-            throw err;
-        });
-    });
-
     const click = () => {
-        try {
-            win = popup(getNativeUrl());
-        } catch (err) {
-            if (!(err instanceof PopupOpenError)) {
-                throw err;
-            }
-        }
+        open();
 
         return ZalgoPromise.try(() => {
             return onClick ? onClick({ fundingSource }) : true;
         }).then(valid => {
             if (!valid) {
-                closeNative();
+                close();
             }
         }, err => {
-            closeNative();
+            close();
             throw err;
         });
     };
+
+    const start = memoize(() => {
+        return createOrder().then(() => {
+            if (appSwitch.didSwitch()) {
+                getLogger().info(`native_app_switch`).flush();
+                instance = connectNative();
+                return instance.setProps();
+            } else {
+                getLogger().info(`native_app_web_fallback`).flush();
+                return fallbackToWebCheckout({ win: appSwitch.getWindow() });
+            }
+        }).catch(err => {
+            close();
+            throw err;
+        });
+    });
+
 
     return {
         click,

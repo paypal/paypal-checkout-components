@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
 
-import { wrapPromise, parseQuery, uniqueID, noop } from 'belter/src';
+import { wrapPromise, parseQuery, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 
@@ -10,10 +10,15 @@ import { promiseNoop } from '../../src/lib';
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton,
     mockFunction, getNativeFirebaseMock, getGraphQLApiMock, mockFirebaseScripts } from './mocks';
 
+const IOS_SAFARI_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
+const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
+
 describe('native cases', () => {
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path', async () => {
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -108,17 +113,152 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
+                ZalgoPromise.delay(50)
+                    .then(onApprove);
+
+                return null;
+            });
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
+            firebaseScripts.done();
+        });
+    });
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path in Chrome', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
+
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+
+            const firebaseScripts = mockFirebaseScripts();
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (!data.query.includes('query GetFireBaseSessionToken')) {
+                        return;
+                    }
+
+                    if (!data.variables.sessionUID) {
+                        throw new Error(`Expected sessionUID to be passed`);
+                    }
+
+                    return {
+                        data: {
+                            firebase: {
+                                auth: {
+                                    sessionUID: data.variables.sessionUID,
+                                    sessionToken
+                                }
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            let sessionUID;
+
+            const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
+                getSessionUID: () => {
+                    if (!sessionUID) {
+                        throw new Error(`Session UID not present`);
+                    }
+
+                    return sessionUID;
+                }
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'XXYYZZ123456';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+
+                ZalgoPromise.try(expect('postOnApprove'), async () => {
+                    await mockWebSocketServer.done();
+                });
+            }));
+
+            const windowOpen = window.open;
+            window.open = expect('windowOpen', (url) => {
+                window.open = windowOpen;
+
+                if (!url) {
+                    throw new Error(`Expected url to be immediately passed to window.open`);
+                }
+
+                if (url.indexOf('/smart/checkout/native') === -1) {
+                    throw new Error(`Expected paypal native url`);
+                }
+
+                const query = parseQuery(url.split('?')[1]);
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
+
+                if (!sessionUID) {
+                    throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
+                }
+
                 const win : Object = {
                     location: {
                         href: 'about:blank'
                     },
-                    closed: false,
-                    close:  expect('close', () => {
-                        ZalgoPromise.delay(50)
-                            .then(() => ZalgoPromise.delay(50))
-                            .then(onApprove);
-                    })
+                    closed: false
                 };
+
+                win.addEventListener = expect('winAddEventListener1', (name, handler) => {
+                    if (name !== 'unload') {
+                        throw new Error(`Unexpected window event listener for ${ name }`);
+                    }
+
+                    win.addEventListener = expect('winAddEventListener2', (name2, handler2) => {
+                        if (name2 !== 'unload') {
+                            throw new Error(`Unexpected window event listener for ${ name2 }`);
+                        }
+
+                        win.closed = true;
+                        handler2();
+
+                        ZalgoPromise.delay(50)
+                            .then(onApprove);
+                    });
+
+                    handler();
+                });
 
                 win.parent = win.top = win;
                 return win;
@@ -142,6 +282,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -237,7 +378,6 @@ describe('native cases', () => {
                 }
 
                 ZalgoPromise.delay(50)
-                    .then(() => ZalgoPromise.delay(50))
                     .then(onApprove);
 
                 return null;
@@ -261,6 +401,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path with onCancel', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -350,20 +491,10 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                const win : Object = {
-                    location: {
-                        href: 'about:blank'
-                    },
-                    closed: false,
-                    close:  expect('close', () => {
-                        ZalgoPromise.delay(50)
-                            .then(() => ZalgoPromise.delay(50))
-                            .then(onCancel);
-                    })
-                };
+                ZalgoPromise.delay(50)
+                    .then(onCancel);
 
-                win.parent = win.top = win;
-                return win;
+                return null;
             });
 
             createButtonHTML();
@@ -384,6 +515,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path with onError', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -469,20 +601,10 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                const win : Object = {
-                    location: {
-                        href: 'about:blank'
-                    },
-                    closed: false,
-                    close:  expect('close', () => {
-                        ZalgoPromise.delay(50)
-                            .then(() => ZalgoPromise.delay(50))
-                            .then(onError);
-                    })
-                };
+                ZalgoPromise.delay(50)
+                    .then(onError);
 
-                win.parent = win.top = win;
-                return win;
+                return null;
             });
 
             createButtonHTML();
@@ -503,6 +625,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to web path', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -603,6 +726,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to native path', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -701,20 +825,11 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                const win : Object = {
-                    location: {
-                        href: 'about:blank'
-                    },
-                    closed: false,
-                    close:  expect('close', () => {
-                        ZalgoPromise.delay(50)
-                            .then(() => ZalgoPromise.delay(50))
-                            .then(onApprove);
-                    })
-                };
 
-                win.parent = win.top = win;
-                return win;
+                ZalgoPromise.delay(50)
+                    .then(onApprove);
+
+                return null;
             });
 
             createButtonHTML();
@@ -735,6 +850,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to native path', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -820,16 +936,7 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                const win : Object = {
-                    location: {
-                        href: 'about:blank'
-                    },
-                    closed: false,
-                    close:  expect('close', noop)
-                };
-
-                win.parent = win.top = win;
-                return win;
+                return null;
             });
 
             createButtonHTML();
@@ -857,6 +964,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder rejecting, click the button, and render checkout via popup to native path', async () => {
         return await wrapPromise(async ({ expect, avoid, expectError }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -940,16 +1048,7 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                const win : Object = {
-                    location: {
-                        href: 'about:blank'
-                    },
-                    closed: false,
-                    close:  expect('close', noop)
-                };
-
-                win.parent = win.top = win;
-                return win;
+                return null;
             });
 
             createButtonHTML();
@@ -987,6 +1086,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to web path', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1091,6 +1191,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to web path', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1104,8 +1205,6 @@ describe('native cases', () => {
             window.xprops.onCancel = avoid('onCancel');
 
             window.xprops.onApprove = mockAsyncProp(avoid('onApprove'));
-
-            let win : Object;
 
             mockFunction(window.paypal, 'Checkout', avoid('Checkout'));
 
@@ -1132,18 +1231,7 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
                 
-                win = {
-                    location: {
-                        href: url
-                    },
-                    closed: false,
-                    close:  expect('close')
-                };
-
-                // $FlowFixMe
-                win.parent = win.top = win;
-
-                return win;
+                return null;
             });
 
             createButtonHTML();
@@ -1161,6 +1249,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path, then fall back from native', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1275,20 +1364,10 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                const win : Object = {
-                    location: {
-                        href: 'about:blank'
-                    },
-                    closed: false,
-                    close:  expect('close', () => {
-                        ZalgoPromise.delay(50)
-                            .then(() => ZalgoPromise.delay(50))
-                            .then(() => fallback({ buyerAccessToken }));
-                    })
-                };
+                ZalgoPromise.delay(50)
+                    .then(() => fallback({ buyerAccessToken }));
 
-                win.parent = win.top = win;
-                return win;
+                return null;
             });
 
             createButtonHTML();
@@ -1309,6 +1388,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder, click the venmo button, and render checkout via popup to native path', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1403,20 +1483,10 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                const win : Object = {
-                    location: {
-                        href: 'about:blank'
-                    },
-                    closed: false,
-                    close:  expect('close', () => {
-                        ZalgoPromise.delay(50)
-                            .then(() => ZalgoPromise.delay(50))
-                            .then(onApprove);
-                    })
-                };
+                ZalgoPromise.delay(50)
+                    .then(onApprove);
 
-                win.parent = win.top = win;
-                return win;
+                return null;
             });
 
             createButtonHTML({
@@ -1441,6 +1511,7 @@ describe('native cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path with error in onApprove', async () => {
         return await wrapPromise(async ({ expect, expectError, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1547,26 +1618,16 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                const win : Object = {
-                    location: {
-                        href: 'about:blank'
-                    },
-                    closed: false,
-                    close:  expect('close', () => {
-                        return ZalgoPromise.delay(50)
-                            .then(() => ZalgoPromise.delay(50))
-                            .then(onApprove)
-                            .then(() => ZalgoPromise.delay(100))
-                            .finally(expect('final', () => {
-                                if (!gotOnApproveResponse) {
-                                    throw new Error(`Expected child window to get onApprove response`);
-                                }
-                            }));
-                    })
-                };
+                ZalgoPromise.delay(50)
+                    .then(onApprove)
+                    .then(() => ZalgoPromise.delay(100))
+                    .finally(expect('final', () => {
+                        if (!gotOnApproveResponse) {
+                            throw new Error(`Expected child window to get onApprove response`);
+                        }
+                    }));
 
-                win.parent = win.top = win;
-                return win;
+                return null;
             });
 
             createButtonHTML();
