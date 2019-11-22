@@ -8,8 +8,8 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { isDevice, uniqueID, inlineMemoize } from 'belter/src';
-import { FUNDING, PLATFORM, QUERY_BOOL, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { isDevice, uniqueID, inlineMemoize, values } from 'belter/src';
+import { FUNDING, PLATFORM, QUERY_BOOL, FPTI_KEY, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl } from '../../config';
@@ -261,7 +261,26 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 fundingEligibility: {
                     type:          'object',
-                    value:         getFundingEligibility,
+                    value:         () => {
+                        const fundingEligibility = getFundingEligibility();
+
+                        try {
+                            if (fundingEligibility.paypal) {
+                                delete fundingEligibility.paypal.vaultable;
+                            }
+                            if (fundingEligibility.card && fundingEligibility.card.vendors) {
+                                for (const vendor of values(CARD)) {
+                                    if (fundingEligibility.card.vendors[vendor]) {
+                                        delete fundingEligibility.card.vendors[vendor].vaultable;
+                                    }
+                                }
+                            }
+                        } catch (err) {
+                            // pass
+                        }
+
+                        return fundingEligibility;
+                    },
                     queryParam:    true,
                     serialization: 'base64'
                 },

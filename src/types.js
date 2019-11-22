@@ -18,6 +18,7 @@ export type FundingEligibilityType = {|
         vendors : {
             visa? : {
                 eligible : boolean,
+                vaultable? : ?boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
                     label : {
@@ -27,6 +28,7 @@ export type FundingEligibilityType = {|
             },
             mastercard? : {
                 eligible : boolean,
+                vaultable? : ?boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
                     label : {
@@ -36,6 +38,7 @@ export type FundingEligibilityType = {|
             },
             amex? : {
                 eligible : boolean,
+                vaultable? : ?boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
                     label : {
@@ -45,6 +48,7 @@ export type FundingEligibilityType = {|
             },
             discover? : {
                 eligible : boolean,
+                vaultable? : ?boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
                     label : {
@@ -54,6 +58,7 @@ export type FundingEligibilityType = {|
             },
             hiper? : {
                 eligible : boolean,
+                vaultable? : ?boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
                     label : {
@@ -63,6 +68,7 @@ export type FundingEligibilityType = {|
             },
             elo? : {
                 eligible : boolean,
+                vaultable? : ?boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
                     label : {
@@ -72,6 +78,7 @@ export type FundingEligibilityType = {|
             },
             jcb? : {
                 eligible : boolean,
+                vaultable? : ?boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
                     label : {
@@ -81,6 +88,7 @@ export type FundingEligibilityType = {|
             },
             cup? : {
                 eligible : boolean,
+                vaultable? : ?boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
                     label : {
@@ -121,6 +129,7 @@ export type FundingEligibilityType = {|
     paypal? : {
         eligible : boolean,
         branded : boolean,
+        vaultable? : ?boolean,
         vaultedInstruments? : $ReadOnlyArray<{
             id : string,
             label : {
