@@ -5666,13 +5666,14 @@ function messageSocket(_ref) {
         messageData = _parsedData.message_data,
         responseStatus = _parsedData.message_status,
         messageTargetApp = _parsedData.target_app;
+    requestUID = requestUID || parsedData.request_id;
+
+    if (messageUID && receivedMessages[messageUID]) {
+      return;
+    }
 
     if (!messageUID || !requestUID || !messageName || !messageType || !messageTargetApp) {
       throw new Error("Incomplete message: " + rawData);
-    }
-
-    if (receivedMessages[messageUID]) {
-      return;
     }
 
     receivedMessages[messageUID] = true;
