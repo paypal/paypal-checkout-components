@@ -3849,7 +3849,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.v4.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.304",
+  version: "4.0.305",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -12637,7 +12637,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.304";
+    payload.version = "4.0.305";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -12693,7 +12693,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.304".replace(/[^0-9]+/g, '_');
+      var version = "4.0.305".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -12710,7 +12710,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.304",
+    v: "checkout.js." + "4.0.305",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -14108,17 +14108,17 @@ __webpack_require__.r(__webpack_exports__);
 
 if (false) {}
 
-if (window.paypal && window.paypal.version === "4.0.304") {
+if (window.paypal && window.paypal.version === "4.0.305") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.304"
+    version: "4.0.305"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.304" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.304" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.305" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.305" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.304"
+    version: "4.0.305"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.304");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.305");
 } else {
   try {
     var _interface = __webpack_require__(56);
@@ -18394,7 +18394,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(lib_session["c" /* getSessionID */])(),
-      ver: "4.0.304"
+      ver: "4.0.305"
     };
   });
   Object(beaver_logger_client["a" /* addHeaderBuilder */])(function () {
@@ -18967,7 +18967,7 @@ function getScriptVersion() {
   if ( true && isPayPalObjects()) {
     return  false ? undefined : "4";
   } else {
-    return  false ? undefined : "4.0.304";
+    return  false ? undefined : "4.0.305";
   }
 }
 function getCurrentScriptUrl() {
@@ -18983,7 +18983,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.304" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.305" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -33819,8 +33819,7 @@ var componentContent = {
 
 
 
-var allowedPersonalizationLabels = [src_constants["f" /* BUTTON_LABEL */].CHECKOUT, src_constants["f" /* BUTTON_LABEL */].BUYNOW, src_constants["f" /* BUTTON_LABEL */].PAY];
-var componentTemplate_delay = 0.2;
+var allowedPersonalizationLabels = [src_constants["f" /* BUTTON_LABEL */].CHECKOUT, src_constants["f" /* BUTTON_LABEL */].BUYNOW, src_constants["f" /* BUTTON_LABEL */].PAY]; // const delay = 0.2;
 
 function getCommonButtonClasses(_ref) {
   var layout = _ref.layout,
@@ -33922,70 +33921,68 @@ function renderFundingIcons(_ref9) {
     size: size,
     layout: layout
   }));
-} // this function performs the first button render for eligible population
-
-
-function renderPPPayPalLoadingDots(_ref10) {
-  var color = _ref10.color,
-      logoColor = _ref10.logoColor,
-      branding = _ref10.branding,
-      label = _ref10.label;
-
-  if (!logoColor) {
-    throw new Error("Can not determine logo without logo color");
-  }
-
-  if (!color) {
-    throw new Error("Can not determine button without color");
-  }
-
-  var loadingDotsElement = jsxToHTML("span", {
-    class: "" + class_CLASS.TEXT
-  }, LoadingDots(componentTemplate_delay)); // this is specifically for the buynow button when the style.branding = false
-
-  if (!branding && label === src_constants["f" /* BUTTON_LABEL */].BUYNOW) {
-    return new jsx_JsxHTMLNodeContainer([loadingDotsElement]);
-  }
-
-  var ppFundingLogo = fundingLogos[src_constants["h" /* BUTTON_LOGO */].PP];
-  var ppLogo = typeof ppFundingLogo === 'function' ? ppFundingLogo({
-    logoColor: logoColor
-  }) : ppFundingLogo[logoColor];
-  var paypalFundingLogo = fundingLogos[src_constants["h" /* BUTTON_LOGO */].PAYPAL];
-  var paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({
-    logoColor: logoColor
-  }) : paypalFundingLogo[logoColor];
-  var nodes = [];
-  nodes[0] = jsxToHTML("img", {
-    class: class_CLASS.LOGO + " " + class_CLASS.LOGO + "-" + src_constants["h" /* BUTTON_LOGO */].PP + " " + class_CLASS.LOGO + "-" + color,
-    src: "data:image/svg+xml;base64," + Object(belter_src["a" /* base64encode */])(ppLogo.toString()),
-    alt: src_constants["h" /* BUTTON_LOGO */].PP
-  }); // for an intentional white space
-
-  nodes[1] = ' ';
-  nodes[2] = jsxToHTML("img", {
-    class: class_CLASS.LOGO + " " + class_CLASS.LOGO + "-" + src_constants["h" /* BUTTON_LOGO */].PAYPAL + " " + class_CLASS.LOGO + "-" + color,
-    src: "data:image/svg+xml;base64," + Object(belter_src["a" /* base64encode */])(paypalLogo.toString()),
-    alt: src_constants["h" /* BUTTON_LOGO */].PAYPAL
-  }); // for an intentional white space
-
-  nodes[3] = ' ';
-  nodes[4] = loadingDotsElement;
-  return new jsx_JsxHTMLNodeContainer(nodes);
 }
+/*
+// this function performs the first button render for eligible population
+function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : $Values<typeof BUTTON_LOGO_COLOR>, branding : boolean, label : string }) : JsxHTMLNode {
+    if (!logoColor) {
+        throw new Error(`Can not determine logo without logo color`);
+    }
+    if (!color) {
+        throw new Error(`Can not determine button without color`);
+    }
+    
+    const loadingDotsElement = (<span class={ `${ CLASS.TEXT }` }>{ LoadingDots(delay) }</span>);
+    
+    // this is specifically for the buynow button when the style.branding = false
+    if (!branding && label === BUTTON_LABEL.BUYNOW) {
+        return new JsxHTMLNodeContainer([ loadingDotsElement ]);
+    }
+    
+    const ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
+    const ppLogo =  typeof ppFundingLogo === 'function' ? ppFundingLogo({ logoColor }) : ppFundingLogo[logoColor];
+    const paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
+    const paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({ logoColor }) : paypalFundingLogo[logoColor];
+    const nodes = [];
+    nodes[0] = (
+        <img
+            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PP  } ${ CLASS.LOGO }-${ color }` }
+            src={ `data:image/svg+xml;base64,${ base64encode(ppLogo.toString()) }` }
+            alt={ BUTTON_LOGO.PP }
+        />);
+    
+    // for an intentional white space
+    nodes[1] = ' ';
+    
+    nodes[2] = (
+        <img
+            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } ${ CLASS.LOGO }-${ color }` }
+            src={ `data:image/svg+xml;base64,${ base64encode(paypalLogo.toString()) }` }
+            alt={ BUTTON_LOGO.PAYPAL }
+        />);
+    
+    // for an intentional white space
+    nodes[3] = ' ';
+    
+    nodes[4] = loadingDotsElement;
+    
+    return new JsxHTMLNodeContainer(nodes);
+}
+*/
 
-function renderContent(text, _ref11) {
-  var label = _ref11.label,
-      locale = _ref11.locale,
-      color = _ref11.color,
-      branding = _ref11.branding,
-      logoColor = _ref11.logoColor,
-      funding = _ref11.funding,
-      env = _ref11.env,
-      _cards = _ref11.cards,
-      dynamicContent = _ref11.dynamicContent,
-      layout = _ref11.layout,
-      size = _ref11.size;
+
+function renderContent(text, _ref10) {
+  var label = _ref10.label,
+      locale = _ref10.locale,
+      color = _ref10.color,
+      branding = _ref10.branding,
+      logoColor = _ref10.logoColor,
+      funding = _ref10.funding,
+      env = _ref10.env,
+      _cards = _ref10.cards,
+      dynamicContent = _ref10.dynamicContent,
+      layout = _ref10.layout,
+      size = _ref10.size;
 
   var _content = getLocaleContent(locale);
 
@@ -34080,24 +34077,24 @@ function renderContent(text, _ref11) {
   });
 }
 
-function renderButton(_ref12) {
-  var _ref13, _ref14, _ref15;
+function renderButton(_ref11) {
+  var _ref12, _ref13, _ref14;
 
-  var size = _ref12.size,
-      label = _ref12.label,
-      color = _ref12.color,
-      locale = _ref12.locale,
-      branding = _ref12.branding,
-      multiple = _ref12.multiple,
-      layout = _ref12.layout,
-      shape = _ref12.shape,
-      source = _ref12.source,
-      funding = _ref12.funding,
-      i = _ref12.i,
-      env = _ref12.env,
-      cards = _ref12.cards,
-      installmentperiod = _ref12.installmentperiod,
-      checkoutCustomization = _ref12.checkoutCustomization;
+  var size = _ref11.size,
+      label = _ref11.label,
+      color = _ref11.color,
+      locale = _ref11.locale,
+      branding = _ref11.branding,
+      multiple = _ref11.multiple,
+      layout = _ref11.layout,
+      shape = _ref11.shape,
+      source = _ref11.source,
+      funding = _ref11.funding,
+      i = _ref11.i,
+      env = _ref11.env,
+      cards = _ref11.cards,
+      installmentperiod = _ref11.installmentperiod,
+      checkoutCustomization = _ref11.checkoutCustomization;
   var logoColor = getButtonConfig(label, 'logoColors')[color];
   var buttonLabel = determineLabel({
     label: label,
@@ -34108,8 +34105,9 @@ function renderButton(_ref12) {
   // the label template, otherwise use the logo template.
 
   var contentText;
-  var impression;
-  var morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+  var impression; // suppressing consumption of mors text
+
+  var morsText; // checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
 
   if (buttonLabel === label) {
     // checks for button label: pay, buynow, checkout, paypal, installment
@@ -34129,12 +34127,7 @@ function renderButton(_ref12) {
     locale: locale
   };
   contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
-  contentText =  true && buttonLabel === label && allowedPersonalizationLabels.indexOf(label) !== -1 ? renderPPPayPalLoadingDots({
-    color: color,
-    logoColor: logoColor,
-    branding: branding,
-    label: label
-  }) : renderContent(contentText, {
+  contentText = renderContent(contentText, {
     label: label,
     locale: locale,
     color: color,
@@ -34149,7 +34142,7 @@ function renderButton(_ref12) {
   }); // Define a list of funding options that will not need a tabindex
 
   var hasTabIndex = [src_constants["v" /* FUNDING */].CARD].indexOf(source) === -1;
-  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref13 = {}, _ref13[src_constants["c" /* ATTRIBUTE */].LAYOUT] = layout ? layout : '', _ref13), (_ref14 = {}, _ref14[src_constants["c" /* ATTRIBUTE */].SIZE] = size ? size : '', _ref14), (_ref15 = {}, _ref15[src_constants["c" /* ATTRIBUTE */].FUNDING_SOURCE] = source, _ref15[src_constants["c" /* ATTRIBUTE */].BUTTON] = true, _ref15), {
+  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref12 = {}, _ref12[src_constants["c" /* ATTRIBUTE */].LAYOUT] = layout ? layout : '', _ref12), (_ref13 = {}, _ref13[src_constants["c" /* ATTRIBUTE */].SIZE] = size ? size : '', _ref13), (_ref14 = {}, _ref14[src_constants["c" /* ATTRIBUTE */].FUNDING_SOURCE] = source, _ref14[src_constants["c" /* ATTRIBUTE */].BUTTON] = true, _ref14), {
     class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -34167,23 +34160,23 @@ function renderButton(_ref12) {
   }), contentText, impression && Beacon(impression));
 }
 
-function renderTagline(_ref16) {
-  var label = _ref16.label,
-      tagline = _ref16.tagline,
-      color = _ref16.color,
-      locale = _ref16.locale,
-      multiple = _ref16.multiple,
-      env = _ref16.env,
-      cards = _ref16.cards,
-      checkoutCustomization = _ref16.checkoutCustomization,
-      layout = _ref16.layout;
+function renderTagline(_ref15) {
+  var label = _ref15.label,
+      tagline = _ref15.tagline,
+      color = _ref15.color,
+      locale = _ref15.locale,
+      multiple = _ref15.multiple,
+      env = _ref15.env,
+      cards = _ref15.cards,
+      checkoutCustomization = _ref15.checkoutCustomization,
+      layout = _ref15.layout;
 
   if (!tagline) {
     return;
   }
 
   if ( true && layout !== src_constants["g" /* BUTTON_LAYOUT */].VERTICAL) {
-    return LoadingDots(componentTemplate_delay);
+    return; // return LoadingDots(delay);
   }
 
   var tag = multiple ? getButtonConfig(label, 'dualTag') || getButtonConfig(label, 'tag') : getButtonConfig(label, 'tag');
@@ -34213,9 +34206,9 @@ function renderScript() {
   });
 }
 
-function renderStyle(_ref17) {
-  var height = _ref17.height,
-      cardNumber = _ref17.cardNumber;
+function renderStyle(_ref16) {
+  var height = _ref16.height,
+      cardNumber = _ref16.cardNumber;
   return jsxToHTML("style", {
     innerHTML: componentStyle({
       height: height,
@@ -34251,10 +34244,10 @@ function renderPowerByPaypalLogo(props) {
   })));
 }
 
-function componentTemplate_componentTemplate(_ref18) {
-  var _ref19;
+function componentTemplate_componentTemplate(_ref17) {
+  var _ref18;
 
-  var props = _ref18.props;
+  var props = _ref17.props;
 
   if (props && props.style) {
     var style = props.style;
@@ -34341,7 +34334,7 @@ function componentTemplate_componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(props_normalizeProps(props)) : null;
-  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref19 = {}, _ref19[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.304", _ref19), {
+  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref18 = {}, _ref18[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.305", _ref18), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -35224,7 +35217,11 @@ var component_Button = interface_create({
 
           smartThrottle.log('click', (_smartThrottle$log = {}, _smartThrottle$log[src_constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$log));
           Object(beaver_logger_client["k" /* info */])('button_click');
-          Object(beaver_logger_client["k" /* info */])("pay_flow_" + (data && data.flow));
+
+          if (data && data.flow) {
+            Object(beaver_logger_client["k" /* info */])("pay_flow_" + data.flow);
+          }
+
           Object(beaver_logger_client["o" /* track */])((_track8 = {}, _track8[src_constants["u" /* FPTI */].KEY.STATE] = src_constants["u" /* FPTI */].STATE.BUTTON, _track8[src_constants["u" /* FPTI */].KEY.TRANSITION] = src_constants["u" /* FPTI */].TRANSITION.BUTTON_CLICK, _track8[src_constants["u" /* FPTI */].KEY.BUTTON_TYPE] = src_constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track8[src_constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track8[src_constants["u" /* FPTI */].KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), _track8[src_constants["u" /* FPTI */].KEY.PAYMENT_FLOW] = data && data.flow, _track8));
 
           if (Object(device["e" /* isIEIntranet */])()) {
@@ -36091,7 +36088,7 @@ var interface_postRobot = src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.304";
+var interface_version = "4.0.305";
 var interface_checkout;
 var apps;
 

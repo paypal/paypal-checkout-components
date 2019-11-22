@@ -8211,7 +8211,7 @@ var PAYPAL_LOGO_COLORS = (_PAYPAL_LOGO_COLORS = {}, _PAYPAL_LOGO_COLORS[BUTTON_L
   primary: '#333030',
   secondary: '#636363'
 }, _PAYPAL_LOGO_COLORS);
-function paypal_paypalLogo(_ref) {
+function paypalLogo(_ref) {
   var logoColor = _ref.logoColor;
 
   if (!PAYPAL_LOGO_COLORS[logoColor]) {
@@ -8369,7 +8369,7 @@ var _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ITAU, _BUTTON_LOGO$ELV, _f
 
 
 
-var fundingLogos = (_fundingLogos = {}, _fundingLogos[BUTTON_LOGO.PP] = (_BUTTON_LOGO$PP = {}, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.WHITE] = pp_white_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLACK] = pp_black_default.a, _BUTTON_LOGO$PP), _fundingLogos[BUTTON_LOGO.PAYPAL] = paypal_paypalLogo, _fundingLogos[BUTTON_LOGO.CREDIT] = creditLogo, _fundingLogos[BUTTON_LOGO.VENMO] = (_BUTTON_LOGO$VENMO = {}, _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.WHITE] = venmo_white_default.a, _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), _fundingLogos[BUTTON_LOGO.ITAU] = (_BUTTON_LOGO$ITAU = {}, _BUTTON_LOGO$ITAU[BUTTON_LOGO_COLOR.WHITE] = itau_default.a, _BUTTON_LOGO$ITAU), _fundingLogos[BUTTON_LOGO.IDEAL] = idealLogo, _fundingLogos[BUTTON_LOGO.ELV] = (_BUTTON_LOGO$ELV = {}, _BUTTON_LOGO$ELV[BUTTON_LOGO_COLOR.ANY] = elv_default.a, _BUTTON_LOGO$ELV[BUTTON_LOGO_COLOR.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[BUTTON_LOGO.BANCONTACT] = bancontactLogo, _fundingLogos[BUTTON_LOGO.GIROPAY] = giropayLogo, _fundingLogos[BUTTON_LOGO.SOFORT] = sofortLogo, _fundingLogos[BUTTON_LOGO.EPS] = epsLogo, _fundingLogos[BUTTON_LOGO.MYBANK] = mybankLogo, _fundingLogos[BUTTON_LOGO.P24] = p24Logo, _fundingLogos[BUTTON_LOGO.PAYU] = payuLogo, _fundingLogos[BUTTON_LOGO.VERKKOPANKKI] = verkkopankkiLogo, _fundingLogos[BUTTON_LOGO.BLIK] = blikLogo, _fundingLogos[BUTTON_LOGO.TRUSTLY] = trustlyLogo, _fundingLogos[BUTTON_LOGO.MAXIMA] = maximaLogo, _fundingLogos[BUTTON_LOGO.BOLETO] = boletoLogo, _fundingLogos[BUTTON_LOGO.OXXO] = oxxoLogo, _fundingLogos);
+var fundingLogos = (_fundingLogos = {}, _fundingLogos[BUTTON_LOGO.PP] = (_BUTTON_LOGO$PP = {}, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.WHITE] = pp_white_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLACK] = pp_black_default.a, _BUTTON_LOGO$PP), _fundingLogos[BUTTON_LOGO.PAYPAL] = paypalLogo, _fundingLogos[BUTTON_LOGO.CREDIT] = creditLogo, _fundingLogos[BUTTON_LOGO.VENMO] = (_BUTTON_LOGO$VENMO = {}, _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.WHITE] = venmo_white_default.a, _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), _fundingLogos[BUTTON_LOGO.ITAU] = (_BUTTON_LOGO$ITAU = {}, _BUTTON_LOGO$ITAU[BUTTON_LOGO_COLOR.WHITE] = itau_default.a, _BUTTON_LOGO$ITAU), _fundingLogos[BUTTON_LOGO.IDEAL] = idealLogo, _fundingLogos[BUTTON_LOGO.ELV] = (_BUTTON_LOGO$ELV = {}, _BUTTON_LOGO$ELV[BUTTON_LOGO_COLOR.ANY] = elv_default.a, _BUTTON_LOGO$ELV[BUTTON_LOGO_COLOR.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[BUTTON_LOGO.BANCONTACT] = bancontactLogo, _fundingLogos[BUTTON_LOGO.GIROPAY] = giropayLogo, _fundingLogos[BUTTON_LOGO.SOFORT] = sofortLogo, _fundingLogos[BUTTON_LOGO.EPS] = epsLogo, _fundingLogos[BUTTON_LOGO.MYBANK] = mybankLogo, _fundingLogos[BUTTON_LOGO.P24] = p24Logo, _fundingLogos[BUTTON_LOGO.PAYU] = payuLogo, _fundingLogos[BUTTON_LOGO.VERKKOPANKKI] = verkkopankkiLogo, _fundingLogos[BUTTON_LOGO.BLIK] = blikLogo, _fundingLogos[BUTTON_LOGO.TRUSTLY] = trustlyLogo, _fundingLogos[BUTTON_LOGO.MAXIMA] = maximaLogo, _fundingLogos[BUTTON_LOGO.BOLETO] = boletoLogo, _fundingLogos[BUTTON_LOGO.OXXO] = oxxoLogo, _fundingLogos);
 // EXTERNAL MODULE: ./src/resources/cardLogos/visa.svg
 var visa = __webpack_require__(8);
 var visa_default = /*#__PURE__*/__webpack_require__.n(visa);
@@ -14748,8 +14748,7 @@ var componentContent = {
 
 
 
-var allowedPersonalizationLabels = [BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY];
-var componentTemplate_delay = 0.2;
+var allowedPersonalizationLabels = [BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY]; // const delay = 0.2;
 
 function getCommonButtonClasses(_ref) {
   var layout = _ref.layout,
@@ -14851,70 +14850,68 @@ function renderFundingIcons(_ref9) {
     size: size,
     layout: layout
   }));
-} // this function performs the first button render for eligible population
-
-
-function renderPPPayPalLoadingDots(_ref10) {
-  var color = _ref10.color,
-      logoColor = _ref10.logoColor,
-      branding = _ref10.branding,
-      label = _ref10.label;
-
-  if (!logoColor) {
-    throw new Error("Can not determine logo without logo color");
-  }
-
-  if (!color) {
-    throw new Error("Can not determine button without color");
-  }
-
-  var loadingDotsElement = jsxToHTML("span", {
-    class: "" + CLASS.TEXT
-  }, LoadingDots(componentTemplate_delay)); // this is specifically for the buynow button when the style.branding = false
-
-  if (!branding && label === BUTTON_LABEL.BUYNOW) {
-    return new jsx_JsxHTMLNodeContainer([loadingDotsElement]);
-  }
-
-  var ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
-  var ppLogo = typeof ppFundingLogo === 'function' ? ppFundingLogo({
-    logoColor: logoColor
-  }) : ppFundingLogo[logoColor];
-  var paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
-  var paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({
-    logoColor: logoColor
-  }) : paypalFundingLogo[logoColor];
-  var nodes = [];
-  nodes[0] = jsxToHTML("img", {
-    class: CLASS.LOGO + " " + CLASS.LOGO + "-" + BUTTON_LOGO.PP + " " + CLASS.LOGO + "-" + color,
-    src: "data:image/svg+xml;base64," + base64encode(ppLogo.toString()),
-    alt: BUTTON_LOGO.PP
-  }); // for an intentional white space
-
-  nodes[1] = ' ';
-  nodes[2] = jsxToHTML("img", {
-    class: CLASS.LOGO + " " + CLASS.LOGO + "-" + BUTTON_LOGO.PAYPAL + " " + CLASS.LOGO + "-" + color,
-    src: "data:image/svg+xml;base64," + base64encode(paypalLogo.toString()),
-    alt: BUTTON_LOGO.PAYPAL
-  }); // for an intentional white space
-
-  nodes[3] = ' ';
-  nodes[4] = loadingDotsElement;
-  return new jsx_JsxHTMLNodeContainer(nodes);
 }
+/*
+// this function performs the first button render for eligible population
+function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : $Values<typeof BUTTON_LOGO_COLOR>, branding : boolean, label : string }) : JsxHTMLNode {
+    if (!logoColor) {
+        throw new Error(`Can not determine logo without logo color`);
+    }
+    if (!color) {
+        throw new Error(`Can not determine button without color`);
+    }
+    
+    const loadingDotsElement = (<span class={ `${ CLASS.TEXT }` }>{ LoadingDots(delay) }</span>);
+    
+    // this is specifically for the buynow button when the style.branding = false
+    if (!branding && label === BUTTON_LABEL.BUYNOW) {
+        return new JsxHTMLNodeContainer([ loadingDotsElement ]);
+    }
+    
+    const ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
+    const ppLogo =  typeof ppFundingLogo === 'function' ? ppFundingLogo({ logoColor }) : ppFundingLogo[logoColor];
+    const paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
+    const paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({ logoColor }) : paypalFundingLogo[logoColor];
+    const nodes = [];
+    nodes[0] = (
+        <img
+            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PP  } ${ CLASS.LOGO }-${ color }` }
+            src={ `data:image/svg+xml;base64,${ base64encode(ppLogo.toString()) }` }
+            alt={ BUTTON_LOGO.PP }
+        />);
+    
+    // for an intentional white space
+    nodes[1] = ' ';
+    
+    nodes[2] = (
+        <img
+            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } ${ CLASS.LOGO }-${ color }` }
+            src={ `data:image/svg+xml;base64,${ base64encode(paypalLogo.toString()) }` }
+            alt={ BUTTON_LOGO.PAYPAL }
+        />);
+    
+    // for an intentional white space
+    nodes[3] = ' ';
+    
+    nodes[4] = loadingDotsElement;
+    
+    return new JsxHTMLNodeContainer(nodes);
+}
+*/
 
-function renderContent(text, _ref11) {
-  var label = _ref11.label,
-      locale = _ref11.locale,
-      color = _ref11.color,
-      branding = _ref11.branding,
-      logoColor = _ref11.logoColor,
-      funding = _ref11.funding,
-      env = _ref11.env,
-      _cards = _ref11.cards,
-      dynamicContent = _ref11.dynamicContent,
-      layout = _ref11.layout,
-      size = _ref11.size;
+
+function renderContent(text, _ref10) {
+  var label = _ref10.label,
+      locale = _ref10.locale,
+      color = _ref10.color,
+      branding = _ref10.branding,
+      logoColor = _ref10.logoColor,
+      funding = _ref10.funding,
+      env = _ref10.env,
+      _cards = _ref10.cards,
+      dynamicContent = _ref10.dynamicContent,
+      layout = _ref10.layout,
+      size = _ref10.size;
 
   var _content = getLocaleContent(locale);
 
@@ -15009,24 +15006,24 @@ function renderContent(text, _ref11) {
   });
 }
 
-function renderButton(_ref12) {
-  var _ref13, _ref14, _ref15;
+function renderButton(_ref11) {
+  var _ref12, _ref13, _ref14;
 
-  var size = _ref12.size,
-      label = _ref12.label,
-      color = _ref12.color,
-      locale = _ref12.locale,
-      branding = _ref12.branding,
-      multiple = _ref12.multiple,
-      layout = _ref12.layout,
-      shape = _ref12.shape,
-      source = _ref12.source,
-      funding = _ref12.funding,
-      i = _ref12.i,
-      env = _ref12.env,
-      cards = _ref12.cards,
-      installmentperiod = _ref12.installmentperiod,
-      checkoutCustomization = _ref12.checkoutCustomization;
+  var size = _ref11.size,
+      label = _ref11.label,
+      color = _ref11.color,
+      locale = _ref11.locale,
+      branding = _ref11.branding,
+      multiple = _ref11.multiple,
+      layout = _ref11.layout,
+      shape = _ref11.shape,
+      source = _ref11.source,
+      funding = _ref11.funding,
+      i = _ref11.i,
+      env = _ref11.env,
+      cards = _ref11.cards,
+      installmentperiod = _ref11.installmentperiod,
+      checkoutCustomization = _ref11.checkoutCustomization;
   var logoColor = getButtonConfig(label, 'logoColors')[color];
   var buttonLabel = determineLabel({
     label: label,
@@ -15037,8 +15034,9 @@ function renderButton(_ref12) {
   // the label template, otherwise use the logo template.
 
   var contentText;
-  var impression;
-  var morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+  var impression; // suppressing consumption of mors text
+
+  var morsText; // checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
 
   if (buttonLabel === label) {
     // checks for button label: pay, buynow, checkout, paypal, installment
@@ -15058,7 +15056,7 @@ function renderButton(_ref12) {
     locale: locale
   };
   contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
-  contentText =  false ? undefined : renderContent(contentText, {
+  contentText = renderContent(contentText, {
     label: label,
     locale: locale,
     color: color,
@@ -15073,7 +15071,7 @@ function renderButton(_ref12) {
   }); // Define a list of funding options that will not need a tabindex
 
   var hasTabIndex = [FUNDING.CARD].indexOf(source) === -1;
-  return jsxToHTML("div", _extends({}, (_ref13 = {}, _ref13[ATTRIBUTE.LAYOUT] = layout ? layout : '', _ref13), (_ref14 = {}, _ref14[ATTRIBUTE.SIZE] = size ? size : '', _ref14), (_ref15 = {}, _ref15[ATTRIBUTE.FUNDING_SOURCE] = source, _ref15[ATTRIBUTE.BUTTON] = true, _ref15), {
+  return jsxToHTML("div", _extends({}, (_ref12 = {}, _ref12[ATTRIBUTE.LAYOUT] = layout ? layout : '', _ref12), (_ref13 = {}, _ref13[ATTRIBUTE.SIZE] = size ? size : '', _ref13), (_ref14 = {}, _ref14[ATTRIBUTE.FUNDING_SOURCE] = source, _ref14[ATTRIBUTE.BUTTON] = true, _ref14), {
     class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -15091,16 +15089,16 @@ function renderButton(_ref12) {
   }), contentText, impression && Beacon(impression));
 }
 
-function renderTagline(_ref16) {
-  var label = _ref16.label,
-      tagline = _ref16.tagline,
-      color = _ref16.color,
-      locale = _ref16.locale,
-      multiple = _ref16.multiple,
-      env = _ref16.env,
-      cards = _ref16.cards,
-      checkoutCustomization = _ref16.checkoutCustomization,
-      layout = _ref16.layout;
+function renderTagline(_ref15) {
+  var label = _ref15.label,
+      tagline = _ref15.tagline,
+      color = _ref15.color,
+      locale = _ref15.locale,
+      multiple = _ref15.multiple,
+      env = _ref15.env,
+      cards = _ref15.cards,
+      checkoutCustomization = _ref15.checkoutCustomization,
+      layout = _ref15.layout;
 
   if (!tagline) {
     return;
@@ -15135,9 +15133,9 @@ function renderScript() {
   });
 }
 
-function renderStyle(_ref17) {
-  var height = _ref17.height,
-      cardNumber = _ref17.cardNumber;
+function renderStyle(_ref16) {
+  var height = _ref16.height,
+      cardNumber = _ref16.cardNumber;
   return jsxToHTML("style", {
     innerHTML: componentStyle({
       height: height,
@@ -15173,10 +15171,10 @@ function renderPowerByPaypalLogo(props) {
   })));
 }
 
-function componentTemplate(_ref18) {
-  var _ref19;
+function componentTemplate(_ref17) {
+  var _ref18;
 
-  var props = _ref18.props;
+  var props = _ref17.props;
 
   if (props && props.style) {
     var style = props.style;
@@ -15263,7 +15261,7 @@ function componentTemplate(_ref18) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[ATTRIBUTE.VERSION] = "4.0.304", _ref19), {
+  return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.305", _ref18), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
