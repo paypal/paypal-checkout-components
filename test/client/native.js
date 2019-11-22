@@ -188,7 +188,11 @@ describe('native cases', () => {
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
+                return ZalgoPromise.delay(50).then(() => {
+
+                    ZalgoPromise.delay(50)
+                        .then(onApprove);
+
                     return orderID;
                 });
             }));
@@ -240,25 +244,9 @@ describe('native cases', () => {
                     closed: false
                 };
 
-                win.addEventListener = expect('winAddEventListener1', (name, handler) => {
-                    if (name !== 'unload') {
-                        throw new Error(`Unexpected window event listener for ${ name }`);
-                    }
-
-                    win.addEventListener = expect('winAddEventListener2', (name2, handler2) => {
-                        if (name2 !== 'unload') {
-                            throw new Error(`Unexpected window event listener for ${ name2 }`);
-                        }
-
-                        win.closed = true;
-                        handler2();
-
-                        ZalgoPromise.delay(50)
-                            .then(onApprove);
-                    });
-
-                    handler();
-                });
+                setTimeout(() => {
+                    win.closed = true;
+                }, 10);
 
                 win.parent = win.top = win;
                 return win;

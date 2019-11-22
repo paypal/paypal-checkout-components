@@ -3,7 +3,7 @@
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, PopupOpenError, isIos, isAndroid, isSafari, isChrome } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
-import { type CrossDomainWindowType, getDomain, isWindowClosed, isBlankDomain } from 'cross-domain-utils/src';
+import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI } from '../config';
@@ -173,15 +173,6 @@ type AppSwitchPopup = {|
     close : () => void
 |};
 
-function onWindowUnload(win : CrossDomainWindowType, handler : () => void) {
-    try {
-        // $FlowFixMe
-        win.addEventListener('unload', () => handler());
-    } catch (err) {
-        // pass
-    }
-}
-
 function appSwitchPopup(url : string) : AppSwitchPopup {
 
     let win;
@@ -196,16 +187,6 @@ function appSwitchPopup(url : string) : AppSwitchPopup {
             throw err;
         }
     }
-    
-    if (isAndroid() && isChrome() && win) {
-        onWindowUnload(win, () => {
-            onWindowUnload(win, () => {
-                if (isWindowClosed(win)) {
-                    appSwitched = true;
-                }
-            });
-        });
-    }
 
     const getWindow = () => win;
     const didSwitch = () => {
@@ -213,7 +194,7 @@ function appSwitchPopup(url : string) : AppSwitchPopup {
             return true;
         }
 
-        if (win && isBlankDomain(win)) {
+        if (isAndroid() && isChrome() && win && isWindowClosed(win)) {
             return true;
         }
 
