@@ -290,9 +290,9 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
                 delete vendorsQuery[card].eligible;
             }
 
-            if (isDefined(basicCardEligibility[card].vaultable)) {
-                delete vendorsQuery[card].vaultable;
-            }
+            // if (isDefined(basicCardEligibility[card].vaultable)) {
+            //    delete vendorsQuery[card].vaultable;
+            // }
 
             if (!Object.keys(vendorsQuery[card]).length) {
                 delete vendorsQuery[card];
@@ -314,9 +314,9 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
                 delete fundingQuery[fundingSource].eligible;
             }
 
-            if (isDefined(basicFundingEligibility[fundingSource].vaultable)) {
-                delete fundingQuery[fundingSource].vaultable;
-            }
+            // if (isDefined(basicFundingEligibility[fundingSource].vaultable)) {
+            //    delete fundingQuery[fundingSource].vaultable;
+            // }
 
             if (isDefined(basicFundingEligibility[fundingSource].branded)) {
                 delete fundingQuery[fundingSource].branded;
