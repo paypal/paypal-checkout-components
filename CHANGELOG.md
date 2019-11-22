@@ -1,3 +1,9 @@
+## <small>5.0.67 (2019-11-22)</small>
+
+* Allow SPB server to re-fetch vaultable flag ([9fa3b9e](http://github.paypal.com/paypal/paypal-checkout/commit/9fa3b9e))
+
+
+
 ## <small>5.0.66 (2019-11-21)</small>
 
 * Do not add sdkMeta to credit url with sdkMeta already set ([e5f2599](http://github.paypal.com/paypal/paypal-checkout/commit/e5f2599))
