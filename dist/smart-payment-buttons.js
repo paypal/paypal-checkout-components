@@ -350,7 +350,7 @@ function () {
     for (var i = 0; i < keys.length; i++) {
       var value = keys[i];
 
-      if (Object(cross_domain_utils_src["f" /* isWindow */])(value) && Object(cross_domain_utils_src["g" /* isWindowClosed */])(value)) {
+      if (Object(cross_domain_utils_src["e" /* isWindow */])(value) && Object(cross_domain_utils_src["f" /* isWindowClosed */])(value)) {
         if (weakmap) {
           try {
             weakmap.delete(value);
@@ -366,7 +366,7 @@ function () {
   };
 
   _proto.isSafeToReadWrite = function isSafeToReadWrite(key) {
-    if (Object(cross_domain_utils_src["f" /* isWindow */])(key)) {
+    if (Object(cross_domain_utils_src["e" /* isWindow */])(key)) {
       return false;
     }
 
@@ -2016,7 +2016,7 @@ function popup(url, options) {
     throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
   }
 
-  if (Object(cross_domain_utils_src["g" /* isWindowClosed */])(win)) {
+  if (Object(cross_domain_utils_src["f" /* isWindowClosed */])(win)) {
     var err = new PopupOpenError("Can not open popup window - blocked");
     throw err;
   }
@@ -2084,7 +2084,7 @@ function awaitFrameLoad(frame) {
 
   var promise = new src["a" /* ZalgoPromise */](function (resolve, reject) {
     frame.addEventListener('load', function () {
-      Object(cross_domain_utils_src["h" /* linkFrameWindow */])(frame);
+      Object(cross_domain_utils_src["g" /* linkFrameWindow */])(frame);
       resolve(frame);
     });
     frame.addEventListener('error', function (err) {
@@ -7223,7 +7223,7 @@ var TYPES = true;
 /* unused concated harmony import canReadFromWindow */
 /* unused concated harmony import getActualDomain */
 /* concated harmony reexport getDomain */__webpack_require__.d(__webpack_exports__, "b", function() { return getDomain; });
-/* concated harmony reexport isBlankDomain */__webpack_require__.d(__webpack_exports__, "e", function() { return isBlankDomain; });
+/* unused concated harmony import isBlankDomain */
 /* unused concated harmony import isActuallySameDomain */
 /* unused concated harmony import isSameDomain */
 /* concated harmony reexport assertSameDomain */__webpack_require__.d(__webpack_exports__, "a", function() { return assertSameDomain; });
@@ -7238,8 +7238,8 @@ var TYPES = true;
 /* unused concated harmony import getAllWindows */
 /* unused concated harmony import isTop */
 /* unused concated harmony import isFrameWindowClosed */
-/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "g", function() { return isWindowClosed; });
-/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "h", function() { return linkFrameWindow; });
+/* concated harmony reexport isWindowClosed */__webpack_require__.d(__webpack_exports__, "f", function() { return isWindowClosed; });
+/* concated harmony reexport linkFrameWindow */__webpack_require__.d(__webpack_exports__, "g", function() { return linkFrameWindow; });
 /* unused concated harmony import getUserAgent */
 /* unused concated harmony import getFrameByName */
 /* unused concated harmony import findChildFrameByName */
@@ -7260,7 +7260,7 @@ var TYPES = true;
 /* unused concated harmony import stringifyDomainPattern */
 /* unused concated harmony import getDomainFromUrl */
 /* unused concated harmony import onCloseWindow */
-/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "f", function() { return isWindow; });
+/* concated harmony reexport isWindow */__webpack_require__.d(__webpack_exports__, "e", function() { return isWindow; });
 /* unused concated harmony import isBrowser */
 /* unused concated harmony import isCurrentDomain */
 /* unused concated harmony import isMockDomain */
@@ -10202,16 +10202,6 @@ function setupNative(_ref5) {
   });
 }
 
-function onWindowUnload(win, handler) {
-  try {
-    // $FlowFixMe
-    win.addEventListener('unload', function () {
-      return handler();
-    });
-  } catch (err) {// pass
-  }
-}
-
 function appSwitchPopup(url) {
   var win;
   var appSwitched = false;
@@ -10226,16 +10216,6 @@ function appSwitchPopup(url) {
     }
   }
 
-  if (Object(src["j" /* isAndroid */])() && Object(src["l" /* isChrome */])() && win) {
-    onWindowUnload(win, function () {
-      onWindowUnload(win, function () {
-        if (Object(cross_domain_utils_src["g" /* isWindowClosed */])(win)) {
-          appSwitched = true;
-        }
-      });
-    });
-  }
-
   var getWindow = function getWindow() {
     return win;
   };
@@ -10245,7 +10225,7 @@ function appSwitchPopup(url) {
       return true;
     }
 
-    if (win && Object(cross_domain_utils_src["e" /* isBlankDomain */])(win)) {
+    if (Object(src["j" /* isAndroid */])() && Object(src["l" /* isChrome */])() && win && Object(cross_domain_utils_src["f" /* isWindowClosed */])(win)) {
       return true;
     }
 
