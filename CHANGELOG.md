@@ -1,3 +1,9 @@
+## <small>5.0.68 (2019-11-22)</small>
+
+* Manually insert spaces in credit logo to allow size calculation ([182c009](http://github.paypal.com/paypal/paypal-checkout/commit/182c009))
+
+
+
 ## <small>5.0.67 (2019-11-22)</small>
 
 * Allow SPB server to re-fetch vaultable flag ([9fa3b9e](http://github.paypal.com/paypal/paypal-checkout/commit/9fa3b9e))
