@@ -7,6 +7,7 @@ import { CreditLogo, PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/sr
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
+import { Space } from '../../ui';
 
 export function getCreditConfig() : FundingSourceConfig {
     return {
@@ -24,7 +25,11 @@ export function getCreditConfig() : FundingSourceConfig {
     
             return (
                 <Fragment>
-                    <PPLogo logoColor={ logoColor } /> <PayPalLogo optional logoColor={ logoColor } /> <CreditLogo logoColor={ logoColor } locale={ locale } />
+                    <PPLogo logoColor={ logoColor } />
+                    <Space />
+                    <PayPalLogo optional logoColor={ logoColor } />
+                    <Space />
+                    <CreditLogo logoColor={ logoColor } locale={ locale } />
                 </Fragment>
             );
         },
