@@ -189,7 +189,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
             throw new Error(`No data passed from socket message`);
         }
     
-        const {
+        let {
             session_uid:    messageSessionUID,
             request_uid:    requestUID,
             message_uid:    messageUID,
@@ -200,12 +200,14 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
             target_app:     messageTargetApp
         } = parsedData;
 
-        if (!messageUID || !requestUID || !messageName || !messageType || !messageTargetApp) {
-            throw new Error(`Incomplete message: ${ rawData }`);
+        requestUID = requestUID || parsedData.request_id;
+
+        if (messageUID && receivedMessages[messageUID]) {
+            return;
         }
 
-        if (receivedMessages[messageUID]) {
-            return;
+        if (!messageUID || !requestUID || !messageName || !messageType || !messageTargetApp) {
+            throw new Error(`Incomplete message: ${ rawData }`);
         }
 
         receivedMessages[messageUID] = true;
