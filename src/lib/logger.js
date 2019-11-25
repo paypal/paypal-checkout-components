@@ -45,6 +45,7 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
         const { lang, country } = locale;
 
         return {
+            [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
             [FPTI_KEY.CONTEXT_TYPE]:           FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
             [FPTI_KEY.CONTEXT_ID]:             buttonSessionID,
             [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
@@ -52,6 +53,7 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
             [FPTI_KEY.DATA_SOURCE]:            FPTI_DATA_SOURCE.PAYMENTS_SDK,
             [FPTI_KEY.CLIENT_ID]:              clientID,
             [FPTI_KEY.SELLER_ID]:              merchantID[0],
+            [FPTI_KEY.BUTTON_SESSION_UID]:     buttonSessionID,
             [FPTI_KEY.SESSION_UID]:            sessionID,
             [FPTI_KEY.REFERER]:                window.location.host,
             [FPTI_KEY.MERCHANT_DOMAIN]:        merchantDomain,

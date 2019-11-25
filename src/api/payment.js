@@ -5,7 +5,7 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { SMART_API_URI, PAYMENTS_API_URL } from '../config';
 import { getLogger } from '../lib';
-import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS } from '../constants';
+import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS } from '../constants';
 
 import { callSmartAPI, callRestAPI } from './api';
 
@@ -48,7 +48,6 @@ export function createPayment(payment : PaymentCreateRequest, { facilitatorAcces
         }
 
         getLogger().track({
-            [FPTI_KEY.STATE]:        FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CREATE_PAYMENT,
             [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.PAYMENT_ID,
             [FPTI_KEY.TOKEN]:        paymentID,

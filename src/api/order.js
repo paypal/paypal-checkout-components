@@ -6,7 +6,7 @@ import { request, noop } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
-import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS } from '../constants';
+import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS } from '../constants';
 
 import { callSmartAPI, callGraphQL, callRestAPI } from './api';
 
@@ -55,7 +55,6 @@ export function createOrderID(order : OrderCreateRequest, { facilitatorAccessTok
         }
 
         getLogger().track({
-            [FPTI_KEY.STATE]:        FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CREATE_ORDER,
             [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
             [FPTI_KEY.TOKEN]:        orderID,

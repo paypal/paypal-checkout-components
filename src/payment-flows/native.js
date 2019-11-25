@@ -1,15 +1,15 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, PopupOpenError, isIos, isAndroid, isSafari, isChrome } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, PopupOpenError, isIos, isAndroid, isSafari, isChrome, stringifyErrorMessage } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { PLATFORM, FUNDING, ENV } from '@paypal/sdk-constants/src';
+import { PLATFORM, FUNDING, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { promiseNoop, getLogger } from '../lib';
-import { USER_ACTION } from '../constants';
+import { USER_ACTION, FPTI_TRANSITION } from '../constants';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 import { checkout } from './checkout';
@@ -358,14 +358,31 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const start = memoize(() => {
         return createOrder().then(() => {
             if (appSwitch.didSwitch()) {
-                getLogger().info(`native_app_switch`).flush();
+                getLogger().info(`native_detect_app_switch`).track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
+                }).flush();
+
                 instance = connectNative();
-                return instance.setProps();
+                return instance.setProps().then(() => {
+                    getLogger().info(`native_app_switch_ack`).track({
+                        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK
+                    }).flush();
+                });
+
             } else {
-                getLogger().info(`native_app_web_fallback`).flush();
+                getLogger().info(`native_detect_no_app_switch`).track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_NO_APP_SWITCH
+                }).flush();
+
                 return fallbackToWebCheckout({ win: appSwitch.getWindow() });
             }
         }).catch(err => {
+            getLogger().info(`native_error`, { err: stringifyError(err) }).track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ERROR,
+                [FPTI_KEY.ERROR_CODE]: 'native_error',
+                [FPTI_KEY.ERROR_DESC]: stringifyErrorMessage(err)
+            }).flush();
+
             close();
             throw err;
         });

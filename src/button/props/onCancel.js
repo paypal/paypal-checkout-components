@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { getLogger } from '../../lib';
-import { FPTI_STATE, FPTI_TRANSITION } from '../../constants';
+import { FPTI_TRANSITION } from '../../constants';
 
 import type { CreateOrder } from './createOrder';
 import type { XProps } from './types';
@@ -51,16 +51,14 @@ export function buildXOnCancelActions() : XOnCancelActionsType {
 export type OnCancel = () => ZalgoPromise<void>;
 
 export function getOnCancel(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : OnCancel {
-    const { onCancel = noop, onError, buttonSessionID } = xprops;
+    const { onCancel = noop, onError } = xprops;
 
     return memoize(() => {
         return createOrder().then(orderID => {
             getLogger()
                 .info('button_cancel')
                 .track({
-                    [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_CANCEL,
-                    [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_CANCEL
                 }).flush();
 
             return onCancel(buildXOnCancelData({ orderID }), buildXOnCancelActions());

@@ -74,12 +74,19 @@ export const FPTI_STATE = {
 export const FPTI_TRANSITION = {
     BUTTON_LOAD:              ('process_button_load' : 'process_button_load'),
     BUTTON_CLICK:             ('process_button_click' : 'process_button_click'),
+
     CREATE_ORDER:             ('process_create_order' : 'process_create_order'),
     RECEIVE_ORDER:            ('process_receive_order' : 'process_receive_order'),
     CREATE_PAYMENT:           ('process_create_payment' : 'process_create_payment'),
+
     CHECKOUT_SHIPPING_CHANGE: ('process_checkout_shipping_change' : 'process_checkout_shipping_change'),
     CHECKOUT_AUTHORIZE:       ('process_checkout_authorize' : 'process_checkout_authorize'),
-    CHECKOUT_CANCEL:          ('process_checkout_cancel' : 'process_checkout_cancel')
+    CHECKOUT_CANCEL:          ('process_checkout_cancel' : 'process_checkout_cancel'),
+
+    NATIVE_DETECT_APP_SWITCH:    ('native_detect_app_switch' : 'native_detect_app_switch'),
+    NATIVE_DETECT_NO_APP_SWITCH: ('native_detect_no_app_switch' : 'native_detect_no_app_switch'),
+    NATIVE_APP_SWITCH_ACK:       ('native_app_switch_ack' : 'native_app_switch_ack'),
+    NATIVE_ERROR:                ('native_app_switch_ack' : 'native_app_switch_ack')
 };
 
 export const FPTI_BUTTON_TYPE = {

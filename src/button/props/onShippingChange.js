@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { patchOrder, type OrderResponse } from '../../api';
-import { FPTI_STATE, FPTI_TRANSITION } from '../../constants';
+import { FPTI_TRANSITION } from '../../constants';
 import { getLogger } from '../../lib';
 
 import type { CreateOrder } from './createOrder';
@@ -59,7 +59,7 @@ export function buildXShippingChangeActions({ orderID, actions, facilitatorAcces
 export type OnShippingChange = (OnShippingChangeData, OnShippingChangeActionsType) => ZalgoPromise<void>;
 
 export function getOnShippingChange(xprops : XProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : ?OnShippingChange {
-    const { onShippingChange, buttonSessionID, partnerAttributionID } = xprops;
+    const { onShippingChange, partnerAttributionID } = xprops;
 
     if (onShippingChange) {
         return ({ buyerAccessToken, ...data }, actions) => {
@@ -67,9 +67,7 @@ export function getOnShippingChange(xprops : XProps, { facilitatorAccessToken, c
                 getLogger()
                     .info('button_shipping_change')
                     .track({
-                        [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-                        [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE,
-                        [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+                        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE
                     }).flush();
 
                 return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, facilitatorAccessToken, buyerAccessToken, actions, partnerAttributionID }));

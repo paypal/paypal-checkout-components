@@ -6,7 +6,7 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { checkout, cardFields, native, vaultCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
 import { sendBeacon, getLogger, promiseNoop } from '../lib';
-import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
+import { FPTI_TRANSITION } from '../constants';
 
 import { type Props, type Config, type ServiceData, type Components } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
@@ -60,7 +60,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
     return ZalgoPromise.try(() => {
         const { personalization, merchantID } = serviceData;
-        let { clientID, onClick, createOrder, buttonSessionID } = props;
+        let { clientID, onClick, createOrder } = props;
 
         createOrder = decorateCreateOrder(createOrder);
 
@@ -72,11 +72,9 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
         const clickPromise = click();
 
         getLogger().info(`button_click`).info(`pay_flow_${ name }`).track({
-            [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-            [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
-            [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-            [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource,
-            [FPTI_KEY.PAYMENT_FLOW]:       name
+            [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.BUTTON_CLICK,
+            [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
+            [FPTI_KEY.PAYMENT_FLOW]:   name
         }).flush();
 
         return ZalgoPromise.hash({

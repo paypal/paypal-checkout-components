@@ -5,7 +5,7 @@ import { memoize, redirect as redir, noop } from 'belter/src';
 import { INTENT, SDK_QUERY_KEYS, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse, getPayment, executePayment, patchPayment } from '../../api';
-import { ORDER_API_ERROR, FPTI_STATE, FPTI_TRANSITION } from '../../constants';
+import { ORDER_API_ERROR, FPTI_TRANSITION } from '../../constants';
 import { unresolvedPromise, getLogger } from '../../lib';
 import { ENABLE_PAYMENT_API } from '../../config';
 
@@ -201,7 +201,7 @@ export type OnApproveActions = {|
 export type OnApprove = (OnApproveData, OnApproveActions) => ZalgoPromise<void>;
 
 export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : OnApprove {
-    const { onApprove, intent, buttonSessionID, partnerAttributionID, onError } = xprops;
+    const { onApprove, intent, partnerAttributionID, onError } = xprops;
 
     return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, isNativeTransaction = false }, { restart }) => {
         return createOrder().then(orderID => {
@@ -209,9 +209,7 @@ export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOr
             getLogger()
                 .info('button_authorize')
                 .track({
-                    [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_AUTHORIZE,
-                    [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_AUTHORIZE
                 }).flush();
 
             const data = { orderID, payerID, paymentID, billingToken, subscriptionID };
