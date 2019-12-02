@@ -321,6 +321,8 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
         }
     }
 
+    // debugger;
+
     return { label, layout, color, shape, tagline, height, period };
 }
 
