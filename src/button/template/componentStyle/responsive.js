@@ -14,6 +14,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
 
         const style = BUTTON_STYLE[size];
         const buttonHeight = height || style.defaultHeight;
+        const buttonTextMarginTop = style.buttonTextMargin;
         const minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
 
         return `
@@ -32,14 +33,19 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     max-height: ${ height || style.maxHeight }px;
                 }
 
-                .${ CLASS.BUTTON }.${ CLASS.BRANDING }-${ BUTTON_BRANDING.UNBRANDED } {
+                .${ CLASS.BUTTON }.${ CLASS.BRANDING }-${ BUTTON_BRANDING.UNBRANDED } .${ CLASS.BUTTON_LABEL } {
+                    height: 100%;
                     font-size: ${ max(perc(buttonHeight, 45), 10) }px;
                 }
 
-                .${ CLASS.LOGO } {
+                .${ CLASS.BUTTON } .${ CLASS.BUTTON_LABEL } {
                     height: ${ perc(buttonHeight, 35) + 5 }px;
                     max-height: ${ perc(buttonHeight, 60) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;
+                }
+                
+                .${ CLASS.BUTTON } .${ CLASS.BUTTON_LABEL } .${ CLASS.TEXT } {
+                    margin-top: ${ buttonTextMarginTop }px;
                 }
                 
                 .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LABEL.EPS },

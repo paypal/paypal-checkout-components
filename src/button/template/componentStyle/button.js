@@ -98,12 +98,10 @@ export const buttonStyle = `
 
     .${ CLASS.TEXT } {
         display: inline-block;
-        white-space: pre-wrap;
+        white-space: pre;
     }
 
-    .${ CLASS.BUTTON } .${ CLASS.LOGO },
-    .${ CLASS.BUTTON } .${ CLASS.TEXT } {
-        vertical-align: top;
+    .${ CLASS.BUTTON } .${ CLASS.BUTTON_LABEL } {
         position: relative;
         top: 50%;
         transform: translateY(-50%);
@@ -111,6 +109,11 @@ export const buttonStyle = `
         -moz-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
         -o-transform: translateY(-50%);
+    }
+    
+    .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } > * {
+        vertical-align: top;
+        height: 100%;
         text-align: left;
     }
 
@@ -118,19 +121,15 @@ export const buttonStyle = `
         border-radius: 4px;
     }
 
-    .${ CLASS.BUTTON } .${ CLASS.TEXT } {
-        visibility: hidden;
-    }
-
     .powered-by-paypal > .${ CLASS.TEXT } {
         vertical-align: top;
         line-height: 18px;
-    } 
+    }
 
     .powered-by-paypal > .${ CLASS.LOGO } {
         height: 16px;
         min-height: 16px;
-    } 
+    }
 
     .${ CLASS.TAGLINE } {
         max-width: 100%;
@@ -138,7 +137,6 @@ export const buttonStyle = `
         display: block;
         text-align: center;
         width: auto;
-        visibility: hidden;
     }
 
     .${ CLASS.SEPARATOR } {

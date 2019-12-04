@@ -4,90 +4,137 @@ export function getComponentScript() : () => void {
 
     /* istanbul ignore next */
     return () => {
-
-        const STYLE = {
-            BLOCK:        'block',
-            INLINE_BLOCK: 'inline-block',
-            NONE:         'none',
-            VISIBLE:      'visible',
-            HIDDEN:       'hidden'
+        const ATTRIBUTE = {
+            OPTIONAL: 'optional'
         };
-
+    
+        const CLASS = {
+            HIDDEN:    'hidden',
+            DOM_READY: 'dom-ready'
+        };
+    
+        const SELECTOR = {
+            ALL:      '*',
+            OPTIONAL: `[${ ATTRIBUTE.OPTIONAL }]`
+        };
+    
+        const TAG = {
+            STYLE: 'style'
+        };
+    
+        function once(handler : Function) : Function {
+            let called = false;
+            return (...args) => {
+                if (!called) {
+                    called = true;
+                    handler(...args);
+                }
+            };
+        }
+    
+        function debounce(handler : Function, time : number = 50) : Function {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    handler(...args);
+                }, time);
+            };
+        }
+    
+        // eslint-disable-next-line flowtype/no-mutable-array
+        function toArray<T>(item) : Array<T> {
+            return Array.prototype.slice.call(item);
+        }
+    
         function getElements(selector, parent) : $ReadOnlyArray<HTMLElement> {
             parent = parent || document;
-            return Array.prototype.slice.call(parent.querySelectorAll(selector));
+            return toArray(parent.querySelectorAll(selector)).filter(el => {
+                return el.tagName.toLowerCase() !== TAG.STYLE;
+            });
         }
-
-        function showElement(el : HTMLElement, displayType : string = STYLE.INLINE_BLOCK) {
-            el.style.display = displayType;
-        }
-
-        function hideElement(el : HTMLElement) {
-            el.style.display = STYLE.NONE;
-        }
-
-        function makeElementVisible(el : HTMLElement) {
-            el.style.visibility = STYLE.VISIBLE;
-        }
-
-        function makeElementInvisible(el : HTMLElement) {
-            el.style.visibility = STYLE.HIDDEN;
-        }
-
-        function isOverflowing(el : HTMLElement) : boolean {
-
-            if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
-                return true;
-            }
-
-            const parent = el.parentNode;
-
-            if (!parent) {
-                return false;
-            }
-
-            const e = el.getBoundingClientRect();
+    
+        function getParent(element : HTMLElement) : HTMLElement {
             // $FlowFixMe
-            const p = parent.getBoundingClientRect();
-
-            if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
-                return true;
-            }
-
-            if (e.left < 0 || e.top < 0 || (e.left + e.width) > window.innerWidth || (e.top + e.height) > window.innerHeight) {
-                return true;
-            }
-
-            return false;
+            return element.parentElement;
         }
-
-        const images    = getElements('.{ CLASS.BUTTON } .{ CLASS.LOGO }');
-        const text      = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
-        const tagline   = getElements('.{ CLASS.TAGLINE }');
-        const cards     = getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }');
-        const optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');
-
-        function toggleOptionals() {
-
-            if (tagline.some(isOverflowing)) {
-                tagline.forEach(makeElementInvisible);
-            } else {
-                tagline.forEach(makeElementVisible);
+    
+        function showElement(el : HTMLElement) {
+            el.classList.remove(CLASS.HIDDEN);
+        }
+    
+        function hideElement(el : HTMLElement) {
+            el.classList.add(CLASS.HIDDEN);
+        }
+    
+        function sum(arr : $ReadOnlyArray<number>) : number {
+            let result = 0;
+            for (const item of arr) {
+                result += item;
             }
-
-            cards.forEach(el => showElement(el));
-            cards.filter(isOverflowing).forEach(hideElement);
-
-            text.forEach(el => showElement(el));
-            optionals.forEach(el => showElement(el));
-
-            if (images.some(isOverflowing) || text.some(isOverflowing)) {
-                text.forEach(hideElement);
-                optionals.forEach(hideElement);
-                
-            } else {
-                text.forEach(makeElementVisible);
-                optionals.forEach(el => showElement(el));
+            return result;
+        }
+    
+        function unique<T>(arr : $ReadOnlyArray<T>) : $ReadOnlyArray<T> {
+            const result = [];
+        
+            for (const el of arr) {
+                if (result.indexOf(el) === -1) {
+                    result.push(el);
+                }
+            }
+        
+            return result;
+        }
+    
+        function getAllChildren(element : HTMLElement) : $ReadOnlyArray<HTMLElement> {
+            return getElements(SELECTOR.ALL, element);
+        }
+    
+        function getOptionalIndex(element : HTMLElement) : number {
+            return parseInt(element.getAttribute(ATTRIBUTE.OPTIONAL) || 0, 10);
+        }
+    
+        function getElementsTotalWidth(elements : $ReadOnlyArray<HTMLElement>) : number {
+            return sum(elements.map(child => child.offsetWidth));
+        }
+    
+        function getOptionalParents() : $ReadOnlyArray<HTMLElement> {
+            const optional = [ ...getElements(SELECTOR.OPTIONAL), ...getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }'), ...getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal') ];
+            return unique(optional.map(getParent).filter(Boolean));
+        }
+    
+        function getOptionalChildren(parent : HTMLElement) : $ReadOnlyArray<HTMLElement> {
+            return toArray(getElements(SELECTOR.OPTIONAL, parent)).sort((first, second) => {
+                return getOptionalIndex(first) - getOptionalIndex(second);
+            });
+        }
+        
+        const children = getOptionalParents().map(optionalParent => {
+            const allChildren = getAllChildren(optionalParent);
+            const optionalChildren = getOptionalChildren(optionalParent);
+        
+            return {
+                optionalParent,
+                allChildren,
+                optionalChildren
+            };
+        });
+        
+        function toggleOptionals() {
+            for (const { optionalParent, allChildren, optionalChildren } of children) {
+                const parentWidth = optionalParent.offsetWidth;
+                let usedWidth = getElementsTotalWidth(allChildren) - getElementsTotalWidth(optionalChildren);
+        
+                for (const optionalChild of optionalChildren) {
+                    usedWidth += optionalChild.offsetWidth;
+            
+                    if (usedWidth > parentWidth) {
+                        hideElement(optionalChild);
+                    } else {
+                        showElement(optionalChild);
+                    }
+                }
             }
         }
 
@@ -114,12 +161,24 @@ export function getComponentScript() : () => void {
             buttonsContainer.classList.add('{ CLASS.SHOULD_FOCUS }');
             window.addEventListener('keydown', handleFirstTab);
         }
+    
+        const setDomReady = once(debounce(() => {
+            window.addEventListener('resize', toggleOptionals);
+            if (document.body) {
+                document.body.classList.add(CLASS.DOM_READY);
+            }
+        }));
+    
+        const load = () => {
+            toggleOptionals();
+            setDomReady();
+        };
 
         toggleOptionals();
         setupTabOutlineEvent();
 
-        document.addEventListener('DOMContentLoaded', toggleOptionals);
-        window.addEventListener('load', toggleOptionals);
-        window.addEventListener('resize', toggleOptionals);
+        document.addEventListener('DOMContentLoaded', load);
+        window.addEventListener('load', load);
+        window.addEventListener('resize', load);
     };
 }

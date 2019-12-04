@@ -873,27 +873,29 @@ export const BUTTON_RELATIVE_STYLE = {
 export const BUTTON_STYLE = {
 
     [ BUTTON_SIZE.TINY ]: {
-        defaultWidth:    75,
-        defaultHeight:   25,
-        minWidth:        75,
-        maxWidth:        150,
-        minHeight:       25,
-        maxHeight:       30,
-        allowFunding:    true,
-        allowTagline:    false,
-        byPayPalHeight:  0
+        defaultWidth:     75,
+        defaultHeight:    25,
+        minWidth:         75,
+        maxWidth:         150,
+        minHeight:        25,
+        maxHeight:        30,
+        buttonTextMargin: 0.5,
+        allowFunding:     true,
+        allowTagline:     false,
+        byPayPalHeight:   0
     },
 
     [ BUTTON_SIZE.SMALL ]: {
-        defaultWidth:    150,
-        defaultHeight:   25,
-        minWidth:        150,
-        maxWidth:        200,
-        minHeight:       25,
-        maxHeight:       55,
-        allowFunding:    true,
-        allowTagline:    true,
-        byPayPalHeight:  0
+        defaultWidth:     150,
+        defaultHeight:    25,
+        minWidth:         150,
+        maxWidth:         200,
+        minHeight:        25,
+        maxHeight:        55,
+        buttonTextMargin: 0.5,
+        allowFunding:     true,
+        allowTagline:     true,
+        byPayPalHeight:   0
     },
 
     [ BUTTON_SIZE.MEDIUM ]: {
@@ -903,6 +905,7 @@ export const BUTTON_STYLE = {
         maxWidth:          300,
         minHeight:         35,
         maxHeight:         55,
+        buttonTextMargin:  1,
         allowFunding:      true,
         allowTagline:      true,
         byPayPalHeight:    30
@@ -915,21 +918,23 @@ export const BUTTON_STYLE = {
         maxWidth:          500,
         minHeight:         30,
         maxHeight:         55,
+        buttonTextMargin:  1,
         allowFunding:      true,
         allowTagline:      true,
         byPayPalHeight:    30
     },
 
     [ BUTTON_SIZE.HUGE ]: {
-        defaultWidth:   500,
-        defaultHeight:  55,
-        minWidth:       500,
-        maxWidth:       750,
-        minHeight:      40,
-        maxHeight:      55,
-        allowFunding:   true,
-        allowTagline:   true,
-        byPayPalHeight: 30
+        defaultWidth:     500,
+        defaultHeight:    55,
+        minWidth:         500,
+        maxWidth:         750,
+        minHeight:        40,
+        maxHeight:        55,
+        buttonTextMargin: 1.25,
+        allowFunding:     true,
+        allowTagline:     true,
+        byPayPalHeight:   30
     }
 };
 
