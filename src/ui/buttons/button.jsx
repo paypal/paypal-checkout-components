@@ -98,7 +98,6 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 `${ CLASS.COLOR }-${ color }`,
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
             ].join(' ') }
-            aria-label={ fundingSource }
             onClick={ handleClick ? null : clickHandler }
             onKeyPress={ handleClick ? null : keyboardAccessibilityHandler }
             tabindex={ handleClick ? '-1' : '0' }>
@@ -190,7 +189,6 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
                 `${ CLASS.ENV }-${ env }`,
                 `${ CLASS.COLOR }-${ color }`
             ].join(' ') }
-            aria-label={ fundingSource }
             tabIndex='0'
             onClick={ clickHandler }
             onKeyPress={ keyboardAccessibilityHandler } >
