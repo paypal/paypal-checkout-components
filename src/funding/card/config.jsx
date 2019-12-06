@@ -3,6 +3,7 @@
 
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
+import { GlyphCard, EloLogo } from '@paypal/sdk-logos';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
@@ -99,76 +100,67 @@ export function getCardConfig() : FundingSourceConfig {
 
         handleClick: true,
 
-        Logo: ({ fundingEligibility, locale, onClick, cardButtonExperiment, nonce }) => {
-            // Testing for Inline Guest black button
-            if (cardButtonExperiment && locale.lang === 'en' && locale.country === 'US' && !__TEST__) {
-                // debugger;
-                return (
-                    <div>
-                        <style
-                            nonce={ nonce }
-                            innerHTML={ `
-                                #black-credit-card-button {
-                                    background: #000;
-                                    color: #fff;
-                                    font-size: 1.15em;
-                                }
-                            ` } />
-                        <button
-                            type="button"
-                            id="black-credit-card-button"
-                            onClick={ event => onClick(event) }
-                            class={ `${ CLASS.BUTTON }` }
-                            { ...{
-                                [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
-                            } }>
-                            Debit or Credit Card
-                        </button>
-                    </div>
-                );
-            }
+        Logo: ({ onClick, nonce, blackButtonText }) => {
+            return (
+                <div>
+                    <style
+                        nonce={ nonce }
+                        innerHTML={ `
+                            #black-credit-card-button {
+                                background: #000;
+                                color: #fff;
+                                font-size: 1.15em;
+                            }
 
-            let maxCards = 4;
+                            #black-credit-card-button img {
+                                padding: 0 6px;
+                                display: inline-block;
+                                height: 1.3em;
+                                vertical-align: middle;
+                                padding: 0 6px;
+                            }
 
-            // $FlowFixMe
-            if (maxCardForCountry[locale.country]) {
-                maxCards = maxCardForCountry[locale.country];
-            }
+                            .dom-ready #black-credit-card-button div {
+                                -webkit-animation: show-text 0.6s 0s forwards;
+                                -moz-animation:    show-text 0.6s 0s forwards;
+                                -o-animation:      show-text 0.6s 0s forwards;
+                                animation:         show-text 0.6s 0s forwards;
+                                vertical-align: middle;
+                                overflow: hidden;
+                                display: inline-block;
+                                max-width: 0%;
+                                opacity: 0;
+                                position: static;
+                                visibility: visible;
+                            }
 
-            return CARD_PRIORITY.map(name => {
-
-                const cardEligibility = fundingEligibility[FUNDING.CARD];
-
-                if (!cardEligibility || !cardEligibility.vendors || !cardEligibility.vendors[name] || !cardEligibility.vendors[name].eligible) {
-                    return null;
-                }
-
-                const vendorConfig = vendors[name];
-
-                if (!vendorConfig) {
-                    return null;
-                }
-
-                const { Label } = vendorConfig;
-                
-                return (
-                    <div
-                        class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
-                        onClick={ event => onClick(event, { card: name }) }
-                        tabindex='0'
-                        role='button'
+                            #black-credit-card-button div {
+                                position: absolute;
+                                visibility: hidden;
+                            }
+                        ` } />
+                    <button
+                        type="button"
+                        id="black-credit-card-button"
+                        onClick={ event => onClick(event) }
+                        class={ `${ CLASS.BUTTON }` }
                         { ...{
-                            [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD,
-                            [ ATTRIBUTE.CARD ]:           name
-                        } }
-                    >
-                        <Label />
-                    </div>
-                );
-            }).filter(Boolean).slice(0, maxCards);
+                            [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
+                        } }>
+                        <GlyphCard />
+                        <div>{ blackButtonText }</div>
+                    </button>
+                </div>
+            );
         },
 
-        Label: ({ logo }) => logo,
+        Label: ({ logo }) => {
+            return (
+                <Fragment>
+                    { logo }
+                </Fragment>
+            );
+        },
 
         VaultLabel: ({ vendor, label } : { vendor? : $Values<typeof CARD>, label : string }) => {
             if (!vendor) {

@@ -277,7 +277,8 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
         shape = DEFAULT_STYLE.SHAPE,
         tagline = (layout === BUTTON_LAYOUT.HORIZONTAL),
         height,
-        period
+        period,
+        blackButtonText
     } = style;
 
     if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
@@ -321,9 +322,7 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
         }
     }
 
-    // debugger;
-
-    return { label, layout, color, shape, tagline, height, period };
+    return { label, layout, color, shape, tagline, height, period, blackButtonText };
 }
 
 const COUNTRIES = values(COUNTRY);
@@ -355,7 +354,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         onShippingChange,
         personalization,
         clientAccessToken,
-        cardButtonExperiment
+        cardButtonExperiment,
+        blackButtonText
     } = props;
 
     const { country, lang } = locale;
@@ -391,5 +391,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     style = normalizeButtonStyle(style);
 
     return { clientID, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, cardButtonExperiment };
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, cardButtonExperiment, blackButtonText };
 }
