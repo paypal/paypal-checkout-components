@@ -180,8 +180,7 @@ export type RenderButtonProps = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?OnShippingChange,
     personalization : ?Personalization,
-    clientAccessToken : ?string,
-    cardButtonExperiment? : boolean
+    clientAccessToken : ?string
 |};
 
 export type PrerenderDetails = {|
@@ -241,8 +240,7 @@ export type ButtonPropsInputs = {|
     clientAccessToken? : string,
     csp? : {
         nonce? : string
-    },
-    cardButtonExperiment? : boolean
+    }
 |};
 
 export const DEFAULT_STYLE = {
@@ -354,7 +352,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         onShippingChange,
         personalization,
         clientAccessToken,
-        cardButtonExperiment,
         blackButtonText
     } = props;
 
@@ -391,5 +388,9 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     style = normalizeButtonStyle(style);
 
     return { clientID, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
+<<<<<<< HEAD
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, cardButtonExperiment, blackButtonText };
+=======
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization };
+>>>>>>> parent of 3b53bfc8... Work on Inline Guest black button (#1233)
 }
