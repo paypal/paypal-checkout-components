@@ -121,10 +121,10 @@ export function getCardConfig() : FundingSourceConfig {
                             }
 
                             .dom-ready #black-credit-card-button div {
-                                -webkit-animation: show-text 0.6s 0s forwards;
-                                -moz-animation:    show-text 0.6s 0s forwards;
-                                -o-animation:      show-text 0.6s 0s forwards;
-                                animation:         show-text 0.6s 0s forwards;
+                                -webkit-animation: show-text 1.0s 0s forwards;
+                                -moz-animation:    show-text 1.0s 0s forwards;
+                                -o-animation:      show-text 1.0s 0s forwards;
+                                animation:         show-text 1.0s 0s forwards;
                                 vertical-align: middle;
                                 overflow: hidden;
                                 display: inline-block;
