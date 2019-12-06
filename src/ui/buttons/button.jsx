@@ -30,11 +30,7 @@ type BasicButtonProps = {|
     personalization : Personalization
 |};
 
-<<<<<<< HEAD
-export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization,  cardButtonExperiment, onClick = noop, blackButtonText } : BasicButtonProps) : ElementNode {
-=======
-export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop } : BasicButtonProps) : ElementNode {
->>>>>>> parent of 3b53bfc8... Work on Inline Guest black button (#1233)
+export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop, blackButtonText } : BasicButtonProps) : ElementNode {
 
     let { color, period, label } = style;
 
