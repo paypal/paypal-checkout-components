@@ -8,8 +8,8 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { isDevice, uniqueID, inlineMemoize } from 'belter/src';
-import { FUNDING, PLATFORM, QUERY_BOOL } from '@paypal/sdk-constants/src';
+import { isDevice, uniqueID, inlineMemoize, values } from 'belter/src';
+import { FUNDING, PLATFORM, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl } from '../../config';

@@ -27,7 +27,8 @@ type BasicButtonProps = {|
     i : number,
     nonce : string,
     clientAccessToken : ?string,
-    personalization : Personalization
+    personalization : Personalization,
+    blackButtonText : ?string
 |};
 
 export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop, blackButtonText } : BasicButtonProps) : ElementNode {

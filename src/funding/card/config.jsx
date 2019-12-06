@@ -3,7 +3,7 @@
 
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
-import { GlyphCard, EloLogo } from '@paypal/sdk-logos';
+import { GlyphCard } from '@paypal/sdk-logos';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
@@ -16,16 +16,6 @@ import { getDiscoverConfig } from './discover';
 import { getHiperConfig } from './hiper';
 import { getEloConfig } from './elo';
 import { getJCBConfig } from './jcb';
-
-const CARD_PRIORITY : $ReadOnlyArray<$Values<typeof CARD>> = [
-    CARD.VISA,
-    CARD.MASTERCARD,
-    CARD.AMEX,
-    CARD.DISCOVER,
-    CARD.HIPER,
-    CARD.ELO,
-    CARD.JCB
-];
 
 function getVendorConfig() : { [$Values<typeof CARD>] : ?CardConfig } {
     return {

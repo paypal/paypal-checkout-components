@@ -180,7 +180,8 @@ export type RenderButtonProps = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?OnShippingChange,
     personalization : ?Personalization,
-    clientAccessToken : ?string
+    clientAccessToken : ?string,
+    blackButtonText : ?string
 |};
 
 export type PrerenderDetails = {|
@@ -240,7 +241,8 @@ export type ButtonPropsInputs = {|
     clientAccessToken? : string,
     csp? : {
         nonce? : string
-    }
+    },
+    blackButtonText : ?string
 |};
 
 export const DEFAULT_STYLE = {
