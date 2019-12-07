@@ -4022,7 +4022,11 @@ var FPTI_TRANSITION = {
   CREATE_PAYMENT: 'process_create_payment',
   CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
   CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
-  CHECKOUT_CANCEL: 'process_checkout_cancel'
+  CHECKOUT_CANCEL: 'process_checkout_cancel',
+  NATIVE_DETECT_APP_SWITCH: 'native_detect_app_switch',
+  NATIVE_DETECT_NO_APP_SWITCH: 'native_detect_no_app_switch',
+  NATIVE_APP_SWITCH_ACK: 'native_app_switch_ack',
+  NATIVE_ERROR: 'native_app_switch_ack'
 };
 var FPTI_BUTTON_TYPE = {
   IFRAME: 'iframe'
@@ -4880,7 +4884,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].BUTTON_SESSION_ID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = buttonSessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _ref2[sdk_constants_src["d" /* FPTI_KEY */].FEED] = sdk_constants_src["c" /* FPTI_FEED */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].DATA_SOURCE] = sdk_constants_src["b" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CLIENT_ID] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SELLER_ID] = merchantID[0], _ref2[sdk_constants_src["d" /* FPTI_KEY */].SESSION_UID] = sessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].REFERER] = window.location.host, _ref2[sdk_constants_src["d" /* FPTI_KEY */].MERCHANT_DOMAIN] = merchantDomain, _ref2[sdk_constants_src["d" /* FPTI_KEY */].LOCALE] = lang + "_" + country, _ref2[sdk_constants_src["d" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_NAME] = sdk_constants_src["e" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_VERSION] = version, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_ACTION] = commit ? sdk_constants_src["f" /* FPTI_USER_ACTION */].COMMIT : sdk_constants_src["f" /* FPTI_USER_ACTION */].CONTINUE, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_CORRID] = correlationID, _ref2;
+    return _ref2 = {}, _ref2[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].BUTTON_SESSION_ID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = buttonSessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _ref2[sdk_constants_src["d" /* FPTI_KEY */].FEED] = sdk_constants_src["c" /* FPTI_FEED */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].DATA_SOURCE] = sdk_constants_src["b" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CLIENT_ID] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SELLER_ID] = merchantID[0], _ref2[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SESSION_UID] = sessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].REFERER] = window.location.host, _ref2[sdk_constants_src["d" /* FPTI_KEY */].MERCHANT_DOMAIN] = merchantDomain, _ref2[sdk_constants_src["d" /* FPTI_KEY */].LOCALE] = lang + "_" + country, _ref2[sdk_constants_src["d" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_NAME] = sdk_constants_src["e" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_VERSION] = version, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_ACTION] = commit ? sdk_constants_src["f" /* FPTI_USER_ACTION */].COMMIT : sdk_constants_src["f" /* FPTI_USER_ACTION */].CONTINUE, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_CORRID] = correlationID, _ref2;
   });
   src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -5096,7 +5100,7 @@ function createOrderID(order, _ref) {
       throw new Error("Order Api response error:\n\n" + JSON.stringify(body, null, 4));
     }
 
-    Object(lib["b" /* getLogger */])().track((_getLogger$track = {}, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].CREATE_ORDER, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].ORDER_ID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TOKEN] = orderID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = orderID, _getLogger$track));
+    Object(lib["b" /* getLogger */])().track((_getLogger$track = {}, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].CREATE_ORDER, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].ORDER_ID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TOKEN] = orderID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = orderID, _getLogger$track));
     return orderID;
   });
 }
@@ -5307,7 +5311,7 @@ function createPayment(payment, _ref) {
       throw new Error("Payment Api response error:\n\n" + JSON.stringify(body, null, 4));
     }
 
-    Object(lib["b" /* getLogger */])().track((_getLogger$track = {}, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].CREATE_PAYMENT, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].PAYMENT_ID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TOKEN] = paymentID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = paymentID, _getLogger$track));
+    Object(lib["b" /* getLogger */])().track((_getLogger$track = {}, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].CREATE_PAYMENT, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].PAYMENT_ID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].TOKEN] = paymentID, _getLogger$track[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = paymentID, _getLogger$track));
     return body;
   });
 }
@@ -8038,7 +8042,6 @@ function getOnApprove(xprops, _ref4) {
       createOrder = _ref4.createOrder;
   var onApprove = xprops.onApprove,
       intent = xprops.intent,
-      buttonSessionID = xprops.buttonSessionID,
       partnerAttributionID = xprops.partnerAttributionID,
       onError = xprops.onError;
   return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__[/* memoize */ "p"])(function (_ref5, _ref6) {
@@ -8053,7 +8056,7 @@ function getOnApprove(xprops, _ref4) {
     return createOrder().then(function (orderID) {
       var _getLogger$info$track;
 
-      Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().info('button_authorize').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_AUTHORIZE, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+      Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().info('button_authorize').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_AUTHORIZE, _getLogger$info$track)).flush();
       var data = {
         orderID: orderID,
         payerID: payerID,
@@ -8146,13 +8149,12 @@ function getOnCancel(xprops, _ref2) {
   var createOrder = _ref2.createOrder;
   var _xprops$onCancel = xprops.onCancel,
       onCancel = _xprops$onCancel === void 0 ? belter_src__WEBPACK_IMPORTED_MODULE_0__[/* noop */ "q"] : _xprops$onCancel,
-      onError = xprops.onError,
-      buttonSessionID = xprops.buttonSessionID;
+      onError = xprops.onError;
   return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__[/* memoize */ "p"])(function () {
     return createOrder().then(function (orderID) {
       var _getLogger$info$track;
 
-      Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().info('button_cancel').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_CANCEL, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+      Object(_lib__WEBPACK_IMPORTED_MODULE_3__[/* getLogger */ "b"])().info('button_cancel').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_CANCEL, _getLogger$info$track)).flush();
       return onCancel(buildXOnCancelData({
         orderID: orderID
       }), buildXOnCancelActions());
@@ -8227,7 +8229,6 @@ function getOnShippingChange(xprops, _ref2) {
   var facilitatorAccessToken = _ref2.facilitatorAccessToken,
       createOrder = _ref2.createOrder;
   var onShippingChange = xprops.onShippingChange,
-      buttonSessionID = xprops.buttonSessionID,
       partnerAttributionID = xprops.partnerAttributionID;
 
   if (onShippingChange) {
@@ -8238,7 +8239,7 @@ function getOnShippingChange(xprops, _ref2) {
       return createOrder().then(function (orderID) {
         var _getLogger$info$track;
 
-        Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().info('button_shipping_change').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_STATE */ "g"].BUTTON, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_SHIPPING_CHANGE, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$track)).flush();
+        Object(_lib__WEBPACK_IMPORTED_MODULE_5__[/* getLogger */ "b"])().info('button_shipping_change').track((_getLogger$info$track = {}, _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__[/* FPTI_KEY */ "d"].TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__[/* FPTI_TRANSITION */ "h"].CHECKOUT_SHIPPING_CHANGE, _getLogger$info$track)).flush();
         return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({
           orderID: orderID,
           facilitatorAccessToken: facilitatorAccessToken,
@@ -10464,16 +10465,29 @@ function initNative(_ref6) {
   var start = Object(src["p" /* memoize */])(function () {
     return createOrder().then(function () {
       if (appSwitch.didSwitch()) {
-        Object(lib["b" /* getLogger */])().info("native_app_switch").flush();
+        var _getLogger$info$track;
+
+        Object(lib["b" /* getLogger */])().info("native_detect_app_switch").track((_getLogger$info$track = {}, _getLogger$info$track[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].NATIVE_DETECT_APP_SWITCH, _getLogger$info$track)).flush();
         instance = connectNative();
-        return instance.setProps();
+        return instance.setProps().then(function () {
+          var _getLogger$info$track2;
+
+          Object(lib["b" /* getLogger */])().info("native_app_switch_ack").track((_getLogger$info$track2 = {}, _getLogger$info$track2[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].NATIVE_APP_SWITCH_ACK, _getLogger$info$track2)).flush();
+        });
       } else {
-        Object(lib["b" /* getLogger */])().info("native_app_web_fallback").flush();
+        var _getLogger$info$track3;
+
+        Object(lib["b" /* getLogger */])().info("native_detect_no_app_switch").track((_getLogger$info$track3 = {}, _getLogger$info$track3[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].NATIVE_DETECT_NO_APP_SWITCH, _getLogger$info$track3)).flush();
         return fallbackToWebCheckout({
           win: appSwitch.getWindow()
         });
       }
     }).catch(function (err) {
+      var _getLogger$info$track4;
+
+      Object(lib["b" /* getLogger */])().info("native_error", {
+        err: Object(src["z" /* stringifyError */])(err)
+      }).track((_getLogger$info$track4 = {}, _getLogger$info$track4[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].NATIVE_ERROR, _getLogger$info$track4[sdk_constants_src["d" /* FPTI_KEY */].ERROR_CODE] = 'native_error', _getLogger$info$track4[sdk_constants_src["d" /* FPTI_KEY */].ERROR_DESC] = Object(src["A" /* stringifyErrorMessage */])(err), _getLogger$info$track4)).flush();
       close();
       throw err;
     });
@@ -10774,8 +10788,7 @@ function initiatePaymentFlow(_ref3) {
         merchantID = serviceData.merchantID;
     var clientID = props.clientID,
         onClick = props.onClick,
-        createOrder = props.createOrder,
-        buttonSessionID = props.buttonSessionID;
+        createOrder = props.createOrder;
     createOrder = decorateCreateOrder(createOrder);
     pay_sendPersonalizationBeacons(personalization);
 
@@ -10804,7 +10817,7 @@ function initiatePaymentFlow(_ref3) {
         close = _init.close;
 
     var clickPromise = click();
-    Object(lib["b" /* getLogger */])().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].PAYMENT_FLOW] = name, _getLogger$info$info$)).flush();
+    Object(lib["b" /* getLogger */])().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].TRANSITION] = constants["h" /* FPTI_TRANSITION */].BUTTON_CLICK, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].CHOSEN_FUNDING] = fundingSource, _getLogger$info$info$[sdk_constants_src["d" /* FPTI_KEY */].PAYMENT_FLOW] = name, _getLogger$info$info$)).flush();
     return zalgo_promise_src["a" /* ZalgoPromise */].hash({
       valid: onClick ? onClick({
         fundingSource: fundingSource
