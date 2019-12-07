@@ -28,8 +28,8 @@ export type Payment = {|
 export type PaymentFlow = {|
     name : string,
     setup : ({ props : Props, serviceData : ServiceData, config : Config, components : Components }) => ZalgoPromise<void> | void,
-    isEligible : ({ props : Props, serviceData : ServiceData, components : Components, config : Config }) => boolean,
-    isPaymentEligible : ({ props : Props, serviceData : ServiceData, payment : Payment, components : Components, config : Config }) => boolean,
+    isEligible : ({ props : Props, serviceData : ServiceData, config : Config }) => boolean,
+    isPaymentEligible : ({ props : Props, serviceData : ServiceData, payment : Payment, config : Config }) => boolean,
     init : <T>({ props : Props, serviceData : ServiceData, payment : Payment, components : Components, config : Config }, overrides? : T) => PaymentFlowInstance, // eslint-disable-line no-undef
     spinner? : boolean,
     inline? : boolean,
