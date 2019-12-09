@@ -81,11 +81,11 @@ export function getCardConfig() : FundingSourceConfig {
         vendors,
 
         colors: [
-            BUTTON_COLOR.TRANSPARENT
+            BUTTON_COLOR.BLACK
         ],
 
         secondaryColors: {
-            [ DEFAULT ]: BUTTON_COLOR.TRANSPARENT
+            [ DEFAULT ]: BUTTON_COLOR.BLACK
         },
 
         handleClick: true,
@@ -97,17 +97,16 @@ export function getCardConfig() : FundingSourceConfig {
                         nonce={ nonce }
                         innerHTML={ `
                             #black-credit-card-button {
-                                background: #000;
+                                background: transparent;
                                 color: #fff;
                                 font-size: 1.15em;
                             }
 
                             #black-credit-card-button img {
-                                padding: 0 6px;
                                 display: inline-block;
                                 height: 1.3em;
                                 vertical-align: middle;
-                                padding: 0 6px;
+                                padding: 0 9px;
                             }
 
                             .dom-ready #black-credit-card-button div {
