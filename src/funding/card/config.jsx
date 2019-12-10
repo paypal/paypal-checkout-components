@@ -4,6 +4,7 @@
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos';
+import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
@@ -81,24 +82,39 @@ export function getCardConfig() : FundingSourceConfig {
         vendors,
 
         colors: [
+            BUTTON_COLOR.WHITE,
             BUTTON_COLOR.BLACK
         ],
 
         secondaryColors: {
+            ...DEFAULT_FUNDING_CONFIG.secondaryColors,
             [ DEFAULT ]: BUTTON_COLOR.BLACK
+        },
+
+        logoColors: {
+            [ BUTTON_COLOR.WHITE  ]:  BUTTON_COLOR.BLACK,
+            [ DEFAULT ]:              BUTTON_COLOR.WHITE
         },
 
         handleClick: true,
 
-        Logo: ({ onClick, nonce, blackButtonText }) => {
+        Logo: ({ onClick, nonce, blackButtonText, logoColor }) => {
             return (
                 <div>
                     <style
                         nonce={ nonce }
                         innerHTML={ `
+                            .paypal-logo-color-black #black-credit-card-button {
+                                color: #000;
+                                blackground: #fff;
+                            }
+
+                            .paypal-logo-color-white #black-credit-card-button { 
+                                color: #fff;
+                            }
+
                             #black-credit-card-button {
                                 background: transparent;
-                                color: #fff;
                                 font-size: 1.15em;
                             }
 
@@ -136,7 +152,7 @@ export function getCardConfig() : FundingSourceConfig {
                         { ...{
                             [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
                         } }>
-                        <GlyphCard />
+                        <GlyphCard color={ logoColor === LOGO_COLOR.BLACK ? '#000000' : '#ffffff' } />
                         <div>{ blackButtonText }</div>
                     </button>
                 </div>
