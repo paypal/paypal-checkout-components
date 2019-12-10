@@ -98,7 +98,10 @@ export function getCardConfig() : FundingSourceConfig {
 
         handleClick: true,
 
-        Logo: ({ onClick, nonce, content, logoColor }) => {
+        Logo: ({ onClick, nonce, content, logoColor, locale = {} }) => {
+            const { lang } = locale;
+            const isRTLLanguage = lang === 'he' || lang === 'ar' || lang === 'fa';
+
             return (
                 <div>
                     <style
@@ -152,8 +155,9 @@ export function getCardConfig() : FundingSourceConfig {
                         { ...{
                             [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
                         } }>
+                        { isRTLLanguage && (<div>{ content.payWithDebitOrCreditCard }</div>) }
                         <GlyphCard color={ logoColor === LOGO_COLOR.BLACK ? '#000000' : '#ffffff' } />
-                        <div>{ content.payWithDebitOrCreditCard }</div>
+                        { !isRTLLanguage && (<div>{ content.payWithDebitOrCreditCard }</div>) }
                     </button>
                 </div>
             );
