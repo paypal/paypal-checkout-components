@@ -98,7 +98,7 @@ export function getCardConfig() : FundingSourceConfig {
 
         handleClick: true,
 
-        Logo: ({ onClick, nonce, blackButtonText, logoColor }) => {
+        Logo: ({ onClick, nonce, content, logoColor }) => {
             return (
                 <div>
                     <style
@@ -153,7 +153,7 @@ export function getCardConfig() : FundingSourceConfig {
                             [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
                         } }>
                         <GlyphCard color={ logoColor === LOGO_COLOR.BLACK ? '#000000' : '#ffffff' } />
-                        <div>{ blackButtonText }</div>
+                        <div>{ content.payWithDebitOrCreditCard }</div>
                     </button>
                 </div>
             );

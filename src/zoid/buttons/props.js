@@ -181,7 +181,7 @@ export type RenderButtonProps = {|
     onShippingChange : ?OnShippingChange,
     personalization : ?Personalization,
     clientAccessToken : ?string,
-    blackButtonText : ?string
+    content : { [string] : string }
 |};
 
 export type PrerenderDetails = {|
@@ -242,7 +242,7 @@ export type ButtonPropsInputs = {|
     csp? : {
         nonce? : string
     },
-    blackButtonText : ?string
+    content? : { [string] : string }
 |};
 
 export const DEFAULT_STYLE = {
@@ -354,7 +354,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         onShippingChange,
         personalization,
         clientAccessToken,
-        blackButtonText
+        content = {}
     } = props;
 
     const { country, lang } = locale;
@@ -390,5 +390,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     style = normalizeButtonStyle(style);
 
     return { clientID, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, blackButtonText };
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content };
 }

@@ -28,10 +28,10 @@ type BasicButtonProps = {|
     nonce : string,
     clientAccessToken : ?string,
     personalization : Personalization,
-    blackButtonText : ?string
+    content? : { [string] : string }
 |};
 
-export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop, blackButtonText } : BasicButtonProps) : ElementNode {
+export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop, content = {} } : BasicButtonProps) : ElementNode {
 
     let { color, period, label } = style;
 
@@ -77,7 +77,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             onClick={ clickHandler }
             onKeyPress={ keyboardAccessibilityHandler }
             nonce={ nonce }
-            blackButtonText={ blackButtonText }
+            content={ content }
         />
     );
 
@@ -118,7 +118,6 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                     onKeyPress={ keyboardAccessibilityHandler }
                     clientAccessToken={ clientAccessToken }
                     personalization={ personalization }
-                    blackButtonText={ blackButtonText }
                 />
             </div>
 

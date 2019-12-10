@@ -24,7 +24,7 @@ export type LogoOptions = {|
     onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
     nonce : string,
     cardButtonExperiment? : boolean,
-    blackButtonText : ?string
+    content : { [string] : string }
 |};
 
 export type LabelOptions = {|
