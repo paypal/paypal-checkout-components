@@ -1,3 +1,10 @@
+## <small>5.0.69 (2019-12-11)</small>
+
+* Add Modal component ([bce6108](http://github.paypal.com/paypal/paypal-checkout/commit/bce6108))
+* Remove button aria-label in favor of button content text ([4e64669](http://github.paypal.com/paypal/paypal-checkout/commit/4e64669))
+
+
+
 ## <small>5.0.68 (2019-11-22)</small>
 
 * Manually insert spaces in credit logo to allow size calculation ([182c009](http://github.paypal.com/paypal/paypal-checkout/commit/182c009))
