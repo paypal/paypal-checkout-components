@@ -101,11 +101,18 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
         logger.info(req, `button_render_version_${ render.version }`);
         logger.info(req, `button_client_version_${ client.version }`);
 
+        const content = smartContent[locale.country][locale.lang] || {};
+        const blackButtonText = content.payWithDebitOrCreditCard;
+        
+        // logs for the missing content for the black button
+        if (!blackButtonText) {
+            logger.info(req, `missing_content`, { info: JSON.stringify({ params, locale }) });
+        }
+        
         const buttonHTML = render.button.Buttons({
-            ...params, nonce: cspNonce, csp:   { nonce: cspNonce }, fundingEligibility, personalization
+            ...params, nonce: cspNonce, csp:   { nonce: cspNonce }, fundingEligibility, personalization, content
         }).render(html());
 
-        const content = smartContent[locale.country][locale.lang];
         const setupParams = {
             fundingEligibility, buyerCountry, cspNonce, merchantID, personalization,
             isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content

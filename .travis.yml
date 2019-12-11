@@ -4,6 +4,8 @@ node_js:
 script:
   - npm run test
 sudo: required
+cache:
+  npm: false
 dist: xenial
 addons:
   chrome: stable
