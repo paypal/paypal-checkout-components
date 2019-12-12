@@ -39,7 +39,8 @@ export type LabelOptions = {|
     layout : $Values<typeof BUTTON_LAYOUT>,
     clientAccessToken : ?string,
     personalization : Personalization,
-    nonce : ?string
+    nonce : ?string,
+    tagline : ?boolean
 |};
 
 export type VaultLabelOptions = {|

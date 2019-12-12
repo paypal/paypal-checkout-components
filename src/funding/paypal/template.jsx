@@ -49,8 +49,10 @@ function getButtonStyle(opts : LabelOptions) : ?ChildType {
     if (__TEST__) {
         return null;
     }
+    
+    const { tagline } = opts;
 
-    const personalizationText = getPersonalizationText(opts);
+    const personalizationText = !tagline && getPersonalizationText(opts);
 
     const MIN_WIDTH = 300;
     const LABEL_DURATION = 1;
@@ -184,7 +186,11 @@ function getButtonPersonalization(opts : LabelOptions) : ?ChildType {
         return;
     }
 
-    const { nonce } = opts;
+    const { nonce, tagline } = opts;
+    
+    if (tagline) {
+        return;
+    }
 
     const personalizationText = getPersonalizationText(opts);
     const personalizationTracker = getPersonalizationTracker(opts);
