@@ -116,13 +116,17 @@ function renderPersonalizationButtonText(text) : JsxHTMLNode {
     return <span class={ className } optional="2">{ text }</span>;
 }
 
-function getButtonTextAnimationStyle(personalizationText, branding) : ?JsxHTMLNode {
+function getButtonTextAnimationStyle({ personalizedButtonText, branding, allowedAnimation }) : ?JsxHTMLNode {
     /*
     if (__TEST__) {
         return null;
     }
     */
     if (!branding) {
+        return;
+    }
+    
+    if (!allowedAnimation) {
         return;
     }
     
@@ -179,13 +183,13 @@ function getButtonTextAnimationStyle(personalizationText, branding) : ?JsxHTMLNo
 
             @media only screen and (min-width: ${ MIN_WIDTH }px) {
                 ${ DOM_READY } ${ PAYPAL_LOGO } {
-                    animation: ${ personalizationText ? `toggle-paypal-logo ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `none` };
+                    animation: ${ personalizedButtonText ? `toggle-paypal-logo ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `none` };
                 }
 
                 ${ DOM_READY } ${ BUTTON_TEXT }:not(.${ CLASS.HIDDEN }) {
                     ${ COMPRESSED }
                     ${ VISIBLE }
-                    animation: ${ personalizationText ? `show-text-delayed ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `show-text ${ LABEL_DURATION }s ${ DELAY }s forwards` };
+                    animation: ${ personalizedButtonText ? `show-text-delayed ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `show-text ${ LABEL_DURATION }s ${ DELAY }s forwards` };
                 }
 
                 ${ DOM_READY } ${ PERSONALIZATION_TEXT } {
@@ -301,11 +305,11 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
     });
 }
 
-function renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding }) : JsxHTMLNode {
+function renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding, allowedAnimation }) : JsxHTMLNode {
     return (
         <div class={ `${ CLASS.BUTTON_LABEL }` }>
     
-            { getButtonTextAnimationStyle(personalizedButtonText, branding) }
+            { getButtonTextAnimationStyle({ personalizedButtonText, branding, allowedAnimation }) }
             { contentText }
             { personalizedButtonText }
             {
@@ -328,12 +332,17 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     let impression;
     const morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
     let personalizedButtonText;
+    let allowedAnimation;
+    if (allowedPersonalizationLabels.indexOf(label) !== -1) {
+        allowedAnimation = true;
+    }
     if (buttonLabel === label) {
         if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText && branding && !tagline) {
             personalizedButtonText = renderPersonalizationButtonText(morsText);
             impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
         }
         contentText = getButtonConfig(label, 'label');
+        
     } else {
         contentText = getButtonConfig(label, 'logoLabel');
     }
@@ -347,8 +356,6 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     contentText = (typeof contentText === 'function') ? contentText(dynamicContent) : contentText;
     contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
-    // let personalizedButtonText;
-    // const personalizedButtonText = (buttonLabel === label && allowedPersonalizationLabels.indexOf(label) !== -1 && morsText) ? renderPersonalizationButtonText(morsText) : null;
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
         FUNDING.CARD
@@ -363,7 +370,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             role='button'
             aria-label={ source }
             tabindex={ hasTabIndex && 0 }>
-            { source === FUNDING.CARD ? contentText : renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding }) }
+            { source === FUNDING.CARD ? contentText : renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding, allowedAnimation }) }
         </div>
     );
 }
