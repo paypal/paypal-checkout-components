@@ -277,8 +277,7 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
         shape = DEFAULT_STYLE.SHAPE,
         tagline = (layout === BUTTON_LAYOUT.HORIZONTAL),
         height,
-        period,
-        blackButtonText
+        period
     } = style;
 
     if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
@@ -322,7 +321,7 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
         }
     }
 
-    return { label, layout, color, shape, tagline, height, period, blackButtonText };
+    return { label, layout, color, shape, tagline, height, period };
 }
 
 const COUNTRIES = values(COUNTRY);

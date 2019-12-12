@@ -1,9 +1,9 @@
 /* @flow */
 
-import { ENV } from '@paypal/sdk-constants/src';
+import { ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
-import { BUTTON_COLOR, CLASS } from '../../../constants';
+import { BUTTON_COLOR, CLASS, ATTRIBUTE, COLOR } from '../../../constants';
 
 export const buttonStyle = `
 
@@ -124,5 +124,28 @@ export const buttonStyle = `
 
     .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
         margin-top: 10px;
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } {
+        color: ${ COLOR.BLACK };
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } {
+        color: ${ COLOR.WHITE };
+    }
+
+    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] * {
+        height: 1.2em;
+    }
+
+    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] .${ CLASS.TEXT } {
+        position: absolute;
+        visibility: hidden;
+        font-weight: 400;
+    }
+
+    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] {
+        background: transparent;
+        font-size: 1.2em;
     }
 `;

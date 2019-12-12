@@ -2,13 +2,14 @@
 /** @jsx node */
 
 import { node, Fragment } from 'jsx-pragmatic/src';
-import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
+import { CARD, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, COLOR } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
-import { Text } from '../../ui';
+import { Text, Space } from '../../ui';
+import { isRTLLanguage } from '../../lib';
 
 import { getVisaConfig } from './visa';
 import { getMastercardConfig } from './mastercard';
@@ -98,77 +99,22 @@ export function getCardConfig() : FundingSourceConfig {
 
         handleClick: true,
 
-        Logo: ({ onClick, nonce, content, logoColor, locale = {} }) => {
+        Logo: ({ content, logoColor, locale = {} }) => {
             const { lang } = locale;
-            const isRTLLanguage = lang === 'he' || lang === 'ar' || lang === 'fa';
-
+            const isRTL = isRTLLanguage(lang);
             return (
-                <div>
-                    <style
-                        nonce={ nonce }
-                        innerHTML={ `
-                            .paypal-logo-color-black #black-credit-card-button {
-                                color: #000;
-                                blackground: #fff;
-                            }
-
-                            .paypal-logo-color-white #black-credit-card-button { 
-                                color: #fff;
-                            }
-
-                            #black-credit-card-button {
-                                background: transparent;
-                                font-size: 1.15em;
-                            }
-
-                            #black-credit-card-button img {
-                                display: inline-block;
-                                height: 1.3em;
-                                vertical-align: middle;
-                                padding: 0 9px;
-                            }
-
-                            .dom-ready #black-credit-card-button div {
-                                -webkit-animation: show-text 1.0s 0s forwards;
-                                -moz-animation:    show-text 1.0s 0s forwards;
-                                -o-animation:      show-text 1.0s 0s forwards;
-                                animation:         show-text 1.0s 0s forwards;
-                                vertical-align: middle;
-                                overflow: hidden;
-                                display: inline-block;
-                                max-width: 0%;
-                                opacity: 0;
-                                position: static;
-                                visibility: visible;
-                            }
-
-                            #black-credit-card-button div {
-                                position: absolute;
-                                visibility: hidden;
-                            }
-                        ` } />
-                    <button
-                        type="button"
-                        id="black-credit-card-button"
-                        onClick={ event => onClick(event) }
-                        class={ `${ CLASS.BUTTON }` }
-                        { ...{
-                            [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
-                        } }>
-                        { isRTLLanguage && (<div>{ content.payWithDebitOrCreditCard }</div>) }
-                        <GlyphCard color={ logoColor === LOGO_COLOR.BLACK ? '#000000' : '#ffffff' } />
-                        { !isRTLLanguage && (<div>{ content.payWithDebitOrCreditCard }</div>) }
-                    </button>
-                </div>
+                <Fragment>
+                    <Text>{ isRTL ? content.payWithDebitOrCreditCard : '' }</Text>
+                    <Space />
+                    <GlyphCard color={ logoColor === LOGO_COLOR.BLACK ? COLOR.BLACK : COLOR.WHITE } />
+                    <Space />
+                    <Text>{ !isRTL ? content.payWithDebitOrCreditCard : '' }</Text>
+                </Fragment>
             );
         },
 
         Label: ({ logo }) => {
-            return (
-                <Fragment>
-                    { logo }
-                </Fragment>
-            );
+            return logo;
         },
 
         VaultLabel: ({ vendor, label } : { vendor? : $Values<typeof CARD>, label : string }) => {

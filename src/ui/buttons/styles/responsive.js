@@ -43,12 +43,6 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     min-height: ${ perc(buttonHeight, 40) }px;
                 }
 
-                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }]:not([${ ATTRIBUTE.PAYMENT_METHOD_ID }]) .${ CLASS.BUTTON_LABEL } {
-                    height: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                }
-                
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL },
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ CLASS.BUTTON_LABEL } {
                     height: ${ perc(buttonHeight, 50) + 5 }px;
