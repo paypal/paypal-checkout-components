@@ -1,7 +1,6 @@
 /* @flow */
 import { LANG } from '@paypal/sdk-constants/src';
 
-export const isRTLLanguage = (languageCode : string) : boolean => {
-    const lang = languageCode.toLowerCase();
-    return lang === LANG.HE || lang === LANG.AR;
+export const isRTLLanguage = (languageCode : $Values<typeof LANG>) : boolean => {
+    return languageCode === LANG.HE || languageCode === LANG.AR;
 };
