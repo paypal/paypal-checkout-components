@@ -117,11 +117,10 @@ function renderPersonalizationButtonText(text) : JsxHTMLNode {
 }
 
 function getButtonTextAnimationStyle({ personalizedButtonText, branding, allowedAnimation }) : ?JsxHTMLNode {
-    /*
     if (__TEST__) {
         return null;
     }
-    */
+    
     if (!branding) {
         return;
     }
@@ -133,7 +132,7 @@ function getButtonTextAnimationStyle({ personalizedButtonText, branding, allowed
     const MIN_WIDTH = 300;
     const LABEL_DURATION = 1;
     const PERSONALIZATION_DURATION = 5;
-    const DELAY = 1;
+    const DELAY = 0.5;
     
     const COMPRESSED = `
         max-width: 0%;
