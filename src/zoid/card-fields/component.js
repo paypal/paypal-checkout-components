@@ -124,7 +124,7 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
                     queryParam: true
                 },
 
-                'disable-card': {
+                disableCard: {
                     type:          'array',
                     queryParam:    'disable-card',
                     allowDelegate: true,

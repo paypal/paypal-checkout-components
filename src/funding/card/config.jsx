@@ -4,9 +4,8 @@
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos';
-import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, COLOR } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
 import { Text, Space } from '../../ui';
 import { isRTLLanguage } from '../../lib';
@@ -104,11 +103,19 @@ export function getCardConfig() : FundingSourceConfig {
             const isRTL = isRTLLanguage(lang);
             return (
                 <Fragment>
-                    <Text>{ isRTL ? content.payWithDebitOrCreditCard : '' }</Text>
-                    <Space />
-                    <GlyphCard color={ logoColor === LOGO_COLOR.BLACK ? COLOR.BLACK : COLOR.WHITE } />
-                    <Space />
-                    <Text>{ !isRTL ? content.payWithDebitOrCreditCard : '' }</Text>
+                    { isRTL && (
+                        <Fragment>
+                            <Text>{ content.payWithDebitOrCreditCard }</Text>
+                            <Space />
+                        </Fragment>
+                    ) }
+                    <GlyphCard color={ logoColor } />
+                    { !isRTL && (
+                        <Fragment>
+                            <Space />
+                            <Text>{ content.payWithDebitOrCreditCard }</Text>
+                        </Fragment>
+                    ) }
                 </Fragment>
             );
         },

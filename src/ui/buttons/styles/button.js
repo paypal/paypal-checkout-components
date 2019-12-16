@@ -126,14 +126,6 @@ export const buttonStyle = `
         margin-top: 10px;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } {
-        color: ${ COLOR.BLACK };
-    }
-
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } {
-        color: ${ COLOR.WHITE };
-    }
-
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] * {
         height: 1.2em;
     }
