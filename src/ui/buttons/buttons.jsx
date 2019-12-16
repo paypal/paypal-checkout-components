@@ -69,6 +69,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         clientAccessToken={ clientAccessToken }
                         personalization={ personalization }
                         cardButtonExperiment={ cardButtonExperiment }
+                        tagline={ tagline }
                     />
                 ))
             }
