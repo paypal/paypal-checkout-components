@@ -5,6 +5,8 @@ export const CLASS = {
 
     CONTAINER: 'paypal-button-container',
     BUTTON:    'paypal-button',
+    
+    BUTTON_LABEL: 'paypal-button-label-container',
 
     LABEL:      'paypal-button-label',
     COLOR:      'paypal-button-color',
@@ -23,5 +25,9 @@ export const CLASS = {
     LOGO: 'paypal-button-logo',
     CARD: 'paypal-button-card',
 
-    SEPARATOR: 'paypal-separator'
+    SEPARATOR: 'paypal-separator',
+    HIDDEN:    'hidden',
+    DOM_READY: 'dom-ready',
+    
+    PERSONALIZATION_TEXT: 'personalization-text'
 };

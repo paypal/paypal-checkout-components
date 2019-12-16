@@ -1,3 +1,4 @@
+// eslint-disable-line max-lines
 /* @flow */
 /** @jsx jsxToHTML */
 
@@ -17,7 +18,6 @@ import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
 const allowedPersonalizationLabels = [ BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY ];
-// const delay = 0.2;
 
 function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
     return [
@@ -111,53 +111,120 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
     return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, size, layout }) }</div>;
 }
 
-/*
-// this function performs the first button render for eligible population
-function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : $Values<typeof BUTTON_LOGO_COLOR>, branding : boolean, label : string }) : JsxHTMLNode {
-    if (!logoColor) {
-        throw new Error(`Can not determine logo without logo color`);
-    }
-    if (!color) {
-        throw new Error(`Can not determine button without color`);
-    }
-    
-    const loadingDotsElement = (<span class={ `${ CLASS.TEXT }` }>{ LoadingDots(delay) }</span>);
-    
-    // this is specifically for the buynow button when the style.branding = false
-    if (!branding && label === BUTTON_LABEL.BUYNOW) {
-        return new JsxHTMLNodeContainer([ loadingDotsElement ]);
-    }
-    
-    const ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
-    const ppLogo =  typeof ppFundingLogo === 'function' ? ppFundingLogo({ logoColor }) : ppFundingLogo[logoColor];
-    const paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
-    const paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({ logoColor }) : paypalFundingLogo[logoColor];
-    const nodes = [];
-    nodes[0] = (
-        <img
-            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PP  } ${ CLASS.LOGO }-${ color }` }
-            src={ `data:image/svg+xml;base64,${ base64encode(ppLogo.toString()) }` }
-            alt={ BUTTON_LOGO.PP }
-        />);
-    
-    // for an intentional white space
-    nodes[1] = ' ';
-    
-    nodes[2] = (
-        <img
-            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } ${ CLASS.LOGO }-${ color }` }
-            src={ `data:image/svg+xml;base64,${ base64encode(paypalLogo.toString()) }` }
-            alt={ BUTTON_LOGO.PAYPAL }
-        />);
-    
-    // for an intentional white space
-    nodes[3] = ' ';
-    
-    nodes[4] = loadingDotsElement;
-    
-    return new JsxHTMLNodeContainer(nodes);
+function renderPersonalizationButtonText(text) : JsxHTMLNode {
+    const className = `${ CLASS.TEXT } ${ CLASS.PERSONALIZATION_TEXT }`;
+    return <span class={ className } optional="2">{ text }</span>;
 }
-*/
+
+function getButtonTextAnimationStyle({ personalizedButtonText, branding, allowedAnimation }) : ?JsxHTMLNode {
+    if (__TEST__) {
+        return null;
+    }
+    
+    if (!branding) {
+        return;
+    }
+    
+    if (!allowedAnimation) {
+        return;
+    }
+    
+    const MIN_WIDTH = 300;
+    const LABEL_DURATION = 1;
+    const PERSONALIZATION_DURATION = 5;
+    const DELAY = 0.5;
+    
+    const COMPRESSED = `
+        max-width: 0%;
+        opacity: 0;
+    `;
+    
+    const EXPANDED = `
+        max-width: 100%;
+        opacity: 1;
+    `;
+    
+    const HIDDEN = `
+        position: absolute;
+        visibility: hidden;
+    `;
+    
+    const VISIBLE = `
+        position: static;
+        visibility: visible;
+    `;
+    
+    const DOM_READY = '.dom-ready';
+    const PAYPAL_BUTTON = `.${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }]`;
+    
+    const PAYPAL_LOGO = `${ PAYPAL_BUTTON } .${ CLASS.LOGO }.${ CLASS.LOGO }-${ FUNDING.PAYPAL }`;
+    const BUTTON_TEXT = `${ PAYPAL_BUTTON } .${ CLASS.TEXT }:not(.personalization-text)`;
+    const PERSONALIZATION_TEXT = `${ PAYPAL_BUTTON } .personalization-text`;
+    
+    return (
+        <style innerHTML={ `
+
+            ${ BUTTON_TEXT }, ${ PERSONALIZATION_TEXT } {
+                ${ HIDDEN }
+            }
+
+            ${ DOM_READY } ${ BUTTON_TEXT }:not(.${ CLASS.HIDDEN }) {
+                ${ VISIBLE }
+                ${ COMPRESSED }
+                animation: show-text ${ LABEL_DURATION }s ${ DELAY }s forwards;
+            }
+
+            @media only screen and (max-width: ${ MIN_WIDTH }px) {
+                ${ DOM_READY } ${ PERSONALIZATION_TEXT } {
+                    ${ HIDDEN }
+                }
+            }
+
+            @media only screen and (min-width: ${ MIN_WIDTH }px) {
+                ${ DOM_READY } ${ PAYPAL_LOGO } {
+                    animation: ${ personalizedButtonText ? `toggle-paypal-logo ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `none` };
+                }
+
+                ${ DOM_READY } ${ BUTTON_TEXT }:not(.${ CLASS.HIDDEN }) {
+                    ${ COMPRESSED }
+                    ${ VISIBLE }
+                    animation: ${ personalizedButtonText ? `show-text-delayed ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `show-text ${ LABEL_DURATION }s ${ DELAY }s forwards` };
+                }
+
+                ${ DOM_READY } ${ PERSONALIZATION_TEXT } {
+                    ${ COMPRESSED }
+                    ${ VISIBLE }
+                    animation: show-personalization-text ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards;
+                }
+            }
+
+            @keyframes show-text {
+                0% { ${ COMPRESSED } }
+                100% { ${ EXPANDED } }
+            }
+
+            @keyframes toggle-paypal-logo {
+                0% { ${ EXPANDED } }
+                8% { ${ COMPRESSED } }
+                85% { ${ COMPRESSED } }
+                100% { ${ EXPANDED } }
+            }
+
+            @keyframes show-text-delayed {
+                0% { ${ COMPRESSED } }
+                85% { ${ COMPRESSED } }
+                100% { ${ EXPANDED } }
+            }
+
+            @keyframes show-personalization-text {
+                0% { ${ COMPRESSED } }
+                25% { ${ EXPANDED } }
+                75% { ${ EXPANDED } }
+                100% { ${ COMPRESSED } }
+            }
+        ` } />
+    );
+}
 
 function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size } :
     { layout? : $Values<typeof BUTTON_LAYOUT>, size? : $Values<typeof BUTTON_SIZE>, label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : $ReadOnlyArray<string>, dynamicContent? : Object }) : JsxHTMLNode {
@@ -168,7 +235,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
 
         text(value : string) : JsxHTMLNode {
             const className = `${ CLASS.TEXT }`;
-            return <span class={ className }>{ value }</span>;
+            return <span class={ className } optional>{ value }</span>;
         },
 
         logo(name : string) : ?JsxHTMLNode {
@@ -237,8 +304,22 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
     });
 }
 
-function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod, checkoutCustomization } :
-    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, installmentperiod : number }) : JsxHTMLNode {
+function renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding, allowedAnimation }) : JsxHTMLNode {
+    return (
+        <div class={ `${ CLASS.BUTTON_LABEL }` }>
+    
+            { getButtonTextAnimationStyle({ personalizedButtonText, branding, allowedAnimation }) }
+            { contentText }
+            { personalizedButtonText }
+            {
+                impression && Beacon(impression)
+            }
+        </div>
+    );
+}
+
+function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, tagline, i, env, cards, installmentperiod, checkoutCustomization } :
+    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, tagline : boolean, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, installmentperiod : number }) : JsxHTMLNode {
 
     const logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -248,16 +329,19 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     // the label template, otherwise use the logo template.
     let contentText;
     let impression;
-    // suppressing consumption of mors text
-    let morsText; // checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+    const morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+    let personalizedButtonText;
+    let allowedAnimation;
+    if (allowedPersonalizationLabels.indexOf(label) !== -1) {
+        allowedAnimation = true;
+    }
     if (buttonLabel === label) {
-        // checks for button label: pay, buynow, checkout, paypal, installment
-        if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText) {
-            contentText = morsText;
+        if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText && branding && !tagline) {
+            personalizedButtonText = renderPersonalizationButtonText(morsText);
             impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
-        } else {
-            contentText = getButtonConfig(label, 'label');
         }
+        contentText = getButtonConfig(label, 'label');
+        
     } else {
         contentText = getButtonConfig(label, 'logoLabel');
     }
@@ -285,11 +369,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             role='button'
             aria-label={ source }
             tabindex={ hasTabIndex && 0 }>
-            
-            { contentText }
-            {
-                impression && Beacon(impression)
-            }
+            { source === FUNDING.CARD ? contentText : renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding, allowedAnimation }) }
         </div>
     );
 }
@@ -417,6 +497,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
             multiple,
             locale,
             branding,
+            tagline,
             layout,
             shape,
             cards,
