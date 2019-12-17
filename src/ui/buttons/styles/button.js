@@ -3,7 +3,7 @@
 import { ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
-import { BUTTON_COLOR, CLASS, ATTRIBUTE, COLOR } from '../../../constants';
+import { BUTTON_COLOR, CLASS, ATTRIBUTE } from '../../../constants';
 
 export const buttonStyle = `
 
