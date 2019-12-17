@@ -82,8 +82,6 @@ function isCreditDualEligible(props) : boolean {
 
 let creditThrottle;
 
-const smartThrottle = getThrottle('smart_button_uri_2', 50, false);
-
 type ButtonOptions = {|
     style : {|
         maxbuttons? : number,
@@ -566,10 +564,6 @@ export const Button : Component<ButtonOptions> = create({
                     pptm.listenForButtonRender();
                     pptm.reloadPptmScript(this.props.client[this.props.env]);
 
-                    smartThrottle.logStart({
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                    });
-
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER,
@@ -616,9 +610,6 @@ export const Button : Component<ButtonOptions> = create({
                     }
 
                     info('button_authorize');
-                    smartThrottle.logComplete({
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                    });
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
@@ -835,10 +826,7 @@ export const Button : Component<ButtonOptions> = create({
             noop:     true,
             decorate(original) : Function {
                 return function decorateOnClick(data : ?{ fundingSource : string, card? : string, flow? : string }) : void {
-
-                    smartThrottle.log('click', {
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                    });
+                    
                     info('button_click');
                     if (data && data.flow) {
                         info(`pay_flow_${ data.flow }`);
