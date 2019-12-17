@@ -63,7 +63,6 @@ export const buttonStyle = `
     }
 
     .${ CLASS.TEXT }, .${ CLASS.SPACE } {
-        display: inline-block;
         white-space: pre;
     }
 
@@ -74,7 +73,7 @@ export const buttonStyle = `
     }
 
     .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } > * {
-        vertical-align: top;
+        vertical-align: middle;
         height: 100%;
         text-align: left;
     }
@@ -126,18 +125,8 @@ export const buttonStyle = `
         margin-top: 10px;
     }
 
-    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] * {
-        height: 1.2em;
-    }
-
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] .${ CLASS.TEXT } {
         position: absolute;
         visibility: hidden;
-        font-weight: 400;
-    }
-
-    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] {
-        background: transparent;
-        font-size: 1.2em;
     }
 `;
