@@ -11,7 +11,8 @@ declare var __PAYPAL_CHECKOUT__ : {
         __BUTTONS__ : string,
         __CHECKOUT__ : string,
         __CARD_FIELDS__ : string,
-        __MENU__ : string
+        __MENU__ : string,
+        __MODAL__ : string
     }
 };
 

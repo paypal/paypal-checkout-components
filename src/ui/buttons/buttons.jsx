@@ -69,6 +69,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         onClick={ onClick }
                         clientAccessToken={ clientAccessToken }
                         personalization={ personalization }
+                        tagline={ tagline }
                     />
                 ))
             }

@@ -28,10 +28,11 @@ type BasicButtonProps = {|
     nonce : string,
     clientAccessToken : ?string,
     personalization : Personalization,
-    content? : { [string] : string }
+    content? : { [string] : string },
+    tagline : ?boolean
 |};
 
-export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop, content = {} } : BasicButtonProps) : ElementNode {
+export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop, content, tagline } : BasicButtonProps) : ElementNode {
 
     let { color, period, label } = style;
 
@@ -98,7 +99,6 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 `${ CLASS.COLOR }-${ color }`,
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
             ].join(' ') }
-            aria-label={ fundingSource }
             onClick={ handleClick ? null : clickHandler }
             onKeyPress={ handleClick ? null : keyboardAccessibilityHandler }
             tabindex={ handleClick ? '-1' : '0' }>
@@ -118,6 +118,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                     onKeyPress={ keyboardAccessibilityHandler }
                     clientAccessToken={ clientAccessToken }
                     personalization={ personalization }
+                    tagline={ tagline }
                 />
             </div>
 
@@ -190,7 +191,6 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
                 `${ CLASS.ENV }-${ env }`,
                 `${ CLASS.COLOR }-${ color }`
             ].join(' ') }
-            aria-label={ fundingSource }
             tabIndex='0'
             onClick={ clickHandler }
             onKeyPress={ keyboardAccessibilityHandler } >
