@@ -563,6 +563,14 @@ export const config = {
 
         'cvs.com': {
             disable_venmo: true
+        },
+
+        'gilt.com': {
+            disable_venmo: true
+        },
+
+        'ruelala.com': {
+            disable_venmo: true
         }
     },
 
