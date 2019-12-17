@@ -5,5 +5,9 @@ module.exports = {
 
     'rules': {
         'react/display-name': 'off'
+    },
+
+    'globals': {
+        '__SMART_BUTTONS__': true
     }
 };

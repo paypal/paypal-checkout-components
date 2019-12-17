@@ -64,7 +64,8 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
             [FPTI_KEY.SDK_VERSION]:            version,
             [FPTI_KEY.USER_AGENT]:             window.navigator && window.navigator.userAgent,
             [FPTI_KEY.USER_ACTION]:            commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE,
-            [FPTI_KEY.CONTEXT_CORRID]:         correlationID
+            [FPTI_KEY.CONTEXT_CORRID]:         correlationID,
+            [FPTI_KEY.BUTTON_VERSION]:         __SMART_BUTTONS__.__MINOR_VERSION__
         };
     });
 

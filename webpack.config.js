@@ -3,13 +3,16 @@
 
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
+import { globals } from './globals';
+
 const MODULE_NAME = 'spb';
 
 type SmartWebpackConfig = {|
     entry : string,
     filename : string,
     minify? : boolean,
-    debug? : boolean
+    debug? : boolean,
+    vars? : { [string] : mixed }
 |};
 
 function getSmartWebpackConfig({ entry, filename, minify = true, debug = false } : SmartWebpackConfig) : Object {
@@ -19,46 +22,53 @@ function getSmartWebpackConfig({ entry, filename, minify = true, debug = false }
         filename,
         minify,
         debug,
-        libraryTarget: 'window'
+        libraryTarget: 'window',
+        vars:          globals
     });
 }
 
 export const WEBPACK_CONFIG_BUTTONS = getSmartWebpackConfig({
     entry:         'src/button',
     filename:      'smart-payment-buttons',
-    minify:        false
+    minify:   false,
+    vars:     globals
 });
 
 export const WEBPACK_CONFIG_BUTTONS_MIN = getSmartWebpackConfig({
     entry:    'src/button',
     filename: 'smart-payment-buttons',
-    minify:   true
+    minify:   true,
+    vars:     globals
 });
 
 export const WEBPACK_CONFIG_BUTTONS_DEBUG = getSmartWebpackConfig({
     entry:    'src/button',
     filename: 'smart-payment-buttons',
     debug:    true,
-    minify:   false
+    minify:   false,
+    vars:     globals
 });
 
 export const WEBPACK_CONFIG_MENU = getSmartWebpackConfig({
     entry:    'src/menu',
     filename: 'smart-menu',
-    minify:   false
+    minify:   false,
+    vars:     globals
 });
 
 export const WEBPACK_CONFIG_MENU_MIN = getSmartWebpackConfig({
     entry:    'src/menu',
     filename: 'smart-menu',
-    minify:   true
+    minify:   true,
+    vars:     globals
 });
 
 export const WEBPACK_CONFIG_MENU_DEBUG = getSmartWebpackConfig({
     entry:    'src/menu',
     filename: 'smart-menu',
     debug:    true,
-    minify:   false
+    minify:   false,
+    vars:     globals
 });
 
 export const WEBPACK_CONFIG_TEST = getWebpackConfig({
@@ -68,6 +78,7 @@ export const WEBPACK_CONFIG_TEST = getWebpackConfig({
         devtool: 'inline-source-map'
     },
     vars: {
+        ...globals,
         __TEST__: true
     }
 });

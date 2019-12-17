@@ -11,6 +11,7 @@
 flow-typed
 node_modules/grumbler-scripts/declarations.js
 node_modules/post-robot/src/declarations.js
+src/declarations.js
 test/declarations.js
 [options]
 module.name_mapper='^src\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
