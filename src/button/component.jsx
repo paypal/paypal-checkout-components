@@ -148,13 +148,6 @@ export const Button : Component<ButtonOptions> = create({
             if (isIEIntranet()) {
                 warn(`button_pre_template_click_intranet_mode`);
 
-                track({
-                    [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
-                    [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK_INTRANET_MODE,
-                    [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
-                    [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                });
-
                 flushLogs();
 
                 // eslint-disable-next-line no-alert
@@ -397,9 +390,7 @@ export const Button : Component<ButtonOptions> = create({
             alias:    'billingAgreement',
 
             decorate(original) : Function {
-                return function payment() : ZalgoPromise<string> {
-
-                    const data = {};
+                return function payment(data = {}) : ZalgoPromise<string> {
 
                     const actions = {
                         request,
@@ -457,7 +448,8 @@ export const Button : Component<ButtonOptions> = create({
                             [ FPTI.KEY.CONTEXT_TYPE ]:       FPTI.CONTEXT_TYPE[getPaymentType(token)],
                             [ FPTI.KEY.CONTEXT_ID ]:         token,
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
-                            [ FPTI.KEY.RESPONSE_DURATION ]:  elapsed
+                            [ FPTI.KEY.RESPONSE_DURATION ]:  elapsed,
+                            [ FPTI.KEY.BUTTON_VERSION ]:     data && data.button_version
                         });
 
                         flushLogs();
@@ -574,14 +566,6 @@ export const Button : Component<ButtonOptions> = create({
 
                     if (isIEIntranet()) {
                         warn(`button_render_intranet_mode`);
-
-                        track({
-                            [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
-                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER_INTRANET_MODE,
-                            [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
-                            [ FPTI.KEY.BUTTON_SOURCE ]:      this.props.source
-                        });
                     }
 
                     if (creditThrottle) {
@@ -614,7 +598,8 @@ export const Button : Component<ButtonOptions> = create({
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_AUTHORIZE,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                        [ FPTI.KEY.BUTTON_VERSION ]:     data && data.button_version
                     });
 
                     if (isIEIntranet()) {
@@ -736,7 +721,8 @@ export const Button : Component<ButtonOptions> = create({
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_SHIPPING_CHANGE,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                        [ FPTI.KEY.BUTTON_VERSION ]:     data && data.button_version
                     });
 
                     flushLogs();
@@ -803,7 +789,8 @@ export const Button : Component<ButtonOptions> = create({
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_CANCEL,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                        [ FPTI.KEY.BUTTON_VERSION ]:     data && data.button_version
                     });
 
                     flushLogs();
@@ -825,8 +812,8 @@ export const Button : Component<ButtonOptions> = create({
             required: false,
             noop:     true,
             decorate(original) : Function {
-                return function decorateOnClick(data : ?{ fundingSource : string, card? : string, flow? : string }) : void {
-                    
+                return function decorateOnClick(data : ?{ fundingSource : string, card? : string, flow? : string, button_version? : string }) : void {
+
                     info('button_click');
                     if (data && data.flow) {
                         info(`pay_flow_${ data.flow }`);
@@ -838,19 +825,12 @@ export const Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource),
-                        [ FPTI.KEY.PAYMENT_FLOW ]:       data && data.flow
+                        [ FPTI.KEY.PAYMENT_FLOW ]:       data && data.flow,
+                        [ FPTI.KEY.BUTTON_VERSION ]:     data && data.button_version
                     });
 
                     if (isIEIntranet()) {
                         warn('button_click_intranet_mode');
-
-                        track({
-                            [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
-                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK_INTRANET_MODE,
-                            [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
-                            [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
-                        });
                     }
 
                     if (creditThrottle) {

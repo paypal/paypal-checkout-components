@@ -39,7 +39,8 @@ export const FPTI = {
         FUNDING_REMEMBERED:     'funding_remembered',
         BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled',
         RESPONSE_DURATION:      'response_duration',
-        PAYMENT_FLOW:           'payment_flow'
+        PAYMENT_FLOW:           'payment_flow',
+        BUTTON_VERSION:         'button_version'
     },
 
     BUTTON_TYPE: {
