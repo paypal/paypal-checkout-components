@@ -1,7 +1,7 @@
 /* @flow */
 
 import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError } from 'belter/src';
-import { COUNTRY, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { COUNTRY, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, PersonalizationType, ContentType } from '../types';
@@ -27,10 +27,12 @@ type ButtonOpts = {|
     firebaseConfig? : FirebaseConfig,
     facilitatorAccessToken : string,
     content : ContentType,
-    eligibility : ?{
+    eligibility : {|
         cardFields : boolean,
-        native : boolean
-    }
+        nativeCheckout : {
+            [$Values<typeof FUNDING> ] : ?boolean
+        }
+    |}
 |};
 
 export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { COUNTRY } from '@paypal/sdk-constants/src';
+import { COUNTRY, FUNDING } from '@paypal/sdk-constants/src';
 
 import type { FundingEligibilityType, CheckoutFlowType, CardFieldsFlowType, ThreeDomainSecureFlowType, PersonalizationType } from '../../types';
 import { type FirebaseConfig } from '../../api';
@@ -164,10 +164,12 @@ export type ServiceData = {|
     fundingEligibility : FundingEligibilityType,
     personalization : PersonalizationType,
     facilitatorAccessToken : string,
-    eligibility : {
+    eligibility : {|
         cardFields : boolean,
-        native : boolean
-    }
+        nativeCheckout : {
+            [ $Values<typeof FUNDING> ] : ?boolean
+        }
+    |}
 |};
 
 type ServiceDataOptions = {|
@@ -177,22 +179,21 @@ type ServiceDataOptions = {|
     fundingEligibility : FundingEligibilityType,
     personalization : PersonalizationType,
     serverMerchantID : $ReadOnlyArray<string>,
-    eligibility : ?{
-        native : boolean,
-        cardFields : boolean
-    }
+    eligibility : {|
+        cardFields : boolean,
+        nativeCheckout : {
+            [$Values<typeof FUNDING> ] : ?boolean
+        }
+    |}
 |};
 
-export function getServiceData({ facilitatorAccessToken, buyerGeoCountry, isCardFieldsExperimentEnabled, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, buyerGeoCountry, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
         fundingEligibility,
         personalization,
         facilitatorAccessToken,
-        eligibility:  {
-            cardFields: isCardFieldsExperimentEnabled,
-            native:     eligibility ? eligibility.native : false
-        }
+        eligibility
     };
 }

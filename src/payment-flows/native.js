@@ -43,6 +43,14 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     });
 });
 
+function isIOSSafari() : boolean {
+    return isIos() && isSafari();
+}
+
+function isAndroidChrome() : boolean {
+    return isAndroid() && isChrome();
+}
+
 function isNativeOptedIn({ props } : { props : Props }) : boolean {
     const { enableNativeCheckout } = props;
 
@@ -91,15 +99,7 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
         return false;
     }
 
-    if (isIos()) {
-        if (!isSafari()) {
-            return false;
-        }
-    } else if (isAndroid()) {
-        if (!isChrome()) {
-            return false;
-        }
-    } else {
+    if (!isIOSSafari() && !isAndroidChrome()) {
         return false;
     }
 
@@ -107,17 +107,18 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
         return true;
     }
 
-    return eligibility.native;
-}
-
-function isNativePaymentEligible({ payment, props } : { payment : Payment, props : Props }) : boolean {
-    const { win, fundingSource } = payment;
-
-    if (win) {
-        return false;
+    if (eligibility.nativeCheckout.paypal || eligibility.nativeCheckout.venmo) {
+        return true;
     }
 
-    if (fundingSource !== FUNDING.PAYPAL && fundingSource !== FUNDING.VENMO) {
+    return false;
+}
+
+function isNativePaymentEligible({ payment, props, serviceData } : { payment : Payment, props : Props, serviceData : ServiceData }) : boolean {
+    const { win, fundingSource } = payment;
+    const { eligibility } = serviceData;
+
+    if (win) {
         return false;
     }
 
@@ -129,7 +130,15 @@ function isNativePaymentEligible({ payment, props } : { payment : Payment, props
         return false;
     }
 
-    return true;
+    if (isNativeOptedIn({ props })) {
+        return true;
+    }
+
+    if (eligibility.nativeCheckout[fundingSource]) {
+        return true;
+    }
+
+    return false;
 }
 
 function setupNative({ config, props } : { config : Config, props : Props }) : ZalgoPromise<void> {
@@ -181,7 +190,7 @@ function appSwitchPopup(url : string) : AppSwitchPopup {
     try {
         win = popup(url);
     } catch (err) {
-        if (err instanceof PopupOpenError && isIos() && isSafari()) {
+        if (err instanceof PopupOpenError && isIOSSafari()) {
             appSwitched = true;
         } else {
             throw err;
@@ -194,7 +203,7 @@ function appSwitchPopup(url : string) : AppSwitchPopup {
             return true;
         }
 
-        if (isAndroid() && isChrome() && win && isWindowClosed(win)) {
+        if (isAndroidChrome() && win && isWindowClosed(win)) {
             return true;
         }
 
