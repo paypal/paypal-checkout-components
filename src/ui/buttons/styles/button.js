@@ -63,6 +63,7 @@ export const buttonStyle = `
     }
 
     .${ CLASS.TEXT }, .${ CLASS.SPACE } {
+        display: inline-block;
         white-space: pre;
     }
 
@@ -73,7 +74,7 @@ export const buttonStyle = `
     }
 
     .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } > * {
-        vertical-align: middle;
+        vertical-align: top;
         height: 100%;
         text-align: left;
     }
