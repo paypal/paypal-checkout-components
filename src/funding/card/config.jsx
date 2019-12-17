@@ -103,19 +103,19 @@ export function getCardConfig() : FundingSourceConfig {
             const isRTL = isRTLLanguage(lang);
             return (
                 <Fragment>
-                    { isRTL && (
+                    { isRTL ? (
                         <Fragment>
                             <Text>{ content.payWithDebitOrCreditCard }</Text>
                             <Space />
                         </Fragment>
-                    ) }
+                    ) : null }
                     <GlyphCard color={ logoColor } />
-                    { !isRTL && (
+                    { !isRTL ? (
                         <Fragment>
                             <Space />
                             <Text>{ content.payWithDebitOrCreditCard }</Text>
                         </Fragment>
-                    ) }
+                    ) : null }
                 </Fragment>
             );
         },
