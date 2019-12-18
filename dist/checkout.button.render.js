@@ -370,6 +370,20 @@ function supportsPopups(ua) {
 
   return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
+function isChrome(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Chrome|Chromium|CriOS/.test(ua);
+}
+function isSafari(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Safari/.test(ua) && !isChrome(ua);
+}
 // CONCATENATED MODULE: ./node_modules/zalgo-promise/src/utils.js
 function utils_isPromise(item) {
   try {
@@ -4944,7 +4958,8 @@ var FPTI = {
     FUNDING_REMEMBERED: 'funding_remembered',
     BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled',
     RESPONSE_DURATION: 'response_duration',
-    PAYMENT_FLOW: 'payment_flow'
+    PAYMENT_FLOW: 'payment_flow',
+    BUTTON_VERSION: 'button_version'
   },
   BUTTON_TYPE: {
     IFRAME: 'iframe',
@@ -5541,6 +5556,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[BUTTON_SIZE.TINY] = {
   maxWidth: 150,
   minHeight: 25,
   maxHeight: 30,
+  buttonTextMargin: 0.5,
   allowFunding: true,
   allowTagline: false,
   byPayPalHeight: 0
@@ -5551,6 +5567,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[BUTTON_SIZE.TINY] = {
   maxWidth: 200,
   minHeight: 25,
   maxHeight: 55,
+  buttonTextMargin: 0.5,
   allowFunding: true,
   allowTagline: true,
   byPayPalHeight: 0
@@ -5561,6 +5578,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[BUTTON_SIZE.TINY] = {
   maxWidth: 300,
   minHeight: 35,
   maxHeight: 55,
+  buttonTextMargin: 1,
   allowFunding: true,
   allowTagline: true,
   byPayPalHeight: 30
@@ -5571,6 +5589,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[BUTTON_SIZE.TINY] = {
   maxWidth: 500,
   minHeight: 30,
   maxHeight: 55,
+  buttonTextMargin: 1,
   allowFunding: true,
   allowTagline: true,
   byPayPalHeight: 30
@@ -5581,6 +5600,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[BUTTON_SIZE.TINY] = {
   maxWidth: 750,
   minHeight: 40,
   maxHeight: 55,
+  buttonTextMargin: 1.25,
   allowFunding: true,
   allowTagline: true,
   byPayPalHeight: 30
@@ -8594,13 +8614,12 @@ function validateButtonProps(props) {
   validateButtonLocale(locale);
   validateButtonStyle(style, props);
 }
-// CONCATENATED MODULE: ./src/button/template/componentStyle/page.js
-var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n        vertical-align: top;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n";
 // CONCATENATED MODULE: ./src/button/template/componentStyle/class.js
 var CLASS = {
   SHOULD_FOCUS: 'paypal-should-focus',
   CONTAINER: 'paypal-button-container',
   BUTTON: 'paypal-button',
+  BUTTON_LABEL: 'paypal-button-label-container',
   LABEL: 'paypal-button-label',
   COLOR: 'paypal-button-color',
   LOGO_COLOR: 'paypal-button-logo-color',
@@ -8615,12 +8634,18 @@ var CLASS = {
   TEXT: 'paypal-button-text',
   LOGO: 'paypal-button-logo',
   CARD: 'paypal-button-card',
-  SEPARATOR: 'paypal-separator'
+  SEPARATOR: 'paypal-separator',
+  HIDDEN: 'hidden',
+  DOM_READY: 'dom-ready',
+  PERSONALIZATION_TEXT: 'personalization-text'
 };
+// CONCATENATED MODULE: ./src/button/template/componentStyle/page.js
+
+var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n        vertical-align: top;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n        box-sizing: border-box;\n    }\n    \n    ." + CLASS.HIDDEN + " {\n        position: absolute;\n        visibility: hidden;\n    }\n";
 // CONCATENATED MODULE: ./src/button/template/componentStyle/button.js
 
 
-var buttonStyle = "\n\n    ." + CLASS.CONTAINER + " {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    ." + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CONTAINER + "." + CLASS.ENV + "-" + ENV.TEST + " ." + CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.GOLD + ":hover,\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + CLASS.CARD + ", ." + CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + CLASS.BUTTON + ":focus, ." + CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.BUTTON + ":focus,\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.LOGO + ",\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.BLACK + " ." + CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
+var buttonStyle = "\n\n    ." + CLASS.CONTAINER + " {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    ." + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CONTAINER + "." + CLASS.ENV + "-" + ENV.TEST + " ." + CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.GOLD + ":hover,\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + CLASS.CARD + ", ." + CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + CLASS.BUTTON + ":focus, ." + CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.BUTTON + ":focus,\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.BUTTON_LABEL + " {\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n    }\n    \n    ." + CLASS.BUTTON + " > ." + CLASS.BUTTON_LABEL + " > * {\n        vertical-align: top;\n        height: 100%;\n        text-align: left;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    .powered-by-paypal > ." + CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    }\n\n    .powered-by-paypal > ." + CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    }\n\n    ." + CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n    }\n\n    ." + CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + BUTTON_COLOR.BLACK + " ." + CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
 // CONCATENATED MODULE: ./src/button/template/componentStyle/layout.js
 
 
@@ -8647,8 +8672,9 @@ function buttonResponsiveStyle(_ref) {
   return Object.keys(BUTTON_STYLE).map(function (size) {
     var style = BUTTON_STYLE[size];
     var buttonHeight = height || style.defaultHeight;
+    var buttonTextMarginTop = style.buttonTextMargin;
     var minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + lib_util_max(util_perc(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + BUTTON_BRANDING.UNBRANDED + " {\n                    font-size: " + lib_util_max(util_perc(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + CLASS.LOGO + " {\n                    height: " + (util_perc(buttonHeight, 35) + 5) + "px;\n                    max-height: " + util_perc(buttonHeight, 60) + "px;\n                    min-height: " + util_perc(buttonHeight, 40) + "px;\n                }\n                \n                ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + BUTTON_LABEL.EPS + ",\n                ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + BUTTON_LABEL.MYBANK + " {\n                    height: " + (util_perc(buttonHeight, 50) + 5) + "px;\n                    max-height: " + util_perc(buttonHeight, 70) + "px;\n                    min-height: " + util_perc(buttonHeight, 40) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.SHAPE + "-" + BUTTON_SHAPE.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.SHAPE + "-" + BUTTON_SHAPE.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.VERTICAL + " {\n                    margin-bottom: " + util_perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + CLASS.SEPARATOR + " {\n                    margin: 0 " + util_perc(buttonHeight, 5) + "px;\n                }\n\n                ." + CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? 'block' : 'none') + ";\n                    height: " + util_perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + util_perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? 'block' : 'none') + ";\n                    height: " + util_perc(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + util_perc(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + CLASS.FUNDINGICONS + " ." + CLASS.CARD + " {\n                    height: " + util_perc(buttonHeight, 70) + "px;\n                    margin-top: " + util_perc(buttonHeight, 15) + "px;\n                    margin-left: " + util_perc(buttonHeight, 7) + "px;\n                    margin-right: " + util_perc(buttonHeight, 7) + "px;\n                }\n\n                ." + CLASS.FUNDINGICONS + " ." + CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + "." + CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + "." + CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + " ." + CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + lib_util_max(style.minWidth, minDualWidth) + "px) {\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + "." + CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + "." + CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + " ." + CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + lib_util_max(util_perc(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + BUTTON_BRANDING.UNBRANDED + " ." + CLASS.BUTTON_LABEL + " {\n                    height: 100%;\n                    font-size: " + lib_util_max(util_perc(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.BUTTON_LABEL + " {\n                    height: " + (util_perc(buttonHeight, 35) + 5) + "px;\n                    max-height: " + util_perc(buttonHeight, 60) + "px;\n                    min-height: " + util_perc(buttonHeight, 40) + "px;\n                }\n                \n                ." + CLASS.BUTTON + " ." + CLASS.BUTTON_LABEL + " ." + CLASS.TEXT + " {\n                    margin-top: " + buttonTextMarginTop + "px;\n                }\n                \n                ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + BUTTON_LABEL.EPS + ",\n                ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + BUTTON_LABEL.MYBANK + " {\n                    height: " + (util_perc(buttonHeight, 50) + 5) + "px;\n                    max-height: " + util_perc(buttonHeight, 70) + "px;\n                    min-height: " + util_perc(buttonHeight, 40) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.SHAPE + "-" + BUTTON_SHAPE.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.SHAPE + "-" + BUTTON_SHAPE.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.VERTICAL + " {\n                    margin-bottom: " + util_perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + CLASS.SEPARATOR + " {\n                    margin: 0 " + util_perc(buttonHeight, 5) + "px;\n                }\n\n                ." + CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? 'block' : 'none') + ";\n                    height: " + util_perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + util_perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? 'block' : 'none') + ";\n                    height: " + util_perc(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + util_perc(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + CLASS.FUNDINGICONS + " ." + CLASS.CARD + " {\n                    height: " + util_perc(buttonHeight, 70) + "px;\n                    margin-top: " + util_perc(buttonHeight, 15) + "px;\n                    margin-left: " + util_perc(buttonHeight, 7) + "px;\n                    margin-right: " + util_perc(buttonHeight, 7) + "px;\n                }\n\n                ." + CLASS.FUNDINGICONS + " ." + CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + "." + CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + "." + CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + " ." + CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + lib_util_max(style.minWidth, minDualWidth) + "px) {\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + "." + CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + "." + CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + BUTTON_LAYOUT.HORIZONTAL + "." + CLASS.NUMBER + "-" + BUTTON_NUMBER.MULTIPLE + " ." + CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
   }).join('\n');
 }
 // CONCATENATED MODULE: ./src/button/template/componentStyle/color.js
@@ -8706,7 +8732,9 @@ function Tagline(tagColor, impression, text) {
   });
   nodes[1] = jsxToHTML("div", {
     class: CLASS.TAGLINE + " " + CLASS.TAGLINE_COLOR + "-" + tagColor
-  }, jsxToHTML("span", null, text), impression && jsxToHTML("img", {
+  }, jsxToHTML("span", {
+    optional: true
+  }, text), impression && jsxToHTML("img", {
     class: "tracking-beacon",
     src: impression
   }));
@@ -8716,97 +8744,153 @@ function Tagline(tagColor, impression, text) {
 function getComponentScript() {
   /* istanbul ignore next */
   return function () {
-    var STYLE = {
-      BLOCK: 'block',
-      INLINE_BLOCK: 'inline-block',
-      NONE: 'none',
-      VISIBLE: 'visible',
-      HIDDEN: 'hidden'
+    var ATTRIBUTE = {
+      OPTIONAL: 'optional'
     };
+    var CLASS = {
+      HIDDEN: 'hidden',
+      DOM_READY: 'dom-ready'
+    };
+    var SELECTOR = {
+      ALL: '*',
+      OPTIONAL: "[" + ATTRIBUTE.OPTIONAL + "]"
+    };
+    var TAG = {
+      STYLE: 'style'
+    };
+
+    function once(handler) {
+      var called = false;
+      return function () {
+        if (!called) {
+          called = true;
+          handler.apply(void 0, arguments);
+        }
+      };
+    }
+
+    function debounce(handler, time) {
+      if (time === void 0) {
+        time = 50;
+      }
+
+      var timeout;
+      return function () {
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+          handler.apply(void 0, args);
+        }, time);
+      };
+    } // eslint-disable-next-line flowtype/no-mutable-array
+
+
+    function toArray(item) {
+      return Array.prototype.slice.call(item);
+    }
 
     function getElements(selector, parent) {
       parent = parent || document;
-      return Array.prototype.slice.call(parent.querySelectorAll(selector));
+      return toArray(parent.querySelectorAll(selector)).filter(function (el) {
+        return el.tagName.toLowerCase() !== TAG.STYLE;
+      });
     }
 
-    function showElement(el, displayType) {
-      if (displayType === void 0) {
-        displayType = STYLE.INLINE_BLOCK;
-      }
+    function getParent(element) {
+      // $FlowFixMe
+      return element.parentElement;
+    }
 
-      el.style.display = displayType;
+    function showElement(el) {
+      el.classList.remove(CLASS.HIDDEN);
     }
 
     function hideElement(el) {
-      el.style.display = STYLE.NONE;
+      el.classList.add(CLASS.HIDDEN);
     }
 
-    function makeElementVisible(el) {
-      el.style.visibility = STYLE.VISIBLE;
+    function sum(arr) {
+      var result = 0;
+
+      for (var _i2 = 0; _i2 < arr.length; _i2++) {
+        var item = arr[_i2];
+        result += item;
+      }
+
+      return result;
     }
 
-    function makeElementInvisible(el) {
-      el.style.visibility = STYLE.HIDDEN;
+    function unique(arr) {
+      var result = [];
+
+      for (var _i4 = 0; _i4 < arr.length; _i4++) {
+        var el = arr[_i4];
+
+        if (result.indexOf(el) === -1) {
+          result.push(el);
+        }
+      }
+
+      return result;
     }
 
-    function isOverflowing(el) {
-      if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
-        return true;
-      }
-
-      var parent = el.parentNode;
-
-      if (!parent) {
-        return false;
-      }
-
-      var e = el.getBoundingClientRect(); // $FlowFixMe
-
-      var p = parent.getBoundingClientRect();
-
-      if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
-        return true;
-      }
-
-      if (e.left < 0 || e.top < 0 || e.left + e.width > window.innerWidth || e.top + e.height > window.innerHeight) {
-        return true;
-      }
-
-      return false;
+    function getAllChildren(element) {
+      return getElements(SELECTOR.ALL, element);
     }
 
-    var images = getElements('.{ CLASS.BUTTON } .{ CLASS.LOGO }');
-    var text = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
-    var tagline = getElements('.{ CLASS.TAGLINE }');
-    var cards = getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }');
-    var optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');
+    function getOptionalIndex(element) {
+      return parseInt(element.getAttribute(ATTRIBUTE.OPTIONAL) || 0, 10);
+    }
+
+    function getElementsTotalWidth(elements) {
+      return sum(elements.map(function (child) {
+        return child.offsetWidth;
+      }));
+    }
+
+    function getOptionalParents() {
+      var optional = [].concat(getElements(SELECTOR.OPTIONAL), getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }'), getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal'));
+      return unique(optional.map(getParent).filter(Boolean));
+    }
+
+    function getOptionalChildren(parent) {
+      return toArray(getElements(SELECTOR.OPTIONAL, parent)).sort(function (first, second) {
+        return getOptionalIndex(first) - getOptionalIndex(second);
+      });
+    }
+
+    var children = getOptionalParents().map(function (optionalParent) {
+      var allChildren = getAllChildren(optionalParent);
+      var optionalChildren = getOptionalChildren(optionalParent);
+      return {
+        optionalParent: optionalParent,
+        allChildren: allChildren,
+        optionalChildren: optionalChildren
+      };
+    });
 
     function toggleOptionals() {
-      if (tagline.some(isOverflowing)) {
-        tagline.forEach(makeElementInvisible);
-      } else {
-        tagline.forEach(makeElementVisible);
-      }
+      for (var _i6 = 0; _i6 < children.length; _i6++) {
+        var _children$_i = children[_i6],
+            optionalParent = _children$_i.optionalParent,
+            allChildren = _children$_i.allChildren,
+            optionalChildren = _children$_i.optionalChildren;
+        var parentWidth = optionalParent.offsetWidth;
+        var usedWidth = getElementsTotalWidth(allChildren) - getElementsTotalWidth(optionalChildren);
 
-      cards.forEach(function (el) {
-        return showElement(el);
-      });
-      cards.filter(isOverflowing).forEach(hideElement);
-      text.forEach(function (el) {
-        return showElement(el);
-      });
-      optionals.forEach(function (el) {
-        return showElement(el);
-      });
+        for (var _i8 = 0; _i8 < optionalChildren.length; _i8++) {
+          var optionalChild = optionalChildren[_i8];
+          usedWidth += optionalChild.offsetWidth;
 
-      if (images.some(isOverflowing) || text.some(isOverflowing)) {
-        text.forEach(hideElement);
-        optionals.forEach(hideElement);
-      } else {
-        text.forEach(makeElementVisible);
-        optionals.forEach(function (el) {
-          return showElement(el);
-        });
+          if (usedWidth > parentWidth) {
+            hideElement(optionalChild);
+          } else {
+            showElement(optionalChild);
+          }
+        }
       }
     }
 
@@ -8832,11 +8916,24 @@ function getComponentScript() {
       window.addEventListener('keydown', handleFirstTab);
     }
 
+    var setDomReady = once(debounce(function () {
+      window.addEventListener('resize', toggleOptionals);
+
+      if (document.body) {
+        document.body.classList.add(CLASS.DOM_READY);
+      }
+    }));
+
+    var load = function load() {
+      toggleOptionals();
+      setDomReady();
+    };
+
     toggleOptionals();
     setupTabOutlineEvent();
-    document.addEventListener('DOMContentLoaded', toggleOptionals);
-    window.addEventListener('load', toggleOptionals);
-    window.addEventListener('resize', toggleOptionals);
+    document.addEventListener('DOMContentLoaded', load);
+    window.addEventListener('load', load);
+    window.addEventListener('resize', load);
   };
 }
 // CONCATENATED MODULE: ./src/button/template/content.js
@@ -14735,6 +14832,7 @@ var componentContent = {
 // CONCATENATED MODULE: ./src/button/template/componentTemplate.jsx
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "componentTemplate", function() { return componentTemplate; });
 
+// eslint-disable-line max-lines
 
 /** @jsx jsxToHTML */
 
@@ -14748,7 +14846,7 @@ var componentContent = {
 
 
 
-var allowedPersonalizationLabels = [BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY]; // const delay = 0.2;
+var allowedPersonalizationLabels = [BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY];
 
 function getCommonButtonClasses(_ref) {
   var layout = _ref.layout,
@@ -14851,67 +14949,60 @@ function renderFundingIcons(_ref9) {
     layout: layout
   }));
 }
-/*
-// this function performs the first button render for eligible population
-function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : $Values<typeof BUTTON_LOGO_COLOR>, branding : boolean, label : string }) : JsxHTMLNode {
-    if (!logoColor) {
-        throw new Error(`Can not determine logo without logo color`);
-    }
-    if (!color) {
-        throw new Error(`Can not determine button without color`);
-    }
-    
-    const loadingDotsElement = (<span class={ `${ CLASS.TEXT }` }>{ LoadingDots(delay) }</span>);
-    
-    // this is specifically for the buynow button when the style.branding = false
-    if (!branding && label === BUTTON_LABEL.BUYNOW) {
-        return new JsxHTMLNodeContainer([ loadingDotsElement ]);
-    }
-    
-    const ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
-    const ppLogo =  typeof ppFundingLogo === 'function' ? ppFundingLogo({ logoColor }) : ppFundingLogo[logoColor];
-    const paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
-    const paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({ logoColor }) : paypalFundingLogo[logoColor];
-    const nodes = [];
-    nodes[0] = (
-        <img
-            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PP  } ${ CLASS.LOGO }-${ color }` }
-            src={ `data:image/svg+xml;base64,${ base64encode(ppLogo.toString()) }` }
-            alt={ BUTTON_LOGO.PP }
-        />);
-    
-    // for an intentional white space
-    nodes[1] = ' ';
-    
-    nodes[2] = (
-        <img
-            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } ${ CLASS.LOGO }-${ color }` }
-            src={ `data:image/svg+xml;base64,${ base64encode(paypalLogo.toString()) }` }
-            alt={ BUTTON_LOGO.PAYPAL }
-        />);
-    
-    // for an intentional white space
-    nodes[3] = ' ';
-    
-    nodes[4] = loadingDotsElement;
-    
-    return new JsxHTMLNodeContainer(nodes);
+
+function renderPersonalizationButtonText(text) {
+  var className = CLASS.TEXT + " " + CLASS.PERSONALIZATION_TEXT;
+  return jsxToHTML("span", {
+    class: className,
+    optional: "2"
+  }, text);
 }
-*/
 
-
-function renderContent(text, _ref10) {
-  var label = _ref10.label,
-      locale = _ref10.locale,
-      color = _ref10.color,
+function getButtonTextAnimationStyle(_ref10) {
+  var personalizedButtonText = _ref10.personalizedButtonText,
       branding = _ref10.branding,
-      logoColor = _ref10.logoColor,
-      funding = _ref10.funding,
-      env = _ref10.env,
-      _cards = _ref10.cards,
-      dynamicContent = _ref10.dynamicContent,
-      layout = _ref10.layout,
-      size = _ref10.size;
+      allowedAnimation = _ref10.allowedAnimation;
+
+  if (false) {}
+
+  if (!branding) {
+    return;
+  }
+
+  if (!allowedAnimation) {
+    return;
+  }
+
+  var MIN_WIDTH = 300;
+  var LABEL_DURATION = 1;
+  var PERSONALIZATION_DURATION = 5;
+  var DELAY = 0.5;
+  var COMPRESSED = "\n        max-width: 0%;\n        opacity: 0;\n    ";
+  var EXPANDED = "\n        max-width: 100%;\n        opacity: 1;\n    ";
+  var HIDDEN = "\n        position: absolute;\n        visibility: hidden;\n    ";
+  var VISIBLE = "\n        position: static;\n        visibility: visible;\n    ";
+  var DOM_READY = '.dom-ready';
+  var PAYPAL_BUTTON = "." + CLASS.BUTTON + "[" + ATTRIBUTE.FUNDING_SOURCE + "=" + FUNDING.PAYPAL + "]";
+  var PAYPAL_LOGO = PAYPAL_BUTTON + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + FUNDING.PAYPAL;
+  var BUTTON_TEXT = PAYPAL_BUTTON + " ." + CLASS.TEXT + ":not(.personalization-text)";
+  var PERSONALIZATION_TEXT = PAYPAL_BUTTON + " .personalization-text";
+  return jsxToHTML("style", {
+    innerHTML: "\n\n            " + BUTTON_TEXT + ", " + PERSONALIZATION_TEXT + " {\n                " + HIDDEN + "\n            }\n\n            " + DOM_READY + " " + BUTTON_TEXT + ":not(." + CLASS.HIDDEN + ") {\n                " + VISIBLE + "\n                " + COMPRESSED + "\n                animation: show-text " + LABEL_DURATION + "s " + DELAY + "s forwards;\n            }\n\n            @media only screen and (max-width: " + MIN_WIDTH + "px) {\n                " + DOM_READY + " " + PERSONALIZATION_TEXT + " {\n                    " + HIDDEN + "\n                }\n            }\n\n            @media only screen and (min-width: " + MIN_WIDTH + "px) {\n                " + DOM_READY + " " + PAYPAL_LOGO + " {\n                    animation: " + (personalizedButtonText ? "toggle-paypal-logo " + PERSONALIZATION_DURATION + "s " + DELAY + "s forwards" : "none") + ";\n                }\n\n                " + DOM_READY + " " + BUTTON_TEXT + ":not(." + CLASS.HIDDEN + ") {\n                    " + COMPRESSED + "\n                    " + VISIBLE + "\n                    animation: " + (personalizedButtonText ? "show-text-delayed " + PERSONALIZATION_DURATION + "s " + DELAY + "s forwards" : "show-text " + LABEL_DURATION + "s " + DELAY + "s forwards") + ";\n                }\n\n                " + DOM_READY + " " + PERSONALIZATION_TEXT + " {\n                    " + COMPRESSED + "\n                    " + VISIBLE + "\n                    animation: show-personalization-text " + PERSONALIZATION_DURATION + "s " + DELAY + "s forwards;\n                }\n            }\n\n            @keyframes show-text {\n                0% { " + COMPRESSED + " }\n                100% { " + EXPANDED + " }\n            }\n\n            @keyframes toggle-paypal-logo {\n                0% { " + EXPANDED + " }\n                8% { " + COMPRESSED + " }\n                85% { " + COMPRESSED + " }\n                100% { " + EXPANDED + " }\n            }\n\n            @keyframes show-text-delayed {\n                0% { " + COMPRESSED + " }\n                85% { " + COMPRESSED + " }\n                100% { " + EXPANDED + " }\n            }\n\n            @keyframes show-personalization-text {\n                0% { " + COMPRESSED + " }\n                25% { " + EXPANDED + " }\n                75% { " + EXPANDED + " }\n                100% { " + COMPRESSED + " }\n            }\n        "
+  });
+}
+
+function renderContent(text, _ref11) {
+  var label = _ref11.label,
+      locale = _ref11.locale,
+      color = _ref11.color,
+      branding = _ref11.branding,
+      logoColor = _ref11.logoColor,
+      funding = _ref11.funding,
+      env = _ref11.env,
+      _cards = _ref11.cards,
+      dynamicContent = _ref11.dynamicContent,
+      layout = _ref11.layout,
+      size = _ref11.size;
 
   var _content = getLocaleContent(locale);
 
@@ -14919,7 +15010,8 @@ function renderContent(text, _ref10) {
     text: function text(value) {
       var className = "" + CLASS.TEXT;
       return jsxToHTML("span", {
-        class: className
+        class: className,
+        optional: true
       }, value);
     },
     logo: function logo(name) {
@@ -15006,24 +15098,40 @@ function renderContent(text, _ref10) {
   });
 }
 
-function renderButton(_ref11) {
-  var _ref12, _ref13, _ref14;
+function renderButtonTextDiv(_ref12) {
+  var contentText = _ref12.contentText,
+      personalizedButtonText = _ref12.personalizedButtonText,
+      impression = _ref12.impression,
+      branding = _ref12.branding,
+      allowedAnimation = _ref12.allowedAnimation;
+  return jsxToHTML("div", {
+    class: "" + CLASS.BUTTON_LABEL
+  }, getButtonTextAnimationStyle({
+    personalizedButtonText: personalizedButtonText,
+    branding: branding,
+    allowedAnimation: allowedAnimation
+  }), contentText, personalizedButtonText, impression && Beacon(impression));
+}
 
-  var size = _ref11.size,
-      label = _ref11.label,
-      color = _ref11.color,
-      locale = _ref11.locale,
-      branding = _ref11.branding,
-      multiple = _ref11.multiple,
-      layout = _ref11.layout,
-      shape = _ref11.shape,
-      source = _ref11.source,
-      funding = _ref11.funding,
-      i = _ref11.i,
-      env = _ref11.env,
-      cards = _ref11.cards,
-      installmentperiod = _ref11.installmentperiod,
-      checkoutCustomization = _ref11.checkoutCustomization;
+function renderButton(_ref13) {
+  var _ref14, _ref15, _ref16;
+
+  var size = _ref13.size,
+      label = _ref13.label,
+      color = _ref13.color,
+      locale = _ref13.locale,
+      branding = _ref13.branding,
+      multiple = _ref13.multiple,
+      layout = _ref13.layout,
+      shape = _ref13.shape,
+      source = _ref13.source,
+      funding = _ref13.funding,
+      tagline = _ref13.tagline,
+      i = _ref13.i,
+      env = _ref13.env,
+      cards = _ref13.cards,
+      installmentperiod = _ref13.installmentperiod,
+      checkoutCustomization = _ref13.checkoutCustomization;
   var logoColor = getButtonConfig(label, 'logoColors')[color];
   var buttonLabel = determineLabel({
     label: label,
@@ -15034,18 +15142,22 @@ function renderButton(_ref11) {
   // the label template, otherwise use the logo template.
 
   var contentText;
-  var impression; // suppressing consumption of mors text
+  var impression;
+  var morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+  var personalizedButtonText;
+  var allowedAnimation;
 
-  var morsText; // checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+  if (allowedPersonalizationLabels.indexOf(label) !== -1) {
+    allowedAnimation = true;
+  }
 
   if (buttonLabel === label) {
-    // checks for button label: pay, buynow, checkout, paypal, installment
-    if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText) {
-      contentText = morsText;
+    if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText && branding && !tagline) {
+      personalizedButtonText = renderPersonalizationButtonText(morsText);
       impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
-    } else {
-      contentText = getButtonConfig(label, 'label');
     }
+
+    contentText = getButtonConfig(label, 'label');
   } else {
     contentText = getButtonConfig(label, 'logoLabel');
   } // Add all the variables in dynamic content required to be plugged in content
@@ -15071,7 +15183,7 @@ function renderButton(_ref11) {
   }); // Define a list of funding options that will not need a tabindex
 
   var hasTabIndex = [FUNDING.CARD].indexOf(source) === -1;
-  return jsxToHTML("div", _extends({}, (_ref12 = {}, _ref12[ATTRIBUTE.LAYOUT] = layout ? layout : '', _ref12), (_ref13 = {}, _ref13[ATTRIBUTE.SIZE] = size ? size : '', _ref13), (_ref14 = {}, _ref14[ATTRIBUTE.FUNDING_SOURCE] = source, _ref14[ATTRIBUTE.BUTTON] = true, _ref14), {
+  return jsxToHTML("div", _extends({}, (_ref14 = {}, _ref14[ATTRIBUTE.LAYOUT] = layout ? layout : '', _ref14), (_ref15 = {}, _ref15[ATTRIBUTE.SIZE] = size ? size : '', _ref15), (_ref16 = {}, _ref16[ATTRIBUTE.FUNDING_SOURCE] = source, _ref16[ATTRIBUTE.BUTTON] = true, _ref16), {
     class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -15086,19 +15198,25 @@ function renderButton(_ref11) {
     role: "button",
     "aria-label": source,
     tabindex: hasTabIndex && 0
-  }), contentText, impression && Beacon(impression));
+  }), source === FUNDING.CARD ? contentText : renderButtonTextDiv({
+    contentText: contentText,
+    personalizedButtonText: personalizedButtonText,
+    impression: impression,
+    branding: branding,
+    allowedAnimation: allowedAnimation
+  }));
 }
 
-function renderTagline(_ref15) {
-  var label = _ref15.label,
-      tagline = _ref15.tagline,
-      color = _ref15.color,
-      locale = _ref15.locale,
-      multiple = _ref15.multiple,
-      env = _ref15.env,
-      cards = _ref15.cards,
-      checkoutCustomization = _ref15.checkoutCustomization,
-      layout = _ref15.layout;
+function renderTagline(_ref17) {
+  var label = _ref17.label,
+      tagline = _ref17.tagline,
+      color = _ref17.color,
+      locale = _ref17.locale,
+      multiple = _ref17.multiple,
+      env = _ref17.env,
+      cards = _ref17.cards,
+      checkoutCustomization = _ref17.checkoutCustomization,
+      layout = _ref17.layout;
 
   if (!tagline) {
     return;
@@ -15133,9 +15251,9 @@ function renderScript() {
   });
 }
 
-function renderStyle(_ref16) {
-  var height = _ref16.height,
-      cardNumber = _ref16.cardNumber;
+function renderStyle(_ref18) {
+  var height = _ref18.height,
+      cardNumber = _ref18.cardNumber;
   return jsxToHTML("style", {
     innerHTML: componentStyle({
       height: height,
@@ -15171,10 +15289,10 @@ function renderPowerByPaypalLogo(props) {
   })));
 }
 
-function componentTemplate(_ref17) {
-  var _ref18;
+function componentTemplate(_ref19) {
+  var _ref20;
 
-  var props = _ref17.props;
+  var props = _ref19.props;
 
   if (props && props.style) {
     var style = props.style;
@@ -15230,6 +15348,7 @@ function componentTemplate(_ref17) {
       multiple: multiple,
       locale: locale,
       branding: branding,
+      tagline: tagline,
       layout: layout,
       shape: shape,
       cards: cards,
@@ -15261,7 +15380,7 @@ function componentTemplate(_ref17) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.305", _ref18), {
+  return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20[ATTRIBUTE.VERSION] = "4.0.306", _ref20), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,

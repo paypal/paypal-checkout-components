@@ -337,7 +337,8 @@ var FPTI = {
     FUNDING_REMEMBERED: 'funding_remembered',
     BUTTON_TAGLINE_ENABLED: 'button_tagline_enabled',
     RESPONSE_DURATION: 'response_duration',
-    PAYMENT_FLOW: 'payment_flow'
+    PAYMENT_FLOW: 'payment_flow',
+    BUTTON_VERSION: 'button_version'
   },
   BUTTON_TYPE: {
     IFRAME: 'iframe',
@@ -1446,7 +1447,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(session["c" /* getSessionID */])(),
-      ver: "4.0.305"
+      ver: "4.0.306"
     };
   });
   Object(client["a" /* addHeaderBuilder */])(function () {
@@ -2023,7 +2024,7 @@ function isPayPalObjects() {
 }
 function getScriptVersion() {
   if (false) {} else {
-    return  false ? undefined : "4.0.305";
+    return  false ? undefined : "4.0.306";
   }
 }
 function getCurrentScriptUrl() {
@@ -2039,7 +2040,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.305" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.306" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -2404,10 +2405,10 @@ function getDefaultEnv() {
 
 var config = {
   locales: constants["z" /* LOCALE */],
-  scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.4.0.305.js",
+  scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.4.0.306.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.305",
+  version: "4.0.306",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -2805,6 +2806,12 @@ var config = {
       disable_venmo: true
     },
     'cvs.com': {
+      disable_venmo: true
+    },
+    'gilt.com': {
+      disable_venmo: true
+    },
+    'ruelala.com': {
       disable_venmo: true
     }
   },
@@ -10118,6 +10125,20 @@ function supportsPopups(ua) {
 
   return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
+function isChrome(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Chrome|Chromium|CriOS/.test(ua);
+}
+function isSafari(ua) {
+  if (ua === void 0) {
+    ua = getUserAgent();
+  }
+
+  return /Safari/.test(ua) && !isChrome(ua);
+}
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
 var esm_extends = __webpack_require__(11);
 
@@ -12643,6 +12664,8 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import isIEIntranet */
 /* unused concated harmony import isMacOsCna */
 /* unused concated harmony import supportsPopups */
+/* unused concated harmony import isChrome */
+/* unused concated harmony import isSafari */
 /* unused concated harmony import isDocumentReady */
 /* unused concated harmony import urlEncode */
 /* unused concated harmony import waitForWindowReady */
@@ -20591,7 +20614,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.305";
+    payload.version = "4.0.306";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -20647,7 +20670,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.305".replace(/[^0-9]+/g, '_');
+      var version = "4.0.306".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -20664,7 +20687,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.305",
+    v: "checkout.js." + "4.0.306",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -25788,17 +25811,17 @@ if ( true && !Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__[/* isPayPalDomai
   throw new Error("Do not integrate with versioned script url");
 }
 
-if (window.paypal && window.paypal.version === "4.0.305") {
+if (window.paypal && window.paypal.version === "4.0.306") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.305"
+    version: "4.0.306"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.305" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.305" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.306" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.306" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.305"
+    version: "4.0.306"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.305");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.306");
 } else {
   try {
     var _interface = __webpack_require__(66);
@@ -27873,6 +27896,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[constants["l" /* BUTTON_SI
   maxWidth: 150,
   minHeight: 25,
   maxHeight: 30,
+  buttonTextMargin: 0.5,
   allowFunding: true,
   allowTagline: false,
   byPayPalHeight: 0
@@ -27883,6 +27907,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[constants["l" /* BUTTON_SI
   maxWidth: 200,
   minHeight: 25,
   maxHeight: 55,
+  buttonTextMargin: 0.5,
   allowFunding: true,
   allowTagline: true,
   byPayPalHeight: 0
@@ -27893,6 +27918,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[constants["l" /* BUTTON_SI
   maxWidth: 300,
   minHeight: 35,
   maxHeight: 55,
+  buttonTextMargin: 1,
   allowFunding: true,
   allowTagline: true,
   byPayPalHeight: 30
@@ -27903,6 +27929,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[constants["l" /* BUTTON_SI
   maxWidth: 500,
   minHeight: 30,
   maxHeight: 55,
+  buttonTextMargin: 1,
   allowFunding: true,
   allowTagline: true,
   byPayPalHeight: 30
@@ -27913,6 +27940,7 @@ var BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[constants["l" /* BUTTON_SI
   maxWidth: 750,
   minHeight: 40,
   maxHeight: 55,
+  buttonTextMargin: 1.25,
   allowFunding: true,
   allowTagline: true,
   byPayPalHeight: 30
@@ -28254,13 +28282,12 @@ function validateButtonProps(props) {
   validateButtonLocale(locale);
   validateButtonStyle(style, props);
 }
-// CONCATENATED MODULE: ./src/button/template/componentStyle/page.js
-var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n        vertical-align: top;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n";
 // CONCATENATED MODULE: ./src/button/template/componentStyle/class.js
 var class_CLASS = {
   SHOULD_FOCUS: 'paypal-should-focus',
   CONTAINER: 'paypal-button-container',
   BUTTON: 'paypal-button',
+  BUTTON_LABEL: 'paypal-button-label-container',
   LABEL: 'paypal-button-label',
   COLOR: 'paypal-button-color',
   LOGO_COLOR: 'paypal-button-logo-color',
@@ -28275,12 +28302,18 @@ var class_CLASS = {
   TEXT: 'paypal-button-text',
   LOGO: 'paypal-button-logo',
   CARD: 'paypal-button-card',
-  SEPARATOR: 'paypal-separator'
+  SEPARATOR: 'paypal-separator',
+  HIDDEN: 'hidden',
+  DOM_READY: 'dom-ready',
+  PERSONALIZATION_TEXT: 'personalization-text'
 };
+// CONCATENATED MODULE: ./src/button/template/componentStyle/page.js
+
+var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n        vertical-align: top;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n        box-sizing: border-box;\n    }\n    \n    ." + class_CLASS.HIDDEN + " {\n        position: absolute;\n        visibility: hidden;\n    }\n";
 // CONCATENATED MODULE: ./src/button/template/componentStyle/button.js
 
 
-var buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + " {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants["t" /* ENV */].TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus, ." + class_CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.BUTTON + ":focus,\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + class_CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
+var buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + " {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants["t" /* ENV */].TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus, ." + class_CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.BUTTON + ":focus,\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.BUTTON_LABEL + " {\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n    }\n    \n    ." + class_CLASS.BUTTON + " > ." + class_CLASS.BUTTON_LABEL + " > * {\n        vertical-align: top;\n        height: 100%;\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    }\n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants["e" /* BUTTON_COLOR */].BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
 // CONCATENATED MODULE: ./src/button/template/componentStyle/layout.js
 
 
@@ -28307,8 +28340,9 @@ function buttonResponsiveStyle(_ref) {
   return Object.keys(BUTTON_STYLE).map(function (size) {
     var style = BUTTON_STYLE[size];
     var buttonHeight = height || style.defaultHeight;
+    var buttonTextMarginTop = style.buttonTextMargin;
     var minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util["h" /* max */])(Object(util["m" /* perc */])(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants["d" /* BUTTON_BRANDING */].UNBRANDED + " {\n                    font-size: " + Object(util["h" /* max */])(Object(util["m" /* perc */])(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util["m" /* perc */])(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util["m" /* perc */])(buttonHeight, 60) + "px;\n                    min-height: " + Object(util["m" /* perc */])(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants["f" /* BUTTON_LABEL */].EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants["f" /* BUTTON_LABEL */].MYBANK + " {\n                    height: " + (Object(util["m" /* perc */])(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util["m" /* perc */])(buttonHeight, 70) + "px;\n                    min-height: " + Object(util["m" /* perc */])(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants["k" /* BUTTON_SHAPE */].PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants["k" /* BUTTON_SHAPE */].RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].VERTICAL + " {\n                    margin-bottom: " + Object(util["m" /* perc */])(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util["m" /* perc */])(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? 'block' : 'none') + ";\n                    height: " + Object(util["m" /* perc */])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util["m" /* perc */])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? 'block' : 'none') + ";\n                    height: " + Object(util["m" /* perc */])(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util["m" /* perc */])(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util["m" /* perc */])(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util["m" /* perc */])(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util["m" /* perc */])(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util["m" /* perc */])(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util["h" /* max */])(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util["h" /* max */])(Object(util["m" /* perc */])(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants["d" /* BUTTON_BRANDING */].UNBRANDED + " ." + class_CLASS.BUTTON_LABEL + " {\n                    height: 100%;\n                    font-size: " + Object(util["h" /* max */])(Object(util["m" /* perc */])(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.BUTTON_LABEL + " {\n                    height: " + (Object(util["m" /* perc */])(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util["m" /* perc */])(buttonHeight, 60) + "px;\n                    min-height: " + Object(util["m" /* perc */])(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.BUTTON + " ." + class_CLASS.BUTTON_LABEL + " ." + class_CLASS.TEXT + " {\n                    margin-top: " + buttonTextMarginTop + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants["f" /* BUTTON_LABEL */].EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants["f" /* BUTTON_LABEL */].MYBANK + " {\n                    height: " + (Object(util["m" /* perc */])(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util["m" /* perc */])(buttonHeight, 70) + "px;\n                    min-height: " + Object(util["m" /* perc */])(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants["k" /* BUTTON_SHAPE */].PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants["k" /* BUTTON_SHAPE */].RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].VERTICAL + " {\n                    margin-bottom: " + Object(util["m" /* perc */])(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util["m" /* perc */])(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? 'block' : 'none') + ";\n                    height: " + Object(util["m" /* perc */])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util["m" /* perc */])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? 'block' : 'none') + ";\n                    height: " + Object(util["m" /* perc */])(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util["m" /* perc */])(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util["m" /* perc */])(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util["m" /* perc */])(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util["m" /* perc */])(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util["m" /* perc */])(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util["h" /* max */])(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants["g" /* BUTTON_LAYOUT */].HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants["j" /* BUTTON_NUMBER */].MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
   }).join('\n');
 }
 // CONCATENATED MODULE: ./src/button/template/componentStyle/color.js
@@ -28366,7 +28400,9 @@ function Tagline(tagColor, impression, text) {
   });
   nodes[1] = Object(jsx["c" /* jsxToHTML */])("div", {
     class: class_CLASS.TAGLINE + " " + class_CLASS.TAGLINE_COLOR + "-" + tagColor
-  }, Object(jsx["c" /* jsxToHTML */])("span", null, text), impression && Object(jsx["c" /* jsxToHTML */])("img", {
+  }, Object(jsx["c" /* jsxToHTML */])("span", {
+    optional: true
+  }, text), impression && Object(jsx["c" /* jsxToHTML */])("img", {
     class: "tracking-beacon",
     src: impression
   }));
@@ -28376,97 +28412,153 @@ function Tagline(tagColor, impression, text) {
 function getComponentScript() {
   /* istanbul ignore next */
   return function () {
-    var STYLE = {
-      BLOCK: 'block',
-      INLINE_BLOCK: 'inline-block',
-      NONE: 'none',
-      VISIBLE: 'visible',
-      HIDDEN: 'hidden'
+    var ATTRIBUTE = {
+      OPTIONAL: 'optional'
     };
+    var CLASS = {
+      HIDDEN: 'hidden',
+      DOM_READY: 'dom-ready'
+    };
+    var SELECTOR = {
+      ALL: '*',
+      OPTIONAL: "[" + ATTRIBUTE.OPTIONAL + "]"
+    };
+    var TAG = {
+      STYLE: 'style'
+    };
+
+    function once(handler) {
+      var called = false;
+      return function () {
+        if (!called) {
+          called = true;
+          handler.apply(void 0, arguments);
+        }
+      };
+    }
+
+    function debounce(handler, time) {
+      if (time === void 0) {
+        time = 50;
+      }
+
+      var timeout;
+      return function () {
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+          handler.apply(void 0, args);
+        }, time);
+      };
+    } // eslint-disable-next-line flowtype/no-mutable-array
+
+
+    function toArray(item) {
+      return Array.prototype.slice.call(item);
+    }
 
     function getElements(selector, parent) {
       parent = parent || document;
-      return Array.prototype.slice.call(parent.querySelectorAll(selector));
+      return toArray(parent.querySelectorAll(selector)).filter(function (el) {
+        return el.tagName.toLowerCase() !== TAG.STYLE;
+      });
     }
 
-    function showElement(el, displayType) {
-      if (displayType === void 0) {
-        displayType = STYLE.INLINE_BLOCK;
-      }
+    function getParent(element) {
+      // $FlowFixMe
+      return element.parentElement;
+    }
 
-      el.style.display = displayType;
+    function showElement(el) {
+      el.classList.remove(CLASS.HIDDEN);
     }
 
     function hideElement(el) {
-      el.style.display = STYLE.NONE;
+      el.classList.add(CLASS.HIDDEN);
     }
 
-    function makeElementVisible(el) {
-      el.style.visibility = STYLE.VISIBLE;
+    function sum(arr) {
+      var result = 0;
+
+      for (var _i2 = 0; _i2 < arr.length; _i2++) {
+        var item = arr[_i2];
+        result += item;
+      }
+
+      return result;
     }
 
-    function makeElementInvisible(el) {
-      el.style.visibility = STYLE.HIDDEN;
+    function unique(arr) {
+      var result = [];
+
+      for (var _i4 = 0; _i4 < arr.length; _i4++) {
+        var el = arr[_i4];
+
+        if (result.indexOf(el) === -1) {
+          result.push(el);
+        }
+      }
+
+      return result;
     }
 
-    function isOverflowing(el) {
-      if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
-        return true;
-      }
-
-      var parent = el.parentNode;
-
-      if (!parent) {
-        return false;
-      }
-
-      var e = el.getBoundingClientRect(); // $FlowFixMe
-
-      var p = parent.getBoundingClientRect();
-
-      if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
-        return true;
-      }
-
-      if (e.left < 0 || e.top < 0 || e.left + e.width > window.innerWidth || e.top + e.height > window.innerHeight) {
-        return true;
-      }
-
-      return false;
+    function getAllChildren(element) {
+      return getElements(SELECTOR.ALL, element);
     }
 
-    var images = getElements('.{ CLASS.BUTTON } .{ CLASS.LOGO }');
-    var text = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
-    var tagline = getElements('.{ CLASS.TAGLINE }');
-    var cards = getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }');
-    var optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');
+    function getOptionalIndex(element) {
+      return parseInt(element.getAttribute(ATTRIBUTE.OPTIONAL) || 0, 10);
+    }
+
+    function getElementsTotalWidth(elements) {
+      return sum(elements.map(function (child) {
+        return child.offsetWidth;
+      }));
+    }
+
+    function getOptionalParents() {
+      var optional = [].concat(getElements(SELECTOR.OPTIONAL), getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }'), getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal'));
+      return unique(optional.map(getParent).filter(Boolean));
+    }
+
+    function getOptionalChildren(parent) {
+      return toArray(getElements(SELECTOR.OPTIONAL, parent)).sort(function (first, second) {
+        return getOptionalIndex(first) - getOptionalIndex(second);
+      });
+    }
+
+    var children = getOptionalParents().map(function (optionalParent) {
+      var allChildren = getAllChildren(optionalParent);
+      var optionalChildren = getOptionalChildren(optionalParent);
+      return {
+        optionalParent: optionalParent,
+        allChildren: allChildren,
+        optionalChildren: optionalChildren
+      };
+    });
 
     function toggleOptionals() {
-      if (tagline.some(isOverflowing)) {
-        tagline.forEach(makeElementInvisible);
-      } else {
-        tagline.forEach(makeElementVisible);
-      }
+      for (var _i6 = 0; _i6 < children.length; _i6++) {
+        var _children$_i = children[_i6],
+            optionalParent = _children$_i.optionalParent,
+            allChildren = _children$_i.allChildren,
+            optionalChildren = _children$_i.optionalChildren;
+        var parentWidth = optionalParent.offsetWidth;
+        var usedWidth = getElementsTotalWidth(allChildren) - getElementsTotalWidth(optionalChildren);
 
-      cards.forEach(function (el) {
-        return showElement(el);
-      });
-      cards.filter(isOverflowing).forEach(hideElement);
-      text.forEach(function (el) {
-        return showElement(el);
-      });
-      optionals.forEach(function (el) {
-        return showElement(el);
-      });
+        for (var _i8 = 0; _i8 < optionalChildren.length; _i8++) {
+          var optionalChild = optionalChildren[_i8];
+          usedWidth += optionalChild.offsetWidth;
 
-      if (images.some(isOverflowing) || text.some(isOverflowing)) {
-        text.forEach(hideElement);
-        optionals.forEach(hideElement);
-      } else {
-        text.forEach(makeElementVisible);
-        optionals.forEach(function (el) {
-          return showElement(el);
-        });
+          if (usedWidth > parentWidth) {
+            hideElement(optionalChild);
+          } else {
+            showElement(optionalChild);
+          }
+        }
       }
     }
 
@@ -28492,11 +28584,24 @@ function getComponentScript() {
       window.addEventListener('keydown', handleFirstTab);
     }
 
+    var setDomReady = once(debounce(function () {
+      window.addEventListener('resize', toggleOptionals);
+
+      if (document.body) {
+        document.body.classList.add(CLASS.DOM_READY);
+      }
+    }));
+
+    var load = function load() {
+      toggleOptionals();
+      setDomReady();
+    };
+
     toggleOptionals();
     setupTabOutlineEvent();
-    document.addEventListener('DOMContentLoaded', toggleOptionals);
-    window.addEventListener('load', toggleOptionals);
-    window.addEventListener('resize', toggleOptionals);
+    document.addEventListener('DOMContentLoaded', load);
+    window.addEventListener('load', load);
+    window.addEventListener('resize', load);
   };
 }
 // CONCATENATED MODULE: ./src/button/template/content.js
@@ -34394,6 +34499,7 @@ var componentContent = {
 };
 // CONCATENATED MODULE: ./src/button/template/componentTemplate.jsx
 
+// eslint-disable-line max-lines
 
 /** @jsx jsxToHTML */
 
@@ -34407,7 +34513,7 @@ var componentContent = {
 
 
 
-var allowedPersonalizationLabels = [constants["f" /* BUTTON_LABEL */].CHECKOUT, constants["f" /* BUTTON_LABEL */].BUYNOW, constants["f" /* BUTTON_LABEL */].PAY]; // const delay = 0.2;
+var allowedPersonalizationLabels = [constants["f" /* BUTTON_LABEL */].CHECKOUT, constants["f" /* BUTTON_LABEL */].BUYNOW, constants["f" /* BUTTON_LABEL */].PAY];
 
 function getCommonButtonClasses(_ref) {
   var layout = _ref.layout,
@@ -34510,67 +34616,60 @@ function renderFundingIcons(_ref9) {
     layout: layout
   }));
 }
-/*
-// this function performs the first button render for eligible population
-function renderPPPayPalLoadingDots({ color, logoColor, branding, label } : { color : string, logoColor : $Values<typeof BUTTON_LOGO_COLOR>, branding : boolean, label : string }) : JsxHTMLNode {
-    if (!logoColor) {
-        throw new Error(`Can not determine logo without logo color`);
-    }
-    if (!color) {
-        throw new Error(`Can not determine button without color`);
-    }
-    
-    const loadingDotsElement = (<span class={ `${ CLASS.TEXT }` }>{ LoadingDots(delay) }</span>);
-    
-    // this is specifically for the buynow button when the style.branding = false
-    if (!branding && label === BUTTON_LABEL.BUYNOW) {
-        return new JsxHTMLNodeContainer([ loadingDotsElement ]);
-    }
-    
-    const ppFundingLogo = fundingLogos[BUTTON_LOGO.PP];
-    const ppLogo =  typeof ppFundingLogo === 'function' ? ppFundingLogo({ logoColor }) : ppFundingLogo[logoColor];
-    const paypalFundingLogo = fundingLogos[BUTTON_LOGO.PAYPAL];
-    const paypalLogo = typeof paypalFundingLogo === 'function' ? paypalFundingLogo({ logoColor }) : paypalFundingLogo[logoColor];
-    const nodes = [];
-    nodes[0] = (
-        <img
-            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PP  } ${ CLASS.LOGO }-${ color }` }
-            src={ `data:image/svg+xml;base64,${ base64encode(ppLogo.toString()) }` }
-            alt={ BUTTON_LOGO.PP }
-        />);
-    
-    // for an intentional white space
-    nodes[1] = ' ';
-    
-    nodes[2] = (
-        <img
-            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } ${ CLASS.LOGO }-${ color }` }
-            src={ `data:image/svg+xml;base64,${ base64encode(paypalLogo.toString()) }` }
-            alt={ BUTTON_LOGO.PAYPAL }
-        />);
-    
-    // for an intentional white space
-    nodes[3] = ' ';
-    
-    nodes[4] = loadingDotsElement;
-    
-    return new JsxHTMLNodeContainer(nodes);
+
+function renderPersonalizationButtonText(text) {
+  var className = class_CLASS.TEXT + " " + class_CLASS.PERSONALIZATION_TEXT;
+  return Object(jsx["c" /* jsxToHTML */])("span", {
+    class: className,
+    optional: "2"
+  }, text);
 }
-*/
 
-
-function renderContent(text, _ref10) {
-  var label = _ref10.label,
-      locale = _ref10.locale,
-      color = _ref10.color,
+function getButtonTextAnimationStyle(_ref10) {
+  var personalizedButtonText = _ref10.personalizedButtonText,
       branding = _ref10.branding,
-      logoColor = _ref10.logoColor,
-      funding = _ref10.funding,
-      env = _ref10.env,
-      _cards = _ref10.cards,
-      dynamicContent = _ref10.dynamicContent,
-      layout = _ref10.layout,
-      size = _ref10.size;
+      allowedAnimation = _ref10.allowedAnimation;
+
+  if (false) {}
+
+  if (!branding) {
+    return;
+  }
+
+  if (!allowedAnimation) {
+    return;
+  }
+
+  var MIN_WIDTH = 300;
+  var LABEL_DURATION = 1;
+  var PERSONALIZATION_DURATION = 5;
+  var DELAY = 0.5;
+  var COMPRESSED = "\n        max-width: 0%;\n        opacity: 0;\n    ";
+  var EXPANDED = "\n        max-width: 100%;\n        opacity: 1;\n    ";
+  var HIDDEN = "\n        position: absolute;\n        visibility: hidden;\n    ";
+  var VISIBLE = "\n        position: static;\n        visibility: visible;\n    ";
+  var DOM_READY = '.dom-ready';
+  var PAYPAL_BUTTON = "." + class_CLASS.BUTTON + "[" + constants["c" /* ATTRIBUTE */].FUNDING_SOURCE + "=" + constants["v" /* FUNDING */].PAYPAL + "]";
+  var PAYPAL_LOGO = PAYPAL_BUTTON + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants["v" /* FUNDING */].PAYPAL;
+  var BUTTON_TEXT = PAYPAL_BUTTON + " ." + class_CLASS.TEXT + ":not(.personalization-text)";
+  var PERSONALIZATION_TEXT = PAYPAL_BUTTON + " .personalization-text";
+  return Object(jsx["c" /* jsxToHTML */])("style", {
+    innerHTML: "\n\n            " + BUTTON_TEXT + ", " + PERSONALIZATION_TEXT + " {\n                " + HIDDEN + "\n            }\n\n            " + DOM_READY + " " + BUTTON_TEXT + ":not(." + class_CLASS.HIDDEN + ") {\n                " + VISIBLE + "\n                " + COMPRESSED + "\n                animation: show-text " + LABEL_DURATION + "s " + DELAY + "s forwards;\n            }\n\n            @media only screen and (max-width: " + MIN_WIDTH + "px) {\n                " + DOM_READY + " " + PERSONALIZATION_TEXT + " {\n                    " + HIDDEN + "\n                }\n            }\n\n            @media only screen and (min-width: " + MIN_WIDTH + "px) {\n                " + DOM_READY + " " + PAYPAL_LOGO + " {\n                    animation: " + (personalizedButtonText ? "toggle-paypal-logo " + PERSONALIZATION_DURATION + "s " + DELAY + "s forwards" : "none") + ";\n                }\n\n                " + DOM_READY + " " + BUTTON_TEXT + ":not(." + class_CLASS.HIDDEN + ") {\n                    " + COMPRESSED + "\n                    " + VISIBLE + "\n                    animation: " + (personalizedButtonText ? "show-text-delayed " + PERSONALIZATION_DURATION + "s " + DELAY + "s forwards" : "show-text " + LABEL_DURATION + "s " + DELAY + "s forwards") + ";\n                }\n\n                " + DOM_READY + " " + PERSONALIZATION_TEXT + " {\n                    " + COMPRESSED + "\n                    " + VISIBLE + "\n                    animation: show-personalization-text " + PERSONALIZATION_DURATION + "s " + DELAY + "s forwards;\n                }\n            }\n\n            @keyframes show-text {\n                0% { " + COMPRESSED + " }\n                100% { " + EXPANDED + " }\n            }\n\n            @keyframes toggle-paypal-logo {\n                0% { " + EXPANDED + " }\n                8% { " + COMPRESSED + " }\n                85% { " + COMPRESSED + " }\n                100% { " + EXPANDED + " }\n            }\n\n            @keyframes show-text-delayed {\n                0% { " + COMPRESSED + " }\n                85% { " + COMPRESSED + " }\n                100% { " + EXPANDED + " }\n            }\n\n            @keyframes show-personalization-text {\n                0% { " + COMPRESSED + " }\n                25% { " + EXPANDED + " }\n                75% { " + EXPANDED + " }\n                100% { " + COMPRESSED + " }\n            }\n        "
+  });
+}
+
+function renderContent(text, _ref11) {
+  var label = _ref11.label,
+      locale = _ref11.locale,
+      color = _ref11.color,
+      branding = _ref11.branding,
+      logoColor = _ref11.logoColor,
+      funding = _ref11.funding,
+      env = _ref11.env,
+      _cards = _ref11.cards,
+      dynamicContent = _ref11.dynamicContent,
+      layout = _ref11.layout,
+      size = _ref11.size;
 
   var _content = getLocaleContent(locale);
 
@@ -34578,7 +34677,8 @@ function renderContent(text, _ref10) {
     text: function text(value) {
       var className = "" + class_CLASS.TEXT;
       return Object(jsx["c" /* jsxToHTML */])("span", {
-        class: className
+        class: className,
+        optional: true
       }, value);
     },
     logo: function logo(name) {
@@ -34665,24 +34765,40 @@ function renderContent(text, _ref10) {
   });
 }
 
-function renderButton(_ref11) {
-  var _ref12, _ref13, _ref14;
+function renderButtonTextDiv(_ref12) {
+  var contentText = _ref12.contentText,
+      personalizedButtonText = _ref12.personalizedButtonText,
+      impression = _ref12.impression,
+      branding = _ref12.branding,
+      allowedAnimation = _ref12.allowedAnimation;
+  return Object(jsx["c" /* jsxToHTML */])("div", {
+    class: "" + class_CLASS.BUTTON_LABEL
+  }, getButtonTextAnimationStyle({
+    personalizedButtonText: personalizedButtonText,
+    branding: branding,
+    allowedAnimation: allowedAnimation
+  }), contentText, personalizedButtonText, impression && Beacon(impression));
+}
 
-  var size = _ref11.size,
-      label = _ref11.label,
-      color = _ref11.color,
-      locale = _ref11.locale,
-      branding = _ref11.branding,
-      multiple = _ref11.multiple,
-      layout = _ref11.layout,
-      shape = _ref11.shape,
-      source = _ref11.source,
-      funding = _ref11.funding,
-      i = _ref11.i,
-      env = _ref11.env,
-      cards = _ref11.cards,
-      installmentperiod = _ref11.installmentperiod,
-      checkoutCustomization = _ref11.checkoutCustomization;
+function renderButton(_ref13) {
+  var _ref14, _ref15, _ref16;
+
+  var size = _ref13.size,
+      label = _ref13.label,
+      color = _ref13.color,
+      locale = _ref13.locale,
+      branding = _ref13.branding,
+      multiple = _ref13.multiple,
+      layout = _ref13.layout,
+      shape = _ref13.shape,
+      source = _ref13.source,
+      funding = _ref13.funding,
+      tagline = _ref13.tagline,
+      i = _ref13.i,
+      env = _ref13.env,
+      cards = _ref13.cards,
+      installmentperiod = _ref13.installmentperiod,
+      checkoutCustomization = _ref13.checkoutCustomization;
   var logoColor = getButtonConfig(label, 'logoColors')[color];
   var buttonLabel = determineLabel({
     label: label,
@@ -34693,18 +34809,22 @@ function renderButton(_ref11) {
   // the label template, otherwise use the logo template.
 
   var contentText;
-  var impression; // suppressing consumption of mors text
+  var impression;
+  var morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+  var personalizedButtonText;
+  var allowedAnimation;
 
-  var morsText; // checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
+  if (allowedPersonalizationLabels.indexOf(label) !== -1) {
+    allowedAnimation = true;
+  }
 
   if (buttonLabel === label) {
-    // checks for button label: pay, buynow, checkout, paypal, installment
-    if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText) {
-      contentText = morsText;
+    if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText && branding && !tagline) {
+      personalizedButtonText = renderPersonalizationButtonText(morsText);
       impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
-    } else {
-      contentText = getButtonConfig(label, 'label');
     }
+
+    contentText = getButtonConfig(label, 'label');
   } else {
     contentText = getButtonConfig(label, 'logoLabel');
   } // Add all the variables in dynamic content required to be plugged in content
@@ -34730,7 +34850,7 @@ function renderButton(_ref11) {
   }); // Define a list of funding options that will not need a tabindex
 
   var hasTabIndex = [constants["v" /* FUNDING */].CARD].indexOf(source) === -1;
-  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref12 = {}, _ref12[constants["c" /* ATTRIBUTE */].LAYOUT] = layout ? layout : '', _ref12), (_ref13 = {}, _ref13[constants["c" /* ATTRIBUTE */].SIZE] = size ? size : '', _ref13), (_ref14 = {}, _ref14[constants["c" /* ATTRIBUTE */].FUNDING_SOURCE] = source, _ref14[constants["c" /* ATTRIBUTE */].BUTTON] = true, _ref14), {
+  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref14 = {}, _ref14[constants["c" /* ATTRIBUTE */].LAYOUT] = layout ? layout : '', _ref14), (_ref15 = {}, _ref15[constants["c" /* ATTRIBUTE */].SIZE] = size ? size : '', _ref15), (_ref16 = {}, _ref16[constants["c" /* ATTRIBUTE */].FUNDING_SOURCE] = source, _ref16[constants["c" /* ATTRIBUTE */].BUTTON] = true, _ref16), {
     class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -34745,19 +34865,25 @@ function renderButton(_ref11) {
     role: "button",
     "aria-label": source,
     tabindex: hasTabIndex && 0
-  }), contentText, impression && Beacon(impression));
+  }), source === constants["v" /* FUNDING */].CARD ? contentText : renderButtonTextDiv({
+    contentText: contentText,
+    personalizedButtonText: personalizedButtonText,
+    impression: impression,
+    branding: branding,
+    allowedAnimation: allowedAnimation
+  }));
 }
 
-function renderTagline(_ref15) {
-  var label = _ref15.label,
-      tagline = _ref15.tagline,
-      color = _ref15.color,
-      locale = _ref15.locale,
-      multiple = _ref15.multiple,
-      env = _ref15.env,
-      cards = _ref15.cards,
-      checkoutCustomization = _ref15.checkoutCustomization,
-      layout = _ref15.layout;
+function renderTagline(_ref17) {
+  var label = _ref17.label,
+      tagline = _ref17.tagline,
+      color = _ref17.color,
+      locale = _ref17.locale,
+      multiple = _ref17.multiple,
+      env = _ref17.env,
+      cards = _ref17.cards,
+      checkoutCustomization = _ref17.checkoutCustomization,
+      layout = _ref17.layout;
 
   if (!tagline) {
     return;
@@ -34794,9 +34920,9 @@ function renderScript() {
   });
 }
 
-function renderStyle(_ref16) {
-  var height = _ref16.height,
-      cardNumber = _ref16.cardNumber;
+function renderStyle(_ref18) {
+  var height = _ref18.height,
+      cardNumber = _ref18.cardNumber;
   return Object(jsx["c" /* jsxToHTML */])("style", {
     innerHTML: componentStyle({
       height: height,
@@ -34832,10 +34958,10 @@ function renderPowerByPaypalLogo(props) {
   })));
 }
 
-function componentTemplate(_ref17) {
-  var _ref18;
+function componentTemplate(_ref19) {
+  var _ref20;
 
-  var props = _ref17.props;
+  var props = _ref19.props;
 
   if (props && props.style) {
     var style = props.style;
@@ -34891,6 +35017,7 @@ function componentTemplate(_ref17) {
       multiple: multiple,
       locale: locale,
       branding: branding,
+      tagline: tagline,
       layout: layout,
       shape: shape,
       cards: cards,
@@ -34922,7 +35049,7 @@ function componentTemplate(_ref17) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref18 = {}, _ref18[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.305", _ref18), {
+  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref20 = {}, _ref20[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.306", _ref20), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -35140,7 +35267,6 @@ function isCreditDualEligible(props) {
 }
 
 var creditThrottle;
-var smartThrottle = Object(lib["x" /* getThrottle */])('smart_button_uri_2', 50, false);
 var component_Button = Object(src["c" /* create */])({
   tag: 'paypal-button',
   name: 'ppbutton',
@@ -35174,10 +35300,7 @@ var component_Button = Object(src["c" /* create */])({
       Object(beaver_logger_client["q" /* warn */])('button_pre_template_click');
 
       if (Object(lib["E" /* isIEIntranet */])()) {
-        var _track;
-
         Object(beaver_logger_client["q" /* warn */])("button_pre_template_click_intranet_mode");
-        Object(beaver_logger_client["p" /* track */])((_track = {}, _track[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.BUTTON, _track[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_CLICK_INTRANET_MODE, _track[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = _this.props.buttonSessionID, _track));
         Object(beaver_logger_client["h" /* flush */])(); // eslint-disable-next-line no-alert
 
         alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
@@ -35387,10 +35510,13 @@ var component_Button = Object(src["c" /* create */])({
       timeout:  false ? undefined : 10 * 1000,
       alias: 'billingAgreement',
       decorate: function decorate(original) {
-        return function payment() {
+        return function payment(data) {
           var _this2 = this;
 
-          var data = {};
+          if (data === void 0) {
+            data = {};
+          }
+
           var actions = {
             request: lib["R" /* request */],
             payment: {
@@ -35429,7 +35555,7 @@ var component_Button = Object(src["c" /* create */])({
           this.memoizedToken = zalgo_promise_src["a" /* ZalgoPromise */].try(original, this, [data, actions]);
           var startTime = Date.now();
           this.memoizedToken = this.memoizedToken.then(function (token) {
-            var _track2;
+            var _track;
 
             if (!token) {
               Object(beaver_logger_client["g" /* error */])("no_token_passed_to_payment");
@@ -35437,7 +35563,7 @@ var component_Button = Object(src["c" /* create */])({
             }
 
             var elapsed = Date.now() - startTime;
-            Object(beaver_logger_client["p" /* track */])((_track2 = {}, _track2[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track2[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.RECIEVE_PAYMENT, _track2[constants["u" /* FPTI */].KEY.CONTEXT_TYPE] = constants["u" /* FPTI */].CONTEXT_TYPE[Object(integrations["d" /* getPaymentType */])(token)], _track2[constants["u" /* FPTI */].KEY.CONTEXT_ID] = token, _track2[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, _track2[constants["u" /* FPTI */].KEY.RESPONSE_DURATION] = elapsed, _track2));
+            Object(beaver_logger_client["p" /* track */])((_track = {}, _track[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.RECIEVE_PAYMENT, _track[constants["u" /* FPTI */].KEY.CONTEXT_TYPE] = constants["u" /* FPTI */].CONTEXT_TYPE[Object(integrations["d" /* getPaymentType */])(token)], _track[constants["u" /* FPTI */].KEY.CONTEXT_ID] = token, _track[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, _track[constants["u" /* FPTI */].KEY.RESPONSE_DURATION] = elapsed, _track[constants["u" /* FPTI */].KEY.BUTTON_VERSION] = data && data.button_version, _track));
             Object(beaver_logger_client["h" /* flush */])();
             return token;
           });
@@ -35543,7 +35669,7 @@ var component_Button = Object(src["c" /* create */])({
       noop: true,
       decorate: function decorate(original) {
         return function decorateOnRender() {
-          var _smartThrottle$logSta, _track3;
+          var _track2;
 
           var _getBrowser = Object(lib["h" /* getBrowser */])(),
               _getBrowser$browser = _getBrowser.browser,
@@ -35563,14 +35689,10 @@ var component_Button = Object(src["c" /* create */])({
           Object(beaver_logger_client["k" /* info */])("button_render_tagline_" + (style.tagline || 'default'));
           pptm.listenForButtonRender();
           pptm.reloadPptmScript(this.props.client[this.props.env]);
-          smartThrottle.logStart((_smartThrottle$logSta = {}, _smartThrottle$logSta[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$logSta));
-          Object(beaver_logger_client["p" /* track */])((_track3 = {}, _track3[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.LOAD, _track3[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_RENDER, _track3[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track3[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3[constants["u" /* FPTI */].KEY.BUTTON_SOURCE] = this.props.source, _track3));
+          Object(beaver_logger_client["p" /* track */])((_track2 = {}, _track2[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.LOAD, _track2[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_RENDER, _track2[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track2[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants["u" /* FPTI */].KEY.BUTTON_SOURCE] = this.props.source, _track2));
 
           if (Object(lib["E" /* isIEIntranet */])()) {
-            var _track4;
-
             Object(beaver_logger_client["q" /* warn */])("button_render_intranet_mode");
-            Object(beaver_logger_client["p" /* track */])((_track4 = {}, _track4[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.LOAD, _track4[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_RENDER_INTRANET_MODE, _track4[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track4[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track4[constants["u" /* FPTI */].KEY.BUTTON_SOURCE] = this.props.source, _track4));
           }
 
           if (creditThrottle) {
@@ -35590,8 +35712,7 @@ var component_Button = Object(src["c" /* create */])({
       required: true,
       decorate: function decorate(original) {
         return function decorateOnAuthorize(data, actions) {
-          var _smartThrottle$logCom,
-              _track5,
+          var _track3,
               _this3 = this;
 
           if (data && !data.intent) {
@@ -35602,8 +35723,7 @@ var component_Button = Object(src["c" /* create */])({
           }
 
           Object(beaver_logger_client["k" /* info */])('button_authorize');
-          smartThrottle.logComplete((_smartThrottle$logCom = {}, _smartThrottle$logCom[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$logCom));
-          Object(beaver_logger_client["p" /* track */])((_track5 = {}, _track5[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track5[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.CHECKOUT_AUTHORIZE, _track5[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5));
+          Object(beaver_logger_client["p" /* track */])((_track3 = {}, _track3[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track3[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.CHECKOUT_AUTHORIZE, _track3[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3[constants["u" /* FPTI */].KEY.BUTTON_VERSION] = data && data.button_version, _track3));
 
           if (Object(lib["E" /* isIEIntranet */])()) {
             Object(beaver_logger_client["q" /* warn */])("button_authorize_intranet_mode");
@@ -35714,11 +35834,11 @@ var component_Button = Object(src["c" /* create */])({
         }
 
         return function decorateOnShippingChange(data, actions) {
-          var _track6,
+          var _track4,
               _this4 = this;
 
           Object(beaver_logger_client["k" /* info */])('button_shipping_change');
-          Object(beaver_logger_client["p" /* track */])((_track6 = {}, _track6[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track6[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.CHECKOUT_SHIPPING_CHANGE, _track6[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track6));
+          Object(beaver_logger_client["p" /* track */])((_track4 = {}, _track4[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track4[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.CHECKOUT_SHIPPING_CHANGE, _track4[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track4[constants["u" /* FPTI */].KEY.BUTTON_VERSION] = data && data.button_version, _track4));
           Object(beaver_logger_client["h" /* flush */])();
           var timeout =  false ? undefined : 10 * 1000;
           var patch = actions.payment.patch;
@@ -35779,10 +35899,10 @@ var component_Button = Object(src["c" /* create */])({
       noop: true,
       decorate: function decorate(original) {
         return function decorateOnCancel(data, actions) {
-          var _track7;
+          var _track5;
 
           Object(beaver_logger_client["k" /* info */])('button_cancel');
-          Object(beaver_logger_client["p" /* track */])((_track7 = {}, _track7[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track7[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.CHECKOUT_CANCEL, _track7[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track7));
+          Object(beaver_logger_client["p" /* track */])((_track5 = {}, _track5[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.CHECKOUT, _track5[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.CHECKOUT_CANCEL, _track5[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants["u" /* FPTI */].KEY.BUTTON_VERSION] = data && data.button_version, _track5));
           Object(beaver_logger_client["h" /* flush */])();
 
           var redirect = function redirect(win, url) {
@@ -35801,22 +35921,18 @@ var component_Button = Object(src["c" /* create */])({
       noop: true,
       decorate: function decorate(original) {
         return function decorateOnClick(data) {
-          var _smartThrottle$log, _track8;
+          var _track6;
 
-          smartThrottle.log('click', (_smartThrottle$log = {}, _smartThrottle$log[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _smartThrottle$log));
           Object(beaver_logger_client["k" /* info */])('button_click');
 
           if (data && data.flow) {
             Object(beaver_logger_client["k" /* info */])("pay_flow_" + data.flow);
           }
 
-          Object(beaver_logger_client["p" /* track */])((_track8 = {}, _track8[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.BUTTON, _track8[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_CLICK, _track8[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track8[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track8[constants["u" /* FPTI */].KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), _track8[constants["u" /* FPTI */].KEY.PAYMENT_FLOW] = data && data.flow, _track8));
+          Object(beaver_logger_client["p" /* track */])((_track6 = {}, _track6[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.BUTTON, _track6[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_CLICK, _track6[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track6[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track6[constants["u" /* FPTI */].KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), _track6[constants["u" /* FPTI */].KEY.PAYMENT_FLOW] = data && data.flow, _track6[constants["u" /* FPTI */].KEY.BUTTON_VERSION] = data && data.button_version, _track6));
 
           if (Object(lib["E" /* isIEIntranet */])()) {
-            var _track9;
-
             Object(beaver_logger_client["q" /* warn */])('button_click_intranet_mode');
-            Object(beaver_logger_client["p" /* track */])((_track9 = {}, _track9[constants["u" /* FPTI */].KEY.STATE] = constants["u" /* FPTI */].STATE.BUTTON, _track9[constants["u" /* FPTI */].KEY.TRANSITION] = constants["u" /* FPTI */].TRANSITION.BUTTON_CLICK_INTRANET_MODE, _track9[constants["u" /* FPTI */].KEY.BUTTON_TYPE] = constants["u" /* FPTI */].BUTTON_TYPE.IFRAME, _track9[constants["u" /* FPTI */].KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track9[constants["u" /* FPTI */].KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), _track9));
           }
 
           if (creditThrottle) {
@@ -36676,7 +36792,7 @@ var postRobot = post_robot_src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.305";
+var interface_version = "4.0.306";
 var interface_checkout;
 var apps;
 
@@ -38004,4 +38120,4 @@ Object(lib["K" /* onDocumentReady */])(function () {
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=checkout.4.0.305.js.map
+//# sourceMappingURL=checkout.4.0.306.js.map
