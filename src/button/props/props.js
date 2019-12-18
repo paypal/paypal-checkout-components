@@ -164,6 +164,7 @@ export type ServiceData = {|
     fundingEligibility : FundingEligibilityType,
     personalization : PersonalizationType,
     facilitatorAccessToken : string,
+    sdkMeta : string,
     eligibility : {|
         cardFields : boolean,
         nativeCheckout : {
@@ -179,6 +180,7 @@ type ServiceDataOptions = {|
     fundingEligibility : FundingEligibilityType,
     personalization : PersonalizationType,
     serverMerchantID : $ReadOnlyArray<string>,
+    sdkMeta : string,
     eligibility : {|
         cardFields : boolean,
         nativeCheckout : {
@@ -187,11 +189,12 @@ type ServiceDataOptions = {|
     |}
 |};
 
-export function getServiceData({ facilitatorAccessToken, buyerGeoCountry, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, sdkMeta, buyerGeoCountry, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
         fundingEligibility,
+        sdkMeta,
         personalization,
         facilitatorAccessToken,
         eligibility
