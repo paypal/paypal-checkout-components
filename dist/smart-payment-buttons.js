@@ -3704,7 +3704,8 @@ var SDK_QUERY_KEYS = {
   ORDER_CURRENCY: 'order-currency',
   ORDER_INTENT: 'order-intent',
   ORDER_COMMIT: 'order-commit',
-  ORDER_VAULT: 'order-vault'
+  ORDER_VAULT: 'order-vault',
+  STAGE_HOST: 'stage-host'
 };
 var COMPONENTS = {
   BUTTONS: 'buttons',
@@ -3782,7 +3783,8 @@ var FPTI_KEY = {
   DISABLE_CARD: 'disable_card',
   RESPONSE_DURATION: 'response_duration',
   SDK_INTEGRATION_SOURCE: 'sdk_integration_source',
-  PAYMENT_FLOW: 'payment_flow'
+  PAYMENT_FLOW: 'payment_flow',
+  BUTTON_VERSION: 'button_version'
 };
 var FPTI_USER_ACTION = {
   COMMIT: 'commit',
@@ -4884,7 +4886,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].BUTTON_SESSION_ID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = buttonSessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _ref2[sdk_constants_src["d" /* FPTI_KEY */].FEED] = sdk_constants_src["c" /* FPTI_FEED */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].DATA_SOURCE] = sdk_constants_src["b" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CLIENT_ID] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SELLER_ID] = merchantID[0], _ref2[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SESSION_UID] = sessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].REFERER] = window.location.host, _ref2[sdk_constants_src["d" /* FPTI_KEY */].MERCHANT_DOMAIN] = merchantDomain, _ref2[sdk_constants_src["d" /* FPTI_KEY */].LOCALE] = lang + "_" + country, _ref2[sdk_constants_src["d" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_NAME] = sdk_constants_src["e" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_VERSION] = version, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_ACTION] = commit ? sdk_constants_src["f" /* FPTI_USER_ACTION */].COMMIT : sdk_constants_src["f" /* FPTI_USER_ACTION */].CONTINUE, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_CORRID] = correlationID, _ref2;
+    return _ref2 = {}, _ref2[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_TYPE] = constants["f" /* FPTI_CONTEXT_TYPE */].BUTTON_SESSION_ID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_ID] = buttonSessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].STATE] = constants["g" /* FPTI_STATE */].BUTTON, _ref2[sdk_constants_src["d" /* FPTI_KEY */].FEED] = sdk_constants_src["c" /* FPTI_FEED */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].DATA_SOURCE] = sdk_constants_src["b" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CLIENT_ID] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SELLER_ID] = merchantID[0], _ref2[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_SESSION_UID] = buttonSessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SESSION_UID] = sessionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].REFERER] = window.location.host, _ref2[sdk_constants_src["d" /* FPTI_KEY */].MERCHANT_DOMAIN] = merchantDomain, _ref2[sdk_constants_src["d" /* FPTI_KEY */].LOCALE] = lang + "_" + country, _ref2[sdk_constants_src["d" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = clientID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_NAME] = sdk_constants_src["e" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref2[sdk_constants_src["d" /* FPTI_KEY */].SDK_VERSION] = version, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[sdk_constants_src["d" /* FPTI_KEY */].USER_ACTION] = commit ? sdk_constants_src["f" /* FPTI_USER_ACTION */].COMMIT : sdk_constants_src["f" /* FPTI_USER_ACTION */].CONTINUE, _ref2[sdk_constants_src["d" /* FPTI_KEY */].CONTEXT_CORRID] = correlationID, _ref2[sdk_constants_src["d" /* FPTI_KEY */].BUTTON_VERSION] = "2.0.177", _ref2;
   });
   src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -8594,8 +8596,8 @@ function getConfig(_ref2) {
 }
 function getServiceData(_ref3) {
   var facilitatorAccessToken = _ref3.facilitatorAccessToken,
+      sdkMeta = _ref3.sdkMeta,
       buyerGeoCountry = _ref3.buyerGeoCountry,
-      isCardFieldsExperimentEnabled = _ref3.isCardFieldsExperimentEnabled,
       fundingEligibility = _ref3.fundingEligibility,
       personalization = _ref3.personalization,
       serverMerchantID = _ref3.serverMerchantID,
@@ -8604,12 +8606,10 @@ function getServiceData(_ref3) {
     merchantID: serverMerchantID,
     buyerCountry: buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__[/* COUNTRY */ "a"].US,
     fundingEligibility: fundingEligibility,
+    sdkMeta: sdkMeta,
     personalization: personalization,
     facilitatorAccessToken: facilitatorAccessToken,
-    eligibility: {
-      cardFields: isCardFieldsExperimentEnabled,
-      native: eligibility ? eligibility.native : false
-    }
+    eligibility: eligibility
   };
 }
 
@@ -10078,6 +10078,14 @@ var getNativeSocket = Object(src["p" /* memoize */])(function (_ref) {
   });
 });
 
+function isIOSSafari() {
+  return Object(src["n" /* isIos */])() && Object(src["o" /* isSafari */])();
+}
+
+function isAndroidChrome() {
+  return Object(src["j" /* isAndroid */])() && Object(src["l" /* isChrome */])();
+}
+
 function isNativeOptedIn(_ref2) {
   var props = _ref2.props;
   var enableNativeCheckout = props.enableNativeCheckout;
@@ -10131,15 +10139,7 @@ function isNativeEligible(_ref3) {
     return false;
   }
 
-  if (Object(src["n" /* isIos */])()) {
-    if (!Object(src["o" /* isSafari */])()) {
-      return false;
-    }
-  } else if (Object(src["j" /* isAndroid */])()) {
-    if (!Object(src["l" /* isChrome */])()) {
-      return false;
-    }
-  } else {
+  if (!isIOSSafari() && !isAndroidChrome()) {
     return false;
   }
 
@@ -10149,20 +10149,22 @@ function isNativeEligible(_ref3) {
     return true;
   }
 
-  return eligibility.native;
+  if (eligibility.nativeCheckout.paypal || eligibility.nativeCheckout.venmo) {
+    return true;
+  }
+
+  return false;
 }
 
 function isNativePaymentEligible(_ref4) {
   var payment = _ref4.payment,
-      props = _ref4.props;
+      props = _ref4.props,
+      serviceData = _ref4.serviceData;
   var win = payment.win,
       fundingSource = payment.fundingSource;
+  var eligibility = serviceData.eligibility;
 
   if (win) {
-    return false;
-  }
-
-  if (fundingSource !== sdk_constants_src["g" /* FUNDING */].PAYPAL && fundingSource !== sdk_constants_src["g" /* FUNDING */].VENMO) {
     return false;
   }
 
@@ -10176,7 +10178,17 @@ function isNativePaymentEligible(_ref4) {
     return false;
   }
 
-  return true;
+  if (isNativeOptedIn({
+    props: props
+  })) {
+    return true;
+  }
+
+  if (eligibility.nativeCheckout[fundingSource]) {
+    return true;
+  }
+
+  return false;
 }
 
 function setupNative(_ref5) {
@@ -10211,7 +10223,7 @@ function appSwitchPopup(url) {
   try {
     win = Object(src["t" /* popup */])(url);
   } catch (err) {
-    if (err instanceof src["a" /* PopupOpenError */] && Object(src["n" /* isIos */])() && Object(src["o" /* isSafari */])()) {
+    if (err instanceof src["a" /* PopupOpenError */] && isIOSSafari()) {
       appSwitched = true;
     } else {
       throw err;
@@ -10227,7 +10239,7 @@ function appSwitchPopup(url) {
       return true;
     }
 
-    if (Object(src["j" /* isAndroid */])() && Object(src["l" /* isChrome */])() && win && Object(cross_domain_utils_src["f" /* isWindowClosed */])(win)) {
+    if (isAndroidChrome() && win && Object(cross_domain_utils_src["f" /* isWindowClosed */])(win)) {
       return true;
     }
 
@@ -11081,6 +11093,7 @@ function setupButton(opts) {
       fundingEligibility = opts.fundingEligibility,
       buyerGeoCountry = opts.buyerCountry,
       content = opts.content,
+      sdkMeta = opts.sdkMeta,
       serverCSPNonce = opts.cspNonce,
       serverMerchantID = opts.merchantID,
       personalization = opts.personalization,
@@ -11094,7 +11107,8 @@ function setupButton(opts) {
     serverMerchantID: serverMerchantID,
     fundingEligibility: fundingEligibility,
     personalization: personalization,
-    isCardFieldsExperimentEnabled: isCardFieldsExperimentEnabled
+    isCardFieldsExperimentEnabled: isCardFieldsExperimentEnabled,
+    sdkMeta: sdkMeta
   });
   var merchantID = serviceData.merchantID;
   var props = Object(button_props["getProps"])({
