@@ -9,18 +9,22 @@ import { EVENT } from '../config';
 
 import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType, getLogBuffer } from './util';
 
-type SDKMeta = {|
-    getSDKLoader : ({ nonce? : ?string }) => string
-|};
-
-export function getSDKMeta(req : ExpressRequest) : SDKMeta {
+function getSDKMetaString(req : ExpressRequest) : string {
     const sdkMeta = req.query.sdkMeta || '';
 
     if (typeof sdkMeta !== 'string') {
         throw new TypeError(`Expected sdkMeta to be a string`);
     }
 
-    return unpackSDKMeta(req.query.sdkMeta);
+    return sdkMeta;
+}
+
+type SDKMeta = {|
+    getSDKLoader : ({ nonce? : ?string }) => string
+|};
+
+export function getSDKMeta(req : ExpressRequest) : SDKMeta {
+    return unpackSDKMeta(getSDKMetaString(req));
 }
 
 export type SDKMiddlewareOptions = {|
@@ -32,6 +36,7 @@ export type SDKMiddleware = ({|
     req : ExpressRequest,
     res : ExpressResponse,
     params : Object,
+    sdkMeta : string,
     meta : SDKMeta,
     logBuffer : LoggerBufferType
 |}) => void | Promise<void>;
@@ -57,6 +62,8 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
             } catch (err) {
                 return clientErrorResponse(res, `Invalid params: ${ JSON.stringify(req.query) }`);
             }
+
+            const sdkMeta = getSDKMetaString(req);
             
             let meta;
 
@@ -67,7 +74,7 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
                 return clientErrorResponse(res, `Invalid sdk meta: ${ (req.query.sdkMeta || '').toString() }`);
             }
 
-            return await middleware({ req, res, params, meta, logBuffer });
+            return await middleware({ req, res, params, meta, logBuffer, sdkMeta });
 
         } catch (err) {
             console.error(err.stack ? err.stack : err); // eslint-disable-line no-console

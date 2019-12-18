@@ -40,7 +40,7 @@ type ButtonMiddlewareOptions = {|
 |};
 
 export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
-    return sdkMiddleware({ logger, cache }, async ({ req, res, params, meta, logBuffer }) => {
+    return sdkMiddleware({ logger, cache }, async ({ req, res, params, meta, logBuffer, sdkMeta }) => {
         logger.info(req, EVENT.RENDER);
         if (logBuffer) {
             logBuffer.flush(req);
@@ -114,7 +114,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
         }).render(html());
 
         const setupParams = {
-            fundingEligibility, buyerCountry, cspNonce, merchantID, personalization,
+            fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta,
             isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content
         };
 
