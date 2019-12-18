@@ -4,12 +4,12 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
-    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, createExperiment } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isDevice, uniqueID, inlineMemoize, values } from 'belter/src';
-import { FUNDING, PLATFORM, QUERY_BOOL, FPTI_KEY, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, PLATFORM, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl } from '../../config';
@@ -113,16 +113,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     required: false
                 },
 
-                cardButtonExperiment: {
-                    type:         'boolean',
-                    queryParam:   true,
-                    value:        ({ state }) => {
-                        // Set up a new experiment at 50%
-                        state.cardButtonExperiment = state.cardButtonExperiment || createExperiment('inline_blk_btn', 100);
-                        return state.cardButtonExperiment.isEnabled();
-                    }
-                },
-
                 onShippingChange: {
                     type:       'function',
                     required:   false,
@@ -135,28 +125,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 onCancel: {
                     type:     'function',
                     required: false
-                },
-
-                onInit: {
-                    type:     'function',
-                    default:  () => () => ({}),
-                    required: false,
-                    decorate: ({ value, state, props }) => {
-                        return (...args) => {
-                            if (props.locale && props.locale.lang === 'en' && props.locale.country === 'US') {
-                                const isBlackButtonEnabled = state.cardButtonExperiment.isEnabled();
-                                state.cardButtonExperiment.logStart({
-                                    [ FPTI_KEY.CONTEXT_ID ]:       props.buttonSessionID,
-                                    [ FPTI_KEY.CONTEXT_TYPE ]:     FPTI_KEY.BUTTON_SESSION_UID,
-                                    [ FPTI_KEY.EXPERIMENT_NAME ]:  'inline_blk_btn',
-                                    [ FPTI_KEY.TREATMENT_NAME ]:   isBlackButtonEnabled ? 'inline_blk_btn_test' : 'inline_blk_btn_control'
-                                });
-                            }
-                            if (value) {
-                                return value(...args);
-                            }
-                        };
-                    }
                 },
 
                 onClick: {

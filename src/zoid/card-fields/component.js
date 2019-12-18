@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { inlineMemoize } from 'belter/src';
-import { getLocale, getEnv, getCommit, getSDKMeta } from '@paypal/sdk-client/src';
+import { getLocale, getEnv, getCommit, getSDKMeta, getDisableCard } from '@paypal/sdk-client/src';
 
 import { getSessionID } from '../../lib';
 import { getCardUrl } from '../../config';
@@ -122,6 +122,16 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
                     type:       'object',
                     required:   false,
                     queryParam: true
+                },
+
+                disableCard: {
+                    type:          'array',
+                    queryParam:    'disable-card',
+                    allowDelegate: true,
+                    queryValue({ value }) : string {
+                        return value.join(',');
+                    },
+                    value: getDisableCard
                 }
             }
         });

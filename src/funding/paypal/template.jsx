@@ -123,6 +123,17 @@ function getButtonStyle(opts : LabelOptions) : ?ChildType {
                 }
             }
 
+            .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] .${ CLASS.TEXT } {
+                ${ HIDDEN }
+                overflow: hidden;
+            }
+
+            ${ DOM_READY } .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] .${ CLASS.TEXT } {
+                ${ VISIBLE }
+                ${ COMPRESSED }
+                animation: show-text ${ LABEL_DURATION }s ${ DELAY }s forwards;
+            }
+
             @keyframes show-text {
                 0% { ${ COMPRESSED } }
                 100% { ${ EXPANDED } }
