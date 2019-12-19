@@ -14976,7 +14976,7 @@ function getButtonTextAnimationStyle(_ref10) {
   var MIN_WIDTH = 300;
   var LABEL_DURATION = 1;
   var PERSONALIZATION_DURATION = 5;
-  var DELAY = 0.5;
+  var DELAY = 0;
   var COMPRESSED = "\n        max-width: 0%;\n        opacity: 0;\n    ";
   var EXPANDED = "\n        max-width: 100%;\n        opacity: 1;\n    ";
   var HIDDEN = "\n        position: absolute;\n        visibility: hidden;\n    ";
@@ -15151,7 +15151,9 @@ function renderButton(_ref13) {
     allowedAnimation = true;
   }
 
-  if (buttonLabel === label) {
+  if (buttonLabel === label && label === BUTTON_LABEL.BUYNOW && !branding) {
+    contentText = getButtonConfig(label, 'label');
+  } else if (buttonLabel === label && !false) {
     if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText && branding && !tagline) {
       personalizedButtonText = renderPersonalizationButtonText(morsText);
       impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
@@ -15380,7 +15382,7 @@ function componentTemplate(_ref19) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20[ATTRIBUTE.VERSION] = "4.0.306", _ref20), {
+  return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20[ATTRIBUTE.VERSION] = "4.0.307", _ref20), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
