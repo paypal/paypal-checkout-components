@@ -132,7 +132,7 @@ function getButtonTextAnimationStyle({ personalizedButtonText, branding, allowed
     const MIN_WIDTH = 300;
     const LABEL_DURATION = 1;
     const PERSONALIZATION_DURATION = 5;
-    const DELAY = 0.5;
+    const DELAY = 0;
     
     const COMPRESSED = `
         max-width: 0%;
@@ -335,13 +335,15 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     if (allowedPersonalizationLabels.indexOf(label) !== -1) {
         allowedAnimation = true;
     }
-    if (buttonLabel === label) {
+    
+    if (buttonLabel === label && label === BUTTON_LABEL.BUYNOW && !branding) {
+        contentText = getButtonConfig(label, 'label');
+    } else if (buttonLabel === label && !__WEB__) {
         if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText && branding && !tagline) {
             personalizedButtonText = renderPersonalizationButtonText(morsText);
             impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
         }
         contentText = getButtonConfig(label, 'label');
-        
     } else {
         contentText = getButtonConfig(label, 'logoLabel');
     }
