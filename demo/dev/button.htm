@@ -11,7 +11,10 @@
 <body>
     <script>
         document.write(button.Buttons({
-            ...xprops
+            ...xprops,
+            content: {
+                payWithDebitOrCreditCard: 'Pay with Debit or Credit Card'
+            }
         }).render(jsx.html()));
 
         document.querySelectorAll('[data-funding-source]').forEach(button => {
