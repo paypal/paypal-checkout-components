@@ -22,7 +22,7 @@ type ButtonsProps = ButtonPropsInputs & {|
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
     const { style, locale, remembered, env, fundingEligibility, platform,
-        nonce, components, onShippingChange, personalization, clientAccessToken, content } = normalizeButtonProps(props);
+        nonce, components, onShippingChange, personalization, clientAccessToken, cardButtonExperiment } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
     const { lang } = locale;
 
@@ -57,7 +57,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 fundingSources.map((fundingSource, i) => (
                     <BasicButton
-                        content={ content }
                         i={ i }
                         style={ style }
                         fundingSource={ fundingSource }
@@ -69,6 +68,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         onClick={ onClick }
                         clientAccessToken={ clientAccessToken }
                         personalization={ personalization }
+                        cardButtonExperiment={ cardButtonExperiment }
                         tagline={ tagline }
                     />
                 ))

@@ -2,13 +2,11 @@
 /** @jsx node */
 
 import { node, Fragment } from 'jsx-pragmatic/src';
-import { CARD, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
-import { GlyphCard } from '@paypal/sdk-logos';
+import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
 
-import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
-import { Text, Space } from '../../ui';
-import { isRTLLanguage } from '../../lib';
+import { Text } from '../../ui';
 
 import { getVisaConfig } from './visa';
 import { getMastercardConfig } from './mastercard';
@@ -17,6 +15,16 @@ import { getDiscoverConfig } from './discover';
 import { getHiperConfig } from './hiper';
 import { getEloConfig } from './elo';
 import { getJCBConfig } from './jcb';
+
+const CARD_PRIORITY : $ReadOnlyArray<$Values<typeof CARD>> = [
+    CARD.VISA,
+    CARD.MASTERCARD,
+    CARD.AMEX,
+    CARD.DISCOVER,
+    CARD.HIPER,
+    CARD.ELO,
+    CARD.JCB
+];
 
 function getVendorConfig() : { [$Values<typeof CARD>] : ?CardConfig } {
     return {
@@ -82,47 +90,85 @@ export function getCardConfig() : FundingSourceConfig {
         vendors,
 
         colors: [
-            BUTTON_COLOR.WHITE,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.TRANSPARENT
         ],
 
         secondaryColors: {
-            ...DEFAULT_FUNDING_CONFIG.secondaryColors,
-            [ DEFAULT ]: BUTTON_COLOR.BLACK
-        },
-
-        logoColors: {
-            [ BUTTON_COLOR.WHITE  ]:  BUTTON_COLOR.BLACK,
-            [ DEFAULT ]:              BUTTON_COLOR.WHITE
+            [ DEFAULT ]: BUTTON_COLOR.TRANSPARENT
         },
 
         handleClick: true,
 
-        Logo: ({ content, logoColor, locale = {} }) => {
-            const { lang } = locale;
-            const isRTL = isRTLLanguage(lang);
-            return (
-                <Fragment>
-                    { isRTL ? (
-                        <Fragment>
-                            <Text>{ content.payWithDebitOrCreditCard }</Text>
-                            <Space />
-                        </Fragment>
-                    ) : null }
-                    <GlyphCard color={ logoColor } />
-                    { !isRTL ? (
-                        <Fragment>
-                            <Space />
-                            <Text>{ content.payWithDebitOrCreditCard }</Text>
-                        </Fragment>
-                    ) : null }
-                </Fragment>
-            );
+        Logo: ({ fundingEligibility, locale, onClick, cardButtonExperiment, nonce }) => {
+            // Testing for Inline Guest black button
+            if (cardButtonExperiment && locale.lang === 'en' && locale.country === 'US' && !__TEST__) {
+                return (
+                    <div>
+                        <style
+                            nonce={ nonce }
+                            innerHTML={ `
+                                #black-credit-card-button {
+                                    background: #000;
+                                    color: #fff;
+                                    font-size: 1.15em;
+                                    border-radius: 4px !important;
+                                }
+                            ` } />
+                        <button
+                            type="button"
+                            id="black-credit-card-button"
+                            onClick={ event => onClick(event) }
+                            class={ `${ CLASS.BUTTON }` }
+                            { ...{
+                                [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD
+                            } }>
+                            Debit or Credit Card
+                        </button>
+                    </div>
+                );
+            }
+
+            let maxCards = 4;
+
+            // $FlowFixMe
+            if (maxCardForCountry[locale.country]) {
+                maxCards = maxCardForCountry[locale.country];
+            }
+
+            return CARD_PRIORITY.map(name => {
+
+                const cardEligibility = fundingEligibility[FUNDING.CARD];
+
+                if (!cardEligibility || !cardEligibility.vendors || !cardEligibility.vendors[name] || !cardEligibility.vendors[name].eligible) {
+                    return null;
+                }
+
+                const vendorConfig = vendors[name];
+
+                if (!vendorConfig) {
+                    return null;
+                }
+
+                const { Label } = vendorConfig;
+                
+                return (
+                    <div
+                        class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
+                        onClick={ event => onClick(event, { card: name }) }
+                        tabindex='0'
+                        role='button'
+                        { ...{
+                            [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD,
+                            [ ATTRIBUTE.CARD ]:           name
+                        } }
+                    >
+                        <Label />
+                    </div>
+                );
+            }).filter(Boolean).slice(0, maxCards);
         },
 
-        Label: ({ logo }) => {
-            return logo;
-        },
+        Label: ({ logo }) => logo,
 
         VaultLabel: ({ vendor, label } : { vendor? : $Values<typeof CARD>, label : string }) => {
             if (!vendor) {

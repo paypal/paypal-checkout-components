@@ -7,8 +7,6 @@ before_script:
   - npm run flow-typed
 script:
   - npm run build
-cache:
-  npm: false
 sudo: required
 dist: xenial
 addons:

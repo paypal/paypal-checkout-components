@@ -23,7 +23,7 @@ export type LogoOptions = {|
     fundingEligibility : FundingEligibilityType,
     onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
     nonce : string,
-    content : { [string] : string }
+    cardButtonExperiment? : boolean
 |};
 
 export type LabelOptions = {|
