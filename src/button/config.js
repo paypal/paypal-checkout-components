@@ -126,7 +126,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
     [ BUTTON_LABEL.PAY ]: {
         label:     `{ content: pay }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.PAYPAL } }`,
 
         allowPrimary: true,
 
