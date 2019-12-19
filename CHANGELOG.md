@@ -1,3 +1,10 @@
+## <small>5.0.71 (2019-12-19)</small>
+
+* Revert "Add screenshots" ([e01c9c6](http://github.paypal.com/paypal/paypal-checkout/commit/e01c9c6))
+* Revert "Feat/finalize black button (#1267)" ([529cad1](http://github.paypal.com/paypal/paypal-checkout/commit/529cad1)), closes [#1267](http://github.paypal.com/paypal/paypal-checkout/issues/1267)
+
+
+
 ## <small>5.0.70 (2019-12-19)</small>
 
 * Add demo content ([0d95094](http://github.paypal.com/paypal/paypal-checkout/commit/0d95094))
