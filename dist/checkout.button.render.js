@@ -5311,7 +5311,7 @@ var BUTTON_CONFIG = (_BUTTON_CONFIG = {}, _BUTTON_CONFIG[DEFAULT] = {
   allowPrimaryHorizontal: true
 }, _BUTTON_CONFIG[BUTTON_LABEL.PAY] = {
   label: "{ content: pay }",
-  logoLabel: "{ logo: " + BUTTON_LOGO.PP + " } { logo: " + BUTTON_LOGO.PAYPAL + " }",
+  logoLabel: "{ logo: " + BUTTON_LOGO.PAYPAL + " }",
   allowPrimary: true,
   allowPrimaryVertical: true,
   allowPrimaryHorizontal: true
@@ -15382,7 +15382,7 @@ function componentTemplate(_ref19) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20[ATTRIBUTE.VERSION] = "4.0.307", _ref20), {
+  return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20[ATTRIBUTE.VERSION] = "4.0.308", _ref20), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,

@@ -2140,7 +2140,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: getSessionID(),
-      ver: "4.0.307"
+      ver: "4.0.308"
     };
   });
   Object(client["a" /* addHeaderBuilder */])(function () {
@@ -2584,7 +2584,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.307";
+    payload.version = "4.0.308";
     payload.host = window.location.host;
     payload.uid = getSessionID();
     payload.appName = APP_NAME;
@@ -2640,7 +2640,7 @@ function beacon_checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.307".replace(/[^0-9]+/g, '_');
+      var version = "4.0.308".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -2657,7 +2657,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.307",
+    v: "checkout.js." + "4.0.308",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -2870,7 +2870,7 @@ function isPayPalObjects() {
 }
 function getScriptVersion() {
   if (false) {} else {
-    return  false ? undefined : "4.0.307";
+    return  false ? undefined : "4.0.308";
   }
 }
 function getCurrentScriptUrl() {
@@ -2886,7 +2886,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.307" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.308" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -3254,7 +3254,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.lib.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.307",
+  version: "4.0.308",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -27492,7 +27492,7 @@ var BUTTON_CONFIG = (_BUTTON_CONFIG = {}, _BUTTON_CONFIG[constants["s" /* DEFAUL
   allowPrimaryHorizontal: true
 }, _BUTTON_CONFIG[constants["f" /* BUTTON_LABEL */].PAY] = {
   label: "{ content: pay }",
-  logoLabel: "{ logo: " + constants["h" /* BUTTON_LOGO */].PP + " } { logo: " + constants["h" /* BUTTON_LOGO */].PAYPAL + " }",
+  logoLabel: "{ logo: " + constants["h" /* BUTTON_LOGO */].PAYPAL + " }",
   allowPrimary: true,
   allowPrimaryVertical: true,
   allowPrimaryHorizontal: true
@@ -34892,7 +34892,7 @@ function componentTemplate(_ref19) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref20 = {}, _ref20[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.307", _ref20), {
+  return Object(jsx["c" /* jsxToHTML */])("div", Object(esm_extends["a" /* default */])({}, (_ref20 = {}, _ref20[constants["c" /* ATTRIBUTE */].VERSION] = "4.0.308", _ref20), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -36635,7 +36635,7 @@ var postRobot = post_robot_src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.307";
+var interface_version = "4.0.308";
 var interface_checkout;
 var apps;
 
