@@ -1,3 +1,12 @@
+## <small>5.0.70 (2019-12-19)</small>
+
+* Add demo content ([0d95094](http://github.paypal.com/paypal/paypal-checkout/commit/0d95094))
+* Add screenshots ([509ccfd](http://github.paypal.com/paypal/paypal-checkout/commit/509ccfd))
+* Feat/finalize black button (#1267) ([e280244](http://github.paypal.com/paypal/paypal-checkout/commit/e280244)), closes [#1267](http://github.paypal.com/paypal/paypal-checkout/issues/1267) [#1233](http://github.paypal.com/paypal/paypal-checkout/issues/1233)
+* show personalized button text only when tagline:false (#1270) ([ad0447a](http://github.paypal.com/paypal/paypal-checkout/commit/ad0447a)), closes [#1270](http://github.paypal.com/paypal/paypal-checkout/issues/1270)
+
+
+
 ## <small>5.0.69 (2019-12-11)</small>
 
 * Add Modal component ([bce6108](http://github.paypal.com/paypal/paypal-checkout/commit/bce6108))
