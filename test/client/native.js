@@ -135,6 +135,138 @@ describe('native cases', () => {
         });
     });
 
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS with a closed window', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+
+            const firebaseScripts = mockFirebaseScripts();
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (!data.query.includes('query GetFireBaseSessionToken')) {
+                        return;
+                    }
+
+                    if (!data.variables.sessionUID) {
+                        throw new Error(`Expected sessionUID to be passed`);
+                    }
+
+                    return {
+                        data: {
+                            firebase: {
+                                auth: {
+                                    sessionUID: data.variables.sessionUID,
+                                    sessionToken
+                                }
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            let sessionUID;
+
+            const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
+                getSessionUID: () => {
+                    if (!sessionUID) {
+                        throw new Error(`Session UID not present`);
+                    }
+
+                    return sessionUID;
+                }
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'XXYYZZ123456';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.delay(50).then(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+
+                ZalgoPromise.try(expect('postOnApprove'), async () => {
+                    await mockWebSocketServer.done();
+                });
+            }));
+
+            const windowOpen = window.open;
+            window.open = expect('windowOpen', (url) => {
+                window.open = windowOpen;
+
+                if (!url) {
+                    throw new Error(`Expected url to be immediately passed to window.open`);
+                }
+
+                if (url.indexOf('/smart/checkout/native') === -1) {
+                    throw new Error(`Expected paypal native url`);
+                }
+
+                const query = parseQuery(url.split('?')[1]);
+                const { sessionUID: querySessionUID, pageUrl } = query;
+                sessionUID = querySessionUID;
+
+                if (!sessionUID) {
+                    throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                if (!pageUrl) {
+                    throw new Error(`Expected pageUrl to be passed in url`);
+                }
+
+                ZalgoPromise.delay(100)
+                    .then(onApprove);
+
+                const win : Object = {
+                    location: {
+                        href: 'about:blank'
+                    },
+                    closed: false
+                };
+
+                setTimeout(() => {
+                    win.closed = true;
+                }, 10);
+
+                win.parent = win.top = win;
+                return win;
+            });
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
+            firebaseScripts.done();
+        });
+    });
+
     it('should render a button with createOrder, click the button, and render checkout via popup to native path in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;

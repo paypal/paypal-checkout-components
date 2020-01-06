@@ -183,32 +183,22 @@ type AppSwitchPopup = {|
 |};
 
 function appSwitchPopup(url : string) : AppSwitchPopup {
-
     let win;
-    let appSwitched = false;
 
     try {
         win = popup(url);
     } catch (err) {
-        if (err instanceof PopupOpenError && isIOSSafari()) {
-            appSwitched = true;
-        } else {
+        if (!(err instanceof PopupOpenError)) {
             throw err;
         }
     }
 
     const getWindow = () => win;
+
     const didSwitch = () => {
-        if (appSwitched) {
-            return true;
-        }
-
-        if (isAndroidChrome() && win && isWindowClosed(win)) {
-            return true;
-        }
-
-        return false;
+        return Boolean(!win || isWindowClosed(win));
     };
+
     const close = () => {
         if (win) {
             win.close();
