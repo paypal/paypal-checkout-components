@@ -2763,6 +2763,9 @@ function eventEmitter() {
       }
 
       return this.trigger.apply(this, [eventName].concat(args));
+    },
+    reset: function reset() {
+      handlers = {};
     }
   };
 }
@@ -4793,7 +4796,7 @@ var constants_PROTOCOL = {
 var AUTO_FLUSH_LEVEL = [LOG_LEVEL.WARN, LOG_LEVEL.ERROR];
 var LOG_LEVEL_PRIORITY = [LOG_LEVEL.ERROR, LOG_LEVEL.WARN, LOG_LEVEL.INFO, LOG_LEVEL.DEBUG];
 var FLUSH_INTERVAL = 60 * 1000;
-var DEFAULT_LOG_LEVEL = LOG_LEVEL.WARN;
+var DEFAULT_LOG_LEVEL =  false ? undefined : LOG_LEVEL.WARN;
 // CONCATENATED MODULE: ./node_modules/beaver-logger/src/logger.js
 
 
@@ -4843,13 +4846,7 @@ function Logger(_ref2) {
       return;
     }
 
-    var consoleLogLevel = logLevel;
-
-    if (window.LOG_LEVEL && LOG_LEVEL_PRIORITY.indexOf(window.LOG_LEVEL) !== -1) {
-      consoleLogLevel = window.LOG_LEVEL;
-    }
-
-    if (LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(consoleLogLevel)) {
+    if (LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(logLevel)) {
       return;
     }
 
@@ -5778,7 +5775,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.177", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.178", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -6220,13 +6217,15 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 
 function mapReactProps(props) {
   var innerHTML = props.innerHTML,
-      remainingProps = _objectWithoutPropertiesLoose(props, ["innerHTML"]);
+      className = props.class,
+      remainingProps = _objectWithoutPropertiesLoose(props, ["innerHTML", "class"]);
 
   var dangerouslySetInnerHTML = innerHTML ? {
     __html: innerHTML
   } : null;
   return _extends({
-    dangerouslySetInnerHTML: dangerouslySetInnerHTML
+    dangerouslySetInnerHTML: dangerouslySetInnerHTML,
+    className: className
   }, remainingProps);
 }
 
@@ -6337,7 +6336,55 @@ function html() {
 
   return htmlRenderer;
 }
+// CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/renderers/preact.js
+
+
+// eslint-disable-line import/no-unresolved
+
+
+
+function mapPreactProps(props) {
+  var innerHTML = props.innerHTML,
+      remainingProps = _objectWithoutPropertiesLoose(props, ["innerHTML"]);
+
+  var dangerouslySetInnerHTML = innerHTML ? {
+    __html: innerHTML
+  } : null;
+  return _extends({
+    dangerouslySetInnerHTML: dangerouslySetInnerHTML
+  }, remainingProps);
+}
+
+function preact(_temp) {
+  var _ref = _temp === void 0 ? {} : _temp,
+      Preact = _ref.Preact;
+
+  if (!Preact) {
+    throw new Error("Must pass Preact library to react renderer");
+  }
+
+  var reactRenderer = function reactRenderer(node) {
+    if (node.type === NODE_TYPE.COMPONENT) {
+      return Preact.h.apply(Preact, [function () {
+        return node.renderComponent(reactRenderer) || null;
+      }, node.props].concat(node.renderChildren(reactRenderer)));
+    }
+
+    if (node.type === NODE_TYPE.ELEMENT) {
+      return Preact.h.apply(Preact, [node.name, mapPreactProps(node.props)].concat(node.renderChildren(reactRenderer)));
+    }
+
+    if (node.type === NODE_TYPE.TEXT) {
+      return node.text;
+    }
+
+    throw new TypeError("Unhandleable node");
+  };
+
+  return reactRenderer;
+}
 // CONCATENATED MODULE: ./node_modules/jsx-pragmatic/src/renderers/index.js
+
 
 
 
@@ -6349,7 +6396,7 @@ function html() {
 /** @jsx node */
 
 var spinnerStyle = "\n\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10\n    }\n\n    .spinner .spinWrap {\n        width: 200px;\n        height: 100px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin-left: -100px;\n        margin-top: -50px\n    }\n\n    .spinner .loader,\n    .spinner .spinnerImage {\n        height: 100px;\n        width: 100px;\n        position: absolute;\n        top: 0;\n        left: 50%;\n        opacity: 1;\n        filter: alpha(opacity=100)\n    }\n\n    .spinner .spinnerImage {\n        margin: 28px 0 0 -25px;\n        background: url(https://www.paypalobjects.com/images/checkout/hermes/icon_ot_spin_lock_skinny.png) no-repeat\n    }\n\n    .spinner .loader {\n        margin: 0 0 0 -55px;\n        background-color: transparent;\n        animation: rotation .7s infinite linear;\n        border-left: 5px solid #cbcbca;\n        border-right: 5px solid #cbcbca;\n        border-bottom: 5px solid #cbcbca;\n        border-top: 5px solid #2380be;\n        border-radius: 100%\n    }\n\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n";
-function SpinnerPage(_ref) {
+function SpinnerPage(_ref, children) {
   var nonce = _ref.nonce;
   return node_node("html", null, node_node("head", null, node_node("title", null, "PayPal"), node_node("meta", {
     name: "viewport",
@@ -6365,7 +6412,7 @@ function SpinnerPage(_ref) {
     class: "spinnerImage"
   }), node_node("p", {
     class: "loader"
-  })))));
+  }))), children));
 }
 // CONCATENATED MODULE: ./node_modules/@paypal/common-components/src/ui/index.js
 
