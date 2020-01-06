@@ -369,7 +369,6 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
             role='button'
-            aria-label={ source }
             tabindex={ hasTabIndex && 0 }>
             { source === FUNDING.CARD ? contentText : renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding, allowedAnimation }) }
         </div>
