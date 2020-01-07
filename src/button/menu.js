@@ -59,11 +59,12 @@ export function renderButtonDropdown({ props, payment, content, initiatePayment 
                     id:    MENU_CHOICE.CHANGE_ACCOUNT,
                     label: content.useDifferentAccount,
                     popup
-                },
+                } /* ,
                 {
                     id:    MENU_CHOICE.DELETE_VAULT,
                     label: content.deleteVaultedAccount
                 }
+                */
             ];
 
             const CARD_CHOICES = [
