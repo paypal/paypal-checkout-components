@@ -188,9 +188,10 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
             },
     
             onAuth: ({ accessToken }) => {
-                getLogger().info(`spb_onauth_access_token_${ accessToken ? 'present' : 'not_present' }`);
-                getLogger().info(`spb_onauth_buyer_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
-                buyerAccessToken = accessToken;
+                getLogger().info(`spb_onauth_access_token_${ (accessToken || buyerAccessToken)  ? 'present' : 'not_present' }`);
+                if (accessToken) {
+                    buyerAccessToken = accessToken;
+                }
             },
     
             onCancel: () => {
