@@ -17,7 +17,8 @@ export type XOnApproveDataType = {|
     payerID : ?string,
     paymentID : ?string,
     subscriptionID : ?string,
-    billingToken : ?string
+    billingToken : ?string,
+    facilitatorAccessToken : string
 |};
 
 export type OrderActions = {|
@@ -234,7 +235,7 @@ export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOr
                     [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_AUTHORIZE
                 }).flush();
 
-            const data = { orderID, payerID, paymentID, billingToken, subscriptionID };
+            const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken };
             const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
 
             return onApprove(data, actions).catch(err => {
