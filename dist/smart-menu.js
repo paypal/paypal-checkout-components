@@ -4688,7 +4688,7 @@ var FPTI_TRANSITION = {
   CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
   CHECKOUT_CANCEL: 'process_checkout_cancel',
   NATIVE_DETECT_APP_SWITCH: 'native_detect_app_switch',
-  NATIVE_DETECT_NO_APP_SWITCH: 'native_detect_no_app_switch',
+  NATIVE_DETECT_WEB_SWITCH: 'native_detect_web_switch',
   NATIVE_APP_SWITCH_ACK: 'native_app_switch_ack',
   NATIVE_ERROR: 'native_app_switch_ack'
 };
@@ -4779,6 +4779,14 @@ function loadScript(url) {
       return reject(err);
     });
     container.appendChild(script);
+  });
+}
+function promiseOne(promises) {
+  return new promise_ZalgoPromise(function (resolve, reject) {
+    for (var _i2 = 0; _i2 < promises.length; _i2++) {
+      var promise = promises[_i2];
+      promise.then(resolve, reject);
+    }
   });
 }
 // CONCATENATED MODULE: ./node_modules/beaver-logger/src/constants.js
@@ -5708,7 +5716,7 @@ var DEFAULT_DEBUG = DEBUG.FALSE;
 
 
 // CONCATENATED MODULE: ./src/config.js
-var _NATIVE_CHECKOUT_URI;
+var _NATIVE_CHECKOUT_URI, _NATIVE_CHECKOUT_POPU;
 
 
 var LOGGER_URL = '/xoplatform/logger/api/logger';
@@ -5728,6 +5736,7 @@ var SMART_API_URI = {
 var GRAPHQL_URI = '/graphql';
 var WEB_CHECKOUT_URI = '/checkoutnow';
 var NATIVE_CHECKOUT_URI = (_NATIVE_CHECKOUT_URI = {}, _NATIVE_CHECKOUT_URI[FUNDING.PAYPAL] = '/smart/checkout/native', _NATIVE_CHECKOUT_URI[FUNDING.VENMO] = '/smart/checkout/venmo', _NATIVE_CHECKOUT_URI);
+var NATIVE_CHECKOUT_POPUP_URI = (_NATIVE_CHECKOUT_POPU = {}, _NATIVE_CHECKOUT_POPU[FUNDING.PAYPAL] = '/smart/checkout/native/popup', _NATIVE_CHECKOUT_POPU[FUNDING.VENMO] = '/smart/checkout/venmo/popup', _NATIVE_CHECKOUT_POPU);
 var NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
 var CLIENT_ID_PAYEE_NO_MATCH = ['Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT', 'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb', 'AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO', 'Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC', 'AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt', 'Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7', 'ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP', 'AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb', 'ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP', 'AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT', 'Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD', 'AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR', 'ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU', 'AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2'];
 var FIREBASE_SCRIPTS = {
@@ -5775,7 +5784,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.179", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.180", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
