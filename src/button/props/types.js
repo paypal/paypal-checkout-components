@@ -19,6 +19,9 @@ import type { XCreateSubscription } from './createSubscription';
 import type { RememberFunding } from './rememberFunding';
 import type { GetPageURL } from './getPageUrl';
 
+// export something to force webpack to see this as an ES module
+export const TYPES = true;
+
 export type PrerenderDetailsType = {|
     win ? : ? ProxyWindow,
     fundingSource : $Values<typeof FUNDING>,

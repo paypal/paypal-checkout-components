@@ -7,6 +7,9 @@ import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 import type { Props, Components, ServiceData, Config, CreateOrder } from '../button/props';
 import type { ProxyWindow } from '../types';
 
+// export something to force webpack to see this as an ES module
+export const TYPES = true;
+
 export type PaymentFlowInstance = {|
     click? : () => ?ZalgoPromise<void>,
     start : () => ZalgoPromise<void>,

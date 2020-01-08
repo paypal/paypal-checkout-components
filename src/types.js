@@ -6,6 +6,9 @@ import { COUNTRY, LANG, FUNDING, CARD } from '@paypal/sdk-constants/src';
 
 import { CONTEXT } from './constants';
 
+// export something to force webpack to see this as an ES module
+export const TYPES = true;
+
 export type ProxyWindow = {|
     close : () => ZalgoPromise<void>
 |};
