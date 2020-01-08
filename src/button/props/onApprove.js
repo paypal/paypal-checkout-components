@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, redirect as redir, noop } from 'belter/src';
 import { INTENT, SDK_QUERY_KEYS, FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse, getPayment, executePayment, patchPayment } from '../../api';
+import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse, getPayment, executePayment, patchPayment, upgradeFacilitatorAccessToken } from '../../api';
 import { ORDER_API_ERROR, FPTI_TRANSITION } from '../../constants';
 import { unresolvedPromise, getLogger } from '../../lib';
 import { ENABLE_PAYMENT_API } from '../../config';
@@ -54,10 +54,10 @@ type ActionOptions = {|
     facilitatorAccessToken : string,
     buyerAccessToken : ?string,
     partnerAttributionID : ?string,
-    isNativeTransaction : boolean
+    forceRestAPI : boolean
 |};
 
-function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction } : ActionOptions) : OrderActions {
+function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : ActionOptions) : OrderActions {
     
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
         // $FlowFixMe
@@ -73,7 +73,7 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, b
     };
     
     const get = memoize(() => {
-        return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction });
+        return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
     });
 
     const capture = memoize(() => {
@@ -81,7 +81,7 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, b
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.CAPTURE } to use client-side capture`);
         }
 
-        return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction })
+        return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
             .finally(get.reset)
             .finally(capture.reset)
             .catch(handleProcessorError);
@@ -92,14 +92,14 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, b
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.AUTHORIZE } to use client-side authorize`);
         }
 
-        return authorizeOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction })
+        return authorizeOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
             .finally(get.reset)
             .finally(authorize.reset)
             .catch(handleProcessorError);
     });
 
     const patch = (data = {}) => {
-        return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction }).catch(() => {
+        return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI }).catch(() => {
             throw new Error('Order could not be patched');
         });
     };
@@ -152,7 +152,7 @@ function buildPaymentActions({ intent, paymentID, payerID, restart, facilitatorA
 
 export type XOnApprove = (XOnApproveDataType, XOnApproveActionsType) => ZalgoPromise<void>;
 
-function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction } : ActionOptions) : XOnApproveActionsType {
+function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : ActionOptions) : XOnApproveActionsType {
 
     // Subscription GET Actions
     const getSubscriptionApi = memoize(() => getSubscription(subscriptionID, { buyerAccessToken }));
@@ -173,8 +173,8 @@ function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, su
         return redir(url, window.top);
     };
 
-    const order = buildOrderActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction });
-    const payment = buildPaymentActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction });
+    const order = buildOrderActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
+    const payment = buildPaymentActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
 
     return {
         order,
@@ -191,7 +191,7 @@ export type OnApproveData = {|
     billingToken ? : ? string,
     subscriptionID ? : ?string,
     buyerAccessToken? : ?string,
-    isNativeTransaction? : boolean
+    forceRestAPI? : boolean
 |};
 
 export type OnApproveActions = {|
@@ -200,36 +200,50 @@ export type OnApproveActions = {|
 
 export type OnApprove = (OnApproveData, OnApproveActions) => ZalgoPromise<void>;
 
-export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : OnApprove {
-    const { onApprove, intent, partnerAttributionID, onError } = xprops;
+function getDefaultOnApprove(intent : $Values<typeof INTENT>) : XOnApprove {
+    return (data, actions) => {
+        if (intent === INTENT.CAPTURE) {
+            return actions.order.capture().then(noop);
+        } else if (intent === INTENT.AUTHORIZE) {
+            return actions.order.authorize().then(noop);
+        } else {
+            throw new Error(`Unsupported intent for auto-capture: ${ intent }`);
+        }
+    };
+}
 
-    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, isNativeTransaction = false }, { restart }) => {
-        return createOrder().then(orderID => {
+export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : OnApprove {
+    const { intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, upgradeLSAT = false } = xprops;
+
+    if (!onApprove) {
+        throw new Error(`Expected onApprove`);
+    }
+
+    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, forceRestAPI = upgradeLSAT }, { restart }) => {
+        return ZalgoPromise.try(() => {
+            if (upgradeLSAT) {
+                return createOrder().then(orderID => upgradeFacilitatorAccessToken(facilitatorAccessToken, { buyerAccessToken, orderID }));
+            }
+        }).then(() => {
+            return createOrder();
+        }).then(orderID => {
 
             getLogger()
-                .info('button_authorize')
+                .info('button_approve')
                 .track({
                     [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_AUTHORIZE
                 }).flush();
 
             const data = { orderID, payerID, paymentID, billingToken, subscriptionID };
-            const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, isNativeTransaction });
+            const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
 
-            if (onApprove) {
-                return onApprove(data, actions).catch(err => {
-                    return ZalgoPromise.try(() => {
-                        return onError(err);
-                    }).then(() => {
-                        throw err;
-                    });
+            return onApprove(data, actions).catch(err => {
+                return ZalgoPromise.try(() => {
+                    return onError(err);
+                }).then(() => {
+                    throw err;
                 });
-            } else {
-                if (intent === INTENT.CAPTURE) {
-                    return actions.order.capture().then(noop);
-                } else if (intent === INTENT.AUTHORIZE) {
-                    return actions.order.authorize().then(noop);
-                }
-            }
+            });
         });
     });
 }

@@ -87,7 +87,7 @@ export function buildOrderActions({ facilitatorAccessToken, intent, currency, me
     
         order.application_context = order.application_context || {};
 
-        return createOrderID(order, { facilitatorAccessToken, partnerAttributionID, isNativeTransaction: false });
+        return createOrderID(order, { facilitatorAccessToken, partnerAttributionID, forceRestAPI: false });
     };
 
     return { create };
