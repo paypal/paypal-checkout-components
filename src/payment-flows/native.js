@@ -27,7 +27,6 @@ const SOCKET_MESSAGE = {
     SET_PROPS:  'setProps',
     GET_PROPS:  'getProps',
     CLOSE:      'close',
-    FALLBACK:   'fallback',
     ON_APPROVE: 'onApprove',
     ON_CANCEL:  'onCancel',
     ON_ERROR:   'onError'
@@ -212,8 +211,8 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     let instance;
 
-    const fallbackToWebCheckout = ({ win, buyerAccessToken, venmoPayloadID } : { win? : CrossDomainWindowType, buyerAccessToken? : string, venmoPayloadID? : string } = {}) => {
-        const checkoutPayment = { ...payment, buyerAccessToken, venmoPayloadID, win, isClick: false };
+    const fallbackToWebCheckout = ({ win } : { win? : CrossDomainWindowType } = {}) => {
+        const checkoutPayment = { ...payment, win, isClick: false };
         instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData });
         return instance.start();
     };
@@ -319,12 +318,6 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             getLogger().info(`native_message_onerror`, { err: message }).flush();
             socket.close();
             return onError(new Error(message));
-        });
-
-        socket.on(SOCKET_MESSAGE.FALLBACK, ({ data: { buyerAccessToken, venmoPayloadID } }) => {
-            getLogger().info(`native_message_fallback`).flush();
-            socket.close();
-            return fallbackToWebCheckout({ buyerAccessToken, venmoPayloadID });
         });
 
         socket.reconnect();
