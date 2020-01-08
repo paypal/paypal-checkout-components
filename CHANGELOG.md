@@ -1,3 +1,10 @@
+## <small>5.0.72 (2020-01-08)</small>
+
+* Add screenshots ([c42c577](http://github.paypal.com/paypal/paypal-checkout/commit/c42c577))
+* Feat/finalize black button (#1267) ([9dc6000](http://github.paypal.com/paypal/paypal-checkout/commit/9dc6000)), closes [#1267](http://github.paypal.com/paypal/paypal-checkout/issues/1267) [#1233](http://github.paypal.com/paypal/paypal-checkout/issues/1233)
+
+
+
 ## <small>5.0.71 (2019-12-19)</small>
 
 * Revert "Add screenshots" ([e01c9c6](http://github.paypal.com/paypal/paypal-checkout/commit/e01c9c6))
