@@ -137,7 +137,7 @@ export type Components = {|
 |};
 
 export function getComponents() : Components {
-    const { Checkout, CardFields, ThreeDomainSecure } = window.paypal;
+    const { Checkout, CardFields, ThreeDomainSecure } = paypal;
     return { Checkout, CardFields, ThreeDomainSecure };
 }
 
@@ -149,7 +149,7 @@ export type Config = {|
 
 export function getConfig({ serverCSPNonce, firebaseConfig } : { serverCSPNonce : ?string, firebaseConfig : ?FirebaseConfig }) : Config {
     const cspNonce = serverCSPNonce || getNonce();
-    const version = window.paypal.version;
+    const { version } = paypal;
     
     return {
         version,

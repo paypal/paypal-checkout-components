@@ -29,13 +29,13 @@ type SmartMenu = {|
 
 export function renderSmartMenu({ clientID } : SmartMenuProps) : SmartMenu {
 
-    const { Menu } = window.paypal;
+    const { Menu } = paypal;
 
     if (!Menu) {
         throw new Error(`Menu component not found`);
     }
 
-    const { renderTo, updateProps, show, hide } = window.paypal.Menu({ clientID });
+    const { renderTo, updateProps, show, hide } = Menu({ clientID });
 
     const render = memoize(() => {
         return renderTo(window.xprops.getParent(), '#smart-menu');

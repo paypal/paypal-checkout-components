@@ -83,10 +83,10 @@ export const FPTI_TRANSITION = {
     CHECKOUT_AUTHORIZE:       ('process_checkout_authorize' : 'process_checkout_authorize'),
     CHECKOUT_CANCEL:          ('process_checkout_cancel' : 'process_checkout_cancel'),
 
-    NATIVE_DETECT_APP_SWITCH:    ('native_detect_app_switch' : 'native_detect_app_switch'),
-    NATIVE_DETECT_NO_APP_SWITCH: ('native_detect_no_app_switch' : 'native_detect_no_app_switch'),
-    NATIVE_APP_SWITCH_ACK:       ('native_app_switch_ack' : 'native_app_switch_ack'),
-    NATIVE_ERROR:                ('native_app_switch_ack' : 'native_app_switch_ack')
+    NATIVE_DETECT_APP_SWITCH: ('native_detect_app_switch' : 'native_detect_app_switch'),
+    NATIVE_DETECT_WEB_SWITCH: ('native_detect_web_switch' : 'native_detect_web_switch'),
+    NATIVE_APP_SWITCH_ACK:    ('native_app_switch_ack' : 'native_app_switch_ack'),
+    NATIVE_ERROR:             ('native_app_switch_ack' : 'native_app_switch_ack')
 };
 
 export const FPTI_BUTTON_TYPE = {

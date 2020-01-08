@@ -4,11 +4,12 @@
 import { wrapPromise, parseQuery, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
+import { getDomain } from 'cross-domain-utils/src';
 
 import { promiseNoop } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton,
-    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, mockFirebaseScripts } from './mocks';
+    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, mockFirebaseScripts, MOCK_SDK_META } from './mocks';
 
 const IOS_SAFARI_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
 const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
@@ -89,6 +90,8 @@ describe('native cases', () => {
                 });
             }));
 
+            let win : Object;
+
             const windowOpen = window.open;
             window.open = expect('windowOpen', (url) => {
                 window.open = windowOpen;
@@ -97,27 +100,98 @@ describe('native cases', () => {
                     throw new Error(`Expected url to be immediately passed to window.open`);
                 }
 
-                if (url.indexOf('/smart/checkout/native') === -1) {
+                if (url.indexOf('/smart/checkout/native/popup') === -1) {
                     throw new Error(`Expected paypal native url`);
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                const { sessionUID: querySessionUID, pageUrl } = query;
-                sessionUID = querySessionUID;
+                const { sdkMeta } = query;
 
-                if (!sessionUID) {
-                    throw new Error(`Expected sessionUID to be passed in url`);
+                if (sdkMeta !== MOCK_SDK_META) {
+                    throw new Error(`Expected sdkMeta to be passed in url`);
                 }
 
-                if (!pageUrl) {
-                    throw new Error(`Expected pageUrl to be passed in url`);
-                }
+                win = {
+                    location: {
+                        href: 'about:blank'
+                    },
+                    close:  avoid('close'),
+                    closed: false
+                };
 
-                ZalgoPromise.delay(50)
-                    .then(onApprove);
+                setTimeout(() => {
+                    win.location.href = url;
+                }, 10);
 
-                return null;
+                // $FlowFixMe
+                win.parent = win.top = win;
+                return win;
             });
+
+            window.paypal.postRobot = {
+                once: (name, options, handler) => {
+                    if (!win) {
+                        throw new Error(`Expected window to be open`);
+                    }
+
+                    if (options.window !== win) {
+                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
+                    }
+
+                    if (options.domain !== getDomain()) {
+                        throw new Error(`Expected domain to be current domain`);
+                    }
+
+                    if (name === 'awaitRedirect') {
+                        const pageUrl = `${ window.location.href  }#close`;
+                        
+                        return ZalgoPromise.try(() => {
+                            return handler({
+                                data: {
+                                    pageUrl
+                                }
+                            });
+                        }).then(res => {
+                            if (!res.redirectUrl) {
+                                throw new Error(`Expected native redirect url`);
+                            }
+
+                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                            if (!redirectQuery.sdkMeta) {
+                                throw new Error(`Expected sdkMeta to be passed in url`);
+                            }
+
+                            if (!redirectQuery.sessionUID) {
+                                throw new Error(`Expected sessionUID to be passed in url`);
+                            }
+
+                            if (!redirectQuery.pageUrl) {
+                                throw new Error(`Expected pageUrl to be passed in url`);
+                            }
+
+                            if (!redirectQuery.buttonSessionID) {
+                                throw new Error(`Expected sdkMeta to be passed in url`);
+                            }
+
+                            sessionUID = redirectQuery.sessionUID;
+                        });
+                    }
+
+                    if (name === 'detectAppSwitch') {
+                        ZalgoPromise.delay(100)
+                            .then(onApprove);
+
+                        return ZalgoPromise.delay(50).then(handler);
+                    }
+
+                    if (name === 'detectWebSwitch') {
+                        return new ZalgoPromise();
+                    }
+
+                    throw new Error(`Unexpected message name: ${ name }`);
+                }
+            };
 
             createButtonHTML();
 
@@ -135,7 +209,7 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS with a closed window', async () => {
+    it('should render a button with createOrder, click the button, and render checkout via popup to web path in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
 
@@ -144,8 +218,6 @@ describe('native cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -156,7 +228,7 @@ describe('native cases', () => {
                     if (!data.variables.sessionUID) {
                         throw new Error(`Expected sessionUID to be passed`);
                     }
-
+                    
                     return {
                         data: {
                             firebase: {
@@ -170,25 +242,11 @@ describe('native cases', () => {
                 })
             }).expectCalls();
 
-            let sessionUID;
-
-            const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
-                getSessionUID: () => {
-                    if (!sessionUID) {
-                        throw new Error(`Session UID not present`);
-                    }
-
-                    return sessionUID;
-                }
-            });
-
-            const mockWebSocketServer = expectSocket();
-
             const orderID = 'XXXXXXXXXX';
-            const payerID = 'XXYYZZ123456';
+            const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.delay(50).then(() => {
+                return ZalgoPromise.try(() => {
                     return orderID;
                 });
             }));
@@ -203,11 +261,9 @@ describe('native cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-
-                ZalgoPromise.try(expect('postOnApprove'), async () => {
-                    await mockWebSocketServer.done();
-                });
             }));
+
+            let win : Object;
 
             const windowOpen = window.open;
             window.open = expect('windowOpen', (url) => {
@@ -217,39 +273,93 @@ describe('native cases', () => {
                     throw new Error(`Expected url to be immediately passed to window.open`);
                 }
 
-                if (url.indexOf('/smart/checkout/native') === -1) {
+                if (url.indexOf('/smart/checkout/native/popup') === -1) {
                     throw new Error(`Expected paypal native url`);
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                const { sessionUID: querySessionUID, pageUrl } = query;
-                sessionUID = querySessionUID;
+                const { sdkMeta } = query;
 
-                if (!sessionUID) {
-                    throw new Error(`Expected sessionUID to be passed in url`);
+                if (sdkMeta !== MOCK_SDK_META) {
+                    throw new Error(`Expected sdkMeta to be passed in url`);
                 }
 
-                if (!pageUrl) {
-                    throw new Error(`Expected pageUrl to be passed in url`);
-                }
-
-                ZalgoPromise.delay(100)
-                    .then(onApprove);
-
-                const win : Object = {
+                win = {
                     location: {
                         href: 'about:blank'
                     },
+                    close:  avoid('close'),
                     closed: false
                 };
 
                 setTimeout(() => {
-                    win.closed = true;
+                    win.location.href = url;
                 }, 10);
 
+                // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
+
+            window.paypal.postRobot = {
+                once: (name, options, handler) => {
+                    if (!win) {
+                        throw new Error(`Expected window to be open`);
+                    }
+
+                    if (options.window !== win) {
+                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
+                    }
+
+                    if (options.domain !== getDomain()) {
+                        throw new Error(`Expected domain to be current domain`);
+                    }
+
+                    if (name === 'awaitRedirect') {
+                        const pageUrl = `${ window.location.href  }#close`;
+                        
+                        return ZalgoPromise.try(() => {
+                            return handler({
+                                data: {
+                                    pageUrl
+                                }
+                            });
+                        }).then(res => {
+                            if (!res.redirectUrl) {
+                                throw new Error(`Expected native redirect url`);
+                            }
+
+                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                            if (!redirectQuery.sdkMeta) {
+                                throw new Error(`Expected sdkMeta to be passed in url`);
+                            }
+
+                            if (!redirectQuery.sessionUID) {
+                                throw new Error(`Expected sessionUID to be passed in url`);
+                            }
+
+                            if (!redirectQuery.pageUrl) {
+                                throw new Error(`Expected pageUrl to be passed in url`);
+                            }
+
+                            if (!redirectQuery.buttonSessionID) {
+                                throw new Error(`Expected sdkMeta to be passed in url`);
+                            }
+                        });
+                    }
+
+                    if (name === 'detectAppSwitch') {
+                        return new ZalgoPromise();
+                    }
+
+                    if (name === 'detectWebSwitch') {
+                        return ZalgoPromise.delay(50).then(handler);
+                    }
+
+                    throw new Error(`Unexpected message name: ${ name }`);
+                }
+            };
 
             createButtonHTML();
 
@@ -263,7 +373,6 @@ describe('native cases', () => {
             await clickButton(FUNDING.PAYPAL);
 
             gqlMock.done();
-            firebaseScripts.done();
         });
     });
 
@@ -400,56 +509,16 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS', async () => {
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to web path in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
 
-            const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
-
-            const gqlMock = getGraphQLApiMock({
-                extraHandler: expect('firebaseGQLCall', ({ data }) => {
-                    if (!data.query.includes('query GetFireBaseSessionToken')) {
-                        return;
-                    }
-
-                    if (!data.variables.sessionUID) {
-                        throw new Error(`Expected sessionUID to be passed`);
-                    }
-
-                    return {
-                        data: {
-                            firebase: {
-                                auth: {
-                                    sessionUID: data.variables.sessionUID,
-                                    sessionToken
-                                }
-                            }
-                        }
-                    };
-                })
-            }).expectCalls();
-
-            let sessionUID;
-
-            const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
-                getSessionUID: () => {
-                    if (!sessionUID) {
-                        throw new Error(`Session UID not present`);
-                    }
-
-                    return sessionUID;
-                }
-            });
-
-            const mockWebSocketServer = expectSocket();
-
             const orderID = 'XXXXXXXXXX';
-            const payerID = 'XXYYZZ123456';
+            const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -459,7 +528,7 @@ describe('native cases', () => {
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -467,11 +536,30 @@ describe('native cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-
-                ZalgoPromise.try(expect('postOnApprove'), async () => {
-                    await mockWebSocketServer.done();
-                });
             }));
+
+            let win : Object;
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
+
+                if (checkoutProps.window !== win) {
+                    throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
+                }
+
+                const checkoutInstance = CheckoutOriginal(checkoutProps);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return checkoutProps.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
 
             const windowOpen = window.open;
             window.open = expect('windowOpen', (url) => {
@@ -486,8 +574,7 @@ describe('native cases', () => {
                 }
 
                 const query = parseQuery(url.split('?')[1]);
-                const { sessionUID: querySessionUID, pageUrl } = query;
-                sessionUID = querySessionUID;
+                const { sessionUID, pageUrl } = query;
 
                 if (!sessionUID) {
                     throw new Error(`Expected sessionUID to be passed in url`);
@@ -497,10 +584,18 @@ describe('native cases', () => {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
 
-                ZalgoPromise.delay(50)
-                    .then(onApprove);
+                win = {
+                    location: {
+                        href: url
+                    },
+                    closed: false,
+                    close:  avoid('close')
+                };
 
-                return null;
+                // $FlowFixMe
+                win.parent = win.top = win;
+
+                return win;
             });
 
             createButtonHTML();
@@ -513,15 +608,13 @@ describe('native cases', () => {
             });
 
             await clickButton(FUNDING.PAYPAL);
-
-            gqlMock.done();
-            firebaseScripts.done();
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path with onCancel', async () => {
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path with onCancel in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -633,9 +726,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path with onError', async () => {
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path with onError in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -743,110 +836,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to web path', async () => {
+    it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to native path in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
-            window.xprops.enableNativeCheckout = true;
-            window.xprops.platform = PLATFORM.MOBILE;
-            delete window.xprops.onClick;
-
-            const orderID = 'XXXXXXXXXX';
-            const payerID = 'AAABBBCCC';
-
-            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
-                    return orderID;
-                });
-            }));
-
-            window.xprops.onCancel = avoid('onCancel');
-
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
-                if (data.orderID !== orderID) {
-                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                }
-
-                if (data.payerID !== payerID) {
-                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                }
-            }));
-
-            let win : Object;
-
-            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
-
-                if (checkoutProps.window !== win) {
-                    throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
-                }
-
-                const checkoutInstance = CheckoutOriginal(checkoutProps);
-
-                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
-                    return checkoutProps.createOrder().then(id => {
-                        if (id !== orderID) {
-                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
-                        }
-                        return renderToOriginal(...args);
-                    });
-                }));
-
-                return checkoutInstance;
-            }));
-
-
-            const windowOpen = window.open;
-            window.open = expect('windowOpen', (url) => {
-                window.open = windowOpen;
-
-                if (!url) {
-                    throw new Error(`Expected url to be immediately passed to window.open`);
-                }
-
-                if (url.indexOf('/smart/checkout/native') === -1) {
-                    throw new Error(`Expected paypal native url`);
-                }
-
-                const query = parseQuery(url.split('?')[1]);
-                const { sessionUID, pageUrl } = query;
-
-                if (!sessionUID) {
-                    throw new Error(`Expected sessionUID to be passed in url`);
-                }
-
-                if (!pageUrl) {
-                    throw new Error(`Expected pageUrl to be passed in url`);
-                }
-
-                win = {
-                    location: {
-                        href: url
-                    },
-                    closed: false,
-                    close:  avoid('close')
-                };
-
-                // $FlowFixMe
-                win.parent = win.top = win;
-
-                return win;
-            });
-
-            createButtonHTML();
-
-            await mockSetupButton({
-                eligibility: {
-                    cardFields: false,
-                    native:     true
-                }
-            });
-
-            await clickButton(FUNDING.PAYPAL);
-        });
-    });
-
-    it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to native path', async () => {
-        return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -968,9 +960,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to native path', async () => {
+    it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to native path in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1082,9 +1074,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder rejecting, click the button, and render checkout via popup to native path', async () => {
+    it('should render a button with createOrder rejecting, click the button, and render checkout via popup to native path in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid, expectError }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1204,9 +1196,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to web path', async () => {
+    it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to web path in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1309,9 +1301,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to web path', async () => {
+    it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to web path in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1367,9 +1359,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path, then fall back from native', async () => {
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path, then fall back from native in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1506,9 +1498,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the venmo button, and render checkout via popup to native path', async () => {
+    it('should render a button with createOrder, click the venmo button, and render checkout via popup to native path in Chrome', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -1629,9 +1621,9 @@ describe('native cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path with error in onApprove', async () => {
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path with error in onApprove in Chrome', async () => {
         return await wrapPromise(async ({ expect, expectError, avoid }) => {
-            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;

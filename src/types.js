@@ -269,6 +269,13 @@ export type ThreeDomainSecureFlowType = {|
     |}) : ZoidComponent
 |};
 
+export type MenuFlowType = {|
+    canRenderTo : (CrossDomainWindowType) => ZalgoPromise<boolean>,
+    ({|
+        clientID : string
+    |}) : ZoidComponent
+|};
+
 export type ContentType = {|
     instantlyPayWith : string,
     poweredBy : string,
@@ -276,4 +283,17 @@ export type ContentType = {|
     useDifferentAccount : string,
     deleteVaultedAccount : string,
     deleteVaultedCard : string
+|};
+
+export type PostRobot = {|
+    
+|};
+
+export type PayPal = {|
+    version : string,
+    Checkout : CheckoutFlowType,
+    CardFields : CardFieldsFlowType,
+    ThreeDomainSecure : ThreeDomainSecureFlowType,
+    Menu : MenuFlowType,
+    postRobot : PostRobot
 |};

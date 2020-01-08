@@ -27,6 +27,12 @@ export const NATIVE_CHECKOUT_URI : { [ $Values<typeof FUNDING> ] : string } = {
     [ FUNDING.VENMO ]:  '/smart/checkout/venmo'
 };
 
+export const NATIVE_CHECKOUT_POPUP_URI : { [$Values<typeof FUNDING> ] : string } = {
+    [ FUNDING.PAYPAL ]: '/smart/checkout/native/popup',
+    [ FUNDING.VENMO ]:  '/smart/checkout/venmo/popup'
+};
+
+
 export const NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
 
 export const CLIENT_ID_PAYEE_NO_MATCH = [

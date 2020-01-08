@@ -1109,6 +1109,8 @@ export function mockFirebaseScripts() : { done : () => void } {
     };
 }
 
+export const MOCK_SDK_META = 'abc123';
+
 export async function mockSetupButton(overrides? : Object = {}) : ZalgoPromise<void> {
     await setupButton({
         facilitatorAccessToken:        'QQQ123000',
@@ -1122,6 +1124,7 @@ export async function mockSetupButton(overrides? : Object = {}) : ZalgoPromise<v
             cardFields: false,
             native:     false
         },
+        sdkMeta: MOCK_SDK_META,
         ...overrides
     });
 }

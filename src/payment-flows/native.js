@@ -1,14 +1,14 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, PopupOpenError, isIos, isAndroid, isSafari, isChrome, stringifyErrorMessage } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, isIos, isAndroid, isSafari, isChrome, stringifyErrorMessage, once, PopupOpenError } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
-import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI } from '../config';
+import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
-import { promiseNoop, getLogger } from '../lib';
+import { getLogger, promiseOne } from '../lib';
 import { USER_ACTION, FPTI_TRANSITION } from '../constants';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
@@ -17,7 +17,13 @@ import { checkout } from './checkout';
 const SOURCE_APP = 'paypal_smart_payment_buttons';
 const TARGET_APP = 'paypal_native_checkout';
 
-const MESSAGE = {
+const POST_MESSAGE = {
+    AWAIT_REDIRECT:    'awaitRedirect',
+    DETECT_APP_SWITCH: 'detectAppSwitch',
+    DETECT_WEB_SWITCH: 'detectWebSwitch'
+};
+
+const SOCKET_MESSAGE = {
     SET_PROPS:  'setProps',
     GET_PROPS:  'getProps',
     CLOSE:      'close',
@@ -49,6 +55,24 @@ function isIOSSafari() : boolean {
 
 function isAndroidChrome() : boolean {
     return isAndroid() && isChrome();
+}
+
+function useDirectAppSwitch() : boolean {
+    return isAndroidChrome();
+}
+
+function didAppSwitch(win : ?CrossDomainWindowType) : boolean {
+    return !win || isWindowClosed(win);
+}
+
+function attemptPopupAppSwitch(url) : ?CrossDomainWindowType {
+    try {
+        return popup(url);
+    } catch (err) {
+        if (!(err instanceof PopupOpenError)) {
+            throw err;
+        }
+    }
 }
 
 function isNativeOptedIn({ props } : { props : Props }) : boolean {
@@ -126,6 +150,10 @@ function isNativePaymentEligible({ payment, props, serviceData } : { payment : P
         return false;
     }
 
+    if (!initialPageUrl) {
+        return false;
+    }
+
     if (fundingSource === FUNDING.VENMO && !isNativeOptedIn({ props })) {
         return false;
     }
@@ -176,45 +204,13 @@ type NativeSDKProps = {|
     forceEligible : boolean
 |};
 
-type AppSwitchPopup = {|
-    getWindow : () => CrossDomainWindowType,
-    didSwitch : () => boolean,
-    close : () => void
-|};
-
-function appSwitchPopup(url : string) : AppSwitchPopup {
-    let win;
-
-    try {
-        win = popup(url);
-    } catch (err) {
-        if (!(err instanceof PopupOpenError)) {
-            throw err;
-        }
-    }
-
-    const getWindow = () => win;
-
-    const didSwitch = () => {
-        return Boolean(!win || isWindowClosed(win));
-    };
-
-    const close = () => {
-        if (win) {
-            win.close();
-        }
-    };
-
-    return { getWindow, didSwitch, close };
-}
-
 function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
         buttonSessionID, env, stageHost, apiStageHost, onClick } = props;
-    const { facilitatorAccessToken } = serviceData;
+    const { facilitatorAccessToken, sdkMeta } = serviceData;
     const { fundingSource } = payment;
 
-    let instance : { close : () => ZalgoPromise<void> } = { close: promiseNoop };
+    let instance;
 
     const fallbackToWebCheckout = ({ win, buyerAccessToken, venmoPayloadID } : { win? : CrossDomainWindowType, buyerAccessToken? : string, venmoPayloadID? : string } = {}) => {
         const checkoutPayment = { ...payment, buyerAccessToken, venmoPayloadID, win, isClick: false };
@@ -222,17 +218,25 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return instance.start();
     };
 
-    const getNativeUrl = () : string => {
-        const domain = (fundingSource === FUNDING.VENMO)
+    const getNativeDomain = () : string => {
+        return (fundingSource === FUNDING.VENMO)
             ? 'https://www.paypal.com'
             : getDomain();
+    };
 
-        return extendUrl(`${ domain }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
-            query: { sessionUID, buttonSessionID, pageUrl: initialPageUrl }
+    const getNativeUrl = ({ pageUrl = initialPageUrl } = {}) : string => {
+        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
+            query: { sdkMeta, sessionUID, buttonSessionID, pageUrl }
         });
     };
 
-    const getWebCheckoutFallbackUrl = ({ orderID }) : string => {
+    const getNativePopupUrl = () : string => {
+        return extendUrl(`${ getDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
+            query: { sdkMeta }
+        });
+    };
+
+    const getWebCheckoutUrl = ({ orderID }) : string => {
         return extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
             query: {
                 fundingSource,
@@ -251,7 +255,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             pageUrl: getPageUrl()
         }).then(({ orderID, pageUrl }) => {
             const userAgent = getUserAgent();
-            const webCheckoutUrl = getWebCheckoutFallbackUrl({ orderID });
+            const webCheckoutUrl = getWebCheckoutUrl({ orderID });
             const forceEligible = isNativeOptedIn({ props });
 
             return {
@@ -261,19 +265,43 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     };
 
-    const connectNative = () => {
+    type NativeConnection = {|
+        setProps : () => ZalgoPromise<void>,
+        close : () => ZalgoPromise<void>
+    |};
+
+    const connectNative = () : NativeConnection => {
         const socket = nativeSocket;
 
         if (!socket) {
             throw new Error(`Native socket connection not established`);
         }
 
-        socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
+        const setProps = once(() => {
+            return getSDKProps().then(sdkProps => {
+                getLogger().info(`native_message_setprops`).flush();
+                return socket.send(SOCKET_MESSAGE.SET_PROPS, sdkProps);
+            }).then(() => {
+                getLogger().info(`native_response_setprops`).track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK
+                }).flush();
+            });
+        });
+
+        const close = once(() => {
+            getLogger().info(`native_message_close`).flush();
+            return socket.send(SOCKET_MESSAGE.CLOSE).then(() => {
+                getLogger().info(`native_response_close`).flush();
+                socket.close();
+            });
+        });
+
+        socket.on(SOCKET_MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
             getLogger().info(`native_message_getprops`).flush();
             return getSDKProps();
         });
 
-        socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
+        socket.on(SOCKET_MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
             getLogger().info(`native_message_onapprove`).flush();
             socket.close();
             const data = { payerID, paymentID, billingToken, forceRestAPI: true };
@@ -281,60 +309,57 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return onApprove(data, actions);
         });
 
-        socket.on(MESSAGE.ON_CANCEL, () => {
+        socket.on(SOCKET_MESSAGE.ON_CANCEL, () => {
             getLogger().info(`native_message_oncancel`).flush();
             socket.close();
             return onCancel();
         });
 
-        socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
+        socket.on(SOCKET_MESSAGE.ON_ERROR, ({ data : { message } }) => {
             getLogger().info(`native_message_onerror`, { err: message }).flush();
             socket.close();
             return onError(new Error(message));
         });
 
-        socket.on(MESSAGE.FALLBACK, ({ data: { buyerAccessToken, venmoPayloadID } }) => {
+        socket.on(SOCKET_MESSAGE.FALLBACK, ({ data: { buyerAccessToken, venmoPayloadID } }) => {
             getLogger().info(`native_message_fallback`).flush();
             socket.close();
             return fallbackToWebCheckout({ buyerAccessToken, venmoPayloadID });
         });
 
-        const setProps = () => {
-            return getSDKProps().then(sdkProps => {
-                getLogger().info(`native_message_setprops`).flush();
-                return socket.send(MESSAGE.SET_PROPS, sdkProps);
-            }).then(() => {
-                getLogger().info(`native_response_setprops`).flush();
-            });
-        };
-
-        const closeNative = () => {
-            getLogger().info(`native_message_close`).flush();
-            return socket.send(MESSAGE.CLOSE).then(() => {
-                getLogger().info(`native_response_close`).flush();
-                socket.close();
-            });
-        };
-
         socket.reconnect();
         
-        return { setProps, close: closeNative };
+        return { setProps, close };
     };
 
-    let appSwitch : AppSwitchPopup;
+    let win : ?CrossDomainWindowType;
+    let native : NativeConnection;
 
     const open = () => {
-        appSwitch = appSwitchPopup(getNativeUrl());
+        const nativeUrl = getNativeUrl();
+        const nativePopupUrl = getNativePopupUrl();
+
+        if (useDirectAppSwitch()) {
+            win = attemptPopupAppSwitch(nativeUrl);
+        } else {
+            win = popup(nativePopupUrl);
+        }
+
+        native = connectNative();
     };
     
     const close = () => {
-        return ZalgoPromise.delay(500).then(() => {
-            if (appSwitch.didSwitch()) {
-                connectNative().close();
+        return ZalgoPromise.try(() => {
+            if (win) {
+                win.close();
             }
 
-            if (appSwitch) {
-                appSwitch.close();
+            if (instance) {
+                return instance.close();
+            }
+
+            if (native) {
+                return native.close();
             }
         });
     };
@@ -354,28 +379,63 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     };
 
-    const start = memoize(() => {
+    const directAppSwitch = () => {
         return createOrder().then(() => {
-            if (appSwitch.didSwitch()) {
+            if (didAppSwitch(win)) {
                 getLogger().info(`native_detect_app_switch`).track({
                     [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
                 }).flush();
 
-                instance = connectNative();
-                return instance.setProps().then(() => {
-                    getLogger().info(`native_app_switch_ack`).track({
-                        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK
-                    }).flush();
-                });
-
-            } else {
-                getLogger().info(`native_detect_no_app_switch`).track({
-                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_NO_APP_SWITCH
+                return native.setProps();
+            } else if (win) {
+                getLogger().info(`native_post_message_detect_web_switch`).track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH
                 }).flush();
 
-                return fallbackToWebCheckout({ win: appSwitch.getWindow() });
+                return fallbackToWebCheckout({ win });
+            } else {
+                throw new Error(`No window found`);
             }
-        }).catch(err => {
+        });
+    };
+
+    const popupAppSwitch = () => {
+        const { postRobot } = paypal;
+        
+        const listen = (event, handler) =>
+            postRobot.once(event, { window: win, domain: getDomain() }, handler);
+
+        listen(POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
+            getLogger().info(`native_post_message_await_redirect`).flush();
+            const redirectUrl = getNativeUrl({ pageUrl });
+            return { redirectUrl };
+        });
+
+        return promiseOne([
+            listen(POST_MESSAGE.DETECT_APP_SWITCH, () => {
+                getLogger().info(`native_post_message_detect_app_switch`).track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
+                }).flush();
+
+                return native.setProps();
+            }),
+
+            listen(POST_MESSAGE.DETECT_WEB_SWITCH, () => {
+                getLogger().info(`native_post_message_detect_web_switch`).track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH
+                }).flush();
+
+                if (win) {
+                    return fallbackToWebCheckout({ win });
+                } else {
+                    throw new Error(`No window found to do web fallback from native`);
+                }
+            })
+        ]);
+    };
+
+    const start = memoize(() => {
+        return (useDirectAppSwitch() ? directAppSwitch() : popupAppSwitch()).catch(err => {
             getLogger().info(`native_error`, { err: stringifyError(err) }).track({
                 [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ERROR,
                 [FPTI_KEY.ERROR_CODE]: 'native_error',
@@ -387,11 +447,10 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     });
 
-
     return {
         click,
         start,
-        close: () => instance.close()
+        close
     };
 }
 
