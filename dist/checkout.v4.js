@@ -3124,7 +3124,7 @@ var config = {
   scriptUrl:  false ? undefined : "//www.paypalobjects.com/api/" + "checkout.v4.js",
   // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
   paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-  version: "4.0.308",
+  version: "4.0.309",
   cors: true,
   env: getDefaultEnv(),
   state: 'checkoutjs',
@@ -8178,20 +8178,6 @@ function supportsPopups(ua) {
 
   return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
-function isChrome(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /Chrome|Chromium|CriOS/.test(ua);
-}
-function isSafari(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /Safari/.test(ua) && !isChrome(ua);
-}
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
 var esm_extends = __webpack_require__(10);
 
@@ -10717,8 +10703,6 @@ function wrapPromise(method, _temp) {
 /* unused concated harmony import isIEIntranet */
 /* unused concated harmony import isMacOsCna */
 /* unused concated harmony import supportsPopups */
-/* unused concated harmony import isChrome */
-/* unused concated harmony import isSafari */
 /* unused concated harmony import isDocumentReady */
 /* unused concated harmony import urlEncode */
 /* unused concated harmony import waitForWindowReady */
@@ -12660,7 +12644,7 @@ function beacon(event, payload) {
 
   try {
     payload.event = "ppxo_" + event;
-    payload.version = "4.0.308";
+    payload.version = "4.0.309";
     payload.host = window.location.host;
     payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__[/* getSessionID */ "c"])();
     payload.appName = APP_NAME;
@@ -12716,7 +12700,7 @@ function checkpoint(name, payload, options) {
     var checkpointName = name;
 
     if (options.version) {
-      var version = "4.0.308".replace(/[^0-9]+/g, '_');
+      var version = "4.0.309".replace(/[^0-9]+/g, '_');
 
       checkpointName = version + "_" + checkpointName;
     }
@@ -12733,7 +12717,7 @@ var FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() {
   return {
-    v: "checkout.js." + "4.0.308",
+    v: "checkout.js." + "4.0.309",
     t: Date.now(),
     g: new Date().getTimezoneOffset(),
     flnm: 'ec:hermes:',
@@ -14131,17 +14115,17 @@ __webpack_require__.r(__webpack_exports__);
 
 if (false) {}
 
-if (window.paypal && window.paypal.version === "4.0.308") {
+if (window.paypal && window.paypal.version === "4.0.309") {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_same_version', {
-    version: "4.0.308"
+    version: "4.0.309"
   });
-  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.308" + ") already loaded on page");
-} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.308" && window.paypal.Button && window.paypal.Button.render) {
+  throw new Error("PayPal Checkout Integration Script with same version (" + "4.0.309" + ") already loaded on page");
+} else if (window.paypal && window.paypal.version && window.paypal.version !== "4.0.309" && window.paypal.Button && window.paypal.Button.render) {
   Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__[/* beacon */ "a"])('bootstrap_already_loaded_different_version', {
     existingVersion: window.paypal.version,
-    version: "4.0.308"
+    version: "4.0.309"
   });
-  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.308");
+  throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: " + "4.0.309");
 } else {
   try {
     var _interface = __webpack_require__(56);
@@ -18417,7 +18401,7 @@ function initLogger() {
       country: config["a" /* config */].locale.country,
       lang: config["a" /* config */].locale.lang,
       uid: Object(lib_session["c" /* getSessionID */])(),
-      ver: "4.0.308"
+      ver: "4.0.309"
     };
   });
   Object(beaver_logger_client["a" /* addHeaderBuilder */])(function () {
@@ -18990,7 +18974,7 @@ function getScriptVersion() {
   if ( true && isPayPalObjects()) {
     return  false ? undefined : "4";
   } else {
-    return  false ? undefined : "4.0.308";
+    return  false ? undefined : "4.0.309";
   }
 }
 function getCurrentScriptUrl() {
@@ -19006,7 +18990,7 @@ function getCurrentScriptUrl() {
     return scriptUrl;
   }
 
-  return "https://www.paypalobjects.com/api/checkout." + "4.0.308" + ( false ? undefined : '') + ".js";
+  return "https://www.paypalobjects.com/api/checkout." + "4.0.309" + ( false ? undefined : '') + ".js";
 }
 function getDomainSetting(name, def) {
   var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src["h" /* getDomain */])();
@@ -34277,7 +34261,6 @@ function renderButton(_ref13) {
       logoColor: logoColor
     }),
     role: "button",
-    "aria-label": source,
     tabindex: hasTabIndex && 0
   }), source === src_constants["v" /* FUNDING */].CARD ? contentText : renderButtonTextDiv({
     contentText: contentText,
@@ -34463,7 +34446,7 @@ function componentTemplate_componentTemplate(_ref19) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(props_normalizeProps(props)) : null;
-  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref20 = {}, _ref20[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.308", _ref20), {
+  return jsxToHTML("div", Object(esm_extends["a" /* default */])({}, (_ref20 = {}, _ref20[src_constants["c" /* ATTRIBUTE */].VERSION] = "4.0.309", _ref20), {
     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
@@ -36206,7 +36189,7 @@ var interface_postRobot = src;
 
 
 var onPossiblyUnhandledException = zalgo_promise_src["a" /* ZalgoPromise */].onPossiblyUnhandledException;
-var interface_version = "4.0.308";
+var interface_version = "4.0.309";
 var interface_checkout;
 var apps;
 

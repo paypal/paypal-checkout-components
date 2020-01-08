@@ -370,20 +370,6 @@ function supportsPopups(ua) {
 
   return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
-function isChrome(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /Chrome|Chromium|CriOS/.test(ua);
-}
-function isSafari(ua) {
-  if (ua === void 0) {
-    ua = getUserAgent();
-  }
-
-  return /Safari/.test(ua) && !isChrome(ua);
-}
 // CONCATENATED MODULE: ./node_modules/zalgo-promise/src/utils.js
 function utils_isPromise(item) {
   try {
@@ -15198,7 +15184,6 @@ function renderButton(_ref13) {
       logoColor: logoColor
     }),
     role: "button",
-    "aria-label": source,
     tabindex: hasTabIndex && 0
   }), source === FUNDING.CARD ? contentText : renderButtonTextDiv({
     contentText: contentText,
@@ -15382,7 +15367,7 @@ function componentTemplate(_ref19) {
   });
   var scriptNode = renderScript();
   var labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
-  return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20[ATTRIBUTE.VERSION] = "4.0.308", _ref20), {
+  return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20[ATTRIBUTE.VERSION] = "4.0.309", _ref20), {
     class: CLASS.CONTAINER + " " + getCommonButtonClasses({
       layout: layout,
       shape: shape,
