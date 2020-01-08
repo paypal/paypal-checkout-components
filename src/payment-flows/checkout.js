@@ -9,7 +9,7 @@ import type { FundingEligibilityType, ProxyWindow } from '../types';
 import type { Props, Components, ServiceData, Config, CreateBillingAgreement, CreateSubscription } from '../button/props';
 import { enableVault } from '../api';
 import { CONTEXT, TARGET_ELEMENT } from '../constants';
-import { unresolvedPromise } from '../lib';
+import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
@@ -179,6 +179,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     
             onApprove: ({ payerID, paymentID, billingToken, subscriptionID }) => {
                 approved = true;
+                getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
     
                 // eslint-disable-next-line no-use-before-define
                 return close().then(() => {
@@ -187,6 +188,8 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
             },
     
             onAuth: ({ accessToken }) => {
+                getLogger().info(`spb_onauth_access_token_${ accessToken ? 'present' : 'not_present' }`);
+                getLogger().info(`spb_onauth_buyer_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
                 buyerAccessToken = accessToken;
             },
     
