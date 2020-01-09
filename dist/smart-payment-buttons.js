@@ -5776,7 +5776,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.182", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.183", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -6081,7 +6081,7 @@ function getOrder(orderID, _ref2) {
       partnerAttributionID = _ref2.partnerAttributionID,
       _ref2$forceRestAPI = _ref2.forceRestAPI,
       forceRestAPI = _ref2$forceRestAPI === void 0 ? false : _ref2$forceRestAPI;
-  return buyerAccessToken || !forceRestAPI ? callSmartAPI({
+  return buyerAccessToken && !forceRestAPI ? callSmartAPI({
     accessToken: buyerAccessToken,
     url: SMART_API_URI.ORDER + "/" + orderID
   }) : callRestAPI({
@@ -6098,7 +6098,7 @@ function captureOrder(orderID, _ref3) {
       partnerAttributionID = _ref3.partnerAttributionID,
       _ref3$forceRestAPI = _ref3.forceRestAPI,
       forceRestAPI = _ref3$forceRestAPI === void 0 ? false : _ref3$forceRestAPI;
-  return buyerAccessToken || !forceRestAPI ? callSmartAPI({
+  return buyerAccessToken && !forceRestAPI ? callSmartAPI({
     accessToken: buyerAccessToken,
     method: 'post',
     url: SMART_API_URI.ORDER + "/" + orderID + "/capture"
@@ -6117,7 +6117,7 @@ function authorizeOrder(orderID, _ref4) {
       partnerAttributionID = _ref4.partnerAttributionID,
       _ref4$forceRestAPI = _ref4.forceRestAPI,
       forceRestAPI = _ref4$forceRestAPI === void 0 ? false : _ref4$forceRestAPI;
-  return buyerAccessToken || !forceRestAPI ? callSmartAPI({
+  return buyerAccessToken && !forceRestAPI ? callSmartAPI({
     accessToken: buyerAccessToken,
     method: 'post',
     url: SMART_API_URI.ORDER + "/" + orderID + "/authorize"
@@ -6139,7 +6139,7 @@ function patchOrder(orderID, data, _ref5) {
   var patchData = Array.isArray(data) ? {
     patch: data
   } : data;
-  return buyerAccessToken || !forceRestAPI ? callSmartAPI({
+  return buyerAccessToken && !forceRestAPI ? callSmartAPI({
     accessToken: buyerAccessToken,
     method: 'post',
     url: SMART_API_URI.ORDER + "/" + orderID + "/patch",
@@ -7615,8 +7615,7 @@ function buildXShippingChangeActions(_ref) {
     return patchOrder(orderID, data, {
       facilitatorAccessToken: facilitatorAccessToken,
       buyerAccessToken: buyerAccessToken,
-      partnerAttributionID: partnerAttributionID,
-      forceRestAPI: false
+      partnerAttributionID: partnerAttributionID
     }).catch(function () {
       throw new Error('Order could not be patched');
     });
