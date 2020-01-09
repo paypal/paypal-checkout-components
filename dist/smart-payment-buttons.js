@@ -5776,7 +5776,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.181", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.182", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -8916,9 +8916,11 @@ function initCheckout(_ref6) {
       },
       onAuth: function onAuth(_ref8) {
         var accessToken = _ref8.accessToken;
-        getLogger().info("spb_onauth_access_token_" + (accessToken ? 'present' : 'not_present'));
-        getLogger().info("spb_onauth_buyer_access_token_" + (buyerAccessToken ? 'present' : 'not_present')).flush();
-        buyerAccessToken = accessToken;
+        getLogger().info("spb_onauth_access_token_" + (accessToken || buyerAccessToken ? 'present' : 'not_present'));
+
+        if (accessToken) {
+          buyerAccessToken = accessToken;
+        }
       },
       onCancel: function onCancel() {
         // eslint-disable-next-line no-use-before-define
@@ -9630,16 +9632,15 @@ function initNative(_ref6) {
     return instance.start();
   };
 
-  var getNativeDomain = function getNativeDomain() {
-    return fundingSource === FUNDING.VENMO ? 'https://www.paypal.com' : getDomain();
-  };
+  var NATIVE_DOMAIN = 'https://www.paypal.com';
+  var NATIVE_POPUP_DOMAIN = 'https://ic.paypal.com';
 
   var getNativeUrl = function getNativeUrl(_temp2) {
     var _ref8 = _temp2 === void 0 ? {} : _temp2,
         _ref8$pageUrl = _ref8.pageUrl,
         pageUrl = _ref8$pageUrl === void 0 ? initialPageUrl : _ref8$pageUrl;
 
-    return extendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
+    return extendUrl("" + NATIVE_DOMAIN + NATIVE_CHECKOUT_URI[fundingSource], {
       query: {
         sdkMeta: sdkMeta,
         sessionUID: native_sessionUID,
@@ -9650,7 +9651,7 @@ function initNative(_ref6) {
   };
 
   var getNativePopupUrl = function getNativePopupUrl() {
-    return extendUrl("" + getDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
+    return extendUrl("" + NATIVE_POPUP_DOMAIN + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
       query: {
         sdkMeta: sdkMeta
       }
@@ -9844,7 +9845,7 @@ function initNative(_ref6) {
     var listen = function listen(event, handler) {
       return postRobot.once(event, {
         window: win,
-        domain: getDomain()
+        domain: NATIVE_POPUP_DOMAIN
       }, handler);
     };
 
