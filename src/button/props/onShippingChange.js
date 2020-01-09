@@ -39,7 +39,7 @@ export type OnShippingChangeActionsType = {|
 export function buildXShippingChangeActions({ orderID, actions, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : { orderID : string, actions : OnShippingChangeActionsType, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string }) : XOnShippingChangeActionsType {
 
     const patch = (data = {}) => {
-        return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI: false }).catch(() => {
+        return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID }).catch(() => {
             throw new Error('Order could not be patched');
         });
     };

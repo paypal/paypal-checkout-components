@@ -32,7 +32,7 @@ type OrderAPIOptions = {|
     facilitatorAccessToken : string,
     buyerAccessToken? : ?string,
     partnerAttributionID : ?string,
-    forceRestAPI : boolean
+    forceRestAPI? : boolean
 |};
 
 export function createOrderID(order : OrderCreateRequest, { facilitatorAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<string> {
@@ -66,7 +66,7 @@ export function createOrderID(order : OrderCreateRequest, { facilitatorAccessTok
 }
 
 export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    return (buyerAccessToken || !forceRestAPI)
+    return (buyerAccessToken && !forceRestAPI)
         ? callSmartAPI({
             accessToken: buyerAccessToken,
             url:         `${ SMART_API_URI.ORDER }/${ orderID }`
@@ -81,7 +81,7 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
 }
 
 export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    return (buyerAccessToken || !forceRestAPI)
+    return (buyerAccessToken && !forceRestAPI)
         ? callSmartAPI({
             accessToken: buyerAccessToken,
             method:      'post',
@@ -98,7 +98,7 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
 }
 
 export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    return (buyerAccessToken || !forceRestAPI)
+    return (buyerAccessToken && !forceRestAPI)
         ? callSmartAPI({
             accessToken: buyerAccessToken,
             method:      'post',
@@ -121,7 +121,7 @@ type PatchData = {|
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
     const patchData = Array.isArray(data) ? { patch: data } : data;
 
-    return (buyerAccessToken || !forceRestAPI)
+    return (buyerAccessToken && !forceRestAPI)
         ? callSmartAPI({
             accessToken: buyerAccessToken,
             method:      'post',
