@@ -4,7 +4,6 @@
 import { wrapPromise, parseQuery, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
-import { getDomain } from 'cross-domain-utils/src';
 
 import { promiseNoop } from '../../src/lib';
 
@@ -138,8 +137,8 @@ describe('native cases', () => {
                         throw new Error(`Expected postRobot.once to be called with newly opened window`);
                     }
 
-                    if (options.domain !== getDomain()) {
-                        throw new Error(`Expected domain to be current domain`);
+                    if (options.domain !== 'https://ic.paypal.com') {
+                        throw new Error(`Expected domain to be correct`);
                     }
 
                     if (name === 'awaitRedirect') {
@@ -311,8 +310,8 @@ describe('native cases', () => {
                         throw new Error(`Expected postRobot.once to be called with newly opened window`);
                     }
 
-                    if (options.domain !== getDomain()) {
-                        throw new Error(`Expected domain to be current domain`);
+                    if (options.domain !== 'https://ic.paypal.com') {
+                        throw new Error(`Expected domain to be correct`);
                     }
 
                     if (name === 'awaitRedirect') {

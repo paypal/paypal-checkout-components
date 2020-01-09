@@ -217,20 +217,17 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return instance.start();
     };
 
-    const getNativeDomain = () : string => {
-        return (fundingSource === FUNDING.VENMO)
-            ? 'https://www.paypal.com'
-            : getDomain();
-    };
+    const NATIVE_DOMAIN = 'https://www.paypal.com';
+    const NATIVE_POPUP_DOMAIN = 'https://ic.paypal.com';
 
     const getNativeUrl = ({ pageUrl = initialPageUrl } = {}) : string => {
-        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
+        return extendUrl(`${ NATIVE_DOMAIN }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: { sdkMeta, sessionUID, buttonSessionID, pageUrl }
         });
     };
 
     const getNativePopupUrl = () : string => {
-        return extendUrl(`${ getDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
+        return extendUrl(`${ NATIVE_POPUP_DOMAIN }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
             query: { sdkMeta }
         });
     };
@@ -396,7 +393,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         const { postRobot } = paypal;
         
         const listen = (event, handler) =>
-            postRobot.once(event, { window: win, domain: getDomain() }, handler);
+            postRobot.once(event, { window: win, domain: NATIVE_POPUP_DOMAIN }, handler);
 
         listen(POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
             getLogger().info(`native_post_message_await_redirect`).flush();
