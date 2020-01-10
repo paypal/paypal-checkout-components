@@ -5776,7 +5776,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.183", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.184", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -6081,13 +6081,13 @@ function getOrder(orderID, _ref2) {
       partnerAttributionID = _ref2.partnerAttributionID,
       _ref2$forceRestAPI = _ref2.forceRestAPI,
       forceRestAPI = _ref2$forceRestAPI === void 0 ? false : _ref2$forceRestAPI;
-  return buyerAccessToken && !forceRestAPI ? callSmartAPI({
-    accessToken: buyerAccessToken,
-    url: SMART_API_URI.ORDER + "/" + orderID
-  }) : callRestAPI({
+  return forceRestAPI ? callRestAPI({
     accessToken: facilitatorAccessToken,
     url: ORDERS_API_URL + "/" + orderID,
     headers: (_headers2 = {}, _headers2[constants_HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers2)
+  }) : callSmartAPI({
+    accessToken: buyerAccessToken,
+    url: SMART_API_URI.ORDER + "/" + orderID
   });
 }
 function captureOrder(orderID, _ref3) {
@@ -6098,15 +6098,15 @@ function captureOrder(orderID, _ref3) {
       partnerAttributionID = _ref3.partnerAttributionID,
       _ref3$forceRestAPI = _ref3.forceRestAPI,
       forceRestAPI = _ref3$forceRestAPI === void 0 ? false : _ref3$forceRestAPI;
-  return buyerAccessToken && !forceRestAPI ? callSmartAPI({
-    accessToken: buyerAccessToken,
-    method: 'post',
-    url: SMART_API_URI.ORDER + "/" + orderID + "/capture"
-  }) : callRestAPI({
+  return forceRestAPI ? callRestAPI({
     accessToken: facilitatorAccessToken,
     method: "post",
     url: ORDERS_API_URL + "/" + orderID + "/capture",
     headers: (_headers3 = {}, _headers3[constants_HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers3)
+  }) : callSmartAPI({
+    accessToken: buyerAccessToken,
+    method: 'post',
+    url: SMART_API_URI.ORDER + "/" + orderID + "/capture"
   });
 }
 function authorizeOrder(orderID, _ref4) {
@@ -6117,15 +6117,15 @@ function authorizeOrder(orderID, _ref4) {
       partnerAttributionID = _ref4.partnerAttributionID,
       _ref4$forceRestAPI = _ref4.forceRestAPI,
       forceRestAPI = _ref4$forceRestAPI === void 0 ? false : _ref4$forceRestAPI;
-  return buyerAccessToken && !forceRestAPI ? callSmartAPI({
-    accessToken: buyerAccessToken,
-    method: 'post',
-    url: SMART_API_URI.ORDER + "/" + orderID + "/authorize"
-  }) : callRestAPI({
+  return forceRestAPI ? callRestAPI({
     accessToken: facilitatorAccessToken,
     method: "post",
     url: ORDERS_API_URL + "/" + orderID + "/authorize",
     headers: (_headers4 = {}, _headers4[constants_HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers4)
+  }) : callSmartAPI({
+    accessToken: buyerAccessToken,
+    method: 'post',
+    url: SMART_API_URI.ORDER + "/" + orderID + "/authorize"
   });
 }
 function patchOrder(orderID, data, _ref5) {
@@ -6139,19 +6139,19 @@ function patchOrder(orderID, data, _ref5) {
   var patchData = Array.isArray(data) ? {
     patch: data
   } : data;
-  return buyerAccessToken && !forceRestAPI ? callSmartAPI({
+  return forceRestAPI ? callRestAPI({
+    accessToken: facilitatorAccessToken,
+    method: "patch",
+    url: ORDERS_API_URL + "/" + orderID,
+    data: patchData,
+    headers: (_headers5 = {}, _headers5[constants_HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers5)
+  }) : callSmartAPI({
     accessToken: buyerAccessToken,
     method: 'post',
     url: SMART_API_URI.ORDER + "/" + orderID + "/patch",
     json: {
       data: patchData
     }
-  }) : callRestAPI({
-    accessToken: facilitatorAccessToken,
-    method: "patch",
-    url: ORDERS_API_URL + "/" + orderID,
-    data: patchData,
-    headers: (_headers5 = {}, _headers5[constants_HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers5)
   });
 }
 function getPayee(orderID) {
@@ -6582,16 +6582,18 @@ function messageSocket(_ref) {
   };
 
   var onResponse = function onResponse(_ref4) {
-    var requestUID = _ref4.requestUID,
+    var messageName = _ref4.messageName,
+        requestUID = _ref4.requestUID,
         messageSessionUID = _ref4.messageSessionUID,
         responseStatus = _ref4.responseStatus,
         messageData = _ref4.messageData;
-    var _responseListeners$re = responseListeners[requestUID],
-        listenerPromise = _responseListeners$re.listenerPromise,
-        requireSessionUID = _responseListeners$re.requireSessionUID;
+
+    var _ref5 = responseListeners[requestUID] || {},
+        listenerPromise = _ref5.listenerPromise,
+        requireSessionUID = _ref5.requireSessionUID;
 
     if (!listenerPromise) {
-      throw new Error("Could not find response listener with id: " + requestUID);
+      throw new Error("Could not find response listener for " + messageName + " with id: " + requestUID);
     }
 
     if (requireSessionUID && messageSessionUID !== sessionUID) {
@@ -6654,6 +6656,7 @@ function messageSocket(_ref) {
       });
     } else if (messageType === MESSAGE_TYPE.RESPONSE) {
       return onResponse({
+        messageName: messageName,
         requestUID: requestUID,
         messageSessionUID: messageSessionUID,
         responseStatus: responseStatus,
@@ -6722,9 +6725,9 @@ function messageSocket(_ref) {
   init();
 
   var on = function on(name, handler, _temp) {
-    var _ref5 = _temp === void 0 ? {} : _temp,
-        _ref5$requireSessionU = _ref5.requireSessionUID,
-        requireSessionUID = _ref5$requireSessionU === void 0 ? true : _ref5$requireSessionU;
+    var _ref6 = _temp === void 0 ? {} : _temp,
+        _ref6$requireSessionU = _ref6.requireSessionUID,
+        requireSessionUID = _ref6$requireSessionU === void 0 ? true : _ref6$requireSessionU;
 
     if (requestListeners[name]) {
       throw new Error("Listener already registered for name: " + name);
@@ -6742,11 +6745,11 @@ function messageSocket(_ref) {
   };
 
   var send = function send(messageName, messageData, _temp2) {
-    var _ref6 = _temp2 === void 0 ? {} : _temp2,
-        _ref6$requireSessionU = _ref6.requireSessionUID,
-        requireSessionUID = _ref6$requireSessionU === void 0 ? true : _ref6$requireSessionU,
-        _ref6$timeout = _ref6.timeout,
-        timeout = _ref6$timeout === void 0 ? 0 : _ref6$timeout;
+    var _ref7 = _temp2 === void 0 ? {} : _temp2,
+        _ref7$requireSessionU = _ref7.requireSessionUID,
+        requireSessionUID = _ref7$requireSessionU === void 0 ? true : _ref7$requireSessionU,
+        _ref7$timeout = _ref7.timeout,
+        timeout = _ref7$timeout === void 0 ? 0 : _ref7$timeout;
 
     return socketPromise.then(function (socket) {
       var requestUID = uniqueID();
@@ -6818,12 +6821,12 @@ function messageSocket(_ref) {
     close: close
   };
 }
-function webSocket(_ref7) {
-  var sessionUID = _ref7.sessionUID,
-      url = _ref7.url,
-      sourceApp = _ref7.sourceApp,
-      sourceAppVersion = _ref7.sourceAppVersion,
-      targetApp = _ref7.targetApp;
+function webSocket(_ref8) {
+  var sessionUID = _ref8.sessionUID,
+      url = _ref8.url,
+      sourceApp = _ref8.sourceApp,
+      sourceAppVersion = _ref8.sourceAppVersion,
+      targetApp = _ref8.targetApp;
 
   var driver = function driver() {
     var socket = new WebSocket(url);
@@ -6888,12 +6891,12 @@ var loadFirebaseSDK = memoize(function (config) {
     return firebase;
   });
 });
-function firebaseSocket(_ref8) {
-  var sessionUID = _ref8.sessionUID,
-      config = _ref8.config,
-      sourceApp = _ref8.sourceApp,
-      sourceAppVersion = _ref8.sourceAppVersion,
-      targetApp = _ref8.targetApp;
+function firebaseSocket(_ref9) {
+  var sessionUID = _ref9.sessionUID,
+      config = _ref9.config,
+      sourceApp = _ref9.sourceApp,
+      sourceAppVersion = _ref9.sourceAppVersion,
+      targetApp = _ref9.targetApp;
 
   var driver = function driver() {
     var open = false;
@@ -6910,9 +6913,9 @@ function firebaseSocket(_ref8) {
       }
     };
 
-    var databasePromise = promise_ZalgoPromise.all([loadFirebaseSDK(config), getFirebaseSessionToken(sessionUID)]).then(function (_ref9) {
-      var firebase = _ref9[0],
-          sessionToken = _ref9[1];
+    var databasePromise = promise_ZalgoPromise.all([loadFirebaseSDK(config), getFirebaseSessionToken(sessionUID)]).then(function (_ref10) {
+      var firebase = _ref10[0],
+          sessionToken = _ref10[1];
       return firebase.auth().signInWithCustomToken(sessionToken).then(function () {
         var database = firebase.database();
         firebase.database.INTERNAL.forceWebSockets();
@@ -9417,6 +9420,8 @@ var SOCKET_MESSAGE = {
   ON_CANCEL: 'onCancel',
   ON_ERROR: 'onError'
 };
+var NATIVE_DOMAIN = 'https://www.paypal.com';
+var NATIVE_POPUP_DOMAIN = 'https://ic.paypal.com';
 var getNativeSocket = memoize(function (_ref) {
   var sessionUID = _ref.sessionUID,
       firebaseConfig = _ref.firebaseConfig,
@@ -9442,8 +9447,8 @@ function useDirectAppSwitch() {
   return isAndroidChrome();
 }
 
-function didAppSwitch(win) {
-  return !win || isWindowClosed(win);
+function didAppSwitch(popupWin) {
+  return !popupWin || isWindowClosed(popupWin);
 }
 
 function attemptPopupAppSwitch(url) {
@@ -9610,34 +9615,42 @@ function initNative(_ref6) {
   var facilitatorAccessToken = serviceData.facilitatorAccessToken,
       sdkMeta = serviceData.sdkMeta;
   var fundingSource = payment.fundingSource;
-  var instance;
+  var clean = cleanup();
 
-  var fallbackToWebCheckout = function fallbackToWebCheckout(_temp) {
-    var _ref7 = _temp === void 0 ? {} : _temp,
-        win = _ref7.win;
+  var close = function close() {
+    return clean.all();
+  };
 
+  var listen = function listen(popupWin, domain, event, handler) {
+    return paypal.postRobot.once(event, {
+      window: popupWin,
+      domain: domain
+    }, handler);
+  };
+
+  var fallbackToWebCheckout = function fallbackToWebCheckout(fallbackWin) {
     var checkoutPayment = _extends({}, payment, {
-      win: win,
+      win: fallbackWin,
       isClick: false
     });
 
-    instance = checkout.init({
+    var instance = checkout.init({
       props: props,
       components: components,
       payment: checkoutPayment,
       config: config,
       serviceData: serviceData
     });
+    clean.register(function () {
+      return instance.close();
+    });
     return instance.start();
   };
 
-  var NATIVE_DOMAIN = 'https://www.paypal.com';
-  var NATIVE_POPUP_DOMAIN = 'https://ic.paypal.com';
-
-  var getNativeUrl = function getNativeUrl(_temp2) {
-    var _ref8 = _temp2 === void 0 ? {} : _temp2,
-        _ref8$pageUrl = _ref8.pageUrl,
-        pageUrl = _ref8$pageUrl === void 0 ? initialPageUrl : _ref8$pageUrl;
+  var getNativeUrl = function getNativeUrl(_temp) {
+    var _ref7 = _temp === void 0 ? {} : _temp,
+        _ref7$pageUrl = _ref7.pageUrl,
+        pageUrl = _ref7$pageUrl === void 0 ? initialPageUrl : _ref7$pageUrl;
 
     return extendUrl("" + NATIVE_DOMAIN + NATIVE_CHECKOUT_URI[fundingSource], {
       query: {
@@ -9657,8 +9670,8 @@ function initNative(_ref6) {
     });
   };
 
-  var getWebCheckoutUrl = function getWebCheckoutUrl(_ref9) {
-    var orderID = _ref9.orderID;
+  var getWebCheckoutUrl = function getWebCheckoutUrl(_ref8) {
+    var orderID = _ref8.orderID;
     return extendUrl("" + getDomain() + WEB_CHECKOUT_URI, {
       query: {
         fundingSource: fundingSource,
@@ -9675,9 +9688,9 @@ function initNative(_ref6) {
     return promise_ZalgoPromise.hash({
       orderID: createOrder(),
       pageUrl: getPageUrl()
-    }).then(function (_ref10) {
-      var orderID = _ref10.orderID,
-          pageUrl = _ref10.pageUrl;
+    }).then(function (_ref9) {
+      var orderID = _ref9.orderID,
+          pageUrl = _ref9.pageUrl;
       var userAgent = getUserAgent();
       var webCheckoutUrl = getWebCheckoutUrl({
         orderID: orderID
@@ -9708,7 +9721,7 @@ function initNative(_ref6) {
       throw new Error("Native socket connection not established");
     }
 
-    var setProps = once(function () {
+    var setNativeProps = once(function () {
       return getSDKProps().then(function (sdkProps) {
         getLogger().info("native_message_setprops").flush();
         return socket.send(SOCKET_MESSAGE.SET_PROPS, sdkProps);
@@ -9718,24 +9731,23 @@ function initNative(_ref6) {
         getLogger().info("native_response_setprops").track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK, _getLogger$info$track)).flush();
       });
     });
-    var close = once(function () {
+    var closeNative = once(function () {
       getLogger().info("native_message_close").flush();
       return socket.send(SOCKET_MESSAGE.CLOSE).then(function () {
         getLogger().info("native_response_close").flush();
-        socket.close();
+        return close();
       });
     });
-    socket.on(SOCKET_MESSAGE.GET_PROPS, function () {
+    var getPropsListener = socket.on(SOCKET_MESSAGE.GET_PROPS, function () {
       getLogger().info("native_message_getprops").flush();
       return getSDKProps();
     });
-    socket.on(SOCKET_MESSAGE.ON_APPROVE, function (_ref11) {
-      var _ref11$data = _ref11.data,
-          payerID = _ref11$data.payerID,
-          paymentID = _ref11$data.paymentID,
-          billingToken = _ref11$data.billingToken;
+    var onApproveListener = socket.on(SOCKET_MESSAGE.ON_APPROVE, function (_ref10) {
+      var _ref10$data = _ref10.data,
+          payerID = _ref10$data.payerID,
+          paymentID = _ref10$data.paymentID,
+          billingToken = _ref10$data.billingToken;
       getLogger().info("native_message_onapprove").flush();
-      socket.close();
       var data = {
         payerID: payerID,
         paymentID: paymentID,
@@ -9747,69 +9759,129 @@ function initNative(_ref6) {
           return fallbackToWebCheckout();
         }
       };
-      return onApprove(data, actions);
+      return close().then(function () {
+        return onApprove(data, actions);
+      });
     });
-    socket.on(SOCKET_MESSAGE.ON_CANCEL, function () {
+    var onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, function () {
       getLogger().info("native_message_oncancel").flush();
-      socket.close();
-      return onCancel();
+      return close().then(function () {
+        return onCancel();
+      });
     });
-    socket.on(SOCKET_MESSAGE.ON_ERROR, function (_ref12) {
-      var message = _ref12.data.message;
+    var onErrorListener = socket.on(SOCKET_MESSAGE.ON_ERROR, function (_ref11) {
+      var message = _ref11.data.message;
       getLogger().info("native_message_onerror", {
         err: message
       }).flush();
-      socket.close();
-      return onError(new Error(message));
+      return close().then(function () {
+        return onError(new Error(message));
+      });
     });
+    clean.register(getPropsListener.cancel);
+    clean.register(onApproveListener.cancel);
+    clean.register(onCancelListener.cancel);
+    clean.register(onErrorListener.cancel);
+    clean.register(closeNative);
     socket.reconnect();
     return {
-      setProps: setProps,
-      close: close
+      setProps: setNativeProps,
+      close: closeNative
     };
   };
-
-  var win;
-  var native;
 
   var open = function open() {
     var nativeUrl = getNativeUrl();
     var nativePopupUrl = getNativePopupUrl();
+    var popupWin;
 
     if (useDirectAppSwitch()) {
-      win = attemptPopupAppSwitch(nativeUrl);
+      popupWin = attemptPopupAppSwitch(nativeUrl);
     } else {
-      win = popup(nativePopupUrl);
+      popupWin = popup(nativePopupUrl);
     }
 
-    native = connectNative();
+    clean.register(function () {
+      if (popupWin) {
+        popupWin.close();
+      }
+    });
+    return popupWin;
   };
 
-  var close = function close() {
-    return promise_ZalgoPromise.try(function () {
-      if (win) {
-        win.close();
-      }
+  var detectAppSwitch = once(function () {
+    var _getLogger$info$track2;
 
-      if (instance) {
-        return instance.close();
-      }
+    getLogger().info("native_detect_app_switch").track((_getLogger$info$track2 = {}, _getLogger$info$track2[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH, _getLogger$info$track2)).flush();
+    return connectNative().setProps();
+  });
+  var detectWebSwitch = once(function (fallbackWin) {
+    var _getLogger$info$track3;
 
-      if (native) {
-        return native.close();
+    getLogger().info("native_detect_web_switch").track((_getLogger$info$track3 = {}, _getLogger$info$track3[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH, _getLogger$info$track3)).flush();
+    return fallbackToWebCheckout(fallbackWin);
+  });
+
+  var initDirectAppSwitch = function initDirectAppSwitch(popupWin) {
+    var detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, function () {
+      getLogger().info("native_post_message_detect_wev_switch").flush();
+      return detectWebSwitch(popupWin);
+    });
+    clean.register(detectWebSwitchListener.cancel);
+    return createOrder().then(function () {
+      if (didAppSwitch(popupWin)) {
+        return detectAppSwitch();
+      } else if (popupWin) {
+        return detectWebSwitch(popupWin);
+      } else {
+        throw new Error("No window found");
       }
     });
   };
 
+  var initPopupAppSwitch = function initPopupAppSwitch(popupWin) {
+    var awaitRedirectListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.AWAIT_REDIRECT, function (_ref12) {
+      var pageUrl = _ref12.data.pageUrl;
+      getLogger().info("native_post_message_await_redirect").flush();
+      return {
+        redirectUrl: getNativeUrl({
+          pageUrl: pageUrl
+        })
+      };
+    });
+    var detectAppSwitchListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.DETECT_APP_SWITCH, function () {
+      getLogger().info("native_post_message_detect_app_switch").flush();
+      return detectAppSwitch();
+    });
+    var detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, function () {
+      getLogger().info("native_post_message_detect_web_switch").flush();
+      return detectWebSwitch(popupWin);
+    });
+    clean.register(awaitRedirectListener.cancel);
+    clean.register(detectAppSwitchListener.cancel);
+    clean.register(detectWebSwitchListener.cancel);
+    return awaitRedirectListener.then(function () {
+      return promiseOne([detectAppSwitchListener, detectWebSwitchListener]);
+    });
+  };
+
+  var win;
+
   var click = function click() {
-    open();
+    win = open();
     return promise_ZalgoPromise.try(function () {
       return onClick ? onClick({
         fundingSource: fundingSource
       }) : true;
     }).then(function (valid) {
       if (!valid) {
-        close();
+        setTimeout(function () {
+          if (didAppSwitch(win)) {
+            connectNative();
+          }
+
+          close();
+        }, 500);
       }
     }, function (err) {
       close();
@@ -9817,76 +9889,23 @@ function initNative(_ref6) {
     });
   };
 
-  var directAppSwitch = function directAppSwitch() {
-    return createOrder().then(function () {
-      if (didAppSwitch(win)) {
-        var _getLogger$info$track2;
-
-        getLogger().info("native_detect_app_switch").track((_getLogger$info$track2 = {}, _getLogger$info$track2[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH, _getLogger$info$track2)).flush();
-        return native.setProps();
-      } else if (win) {
-        var _getLogger$info$track3;
-
-        getLogger().info("native_post_message_detect_web_switch").track((_getLogger$info$track3 = {}, _getLogger$info$track3[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH, _getLogger$info$track3)).flush();
-        return fallbackToWebCheckout({
-          win: win
-        });
-      } else {
-        throw new Error("No window found");
-      }
-    });
-  };
-
-  var popupAppSwitch = function popupAppSwitch() {
-    var _paypal = paypal,
-        postRobot = _paypal.postRobot;
-
-    var listen = function listen(event, handler) {
-      return postRobot.once(event, {
-        window: win,
-        domain: NATIVE_POPUP_DOMAIN
-      }, handler);
-    };
-
-    listen(POST_MESSAGE.AWAIT_REDIRECT, function (_ref13) {
-      var pageUrl = _ref13.data.pageUrl;
-      getLogger().info("native_post_message_await_redirect").flush();
-      var redirectUrl = getNativeUrl({
-        pageUrl: pageUrl
-      });
-      return {
-        redirectUrl: redirectUrl
-      };
-    });
-    return promiseOne([listen(POST_MESSAGE.DETECT_APP_SWITCH, function () {
-      var _getLogger$info$track4;
-
-      getLogger().info("native_post_message_detect_app_switch").track((_getLogger$info$track4 = {}, _getLogger$info$track4[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH, _getLogger$info$track4)).flush();
-      return native.setProps();
-    }), listen(POST_MESSAGE.DETECT_WEB_SWITCH, function () {
-      var _getLogger$info$track5;
-
-      getLogger().info("native_post_message_detect_web_switch").track((_getLogger$info$track5 = {}, _getLogger$info$track5[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH, _getLogger$info$track5)).flush();
-
-      if (win) {
-        return fallbackToWebCheckout({
-          win: win
-        });
-      } else {
-        throw new Error("No window found to do web fallback from native");
-      }
-    })]);
-  };
-
   var start = memoize(function () {
-    return (useDirectAppSwitch() ? directAppSwitch() : popupAppSwitch()).catch(function (err) {
-      var _getLogger$info$track6;
+    return promise_ZalgoPromise.try(function () {
+      return useDirectAppSwitch() ? initDirectAppSwitch(win) : initPopupAppSwitch(win);
+    }).catch(function (err) {
+      var _getLogger$info$track4;
 
       getLogger().info("native_error", {
         err: stringifyError(err)
-      }).track((_getLogger$info$track6 = {}, _getLogger$info$track6[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_ERROR, _getLogger$info$track6[FPTI_KEY.ERROR_CODE] = 'native_error', _getLogger$info$track6[FPTI_KEY.ERROR_DESC] = stringifyErrorMessage(err), _getLogger$info$track6)).flush();
-      close();
-      throw err;
+      }).track((_getLogger$info$track4 = {}, _getLogger$info$track4[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_ERROR, _getLogger$info$track4[FPTI_KEY.ERROR_CODE] = 'native_error', _getLogger$info$track4[FPTI_KEY.ERROR_DESC] = stringifyErrorMessage(err), _getLogger$info$track4)).flush();
+
+      if (didAppSwitch(win)) {
+        connectNative();
+      }
+
+      return close().then(function () {
+        throw err;
+      });
     });
   });
   return {
