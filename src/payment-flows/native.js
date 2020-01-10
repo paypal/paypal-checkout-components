@@ -310,27 +310,29 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             getLogger().info(`native_message_onapprove`).flush();
             const data = { payerID, paymentID, billingToken, forceRestAPI: true };
             const actions = { restart: () => fallbackToWebCheckout() };
-            close();
-            return onApprove(data, actions);
+            return close().then(() => {
+                return onApprove(data, actions);
+            });
         });
 
         const onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, () => {
             getLogger().info(`native_message_oncancel`).flush();
-            close();
-            return onCancel();
+            return close().then(() => {
+                return onCancel();
+            });
         });
 
         const onErrorListener = socket.on(SOCKET_MESSAGE.ON_ERROR, ({ data : { message } }) => {
             getLogger().info(`native_message_onerror`, { err: message }).flush();
-            close();
-            return onError(new Error(message));
+            return close().then(() => {
+                return onError(new Error(message));
+            });
         });
 
         clean.register(getPropsListener.cancel);
         clean.register(onApproveListener.cancel);
         clean.register(onCancelListener.cancel);
         clean.register(onErrorListener.cancel);
-        clean.register(closeNative);
 
         socket.reconnect();
         
@@ -433,12 +435,13 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return onClick ? onClick({ fundingSource }) : true;
         }).then(valid => {
             if (!valid) {
-                setTimeout(() => {
+                return ZalgoPromise.delay(500).then(() => {
                     if (didAppSwitch(win)) {
-                        connectNative();
+                        return connectNative().close();
                     }
-                    close();
-                }, 500);
+                }).then(() => {
+                    return close();
+                });
             }
         }, err => {
             close();
@@ -458,12 +461,15 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 [FPTI_KEY.ERROR_DESC]: stringifyErrorMessage(err)
             }).flush();
 
-            if (didAppSwitch(win)) {
-                connectNative();
-            }
-
-            close();
-            throw err;
+            return ZalgoPromise.try(() => {
+                if (didAppSwitch(win)) {
+                    return connectNative().close();
+                }
+            }).then(() => {
+                return close();
+            }).then(() => {
+                throw err;
+            });
         });
     });
 
