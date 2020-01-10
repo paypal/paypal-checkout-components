@@ -310,23 +310,20 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             getLogger().info(`native_message_onapprove`).flush();
             const data = { payerID, paymentID, billingToken, forceRestAPI: true };
             const actions = { restart: () => fallbackToWebCheckout() };
-            return close().then(() => {
-                return onApprove(data, actions);
-            });
+            close();
+            return onApprove(data, actions);
         });
 
         const onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, () => {
             getLogger().info(`native_message_oncancel`).flush();
-            return close().then(() => {
-                return onCancel();
-            });
+            close();
+            return onCancel();
         });
 
         const onErrorListener = socket.on(SOCKET_MESSAGE.ON_ERROR, ({ data : { message } }) => {
             getLogger().info(`native_message_onerror`, { err: message }).flush();
-            return close().then(() => {
-                return onError(new Error(message));
-            });
+            close();
+            return onError(new Error(message));
         });
 
         clean.register(getPropsListener.cancel);
@@ -465,9 +462,8 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 connectNative();
             }
 
-            return close().then(() => {
-                throw err;
-            });
+            close();
+            throw err;
         });
     });
 
