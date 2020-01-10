@@ -66,51 +66,51 @@ export function createOrderID(order : OrderCreateRequest, { facilitatorAccessTok
 }
 
 export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    return (buyerAccessToken && !forceRestAPI)
-        ? callSmartAPI({
-            accessToken: buyerAccessToken,
-            url:         `${ SMART_API_URI.ORDER }/${ orderID }`
-        })
-        : callRestAPI({
+    return forceRestAPI
+        ? callRestAPI({
             accessToken: facilitatorAccessToken,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
             headers:     {
-                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
             }
+        })
+        : callSmartAPI({
+            accessToken: buyerAccessToken,
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }`
         });
 }
 
 export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    return (buyerAccessToken && !forceRestAPI)
-        ? callSmartAPI({
-            accessToken: buyerAccessToken,
-            method:      'post',
-            url:         `${ SMART_API_URI.ORDER }/${ orderID }/capture`
-        })
-        : callRestAPI({
+    return forceRestAPI
+        ? callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `post`,
             url:         `${ ORDERS_API_URL }/${ orderID }/capture`,
             headers:     {
-                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
             }
+        })
+        : callSmartAPI({
+            accessToken: buyerAccessToken,
+            method:      'post',
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }/capture`
         });
 }
 
 export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    return (buyerAccessToken && !forceRestAPI)
-        ? callSmartAPI({
-            accessToken: buyerAccessToken,
-            method:      'post',
-            url:         `${ SMART_API_URI.ORDER }/${ orderID }/authorize`
-        })
-        : callRestAPI({
+    return forceRestAPI
+        ? callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `post`,
             url:         `${ ORDERS_API_URL }/${ orderID }/authorize`,
             headers:     {
-                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
             }
+        })
+        : callSmartAPI({
+            accessToken: buyerAccessToken,
+            method:      'post',
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }/authorize`
         });
 }
 
@@ -121,21 +121,21 @@ type PatchData = {|
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
     const patchData = Array.isArray(data) ? { patch: data } : data;
 
-    return (buyerAccessToken && !forceRestAPI)
-        ? callSmartAPI({
-            accessToken: buyerAccessToken,
-            method:      'post',
-            url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
-            json:        { data: patchData }
-        })
-        : callRestAPI({
+    return forceRestAPI
+        ? callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `patch`,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
             data:        patchData,
             headers:     {
-                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
             }
+        })
+        : callSmartAPI({
+            accessToken: buyerAccessToken,
+            method:      'post',
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
+            json:        { data: patchData }
         });
 }
 
