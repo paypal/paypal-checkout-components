@@ -58,7 +58,8 @@ export function getOnCancel(xprops : XProps, { createOrder } : { createOrder : C
             getLogger()
                 .info('button_cancel')
                 .track({
-                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_CANCEL
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_CANCEL,
+                    [FPTI_KEY.TOKEN]:      orderID
                 }).flush();
 
             return onCancel(buildXOnCancelData({ orderID }), buildXOnCancelActions());

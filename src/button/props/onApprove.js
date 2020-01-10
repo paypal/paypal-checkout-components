@@ -232,7 +232,8 @@ export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOr
             getLogger()
                 .info('button_approve')
                 .track({
-                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_AUTHORIZE
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_AUTHORIZE,
+                    [FPTI_KEY.TOKEN]:      orderID
                 }).flush();
 
             const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken };

@@ -67,7 +67,8 @@ export function getOnShippingChange(xprops : XProps, { facilitatorAccessToken, c
                 getLogger()
                     .info('button_shipping_change')
                     .track({
-                        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE
+                        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE,
+                        [FPTI_KEY.TOKEN]:      orderID
                     }).flush();
 
                 return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, facilitatorAccessToken, buyerAccessToken, actions, partnerAttributionID }));

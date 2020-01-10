@@ -36,7 +36,8 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
     logger.addPayloadBuilder(() => {
         return {
             referer: window.location.host,
-            uid:     sessionID,
+            buttonSessionID,
+            sessionID,
             env
         };
     });

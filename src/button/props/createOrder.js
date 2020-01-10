@@ -199,6 +199,7 @@ export function getCreateOrder(xprops : XProps, { facilitatorAccessToken, create
                 [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
                 [FPTI_KEY.CONTEXT_TYPE]:       FPTI_CONTEXT_TYPE.ORDER_ID,
                 [FPTI_KEY.CONTEXT_ID]:         orderID,
+                [FPTI_KEY.TOKEN]:              orderID,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
                 [FPTI_KEY.RESPONSE_DURATION]:  duration.toString()
             }).flush();
