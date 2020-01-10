@@ -154,11 +154,11 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         });
     };
 
-    const onResponse = ({ requestUID, messageSessionUID, responseStatus, messageData }) => {
-        const { listenerPromise, requireSessionUID } = responseListeners[requestUID];
+    const onResponse = ({ messageName, requestUID, messageSessionUID, responseStatus, messageData }) => {
+        const { listenerPromise, requireSessionUID } = responseListeners[requestUID] || {};
         
         if (!listenerPromise) {
-            throw new Error(`Could not find response listener with id: ${ requestUID }`);
+            throw new Error(`Could not find response listener for ${ messageName } with id: ${ requestUID }`);
         }
 
         if (requireSessionUID && messageSessionUID !== sessionUID) {
@@ -215,7 +215,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         if (messageType === MESSAGE_TYPE.REQUEST) {
             return onRequest(socket, { messageSessionUID, requestUID, messageName, messageData });
         } else if (messageType === MESSAGE_TYPE.RESPONSE) {
-            return onResponse({ requestUID, messageSessionUID, responseStatus, messageData });
+            return onResponse({ messageName, requestUID, messageSessionUID, responseStatus, messageData });
         
         } else {
             throw new Error(`Unhandleable message type: ${ messageType }`);

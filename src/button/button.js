@@ -115,7 +115,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         onElementClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
-
+            
             const payPromise = initiatePayment({ payment });
 
             // $FlowFixMe

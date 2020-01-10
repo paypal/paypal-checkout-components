@@ -19,6 +19,11 @@ export function mockAsyncProp(handler : Function) : Function {
     return (...args) => ZalgoPromise.delay(1).then(() => handler(...args));
 }
 
+export function cancelablePromise<T>(promise : ZalgoPromise<T>) : ZalgoPromise<T> {
+    promise.cancel = noop;
+    return promise;
+}
+
 export function setupMocks() {
     delete window.navigator.mockUserAgent;
 
@@ -102,6 +107,11 @@ export function setupMocks() {
                     throw err;
                 }
             };
+        },
+        postRobot: {
+            on:   () => ({ cancel: noop }),
+            once: () => cancelablePromise(ZalgoPromise.resolve()),
+            send: () => cancelablePromise(ZalgoPromise.resolve())
         }
     };
 
