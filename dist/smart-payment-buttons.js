@@ -5767,7 +5767,8 @@ function setupLogger(_ref) {
   logger.addPayloadBuilder(function () {
     return {
       referer: window.location.host,
-      uid: sessionID,
+      buttonSessionID: buttonSessionID,
+      sessionID: sessionID,
       env: env
     };
   });
@@ -5776,7 +5777,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.184", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.185", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -7206,7 +7207,7 @@ function getCreateOrder(xprops, _ref4) {
       }
 
       var duration = Date.now() - startTime;
-      getLogger().track((_getLogger$track = {}, _getLogger$track[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _getLogger$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.RECEIVE_ORDER, _getLogger$track[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.ORDER_ID, _getLogger$track[FPTI_KEY.CONTEXT_ID] = orderID, _getLogger$track[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _getLogger$track[FPTI_KEY.RESPONSE_DURATION] = duration.toString(), _getLogger$track)).flush();
+      getLogger().track((_getLogger$track = {}, _getLogger$track[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _getLogger$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.RECEIVE_ORDER, _getLogger$track[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.ORDER_ID, _getLogger$track[FPTI_KEY.CONTEXT_ID] = orderID, _getLogger$track[FPTI_KEY.TOKEN] = orderID, _getLogger$track[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _getLogger$track[FPTI_KEY.RESPONSE_DURATION] = duration.toString(), _getLogger$track)).flush();
       return orderID;
     });
   });
@@ -7492,7 +7493,7 @@ function getOnApprove(xprops, _ref4) {
     }).then(function (orderID) {
       var _getLogger$info$track;
 
-      getLogger().info('button_approve').track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.CHECKOUT_AUTHORIZE, _getLogger$info$track)).flush();
+      getLogger().info('button_approve').track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.CHECKOUT_AUTHORIZE, _getLogger$info$track[FPTI_KEY.TOKEN] = orderID, _getLogger$info$track)).flush();
       var data = {
         orderID: orderID,
         payerID: payerID,
@@ -7569,7 +7570,7 @@ function getOnCancel(xprops, _ref2) {
     return createOrder().then(function (orderID) {
       var _getLogger$info$track;
 
-      getLogger().info('button_cancel').track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.CHECKOUT_CANCEL, _getLogger$info$track)).flush();
+      getLogger().info('button_cancel').track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.CHECKOUT_CANCEL, _getLogger$info$track[FPTI_KEY.TOKEN] = orderID, _getLogger$info$track)).flush();
       return onCancel(buildXOnCancelData({
         orderID: orderID
       }), buildXOnCancelActions());
@@ -7654,7 +7655,7 @@ function getOnShippingChange(xprops, _ref2) {
       return createOrder().then(function (orderID) {
         var _getLogger$info$track;
 
-        getLogger().info('button_shipping_change').track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE, _getLogger$info$track)).flush();
+        getLogger().info('button_shipping_change').track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE, _getLogger$info$track[FPTI_KEY.TOKEN] = orderID, _getLogger$info$track)).flush();
         return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({
           orderID: orderID,
           facilitatorAccessToken: facilitatorAccessToken,
