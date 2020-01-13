@@ -381,7 +381,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const initDirectAppSwitch = (popupWin : ?CrossDomainWindowType) => {
         const detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, () => {
-            getLogger().info(`native_post_message_detect_wev_switch`).flush();
+            getLogger().info(`native_post_message_detect_web_switch`).flush();
             return detectWebSwitch(popupWin);
         });
 
