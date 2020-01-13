@@ -1,3 +1,9 @@
+## <small>5.0.73 (2020-01-13)</small>
+
+* Fix null pointer in marks component ([6464a90](http://github.paypal.com/paypal/paypal-checkout/commit/6464a90))
+
+
+
 ## <small>5.0.72 (2020-01-08)</small>
 
 * Add screenshots ([c42c577](http://github.paypal.com/paypal/paypal-checkout/commit/c42c577))
