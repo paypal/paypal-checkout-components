@@ -73,6 +73,7 @@ export type XProps = {|
 
     stageHost : ?string,
     apiStageHost : ?string,
+    upgradeLSAT? : boolean,
     
     onInit : XOnInit,
     onApprove : ?XOnApprove,
