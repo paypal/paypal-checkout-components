@@ -78,7 +78,6 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             onClick={ clickHandler }
             onKeyPress={ keyboardAccessibilityHandler }
             nonce={ nonce }
-            content={ content }
         />
     );
 
@@ -119,6 +118,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                     clientAccessToken={ clientAccessToken }
                     personalization={ personalization }
                     tagline={ tagline }
+                    content={ content }
                 />
             </div>
 

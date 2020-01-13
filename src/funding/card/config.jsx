@@ -98,30 +98,32 @@ export function getCardConfig() : FundingSourceConfig {
 
         handleClick: true,
 
-        Logo: ({ content, logoColor, locale = {} }) => {
+        Logo: ({ logoColor }) => {
+            return (
+                <GlyphCard color={ logoColor } />
+            );
+        },
+
+        Label: ({ logo, locale, content }) => {
             const { lang } = locale;
             const isRTL = isRTLLanguage(lang);
             return (
                 <Fragment>
                     { isRTL ? (
                         <Fragment>
-                            <Text>{ content.payWithDebitOrCreditCard }</Text>
+                            <Text optional>{ content.payWithDebitOrCreditCard }</Text>
                             <Space />
                         </Fragment>
                     ) : null }
-                    <GlyphCard color={ logoColor } />
+                    { logo }
                     { !isRTL ? (
                         <Fragment>
                             <Space />
-                            <Text>{ content.payWithDebitOrCreditCard }</Text>
+                            <Text optional>{ content.payWithDebitOrCreditCard }</Text>
                         </Fragment>
                     ) : null }
                 </Fragment>
             );
-        },
-
-        Label: ({ logo }) => {
-            return logo;
         },
 
         VaultLabel: ({ vendor, label } : { vendor? : $Values<typeof CARD>, label : string }) => {

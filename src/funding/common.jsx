@@ -22,8 +22,7 @@ export type LogoOptions = {|
     optional? : boolean,
     fundingEligibility : FundingEligibilityType,
     onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
-    nonce : string,
-    content : { [string] : string }
+    nonce : string
 |};
 
 export type LabelOptions = {|
@@ -40,7 +39,8 @@ export type LabelOptions = {|
     clientAccessToken : ?string,
     personalization : Personalization,
     nonce : ?string,
-    tagline : ?boolean
+    tagline : ?boolean,
+    content : { [string] : string }
 |};
 
 export type VaultLabelOptions = {|
