@@ -401,7 +401,9 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const initPopupAppSwitch = (popupWin) => {
         const awaitRedirectListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
             getLogger().info(`native_post_message_await_redirect`).flush();
-            return { redirectUrl: getNativeUrl({ pageUrl }) };
+            return createOrder().then(() => {
+                return { redirectUrl: getNativeUrl({ pageUrl }) };
+            });
         });
 
         const detectAppSwitchListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.DETECT_APP_SWITCH, () => {
