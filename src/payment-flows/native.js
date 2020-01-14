@@ -310,23 +310,17 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             getLogger().info(`native_message_onapprove`).flush();
             const data = { payerID, paymentID, billingToken, forceRestAPI: true };
             const actions = { restart: () => fallbackToWebCheckout() };
-            return close().then(() => {
-                return onApprove(data, actions);
-            });
+            return onApprove(data, actions).finally(close);
         });
 
         const onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, () => {
             getLogger().info(`native_message_oncancel`).flush();
-            return close().then(() => {
-                return onCancel();
-            });
+            return onCancel().finally(close);
         });
 
         const onErrorListener = socket.on(SOCKET_MESSAGE.ON_ERROR, ({ data : { message } }) => {
             getLogger().info(`native_message_onerror`, { err: message }).flush();
-            return close().then(() => {
-                return onError(new Error(message));
-            });
+            return onError(new Error(message)).finally(close);
         });
 
         clean.register(getPropsListener.cancel);

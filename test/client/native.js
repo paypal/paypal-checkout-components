@@ -59,7 +59,12 @@ describe('native cases', () => {
                     }
 
                     return sessionUID;
-                }
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'setProps' && message_type === 'request') {
+                        ZalgoPromise.delay(50).then(onApprove);
+                    }
+                })
             });
 
             const mockWebSocketServer = expectSocket();
@@ -183,9 +188,6 @@ describe('native cases', () => {
                         }
 
                         win.close = expect('close');
-
-                        ZalgoPromise.delay(100)
-                            .then(onApprove);
 
                         return cancelablePromise(ZalgoPromise.delay(50).then(handler));
                     }
@@ -437,7 +439,12 @@ describe('native cases', () => {
                     }
 
                     return sessionUID;
-                }
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'setProps' && message_type === 'request') {
+                        ZalgoPromise.delay(50).then(onApprove);
+                    }
+                })
             });
 
             const mockWebSocketServer = expectSocket();
@@ -580,9 +587,6 @@ describe('native cases', () => {
                         }
 
                         win.close = expect('close');
-
-                        ZalgoPromise.delay(100)
-                            .then(onApprove);
 
                         return cancelablePromise(ZalgoPromise.delay(50).then(handler));
                     }
@@ -853,7 +857,12 @@ describe('native cases', () => {
                     }
 
                     return sessionUID;
-                }
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'setProps' && message_type === 'request') {
+                        ZalgoPromise.delay(50).then(onApprove);
+                    }
+                })
             });
 
             const mockWebSocketServer = expectSocket();
@@ -867,10 +876,6 @@ describe('native cases', () => {
                 return ZalgoPromise.delay(50).then(() => {
 
                     win.close = expect('close');
-
-                    ZalgoPromise.delay(50)
-                        .then(onApprove);
-
                     return orderID;
                 });
             }));
@@ -1092,7 +1097,12 @@ describe('native cases', () => {
                     }
 
                     return sessionUID;
-                }
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'setProps' && message_type === 'request') {
+                        ZalgoPromise.delay(50).then(onApprove);
+                    }
+                })
             });
 
             const mockWebSocketServer = expectSocket();
@@ -1106,9 +1116,6 @@ describe('native cases', () => {
                 return ZalgoPromise.delay(50).then(() => {
 
                     win.close = expect('close');
-
-                    ZalgoPromise.delay(50)
-                        .then(onApprove);
 
                     return orderID;
                 });
@@ -1593,7 +1600,12 @@ describe('native cases', () => {
                     }
 
                     return sessionUID;
-                }
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'setProps' && message_type === 'request') {
+                        ZalgoPromise.delay(50).then(onApprove);
+                    }
+                })
             });
 
             const mockWebSocketServer = expectSocket();
@@ -1608,7 +1620,7 @@ describe('native cases', () => {
             }));
 
             window.xprops.onClick = mockAsyncProp(expect('onClick', async (data, actions) => {
-                return actions.resolve();
+                return ZalgoPromise.delay(200).then(actions.resolve);
             }));
 
             window.xprops.onCancel = avoid('onCancel');
@@ -1650,10 +1662,6 @@ describe('native cases', () => {
                 if (!pageUrl) {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
-
-
-                ZalgoPromise.delay(50)
-                    .then(onApprove);
 
                 return null;
             });
@@ -1941,7 +1949,7 @@ describe('native cases', () => {
             }));
 
             window.xprops.onClick = mockAsyncProp(expect('onClick', async (data, actions) => {
-                return actions.resolve();
+                return ZalgoPromise.delay(200).then(actions.resolve);
             }));
 
             window.xprops.onCancel = avoid('onCancel');
@@ -2144,7 +2152,12 @@ describe('native cases', () => {
                     }
 
                     return sessionUID;
-                }
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'setProps' && message_type === 'request') {
+                        ZalgoPromise.delay(50).then(onApprove);
+                    }
+                })
             });
 
             const mockWebSocketServer = expectSocket();
@@ -2197,9 +2210,6 @@ describe('native cases', () => {
                 if (!pageUrl) {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
-
-                ZalgoPromise.delay(50)
-                    .then(onApprove);
 
                 return null;
             });
@@ -2272,6 +2282,17 @@ describe('native cases', () => {
                     return sessionUID;
                 },
                 extraHandler: expect('firebaseExtraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'setProps' && message_type === 'request') {
+                        ZalgoPromise.delay(50)
+                            .then(onApprove)
+                            .then(() => ZalgoPromise.delay(200))
+                            .then(expect('onApproveDone', () => {
+                                if (!gotOnApproveResponse) {
+                                    throw new Error(`Expected child window to get onApprove response`);
+                                }
+                            }));
+                    }
+
                     if (message_name === 'onApprove' && message_type === 'response') {
                         gotOnApproveResponse = true;
                     }
@@ -2332,15 +2353,6 @@ describe('native cases', () => {
                 if (!pageUrl) {
                     throw new Error(`Expected pageUrl to be passed in url`);
                 }
-
-                ZalgoPromise.delay(50)
-                    .then(onApprove)
-                    .then(() => ZalgoPromise.delay(100))
-                    .finally(expect('final', () => {
-                        if (!gotOnApproveResponse) {
-                            throw new Error(`Expected child window to get onApprove response`);
-                        }
-                    }));
 
                 return null;
             });
