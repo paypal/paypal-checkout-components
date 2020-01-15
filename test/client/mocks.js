@@ -7,6 +7,7 @@ import { ZalgoPromise } from 'zalgo-promise';
 import { values, destroyElement, noop, uniqueID } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY } from '@paypal/sdk-constants/src';
+import { isWindowClosed, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { setupButton } from '../../src';
 import { loadFirebaseSDK } from '../../src/api';
@@ -1138,3 +1139,87 @@ export async function mockSetupButton(overrides? : Object = {}) : ZalgoPromise<v
         ...overrides
     });
 }
+
+type PostRobotMock = {|
+    receive : <T>({| // eslint-disable-line no-undef
+        name : string,
+        win? : CrossDomainWindowType,
+        domain? : string,
+        data? : mixed
+    |}) => ZalgoPromise<T>,  // eslint-disable-line no-undef
+        done : () => void
+    |};
+    
+export function getPostRobotMock() : PostRobotMock {
+    let active = true;
+
+    const listeners = [];
+
+    window.paypal.postRobot = {
+        on: (name, options, handler) => {
+            const listener = { name, options, handler, once: false };
+            listeners.push(listener);
+            return {
+                cancel: () => {
+                    listeners.splice(listeners.indexOf(listener), 1);
+                }
+            };
+        },
+        once: (name, options, handler) => {
+            const promise = new ZalgoPromise();
+            const listener = { name, options, handler, promise, once: true };
+            listeners.push(listener);
+            promise.cancel = () => {
+                listeners.splice(listeners.indexOf(listener), 1);
+            };
+            return promise;
+        },
+        send: () => {
+            throw new Error(`postRobot.send: not implemented`);
+        }
+    };
+
+    const receive = ({ name, win, domain, data }) => {
+        if (!active) {
+            throw new Error(`Post-robot mock not active`);
+        }
+
+        if (win && isWindowClosed(win)) {
+            throw new Error(`Expected sending window to be open`);
+        }
+
+        for (const listener of listeners) {
+            if (listener.name !== name) {
+                continue;
+            }
+
+            if (win && listener.options.window && listener.options.window !== win) {
+                continue;
+            }
+
+            if (domain && listener.options.domain && listener.options.domain !== domain) {
+                continue;
+            }
+
+            if (listener.promise) {
+                listener.promise.resolve(data);
+            }
+
+            return ZalgoPromise.try(() => listener.handler({ source: win, origin: domain, data }));
+        }
+
+        throw new Error(`No postRobot handler found for message name: ${ name }`);
+    };
+
+    const done = () => {
+        active = false;
+        delete window.paypal.postRobot;
+    };
+
+    return {
+        receive,
+        done
+    };
+}
+
+

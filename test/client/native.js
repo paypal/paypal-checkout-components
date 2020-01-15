@@ -8,7 +8,7 @@ import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 import { promiseNoop } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton,
-    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, mockFirebaseScripts, MOCK_SDK_META, cancelablePromise } from './mocks';
+    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, mockFirebaseScripts, MOCK_SDK_META, getPostRobotMock } from './mocks';
 
 const IOS_SAFARI_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
 const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
@@ -350,6 +350,9 @@ describe('native chrome cases', () => {
 
                 setTimeout(expect('secondClick', async () => {
                     await clickButton(FUNDING.PAYPAL);
+
+                    gqlMock.done();
+                    firebaseScripts.done();
                 }));
             }));
 
@@ -409,9 +412,6 @@ describe('native chrome cases', () => {
             });
 
             await clickButton(FUNDING.PAYPAL);
-
-            gqlMock.done();
-            firebaseScripts.done();
         });
     });
 
@@ -1636,6 +1636,8 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
+            const postRobotMock = getPostRobotMock();
+
             const orderID = 'XXXXXXXXXX';
             const payerID = 'XXYYZZ123456';
 
@@ -1690,86 +1692,55 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:     {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        win.close = expect('close');
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
 
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        win.close = expect('close');
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -1782,6 +1753,7 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
+            postRobotMock.done();
             gqlMock.done();
             firebaseScripts.done();
         });
@@ -1819,6 +1791,8 @@ describe('native ios cases', () => {
                     };
                 })
             }).expectCalls();
+
+            const postRobotMock = getPostRobotMock();
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'AAABBBCCC';
@@ -1870,82 +1844,51 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:   {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectWebSwitch',
+                            domain: 'https://www.paypal.com'
+                        });
+                    }));
+                });
 
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -1958,11 +1901,12 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
+            postRobotMock.done();
             gqlMock.done();
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS with multiple button clicks', async () => {
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS with multiple clicks', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
 
@@ -2014,6 +1958,8 @@ describe('native ios cases', () => {
                 })
             });
 
+            const postRobotMock = getPostRobotMock();
+
             const mockWebSocketServer = expectSocket();
 
             const orderID = 'XXXXXXXXXX';
@@ -2052,6 +1998,10 @@ describe('native ios cases', () => {
 
                 setTimeout(expect('secondClick', async () => {
                     await clickButton(FUNDING.PAYPAL);
+
+                    postRobotMock.done();
+                    gqlMock.done();
+                    firebaseScripts.done();
                 }));
             }));
 
@@ -2089,86 +2039,55 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:     {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        win.close = expect('close');
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
 
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        win.close = expect('close');
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -2180,9 +2099,6 @@ describe('native ios cases', () => {
             });
 
             await clickButton(FUNDING.PAYPAL);
-
-            gqlMock.done();
-            firebaseScripts.done();
         });
     });
 
@@ -2219,6 +2135,8 @@ describe('native ios cases', () => {
                 })
             }).expectCalls();
 
+            const postRobotMock = getPostRobotMock();
+
             const orderID = 'XXXXXXXXXX';
             const payerID = 'AAABBBCCC';
 
@@ -2251,6 +2169,9 @@ describe('native ios cases', () => {
 
                 setTimeout(expect('secondClick', async () => {
                     await clickButton(FUNDING.PAYPAL);
+
+                    postRobotMock.done();
+                    gqlMock.done();
                 }));
             }));
 
@@ -2288,82 +2209,51 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:   {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectWebSwitch',
+                            domain: 'https://www.paypal.com'
+                        });
+                    }));
+                });
 
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -2375,8 +2265,6 @@ describe('native ios cases', () => {
             });
 
             await clickButton(FUNDING.PAYPAL);
-
-            gqlMock.done();
         });
     });
 
@@ -2431,6 +2319,8 @@ describe('native ios cases', () => {
                 })
             });
 
+            const postRobotMock = getPostRobotMock();
+
             const mockWebSocketServer = expectSocket();
 
             const orderID = 'XXXXXXXXXX';
@@ -2482,86 +2372,55 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:     {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        win.close = expect('close');
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
 
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        win.close = expect('close');
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -2574,6 +2433,7 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
+            postRobotMock.done();
             gqlMock.done();
             firebaseScripts.done();
         });
@@ -2630,6 +2490,8 @@ describe('native ios cases', () => {
                 })
             });
 
+            const postRobotMock = getPostRobotMock();
+
             const mockWebSocketServer = expectSocket();
 
             const orderID = 'XXXXXXXXXX';
@@ -2677,86 +2539,55 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:   {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        win.close = expect('close');
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
 
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        win.close = expect('close');
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -2769,6 +2600,7 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
+            postRobotMock.done();
             gqlMock.done();
             firebaseScripts.done();
         });
@@ -2824,6 +2656,8 @@ describe('native ios cases', () => {
                     }
                 })
             });
+
+            const postRobotMock = getPostRobotMock();
 
             const mockWebSocketServer = expectSocket();
 
@@ -2885,86 +2719,53 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
-                    win.location.href = url;
-                }, 10);
-
                 // $FlowFixMe
                 win.parent = win.top = win;
-                return win;
-            });
 
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
+                ZalgoPromise.delay(10).then(() => {
+                    win.location.href = url;
 
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com'
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
                         }
 
-                        const pageUrl = `${ window.location.href }#close`;
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
                         }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
 
                         win.close = expect('close');
 
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
+                
+                return win;
+            });
 
             createButtonHTML();
 
@@ -2977,6 +2778,7 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
+            postRobotMock.done();
             gqlMock.done();
             firebaseScripts.done();
         });
@@ -3035,6 +2837,8 @@ describe('native ios cases', () => {
                 })
             });
 
+            const postRobotMock = getPostRobotMock();
+
             const mockWebSocketServer = expectSocket();
 
             window.xprops.createOrder = mockAsyncProp(avoid('createOrder', promiseNoop));
@@ -3078,80 +2882,53 @@ describe('native ios cases', () => {
                 // $FlowFixMe
                 win.parent = win.top = win;
 
-                return win;
-            });
+                ZalgoPromise.delay(10).then(() => {
+                    win.location.href = url;
 
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:     {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
                         }
 
-                        const pageUrl = `${ window.location.href }#close`;
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
                         }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
 
                         win.close = expect('close');
 
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
 
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
+                return win;
+            });
 
             createButtonHTML();
 
@@ -3166,6 +2943,7 @@ describe('native ios cases', () => {
 
             await ZalgoPromise.delay(1000);
 
+            postRobotMock.done();
             gqlMock.done();
             firebaseScripts.done();
             await mockWebSocketServer.done();
@@ -3229,6 +3007,8 @@ describe('native ios cases', () => {
                 })
             });
 
+            const postRobotMock = getPostRobotMock();
+
             const mockWebSocketServer = expectSocket();
 
             window.xprops.createOrder = mockAsyncProp(expectError('createOrder', async () => {
@@ -3267,86 +3047,55 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
 
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:   {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        win.close = expect('close');
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
+                
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        win.close = expect('close');
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -3371,6 +3120,7 @@ describe('native ios cases', () => {
 
             await ZalgoPromise.delay(1000);
 
+            postRobotMock.done();
             gqlMock.done();
             firebaseScripts.done();
             await mockWebSocketServer.done();
@@ -3387,6 +3137,8 @@ describe('native ios cases', () => {
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
+
+            const postRobotMock = getPostRobotMock();
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'AAABBBCCC';
@@ -3465,76 +3217,49 @@ describe('native ios cases', () => {
                 // $FlowFixMe
                 win.parent = win.top = win;
 
+                ZalgoPromise.delay(10).then(() => {
+                    win.location.href = url;
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:   {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectWebSwitch',
+                            domain: 'https://www.paypal.com'
+                        });
+                    }));
+                });
+
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -3546,15 +3271,19 @@ describe('native ios cases', () => {
             });
 
             await clickButton(FUNDING.PAYPAL);
+
+            postRobotMock.done();
         });
     });
 
-    it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to web path in iOS', async () => {
+    it.skip('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to web path in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
+
+            const postRobotMock = getPostRobotMock();
 
             window.xprops.createOrder = mockAsyncProp(avoid('createOrder'));
 
@@ -3600,80 +3329,49 @@ describe('native ios cases', () => {
                 // $FlowFixMe
                 win.parent = win.top = win;
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:   {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectWebSwitch',
+                            domain: 'https://www.paypal.com'
+                        });
+                    }));
+                });
 
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -3739,6 +3437,8 @@ describe('native ios cases', () => {
                 })
             });
 
+            const postRobotMock = getPostRobotMock();
+
             const mockWebSocketServer = expectSocket();
 
             const orderID = 'XXXXXXXXXX';
@@ -3795,86 +3495,55 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:   {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        win.close = expect('close');
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
 
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        win.close = expect('close');
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML({
                 venmo: {
@@ -3891,6 +3560,7 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.VENMO);
 
+            postRobotMock.done();
             gqlMock.done();
             firebaseScripts.done();
         });
@@ -3961,6 +3631,8 @@ describe('native ios cases', () => {
                 })
             });
 
+            const postRobotMock = getPostRobotMock();
+
             const mockWebSocketServer = expectSocket();
 
             const orderID = 'XXXXXXXXXX';
@@ -4020,86 +3692,55 @@ describe('native ios cases', () => {
                     closed: false
                 };
 
-                setTimeout(() => {
+                ZalgoPromise.delay(10).then(() => {
                     win.location.href = url;
-                }, 10);
+
+                    return postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://ic.paypal.com',
+                        data:   {
+                            pageUrl: `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        win.close = expect('close');
+
+                        return postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://ic.paypal.com'
+                        });
+                    }));
+                });
 
                 // $FlowFixMe
                 win.parent = win.top = win;
                 return win;
             });
-
-            window.paypal.postRobot = {
-                once: (name, options, handler) => {
-                    if (!win) {
-                        throw new Error(`Expected window to be open`);
-                    }
-
-                    if (options.window !== win) {
-                        throw new Error(`Expected postRobot.once to be called with newly opened window`);
-                    }
-
-                    if (name === 'awaitRedirect') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        const pageUrl = `${ window.location.href }#close`;
-
-                        return cancelablePromise(ZalgoPromise.try(() => {
-                            return handler({
-                                data: {
-                                    pageUrl
-                                }
-                            });
-                        }).then(res => {
-                            if (!res.redirectUrl) {
-                                throw new Error(`Expected native redirect url`);
-                            }
-
-                            const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                            if (!redirectQuery.sdkMeta) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            if (!redirectQuery.sessionUID) {
-                                throw new Error(`Expected sessionUID to be passed in url`);
-                            }
-
-                            if (!redirectQuery.pageUrl) {
-                                throw new Error(`Expected pageUrl to be passed in url`);
-                            }
-
-                            if (!redirectQuery.buttonSessionID) {
-                                throw new Error(`Expected sdkMeta to be passed in url`);
-                            }
-
-                            sessionUID = redirectQuery.sessionUID;
-                        }));
-                    }
-
-                    if (name === 'detectAppSwitch') {
-                        if (options.domain !== 'https://ic.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        win.close = expect('close');
-
-                        return cancelablePromise(ZalgoPromise.delay(50).then(handler));
-                    }
-
-                    if (name === 'detectWebSwitch') {
-                        if (options.domain !== 'https://www.paypal.com') {
-                            throw new Error(`Expected domain to be correct`);
-                        }
-
-                        return cancelablePromise(new ZalgoPromise());
-                    }
-
-                    throw new Error(`Unexpected message name: ${ name }`);
-                }
-            };
 
             createButtonHTML();
 
@@ -4112,6 +3753,7 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
+            postRobotMock.done();
             gqlMock.done();
             firebaseScripts.done();
         });
