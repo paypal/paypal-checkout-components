@@ -3511,7 +3511,7 @@ function PopupOpenError(message) {
   this.message = message;
 }
 PopupOpenError.prototype = Object.create(Error.prototype);
-function popup(url, options) {
+function dom_popup(url, options) {
   // $FlowFixMe
   options = options || {};
   var _options = options,
@@ -5777,7 +5777,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.188", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.189", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -8658,7 +8658,7 @@ function SpinnerPage(_ref, children) {
 function openPopup(_ref) {
   var width = _ref.width,
       height = _ref.height;
-  var win = assertSameDomain(popup('', {
+  var win = assertSameDomain(dom_popup('', {
     width: width,
     height: height
   }));
@@ -9450,20 +9450,8 @@ function useDirectAppSwitch() {
   return isAndroidChrome();
 }
 
-function usePopupAppSwitch() {
-  return isIOSSafari();
-}
-
 function didAppSwitch(popupWin) {
   return !popupWin || isWindowClosed(popupWin);
-}
-
-function openBlankPopup() {
-  return window.open('');
-}
-
-function attemptPopupAppSwitch(url) {
-  return window.open(url);
 }
 
 function isNativeOptedIn(_ref2) {
@@ -9621,10 +9609,9 @@ function initNative(_ref6) {
       sdkMeta = serviceData.sdkMeta;
   var fundingSource = payment.fundingSource;
   var clean = cleanup();
-
-  var close = function close() {
+  var close = memoize(function () {
     return clean.all();
-  };
+  });
 
   var listen = function listen(popupWin, domain, event, handler) {
     return paypal.postRobot.once(event, {
@@ -9652,7 +9639,7 @@ function initNative(_ref6) {
     return instance.start();
   };
 
-  var getNativeUrl = function getNativeUrl(_temp) {
+  var getNativeUrl = memoize(function (_temp) {
     var _ref7 = _temp === void 0 ? {} : _temp,
         _ref7$pageUrl = _ref7.pageUrl,
         pageUrl = _ref7$pageUrl === void 0 ? initialPageUrl : _ref7$pageUrl;
@@ -9665,17 +9652,15 @@ function initNative(_ref6) {
         pageUrl: pageUrl
       }
     });
-  };
-
-  var getNativePopupUrl = function getNativePopupUrl() {
+  });
+  var getNativePopupUrl = memoize(function () {
     return extendUrl("" + NATIVE_POPUP_DOMAIN + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
       query: {
         sdkMeta: sdkMeta
       }
     });
-  };
-
-  var getWebCheckoutUrl = function getWebCheckoutUrl(_ref8) {
+  });
+  var getWebCheckoutUrl = memoize(function (_ref8) {
     var orderID = _ref8.orderID;
     return extendUrl("" + getDomain() + WEB_CHECKOUT_URI, {
       query: {
@@ -9687,9 +9672,8 @@ function initNative(_ref6) {
         venmoOverride: fundingSource === FUNDING.VENMO ? '1' : '0'
       }
     });
-  };
-
-  var getSDKProps = function getSDKProps() {
+  });
+  var getSDKProps = memoize(function () {
     return promise_ZalgoPromise.hash({
       orderID: createOrder(),
       pageUrl: getPageUrl()
@@ -9717,16 +9701,15 @@ function initNative(_ref6) {
         forceEligible: forceEligible
       };
     });
-  };
-
-  var connectNative = function connectNative() {
+  });
+  var connectNative = memoize(function () {
     var socket = nativeSocket;
 
     if (!socket) {
       throw new Error("Native socket connection not established");
     }
 
-    var setNativeProps = once(function () {
+    var setNativeProps = memoize(function () {
       return getSDKProps().then(function (sdkProps) {
         getLogger().info("native_message_setprops").flush();
         return socket.send(SOCKET_MESSAGE.SET_PROPS, sdkProps);
@@ -9736,7 +9719,7 @@ function initNative(_ref6) {
         getLogger().info("native_response_setprops").track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK, _getLogger$info$track)).flush();
       });
     });
-    var closeNative = once(function () {
+    var closeNative = memoize(function () {
       getLogger().info("native_message_close").flush();
       return socket.send(SOCKET_MESSAGE.CLOSE).then(function () {
         getLogger().info("native_response_close").flush();
@@ -9786,26 +9769,7 @@ function initNative(_ref6) {
       setProps: setNativeProps,
       close: closeNative
     };
-  };
-
-  var open = function open() {
-    var nativeUrl = getNativeUrl();
-    var popupWin;
-
-    if (useDirectAppSwitch()) {
-      popupWin = attemptPopupAppSwitch(nativeUrl);
-    } else {
-      popupWin = openBlankPopup();
-    }
-
-    clean.register(function () {
-      if (popupWin && !isWindowClosed(popupWin)) {
-        popupWin.close();
-      }
-    });
-    return popupWin;
-  };
-
+  });
   var detectAppSwitch = once(function () {
     var _getLogger$info$track2;
 
@@ -9818,34 +9782,79 @@ function initNative(_ref6) {
     getLogger().info("native_detect_web_switch").track((_getLogger$info$track3 = {}, _getLogger$info$track3[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH, _getLogger$info$track3)).flush();
     return fallbackToWebCheckout(fallbackWin);
   });
+  var validate = memoize(function () {
+    return promise_ZalgoPromise.try(function () {
+      return onClick ? onClick({
+        fundingSource: fundingSource
+      }) : true;
+    });
+  });
+  var popup = memoize(function (url) {
+    var win = window.open(url);
+    clean.register(function () {
+      if (win && !isWindowClosed(win)) {
+        win.close();
+      }
+    });
+    return win;
+  });
 
-  var initDirectAppSwitch = function initDirectAppSwitch(popupWin) {
-    var detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, function () {
+  var initDirectAppSwitch = function initDirectAppSwitch() {
+    var nativeWin = popup(getNativeUrl());
+    var validatePromise = validate();
+    var delayPromise = promise_ZalgoPromise.delay(500);
+    var detectWebSwitchListener = listen(nativeWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, function () {
       getLogger().info("native_post_message_detect_web_switch").flush();
-      return detectWebSwitch(popupWin);
+      return detectWebSwitch(nativeWin);
     });
     clean.register(detectWebSwitchListener.cancel);
-    return createOrder().then(function () {
-      if (didAppSwitch(popupWin)) {
-        return detectAppSwitch();
-      } else if (popupWin) {
-        return detectWebSwitch(popupWin);
-      } else {
-        throw new Error("No window found");
+    return validatePromise.then(function (valid) {
+      if (!valid) {
+        return delayPromise.then(function () {
+          if (didAppSwitch(nativeWin)) {
+            return connectNative().close();
+          }
+        }).then(function () {
+          return close();
+        });
       }
+
+      return createOrder().then(function () {
+        if (didAppSwitch(nativeWin)) {
+          return detectAppSwitch();
+        } else if (nativeWin) {
+          return detectWebSwitch(nativeWin);
+        } else {
+          throw new Error("No window found");
+        }
+      }).catch(function (err) {
+        return connectNative().close().then(function () {
+          throw err;
+        });
+      });
     });
   };
 
-  var initPopupAppSwitch = function initPopupAppSwitch(popupWin) {
+  var initPopupAppSwitch = function initPopupAppSwitch() {
+    var popupWin = popup(getNativePopupUrl());
+    var validatePromise = validate();
     var awaitRedirectListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.AWAIT_REDIRECT, function (_ref12) {
       var pageUrl = _ref12.data.pageUrl;
       getLogger().info("native_post_message_await_redirect").flush();
-      return createOrder().then(function () {
-        return {
-          redirectUrl: getNativeUrl({
-            pageUrl: pageUrl
-          })
-        };
+      return validatePromise.then(function (valid) {
+        if (!valid) {
+          return close().then(function () {
+            throw new Error("Validation failed");
+          });
+        }
+
+        return createOrder().then(function () {
+          return {
+            redirectUrl: getNativeUrl({
+              pageUrl: pageUrl
+            })
+          };
+        });
       });
     });
     var detectAppSwitchListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.DETECT_APP_SWITCH, function () {
@@ -9864,57 +9873,22 @@ function initNative(_ref6) {
     });
   };
 
-  var win;
-
   var click = function click() {
-    win = open();
     return promise_ZalgoPromise.try(function () {
-      return onClick ? onClick({
-        fundingSource: fundingSource
-      }) : true;
-    }).then(function (valid) {
-      if (valid) {
-        if (usePopupAppSwitch() && win) {
-          win.location = getNativePopupUrl();
-        }
-      } else {
-        if (usePopupAppSwitch()) {
-          close();
-        } else {
-          return promise_ZalgoPromise.delay(500).then(function () {
-            if (didAppSwitch(win)) {
-              return connectNative().close();
-            }
-          }).then(function () {
-            return close();
-          });
-        }
-      }
-    }, function (err) {
-      close();
-      throw err;
-    });
-  };
-
-  var start = memoize(function () {
-    return promise_ZalgoPromise.try(function () {
-      return useDirectAppSwitch() ? initDirectAppSwitch(win) : initPopupAppSwitch(win);
+      return useDirectAppSwitch() ? initDirectAppSwitch() : initPopupAppSwitch();
     }).catch(function (err) {
-      var _getLogger$error$trac;
+      return close().then(function () {
+        var _getLogger$error$trac;
 
-      getLogger().error("native_error", {
-        err: stringifyError(err)
-      }).track((_getLogger$error$trac = {}, _getLogger$error$trac[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_ERROR, _getLogger$error$trac[FPTI_KEY.ERROR_CODE] = 'native_error', _getLogger$error$trac[FPTI_KEY.ERROR_DESC] = stringifyErrorMessage(err), _getLogger$error$trac)).flush();
-      return promise_ZalgoPromise.try(function () {
-        if (didAppSwitch(win)) {
-          return connectNative().close();
-        }
-      }).then(function () {
-        return close();
-      }).then(function () {
+        getLogger().error("native_error", {
+          err: stringifyError(err)
+        }).track((_getLogger$error$trac = {}, _getLogger$error$trac[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_ERROR, _getLogger$error$trac[FPTI_KEY.ERROR_CODE] = 'native_error', _getLogger$error$trac[FPTI_KEY.ERROR_DESC] = stringifyErrorMessage(err), _getLogger$error$trac)).flush();
         throw err;
       });
     });
+  };
+
+  var start = memoize(function () {// pass
   });
   return {
     click: click,
@@ -10237,7 +10211,8 @@ function initiatePaymentFlow(_ref3) {
         start = _init.start,
         close = _init.close;
 
-    var clickPromise = click();
+    var clickPromise = promise_ZalgoPromise.try(click);
+    clickPromise.catch(src_util_noop);
     getLogger().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, _getLogger$info$info$[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.BUTTON_CLICK, _getLogger$info$info$[FPTI_KEY.CHOSEN_FUNDING] = fundingSource, _getLogger$info$info$[FPTI_KEY.PAYMENT_FLOW] = name, _getLogger$info$info$)).flush();
     return promise_ZalgoPromise.hash({
       valid: onClick ? onClick({
@@ -10265,7 +10240,7 @@ function initiatePaymentFlow(_ref3) {
           err: stringifyError(err)
         });
       });
-      return start().then(function () {
+      return promise_ZalgoPromise.try(start).then(function () {
         return createOrder();
       }).then(function (orderID) {
         return validateOrder(orderID, {
