@@ -4572,32 +4572,32 @@ function wrapPromise(method, _temp) {
     };
   };
 
-  promises.push(promise_ZalgoPromise.try(function () {
-    return method({
-      expect: expect,
-      avoid: avoid,
-      expectError: expectError,
-      error: avoid
-    });
-  }));
-
-  var drain = function drain() {
+  var wait = function wait() {
     return promise_ZalgoPromise.try(function () {
       if (promises.length) {
         return promises.pop();
       }
     }).then(function () {
       if (promises.length) {
-        return drain();
+        return wait();
       }
 
       if (expected.length) {
-        return promise_ZalgoPromise.delay(10).then(drain);
+        return promise_ZalgoPromise.delay(10).then(wait);
       }
     });
   };
 
-  return drain().then(function () {
+  promises.push(promise_ZalgoPromise.try(function () {
+    return method({
+      expect: expect,
+      avoid: avoid,
+      expectError: expectError,
+      error: avoid,
+      wait: wait
+    });
+  }));
+  return wait().then(function () {
     clearTimeout(timer);
   });
 }
@@ -5777,7 +5777,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.187", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.188", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -9398,6 +9398,8 @@ var vaultCapture = {
 // CONCATENATED MODULE: ./src/payment-flows/native.js
 
 
+/* eslint max-lines: off */
+
 
 
 
@@ -9448,18 +9450,20 @@ function useDirectAppSwitch() {
   return isAndroidChrome();
 }
 
+function usePopupAppSwitch() {
+  return isIOSSafari();
+}
+
 function didAppSwitch(popupWin) {
   return !popupWin || isWindowClosed(popupWin);
 }
 
+function openBlankPopup() {
+  return window.open('');
+}
+
 function attemptPopupAppSwitch(url) {
-  try {
-    return popup(url);
-  } catch (err) {
-    if (!(err instanceof PopupOpenError)) {
-      throw err;
-    }
-  }
+  return window.open(url);
 }
 
 function isNativeOptedIn(_ref2) {
@@ -9760,24 +9764,18 @@ function initNative(_ref6) {
           return fallbackToWebCheckout();
         }
       };
-      return close().then(function () {
-        return onApprove(data, actions);
-      });
+      return promise_ZalgoPromise.all([onApprove(data, actions), close()]);
     });
     var onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, function () {
       getLogger().info("native_message_oncancel").flush();
-      return close().then(function () {
-        return onCancel();
-      });
+      return promise_ZalgoPromise.all([onCancel(), close()]);
     });
     var onErrorListener = socket.on(SOCKET_MESSAGE.ON_ERROR, function (_ref11) {
       var message = _ref11.data.message;
       getLogger().info("native_message_onerror", {
         err: message
       }).flush();
-      return close().then(function () {
-        return onError(new Error(message));
-      });
+      return promise_ZalgoPromise.all([onError(new Error(message)), close()]);
     });
     clean.register(getPropsListener.cancel);
     clean.register(onApproveListener.cancel);
@@ -9792,17 +9790,16 @@ function initNative(_ref6) {
 
   var open = function open() {
     var nativeUrl = getNativeUrl();
-    var nativePopupUrl = getNativePopupUrl();
     var popupWin;
 
     if (useDirectAppSwitch()) {
       popupWin = attemptPopupAppSwitch(nativeUrl);
     } else {
-      popupWin = popup(nativePopupUrl);
+      popupWin = openBlankPopup();
     }
 
     clean.register(function () {
-      if (popupWin) {
+      if (popupWin && !isWindowClosed(popupWin)) {
         popupWin.close();
       }
     });
@@ -9876,14 +9873,22 @@ function initNative(_ref6) {
         fundingSource: fundingSource
       }) : true;
     }).then(function (valid) {
-      if (!valid) {
-        return promise_ZalgoPromise.delay(500).then(function () {
-          if (didAppSwitch(win)) {
-            return connectNative().close();
-          }
-        }).then(function () {
-          return close();
-        });
+      if (valid) {
+        if (usePopupAppSwitch() && win) {
+          win.location = getNativePopupUrl();
+        }
+      } else {
+        if (usePopupAppSwitch()) {
+          close();
+        } else {
+          return promise_ZalgoPromise.delay(500).then(function () {
+            if (didAppSwitch(win)) {
+              return connectNative().close();
+            }
+          }).then(function () {
+            return close();
+          });
+        }
       }
     }, function (err) {
       close();
@@ -9895,11 +9900,11 @@ function initNative(_ref6) {
     return promise_ZalgoPromise.try(function () {
       return useDirectAppSwitch() ? initDirectAppSwitch(win) : initPopupAppSwitch(win);
     }).catch(function (err) {
-      var _getLogger$info$track4;
+      var _getLogger$error$trac;
 
-      getLogger().info("native_error", {
+      getLogger().error("native_error", {
         err: stringifyError(err)
-      }).track((_getLogger$info$track4 = {}, _getLogger$info$track4[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_ERROR, _getLogger$info$track4[FPTI_KEY.ERROR_CODE] = 'native_error', _getLogger$info$track4[FPTI_KEY.ERROR_DESC] = stringifyErrorMessage(err), _getLogger$info$track4)).flush();
+      }).track((_getLogger$error$trac = {}, _getLogger$error$trac[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.NATIVE_ERROR, _getLogger$error$trac[FPTI_KEY.ERROR_CODE] = 'native_error', _getLogger$error$trac[FPTI_KEY.ERROR_DESC] = stringifyErrorMessage(err), _getLogger$error$trac)).flush();
       return promise_ZalgoPromise.try(function () {
         if (didAppSwitch(win)) {
           return connectNative().close();
