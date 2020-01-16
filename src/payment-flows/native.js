@@ -2,7 +2,7 @@
 /* eslint max-lines: off */
 
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError, isIos, isAndroid,
-    isSafari, isChrome, stringifyErrorMessage, once, cleanup } from 'belter/src';
+    isSafari, isChrome, stringifyErrorMessage, cleanup, once } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
@@ -70,20 +70,8 @@ function useDirectAppSwitch() : boolean {
     return isAndroidChrome();
 }
 
-function usePopupAppSwitch() : boolean {
-    return isIOSSafari();
-}
-
 function didAppSwitch(popupWin : ?CrossDomainWindowType) : boolean {
     return !popupWin || isWindowClosed(popupWin);
-}
-
-function openBlankPopup() : ?CrossDomainWindowType {
-    return window.open('');
-}
-
-function attemptPopupAppSwitch(url) : ?CrossDomainWindowType {
-    return window.open(url);
 }
 
 function isNativeOptedIn({ props } : { props : Props }) : boolean {
@@ -223,9 +211,9 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const clean = cleanup();
 
-    const close = () => {
+    const close = memoize(() => {
         return clean.all();
-    };
+    });
 
     const listen = (popupWin, domain, event, handler) =>
         paypal.postRobot.once(event, { window: popupWin, domain }, handler);
@@ -237,19 +225,19 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return instance.start();
     };
 
-    const getNativeUrl = ({ pageUrl = initialPageUrl } = {}) : string => {
+    const getNativeUrl = memoize(({ pageUrl = initialPageUrl } = {}) : string => {
         return extendUrl(`${ NATIVE_DOMAIN }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: { sdkMeta, sessionUID, buttonSessionID, pageUrl }
         });
-    };
+    });
 
-    const getNativePopupUrl = () : string => {
+    const getNativePopupUrl = memoize(() : string => {
         return extendUrl(`${ NATIVE_POPUP_DOMAIN }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
             query: { sdkMeta }
         });
-    };
+    });
 
-    const getWebCheckoutUrl = ({ orderID }) : string => {
+    const getWebCheckoutUrl = memoize(({ orderID }) : string => {
         return extendUrl(`${ getDomain() }${ WEB_CHECKOUT_URI }`, {
             query: {
                 fundingSource,
@@ -260,9 +248,9 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 venmoOverride: (fundingSource === FUNDING.VENMO) ? '1' : '0'
             }
         });
-    };
+    });
 
-    const getSDKProps = () : ZalgoPromise<NativeSDKProps> => {
+    const getSDKProps = memoize(() : ZalgoPromise<NativeSDKProps> => {
         return ZalgoPromise.hash({
             orderID: createOrder(),
             pageUrl: getPageUrl()
@@ -276,16 +264,16 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 userAgent, buttonSessionID, env, stageHost, apiStageHost, forceEligible
             };
         });
-    };
+    });
 
-    const connectNative = () : NativeConnection => {
+    const connectNative = memoize(() : NativeConnection => {
         const socket = nativeSocket;
 
         if (!socket) {
             throw new Error(`Native socket connection not established`);
         }
 
-        const setNativeProps = once(() => {
+        const setNativeProps = memoize(() => {
             return getSDKProps().then(sdkProps => {
                 getLogger().info(`native_message_setprops`).flush();
                 return socket.send(SOCKET_MESSAGE.SET_PROPS, sdkProps);
@@ -296,7 +284,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             });
         });
 
-        const closeNative = once(() => {
+        const closeNative = memoize(() => {
             getLogger().info(`native_message_close`).flush();
             return socket.send(SOCKET_MESSAGE.CLOSE).then(() => {
                 getLogger().info(`native_response_close`).flush();
@@ -346,27 +334,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             setProps: setNativeProps,
             close:    closeNative
         };
-    };
-
-    const open = () : ?CrossDomainWindowType => {
-        const nativeUrl = getNativeUrl();
-
-        let popupWin;
-
-        if (useDirectAppSwitch()) {
-            popupWin = attemptPopupAppSwitch(nativeUrl);
-        } else {
-            popupWin = openBlankPopup();
-        }
-
-        clean.register(() => {
-            if (popupWin && !isWindowClosed(popupWin)) {
-                popupWin.close();
-            }
-        });
-
-        return popupWin;
-    };
+    });
 
     const detectAppSwitch = once(() => {
         getLogger().info(`native_detect_app_switch`).track({
@@ -384,30 +352,79 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return fallbackToWebCheckout(fallbackWin);
     });
 
-    const initDirectAppSwitch = (popupWin : ?CrossDomainWindowType) => {
-        const detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, () => {
+    const validate = memoize(() => {
+        return ZalgoPromise.try(() => {
+            return onClick ? onClick({ fundingSource }) : true;
+        });
+    });
+
+    const popup = memoize((url : string) => {
+        const win = window.open(url);
+
+        clean.register(() => {
+            if (win && !isWindowClosed(win)) {
+                win.close();
+            }
+        });
+
+        return win;
+    });
+
+    const initDirectAppSwitch = () => {
+        const nativeWin = popup(getNativeUrl());
+        const validatePromise = validate();
+        const delayPromise = ZalgoPromise.delay(500);
+
+        const detectWebSwitchListener = listen(nativeWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, () => {
             getLogger().info(`native_post_message_detect_web_switch`).flush();
-            return detectWebSwitch(popupWin);
+            return detectWebSwitch(nativeWin);
         });
 
         clean.register(detectWebSwitchListener.cancel);
-        
-        return createOrder().then(() => {
-            if (didAppSwitch(popupWin)) {
-                return detectAppSwitch();
-            } else if (popupWin) {
-                return detectWebSwitch(popupWin);
-            } else {
-                throw new Error(`No window found`);
+
+        return validatePromise.then(valid => {
+            if (!valid) {
+                return delayPromise.then(() => {
+                    if (didAppSwitch(nativeWin)) {
+                        return connectNative().close();
+                    }
+                }).then(() => {
+                    return close();
+                });
             }
+
+            return createOrder().then(() => {
+                if (didAppSwitch(nativeWin)) {
+                    return detectAppSwitch();
+                } else if (nativeWin) {
+                    return detectWebSwitch(nativeWin);
+                } else {
+                    throw new Error(`No window found`);
+                }
+            }).catch(err => {
+                return connectNative().close().then(() => {
+                    throw err;
+                });
+            });
         });
     };
 
-    const initPopupAppSwitch = (popupWin) => {
+    const initPopupAppSwitch = () => {
+        const popupWin = popup(getNativePopupUrl());
+        const validatePromise = validate();
+
         const awaitRedirectListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
             getLogger().info(`native_post_message_await_redirect`).flush();
-            return createOrder().then(() => {
-                return { redirectUrl: getNativeUrl({ pageUrl }) };
+            return validatePromise.then(valid => {
+                if (!valid) {
+                    return close().then(() => {
+                        throw new Error(`Validation failed`);
+                    });
+                }
+
+                return createOrder().then(() => {
+                    return { redirectUrl: getNativeUrl({ pageUrl }) };
+                });
             });
         });
 
@@ -433,59 +450,24 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     };
 
-    let win : ?CrossDomainWindowType;
-
     const click = () => {
-        win = open();
-
         return ZalgoPromise.try(() => {
-            return onClick ? onClick({ fundingSource }) : true;
-        }).then(valid => {
-            if (valid) {
-                if (usePopupAppSwitch() && win) {
-                    win.location = getNativePopupUrl();
-                }
-            } else {
-                if (usePopupAppSwitch()) {
-                    close();
-                } else {
-                    return ZalgoPromise.delay(500).then(() => {
-                        if (didAppSwitch(win)) {
-                            return connectNative().close();
-                        }
-                    }).then(() => {
-                        return close();
-                    });
-                }
-            }
-        }, err => {
-            close();
-            throw err;
+            return useDirectAppSwitch() ? initDirectAppSwitch() : initPopupAppSwitch();
+        }).catch(err => {
+            return close().then(() => {
+                getLogger().error(`native_error`, { err: stringifyError(err) }).track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ERROR,
+                    [FPTI_KEY.ERROR_CODE]: 'native_error',
+                    [FPTI_KEY.ERROR_DESC]: stringifyErrorMessage(err)
+                }).flush();
+
+                throw err;
+            });
         });
     };
 
     const start = memoize(() => {
-        return ZalgoPromise.try(() => {
-            return useDirectAppSwitch()
-                ? initDirectAppSwitch(win)
-                : initPopupAppSwitch(win);
-        }).catch(err => {
-            getLogger().error(`native_error`, { err: stringifyError(err) }).track({
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ERROR,
-                [FPTI_KEY.ERROR_CODE]: 'native_error',
-                [FPTI_KEY.ERROR_DESC]: stringifyErrorMessage(err)
-            }).flush();
-
-            return ZalgoPromise.try(() => {
-                if (didAppSwitch(win)) {
-                    return connectNative().close();
-                }
-            }).then(() => {
-                return close();
-            }).then(() => {
-                throw err;
-            });
-        });
+        // pass
     });
 
     return {

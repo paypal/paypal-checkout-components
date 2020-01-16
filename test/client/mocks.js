@@ -1267,7 +1267,7 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
             window.open = windowOpen;
         }
 
-        let currentUrl = url || 'about:blank';
+        let currentUrl = 'about:blank';
 
         const onLoad = () => {
             if (!win) {
@@ -1331,9 +1331,15 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
         newWin.parent = newWin.top = newWin.self = newWin;
         win = newWin;
 
-        if (url) {
-            onLoad();
-        }
+        ZalgoPromise.delay(10).then(() => {
+            if (appSwitch) {
+                newWin.closed = true;
+            }
+                            
+            if (url) {
+                newWin.location = url;
+            }
+        });
 
         if (appSwitch) {
             ZalgoPromise.delay(10).then(() => {

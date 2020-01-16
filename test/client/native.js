@@ -166,6 +166,7 @@ describe('native chrome cases', () => {
                         if (id !== orderID) {
                             throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
                         }
+
                         return renderToOriginal(...args);
                     });
                 }));
@@ -1281,7 +1282,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -1442,7 +1442,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -1543,7 +1542,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 times:              2,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
@@ -1718,7 +1716,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 times:              2,
                 onOpen:             ({ win }) => {
@@ -1832,7 +1829,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -1970,7 +1966,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -2104,7 +2099,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -2249,7 +2243,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -2259,35 +2252,7 @@ describe('native ios cases', () => {
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
-                    }).then(expect('awaitRedirectResponse', res => {
-                        if (!res.redirectUrl) {
-                            throw new Error(`Expected native redirect url`);
-                        }
-
-                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
-
-                        if (!redirectQuery.sessionUID) {
-                            throw new Error(`Expected sessionUID to be passed in url`);
-                        }
-
-                        if (!redirectQuery.pageUrl) {
-                            throw new Error(`Expected pageUrl to be passed in url`);
-                        }
-
-                        if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
-
-                        return postRobotMock.receive({
-                            win,
-                            name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
-                        });
-                    }));
+                    }).catch(expect('awaitRedirectError'));
                 }
             });
 
@@ -2358,7 +2323,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -2446,7 +2410,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -2536,7 +2499,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -2546,35 +2508,7 @@ describe('native ios cases', () => {
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
-                    }).then(expect('awaitRedirectResponse', res => {
-                        if (!res.redirectUrl) {
-                            throw new Error(`Expected native redirect url`);
-                        }
-
-                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
-
-                        if (!redirectQuery.sessionUID) {
-                            throw new Error(`Expected sessionUID to be passed in url`);
-                        }
-
-                        if (!redirectQuery.pageUrl) {
-                            throw new Error(`Expected pageUrl to be passed in url`);
-                        }
-
-                        if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
-
-                        return postRobotMock.receive({
-                            win,
-                            name:   'detectWebSwitch',
-                            domain: 'https://www.paypal.com'
-                        });
-                    }));
+                    }).catch(expect('awaitRedirectResponseError'));
                 }
             });
 
@@ -2647,7 +2581,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/venmo/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
@@ -2796,7 +2729,6 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
-                expectImmediateUrl: false,
                 expectedQuery:      [ 'sdkMeta' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({

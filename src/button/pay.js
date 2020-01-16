@@ -69,7 +69,8 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
         const { name, init, inline, spinner } = getPaymentFlow({ props, payment, config, components, serviceData });
         const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
 
-        const clickPromise = click();
+        const clickPromise = ZalgoPromise.try(click);
+        clickPromise.catch(noop);
 
         getLogger().info(`button_click`).info(`pay_flow_${ name }`).track({
             [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.BUTTON_CLICK,
@@ -92,7 +93,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 .then(orderID => updateButtonClientConfig({ orderID, fundingSource, inline }))
                 .catch(err => getLogger().error('update_client_config_error', { err: stringifyError(err) }));
 
-            return start()
+            return ZalgoPromise.try(start)
                 .then(() => createOrder())
                 .then(orderID => validateOrder(orderID, { clientID, merchantID }))
                 .then(() => clickPromise)
