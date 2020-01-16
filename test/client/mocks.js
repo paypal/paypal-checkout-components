@@ -4,7 +4,7 @@
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { mockWebSocket, patchWebSocket } from 'sync-browser-mocks/src/webSocket';
 import { ZalgoPromise } from 'zalgo-promise';
-import { values, destroyElement, noop, uniqueID } from 'belter/src';
+import { values, destroyElement, noop, uniqueID, parseQuery } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY } from '@paypal/sdk-constants/src';
 import { isWindowClosed, type CrossDomainWindowType } from 'cross-domain-utils/src';
@@ -16,8 +16,8 @@ import { triggerKeyPress } from './util';
 
 export const MOCK_BUYER_ACCESS_TOKEN = 'abc123xxxyyyzzz456';
 
-export function mockAsyncProp(handler : Function) : Function {
-    return (...args) => ZalgoPromise.delay(1).then(() => handler(...args));
+export function mockAsyncProp(handler : Function, time? : number = 1) : Function {
+    return (...args) => ZalgoPromise.delay(time).then(() => handler(...args));
 }
 
 export function cancelablePromise<T>(promise : ZalgoPromise<T>) : ZalgoPromise<T> {
@@ -1201,11 +1201,18 @@ export function getPostRobotMock() : PostRobotMock {
                 continue;
             }
 
-            if (listener.promise) {
-                listener.promise.resolve(data);
-            }
-
-            return ZalgoPromise.try(() => listener.handler({ source: win, origin: domain, data }));
+            return ZalgoPromise.try(() => listener.handler({ source: win, origin: domain, data }))
+                .then(res => {
+                    if (listener.promise) {
+                        listener.promise.resolve(res || data);
+                    }
+                    return res;
+                }, err => {
+                    if (listener.promise) {
+                        listener.promise.reject(err);
+                    }
+                    throw err;
+                });
         }
 
         throw new Error(`No postRobot handler found for message name: ${ name }`);
@@ -1222,4 +1229,148 @@ export function getPostRobotMock() : PostRobotMock {
     };
 }
 
+type MockWindowOptions = {|
+    expectedUrl? : string,
+    expectImmediateUrl? : boolean,
+    times? : number,
+    appSwitch? : boolean,
+    expectClose? : boolean,
+    expectedQuery? : $ReadOnlyArray<string>,
+    onOpen? : ({|
+        win : CrossDomainWindowType,
+        url : string,
+        query : {| [string] : string |}
+    |}) => void
+|};
 
+type MockWindow = {|
+    getWindow : () => ?CrossDomainWindowType,
+    expectClose : () => void,
+    done : () => void
+|};
+        
+export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, expectClose = false, onOpen = noop, expectedQuery = [], expectImmediateUrl = true } : MockWindowOptions) : MockWindow {
+
+    let windowOpenedTimes = 0;
+
+    let win : ?CrossDomainWindowType;
+
+    const windowOpen = window.open;
+    window.open = (url) : CrossDomainWindowType => {
+        if (expectImmediateUrl && !url) {
+            throw new Error(`Expected url to be immediately passed to window.open`);
+        }
+    
+        windowOpenedTimes += 1;
+            
+        if (windowOpenedTimes === times) {
+            window.open = windowOpen;
+        }
+
+        let currentUrl = url || 'about:blank';
+
+        const onLoad = () => {
+            if (!win) {
+                throw new Error(`Expecred win to be set`);
+            }
+
+            const [ stringUrl, stringQuery ] = currentUrl.split('?');
+
+            if (expectedUrl && stringUrl !== expectedUrl) {
+                throw new Error(`Expected url to be ${ expectedUrl }, got ${ stringUrl }`);
+            }
+
+            const query = parseQuery(stringQuery);
+
+            for (const key of expectedQuery) {
+                if (!query[key]) {
+                    throw new Error(`Expected query param: ${ key }`);
+                }
+            }
+
+            onOpen({
+                win,
+                url: currentUrl,
+                query
+            });
+        };
+
+        const newWin : CrossDomainWindowType = {
+            get location() : {||} {
+                // $FlowFixMe
+                return {};
+            },
+            set location(loc : string) {
+                ZalgoPromise.delay(10).then(() => {
+                    currentUrl = loc;
+                    onLoad();
+                });
+            },
+            closed: false,
+            close:  () => {
+                newWin.closed = true;
+
+                if (!expectClose) {
+                    throw new Error(`Expected window to not close`);
+                }
+            },
+            focus:       noop,
+            frames:      [],
+            length:      0,
+            // $FlowFixMe
+            open:        noop,
+            // $FlowFixMe
+            parent:      null,
+            // $FlowFixMe
+            top:         null,
+            // $FlowFixMe
+            self:        null,
+            postMessage: noop
+        };
+
+        newWin.parent = newWin.top = newWin.self = newWin;
+        win = newWin;
+
+        if (url) {
+            onLoad();
+        }
+
+        if (appSwitch) {
+            ZalgoPromise.delay(10).then(() => {
+                newWin.closed = true;
+            });
+        }
+
+        return newWin;
+    };
+
+    const done = () => {
+        window.open = windowOpen;
+
+        if (windowOpenedTimes !== times) {
+            throw new Error(`Expected window.open to be called ${ times } times, got ${ windowOpenedTimes } calls`);
+        }
+
+        if (expectClose && win && !win.closed) {
+            throw new Error(`Expected window to close`);
+        }
+
+        if (!expectClose && win && win.closed) {
+            throw new Error(`Expected window to not close`);
+        }
+    };
+
+    const getWindow = () => {
+        return win;
+    };
+
+    const doExpectClose = () => {
+        expectClose = true;
+    };
+
+    return {
+        getWindow,
+        expectClose: doExpectClose,
+        done
+    };
+}

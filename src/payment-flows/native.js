@@ -1,7 +1,8 @@
 /* @flow */
+/* eslint max-lines: off */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, popup, memoize, stringifyError, isIos, isAndroid,
-    isSafari, isChrome, stringifyErrorMessage, once, cleanup, PopupOpenError } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError, isIos, isAndroid,
+    isSafari, isChrome, stringifyErrorMessage, once, cleanup } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
@@ -69,18 +70,20 @@ function useDirectAppSwitch() : boolean {
     return isAndroidChrome();
 }
 
+function usePopupAppSwitch() : boolean {
+    return isIOSSafari();
+}
+
 function didAppSwitch(popupWin : ?CrossDomainWindowType) : boolean {
     return !popupWin || isWindowClosed(popupWin);
 }
 
+function openBlankPopup() : ?CrossDomainWindowType {
+    return window.open('');
+}
+
 function attemptPopupAppSwitch(url) : ?CrossDomainWindowType {
-    try {
-        return popup(url);
-    } catch (err) {
-        if (!(err instanceof PopupOpenError)) {
-            throw err;
-        }
-    }
+    return window.open(url);
 }
 
 function isNativeOptedIn({ props } : { props : Props }) : boolean {
@@ -310,17 +313,26 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             getLogger().info(`native_message_onapprove`).flush();
             const data = { payerID, paymentID, billingToken, forceRestAPI: true };
             const actions = { restart: () => fallbackToWebCheckout() };
-            return onApprove(data, actions).finally(close);
+            return ZalgoPromise.all([
+                onApprove(data, actions),
+                close()
+            ]);
         });
 
         const onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, () => {
             getLogger().info(`native_message_oncancel`).flush();
-            return onCancel().finally(close);
+            return ZalgoPromise.all([
+                onCancel(),
+                close()
+            ]);
         });
 
         const onErrorListener = socket.on(SOCKET_MESSAGE.ON_ERROR, ({ data : { message } }) => {
             getLogger().info(`native_message_onerror`, { err: message }).flush();
-            return onError(new Error(message)).finally(close);
+            return ZalgoPromise.all([
+                onError(new Error(message)),
+                close()
+            ]);
         });
 
         clean.register(getPropsListener.cancel);
@@ -338,18 +350,17 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const open = () : ?CrossDomainWindowType => {
         const nativeUrl = getNativeUrl();
-        const nativePopupUrl = getNativePopupUrl();
 
         let popupWin;
 
         if (useDirectAppSwitch()) {
             popupWin = attemptPopupAppSwitch(nativeUrl);
         } else {
-            popupWin = popup(nativePopupUrl);
+            popupWin = openBlankPopup();
         }
 
         clean.register(() => {
-            if (popupWin) {
+            if (popupWin && !isWindowClosed(popupWin)) {
                 popupWin.close();
             }
         });
@@ -430,14 +441,22 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return ZalgoPromise.try(() => {
             return onClick ? onClick({ fundingSource }) : true;
         }).then(valid => {
-            if (!valid) {
-                return ZalgoPromise.delay(500).then(() => {
-                    if (didAppSwitch(win)) {
-                        return connectNative().close();
-                    }
-                }).then(() => {
-                    return close();
-                });
+            if (valid) {
+                if (usePopupAppSwitch() && win) {
+                    win.location = getNativePopupUrl();
+                }
+            } else {
+                if (usePopupAppSwitch()) {
+                    close();
+                } else {
+                    return ZalgoPromise.delay(500).then(() => {
+                        if (didAppSwitch(win)) {
+                            return connectNative().close();
+                        }
+                    }).then(() => {
+                        return close();
+                    });
+                }
             }
         }, err => {
             close();
@@ -451,7 +470,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 ? initDirectAppSwitch(win)
                 : initPopupAppSwitch(win);
         }).catch(err => {
-            getLogger().info(`native_error`, { err: stringifyError(err) }).track({
+            getLogger().error(`native_error`, { err: stringifyError(err) }).track({
                 [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ERROR,
                 [FPTI_KEY.ERROR_CODE]: 'native_error',
                 [FPTI_KEY.ERROR_DESC]: stringifyErrorMessage(err)
