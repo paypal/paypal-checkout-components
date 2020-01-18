@@ -6,8 +6,8 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT } from '../../constants';
 import { determineEligibleFunding, determineVaultedFunding, isVaultedFundingEligible } from '../../funding';
-import { normalizeButtonProps, type ButtonPropsInputs } from '../../zoid/buttons/props';
 
+import { normalizeButtonProps, type ButtonPropsInputs } from './props';
 import { Style } from './style';
 import { BasicButton, VaultedButton } from './button';
 import { TagLine } from './tagline';
@@ -21,12 +21,12 @@ type ButtonsProps = ButtonPropsInputs & {|
 
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
-    const { style, locale, remembered, env, fundingEligibility, platform,
+    const { fundingSource, style, locale, remembered, env, fundingEligibility, platform,
         nonce, components, onShippingChange, personalization, clientAccessToken, content } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
     const { lang } = locale;
 
-    const fundingSources = determineEligibleFunding({ layout, remembered, platform, fundingEligibility, components, onShippingChange });
+    const fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange });
     const multiple = fundingSources.length > 1;
 
     if (!fundingSources.length) {
@@ -55,12 +55,12 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             />
 
             {
-                fundingSources.map((fundingSource, i) => (
+                fundingSources.map((source, i) => (
                     <BasicButton
                         content={ content }
                         i={ i }
                         style={ style }
-                        fundingSource={ fundingSource }
+                        fundingSource={ source }
                         multiple={ multiple }
                         env={ env }
                         locale={ locale }
@@ -75,7 +75,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
-                (tagline && layout === BUTTON_LAYOUT.HORIZONTAL)
+                (tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource)
                     ? <TagLine
                         fundingSource={ fundingSources[0] }
                         style={ style }
@@ -93,10 +93,10 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
-                vaultedFunding.map(({ fundingSource, paymentMethodID, vendor, label }) => (
+                vaultedFunding.map(({ fundingSource: source, paymentMethodID, vendor, label }) => (
                     <VaultedButton
                         style={ style }
-                        fundingSource={ fundingSource }
+                        fundingSource={ source }
                         multiple={ multiple }
                         env={ env }
                         nonce={ nonce }
@@ -122,4 +122,4 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     );
 }
 
-export { DEFAULT_PROPS } from '../../zoid/buttons/props';
+export { DEFAULT_PROPS } from './props';

@@ -6,7 +6,6 @@ module.exports = {
     'globals': {
         'Promise': false,
         '__PAYPAL_CHECKOUT__': true,
-        '__paypal_checkout__': true,
         '__sdk__': true,
         '__LOCALE__': true,
         '__CLIENT_ID__': true,
@@ -18,7 +17,8 @@ module.exports = {
         '__STAGE_HOST__': true,
         '__HOST__': true,
         '__PATH__': true,
-        '__COMPONENTS__': true
+        '__COMPONENTS__': true,
+        '__FUNDING_ELIGIBILITY__': true
     },
 
     'rules': {

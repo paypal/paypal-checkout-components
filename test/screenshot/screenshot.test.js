@@ -17,10 +17,6 @@ const IMAGE_DIR = `${ __dirname }/images`;
 
 const DIFF_THRESHOLD = 50;
 
-const USER_AGENTS = {
-    iphone6: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
-};
-
 const HEADLESS = (process.env.HEADLESS !== '0');
 const DEVTOOLS = (process.env.DEVTOOLS === '1');
 
@@ -64,16 +60,13 @@ for (const config of buttonConfigs) {
         const filepath = `${ IMAGE_DIR }/${ filename }.png`;
         const diffpath = `${ IMAGE_DIR }/${ filename }-old.png`;
 
-        const { x, y, width, height } = await page.evaluate(async (options, userAgents) => {
+        const { x, y, width, height } = await page.evaluate(async (options) => {
 
             // $FlowFixMe
             document.body.innerHTML = '';
 
             const container = window.document.createElement('div');
             window.document.body.appendChild(container);
-
-            const oldFundingEligibility = window.__TEST_FUNDING_ELIGIBILITY__;
-            const oldRememberedFunding = window.__TEST_REMEMBERED_FUNDING__;
 
             if (options.fundingEligibility) {
                 window.__TEST_FUNDING_ELIGIBILITY__ = options.fundingEligibility;
@@ -90,7 +83,7 @@ for (const config of buttonConfigs) {
             }
 
             if (options.userAgent) {
-                window.navigator.mockUserAgent = userAgents[options.userAgent];
+                window.navigator.mockUserAgent = options.userAgent;
             }
 
             const renderPromise = window.paypal.Buttons(options.button || {}).render(container);
@@ -106,8 +99,8 @@ for (const config of buttonConfigs) {
             const rect = frame.getBoundingClientRect();
 
             delete window.navigator.mockUserAgent;
-            window.__TEST_FUNDING_ELIGIBILITY__ = oldFundingEligibility;
-            window.__TEST_REMEMBERED_FUNDING__ = oldRememberedFunding;
+            delete window.__TEST_FUNDING_ELIGIBILITY__;
+            delete window.__TEST_REMEMBERED_FUNDING__;
 
             return {
                 x:      rect.left,
@@ -116,7 +109,7 @@ for (const config of buttonConfigs) {
                 height: rect.height
             };
 
-        }, buttonConfig, USER_AGENTS);
+        }, buttonConfig);
 
         if (width === 0) {
             throw new Error(`Button width is 0`);

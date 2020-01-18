@@ -9,8 +9,7 @@ import { SpinnerPage } from '@paypal/common-components/src';
 
 import { DEFAULT_POPUP_SIZE } from '../../config';
 import { Buttons } from '../../ui';
-
-import type { ButtonProps } from './props';
+import { type ButtonProps } from '../../ui/buttons/props';
 
 type PrerenderedButtonsProps = {|
     nonce : ?string,

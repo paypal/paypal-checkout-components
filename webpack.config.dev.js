@@ -35,33 +35,27 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
                 __MENU__:     `/demo/dev/menu.htm`
             }
         },
-        __paypal_checkout__: {
-            ...testGlobals.__paypal_checkout__,
-
-            serverConfig: {
-                fundingEligibility: {
-                    paypal: {
+        __FUNDING_ELIGIBILITY__: {
+            paypal: {
+                eligible: true
+            },
+            credit: {
+                eligible: true
+            },
+            venmo: {
+                eligible: true
+            },
+            card: {
+                eligible: true,
+                vendors:  {
+                    visa: {
                         eligible: true
                     },
-                    credit: {
+                    mastercard: {
                         eligible: true
                     },
-                    venmo: {
+                    amex: {
                         eligible: true
-                    },
-                    card: {
-                        eligible: true,
-                        vendors:  {
-                            visa: {
-                                eligible: true
-                            },
-                            mastercard: {
-                                eligible: true
-                            },
-                            amex: {
-                                eligible: true
-                            }
-                        }
                     }
                 }
             }

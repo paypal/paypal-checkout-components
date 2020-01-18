@@ -31,10 +31,7 @@ export const WEBPACK_CONFIG_BUTTON_RENDER = getWebpackConfig({
     modulename:    MODULE_NAME,
     web:           false,
     libraryTarget: 'commonjs2',
-    vars:          {
-        ...globals,
-        __paypal_checkout__: {}
-    }
+    vars:          globals
 });
 
 export default [ WEBPACK_CONFIG_BUTTON_RENDER ];

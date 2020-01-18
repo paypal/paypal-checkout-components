@@ -8,8 +8,9 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import type { LogoOptions, LabelOptions, VaultLabelOptions, TagOptions } from '../common';
 import { BUTTON_LABEL, BUTTON_LAYOUT, CLASS, ATTRIBUTE } from '../../constants';
 import { componentContent } from '../content';
-import { Text, Space } from '../../ui';
+import { Text, Space } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
+import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/labels';
 
 export function Logo({ logoColor } : LogoOptions) : ChildType {
     return (
@@ -45,7 +46,7 @@ function getPersonalizationTracker({ personalization } : LabelOptions) : ?string
     return personalizationTracker;
 }
 
-function getButtonStyle(opts : LabelOptions) : ?ChildType {
+function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
     if (__TEST__) {
         return null;
     }
@@ -55,93 +56,39 @@ function getButtonStyle(opts : LabelOptions) : ?ChildType {
     const personalizationText = !tagline && getPersonalizationText(opts);
 
     const MIN_WIDTH = 300;
-    const LABEL_DURATION = 1;
     const PERSONALIZATION_DURATION = 5;
-    const DELAY = 0;
 
-    const COMPRESSED = `
-        max-width: 0%;
-        opacity: 0;
-    `;
-
-    const EXPANDED = `
-        max-width: 100%;
-        opacity: 1;
-    `;
-
-    const HIDDEN = `
-        position: absolute;
-        visibility: hidden;
-    `;
-
-    const VISIBLE = `
-        position: static;
-        visibility: visible;
-    `;
-
-    const DOM_READY = '.dom-ready';
     const PAYPAL_BUTTON = `.${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }]`;
 
-    const PAYPAL_LOGO = `${ PAYPAL_BUTTON } .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ FUNDING.PAYPAL }`;
-    const BUTTON_TEXT = `${ PAYPAL_BUTTON } .${ CLASS.TEXT }:not(.personalization-text)`;
-    const PERSONALIZATION_TEXT = `${ PAYPAL_BUTTON } .personalization-text`;
-    
     return (
         <style innerHTML={ `
-
-            ${ BUTTON_TEXT }, ${ PERSONALIZATION_TEXT } {
-                ${ HIDDEN }
-            }
-
-            ${ DOM_READY } ${ BUTTON_TEXT }:not(.${ CLASS.HIDDEN }) {
-                ${ VISIBLE }
-                ${ COMPRESSED }
-                animation: show-text ${ LABEL_DURATION }s ${ DELAY }s forwards;
-            }
-
             @media only screen and (max-width: ${ MIN_WIDTH }px) {
-                ${ DOM_READY } ${ PERSONALIZATION_TEXT } {
+                .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ CLASS.PERSONALIZATION_TEXT } {
                     ${ HIDDEN }
                 }
             }
 
             @media only screen and (min-width: ${ MIN_WIDTH }px) {
-                ${ DOM_READY } ${ PAYPAL_LOGO } {
-                    animation: ${ personalizationText ? `toggle-paypal-logo ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `none` };
+                .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ FUNDING.PAYPAL } {
+                    animation: ${ personalizationText ? `toggle-paypal-logo ${ PERSONALIZATION_DURATION }s 0s forwards` : `none` };
                 }
 
-                ${ DOM_READY } ${ BUTTON_TEXT }:not(.${ CLASS.HIDDEN }) {
+                .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ CLASS.TEXT }:not(.${ CLASS.PERSONALIZATION_TEXT }):not(.${ CLASS.HIDDEN }) {
                     ${ COMPRESSED }
                     ${ VISIBLE }
-                    animation: ${ personalizationText ? `show-text-delayed ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards` : `show-text ${ LABEL_DURATION }s ${ DELAY }s forwards` };
+                    animation: ${ personalizationText ? `show-text-delayed ${ PERSONALIZATION_DURATION }s 0s forwards` : `show-text 1s 0s forwards` };
                 }
 
-                ${ DOM_READY } ${ PERSONALIZATION_TEXT } {
+                .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ CLASS.PERSONALIZATION_TEXT } {
                     ${ COMPRESSED }
                     ${ VISIBLE }
-                    animation: show-personalization-text ${ PERSONALIZATION_DURATION }s ${ DELAY }s forwards;
+                    animation: show-personalization-text ${ PERSONALIZATION_DURATION }s 0s forwards;
                 }
-            }
-
-            .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] .${ CLASS.TEXT } {
-                ${ HIDDEN }
-                overflow: hidden;
-            }
-
-            ${ DOM_READY } .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] .${ CLASS.TEXT } {
-                ${ VISIBLE }
-                ${ COMPRESSED }
-                animation: show-text ${ LABEL_DURATION }s ${ DELAY }s forwards;
-            }
-
-            @keyframes show-text {
-                0% { ${ COMPRESSED } }
-                100% { ${ EXPANDED } }
             }
 
             @keyframes toggle-paypal-logo {
                 0% { ${ EXPANDED } }
-                8% { ${ COMPRESSED } }
+                15% { ${ COMPRESSED } }
                 85% { ${ COMPRESSED } }
                 100% { ${ EXPANDED } }
             }
@@ -154,8 +101,10 @@ function getButtonStyle(opts : LabelOptions) : ?ChildType {
 
             @keyframes show-personalization-text {
                 0% { ${ COMPRESSED } }
+                15% { ${ COMPRESSED } }
                 25% { ${ EXPANDED } }
-                75% { ${ EXPANDED } }
+                70% { ${ EXPANDED } }
+                85% { ${ COMPRESSED } }
                 100% { ${ COMPRESSED } }
             }
         ` } />
@@ -197,9 +146,9 @@ function getButtonPersonalization(opts : LabelOptions) : ?ChildType {
         return;
     }
 
-    const { nonce, tagline } = opts;
+    const { nonce, tagline, label } = opts;
     
-    if (tagline) {
+    if (tagline || !label) {
         return;
     }
 
@@ -212,10 +161,13 @@ function getButtonPersonalization(opts : LabelOptions) : ?ChildType {
 
     return (
         <Fragment>
-            <Text className="personalization-text" optional={ 2 }>{ personalizationText }</Text>
+            <Text className={ CLASS.PERSONALIZATION_TEXT } optional={ 2 }>{ personalizationText }</Text>
             {
                 personalizationTracker &&
                     <TrackingBeacon url={ personalizationTracker } nonce={ nonce } />
+            }
+            {
+                getButtonPersonalizationStyle(opts)
             }
         </Fragment>
         
@@ -226,7 +178,6 @@ function getButtonPersonalization(opts : LabelOptions) : ?ChildType {
 export function Label(opts : LabelOptions) : ChildType {
     return (
         <Fragment>
-            { getButtonStyle(opts) }
             { getButtonLabel(opts) }
             { getButtonPersonalization(opts) }
         </Fragment>

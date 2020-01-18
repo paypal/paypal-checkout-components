@@ -8,12 +8,14 @@ import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../../constants';
-import { getFundingConfig } from '../../funding';
+import { getFundingConfig, isFundingEligible } from '../../funding';
 import type { FundingEligibilityType } from '../../types';
-import { BUTTON_SIZE_STYLE } from '../../ui/buttons/config';
+
+import { BUTTON_SIZE_STYLE } from './config';
 
 export type CreateOrderData = {|
 
@@ -167,6 +169,7 @@ export type RenderButtonProps = {|
     style : ButtonStyle,
     locale : LocaleType,
     commit : boolean,
+    fundingSource : ?$Values<typeof FUNDING>,
     env : $Values<typeof ENV>,
     stage? : string,
     stageUrl? : string,
@@ -193,6 +196,7 @@ export type PrerenderDetails = {|
 export type GetPrerenderDetails = () => PrerenderDetails | void;
 
 export type ButtonProps = {|
+    fundingSource : ?$Values<typeof FUNDING>,
     intent : $Values<typeof INTENT>,
     createOrder : CreateOrder,
     createBillingAgreement : CreateBillingAgreement,
@@ -221,6 +225,7 @@ export type ButtonProps = {|
 
 export type ButtonPropsInputs = {|
     clientID : string,
+    fundingSource? : $Values<typeof FUNDING>,
     style? : ButtonStyleInputs | void,
     locale? : $PropertyType<ButtonProps, 'locale'> | void,
     commit? : $PropertyType<ButtonProps, 'commit'> | void,
@@ -264,18 +269,27 @@ export const DEFAULT_PROPS = {
 };
 
 // $FlowFixMe
-export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
+export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonStyleInputs) : ButtonStyle {
 
     if (!style) {
         throw new Error(`Expected props.style to be set`);
     }
 
+    const { fundingSource } = props;
+
+    const FUNDING_CONFIG = getFundingConfig();
+    const fundingConfig = FUNDING_CONFIG[fundingSource || FUNDING.PAYPAL];
+
+    if (!fundingConfig) {
+        throw new Error(`Expected ${ FUNDING.PAYPAL } to be eligible`);
+    }
+
     const {
         label,
-        layout = DEFAULT_STYLE.LAYOUT,
-        color = DEFAULT_STYLE.COLOR,
-        shape = DEFAULT_STYLE.SHAPE,
-        tagline = (layout === BUTTON_LAYOUT.HORIZONTAL),
+        layout = fundingSource ? BUTTON_LAYOUT.HORIZONTAL : fundingConfig.layouts[0],
+        color = fundingConfig.colors[0],
+        shape = fundingConfig.shapes[0],
+        tagline = (layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource),
         height,
         period
     } = style;
@@ -286,13 +300,6 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
 
     if (label && values(BUTTON_LABEL).indexOf(label) === -1) {
         throw new Error(`Invalid label: ${ label }`);
-    }
-
-    const FUNDING_CONFIG = getFundingConfig();
-    const fundingConfig = FUNDING_CONFIG[FUNDING.PAYPAL];
-
-    if (!fundingConfig) {
-        throw new Error(`Expected ${ FUNDING.PAYPAL } to be eligible`);
     }
 
     if (color && fundingConfig.colors.indexOf(color) === -1) {
@@ -337,6 +344,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     let {
         clientID,
+        fundingSource,
         // $FlowFixMe
         style = {},
         remembered = [],
@@ -386,8 +394,18 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         nonce = csp.nonce;
     }
 
-    style = normalizeButtonStyle(style);
+    style = normalizeButtonStyle(props, style);
 
-    return { clientID, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
+    if (fundingSource) {
+        if (SUPPORTED_FUNDING_SOURCES.indexOf(fundingSource) === -1) {
+            throw new Error(`Invalid funding source: ${ fundingSource }`);
+        }
+
+        if (!isFundingEligible(fundingSource, { platform, fundingEligibility, components, onShippingChange })) {
+            throw new Error(`Funding Source not eligible: ${ fundingSource }`);
+        }
+    }
+
+    return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content };
 }

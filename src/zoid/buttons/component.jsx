@@ -15,8 +15,8 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { getButtonUrl } from '../../config';
 import { getFundingEligibility } from '../../globals';
 import { getSessionID } from '../../lib';
+import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 
-import { normalizeButtonStyle, type ButtonProps } from './props';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 
@@ -61,14 +61,14 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:       'object',
                     queryParam: true,
                     required:   false,
-                    decorate:   ({ value }) => {
+                    decorate:   ({ props, value }) => {
                         // $FlowFixMe
-                        return normalizeButtonStyle(value);
+                        return normalizeButtonStyle(props, value);
                     },
 
-                    validate: ({ value = {} }) => {
+                    validate: ({ props, value = {} }) => {
                         // $FlowFixMe
-                        normalizeButtonStyle(value);
+                        normalizeButtonStyle(props, value);
                     },
 
                     default: () => ({})
@@ -84,6 +84,12 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:       'object',
                     queryParam: true,
                     value:      getLocale
+                },
+
+                fundingSource: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false
                 },
 
                 sdkMeta: {

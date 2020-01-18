@@ -88,16 +88,13 @@ export const fundingEligibility = {
     },
     trustly: {
         eligible: false
+    },
+    itau: {
+        eligible: false
     }
 };
 
 export const testGlobals = {
-    __paypal_checkout__: {
-        serverConfig: {
-            fundingEligibility: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`
-        }
-    },
-
     __PAYPAL_CHECKOUT__: {
         __URI__:                {
             __CHECKOUT__:    `/base/test/integration/windows/checkout/index.htm?checkouturl=true`,
@@ -106,6 +103,8 @@ export const testGlobals = {
             __CARD_FIELDS__: `/base/test/integration/windows/card-fields/index.htm`
         }
     },
+
+    __FUNDING_ELIGIBILITY__: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
 
     __PROTOCOL__:       'http',
     __PORT__:           8000,

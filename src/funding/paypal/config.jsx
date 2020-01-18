@@ -13,8 +13,8 @@ export function getPayPalConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         layouts: [
-            BUTTON_LAYOUT.HORIZONTAL,
-            BUTTON_LAYOUT.VERTICAL
+            BUTTON_LAYOUT.VERTICAL,
+            BUTTON_LAYOUT.HORIZONTAL
         ],
 
         colors: [

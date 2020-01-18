@@ -8,7 +8,7 @@ import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
 import type { FundingEligibilityType } from '../types';
-import type { Personalization } from '../zoid/buttons/props';
+import type { Personalization } from '../ui/buttons/props';
 
 
 export type CardConfig = {|
@@ -98,8 +98,8 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
     },
 
     shapes: [
-        BUTTON_SHAPE.PILL,
-        BUTTON_SHAPE.RECT
+        BUTTON_SHAPE.RECT,
+        BUTTON_SHAPE.PILL
     ],
 
     secondaryColors: {

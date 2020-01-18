@@ -8,7 +8,7 @@ import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 
 const DUAL_BUTTON_MIN_RATIO = 2.8;
 
-export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?number, cardNumber? : number }) : string {
+export function buttonResponsiveStyle({ height } : { height? : ?number }) : string {
 
     return Object.keys(BUTTON_SIZE_STYLE).map(size => {
 
@@ -73,18 +73,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
 
                 .${ CLASS.CARD } {
                     display: inline-block;
-                }
-
-                .${ CLASS.BUTTON } .${ CLASS.CARD } {
-                    width: ${ (90 / cardNumber).toFixed(2) }%;
-                    max-width: ${ perc(buttonHeight, 160) }px;
-                    margin-top: 0;
-                    margin-left: ${ (5 / cardNumber).toFixed(2) }%;
-                    margin-right: ${ (5 / cardNumber).toFixed(2) }%;
-                }
-
-                .${ CLASS.BUTTON } .${ CLASS.CARD } img {
-                    width: 100%;
+                    height: 100%;
                 }
 
                 .${ CLASS.MENU_TOGGLE } {

@@ -8,9 +8,9 @@ import { noop } from 'belter/src';
 
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER } from '../../constants';
 import { getFundingConfig } from '../../funding';
-import { type ButtonStyle, type Personalization } from '../../zoid/buttons/props';
 import type { FundingEligibilityType } from '../../types';
 
+import { type ButtonStyle, type Personalization } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu';
 
@@ -34,8 +34,6 @@ type BasicButtonProps = {|
 
 export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, personalization, onClick = noop, content, tagline } : BasicButtonProps) : ElementNode {
 
-    let { color, period, label } = style;
-
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -44,6 +42,12 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
 
     const colors = fundingConfig.colors;
     const secondaryColors = fundingConfig.secondaryColors || {};
+
+    let {
+        color = colors[0],
+        period,
+        label
+    } = style;
 
     if (multiple && i > 0) {
         color = secondaryColors[color] || secondaryColors[BUTTON_COLOR.DEFAULT] || colors[0];

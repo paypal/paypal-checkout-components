@@ -7,7 +7,7 @@ import { GlyphCard } from '@paypal/sdk-logos';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
-import { Text, Space } from '../../ui';
+import { Text, Space } from '../../ui/text';
 import { isRTLLanguage } from '../../lib';
 
 import { getVisaConfig } from './visa';
@@ -20,13 +20,13 @@ import { getJCBConfig } from './jcb';
 
 function getVendorConfig() : { [$Values<typeof CARD>] : ?CardConfig } {
     return {
-        [ CARD.VISA ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.visa && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.visa.eligible)) ? getVisaConfig() : null,
-        [ CARD.AMEX ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.amex && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.amex.eligible)) ? getAmexConfig() : null,
-        [ CARD.MASTERCARD ]: (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.mastercard && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.mastercard.eligible)) ? getMastercardConfig() : null,
-        [ CARD.DISCOVER ]:   (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.discover && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.discover.eligible)) ? getDiscoverConfig() : null,
-        [ CARD.JCB ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.jcb && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.jcb.eligible)) ? getJCBConfig() : null,
-        [ CARD.ELO ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.elo && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.elo.eligible)) ? getEloConfig() : null,
-        [ CARD.HIPER ]:      (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.hiper && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.hiper.eligible)) ? getHiperConfig() : null
+        [ CARD.VISA ]:       (!__TREE_SHAKE__ || (__FUNDING_ELIGIBILITY__.card && __FUNDING_ELIGIBILITY__.card.vendors && __FUNDING_ELIGIBILITY__.card.vendors.visa && __FUNDING_ELIGIBILITY__.card.vendors.visa.eligible)) ? getVisaConfig() : null,
+        [ CARD.AMEX ]:       (!__TREE_SHAKE__ || (__FUNDING_ELIGIBILITY__.card && __FUNDING_ELIGIBILITY__.card.vendors && __FUNDING_ELIGIBILITY__.card.vendors.amex && __FUNDING_ELIGIBILITY__.card.vendors.amex.eligible)) ? getAmexConfig() : null,
+        [ CARD.MASTERCARD ]: (!__TREE_SHAKE__ || (__FUNDING_ELIGIBILITY__.card && __FUNDING_ELIGIBILITY__.card.vendors && __FUNDING_ELIGIBILITY__.card.vendors.mastercard && __FUNDING_ELIGIBILITY__.card.vendors.mastercard.eligible)) ? getMastercardConfig() : null,
+        [ CARD.DISCOVER ]:   (!__TREE_SHAKE__ || (__FUNDING_ELIGIBILITY__.card && __FUNDING_ELIGIBILITY__.card.vendors && __FUNDING_ELIGIBILITY__.card.vendors.discover && __FUNDING_ELIGIBILITY__.card.vendors.discover.eligible)) ? getDiscoverConfig() : null,
+        [ CARD.JCB ]:        (!__TREE_SHAKE__ || (__FUNDING_ELIGIBILITY__.card && __FUNDING_ELIGIBILITY__.card.vendors && __FUNDING_ELIGIBILITY__.card.vendors.jcb && __FUNDING_ELIGIBILITY__.card.vendors.jcb.eligible)) ? getJCBConfig() : null,
+        [ CARD.ELO ]:        (!__TREE_SHAKE__ || (__FUNDING_ELIGIBILITY__.card && __FUNDING_ELIGIBILITY__.card.vendors && __FUNDING_ELIGIBILITY__.card.vendors.elo && __FUNDING_ELIGIBILITY__.card.vendors.elo.eligible)) ? getEloConfig() : null,
+        [ CARD.HIPER ]:      (!__TREE_SHAKE__ || (__FUNDING_ELIGIBILITY__.card && __FUNDING_ELIGIBILITY__.card.vendors && __FUNDING_ELIGIBILITY__.card.vendors.hiper && __FUNDING_ELIGIBILITY__.card.vendors.hiper.eligible)) ? getHiperConfig() : null
     };
 }
 
@@ -45,14 +45,6 @@ export function getCardConfig() : FundingSourceConfig {
             const hostedFieldsRequested = Boolean(components.indexOf(COMPONENTS.HOSTED_FIELDS) !== -1);
             const cardEligible = Boolean(fundingEligibility.card && fundingEligibility.card.eligible);
             const cardBranded = Boolean(fundingEligibility.card && fundingEligibility.card.branded);
-            const cardVendors = fundingEligibility.card && fundingEligibility.card.vendors;
-
-            const cardEligibleVendors = Object.keys(cardVendors || []).filter(vendor =>
-                cardVendors[vendor] && cardVendors[vendor].eligible);
-
-            if (cardEligibleVendors.length <= 0) {
-                return false;
-            }
 
             // If card is not eligible, never show card buttons
             if (!cardEligible) {
@@ -82,8 +74,8 @@ export function getCardConfig() : FundingSourceConfig {
         vendors,
 
         colors: [
-            BUTTON_COLOR.WHITE,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         secondaryColors: {

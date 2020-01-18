@@ -3,8 +3,6 @@
 
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import type { FundingEligibilityType } from './types';
-
 declare var __PAYPAL_CHECKOUT__ : {
     __REMEMBERED_FUNDING__ : $ReadOnlyArray<$Values<typeof FUNDING>>,
     __URI__ : {
@@ -13,12 +11,6 @@ declare var __PAYPAL_CHECKOUT__ : {
         __CARD_FIELDS__ : string,
         __MENU__ : string,
         __MODAL__ : string
-    }
-};
-
-declare var __paypal_checkout__ : {
-    serverConfig : {
-        fundingEligibility : FundingEligibilityType
     }
 };
 

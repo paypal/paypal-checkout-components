@@ -6,7 +6,7 @@ import { Fragment, node } from 'jsx-pragmatic/src';
 
 import { BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
-import { Text, Space } from '../../ui';
+import { Text, Space } from '../../ui/text';
 
 export function getIdealConfig() : FundingSourceConfig {
     return {

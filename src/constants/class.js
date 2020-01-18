@@ -22,6 +22,8 @@ export const CLASS = {
     TEXT:  ('paypal-button-text' : 'paypal-button-text'),
     SPACE: ('paypal-button-space' : 'paypal-button-space'),
     CARD:  ('paypal-button-card' : 'paypal-button-card'),
+
+    PERSONALIZATION_TEXT: ('paypal-personalization-text' : 'paypal-personalization-text'),
     
     VAULT_LABEL:  ('paypal-vault-label' : 'paypal-vault-label'),
     VAULT_HEADER: ('paypal-vault-header' : 'paypal-vault-header'),
@@ -29,6 +31,8 @@ export const CLASS = {
     MENU_TOGGLE: ('menu-toggle' : 'menu-toggle'),
 
     SEPARATOR: ('paypal-separator' : 'paypal-separator'),
+
+    DOM_READY: ('dom-ready' : 'dom-ready'),
 
     HIDDEN:  ('hidden' : 'hidden')
 };

@@ -6,8 +6,9 @@ import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../constants';
 import { getFundingConfig } from '../../funding';
-import { type ButtonStyle, type Personalization } from '../../zoid/buttons/props';
 import { TrackingBeacon } from '../tracking';
+
+import { type ButtonStyle, type Personalization } from './props';
 
 export function TagLine({ fundingSource, style, locale, multiple, nonce, personalization } :
     {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string, personalization : ?Personalization |}) : ?ElementNode {

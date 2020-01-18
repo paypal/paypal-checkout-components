@@ -7,8 +7,7 @@ import { EVENT, type RenderOptionsType } from 'zoid/src';
 
 import { BUTTON_SIZE } from '../../constants';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/config';
-
-import type { ButtonProps } from './props';
+import { type ButtonProps } from '../../ui/buttons/props';
 
 const CLASS = {
     VISIBLE:         'visible',
