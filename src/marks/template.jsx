@@ -3,10 +3,9 @@
 
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { node, type ChildNodeType, type ElementNode } from 'jsx-pragmatic/src';
-import { getLocale } from '@paypal/sdk-client/src';
+import { getLocale, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { toPx } from 'belter/src';
 
-import type { FundingEligibilityType } from '../types';
 import { getFundingConfig } from '../funding';
 
 function Mark({ fundingSource, fundingEligibility } : { fundingSource : $Values<typeof FUNDING>, fundingEligibility : FundingEligibilityType }) : ChildNodeType {

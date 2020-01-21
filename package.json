@@ -4,13 +4,14 @@
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
-    "dev": "babel-node ./node_modules/.bin/webpack-dev-server --config webpack.config.dev.js --port 9000 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
+    "dev": "babel-node npx webpack-dev-server --config webpack.config.dev.js --port 9000 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
     "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
     "flow-typed": "rm -rf flow-typed && flow-typed install",
     "flow": "flow",
     "karma": "cross-env NODE_ENV=test babel-node $(npm bin)/karma start",
-    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run jest-ssr && npm run karma && npm run jest-screenshot; fi;",
-    "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress",
+    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run jest-ssr && npm run karma && npm run jest-screenshot && npm run check-size; fi;",
+    "webpack": "babel-node $(npm bin)/webpack --progress",
+    "webpack-size": "babel-node $(npm bin)/webpack --progress --config webpack.config.size && echo && echo Final bundle size: $( npm run -s get-size );",
     "build": "npm run test && npm run webpack",
     "release": "./scripts/publish.sh",
     "release:patch": "./scripts/publish.sh patch",
@@ -27,7 +28,9 @@
     "jest-screenshot": "jest test/screenshot --env=node --no-cache",
     "jest-ssr": "jest test/ssr --env=node --no-cache",
     "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
-    "check-size": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress --config webpack.config.size && cat dist/size.js | gzip -9 | wc && rm dist/size.js"
+    "get-size": "gzip -9 < dist/size.min.js | wc -c",
+    "check-size": "npm run webpack-size && if [ $(npm run -s get-size) -ge 60000 ]; then echo 'Bundle size greater than 60k'; exit 1; else npm run delete-size; fi;",
+    "delete-size": "rm dist/size.js dist/size.min.js dist/report.html"
   },
   "files": [
     "src/",

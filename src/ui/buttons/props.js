@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, uniqueID } from 'belter/src';
-import { type OrderCreateRequest,
+import { type OrderCreateRequest, type FundingEligibilityType,
     type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
@@ -13,7 +13,6 @@ import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../../constants';
 import { getFundingConfig, isFundingEligible } from '../../funding';
-import type { FundingEligibilityType } from '../../types';
 
 import { BUTTON_SIZE_STYLE } from './config';
 

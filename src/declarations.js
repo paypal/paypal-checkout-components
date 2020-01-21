@@ -13,5 +13,3 @@ declare var __PAYPAL_CHECKOUT__ : {
         __MODAL__ : string
     }
 };
-
-declare var __hosted_fields__ : void;

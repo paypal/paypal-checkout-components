@@ -3,7 +3,7 @@
 
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
-import { GlyphCard } from '@paypal/sdk-logos';
+import { GlyphCard } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';

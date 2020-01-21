@@ -6,9 +6,8 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { getElement, isDevice } from 'belter/src';
 import { PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 import { getRememberedFunding } from '@paypal/funding-components/src';
-import { getComponents } from '@paypal/sdk-client/src';
+import { getComponents, getFundingEligibility } from '@paypal/sdk-client/src';
 
-import { getFundingEligibility } from '../globals';
 import { BUTTON_LAYOUT } from '../constants';
 import { determineEligibleFunding } from '../funding';
 

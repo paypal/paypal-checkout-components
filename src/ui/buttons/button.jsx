@@ -1,6 +1,7 @@
 /* @flow */
 /** @jsx node */
 
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { FUNDING, ENV, type LocaleType, CARD } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
@@ -8,7 +9,6 @@ import { noop } from 'belter/src';
 
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER } from '../../constants';
 import { getFundingConfig } from '../../funding';
-import type { FundingEligibilityType } from '../../types';
 
 import { type ButtonStyle, type Personalization } from './props';
 import { Spinner } from './spinner';

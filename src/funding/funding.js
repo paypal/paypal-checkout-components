@@ -1,11 +1,11 @@
 /* @flow */
 
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS, CARD } from '@paypal/sdk-constants/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 import { values } from 'belter/src';
 
 import { BUTTON_LAYOUT } from '../constants';
-import type { FundingEligibilityType } from '../types';
 import type { OnShippingChange } from '../ui/buttons/props';
 
 import { getFundingConfig } from './config';

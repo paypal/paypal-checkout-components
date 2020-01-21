@@ -2,12 +2,12 @@
 /* eslint no-template-curly-in-string: off, max-lines: off */
 /** @jsx node */
 
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
-import type { FundingEligibilityType } from '../types';
 import type { Personalization } from '../ui/buttons/props';
 
 
