@@ -2,7 +2,7 @@
 /* eslint max-lines: off */
 
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError, isIos, isAndroid,
-    isSafari, isChrome, stringifyErrorMessage, cleanup, once } from 'belter/src';
+    isSafari, isChrome, stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, FUNDING, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
@@ -304,7 +304,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return ZalgoPromise.all([
                 onApprove(data, actions),
                 close()
-            ]);
+            ]).then(noop);
         });
 
         const onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, () => {
@@ -312,7 +312,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return ZalgoPromise.all([
                 onCancel(),
                 close()
-            ]);
+            ]).then(noop);
         });
 
         const onErrorListener = socket.on(SOCKET_MESSAGE.ON_ERROR, ({ data : { message } }) => {
@@ -320,7 +320,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return ZalgoPromise.all([
                 onError(new Error(message)),
                 close()
-            ]);
+            ]).then(noop);
         });
 
         clean.register(getPropsListener.cancel);
