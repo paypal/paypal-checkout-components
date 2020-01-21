@@ -2,12 +2,10 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getPayPalDomainRegex, getSDKMeta } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@paypal/sdk-client/src';
 import { create, EVENT, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, destroyElement, toCSS } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
-
-import { getModalUrl } from '../../config';
 
 import { type ModalProps } from './props';
 
@@ -19,8 +17,8 @@ const CLASS = {
 export function getModalComponent() : ZoidComponent<ModalProps> {
     return inlineMemoize(getModalComponent, () => {
         return create({
-            tag:    'paypal-smart-modal',
-            url:    getModalUrl,
+            tag:    'paypal-modal',
+            url:    () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__MODAL__ }`,
             domain: getPayPalDomainRegex(),
 
             dimensions: {

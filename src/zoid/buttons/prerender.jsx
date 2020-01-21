@@ -7,7 +7,7 @@ import { popup, supportsPopups, writeElementToWindow } from 'belter/src';
 import { assertSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { SpinnerPage } from '@paypal/common-components/src';
 
-import { DEFAULT_POPUP_SIZE } from '../../config';
+import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
 

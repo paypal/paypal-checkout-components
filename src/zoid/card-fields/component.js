@@ -6,10 +6,9 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { inlineMemoize } from 'belter/src';
-import { getLocale, getEnv, getCommit, getSDKMeta, getDisableCard } from '@paypal/sdk-client/src';
+import { getLocale, getEnv, getCommit, getSDKMeta, getDisableCard, getPayPalDomain } from '@paypal/sdk-client/src';
 
 import { getSessionID } from '../../lib';
-import { getCardUrl } from '../../config';
 
 type CardProps = {|
     client : {
@@ -31,10 +30,8 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
     return inlineMemoize(getCardFieldsComponent, () => {
         // $FlowFixMe
         return create({
-            tag:  'card-fields',
-            name: 'ppcard',
-
-            url: getCardUrl,
+            tag:  'paypal-card-fields',
+            url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELDS__ }`,
 
             dimensions: {
                 height: '300px',

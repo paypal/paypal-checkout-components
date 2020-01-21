@@ -6,14 +6,13 @@ import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@p
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize } from 'belter/src';
 
-import { type MenuProps } from './props';
+import { type WalletProps } from './props';
 
-export function getMenuComponent() : ZoidComponent<MenuProps> {
-    return inlineMemoize(getMenuComponent, () => {
+export function getWalletComponent() : ZoidComponent<WalletProps> {
+    return inlineMemoize(getWalletComponent, () => {
         return create({
-            tag: 'paypal-menu',
-            url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__MENU__ }`,
-
+            tag:    'paypal-wallet',
+            url:    () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__WALLET__ }`,
             domain: getPayPalDomainRegex(),
             
             autoResize: {

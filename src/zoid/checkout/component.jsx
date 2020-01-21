@@ -4,7 +4,7 @@
 
 import { node, dom } from 'jsx-pragmatic/src';
 import { getPayPalDomainRegex, getLogger, getLocale,
-    getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion } from '@paypal/sdk-client/src';
+    getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion, getPayPalDomain } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent, EVENT } from 'zoid/src';
 import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/src';
@@ -12,17 +12,17 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import { Overlay, SpinnerPage } from '@paypal/common-components/src';
 
 import { getSessionID } from '../../lib';
-import { DEFAULT_POPUP_SIZE, getCheckoutUrl } from '../../config';
 
 import type { CheckoutPropsType } from './props';
 import { containerContent } from './content';
 import { fixCreditRedirect } from './hacks';
+import { DEFAULT_POPUP_SIZE } from './config';
 
 export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
     return inlineMemoize(getCheckoutComponent, () => {
         const component = create({
-
-            tag:  'paypal-checkout',
+            tag: 'paypal-checkout',
+            url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`,
         
             attributes: {
                 iframe: {
@@ -31,9 +31,7 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
             },
         
             defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
-        
-            url: getCheckoutUrl,
-        
+
             domain: getPayPalDomainRegex(),
         
             logger: getLogger(),
