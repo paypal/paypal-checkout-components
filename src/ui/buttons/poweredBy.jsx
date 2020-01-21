@@ -6,10 +6,10 @@ import { type LocaleType } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { CLASS } from '../../constants';
-
-import { Text } from '..';
+import { Text } from '../text';
 
 import { buttonContent } from './content';
+
 
 const POWERED_BY_PAYPAL_STYLE = `
     .${ CLASS.POWERED_BY } {
@@ -48,8 +48,7 @@ export function PoweredByPayPal({ locale: { lang } } : PoweredByPayPalProps) : C
             <style innerHTML={ POWERED_BY_PAYPAL_STYLE } />
             { __WEB__
                 ? <Text />
-                : <PoweredBy logoColor={ LOGO_COLOR.BLUE } />
-            }
+                : <PoweredBy logoColor={ LOGO_COLOR.BLUE } />}
         </div>
     );
 }

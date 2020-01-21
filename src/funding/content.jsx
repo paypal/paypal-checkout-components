@@ -31,8 +31,7 @@ export const componentContent : ContentMap = {
                     { logo }
                     { period
                         ? <Text optional> Pay up to { period.toString() }x<br /> without interest</Text>
-                        : <Text optional> Interest free<br /> payments</Text>
-                    }
+                        : <Text optional> Interest free<br /> payments</Text>}
                 </Fragment>
             );
         },
@@ -55,8 +54,7 @@ export const componentContent : ContentMap = {
                     { logo }
                     { period
                         ? <Text optional> Pague hasta { period.toString() }x<br /> sin interés</Text>
-                        : <Text optional> Pagos en<br /> mensualidades</Text>
-                    }
+                        : <Text optional> Pagos en<br /> mensualidades</Text>}
                 </Fragment>
             );
         },
@@ -96,8 +94,7 @@ export const componentContent : ContentMap = {
                     { logo }
                     { period
                         ? <Text optional> Pague em até<br /> { period.toString() }x sem juros</Text>
-                        : <Text optional> Pagamentos<br /> parcelados</Text>
-                    }
+                        : <Text optional> Pagamentos<br /> parcelados</Text>}
                 </Fragment>
             );
         },

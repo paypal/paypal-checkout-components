@@ -24,8 +24,6 @@ export function fixCreditRedirect() {
                 if (url.indexOf('/ppcreditapply') !== -1 && url.indexOf('key=') !== -1 && url.indexOf('sdkMeta') === -1) {
                     url += `&sdkMeta=${ getSDKMeta() }`;
                 }
-                
-            // eslint-disable-next-line unicorn/catch-error-name
             } catch (err2) {
                 // pass
             }

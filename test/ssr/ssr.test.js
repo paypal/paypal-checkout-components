@@ -33,6 +33,7 @@ async function getButtonScript() : Promise<{ Buttons : (Object) => ElementNode, 
         throw new TypeError(`Expected componentTemplate to be a function`);
     }
 
+    // eslint-disable-next-line require-atomic-updates
     cache[cacheKey] = exports;
 
     return exports;

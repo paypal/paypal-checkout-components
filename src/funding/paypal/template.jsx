@@ -201,5 +201,5 @@ export function Tag({ multiple, locale: { lang } } : TagOptions) : ?ChildType {
 
     return (multiple && DualTag)
         ? <DualTag optional />
-        : <SaferTag  optional />;
+        : <SaferTag optional />;
 }
