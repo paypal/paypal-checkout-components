@@ -88,8 +88,6 @@ export function getCardConfig() : FundingSourceConfig {
             [ DEFAULT ]:              BUTTON_COLOR.WHITE
         },
 
-        handleClick: true,
-
         Logo: ({ logoColor }) => {
             return (
                 <GlyphCard color={ logoColor } />

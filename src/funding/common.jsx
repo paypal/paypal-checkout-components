@@ -2,6 +2,7 @@
 /* eslint no-template-curly-in-string: off, max-lines: off */
 /** @jsx node */
 
+import { node } from 'jsx-pragmatic';
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type ChildType } from 'jsx-pragmatic/src';
@@ -9,6 +10,8 @@ import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
+
+import { componentContent } from './content';
 
 
 export type CardConfig = {|
@@ -66,13 +69,42 @@ export type FundingSourceConfig = {|
     Label : (LabelOptions) => ChildType,
     VaultLabel? : (VaultLabelOptions) => ChildType,
     Tag? : (TagOptions) => ?ChildType,
-    handleClick : boolean,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
 |};
+
+export function BasicLabel({ logo, label, layout, multiple, period, locale: { lang } } : LabelOptions) : ChildType {
+    if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
+        return logo;
+    }
+
+    if (__WEB__) {
+        return logo;
+    }
+
+    const { Checkout, Pay, BuyNow, Installment } = componentContent[lang];
+
+    if (label === BUTTON_LABEL.CHECKOUT) {
+        return <Checkout logo={ logo } />;
+    }
+
+    if (label === BUTTON_LABEL.PAY) {
+        return <Pay logo={ logo } />;
+    }
+
+    if (label === BUTTON_LABEL.BUYNOW) {
+        return <BuyNow logo={ logo } />;
+    }
+
+    if (label === BUTTON_LABEL.INSTALLMENT && Installment) {
+        return <Installment logo={ logo } period={ period } />;
+    }
+
+    return logo;
+}
 
 export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
 
@@ -84,8 +116,6 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
         PLATFORM.DESKTOP,
         PLATFORM.MOBILE
     ],
-
-    handleClick: false,
 
     colors: [
         BUTTON_COLOR.SILVER,
@@ -118,7 +148,5 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
         throw new Error(`Not implemented`);
     },
 
-    Label: ({ logo }) => {
-        return logo;
-    }
+    Label: BasicLabel
 };

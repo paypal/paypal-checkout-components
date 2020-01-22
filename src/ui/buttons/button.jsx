@@ -56,7 +56,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
     const logoColors = fundingConfig.logoColors || {};
     const logoColor = logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
 
-    const { Label, Logo, handleClick } = fundingConfig;
+    const { Label, Logo } = fundingConfig;
 
     const clickHandler = (event, opts) => {
         event.preventDefault();
@@ -65,7 +65,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
         onClick(event, { fundingSource, ...opts });
     };
 
-    const keyboardAccessibilityHandler = (event, opts) => {
+    const keypressHandler = (event, opts) => {
         if (event.keyCode === 13 || event.keyCode === 32) {
             clickHandler(event, opts);
         }
@@ -73,15 +73,35 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
 
     const { layout, shape } = style;
 
-    const logo = (
+    const logoNode = (
         <Logo
             label={ label }
             locale={ locale }
             logoColor={ logoColor }
             fundingEligibility={ fundingEligibility }
             onClick={ clickHandler }
-            onKeyPress={ keyboardAccessibilityHandler }
+            onKeyPress={ keypressHandler }
             nonce={ nonce }
+        />
+    );
+
+    const labelNode = (
+        <Label
+            logo={ logoNode }
+            label={ label }
+            nonce={ nonce }
+            locale={ locale }
+            logoColor={ logoColor }
+            period={ period }
+            layout={ layout }
+            multiple={ multiple }
+            fundingEligibility={ fundingEligibility }
+            onClick={ clickHandler }
+            onKeyPress={ keypressHandler }
+            clientAccessToken={ clientAccessToken }
+            personalization={ personalization }
+            tagline={ tagline }
+            content={ content }
         />
     );
 
@@ -102,28 +122,12 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 `${ CLASS.COLOR }-${ color }`,
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
             ].join(' ') }
-            onClick={ handleClick ? null : clickHandler }
-            onKeyPress={ handleClick ? null : keyboardAccessibilityHandler }
-            tabindex={ handleClick ? '-1' : '0' }>
+            onClick={ clickHandler }
+            onKeyPress={ keypressHandler }
+            tabindex='0'>
 
             <div class={ CLASS.BUTTON_LABEL }>
-                <Label
-                    logo={ logo }
-                    label={ label }
-                    nonce={ nonce }
-                    locale={ locale }
-                    logoColor={ logoColor }
-                    period={ period }
-                    layout={ layout }
-                    multiple={ multiple }
-                    fundingEligibility={ fundingEligibility }
-                    onClick={ clickHandler }
-                    onKeyPress={ keyboardAccessibilityHandler }
-                    clientAccessToken={ clientAccessToken }
-                    personalization={ personalization }
-                    tagline={ tagline }
-                    content={ content }
-                />
+                { labelNode }
             </div>
 
             <Spinner />

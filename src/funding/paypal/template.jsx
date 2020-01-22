@@ -5,8 +5,8 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { PPLogo, PayPalLogo, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import type { LogoOptions, LabelOptions, VaultLabelOptions, TagOptions } from '../common';
-import { BUTTON_LABEL, BUTTON_LAYOUT, CLASS, ATTRIBUTE } from '../../constants';
+import { type LogoOptions, type LabelOptions, type VaultLabelOptions, type TagOptions, BasicLabel } from '../common';
+import { CLASS, ATTRIBUTE } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
@@ -111,37 +111,7 @@ function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
     );
 }
 
-function getButtonLabel({ logo, label, locale: { lang }, period, layout, multiple } : LabelOptions) : ChildType {
-    if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
-        return logo;
-    }
-
-    if (__WEB__) {
-        return logo;
-    }
-
-    const { Checkout, Pay, BuyNow, Installment } = componentContent[lang];
-
-    if (label === BUTTON_LABEL.CHECKOUT) {
-        return <Checkout logo={ logo } />;
-    }
-
-    if (label === BUTTON_LABEL.PAY) {
-        return <Pay logo={ logo } />;
-    }
-
-    if (label === BUTTON_LABEL.BUYNOW) {
-        return <BuyNow logo={ logo } />;
-    }
-
-    if (label === BUTTON_LABEL.INSTALLMENT && Installment) {
-        return <Installment logo={ logo } period={ period } />;
-    }
-
-    return logo;
-}
-
-function getButtonPersonalization(opts : LabelOptions) : ?ChildType {
+function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
     if (__WEB__) {
         return;
     }
@@ -178,8 +148,8 @@ function getButtonPersonalization(opts : LabelOptions) : ?ChildType {
 export function Label(opts : LabelOptions) : ChildType {
     return (
         <Fragment>
-            { getButtonLabel(opts) }
-            { getButtonPersonalization(opts) }
+            <BasicLabel { ...opts } />
+            <ButtonPersonalization { ...opts } />
         </Fragment>
     );
 }

@@ -34,31 +34,6 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
                 __BUTTONS__:  `/demo/dev/button.htm`,
                 __MENU__:     `/demo/dev/menu.htm`
             }
-        },
-        __FUNDING_ELIGIBILITY__: {
-            paypal: {
-                eligible: true
-            },
-            credit: {
-                eligible: true
-            },
-            venmo: {
-                eligible: true
-            },
-            card: {
-                eligible: true,
-                vendors:  {
-                    visa: {
-                        eligible: true
-                    },
-                    mastercard: {
-                        eligible: true
-                    },
-                    amex: {
-                        eligible: true
-                    }
-                }
-            }
         }
     }
 });
