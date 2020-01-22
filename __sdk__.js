@@ -12,5 +12,9 @@ module.exports = {
     marks: {
         entry: './src/interface/marks',
         globals
+    },
+    wallet: {
+        entry: './src/interface/wallet',
+        globals
     }
 };

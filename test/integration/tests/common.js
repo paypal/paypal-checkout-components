@@ -31,7 +31,6 @@ export function buildSDKScriptUrl(query? : Object = {}) : string {
         }
     });
 }
-
 export function generateOrderID() : string {
     return `${ uniqueID().toUpperCase() }`;
 }

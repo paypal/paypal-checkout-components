@@ -2,7 +2,7 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize } from 'belter/src';
 
@@ -47,7 +47,8 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                 
                 clientID: {
                     type:       'string',
-                    queryParam: true
+                    queryParam: true,
+                    value:      getClientID
                 }
             }
         });
