@@ -1,3 +1,15 @@
+## <small>5.0.74 (2020-01-22)</small>
+
+* Add Wallet zoid component ([a22161c](http://github.paypal.com/paypal/paypal-checkout/commit/a22161c))
+* Allow label to be passed for standalone buttons ([cfc911b](http://github.paypal.com/paypal/paypal-checkout/commit/cfc911b))
+* Export wallet component ([aa1e120](http://github.paypal.com/paypal/paypal-checkout/commit/aa1e120))
+* Fix bundle size and add checks for future builds ([9b25c3f](http://github.paypal.com/paypal/paypal-checkout/commit/9b25c3f))
+* Fix dev server ([d4cb68c](http://github.paypal.com/paypal/paypal-checkout/commit/d4cb68c))
+* Standalone buttons ([a518d85](http://github.paypal.com/paypal/paypal-checkout/commit/a518d85))
+* Test fixes ([e9bf869](http://github.paypal.com/paypal/paypal-checkout/commit/e9bf869))
+
+
+
 ## <small>5.0.73 (2020-01-13)</small>
 
 * Fix null pointer in marks component ([6464a90](http://github.paypal.com/paypal/paypal-checkout/commit/6464a90))
