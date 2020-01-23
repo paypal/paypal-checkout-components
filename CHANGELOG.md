@@ -1,3 +1,10 @@
+## <small>5.0.75 (2020-01-23)</small>
+
+* Add paypal.Buttons().isEligible() ([610bffc](http://github.paypal.com/paypal/paypal-checkout/commit/610bffc))
+* Use refined funding eligibility to render venmo button ([5423936](http://github.paypal.com/paypal/paypal-checkout/commit/5423936))
+
+
+
 ## <small>5.0.74 (2020-01-22)</small>
 
 * Add Wallet zoid component ([a22161c](http://github.paypal.com/paypal/paypal-checkout/commit/a22161c))
