@@ -2,7 +2,7 @@
 /** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { base64encode } from 'belter/src';
+import { base64encode, supportsPopups } from 'belter/src';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
@@ -91,7 +91,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         event.preventDefault();
         event.stopPropagation();
 
-        if (isIos()) {
+        if (isIos() && supportsPopups()) {
             // eslint-disable-next-line no-alert
             window.alert('Please switch tabs to reactivate the PayPal window');
         } else {
