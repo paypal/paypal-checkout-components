@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint import/no-default-export: off */
+/* eslint import/no-default-export: off, import/no-commonjs: off */
 
 import { getKarmaConfig } from 'grumbler-scripts/config/karma.conf';
 

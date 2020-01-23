@@ -111,7 +111,7 @@ export function stringifyError(err : mixed, level : number = 1) : string {
 
         return Object.prototype.toString.call(err);
 
-    } catch (newErr) { // eslint-disable-line unicorn/catch-error-name
+    } catch (newErr) {
         return `Error while stringifying error: ${ stringifyError(newErr, level + 1) }`;
     }
 }

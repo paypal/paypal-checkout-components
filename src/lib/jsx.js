@@ -103,7 +103,7 @@ export function jsxToHTML(name : string, props : PropsType, ...children : Childr
 
 export function jsxRender(template : string, renderers : { [string] : (string) =>?(JsxHTMLNode | $ReadOnlyArray<JsxHTMLNode>) }) : JsxHTMLNode {
 
-    // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
+    // eslint-disable-next-line security/detect-unsafe-regex
     const nodes = regexMap(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, (match, type, value, text) => {
         if (type) {
             if (!renderers[type]) {

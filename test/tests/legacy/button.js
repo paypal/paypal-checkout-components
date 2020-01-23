@@ -850,9 +850,9 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
-            const content3 = (getElement('.paypal-button-content span', container3).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).textContent || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).textContent || '').trim();
+            const content3 = (getElement('.paypal-button-content span', container3).textContent || '').trim();
 
             assert.equal(content1, content2, 'en_US should match en_US');
             assert.notEqual(content1, content3, 'en_US should not match en_FR');
@@ -880,8 +880,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).textContent || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).textContent || '').trim();
 
             assert.equal(content1, content2, 'en_US should match no locale');
         });
@@ -908,8 +908,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).textContent || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).textContent || '').trim();
 
             assert.equal(content1, content2, 'en_US should match xx_XX');
         });
@@ -936,8 +936,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).textContent || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).textContent || '').trim();
 
             assert.equal(content1, content2, 'fr_US should match fr');
         });
@@ -964,8 +964,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).textContent || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).textContent || '').trim();
 
             assert.equal(content1, content2, 'en_US should match US');
         });
@@ -992,8 +992,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).textContent || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).textContent || '').trim();
 
             assert.equal(content1, content2, 'en_FR should match FR');
         });

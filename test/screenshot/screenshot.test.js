@@ -57,7 +57,7 @@ for (const config of buttonConfigs) {
         const { page } = await setupBrowserPage;
 
         // fasten up the animation
-        await page._client.send('Animation.setPlaybackRate', { playbackRate: 12.0 });
+        await page._client.send('Animation.setPlaybackRate', { playbackRate: 12 });
         const filepath = `${ IMAGE_DIR }/${ filename }.png`;
         const diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
@@ -104,6 +104,7 @@ for (const config of buttonConfigs) {
             delete window.navigator.mockUserAgent;
 
             if (decorate) {
+                // eslint-disable-next-line require-atomic-updates
                 window.paypal.Button.props.funding.decorate = decorate;
             }
 

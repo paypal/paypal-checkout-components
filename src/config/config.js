@@ -35,7 +35,7 @@ export const config = {
         ? `//${ window.location.host }/base/src/load.js`
         : `//www.paypalobjects.com/api/${ __FILE_NAME__ }`,
 
-    // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
+    // eslint-disable-next-line security/detect-unsafe-regex
     paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
     version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__,
@@ -780,7 +780,7 @@ export const config = {
 
     loggerUri: `/xoplatform/logger/api/logger`,
 
-    loggerThrottlePercentage: 1.0, // 100%
+    loggerThrottlePercentage: 1, // 100%
 
     pptmUri: `/tagmanager/pptm.js`,
 

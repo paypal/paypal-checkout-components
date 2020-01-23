@@ -19,6 +19,10 @@ module.exports = {
         'react/destructuring-assignment': 'off',
         'react/require-default-props': 'off',
         'react/no-unused-prop-types': 'off',
-        'react/style-prop-object': 'off'
+        'react/style-prop-object': 'off',
+        'unicorn/prefer-negative-index': 'off',
+        'default-param-last': 'off',
+        'import/no-cycle': 'off',
+        'unicorn/no-for-loop': 'off'
     }
 };
