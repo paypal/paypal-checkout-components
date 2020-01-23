@@ -26,7 +26,7 @@ describe(`paypal standalone buttons`, () => {
 
                 const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
 
-                return window.paypal.Buttons({
+                const button = window.paypal.Buttons({
                     test: {
                         onRender: expect('onRender', ({ fundingSources }) => {
                             if (fundingSources.length !== 1) {
@@ -43,7 +43,13 @@ describe(`paypal standalone buttons`, () => {
 
                     fundingSource
 
-                }).render('#testContainer');
+                });
+                
+                if (!button.isEligible()) {
+                    throw new Error(`Expected button to be eligible`);
+                }
+                
+                return button.render('#testContainer');
             });
         });
 
@@ -55,14 +61,59 @@ describe(`paypal standalone buttons`, () => {
 
                 const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', false);
 
-                return window.paypal.Buttons({
+                const button = window.paypal.Buttons({
                     test: {},
                     fundingSource
+                });
 
-                }).render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
+                if (button.isEligible()) {
+                    throw new Error(`Expected button to not be eligible`);
+                }
+                
+                return button.render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
                     mockEligibility.cancel();
                 });
             });
         });
     }
+
+    it(`should render a standalone venmo button and error out when not on mobile, even when venmo is eligible`, () => {
+        return wrapPromise(({ expect }) => {
+            const fundingSource = FUNDING.VENMO;
+            const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', false);
+
+            const button = window.paypal.Buttons({
+                test: {},
+                fundingSource
+            });
+
+            if (button.isEligible()) {
+                throw new Error(`Expected button to not be eligible`);
+            }
+
+            return button.render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
+                mockEligibility.cancel();
+            });
+        });
+    });
+
+    it(`should render a standalone ideal button and error out when onShippingChange is passed, even when ideal is eligible`, () => {
+        return wrapPromise(({ expect }) => {
+            const fundingSource = FUNDING.IDEAL;
+            const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', false);
+
+            const button = window.paypal.Buttons({
+                test: {},
+                fundingSource
+            });
+
+            if (button.isEligible()) {
+                throw new Error(`Expected button to not be eligible`);
+            }
+
+            return button.render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
+                mockEligibility.cancel();
+            });
+        });
+    });
 });
