@@ -64,7 +64,7 @@ export type FundingSourceConfig = {|
     maxCards? : { [$Values<typeof COUNTRY>] : number },
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
-    eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType }) => boolean,
+    eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType, layout : ?$Values<typeof BUTTON_LAYOUT> }) => boolean,
     Logo : (LogoOptions) => ChildType,
     Label : (LabelOptions) => ChildType,
     VaultLabel? : (VaultLabelOptions) => ChildType,

@@ -3,9 +3,9 @@
 /* eslint max-lines: 0 */
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
-    getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getFundingEligibility,
+    getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain } from '@paypal/sdk-client/src';
-import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
+import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isDevice, uniqueID, inlineMemoize, values } from 'belter/src';
@@ -234,7 +234,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 fundingEligibility: {
                     type:          'object',
                     value:         () => {
-                        const fundingEligibility = getFundingEligibility();
+                        const fundingEligibility = getRefinedFundingEligibility();
 
                         try {
                             if (fundingEligibility.paypal) {

@@ -42,6 +42,22 @@ export function getVenmoConfig() : FundingSourceConfig {
             [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.BLUE
+        },
+
+        eligible: ({ fundingEligibility, layout }) => {
+            if (layout === BUTTON_LAYOUT.VERTICAL) {
+                return true;
+            }
+
+            if (fundingEligibility.venmo && fundingEligibility.venmo.recommended) {
+                return true;
+            }
+
+            if (fundingEligibility.credit && fundingEligibility.credit.eligible) {
+                return false;
+            }
+
+            return true;
         }
     };
 }
