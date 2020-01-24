@@ -4,7 +4,8 @@
 
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { inlineMemoize } from 'belter/src';
+import { inlineMemoize, memoize } from 'belter/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { type WalletProps } from './props';
 
@@ -49,6 +50,27 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                     type:       'string',
                     queryParam: true,
                     value:      getClientID
+                },
+
+                style: {
+                    type:     'object',
+                    required: false
+                },
+
+                setupListeners: {
+                    type:     'function',
+                    required: false
+                },
+
+                createOrder: {
+                    type:       'function',
+                    queryParam: 'orderID',
+                    queryValue: ({ value }) => ZalgoPromise.try(value),
+                    decorate:   ({ value }) => memoize(value)
+                },
+
+                onApprove: {
+                    type: 'function'
                 }
             }
         });
