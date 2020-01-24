@@ -360,7 +360,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
         }
     });
 
-    const ButtonsWrapper = (props) => {
+    const ButtonsWrapper = (props = {}) => {
         const instance = Buttons(props);
 
         // $FlowFixMe
@@ -386,5 +386,6 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
     ButtonsWrapper.isChild = Buttons.isChild;
     ButtonsWrapper.canRenderTo = Buttons.canRenderTo;
 
+    // $FlowFixMe
     return ButtonsWrapper;
 });
