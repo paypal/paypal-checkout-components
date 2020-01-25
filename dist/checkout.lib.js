@@ -1541,7 +1541,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.310"
+                    ver: "4.0.311"
                 };
             }));
             Object(client.a)((function() {
@@ -1850,7 +1850,7 @@
             });
         }));
         function getScriptVersion() {
-            return "4.0.310";
+            return "4.0.311";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1859,7 +1859,7 @@
                 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.310.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.311.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1885,7 +1885,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.310"
+                        version: "4.0.311"
                     }), metaFrameDomain).then((function() {
                         return metaListener;
                     })).then((function(_ref) {
@@ -2130,7 +2130,7 @@
             locales: constants.z,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.310",
+            version: "4.0.311",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -23611,7 +23611,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref20 = {}, _ref20[constants.c.VERSION] = "4.0.310", 
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref20 = {}, _ref20[constants.c.VERSION] = "4.0.311", 
             _ref20), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -24897,7 +24897,7 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.310";
+        var interface_version = "4.0.311";
         var interface_checkout;
         var apps;
         var legacy = __webpack_require__(43);
