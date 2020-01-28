@@ -232,7 +232,7 @@ export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOr
             getLogger()
                 .info('button_approve')
                 .track({
-                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_AUTHORIZE,
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_APPROVE,
                     [FPTI_KEY.TOKEN]:      orderID
                 }).flush();
 
