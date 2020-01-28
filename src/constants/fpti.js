@@ -85,7 +85,7 @@ export const FPTI = {
         RECIEVE_PAYMENT: 'process_recieve_payment',
 
         CHECKOUT_INIT:            'process_checkout_init',
-        CHECKOUT_AUTHORIZE:       'process_checkout_authorize',
+        CHECKOUT_APPROVE:         'process_checkout_approve',
         CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
         CHECKOUT_CANCEL:          'process_checkout_cancel',
         CHECKOUT_ERROR:           'process_checkout_error',

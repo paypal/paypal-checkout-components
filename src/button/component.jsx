@@ -597,7 +597,7 @@ export const Button : Component<ButtonOptions> = create({
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
-                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_AUTHORIZE,
+                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_APPROVE,
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
                         [ FPTI.KEY.BUTTON_VERSION ]:     data && data.button_version
                     });
