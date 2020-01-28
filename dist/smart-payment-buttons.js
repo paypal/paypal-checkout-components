@@ -5350,7 +5350,7 @@ var FPTI_TRANSITION = {
   RECEIVE_ORDER: 'process_receive_order',
   CREATE_PAYMENT: 'process_create_payment',
   CHECKOUT_SHIPPING_CHANGE: 'process_checkout_shipping_change',
-  CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
+  CHECKOUT_APPROVE: 'process_checkout_approve',
   CHECKOUT_CANCEL: 'process_checkout_cancel',
   NATIVE_DETECT_APP_SWITCH: 'native_detect_app_switch',
   NATIVE_DETECT_WEB_SWITCH: 'native_detect_web_switch',
@@ -5777,7 +5777,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.190", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.191", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -6321,12 +6321,8 @@ function getPayment(paymentID, _ref4) {
   var _headers2;
 
   var facilitatorAccessToken = _ref4.facilitatorAccessToken,
-      buyerAccessToken = _ref4.buyerAccessToken,
       partnerAttributionID = _ref4.partnerAttributionID;
-  return buyerAccessToken ? callSmartAPI({
-    accessToken: buyerAccessToken,
-    url: SMART_API_URI.PAYMENT + "/" + paymentID
-  }) : callRestAPI({
+  return callRestAPI({
     accessToken: facilitatorAccessToken,
     url: PAYMENTS_API_URL + "/" + paymentID,
     headers: (_headers2 = {}, _headers2[constants_HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID || '', _headers2)
@@ -6336,18 +6332,8 @@ function executePayment(paymentID, payerID, _ref5) {
   var _headers3;
 
   var facilitatorAccessToken = _ref5.facilitatorAccessToken,
-      buyerAccessToken = _ref5.buyerAccessToken,
       partnerAttributionID = _ref5.partnerAttributionID;
-  return buyerAccessToken ? callSmartAPI({
-    accessToken: buyerAccessToken,
-    method: 'post',
-    url: SMART_API_URI.PAYMENT + "/" + paymentID + "/execute",
-    json: {
-      data: {
-        payer_id: payerID
-      }
-    }
-  }) : callRestAPI({
+  return callRestAPI({
     accessToken: facilitatorAccessToken,
     method: "post",
     url: PAYMENTS_API_URL + "/" + paymentID + "/execute",
@@ -6361,19 +6347,11 @@ function patchPayment(paymentID, data, _ref6) {
   var _headers4;
 
   var facilitatorAccessToken = _ref6.facilitatorAccessToken,
-      buyerAccessToken = _ref6.buyerAccessToken,
       partnerAttributionID = _ref6.partnerAttributionID;
   var patchData = Array.isArray(data) ? {
     patch: data
   } : data;
-  return buyerAccessToken ? callSmartAPI({
-    accessToken: buyerAccessToken,
-    method: 'post',
-    url: SMART_API_URI.ORDER + "/" + paymentID + "/patch",
-    json: {
-      data: patchData
-    }
-  }) : callRestAPI({
+  return callRestAPI({
     accessToken: facilitatorAccessToken,
     method: "patch",
     url: PAYMENTS_API_URL + "/" + paymentID,
@@ -7493,7 +7471,7 @@ function getOnApprove(xprops, _ref4) {
     }).then(function (orderID) {
       var _getLogger$info$track;
 
-      getLogger().info('button_approve').track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.CHECKOUT_AUTHORIZE, _getLogger$info$track[FPTI_KEY.TOKEN] = orderID, _getLogger$info$track)).flush();
+      getLogger().info('button_approve').track((_getLogger$info$track = {}, _getLogger$info$track[FPTI_KEY.TRANSITION] = FPTI_TRANSITION.CHECKOUT_APPROVE, _getLogger$info$track[FPTI_KEY.TOKEN] = orderID, _getLogger$info$track)).flush();
       var data = {
         orderID: orderID,
         payerID: payerID,
@@ -9544,12 +9522,6 @@ function isNativePaymentEligible(_ref4) {
     return false;
   }
 
-  if (fundingSource === FUNDING.VENMO && !isNativeOptedIn({
-    props: props
-  })) {
-    return false;
-  }
-
   if (isNativeOptedIn({
     props: props
   })) {
@@ -9668,8 +9640,7 @@ function initNative(_ref6) {
         facilitatorAccessToken: facilitatorAccessToken,
         token: orderID,
         useraction: commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
-        native_xo: '1',
-        venmoOverride: fundingSource === FUNDING.VENMO ? '1' : '0'
+        native_xo: '1'
       }
     });
   });
