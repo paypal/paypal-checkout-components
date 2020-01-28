@@ -4,7 +4,7 @@
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError, isIos, isAndroid,
     isSafari, isChrome, stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { PLATFORM, FUNDING, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { PLATFORM, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
@@ -153,10 +153,6 @@ function isNativePaymentEligible({ payment, props, serviceData } : { payment : P
         return false;
     }
 
-    if (fundingSource === FUNDING.VENMO && !isNativeOptedIn({ props })) {
-        return false;
-    }
-
     if (isNativeOptedIn({ props })) {
         return true;
     }
@@ -244,8 +240,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 facilitatorAccessToken,
                 token:         orderID,
                 useraction:    commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
-                native_xo:     '1',
-                venmoOverride: (fundingSource === FUNDING.VENMO) ? '1' : '0'
+                native_xo:     '1'
             }
         });
     });
