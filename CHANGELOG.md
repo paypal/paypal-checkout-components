@@ -1,3 +1,10 @@
+## <small>5.0.76 (2020-01-30)</small>
+
+* Add Marks eligibility and tests ([8e016de](http://github.paypal.com/paypal/paypal-checkout/commit/8e016de))
+* Add prop definitions to wallet component ([aa088ec](http://github.paypal.com/paypal/paypal-checkout/commit/aa088ec))
+
+
+
 ## <small>5.0.75 (2020-01-23)</small>
 
 * Add paypal.Buttons().isEligible() ([610bffc](http://github.paypal.com/paypal/paypal-checkout/commit/610bffc))
