@@ -5777,7 +5777,7 @@ function setupLogger(_ref) {
 
     var lang = locale.lang,
         country = locale.country;
-    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.191", _ref2;
+    return _ref2 = {}, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.CONTEXT_TYPE] = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, _ref2[FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref2[FPTI_KEY.STATE] = FPTI_STATE.BUTTON, _ref2[FPTI_KEY.FEED] = FPTI_FEED.PAYMENTS_SDK, _ref2[FPTI_KEY.DATA_SOURCE] = FPTI_DATA_SOURCE.PAYMENTS_SDK, _ref2[FPTI_KEY.CLIENT_ID] = clientID, _ref2[FPTI_KEY.SELLER_ID] = merchantID[0], _ref2[FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref2[FPTI_KEY.SESSION_UID] = sessionID, _ref2[FPTI_KEY.REFERER] = window.location.host, _ref2[FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, _ref2[FPTI_KEY.LOCALE] = lang + "_" + country, _ref2[FPTI_KEY.INTEGRATION_IDENTIFIER] = clientID, _ref2[FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _ref2[FPTI_KEY.SDK_NAME] = FPTI_SDK_NAME.PAYMENTS_SDK, _ref2[FPTI_KEY.SDK_VERSION] = version, _ref2[FPTI_KEY.USER_AGENT] = window.navigator && window.navigator.userAgent, _ref2[FPTI_KEY.USER_ACTION] = commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE, _ref2[FPTI_KEY.CONTEXT_CORRID] = correlationID, _ref2[FPTI_KEY.BUTTON_VERSION] = "2.0.192", _ref2;
   });
   promise_ZalgoPromise.onPossiblyUnhandledException(function (err) {
     var _logger$track;
@@ -9391,7 +9391,8 @@ var TARGET_APP = 'paypal_native_checkout';
 var POST_MESSAGE = {
   AWAIT_REDIRECT: 'awaitRedirect',
   DETECT_APP_SWITCH: 'detectAppSwitch',
-  DETECT_WEB_SWITCH: 'detectWebSwitch'
+  DETECT_WEB_SWITCH: 'detectWebSwitch',
+  ON_COMPLETE: 'onComplete'
 };
 var SOCKET_MESSAGE = {
   SET_PROPS: 'setProps',
@@ -9581,6 +9582,8 @@ function initNative(_ref6) {
       sdkMeta = serviceData.sdkMeta;
   var fundingSource = payment.fundingSource;
   var clean = cleanup();
+  var approved = false;
+  var cancelled = false;
   var close = memoize(function () {
     return clean.all();
   });
@@ -9706,6 +9709,7 @@ function initNative(_ref6) {
           payerID = _ref10$data.payerID,
           paymentID = _ref10$data.paymentID,
           billingToken = _ref10$data.billingToken;
+      approved = true;
       getLogger().info("native_message_onapprove").flush();
       var data = {
         payerID: payerID,
@@ -9721,6 +9725,7 @@ function initNative(_ref6) {
       return promise_ZalgoPromise.all([onApprove(data, actions), close()]).then(src_util_noop);
     });
     var onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, function () {
+      cancelled = true;
       getLogger().info("native_message_oncancel").flush();
       return promise_ZalgoPromise.all([onCancel(), close()]).then(src_util_noop);
     });
@@ -9762,7 +9767,16 @@ function initNative(_ref6) {
   });
   var popup = memoize(function (url) {
     var win = window.open(url);
+    var closeListener = onCloseWindow(win, function () {
+      return promise_ZalgoPromise.delay(1000).then(function () {
+        if (!approved && !cancelled) {
+          return promise_ZalgoPromise.all([onCancel(), close()]);
+        }
+      }).then(src_util_noop);
+    });
     clean.register(function () {
+      closeListener.cancel();
+
       if (win && !isWindowClosed(win)) {
         win.close();
       }
@@ -9836,9 +9850,14 @@ function initNative(_ref6) {
       getLogger().info("native_post_message_detect_web_switch").flush();
       return detectWebSwitch(popupWin);
     });
+    var onCompleteListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.ON_COMPLETE, function () {
+      getLogger().info("native_post_message_on_complete").flush();
+      close();
+    });
     clean.register(awaitRedirectListener.cancel);
     clean.register(detectAppSwitchListener.cancel);
     clean.register(detectWebSwitchListener.cancel);
+    clean.register(onCompleteListener.cancel);
     return awaitRedirectListener.then(function () {
       return promiseOne([detectAppSwitchListener, detectWebSwitchListener]);
     });
