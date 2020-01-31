@@ -274,13 +274,13 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         throw new Error(`Expected props.style to be set`);
     }
 
-    const { fundingSource } = props;
+    const { fundingSource = FUNDING.PAYPAL } = props;
 
     const FUNDING_CONFIG = getFundingConfig();
-    const fundingConfig = FUNDING_CONFIG[fundingSource || FUNDING.PAYPAL];
+    const fundingConfig = FUNDING_CONFIG[fundingSource];
 
     if (!fundingConfig) {
-        throw new Error(`Expected ${ FUNDING.PAYPAL } to be eligible`);
+        throw new Error(`Expected ${ fundingSource } to be eligible`);
     }
 
     const {
@@ -393,8 +393,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         nonce = csp.nonce;
     }
 
-    style = normalizeButtonStyle(props, style);
-
     if (fundingSource) {
         if (SUPPORTED_FUNDING_SOURCES.indexOf(fundingSource) === -1) {
             throw new Error(`Invalid funding source: ${ fundingSource }`);
@@ -404,6 +402,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
+
+    style = normalizeButtonStyle(props, style);
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content };
