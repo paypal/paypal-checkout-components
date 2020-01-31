@@ -1,3 +1,11 @@
+## <small>5.0.77 (2020-01-31)</small>
+
+* Fix tests ([2f9ff11](http://github.paypal.com/paypal/paypal-checkout/commit/2f9ff11))
+* Fix typo ([c1ef880](http://github.paypal.com/paypal/paypal-checkout/commit/c1ef880))
+* Validate funding eligibility before normalizing style ([118fc83](http://github.paypal.com/paypal/paypal-checkout/commit/118fc83))
+
+
+
 ## <small>5.0.76 (2020-01-30)</small>
 
 * Add Marks eligibility and tests ([8e016de](http://github.paypal.com/paypal/paypal-checkout/commit/8e016de))
