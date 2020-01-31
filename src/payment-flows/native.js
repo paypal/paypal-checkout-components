@@ -5,7 +5,7 @@ import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyEr
     isSafari, isChrome, stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
-import { type CrossDomainWindowType, getDomain, isWindowClosed } from 'cross-domain-utils/src';
+import { type CrossDomainWindowType, getDomain, isWindowClosed, onCloseWindow } from 'cross-domain-utils/src';
 
 import type { Props, Components, Config, ServiceData } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
@@ -22,7 +22,8 @@ const TARGET_APP = 'paypal_native_checkout';
 const POST_MESSAGE = {
     AWAIT_REDIRECT:    'awaitRedirect',
     DETECT_APP_SWITCH: 'detectAppSwitch',
-    DETECT_WEB_SWITCH: 'detectWebSwitch'
+    DETECT_WEB_SWITCH: 'detectWebSwitch',
+    ON_COMPLETE:       'onComplete'
 };
 
 const SOCKET_MESSAGE = {
@@ -206,6 +207,8 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const { fundingSource } = payment;
 
     const clean = cleanup();
+    let approved = false;
+    let cancelled = false;
 
     const close = memoize(() => {
         return clean.all();
@@ -293,6 +296,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
 
         const onApproveListener = socket.on(SOCKET_MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
+            approved = true;
             getLogger().info(`native_message_onapprove`).flush();
             const data = { payerID, paymentID, billingToken, forceRestAPI: true };
             const actions = { restart: () => fallbackToWebCheckout() };
@@ -303,6 +307,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
 
         const onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, () => {
+            cancelled = true;
             getLogger().info(`native_message_oncancel`).flush();
             return ZalgoPromise.all([
                 onCancel(),
@@ -356,7 +361,19 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const popup = memoize((url : string) => {
         const win = window.open(url);
 
+        const closeListener = onCloseWindow(win, () => {
+            return ZalgoPromise.delay(1000).then(() => {
+                if (!approved && !cancelled) {
+                    return ZalgoPromise.all([
+                        onCancel(),
+                        close()
+                    ]);
+                }
+            }).then(noop);
+        });
+
         clean.register(() => {
+            closeListener.cancel();
             if (win && !isWindowClosed(win)) {
                 win.close();
             }
@@ -433,9 +450,15 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return detectWebSwitch(popupWin);
         });
 
+        const onCompleteListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.ON_COMPLETE, () => {
+            getLogger().info(`native_post_message_on_complete`).flush();
+            close();
+        });
+
         clean.register(awaitRedirectListener.cancel);
         clean.register(detectAppSwitchListener.cancel);
         clean.register(detectWebSwitchListener.cancel);
+        clean.register(onCompleteListener.cancel);
 
         return awaitRedirectListener.then(() => {
             return promiseOne([
