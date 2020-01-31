@@ -274,13 +274,13 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         throw new Error(`Expected props.style to be set`);
     }
 
-    const { fundingSource = FUNDING.PAYPAL } = props;
+    const { fundingSource } = props;
 
     const FUNDING_CONFIG = getFundingConfig();
-    const fundingConfig = FUNDING_CONFIG[fundingSource];
+    const fundingConfig = FUNDING_CONFIG[fundingSource || FUNDING.PAYPAL];
 
     if (!fundingConfig) {
-        throw new Error(`Expected ${ fundingSource } to be eligible`);
+        throw new Error(`Expected ${ fundingSource || FUNDING.PAYPAL } to be eligible`);
     }
 
     const {
