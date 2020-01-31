@@ -46,7 +46,7 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.PAYU ]:           (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.payu !== 'undefined'           && __FUNDING_ELIGIBILITY__.payu.eligible)) ? getPayuConfig() : null,
             [ FUNDING.VERKKOPANKKI ]:   (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.verkkopankki !== 'undefined'   && __FUNDING_ELIGIBILITY__.verkkopankki.eligible)) ? getVerkkopankkiConfig() : null,
             [ FUNDING.BLIK ]:           (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.blik !== 'undefined'           && __FUNDING_ELIGIBILITY__.blik.eligible)) ? getBlikConfig() : null,
-            [ FUNDING.TRUSTLY ]:        (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.truslty !== 'undefined'        && __FUNDING_ELIGIBILITY__.trustly.eligible)) ? getTrustlyConfig() : null,
+            [ FUNDING.TRUSTLY ]:        (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.trustly !== 'undefined'        && __FUNDING_ELIGIBILITY__.trustly.eligible)) ? getTrustlyConfig() : null,
             [ FUNDING.ZIMPLER ]:        (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.zimpler !== 'undefined'        && __FUNDING_ELIGIBILITY__.zimpler.eligible)) ? getZimplerConfig() : null,
             [ FUNDING.WECHATPAY ]:      (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.wechatpay !== 'undefined'      && __FUNDING_ELIGIBILITY__.wechatpay.eligible)) ? getWechatpayConfig() : null,
             [ FUNDING.OXXO ]:           (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.oxxo !== 'undefined'           && __FUNDING_ELIGIBILITY__.oxxo.eligible)) ? getOxxoConfig() : null,
