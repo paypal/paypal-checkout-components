@@ -1,3 +1,9 @@
+## <small>5.0.78 (2020-02-04)</small>
+
+* Default to paypal for style prop normalization ([c1ba6e8](http://github.paypal.com/paypal/paypal-checkout/commit/c1ba6e8))
+
+
+
 ## <small>5.0.77 (2020-01-31)</small>
 
 * Fix tests ([2f9ff11](http://github.paypal.com/paypal/paypal-checkout/commit/2f9ff11))
