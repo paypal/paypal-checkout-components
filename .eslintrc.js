@@ -4,7 +4,10 @@ module.exports = {
     'extends': require.resolve('grumbler-scripts/config/.eslintrc-browser'),
 
     'rules': {
-        'react/display-name': 'off'
+        'react/display-name': 'off',
+        'prefer-regex-literals': 'off',
+        'require-atomic-updates': 'off'
+
     },
 
     'globals': {

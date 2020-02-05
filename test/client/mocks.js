@@ -363,6 +363,7 @@ export function getSubscriptionIdToCartIdApiMock(options : Object = {}, subscrip
     });
 }
 
+// eslint-disable-next-line default-param-last
 export function getGetSubscriptionApiMock(options : Object = {}, subscriptionID : string) : MockEndpoint {
 
     return $mockEndpoint.register({
@@ -406,6 +407,7 @@ export function getReviseSubscriptionIdApiMock(options : Object, subscriptionID 
     });
 }
 
+// eslint-disable-next-line default-param-last
 export function getActivateSubscriptionIdApiMock(options : Object = {}, subscriptionID : string) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
@@ -694,7 +696,7 @@ function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) :
 
     const splitPath = (path : string) => {
         const pathComponents = path.split('/');
-        let [ namespace, key ] = [ pathComponents.slice(0, pathComponents.length - 1), pathComponents[pathComponents.length - 1] ];
+        let [ namespace, key ] = [ pathComponents.slice(0, -1), pathComponents[pathComponents.length - 1] ];
         namespace = namespace.join('/');
         return { namespace, key };
     };
