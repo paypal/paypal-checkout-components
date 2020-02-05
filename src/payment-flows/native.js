@@ -360,20 +360,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const popup = memoize((url : string) => {
         const win = window.open(url);
-
-        const closeListener = onCloseWindow(win, () => {
-            return ZalgoPromise.delay(1000).then(() => {
-                if (!approved && !cancelled) {
-                    return ZalgoPromise.all([
-                        onCancel(),
-                        close()
-                    ]);
-                }
-            }).then(noop);
-        });
-
         clean.register(() => {
-            closeListener.cancel();
             if (win && !isWindowClosed(win)) {
                 win.close();
             }
@@ -423,6 +410,22 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const initPopupAppSwitch = () => {
         const popupWin = popup(getNativePopupUrl());
+
+        const closeListener = onCloseWindow(popupWin, () => {
+            return ZalgoPromise.delay(1000).then(() => {
+                if (!approved && !cancelled) {
+                    return ZalgoPromise.all([
+                        onCancel(),
+                        close()
+                    ]);
+                }
+            }).then(noop);
+        }, 500);
+
+        clean.register(() => {
+            closeListener.cancel();
+        });
+
         const validatePromise = validate();
 
         const awaitRedirectListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
