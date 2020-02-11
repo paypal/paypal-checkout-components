@@ -78,7 +78,7 @@ for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
     });
 }
 
-for (const label of [ BUTTON_LABEL.PAY, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.CHECKOUT ]) {
+for (const label of [ BUTTON_LABEL.PAY, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.SUBSCRIBE ]) {
     buttonConfigs.push({
         button: {
             style: {

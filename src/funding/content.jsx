@@ -11,6 +11,7 @@ import { Text } from '../ui/text';
 export type ContentMap = {
     [ $Values<typeof LANG> ] : {
         Checkout : ({ logo : ChildType }) => ChildType,
+        Subscribe? : ({ logo : ChildType }) => ChildType, /** Current we make it optional, once we get translation for all lang then remove it **/
         Pay : ({ logo : ChildType }) => ChildType,
         BuyNow : ({ logo : ChildType }) => ChildType,
         Installment? : ({ logo : ChildType, period? : ?number }) => ChildType,
@@ -22,10 +23,11 @@ export type ContentMap = {
 
 export const componentContent : ContentMap = {
     en: {
-        Checkout:           ({ logo }) => <Fragment>{ logo }<Text optional> Checkout</Text></Fragment>,
-        SaferTag:           () => <Text optional>The safer, easier way to pay</Text>,
-        Pay:                ({ logo }) => <Fragment><Text optional>Pay with </Text>{ logo }</Fragment>,
-        Installment:        ({ period, logo }) => {
+        Checkout:    ({ logo }) => <Fragment>{ logo }<Text optional> Checkout</Text></Fragment>,
+        Subscribe:   ({ logo }) => <Fragment>{ logo }<Text optional> Subscribe</Text></Fragment>,
+        SaferTag:    () => <Text optional>The safer, easier way to pay</Text>,
+        Pay:         ({ logo }) => <Fragment><Text optional>Pay with </Text>{ logo }</Fragment>,
+        Installment: ({ period, logo }) => {
             return (
                 <Fragment>
                     { logo }

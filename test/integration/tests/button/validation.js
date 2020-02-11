@@ -78,6 +78,10 @@ const buttonConfigs = [
             {
                 label: `gnorf`,
                 valid: false
+            },
+            {
+                label: `subscribe`,
+                valid: true
             }
 
         ].map(({ label, valid }) => ({
@@ -120,7 +124,7 @@ const buttonConfigs = [
             }
 
         ].map(({ period, valid }) => ({
-            
+
             desc: `label: installment, period: ${ period }`,
 
             valid,
@@ -455,6 +459,48 @@ const buttonConfigs = [
 
             {
                 label: `credit`,
+                color: `blerf`,
+                valid: false
+            },
+
+            {
+                label: `subscribe`,
+                color: `gold`,
+                valid: true
+            },
+
+            {
+                label: `subscribe`,
+                color: `blue`,
+                valid: true
+            },
+
+            {
+                label: `subscribe`,
+                color: `silver`,
+                valid: true
+            },
+
+            {
+                label: `subscribe`,
+                color: `black`,
+                valid: true
+            },
+
+            {
+                label: `subscribe`,
+                color: `creditblue`,
+                valid: false
+            },
+
+            {
+                label: `subscribe`,
+                color: `darkblue`,
+                valid: false
+            },
+
+            {
+                label: `subscribe`,
                 color: `blerf`,
                 valid: false
             }
