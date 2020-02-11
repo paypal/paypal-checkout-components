@@ -11,7 +11,7 @@ import { Text } from '../ui/text';
 export type ContentMap = {
     [ $Values<typeof LANG> ] : {
         Checkout : ({ logo : ChildType }) => ChildType,
-        Subscribe? : ({ logo : ChildType }) => ChildType, /** Current we make it optional, once we get translation for all lang then remove it **/
+        Subscribe? : ({ logo : ChildType }) => ChildType, /** Todo(Remove "?"): Once we get a translation for all the LANG for Subscribe **/
         Pay : ({ logo : ChildType }) => ChildType,
         BuyNow : ({ logo : ChildType }) => ChildType,
         Installment? : ({ logo : ChildType, period? : ?number }) => ChildType,
