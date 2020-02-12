@@ -2,10 +2,11 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken, getClientAccessToken, getUserAuthCode } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, memoize } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { type WalletProps } from './props';
 
@@ -13,7 +14,7 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
     return inlineMemoize(getWalletComponent, () => {
         return create({
             tag:    'paypal-wallet',
-            url:    () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__WALLET__ }`,
+            url:    () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__WALLET__ }`,
             domain: getPayPalDomainRegex(),
             
             autoResize: {
@@ -50,6 +51,33 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                     type:       'string',
                     queryParam: true,
                     value:      getClientID
+                },
+                
+                clientAccessToken: {
+                    type:       'string',
+                    required:   false,
+                    queryParam: true,
+                    value:      getClientAccessToken
+                },
+
+                buyerAccessToken: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    value:      getUserAccessToken
+                },
+
+                buyerAuthCode: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    value:      getUserAuthCode
+                },
+
+                fundingSource: {
+                    type:       'string',
+                    queryParam: true,
+                    default:    () => FUNDING.PAYPAL
                 },
 
                 style: {

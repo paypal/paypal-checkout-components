@@ -80,7 +80,6 @@ export function determineVaultedFunding({ fundingEligibility } : {| fundingEligi
         const fundingConfig = fundingEligibility[fundingSource];
 
         if (fundingConfig && fundingConfig.eligible && fundingConfig.vaultedInstruments) {
-            // $FlowFixMe
             for (const { id, label: { description } } of fundingConfig.vaultedInstruments) {
                 vaultedFunding.push({ fundingSource, label: description, paymentMethodID: id });
             }
@@ -88,7 +87,6 @@ export function determineVaultedFunding({ fundingEligibility } : {| fundingEligi
 
         if (fundingConfig && fundingConfig.vendors) {
             for (const vendor of values(CARD)) {
-                // $FlowFixMe
                 const vendorConfig = fundingConfig.vendors[vendor];
 
                 if (vendorConfig && vendorConfig.vaultedInstruments) {
