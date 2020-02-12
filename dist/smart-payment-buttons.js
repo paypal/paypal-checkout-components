@@ -3602,7 +3602,7 @@ window.spb = function(modules) {
                 _ref2.merchant_domain = merchantDomain, _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, 
                 _ref2.bn_code = partnerAttributionID, _ref2.sdk_name = "payments_sdk", _ref2.sdk_version = version, 
                 _ref2.user_agent = window.navigator && window.navigator.userAgent, _ref2.user_action = commit ? "commit" : "continue", 
-                _ref2.context_correlation_id = correlationID, _ref2.button_version = "2.0.194", 
+                _ref2.context_correlation_id = correlationID, _ref2.button_version = "2.0.195", 
                 _ref2;
             }));
             promise_ZalgoPromise.onPossiblyUnhandledException((function(err) {
