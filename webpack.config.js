@@ -12,17 +12,18 @@ type SmartWebpackConfig = {|
     filename : string,
     minify? : boolean,
     debug? : boolean,
-    vars? : { [string] : mixed }
+    vars? : { [string] : mixed },
+    libraryTarget? : string
 |};
 
-function getSmartWebpackConfig({ entry, filename, minify = true, debug = false } : SmartWebpackConfig) : Object {
+function getSmartWebpackConfig({ entry, filename, minify = true, debug = false, libraryTarget = 'window' } : SmartWebpackConfig) : Object {
     return getWebpackConfig({
         entry:         `${ __dirname }/${ entry }`,
         modulename:    MODULE_NAME,
         filename,
         minify,
         debug,
-        libraryTarget: 'umd',
+        libraryTarget,
         vars:          globals
     });
 }
@@ -72,25 +73,28 @@ export const WEBPACK_CONFIG_MENU_DEBUG = getSmartWebpackConfig({
 });
 
 export const WEBPACK_CONFIG_WALLET = getSmartWebpackConfig({
-    entry:    'src/wallet',
-    filename: 'smart-wallet',
-    minify:   false,
-    vars:     globals
+    entry:         'src/wallet',
+    filename:      'smart-wallet',
+    minify:        false,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_WALLET_MIN = getSmartWebpackConfig({
-    entry:    'src/wallet',
-    filename: 'smart-wallet',
-    minify:   true,
-    vars:     globals
+    entry:         'src/wallet',
+    filename:      'smart-wallet',
+    minify:        true,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_WALLET_DEBUG = getSmartWebpackConfig({
-    entry:    'src/wallet',
-    filename: 'smart-wallet',
-    debug:    true,
-    minify:   false,
-    vars:     globals
+    entry:         'src/wallet',
+    filename:      'smart-wallet',
+    debug:         true,
+    minify:        false,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_TEST = getWebpackConfig({
