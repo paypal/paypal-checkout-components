@@ -1,3 +1,9 @@
+## <small>5.0.79 (2020-02-12)</small>
+
+* Add auth params to wallet component ([7e75b42](http://github.paypal.com/paypal/paypal-checkout/commit/7e75b42))
+
+
+
 ## <small>5.0.78 (2020-02-04)</small>
 
 * Default to paypal for style prop normalization ([c1ba6e8](http://github.paypal.com/paypal/paypal-checkout/commit/c1ba6e8))
