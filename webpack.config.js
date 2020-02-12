@@ -22,7 +22,7 @@ function getSmartWebpackConfig({ entry, filename, minify = true, debug = false }
         filename,
         minify,
         debug,
-        libraryTarget: 'window',
+        libraryTarget: 'umd',
         vars:          globals
     });
 }
@@ -71,6 +71,28 @@ export const WEBPACK_CONFIG_MENU_DEBUG = getSmartWebpackConfig({
     vars:     globals
 });
 
+export const WEBPACK_CONFIG_WALLET = getSmartWebpackConfig({
+    entry:    'src/wallet',
+    filename: 'smart-wallet',
+    minify:   false,
+    vars:     globals
+});
+
+export const WEBPACK_CONFIG_WALLET_MIN = getSmartWebpackConfig({
+    entry:    'src/wallet',
+    filename: 'smart-wallet',
+    minify:   true,
+    vars:     globals
+});
+
+export const WEBPACK_CONFIG_WALLET_DEBUG = getSmartWebpackConfig({
+    entry:    'src/wallet',
+    filename: 'smart-wallet',
+    debug:    true,
+    minify:   false,
+    vars:     globals
+});
+
 export const WEBPACK_CONFIG_TEST = getWebpackConfig({
     modulename: MODULE_NAME,
     test:       true,
@@ -87,5 +109,7 @@ export default [
     WEBPACK_CONFIG_BUTTONS,
     WEBPACK_CONFIG_BUTTONS_MIN,
     WEBPACK_CONFIG_MENU,
-    WEBPACK_CONFIG_MENU_MIN
+    WEBPACK_CONFIG_MENU_MIN,
+    WEBPACK_CONFIG_WALLET,
+    WEBPACK_CONFIG_WALLET_MIN
 ];

@@ -43,7 +43,7 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
         } catch (err) {
             gqlError = err;
         }
-
+        
         for (let i = 0; i < batch.length; i++) {
             const { resolve, reject } = batch[i];
 
