@@ -5,9 +5,9 @@ import { pageStyle } from './page';
 import { walletResponsiveStyle } from './responsive';
 // import { walletColorStyle } from './color';
 
-export function componentStyle({ height } : { height? : ?number }) : string {
+export function componentStyle() : string {
     return `
         ${ pageStyle }
-        ${ walletResponsiveStyle({ height }) }
+        ${ walletResponsiveStyle() }
     `;
 }

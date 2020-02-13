@@ -2,8 +2,6 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import type { XProps } from './types';
-
 export type XOnInitDataType = {|
     
 |};
@@ -32,9 +30,7 @@ export type OnInit = () => {|
     isEnabled : () => boolean
 |};
 
-export function getOnInit(xprops : XProps) : OnInit {
-    const { onInit } = xprops;
-
+export function getOnInit({ onInit } : { onInit : ?XOnInit }) : OnInit {
     return () => {
         let enabled = true;
 

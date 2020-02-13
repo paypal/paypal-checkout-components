@@ -17,20 +17,22 @@ function getNonce(res : ExpressResponse) : string {
 type StyleType = {|
     height : number
 |};
+
 type ParamsType = {|
     env : $Values<typeof ENV>,
     clientID : ?string,
     orderID : ?string,
-    accessCode : ?string,
-    accessToken : ?string,
+    buyerAuthCode : ?string,
+    buyerAccessToken : ?string,
     locale? : LocaleType,
     debug? : boolean,
     style : StyleType
 |};
+
 type RequestParams = {|
     env : $Values<typeof ENV>,
-    accessCode : ?string,
-    accessToken : ?string,
+    buyerAuthCode : ?string,
+    buyerAccessToken : ?string,
     clientID : ?string,
     orderID : ?string,
     cspNonce : string,
@@ -38,14 +40,15 @@ type RequestParams = {|
     debug : boolean,
     style : StyleType
 |};
+
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
     // adding access token in params for easy development until we have a clear path on how we would be doing access code to access token exchange
     const {
         env,
         clientID,
         orderID,
-        accessCode,
-        accessToken,
+        buyerAuthCode,
+        buyerAccessToken,
         locale = {},
         debug = false,
         style
@@ -62,8 +65,8 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         env,
         clientID,
         orderID,
-        accessCode,
-        accessToken,
+        buyerAuthCode,
+        buyerAccessToken,
         cspNonce,
         debug,
         locale: { country, lang },

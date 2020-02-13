@@ -7,7 +7,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, getDomain, isWindowClosed, onCloseWindow } from 'cross-domain-utils/src';
 
-import type { Props, Components, Config, ServiceData } from '../button/props';
+import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { getLogger, promiseOne } from '../lib';
@@ -75,7 +75,7 @@ function didAppSwitch(popupWin : ?CrossDomainWindowType) : boolean {
     return !popupWin || isWindowClosed(popupWin);
 }
 
-function isNativeOptedIn({ props } : { props : Props }) : boolean {
+function isNativeOptedIn({ props } : { props : ButtonProps }) : boolean {
     const { enableNativeCheckout } = props;
 
     if (enableNativeCheckout) {
@@ -97,7 +97,7 @@ let sessionUID;
 let nativeSocket;
 let initialPageUrl;
 
-function isNativeEligible({ props, config, serviceData } : { props : Props, config : Config, serviceData : ServiceData }) : boolean {
+function isNativeEligible({ props, config, serviceData } : { props : ButtonProps, config : Config, serviceData : ServiceData }) : boolean {
     
     const { platform, onShippingChange, createBillingAgreement, createSubscription } = props;
     const { firebase: firebaseConfig } = config;
@@ -138,7 +138,7 @@ function isNativeEligible({ props, config, serviceData } : { props : Props, conf
     return false;
 }
 
-function isNativePaymentEligible({ payment, props, serviceData } : { payment : Payment, props : Props, serviceData : ServiceData }) : boolean {
+function isNativePaymentEligible({ payment, props, serviceData } : { payment : Payment, props : ButtonProps, serviceData : ServiceData }) : boolean {
     const { win, fundingSource } = payment;
     const { eligibility } = serviceData;
 
@@ -165,7 +165,7 @@ function isNativePaymentEligible({ payment, props, serviceData } : { payment : P
     return false;
 }
 
-function setupNative({ config, props } : { config : Config, props : Props }) : ZalgoPromise<void> {
+function setupNative({ config, props } : { config : Config, props : ButtonProps }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { version, firebase: firebaseConfig } = config;
         const { getPageUrl } = props;
@@ -200,7 +200,7 @@ type NativeSDKProps = {|
     forceEligible : boolean
 |};
 
-function initNative({ props, components, config, payment, serviceData } : { props : Props, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
+function initNative({ props, components, config, payment, serviceData } : { props : ButtonProps, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
         buttonSessionID, env, stageHost, apiStageHost, onClick } = props;
     const { facilitatorAccessToken, sdkMeta } = serviceData;

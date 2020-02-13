@@ -2,9 +2,7 @@
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
-import { createSubscription, reviseSubscription } from '../../api';
-
-import type { XProps } from './types';
+import { createSubscription as createSubcriptionID, reviseSubscription } from '../api';
 
 export type XCreateSubscriptionDataType = {||};
 
@@ -24,7 +22,7 @@ export function buildXCreateSubscriptionData() : XCreateSubscriptionDataType {
 
 export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID } : { facilitatorAccessToken : string, partnerAttributionID : ?string }) : XCreateSubscriptionActionsType {
     const create = (data) => {
-        return createSubscription(facilitatorAccessToken, data, { partnerAttributionID });
+        return createSubcriptionID(facilitatorAccessToken, data, { partnerAttributionID });
     };
 
     const revise = (subscriptionID : string, data) => {
@@ -38,11 +36,15 @@ export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partne
 
 export type CreateSubscription = XCreateSubscription;
 
-export function getCreateSubscription(xprops : XProps, { facilitatorAccessToken } : { facilitatorAccessToken : string }) : ?CreateSubscription {
-    const { createSubscription: createSubscriptionFunc, partnerAttributionID } = xprops;
-    if (createSubscriptionFunc) {
+type CreateSubscriptionXProps = {|
+    createSubscription : ?XCreateSubscription,
+    partnerAttributionID : ?string
+|};
+
+export function getCreateSubscription({ createSubscription, partnerAttributionID } : CreateSubscriptionXProps, { facilitatorAccessToken } : { facilitatorAccessToken : string }) : ?CreateSubscription {
+    if (createSubscription) {
         return () => {
-            return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID })).then(subscriptionID => {
+            return createSubscription(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID })).then(subscriptionID => {
                 if (!subscriptionID || typeof subscriptionID !== 'string') {
                     throw new Error(`Expected an subscription id to be passed to createSubscription`);
                 }

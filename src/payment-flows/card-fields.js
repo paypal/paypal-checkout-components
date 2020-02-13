@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 import { memoize, querySelectorAll, debounce, noop } from 'belter/src';
 
-import type { Props, Config, ServiceData, Components } from '../button/props';
+import type { ButtonProps, Config, ServiceData, Components } from '../button/props';
 import { DATA_ATTRIBUTES } from '../constants';
 import { unresolvedPromise, promiseNoop } from '../lib';
 
@@ -17,7 +17,7 @@ function setupCardFields() {
 
 let cardFieldsOpen = false;
 
-function isCardFieldsEligible({ props, serviceData } : { props : Props, serviceData : ServiceData }) : boolean {
+function isCardFieldsEligible({ props, serviceData } : { props : ButtonProps, serviceData : ServiceData }) : boolean {
     const { vault, onShippingChange, enableStandardCardFields } = props;
     const { eligibility } = serviceData;
 
@@ -107,7 +107,7 @@ const slideDownButtons = () => {
     buttonsContainer.style.marginTop = `0px`;
 };
 
-function initCardFields({ props, components, payment, serviceData, config } : { props : Props, config : Config, components : Components, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
+function initCardFields({ props, components, payment, serviceData, config } : { props : ButtonProps, config : Config, components : Components, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel,
         locale, commit, onError, sessionID, buttonSessionID } = props;
     const { CardFields } = components;

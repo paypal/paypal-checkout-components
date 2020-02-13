@@ -134,7 +134,8 @@ const walletMiddleware = getWalletMiddleware({
                 data: {}
             };
         }));
-    }
+    },
+    exchangeAuthCode: () => 'foobar'
 });
 
 const menuMiddleware = getMenuMiddleware({});

@@ -8,5 +8,9 @@ export const globals = {
     __SMART_BUTTONS__: {
         __MAJOR_VERSION__: getNextVersion(pkg, 'major').replace(/_/g, '.'),
         __MINOR_VERSION__: getNextVersion(pkg, 'patch').replace(/_/g, '.')
+    },
+    __SMART_WALLET__: {
+        __MAJOR_VERSION__: getNextVersion(pkg, 'major').replace(/_/g, '.'),
+        __MINOR_VERSION__: getNextVersion(pkg, 'patch').replace(/_/g, '.')
     }
 };

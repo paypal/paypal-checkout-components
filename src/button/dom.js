@@ -25,11 +25,3 @@ export function enableLoadingSpinner(button : HTMLElement) {
 export function disableLoadingSpinner(button : HTMLElement) {
     button.classList.remove(CLASS.LOADING);
 }
-
-export function getNonce() : string {
-    let nonce = '';
-    if (document.body) {
-        nonce = document.body.getAttribute(`${ DATA_ATTRIBUTES.NONCE }`) || '';
-    }
-    return nonce;
-}

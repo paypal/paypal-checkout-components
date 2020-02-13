@@ -1,14 +1,14 @@
 /* @flow */
 
-import { memoize, redirect as redir, noop } from 'belter/src';
+import { memoize, redirect as redir } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { getLogger } from '../../lib';
-import { FPTI_TRANSITION } from '../../constants';
+import { getLogger, promiseNoop } from '../lib';
+import { FPTI_TRANSITION } from '../constants';
 
 import type { CreateOrder } from './createOrder';
-import type { XProps } from './types';
+import type { XOnError } from './onError';
 
 export type XOnCancelDataType = {|
     orderID : string
@@ -50,9 +50,12 @@ export function buildXOnCancelActions() : XOnCancelActionsType {
 
 export type OnCancel = () => ZalgoPromise<void>;
 
-export function getOnCancel(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : OnCancel {
-    const { onCancel = noop, onError } = xprops;
+type OnCancelXProps = {|
+    onCancel : XOnCancel,
+    onError : XOnError
+|};
 
+export function getOnCancel({ onCancel = promiseNoop, onError } : OnCancelXProps, { createOrder } : { createOrder : CreateOrder }) : OnCancel {
     return memoize(() => {
         return createOrder().then(orderID => {
             getLogger()

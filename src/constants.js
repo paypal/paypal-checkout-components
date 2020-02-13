@@ -63,17 +63,21 @@ export const PRODUCT_FLOW = {
 
 export const FPTI_CONTEXT_TYPE = {
     BUTTON_SESSION_ID: ('button_session_id' : 'button_session_id'),
+    WALLET_SESSION_ID: ('wallet_session_id' : 'wallet_session_id'),
     ORDER_ID:          ('EC-Token' : 'EC-Token'),
     PAYMENT_ID:        ('Pay-ID' : 'Pay-ID')
 };
 
 export const FPTI_STATE = {
-    BUTTON:   ('smart_button' : 'smart_button')
+    BUTTON:   ('smart_button' : 'smart_button'),
+    WALLET:   ('smart_wallet' : 'smart_wallet')
 };
 
 export const FPTI_TRANSITION = {
     BUTTON_LOAD:              ('process_button_load' : 'process_button_load'),
     BUTTON_CLICK:             ('process_button_click' : 'process_button_click'),
+
+    WALLET_LOAD:              ('process_wallet_load' : 'process_wallet_load'),
 
     CREATE_ORDER:             ('process_create_order' : 'process_create_order'),
     RECEIVE_ORDER:            ('process_receive_order' : 'process_receive_order'),
@@ -102,6 +106,11 @@ export const FTPI_BUTTON_KEY = {
     BUTTON_WIDTH:           ('button_width' : 'button_width'),
     BUTTON_TYPE:            ('button_type' : 'button_type'),
     BUTTON_TAGLINE_ENABLED: ('button_tagline_enabled' : 'button_tagline_enabled')
+};
+
+export const FTPI_WALLET_KEY = {
+    WALLET_SESSION_UID: ('wallet_session_id' : 'wallet_session_id'),
+    WALLET_VERSION:     ('wallet_version' : 'wallet_version')
 };
 
 export const USER_ACTION = {

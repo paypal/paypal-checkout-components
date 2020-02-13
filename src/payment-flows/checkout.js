@@ -6,7 +6,8 @@ import { FUNDING, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { FundingEligibilityType, ProxyWindow } from '../types';
-import type { Props, Components, ServiceData, Config, CreateBillingAgreement, CreateSubscription } from '../button/props';
+import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
+import type { CreateBillingAgreement, CreateSubscription } from '../props';
 import { enableVault } from '../api';
 import { CONTEXT, TARGET_ELEMENT } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
@@ -132,7 +133,7 @@ function getContext({ win, isClick } : { win : ?(CrossDomainWindowType | ProxyWi
     return CONTEXT.IFRAME;
 }
 
-function initCheckout({ props, components, serviceData, payment, config } : { props : Props, components : Components, serviceData : ServiceData, payment : Payment, config : Config }) : PaymentFlowInstance {
+function initCheckout({ props, components, serviceData, payment, config } : { props : ButtonProps, components : Components, serviceData : ServiceData, payment : Payment, config : Config }) : PaymentFlowInstance {
     if (checkoutOpen) {
         throw new Error(`Checkout already rendered`);
     }

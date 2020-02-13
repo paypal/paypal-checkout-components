@@ -4,8 +4,6 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { memoize } from 'belter/src';
 
-import type { XProps } from './types';
-
 export type XOnClickDataType = {|
     fundingSource : $Values<typeof FUNDING>
 |};
@@ -39,9 +37,7 @@ export type OnClickDataType = {|
 
 export type OnClick = (OnClickDataType) => ZalgoPromise<boolean>;
 
-export function getOnClick(xprops : XProps) : OnClick | void {
-    const { onClick } = xprops;
-
+export function getOnClick({ onClick } : { onClick : ?XOnClick }) : OnClick | void {
     if (!onClick) {
         return;
     }

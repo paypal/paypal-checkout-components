@@ -4,13 +4,13 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, redirect as redir, noop } from 'belter/src';
 import { INTENT, SDK_QUERY_KEYS, FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse, getPayment, executePayment, patchPayment, upgradeFacilitatorAccessToken } from '../../api';
-import { ORDER_API_ERROR, FPTI_TRANSITION } from '../../constants';
-import { unresolvedPromise, getLogger } from '../../lib';
-import { ENABLE_PAYMENT_API } from '../../config';
+import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse, getPayment, executePayment, patchPayment, upgradeFacilitatorAccessToken } from '../api';
+import { ORDER_API_ERROR, FPTI_TRANSITION } from '../constants';
+import { unresolvedPromise, getLogger } from '../lib';
+import { ENABLE_PAYMENT_API } from '../config';
 
 import type { CreateOrder } from './createOrder';
-import type { XProps } from './types';
+import type { XOnError } from './onError';
 
 export type XOnApproveDataType = {|
     orderID : string,
@@ -188,9 +188,9 @@ function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, su
 
 export type OnApproveData = {|
     payerID? : ?string,
-    paymentID ? : ? string,
-    billingToken ? : ? string,
-    subscriptionID ? : ?string,
+    paymentID? : ?string,
+    billingToken? : ?string,
+    subscriptionID? : ?string,
     buyerAccessToken? : ?string,
     forceRestAPI? : boolean
 |};
@@ -213,9 +213,15 @@ function getDefaultOnApprove(intent : $Values<typeof INTENT>) : XOnApprove {
     };
 }
 
-export function getOnApprove(xprops : XProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : OnApprove {
-    const { intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, upgradeLSAT = false } = xprops;
+type OnApproveXProps = {|
+    intent : $Values<typeof INTENT>,
+    onApprove : ?XOnApprove,
+    partnerAttributionID : ?string,
+    onError : XOnError,
+    upgradeLSAT : boolean
+|};
 
+export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, upgradeLSAT = false } : OnApproveXProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : OnApprove {
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }

@@ -5,12 +5,10 @@ import { max, perc } from 'belter/src';
 import { WALLET_SIZE_STYLE } from '../config';
 import { CLASS } from '../constants';
 
-export function walletResponsiveStyle({ height } : { height? : ?number }) : string {
-    
+export function walletResponsiveStyle() : string {
     return Object.keys(WALLET_SIZE_STYLE).map(size => {
-        
         const style = WALLET_SIZE_STYLE[size];
-        const walletHeight = height || style.defaultHeight;
+        const walletHeight = style.defaultHeight;
         
         return `
 
@@ -52,7 +50,6 @@ export function walletResponsiveStyle({ height } : { height? : ?number }) : stri
                 }
             }
         `;
-        
     }).join('\n');
 }
 

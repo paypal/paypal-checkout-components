@@ -6,15 +6,11 @@ import { h, type Node } from 'preact';
 import { componentStyle } from './styles';
 
 type StyleOptionsType = {|
-    styleOptions : {|
-        height : number
-    |},
     cspNonce : string
 |};
 
-export function Style({ styleOptions, cspNonce } : StyleOptionsType) : Node {
-    const { height } = styleOptions;
-    const css = componentStyle({ height });
+export function Style({ cspNonce } : StyleOptionsType) : Node {
+    const css = componentStyle();
     
     return (
         <style nonce={ cspNonce }>

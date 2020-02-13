@@ -3,12 +3,11 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { patchOrder, type OrderResponse } from '../../api';
-import { FPTI_TRANSITION } from '../../constants';
-import { getLogger } from '../../lib';
+import { patchOrder, type OrderResponse } from '../api';
+import { FPTI_TRANSITION } from '../constants';
+import { getLogger } from '../lib';
 
 import type { CreateOrder } from './createOrder';
-import type { XProps } from './types';
 
 export type XOnShippingChangeDataType = {|
     
@@ -58,9 +57,12 @@ export function buildXShippingChangeActions({ orderID, actions, facilitatorAcces
 
 export type OnShippingChange = (OnShippingChangeData, OnShippingChangeActionsType) => ZalgoPromise<void>;
 
-export function getOnShippingChange(xprops : XProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : ?OnShippingChange {
-    const { onShippingChange, partnerAttributionID } = xprops;
+type OnShippingChangeXProps = {|
+    onShippingChange : ?XOnShippingChange,
+    partnerAttributionID : ?string
+|};
 
+export function getOnShippingChange({ onShippingChange, partnerAttributionID } : OnShippingChangeXProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : ?OnShippingChange {
     if (onShippingChange) {
         return ({ buyerAccessToken, ...data }, actions) => {
             return createOrder().then(orderID => {

@@ -22,15 +22,18 @@ type FundingInstrumentType = {|
         height : string
     |}
 |};
+
 type FundingOptionType = {|
     id : string,
     fundingInstrument : FundingInstrumentType,
     isPreferred : boolean
 |};
+
 type CheckoutSession = {|
     declinedInstruments : [],
     fundingOptions : $ReadOnlyArray<FundingOptionType>
 |};
+
 const declineInstrumentSchema = `
     declinedInstruments {
         id
@@ -46,7 +49,9 @@ const declineInstrumentSchema = `
             width
             height
         }
-    }`;
+    }
+`;
+
 const fundingOptionsSchema = `
     fundingOptions(returnAllPlans: true, groupSourcesOnType: INCENTIVE) {
         id
@@ -139,14 +144,15 @@ const fundingOptionsSchema = `
         }
     }
 `;
-// schema to fetch wallet funding options, declined instruments
+
 const checkoutSessionQuery = `
     query CreateCheckoutSession($token: String!) {
         checkoutSession(token: $token) {
             ${ declineInstrumentSchema }
             ${ fundingOptionsSchema }
         }
-    }`;
+    }
+`;
 
 export async function resolveCheckoutSession(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, accessToken, orderID } : CheckoutSessionOptions) : Promise<CheckoutSession> {
     try {
@@ -163,7 +169,7 @@ export async function resolveCheckoutSession(req : ExpressRequest, gqlBatch : Gr
         return checkoutSession;
         
     } catch (err) {
-        logger.error(req, 'checkout_session_error_fallback', { err: err.stack ? err.stack : err.toString() });
-        throw new Error('checkout_session_error');
+        logger.error(req, 'checkout_session_error', { err: err.stack ? err.stack : err.toString() });
+        throw err;
     }
 }

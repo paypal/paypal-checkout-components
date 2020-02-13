@@ -298,3 +298,41 @@ export function updateClientConfig({ orderID, fundingSource, integrationArtifact
         variables: { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow }
     }).then(noop);
 }
+
+type ApproveOrderOptions = {|
+    orderID : string,
+    planID : string,
+    buyerAccessToken : string
+|};
+
+type ApproveData = {|
+    payerID : string
+|};
+
+export function approveOrder({ orderID, planID, buyerAccessToken } : ApproveOrderOptions) : ZalgoPromise<ApproveData> {
+    return callGraphQL({
+        query: `
+            mutation ApproveOrder(
+                $orderID : String!
+                $planID : String!
+            ) {
+                approvePayment(
+                    token: $orderID
+                    selectedPlanId: $planID
+                ) {
+                    buyer {
+                        userId
+                    }
+                }
+            }
+        `,
+        variables: { orderID, planID },
+        headers:   {
+            [ HEADERS.ACCESS_TOKEN ]: buyerAccessToken
+        }
+    }).then(({ approvePayment }) => {
+        return {
+            payerID: approvePayment.buyer.userId
+        };
+    });
+}

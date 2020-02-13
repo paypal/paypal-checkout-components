@@ -8,7 +8,7 @@ import { checkout, cardFields, native, vaultCapture, popupBridge, type Payment, 
 import { sendBeacon, getLogger, promiseNoop } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
 
-import { type Props, type Config, type ServiceData, type Components } from './props';
+import { type ButtonProps, type Config, type ServiceData, type Components } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
 import { updateButtonClientConfig, validateOrder } from './orders';
 
@@ -20,7 +20,7 @@ const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     checkout
 ];
 
-export function setupPaymentFlows({ props, config, serviceData, components } : { props : Props, config : Config, serviceData : ServiceData, components : Components }) : ZalgoPromise<void> {
+export function setupPaymentFlows({ props, config, serviceData, components } : { props : ButtonProps, config : Config, serviceData : ServiceData, components : Components }) : ZalgoPromise<void> {
     return ZalgoPromise.all(PAYMENT_FLOWS.map(flow => {
         return flow.isEligible({ props, config, serviceData, components })
             ? flow.setup({ props, config, serviceData, components })
@@ -28,7 +28,7 @@ export function setupPaymentFlows({ props, config, serviceData, components } : {
     })).then(noop);
 }
 
-export function getPaymentFlow({ props, payment, config, components, serviceData } : { props : Props, payment : Payment, config : Config, components : Components, serviceData : ServiceData }) : PaymentFlow {
+export function getPaymentFlow({ props, payment, config, components, serviceData } : { props : ButtonProps, payment : Payment, config : Config, components : Components, serviceData : ServiceData }) : PaymentFlow {
     for (const flow of PAYMENT_FLOWS) {
         if (flow.isEligible({ props, config, components, serviceData }) && flow.isPaymentEligible({ props, payment, config, components, serviceData })) {
             return flow;
@@ -49,7 +49,7 @@ const sendPersonalizationBeacons = (personalization) => {
 
 type InitiatePaymentType = {|
     payment : Payment,
-    props : Props,
+    props : ButtonProps,
     serviceData : ServiceData,
     config : Config,
     components : Components

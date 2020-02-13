@@ -1,16 +1,51 @@
 /* @flow */
 
 import { isIEIntranet, getPageRenderTime } from 'belter/src';
-import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { FUNDING, FPTI_KEY, ENV } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { getLogger } from '../lib';
-import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FTPI_BUTTON_KEY } from '../constants';
+import type { LocaleType } from '../types';
+import { getLogger, setupLogger } from '../lib';
+import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FTPI_BUTTON_KEY, FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
 
 import type { ButtonStyle } from './props';
 
-export function setupButtonLogs({ style } : { style : ButtonStyle }) : ZalgoPromise<void> {
+type ButtonLoggerOptions = {|
+    env : $Values<typeof ENV>,
+    sessionID : string,
+    clientID : ?string,
+    partnerAttributionID : ?string,
+    commit : boolean,
+    correlationID : string,
+    locale : LocaleType,
+    buttonSessionID : string,
+    merchantID : $ReadOnlyArray<string>,
+    merchantDomain : string,
+    version : string,
+    style : ButtonStyle
+|};
+
+export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version, style } : ButtonLoggerOptions) : ZalgoPromise<void> {
     const logger = getLogger();
+
+    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version });
+
+    logger.addPayloadBuilder(() => {
+        return {
+            buttonSessionID
+        };
+    });
+
+    logger.addTrackingBuilder(() => {
+        return {
+            [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
+            [FPTI_KEY.CONTEXT_TYPE]:           FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
+            [FPTI_KEY.CONTEXT_ID]:             buttonSessionID,
+            [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
+            [FPTI_KEY.BUTTON_SESSION_UID]:     buttonSessionID,
+            [FPTI_KEY.BUTTON_VERSION]:         __SMART_BUTTONS__.__MINOR_VERSION__
+        };
+    });
 
     if (isIEIntranet()) {
         logger.warn('button_child_intranet_mode');

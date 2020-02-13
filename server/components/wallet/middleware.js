@@ -2,10 +2,11 @@
 
 // eslint-disable-next-line import/no-named-as-default
 import render from 'preact-render-to-string';
+import { ZalgoPromise } from 'zalgo-promise';
 
 import { clientErrorResponse, htmlResponse, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
 import { resolveCheckoutSession } from '../../service';
-import type { LoggerType, CacheType } from '../../types';
+import type { ExpressRequest, LoggerType, CacheType } from '../../types';
 
 import { getParams } from './params';
 import { EVENT } from './constants';
@@ -14,29 +15,38 @@ import { getSmartWalletClientScript } from './script';
 type WalletMiddlewareOptions = {|
     logger? : LoggerType,
     graphQL : GraphQL,
-    cache? : CacheType
+    cache? : CacheType,
+    exchangeAuthCode : (ExpressRequest, string) => ZalgoPromise<string>
 |};
 
-export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache } : WalletMiddlewareOptions) : ExpressMiddleware {
+export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, exchangeAuthCode } : WalletMiddlewareOptions) : ExpressMiddleware {
     return sdkMiddleware({ logger, cache }, async ({ req, res, params, meta, logBuffer }) => {
         logger.info(req, EVENT.RENDER);
         if (logBuffer) {
             logBuffer.flush(req);
         }
     
-        const { orderID, accessToken, cspNonce, debug, style } = getParams(params, req, res);
+        let { orderID, buyerAccessToken, buyerAuthCode, cspNonce, debug } = getParams(params, req, res);
     
         if (!orderID) {
             return clientErrorResponse(res, 'Please provide an orderID query parameter');
         }
-        if (!accessToken) {
-            return clientErrorResponse(res, 'Please provide an accessToken query parameter');
+
+        let buyerAccessTokenPromise;
+        if (buyerAccessToken) {
+            buyerAccessTokenPromise = Promise.resolve(buyerAccessToken);
+        } else if (buyerAuthCode) {
+            buyerAccessTokenPromise = exchangeAuthCode(req, buyerAuthCode);
+        } else {
+            return clientErrorResponse(res, 'Please provide an accessToken or authCode query parameter');
         }
         
-        const clientPromise = await getSmartWalletClientScript({ debug, logBuffer, cache });
+        const clientPromise = getSmartWalletClientScript({ debug, logBuffer, cache });
         
         const gqlBatch = graphQLBatch(req, graphQL);
-        const checkoutSessionPromise = resolveCheckoutSession(req, gqlBatch, { logger, accessToken, orderID });
+
+        buyerAccessToken = await buyerAccessTokenPromise;
+        const checkoutSessionPromise = resolveCheckoutSession(req, gqlBatch, { logger, accessToken: buyerAccessToken, orderID });
     
         gqlBatch.flush();
         
@@ -51,7 +61,6 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache } :
         // const Wallet = spb.Wallet({ cspNonce, fundingOptions, style });
         const walletHTML = '';// render(Wallet);
         
-        
         const pageHTML = `
             <!DOCTYPE html>
             <head></head>
@@ -61,7 +70,7 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache } :
                 <div id="wallet-container" class="wallet-container">${ walletHTML }</div>
                 ${ meta.getSDKLoader({ nonce: cspNonce }) }
                 <script nonce="${ cspNonce }">${ client.script }</script>
-                <script nonce="${ cspNonce }">spb.setupWallet(${ safeJSON({ cspNonce, checkoutSession, style }) })</script>
+                <script nonce="${ cspNonce }">spb.setupWallet(${ safeJSON({ cspNonce, checkoutSession, buyerAccessToken }) })</script>
             </body>
         `;
         return htmlResponse(res, pageHTML);

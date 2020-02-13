@@ -5,14 +5,14 @@ import { COUNTRY, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, PersonalizationType, ContentType } from '../types';
-import { setupLogger, fixClickFocus, getLogger } from '../lib';
+import { fixClickFocus, getLogger } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES } from '../constants';
 import { type Payment } from '../payment-flows';
 
 import { getProps, getConfig, getComponents, getServiceData } from './props';
 import { getSelectedFunding, getButtons } from './dom';
-import { setupButtonLogs } from './logs';
+import { setupButtonLogger } from './logger';
 import { setupRemember } from './remember';
 import { setupPaymentFlows, initiatePaymentFlow } from './pay';
 import { renderButtonDropdown } from './menu';
@@ -58,9 +58,6 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     const { version } = config;
     
     const components = getComponents();
-    
-    setupLogger({ env, version, sessionID, clientID, partnerAttributionID, commit,
-        correlationID, locale, merchantID, buttonSessionID, merchantDomain });
 
     const { initPromise, isEnabled } = onInit();
 
@@ -145,7 +142,9 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     });
 
     const setupRememberTask = setupRemember({ rememberFunding, fundingEligibility });
-    const setupButtonLogsTask = setupButtonLogs({ style });
+    const setupButtonLogsTask = setupButtonLogger({
+        style, env, version, sessionID, clientID, partnerAttributionID, commit,
+        correlationID, locale, merchantID, buttonSessionID, merchantDomain });
     const setupPaymentFlowsTask = setupPaymentFlows({ props, config, serviceData, components });
 
     return ZalgoPromise.hash({

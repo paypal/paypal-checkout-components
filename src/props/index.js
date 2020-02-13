@@ -1,8 +1,5 @@
 /* @flow */
 
-export * from './types';
-export * from './props';
-
 export * from './createOrder';
 export * from './createBillingAgreement';
 export * from './createSubscription';

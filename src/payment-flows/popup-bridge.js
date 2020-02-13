@@ -4,16 +4,17 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { getDomain } from 'cross-domain-utils/src';
 import { extendUrl } from 'belter/src';
 
+import type { ButtonProps } from '../button/props';
 import { WEB_CHECKOUT_URI } from '../config';
 import { promiseNoop } from '../lib';
-import { POPUP_BRIDGE_OPTYPE, type Props } from '../button/props';
+import { POPUP_BRIDGE_OPTYPE } from '../props';
 import { USER_ACTION } from '../constants';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
 
 let parentPopupBridge;
 
-function setupPopupBridge({ props } : { props : Props }) : ZalgoPromise<void> {
+function setupPopupBridge({ props } : { props : ButtonProps }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { getPopupBridge } = props;
         if (getPopupBridge) {
@@ -24,7 +25,7 @@ function setupPopupBridge({ props } : { props : Props }) : ZalgoPromise<void> {
     });
 }
 
-function isPopupBridgeEligible({ props } : { props : Props }) : boolean {
+function isPopupBridgeEligible({ props } : { props : ButtonProps }) : boolean {
     const { onShippingChange } = props;
 
     if (onShippingChange) {
@@ -48,7 +49,7 @@ function isPopupBridgePaymentEligible({ payment } : { payment : Payment }) : boo
     return true;
 }
 
-function initPopupBridge({ props, payment } : { props : Props, payment : Payment }) : PaymentFlowInstance {
+function initPopupBridge({ props, payment } : { props : ButtonProps, payment : Payment }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, commit } = props;
     const { fundingSource } = payment;
 

@@ -7,7 +7,6 @@ import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, FPTI_USER_ACTION,
 
 import type { LocaleType } from '../types';
 import { LOGGER_URL } from '../config';
-import { FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
 
 export function getLogger() : LoggerType {
     return inlineMemoize(getLogger, () =>
@@ -24,19 +23,17 @@ type LoggerOptions = {|
     commit : boolean,
     correlationID : string,
     locale : LocaleType,
-    buttonSessionID : string,
     merchantID : $ReadOnlyArray<string>,
     merchantDomain : string,
     version : string
 |};
 
-export function setupLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version } : LoggerOptions) {
+export function setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version } : LoggerOptions) {
     const logger = getLogger();
 
     logger.addPayloadBuilder(() => {
         return {
             referer: window.location.host,
-            buttonSessionID,
             sessionID,
             env
         };
@@ -46,15 +43,10 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
         const { lang, country } = locale;
 
         return {
-            [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
-            [FPTI_KEY.CONTEXT_TYPE]:           FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
-            [FPTI_KEY.CONTEXT_ID]:             buttonSessionID,
-            [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
             [FPTI_KEY.FEED]:                   FPTI_FEED.PAYMENTS_SDK,
             [FPTI_KEY.DATA_SOURCE]:            FPTI_DATA_SOURCE.PAYMENTS_SDK,
             [FPTI_KEY.CLIENT_ID]:              clientID,
             [FPTI_KEY.SELLER_ID]:              merchantID[0],
-            [FPTI_KEY.BUTTON_SESSION_UID]:     buttonSessionID,
             [FPTI_KEY.SESSION_UID]:            sessionID,
             [FPTI_KEY.REFERER]:                window.location.host,
             [FPTI_KEY.MERCHANT_DOMAIN]:        merchantDomain,
@@ -65,8 +57,7 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
             [FPTI_KEY.SDK_VERSION]:            version,
             [FPTI_KEY.USER_AGENT]:             window.navigator && window.navigator.userAgent,
             [FPTI_KEY.USER_ACTION]:            commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE,
-            [FPTI_KEY.CONTEXT_CORRID]:         correlationID,
-            [FPTI_KEY.BUTTON_VERSION]:         __SMART_BUTTONS__.__MINOR_VERSION__
+            [FPTI_KEY.CONTEXT_CORRID]:         correlationID
         };
     });
 

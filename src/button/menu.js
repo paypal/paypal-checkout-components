@@ -10,7 +10,7 @@ import { CHECKOUT_POPUP_DIMENSIONS, type Payment } from '../payment-flows';
 import { deleteVault, validatePaymentMethod } from '../api';
 import { DATA_ATTRIBUTES } from '../constants';
 
-import { type Props } from './props';
+import { type ButtonProps } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
 
 const MENU_CHOICE = {
@@ -26,7 +26,7 @@ const popup = {
 
 type ButtonDropdownProps = {|
     payment : Payment,
-    props : Props,
+    props : ButtonProps,
     content : ContentType,
     initiatePayment : ({ payment : Payment }) => ZalgoPromise<void>
 |};

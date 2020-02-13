@@ -2,8 +2,6 @@
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
-import type { XProps } from './types';
-
 export type XCreateBillingAgreementDataType = {|
     
 |};
@@ -26,9 +24,7 @@ export function buildXCreateBillingAgreementActions() : XCreateBillingAgreementA
 
 export type CreateBillingAgreement = XCreateBillingAgreement;
 
-export function getCreateBillingAgreement(xprops : XProps) : ?CreateBillingAgreement {
-    const { createBillingAgreement } = xprops;
-
+export function getCreateBillingAgreement({ createBillingAgreement } : { createBillingAgreement : ?XCreateBillingAgreement }) : ?CreateBillingAgreement {
     if (createBillingAgreement) {
         return () => {
             return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions()).then(billingToken => {
