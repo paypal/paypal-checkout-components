@@ -8,13 +8,14 @@ import type { FundingOptionType } from '../types';
 import { Style } from './style';
 
 type ItemProps = {|
+    cspNonce : string,
     fundingOption : FundingOptionType,
     listOpen : boolean,
     selectWalletItemHandler : (item : FundingOptionType) => void,
     listOpenHandler : (listOpen : boolean) => void
 |};
 
-export function WalletItem({ fundingOption, selectWalletItemHandler, listOpen, listOpenHandler } : ItemProps) : Node {
+export function WalletItem({ cspNonce, fundingOption, selectWalletItemHandler, listOpen, listOpenHandler } : ItemProps) : Node {
 
     const selectItem = (item) => {
         selectWalletItemHandler(item);
@@ -30,7 +31,7 @@ export function WalletItem({ fundingOption, selectWalletItemHandler, listOpen, l
 
     return (
         <Fragment>
-            <Style>
+            <Style cspNonce={ cspNonce }>
                 {`
                     .wallet-item  {
                         white-space: nowrap;

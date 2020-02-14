@@ -180,7 +180,7 @@ app.listen(PORT, () => {
         Smart Button server listening
           - http://localhost.paypal.com:${ PORT }/smart/buttons?clientID=alc_client1
           - http://localhost.paypal.com:${ PORT }/smart/menu?clientID=alc_client1
-          - http://localhost.paypal.com:${ PORT }/smart/wallet?clientID=alc_client1&orderID=ORDER123&accessToken=access1234&style.height=40
+          - http://localhost.paypal.com:${ PORT }/smart/wallet?clientID=alc_client1&orderID=ORDER123&buyerAccessToken=access1234
     
     `);
 });

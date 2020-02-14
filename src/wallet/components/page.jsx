@@ -3,16 +3,20 @@
 
 import { h, Fragment, type Node } from 'preact';
 
+import type { CheckoutSession } from '../types';
+
 import { Style } from './style';
+import { Wallet } from './wallet';
 
 type PageProps = {|
-    children : Node
+    cspNonce : string,
+    checkoutSession : CheckoutSession
 |};
 
-export function Page({ children } : PageProps) : Node {
+export function Page({ cspNonce, checkoutSession } : PageProps) : Node {
     return (
         <Fragment>
-            <Style>
+            <Style cspNonce={ cspNonce }>
                 {`
                     html, body {
                         padding: 0;
@@ -34,7 +38,10 @@ export function Page({ children } : PageProps) : Node {
                     }
                 `}
             </Style>
-            { children }
+            <Wallet
+                cspNonce={ cspNonce }
+                checkoutSession={ checkoutSession }
+            />
         </Fragment>
     );
 }

@@ -15,10 +15,11 @@ export type CheckoutSessionType = {|
 |};
 
 type WalletProps = {|
+    cspNonce : string,
     checkoutSession : CheckoutSessionType
 |};
 
-export function Wallet({ checkoutSession } : WalletProps) : Node {
+export function Wallet({ cspNonce, checkoutSession } : WalletProps) : Node {
     const { fundingOptions } = checkoutSession;
     
     // implement logic to select either the preferred one or to the first option available
@@ -29,7 +30,7 @@ export function Wallet({ checkoutSession } : WalletProps) : Node {
     
     return (
         <Fragment>
-            <Style>
+            <Style cspNonce={ cspNonce }>
                 {`
                     .wallet {
                         padding: 5px;

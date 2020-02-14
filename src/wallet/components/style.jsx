@@ -3,11 +3,9 @@
 
 import { h, type Node } from 'preact';
 
-import { getNonce } from '../../lib';
-
-export function Style({ children } : { children : $ReadOnlyArray<string> }) : Node {
+export function Style({ cspNonce, children } : { cspNonce : string, children : $ReadOnlyArray<string> }) : Node {
     return (
-        <style nonce={ getNonce() }>
+        <style nonce={ cspNonce }>
             { children }
         </style>
     );

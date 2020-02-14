@@ -50,6 +50,7 @@
     "cross-domain-utils": "^2.0.16",
     "grabthar": "^3",
     "jsx-pragmatic": "^2",
+    "preact": "^10",
     "preact-render-to-string": "^5.1.4",
     "strict-merge": "^1.0.1",
     "typed-graphqlify": "^2.2.3",
@@ -61,7 +62,6 @@
     "flow-bin": "^0.110.1",
     "grumbler-scripts": "^3.0.18",
     "post-robot": "^10.0.13",
-    "preact": "10.0.0-rc.1",
     "sync-browser-mocks": "^2.0.1",
     "webpack-mem-compile": "^1.0.2"
   },

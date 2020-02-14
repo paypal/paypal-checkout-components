@@ -1,26 +1,23 @@
 /* @flow */
 /** @jsx h */
 
+// eslint-disable-next-line import/no-named-as-default
+import renderToString from 'preact-render-to-string';
 import { h, render } from 'preact';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { getBody } from '../lib';
 import { approveOrder } from '../api';
 
-import type { CheckoutSession, FundingOptionType } from './types';
+import type { CheckoutSession } from './types';
 import { getProps, type WalletProps } from './props';
-import { Wallet, Page } from './components';
+import { Page } from './components';
 
-export type CheckoutSessionType = {|
-    declinedInstruments : [],
-    fundingOptions : $ReadOnlyArray<FundingOptionType>
-|};
-
-export function fallbackToWebCheckout() : ZalgoPromise<void> {
+function fallbackToWebCheckout() : ZalgoPromise<void> {
     throw new Error(`Not implemented`);
 }
 
-export function submitWalletPayment(props : WalletProps, { checkoutSession, buyerAccessToken } : { checkoutSession : CheckoutSession, buyerAccessToken : string }) : ZalgoPromise<void> {
+function submitWalletPayment(props : WalletProps, { checkoutSession, buyerAccessToken } : { checkoutSession : CheckoutSession, buyerAccessToken : string }) : ZalgoPromise<void> {
     const { createOrder, onApprove } = props;
     const planID = checkoutSession.fundingOptions[0].allPlans[0].id;
 
@@ -31,7 +28,7 @@ export function submitWalletPayment(props : WalletProps, { checkoutSession, buye
     });
 }
 
-export function setupWalletPayment(props : WalletProps, { checkoutSession, buyerAccessToken } : { checkoutSession : CheckoutSession, buyerAccessToken : string }) : ZalgoPromise<void> {
+function setupWalletPayment(props : WalletProps, { checkoutSession, buyerAccessToken } : { checkoutSession : CheckoutSession, buyerAccessToken : string }) : ZalgoPromise<void> {
     const { setup } = props;
 
     return setup({}, {
@@ -46,13 +43,15 @@ type SetupOptions = {|
     checkoutSession : CheckoutSession
 |};
 
+export function renderWallet(props : { cspNonce : string, checkoutSession : CheckoutSession }) : string {
+    return renderToString(<Page { ...props } />);
+}
+
 export function setupWallet({ facilitatorAccessToken, buyerAccessToken, cspNonce, checkoutSession } : SetupOptions) {
     const props = getProps({ facilitatorAccessToken });
     setupWalletPayment(props, { checkoutSession, buyerAccessToken });
     render(
-        <Page>
-            <Wallet cspNonce={ cspNonce } checkoutSession={ checkoutSession } />
-        </Page>,
+        <Page cspNonce={ cspNonce } checkoutSession={ checkoutSession } />,
         getBody()
     );
 }

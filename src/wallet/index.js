@@ -1,3 +1,3 @@
 /* @flow */
 
-export * from './wallet';
+export { setupWallet, renderWallet } from './wallet';

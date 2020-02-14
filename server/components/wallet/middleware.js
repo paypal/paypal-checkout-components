@@ -1,12 +1,10 @@
 /* @flow */
 
-// eslint-disable-next-line import/no-named-as-default
-import render from 'preact-render-to-string';
 import { ZalgoPromise } from 'zalgo-promise';
 
+import type { ExpressRequest, LoggerType, CacheType } from '../../types';
 import { clientErrorResponse, htmlResponse, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
 import { resolveCheckoutSession } from '../../service';
-import type { ExpressRequest, LoggerType, CacheType } from '../../types';
 
 import { getParams } from './params';
 import { EVENT } from './constants';
@@ -41,7 +39,7 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, ex
             return clientErrorResponse(res, 'Please provide an accessToken or authCode query parameter');
         }
         
-        const clientPromise = getSmartWalletClientScript({ debug, logBuffer, cache });
+        const { getVersion, getScript, importScript } = getSmartWalletClientScript({ debug, logBuffer, cache });
         
         const gqlBatch = graphQLBatch(req, graphQL);
 
@@ -49,27 +47,19 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, ex
         const checkoutSessionPromise = resolveCheckoutSession(req, gqlBatch, { logger, accessToken: buyerAccessToken, orderID });
     
         gqlBatch.flush();
-        
-        const client = await clientPromise;
+
         const checkoutSession = await checkoutSessionPromise;
         
-        
-        const walletStyle = '';
-        
-        // commenting it as SSR is broken at the moment
-        // const spb = require('../../../dist/smart-wallet');
-        // const Wallet = spb.Wallet({ cspNonce, fundingOptions, style });
-        const walletHTML = '';// render(Wallet);
-        
+        const { renderWallet } = await importScript();
+        const walletHTML = renderWallet({ cspNonce, checkoutSession });
+
         const pageHTML = `
             <!DOCTYPE html>
             <head></head>
-            <body data-nonce="${ cspNonce }" data-client-version="${ client.version }" data-render-version="${ render.version }">
-                <style nonce="${ cspNonce }">${ walletStyle }</style>
-                
+            <body data-nonce="${ cspNonce }" data-client-version="${ await getVersion() }" data-render-version="${ await getVersion() }">
                 <div id="wallet-container" class="wallet-container">${ walletHTML }</div>
                 ${ meta.getSDKLoader({ nonce: cspNonce }) }
-                <script nonce="${ cspNonce }">${ client.script }</script>
+                <script nonce="${ cspNonce }">${ await getScript() }</script>
                 <script nonce="${ cspNonce }">spb.setupWallet(${ safeJSON({ cspNonce, checkoutSession, buyerAccessToken }) })</script>
             </body>
         `;
