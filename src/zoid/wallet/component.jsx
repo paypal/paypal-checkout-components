@@ -2,6 +2,7 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
+import { node, dom } from 'jsx-pragmatic/src';
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken, getClientAccessToken, getUserAuthCode, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID, getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault, getMerchantID, getCSPNonce, getDebug } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, memoize, uniqueID } from 'belter/src';
@@ -10,6 +11,8 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import { getRefinedFundingEligibility, rememberFunding } from '@paypal/funding-components/src';
 
 import { type WalletProps } from './props';
+import { WalletPrerender } from './prerender';
+import { WalletContainer } from './container';
 
 export function getWalletComponent() : ZoidComponent<WalletProps> {
     return inlineMemoize(getWalletComponent, () => {
@@ -30,8 +33,16 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
 
             logger: getLogger(),
 
-            prerenderTemplate: () => {
-                return null;
+            containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
+                return (
+                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } props={ props } />
+                ).render(dom({ doc }));
+            },
+
+            prerenderTemplate: ({ props, doc }) => {
+                return (
+                    <WalletPrerender nonce={ props.nonce } />
+                ).render(dom({ doc }));
             },
 
             attributes: {
