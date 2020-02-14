@@ -2,11 +2,12 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken, getClientAccessToken, getUserAuthCode } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken, getClientAccessToken, getUserAuthCode, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID, getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault, getMerchantID, getCSPNonce, getDebug } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { inlineMemoize, memoize } from 'belter/src';
+import { inlineMemoize, memoize, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
+import { getRefinedFundingEligibility, rememberFunding } from '@paypal/funding-components/src';
 
 import { type WalletProps } from './props';
 
@@ -99,6 +100,135 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
 
                 onApprove: {
                     type: 'function'
+                },
+
+                locale: {
+                    type:       'object',
+                    queryParam: true,
+                    value:      getLocale
+                },
+
+                partnerAttributionID: {
+                    type:       'string',
+                    required:   false,
+                    value:     getPartnerAttributionID
+                },
+
+                correlationID: {
+                    type:       'string',
+                    required:   false,
+                    value:      getCorrelationID
+                },
+
+                sessionID: {
+                    type:       'string',
+                    value:      getSessionID,
+                    queryParam: true
+                },
+
+                walletSessionID: {
+                    type:       'string',
+                    value:      uniqueID,
+                    queryParam: true
+                },
+
+                env: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getEnv
+                },
+
+                stageHost: {
+                    type:       'string',
+                    value:      getStageHost,
+                    required:   false
+                },
+
+                apiStageHost: {
+                    type:       'string',
+                    value:      getAPIStageHost,
+                    required:   false
+                },
+
+                fundingEligibility: {
+                    type:          'object',
+                    value:         getRefinedFundingEligibility,
+                    queryParam:    true,
+                    serialization: 'base64'
+                },
+
+                platform: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getPlatform
+                },
+
+                remember: {
+                    type:  'function',
+                    value: () => {
+                        return (fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>) =>
+                            rememberFunding(fundingSources, { cookie: false });
+                    }
+                },
+
+                currency: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getCurrency
+                },
+
+                intent: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getIntent
+                },
+
+                buyerCountry: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    value:      getBuyerCountry
+                },
+
+                commit: {
+                    type:       'boolean',
+                    queryParam: true,
+                    value:      getCommit
+                },
+
+                vault: {
+                    type:       'boolean',
+                    queryParam: true,
+                    value:      getVault
+                },
+            
+                merchantID: {
+                    type:       'array',
+                    queryParam: true,
+                    value:      getMerchantID
+                },
+
+                csp: {
+                    type:     'object',
+                    required: false,
+                    value:    () => {
+                        return {
+                            nonce: getCSPNonce()
+                        };
+                    }
+                },
+            
+                getPageUrl: {
+                    type:  'function',
+                    value: () => {
+                        return () => window.location.href;
+                    }
+                },
+
+                debug: {
+                    type:       'boolean',
+                    value:      getDebug,
+                    queryParam: true
                 }
             }
         });
