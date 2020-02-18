@@ -91,7 +91,7 @@ export function BasicLabel({ i, logo, label, layout, multiple, period, locale: {
         return logo;
     }
 
-    const { Checkout, Pay, BuyNow, Installment, Subscribe } = componentContent[lang];
+    const { Checkout, Pay, BuyNow, Installment, Subscribe, Donate } = componentContent[lang];
 
     if (label === BUTTON_LABEL.CHECKOUT) {
         return <Checkout logo={ logo } />;
@@ -99,6 +99,10 @@ export function BasicLabel({ i, logo, label, layout, multiple, period, locale: {
 
     if (label === BUTTON_LABEL.SUBSCRIBE) {
         return <Subscribe logo={ logo } />;
+    }
+    
+    if (label === BUTTON_LABEL.DONATE) {
+        return <Donate logo={ logo } />;
     }
 
     if (label === BUTTON_LABEL.PAY) {
