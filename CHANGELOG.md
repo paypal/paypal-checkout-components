@@ -1,3 +1,13 @@
+## <small>5.0.80 (2020-02-19)</small>
+
+* Add additional wallet props ([d7ff243](http://github.paypal.com/paypal/paypal-checkout/commit/d7ff243))
+* Add risk data collector to wallet ([00630ca](http://github.paypal.com/paypal/paypal-checkout/commit/00630ca))
+* Add wallet container and prerender templates ([45ecbad](http://github.paypal.com/paypal/paypal-checkout/commit/45ecbad))
+* Export validateButtonProps ([09e65e3](http://github.paypal.com/paypal/paypal-checkout/commit/09e65e3))
+* Fix multiple button label issue ([46f9490](http://github.paypal.com/paypal/paypal-checkout/commit/46f9490))
+
+
+
 ## <small>5.0.79 (2020-02-12)</small>
 
 * Add auth params to wallet component ([7e75b42](http://github.paypal.com/paypal/paypal-checkout/commit/7e75b42))
