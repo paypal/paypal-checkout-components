@@ -3,6 +3,7 @@
 import { ENV, FUNDING, CARD } from '@paypal/sdk-constants';
 
 import { FNCLS, FRAUDNET_ID } from '../config';
+import { safeJSON } from '../lib';
 
 import type { FundingEligibility } from './fundingEligibility';
 
@@ -39,14 +40,14 @@ export function shouldRenderFraudnet({ fundingEligibility } : { fundingEligibili
 
 export function renderFraudnetScript({ id, cspNonce, env } : { id : string, cspNonce : string, env : $Values<typeof ENV> }) : string {
 
-    const fraudnetConfig = JSON.stringify({
+    const fraudnetConfig = {
         f: id,
         s: FRAUDNET_ID
-    });
+    };
 
     return `
         <script nonce="${ cspNonce }" type="application/json" id="fconfig" fncls="${ FNCLS }">
-            ${ fraudnetConfig }
+            ${ safeJSON(fraudnetConfig) }
         </script>
         <script nonce="${ cspNonce }" type="text/javascript" src="${ FRAUDNET_URL[env] }" async></script>
     `;

@@ -7,7 +7,7 @@ import type { ExpressRequest, ExpressResponse, LoggerType, CacheType } from '../
 import { startWatchers } from '../watchers';
 import { EVENT } from '../config';
 
-import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType, getLogBuffer } from './util';
+import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType, getLogBuffer, safeJSON } from './util';
 
 function getSDKMetaString(req : ExpressRequest) : string {
     const sdkMeta = req.query.sdkMeta || '';
@@ -60,7 +60,7 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
             try {
                 params = undotify(req.query);
             } catch (err) {
-                return clientErrorResponse(res, `Invalid params: ${ JSON.stringify(req.query) }`);
+                return clientErrorResponse(res, `Invalid params: ${ safeJSON(req.query) }`);
             }
 
             const sdkMeta = getSDKMetaString(req);
