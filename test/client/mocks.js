@@ -667,6 +667,103 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
     };
 }
 
+const mockScripts = {};
+
+export function mockScript({ src, expect = true, block = true } : { src : string, expect? : boolean, block? : boolean }) : { done : () => void, await : () => ZalgoPromise<HTMLElement> } {
+    const promise = new ZalgoPromise();
+    mockScripts[src] = { expect, block, promise };
+
+    return {
+        await: () => {
+            return promise;
+        },
+        done: () => {
+            
+            if (expect && (!mockScripts[src] || !mockScripts[src].created)) {
+                throw new Error(`Expected script with src ${ src } to have been created`);
+            }
+
+            delete mockScripts[src];
+        }
+    };
+}
+
+const createElement = document.createElement;
+// $FlowFixMe
+document.createElement = function mockCreateElement(name : string) : HTMLElement {
+    const el = createElement.apply(this, arguments);
+
+    if (name !== 'script') {
+        return el;
+    }
+
+    const setAttribute = el.setAttribute;
+    el.setAttribute = function mockSetAttribute(key : string, value : string) {
+        if (key === 'src' && mockScripts[value]) {
+            mockScripts[value].created = true;
+            const { block } = mockScripts[value];
+
+            if (block) {
+                setAttribute.call(this, 'type', 'mock/javascript');
+            }
+
+            setAttribute.apply(this, arguments);
+            mockScripts[value].promise.resolve(el);
+        }
+    };
+
+    const addEventListener = el.addEventListener;
+    el.addEventListener = function mockAddEventListener(eventName : string, handler : () => void) {
+        if (eventName === 'load') {
+            handler();
+            return;
+        }
+
+        addEventListener.apply(this, arguments);
+    };
+
+    return el;
+};
+
+export function mockFirebaseScripts() : { done : () => void, await : ZalgoPromise<$ReadOnlyArray<HTMLElement>> } {
+    loadFirebaseSDK.reset();
+
+    const mockfirebaseApp = mockScript({
+        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
+        expect: true,
+        block:  true
+    });
+
+    const mockfirebaseAuth = mockScript({
+        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
+        expect: true,
+        block:  true
+    });
+
+    const mockfirebaseDatabase = mockScript({
+        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js',
+        expect: true,
+        block:  true
+    });
+
+    return {
+        await: () => {
+            return ZalgoPromise.all([
+                mockfirebaseApp.await(),
+                mockfirebaseAuth.await(),
+                mockfirebaseDatabase.await()
+            ]);
+        },
+        done: () => {
+            delete window.firebase;
+            loadFirebaseSDK.reset();
+            mockfirebaseApp.done();
+            mockfirebaseAuth.done();
+            mockfirebaseDatabase.done();
+        }
+    };
+}
+
 export const MOCK_FIREBASE_CONFIG = {
     apiKey:            'AIzaSyAeyii31bJYddKqSHrkyiRKU3EHCvh-owM',
     authDomain:        'testmessaging-63f5d.firebaseapp.com',
@@ -688,6 +785,7 @@ type MockFirebase = {|
 let firebaseOffline = false;
 
 function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) : MockFirebase {
+    const firebaseScriptsMock = mockFirebaseScripts();
 
     let hasCalls = false;
 
@@ -710,63 +808,66 @@ function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) :
         }
     };
 
-    window.firebase = {
-        initializeApp: () => {
-            // pass
-        },
-        auth: () => {
-            return {
-                signInWithCustomToken: () => {
-                    return ZalgoPromise.resolve();
-                }
-            };
-        },
-        database: () => {
-            return {
-                ref: (path) => {
-                    return {
-                        set: (data) => {
-                            if (firebaseOffline) {
-                                return;
-                            }
-
-                            hasCalls = true;
-                            const { namespace } = splitPath(path);
-                            send(path, data);
-                            handler({
-                                data: messages[namespace]
-                            });
-
-                        },
-                        on: (item, onHandler) => {
-                            listeners[path] = listeners[path] || [];
-                            listeners[path].push((...args) => {
-                                if (!firebaseOffline) {
-                                    onHandler(...args);
+    firebaseScriptsMock.await().then(() => {
+        window.firebase = {
+            initializeApp: () => {
+                // pass
+            },
+            auth: () => {
+                return {
+                    signInWithCustomToken: () => {
+                        return ZalgoPromise.resolve();
+                    }
+                };
+            },
+            database: () => {
+                return {
+                    ref: (path) => {
+                        return {
+                            set: (data) => {
+                                if (firebaseOffline) {
+                                    return;
                                 }
-                            });
-                        }
-                    };
-                },
-                goOffline: () => {
-                    firebaseOffline = true;
-                },
-                goOnline: () => {
-                    firebaseOffline = false;
-                }
-            };
-        }
-    };
 
-    window.firebase.database.INTERNAL = {
-        forceWebSockets: () => {
-            // pass
-        }
-    };
+                                hasCalls = true;
+                                const { namespace } = splitPath(path);
+                                send(path, data);
+                                handler({
+                                    data: messages[namespace]
+                                });
+
+                            },
+                            on: (item, onHandler) => {
+                                listeners[path] = listeners[path] || [];
+                                listeners[path].push((...args) => {
+                                    if (!firebaseOffline) {
+                                        onHandler(...args);
+                                    }
+                                });
+                            }
+                        };
+                    },
+                    goOffline: () => {
+                        firebaseOffline = true;
+                    },
+                    goOnline: () => {
+                        firebaseOffline = false;
+                    }
+                };
+            }
+        };
+
+        window.firebase.database.INTERNAL = {
+            forceWebSockets: () => {
+                // pass
+            }
+        };
+    });
 
     const expect = () => {
         return {
             done: () => {
+                firebaseScriptsMock.done();
                 if (!hasCalls) {
                     throw new Error(`Expected calls to firebase`);
                 }
@@ -1036,89 +1137,6 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
 
     return {
         expect, onApprove, onCancel, onError, fallback
-    };
-}
-
-
-const mockScripts = {};
-
-export function mockScript({ src, expect = true, block = true } : { src : string, expect? : boolean, block? : boolean }) : { done : () => void } {
-    mockScripts[src] = { expect, block };
-
-    return {
-        done: () => {
-            if (expect && !mockScripts[src].created) {
-                throw new Error(`Expected script with src ${ src } to have been created`);
-            }
-
-            delete mockScripts[src];
-        }
-    };
-}
-
-const createElement = document.createElement;
-// $FlowFixMe
-document.createElement = function mockCreateElement(name : string) : HTMLElement {
-    const el = createElement.apply(this, arguments);
-
-    if (name !== 'script') {
-        return el;
-    }
-
-    const setAttribute = el.setAttribute;
-    el.setAttribute = function mockSetAttribute(key : string, value : string) {
-        if (key === 'src' && mockScripts[value]) {
-            mockScripts[value].created = true;
-            const { block } = mockScripts[value];
-
-            if (block) {
-                setAttribute.call(this, 'type', 'mock/javascript');
-            }
-
-            setAttribute.apply(this, arguments);
-        }
-    };
-
-    const addEventListener = el.addEventListener;
-    el.addEventListener = function mockAddEventListener(eventName : string, handler : () => void) {
-        if (eventName === 'load') {
-            handler();
-            return;
-        }
-
-        addEventListener.apply(this, arguments);
-    };
-
-    return el;
-};
-
-export function mockFirebaseScripts() : { done : () => void } {
-    loadFirebaseSDK.reset();
-
-    const mockfirebaseApp = mockScript({
-        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',
-        expect: true,
-        block:  true
-    });
-
-    const mockfirebaseAuth = mockScript({
-        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js',
-        expect: true,
-        block:  true
-    });
-
-    const mockfirebaseDatabase = mockScript({
-        src:    'https://www.paypalobjects.com/checkout/js/lib/firebase-database.js',
-        expect: true,
-        block:  true
-    });
-
-    return {
-        done: () => {
-            mockfirebaseApp.done();
-            mockfirebaseAuth.done();
-            mockfirebaseDatabase.done();
-        }
     };
 }
 

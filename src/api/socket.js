@@ -439,11 +439,15 @@ export type FirebaseSocketOptions = {|
 |};
 
 export const loadFirebaseSDK = memoize((config) => {
-    return loadScript(FIREBASE_SCRIPTS.APP).then(() => {
-        return ZalgoPromise.all([
-            loadScript(FIREBASE_SCRIPTS.AUTH),
-            loadScript(FIREBASE_SCRIPTS.DATABASE)
-        ]);
+    return ZalgoPromise.try(() => {
+        if (!window.firebase || !window.firebase.auth || !window.firebase.database) {
+            return loadScript(FIREBASE_SCRIPTS.APP).then(() => {
+                return ZalgoPromise.all([
+                    loadScript(FIREBASE_SCRIPTS.AUTH),
+                    loadScript(FIREBASE_SCRIPTS.DATABASE)
+                ]);
+            });
+        }
     }).then(() => {
         const firebase = window.firebase;
 

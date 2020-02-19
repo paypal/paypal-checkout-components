@@ -1229,49 +1229,10 @@ window.spb = function(modules) {
             });
         }));
     }
-    function enableLoadingSpinner(button) {
-        button.classList.add("paypal-button-loading");
-    }
-    function disableLoadingSpinner(button) {
-        button.classList.remove("paypal-button-loading");
-    }
     function getNonce() {
         var nonce = "";
         document.body && (nonce = document.body.getAttribute("data-nonce") || "");
         return nonce;
-    }
-    function buildXOnInitData() {
-        return {};
-    }
-    function buildXOnInitActions(set) {
-        return {
-            enable: function() {
-                return promise_ZalgoPromise.try((function() {
-                    return set(!0);
-                }));
-            },
-            disable: function() {
-                return promise_ZalgoPromise.try((function() {
-                    return set(!1);
-                }));
-            }
-        };
-    }
-    function getOnInit(xprops) {
-        var onInit = xprops.onInit;
-        return function() {
-            var enabled = !0;
-            return {
-                initPromise: promise_ZalgoPromise.try((function() {
-                    if (onInit) return onInit({}, buildXOnInitActions((function(val) {
-                        enabled = val;
-                    })));
-                })),
-                isEnabled: function() {
-                    return enabled;
-                }
-            };
-        };
     }
     function callRestAPI(_ref) {
         var _extends2;
@@ -1412,8 +1373,10 @@ window.spb = function(modules) {
         }));
     }
     var loadFirebaseSDK = memoize((function(config) {
-        return loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-app.js").then((function() {
-            return promise_ZalgoPromise.all([ loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js"), loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-database.js") ]);
+        return promise_ZalgoPromise.try((function() {
+            if (!window.firebase || !window.firebase.auth || !window.firebase.database) return loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-app.js").then((function() {
+                return promise_ZalgoPromise.all([ loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js"), loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-database.js") ]);
+            }));
         })).then((function() {
             var firebase = window.firebase;
             if (!firebase) throw new Error("Firebase failed to load");
@@ -1421,165 +1384,95 @@ window.spb = function(modules) {
             return firebase;
         }));
     }));
-    function buildXCreateOrderData() {
-        return {};
-    }
-    function buildOrderActions(_ref) {
-        var facilitatorAccessToken = _ref.facilitatorAccessToken, intent = _ref.intent, currency = _ref.currency, merchantID = _ref.merchantID, partnerAttributionID = _ref.partnerAttributionID;
-        return {
-            create: function(data) {
-                var order = _extends({}, data);
-                if (order.intent && order.intent.toLowerCase() !== intent) throw new Error("Unexpected intent: " + order.intent + " passed to order.create. Please ensure you are passing /sdk/js?intent=" + order.intent.toLowerCase() + " in the paypal script tag.");
-                (order = _extends({}, order, {
-                    intent: intent.toUpperCase()
-                })).purchase_units = order.purchase_units.map((function(unit) {
-                    if (unit.amount.currency_code && unit.amount.currency_code !== currency) throw new Error("Unexpected currency: " + unit.amount.currency_code + " passed to order.create. Please ensure you are passing /sdk/js?currency=" + unit.amount.currency_code + " in the paypal script tag.");
-                    var payee = unit.payee;
-                    if (payee && merchantID && merchantID.length) {
-                        if (!merchantID[0]) throw new Error("Pass merchant-id=XYZ in the paypal script tag.");
-                        if (payee.merchant_id && payee.merchant_id !== merchantID[0]) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
-                    }
-                    merchantID && (payee = _extends({}, payee, {
-                        merchant_id: merchantID[0]
-                    }));
-                    return _extends({}, unit, {
-                        payee: payee,
-                        amount: _extends({}, unit.amount, {
-                            currency_code: currency
-                        })
-                    });
-                }));
-                order.application_context = order.application_context || {};
-                return function(order, _ref) {
-                    var _headers;
-                    var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID;
-                    getLogger().info("rest_api_create_order_id");
-                    return callRestAPI({
-                        accessToken: facilitatorAccessToken,
-                        method: "post",
-                        url: "" + ORDERS_API_URL,
-                        data: order,
-                        headers: (_headers = {}, _headers["paypal-partner-attribution-id"] = partnerAttributionID || "", 
-                        _headers)
-                    }).then((function(body) {
-                        var _getLogger$track;
-                        var orderID = body && body.id;
-                        if (!orderID) throw new Error("Order Api response error:\n\n" + JSON.stringify(body, null, 4));
-                        getLogger().track(((_getLogger$track = {}).transition_name = "process_create_order", 
-                        _getLogger$track.context_type = "EC-Token", _getLogger$track.token = orderID, _getLogger$track.context_id = orderID, 
-                        _getLogger$track));
-                        return orderID;
-                    }));
-                }(order, {
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    partnerAttributionID: partnerAttributionID,
-                    forceRestAPI: !1
-                });
-            }
-        };
-    }
-    function buildPaymentActions(_ref2) {
-        var facilitatorAccessToken = _ref2.facilitatorAccessToken, intent = _ref2.intent, currency = _ref2.currency, merchantID = _ref2.merchantID, partnerAttributionID = _ref2.partnerAttributionID;
-        return {
-            create: function(data) {
-                var payment = _extends({}, data);
-                var expectedIntent = "capture" === intent ? "sale" : intent;
-                if (payment.intent && payment.intent !== expectedIntent) throw new Error("Unexpected intent: " + payment.intent + " passed to order.create. Expected " + expectedIntent);
-                (payment = _extends({}, payment, {
-                    intent: expectedIntent
-                })).transactions = payment.transactions.map((function(transaction) {
-                    if (transaction.amount.currency && transaction.amount.currency !== currency) throw new Error("Unexpected currency: " + transaction.amount.currency + " passed to order.create. Please ensure you are passing /sdk/js?currency=" + transaction.amount.currency + " in the paypal script tag.");
-                    var payee = transaction.payee;
-                    if (payee && merchantID && merchantID.length) {
-                        if (!merchantID[0]) throw new Error("Pass merchant-id=XYZ in the paypal script tag.");
-                        if (payee.merchant_id && payee.merchant_id !== merchantID[0]) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
-                    }
-                    merchantID && (payee = _extends({}, payee, {
-                        merchant_id: merchantID[0]
-                    }));
-                    return _extends({}, transaction, {
-                        payee: payee,
-                        amount: _extends({}, transaction.amount, {
-                            currency: currency
-                        })
-                    });
-                }));
-                payment.redirect_urls = payment.redirect_urls || {};
-                payment.redirect_urls.return_url = payment.redirect_urls.return_url || getDomain() + "/checkoutnow/error";
-                payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || getDomain() + "/checkoutnow/error";
-                payment.payer = payment.payer || {};
-                payment.payer.payment_method = payment.payer.payment_method || "paypal";
-                return function(payment, _ref3) {
-                    return function(payment, _ref) {
-                        var _headers;
-                        var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID;
-                        getLogger().info("rest_api_create_payment_id");
-                        return callRestAPI({
-                            accessToken: facilitatorAccessToken,
-                            method: "post",
-                            url: "/v1/payments/payment",
-                            data: payment,
-                            headers: (_headers = {}, _headers["paypal-partner-attribution-id"] = partnerAttributionID || "", 
-                            _headers)
-                        }).then((function(body) {
-                            var _getLogger$track;
-                            var paymentID = body && body.id;
-                            if (!paymentID) throw new Error("Payment Api response error:\n\n" + JSON.stringify(body, null, 4));
-                            getLogger().track(((_getLogger$track = {}).transition_name = "process_create_payment", 
-                            _getLogger$track.context_type = "Pay-ID", _getLogger$track.token = paymentID, _getLogger$track.context_id = paymentID, 
-                            _getLogger$track));
-                            return body;
-                        }));
-                    }(payment, {
-                        facilitatorAccessToken: _ref3.facilitatorAccessToken,
-                        partnerAttributionID: _ref3.partnerAttributionID
-                    }).then((function(res) {
-                        if (res.links && res.links.length) for (var i = 0; i < res.links.length; i++) if ("REDIRECT" === res.links[i].method && "approval_url" === res.links[i].rel) {
-                            var match = res.links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
-                            if (match) return match[1];
-                        }
-                        throw new Error("Could not find payment token");
-                    }));
-                }(payment, {
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    partnerAttributionID: partnerAttributionID
-                });
-            }
-        };
-    }
-    function buildXCreateOrderActions(_ref3) {
-        var facilitatorAccessToken = _ref3.facilitatorAccessToken, intent = _ref3.intent, currency = _ref3.currency, merchantID = _ref3.merchantID, partnerAttributionID = _ref3.partnerAttributionID;
-        var order = buildOrderActions({
-            facilitatorAccessToken: facilitatorAccessToken,
-            intent: intent,
-            currency: currency,
-            merchantID: merchantID,
-            partnerAttributionID: partnerAttributionID
-        });
-        buildPaymentActions({
-            facilitatorAccessToken: facilitatorAccessToken,
-            intent: intent,
-            currency: currency,
-            merchantID: merchantID,
-            partnerAttributionID: partnerAttributionID
-        });
-        return {
-            order: order,
-            payment: null
-        };
-    }
-    function getCreateOrder(xprops, _ref4) {
-        var createBillingAgreement = _ref4.createBillingAgreement, createSubscription = _ref4.createSubscription;
-        var createOrder = xprops.createOrder, buttonSessionID = xprops.buttonSessionID, currency = xprops.currency;
+    function getCreateOrder(_ref4, _ref5) {
+        var createOrder = _ref4.createOrder, currency = _ref4.currency;
+        var createBillingAgreement = _ref5.createBillingAgreement, createSubscription = _ref5.createSubscription;
         var data = {};
-        var actions = buildXCreateOrderActions({
-            facilitatorAccessToken: _ref4.facilitatorAccessToken,
-            intent: xprops.intent,
+        var actions = function(_ref3) {
+            var facilitatorAccessToken = _ref3.facilitatorAccessToken, intent = _ref3.intent, currency = _ref3.currency, merchantID = _ref3.merchantID, partnerAttributionID = _ref3.partnerAttributionID;
+            var order = function(_ref) {
+                var facilitatorAccessToken = _ref.facilitatorAccessToken, intent = _ref.intent, currency = _ref.currency, merchantID = _ref.merchantID, partnerAttributionID = _ref.partnerAttributionID;
+                return {
+                    create: function(data) {
+                        var order = _extends({}, data);
+                        if (order.intent && order.intent.toLowerCase() !== intent) throw new Error("Unexpected intent: " + order.intent + " passed to order.create. Please ensure you are passing /sdk/js?intent=" + order.intent.toLowerCase() + " in the paypal script tag.");
+                        (order = _extends({}, order, {
+                            intent: intent.toUpperCase()
+                        })).purchase_units = order.purchase_units.map((function(unit) {
+                            if (unit.amount.currency_code && unit.amount.currency_code !== currency) throw new Error("Unexpected currency: " + unit.amount.currency_code + " passed to order.create. Please ensure you are passing /sdk/js?currency=" + unit.amount.currency_code + " in the paypal script tag.");
+                            var payee = unit.payee;
+                            if (payee && merchantID && merchantID.length) {
+                                if (!merchantID[0]) throw new Error("Pass merchant-id=XYZ in the paypal script tag.");
+                                if (payee.merchant_id && payee.merchant_id !== merchantID[0]) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
+                            }
+                            merchantID && (payee = _extends({}, payee, {
+                                merchant_id: merchantID[0]
+                            }));
+                            return _extends({}, unit, {
+                                payee: payee,
+                                amount: _extends({}, unit.amount, {
+                                    currency_code: currency
+                                })
+                            });
+                        }));
+                        order.application_context = order.application_context || {};
+                        return function(order, _ref) {
+                            var _headers;
+                            var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID;
+                            getLogger().info("rest_api_create_order_id");
+                            return callRestAPI({
+                                accessToken: facilitatorAccessToken,
+                                method: "post",
+                                url: "" + ORDERS_API_URL,
+                                data: order,
+                                headers: (_headers = {}, _headers["paypal-partner-attribution-id"] = partnerAttributionID || "", 
+                                _headers)
+                            }).then((function(body) {
+                                var _getLogger$track;
+                                var orderID = body && body.id;
+                                if (!orderID) throw new Error("Order Api response error:\n\n" + JSON.stringify(body, null, 4));
+                                getLogger().track(((_getLogger$track = {}).transition_name = "process_create_order", 
+                                _getLogger$track.context_type = "EC-Token", _getLogger$track.token = orderID, _getLogger$track.context_id = orderID, 
+                                _getLogger$track));
+                                return orderID;
+                            }));
+                        }(order, {
+                            facilitatorAccessToken: facilitatorAccessToken,
+                            partnerAttributionID: partnerAttributionID,
+                            forceRestAPI: !1
+                        });
+                    }
+                };
+            }({
+                facilitatorAccessToken: facilitatorAccessToken,
+                intent: intent,
+                currency: currency,
+                merchantID: merchantID,
+                partnerAttributionID: partnerAttributionID
+            });
+            !function(_ref2) {
+                var facilitatorAccessToken = _ref2.facilitatorAccessToken, intent = _ref2.intent, currency = _ref2.currency, merchantID = _ref2.merchantID, partnerAttributionID = _ref2.partnerAttributionID;
+            }({
+                facilitatorAccessToken: facilitatorAccessToken,
+                intent: intent,
+                currency: currency,
+                merchantID: merchantID,
+                partnerAttributionID: partnerAttributionID
+            });
+            return {
+                order: order,
+                payment: null
+            };
+        }({
+            facilitatorAccessToken: _ref5.facilitatorAccessToken,
+            intent: _ref4.intent,
             currency: currency,
-            merchantID: xprops.merchantID,
-            partnerAttributionID: xprops.partnerAttributionID
+            merchantID: _ref4.merchantID,
+            partnerAttributionID: _ref4.partnerAttributionID
         });
         return memoize((function() {
+            var queryOrderID = parseQuery(window.location.search.slice(1)).orderID;
+            if (queryOrderID) return promise_ZalgoPromise.resolve(queryOrderID);
             var startTime = Date.now();
             return promise_ZalgoPromise.try((function() {
                 return createBillingAgreement ? createBillingAgreement().then(billingTokenToOrderID) : createSubscription ? createSubscription().then(subscriptionIdToCartId) : createOrder ? createOrder(data, actions) : actions.order.create({
@@ -1597,25 +1490,25 @@ window.spb = function(modules) {
                 var duration = Date.now() - startTime;
                 getLogger().track((_getLogger$track = {}, _getLogger$track.state_name = "smart_button", 
                 _getLogger$track.transition_name = "process_receive_order", _getLogger$track.context_type = "EC-Token", 
-                _getLogger$track.context_id = orderID, _getLogger$track.token = orderID, _getLogger$track.button_session_id = buttonSessionID, 
-                _getLogger$track.response_duration = duration.toString(), _getLogger$track)).flush();
+                _getLogger$track.context_id = orderID, _getLogger$track.token = orderID, _getLogger$track.response_duration = duration.toString(), 
+                _getLogger$track)).flush();
                 return orderID;
             }));
         }));
     }
-    function getOnApprove(xprops, _ref4) {
-        var facilitatorAccessToken = _ref4.facilitatorAccessToken, createOrder = _ref4.createOrder;
-        var intent = xprops.intent, _xprops$onApprove = xprops.onApprove, onApprove = void 0 === _xprops$onApprove ? function(intent) {
+    function getOnApprove(_ref4, _ref5) {
+        var intent = _ref4.intent, _ref4$onApprove = _ref4.onApprove, onApprove = void 0 === _ref4$onApprove ? function(intent) {
             return function(data, actions) {
                 if ("capture" === intent) return actions.order.capture().then(src_util_noop);
                 if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                 throw new Error("Unsupported intent for auto-capture: " + intent);
             };
-        }(intent) : _xprops$onApprove, partnerAttributionID = xprops.partnerAttributionID, onError = xprops.onError, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
+        }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
+        var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
         if (!onApprove) throw new Error("Expected onApprove");
-        return memoize((function(_ref5, _ref6) {
-            var payerID = _ref5.payerID, paymentID = _ref5.paymentID, billingToken = _ref5.billingToken, subscriptionID = _ref5.subscriptionID, buyerAccessToken = _ref5.buyerAccessToken, _ref5$forceRestAPI = _ref5.forceRestAPI, forceRestAPI = void 0 === _ref5$forceRestAPI ? upgradeLSAT : _ref5$forceRestAPI;
-            var restart = _ref6.restart;
+        return memoize((function(_ref6, _ref7) {
+            var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
+            var restart = _ref7.restart;
             return promise_ZalgoPromise.try((function() {
                 if (upgradeLSAT) return createOrder().then((function(orderID) {
                     return function(facilitatorAccessToken, _ref2) {
@@ -1876,87 +1769,77 @@ window.spb = function(modules) {
             }));
         }));
     }
-    function buildXOnCancelData(_ref) {
-        return {
-            orderID: _ref.orderID
-        };
-    }
-    function buildXOnCancelActions() {
-        return {
-            redirect: function(url) {
-                if (!url) throw new Error("Expected redirect url");
-                if (-1 === url.indexOf("://")) {
-                    getLogger().warn("redir_url_non_scheme", {
-                        url: url
-                    }).flush();
-                    throw new Error("Invalid redirect url: " + url + " - must be fully qualified url");
-                }
-                url.match(/^https?:\/\//) || getLogger().warn("redir_url_non_http", {
-                    url: url
-                }).flush();
-                return dom_redirect(url, window.top);
-            }
-        };
-    }
-    function getOnCancel(xprops, _ref2) {
-        var createOrder = _ref2.createOrder;
-        var _xprops$onCancel = xprops.onCancel, onCancel = void 0 === _xprops$onCancel ? src_util_noop : _xprops$onCancel, onError = xprops.onError;
+    function getOnCancel(_ref2, _ref3) {
+        var _ref2$onCancel = _ref2.onCancel, onCancel = void 0 === _ref2$onCancel ? promiseNoop : _ref2$onCancel, onError = _ref2.onError;
+        var createOrder = _ref3.createOrder;
         return memoize((function() {
             return createOrder().then((function(orderID) {
                 var _getLogger$info$track;
                 getLogger().info("button_cancel").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_cancel", 
                 _getLogger$info$track.token = orderID, _getLogger$info$track)).flush();
-                return onCancel(buildXOnCancelData({
-                    orderID: orderID
-                }), buildXOnCancelActions());
+                return onCancel({
+                    orderID: {
+                        orderID: orderID
+                    }.orderID
+                }, {
+                    redirect: function(url) {
+                        if (!url) throw new Error("Expected redirect url");
+                        if (-1 === url.indexOf("://")) {
+                            getLogger().warn("redir_url_non_scheme", {
+                                url: url
+                            }).flush();
+                            throw new Error("Invalid redirect url: " + url + " - must be fully qualified url");
+                        }
+                        url.match(/^https?:\/\//) || getLogger().warn("redir_url_non_http", {
+                            url: url
+                        }).flush();
+                        return dom_redirect(url, window.top);
+                    }
+                });
             })).catch((function(err) {
                 return onError(err);
             }));
         }));
     }
-    function buildXOnShippingChangeData(data) {
-        return data;
-    }
-    function buildXShippingChangeActions(_ref) {
-        var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID;
-        return {
-            resolve: function() {
-                return promise_ZalgoPromise.resolve();
-            },
-            reject: _ref.actions.reject || function() {
-                throw new Error("Missing reject action callback");
-            },
-            order: {
-                patch: function(data) {
-                    void 0 === data && (data = {});
-                    return patchOrder(orderID, data, {
-                        facilitatorAccessToken: facilitatorAccessToken,
-                        buyerAccessToken: buyerAccessToken,
-                        partnerAttributionID: partnerAttributionID
-                    }).catch((function() {
-                        throw new Error("Order could not be patched");
-                    }));
-                }
-            }
-        };
-    }
-    function getOnShippingChange(xprops, _ref2) {
-        var facilitatorAccessToken = _ref2.facilitatorAccessToken, createOrder = _ref2.createOrder;
-        var onShippingChange = xprops.onShippingChange, partnerAttributionID = xprops.partnerAttributionID;
-        if (onShippingChange) return function(_ref3, actions) {
-            var buyerAccessToken = _ref3.buyerAccessToken, data = function(source, excluded) {
+    function getOnShippingChange(_ref2, _ref3) {
+        var onShippingChange = _ref2.onShippingChange, partnerAttributionID = _ref2.partnerAttributionID;
+        var facilitatorAccessToken = _ref3.facilitatorAccessToken, createOrder = _ref3.createOrder;
+        if (onShippingChange) return function(_ref4, actions) {
+            var buyerAccessToken = _ref4.buyerAccessToken, data = function(source, excluded) {
                 if (null == source) return {};
                 var target = {};
                 var sourceKeys = Object.keys(source);
                 var key, i;
                 for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
                 return target;
-            }(_ref3, [ "buyerAccessToken" ]);
+            }(_ref4, [ "buyerAccessToken" ]);
             return createOrder().then((function(orderID) {
                 var _getLogger$info$track;
                 getLogger().info("button_shipping_change").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_shipping_change", 
                 _getLogger$info$track.token = orderID, _getLogger$info$track)).flush();
-                return onShippingChange(data, buildXShippingChangeActions({
+                return onShippingChange(data, function(_ref) {
+                    var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID;
+                    return {
+                        resolve: function() {
+                            return promise_ZalgoPromise.resolve();
+                        },
+                        reject: _ref.actions.reject || function() {
+                            throw new Error("Missing reject action callback");
+                        },
+                        order: {
+                            patch: function(data) {
+                                void 0 === data && (data = {});
+                                return patchOrder(orderID, data, {
+                                    facilitatorAccessToken: facilitatorAccessToken,
+                                    buyerAccessToken: buyerAccessToken,
+                                    partnerAttributionID: partnerAttributionID
+                                }).catch((function() {
+                                    throw new Error("Order could not be patched");
+                                }));
+                            }
+                        }
+                    };
+                }({
                     orderID: orderID,
                     facilitatorAccessToken: facilitatorAccessToken,
                     buyerAccessToken: buyerAccessToken,
@@ -1966,131 +1849,67 @@ window.spb = function(modules) {
             }));
         };
     }
-    var CLICK_VALID = {
-        VALID: !0,
-        INVALID: !1
-    };
-    function buildXOnClickData(_ref) {
-        return {
-            fundingSource: _ref.fundingSource
-        };
-    }
-    function buildXOnClickActions() {
-        return {
-            resolve: function() {
-                return promise_ZalgoPromise.try((function() {
-                    return CLICK_VALID.VALID;
-                }));
-            },
-            reject: function() {
-                return promise_ZalgoPromise.try((function() {
-                    return CLICK_VALID.INVALID;
-                }));
-            }
-        };
-    }
-    function getOnClick(xprops) {
-        var onClick = xprops.onClick;
-        if (onClick) return memoize((function(_ref2) {
-            return onClick(buildXOnClickData({
-                fundingSource: _ref2.fundingSource
-            }), buildXOnClickActions()).then((function(valid) {
-                return valid !== CLICK_VALID.INVALID;
-            }));
-        }));
-    }
-    function buildXCreateBillingAgreementData() {
-        return {};
-    }
-    function buildXCreateBillingAgreementActions() {
-        return {};
-    }
-    function getCreateBillingAgreement(xprops) {
-        var createBillingAgreement = xprops.createBillingAgreement;
-        if (createBillingAgreement) return function() {
-            return createBillingAgreement({}, {}).then((function(billingToken) {
-                if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
-                return billingToken;
-            }));
-        };
-    }
-    function buildXCreateSubscriptionData() {
-        return {};
-    }
-    function buildXCreateSubscriptionActions(_ref) {
-        var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID;
-        return {
-            subscription: {
-                create: function(data) {
-                    return function(accessToken, subscriptionPayload, _ref) {
-                        var partnerAttributionID = _ref.partnerAttributionID;
-                        getLogger().info("rest_api_create_subscription_id");
-                        if (!accessToken) throw new Error("Access token not passed");
-                        if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
-                        return request({
-                            method: "post",
-                            url: "/v1/billing/subscriptions",
-                            headers: {
-                                Authorization: "Bearer " + accessToken,
-                                "PayPal-Partner-Attribution-Id": partnerAttributionID
-                            },
-                            json: subscriptionPayload
-                        }).then((function(_ref2) {
-                            var body = _ref2.body;
-                            if (!body || !body.id) throw new Error("Create Subscription Api response error:\n\n" + JSON.stringify(body, null, 4));
-                            return body.id;
-                        }));
-                    }(facilitatorAccessToken, data, {
-                        partnerAttributionID: partnerAttributionID
-                    });
-                },
-                revise: function(subscriptionID, data) {
-                    return function(accessToken, subscriptionID, subscriptionPayload, _ref3) {
-                        var partnerAttributionID = _ref3.partnerAttributionID;
-                        getLogger().info("rest_api_create_subscription_id");
-                        if (!accessToken) throw new Error("Access token not passed");
-                        if (!subscriptionID) throw new Error("Expected subscription id to be passed as first argument to revise subscription api");
-                        if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
-                        return request({
-                            method: "post",
-                            url: "/v1/billing/subscriptions/" + subscriptionID + "/revise",
-                            headers: {
-                                Authorization: "Bearer " + accessToken,
-                                "PayPal-Partner-Attribution-Id": partnerAttributionID
-                            },
-                            json: subscriptionPayload
-                        }).then((function(_ref4) {
-                            var status = _ref4.status;
-                            if (200 !== status) throw new Error("Revise Subscription Api HTTP-" + status + " response: error:\n\n" + JSON.stringify(_ref4.body, null, 4));
-                            return subscriptionID;
-                        }));
-                    }(facilitatorAccessToken, subscriptionID, data, {
-                        partnerAttributionID: partnerAttributionID
-                    });
-                }
-            }
-        };
-    }
-    function getCreateSubscription(xprops, _ref2) {
-        var facilitatorAccessToken = _ref2.facilitatorAccessToken;
-        var createSubscriptionFunc = xprops.createSubscription, partnerAttributionID = xprops.partnerAttributionID;
-        if (createSubscriptionFunc) return function() {
-            return createSubscriptionFunc({}, buildXCreateSubscriptionActions({
-                facilitatorAccessToken: facilitatorAccessToken,
-                partnerAttributionID: partnerAttributionID
-            })).then((function(subscriptionID) {
-                if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
-                return subscriptionID;
-            }));
-        };
-    }
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken;
         var xprops = window.xprops;
-        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, correlationID = xprops.correlationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableStandardCardFields = xprops.enableStandardCardFields, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, currency = xprops.currency;
-        var onInit = getOnInit(xprops);
+        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, correlationID = xprops.correlationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableStandardCardFields = xprops.enableStandardCardFields, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, currency = xprops.currency, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
+        var onInit = function(_ref) {
+            var onInit = _ref.onInit;
+            return function() {
+                var enabled = !0;
+                return {
+                    initPromise: promise_ZalgoPromise.try((function() {
+                        if (onInit) return onInit({}, (set = function(val) {
+                            enabled = val;
+                        }, {
+                            enable: function() {
+                                return promise_ZalgoPromise.try((function() {
+                                    return set(!0);
+                                }));
+                            },
+                            disable: function() {
+                                return promise_ZalgoPromise.try((function() {
+                                    return set(!1);
+                                }));
+                            }
+                        }));
+                        var set;
+                    })),
+                    isEnabled: function() {
+                        return enabled;
+                    }
+                };
+            };
+        }({
+            onInit: xprops.onInit
+        });
         var merchantDomain = "function" == typeof getParentDomain ? getParentDomain() : "unknown";
-        var onClick = getOnClick(xprops);
+        var onClick = function(_ref2) {
+            var onClick = _ref2.onClick;
+            if (onClick) return memoize((function(_ref3) {
+                return onClick((_ref = {
+                    fundingSource: _ref3.fundingSource
+                }, {
+                    fundingSource: _ref.fundingSource
+                }), {
+                    resolve: function() {
+                        return promise_ZalgoPromise.try((function() {
+                            return !0;
+                        }));
+                    },
+                    reject: function() {
+                        return promise_ZalgoPromise.try((function() {
+                            return !1;
+                        }));
+                    }
+                }).then((function(valid) {
+                    return !1 !== valid;
+                }));
+                var _ref;
+            }));
+        }({
+            onClick: xprops.onClick
+        });
         if (xprops.createBillingAgreement) {
             if (xprops.createOrder) throw new Error("Do not pass both createBillingAgreement and createOrder");
             if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createBillingAgreement");
@@ -2100,11 +1919,95 @@ window.spb = function(modules) {
             if (xprops.createOrder) throw new Error("Do not pass both createSubscription and createBillingAgreement");
             if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createSubscription");
         }
-        var createBillingAgreement = getCreateBillingAgreement(xprops);
-        var createSubscription = getCreateSubscription(xprops, {
+        var createBillingAgreement = function(_ref) {
+            var createBillingAgreement = _ref.createBillingAgreement;
+            if (createBillingAgreement) return function() {
+                return createBillingAgreement({}, {}).then((function(billingToken) {
+                    if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
+                    return billingToken;
+                }));
+            };
+        }({
+            createBillingAgreement: xprops.createBillingAgreement
+        });
+        var createSubscription = function(_ref2, _ref3) {
+            var createSubscription = _ref2.createSubscription, partnerAttributionID = _ref2.partnerAttributionID;
+            var facilitatorAccessToken = _ref3.facilitatorAccessToken;
+            if (createSubscription) return function() {
+                return createSubscription({}, function(_ref) {
+                    var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID;
+                    return {
+                        subscription: {
+                            create: function(data) {
+                                return function(accessToken, subscriptionPayload, _ref) {
+                                    var partnerAttributionID = _ref.partnerAttributionID;
+                                    getLogger().info("rest_api_create_subscription_id");
+                                    if (!accessToken) throw new Error("Access token not passed");
+                                    if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
+                                    return request({
+                                        method: "post",
+                                        url: "/v1/billing/subscriptions",
+                                        headers: {
+                                            Authorization: "Bearer " + accessToken,
+                                            "PayPal-Partner-Attribution-Id": partnerAttributionID
+                                        },
+                                        json: subscriptionPayload
+                                    }).then((function(_ref2) {
+                                        var body = _ref2.body;
+                                        if (!body || !body.id) throw new Error("Create Subscription Api response error:\n\n" + JSON.stringify(body, null, 4));
+                                        return body.id;
+                                    }));
+                                }(facilitatorAccessToken, data, {
+                                    partnerAttributionID: partnerAttributionID
+                                });
+                            },
+                            revise: function(subscriptionID, data) {
+                                return function(accessToken, subscriptionID, subscriptionPayload, _ref3) {
+                                    var partnerAttributionID = _ref3.partnerAttributionID;
+                                    getLogger().info("rest_api_create_subscription_id");
+                                    if (!accessToken) throw new Error("Access token not passed");
+                                    if (!subscriptionID) throw new Error("Expected subscription id to be passed as first argument to revise subscription api");
+                                    if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
+                                    return request({
+                                        method: "post",
+                                        url: "/v1/billing/subscriptions/" + subscriptionID + "/revise",
+                                        headers: {
+                                            Authorization: "Bearer " + accessToken,
+                                            "PayPal-Partner-Attribution-Id": partnerAttributionID
+                                        },
+                                        json: subscriptionPayload
+                                    }).then((function(_ref4) {
+                                        var status = _ref4.status;
+                                        if (200 !== status) throw new Error("Revise Subscription Api HTTP-" + status + " response: error:\n\n" + JSON.stringify(_ref4.body, null, 4));
+                                        return subscriptionID;
+                                    }));
+                                }(facilitatorAccessToken, subscriptionID, data, {
+                                    partnerAttributionID: partnerAttributionID
+                                });
+                            }
+                        }
+                    };
+                }({
+                    facilitatorAccessToken: facilitatorAccessToken,
+                    partnerAttributionID: partnerAttributionID
+                })).then((function(subscriptionID) {
+                    if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
+                    return subscriptionID;
+                }));
+            };
+        }({
+            createSubscription: xprops.createSubscription,
+            partnerAttributionID: partnerAttributionID
+        }, {
             facilitatorAccessToken: facilitatorAccessToken
         });
-        var createOrder = getCreateOrder(xprops, {
+        var createOrder = getCreateOrder({
+            createOrder: xprops.createOrder,
+            currency: currency,
+            intent: intent,
+            merchantID: merchantID,
+            partnerAttributionID: partnerAttributionID
+        }, {
             facilitatorAccessToken: facilitatorAccessToken,
             createBillingAgreement: createBillingAgreement,
             createSubscription: createSubscription
@@ -2140,15 +2043,27 @@ window.spb = function(modules) {
             createOrder: createOrder,
             createBillingAgreement: createBillingAgreement,
             createSubscription: createSubscription,
-            onApprove: getOnApprove(xprops, {
+            onApprove: getOnApprove({
+                onApprove: xprops.onApprove,
+                intent: intent,
+                onError: onError,
+                partnerAttributionID: partnerAttributionID,
+                upgradeLSAT: upgradeLSAT
+            }, {
                 facilitatorAccessToken: facilitatorAccessToken,
                 createOrder: createOrder
             }),
-            onCancel: getOnCancel(xprops, {
+            onCancel: getOnCancel({
+                onCancel: xprops.onCancel,
+                onError: onError
+            }, {
                 facilitatorAccessToken: facilitatorAccessToken,
                 createOrder: createOrder
             }),
-            onShippingChange: getOnShippingChange(xprops, {
+            onShippingChange: getOnShippingChange({
+                onShippingChange: xprops.onShippingChange,
+                partnerAttributionID: partnerAttributionID
+            }, {
                 facilitatorAccessToken: facilitatorAccessToken,
                 createOrder: createOrder
             })
@@ -2182,18 +2097,11 @@ window.spb = function(modules) {
             eligibility: _ref3.eligibility
         };
     }
-    function getOnError(xprops) {
-        return xprops.onError;
+    function enableLoadingSpinner(button) {
+        button.classList.add("paypal-button-loading");
     }
-    var POPUP_BRIDGE_OPTYPE = {
-        PAYMENT: "payment",
-        CANCEL: "cancel"
-    };
-    function getRememberFunding(xprops) {
-        return xprops.remember;
-    }
-    function getGetPageUrl(xprops) {
-        return xprops.getPageUrl;
+    function disableLoadingSpinner(button) {
+        button.classList.remove("paypal-button-loading");
     }
     function _renderChildren(children, renderer) {
         var result = [];
@@ -2854,7 +2762,7 @@ window.spb = function(modules) {
     };
     var NATIVE_DOMAIN = "https://www.paypal.com";
     var getNativeSocket = memoize((function(_ref) {
-        return config = (_ref9 = {
+        var nativeSocket = (config = (_ref9 = {
             sessionUID: _ref.sessionUID,
             sourceApp: "paypal_smart_payment_buttons",
             sourceAppVersion: _ref.version,
@@ -3125,8 +3033,14 @@ window.spb = function(modules) {
             sourceApp: _ref9.sourceApp,
             sourceAppVersion: _ref9.sourceAppVersion,
             targetApp: _ref9.targetApp
-        });
+        }));
         var _ref9, sessionUID, config;
+        nativeSocket.onError((function(err) {
+            getLogger().error("native_socket_error", {
+                err: stringifyError(err)
+            });
+        }));
+        return nativeSocket;
     }));
     function isAndroidChrome() {
         return isAndroid() && isChrome();
@@ -3141,8 +3055,6 @@ window.spb = function(modules) {
         } catch (err) {}
         return !1;
     }
-    var native_sessionUID;
-    var nativeSocket;
     var initialPageUrl;
     var parentPopupBridge;
     var PAYMENT_FLOWS = [ vaultCapture, cardFields, {
@@ -3181,14 +3093,14 @@ window.spb = function(modules) {
                         return parentPopupBridge.start(url);
                     })).then((function(_ref5) {
                         var opType = _ref5.opType;
-                        if (opType === POPUP_BRIDGE_OPTYPE.PAYMENT) return onApprove({
+                        if ("payment" === opType) return onApprove({
                             payerID: _ref5.PayerID,
                             paymentID: _ref5.paymentId,
                             billingToken: _ref5.ba_token
                         }, {
                             restart: start
                         });
-                        if (opType === POPUP_BRIDGE_OPTYPE.CANCEL) return onCancel();
+                        if ("cancel" === opType) return onCancel();
                         throw new Error("Unhandleable opType: " + opType);
                     }));
                 },
@@ -3199,22 +3111,9 @@ window.spb = function(modules) {
     }, {
         name: "native",
         setup: function(_ref5) {
-            var config = _ref5.config, props = _ref5.props;
+            var props = _ref5.props;
             return promise_ZalgoPromise.try((function() {
-                var version = config.version, firebaseConfig = config.firebase;
-                var getPageUrl = props.getPageUrl;
-                native_sessionUID = uniqueID();
-                (nativeSocket = getNativeSocket({
-                    sessionUID: native_sessionUID,
-                    firebaseConfig: firebaseConfig,
-                    version: version
-                })).onError((function(err) {
-                    nativeSocket = null;
-                    getLogger().error("native_socket_error", {
-                        err: stringifyError(err)
-                    });
-                }));
-                return getPageUrl().then((function(pageUrl) {
+                return (0, props.getPageUrl)().then((function(pageUrl) {
                     initialPageUrl = pageUrl;
                 }));
             }));
@@ -3234,7 +3133,7 @@ window.spb = function(modules) {
             var payment = _ref4.payment;
             var fundingSource = payment.fundingSource;
             var eligibility = _ref4.serviceData.eligibility;
-            return !(payment.win || !nativeSocket || !initialPageUrl || !isNativeOptedIn({
+            return !(payment.win || !initialPageUrl || !isNativeOptedIn({
                 props: _ref4.props
             }) && !eligibility.nativeCheckout[fundingSource]);
         },
@@ -3243,6 +3142,7 @@ window.spb = function(modules) {
             var createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, commit = props.commit, getPageUrl = props.getPageUrl, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost, onClick = props.onClick;
             var facilitatorAccessToken = serviceData.facilitatorAccessToken, sdkMeta = serviceData.sdkMeta;
             var fundingSource = payment.fundingSource;
+            var version = config.version, firebaseConfig = config.firebase;
             var clean = (tasks = [], cleaned = !1, {
                 set: function(name, item) {
                     if (!cleaned) {
@@ -3296,11 +3196,11 @@ window.spb = function(modules) {
                 return instance.start();
             };
             var getNativeUrl = memoize((function(_temp) {
-                var _ref7$pageUrl = (void 0 === _temp ? {} : _temp).pageUrl;
+                var _ref7 = void 0 === _temp ? {} : _temp, _ref7$pageUrl = _ref7.pageUrl;
                 return extendUrl("" + NATIVE_DOMAIN + NATIVE_CHECKOUT_URI[fundingSource], {
                     query: {
                         sdkMeta: sdkMeta,
-                        sessionUID: native_sessionUID,
+                        sessionUID: _ref7.sessionUID,
                         buttonSessionID: buttonSessionID,
                         pageUrl: void 0 === _ref7$pageUrl ? initialPageUrl : _ref7$pageUrl
                     }
@@ -3353,9 +3253,12 @@ window.spb = function(modules) {
                     };
                 }));
             }));
-            var connectNative = memoize((function() {
-                var socket = nativeSocket;
-                if (!socket) throw new Error("Native socket connection not established");
+            var connectNative = memoize((function(_ref10) {
+                var socket = getNativeSocket({
+                    sessionUID: _ref10.sessionUID,
+                    firebaseConfig: firebaseConfig,
+                    version: version
+                });
                 var setNativeProps = memoize((function() {
                     return getSDKProps().then((function(sdkProps) {
                         getLogger().info("native_message_setprops").flush();
@@ -3377,8 +3280,8 @@ window.spb = function(modules) {
                     getLogger().info("native_message_getprops").flush();
                     return getSDKProps();
                 }));
-                var onApproveListener = socket.on("onApprove", (function(_ref10) {
-                    var _ref10$data = _ref10.data, payerID = _ref10$data.payerID, paymentID = _ref10$data.paymentID, billingToken = _ref10$data.billingToken;
+                var onApproveListener = socket.on("onApprove", (function(_ref11) {
+                    var _ref11$data = _ref11.data, payerID = _ref11$data.payerID, paymentID = _ref11$data.paymentID, billingToken = _ref11$data.billingToken;
                     approved = !0;
                     getLogger().info("native_message_onapprove").flush();
                     return promise_ZalgoPromise.all([ onApprove({
@@ -3397,8 +3300,8 @@ window.spb = function(modules) {
                     getLogger().info("native_message_oncancel").flush();
                     return promise_ZalgoPromise.all([ onCancel(), close() ]).then(src_util_noop);
                 }));
-                var onErrorListener = socket.on("onError", (function(_ref11) {
-                    var message = _ref11.data.message;
+                var onErrorListener = socket.on("onError", (function(_ref12) {
+                    var message = _ref12.data.message;
                     getLogger().info("native_message_onerror", {
                         err: message
                     }).flush();
@@ -3414,11 +3317,14 @@ window.spb = function(modules) {
                     close: closeNative
                 };
             }));
-            var detectAppSwitch = once((function() {
+            var detectAppSwitch = once((function(_ref13) {
                 var _getLogger$info$track2;
+                var sessionUID = _ref13.sessionUID;
                 getLogger().info("native_detect_app_switch").track((_getLogger$info$track2 = {}, 
                 _getLogger$info$track2.transition_name = "native_detect_app_switch", _getLogger$info$track2)).flush();
-                return connectNative().setProps();
+                return connectNative({
+                    sessionUID: sessionUID
+                }).setProps();
             }));
             var detectWebSwitch = once((function(fallbackWin) {
                 var _getLogger$info$track3;
@@ -3443,8 +3349,12 @@ window.spb = function(modules) {
             return {
                 click: function() {
                     return promise_ZalgoPromise.try((function() {
-                        return isAndroidChrome() ? function() {
-                            var nativeWin = popup(getNativeUrl());
+                        var sessionUID = uniqueID();
+                        return isAndroidChrome() ? function(_ref14) {
+                            var sessionUID = _ref14.sessionUID;
+                            var nativeWin = popup(getNativeUrl({
+                                sessionUID: sessionUID
+                            }));
                             var validatePromise = validate();
                             var delayPromise = promise_ZalgoPromise.delay(500);
                             var detectWebSwitchListener = listen(nativeWin, NATIVE_DOMAIN, "detectWebSwitch", (function() {
@@ -3454,20 +3364,29 @@ window.spb = function(modules) {
                             clean.register(detectWebSwitchListener.cancel);
                             return validatePromise.then((function(valid) {
                                 return valid ? createOrder().then((function() {
-                                    if (didAppSwitch(nativeWin)) return detectAppSwitch();
+                                    if (didAppSwitch(nativeWin)) return detectAppSwitch({
+                                        sessionUID: sessionUID
+                                    });
                                     if (nativeWin) return detectWebSwitch(nativeWin);
                                     throw new Error("No window found");
                                 })).catch((function(err) {
-                                    return connectNative().close().then((function() {
+                                    return connectNative({
+                                        sessionUID: sessionUID
+                                    }).close().then((function() {
                                         throw err;
                                     }));
                                 })) : delayPromise.then((function() {
-                                    if (didAppSwitch(nativeWin)) return connectNative().close();
+                                    if (didAppSwitch(nativeWin)) return connectNative({
+                                        sessionUID: sessionUID
+                                    }).close();
                                 })).then((function() {
                                     return close();
                                 }));
                             }));
-                        }() : function() {
+                        }({
+                            sessionUID: sessionUID
+                        }) : function(_ref15) {
+                            var sessionUID = _ref15.sessionUID;
                             var popupWin = popup(getNativePopupUrl());
                             var closeListener = function(win, callback, delay, maxtime) {
                                 void 0 === delay && (delay = 1e3);
@@ -3495,13 +3414,14 @@ window.spb = function(modules) {
                                 closeListener.cancel();
                             }));
                             var validatePromise = validate();
-                            var awaitRedirectListener = listen(popupWin, "https://ic.paypal.com", "awaitRedirect", (function(_ref12) {
-                                var pageUrl = _ref12.data.pageUrl;
+                            var awaitRedirectListener = listen(popupWin, "https://ic.paypal.com", "awaitRedirect", (function(_ref16) {
+                                var pageUrl = _ref16.data.pageUrl;
                                 getLogger().info("native_post_message_await_redirect").flush();
                                 return validatePromise.then((function(valid) {
                                     return valid ? createOrder().then((function() {
                                         return {
                                             redirectUrl: getNativeUrl({
+                                                sessionUID: sessionUID,
                                                 pageUrl: pageUrl
                                             })
                                         };
@@ -3512,7 +3432,9 @@ window.spb = function(modules) {
                             }));
                             var detectAppSwitchListener = listen(popupWin, "https://ic.paypal.com", "detectAppSwitch", (function() {
                                 getLogger().info("native_post_message_detect_app_switch").flush();
-                                return detectAppSwitch();
+                                return detectAppSwitch({
+                                    sessionUID: sessionUID
+                                });
                             }));
                             var detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, "detectWebSwitch", (function() {
                                 getLogger().info("native_post_message_detect_web_switch").flush();
@@ -3532,7 +3454,9 @@ window.spb = function(modules) {
                                 }));
                                 var promises;
                             }));
-                        }();
+                        }({
+                            sessionUID: sessionUID
+                        });
                     })).catch((function(err) {
                         return close().then((function() {
                             var _getLogger$error$trac;
@@ -3581,52 +3505,6 @@ window.spb = function(modules) {
         });
         var version = config.version;
         var components = getComponents();
-        !function(_ref) {
-            var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, correlationID = _ref.correlationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version;
-            var logger = getLogger();
-            logger.addPayloadBuilder((function() {
-                return {
-                    referer: window.location.host,
-                    buttonSessionID: buttonSessionID,
-                    sessionID: sessionID,
-                    env: env
-                };
-            }));
-            logger.addTrackingBuilder((function() {
-                var _ref2;
-                var lang = locale.lang, country = locale.country;
-                return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
-                _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.feed_name = "payments_sdk", 
-                _ref2.serverside_data_source = "checkout", _ref2.client_id = clientID, _ref2.seller_id = merchantID[0], 
-                _ref2.button_session_id = buttonSessionID, _ref2.page_session_id = sessionID, _ref2.referer_url = window.location.host, 
-                _ref2.merchant_domain = merchantDomain, _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, 
-                _ref2.bn_code = partnerAttributionID, _ref2.sdk_name = "payments_sdk", _ref2.sdk_version = version, 
-                _ref2.user_agent = window.navigator && window.navigator.userAgent, _ref2.user_action = commit ? "commit" : "continue", 
-                _ref2.context_correlation_id = correlationID, _ref2.button_version = "2.0.195", 
-                _ref2;
-            }));
-            promise_ZalgoPromise.onPossiblyUnhandledException((function(err) {
-                var _logger$track;
-                logger.track(((_logger$track = {}).ext_error_code = "payments_sdk_error", _logger$track.ext_error_desc = stringifyErrorMessage(err), 
-                _logger$track));
-                logger.error("unhandled_error", {
-                    err: stringifyError(err)
-                });
-                logger.flush().catch(src_util_noop);
-            }));
-        }({
-            env: env,
-            version: version,
-            sessionID: sessionID,
-            clientID: clientID,
-            partnerAttributionID: partnerAttributionID,
-            commit: commit,
-            correlationID: correlationID,
-            locale: locale,
-            merchantID: merchantID,
-            buttonSessionID: buttonSessionID,
-            merchantDomain: merchantDomain
-        });
         var _onInit = onInit(), initPromise = _onInit.initPromise, isEnabled = _onInit.isEnabled;
         var paymentProcessing = !1;
         function initiatePayment(_ref) {
@@ -3987,8 +3865,61 @@ window.spb = function(modules) {
             fundingEligibility: fundingEligibility
         });
         var setupButtonLogsTask = function(_ref) {
-            var style = _ref.style;
+            var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, correlationID = _ref.correlationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version, style = _ref.style;
             var logger = getLogger();
+            !function(_ref) {
+                var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, correlationID = _ref.correlationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version;
+                var logger = getLogger();
+                logger.addPayloadBuilder((function() {
+                    return {
+                        referer: window.location.host,
+                        sessionID: sessionID,
+                        env: env
+                    };
+                }));
+                logger.addTrackingBuilder((function() {
+                    var _ref2;
+                    var lang = locale.lang, country = locale.country;
+                    return (_ref2 = {}).feed_name = "payments_sdk", _ref2.serverside_data_source = "checkout", 
+                    _ref2.client_id = clientID, _ref2.seller_id = merchantID[0], _ref2.page_session_id = sessionID, 
+                    _ref2.referer_url = window.location.host, _ref2.merchant_domain = merchantDomain, 
+                    _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, _ref2.bn_code = partnerAttributionID, 
+                    _ref2.sdk_name = "payments_sdk", _ref2.sdk_version = version, _ref2.user_agent = window.navigator && window.navigator.userAgent, 
+                    _ref2.user_action = commit ? "commit" : "continue", _ref2.context_correlation_id = correlationID, 
+                    _ref2;
+                }));
+                promise_ZalgoPromise.onPossiblyUnhandledException((function(err) {
+                    var _logger$track;
+                    logger.track(((_logger$track = {}).ext_error_code = "payments_sdk_error", _logger$track.ext_error_desc = stringifyErrorMessage(err), 
+                    _logger$track));
+                    logger.error("unhandled_error", {
+                        err: stringifyError(err)
+                    });
+                    logger.flush().catch(src_util_noop);
+                }));
+            }({
+                env: env,
+                sessionID: sessionID,
+                clientID: clientID,
+                partnerAttributionID: partnerAttributionID,
+                commit: commit,
+                correlationID: correlationID,
+                locale: locale,
+                merchantID: merchantID,
+                merchantDomain: merchantDomain,
+                version: version
+            });
+            logger.addPayloadBuilder((function() {
+                return {
+                    buttonSessionID: buttonSessionID
+                };
+            }));
+            logger.addTrackingBuilder((function() {
+                var _ref2;
+                return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
+                _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
+                _ref2.button_version = "2.0.196", _ref2;
+            }));
             (function() {
                 if (window.document.documentMode) try {
                     var status = window.status;
@@ -4030,7 +3961,18 @@ window.spb = function(modules) {
                 logger.flush();
             }));
         }({
-            style: style
+            style: style,
+            env: env,
+            version: version,
+            sessionID: sessionID,
+            clientID: clientID,
+            partnerAttributionID: partnerAttributionID,
+            commit: commit,
+            correlationID: correlationID,
+            locale: locale,
+            merchantID: merchantID,
+            buttonSessionID: buttonSessionID,
+            merchantDomain: merchantDomain
         });
         var setupPaymentFlowsTask = function(_ref) {
             var props = _ref.props, config = _ref.config, serviceData = _ref.serviceData, components = _ref.components;
@@ -4079,93 +4021,6 @@ window.spb = function(modules) {
     }));
     __webpack_require__.d(__webpack_exports__, "getServiceData", (function() {
         return getServiceData;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXCreateOrderData", (function() {
-        return buildXCreateOrderData;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildOrderActions", (function() {
-        return buildOrderActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildPaymentActions", (function() {
-        return buildPaymentActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXCreateOrderActions", (function() {
-        return buildXCreateOrderActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getCreateOrder", (function() {
-        return getCreateOrder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementData", (function() {
-        return buildXCreateBillingAgreementData;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementActions", (function() {
-        return buildXCreateBillingAgreementActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getCreateBillingAgreement", (function() {
-        return getCreateBillingAgreement;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionData", (function() {
-        return buildXCreateSubscriptionData;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXCreateSubscriptionActions", (function() {
-        return buildXCreateSubscriptionActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getCreateSubscription", (function() {
-        return getCreateSubscription;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getOnApprove", (function() {
-        return getOnApprove;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXOnInitData", (function() {
-        return buildXOnInitData;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXOnInitActions", (function() {
-        return buildXOnInitActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getOnInit", (function() {
-        return getOnInit;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXOnCancelData", (function() {
-        return buildXOnCancelData;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXOnCancelActions", (function() {
-        return buildXOnCancelActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getOnCancel", (function() {
-        return getOnCancel;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXOnShippingChangeData", (function() {
-        return buildXOnShippingChangeData;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXShippingChangeActions", (function() {
-        return buildXShippingChangeActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getOnShippingChange", (function() {
-        return getOnShippingChange;
-    }));
-    __webpack_require__.d(__webpack_exports__, "CLICK_VALID", (function() {
-        return CLICK_VALID;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXOnClickData", (function() {
-        return buildXOnClickData;
-    }));
-    __webpack_require__.d(__webpack_exports__, "buildXOnClickActions", (function() {
-        return buildXOnClickActions;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getOnClick", (function() {
-        return getOnClick;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getOnError", (function() {
-        return getOnError;
-    }));
-    __webpack_require__.d(__webpack_exports__, "POPUP_BRIDGE_OPTYPE", (function() {
-        return POPUP_BRIDGE_OPTYPE;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getRememberFunding", (function() {
-        return getRememberFunding;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getGetPageUrl", (function() {
-        return getGetPageUrl;
     }));
 } ]);
 //# sourceMappingURL=smart-payment-buttons.js.map

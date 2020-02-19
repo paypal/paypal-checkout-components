@@ -50,13 +50,19 @@ type NativeConnection = {|
 |};
 
 const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : NativeSocketOptions) : MessageSocket => {
-    return firebaseSocket({
+    const nativeSocket = firebaseSocket({
         sessionUID,
         sourceApp:        SOURCE_APP,
         sourceAppVersion: version,
         targetApp:        TARGET_APP,
         config:           firebaseConfig
     });
+
+    nativeSocket.onError(err => {
+        getLogger().error('native_socket_error', { err: stringifyError(err) });
+    });
+
+    return nativeSocket;
 });
 
 function isIOSSafari() : boolean {
@@ -93,8 +99,6 @@ function isNativeOptedIn({ props } : { props : ButtonProps }) : boolean {
     return false;
 }
 
-let sessionUID;
-let nativeSocket;
 let initialPageUrl;
 
 function isNativeEligible({ props, config, serviceData } : { props : ButtonProps, config : Config, serviceData : ServiceData }) : boolean {
@@ -146,10 +150,6 @@ function isNativePaymentEligible({ payment, props, serviceData } : { payment : P
         return false;
     }
 
-    if (!nativeSocket) {
-        return false;
-    }
-
     if (!initialPageUrl) {
         return false;
     }
@@ -165,20 +165,9 @@ function isNativePaymentEligible({ payment, props, serviceData } : { payment : P
     return false;
 }
 
-function setupNative({ config, props } : { config : Config, props : ButtonProps }) : ZalgoPromise<void> {
+function setupNative({ props } : { props : ButtonProps }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        const { version, firebase: firebaseConfig } = config;
         const { getPageUrl } = props;
-
-        sessionUID = uniqueID();
-        nativeSocket = getNativeSocket({
-            sessionUID, firebaseConfig, version
-        });
-
-        nativeSocket.onError(err => {
-            nativeSocket = null;
-            getLogger().error('native_socket_error', { err: stringifyError(err) });
-        });
 
         return getPageUrl().then(pageUrl => {
             initialPageUrl = pageUrl;
@@ -205,6 +194,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         buttonSessionID, env, stageHost, apiStageHost, onClick } = props;
     const { facilitatorAccessToken, sdkMeta } = serviceData;
     const { fundingSource } = payment;
+    const { version, firebase: firebaseConfig } = config;
 
     const clean = cleanup();
     let approved = false;
@@ -224,7 +214,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return instance.start();
     };
 
-    const getNativeUrl = memoize(({ pageUrl = initialPageUrl } = {}) : string => {
+    const getNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
         return extendUrl(`${ NATIVE_DOMAIN }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: { sdkMeta, sessionUID, buttonSessionID, pageUrl }
         });
@@ -264,12 +254,10 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     });
 
-    const connectNative = memoize(() : NativeConnection => {
-        const socket = nativeSocket;
-
-        if (!socket) {
-            throw new Error(`Native socket connection not established`);
-        }
+    const connectNative = memoize(({ sessionUID } : { sessionUID : string }) : NativeConnection => {
+        const socket = getNativeSocket({
+            sessionUID, firebaseConfig, version
+        });
 
         const setNativeProps = memoize(() => {
             return getSDKProps().then(sdkProps => {
@@ -336,12 +324,12 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         };
     });
 
-    const detectAppSwitch = once(() => {
+    const detectAppSwitch = once(({ sessionUID } : { sessionUID : string }) => {
         getLogger().info(`native_detect_app_switch`).track({
             [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
         }).flush();
 
-        return connectNative().setProps();
+        return connectNative({ sessionUID }).setProps();
     });
 
     const detectWebSwitch = once((fallbackWin : ?CrossDomainWindowType) => {
@@ -369,8 +357,8 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return win;
     });
 
-    const initDirectAppSwitch = () => {
-        const nativeWin = popup(getNativeUrl());
+    const initDirectAppSwitch = ({ sessionUID } : { sessionUID : string }) => {
+        const nativeWin = popup(getNativeUrl({ sessionUID }));
         const validatePromise = validate();
         const delayPromise = ZalgoPromise.delay(500);
 
@@ -385,7 +373,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             if (!valid) {
                 return delayPromise.then(() => {
                     if (didAppSwitch(nativeWin)) {
-                        return connectNative().close();
+                        return connectNative({ sessionUID }).close();
                     }
                 }).then(() => {
                     return close();
@@ -394,21 +382,21 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
             return createOrder().then(() => {
                 if (didAppSwitch(nativeWin)) {
-                    return detectAppSwitch();
+                    return detectAppSwitch({ sessionUID });
                 } else if (nativeWin) {
                     return detectWebSwitch(nativeWin);
                 } else {
                     throw new Error(`No window found`);
                 }
             }).catch(err => {
-                return connectNative().close().then(() => {
+                return connectNative({ sessionUID }).close().then(() => {
                     throw err;
                 });
             });
         });
     };
 
-    const initPopupAppSwitch = () => {
+    const initPopupAppSwitch = ({ sessionUID } : { sessionUID : string }) => {
         const popupWin = popup(getNativePopupUrl());
 
         const closeListener = onCloseWindow(popupWin, () => {
@@ -438,14 +426,14 @@ function initNative({ props, components, config, payment, serviceData } : { prop
                 }
 
                 return createOrder().then(() => {
-                    return { redirectUrl: getNativeUrl({ pageUrl }) };
+                    return { redirectUrl: getNativeUrl({ sessionUID, pageUrl }) };
                 });
             });
         });
 
         const detectAppSwitchListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.DETECT_APP_SWITCH, () => {
             getLogger().info(`native_post_message_detect_app_switch`).flush();
-            return detectAppSwitch();
+            return detectAppSwitch({ sessionUID });
         });
 
         const detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, () => {
@@ -473,7 +461,8 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
     const click = () => {
         return ZalgoPromise.try(() => {
-            return useDirectAppSwitch() ? initDirectAppSwitch() : initPopupAppSwitch();
+            const sessionUID = uniqueID();
+            return useDirectAppSwitch() ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
         }).catch(err => {
             return close().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({

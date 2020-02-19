@@ -8,7 +8,7 @@ import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 import { promiseNoop } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getMockWindowOpen,
-    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, mockFirebaseScripts, getPostRobotMock } from './mocks';
+    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, getPostRobotMock } from './mocks';
 
 const IOS_SAFARI_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
 const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
@@ -24,8 +24,6 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -116,7 +114,6 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
         });
     });
 
@@ -199,8 +196,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -305,7 +301,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -400,8 +396,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -486,7 +481,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -498,8 +493,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -580,7 +574,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -592,8 +586,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -687,7 +680,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -699,8 +692,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -780,7 +772,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
 
             if (!closeMessageSent) {
                 throw new Error(`Expected close message to be sent`);
@@ -796,8 +788,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -886,7 +877,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
 
             if (!closeMessageSent) {
                 throw new Error(`Expected close message to be sent`);
@@ -1017,8 +1008,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -1112,7 +1102,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -1124,8 +1114,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -1234,7 +1223,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -1247,8 +1236,7 @@ describe('native chrome cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -1339,7 +1327,7 @@ describe('native chrome cases', () => {
             await mockWebSocketServer.done();
             mockWindow.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 });
@@ -1355,8 +1343,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -1485,7 +1472,7 @@ describe('native ios cases', () => {
             mockWindow.done();
             postRobotMock.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -1615,8 +1602,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -1759,7 +1745,7 @@ describe('native ios cases', () => {
             mockWindow.done();
             postRobotMock.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -1902,8 +1888,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2027,7 +2012,7 @@ describe('native ios cases', () => {
             mockWindow.done();
             postRobotMock.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -2039,8 +2024,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2167,7 +2151,7 @@ describe('native ios cases', () => {
             mockWindow.done();
             postRobotMock.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -2179,8 +2163,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2300,7 +2283,7 @@ describe('native ios cases', () => {
             mockWindow.done();
             postRobotMock.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -2312,8 +2295,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2446,7 +2428,7 @@ describe('native ios cases', () => {
             mockWindow.done();
             postRobotMock.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -2456,33 +2438,6 @@ describe('native ios cases', () => {
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
-
-            const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
-
-            const gqlMock = getGraphQLApiMock({
-                extraHandler: expect('firebaseGQLCall', ({ data }) => {
-                    if (!data.query.includes('query GetFireBaseSessionToken')) {
-                        return;
-                    }
-
-                    if (!data.variables.sessionUID) {
-                        throw new Error(`Expected sessionUID to be passed`);
-                    }
-
-                    return {
-                        data: {
-                            firebase: {
-                                auth: {
-                                    sessionUID: data.variables.sessionUID,
-                                    sessionToken
-                                }
-                            }
-                        }
-                    };
-                })
-            }).expectCalls();
 
             const postRobotMock = getPostRobotMock();
 
@@ -2525,8 +2480,7 @@ describe('native ios cases', () => {
 
             mockWindow.done();
             postRobotMock.done();
-            gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -2536,33 +2490,6 @@ describe('native ios cases', () => {
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
-
-            const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
-
-            const gqlMock = getGraphQLApiMock({
-                extraHandler: expect('firebaseGQLCall', ({ data }) => {
-                    if (!data.query.includes('query GetFireBaseSessionToken')) {
-                        return;
-                    }
-
-                    if (!data.variables.sessionUID) {
-                        throw new Error(`Expected sessionUID to be passed`);
-                    }
-
-                    return {
-                        data: {
-                            firebase: {
-                                auth: {
-                                    sessionUID: data.variables.sessionUID,
-                                    sessionToken
-                                }
-                            }
-                        }
-                    };
-                })
-            }).expectCalls();
 
             const postRobotMock = getPostRobotMock();
 
@@ -2614,8 +2541,6 @@ describe('native ios cases', () => {
 
             mockWindow.done();
             postRobotMock.done();
-            gqlMock.done();
-            firebaseScripts.done();
         });
     });
 
@@ -2794,8 +2719,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2928,7 +2852,7 @@ describe('native ios cases', () => {
             mockWindow.done();
             postRobotMock.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 
@@ -2940,8 +2864,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-
-            const firebaseScripts = mockFirebaseScripts();
+            
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -3090,7 +3013,7 @@ describe('native ios cases', () => {
             mockWebSocketServer.done();
             postRobotMock.done();
             gqlMock.done();
-            firebaseScripts.done();
+
         });
     });
 });
