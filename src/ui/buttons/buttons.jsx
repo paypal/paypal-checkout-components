@@ -19,6 +19,10 @@ type ButtonsProps = ButtonPropsInputs & {|
     onClick? : Function
 |};
 
+export function validateButtonProps(props : ButtonsProps) {
+    normalizeButtonProps(props);
+}
+
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
     const { fundingSource, style, locale, remembered, env, fundingEligibility, platform,
