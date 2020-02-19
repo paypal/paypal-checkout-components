@@ -9,6 +9,7 @@ import { inlineMemoize, memoize, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getRefinedFundingEligibility, rememberFunding } from '@paypal/funding-components/src';
+import { collectRiskData } from '@paypal/risk-data-collector/src';
 
 import { type WalletProps } from './props';
 import { WalletPrerender } from './prerender';
@@ -111,6 +112,13 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
 
                 onApprove: {
                     type: 'function'
+                },
+
+                riskData: {
+                    type:          'object',
+                    value:         collectRiskData,
+                    queryParam:    true,
+                    serialization: 'base64'
                 },
 
                 locale: {
