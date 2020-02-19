@@ -1,3 +1,9 @@
+## <small>5.0.81 (2020-02-19)</small>
+
+* Fix card logo ([f6a19a0](http://github.paypal.com/paypal/paypal-checkout/commit/f6a19a0))
+
+
+
 ## <small>5.0.80 (2020-02-19)</small>
 
 * Add additional wallet props ([d7ff243](http://github.paypal.com/paypal/paypal-checkout/commit/d7ff243))
