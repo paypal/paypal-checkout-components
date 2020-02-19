@@ -85,7 +85,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
         />
     );
 
-    const labelNode = (i !== 0)
+    const labelNode = (i !== 0 && fundingSource !== FUNDING.CARD)
         ? logoNode
         : (
             <Label
