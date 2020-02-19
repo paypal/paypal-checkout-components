@@ -85,25 +85,27 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
         />
     );
 
-    const labelNode = (
-        <Label
-            logo={ logoNode }
-            label={ label }
-            nonce={ nonce }
-            locale={ locale }
-            logoColor={ logoColor }
-            period={ period }
-            layout={ layout }
-            multiple={ multiple }
-            fundingEligibility={ fundingEligibility }
-            onClick={ clickHandler }
-            onKeyPress={ keypressHandler }
-            clientAccessToken={ clientAccessToken }
-            personalization={ personalization }
-            tagline={ tagline }
-            content={ content }
-        />
-    );
+    const labelNode = (i !== 0)
+        ? logoNode
+        : (
+            <Label
+                logo={ logoNode }
+                label={ label }
+                nonce={ nonce }
+                locale={ locale }
+                logoColor={ logoColor }
+                period={ period }
+                layout={ layout }
+                multiple={ multiple }
+                fundingEligibility={ fundingEligibility }
+                onClick={ clickHandler }
+                onKeyPress={ keypressHandler }
+                clientAccessToken={ clientAccessToken }
+                personalization={ personalization }
+                tagline={ tagline }
+                content={ content }
+            />
+        );
 
     return (
         <div
