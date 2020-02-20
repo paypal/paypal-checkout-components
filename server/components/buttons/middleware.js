@@ -102,16 +102,20 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
         logger.info(req, `button_client_version_${ client.version }`);
 
         const content = smartContent[locale.country][locale.lang] || {};
-        const blackButtonText = content.payWithDebitOrCreditCard;
-        
-        // logs for the missing content for the black button
-        if (!blackButtonText) {
-            logger.info(req, `missing_content`, { info: JSON.stringify({ params, locale }) });
+
+        const buttonProps = {
+            ...params, nonce: cspNonce, csp: { nonce: cspNonce }, fundingEligibility, personalization, content
+        };
+
+        try {
+            if (render.button.validateButtonProps) {
+                render.button.validateButtonProps(buttonProps);
+            }
+        } catch (err) {
+            return clientErrorResponse(res, err.stack || err.message);
         }
         
-        const buttonHTML = render.button.Buttons({
-            ...params, nonce: cspNonce, csp:   { nonce: cspNonce }, fundingEligibility, personalization, content
-        }).render(html());
+        const buttonHTML = render.button.Buttons(buttonProps).render(html());
 
         const setupParams = {
             fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta,
