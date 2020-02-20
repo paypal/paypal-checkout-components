@@ -14,6 +14,10 @@ function getNonce(res : ExpressResponse) : string {
     return nonce;
 }
 
+export type RiskData = {|
+    
+|};
+
 type StyleType = {|
     height : number
 |};
@@ -26,7 +30,9 @@ type ParamsType = {|
     buyerAccessToken : ?string,
     locale? : LocaleType,
     debug? : boolean,
-    style : StyleType
+    style : StyleType,
+    sessionID : string,
+    riskData : string
 |};
 
 type RequestParams = {|
@@ -38,13 +44,22 @@ type RequestParams = {|
     cspNonce : string,
     locale : LocaleType,
     debug : boolean,
-    style : StyleType
+    style : StyleType,
+    riskData : RiskData,
+    sessionID : string
 |};
+
+function getDefaultRiskData() : RiskData {
+    // $FlowFixMe
+    return {};
+}
 
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
     // adding access token in params for easy development until we have a clear path on how we would be doing access code to access token exchange
     const {
         env,
+        sessionID,
+        riskData: serializedRiskData,
         clientID,
         orderID,
         buyerAuthCode,
@@ -60,9 +75,15 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
     } = locale;
     
     const cspNonce = getNonce(res);
+
+    const riskData = serializedRiskData ? JSON.parse(
+        Buffer.from(serializedRiskData, 'base64').toString('utf8')
+    ) : getDefaultRiskData();
     
     return {
         env,
+        sessionID,
+        riskData,
         clientID,
         orderID,
         buyerAuthCode,

@@ -6,7 +6,7 @@ import type { ExpressRequest, LoggerType, CacheType } from '../../types';
 import { clientErrorResponse, htmlResponse, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
 import { resolveCheckoutSession } from '../../service';
 
-import { getParams } from './params';
+import { getParams, type RiskData } from './params';
 import { EVENT } from './constants';
 import { getSmartWalletClientScript } from './script';
 
@@ -14,7 +14,7 @@ type WalletMiddlewareOptions = {|
     logger? : LoggerType,
     graphQL : GraphQL,
     cache? : CacheType,
-    exchangeAuthCode : (ExpressRequest, string) => ZalgoPromise<string>
+    exchangeAuthCode : (ExpressRequest, string, string, RiskData) => ZalgoPromise<string>
 |};
 
 export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, exchangeAuthCode } : WalletMiddlewareOptions) : ExpressMiddleware {
@@ -24,7 +24,7 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, ex
             logBuffer.flush(req);
         }
     
-        let { orderID, buyerAccessToken, buyerAuthCode, cspNonce, debug } = getParams(params, req, res);
+        let { orderID, buyerAccessToken, buyerAuthCode, cspNonce, debug, sessionID, riskData } = getParams(params, req, res);
     
         if (!orderID) {
             return clientErrorResponse(res, 'Please provide an orderID query parameter');
@@ -34,7 +34,7 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, ex
         if (buyerAccessToken) {
             buyerAccessTokenPromise = Promise.resolve(buyerAccessToken);
         } else if (buyerAuthCode) {
-            buyerAccessTokenPromise = exchangeAuthCode(req, buyerAuthCode);
+            buyerAccessTokenPromise = exchangeAuthCode(req, buyerAuthCode, sessionID, riskData);
         } else {
             return clientErrorResponse(res, 'Please provide an accessToken or authCode query parameter');
         }
