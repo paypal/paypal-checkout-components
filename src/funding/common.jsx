@@ -29,6 +29,7 @@ export type LogoOptions = {|
 |};
 
 export type LabelOptions = {|
+    i : number,
     logo : ChildType,
     label : ?$Values<typeof BUTTON_LABEL>,
     locale : LocaleType,
@@ -70,18 +71,23 @@ export type FundingSourceConfig = {|
     VaultLabel? : (VaultLabelOptions) => ChildType,
     Tag? : (TagOptions) => ?ChildType,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
+    textColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
 |};
 
-export function BasicLabel({ logo, label, layout, multiple, period, locale: { lang } } : LabelOptions) : ChildType {
+export function BasicLabel({ i, logo, label, layout, multiple, period, locale: { lang } } : LabelOptions) : ChildType {
     if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
         return logo;
     }
 
     if (__WEB__) {
+        return logo;
+    }
+
+    if (i > 0) {
         return logo;
     }
 
@@ -131,6 +137,13 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
         BUTTON_SHAPE.RECT,
         BUTTON_SHAPE.PILL
     ],
+
+    textColors: {
+        [DEFAULT]:               BUTTON_COLOR.BLACK,
+        [BUTTON_COLOR.BLUE]:     BUTTON_COLOR.WHITE,
+        [BUTTON_COLOR.BLACK]:    BUTTON_COLOR.WHITE,
+        [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.WHITE
+    },
 
     secondaryColors: {
         [ DEFAULT ]:            BUTTON_COLOR.SILVER,

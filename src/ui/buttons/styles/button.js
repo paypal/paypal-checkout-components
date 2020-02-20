@@ -3,7 +3,7 @@
 import { ENV } from '@paypal/sdk-constants/src';
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
-import { BUTTON_COLOR, CLASS } from '../../../constants';
+import { CLASS } from '../../../constants';
 
 export const buttonStyle = `
 
@@ -33,10 +33,6 @@ export const buttonStyle = `
         vertical-align: top;
         cursor: pointer;
         overflow: hidden;
-    }
-
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT } {
-        cursor: auto;
     }
 
     .${ CLASS.BUTTON } * {

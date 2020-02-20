@@ -157,7 +157,7 @@ export function Label(opts : LabelOptions) : ChildType {
 export function VaultLabel({ logoColor, label } : VaultLabelOptions) : ChildType {
     return (
         <Fragment>
-            <PPLogo logoColor={ logoColor } optional /> <Text className={ CLASS.VAULT_LABEL }>{label}</Text>
+            <PPLogo logoColor={ logoColor } optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
         </Fragment>
     );
 }

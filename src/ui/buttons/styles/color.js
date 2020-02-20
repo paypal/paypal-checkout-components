@@ -1,12 +1,21 @@
 /* @flow */
 
-import { BUTTON_COLOR, CLASS } from '../../../constants';
+import { BUTTON_COLOR, CLASS, TEXT_COLOR } from '../../../constants';
 
 export const buttonColorStyle = `
 
+
+    .${ CLASS.BUTTON }.${ CLASS.TEXT_COLOR }-${ TEXT_COLOR.BLACK } {
+        color: #2C2E2F;
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.TEXT_COLOR }-${ TEXT_COLOR.WHITE } {
+        color: #fff;
+    }
+
+
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } {
         background: #ffc439;
-        color: #111;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD }:hover {
@@ -23,7 +32,6 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
         background: #009cde;
-        color: #fff;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE }:hover {
@@ -39,7 +47,6 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } {
         background: #eee;
-        color: #111;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER }:hover {
@@ -55,7 +62,6 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } {
         background: #003087;
-        color: #fff;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE }:hover {
@@ -71,7 +77,6 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } {
         background: #2C2E2F;
-        color: #fff;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK }:hover {
@@ -87,7 +92,6 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } {
         background: #fff;
-        color: #2C2E2F;
         border: 1px solid #2C2E2F;
     }
 
@@ -99,14 +103,6 @@ export const buttonColorStyle = `
         outline: none;
         box-shadow: 0px 0px 1px 3px #0c67ff inset;
     }
-
-
-
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT } {
-        background: transparent;
-        color: #111;
-    }
-
 
 
     .${ CLASS.BUTTON } .${ CLASS.CARD } {
