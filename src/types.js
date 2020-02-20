@@ -225,7 +225,7 @@ export type CheckoutFlowType = {|
         onApprove : ({| payerID : string, paymentID : ?string, billingToken : ?string, subscriptionID : ?string |}) => ZalgoPromise<void> | void,
         onAuth : ({| accessToken : string |}) => ZalgoPromise<void> | void,
         onCancel : () => ZalgoPromise<void> | void,
-        onShippingChange : ?({| |}, {| reject : () => ZalgoPromise<void> |}) => ZalgoPromise<void> | void,
+        onShippingChange : ?({| |}, {| resolve : () => ZalgoPromise<void>, reject : () => ZalgoPromise<void> |}) => ZalgoPromise<void> | void,
         onError : (mixed) => ZalgoPromise<void> | void,
         onClose : () => ZalgoPromise<void> | void,
         fundingSource : $Values<typeof FUNDING>,

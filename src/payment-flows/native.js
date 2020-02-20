@@ -27,12 +27,13 @@ const POST_MESSAGE = {
 };
 
 const SOCKET_MESSAGE = {
-    SET_PROPS:  'setProps',
-    GET_PROPS:  'getProps',
-    CLOSE:      'close',
-    ON_APPROVE: 'onApprove',
-    ON_CANCEL:  'onCancel',
-    ON_ERROR:   'onError'
+    SET_PROPS:          'setProps',
+    GET_PROPS:          'getProps',
+    CLOSE:              'close',
+    ON_SHIPPING_CHANGE: 'onShippingChange',
+    ON_APPROVE:         'onApprove',
+    ON_CANCEL:          'onCancel',
+    ON_ERROR:           'onError'
 };
 
 const NATIVE_DOMAIN = 'https://www.paypal.com';
@@ -111,7 +112,7 @@ function isNativeEligible({ props, config, serviceData } : { props : ButtonProps
         return false;
     }
 
-    if (onShippingChange) {
+    if (onShippingChange && !isNativeOptedIn({ props })) {
         return false;
     }
 
@@ -191,7 +192,7 @@ type NativeSDKProps = {|
 
 function initNative({ props, components, config, payment, serviceData } : { props : ButtonProps, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
-        buttonSessionID, env, stageHost, apiStageHost, onClick } = props;
+        buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange } = props;
     const { facilitatorAccessToken, sdkMeta } = serviceData;
     const { fundingSource } = payment;
     const { version, firebase: firebaseConfig } = config;
@@ -283,6 +284,30 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             return getSDKProps();
         });
 
+        const onShippingChangeListener = socket.on(SOCKET_MESSAGE.ON_SHIPPING_CHANGE, ({ data }) => {
+            getLogger().info(`native_message_onshippingchange`).flush();
+            if (onShippingChange) {
+                let resolved = true;
+                const actions = {
+                    resolve: () => {
+                        return ZalgoPromise.try(() => {
+                            resolved = true;
+                        });
+                    },
+                    reject: () => {
+                        return ZalgoPromise.try(() => {
+                            resolved = false;
+                        });
+                    }
+                };
+                return onShippingChange(data, actions).then(() => {
+                    return {
+                        resolved
+                    };
+                });
+            }
+        });
+
         const onApproveListener = socket.on(SOCKET_MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
             approved = true;
             getLogger().info(`native_message_onapprove`).flush();
@@ -312,6 +337,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
 
         clean.register(getPropsListener.cancel);
+        clean.register(onShippingChangeListener.cancel);
         clean.register(onApproveListener.cancel);
         clean.register(onCancelListener.cancel);
         clean.register(onErrorListener.cancel);

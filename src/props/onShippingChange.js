@@ -32,6 +32,7 @@ export type OnShippingChangeData = {|
 |};
 
 export type OnShippingChangeActionsType = {|
+    resolve : () => ZalgoPromise<void>,
     reject : () => ZalgoPromise<void>
 |};
 
