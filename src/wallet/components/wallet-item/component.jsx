@@ -31,14 +31,14 @@ export function WalletItem({ fundingOption, selectWalletItemHandler, listOpen, l
     return (
         <Style css={ css }>
             <div class='wallet-item' onClick={ () => selectItem(fundingOption) }>
-                <div class='wallet-item-icon-container'>
-                    <img src={ fundingOptionIcon } class='wallet-item-icon' />
+                <div class='icon'>
+                    <img src={ fundingOptionIcon } />
                 </div>
-                <div class='wallet-item-description'>
-                    <div class='wallet-item-name'>{ fundingOptionTitle }</div>
-                    <div class='wallet-item-details'>
-                        <span class='wallet-item-type'>{instrumentSubType} </span>
-                        <span class='wallet-item-digits'>•••• {lastDigits}</span>
+                <div class='description'>
+                    <div class='name'>{ fundingOptionTitle }</div>
+                    <div class='details'>
+                        <span class='type'>{instrumentSubType} </span>
+                        <span class='digits'>•••• {lastDigits}</span>
                     </div>
                 </div>
             </div>
