@@ -37,7 +37,7 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, ex
                 return clientErrorResponse(res, 'Please provide an accessToken or authCode query parameter');
             }
             
-            const { getVersion, importScript } = getSmartWalletClientScript({ debug, logBuffer, cache });
+            const { getVersion, importScript } = getSmartWalletClientScript({ res, debug, logBuffer, cache });
             
             const gqlBatch = graphQLBatch(req, graphQL);
 
@@ -68,7 +68,7 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, ex
             logger.info(req, EVENT.RENDER);
 
             const { debug } = getParams(params, req, res);
-            const { getScript } = getSmartWalletClientScript({ debug, logBuffer, cache });
+            const { getScript } = getSmartWalletClientScript({ res, debug, logBuffer, cache });
 
             return javascriptResponse(res, await getScript());
         }

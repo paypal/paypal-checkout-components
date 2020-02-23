@@ -3,6 +3,10 @@
 import { randomBytes } from 'crypto';
 
 import express from 'express';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+
+import { WEBPACK_CONFIG_WALLET_LOCAL_DEBUG } from '../webpack.config';
 
 import type { ExpressRequest, ExpressResponse } from './types';
 import { getButtonMiddleware, getMenuMiddleware, getWalletMiddleware } from './components';
@@ -141,7 +145,6 @@ const walletMiddleware = getWalletMiddleware({
 
 const menuMiddleware = getMenuMiddleware({});
 
-
 app.use('/smart/buttons', (req : ExpressRequest, res : ExpressResponse, next) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
 
@@ -164,6 +167,8 @@ app.use('/smart/menu', (req : ExpressRequest, res : ExpressResponse, next) => {
     next();
 }, menuMiddleware);
 
+const walletScriptMiddleware = webpackDevMiddleware(webpack(WEBPACK_CONFIG_WALLET_LOCAL_DEBUG), { serverSideRender: true });
+
 app.use('/smart/wallet', (req : ExpressRequest, res : ExpressResponse, next) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
     
@@ -173,7 +178,7 @@ app.use('/smart/wallet', (req : ExpressRequest, res : ExpressResponse, next) => 
     res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
 
     next();
-}, walletMiddleware);
+}, walletScriptMiddleware, walletMiddleware);
 
 app.listen(PORT, () => {
     // eslint-disable-next-line no-console

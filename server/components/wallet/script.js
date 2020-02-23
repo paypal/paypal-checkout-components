@@ -5,12 +5,19 @@ import { join } from 'path';
 import { ENV } from '@paypal/sdk-constants';
 import { memoize } from 'belter';
 
-import type { CacheType } from '../../types';
+import type { CacheType, ExpressResponse } from '../../types';
 import { WALLET_CLIENT_JS, WALLET_CLIENT_MIN_JS, WEBPACK_CONFIG } from '../../config';
 import { isLocal, compileWebpack, babelRequire, type LoggerBufferType, evalRequireScript } from '../../lib';
 import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
+import { getWebpackDevScript } from '../../lib/webpack';
 
-export async function compileLocalSmartWalletClientScript() : Promise<string> {
+export async function compileLocalSmartWalletClientScript(res : ExpressResponse) : Promise<string> {
+    const devScript = getWebpackDevScript(res);
+
+    if (devScript) {
+        return devScript;
+    }
+
     const root = join(__dirname, '../../..');
     const { WEBPACK_CONFIG_WALLET_LOCAL_DEBUG } = babelRequire(join(root, WEBPACK_CONFIG));
     return await compileWebpack(WEBPACK_CONFIG_WALLET_LOCAL_DEBUG, root);
@@ -27,7 +34,7 @@ type SmartWalletClientScript = {|
     importScript : () => Promise<WalletClientScript>
 |};
 
-export function getSmartWalletClientScript({ logBuffer, cache, debug = false } : { debug : boolean, logBuffer : ?LoggerBufferType, cache : ?CacheType } = {}) : SmartWalletClientScript {
+export function getSmartWalletClientScript({ res, logBuffer, cache, debug = false } : {res : ExpressResponse, debug : boolean, logBuffer : ?LoggerBufferType, cache : ?CacheType } = {}) : SmartWalletClientScript {
     const getWatcher = memoize(() => getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache }));
     
     const getVersion = async () => {
@@ -41,7 +48,7 @@ export function getSmartWalletClientScript({ logBuffer, cache, debug = false } :
 
     const getScript = async () => {
         if (isLocal()) {
-            return await compileLocalSmartWalletClientScript();
+            return await compileLocalSmartWalletClientScript(res);
         }
 
         return await getWatcher().read(debug ? WALLET_CLIENT_JS : WALLET_CLIENT_MIN_JS);
@@ -49,7 +56,7 @@ export function getSmartWalletClientScript({ logBuffer, cache, debug = false } :
 
     const importScript = async () => {
         if (isLocal()) {
-            return evalRequireScript(await compileLocalSmartWalletClientScript());
+            return evalRequireScript(await compileLocalSmartWalletClientScript(res));
         }
 
         return await getWatcher().import(debug ? WALLET_CLIENT_JS : WALLET_CLIENT_MIN_JS);
