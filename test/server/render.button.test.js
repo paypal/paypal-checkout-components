@@ -27,7 +27,7 @@ test('should do a basic button render and succeed', async () => {
     const res = mockRes();
 
     // $FlowFixMe
-    await buttonMiddleware(req, res);
+    await buttonMiddleware.appMiddleware(req, res);
 
     const status = res.getStatus();
     const contentType = res.getHeader('content-type');
@@ -94,7 +94,7 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
         content: mockContent
     });
     // $FlowFixMe
-    await errButtonMiddleware(req, res);
+    await errButtonMiddleware.appMiddleware(req, res);
     
     const status = res.getStatus();
     const contentType = res.getHeader('content-type');
@@ -132,7 +132,7 @@ test('should give a 400 error with no clientID passed', async () => {
     const res = mockRes();
 
     // $FlowFixMe
-    await buttonMiddleware(req, res);
+    await buttonMiddleware.appMiddleware(req, res);
 
     const status = res.getStatus();
 

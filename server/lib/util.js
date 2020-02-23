@@ -7,12 +7,13 @@ import webpack from 'webpack';
 import { regexTokenize } from 'belter';
 import type { ChildType, NullableChildType } from 'jsx-pragmatic/src';
 
-import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from '../config';
+import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE, HTTP_CONTENT_DISPOSITION } from '../config';
 import type { ExpressRequest, ExpressResponse, LoggerType, LoggerPayload } from '../types';
 
 function response(res : ExpressResponse, status : $Values<typeof HTTP_STATUS_CODE>, type : $Values<typeof HTTP_CONTENT_TYPE>, message : string) {
     res.status(status)
         .header(HTTP_HEADER.CONTENT_TYPE, type)
+        .header(HTTP_HEADER.CONTENT_DISPOSITION, HTTP_CONTENT_DISPOSITION.INLINE)
         .send(message);
 }
 
@@ -26,6 +27,10 @@ export function clientErrorResponse(res : ExpressResponse, message : string) {
 
 export function htmlResponse(res : ExpressResponse, html : string) {
     response(res, HTTP_STATUS_CODE.SUCCESS, HTTP_CONTENT_TYPE.HTML, html);
+}
+
+export function javascriptResponse(res : ExpressResponse, javascript : string) {
+    response(res, HTTP_STATUS_CODE.SUCCESS, HTTP_CONTENT_TYPE.JAVASCRIPT, javascript);
 }
 
 export function allowFrame(res : ExpressResponse) {

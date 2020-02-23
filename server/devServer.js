@@ -77,6 +77,7 @@ const buttonMiddleware = getButtonMiddleware({
         }
     }
 });
+
 const walletMiddleware = getWalletMiddleware({
     graphQL: (req, payload) => {
         // $FlowFixMe
@@ -141,7 +142,7 @@ const walletMiddleware = getWalletMiddleware({
 const menuMiddleware = getMenuMiddleware({});
 
 
-app.get('/smart/buttons', (req : ExpressRequest, res : ExpressResponse) => {
+app.use('/smart/buttons', (req : ExpressRequest, res : ExpressResponse, next) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
 
     res.locals = res.locals || {};
@@ -149,10 +150,10 @@ app.get('/smart/buttons', (req : ExpressRequest, res : ExpressResponse) => {
 
     res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
     
-    return buttonMiddleware(req, res);
-});
+    next();
+}, buttonMiddleware);
 
-app.get('/smart/menu', (req : ExpressRequest, res : ExpressResponse) => {
+app.use('/smart/menu', (req : ExpressRequest, res : ExpressResponse, next) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
 
     res.locals = res.locals || {};
@@ -160,19 +161,19 @@ app.get('/smart/menu', (req : ExpressRequest, res : ExpressResponse) => {
 
     res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
 
-    return menuMiddleware(req, res);
-});
+    next();
+}, menuMiddleware);
 
-app.get('/smart/wallet', (req : ExpressRequest, res : ExpressResponse) => {
+app.use('/smart/wallet', (req : ExpressRequest, res : ExpressResponse, next) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
     
     res.locals = res.locals || {};
     res.locals.nonce = nonce;
     
     res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
-    
-    return walletMiddleware(req, res);
-});
+
+    next();
+}, walletMiddleware);
 
 app.listen(PORT, () => {
     // eslint-disable-next-line no-console
