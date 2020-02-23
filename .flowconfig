@@ -14,7 +14,13 @@ node_modules/post-robot/src/declarations.js
 src/declarations.js
 test/declarations.js
 [options]
+module.file_ext=.js
+module.file_ext=.json
+module.file_ext=.jsx
+module.file_ext=.css
+module.file_ext=.scss
 module.name_mapper='^src\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
+module.name_mapper='.*\(.scss\)' -> 'CSSModule'
 experimental.const_params=false
 esproposal.export_star_as=enable
 include_warnings=true

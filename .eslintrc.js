@@ -6,8 +6,8 @@ module.exports = {
     'rules': {
         'react/display-name': 'off',
         'prefer-regex-literals': 'off',
-        'require-atomic-updates': 'off'
-
+        'require-atomic-updates': 'off',
+        'react/require-default-props': 'off'
     },
 
     'globals': {

@@ -85,3 +85,11 @@ export function promiseOne<T>(promises : $ReadOnlyArray<ZalgoPromise<T>>) : Zalg
         }
     });
 }
+
+export function isServer() : boolean {
+    return (typeof window === 'undefined');
+}
+
+export function isClient() : boolean {
+    return (typeof window !== 'undefined');
+}

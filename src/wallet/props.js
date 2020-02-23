@@ -93,9 +93,24 @@ export type WalletProps = {|
     onCancel : OnCancel
 |};
 
+function getXProps() : WalletXProps {
+    if (window.xprops) {
+        return window.xprops;
+    }
+
+    if (__LOCAL__ && __DEBUG__) {
+        // $FlowFixMe
+        return {
+            env: __ENV__
+        };
+    }
+
+    throw new Error(`No xprops found`);
+}
+
 export function getProps({ facilitatorAccessToken } : { facilitatorAccessToken : string }) : WalletProps {
 
-    const xprops : WalletXProps = window.xprops;
+    const xprops = getXProps();
 
     const {
         env,

@@ -12,8 +12,8 @@ import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
 export async function compileLocalSmartWalletClientScript() : Promise<string> {
     const root = join(__dirname, '../../..');
-    const { WEBPACK_CONFIG_WALLET_DEBUG } = babelRequire(join(root, WEBPACK_CONFIG));
-    return await compileWebpack(WEBPACK_CONFIG_WALLET_DEBUG, root);
+    const { WEBPACK_CONFIG_WALLET_LOCAL_DEBUG } = babelRequire(join(root, WEBPACK_CONFIG));
+    return await compileWebpack(WEBPACK_CONFIG_WALLET_LOCAL_DEBUG, root);
 }
 
 type WalletClientScript = {|

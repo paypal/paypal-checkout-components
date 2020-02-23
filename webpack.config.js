@@ -8,6 +8,7 @@ import { globals } from './globals';
 const MODULE_NAME = 'spb';
 
 type SmartWebpackConfig = {|
+    env? : string,
     entry : string,
     filename : string,
     minify? : boolean,
@@ -16,8 +17,9 @@ type SmartWebpackConfig = {|
     libraryTarget? : string
 |};
 
-function getSmartWebpackConfig({ entry, filename, minify = true, debug = false, libraryTarget = 'window' } : SmartWebpackConfig) : Object {
+function getSmartWebpackConfig({ entry, env, filename, minify = true, debug = false, libraryTarget = 'window' } : SmartWebpackConfig) : Object {
     return getWebpackConfig({
+        env,
         entry:         `${ __dirname }/${ entry }`,
         modulename:    MODULE_NAME,
         filename,
@@ -89,6 +91,16 @@ export const WEBPACK_CONFIG_WALLET_MIN = getSmartWebpackConfig({
 });
 
 export const WEBPACK_CONFIG_WALLET_DEBUG = getSmartWebpackConfig({
+    entry:         'src/wallet',
+    filename:      'smart-wallet',
+    debug:         true,
+    minify:        false,
+    vars:          globals,
+    libraryTarget: 'umd'
+});
+
+export const WEBPACK_CONFIG_WALLET_LOCAL_DEBUG = getSmartWebpackConfig({
+    env:           'local',
     entry:         'src/wallet',
     filename:      'smart-wallet',
     debug:         true,

@@ -11,7 +11,7 @@ import { approveOrder } from '../api';
 
 import type { CheckoutSession } from './types';
 import { getProps, type WalletProps } from './props';
-import { Page } from './components';
+import { StyleSheet, Page } from './components';
 
 function fallbackToWebCheckout() : ZalgoPromise<void> {
     throw new Error(`Not implemented`);
@@ -43,15 +43,28 @@ type SetupOptions = {|
     checkoutSession : CheckoutSession
 |};
 
+type AppProps = {|
+    cspNonce : string,
+    checkoutSession : CheckoutSession
+|};
+
+export function App({ cspNonce, checkoutSession } : AppProps) : Node {
+    return (
+        <StyleSheet cspNonce={ cspNonce }>
+            <Page checkoutSession={ checkoutSession } />
+        </StyleSheet>
+    );
+}
+
 export function renderWallet(props : { cspNonce : string, checkoutSession : CheckoutSession }) : string {
-    return renderToString(<Page { ...props } />);
+    return renderToString(<App { ...props } />);
 }
 
 export function setupWallet({ facilitatorAccessToken, buyerAccessToken, cspNonce, checkoutSession } : SetupOptions) {
     const props = getProps({ facilitatorAccessToken });
     setupWalletPayment(props, { checkoutSession, buyerAccessToken });
     render(
-        <Page cspNonce={ cspNonce } checkoutSession={ checkoutSession } />,
-        getBody()
+        <App cspNonce={ cspNonce } checkoutSession={ checkoutSession } />,
+        getBody().querySelector('#wallet-container')
     );
 }

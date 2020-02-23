@@ -1,13 +1,14 @@
 /* @flow */
 /** @jsx h */
 
-import { h, Fragment, type Node } from 'preact';
+import { h } from 'preact';
 import { useState } from 'preact/hooks';
 
-import type { FundingOptionType } from '../types';
+import type { FundingOptionType } from '../../types';
+import { WalletItem } from '../wallet-item';
+import { Style } from '../style/component';
 
-import { Style } from './style';
-import { WalletItem } from './wallet-item';
+import css from './style.scoped.scss';
 
 export type CheckoutSessionType = {|
     declinedInstruments : [],
@@ -15,11 +16,10 @@ export type CheckoutSessionType = {|
 |};
 
 type WalletProps = {|
-    cspNonce : string,
     checkoutSession : CheckoutSessionType
 |};
 
-export function Wallet({ cspNonce, checkoutSession } : WalletProps) : Node {
+export function Wallet({ checkoutSession } : WalletProps) : Node {
     const { fundingOptions } = checkoutSession;
     
     // implement logic to select either the preferred one or to the first option available
@@ -29,14 +29,7 @@ export function Wallet({ cspNonce, checkoutSession } : WalletProps) : Node {
     const [ selectedWalletItem, setSelectedWalletItem ] = useState(isSelected);
     
     return (
-        <Fragment>
-            <Style cspNonce={ cspNonce }>
-                {`
-                    .wallet {
-                        padding: 5px;
-                    }
-                `}
-            </Style>
+        <Style css={ css }>
             <div class='wallet'>
                 <WalletItem
                     fundingOption={ selectedWalletItem } selectWalletItemHandler={ setSelectedWalletItem }
@@ -54,6 +47,6 @@ export function Wallet({ cspNonce, checkoutSession } : WalletProps) : Node {
                         ))
                 }
             </div>
-        </Fragment>
+        </Style>
     );
 }

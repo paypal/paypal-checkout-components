@@ -13,3 +13,9 @@ declare var __SMART_WALLET__ : {|
 |};
 
 declare var paypal : PayPal;
+
+declare module CSSModule {
+    declare var exports: {|
+    
+    |};
+}
