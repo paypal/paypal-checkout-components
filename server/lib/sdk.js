@@ -1,6 +1,5 @@
 /* @flow */
 
-import express from 'express';
 import { unpackSDKMeta } from '@paypal/sdk-client';
 import { undotify } from 'belter';
 
@@ -117,17 +116,19 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
         }
     };
 
-    const expressApp = express();
+    const middleware = async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
+        const url = req.url.split('?')[0];
 
-    // $FlowFixMe
-    expressApp.appMiddleware = appMiddleware;
-    expressApp.get('/', appMiddleware);
+        if (url === '/') {
+            return await appMiddleware(req, res);
+        }
 
-    if (script) {
-        // $FlowFixMe
-        expressApp.scriptMiddleware = scriptMiddleware;
-        expressApp.get('/script', scriptMiddleware);
-    }
+        if (url === '/script') {
+            return await scriptMiddleware(req, res);
+        }
 
-    return expressApp;
+        res.status(404).send(`404 not found`);
+    };
+
+    return middleware;
 }
