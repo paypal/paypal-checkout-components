@@ -1,3 +1,9 @@
+## <small>5.0.82 (2020-02-26)</small>
+
+* Support standalone vault buttons ([533c9dd](http://github.paypal.com/paypal/paypal-checkout/commit/533c9dd))
+
+
+
 ## <small>5.0.81 (2020-02-19)</small>
 
 * Fix card logo ([f6a19a0](http://github.paypal.com/paypal/paypal-checkout/commit/f6a19a0))
