@@ -2760,7 +2760,6 @@ window.spb = function(modules) {
         spinner: !0,
         inline: !0
     };
-    var NATIVE_DOMAIN = "https://www.paypal.com";
     var getNativeSocket = memoize((function(_ref) {
         var nativeSocket = (config = (_ref9 = {
             sessionUID: _ref.sessionUID,
@@ -3042,6 +3041,12 @@ window.spb = function(modules) {
         }));
         return nativeSocket;
     }));
+    function isIOSSafari() {
+        return isIos() && function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /Safari/.test(ua) && !isChrome(ua);
+        }();
+    }
     function isAndroidChrome() {
         return isAndroid() && isChrome();
     }
@@ -3120,12 +3125,12 @@ window.spb = function(modules) {
         },
         isEligible: function(_ref3) {
             var props = _ref3.props;
+            var createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, env = props.env;
             var firebaseConfig = _ref3.config.firebase;
             var eligibility = _ref3.serviceData.eligibility;
-            return !("mobile" !== props.platform || props.onShippingChange || props.createBillingAgreement || props.createSubscription || !supportsPopups() || !firebaseConfig || !(isIos() && function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /Safari/.test(ua) && !isChrome(ua);
-            }() || isAndroidChrome()) || !isNativeOptedIn({
+            return !("local" === env || "stage" === env || "mobile" !== props.platform || props.onShippingChange && !isNativeOptedIn({
+                props: props
+            }) || createBillingAgreement || createSubscription || !supportsPopups() || !firebaseConfig || !isIOSSafari() && !isAndroidChrome() || !isNativeOptedIn({
                 props: props
             }) && !eligibility.nativeCheckout.paypal && !eligibility.nativeCheckout.venmo);
         },
@@ -3139,7 +3144,7 @@ window.spb = function(modules) {
         },
         init: function(_ref6) {
             var props = _ref6.props, components = _ref6.components, config = _ref6.config, payment = _ref6.payment, serviceData = _ref6.serviceData;
-            var createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, commit = props.commit, getPageUrl = props.getPageUrl, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost, onClick = props.onClick;
+            var createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, commit = props.commit, getPageUrl = props.getPageUrl, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost, onClick = props.onClick, onShippingChange = props.onShippingChange;
             var facilitatorAccessToken = serviceData.facilitatorAccessToken, sdkMeta = serviceData.sdkMeta;
             var fundingSource = payment.fundingSource;
             var version = config.version, firebaseConfig = config.firebase;
@@ -3195,19 +3200,25 @@ window.spb = function(modules) {
                 }));
                 return instance.start();
             };
+            var getNativeDomain = memoize((function() {
+                return "https://www.paypal.com";
+            }));
+            var getNativePopupDomain = memoize((function() {
+                return "https://ic.paypal.com";
+            }));
             var getNativeUrl = memoize((function(_temp) {
-                var _ref7 = void 0 === _temp ? {} : _temp, _ref7$pageUrl = _ref7.pageUrl;
-                return extendUrl("" + NATIVE_DOMAIN + NATIVE_CHECKOUT_URI[fundingSource], {
+                var _ref7 = void 0 === _temp ? {} : _temp, _ref7$pageUrl = _ref7.pageUrl, pageUrl = void 0 === _ref7$pageUrl ? initialPageUrl : _ref7$pageUrl, sessionUID = _ref7.sessionUID;
+                return extendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
                     query: {
                         sdkMeta: sdkMeta,
-                        sessionUID: _ref7.sessionUID,
+                        sessionUID: sessionUID,
                         buttonSessionID: buttonSessionID,
-                        pageUrl: void 0 === _ref7$pageUrl ? initialPageUrl : _ref7$pageUrl
+                        pageUrl: pageUrl
                     }
                 });
             }));
             var getNativePopupUrl = memoize((function() {
-                return extendUrl("https://ic.paypal.com" + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
+                return extendUrl("" + getNativePopupDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
                     query: {
                         sdkMeta: sdkMeta
                     }
@@ -3280,8 +3291,31 @@ window.spb = function(modules) {
                     getLogger().info("native_message_getprops").flush();
                     return getSDKProps();
                 }));
-                var onApproveListener = socket.on("onApprove", (function(_ref11) {
-                    var _ref11$data = _ref11.data, payerID = _ref11$data.payerID, paymentID = _ref11$data.paymentID, billingToken = _ref11$data.billingToken;
+                var onShippingChangeListener = socket.on("onShippingChange", (function(_ref11) {
+                    var data = _ref11.data;
+                    getLogger().info("native_message_onshippingchange").flush();
+                    if (onShippingChange) {
+                        var resolved = !0;
+                        return onShippingChange(data, {
+                            resolve: function() {
+                                return promise_ZalgoPromise.try((function() {
+                                    resolved = !0;
+                                }));
+                            },
+                            reject: function() {
+                                return promise_ZalgoPromise.try((function() {
+                                    resolved = !1;
+                                }));
+                            }
+                        }).then((function() {
+                            return {
+                                resolved: resolved
+                            };
+                        }));
+                    }
+                }));
+                var onApproveListener = socket.on("onApprove", (function(_ref12) {
+                    var _ref12$data = _ref12.data, payerID = _ref12$data.payerID, paymentID = _ref12$data.paymentID, billingToken = _ref12$data.billingToken;
                     approved = !0;
                     getLogger().info("native_message_onapprove").flush();
                     return promise_ZalgoPromise.all([ onApprove({
@@ -3300,14 +3334,15 @@ window.spb = function(modules) {
                     getLogger().info("native_message_oncancel").flush();
                     return promise_ZalgoPromise.all([ onCancel(), close() ]).then(src_util_noop);
                 }));
-                var onErrorListener = socket.on("onError", (function(_ref12) {
-                    var message = _ref12.data.message;
+                var onErrorListener = socket.on("onError", (function(_ref13) {
+                    var message = _ref13.data.message;
                     getLogger().info("native_message_onerror", {
                         err: message
                     }).flush();
                     return promise_ZalgoPromise.all([ onError(new Error(message)), close() ]).then(src_util_noop);
                 }));
                 clean.register(getPropsListener.cancel);
+                clean.register(onShippingChangeListener.cancel);
                 clean.register(onApproveListener.cancel);
                 clean.register(onCancelListener.cancel);
                 clean.register(onErrorListener.cancel);
@@ -3317,9 +3352,9 @@ window.spb = function(modules) {
                     close: closeNative
                 };
             }));
-            var detectAppSwitch = once((function(_ref13) {
+            var detectAppSwitch = once((function(_ref14) {
                 var _getLogger$info$track2;
-                var sessionUID = _ref13.sessionUID;
+                var sessionUID = _ref14.sessionUID;
                 getLogger().info("native_detect_app_switch").track((_getLogger$info$track2 = {}, 
                 _getLogger$info$track2.transition_name = "native_detect_app_switch", _getLogger$info$track2)).flush();
                 return connectNative({
@@ -3350,14 +3385,14 @@ window.spb = function(modules) {
                 click: function() {
                     return promise_ZalgoPromise.try((function() {
                         var sessionUID = uniqueID();
-                        return isAndroidChrome() ? function(_ref14) {
-                            var sessionUID = _ref14.sessionUID;
+                        return isAndroidChrome() || isIOSSafari() && "www.sandbox.paypal.com" === window.location.hostname ? function(_ref15) {
+                            var sessionUID = _ref15.sessionUID;
                             var nativeWin = popup(getNativeUrl({
                                 sessionUID: sessionUID
                             }));
                             var validatePromise = validate();
                             var delayPromise = promise_ZalgoPromise.delay(500);
-                            var detectWebSwitchListener = listen(nativeWin, NATIVE_DOMAIN, "detectWebSwitch", (function() {
+                            var detectWebSwitchListener = listen(nativeWin, getNativeDomain(), "detectWebSwitch", (function() {
                                 getLogger().info("native_post_message_detect_web_switch").flush();
                                 return detectWebSwitch(nativeWin);
                             }));
@@ -3385,8 +3420,8 @@ window.spb = function(modules) {
                             }));
                         }({
                             sessionUID: sessionUID
-                        }) : function(_ref15) {
-                            var sessionUID = _ref15.sessionUID;
+                        }) : function(_ref16) {
+                            var sessionUID = _ref16.sessionUID;
                             var popupWin = popup(getNativePopupUrl());
                             var closeListener = function(win, callback, delay, maxtime) {
                                 void 0 === delay && (delay = 1e3);
@@ -3414,8 +3449,8 @@ window.spb = function(modules) {
                                 closeListener.cancel();
                             }));
                             var validatePromise = validate();
-                            var awaitRedirectListener = listen(popupWin, "https://ic.paypal.com", "awaitRedirect", (function(_ref16) {
-                                var pageUrl = _ref16.data.pageUrl;
+                            var awaitRedirectListener = listen(popupWin, getNativePopupDomain(), "awaitRedirect", (function(_ref17) {
+                                var pageUrl = _ref17.data.pageUrl;
                                 getLogger().info("native_post_message_await_redirect").flush();
                                 return validatePromise.then((function(valid) {
                                     return valid ? createOrder().then((function() {
@@ -3430,17 +3465,17 @@ window.spb = function(modules) {
                                     }));
                                 }));
                             }));
-                            var detectAppSwitchListener = listen(popupWin, "https://ic.paypal.com", "detectAppSwitch", (function() {
+                            var detectAppSwitchListener = listen(popupWin, getNativePopupDomain(), "detectAppSwitch", (function() {
                                 getLogger().info("native_post_message_detect_app_switch").flush();
                                 return detectAppSwitch({
                                     sessionUID: sessionUID
                                 });
                             }));
-                            var detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, "detectWebSwitch", (function() {
+                            var detectWebSwitchListener = listen(popupWin, getNativeDomain(), "detectWebSwitch", (function() {
                                 getLogger().info("native_post_message_detect_web_switch").flush();
                                 return detectWebSwitch(popupWin);
                             }));
-                            var onCompleteListener = listen(popupWin, NATIVE_DOMAIN, "onComplete", (function() {
+                            var onCompleteListener = listen(popupWin, getNativeDomain(), "onComplete", (function() {
                                 getLogger().info("native_post_message_on_complete").flush();
                                 close();
                             }));
@@ -3918,7 +3953,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.198", _ref2;
+                _ref2.button_version = "2.0.199", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {

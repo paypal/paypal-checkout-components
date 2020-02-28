@@ -1,3 +1,4 @@
+/*! For license information please see smart-wallet.js.LICENSE.txt */
 !function(root, factory) {
     "object" == typeof exports && "object" == typeof module ? module.exports = factory() : "function" == typeof define && define.amd ? define("spb", [], factory) : "object" == typeof exports ? exports.spb = factory() : root.spb = factory();
 }("undefined" != typeof self ? self : this, (function() {
@@ -58,11 +59,144 @@
             return {}.hasOwnProperty.call(object, property);
         };
         __webpack_require__.p = "";
-        return __webpack_require__(__webpack_require__.s = 0);
-    }([ function(module, __webpack_exports__, __webpack_require__) {
+        return __webpack_require__(__webpack_require__.s = 8);
+    }([ function(module, exports, __webpack_require__) {
+        "use strict";
+        module.exports = function(useSourceMap) {
+            var list = [];
+            list.toString = function() {
+                return this.map((function(item) {
+                    var content = function(item, useSourceMap) {
+                        var content = item[1] || "";
+                        var cssMapping = item[3];
+                        if (!cssMapping) return content;
+                        if (useSourceMap && "function" == typeof btoa) {
+                            var sourceMapping = (base64 = btoa(unescape(encodeURIComponent(JSON.stringify(cssMapping)))), 
+                            data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64), 
+                            "/*# ".concat(data, " */"));
+                            var sourceURLs = cssMapping.sources.map((function(source) {
+                                return "/*# sourceURL=".concat(cssMapping.sourceRoot || "").concat(source, " */");
+                            }));
+                            return [ content ].concat(sourceURLs).concat([ sourceMapping ]).join("\n");
+                        }
+                        var base64, data;
+                        return [ content ].join("\n");
+                    }(item, useSourceMap);
+                    return item[2] ? "@media ".concat(item[2], " {").concat(content, "}") : content;
+                })).join("");
+            };
+            list.i = function(modules, mediaQuery, dedupe) {
+                "string" == typeof modules && (modules = [ [ null, modules, "" ] ]);
+                var alreadyImportedModules = {};
+                if (dedupe) for (var i = 0; i < this.length; i++) {
+                    var id = this[i][0];
+                    null != id && (alreadyImportedModules[id] = !0);
+                }
+                for (var _i = 0; _i < modules.length; _i++) {
+                    var item = [].concat(modules[_i]);
+                    if (!dedupe || !alreadyImportedModules[item[0]]) {
+                        mediaQuery && (item[2] = item[2] ? "".concat(mediaQuery, " and ").concat(item[2]) : mediaQuery);
+                        list.push(item);
+                    }
+                }
+            };
+            return list;
+        };
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var inserted = {};
+        function removeCss(ids) {
+            ids.forEach((function(id) {
+                if (--inserted[id] <= 0) {
+                    var elem = document.getElementById(id);
+                    elem && elem.parentNode.removeChild(elem);
+                }
+            }));
+        }
+        module.exports = function(styles, _temp) {
+            var _ref = void 0 === _temp ? {} : _temp, _ref$replace = _ref.replace, replace = void 0 !== _ref$replace && _ref$replace, _ref$prepend = _ref.prepend, prepend = void 0 !== _ref$prepend && _ref$prepend, _ref$prefix = _ref.prefix, prefix = void 0 === _ref$prefix ? "s" : _ref$prefix;
+            var ids = [];
+            for (var i = 0; i < styles.length; i++) {
+                var _styles$i = styles[i], css = _styles$i[1], media = _styles$i[2], sourceMap = _styles$i[3];
+                var id = "" + prefix + _styles$i[0] + "-" + i;
+                ids.push(id);
+                if (!inserted[id] || replace) {
+                    inserted[id] = 1;
+                    var elem = document.getElementById(id);
+                    var create = !1;
+                    if (!elem) {
+                        create = !0;
+                        (elem = document.createElement("style")).setAttribute("type", "text/css");
+                        elem.id = id;
+                        media && elem.setAttribute("media", media);
+                    }
+                    var cssText = css;
+                    if (sourceMap && "function" == typeof btoa) {
+                        cssText += "\n/*# sourceMappingURL=data:application/json;base64," + (str = JSON.stringify(sourceMap), 
+                        btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(match, p1) {
+                            return String.fromCharCode("0x" + p1);
+                        })))) + "*/";
+                        cssText += "\n/*# sourceURL=" + sourceMap.file + "?" + id + "*/";
+                    }
+                    "textContent" in elem ? elem.textContent = cssText : elem.styleSheet.cssText = cssText;
+                    create && (prepend ? document.head.insertBefore(elem, document.head.childNodes[0]) : document.head.appendChild(elem));
+                } else inserted[id]++;
+            }
+            var str;
+            return removeCss.bind(null, ids);
+        };
+    }, function(module, exports, __webpack_require__) {
+        var css = __webpack_require__(5);
+        var insertCss = __webpack_require__(1);
+        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+        (exports = module.exports = css.locals || {})._getContent = function() {
+            return content;
+        };
+        exports._getCss = function() {
+            return "" + css;
+        };
+        exports._insertCss = function(options) {
+            return insertCss(content, options);
+        };
+    }, function(module, exports, __webpack_require__) {
+        var css = __webpack_require__(6);
+        var insertCss = __webpack_require__(1);
+        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+        (exports = module.exports = css.locals || {})._getContent = function() {
+            return content;
+        };
+        exports._getCss = function() {
+            return "" + css;
+        };
+        exports._insertCss = function(options) {
+            return insertCss(content, options);
+        };
+    }, function(module, exports, __webpack_require__) {
+        var css = __webpack_require__(7);
+        var insertCss = __webpack_require__(1);
+        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+        (exports = module.exports = css.locals || {})._getContent = function() {
+            return content;
+        };
+        exports._getCss = function() {
+            return "" + css;
+        };
+        exports._insertCss = function(options) {
+            return insertCss(content, options);
+        };
+    }, function(module, exports, __webpack_require__) {
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-6091ba7d]{white-space:nowrap;cursor:pointer;margin-top:5px;border-bottom:1px solid #eee}@media only screen and (min-width: 0px){.wallet-item[data-v-6091ba7d]{height:50px}}@media only screen and (min-width: 600px){.wallet-item[data-v-6091ba7d]{height:60px}}.wallet-item[data-v-6091ba7d]:first-child{margin-top:0px}.wallet-item[data-v-6091ba7d]:last-child{border-bottom:0}.wallet-item .icon[data-v-6091ba7d]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-6091ba7d]{max-height:90%;max-width:90%}.wallet-item .description[data-v-6091ba7d]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-6091ba7d]{font-size:.95em;height:50%}.wallet-item .description .details[data-v-6091ba7d]{height:50%;color:#6c7378;font-size:.80em}\n", "" ]);
+        module.exports = exports;
+    }, function(module, exports, __webpack_require__) {
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet[data-v-7d8c4ca3]{padding:5px}\n", "" ]);
+        module.exports = exports;
+    }, function(module, exports, __webpack_require__) {
+        (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{padding:0;margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue,HelveticaNeue,HelveticaNeue-Light,Helvetica Neue Light,helvetica,arial,sans-serif;vertical-align:top;border-collapse:collapse}*{user-select:none;cursor:default;box-sizing:border-box}\n", "" ]);
+        module.exports = exports;
+    }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_o, preact_module_f = {}, e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
+        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_o, preact_module_r, preact_module_f = {}, e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
         function s(n, l) {
             for (var u in l) n[u] = l[u];
             return n;
@@ -170,7 +304,7 @@
                 if (u) for (f in u) i && u[f] === i[f] || preact_module_P(o, f, u[f]);
             } else "o" === l[0] && "n" === l[1] ? (e = l !== (l = l.replace(/Capture$/, "")), 
             c = l.toLowerCase(), l = (c in n ? c : l).slice(2), u ? (i || n.addEventListener(l, preact_module_N, e), 
-            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_N, e)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u ? n.removeAttribute(l) : n.setAttribute(l, u));
+            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_N, e)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
         }
         function preact_module_N(l) {
             this.l[l.type](preact_module_n.event ? preact_module_n.event(l) : l);
@@ -292,7 +426,7 @@
         }, preact_module_y.prototype.forceUpdate = function(n) {
             this.__v && (this.__e = !0, n && this.__h.push(n), g(this));
         }, preact_module_y.prototype.render = preact_module_d, preact_module_u = [], preact_module_i = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
-        preact_module_o = preact_module_f;
+        preact_module_o = preact_module_f, preact_module_r = 0;
         var index_module_n = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|^--/i, index_module_o = function(e) {
             return String(e).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }, index_module_a = function(e, t) {
@@ -1194,6 +1328,9 @@
                 container.appendChild(script);
             }));
         }
+        function isServer() {
+            return "undefined" == typeof window;
+        }
         var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
         function httpTransport(_ref) {
@@ -1881,22 +2018,18 @@
                 }));
             }));
         }
-        function Style(_ref) {
-            return v("style", {
-                nonce: _ref.cspNonce
-            }, _ref.children);
-        }
         var hooks_module_t, hooks_module_r, hooks_module_u, hooks_module_i = [], hooks_module_o = preact_module_n.__r, hooks_module_f = preact_module_n.diffed, hooks_module_c = preact_module_n.__c, hooks_module_e = preact_module_n.unmount;
+        function hooks_module_a(t) {
+            preact_module_n.__h && preact_module_n.__h(hooks_module_r);
+            var u = hooks_module_r.__H || (hooks_module_r.__H = {
+                __: [],
+                __h: []
+            });
+            return t >= u.__.length && u.__.push({}), u.__[t];
+        }
         function hooks_module_v(n) {
             return function(n, u, i) {
-                var o = function(t) {
-                    preact_module_n.__h && preact_module_n.__h(hooks_module_r);
-                    var u = hooks_module_r.__H || (hooks_module_r.__H = {
-                        __: [],
-                        __h: []
-                    });
-                    return t >= u.__.length && u.__.push({}), u.__[t];
-                }(hooks_module_t++);
+                var o = hooks_module_a(hooks_module_t++);
                 return o.__c || (o.__c = hooks_module_r, o.__ = [ hooks_module_x(void 0, u), function(t) {
                     var r = n(o.__[0], t);
                     o.__[0] !== r && (o.__[0] = r, o.__c.setState({}));
@@ -1963,81 +2096,186 @@
                 }
             }
         };
+        var StyleContext = (l = {}, (u = {
+            __c: "__cC" + preact_module_r++,
+            __: void 0,
+            Consumer: function(n, l) {
+                return n.children(l);
+            },
+            Provider: function(n) {
+                var i, t = this;
+                return this.getChildContext || (i = [], this.getChildContext = function() {
+                    return l[u.__c] = t, l;
+                }, this.shouldComponentUpdate = function(l) {
+                    n.value !== l.value && i.some((function(n) {
+                        n.context = l.value, g(n);
+                    }));
+                }, this.sub = function(n) {
+                    i.push(n);
+                    var l = n.componentWillUnmount;
+                    n.componentWillUnmount = function() {
+                        i.splice(i.indexOf(n), 1), l && l.call(n);
+                    };
+                }), n.children;
+            }
+        }).Consumer.contextType = u, u);
+        var l, u;
+        function StyleSheet(_ref) {
+            var cspNonce = _ref.cspNonce, _ref$children = _ref.children, children = void 0 === _ref$children ? null : _ref$children;
+            var _useState = hooks_module_v({}), styles = _useState[0], setStyles = _useState[1];
+            return v(StyleContext.Provider, {
+                value: {
+                    cspNonce: cspNonce,
+                    addStyle: function(css) {
+                        if (isServer()) {
+                            var _extends2;
+                            styles = _extends({}, styles, ((_extends2 = {})[css] = (styles[css] || 0) + 1, _extends2));
+                        } else setStyles((function(prevState) {
+                            var _extends3;
+                            return _extends({}, prevState, ((_extends3 = {})[css] = (prevState[css] || 0) + 1, 
+                            _extends3));
+                        }));
+                    },
+                    removeStyle: function(css) {
+                        if (isServer()) {
+                            var _extends4;
+                            styles = _extends({}, styles, ((_extends4 = {})[css] = (styles[css] || 0) - 1, _extends4));
+                        } else setStyles((function(prevState) {
+                            var _extends5;
+                            return _extends({}, prevState, ((_extends5 = {})[css] = (prevState[css] || 0) - 1, 
+                            _extends5));
+                        }));
+                    }
+                }
+            }, children, v((function() {
+                var styleString = Object.keys(styles).filter((function(style) {
+                    return styles[style] > 0;
+                })).join("\n");
+                return v("style", {
+                    nonce: cspNonce
+                }, styleString);
+            }), null));
+        }
+        function Style(_ref2) {
+            var css = _ref2.css, _ref2$children = _ref2.children, children = void 0 === _ref2$children ? null : _ref2$children;
+            var _useContext = function(n) {
+                var u = hooks_module_r.context[n.__c];
+                if (!u) return n.__;
+                var i = hooks_module_a(hooks_module_t++);
+                return null == i.__ && (i.__ = !0, u.sub(hooks_module_r)), u.props.value;
+            }(StyleContext), addStyle = _useContext.addStyle, removeStyle = _useContext.removeStyle;
+            var cssText = css._getCss();
+            isServer() ? addStyle(cssText) : function(n, u) {
+                var i = hooks_module_a(hooks_module_t++);
+                (function(n, t) {
+                    return !n || t.some((function(t, r) {
+                        return t !== n[r];
+                    }));
+                })(i.__H, u) && (i.__ = function() {
+                    addStyle(cssText);
+                    return function() {
+                        return removeStyle(cssText);
+                    };
+                }, i.__H = u, hooks_module_r.__H.__h.push(i));
+            }(0, [ cssText ]);
+            return children;
+        }
+        var style_scopedscopeId_6091ba7d = __webpack_require__(2);
+        var style_scopedscopeId_6091ba7d_default = __webpack_require__.n(style_scopedscopeId_6091ba7d);
         function WalletItem(_ref) {
             var fundingOption = _ref.fundingOption, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
             var fundingInstrument = fundingOption.fundingInstrument;
-            var fundingOptionIcon = fundingInstrument && fundingInstrument.image && fundingInstrument.image.url && fundingInstrument.image.url.href;
             var fundingOptionTitle = fundingInstrument && fundingInstrument.issuerProductDescription;
             var instrumentSubType = fundingInstrument && fundingInstrument.instrumentSubType;
             var lastDigits = fundingInstrument && fundingInstrument.lastDigits;
-            return v(preact_module_d, null, v(Style, {
-                cspNonce: _ref.cspNonce
-            }, "\n                    .wallet-item  {\n                        white-space: nowrap;\n                        cursor: pointer;\n                        margin-top: 5px;\n                        border-bottom: 1px solid #eee;\n                    }\n\n                    .wallet-item:first-child {\n                        margin-top: 0px;\n                    }\n\n                    .wallet-item:last-child {\n                        border-bottom: 0;\n                    }\n\n                    @media only screen and (min-width: 0px) {\n                        .wallet-item {\n                            height: 50px;\n                        }\n                    }\n\n                    @media only screen and (min-width: 600px) {\n                        .wallet-item {\n                            height: 60px;\n                        }\n                    }\n\n                    .wallet-item-icon-container {\n                        display: inline-block;\n                        vertical-align: top;\n                        text-align: center;\n                        width: 50px;\n                        margin-right: 20px;\n                    }\n\n                    .wallet-item-icon {\n                        max-height: 90%;\n                        max-width: 90%;\n                    }\n\n                    .wallet-item-description {\n                        display: inline-block;\n                        vertical-align: top;\n                    }\n\n                    .wallet-item-name {\n                        font-size: .95em;\n                        height: 50%;\n                    }\n\n                    .wallet-item-details {\n                        height: 50%;\n                        color: #6c7378;\n                        font-size: .80em;\n                    }\n                "), v("div", {
+            return v(Style, {
+                css: style_scopedscopeId_6091ba7d_default.a,
+                "data-v-6091ba7d": ""
+            }, v("div", {
                 class: "wallet-item",
                 onClick: function() {
                     return function(item) {
                         selectWalletItemHandler(item);
                         listOpenHandler(!listOpen);
                     }(fundingOption);
-                }
+                },
+                "data-v-6091ba7d": ""
             }, v("div", {
-                class: "wallet-item-icon-container"
+                class: "icon",
+                "data-v-6091ba7d": ""
             }, v("img", {
-                src: fundingOptionIcon,
-                class: "wallet-item-icon"
+                src: fundingInstrument && fundingInstrument.image && fundingInstrument.image.url && fundingInstrument.image.url.href,
+                "data-v-6091ba7d": ""
             })), v("div", {
-                class: "wallet-item-description"
+                class: "description",
+                "data-v-6091ba7d": ""
             }, v("div", {
-                class: "wallet-item-name"
+                class: "name",
+                "data-v-6091ba7d": ""
             }, fundingOptionTitle), v("div", {
-                class: "wallet-item-details"
+                class: "details",
+                "data-v-6091ba7d": ""
             }, v("span", {
-                class: "wallet-item-type"
+                class: "type",
+                "data-v-6091ba7d": ""
             }, instrumentSubType, " "), v("span", {
-                class: "wallet-item-digits"
+                class: "digits",
+                "data-v-6091ba7d": ""
             }, "•••• ", lastDigits)))));
         }
+        var style_scopedscopeId_7d8c4ca3 = __webpack_require__(3);
+        var style_scopedscopeId_7d8c4ca3_default = __webpack_require__.n(style_scopedscopeId_7d8c4ca3);
         function Wallet(_ref) {
-            var cspNonce = _ref.cspNonce;
             var fundingOptions = _ref.checkoutSession.fundingOptions;
             var isSelected = fundingOptions[0];
             var _useState = hooks_module_v(!1), listOpen = _useState[0], setListOpen = _useState[1];
-            var _useState2 = hooks_module_v(isSelected), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
-            return v(preact_module_d, null, v(Style, {
-                cspNonce: cspNonce
-            }, "\n                    .wallet {\n                        padding: 5px;\n                    }\n                "), v("div", {
-                class: "wallet"
+            var _useState2 = hooks_module_v(isSelected), setSelectedWalletItem = _useState2[1];
+            return v(Style, {
+                css: style_scopedscopeId_7d8c4ca3_default.a,
+                "data-v-7d8c4ca3": ""
+            }, v("div", {
+                class: "wallet",
+                "data-v-7d8c4ca3": ""
             }, v(WalletItem, {
-                fundingOption: selectedWalletItem,
+                fundingOption: _useState2[0],
                 selectWalletItemHandler: setSelectedWalletItem,
                 listOpen: listOpen,
-                listOpenHandler: setListOpen
+                listOpenHandler: setListOpen,
+                "data-v-7d8c4ca3": ""
             }), listOpen && fundingOptions.map((function(option) {
                 return v(WalletItem, {
                     fundingOption: option,
                     selectWalletItemHandler: setSelectedWalletItem,
                     listOpen: listOpen,
-                    listOpenHandler: setListOpen
+                    listOpenHandler: setListOpen,
+                    "data-v-7d8c4ca3": ""
                 });
             }))));
         }
+        var page_style = __webpack_require__(4);
+        var style_default = __webpack_require__.n(page_style);
         function Page(_ref) {
-            var cspNonce = _ref.cspNonce, checkoutSession = _ref.checkoutSession;
-            return v(preact_module_d, null, v(Style, {
-                cspNonce: cspNonce
-            }, "\n                    html, body {\n                        padding: 0;\n                        margin: 0;\n                        width: 100%;\n                        overflow: hidden;\n                    }\n\n                    body {\n                        font-family: Helvetica Neue,HelveticaNeue,HelveticaNeue-Light,Helvetica Neue Light,helvetica,arial,sans-serif;\n                        vertical-align: top;\n                        border-collapse: collapse;\n                    }\n\n                    * {\n                        user-select: none;\n                        cursor: default;\n                        box-sizing: border-box;\n                    }\n                "), v(Wallet, {
-                cspNonce: cspNonce,
-                checkoutSession: checkoutSession
+            return v(Style, {
+                css: style_default.a
+            }, v(Wallet, {
+                checkoutSession: _ref.checkoutSession
             }));
         }
         function fallbackToWebCheckout() {
             throw new Error("Not implemented");
         }
-        function renderWallet(props) {
-            return index_module(v(Page, props));
+        function App(_ref4) {
+            return v(StyleSheet, {
+                cspNonce: _ref4.cspNonce
+            }, v(Page, {
+                checkoutSession: _ref4.checkoutSession
+            }));
         }
-        function setupWallet(_ref4) {
-            var buyerAccessToken = _ref4.buyerAccessToken, cspNonce = _ref4.cspNonce, checkoutSession = _ref4.checkoutSession;
+        function renderWallet(props) {
+            return index_module(v(App, props));
+        }
+        function setupWallet(_ref5) {
+            var buyerAccessToken = _ref5.buyerAccessToken, cspNonce = _ref5.cspNonce, checkoutSession = _ref5.checkoutSession;
             !function(props, _ref3) {
                 var checkoutSession = _ref3.checkoutSession, buyerAccessToken = _ref3.buyerAccessToken;
                 (0, props.setup)({}, {
@@ -2079,9 +2317,11 @@
                     }
                 });
             }((_ref = {
-                facilitatorAccessToken: _ref4.facilitatorAccessToken
-            }, facilitatorAccessToken = _ref.facilitatorAccessToken, xprops = window.xprops, 
-            env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, 
+                facilitatorAccessToken: _ref5.facilitatorAccessToken
+            }, facilitatorAccessToken = _ref.facilitatorAccessToken, xprops = function() {
+                if (window.xprops) return window.xprops;
+                throw new Error("No xprops found");
+            }(), env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, 
             platform = xprops.platform, sessionID = xprops.sessionID, intent = xprops.intent, 
             walletSessionID = xprops.walletSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, 
             correlationID = xprops.correlationID, getParentDomain = xprops.getParentDomain, 
@@ -2148,14 +2388,14 @@
                 preact_module_n.__ && preact_module_n.__(l, u), r = (t = i === preact_module_o) ? null : u.__k, 
                 l = v(preact_module_d, null, [ l ]), c = [], preact_module_z(u, u.__k = l, r || preact_module_f, preact_module_f, void 0 !== u.ownerSVGElement, r ? null : e.slice.call(u.childNodes), c, preact_module_f, t), 
                 preact_module_T(c, l);
-            }(v(Page, {
+            }(v(App, {
                 cspNonce: cspNonce,
                 checkoutSession: checkoutSession
             }), function() {
                 var body = document.body;
                 if (!body) throw new Error("Document body not found");
                 return body;
-            }());
+            }().querySelector("#wallet-container"));
         }
         __webpack_require__.d(__webpack_exports__, "setupWallet", (function() {
             return setupWallet;
