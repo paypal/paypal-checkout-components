@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, Fragment } from 'jsx-pragmatic/src';
-import { CARD, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
+import { CARD, COUNTRY, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
@@ -41,7 +41,7 @@ export function getCardConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        eligible: ({ components, fundingEligibility }) => {
+        eligible: ({ components, fundingSource, fundingEligibility }) => {
             const cardEligibility = fundingEligibility.card;
             const vendorEligibility = cardEligibility && cardEligibility.vendors;
 
@@ -64,6 +64,11 @@ export function getCardConfig() : FundingSourceConfig {
 
             // If there's a vaulted card, always show card button
             if (cardVaulted) {
+                return true;
+            }
+
+            // If standalone card is selected, always show card button
+            if (fundingSource === FUNDING.CARD) {
                 return true;
             }
             

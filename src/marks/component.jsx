@@ -37,7 +37,7 @@ export const getMarksComponent = memoize(() => {
                 return true;
             }
 
-            return isFundingEligible(fundingSource, { layout, platform, fundingEligibility, components, onShippingChange });
+            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange });
         };
 
         const render = (container) => {
