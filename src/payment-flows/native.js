@@ -74,8 +74,12 @@ function isAndroidChrome() : boolean {
     return isAndroid() && isChrome();
 }
 
+function useTemporarySandboxIOSFix() : boolean {
+    return isIOSSafari() && window.location.hostname === 'www.sandbox.paypal.com';
+}
+
 function useDirectAppSwitch() : boolean {
-    return isAndroidChrome();
+    return isAndroidChrome() || useTemporarySandboxIOSFix();
 }
 
 function didAppSwitch(popupWin : ?CrossDomainWindowType) : boolean {
@@ -104,9 +108,13 @@ let initialPageUrl;
 
 function isNativeEligible({ props, config, serviceData } : { props : ButtonProps, config : Config, serviceData : ServiceData }) : boolean {
     
-    const { platform, onShippingChange, createBillingAgreement, createSubscription } = props;
+    const { platform, onShippingChange, createBillingAgreement, createSubscription, env } = props;
     const { firebase: firebaseConfig } = config;
     const { eligibility } = serviceData;
+
+    if (env === ENV.LOCAL || env === ENV.STAGE) {
+        return false;
+    }
 
     if (platform !== PLATFORM.MOBILE) {
         return false;
@@ -215,14 +223,22 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return instance.start();
     };
 
+    const getNativeDomain = memoize(() : string => {
+        return NATIVE_DOMAIN;
+    });
+
+    const getNativePopupDomain = memoize(() : string => {
+        return NATIVE_POPUP_DOMAIN;
+    });
+
     const getNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
-        return extendUrl(`${ NATIVE_DOMAIN }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
+        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: { sdkMeta, sessionUID, buttonSessionID, pageUrl }
         });
     });
 
     const getNativePopupUrl = memoize(() : string => {
-        return extendUrl(`${ NATIVE_POPUP_DOMAIN }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
+        return extendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
             query: { sdkMeta }
         });
     });
@@ -388,7 +404,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         const validatePromise = validate();
         const delayPromise = ZalgoPromise.delay(500);
 
-        const detectWebSwitchListener = listen(nativeWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, () => {
+        const detectWebSwitchListener = listen(nativeWin, getNativeDomain(), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
             getLogger().info(`native_post_message_detect_web_switch`).flush();
             return detectWebSwitch(nativeWin);
         });
@@ -442,7 +458,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
         const validatePromise = validate();
 
-        const awaitRedirectListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
+        const awaitRedirectListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
             getLogger().info(`native_post_message_await_redirect`).flush();
             return validatePromise.then(valid => {
                 if (!valid) {
@@ -457,17 +473,17 @@ function initNative({ props, components, config, payment, serviceData } : { prop
             });
         });
 
-        const detectAppSwitchListener = listen(popupWin, NATIVE_POPUP_DOMAIN, POST_MESSAGE.DETECT_APP_SWITCH, () => {
+        const detectAppSwitchListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.DETECT_APP_SWITCH, () => {
             getLogger().info(`native_post_message_detect_app_switch`).flush();
             return detectAppSwitch({ sessionUID });
         });
 
-        const detectWebSwitchListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.DETECT_WEB_SWITCH, () => {
+        const detectWebSwitchListener = listen(popupWin, getNativeDomain(), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
             getLogger().info(`native_post_message_detect_web_switch`).flush();
             return detectWebSwitch(popupWin);
         });
 
-        const onCompleteListener = listen(popupWin, NATIVE_DOMAIN, POST_MESSAGE.ON_COMPLETE, () => {
+        const onCompleteListener = listen(popupWin, getNativeDomain(), POST_MESSAGE.ON_COMPLETE, () => {
             getLogger().info(`native_post_message_on_complete`).flush();
             close();
         });
