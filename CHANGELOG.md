@@ -1,3 +1,9 @@
+## <small>5.0.84 (2020-02-28)</small>
+
+* Always show card button when eligible and when selected as standalone ([8b8f67c](http://github.paypal.com/paypal/paypal-checkout/commit/8b8f67c))
+
+
+
 ## <small>5.0.83 (2020-02-28)</small>
 
 * Always show card button when there is a vaulted card ([2dd6d61](http://github.paypal.com/paypal/paypal-checkout/commit/2dd6d61))
