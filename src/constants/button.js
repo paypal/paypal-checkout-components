@@ -20,6 +20,12 @@ export const BUTTON_COLOR = {
     TRANSPARENT: ('transparent' : 'transparent')
 };
 
+export const TEXT_COLOR = {
+    BLACK:   ('black' : 'black'),
+    WHITE:   ('white' : 'white'),
+    DEFAULT: ('default' : 'default')
+};
+
 export const BUTTON_SIZE = {
     TINY:       ('tiny' : 'tiny'),
     SMALL:      ('small' : 'small'),

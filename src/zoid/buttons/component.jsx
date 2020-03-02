@@ -373,7 +373,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             const components         = getComponents();
 
             if (fundingSource) {
-                return isFundingEligible(fundingSource, { layout, platform, fundingEligibility, components, onShippingChange });
+                return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange });
             }
 
             return true;

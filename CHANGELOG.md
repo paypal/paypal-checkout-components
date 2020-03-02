@@ -1,3 +1,43 @@
+## <small>5.0.84 (2020-02-28)</small>
+
+* Always show card button when eligible and when selected as standalone ([8b8f67c](http://github.paypal.com/paypal/paypal-checkout/commit/8b8f67c))
+
+
+
+## <small>5.0.83 (2020-02-28)</small>
+
+* Always show card button when there is a vaulted card ([2dd6d61](http://github.paypal.com/paypal/paypal-checkout/commit/2dd6d61))
+
+
+
+## <small>5.0.82 (2020-02-26)</small>
+
+* Support standalone vault buttons ([533c9dd](http://github.paypal.com/paypal/paypal-checkout/commit/533c9dd))
+
+
+
+## <small>5.0.81 (2020-02-19)</small>
+
+* Fix card logo ([f6a19a0](http://github.paypal.com/paypal/paypal-checkout/commit/f6a19a0))
+
+
+
+## <small>5.0.80 (2020-02-19)</small>
+
+* Add additional wallet props ([d7ff243](http://github.paypal.com/paypal/paypal-checkout/commit/d7ff243))
+* Add risk data collector to wallet ([00630ca](http://github.paypal.com/paypal/paypal-checkout/commit/00630ca))
+* Add wallet container and prerender templates ([45ecbad](http://github.paypal.com/paypal/paypal-checkout/commit/45ecbad))
+* Export validateButtonProps ([09e65e3](http://github.paypal.com/paypal/paypal-checkout/commit/09e65e3))
+* Fix multiple button label issue ([46f9490](http://github.paypal.com/paypal/paypal-checkout/commit/46f9490))
+
+
+
+## <small>5.0.79 (2020-02-12)</small>
+
+* Add auth params to wallet component ([7e75b42](http://github.paypal.com/paypal/paypal-checkout/commit/7e75b42))
+
+
+
 ## <small>5.0.78 (2020-02-04)</small>
 
 * Default to paypal for style prop normalization ([c1ba6e8](http://github.paypal.com/paypal/paypal-checkout/commit/c1ba6e8))

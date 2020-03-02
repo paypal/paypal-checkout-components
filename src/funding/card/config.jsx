@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, Fragment } from 'jsx-pragmatic/src';
-import { CARD, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
+import { CARD, COUNTRY, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
@@ -41,10 +41,16 @@ export function getCardConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        eligible: ({ components, fundingEligibility }) => {
+        eligible: ({ components, fundingSource, fundingEligibility }) => {
+            const cardEligibility = fundingEligibility.card;
+            const vendorEligibility = cardEligibility && cardEligibility.vendors;
+
             const hostedFieldsRequested = Boolean(components.indexOf(COMPONENTS.HOSTED_FIELDS) !== -1);
-            const cardEligible = Boolean(fundingEligibility.card && fundingEligibility.card.eligible);
-            const cardBranded = Boolean(fundingEligibility.card && fundingEligibility.card.branded);
+            const cardEligible = Boolean(cardEligibility && cardEligibility.eligible);
+            const cardBranded = Boolean(cardEligibility && cardEligibility.branded);
+            const cardVaulted = Boolean(vendorEligibility && Object.keys(vendorEligibility).some(vendor => {
+                return Boolean(vendorEligibility[vendor] && vendorEligibility[vendor].vaultedInstruments && vendorEligibility[vendor].vaultedInstruments.length);
+            }));
 
             // If card is not eligible, never show card buttons
             if (!cardEligible) {
@@ -53,6 +59,16 @@ export function getCardConfig() : FundingSourceConfig {
 
             // If card is branded, always show card buttons
             if (cardBranded) {
+                return true;
+            }
+
+            // If there's a vaulted card, always show card button
+            if (cardVaulted) {
+                return true;
+            }
+
+            // If standalone card is selected, always show card button
+            if (fundingSource === FUNDING.CARD) {
                 return true;
             }
             

@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.78",
+  "version": "5.0.84",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -80,6 +80,7 @@
   "dependencies": {
     "@paypal/common-components": "^1.0.3",
     "@paypal/funding-components": "^1.0.7",
+    "@paypal/risk-data-collector": "^1.0.1",
     "@paypal/sdk-client": "^4.0.0",
     "@paypal/sdk-constants": "^1.0.1",
     "@paypal/sdk-logos": "^1.0.17",
