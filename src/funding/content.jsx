@@ -11,7 +11,7 @@ import { Text } from '../ui/text';
 export type ContentMap = {
     [ $Values<typeof LANG> ] : {
         Checkout : ({ logo : ChildType }) => ChildType,
-        Subscribe? : ({ logo : ChildType }) => ChildType, /** PayPal officially not support th language, did't add translation for the same **/
+        Subscribe? : ({ logo : ChildType }) => ChildType, /** Didn't add a translation for `tr` language **/
         Pay : ({ logo : ChildType }) => ChildType,
         BuyNow : ({ logo : ChildType }) => ChildType,
         Installment? : ({ logo : ChildType, period? : ?number }) => ChildType,
