@@ -6,6 +6,7 @@ import { useState } from 'preact/hooks';
 
 import type { FundingOptionType } from '../../types';
 import { WalletItem } from '../walletItem';
+import { buildWalletItemDetails } from '../../util';
 import { Style } from '../style';
 
 import styles from './style.scoped.scss';
@@ -25,13 +26,18 @@ export const Wallet = ({ checkoutSession } : WalletProps) : Node => {
         [ listOpen, setListOpen ] = useState(false),
         [ selectedWalletItem, setSelectedWalletItem ] = useState(fundingOptions[0]);
 
+    const changeSelectedWalletItem = (itemId) => {
+        const newItem = fundingOptions.find(option => option.id === itemId);
+        setSelectedWalletItem(newItem);
+    };
+
     const renderSelectedWalletItem = () => {
         return (listOpen)
             ? ''
             : <WalletItem
                 selected={ true }
-                fundingOption={ selectedWalletItem }
-                selectWalletItemHandler={ setSelectedWalletItem }
+                details={ buildWalletItemDetails(selectedWalletItem) }
+                selectWalletItemHandler={ changeSelectedWalletItem }
                 listOpen={ listOpen }
                 listOpenHandler={ setListOpen }
             />;
@@ -45,8 +51,8 @@ export const Wallet = ({ checkoutSession } : WalletProps) : Node => {
                         fundingOptions.map((option) => (
                             <WalletItem
                                 selected={ option.id === selectedWalletItem.id }
-                                fundingOption={ option }
-                                selectWalletItemHandler={ setSelectedWalletItem }
+                                details={ buildWalletItemDetails(option) }
+                                selectWalletItemHandler={ changeSelectedWalletItem }
                                 listOpen={ listOpen }
                                 listOpenHandler={ setListOpen }
                             />

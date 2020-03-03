@@ -4,7 +4,7 @@
 import { h, type Node } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 
-import type { FundingOptionType } from '../../types';
+import type { WalletDetailsType } from '../../types';
 import { Style } from '../style';
 import { Check } from '../../images/check';
 
@@ -12,56 +12,21 @@ import styles from './style.scoped.scss';
 
 type ItemProps = {|
     selected : boolean,
-    fundingOption : FundingOptionType,
+    details : WalletDetailsType,
     listOpen : boolean,
-    selectWalletItemHandler : (item : FundingOptionType) => void,
+    selectWalletItemHandler : (itemId : string) => void,
     listOpenHandler : (listOpen : boolean) => void
 |};
 
 export const WalletItem = ({
     selected,
-    fundingOption,
+    details,
     selectWalletItemHandler,
     listOpen,
     listOpenHandler
 } : ItemProps) : Node => {
     const
-        [ fundingOptionIcon, setFundingOptionIcon ] = useState(''),
-        [ fundingOptionTitle, setFundingOptionTitle ] = useState(''),
-        [ instrumentSubType, setInstrumentSubType ] = useState(''),
-        [ showPreferredText, setShowPreferredText ] = useState(''),
-        [ lastDigits, setLastDigits ] = useState(''),
         [ showSelected, setShowSelected ] = useState(selected);
-
-    useEffect(() => {
-        const {
-            fundingInstrument: {
-                image,
-                name,
-                issuerProductDescription,
-                instrumentSubType: subType,
-                lastDigits: digits,
-                isPreferred
-            }
-        } = fundingOption;
-
-        const href = (image) ? image.url.href : '';
-
-        setFundingOptionIcon(href);
-
-        if (subType === 'PAYPAL') {
-            setFundingOptionTitle('PayPal Credit');
-            setInstrumentSubType('Pay overtime for your purchase');
-            setLastDigits('');
-        } else {
-            setFundingOptionTitle(issuerProductDescription || name);
-            setInstrumentSubType(subType);
-            setLastDigits(`•••• ${ digits || '' }`);
-        }
-
-        setShowPreferredText(isPreferred);
-
-    }, [ fundingOption ]);
 
     useEffect(() => {
         setShowSelected(selected);
@@ -73,7 +38,7 @@ export const WalletItem = ({
     };
 
     const renderPreferred = () => {
-        return (showPreferredText)
+        return (details.showPreferredText)
             ? <div className='preferred'>PREFERRED</div>
             : '';
     };
@@ -86,15 +51,15 @@ export const WalletItem = ({
 
     return (
         <Style css={ styles } >
-            <div className={ `wallet-item ${ (selected) ? 'selected-wallet-item' : '' }` } onClick={ () => selectItem(fundingOption) }>
+            <div className={ `wallet-item ${ (selected) ? 'selected-wallet-item' : '' }` } onClick={ () => selectItem(details.id) }>
                 <div className='icon'>
-                    <img src={ fundingOptionIcon } />
+                    <img src={ details.fundingOptionIcon } />
                 </div>
                 <div className='description'>
-                    <div className='name'>{ fundingOptionTitle }</div>
+                    <div className='name'>{ details.fundingOptionTitle }</div>
                     <div className='details'>
-                        <span className='type'>{ instrumentSubType } </span>
-                        <span className='digits'>{ lastDigits }</span>
+                        <span className='type'>{ details.instrumentSubType } </span>
+                        <span className='digits'>{ details.lastDigits }</span>
                     </div>
                 </div>
                 { renderPreferred() }

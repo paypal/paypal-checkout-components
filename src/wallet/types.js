@@ -27,6 +27,14 @@ export type FundingOptionType = {|
     allPlans : $ReadOnlyArray<PlanType>
 |};
 
+export type WalletDetailsType = {|
+    id : string,
+    fundingOptionIcon : string,
+    fundingOptionTitle : string,
+    instrumentSubType : string,
+    showPreferredText : boolean,
+    lastDigits : string
+|};
 
 export type CheckoutSessionType = {|
     declinedInstruments : [],

@@ -34,15 +34,15 @@ const buttonMiddleware = getButtonMiddleware({
                         tagline: {
                             text:     'Get $5 off your order!',
                             tracking: {
-                                impression: 'http ://www.paypal.com/tracking?foo=bar',
-                                click:      'http ://www.paypal.com/tracking?foo=bar'
+                                impression: 'http://www.paypal.com/tracking?foo=bar',
+                                click:      'http://www.paypal.com/tracking?foo=bar'
                             }
                         },
                         buttonText: {
-                            text:     'PAY! {logo :pp} {logo :paypal} {logo :pp}',
+                            text:     'PAY! {logo:pp} {logo:paypal} {logo:pp}',
                             tracking: {
-                                impression: 'http ://www.paypal.com/tracking?foo=bar',
-                                click:      'http ://www.paypal.com/tracking?foo=bar'
+                                impression: 'http://www.paypal.com/tracking?foo=bar',
+                                click:      'http://www.paypal.com/tracking?foo=bar'
                             }
                         }
                     }
