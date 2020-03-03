@@ -5,7 +5,8 @@ export const BUTTON_LABEL = {
     CHECKOUT:    ('checkout' : 'checkout'),
     BUYNOW:      ('buynow' : 'buynow'),
     PAY:         ('pay' : 'pay'),
-    INSTALLMENT: ('installment' : 'installment')
+    INSTALLMENT: ('installment' : 'installment'),
+    SUBSCRIBE:   ('subscribe' : 'subscribe')
 };
 
 export const BUTTON_COLOR = {

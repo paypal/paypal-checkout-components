@@ -91,10 +91,14 @@ export function BasicLabel({ i, logo, label, layout, multiple, period, locale: {
         return logo;
     }
 
-    const { Checkout, Pay, BuyNow, Installment } = componentContent[lang];
+    const { Checkout, Pay, BuyNow, Installment, Subscribe } = componentContent[lang];
 
     if (label === BUTTON_LABEL.CHECKOUT) {
         return <Checkout logo={ logo } />;
+    }
+
+    if (label === BUTTON_LABEL.SUBSCRIBE) {
+        return <Subscribe logo={ logo } />;
     }
 
     if (label === BUTTON_LABEL.PAY) {
