@@ -1,15 +1,14 @@
 html, body {
-    padding: 0;
     margin: 0;
     width: 100%;
     overflow: hidden;
-    font-family: Helvetica Neue,HelveticaNeue,HelveticaNeue-Light,Helvetica Neue Light,helvetica,arial,sans-serif;
-    vertical-align: top;
-    border-collapse: collapse;
+    font-family: Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif;
 }
 
 * {
-    user-select: none;
-    cursor: default;
     box-sizing: border-box;
+}
+
+.flex-spacer {
+    flex: 1;
 }

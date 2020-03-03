@@ -34,15 +34,15 @@ const buttonMiddleware = getButtonMiddleware({
                         tagline: {
                             text:     'Get $5 off your order!',
                             tracking: {
-                                impression: 'http://www.paypal.com/tracking?foo=bar',
-                                click:      'http://www.paypal.com/tracking?foo=bar'
+                                impression: 'http ://www.paypal.com/tracking?foo=bar',
+                                click:      'http ://www.paypal.com/tracking?foo=bar'
                             }
                         },
                         buttonText: {
-                            text:     'PAY! {logo:pp} {logo:paypal} {logo:pp}',
+                            text:     'PAY! {logo :pp} {logo :paypal} {logo :pp}',
                             tracking: {
-                                impression: 'http://www.paypal.com/tracking?foo=bar',
-                                click:      'http://www.paypal.com/tracking?foo=bar'
+                                impression: 'http ://www.paypal.com/tracking?foo=bar',
+                                click:      'http ://www.paypal.com/tracking?foo=bar'
                             }
                         }
                     }
@@ -93,41 +93,118 @@ const walletMiddleware = getWalletMiddleware({
                             declinedInstruments: [],
                             fundingOptions:      [
                                 {
-                                    'id':                'CC-ABC12345',
+                                    'id':                           'BA-XH7B6GNDFFJV2',
                                     'fundingInstrument': {
-                                        'id':                       'CC-ABC12345',
-                                        'name':                     'VISA',
-                                        'issuerProductDescription': 'The Bank Card Platinum Rewards',
-                                        'type':                     'CREDIT_CARD',
-                                        'instrumentSubType':        'CREDIT',
-                                        'lastDigits':               '1234',
-                                        'image':                    {
-                                            'url': {
-                                                'href': ''
-                                            },
-                                            'width':  '96',
-                                            'height': '96'
-                                        },
-                                        'isPreferred': false
+                                        'id':                       'BA-XH7B6GNDFFJV2',
+                                        'name':                     'WELLS FARGO BANK NA',
+                                        'issuerProductDescription': null,
+                                        'type':                     'BANK_ACCOUNT',
+                                        'instrumentSubType':        'CHECKING',
+                                        'lastDigits':               '9673',
+                                        'image':                    null,
+                                        'institutionImages':        [],
+                                        'isPreferred':              true,
+                                        'attribution':              null,
+                                        'rewards':                  null,
+                                        '__typename':               'FundingInstrument',
+                                        'creditFIAdditionalData':   null,
+                                        'payerDisclaimer':          null
                                     }
-                                },
-                                {
-                                    'id':                'CC-ABC56789',
+                                }, {
+                                    'id':                           'BC-5932XGYM5Y3QC',
                                     'fundingInstrument': {
-                                        'id':                       'CC-ABC56789',
-                                        'name':                     'AMEX',
-                                        'issuerProductDescription': 'The Amex Rewards Card',
+                                        'id':                       'BC-5932XGYM5Y3QC',
+                                        'name':                     'BILL_ME_LATER',
+                                        'issuerProductDescription': null,
+                                        'type':                     'PAYPAL_CREDIT',
+                                        'instrumentSubType':        'PAYPAL',
+                                        'lastDigits':               null,
+                                        'image':                    null,
+                                        'institutionImages':        [],
+                                        'isPreferred':              false,
+                                        'attribution':              null,
+                                        'rewards':                  null,
+                                        '__typename':               'FundingInstrument',
+                                        'creditFIAdditionalData':   null,
+                                        'payerDisclaimer':          null
+                                    }
+                                }, {
+                                    'id':                           'CC-J327ZUEUDE8QL',
+                                    'fundingInstrument': {
+                                        'id':                       'CC-J327ZUEUDE8QL',
+                                        'name':                     'VISA',
+                                        'issuerProductDescription': 'Wells Fargo Bank',
                                         'type':                     'CREDIT_CARD',
-                                        'instrumentSubType':        'CREDIT',
-                                        'lastDigits':               '8654',
+                                        'instrumentSubType':        'DEBIT',
+                                        'lastDigits':               '8558',
                                         'image':                    {
                                             'url': {
-                                                'href': ''
+                                                'href':             'https://pics.paypal.com//00/s/OTY5WDE1MzZYUE5H/p/ZTkxNjMyNjAtOTZiYy00YzllLTlmMDQtNDM5MmVkYjJkYjFk/image_0.png',
+                                                '__typename':       'GenericURL'
                                             },
-                                            'width':  '96',
-                                            'height': '96'
+                                            'width':                '96',
+                                            'height':               '96',
+                                            '__typename':           'CardImage'
                                         },
-                                        'isPreferred': false
+                                        'institutionImages':        [],
+                                        'isPreferred':              false,
+                                        'attribution':              null,
+                                        'rewards':                  null,
+                                        '__typename':               'FundingInstrument',
+                                        'creditFIAdditionalData':   null,
+                                        'payerDisclaimer':          null
+                                    }
+                                }, {
+                                    'id':                           'CC-WXS325L2PS75E',
+                                    'fundingInstrument': {
+                                        'id':                       'CC-WXS325L2PS75E',
+                                        'name':                     'VISA',
+                                        'issuerProductDescription': 'Wells Fargo Platinum Visa Credit Card',
+                                        'type':                     'CREDIT_CARD',
+                                        'instrumentSubType':        'CREDIT',
+                                        'lastDigits':               '5335',
+                                        'image':                    {
+                                            'url': {
+                                                'href':             'https://pics.paypal.com//00/s/OTY5WDE1MzhYUE5H/p/Y2IwMTk0Y2YtOTY4OS00ZWMwLWI1NjgtZmI5MDQzOWUyMmZk/image_0.png',
+                                                '__typename':       'GenericURL'
+                                            },
+                                            'width':                '96',
+                                            'height':               '96',
+                                            '__typename':           'CardImage'
+                                        },
+                                        'institutionImages':        [],
+                                        'isPreferred':              false,
+                                        'attribution':              null,
+                                        'rewards':                  null,
+                                        '__typename':               'FundingInstrument',
+                                        'creditFIAdditionalData':   null,
+                                        'payerDisclaimer':          null
+                                    }
+                                }, {
+                                    'id':                           'CC-ATXCFBG3VN2GQ',
+                                    'fundingInstrument': {
+                                        'id':                       'CC-ATXCFBG3VN2GQ',
+                                        'name':                     'VISA',
+                                        'issuerProductDescription': 'Barclaycard with Apple Rewards',
+                                        'type':                     'CREDIT_CARD',
+                                        'instrumentSubType':        'CREDIT',
+                                        'lastDigits':               '3817',
+                                        'image':                    {
+                                            'url': {
+                                                'href':             'https://pics.paypal.com//00/s/OTY5WDE1MzZYUE5H/p/MjA5YzU0OTUtM2JjNi00OGE5LTg3ZjgtMWM0MzA0YjM1NWJk/image_0.png',
+                                                '__typename':       'GenericURL'
+                                            },
+                                            'width':                '96',
+                                            'height':               '96',
+                                            '__typename':           'CardImage'
+                                        },
+                                        'institutionImages':        [],
+                                        'isPreferred':              false,
+                                        'attribution':              null,
+                                        'rewards':                  null,
+                                        '__typename':               'FundingInstrument',
+                                        'creditFIAdditionalData':   null,
+                                        'payerDisclaimer':          null
                                     }
                                 }
                             ]

@@ -53,7 +53,9 @@ export function getWalletMiddleware({ logger = defaultLogger, graphQL, cache, ex
 
             const pageHTML = `
                 <!DOCTYPE html>
-                <head></head>
+                <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
                 <body data-nonce="${ cspNonce }" data-client-version="${ await getVersion() }" data-render-version="${ await getVersion() }">
                     <div id="wallet-container" class="wallet-container">${ walletHTML }</div>
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }

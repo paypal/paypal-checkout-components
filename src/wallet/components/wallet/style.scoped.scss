@@ -1,4 +1,20 @@
-
 .wallet {
-    padding: 5px;
+    border: 1px solid rgb(0, 156, 222);
+    border-radius: 4px;
+    overflow: hidden;
+
+    .add-card-button {
+        padding: 20px;
+
+        a {
+            color: #007ab7;
+            font-weight: 400;
+            font-size: 16px;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
 }

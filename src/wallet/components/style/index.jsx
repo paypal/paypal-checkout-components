@@ -13,7 +13,14 @@ type StyleSheetProps = {|
     children? : $ReadOnlyArray<Node>
 |};
 
-export function StyleSheet({ cspNonce, children = null } : StyleSheetProps) : Node {
+type StyleProps = {|
+    css : {|
+        _getCss : () => string
+    |},
+    children? : $ReadOnlyArray<Node>
+|};
+
+export const StyleSheet = ({ cspNonce, children = null } : StyleSheetProps) : Node => {
     let [ styles, setStyles ] = useState({});
 
     const addStyle = (css) => {
@@ -63,16 +70,9 @@ export function StyleSheet({ cspNonce, children = null } : StyleSheetProps) : No
             <StyleTag />
         </StyleContext.Provider>
     );
-}
+};
 
-type StyleProps = {|
-    css : {|
-        _getCss : () => string
-    |},
-    children? : $ReadOnlyArray<Node>
-|};
-
-export function Style({ css, children = null } : StyleProps) : Node {
+export const Style = ({ css, children = null } : StyleProps) : Node => {
     const { addStyle, removeStyle } = useContext(StyleContext);
     const cssText = css._getCss();
 
@@ -86,4 +86,4 @@ export function Style({ css, children = null } : StyleProps) : Node {
     }
 
     return children;
-}
+};

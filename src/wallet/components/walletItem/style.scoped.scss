@@ -1,0 +1,67 @@
+
+.wallet-item {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease-in-out;
+    height: 60px;
+
+    @media only screen and (max-width: 600px) {
+        height: 50px;
+    }
+
+    .icon {
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        width: 50px;
+        margin-right: 20px;
+
+        img {
+            max-height: 90%;
+            max-width: 90%;
+        }
+    }
+
+    .description {
+        display: inline-block;
+        vertical-align: top;
+
+        .name {
+            font-size: 16px;
+            height: 50%;
+            margin-bottom: 5px;
+
+            @media only screen and (max-width: 600px) {
+                font-size: 13px;
+            }
+        }
+
+        .details {
+            height: 50%;
+            color: #6c7378;
+            font-size: 14px;
+
+            @media only screen and (max-width: 600px) {
+                font-size: 12px;
+            }
+        }
+    }
+
+    .preferred {
+        background-color: #eaf7e9;
+        color: #2d542b;
+        font-size: 10px;
+        padding: 2px 5px;
+        border-radius: 3px;
+        margin: 0 5px;
+    }
+
+    &:hover {
+        background-color: #EEE;
+    }
+}
