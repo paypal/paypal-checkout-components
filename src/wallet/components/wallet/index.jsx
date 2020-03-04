@@ -6,6 +6,7 @@ import { useState } from 'preact/hooks';
 
 import type { FundingOptionType } from '../../types';
 import { WalletItem } from '../walletItem';
+import { CreditBanner } from '../credit';
 import { buildWalletItemDetails } from '../../util';
 import { Style } from '../style';
 
@@ -58,6 +59,7 @@ export const Wallet = ({ checkoutSession } : WalletProps) : Node => {
                             />
                         ))
                     }
+                    <CreditBanner checkoutSession={ checkoutSession } />
                     <div className="add-card-button">
                         <a href="#">Add debit or credit card</a>
                     </div>
