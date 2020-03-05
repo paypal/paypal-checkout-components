@@ -12,3 +12,4 @@ import './style';
 import './instant';
 import './popupBridge';
 import './standalone';
+import './clone';

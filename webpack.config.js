@@ -14,7 +14,6 @@ export const WEBPACK_CONFIG_TEST = getWebpackConfig({
 
     test:   true,
     debug:  true,
-    minify: true,
 
     vars: {
         ...globals,

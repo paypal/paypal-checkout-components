@@ -3,6 +3,7 @@
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
+import { noop } from 'belter/src';
 
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT } from '../../constants';
 import { determineEligibleFunding } from '../../funding';
@@ -23,7 +24,7 @@ export function validateButtonProps(props : ButtonsProps) {
 }
 
 export function Buttons(props : ButtonsProps) : ElementNode {
-    const { onClick } = props;
+    const { onClick = noop } = props;
     const { fundingSource, style, locale, remembered, env, fundingEligibility, platform,
         nonce, components, onShippingChange, personalization, clientAccessToken, content } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;

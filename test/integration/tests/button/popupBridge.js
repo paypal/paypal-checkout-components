@@ -15,6 +15,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
         afterEach(() => {
             destroyTestContainer();
+            delete window.popupBridge;
         });
 
         it('should render a button with popup bridge', () => {

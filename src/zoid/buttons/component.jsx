@@ -8,7 +8,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, values, memoize } from 'belter/src';
+import { uniqueID, values, memoize, noop, identity } from 'belter/src';
 import { FUNDING, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
@@ -360,8 +360,22 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
         }
     });
 
+    const instances = [];
+
     const ButtonsWrapper = (props = {}) => {
-        const instance = Buttons(props);
+        // eslint-disable-next-line prefer-const
+        let instance;
+
+        const onDestroy = props.onDestroy || noop;
+        props.onDestroy = (...args) => {
+            if (instance) {
+                instances.splice(instances.indexOf(instance), 1);
+            }
+            return onDestroy(...args);
+        };
+
+        instance = Buttons(props);
+        instances.push(instance);
 
         // $FlowFixMe
         instance.isEligible = () => {
@@ -379,12 +393,18 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             return true;
         };
 
+        // $FlowFixMe
+        instance.clone = ({ decorate = identity } = {}) => {
+            return ButtonsWrapper(decorate(props));
+        };
+
         return instance;
     };
 
     ButtonsWrapper.driver = Buttons.driver;
     ButtonsWrapper.isChild = Buttons.isChild;
     ButtonsWrapper.canRenderTo = Buttons.canRenderTo;
+    ButtonsWrapper.instances = instances;
 
     // $FlowFixMe
     return ButtonsWrapper;
