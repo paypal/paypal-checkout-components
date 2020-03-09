@@ -1,12 +1,14 @@
+@import '@paypal/sdk-constants/src/styles/index.scss';
+
 .add-card-button {
     padding: 20px;
 
     a {
-        color: #007ab7;
+        color: $blueText;
         font-weight: 400;
-        font-size: 16px;
+        font-size: $defaultFontSize;
         text-decoration: none;
-
+      
         &:hover {
             text-decoration: underline;
         }

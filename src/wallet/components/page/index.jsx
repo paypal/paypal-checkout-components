@@ -4,7 +4,6 @@
 import { h, type Node } from 'preact';
 
 import type { CheckoutSession } from '../../types';
-import { CreditBanner } from '../credit';
 import { Wallet } from '../wallet';
 import { Style } from '../style';
 
@@ -17,6 +16,5 @@ type PageProps = {|
 export const Page = ({ checkoutSession } : PageProps) : Node => (
     <Style css={ styles }>
         <Wallet checkoutSession={ checkoutSession } />
-        <CreditBanner checkoutSession={ checkoutSession } />
     </Style>
 );
