@@ -207,14 +207,15 @@ export type FundingEligibilityType = {|
     }
 |};
 
-type ZoidComponent = {|
+export type ZoidComponent = {|
     render : (string, ?$Values<typeof CONTEXT>) => ZalgoPromise<void>,
     renderTo : (CrossDomainWindowType, string, ?$Values<typeof CONTEXT>) => ZalgoPromise<void>,
     close : () => ZalgoPromise<void>,
     onError : (mixed) => ZalgoPromise<void>
 |};
 
-export type CheckoutFlowType = {|
+// eslint-disable-next-line flowtype/require-exact-type
+export type CheckoutFlowType = {
     canRenderTo : (CrossDomainWindowType) => ZalgoPromise<boolean>,
     ({|
         window? : ?(ProxyWindow | CrossDomainWindowType),
@@ -237,9 +238,10 @@ export type CheckoutFlowType = {|
         buyerAccessToken : ?string,
         venmoPayloadID? : ?string
     |}) : ZoidComponent
-|};
+};
 
-export type CardFieldsFlowType = {|
+// eslint-disable-next-line flowtype/require-exact-type
+export type CardFieldsFlowType = {
     canRenderTo : (CrossDomainWindowType) => ZalgoPromise<boolean>,
     ({|
         window? : ?(ProxyWindow | CrossDomainWindowType),
@@ -260,9 +262,10 @@ export type CardFieldsFlowType = {|
         commit : boolean,
         cspNonce : ?string
     |}) : ZoidComponent
-|};
+};
 
-export type ThreeDomainSecureFlowType = {|
+// eslint-disable-next-line flowtype/require-exact-type
+export type ThreeDomainSecureFlowType = {
     canRenderTo : (CrossDomainWindowType) => ZalgoPromise<boolean>,
     ({|
         createOrder : () => ZalgoPromise<string>,
@@ -270,14 +273,15 @@ export type ThreeDomainSecureFlowType = {|
         onCancel : () => ZalgoPromise<void> | void,
         onError : (mixed) => ZalgoPromise<void> | void
     |}) : ZoidComponent
-|};
+};
 
-export type MenuFlowType = {|
+// eslint-disable-next-line flowtype/require-exact-type
+export type MenuFlowType = {
     canRenderTo : (CrossDomainWindowType) => ZalgoPromise<boolean>,
     ({|
         clientID : string
     |}) : ZoidComponent
-|};
+};
 
 export type ContentType = {|
     instantlyPayWith : string,
