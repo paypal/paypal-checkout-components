@@ -90,11 +90,18 @@ export const FPTI_TRANSITION = {
     NATIVE_DETECT_APP_SWITCH: ('native_detect_app_switch' : 'native_detect_app_switch'),
     NATIVE_DETECT_WEB_SWITCH: ('native_detect_web_switch' : 'native_detect_web_switch'),
     NATIVE_APP_SWITCH_ACK:    ('native_app_switch_ack' : 'native_app_switch_ack'),
-    NATIVE_ERROR:             ('native_app_switch_ack' : 'native_app_switch_ack')
+    NATIVE_ERROR:             ('native_app_switch_ack' : 'native_app_switch_ack'),
+
+    HONEY_IDENTIFY:           ('honey_identify')
 };
 
 export const FPTI_BUTTON_TYPE = {
     IFRAME: ('iframe' : 'iframe')
+};
+
+export const FTPI_CUSTOM_KEY = {
+    HONEY_DEVICE_ID:  ('honey_device_id' : 'honey_device_id'),
+    HONEY_SESSION_ID: ('honey_session_id' : 'honey_session_id')
 };
 
 export const FTPI_BUTTON_KEY = {
