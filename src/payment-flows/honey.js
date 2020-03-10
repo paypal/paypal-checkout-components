@@ -72,7 +72,7 @@ function initHoney() : PaymentFlowInstance {
     throw new Error(`Not Implemented`);
 }
 
-export const cardFields : PaymentFlow = {
+export const honey : PaymentFlow = {
     name:              'card_fields',
     setup:             setupHoney,
     isEligible:        isHoneyEligible,
