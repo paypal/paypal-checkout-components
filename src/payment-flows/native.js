@@ -208,6 +208,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const clean = cleanup();
     let approved = false;
     let cancelled = false;
+    let didFallback = false;
 
     const close = memoize(() => {
         return clean.all();
@@ -217,6 +218,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         paypal.postRobot.once(event, { window: popupWin, domain }, handler);
 
     const fallbackToWebCheckout = (fallbackWin? : ?CrossDomainWindowType) => {
+        didFallback = true;
         const checkoutPayment = { ...payment, win: fallbackWin, isClick: false };
         const instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData });
         clean.register(() => instance.close());
@@ -443,7 +445,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
 
         const closeListener = onCloseWindow(popupWin, () => {
             return ZalgoPromise.delay(1000).then(() => {
-                if (!approved && !cancelled) {
+                if (!approved && !cancelled && !didFallback) {
                     return ZalgoPromise.all([
                         onCancel(),
                         close()
