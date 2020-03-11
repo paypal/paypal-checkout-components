@@ -308,6 +308,10 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
         if ([ FUNDING.VENMO, FUNDING.ITAU ].includes(fundingSource)) {
             if (basicFundingEligibility[fundingSource] && basicFundingEligibility[fundingSource].eligible) {
                 delete fundingQuery[fundingSource].eligible;
+
+                if (!Object.keys(fundingQuery[fundingSource]).length) {
+                    delete fundingQuery[fundingSource];
+                }
             }
             
             continue;
