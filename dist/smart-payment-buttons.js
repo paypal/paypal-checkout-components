@@ -3842,6 +3842,10 @@ window.spb = function(modules) {
                         event.preventDefault();
                         event.stopPropagation();
                         var choices = "paypal" === fundingSource ? [ {
+                            id: "SELECT_FUNDING_SHIPPING",
+                            label: content.chooseCardOrShipping,
+                            popup: menu_popup
+                        }, {
                             id: "CHANGE_ACCOUNT",
                             label: content.useDifferentAccount,
                             popup: menu_popup
@@ -4019,7 +4023,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.200", _ref2;
+                _ref2.button_version = "2.0.201", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
