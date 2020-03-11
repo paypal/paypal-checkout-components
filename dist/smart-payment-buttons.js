@@ -59,6 +59,24 @@ window.spb = function(modules) {
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
+    __webpack_require__.d(__webpack_exports__, "setupButton", (function() {
+        return setupButton;
+    }));
+    __webpack_require__.d(__webpack_exports__, "TYPES", (function() {
+        return props_TYPES;
+    }));
+    __webpack_require__.d(__webpack_exports__, "getProps", (function() {
+        return getProps;
+    }));
+    __webpack_require__.d(__webpack_exports__, "getComponents", (function() {
+        return getComponents;
+    }));
+    __webpack_require__.d(__webpack_exports__, "getConfig", (function() {
+        return getConfig;
+    }));
+    __webpack_require__.d(__webpack_exports__, "getServiceData", (function() {
+        return getServiceData;
+    }));
     function getUserAgent() {
         return window.navigator.mockUserAgent || window.navigator.userAgent;
     }
@@ -590,7 +608,12 @@ window.spb = function(modules) {
                 if (!frame.contentWindow) return !0;
                 if (!frame.parentNode) return !0;
                 var doc = frame.ownerDocument;
-                return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
+                if (doc && doc.documentElement && !doc.documentElement.contains(frame)) {
+                    var parent = frame;
+                    for (;parent.parentNode && parent.parentNode !== parent; ) parent = parent.parentNode;
+                    if (!parent.host || !doc.documentElement.contains(parent.host)) return !0;
+                }
+                return !1;
             }(frame)) return !0;
         }
         return !1;
@@ -1849,6 +1872,7 @@ window.spb = function(modules) {
             }));
         };
     }
+    var props_TYPES = !0;
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken;
         var xprops = window.xprops;
@@ -2329,7 +2353,7 @@ window.spb = function(modules) {
             var context = (_ref5 = {
                 win: win,
                 isClick: payment.isClick
-            }).win ? "popup" : _ref5.isClick && supportsPopups() ? "popup" : "iframe";
+            }).win || _ref5.isClick && supportsPopups() ? "popup" : "iframe";
             var _ref5;
             var approved = !1;
             var restart = memoize((function() {
@@ -3174,6 +3198,7 @@ window.spb = function(modules) {
             var tasks, cleaned;
             var approved = !1;
             var cancelled = !1;
+            var didFallback = !1;
             var close = memoize((function() {
                 return clean.all();
             }));
@@ -3184,6 +3209,7 @@ window.spb = function(modules) {
                 }, handler);
             };
             var fallbackToWebCheckout = function(fallbackWin) {
+                didFallback = !0;
                 var checkoutPayment = _extends({}, payment, {
                     win: fallbackWin,
                     isClick: !1
@@ -3431,7 +3457,7 @@ window.spb = function(modules) {
                                     if (isWindowClosed(win)) {
                                         timeout && clearTimeout(timeout);
                                         return promise_ZalgoPromise.delay(1e3).then((function() {
-                                            if (!approved && !cancelled) return promise_ZalgoPromise.all([ onCancel(), close() ]);
+                                            if (!approved && !cancelled && !didFallback) return promise_ZalgoPromise.all([ onCancel(), close() ]);
                                         })).then(src_util_noop);
                                     }
                                     if (maxtime <= 0) clearTimeout(timeout); else {
@@ -3509,7 +3535,47 @@ window.spb = function(modules) {
             };
         },
         spinner: !0
-    }, checkout ];
+    }, checkout, {
+        name: "card_fields",
+        setup: function() {
+            window.postMessage(JSON.stringify({
+                message_source: "smart_payment_buttons",
+                message_name: "identify_extension"
+            }), getDomain());
+            window.addEventListener("message", (function(_ref) {
+                var data = _ref.data;
+                if (_ref.origin === getDomain()) {
+                    try {
+                        data = JSON.parse(data);
+                    } catch (err) {
+                        return;
+                    }
+                    var message_data = data.message_data;
+                    if ("honey_extension" === data.message_source && "identify_extension" === data.message_name) {
+                        var _getLogger$info$track;
+                        var device_id = message_data.device_id, session_id = message_data.session_id;
+                        getLogger().addTrackingBuilder((function() {
+                            var _ref2;
+                            return (_ref2 = {}).honey_device_id = device_id, _ref2.honey_session_id = session_id, 
+                            _ref2;
+                        }));
+                        getLogger().info("identify_honey").track(((_getLogger$info$track = {}).transition_name = "honey_identify", 
+                        _getLogger$info$track));
+                    }
+                }
+            }));
+        },
+        isEligible: function() {
+            return !0;
+        },
+        isPaymentEligible: function() {
+            return !1;
+        },
+        init: function() {
+            throw new Error("Not Implemented");
+        },
+        inline: !0
+    } ];
     var menu_popup = {
         width: 500,
         height: 590
@@ -3953,7 +4019,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.199", _ref2;
+                _ref2.button_version = "2.0.200", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
@@ -4039,23 +4105,5 @@ window.spb = function(modules) {
             setupPaymentFlowsTask: setupPaymentFlowsTask
         }).then(src_util_noop);
     }
-    __webpack_require__.d(__webpack_exports__, "setupButton", (function() {
-        return setupButton;
-    }));
-    __webpack_require__.d(__webpack_exports__, "TYPES", (function() {
-        return !0;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getProps", (function() {
-        return getProps;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getComponents", (function() {
-        return getComponents;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getConfig", (function() {
-        return getConfig;
-    }));
-    __webpack_require__.d(__webpack_exports__, "getServiceData", (function() {
-        return getServiceData;
-    }));
 } ]);
 //# sourceMappingURL=smart-payment-buttons.js.map

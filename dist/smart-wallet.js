@@ -59,7 +59,7 @@
             return {}.hasOwnProperty.call(object, property);
         };
         __webpack_require__.p = "";
-        return __webpack_require__(__webpack_require__.s = 8);
+        return __webpack_require__(__webpack_require__.s = 10);
     }([ function(module, exports, __webpack_require__) {
         "use strict";
         module.exports = function(useSourceMap) {
@@ -146,19 +146,6 @@
             return removeCss.bind(null, ids);
         };
     }, function(module, exports, __webpack_require__) {
-        var css = __webpack_require__(5);
-        var insertCss = __webpack_require__(1);
-        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
-        (exports = module.exports = css.locals || {})._getContent = function() {
-            return content;
-        };
-        exports._getCss = function() {
-            return "" + css;
-        };
-        exports._insertCss = function(options) {
-            return insertCss(content, options);
-        };
-    }, function(module, exports, __webpack_require__) {
         var css = __webpack_require__(6);
         var insertCss = __webpack_require__(1);
         var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
@@ -185,17 +172,52 @@
             return insertCss(content, options);
         };
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-6091ba7d]{white-space:nowrap;cursor:pointer;margin-top:5px;border-bottom:1px solid #eee}@media only screen and (min-width: 0px){.wallet-item[data-v-6091ba7d]{height:50px}}@media only screen and (min-width: 600px){.wallet-item[data-v-6091ba7d]{height:60px}}.wallet-item[data-v-6091ba7d]:first-child{margin-top:0px}.wallet-item[data-v-6091ba7d]:last-child{border-bottom:0}.wallet-item .icon[data-v-6091ba7d]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-6091ba7d]{max-height:90%;max-width:90%}.wallet-item .description[data-v-6091ba7d]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-6091ba7d]{font-size:.95em;height:50%}.wallet-item .description .details[data-v-6091ba7d]{height:50%;color:#6c7378;font-size:.80em}\n", "" ]);
+        var css = __webpack_require__(8);
+        var insertCss = __webpack_require__(1);
+        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+        (exports = module.exports = css.locals || {})._getContent = function() {
+            return content;
+        };
+        exports._getCss = function() {
+            return "" + css;
+        };
+        exports._insertCss = function(options) {
+            return insertCss(content, options);
+        };
+    }, function(module, exports, __webpack_require__) {
+        var css = __webpack_require__(9);
+        var insertCss = __webpack_require__(1);
+        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+        (exports = module.exports = css.locals || {})._getContent = function() {
+            return content;
+        };
+        exports._getCss = function() {
+            return "" + css;
+        };
+        exports._insertCss = function(options) {
+            return insertCss(content, options);
+        };
+    }, function(module, exports, __webpack_require__) {
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-fdd787a1]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-fdd787a1]{height:50px}}.wallet-item .icon[data-v-fdd787a1]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-fdd787a1]{max-height:90%;max-width:90%}.wallet-item .description[data-v-fdd787a1]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-fdd787a1]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-fdd787a1]{font-size:13px}}.wallet-item .description .details[data-v-fdd787a1]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-fdd787a1]{font-size:12px}}.wallet-item .preferred[data-v-fdd787a1]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-fdd787a1]:hover{background-color:#eee}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet[data-v-7d8c4ca3]{padding:5px}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{padding:0;margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue,HelveticaNeue,HelveticaNeue-Light,Helvetica Neue Light,helvetica,arial,sans-serif;vertical-align:top;border-collapse:collapse}*{user-select:none;cursor:default;box-sizing:border-box}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-d2ff3bcf]{padding:20px}.add-card-button a[data-v-d2ff3bcf]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-d2ff3bcf]:hover{text-decoration:underline}\n", "" ]);
+        module.exports = exports;
+    }, function(module, exports, __webpack_require__) {
+        (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif}*{box-sizing:border-box}.flex-spacer{flex:1}\n", "" ]);
         module.exports = exports;
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.r(__webpack_exports__);
+        __webpack_require__.d(__webpack_exports__, "setupWallet", (function() {
+            return setupWallet;
+        }));
+        __webpack_require__.d(__webpack_exports__, "renderWallet", (function() {
+            return renderWallet;
+        }));
         var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_o, preact_module_r, preact_module_f = {}, e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
         function s(n, l) {
             for (var u in l) n[u] = l[u];
@@ -258,7 +280,7 @@
                 return l.__v.__b - n.__v.__b;
             })); n = preact_module_u.pop(); ) n.__d && (i = void 0, t = void 0, r = (o = (l = n).__v).__e, 
             (f = l.__P) && (i = [], t = preact_module_z(f, o, s({}, o), l.__n, void 0 !== f.ownerSVGElement, null, i, null == r ? preact_module_m(o) : r), 
-            preact_module_T(i, o), t != r && preact_module_w(o)));
+            preact_module_A(i, o), t != r && preact_module_w(o)));
         }
         function preact_module_(n, l, u, i, t, o, r, c, s) {
             var v, h, p, d, y, w, g, k = u && u.__k || e, _ = k.length;
@@ -286,12 +308,12 @@
                             "option" == l.type && (n.value = "");
                         }
                         c = void 0 !== e ? e : d.nextSibling, "function" == typeof l.type && (l.__d = c);
-                    }
+                    } else c && p.__e == c && c.parentNode != n && (c = preact_module_m(p));
                 }
                 return v++, u;
             })), l.__e = w, null != o && "function" != typeof l.type) for (v = o.length; v--; ) null != o[v] && a(o[v]);
-            for (v = _; v--; ) null != k[v] && preact_module_A(k[v], k[v]);
-            if (g) for (v = 0; v < g.length; v++) preact_module_j(g[v], g[++v], g[++v]);
+            for (v = _; v--; ) null != k[v] && preact_module_j(k[v], k[v]);
+            if (g) for (v = 0; v < g.length; v++) preact_module_$(g[v], g[++v], g[++v]);
         }
         function preact_module_P(n, l, u) {
             "-" === l[0] ? n.setProperty(l, u) : n[l] = "number" == typeof u && !1 === c.test(l) ? u + "px" : null == u ? "" : u;
@@ -333,18 +355,18 @@
                         }));
                     }
                     v.context = x, v.props = k, v.state = v.__s, (a = preact_module_n.__r) && a(u), 
-                    v.__d = !1, v.__v = u, v.__P = l, a = v.render(v.props, v.state, v.context), u.__k = null != a && a.type == preact_module_d && null == a.key ? a.props.children : a, 
+                    v.__d = !1, v.__v = u, v.__P = l, a = v.render(v.props, v.state, v.context), u.__k = null != a && a.type == preact_module_d && null == a.key ? a.props.children : Array.isArray(a) ? a : [ a ], 
                     null != v.getChildContext && (t = s(s({}, t), v.getChildContext())), h || null == v.getSnapshotBeforeUpdate || (w = v.getSnapshotBeforeUpdate(p, m)), 
                     preact_module_(l, u, i, t, o, r, f, e, c), v.base = u.__e, v.__h.length && f.push(v), 
                     g && (v.__E = v.__ = null), v.__e = !1;
-                } else u.__e = preact_module_$(i.__e, u, i, t, o, r, f, c);
+                } else u.__e = preact_module_T(i.__e, u, i, t, o, r, f, c);
                 (a = preact_module_n.diffed) && a(u);
             } catch (l) {
                 preact_module_n.__e(l, u, i);
             }
             return u.__e;
         }
-        function preact_module_T(l, u) {
+        function preact_module_A(l, u) {
             preact_module_n.__c && preact_module_n.__c(u, l), l.some((function(u) {
                 try {
                     l = u.__h, u.__h = [], l.some((function(n) {
@@ -355,9 +377,9 @@
                 }
             }));
         }
-        function preact_module_$(n, l, u, i, t, o, r, c) {
+        function preact_module_T(n, l, u, i, t, o, r, c) {
             var s, a, v, h, p, d = u.props, y = l.props;
-            if (t = "svg" === l.type || t, null == n && null != o) for (s = 0; s < o.length; s++) if (null != (a = o[s]) && (null === l.type ? 3 === a.nodeType : a.localName === l.type)) {
+            if (t = "svg" === l.type || t, null != o) for (s = 0; s < o.length; s++) if (null != (a = o[s]) && ((null === l.type ? 3 === a.nodeType : a.localName === l.type) || n == a)) {
                 n = a, o[s] = null;
                 break;
             }
@@ -367,8 +389,8 @@
                     is: y.is
                 }), o = null;
             }
-            if (null === l.type) null != o && (o[o.indexOf(n)] = null), d !== y && n.data != y && (n.data = y); else if (l !== u) {
-                if (null != o && (o[o.indexOf(n)] = null, o = e.slice.call(n.childNodes)), v = (d = u.props || preact_module_f).dangerouslySetInnerHTML, 
+            if (null === l.type) d !== y && n.data != y && (n.data = y); else if (l !== u) {
+                if (null != o && (o = e.slice.call(n.childNodes)), v = (d = u.props || preact_module_f).dangerouslySetInnerHTML, 
                 h = y.dangerouslySetInnerHTML, !c) {
                     if (d === preact_module_f) for (d = {}, p = 0; p < n.attributes.length; p++) d[n.attributes[p].name] = n.attributes[p].value;
                     (h || v) && (h && v && h.__html == v.__html || (n.innerHTML = h && h.__html || ""));
@@ -383,16 +405,16 @@
             }
             return n;
         }
-        function preact_module_j(l, u, i) {
+        function preact_module_$(l, u, i) {
             try {
                 "function" == typeof l ? l(u) : l.current = u;
             } catch (l) {
                 preact_module_n.__e(l, i);
             }
         }
-        function preact_module_A(l, u, i) {
+        function preact_module_j(l, u, i) {
             var t, o, r;
-            if (preact_module_n.unmount && preact_module_n.unmount(l), (t = l.ref) && (t.current && t.current !== l.__e || preact_module_j(t, null, u)), 
+            if (preact_module_n.unmount && preact_module_n.unmount(l), (t = l.ref) && (t.current && t.current !== l.__e || preact_module_$(t, null, u)), 
             i || "function" == typeof l.type || (i = null != (o = l.__e)), l.__e = l.__d = void 0, 
             null != (t = l.__c)) {
                 if (t.componentWillUnmount) try {
@@ -402,7 +424,7 @@
                 }
                 t.base = t.__P = null;
             }
-            if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && preact_module_A(t[r], u, i);
+            if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && preact_module_j(t[r], u, i);
             null != o && a(o);
         }
         function preact_module_D(n, l, u) {
@@ -966,7 +988,12 @@
                     if (!frame.contentWindow) return !0;
                     if (!frame.parentNode) return !0;
                     var doc = frame.ownerDocument;
-                    return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
+                    if (doc && doc.documentElement && !doc.documentElement.contains(frame)) {
+                        var parent = frame;
+                        for (;parent.parentNode && parent.parentNode !== parent; ) parent = parent.parentNode;
+                        if (!parent.host || !doc.documentElement.contains(parent.host)) return !0;
+                    }
+                    return !1;
                 }(frame)) return !0;
             }
             return !1;
@@ -2036,6 +2063,14 @@
                 } ]), o.__;
             }(hooks_module_x, n);
         }
+        function hooks_module_p(n, u) {
+            var i = hooks_module_a(hooks_module_t++);
+            (function(n, t) {
+                return !n || t.some((function(t, r) {
+                    return t !== n[r];
+                }));
+            })(i.__H, u) && (i.__ = n, i.__H = u, hooks_module_r.__H.__h.push(i));
+        }
         function hooks_module_F() {
             hooks_module_i.some((function(t) {
                 if (t.__P) try {
@@ -2120,7 +2155,7 @@
             }
         }).Consumer.contextType = u, u);
         var l, u;
-        function StyleSheet(_ref) {
+        var style_StyleSheet = function(_ref) {
             var cspNonce = _ref.cspNonce, _ref$children = _ref.children, children = void 0 === _ref$children ? null : _ref$children;
             var _useState = hooks_module_v({}), styles = _useState[0], setStyles = _useState[1];
             return v(StyleContext.Provider, {
@@ -2155,8 +2190,8 @@
                     nonce: cspNonce
                 }, styleString);
             }), null));
-        }
-        function Style(_ref2) {
+        };
+        var style_Style = function(_ref2) {
             var css = _ref2.css, _ref2$children = _ref2.children, children = void 0 === _ref2$children ? null : _ref2$children;
             var _useContext = function(n) {
                 var u = hooks_module_r.context[n.__c];
@@ -2165,109 +2200,195 @@
                 return null == i.__ && (i.__ = !0, u.sub(hooks_module_r)), u.props.value;
             }(StyleContext), addStyle = _useContext.addStyle, removeStyle = _useContext.removeStyle;
             var cssText = css._getCss();
-            isServer() ? addStyle(cssText) : function(n, u) {
-                var i = hooks_module_a(hooks_module_t++);
-                (function(n, t) {
-                    return !n || t.some((function(t, r) {
-                        return t !== n[r];
-                    }));
-                })(i.__H, u) && (i.__ = function() {
-                    addStyle(cssText);
-                    return function() {
-                        return removeStyle(cssText);
-                    };
-                }, i.__H = u, hooks_module_r.__H.__h.push(i));
-            }(0, [ cssText ]);
+            isServer() ? addStyle(cssText) : hooks_module_p((function() {
+                addStyle(cssText);
+                return function() {
+                    return removeStyle(cssText);
+                };
+            }), [ cssText ]);
             return children;
-        }
-        var style_scopedscopeId_6091ba7d = __webpack_require__(2);
-        var style_scopedscopeId_6091ba7d_default = __webpack_require__.n(style_scopedscopeId_6091ba7d);
-        function WalletItem(_ref) {
-            var fundingOption = _ref.fundingOption, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
-            var fundingInstrument = fundingOption.fundingInstrument;
-            var fundingOptionTitle = fundingInstrument && fundingInstrument.issuerProductDescription;
-            var instrumentSubType = fundingInstrument && fundingInstrument.instrumentSubType;
-            var lastDigits = fundingInstrument && fundingInstrument.lastDigits;
-            return v(Style, {
-                css: style_scopedscopeId_6091ba7d_default.a,
-                "data-v-6091ba7d": ""
+        };
+        var check_Check = function() {
+            return v("svg", {
+                width: "18px",
+                height: "15px",
+                viewBox: "0 0 18 15",
+                version: "1.1",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, v("title", null, "Icons/check"), v("desc", null, "Created with Sketch."), v("g", {
+                id: "✅-Icon-Library",
+                stroke: "none",
+                "stroke-width": "1",
+                fill: "none",
+                "fill-rule": "evenodd"
+            }, v("g", {
+                id: "Icons/check",
+                transform: "translate(-6.000000, -7.000000)",
+                fill: "#0070BA",
+                "fill-rule": "nonzero"
+            }, v("path", {
+                d: "M11.4121381,19.6994417 L22.6691362,7.6974334 C22.9052747,7.44566678 23.3008,7.43299769 23.5525666,7.6691362 C23.8043332,7.90527472 23.8170023,8.30079998 23.5808638,8.5525666 L11.8567862,21.0525666 C11.6057696,21.3201959 11.1792894,21.315028 10.9348317,21.0413946 L6.40890929,15.9753097 C6.17894091,15.7178949 6.20119062,15.3227928 6.45860541,15.0928244 C6.7160202,14.862856 7.11112232,14.8851057 7.34109071,15.1425205 L11.4121381,19.6994417 Z",
+                id: "Path"
+            }))));
+        };
+        var style_scopedscopeId_fdd787a1 = __webpack_require__(2);
+        var style_scopedscopeId_fdd787a1_default = __webpack_require__.n(style_scopedscopeId_fdd787a1);
+        var walletItem_WalletItem = function(_ref) {
+            var selected = _ref.selected, details = _ref.details, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
+            var _useState = hooks_module_v(selected), showSelected = _useState[0], setShowSelected = _useState[1];
+            hooks_module_p((function() {
+                setShowSelected(selected);
+            }), [ selected ]);
+            return v(style_Style, {
+                css: style_scopedscopeId_fdd787a1_default.a,
+                "data-v-fdd787a1": ""
             }, v("div", {
-                class: "wallet-item",
+                className: "wallet-item " + (selected ? "selected-wallet-item" : ""),
                 onClick: function() {
                     return function(item) {
                         selectWalletItemHandler(item);
                         listOpenHandler(!listOpen);
-                    }(fundingOption);
+                    }(details.id);
                 },
-                "data-v-6091ba7d": ""
+                "data-v-fdd787a1": ""
             }, v("div", {
-                class: "icon",
-                "data-v-6091ba7d": ""
+                className: "icon",
+                "data-v-fdd787a1": ""
             }, v("img", {
-                src: fundingInstrument && fundingInstrument.image && fundingInstrument.image.url && fundingInstrument.image.url.href,
-                "data-v-6091ba7d": ""
+                src: details.fundingOptionIcon,
+                "data-v-fdd787a1": ""
             })), v("div", {
-                class: "description",
-                "data-v-6091ba7d": ""
+                className: "description",
+                "data-v-fdd787a1": ""
             }, v("div", {
-                class: "name",
-                "data-v-6091ba7d": ""
-            }, fundingOptionTitle), v("div", {
-                class: "details",
-                "data-v-6091ba7d": ""
+                className: "name",
+                "data-v-fdd787a1": ""
+            }, details.fundingOptionTitle), v("div", {
+                className: "details",
+                "data-v-fdd787a1": ""
             }, v("span", {
-                class: "type",
-                "data-v-6091ba7d": ""
-            }, instrumentSubType, " "), v("span", {
-                class: "digits",
-                "data-v-6091ba7d": ""
-            }, "•••• ", lastDigits)))));
-        }
-        var style_scopedscopeId_7d8c4ca3 = __webpack_require__(3);
-        var style_scopedscopeId_7d8c4ca3_default = __webpack_require__.n(style_scopedscopeId_7d8c4ca3);
-        function Wallet(_ref) {
-            var fundingOptions = _ref.checkoutSession.fundingOptions;
-            var isSelected = fundingOptions[0];
-            var _useState = hooks_module_v(!1), listOpen = _useState[0], setListOpen = _useState[1];
-            var _useState2 = hooks_module_v(isSelected), setSelectedWalletItem = _useState2[1];
-            return v(Style, {
-                css: style_scopedscopeId_7d8c4ca3_default.a,
-                "data-v-7d8c4ca3": ""
+                className: "type",
+                "data-v-fdd787a1": ""
+            }, details.instrumentSubType, " "), v("span", {
+                className: "digits",
+                "data-v-fdd787a1": ""
+            }, details.lastDigits))), details.showPreferredText ? v("div", {
+                className: "preferred",
+                "data-v-fdd787a1": ""
+            }, "PREFERRED") : "", v("div", {
+                className: "flex-spacer",
+                "data-v-fdd787a1": ""
+            }), showSelected ? v("div", {
+                className: "selected",
+                "data-v-fdd787a1": ""
+            }, v(check_Check, {
+                "data-v-fdd787a1": ""
+            })) : ""));
+        };
+        var style_scopedscopeId_d7b06a5e = __webpack_require__(3);
+        var style_scopedscopeId_d7b06a5e_default = __webpack_require__.n(style_scopedscopeId_d7b06a5e);
+        var credit_CreditBanner = function() {
+            return v(style_Style, {
+                css: style_scopedscopeId_d7b06a5e_default.a,
+                "data-v-d7b06a5e": ""
             }, v("div", {
-                class: "wallet",
-                "data-v-7d8c4ca3": ""
-            }, v(WalletItem, {
-                fundingOption: _useState2[0],
-                selectWalletItemHandler: setSelectedWalletItem,
+                "data-v-d7b06a5e": ""
+            }, "This is where the credit messaging goes..."));
+        };
+        var buildWalletItemDetails = function(fundingOption) {
+            var _fundingOption$fundin = fundingOption.fundingInstrument, image = _fundingOption$fundin.image, name = _fundingOption$fundin.name, issuerProductDescription = _fundingOption$fundin.issuerProductDescription, subType = _fundingOption$fundin.instrumentSubType, digits = _fundingOption$fundin.lastDigits, isPreferred = _fundingOption$fundin.isPreferred;
+            return {
+                id: fundingOption.id,
+                fundingOptionIcon: image ? image.url.href : function(type, name) {
+                    var prefix = "https://www.paypalobjects.com/ui-web";
+                    switch (type) {
+                      case "BANK_ACCOUNT":
+                        return prefix + "/money-icons/bank/generic_bank.png";
+
+                      case "PAYPAL_CREDIT":
+                        switch (name) {
+                          case "EBAY_MASTERCARD":
+                            return prefix + "/money-icons/card/ebay_mastercard.png";
+
+                          case "PAYPAL_EXTRAS_MASTERCARD":
+                            return prefix + "/money-icons/card/extrasMastercardLogo.svg";
+
+                          default:
+                            return prefix + "/wallet-icons/bank/PP_Credit_large.svg";
+                        }
+
+                      default:
+                        return prefix + "/wallet-icons/bank/PP_Balance_large.svg";
+                    }
+                }(_fundingOption$fundin.type, name),
+                fundingOptionTitle: "PAYPAL" === subType ? "PayPal Credit" : issuerProductDescription || name,
+                instrumentSubType: "PAYPAL" === subType ? "Pay overtime for your purchase" : subType,
+                showPreferredText: isPreferred,
+                lastDigits: "PAYPAL" === subType ? "" : "•••• " + (digits || "")
+            };
+        };
+        var style_scopedscopeId_d2ff3bcf = __webpack_require__(4);
+        var style_scopedscopeId_d2ff3bcf_default = __webpack_require__.n(style_scopedscopeId_d2ff3bcf);
+        var wallet_Wallet = function(_ref) {
+            var checkoutSession = _ref.checkoutSession;
+            var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_v(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_v(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
+            var changeSelectedWalletItem = function(itemId) {
+                var newItem = fundingOptions.find((function(option) {
+                    return option.id === itemId;
+                }));
+                setSelectedWalletItem(newItem);
+            };
+            return v(style_Style, {
+                css: style_scopedscopeId_d2ff3bcf_default.a,
+                "data-v-d2ff3bcf": ""
+            }, v("div", {
+                className: "wallet",
+                "data-v-d2ff3bcf": ""
+            }, listOpen ? "" : v(walletItem_WalletItem, {
+                selected: !0,
+                details: buildWalletItemDetails(selectedWalletItem),
+                selectWalletItemHandler: changeSelectedWalletItem,
                 listOpen: listOpen,
                 listOpenHandler: setListOpen,
-                "data-v-7d8c4ca3": ""
-            }), listOpen && fundingOptions.map((function(option) {
-                return v(WalletItem, {
-                    fundingOption: option,
-                    selectWalletItemHandler: setSelectedWalletItem,
+                "data-v-d2ff3bcf": ""
+            }), listOpen ? v("div", {
+                "data-v-d2ff3bcf": ""
+            }, fundingOptions.map((function(option) {
+                return v(walletItem_WalletItem, {
+                    selected: option.id === selectedWalletItem.id,
+                    details: buildWalletItemDetails(option),
+                    selectWalletItemHandler: changeSelectedWalletItem,
                     listOpen: listOpen,
                     listOpenHandler: setListOpen,
-                    "data-v-7d8c4ca3": ""
+                    "data-v-d2ff3bcf": ""
                 });
-            }))));
-        }
-        var page_style = __webpack_require__(4);
+            })), v(credit_CreditBanner, {
+                checkoutSession: checkoutSession,
+                "data-v-d2ff3bcf": ""
+            }), v("div", {
+                className: "add-card-button",
+                "data-v-d2ff3bcf": ""
+            }, v("a", {
+                href: "#",
+                "data-v-d2ff3bcf": ""
+            }, "Add debit or credit card"))) : ""));
+        };
+        var page_style = __webpack_require__(5);
         var style_default = __webpack_require__.n(page_style);
-        function Page(_ref) {
-            return v(Style, {
+        var page_Page = function(_ref) {
+            return v(style_Style, {
                 css: style_default.a
-            }, v(Wallet, {
+            }, v(wallet_Wallet, {
                 checkoutSession: _ref.checkoutSession
             }));
-        }
+        };
         function fallbackToWebCheckout() {
             throw new Error("Not implemented");
         }
         function App(_ref4) {
-            return v(StyleSheet, {
+            return v(style_StyleSheet, {
                 cspNonce: _ref4.cspNonce
-            }, v(Page, {
+            }, v(page_Page, {
                 checkoutSession: _ref4.checkoutSession
             }));
         }
@@ -2387,7 +2508,7 @@
                 var t, r, c;
                 preact_module_n.__ && preact_module_n.__(l, u), r = (t = i === preact_module_o) ? null : u.__k, 
                 l = v(preact_module_d, null, [ l ]), c = [], preact_module_z(u, u.__k = l, r || preact_module_f, preact_module_f, void 0 !== u.ownerSVGElement, r ? null : e.slice.call(u.childNodes), c, preact_module_f, t), 
-                preact_module_T(c, l);
+                preact_module_A(c, l);
             }(v(App, {
                 cspNonce: cspNonce,
                 checkoutSession: checkoutSession
@@ -2397,12 +2518,6 @@
                 return body;
             }().querySelector("#wallet-container"));
         }
-        __webpack_require__.d(__webpack_exports__, "setupWallet", (function() {
-            return setupWallet;
-        }));
-        __webpack_require__.d(__webpack_exports__, "renderWallet", (function() {
-            return renderWallet;
-        }));
     } ]);
 }));
 //# sourceMappingURL=smart-wallet.js.map
