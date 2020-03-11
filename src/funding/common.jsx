@@ -78,16 +78,12 @@ export type FundingSourceConfig = {|
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
 |};
 
-export function BasicLabel({ i, logo, label, layout, multiple, period, locale: { lang } } : LabelOptions) : ChildType {
+export function BasicLabel({ logo, label, layout, multiple, period, locale: { lang } } : LabelOptions) : ChildType {
     if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
         return logo;
     }
 
     if (__WEB__) {
-        return logo;
-    }
-
-    if (i > 0) {
         return logo;
     }
 
