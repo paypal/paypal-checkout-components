@@ -1,6 +1,7 @@
 /* @flow */
 
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
+import { getDomain } from 'cross-domain-utils/src';
 
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
@@ -20,10 +21,10 @@ function setupHoney() {
     window.postMessage(JSON.stringify({
         message_source: MESSAGE_SOURCE.SMART_BUTTON,
         message_name:   MESSAGE_NAME.IDENTIFY_EXTENSION
-    }), window.location.host);
+    }), getDomain());
 
     window.addEventListener('message', ({ data, origin }) => {
-        if (origin !== window.location.host) {
+        if (origin !== getDomain()) {
             return;
         }
 
