@@ -1,3 +1,11 @@
+## <small>5.0.85 (2020-03-11)</small>
+
+* Add button.clone and Buttons.instances ([d1aba23](http://github.paypal.com/paypal/paypal-checkout/commit/d1aba23))
+* Show label for all vertical buttons ([994400a](http://github.paypal.com/paypal/paypal-checkout/commit/994400a))
+* FEATURE: Integrate Subscribe as a label for en lang (#1279) ([b2789ed](http://github.paypal.com/paypal/paypal-checkout/commit/b2789ed)), closes [#1279](http://github.paypal.com/paypal/paypal-checkout/issues/1279)
+
+
+
 ## <small>5.0.84 (2020-02-28)</small>
 
 * Always show card button when eligible and when selected as standalone ([8b8f67c](http://github.paypal.com/paypal/paypal-checkout/commit/8b8f67c))
