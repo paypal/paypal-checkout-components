@@ -48,13 +48,11 @@ export function renderButtonDropdown({ props, payment, content, initiatePayment 
             event.stopPropagation();
 
             const PAYPAL_CHOICES = [
-                /*
                 {
                     id:    MENU_CHOICE.SELECT_FUNDING_SHIPPING,
                     label: content.chooseCardOrShipping,
                     popup
                 },
-                */
                 {
                     id:    MENU_CHOICE.CHANGE_ACCOUNT,
                     label: content.useDifferentAccount,
