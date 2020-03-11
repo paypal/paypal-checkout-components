@@ -5,8 +5,8 @@ import type { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 
 import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
-import type { CreateOrder } from '../props';
 import type { ProxyWindow } from '../types';
+import { BUYER_INTENT } from '../constants';
 
 // export something to force webpack to see this as an ES module
 export const TYPES = true;
@@ -26,7 +26,7 @@ export type Payment = {|
     isClick? : boolean,
     buyerAccessToken? : ?string,
     venmoPayloadID? : string,
-    decorateCreateOrder? : (CreateOrder) => CreateOrder
+    buyerIntent : $Values<typeof BUYER_INTENT>
 |};
 
 export type PaymentFlow = {|

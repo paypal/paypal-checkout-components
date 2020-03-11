@@ -1,6 +1,6 @@
 /* @flow */
 
-import { noop, identity, stringifyError } from 'belter/src';
+import { noop, stringifyError } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
@@ -57,13 +57,11 @@ type InitiatePaymentType = {|
 |};
 
 export function initiatePaymentFlow({ payment, serviceData, config, components, props } : InitiatePaymentType) : ZalgoPromise<void> {
-    const { button, fundingSource, decorateCreateOrder = identity } = payment;
+    const { button, fundingSource } = payment;
 
     return ZalgoPromise.try(() => {
         const { personalization, merchantID } = serviceData;
-        let { clientID, onClick, createOrder } = props;
-
-        createOrder = decorateCreateOrder(createOrder);
+        const { clientID, onClick, createOrder } = props;
 
         sendPersonalizationBeacons(personalization);
 

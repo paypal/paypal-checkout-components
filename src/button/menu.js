@@ -1,14 +1,14 @@
 /* @flow */
 
-import { onClick as onElementClick, destroyElement, memoize } from 'belter/src';
+import { onClick as onElementClick, destroyElement } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { ContentType } from '../types';
 import { renderSmartMenu } from '../menu/interface';
 import { CHECKOUT_POPUP_DIMENSIONS, type Payment } from '../payment-flows';
-import { deleteVault, validatePaymentMethod } from '../api';
-import { DATA_ATTRIBUTES } from '../constants';
+import { deleteVault } from '../api';
+import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
 
 import { type ButtonProps } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
@@ -28,13 +28,13 @@ type ButtonDropdownProps = {|
     payment : Payment,
     props : ButtonProps,
     content : ContentType,
-    initiatePayment : ({ payment : Payment }) => ZalgoPromise<void>
+    initiatePayment : ({| payment : Payment |}) => ZalgoPromise<void>
 |};
 
 let smartMenu;
 
 export function renderButtonDropdown({ props, payment, content, initiatePayment } : ButtonDropdownProps) {
-    const { clientID, clientAccessToken, enableThreeDomainSecure, buttonSessionID, partnerAttributionID } = props;
+    const { clientID, clientAccessToken } = props;
     const { button, fundingSource, paymentMethodID } = payment;
     const menuToggle = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
 
@@ -84,7 +84,7 @@ export function renderButtonDropdown({ props, payment, content, initiatePayment 
                 verticalOffset,
                 onChoose: ({ id, win }) => {
                     if (id === MENU_CHOICE.CHANGE_ACCOUNT) {
-                        return initiatePayment({ payment: { ...payment, win } });
+                        return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
 
                     } else if (id === MENU_CHOICE.DELETE_VAULT) {
                         if (!clientAccessToken || !paymentMethodID) {
@@ -108,24 +108,8 @@ export function renderButtonDropdown({ props, payment, content, initiatePayment 
                         if (!clientAccessToken || !paymentMethodID) {
                             throw new Error(`Can not change funding or shipping without client access token and payment method id`);
                         }
-
-                        const decorateCreateOrder = (createOrder) => {
-                            return memoize(() => {
-                                return createOrder().then(orderID => {
-                                    return validatePaymentMethod({
-                                        clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, buttonSessionID, partnerAttributionID
-                                    }).then(({ status }) => {
-                                        if (status !== 200) {
-                                            throw new Error(`Validate payment failed with status: ${ status }`);
-                                        }
-
-                                        return orderID;
-                                    });
-                                });
-                            });
-                        };
-
-                        return initiatePayment({ payment: { ...payment, win, decorateCreateOrder } });
+                        
+                        return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
                     }
                 }
             }).then(() => {

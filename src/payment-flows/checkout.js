@@ -8,8 +8,8 @@ import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-util
 import type { FundingEligibilityType, ProxyWindow } from '../types';
 import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
 import type { CreateBillingAgreement, CreateSubscription } from '../props';
-import { enableVault } from '../api';
-import { CONTEXT, TARGET_ELEMENT } from '../constants';
+import { enableVault, validatePaymentMethod } from '../api';
+import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
 
@@ -141,8 +141,9 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     const { Checkout } = components;
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
-        createBillingAgreement, createSubscription, onClick } = props;
-    let { button, win, fundingSource, card, isClick, buyerAccessToken, venmoPayloadID } = payment;
+        createBillingAgreement, createSubscription, onClick, enableThreeDomainSecure,
+        partnerAttributionID } = props;
+    let { button, win, fundingSource, card, isClick, buyerAccessToken, venmoPayloadID, buyerIntent, paymentMethodID } = payment;
     const { fundingEligibility, buyerCountry } = serviceData;
     const { cspNonce } = config;
 
@@ -151,7 +152,7 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     let approved = false;
 
     const restart = memoize(() : ZalgoPromise<void> =>
-        initCheckout({ props, components, serviceData, config, payment: { button, win, fundingSource, card, isClick: false } })
+        initCheckout({ props, components, serviceData, config, payment: { button, win, fundingSource, card, buyerIntent, isClick: false } })
             .start().finally(unresolvedPromise));
 
     const onClose = () => {
@@ -172,7 +173,13 @@ function initCheckout({ props, components, serviceData, payment, config } : { pr
     
             createOrder: () => {
                 return createOrder().then(orderID => {
-                    return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription }).then(() => {
+                    return ZalgoPromise.try(() => {
+                        if (buyerIntent === BUYER_INTENT.PAY) {
+                            return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription });
+                        } else if (buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING && clientAccessToken && paymentMethodID) {
+                            return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, buttonSessionID });
+                        }
+                    }).then(() => {
                         return orderID;
                     });
                 });

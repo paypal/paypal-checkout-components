@@ -2,6 +2,12 @@
 
 export const SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
 
+export const BUYER_INTENT = {
+    PAY:                                 'pay',
+    PAY_WITH_DIFFERENT_ACCOUNT:          'pay_with_different_account',
+    PAY_WITH_DIFFERENT_FUNDING_SHIPPING: 'pay_with_different_funding_shipping'
+};
+
 export const HEADERS = {
     AUTHORIZATION: 'authorization',
     CONTENT_TYPE:  'content-type',

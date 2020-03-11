@@ -7,7 +7,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import type { FundingEligibilityType, PersonalizationType, ContentType } from '../types';
 import { fixClickFocus, getLogger } from '../lib';
 import { type FirebaseConfig } from '../api';
-import { DATA_ATTRIBUTES } from '../constants';
+import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
 import { type Payment } from '../payment-flows';
 
 import { getProps, getConfig, getComponents, getServiceData } from './props';
@@ -63,7 +63,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
     let paymentProcessing = false;
 
-    function initiatePayment({ payment } : { payment : Payment }) : ZalgoPromise<void> {
+    function initiatePayment({ payment } : {| payment : Payment |}) : ZalgoPromise<void> {
         return ZalgoPromise.try(() => {
             if (paymentProcessing) {
                 return;
@@ -104,7 +104,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
     getButtons().forEach(button => {
         const { fundingSource, card, paymentMethodID } = getSelectedFunding(button);
-        const payment = { button, fundingSource, card, paymentMethodID, isClick: true };
+        const payment = { button, fundingSource, card, paymentMethodID, isClick: true, buyerIntent: BUYER_INTENT.PAY };
         
         fixClickFocus(button);
         renderButtonDropdown({ props, payment, content, initiatePayment });
@@ -133,7 +133,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
                 throw new Error(`Can not find button element`);
             }
 
-            const payment = { win, button, fundingSource, card };
+            const payment = { win, button, fundingSource, card, buyerIntent: BUYER_INTENT.PAY };
             const payPromise = initiatePayment({ payment });
 
             // $FlowFixMe
