@@ -5,6 +5,7 @@ import { randomBytes } from 'crypto';
 import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
+import { noop } from 'belter';
 
 import { WEBPACK_CONFIG_WALLET_LOCAL_DEBUG } from '../webpack.config';
 
@@ -14,7 +15,24 @@ import { getButtonMiddleware, getMenuMiddleware, getWalletMiddleware } from './c
 const app = express();
 const PORT = process.env.PORT || 8003;
 
+const cache = {
+    // eslint-disable-next-line no-unused-vars
+    get: (key) => Promise.resolve(),
+    set: (key, value) => Promise.resolve(value)
+};
+
+const logger = {
+    debug: noop,
+    info:  noop,
+    warn:  noop,
+    error: (err) => {
+        throw new Error(err);
+    }
+};
+
 const buttonMiddleware = getButtonMiddleware({
+    cache,
+    logger,
     graphQL: (req, payload) => {
         // $FlowFixMe
         return Promise.resolve(payload.map(({ query }) => {
@@ -83,6 +101,8 @@ const buttonMiddleware = getButtonMiddleware({
 });
 
 const walletMiddleware = getWalletMiddleware({
+    cache,
+    logger,
     graphQL: (req, payload) => {
         // $FlowFixMe
         return Promise.resolve(payload.map(({ query }) => {

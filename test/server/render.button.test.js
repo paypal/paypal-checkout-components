@@ -1,6 +1,6 @@
 /* @flow */
 
-import { regexMap } from 'belter';
+import { regexMap, noop } from 'belter';
 import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
@@ -15,7 +15,20 @@ jest.setTimeout(300000);
 
 afterAll(cancelWatchers);
 
-const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent });
+const cache = {
+    // eslint-disable-next-line no-unused-vars
+    get: (key) => Promise.resolve(),
+    set: (key, value) => Promise.resolve(value)
+};
+
+const logger = {
+    debug: noop,
+    info:  noop,
+    warn:  noop,
+    error: noop
+};
+
+const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger });
 
 test('should do a basic button render and succeed', async () => {
 
@@ -91,7 +104,9 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
         getMerchantID: () => {
             return Promise.resolve('ABC123');
         },
-        content: mockContent
+        content: mockContent,
+        cache,
+        logger
     });
     // $FlowFixMe
     await errButtonMiddleware(req, res);

@@ -23,12 +23,12 @@ type InlineGuestElmoParams = {|
 |};
 
 type ButtonMiddlewareOptions = {|
-    logger? : LoggerType,
+    logger : LoggerType,
     graphQL : GraphQL,
     getAccessToken : (ExpressRequest, string) => Promise<string>,
     getMerchantID : (ExpressRequest, string) => Promise<string>,
-    getInlineGuestExperiment ? : (req : ExpressRequest, params : InlineGuestElmoParams) => Promise<boolean>,
-    cache? : CacheType,
+    getInlineGuestExperiment? : (req : ExpressRequest, params : InlineGuestElmoParams) => Promise<boolean>,
+    cache : CacheType,
     firebaseConfig? : FirebaseConfig,
     content : {
         [$Values<typeof COUNTRY>] : {
