@@ -1,6 +1,8 @@
 /* @flow */
+/* eslint max-depth: off */
 
 import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
+import { values } from 'belter';
 
 import { HTTP_HEADER } from '../../config';
 import type { FundingEligibility } from '../../service';
@@ -68,9 +70,59 @@ function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibility {
     const encodedFundingEligibility = req.query.fundingEligibility;
 
     if (encodedFundingEligibility && typeof encodedFundingEligibility === 'string') {
-        return JSON.parse(
+        const fundingEligibilityInput = JSON.parse(
             Buffer.from(encodedFundingEligibility, 'base64').toString('utf8')
         );
+
+        const fundingEligibility = {};
+        
+        for (const fundingSource of values(FUNDING)) {
+            const fundingSourceEligibilityInput = fundingEligibilityInput[fundingSource] || {};
+            const fundingSourceEligibility = fundingEligibility[fundingSource] = {};
+
+            if (fundingSourceEligibilityInput) {
+                if (typeof fundingSourceEligibilityInput.eligible === 'boolean') {
+                    fundingSourceEligibility.eligible = fundingSourceEligibilityInput.eligible;
+                }
+
+                if (typeof fundingSourceEligibilityInput.recommended === 'boolean') {
+                    fundingSourceEligibility.recommended = fundingSourceEligibilityInput.recommended;
+                }
+
+                if (typeof fundingSourceEligibilityInput.branded === 'boolean') {
+                    fundingSourceEligibility.branded = fundingSourceEligibilityInput.branded;
+                }
+
+                if (typeof fundingSourceEligibilityInput.vaultable === 'boolean') {
+                    fundingSourceEligibility.vaultable = fundingSourceEligibilityInput.vaultable;
+                }
+
+                if (fundingSource === FUNDING.CARD) {
+                    const vendorsInputEligibility = fundingSourceEligibilityInput.vendors || {};
+                    const vendorsEligility = fundingSourceEligibility.vendors = {};
+
+                    for (const vendor of values(CARD)) {
+                        const vendorEligibilityInput = vendorsInputEligibility[vendor] || {};
+                        const vendorEligibility = vendorsEligility[vendor] = {};
+
+                        if (typeof vendorEligibilityInput.eligible === 'boolean') {
+                            vendorEligibility.eligible = vendorEligibilityInput.eligible;
+                        }
+        
+                        if (typeof vendorEligibilityInput.branded === 'boolean') {
+                            vendorEligibility.branded = vendorEligibilityInput.branded;
+                        }
+        
+                        if (typeof vendorEligibilityInput.vaultable === 'boolean') {
+                            vendorEligibility.vaultable = vendorEligibilityInput.vaultable;
+                        }
+                    }
+                }
+            }
+        }
+
+        // $FlowFixMe
+        return fundingEligibility;
     }
 
     // $FlowFixMe
