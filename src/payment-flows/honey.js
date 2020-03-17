@@ -74,7 +74,7 @@ function initHoney() : PaymentFlowInstance {
 }
 
 export const honey : PaymentFlow = {
-    name:              'card_fields',
+    name:              'honey',
     setup:             setupHoney,
     isEligible:        isHoneyEligible,
     isPaymentEligible: isHoneyPaymentEligible,
