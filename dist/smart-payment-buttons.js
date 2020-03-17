@@ -3543,7 +3543,7 @@ window.spb = function(modules) {
         },
         spinner: !0
     }, checkout, {
-        name: "card_fields",
+        name: "honey",
         setup: function() {
             window.postMessage(JSON.stringify({
                 message_source: "smart_payment_buttons",
@@ -4015,7 +4015,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.202", _ref2;
+                _ref2.button_version = "2.0.203", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
