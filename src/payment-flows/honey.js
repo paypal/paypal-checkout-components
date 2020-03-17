@@ -1,6 +1,7 @@
 /* @flow */
 
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
+import { stringifyError } from 'belter/src';
 
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
@@ -17,10 +18,14 @@ const MESSAGE_NAME = {
 };
 
 function setupHoney() {
-    window.postMessage(JSON.stringify({
-        message_source: MESSAGE_SOURCE.SMART_BUTTON,
-        message_name:   MESSAGE_NAME.IDENTIFY_EXTENSION
-    }), '*');
+    try {
+        window.top.postMessage(JSON.stringify({
+            message_source: MESSAGE_SOURCE.SMART_BUTTON,
+            message_name:   MESSAGE_NAME.IDENTIFY_EXTENSION
+        }), '*');
+    } catch (err) {
+        getLogger().warn('honey_postmessage_failed', { err: stringifyError(err) });
+    }
 
     window.addEventListener('message', ({ data }) => {
         try {
