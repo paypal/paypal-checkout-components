@@ -21,7 +21,7 @@ function setupHoney() {
     window.postMessage(JSON.stringify({
         message_source: MESSAGE_SOURCE.SMART_BUTTON,
         message_name:   MESSAGE_NAME.IDENTIFY_EXTENSION
-    }), getDomain());
+    }), '*');
 
     window.addEventListener('message', ({ data, origin }) => {
         if (origin !== getDomain()) {
