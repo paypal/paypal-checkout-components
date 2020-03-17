@@ -3551,12 +3551,12 @@ window.spb = function(modules) {
             }), "*");
             window.addEventListener("message", (function(_ref) {
                 var data = _ref.data;
-                if (_ref.origin === getDomain()) {
-                    try {
-                        data = JSON.parse(data);
-                    } catch (err) {
-                        return;
-                    }
+                try {
+                    data = JSON.parse(data);
+                } catch (err) {
+                    return;
+                }
+                if (data) {
                     var message_data = data.message_data;
                     if ("honey_extension" === data.message_source && "identify_extension" === data.message_name) {
                         var _getLogger$info$track;
@@ -4015,7 +4015,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.204", _ref2;
+                _ref2.button_version = "2.0.205", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
