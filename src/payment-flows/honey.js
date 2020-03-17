@@ -1,7 +1,6 @@
 /* @flow */
 
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
-import { getDomain } from 'cross-domain-utils/src';
 
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
@@ -23,14 +22,14 @@ function setupHoney() {
         message_name:   MESSAGE_NAME.IDENTIFY_EXTENSION
     }), '*');
 
-    window.addEventListener('message', ({ data, origin }) => {
-        if (origin !== getDomain()) {
-            return;
-        }
-
+    window.addEventListener('message', ({ data }) => {
         try {
             data = JSON.parse(data);
         } catch (err) {
+            return;
+        }
+
+        if (!data) {
             return;
         }
 
