@@ -53,8 +53,10 @@ export type ExpressMiddleware = (
     res : ExpressResponse
 ) => void | Promise<void>;
 
+let logBuffer;
+
 export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareOptions, { app, script } : { app : SDKMiddleware, script? : SDKScriptMiddleware }) : ExpressMiddleware {
-    const logBuffer = getLogBuffer(logger);
+    logBuffer = logBuffer || getLogBuffer(logger);
     startWatchers({ logBuffer, cache });
 
     const appMiddleware = async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
