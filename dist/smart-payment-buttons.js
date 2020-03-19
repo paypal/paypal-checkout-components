@@ -3572,8 +3572,8 @@ window.spb = function(modules) {
                             return (_ref2 = {}).honey_device_id = device_id, _ref2.honey_session_id = session_id, 
                             _ref2;
                         }));
-                        getLogger().info("identify_honey").track(((_getLogger$info$track = {}).transition_name = "honey_identify", 
-                        _getLogger$info$track));
+                        getLogger().info("identify_honey").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "honey_identify", 
+                        _getLogger$info$track)).flush();
                     }
                 }
             }));
@@ -4021,7 +4021,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.206", _ref2;
+                _ref2.button_version = "2.0.207", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
