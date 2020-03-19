@@ -27,3 +27,7 @@ export const EVENT = {
     RENDER: 'render',
     ERROR:  'error'
 };
+
+export const AUTH_ERROR_CODE = {
+    INVALID_CLIENT: 'invalid_client'
+};

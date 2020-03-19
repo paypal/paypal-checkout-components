@@ -6,6 +6,7 @@ import { COUNTRY, LANG } from '@paypal/sdk-constants';
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization, resolveNativeEligibility, resolveMerchantID } from '../../service';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
+import { AUTH_ERROR_CODE } from '../../config';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { EVENT } from './constants';
@@ -80,20 +81,30 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             gqlBatch.flush();
 
+            let facilitatorAccessToken;
+
+            try {
+                facilitatorAccessToken = await facilitatorAccessTokenPromise;
+            } catch (err) {
+                if (err && err.code === AUTH_ERROR_CODE.INVALID_CLIENT) {
+                    return clientErrorResponse(res, 'Invalid clientID');
+                }
+
+                throw err;
+            }
+
             const render = await renderPromise;
             const client = await clientPromise;
             const fundingEligibility = await fundingEligibilityPromise;
             const personalization = await personalizationPromise;
             const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
-            const facilitatorAccessToken = await facilitatorAccessTokenPromise;
             const merchantID = await merchantIDPromise;
-
-            const { paypal, venmo } = await nativeEligibilityPromise;
+            const nativeEligibility = await nativeEligibilityPromise;
+            const cardFieldsEligibility = await isCardFieldsExperimentEnabledPromise;
 
             const eligibility = {
-                native:         paypal,
-                nativeCheckout: { paypal, venmo },
-                cardFields:     await isCardFieldsExperimentEnabledPromise
+                nativeCheckout: nativeEligibility,
+                cardFields:     cardFieldsEligibility
             };
 
             logger.info(req, `button_render_version_${ render.version }`);
