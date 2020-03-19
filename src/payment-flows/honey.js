@@ -60,7 +60,7 @@ function setupHoney() {
 
             getLogger().info('identify_honey').track({
                 [ FPTI_KEY.TRANSITION ]: FPTI_TRANSITION.HONEY_IDENTIFY
-            });
+            }).flush();
         }
     });
 }
