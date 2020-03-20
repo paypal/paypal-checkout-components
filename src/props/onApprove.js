@@ -16,8 +16,8 @@ export type XOnApproveDataType = {|
     orderID : string,
     payerID : ?string,
     paymentID : ?string,
-    subscriptionID : ?string,
-    billingToken : ?string,
+    subscriptionID? : ?string,
+    billingToken? : ?string,
     facilitatorAccessToken : string
 |};
 
@@ -51,7 +51,7 @@ type ActionOptions = {|
     payerID : string,
     restart : () => ZalgoPromise<void>,
     intent : $Values<typeof INTENT>,
-    subscriptionID : string,
+    subscriptionID : ?string,
     facilitatorAccessToken : string,
     buyerAccessToken : ?string,
     partnerAttributionID : ?string,
@@ -114,7 +114,7 @@ function buildPaymentActions({ intent, paymentID, payerID, restart, facilitatorA
         return;
     }
 
-    const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
+    const handleProcessorError = (err : mixed) : ZalgoPromise<PaymentResponse> => {
         // $FlowFixMe
         const isProcessorDecline = err && err.data && err.data.details && err.data.details.some(detail => {
             return detail.issue === ORDER_API_ERROR.INSTRUMENT_DECLINED || detail.issue === ORDER_API_ERROR.PAYER_ACTION_REQUIRED;
@@ -155,9 +155,21 @@ export type XOnApprove = (XOnApproveDataType, XOnApproveActionsType) => ZalgoPro
 
 function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : ActionOptions) : XOnApproveActionsType {
 
-    // Subscription GET Actions
-    const getSubscriptionApi = memoize(() => getSubscription(subscriptionID, { buyerAccessToken }));
-    const activateSubscriptionApi = memoize(() => activateSubscription(subscriptionID, { buyerAccessToken }));
+    const getSubscriptionApi = memoize(() => {
+        if (!subscriptionID) {
+            throw new Error(`No subscription ID present`);
+        }
+
+        return getSubscription(subscriptionID, { buyerAccessToken });
+    });
+
+    const activateSubscriptionApi = memoize(() => {
+        if (!subscriptionID) {
+            throw new Error(`No subscription ID present`);
+        }
+        
+        return activateSubscription(subscriptionID, { buyerAccessToken });
+    });
 
     const redirect = (url) => {
         if (!url) {
@@ -187,7 +199,7 @@ function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, su
 }
 
 export type OnApproveData = {|
-    payerID? : ?string,
+    payerID : string,
     paymentID? : ?string,
     billingToken? : ?string,
     subscriptionID? : ?string,
@@ -226,9 +238,9 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
         throw new Error(`Expected onApprove`);
     }
 
-    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, forceRestAPI = upgradeLSAT }, { restart }) => {
+    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
         return ZalgoPromise.try(() => {
-            if (upgradeLSAT) {
+            if (upgradeLSAT && buyerAccessToken) {
                 return createOrder().then(orderID => upgradeFacilitatorAccessToken(facilitatorAccessToken, { buyerAccessToken, orderID }));
             }
         }).then(() => {

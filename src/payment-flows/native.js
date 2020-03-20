@@ -10,7 +10,7 @@ import { type CrossDomainWindowType, getDomain, isWindowClosed, onCloseWindow } 
 import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
-import { getLogger, promiseOne } from '../lib';
+import { getLogger, promiseOne, promiseNoop } from '../lib';
 import { USER_ACTION, FPTI_TRANSITION } from '../constants';
 
 import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
@@ -204,6 +204,10 @@ function initNative({ props, components, config, payment, serviceData } : { prop
     const { facilitatorAccessToken, sdkMeta } = serviceData;
     const { fundingSource } = payment;
     const { version, firebase: firebaseConfig } = config;
+
+    if (!firebaseConfig) {
+        throw new Error(`Can not run native flow without firebase config`);
+    }
 
     const clean = cleanup();
     let approved = false;
@@ -520,9 +524,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     };
 
-    const start = memoize(() => {
-        // pass
-    });
+    const start = promiseNoop;
 
     return {
         click,

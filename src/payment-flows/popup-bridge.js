@@ -72,6 +72,10 @@ function initPopupBridge({ props, payment } : { props : ButtonProps, payment : P
 
         }).then(({ opType, PayerID: payerID, paymentId: paymentID, ba_token: billingToken }) => {
             if (opType === POPUP_BRIDGE_OPTYPE.PAYMENT) {
+                if (!payerID) {
+                    throw new Error(`Expected payerID to be passed`);
+                }
+
                 return onApprove({ payerID, paymentID, billingToken }, { restart: start });
             }
 

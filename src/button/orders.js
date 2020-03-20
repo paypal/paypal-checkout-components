@@ -20,11 +20,9 @@ export function updateButtonClientConfig({ orderID, fundingSource, inline = fals
 }
 
 export function validateOrder(orderID : string, { clientID, merchantID } : { clientID : ?string, merchantID : $ReadOnlyArray<string> }) : ZalgoPromise<void> {
-    
-    // $FlowFixMe
-    return ZalgoPromise.all([
+    return ZalgoPromise.hash({
 
-        callGraphQL({
+        gql: callGraphQL({
             query: `
                 query GetCheckoutDetails($orderID: String!) {
                     checkoutSession(token: $orderID) {
@@ -42,9 +40,9 @@ export function validateOrder(orderID : string, { clientID, merchantID } : { cli
             variables: { orderID }
         }),
         
-        getPayee(orderID)
+        payee: getPayee(orderID)
 
-    ]).then(([ gql, payee ]) => {
+    }).then(({ gql, payee }) => {
 
         const cart = gql.checkoutSession.cart;
 

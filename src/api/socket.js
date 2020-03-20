@@ -438,7 +438,29 @@ export type FirebaseSocketOptions = {|
     targetApp : string
 |};
 
-export const loadFirebaseSDK = memoize((config) => {
+type FirebaseSDK = {|
+    initializeApp : (FirebaseConfig) => void,
+    auth : () => {|
+        signInWithCustomToken : (string) => ZalgoPromise<void>
+    |},
+    database : {|
+        INTERNAL : {|
+            forceWebSockets : () => void
+        |},
+        () : {|
+            ref : (string) => {|
+                // eslint-disable-next-line no-undef
+                set : <T>(T) => void,
+                // eslint-disable-next-line no-undef
+                on : <T>('value', (T) => void, (Error) => void) => void
+            |},
+            goOnline : () => void,
+            goOffline : () => void
+        |}
+    |}
+|};
+            
+export const loadFirebaseSDK = memoize((config : FirebaseConfig) : ZalgoPromise<FirebaseSDK> => {
     return ZalgoPromise.try(() => {
         if (!window.firebase || !window.firebase.auth || !window.firebase.database) {
             return loadScript(FIREBASE_SCRIPTS.APP).then(() => {
@@ -475,10 +497,10 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
             }
         };
 
-        const databasePromise = ZalgoPromise.all([
-            loadFirebaseSDK(config),
-            getFirebaseSessionToken(sessionUID)
-        ]).then(([ firebase, sessionToken ]) => {
+        const databasePromise = ZalgoPromise.hash({
+            firebase:     loadFirebaseSDK(config),
+            sessionToken: getFirebaseSessionToken(sessionUID)
+        }).then(({ firebase, sessionToken }) => {
             return firebase.auth().signInWithCustomToken(sessionToken).then(() => {
                 const database = firebase.database();
                 firebase.database.INTERNAL.forceWebSockets();
