@@ -1049,16 +1049,16 @@ Button.render = function ButtonRender(props : ButtonOptions = {}, ...args) : Zal
     const { onDestroy = noop } = props;
     const newProps = {
         ...props,
-        onDestroy: (...onDestroyArgs) => {
+        onDestroy: function onDestroyWrapper() : void {
             const index = instances.indexOf(instance);
             if (index !== -1) {
                 instances.splice(index, 1);
             }
-            return onDestroy(...onDestroyArgs);
+            return onDestroy.apply(this, arguments);
         }
     };
 
-    return render.call(newProps, ...args);
+    return render.call(Button, newProps, ...args);
 };
 
 if (Button.isChild()) {
