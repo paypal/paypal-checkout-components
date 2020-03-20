@@ -7,7 +7,7 @@ import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { info, warn, track, error, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
-import { base64encode } from 'belter/src';
+import { base64encode, identity, noop } from 'belter/src';
 import { debounce, once } from 'zoid/src/lib';
 
 import { pptm } from '../external';
@@ -1024,6 +1024,42 @@ export const Button : Component<ButtonOptions> = create({
         }
     }
 });
+
+// $FlowFixMe
+const instances = Button.instances = [];
+
+const render = Button.render;
+
+// $FlowFixMe
+Button.render = function ButtonRender(props : ButtonOptions = {}, ...args) : ZalgoPromise<void> {
+    const instance = {
+        clone: ({ decorate = identity } : { decorate? : (ButtonOptions) => ButtonOptions } = {}) => {
+            return {
+                render: (container) => {
+                    const decoratedProps : ButtonOptions = decorate(props);
+                    // $FlowFixMe
+                    return render.call(Button, decoratedProps, container);
+                }
+            };
+        }
+    };
+
+    instances.push(instance);
+
+    const { onDestroy = noop } = props;
+    const newProps = {
+        ...props,
+        onDestroy: (...onDestroyArgs) => {
+            const index = instances.indexOf(instance);
+            if (index !== -1) {
+                instances.splice(index, 1);
+            }
+            return onDestroy(...onDestroyArgs);
+        }
+    };
+
+    return render.call(newProps, ...args);
+};
 
 if (Button.isChild()) {
     setupButtonChild(Button);
