@@ -857,7 +857,7 @@ window.spb = function(modules) {
         memoizedFunction.reset = function() {
             cacheMap.delete(options.thisNamespace ? _this : method);
         };
-        return setFunctionName(memoizedFunction, getFunctionName(method) + "::memoized");
+        return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
     }
     function inlineMemoize(method, logic, args) {
         void 0 === args && (args = []);
@@ -1530,7 +1530,7 @@ window.spb = function(modules) {
             var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
             var restart = _ref7.restart;
             return promise_ZalgoPromise.try((function() {
-                if (upgradeLSAT) return createOrder().then((function(orderID) {
+                if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
                     return function(facilitatorAccessToken, _ref2) {
                         var _headers;
                         var buyerAccessToken = _ref2.buyerAccessToken, orderID = _ref2.orderID;
@@ -1566,6 +1566,7 @@ window.spb = function(modules) {
                 var actions = function(_ref3) {
                     var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, subscriptionID = _ref3.subscriptionID, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI;
                     var getSubscriptionApi = memoize((function() {
+                        if (!subscriptionID) throw new Error("No subscription ID present");
                         return function(subscriptionID, _ref6) {
                             return callSmartAPI({
                                 accessToken: _ref6.buyerAccessToken,
@@ -1576,6 +1577,7 @@ window.spb = function(modules) {
                         });
                     }));
                     var activateSubscriptionApi = memoize((function() {
+                        if (!subscriptionID) throw new Error("No subscription ID present");
                         return function(subscriptionID, _ref5) {
                             return callSmartAPI({
                                 accessToken: _ref5.buyerAccessToken,
@@ -3011,8 +3013,11 @@ window.spb = function(modules) {
                 var error = function(err) {
                     for (var _i6 = 0; _i6 < onErrorHandlers.length; _i6++) (0, onErrorHandlers[_i6])(err);
                 };
-                var databasePromise = promise_ZalgoPromise.all([ loadFirebaseSDK(config), getFirebaseSessionToken(sessionUID) ]).then((function(_ref10) {
-                    var firebase = _ref10[0], sessionToken = _ref10[1];
+                var databasePromise = promise_ZalgoPromise.hash({
+                    firebase: loadFirebaseSDK(config),
+                    sessionToken: getFirebaseSessionToken(sessionUID)
+                }).then((function(_ref10) {
+                    var firebase = _ref10.firebase, sessionToken = _ref10.sessionToken;
                     return firebase.auth().signInWithCustomToken(sessionToken).then((function() {
                         var database = firebase.database();
                         firebase.database.INTERNAL.forceWebSockets();
@@ -3128,14 +3133,17 @@ window.spb = function(modules) {
                         });
                         return parentPopupBridge.start(url);
                     })).then((function(_ref5) {
-                        var opType = _ref5.opType;
-                        if ("payment" === opType) return onApprove({
-                            payerID: _ref5.PayerID,
-                            paymentID: _ref5.paymentId,
-                            billingToken: _ref5.ba_token
-                        }, {
-                            restart: start
-                        });
+                        var opType = _ref5.opType, payerID = _ref5.PayerID, paymentID = _ref5.paymentId, billingToken = _ref5.ba_token;
+                        if ("payment" === opType) {
+                            if (!payerID) throw new Error("Expected payerID to be passed");
+                            return onApprove({
+                                payerID: payerID,
+                                paymentID: paymentID,
+                                billingToken: billingToken
+                            }, {
+                                restart: start
+                            });
+                        }
                         if ("cancel" === opType) return onCancel();
                         throw new Error("Unhandleable opType: " + opType);
                     }));
@@ -3179,6 +3187,7 @@ window.spb = function(modules) {
             var facilitatorAccessToken = serviceData.facilitatorAccessToken, sdkMeta = serviceData.sdkMeta;
             var fundingSource = payment.fundingSource;
             var version = config.version, firebaseConfig = config.firebase;
+            if (!firebaseConfig) throw new Error("Can not run native flow without firebase config");
             var clean = (tasks = [], cleaned = !1, {
                 set: function(name, item) {
                     if (!cleaned) {
@@ -3537,7 +3546,7 @@ window.spb = function(modules) {
                         }));
                     }));
                 },
-                start: memoize((function() {})),
+                start: promiseNoop,
                 close: close
             };
         },
@@ -3722,14 +3731,17 @@ window.spb = function(modules) {
                                         })).then((function(orderID) {
                                             return function(orderID, _ref2) {
                                                 var clientID = _ref2.clientID, merchantID = _ref2.merchantID;
-                                                return promise_ZalgoPromise.all([ callGraphQL({
-                                                    query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
-                                                    variables: {
-                                                        orderID: orderID
-                                                    }
-                                                }), getPayee(orderID) ]).then((function(_ref3) {
-                                                    var payee = _ref3[1];
-                                                    var cart = _ref3[0].checkoutSession.cart;
+                                                return promise_ZalgoPromise.hash({
+                                                    gql: callGraphQL({
+                                                        query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
+                                                        variables: {
+                                                            orderID: orderID
+                                                        }
+                                                    }),
+                                                    payee: getPayee(orderID)
+                                                }).then((function(_ref3) {
+                                                    var payee = _ref3.payee;
+                                                    var cart = _ref3.gql.checkoutSession.cart;
                                                     var intent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
                                                     var currency = cart.amounts && cart.amounts.total.currencyCode;
                                                     var expectedCurrency = currency;
@@ -4021,7 +4033,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.207", _ref2;
+                _ref2.button_version = "2.0.208", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {

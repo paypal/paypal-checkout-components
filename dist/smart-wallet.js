@@ -1237,7 +1237,7 @@
             memoizedFunction.reset = function() {
                 cacheMap.delete(options.thisNamespace ? _this : method);
             };
-            return setFunctionName(memoizedFunction, getFunctionName(method) + "::memoized");
+            return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
         }
         function inlineMemoize(method, logic, args) {
             void 0 === args && (args = []);
@@ -1736,7 +1736,7 @@
                 var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
                 var restart = _ref7.restart;
                 return promise_ZalgoPromise.try((function() {
-                    if (upgradeLSAT) return createOrder().then((function(orderID) {
+                    if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
                         return function(facilitatorAccessToken, _ref2) {
                             var _headers;
                             var buyerAccessToken = _ref2.buyerAccessToken, orderID = _ref2.orderID;
@@ -1772,6 +1772,7 @@
                     var actions = function(_ref3) {
                         var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, subscriptionID = _ref3.subscriptionID, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI;
                         var getSubscriptionApi = memoize((function() {
+                            if (!subscriptionID) throw new Error("No subscription ID present");
                             return function(subscriptionID, _ref6) {
                                 return callSmartAPI({
                                     accessToken: _ref6.buyerAccessToken,
@@ -1782,6 +1783,7 @@
                             });
                         }));
                         var activateSubscriptionApi = memoize((function() {
+                            if (!subscriptionID) throw new Error("No subscription ID present");
                             return function(subscriptionID, _ref5) {
                                 return callSmartAPI({
                                     accessToken: _ref5.buyerAccessToken,
