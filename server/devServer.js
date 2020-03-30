@@ -240,7 +240,10 @@ const walletMiddleware = getWalletMiddleware({
     exchangeAuthCode: () => 'foobar'
 });
 
-const menuMiddleware = getMenuMiddleware({});
+const menuMiddleware = getMenuMiddleware({
+    cache,
+    logger
+});
 
 app.use('/smart/buttons', (req : ExpressRequest, res : ExpressResponse, next) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
