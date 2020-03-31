@@ -6,7 +6,7 @@ import { PPLogo, PayPalLogo, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type VaultLabelOptions, type TagOptions, BasicLabel } from '../common';
-import { CLASS, ATTRIBUTE } from '../../constants';
+import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
@@ -22,7 +22,7 @@ export function Logo({ logoColor } : LogoOptions) : ChildType {
     );
 }
 
-function getPersonalizationText({ personalization } : LabelOptions) : ?string {
+function getPersonalizationText({ personalization, layout, multiple } : LabelOptions) : ?string {
     const personalizationText = personalization && personalization.buttonText && personalization.buttonText.text;
 
     if (!personalizationText) {
@@ -30,6 +30,10 @@ function getPersonalizationText({ personalization } : LabelOptions) : ?string {
     }
 
     if (personalizationText.match(/[{}]/)) {
+        return;
+    }
+
+    if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
         return;
     }
 
