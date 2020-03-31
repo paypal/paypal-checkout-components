@@ -72,7 +72,7 @@ export async function retry<T>(handler : () => Promise<T>, attempts : number) : 
     }
 }
 
-export async function withPage(handler : ({ page : Object }) => Promise<void>) : Promise<void> {
+export async function withPage(handler : ({| page : Object |}) => Promise<void>) : Promise<void> {
     const browser = await puppeteer.launch({
         headless:          HEADLESS,
         devtools:          DEVTOOLS,
@@ -96,7 +96,7 @@ export async function withPage(handler : ({ page : Object }) => Promise<void>) :
             async () => {
                 await retry(async () => {
                     await page.goto(DOMAIN);
-                    await handler({ browser, page });
+                    await handler({ page });
                 }, RETRIES);
             }
         );
@@ -136,7 +136,14 @@ export async function findFrameByName(page : Object, name : string) : Object {
     throw new Error(`Could not find frame with name: ${ name }`);
 }
 
-export async function waitForPopup(page : Object, opts? : { timeout? : number } = {}) : Promise<Object> {
+type PopupOpts = {| timeout? : number |};
+
+const getDefaultPopupOpts = () : PopupOpts => {
+    // $FlowFixMe
+    return {};
+};
+
+export async function waitForPopup(page : Object, opts? : PopupOpts = getDefaultPopupOpts()) : Promise<Object> {
     const { timeout = TIMEOUT * 1000 } = opts;
     log('WAIT FOR POPUP');
     const popupPage = await new Promise((resolve, reject) => {
@@ -160,7 +167,14 @@ export async function delay(time : number) : Promise<void> {
     });
 }
 
-export async function waitForElement(page : Object, selector : string, opts? : { timeout? : number } = {}) : Promise<void> {
+type ElementOpts = {| timeout? : number |};
+
+const getDefaultElementOpts = () : ElementOpts => {
+    // $FlowFixMe
+    return {};
+};
+
+export async function waitForElement(page : Object, selector : string, opts? : ElementOpts = getDefaultElementOpts()) : Promise<void> {
     const { timeout = TIMEOUT * 1000 } = opts;
     log('WAIT FOR', selector);
     await screenshot(page, `wait_for_${ selector }`);
@@ -173,7 +187,14 @@ export async function waitForElement(page : Object, selector : string, opts? : {
     await screenshot(page, `wait_for_${ selector }_success`);
 }
 
-export async function waitAndType(page : Object, selector : string, text : string, opts? : { timeout? : number } = {}) : Promise<void> {
+type WaitOpts = {| timeout? : number |};
+
+const getDefaultWaitOpts = () : WaitOpts => {
+    // $FlowFixMe
+    return {};
+};
+
+export async function waitAndType(page : Object, selector : string, text : string, opts? : WaitOpts = getDefaultWaitOpts()) : Promise<void> {
     const { timeout = TIMEOUT * 1000 } = opts;
     await waitForElement(page, selector, { timeout });
     await delay(1000);
@@ -183,7 +204,7 @@ export async function waitAndType(page : Object, selector : string, text : strin
     await page.type(selector, text);
 }
 
-export async function waitAndClick(page : Object, selector : string, opts? : { timeout? : number } = {}) : Promise<void> {
+export async function waitAndClick(page : Object, selector : string, opts? : WaitOpts = getDefaultWaitOpts()) : Promise<void> {
     const { timeout = TIMEOUT * 1000 } = opts;
     await waitForElement(page, selector, { timeout });
     await delay(1000);
@@ -215,7 +236,7 @@ export async function elementExists(page : Object, selector : string) : Promise<
     return false;
 }
 
-export async function waitForClose(page : Object, opts? : { timeout? : number } = {}) : Promise<void> {
+export async function waitForClose(page : Object, opts? : WaitOpts = getDefaultWaitOpts()) : Promise<void> {
     const { timeout = TIMEOUT * 1000 } = opts;
 
     const start = Date.now();

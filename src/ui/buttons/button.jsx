@@ -31,7 +31,7 @@ type BasicButtonProps = {|
     tagline : ?boolean
 |};
 
-function getVaultedInstrument({ fundingEligibility, fundingSource, onShippingChange }) : ?{ vaultedInstrument : VaultedInstrument, vendor? : $Values<typeof CARD> } {
+function getVaultedInstrument({ fundingEligibility, fundingSource, onShippingChange }) : ?{| vaultedInstrument : VaultedInstrument, vendor? : $Values<typeof CARD> |} {
     if (!isVaultedFundingEligible({ onShippingChange })) {
         return;
     }

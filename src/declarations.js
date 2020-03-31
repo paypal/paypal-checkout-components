@@ -3,14 +3,14 @@
 
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-declare var __PAYPAL_CHECKOUT__ : {
+declare var __PAYPAL_CHECKOUT__ : {|
     __REMEMBERED_FUNDING__ : $ReadOnlyArray<$Values<typeof FUNDING>>,
-    __URI__ : {
+    __URI__ : {|
         __BUTTONS__ : string,
         __CHECKOUT__ : string,
         __CARD_FIELDS__ : string,
         __MENU__ : string,
         __MODAL__ : string,
         __WALLET__ : string
-    }
-};
+    |}
+|};

@@ -6,7 +6,7 @@ import { CARD, COUNTRY, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig, type VaultLabelOptions } from '../common';
 import { Text, Space } from '../../ui/text';
 import { isRTLLanguage } from '../../lib';
 
@@ -132,7 +132,7 @@ export function getCardConfig() : FundingSourceConfig {
             );
         },
 
-        VaultLabel: ({ vendor, label } : { vendor? : $Values<typeof CARD>, label : string }) => {
+        VaultLabel: ({ vendor, label } : VaultLabelOptions) => {
             if (!vendor) {
                 throw new Error(`Vendor required for card vault label`);
             }

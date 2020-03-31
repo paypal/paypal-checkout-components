@@ -6,7 +6,7 @@ import { labelStyle } from './labels';
 import { buttonResponsiveStyle } from './responsive';
 import { buttonColorStyle } from './color';
 
-export function componentStyle({ height } : { height? : ?number }) : string {
+export function componentStyle({ height } : {| height? : ?number |}) : string {
     return `
         ${ pageStyle }
         ${ buttonStyle }

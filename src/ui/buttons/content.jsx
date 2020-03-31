@@ -9,9 +9,9 @@ import { PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { Text } from '../text';
 
 type ButtonContentMap = {
-    [ $Values<typeof LANG> ] : {
-        PoweredBy : ({ logoColor : $Values<typeof LOGO_COLOR> }) => ChildType
-    }
+    [ $Values<typeof LANG> ] : {|
+        PoweredBy : ({| logoColor : $Values<typeof LOGO_COLOR> |}) => ChildType
+    |}
 };
 
 export const buttonContent : ButtonContentMap = {

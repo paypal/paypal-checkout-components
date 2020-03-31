@@ -8,7 +8,7 @@ import { toPx } from 'belter/src';
 
 import { getFundingConfig } from '../funding';
 
-function Mark({ fundingSource, fundingEligibility } : { fundingSource : $Values<typeof FUNDING>, fundingEligibility : FundingEligibilityType }) : ChildNodeType {
+function Mark({ fundingSource, fundingEligibility } : {| fundingSource : $Values<typeof FUNDING>, fundingEligibility : FundingEligibilityType |}) : ChildNodeType {
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -24,7 +24,7 @@ function Mark({ fundingSource, fundingEligibility } : { fundingSource : $Values<
     );
 }
 
-export function MarksElement({ fundingEligibility, fundingSources, height } : { fundingEligibility : FundingEligibilityType, fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>, height : number }) : ElementNode {
+export function MarksElement({ fundingEligibility, fundingSources, height } : {| fundingEligibility : FundingEligibilityType, fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>, height : number |}) : ElementNode {
     return (
         <div class='paypal-marks'>
             <style>

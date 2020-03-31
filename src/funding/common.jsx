@@ -64,7 +64,7 @@ export type FundingSourceConfig = {|
     maxCards? : { [$Values<typeof COUNTRY>] : number },
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
-    eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType, fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT> }) => boolean,
+    eligible? : ({| components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType, fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT> |}) => boolean,
     Logo : (LogoOptions) => ChildType,
     Label : (LabelOptions) => ChildType,
     VaultLabel? : (VaultLabelOptions) => ChildType,
@@ -92,7 +92,7 @@ export function BasicLabel({ logo, label, layout, multiple, period, locale: { la
         return <Checkout logo={ logo } />;
     }
 
-    if (label === BUTTON_LABEL.SUBSCRIBE) {
+    if (label === BUTTON_LABEL.SUBSCRIBE && Subscribe) {
         return <Subscribe logo={ logo } />;
     }
 

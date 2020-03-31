@@ -12,7 +12,7 @@ import puppeteer from 'puppeteer';
 import { createTempFile } from './util';
 import { readPNG, type PngType } from './image';
 
-export async function openPage(scriptURL : string, { headless = true, devtools = false } : { headless? : boolean, devtools? : boolean }) : Promise<Object> {
+export async function openPage(scriptURL : string, { headless = true, devtools = false } : {| headless? : boolean, devtools? : boolean |}) : Promise<Object> {
     const browser = await puppeteer.launch({ headless, devtools, args: [ '--no-sandbox' ] });
 
     const open = async () => {
@@ -47,7 +47,7 @@ export async function openPage(scriptURL : string, { headless = true, devtools =
     };
 }
 
-export async function takeScreenshot(page : Object, { x, y, width, height } : { x : number, y : number, width : number, height : number }) :
+export async function takeScreenshot(page : Object, { x, y, width, height } : {| x : number, y : number, width : number, height : number |}) :
     Promise<PngType> {
 
     const path = `${ os.tmpdir() }/${ Math.random().toString() }.png`;

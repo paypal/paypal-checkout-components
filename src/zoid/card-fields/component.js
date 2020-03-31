@@ -18,9 +18,9 @@ type CardProps = {|
     locale? : string,
     logLevel : string,
     awaitPopupBridge : Function,
-    onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    onCancel ? : ({ cancelUrl : string }, { redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    onEvent ? : ({ type : string, payload : Object }) => void,
+    onAuthorize : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
+    onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
+    onEvent ? : ({| type : string, payload : Object |}) => void,
     meta : Object,
     commit : boolean,
     token : string

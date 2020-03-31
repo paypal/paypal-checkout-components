@@ -3,7 +3,7 @@
 
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
-export function LoadingDots({ color = 'rgba(0, 0, 0, 0.5)', delay = 0.2 } : { color : string, delay : number }) : ChildType {
+export function LoadingDots({ color = 'rgba(0, 0, 0, 0.5)', delay = 0.2 } : {| color : string, delay : number |}) : ChildType {
     return (
         <Fragment>
             <style innerHTML={ `

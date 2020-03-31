@@ -3,7 +3,7 @@
 
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
-export function TrackingBeacon({ url, nonce } : { url : string, nonce : ?string }) : ChildType {
+export function TrackingBeacon({ url, nonce } : {| url : string, nonce : ?string |}) : ChildType {
     return (
         <Fragment>
             <style

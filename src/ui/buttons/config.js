@@ -19,14 +19,14 @@ export const BUTTON_RELATIVE_STYLE = {
 };
 
 type ButtonStyleMap = {
-    [ $Values<typeof BUTTON_SIZE> ] : {
+    [ $Values<typeof BUTTON_SIZE> ] : {|
         defaultWidth : number,
         defaultHeight : number,
         minWidth : number,
         maxWidth : number,
         minHeight : number,
         maxHeight : number
-    }
+    |}
 };
 
 export const BUTTON_SIZE_STYLE : ButtonStyleMap = {

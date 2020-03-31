@@ -4,10 +4,10 @@
 import { LANG } from '@paypal/sdk-constants/src';
 
 type ContentMap = {
-    [ $Values<typeof LANG> ] : {
+    [ $Values<typeof LANG> ] : {|
         windowMessage : string,
         continueMessage : string
-    }
+    |}
 };
 
 export const containerContent : ContentMap = {

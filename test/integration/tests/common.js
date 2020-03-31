@@ -130,7 +130,7 @@ export const loggerApiMock = $mockEndpoint.register({
 export const authApiMock = $mockEndpoint.register({
     method: 'POST',
     uri:    getAuthAPIUrl(),
-    handler({ headers, data }) : { access_token : string } {
+    handler({ headers, data }) : {| access_token : string |} {
 
         if (!headers.authorization) {
             throw new Error(`Expected authorization header for auth api request`);
@@ -159,7 +159,7 @@ export const authApiMock = $mockEndpoint.register({
 export const orderApiMock = $mockEndpoint.register({
     method: 'POST',
     uri:    getOrderAPIUrl(),
-    handler({ data, headers }) : { id : string } {
+    handler({ data, headers }) : {| id : string |} {
 
         if (!headers.authorization) {
             throw new Error(`Expected authorization header for auth api request`);
@@ -264,7 +264,7 @@ window.open = function patchedWindowOpen() : CrossDomainWindowType {
     return windowOpen.apply(this, arguments);
 };
 
-export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPromise<CrossDomainWindowType> {
+export function onWindowOpen({ time = 500 } : {| time? : number |} = {}) : ZalgoPromise<CrossDomainWindowType> {
     return new ZalgoPromise((resolve, reject) => {
 
         const winOpen = window.open;
@@ -394,7 +394,7 @@ export function onElementResize(el : HTMLElement, opts? : OnElementResizeOptions
     });
 }
 
-export function mockProp<T>(namespace : Object, name : string, value : T) : { cancel : () => void } {
+export function mockProp<T>(namespace : Object, name : string, value : T) : {| cancel : () => void |} {
     const descriptor = Object.getOwnPropertyDescriptor(namespace, name);
     delete namespace[name];
     namespace[name] = value;

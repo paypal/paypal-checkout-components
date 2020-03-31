@@ -34,26 +34,31 @@ type ButtonConfig = {|
     only? : boolean,
     filename? : string,
     userAgent? : string,
-    container? : {
+    container? : {|
         width : number
-    },
+    |},
     fundingEligibility? : Object,
     rememberedFunding? : $ReadOnlyArray<string>,
-    button? : {
+    button? : {|
         locale? : string,
-        style? : {
+        fundingSource? : string,
+        style? : {|
             color? : string,
             size? : string,
             shape? : string,
             label? : string,
-            period? : number
-        }
-    }
+            period? : number,
+            layout? : string,
+            height? : number,
+            tagline? : boolean
+        |}
+    |}
 |};
 
 export const buttonConfigs : Array<ButtonConfig> = [];
 
 buttonConfigs.push({
+    // $FlowFixMe
     button: {}
 });
 
@@ -114,6 +119,7 @@ for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
         rememberedFunding: fundingSource === FUNDING.VENMO
             ? [ fundingSource ]
             : [],
+        // $FlowFixMe
         button:            {}
     });
 }
@@ -123,11 +129,8 @@ for (const width of RESPONSIVE_WIDTHS) {
         container: {
             width
         },
-        button: {
-            style: {
-
-            }
-        }
+        // $FlowFixMe
+        button: {}
     });
 }
 

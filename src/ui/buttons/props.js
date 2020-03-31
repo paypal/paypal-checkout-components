@@ -18,12 +18,12 @@ import { BUTTON_SIZE_STYLE } from './config';
 
 export type CreateOrderData = {|
 
-|} | {};
+|} | {||};
 
 export type CreateOrderActions = {|
-    order : {
+    order : {|
         create : (OrderCreateRequest) => ZalgoPromise<string>
-    }
+    |}
 |};
 
 export type CreateOrder = (CreateOrderData, CreateOrderActions) => ZalgoPromise<string> | string;
@@ -37,30 +37,30 @@ export type OnApproveData = {|
 export type CreateBillingAgreement = () => ZalgoPromise<string> | string;
 
 export type CreateSubscriptionRequest = {||};
-export type SubscriptionResponse = {||} | {};
+export type SubscriptionResponse = {||} | {||};
 export type CreateSubscriptionData = {|
-|} | {};
+|} | {||};
 
 export type CreateSubscriptionActions = {|
-    subscription : {
+    subscription : {|
         create : (CreateSubscriptionRequest) => ZalgoPromise<string>,
         revise : (CreateSubscriptionRequest) => ZalgoPromise<string>
-    }
+    |}
 |};
 
 export type CreateSubscription = (CreateSubscriptionData, CreateSubscriptionActions) => ZalgoPromise<string> | string;
 
 export type OnApproveActions = {|
     redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>,
-    order : {
+    order : {|
         capture : () => ZalgoPromise<OrderCaptureResponse>,
         get : () => ZalgoPromise<OrderGetResponse>,
         authorize : () => ZalgoPromise<OrderAuthorizeResponse>
-    },
-    subscription : {
+    |},
+    subscription : {|
         get : () => ZalgoPromise<SubscriptionResponse>,
         activate : () => ZalgoPromise<SubscriptionResponse>
-    }
+    |}
 |};
 
 export type OnApprove = (data : OnApproveData, actions : OnApproveActions) => ZalgoPromise<void> | void;
@@ -75,10 +75,10 @@ type OnShippingChangeAddress = {|
 type OnShippingChangeMethod = {|
     label : string,
     type : string,
-    amount : {
+    amount : {|
         currency_code : string,
         value : string
-    }
+    |}
 |};
 
 export type OnShippingChangeData = {|
@@ -90,9 +90,9 @@ export type OnShippingChangeData = {|
 |};
 
 export type OnShippingChangeActions = {|
-    order : {
+    order : {|
         patch : () => ZalgoPromise<OrderGetResponse>
-    }
+    |}
 |};
 
 export type OnShippingChange = (data : OnShippingChangeData, actions : OnShippingChangeActions) => ZalgoPromise<void> | void;
@@ -243,9 +243,9 @@ export type ButtonPropsInputs = {|
     onShippingChange : ?Function,
     personalization? : Personalization,
     clientAccessToken? : string,
-    csp? : {
+    csp? : {|
         nonce? : string
-    },
+    |},
     content? : { [string] : string }
 |};
 

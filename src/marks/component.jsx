@@ -22,7 +22,7 @@ type MarksType = {|
 |};
 
 export const getMarksComponent = memoize(() => {
-    function Marks({ fundingSource, onShippingChange } : { fundingSource? : ?$Values<typeof FUNDING>, onShippingChange? : OnShippingChange } = {}) : MarksType {
+    function Marks({ fundingSource, onShippingChange } : {| fundingSource? : ?$Values<typeof FUNDING>, onShippingChange? : OnShippingChange |} = {}) : MarksType {
 
         const height = DEFAULT_HEIGHT;
         const fundingEligibility = getFundingEligibility();

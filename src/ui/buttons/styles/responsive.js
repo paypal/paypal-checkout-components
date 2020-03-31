@@ -8,7 +8,7 @@ import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 
 const DUAL_BUTTON_MIN_RATIO = 2.8;
 
-export function buttonResponsiveStyle({ height } : { height? : ?number }) : string {
+export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : string {
 
     return Object.keys(BUTTON_SIZE_STYLE).map(size => {
 

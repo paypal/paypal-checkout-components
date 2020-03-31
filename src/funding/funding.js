@@ -10,7 +10,7 @@ import type { OnShippingChange } from '../ui/buttons/props';
 import { getFundingConfig } from './config';
 
 export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange } :
-    { layout? : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, fundingSource : ?$Values<typeof FUNDING>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange : ?Function }) : boolean {
+    {| layout? : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, fundingSource : ?$Values<typeof FUNDING>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange : ?Function |}) : boolean {
 
     if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
         return false;
@@ -41,7 +41,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
     return true;
 }
 
-export function determineEligibleFunding({ fundingSource, layout, platform, remembered, fundingEligibility, components, onShippingChange } :
+export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange } :
     {| fundingSource : ?$Values<typeof FUNDING>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange? : ?Function |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
 
     if (fundingSource) {
@@ -49,7 +49,7 @@ export function determineEligibleFunding({ fundingSource, layout, platform, reme
     }
 
     let eligibleFunding = SUPPORTED_FUNDING_SOURCES.filter(source =>
-        isFundingEligible(source, { layout, platform, remembered, fundingSource, fundingEligibility, components, onShippingChange }));
+        isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange }));
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {
         eligibleFunding = eligibleFunding.slice(0, 2);
@@ -58,7 +58,7 @@ export function determineEligibleFunding({ fundingSource, layout, platform, reme
     return eligibleFunding;
 }
 
-export function isVaultedFundingEligible({ onShippingChange } : { onShippingChange : ?OnShippingChange }) : boolean {
+export function isVaultedFundingEligible({ onShippingChange } : {| onShippingChange : ?OnShippingChange |}) : boolean {
     if (onShippingChange) {
         return false;
     }

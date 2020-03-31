@@ -22,7 +22,7 @@ export async function clickButton(buttonFrame : Object, button : Object) : Promi
     return await popupPromise;
 }
 
-export async function runLoginFlow(page : Object, { user, password } : { user : string, password : string }) : Promise<void> {
+export async function runLoginFlow(page : Object, { user, password } : {| user : string, password : string |}) : Promise<void> {
     await waitAndType(page, SELECTORS.LOGIN.EMAIL_FIELD, user);
 
     if (await elementExists(page, SELECTORS.LOGIN.NEXT_BUTTON)) {
@@ -33,7 +33,7 @@ export async function runLoginFlow(page : Object, { user, password } : { user : 
     await waitAndClick(page, SELECTORS.LOGIN.LOGIN_BUTTON);
 }
 
-export async function runCheckoutLoginFlow(page : Object, { user, password } : { user : string, password : string }) : Promise<void> {
+export async function runCheckoutLoginFlow(page : Object, { user, password } : {| user : string, password : string |}) : Promise<void> {
     await Promise.race([
         waitForElement(page, SELECTORS.LOGIN.EMAIL_FIELD),
         waitForElement(page, SELECTORS.CHECKOUT.LOGIN_IFRAME)
