@@ -23,7 +23,6 @@ export {
     getSandboxStyle
 };
 
-// eslint-disable-next-line flowtype/require-exact-type
 export type ContainerTemplateOptions = {
     id : string,
     props : Object,

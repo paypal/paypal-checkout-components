@@ -23,6 +23,7 @@ module.exports = {
         'unicorn/prefer-negative-index': 'off',
         'default-param-last': 'off',
         'import/no-cycle': 'off',
-        'unicorn/no-for-loop': 'off'
+        'unicorn/no-for-loop': 'off',
+        'flowtype/require-exact-type': 'off'
     }
 };

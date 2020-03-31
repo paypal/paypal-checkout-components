@@ -15,7 +15,6 @@ const LOGO_COLOR = {
     [ CHECKOUT_OVERLAY_COLOR.WHITE ]: BUTTON_LOGO_COLOR.BLACK
 };
 
-// eslint-disable-next-line flowtype/require-exact-type
 export type ContainerTemplateOptions = {
     id : string,
     props : Object,

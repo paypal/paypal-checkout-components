@@ -30,7 +30,6 @@ function addHeader(name, value) : void {
     }
 }
 
-// eslint-disable-next-line flowtype/require-exact-type
 type CheckoutPropsType = {
     payment? : () => ZalgoPromise<string>,
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,

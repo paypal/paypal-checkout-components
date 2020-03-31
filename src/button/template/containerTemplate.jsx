@@ -6,7 +6,6 @@ import { getButtonConfig, BUTTON_STYLE } from '../config';
 import { normalizeProps } from '../props';
 import { values } from '../../lib/util';
 
-// eslint-disable-next-line flowtype/require-exact-type
 type ContainerTemplateOptions = {
     id : string,
     props : Object,
