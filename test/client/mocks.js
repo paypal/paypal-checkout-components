@@ -170,7 +170,7 @@ setupMocks();
 patchXmlHttpRequest();
 patchWebSocket();
 
-export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({ args : $ReadOnlyArray<A>, original : (...args: $ReadOnlyArray<A>) => T }) => T) : { cancel : () => void } {
+export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({| args : $ReadOnlyArray<A>, original : (...args: $ReadOnlyArray<A>) => T |}) => T) : {| cancel : () => void |} {
     // $FlowFixMe
     const original = obj[prop];
     // $FlowFixMe
@@ -527,10 +527,10 @@ type NativeMockWebSocket = {|
     onApprove : () => void,
     onCancel : () => void,
     onError : () => void,
-    fallback : ({ buyerAccessToken : string }) => void
+    fallback : ({| buyerAccessToken : string |}) => void
 |};
 
-export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () => ?string }) : NativeMockWebSocket {
+export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : () => ?string |}) : NativeMockWebSocket {
     let props;
 
     let getPropsRequestID;
@@ -669,7 +669,7 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
 
 const mockScripts = {};
 
-export function mockScript({ src, expect = true, block = true } : { src : string, expect? : boolean, block? : boolean }) : { done : () => void, await : () => ZalgoPromise<HTMLElement> } {
+export function mockScript({ src, expect = true, block = true } : {| src : string, expect? : boolean, block? : boolean |}) : {| done : () => void, await : () => ZalgoPromise<HTMLElement> |} {
     const promise = new ZalgoPromise();
     mockScripts[src] = { expect, block, promise };
 
@@ -725,7 +725,7 @@ document.createElement = function mockCreateElement(name : string) : HTMLElement
     return el;
 };
 
-export function mockFirebaseScripts() : { done : () => void, await : ZalgoPromise<$ReadOnlyArray<HTMLElement>> } {
+export function mockFirebaseScripts() : {| done : () => void, await : ZalgoPromise<$ReadOnlyArray<HTMLElement>> |} {
     loadFirebaseSDK.reset();
 
     const mockfirebaseApp = mockScript({
@@ -784,7 +784,7 @@ type MockFirebase = {|
 
 let firebaseOffline = false;
 
-function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) : MockFirebase {
+function mockFirebase({ handler } : {| handler : ({| data : Object |}) => void |}) : MockFirebase {
     const firebaseScriptsMock = mockFirebaseScripts();
 
     let hasCalls = false;
@@ -878,7 +878,7 @@ function mockFirebase({ handler } : { handler : ({ data : Object }) => void }) :
     return { send, expect };
 }
 
-export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSessionUID : () => string, extraHandler? : Function }) : NativeMockWebSocket {
+export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSessionUID : () => string, extraHandler? : Function |}) : NativeMockWebSocket {
     let props;
 
     let getPropsRequestID;
@@ -1099,7 +1099,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : { getSes
         waitingForResponse.push(onErrorRequestID);
     };
 
-    const fallback = ({ buyerAccessToken } : { buyerAccessToken : string }) => {
+    const fallback = ({ buyerAccessToken } : {| buyerAccessToken : string |}) => {
         fallbackRequestID = `${ uniqueID() }_fallback`;
 
         send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({

@@ -30,7 +30,7 @@ export type OnInit = () => {|
     isEnabled : () => boolean
 |};
 
-export function getOnInit({ onInit } : { onInit : ?XOnInit }) : OnInit {
+export function getOnInit({ onInit } : {| onInit : ?XOnInit |}) : OnInit {
     return () => {
         let enabled = true;
 

@@ -24,7 +24,7 @@ export function buildXCreateBillingAgreementActions() : XCreateBillingAgreementA
 
 export type CreateBillingAgreement = XCreateBillingAgreement;
 
-export function getCreateBillingAgreement({ createBillingAgreement } : { createBillingAgreement : ?XCreateBillingAgreement }) : ?CreateBillingAgreement {
+export function getCreateBillingAgreement({ createBillingAgreement } : {| createBillingAgreement : ?XCreateBillingAgreement |}) : ?CreateBillingAgreement {
     if (createBillingAgreement) {
         return () => {
             return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions()).then(billingToken => {

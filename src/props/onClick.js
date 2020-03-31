@@ -20,7 +20,7 @@ export const CLICK_VALID = {
     INVALID: (false : false)
 };
 
-export function buildXOnClickData({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) : XOnClickDataType {
+export function buildXOnClickData({ fundingSource } : {| fundingSource : $Values<typeof FUNDING> |}) : XOnClickDataType {
     return { fundingSource };
 }
 
@@ -37,12 +37,12 @@ export type OnClickDataType = {|
 
 export type OnClick = (OnClickDataType) => ZalgoPromise<boolean>;
 
-export function getOnClick({ onClick } : { onClick : ?XOnClick }) : OnClick | void {
+export function getOnClick({ onClick } : {| onClick : ?XOnClick |}) : OnClick | void {
     if (!onClick) {
         return;
     }
 
-    return memoize(({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) => {
+    return memoize(({ fundingSource } : {| fundingSource : $Values<typeof FUNDING> |}) => {
         return onClick(buildXOnClickData({ fundingSource }), buildXOnClickActions()).then(valid => {
             return (valid !== CLICK_VALID.INVALID);
         });

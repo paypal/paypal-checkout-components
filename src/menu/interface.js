@@ -10,21 +10,21 @@ type SmartMenuProps = {|
 |};
 
 type SmartMenu = {|
-    display : ({
+    display : ({|
         verticalOffset : number,
         choices : $ReadOnlyArray<{|
             id : string,
         label : string,
-        popup? : {
+        popup? : {|
             width : number,
             height : number
-        }
+        |}
             |}>,
         onChoose : ({|
             id : string,
             win : ?ProxyWindow
                 |}) => void
-    }) => ZalgoPromise<void>
+    |}) => ZalgoPromise<void>
 |};
 
 export function renderSmartMenu({ clientID } : SmartMenuProps) : SmartMenu {

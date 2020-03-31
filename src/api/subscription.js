@@ -12,17 +12,17 @@ export type SubscriptionCreateRequest = {|
     plan_id : string,
     start_time? : string,
     quantity? : string,
-    shipping_amount? : {
+    shipping_amount? : {|
         currency_code : string,
         value : string
-    },
+    |},
     auto_renewal? : boolean,
-    application_context? : {
+    application_context? : {|
         brand_name? : string,
         locale? : string,
         shipping_preference? : string,
         user_action? : string
-    }
+    |}
 |};
 
 export type SubscriptionResponse = {||};

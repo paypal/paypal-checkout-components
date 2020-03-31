@@ -17,7 +17,7 @@ function fallbackToWebCheckout() : ZalgoPromise<void> {
     throw new Error(`Not implemented`);
 }
 
-function submitWalletPayment(props : WalletProps, { checkoutSession, buyerAccessToken } : { checkoutSession : CheckoutSession, buyerAccessToken : string }) : ZalgoPromise<void> {
+function submitWalletPayment(props : WalletProps, { checkoutSession, buyerAccessToken } : {| checkoutSession : CheckoutSession, buyerAccessToken : string |}) : ZalgoPromise<void> {
     const { createOrder, onApprove } = props;
     const planID = checkoutSession.fundingOptions[0].allPlans[0].id;
 
@@ -28,7 +28,7 @@ function submitWalletPayment(props : WalletProps, { checkoutSession, buyerAccess
     });
 }
 
-function setupWalletPayment(props : WalletProps, { checkoutSession, buyerAccessToken } : { checkoutSession : CheckoutSession, buyerAccessToken : string }) : ZalgoPromise<void> {
+function setupWalletPayment(props : WalletProps, { checkoutSession, buyerAccessToken } : {| checkoutSession : CheckoutSession, buyerAccessToken : string |}) : ZalgoPromise<void> {
     const { setup } = props;
 
     return setup({}, {
@@ -56,7 +56,7 @@ export function App({ cspNonce, checkoutSession } : AppProps) : Node {
     );
 }
 
-export function renderWallet(props : { cspNonce : string, checkoutSession : CheckoutSession }) : string {
+export function renderWallet(props : {| cspNonce : string, checkoutSession : CheckoutSession |}) : string {
     return renderToString(<App { ...props } />);
 }
 

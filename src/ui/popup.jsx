@@ -8,7 +8,7 @@ import { assertSameDomain, type CrossDomainWindowType } from 'cross-domain-utils
 
 import { getNonce } from '../lib';
 
-export function openPopup({ width, height } : { width : number, height : number }) : CrossDomainWindowType {
+export function openPopup({ width, height } : {| width : number, height : number |}) : CrossDomainWindowType {
     const win = assertSameDomain(popup('', { width, height }));
 
     const doc = win.document;

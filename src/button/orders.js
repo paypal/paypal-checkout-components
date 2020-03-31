@@ -9,7 +9,7 @@ import { callGraphQL } from '../api/api';
 import { getLogger } from '../lib';
 import { CLIENT_ID_PAYEE_NO_MATCH } from '../config';
 
-export function updateButtonClientConfig({ orderID, fundingSource, inline = false } : { orderID : string, fundingSource : $Values<typeof FUNDING>, inline : boolean | void }) : ZalgoPromise<void> {
+export function updateButtonClientConfig({ orderID, fundingSource, inline = false } : {| orderID : string, fundingSource : $Values<typeof FUNDING>, inline : boolean | void |}) : ZalgoPromise<void> {
     return updateClientConfig({
         orderID,
         fundingSource,
@@ -19,7 +19,7 @@ export function updateButtonClientConfig({ orderID, fundingSource, inline = fals
     });
 }
 
-export function validateOrder(orderID : string, { clientID, merchantID } : { clientID : ?string, merchantID : $ReadOnlyArray<string> }) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { clientID, merchantID } : {| clientID : ?string, merchantID : $ReadOnlyArray<string> |}) : ZalgoPromise<void> {
     return ZalgoPromise.hash({
 
         gql: callGraphQL({

@@ -20,7 +20,7 @@ function getSDKMetaString(req : ExpressRequest) : string {
 }
 
 type SDKMeta = {|
-    getSDKLoader : ({ nonce? : ?string }) => string
+    getSDKLoader : ({| nonce? : ?string |}) => string
 |};
 
 export function getSDKMeta(req : ExpressRequest) : SDKMeta {
@@ -55,7 +55,7 @@ export type ExpressMiddleware = (
 
 let logBuffer;
 
-export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareOptions, { app, script } : { app : SDKMiddleware, script? : SDKScriptMiddleware }) : ExpressMiddleware {
+export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareOptions, { app, script } : {| app : SDKMiddleware, script? : SDKScriptMiddleware |}) : ExpressMiddleware {
     logBuffer = logBuffer || getLogBuffer(logger);
     startWatchers({ logBuffer, cache });
 

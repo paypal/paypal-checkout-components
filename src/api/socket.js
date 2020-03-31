@@ -66,7 +66,7 @@ export type MessageSocketOptions = {|
 export type MessageSocket = {|
     on : <T, R>( // eslint-disable-line no-undef
         name : string,
-        handler : ({ data : T }) => ZalgoPromise<R> | R, // eslint-disable-line no-undef
+        handler : ({| data : T |}) => ZalgoPromise<R> | R, // eslint-disable-line no-undef
         opts? : {|
             requireSessionUID? : boolean
         |}

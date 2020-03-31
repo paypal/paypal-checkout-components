@@ -7,13 +7,13 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, getDomain, isWindowClosed, onCloseWindow } from 'cross-domain-utils/src';
 
-import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
+import type { ButtonProps } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { getLogger, promiseOne, promiseNoop } from '../lib';
 import { USER_ACTION, FPTI_TRANSITION } from '../constants';
 
-import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
+import type { PaymentFlow, PaymentFlowInstance, SetupOptions, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
 import { checkout } from './checkout';
 
 const SOURCE_APP = 'paypal_smart_payment_buttons';
@@ -86,7 +86,7 @@ function didAppSwitch(popupWin : ?CrossDomainWindowType) : boolean {
     return !popupWin || isWindowClosed(popupWin);
 }
 
-function isNativeOptedIn({ props } : { props : ButtonProps }) : boolean {
+function isNativeOptedIn({ props } : {| props : ButtonProps |}) : boolean {
     const { enableNativeCheckout } = props;
 
     if (enableNativeCheckout) {
@@ -106,7 +106,7 @@ function isNativeOptedIn({ props } : { props : ButtonProps }) : boolean {
 
 let initialPageUrl;
 
-function isNativeEligible({ props, config, serviceData } : { props : ButtonProps, config : Config, serviceData : ServiceData }) : boolean {
+function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
     
     const { platform, onShippingChange, createBillingAgreement, createSubscription, env } = props;
     const { firebase: firebaseConfig } = config;
@@ -151,7 +151,7 @@ function isNativeEligible({ props, config, serviceData } : { props : ButtonProps
     return false;
 }
 
-function isNativePaymentEligible({ payment, props, serviceData } : { payment : Payment, props : ButtonProps, serviceData : ServiceData }) : boolean {
+function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentEligibleOptions) : boolean {
     const { win, fundingSource } = payment;
     const { eligibility } = serviceData;
 
@@ -174,7 +174,7 @@ function isNativePaymentEligible({ payment, props, serviceData } : { payment : P
     return false;
 }
 
-function setupNative({ props } : { props : ButtonProps }) : ZalgoPromise<void> {
+function setupNative({ props } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { getPageUrl } = props;
 
@@ -198,7 +198,7 @@ type NativeSDKProps = {|
     forceEligible : boolean
 |};
 
-function initNative({ props, components, config, payment, serviceData } : { props : ButtonProps, components : Components, config : Config, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
+function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange } = props;
     const { facilitatorAccessToken, sdkMeta } = serviceData;
@@ -277,7 +277,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     });
 
-    const connectNative = memoize(({ sessionUID } : { sessionUID : string }) : NativeConnection => {
+    const connectNative = memoize(({ sessionUID } : {| sessionUID : string |}) : NativeConnection => {
         const socket = getNativeSocket({
             sessionUID, firebaseConfig, version
         });
@@ -372,7 +372,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         };
     });
 
-    const detectAppSwitch = once(({ sessionUID } : { sessionUID : string }) => {
+    const detectAppSwitch = once(({ sessionUID } : {| sessionUID : string |}) => {
         getLogger().info(`native_detect_app_switch`).track({
             [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
         }).flush();
@@ -405,7 +405,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         return win;
     });
 
-    const initDirectAppSwitch = ({ sessionUID } : { sessionUID : string }) => {
+    const initDirectAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         const nativeWin = popup(getNativeUrl({ sessionUID }));
         const validatePromise = validate();
         const delayPromise = ZalgoPromise.delay(500);
@@ -444,7 +444,7 @@ function initNative({ props, components, config, payment, serviceData } : { prop
         });
     };
 
-    const initPopupAppSwitch = ({ sessionUID } : { sessionUID : string }) => {
+    const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         const popupWin = popup(getNativePopupUrl());
 
         const closeListener = onCloseWindow(popupWin, () => {

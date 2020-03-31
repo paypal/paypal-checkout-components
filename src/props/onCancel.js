@@ -20,7 +20,7 @@ export type XOnCancelActionsType = {|
 
 export type XOnCancel = (XOnCancelDataType, XOnCancelActionsType) => ZalgoPromise<void>;
 
-export function buildXOnCancelData({ orderID } : { orderID : string }) : XOnCancelDataType {
+export function buildXOnCancelData({ orderID } : {| orderID : string |}) : XOnCancelDataType {
     return {
         orderID
     };
@@ -55,7 +55,7 @@ type OnCancelXProps = {|
     onError : XOnError
 |};
 
-export function getOnCancel({ onCancel = promiseNoop, onError } : OnCancelXProps, { createOrder } : { createOrder : CreateOrder }) : OnCancel {
+export function getOnCancel({ onCancel = promiseNoop, onError } : OnCancelXProps, { createOrder } : {| createOrder : CreateOrder |}) : OnCancel {
     return memoize(() => {
         return createOrder().then(orderID => {
             getLogger()

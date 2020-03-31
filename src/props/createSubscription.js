@@ -7,10 +7,10 @@ import { createSubscription as createSubcriptionID, reviseSubscription } from '.
 export type XCreateSubscriptionDataType = {||};
 
 export type XCreateSubscriptionActionsType = {|
-    subscription : {
+    subscription : {|
         create : (Object) => ZalgoPromise<string>,
         revise : (string, Object) => ZalgoPromise<string>
-    }
+    |}
 |};
 
 export type XCreateSubscription = (?XCreateSubscriptionDataType, ?XCreateSubscriptionActionsType) => ZalgoPromise<string>;
@@ -20,7 +20,7 @@ export function buildXCreateSubscriptionData() : XCreateSubscriptionDataType {
     return {};
 }
 
-export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID } : { facilitatorAccessToken : string, partnerAttributionID : ?string }) : XCreateSubscriptionActionsType {
+export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID } : {| facilitatorAccessToken : string, partnerAttributionID : ?string |}) : XCreateSubscriptionActionsType {
     const create = (data) => {
         return createSubcriptionID(facilitatorAccessToken, data, { partnerAttributionID });
     };
@@ -41,7 +41,7 @@ type CreateSubscriptionXProps = {|
     partnerAttributionID : ?string
 |};
 
-export function getCreateSubscription({ createSubscription, partnerAttributionID } : CreateSubscriptionXProps, { facilitatorAccessToken } : { facilitatorAccessToken : string }) : ?CreateSubscription {
+export function getCreateSubscription({ createSubscription, partnerAttributionID } : CreateSubscriptionXProps, { facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ?CreateSubscription {
     if (createSubscription) {
         return () => {
             return createSubscription(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID })).then(subscriptionID => {

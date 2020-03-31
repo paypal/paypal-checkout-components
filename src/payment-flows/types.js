@@ -29,12 +29,40 @@ export type Payment = {|
     buyerIntent : $Values<typeof BUYER_INTENT>
 |};
 
+export type SetupOptions = {|
+    props : ButtonProps,
+    serviceData : ServiceData,
+    config : Config,
+    components : Components
+|};
+
+export type IsEligibleOptions = {|
+    props : ButtonProps,
+    serviceData : ServiceData,
+    config : Config
+|};
+
+export type IsPaymentEligibleOptions = {|
+    props : ButtonProps,
+    serviceData : ServiceData,
+    payment : Payment,
+    config : Config
+|};
+
+export type InitOptions = {|
+    props : ButtonProps,
+    serviceData : ServiceData,
+    payment : Payment,
+    components : Components,
+    config : Config
+|};
+
 export type PaymentFlow = {|
     name : string,
-    setup : ({ props : ButtonProps, serviceData : ServiceData, config : Config, components : Components }) => ZalgoPromise<void> | void,
-    isEligible : ({ props : ButtonProps, serviceData : ServiceData, config : Config }) => boolean,
-    isPaymentEligible : ({ props : ButtonProps, serviceData : ServiceData, payment : Payment, config : Config }) => boolean,
-    init : <T>({ props : ButtonProps, serviceData : ServiceData, payment : Payment, components : Components, config : Config }, overrides? : T) => PaymentFlowInstance, // eslint-disable-line no-undef
+    setup : (SetupOptions) => ZalgoPromise<void> | void,
+    isEligible : (IsEligibleOptions) => boolean,
+    isPaymentEligible : (IsPaymentEligibleOptions) => boolean,
+    init : <T>(InitOptions, overrides? : T) => PaymentFlowInstance, // eslint-disable-line no-undef
     spinner? : boolean,
     inline? : boolean,
     popup? : boolean

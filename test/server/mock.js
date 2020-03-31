@@ -66,7 +66,7 @@ export function mockRes(opts : Object = {}) : MockRes {
 }
 
 // eslint-disable-next-line require-await
-export async function graphQL(req : {}, payload : $ReadOnlyArray<{ query : string, variables : Object }>) : Promise<Object> {
+export async function graphQL(req : {||}, payload : $ReadOnlyArray<{| query : string, variables : Object |}>) : Promise<Object> {
     return Promise.resolve(payload.map(request => {
         if (request.query.match(/FundingEligibility/)) {
             return {

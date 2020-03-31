@@ -21,190 +21,190 @@ export type LocaleType = {|
 export type PersonalizationType = {|
     buttonText? : {|
         text : string,
-        tracking : {
+        tracking : {|
             impression : string,
             click : string
-        }
+        |}
     |},
     tagline? : {|
         text : string,
-        tracking : {
+        tracking : {|
             impression : string,
             click : string
-        }
+        |}
     |}
 |};
 
 export type FundingEligibilityType = {|
-    bancontact? : {
+    bancontact? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    card? : {
+    |},
+    card? : {|
         eligible : boolean,
         branded? : boolean,
         vaultable? : boolean,
-        vendors : {
-            visa? : {
+        vendors : {|
+            visa? : {|
                 eligible : boolean,
-                vaultedInstruments ? : $ReadOnlyArray<{
+                vaultedInstruments ? : $ReadOnlyArray<{|
                     id : string,
-                    label : {
+                    label : {|
                         description : string
-                    }
-                }>
-            },
-            mastercard? : {
+                    |}
+                |}>
+            |},
+            mastercard? : {|
                 eligible : boolean,
-                vaultedInstruments ? : $ReadOnlyArray<{
+                vaultedInstruments ? : $ReadOnlyArray<{|
                     id : string,
-                    label : {
+                    label : {|
                         description : string
-                    }
-                }>
-            },
-            amex? : {
+                    |}
+                |}>
+            |},
+            amex? : {|
                 eligible : boolean,
-                vaultedInstruments ? : $ReadOnlyArray<{
+                vaultedInstruments ? : $ReadOnlyArray<{|
                     id : string,
-                    label : {
+                    label : {|
                         description : string
-                    }
-                }>
-            },
-            discover? : {
+                    |}
+                |}>
+            |},
+            discover? : {|
                 eligible : boolean,
-                vaultedInstruments ? : $ReadOnlyArray<{
+                vaultedInstruments ? : $ReadOnlyArray<{|
                     id : string,
-                    label : {
+                    label : {|
                         description : string
-                    }
-                }>
-            },
-            hiper? : {
+                    |}
+                |}>
+            |},
+            hiper? : {|
                 eligible : boolean,
-                vaultedInstruments ? : $ReadOnlyArray<{
+                vaultedInstruments ? : $ReadOnlyArray<{|
                     id : string,
-                    label : {
+                    label : {|
                         description : string
-                    }
-                }>
-            },
-            elo? : {
+                    |}
+                |}>
+            |},
+            elo? : {|
                 eligible : boolean,
-                vaultedInstruments ? : $ReadOnlyArray<{
+                vaultedInstruments ? : $ReadOnlyArray<{|
                     id : string,
-                    label : {
+                    label : {|
                         description : string
-                    }
-                }>
-            },
-            jcb? : {
+                    |}
+                |}>
+            |},
+            jcb? : {|
                 eligible : boolean,
-                vaultedInstruments ? : $ReadOnlyArray<{
+                vaultedInstruments ? : $ReadOnlyArray<{|
                     id : string,
-                    label : {
+                    label : {|
                         description : string
-                    }
-                }>
-            },
-            cup? : {
+                    |}
+                |}>
+            |},
+            cup? : {|
                 eligible : boolean,
-                vaultedInstruments ? : $ReadOnlyArray<{
+                vaultedInstruments ? : $ReadOnlyArray<{|
                     id : string,
-                    label : {
+                    label : {|
                         description : string
-                    }
-                }>
-            }
-        }
-    },
-    credit? : {
+                    |}
+                |}>
+            |}
+        |}
+    |},
+    credit? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    sepa? : {
+    |},
+    sepa? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    eps? : {
+    |},
+    eps? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    giropay? : {
+    |},
+    giropay? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    ideal? : {
+    |},
+    ideal? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    mybank? : {
+    |},
+    mybank? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    p24? : {
+    |},
+    p24? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    paypal? : {
+    |},
+    paypal? : {|
         eligible : boolean,
         vaultable? : boolean,
-        vaultedInstruments? : $ReadOnlyArray<{
+        vaultedInstruments? : $ReadOnlyArray<{|
             id : string,
-            label : {
+            label : {|
                 description : string
-            }
-        }>
-    },
-    sofort? : {
+            |}
+        |}>
+    |},
+    sofort? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    venmo? : {
+    |},
+    venmo? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    wechatpay? : {
+    |},
+    wechatpay? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    zimpler? : {
+    |},
+    zimpler? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    itau? : {
+    |},
+    itau? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    payu? : {
+    |},
+    payu? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    verkkopankki? : {
+    |},
+    verkkopankki? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    blik? : {
+    |},
+    blik? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    boleto? : {
+    |},
+    boleto? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    maxima? : {
+    |},
+    maxima? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    oxxo? : {
+    |},
+    oxxo? : {|
         eligible : boolean,
         vaultable? : boolean
-    },
-    trustly? : {
+    |},
+    trustly? : {|
         eligible : boolean,
         vaultable? : boolean
-    }
+    |}
 |};
 
 export type ZoidComponent = {|
@@ -254,7 +254,7 @@ export type CardFieldsFlowType = {
         onCancel : () => ZalgoPromise<void> | void,
         onError : (mixed) => ZalgoPromise<void> | void,
         onClose : () => ZalgoPromise<void> | void,
-        onCardTypeChange : ({ card : $Values<typeof CARD> }) => ZalgoPromise<void> | void,
+        onCardTypeChange : ({| card : $Values<typeof CARD> |}) => ZalgoPromise<void> | void,
         fundingSource : $Values<typeof FUNDING>,
         card : ?$Values<typeof CARD>,
         buyerCountry : $Values<typeof COUNTRY>,

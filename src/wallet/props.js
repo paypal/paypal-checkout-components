@@ -108,7 +108,7 @@ function getXProps() : WalletXProps {
     throw new Error(`No xprops found`);
 }
 
-export function getProps({ facilitatorAccessToken } : { facilitatorAccessToken : string }) : WalletProps {
+export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : WalletProps {
 
     const xprops = getXProps();
 
@@ -143,7 +143,7 @@ export function getProps({ facilitatorAccessToken } : { facilitatorAccessToken :
     const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken });
 
     const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, upgradeLSAT: false }, { facilitatorAccessToken, createOrder });
-    const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { facilitatorAccessToken, createOrder });
+    const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
 
     return {
         env,
@@ -193,7 +193,7 @@ export type Config = {|
     cspNonce : ?string
 |};
 
-export function getConfig({ serverCSPNonce } : { serverCSPNonce : ?string }) : Config {
+export function getConfig({ serverCSPNonce } : {| serverCSPNonce : ?string |}) : Config {
     const cspNonce = serverCSPNonce || getNonce();
     const { version } = paypal;
     

@@ -59,7 +59,7 @@ export function getFirebaseSessionToken(sessionUID : string) : ZalgoPromise<stri
     });
 }
 
-export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, { buyerAccessToken, orderID } : { buyerAccessToken : string, orderID : string }) : ZalgoPromise<void> {
+export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, { buyerAccessToken, orderID } : {| buyerAccessToken : string, orderID : string |}) : ZalgoPromise<void> {
     return callGraphQL({
         headers: {
             [ HEADERS.ACCESS_TOKEN ]: buyerAccessToken

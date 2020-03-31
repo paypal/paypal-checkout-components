@@ -37,10 +37,10 @@ export type PaymentActions = {|
 export type XOnApproveActionsType = {|
     order : OrderActions,
     payment : ?PaymentActions,
-    subscription : {
+    subscription : {|
         get : () => ZalgoPromise<SubscriptionResponse>,
         activate : () => ZalgoPromise<SubscriptionResponse>
-    },
+    |},
     restart : () => ZalgoPromise<void>,
     redirect : (string) => ZalgoPromise<void>
 |};
@@ -233,7 +233,7 @@ type OnApproveXProps = {|
     upgradeLSAT : boolean
 |};
 
-export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, upgradeLSAT = false } : OnApproveXProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : OnApprove {
+export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, upgradeLSAT = false } : OnApproveXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : OnApprove {
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }

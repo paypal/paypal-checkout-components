@@ -34,7 +34,7 @@ type SmartWalletClientScript = {|
     importScript : () => Promise<WalletClientScript>
 |};
 
-export function getSmartWalletClientScript({ res, logBuffer, cache, debug = false } : {res : ExpressResponse, debug : boolean, logBuffer : ?LoggerBufferType, cache : ?CacheType } = {}) : SmartWalletClientScript {
+export function getSmartWalletClientScript({ res, logBuffer, cache, debug = false } : {|res : ExpressResponse, debug : boolean, logBuffer : ?LoggerBufferType, cache : ?CacheType |} = {}) : SmartWalletClientScript {
     const getWatcher = memoize(() => getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache }));
     
     const getVersion = async () => {

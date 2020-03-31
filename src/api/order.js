@@ -12,15 +12,15 @@ import { callSmartAPI, callGraphQL, callRestAPI } from './api';
 
 export type OrderCreateRequest = {|
     intent? : 'CAPTURE' | 'AUTHORIZE',
-        purchase_units : $ReadOnlyArray<{
-            amount : {
+        purchase_units : $ReadOnlyArray<{|
+            amount : {|
                 currency_code : string,
                 value : string
-            },
-            payee? : {
+            |},
+            payee? : {|
                 merchant_id? : string
-            }
-        }>
+            |}
+        |}>
 |};
 
 export type OrderResponse = {||};
@@ -178,7 +178,7 @@ type PaymentSource = {|
     contingencies? : $ReadOnlyArray<$Values<typeof VALIDATE_CONTINGENCIES>>
 |};
 
-export function validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, buttonSessionID } : ValidatePaymentMethodOptions) : ZalgoPromise<{ status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } }> {
+export function validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, buttonSessionID } : ValidatePaymentMethodOptions) : ZalgoPromise<{| status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } |}> {
     getLogger().info(`rest_api_create_order_token`);
 
     const headers : Object = {
@@ -228,7 +228,7 @@ export function subscriptionIdToCartId(subscriptionID : string) : ZalgoPromise<s
     });
 }
 
-export function enableVault({ orderID, clientAccessToken } : { orderID : string, clientAccessToken : string }) : ZalgoPromise<mixed> {
+export function enableVault({ orderID, clientAccessToken } : {| orderID : string, clientAccessToken : string |}) : ZalgoPromise<mixed> {
     return callGraphQL({
         query: `
             mutation EnableVault(
@@ -248,7 +248,7 @@ export function enableVault({ orderID, clientAccessToken } : { orderID : string,
     });
 }
 
-export function deleteVault({ paymentMethodID, clientAccessToken } : { paymentMethodID : string, clientAccessToken : string }) : ZalgoPromise<mixed> {
+export function deleteVault({ paymentMethodID, clientAccessToken } : {| paymentMethodID : string, clientAccessToken : string |}) : ZalgoPromise<mixed> {
     return callGraphQL({
         query: `
             mutation DeleteVault(

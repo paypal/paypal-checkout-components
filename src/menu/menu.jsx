@@ -1,6 +1,7 @@
 /* @flow */
 /** @jsx h */
 
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { h, Fragment, type Node } from 'preact';
 
 import { openPopup } from '../ui';
@@ -18,7 +19,7 @@ type MenuProps = {|
             height : number
         |}
     |}>,
-    onChoose : ({ id : string }) => void,
+    onChoose : ({| id : string, win? : ?CrossDomainWindowType |}) => void,
     onBlur : () => void
 |};
 

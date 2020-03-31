@@ -78,7 +78,7 @@ export function callSmartAPI({ accessToken, url, method = 'get', json } : APIReq
         });
 }
 
-export function callGraphQL<T>({ query, variables = {}, headers = {} } : { query : string, variables? : { [string] : mixed }, headers? : { [string] : string } }) : ZalgoPromise<T> {
+export function callGraphQL<T>({ query, variables = {}, headers = {} } : {| query : string, variables? : { [string] : mixed }, headers? : { [string] : string } |}) : ZalgoPromise<T> {
     return request({
         url:     GRAPHQL_URI,
         method:  'POST',

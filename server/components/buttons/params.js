@@ -59,10 +59,10 @@ type RequestParams = {|
     basicFundingEligibility : FundingEligibility,
     locale : LocaleType,
     debug : boolean,
-    style : {
+    style : {|
         label : string,
         period : ?number
-    },
+    |},
     onShippingChange : boolean
 |};
 

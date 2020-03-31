@@ -3,12 +3,12 @@
 import type { ExpressRequest } from '../types';
 
 // $FlowFixMe
-export type GraphQL = <V, R>(ExpressRequest, $ReadOnlyArray<{ query : string, variables : V }>) => Promise<R>; // eslint-disable-line no-undef
+export type GraphQL = <V, R>(ExpressRequest, $ReadOnlyArray<{| query : string, variables : V |}>) => Promise<R>; // eslint-disable-line no-undef
 
 // eslint-disable-next-line flowtype/require-exact-type
 export type GraphQLBatch = {
     // eslint-disable-next-line no-undef
-    <V, R>({ query : string, variables : V, accessToken? : ?string }) : Promise<R>,
+    <V, R>({| query : string, variables : V, accessToken? : ?string |}) : Promise<R>,
     flush : () => void
 };
 

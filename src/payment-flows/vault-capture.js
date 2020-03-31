@@ -4,18 +4,17 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { ThreeDomainSecureFlowType } from '../types';
-import type { ButtonProps, Components } from '../button/props';
 import type { CreateOrder } from '../props';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse } from '../api';
 import { TARGET_ELEMENT } from '../constants';
 
-import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
+import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
 
 function setupVaultCapture() {
     // pass
 }
 
-function isVaultCaptureEligible({ props } : { props : ButtonProps }) : boolean {
+function isVaultCaptureEligible({ props } : IsEligibleOptions) : boolean {
     const { onShippingChange } = props;
 
     if (onShippingChange) {
@@ -25,7 +24,7 @@ function isVaultCaptureEligible({ props } : { props : ButtonProps }) : boolean {
     return true;
 }
 
-function isVaultCapturePaymentEligible({ payment } : { payment : Payment }) : boolean {
+function isVaultCapturePaymentEligible({ payment } : IsPaymentEligibleOptions) : boolean {
     const { win, paymentMethodID } = payment || {};
 
     if (win) {
@@ -80,7 +79,7 @@ function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, 
     });
 }
 
-function initVaultCapture({ props, components, payment } : { props : ButtonProps, components : Components, payment : Payment }) : PaymentFlowInstance {
+function initVaultCapture({ props, components, payment } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, clientAccessToken,
         enableThreeDomainSecure, buttonSessionID, partnerAttributionID, getParent } = props;
     const { ThreeDomainSecure } = components;

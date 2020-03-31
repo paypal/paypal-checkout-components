@@ -4,11 +4,10 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 import { memoize, querySelectorAll, debounce, noop } from 'belter/src';
 
-import type { ButtonProps, Config, ServiceData, Components } from '../button/props';
 import { DATA_ATTRIBUTES } from '../constants';
 import { unresolvedPromise, promiseNoop } from '../lib';
 
-import type { Payment, PaymentFlow, PaymentFlowInstance } from './types';
+import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
 import { checkout } from './checkout';
 
 function setupCardFields() {
@@ -17,7 +16,7 @@ function setupCardFields() {
 
 let cardFieldsOpen = false;
 
-function isCardFieldsEligible({ props, serviceData } : { props : ButtonProps, serviceData : ServiceData }) : boolean {
+function isCardFieldsEligible({ props, serviceData } : IsEligibleOptions) : boolean {
     const { vault, onShippingChange, enableStandardCardFields } = props;
     const { eligibility } = serviceData;
 
@@ -37,7 +36,7 @@ function isCardFieldsEligible({ props, serviceData } : { props : ButtonProps, se
     return eligibility.cardFields;
 }
 
-function isCardFieldsPaymentEligible({ payment } : { payment : Payment }) : boolean {
+function isCardFieldsPaymentEligible({ payment } : IsPaymentEligibleOptions) : boolean {
     const { win, fundingSource } = payment || {};
 
     if (win) {
@@ -66,7 +65,7 @@ function unhighlightCards() {
     });
 }
 
-const getElements = () : { buttonsContainer : HTMLElement, cardButtonsContainer : HTMLElement, cardFieldsContainer : HTMLElement } => {
+const getElements = () : {| buttonsContainer : HTMLElement, cardButtonsContainer : HTMLElement, cardFieldsContainer : HTMLElement |} => {
     const buttonsContainer = document.querySelector('#buttons-container');
     const cardButtonsContainer = document.querySelector(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }="${ FUNDING.CARD }"]`);
     const cardFieldsContainer = document.querySelector('#card-fields-container');
@@ -107,7 +106,7 @@ const slideDownButtons = () => {
     buttonsContainer.style.marginTop = `0px`;
 };
 
-function initCardFields({ props, components, payment, serviceData, config } : { props : ButtonProps, config : Config, components : Components, payment : Payment, serviceData : ServiceData }) : PaymentFlowInstance {
+function initCardFields({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel,
         locale, commit, onError, sessionID, buttonSessionID } = props;
     const { CardFields } = components;

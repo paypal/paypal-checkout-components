@@ -6,14 +6,13 @@ import { FUNDING, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { FundingEligibilityType, ProxyWindow } from '../types';
-import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
 import type { CreateBillingAgreement, CreateSubscription } from '../props';
 import { enableVault, validatePaymentMethod } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
 
-import type { PaymentFlow, PaymentFlowInstance, Payment } from './types';
+import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from './types';
 
 export const CHECKOUT_POPUP_DIMENSIONS = {
     WIDTH:  500,
@@ -34,7 +33,7 @@ function getRenderWindow() : Object {
     }
 }
 
-function setupCheckout({ components } : { components : Components }) : ZalgoPromise<void> {
+function setupCheckout({ components } : SetupOptions) : ZalgoPromise<void> {
     const { Checkout } = components;
 
     checkoutOpen = false;
@@ -121,7 +120,7 @@ function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgre
     });
 }
 
-function getContext({ win, isClick } : { win : ?(CrossDomainWindowType | ProxyWindow), isClick : ?boolean }) : $Values<typeof CONTEXT> {
+function getContext({ win, isClick } : {| win : ?(CrossDomainWindowType | ProxyWindow), isClick : ?boolean |}) : $Values<typeof CONTEXT> {
     if (win) {
         return CONTEXT.POPUP;
     }
@@ -133,7 +132,7 @@ function getContext({ win, isClick } : { win : ?(CrossDomainWindowType | ProxyWi
     return CONTEXT.IFRAME;
 }
 
-function initCheckout({ props, components, serviceData, payment, config } : { props : ButtonProps, components : Components, serviceData : ServiceData, payment : Payment, config : Config }) : PaymentFlowInstance {
+function initCheckout({ props, components, serviceData, payment, config } : InitOptions) : PaymentFlowInstance {
     if (checkoutOpen) {
         throw new Error(`Checkout already rendered`);
     }

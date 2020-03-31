@@ -16,9 +16,9 @@ export type XOnShippingChangeDataType = {|
 export type XOnShippingChangeActionsType = {|
     resolve : () => ZalgoPromise<void>,
     reject : (mixed) => ZalgoPromise<void>,
-    order : {
+    order : {|
         patch : () => ZalgoPromise<OrderResponse>
-    }
+    |}
 |};
 
 export type XOnShippingChange = (XOnShippingChangeDataType, XOnShippingChangeActionsType) => ZalgoPromise<void>;
@@ -36,7 +36,7 @@ export type OnShippingChangeActionsType = {|
     reject : () => ZalgoPromise<void>
 |};
 
-export function buildXShippingChangeActions({ orderID, actions, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : { orderID : string, actions : OnShippingChangeActionsType, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string }) : XOnShippingChangeActionsType {
+export function buildXShippingChangeActions({ orderID, actions, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : {| orderID : string, actions : OnShippingChangeActionsType, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string |}) : XOnShippingChangeActionsType {
 
     const patch = (data = {}) => {
         return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID }).catch(() => {
@@ -63,7 +63,7 @@ type OnShippingChangeXProps = {|
     partnerAttributionID : ?string
 |};
 
-export function getOnShippingChange({ onShippingChange, partnerAttributionID } : OnShippingChangeXProps, { facilitatorAccessToken, createOrder } : { facilitatorAccessToken : string, createOrder : CreateOrder }) : ?OnShippingChange {
+export function getOnShippingChange({ onShippingChange, partnerAttributionID } : OnShippingChangeXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : ?OnShippingChange {
     if (onShippingChange) {
         return ({ buyerAccessToken, ...data }, actions) => {
             return createOrder().then(orderID => {

@@ -15,7 +15,7 @@ const FRAUDNET_URL = {
     [ ENV.TEST ]:       'https://c.paypal.com/da/r/fb.js'
 };
 
-export function shouldRenderFraudnet({ fundingEligibility } : { fundingEligibility : FundingEligibility }) : boolean {
+export function shouldRenderFraudnet({ fundingEligibility } : {| fundingEligibility : FundingEligibility |}) : boolean {
     for (const fundingSource of Object.values(FUNDING)) {
         // $FlowFixMe
         const fundingConfig = fundingEligibility[fundingSource];
@@ -38,7 +38,7 @@ export function shouldRenderFraudnet({ fundingEligibility } : { fundingEligibili
     return false;
 }
 
-export function renderFraudnetScript({ id, cspNonce, env } : { id : string, cspNonce : string, env : $Values<typeof ENV> }) : string {
+export function renderFraudnetScript({ id, cspNonce, env } : {| id : string, cspNonce : string, env : $Values<typeof ENV> |}) : string {
 
     const fraudnetConfig = {
         f: id,
