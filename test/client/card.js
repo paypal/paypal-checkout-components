@@ -5,7 +5,7 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, mockFunction, clickButton } from './mocks';
+import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, mockFunction, clickButton } from './mocks';
 
 describe('card field cases', () => {
 
@@ -13,7 +13,7 @@ describe('card field cases', () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.xprops.enableStandardCardFields = true;
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -79,7 +79,7 @@ describe('card field cases', () => {
 
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
-            await clickButton(FUNDING.CARD, CARD.VISA);
+            await clickButton(FUNDING.CARD);
         });
     });
 });

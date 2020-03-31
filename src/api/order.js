@@ -2,7 +2,7 @@
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
-import { request, noop } from 'belter/src';
+import { request, noop, memoize } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
@@ -336,3 +336,50 @@ export function approveOrder({ orderID, planID, buyerAccessToken } : ApproveOrde
         };
     });
 }
+
+type SupplementalOrderInfo = {|
+    checkoutSession : {|
+        cart : {|
+            intent : string,
+            amounts? : {|
+                total : {|
+                    currencyCode : string
+                |}
+            |},
+            shippingAddress? : {|
+                isFullAddress? : boolean
+            |}
+        |},
+        flags : {|
+            isShippingAddressRequired? : boolean
+        |}
+    |}
+|};
+
+export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromise<SupplementalOrderInfo> => {
+    return callGraphQL({
+        query: `
+            query GetCheckoutDetails($orderID: String!) {
+                checkoutSession(token: $orderID) {
+                    cart {
+                        intent
+                        amounts {
+                            total {
+                                currencyCode
+                            }
+                        }
+                        shippingAddress {
+                            isFullAddress
+                        }
+                    }
+                    flags {
+                        hideShipping
+                        isShippingAddressRequired
+                        isChangeShippingAddressAllowed
+                    }
+                }
+            }
+        `,
+        variables: { orderID }
+    });
+});

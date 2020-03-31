@@ -8,7 +8,7 @@ import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 import { promiseNoop } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getMockWindowOpen,
-    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, getPostRobotMock } from './mocks';
+    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, getPostRobotMock, generateOrderID } from './mocks';
 
 const IOS_SAFARI_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
 const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
@@ -77,7 +77,7 @@ describe('native chrome cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -124,7 +124,7 @@ describe('native chrome cases', () => {
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -252,7 +252,7 @@ describe('native chrome cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -312,7 +312,7 @@ describe('native chrome cases', () => {
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -450,7 +450,7 @@ describe('native chrome cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -547,7 +547,7 @@ describe('native chrome cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -640,7 +640,7 @@ describe('native chrome cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -892,7 +892,7 @@ describe('native chrome cases', () => {
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -1062,7 +1062,7 @@ describe('native chrome cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -1181,7 +1181,7 @@ describe('native chrome cases', () => {
                 }
             });
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -1290,7 +1290,7 @@ describe('native chrome cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -1435,7 +1435,7 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -1511,7 +1511,7 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -1695,7 +1695,7 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -1784,7 +1784,7 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -1980,7 +1980,7 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -2119,7 +2119,7 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -2255,7 +2255,7 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -2387,7 +2387,7 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -2553,7 +2553,7 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -2811,7 +2811,7 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -2971,7 +2971,7 @@ describe('native ios cases', () => {
 
             const mockWebSocketServer = expectSocket();
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {

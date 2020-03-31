@@ -5,7 +5,7 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, enterButton } from './mocks';
+import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, enterButton } from './mocks';
 import { triggerKeyPress } from './util';
 
 describe('happy cases', () => {
@@ -13,7 +13,7 @@ describe('happy cases', () => {
     it('should render a button with createOrder, click the button, and render checkout', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -80,7 +80,7 @@ describe('happy cases', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with a paymentID', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
             const paymentID = 'ZZZZZZ';
 
@@ -251,7 +251,7 @@ describe('happy cases', () => {
     it('should render a button, press enter on the button, and render checkout', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -328,7 +328,7 @@ describe('happy cases', () => {
     it('should render a button, click the button, and render checkout, then call onCancel', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -371,7 +371,7 @@ describe('happy cases', () => {
     it('should render a button, click the button, and render checkout, onApprove, restart and call onApprove again', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -438,7 +438,7 @@ describe('happy cases', () => {
     it('should not error out if server-passed merchant id is different to payee', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {

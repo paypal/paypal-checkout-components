@@ -5,14 +5,14 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, generateOrderID } from './mocks';
 
 describe('prerender cases', () => {
 
     it('should prerender a button, and call createOrder or onApprove', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             const win = {
                 close: avoid('close')
@@ -45,7 +45,7 @@ describe('prerender cases', () => {
     it('should render a button, enable the button, click, and call createOrder or onApprove', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             const win = {
                 close: avoid('close')
@@ -108,7 +108,7 @@ describe('prerender cases', () => {
     it('should render a button, disable the button, re-enable the button, click, and call createOrder or onApprove', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             const win = {
                 close: avoid('close')
@@ -144,7 +144,7 @@ describe('prerender cases', () => {
     it('should render a button, and resolve in onClick', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             const win = {
                 close: avoid('close')

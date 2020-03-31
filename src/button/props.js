@@ -98,6 +98,7 @@ export type ButtonProps = {|
     vault : boolean,
     commit : boolean,
     currency : $Values<typeof CURRENCY>,
+    intent : $Values<typeof INTENT>,
 
     clientAccessToken : ?string,
 
@@ -219,6 +220,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         merchantDomain,
         platform,
         currency,
+        intent,
 
         getPopupBridge,
         getPrerenderDetails,

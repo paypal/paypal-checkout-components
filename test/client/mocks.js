@@ -185,11 +185,8 @@ export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({| args :
     };
 }
 
-export async function clickButton(fundingSource? : string = FUNDING.PAYPAL, card? : string = CARD.VISA) : ZalgoPromise<void> {
-    let selector = `button[data-funding-source=${ fundingSource }]`;
-    if (fundingSource === FUNDING.CARD) {
-        selector = `${ selector }[data-card=${ card }]`;
-    }
+export async function clickButton(fundingSource? : string = FUNDING.PAYPAL) : ZalgoPromise<void> {
+    const selector = `button[data-funding-source=${ fundingSource }]`;
     const button = window.document.querySelector(selector);
     button.click();
     await button.payPromise;
@@ -215,14 +212,6 @@ export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_
             continue;
         }
 
-        buttons.push(`<button data-funding-source="${ fundingSource }"></div>`);
-
-        if (fundingConfig.vaultedInstruments) {
-            for (const vaultedInstrument of fundingConfig.vaultedInstruments) {
-                buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
-            }
-        }
-
         if (fundingSource === FUNDING.CARD) {
             for (const card of values(CARD)) {
                 const cardConfig = fundingConfig.vendors[card];
@@ -230,14 +219,20 @@ export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_
                 if (!cardConfig || !cardConfig.eligible) {
                     continue;
                 }
-
-                buttons.push(`<button data-funding-source="${ fundingSource }" data-card="${ card }"></div>`);
-
-                if (cardConfig.vaultedInstruments) {
-                    for (const vaultedInstrument of cardConfig.vaultedInstruments) {
-                        buttons.push(`<button data-funding-source="${ fundingSource }" data-card="${ card }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
-                    }
+                
+                if (cardConfig.vaultedInstruments && cardConfig.vaultedInstruments.length) {
+                    const vaultedInstrument = cardConfig.vaultedInstruments[0];
+                    buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
+                } else {
+                    buttons.push(`<button data-funding-source="${ fundingSource }"></div>`);
                 }
+            }
+        } else {
+            if (fundingConfig.vaultedInstruments && fundingConfig.vaultedInstruments.length) {
+                const vaultedInstrument = fundingConfig.vaultedInstruments[0];
+                buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
+            } else {
+                buttons.push(`<button data-funding-source="${ fundingSource }"></div>`);
             }
         }
     }
@@ -430,6 +425,10 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                 if (result) {
                     return result;
                 }
+            }
+
+            if (options.data) {
+                return options.data;
             }
 
             if (data.query.includes('query GetCheckoutDetails')) {
@@ -1399,4 +1398,8 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
         expectClose: doExpectClose,
         done
     };
+}
+
+export function generateOrderID() : string {
+    return uniqueID().slice(0, 8);
 }

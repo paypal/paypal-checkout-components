@@ -1,11 +1,10 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
+import { INTENT, SDK_QUERY_KEYS, FUNDING, CURRENCY } from '@paypal/sdk-constants/src';
 
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
-import { updateClientConfig, getPayee } from '../api';
-import { callGraphQL } from '../api/api';
+import { updateClientConfig, getPayee, getSupplementalOrderInfo } from '../api';
 import { getLogger } from '../lib';
 import { CLIENT_ID_PAYEE_NO_MATCH } from '../config';
 
@@ -19,38 +18,22 @@ export function updateButtonClientConfig({ orderID, fundingSource, inline = fals
     });
 }
 
-export function validateOrder(orderID : string, { clientID, merchantID } : {| clientID : ?string, merchantID : $ReadOnlyArray<string> |}) : ZalgoPromise<void> {
+type ValidateOptions = {|
+    clientID : ?string,
+    merchantID : $ReadOnlyArray<string>,
+    expectedIntent : $Values<typeof INTENT>,
+    expectedCurrency : $Values<typeof CURRENCY>
+|};
+
+export function validateOrder(orderID : string, { clientID, merchantID, expectedCurrency, expectedIntent } : ValidateOptions) : ZalgoPromise<void> {
     return ZalgoPromise.hash({
-
-        gql: callGraphQL({
-            query: `
-                query GetCheckoutDetails($orderID: String!) {
-                    checkoutSession(token: $orderID) {
-                        cart {
-                            intent
-                            amounts {
-                                total {
-                                    currencyCode
-                                }
-                            }
-                        }
-                    }
-                }
-            `,
-            variables: { orderID }
-        }),
-        
+        order: getSupplementalOrderInfo(orderID),
         payee: getPayee(orderID)
-
-    }).then(({ gql, payee }) => {
-
-        const cart = gql.checkoutSession.cart;
+    }).then(({ order, payee }) => {
+        const cart = order.checkoutSession.cart;
 
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
         const currency = cart.amounts && cart.amounts.total.currencyCode;
-
-        const expectedIntent = intent;
-        const expectedCurrency = currency;
 
         if (intent !== expectedIntent) {
             throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ intent } to the sdk`);

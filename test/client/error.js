@@ -4,7 +4,7 @@
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { wrapPromise, noop } from 'belter/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton, mockFunction } from './mocks';
+import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton, mockFunction } from './mocks';
 
 describe('error cases', () => {
 
@@ -38,7 +38,7 @@ describe('error cases', () => {
 
     it('should call xprops.onError for any onCancel error', async () => {
         return await wrapPromise(async ({ expect, expectError }) => {
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             const error = new Error(`Something went wrong`);
 

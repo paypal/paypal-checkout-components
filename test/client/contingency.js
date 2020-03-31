@@ -5,14 +5,14 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getGraphQLApiMock } from './mocks';
+import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getGraphQLApiMock } from './mocks';
 
 describe('contingency cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture and auto restart with INSTRUMENT_DECLINED', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -99,7 +99,7 @@ describe('contingency cases', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture and auto restart with PAYER_ACTION_REQUIRED', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -186,7 +186,7 @@ describe('contingency cases', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize and auto restart with INSTRUMENT_DECLINED', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.intent = INTENT.AUTHORIZE;
@@ -294,7 +294,7 @@ describe('contingency cases', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize and auto restart with PAYER_ACTION_REQUIRED', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.intent = INTENT.AUTHORIZE;

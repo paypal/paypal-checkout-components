@@ -92,9 +92,14 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 .then(orderID => updateButtonClientConfig({ orderID, fundingSource, inline }))
                 .catch(err => getLogger().error('update_client_config_error', { err: stringifyError(err) }));
 
+            const {
+                intent:   expectedIntent,
+                currency: expectedCurrency
+            } = props;
+
             return ZalgoPromise.try(start)
                 .then(() => createOrder())
-                .then(orderID => validateOrder(orderID, { clientID, merchantID }))
+                .then(orderID => validateOrder(orderID, { clientID, merchantID, expectedCurrency, expectedIntent }))
                 .then(() => clickPromise)
                 .catch(err => {
                     return ZalgoPromise.all([

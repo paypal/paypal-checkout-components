@@ -22,7 +22,8 @@ import {
     getActivateSubscriptionIdApiMock,
     getReviseSubscriptionIdApiMock,
     getGraphQLApiMock,
-    mockSetupButton
+    mockSetupButton,
+    generateOrderID
 } from './mocks';
 
 describe('actions cases', () => {
@@ -100,7 +101,7 @@ describe('actions cases', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.get', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -162,7 +163,7 @@ describe('actions cases', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -224,7 +225,7 @@ describe('actions cases', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.intent = INTENT.AUTHORIZE;
@@ -307,7 +308,7 @@ describe('actions cases', () => {
     it('should render a button, click the button, and render checkout, then pass onShippingChange callback to the parent with actions.order.patch', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -363,7 +364,7 @@ describe('actions cases', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.patch', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {

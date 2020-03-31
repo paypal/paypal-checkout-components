@@ -111,7 +111,7 @@ describe('client config cases', () => {
 
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
-            await clickButton(FUNDING.CARD, CARD.VISA);
+            await clickButton(FUNDING.CARD);
         });
     });
 

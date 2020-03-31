@@ -5,7 +5,7 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton, generateOrderID } from './mocks';
 
 describe('popup bridge cases', () => {
 
@@ -13,7 +13,7 @@ describe('popup bridge cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const nativeUrl = 'native://foobar';
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -57,7 +57,7 @@ describe('popup bridge cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const nativeUrl = 'native://foobar';
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -95,7 +95,7 @@ describe('popup bridge cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const nativeUrl = 'native://foobar';
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
             const paymentID = 'ZZZZZZZZZZ';
 
@@ -145,7 +145,7 @@ describe('popup bridge cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const nativeUrl = 'native://foobar';
-            const orderID = 'XXXXXXXXXX';
+            const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
             const billingToken = 'BA-QQQQQQQQQQQ';
 
