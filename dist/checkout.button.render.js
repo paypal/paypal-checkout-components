@@ -61,6 +61,9 @@
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
+    __webpack_require__.d(__webpack_exports__, "componentTemplate", (function() {
+        return componentTemplate;
+    }));
     function _extends() {
         return (_extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
@@ -115,6 +118,7 @@
         BOLETO: "boleto",
         OXXO: "oxxo"
     };
+    var DEFAULT = "default";
     var _CONTEXT_TYPE;
     (_CONTEXT_TYPE = {
         BUTTON_SESSION_ID: "button_session_id"
@@ -216,7 +220,7 @@
     _LOCALE.YT = [ "en", "fr", "es", "zh" ], _LOCALE.ZA = [ "en", "fr", "es", "zh" ], 
     _LOCALE.ZM = [ "en", "fr", "es", "zh" ], _LOCALE.ZW = [ "en" ], _LOCALE);
     var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _logoColors19, _secondaryColors19, _logoColors20, _secondaryColors20, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
-    var BUTTON_CONFIG = ((_BUTTON_CONFIG = {}).default = {
+    var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[DEFAULT] = {
         colors: [ "gold", "blue", "silver", "black", "white" ],
         sizes: [ BUTTON_SIZE.SMALL, BUTTON_SIZE.MEDIUM, BUTTON_SIZE.LARGE, BUTTON_SIZE.RESPONSIVE ],
         shapes: [ "pill", "rect" ],
@@ -648,7 +652,7 @@
         return function(conf, category, key, def) {
             var categoryConfig = conf[category];
             if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
-            if (conf.default && conf.default.hasOwnProperty(key)) return conf.default[key];
+            if (conf[DEFAULT] && conf[DEFAULT].hasOwnProperty(key)) return conf[DEFAULT][key];
             if (arguments.length >= 4) return def;
             throw new Error("No value found for " + category + ":" + key);
         }(BUTTON_CONFIG, label, key, def);
@@ -656,7 +660,7 @@
     var _FUNDING_CONFIG, _CARD_CONFIG;
     var FUNDING_PRIORITY = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.ITAU, FUNDING.CREDIT, FUNDING.CARD, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.BLIK, FUNDING.P24, FUNDING.PAYU, FUNDING.VERKKOPANKKI, FUNDING.TRUSTLY, FUNDING.MAXIMA, FUNDING.BOLETO, FUNDING.OXXO ];
     var FUNDING_ORDER = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.ITAU, FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.BLIK, FUNDING.P24, FUNDING.PAYU, FUNDING.VERKKOPANKKI, FUNDING.TRUSTLY, FUNDING.MAXIMA, FUNDING.BOLETO, FUNDING.OXXO, FUNDING.CARD ];
-    var FUNDING_CONFIG = ((_FUNDING_CONFIG = {}).default = {
+    var FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[DEFAULT] = {
         enabled: !0,
         allowOptIn: !0,
         allowOptOut: !0,
@@ -775,7 +779,7 @@
         allowVertical: !1,
         requireCommitAsTrue: !0
     }, _FUNDING_CONFIG);
-    var CARD_CONFIG = ((_CARD_CONFIG = {}).default = {
+    var CARD_CONFIG = ((_CARD_CONFIG = {})[DEFAULT] = {
         priority: [ "visa", "mastercard", "amex" ]
     }, _CARD_CONFIG.GB = {
         priority: [ "visa", "mastercard", "amex", "discover", "maestro" ]
@@ -791,7 +795,7 @@
     function config_getConfig(conf, category, key, def) {
         var categoryConfig = conf[category];
         if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
-        if (conf.default && conf.default.hasOwnProperty(key)) return conf.default[key];
+        if (conf[DEFAULT] && conf[DEFAULT].hasOwnProperty(key)) return conf[DEFAULT][key];
         if (arguments.length >= 4) return def;
         throw new Error("No value found for " + category + ":" + key);
     }
@@ -8441,9 +8445,6 @@
             }
         }
     };
-    __webpack_require__.d(__webpack_exports__, "componentTemplate", (function() {
-        return componentTemplate;
-    }));
     var allowedPersonalizationLabels = [ "checkout", "buynow", "pay" ];
     function getCommonButtonClasses(_ref) {
         return [ CLASS.LAYOUT + "-" + _ref.layout, CLASS.SHAPE + "-" + _ref.shape, CLASS.BRANDING + "-" + (_ref.branding ? "branded" : "unbranded"), CLASS.NUMBER + "-" + (_ref.multiple ? "multiple" : "single"), CLASS.ENV + "-" + _ref.env, "" + CLASS.SHOULD_FOCUS ].join(" ");
@@ -8946,14 +8947,14 @@
         var labelPowerByPayPal = cards.length > 0 ? function(props) {
             if (!props) return null;
             var _props$sources = props.sources;
-            return "vertical" !== props.layout ? null : -1 === (void 0 === _props$sources ? [] : _props$sources).indexOf(FUNDING.CARD) ? null : jsxToHTML("div", {
+            return "vertical" !== props.layout || -1 === (void 0 === _props$sources ? [] : _props$sources).indexOf(FUNDING.CARD) ? null : jsxToHTML("div", {
                 class: "powered-by-paypal",
                 style: "\n                text-align: center;\n                margin: 10px auto;\n                height: 14px;\n                font-family: PayPal-Sans, HelveticaNeue, sans-serif;\n                font-size: 11px;\n                font-weight: normal;\n                font-style: italic;\n                font-stretch: normal;\n                color: #7b8388;\n                position: relative;\n                margin-right: 3px;\n                bottom: 3px;\n            "
             }, renderContent("{ content: poweredBy }", _extends({}, props, {
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20["data-version"] = "4.0.311", 
+        return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20["data-version"] = "4.0.312", 
         _ref20), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,

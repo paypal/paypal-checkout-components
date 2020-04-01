@@ -73,6 +73,12 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
+    __webpack_require__.d(__webpack_exports__, "onLoadCheckoutIntegration", (function() {
+        return onLoadCheckoutIntegration;
+    }));
+    __webpack_require__.d(__webpack_exports__, "isCheckoutXComponent", (function() {
+        return isCheckoutXComponent;
+    }));
     var esm_extends = __webpack_require__(0);
     var config = {
         checkoutjs_url: "https://www.paypalobjects.com/api/checkout{version}.js",
@@ -198,12 +204,6 @@
             }
         }(err));
         if (err || result) return integrationResponder.respond(err, result);
-    }));
-    __webpack_require__.d(__webpack_exports__, "onLoadCheckoutIntegration", (function() {
-        return onLoadCheckoutIntegration;
-    }));
-    __webpack_require__.d(__webpack_exports__, "isCheckoutXComponent", (function() {
-        return isCheckoutXComponent;
     }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
