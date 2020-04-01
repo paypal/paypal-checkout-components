@@ -1267,8 +1267,13 @@ type MockWindow = {|
     expectClose : () => void,
     done : () => void
 |};
+
+const getDefaultMockWindowOptions = () : MockWindowOptions => {
+    // $FlowFixMe
+    return {};
+};
         
-export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, expectClose = false, onOpen = noop, expectedQuery = [], expectImmediateUrl = true } : MockWindowOptions) : MockWindow {
+export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, expectClose = false, onOpen = noop, expectedQuery = [], expectImmediateUrl = true } : MockWindowOptions = getDefaultMockWindowOptions()) : MockWindow {
 
     let windowOpenedTimes = 0;
 
@@ -1317,7 +1322,9 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
         const newWin : CrossDomainWindowType = {
             get location() : {||} {
                 // $FlowFixMe
-                return {};
+                return {
+                    protocol: 'about:'
+                };
             },
             set location(loc : string) {
                 ZalgoPromise.delay(10).then(() => {
@@ -1346,6 +1353,27 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
             self:        null,
             postMessage: noop
         };
+
+        const mockElement = (tagName = 'div') => {
+            return {
+                tagName,
+                appendChild:      noop,
+                removeChild:      noop,
+                setAttribute:     noop,
+                querySelector:    noop,
+                querySelectorAll: () => [],
+                children:         []
+            };
+        };
+
+        if (!url) {
+            // $FlowFixMe
+            newWin.document = {
+                createElement:   mockElement,
+                createTextNode:  mockElement,
+                documentElement: mockElement()
+            };
+        }
 
         newWin.parent = newWin.top = newWin.self = newWin;
         win = newWin;

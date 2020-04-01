@@ -151,7 +151,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     let approved = false;
 
     const restart = memoize(() : ZalgoPromise<void> =>
-        initCheckout({ props, components, serviceData, config, payment: { button, win, fundingSource, card, buyerIntent, isClick: false } })
+        initCheckout({ props, components, serviceData, config, payment: { button, fundingSource, card, buyerIntent, isClick: false } })
             .start().finally(unresolvedPromise));
 
     const onClose = () => {
@@ -242,13 +242,13 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     });
 
     const click = () => {
+        if (supportsPopups()) {
+            win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+        }
+
         if (!onClick) {
             start();
             return;
-        }
-
-        if (supportsPopups()) {
-            win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
         }
 
         return ZalgoPromise.try(() => {
