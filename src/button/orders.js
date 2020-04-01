@@ -2,6 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { INTENT, SDK_QUERY_KEYS, FUNDING, CURRENCY } from '@paypal/sdk-constants/src';
+import { stringifyError } from 'belter/src';
 
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
 import { updateClientConfig, getPayee, getSupplementalOrderInfo } from '../api';
@@ -65,5 +66,8 @@ export function validateOrder(orderID : string, { clientID, merchantID, expected
         if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) {
             throw new Error(`Payee passed in transaction does not match expected merchant id: ${ xpropMerchantID }`);
         }
+    }).catch(err => {
+        getLogger().warn('order_validation_error', { err: stringifyError(err) }).flush();
+        throw err;
     });
 }
