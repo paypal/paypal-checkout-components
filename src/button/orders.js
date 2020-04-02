@@ -68,6 +68,7 @@ export function validateOrder(orderID : string, { clientID, merchantID, expected
         }
     }).catch(err => {
         if (clientID && ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1) {
+            getLogger().warn(`order_validation_error_whitelist`, { err: stringifyError(err) }).flush();
             getLogger().warn(`order_validation_error_whitelist_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
             return;
         }
