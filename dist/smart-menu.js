@@ -962,6 +962,109 @@ window.spb = function(modules) {
             class: "loader"
         }))), children));
     }
+    function openPopup(_ref) {
+        var win = function(win) {
+            if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
+            return win;
+        }(function(url, options) {
+            var width = (options = options || {}).width, height = options.height;
+            var top = 0;
+            var left = 0;
+            width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
+            height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
+            width && height && (options = _extends({
+                top: top,
+                left: left,
+                width: width,
+                height: height,
+                status: 1,
+                toolbar: 0,
+                menubar: 0,
+                resizable: 1,
+                scrollbars: 1
+            }, options));
+            var name = options.name || "";
+            delete options.name;
+            var params = Object.keys(options).map((function(key) {
+                if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
+                var item;
+            })).filter(Boolean).join(",");
+            var win;
+            try {
+                win = window.open("", name, params, !0);
+            } catch (err) {
+                throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+            }
+            if (function(win, allowMock) {
+                void 0 === allowMock && (allowMock = !0);
+                try {
+                    if (win === window) return !1;
+                } catch (err) {
+                    return !0;
+                }
+                try {
+                    if (!win) return !0;
+                } catch (err) {
+                    return !0;
+                }
+                try {
+                    if (win.closed) return !0;
+                } catch (err) {
+                    return !err || "Call was rejected by callee.\r\n" !== err.message;
+                }
+                if (allowMock && isSameDomain(win)) try {
+                    if (win.mockclosed) return !0;
+                } catch (err) {}
+                try {
+                    if (!win.parent || !win.top) return !0;
+                } catch (err) {}
+                var iframeIndex = function(collection, item) {
+                    for (var i = 0; i < collection.length; i++) try {
+                        if (collection[i] === item) return i;
+                    } catch (err) {}
+                    return -1;
+                }(iframeWindows, win);
+                if (-1 !== iframeIndex) {
+                    var frame = iframeFrames[iframeIndex];
+                    if (frame && function(frame) {
+                        if (!frame.contentWindow) return !0;
+                        if (!frame.parentNode) return !0;
+                        var doc = frame.ownerDocument;
+                        if (doc && doc.documentElement && !doc.documentElement.contains(frame)) {
+                            var parent = frame;
+                            for (;parent.parentNode && parent.parentNode !== parent; ) parent = parent.parentNode;
+                            if (!parent.host || !doc.documentElement.contains(parent.host)) return !0;
+                        }
+                        return !1;
+                    }(frame)) return !0;
+                }
+                return !1;
+            }(win)) {
+                var err;
+                throw new PopupOpenError("Can not open popup window - blocked");
+            }
+            window.addEventListener("unload", (function() {
+                return win.close();
+            }));
+            return win;
+        }(0, {
+            width: _ref.width,
+            height: _ref.height
+        }));
+        var doc = win.document;
+        !function(win, el) {
+            var tag = el.tagName.toLowerCase();
+            if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+            var documentElement = win.document.documentElement;
+            for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
+            for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
+        }(win, node_node(SpinnerPage, {
+            nonce: getNonce()
+        }).render(dom({
+            doc: doc
+        })));
+        return win;
+    }
     function Menu(_ref) {
         var choices = _ref.choices, onChoose = _ref.onChoose, onBlur = _ref.onBlur, cspNonce = _ref.cspNonce, verticalOffset = _ref.verticalOffset;
         var autoFocus = function() {
@@ -993,109 +1096,7 @@ window.spb = function(modules) {
                 onClick: function() {
                     return function(choice) {
                         var win;
-                        choice.popup && (win = function(_ref) {
-                            var win = function(win) {
-                                if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
-                                return win;
-                            }(function(url, options) {
-                                var width = (options = options || {}).width, height = options.height;
-                                var top = 0;
-                                var left = 0;
-                                width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
-                                height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
-                                width && height && (options = _extends({
-                                    top: top,
-                                    left: left,
-                                    width: width,
-                                    height: height,
-                                    status: 1,
-                                    toolbar: 0,
-                                    menubar: 0,
-                                    resizable: 1,
-                                    scrollbars: 1
-                                }, options));
-                                var name = options.name || "";
-                                delete options.name;
-                                var params = Object.keys(options).map((function(key) {
-                                    if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
-                                    var item;
-                                })).filter(Boolean).join(",");
-                                var win;
-                                try {
-                                    win = window.open("", name, params, !0);
-                                } catch (err) {
-                                    throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
-                                }
-                                if (function(win, allowMock) {
-                                    void 0 === allowMock && (allowMock = !0);
-                                    try {
-                                        if (win === window) return !1;
-                                    } catch (err) {
-                                        return !0;
-                                    }
-                                    try {
-                                        if (!win) return !0;
-                                    } catch (err) {
-                                        return !0;
-                                    }
-                                    try {
-                                        if (win.closed) return !0;
-                                    } catch (err) {
-                                        return !err || "Call was rejected by callee.\r\n" !== err.message;
-                                    }
-                                    if (allowMock && isSameDomain(win)) try {
-                                        if (win.mockclosed) return !0;
-                                    } catch (err) {}
-                                    try {
-                                        if (!win.parent || !win.top) return !0;
-                                    } catch (err) {}
-                                    var iframeIndex = function(collection, item) {
-                                        for (var i = 0; i < collection.length; i++) try {
-                                            if (collection[i] === item) return i;
-                                        } catch (err) {}
-                                        return -1;
-                                    }(iframeWindows, win);
-                                    if (-1 !== iframeIndex) {
-                                        var frame = iframeFrames[iframeIndex];
-                                        if (frame && function(frame) {
-                                            if (!frame.contentWindow) return !0;
-                                            if (!frame.parentNode) return !0;
-                                            var doc = frame.ownerDocument;
-                                            if (doc && doc.documentElement && !doc.documentElement.contains(frame)) {
-                                                var parent = frame;
-                                                for (;parent.parentNode && parent.parentNode !== parent; ) parent = parent.parentNode;
-                                                if (!parent.host || !doc.documentElement.contains(parent.host)) return !0;
-                                            }
-                                            return !1;
-                                        }(frame)) return !0;
-                                    }
-                                    return !1;
-                                }(win)) {
-                                    var err;
-                                    throw new PopupOpenError("Can not open popup window - blocked");
-                                }
-                                window.addEventListener("unload", (function() {
-                                    return win.close();
-                                }));
-                                return win;
-                            }(0, {
-                                width: _ref.width,
-                                height: _ref.height
-                            }));
-                            var doc = win.document;
-                            !function(win, el) {
-                                var tag = el.tagName.toLowerCase();
-                                if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
-                                var documentElement = win.document.documentElement;
-                                for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
-                                for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
-                            }(win, node_node(SpinnerPage, {
-                                nonce: getNonce()
-                            }).render(dom({
-                                doc: doc
-                            })));
-                            return win;
-                        }({
+                        choice.popup && (win = openPopup({
                             width: choice.popup.width,
                             height: choice.popup.height
                         }));

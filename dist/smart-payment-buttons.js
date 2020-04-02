@@ -833,6 +833,7 @@ window.spb = function(modules) {
             throw new Error("Arguments not serializable -- can not be used to memoize");
         }
     }
+    var memoizedFunctions = [];
     function memoize(method, options) {
         var _this = this;
         void 0 === options && (options = {});
@@ -857,8 +858,12 @@ window.spb = function(modules) {
         memoizedFunction.reset = function() {
             cacheMap.delete(options.thisNamespace ? _this : method);
         };
+        memoizedFunctions.push(memoizedFunction);
         return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
     }
+    memoize.clear = function() {
+        for (var _i2 = 0; _i2 < memoizedFunctions.length; _i2++) memoizedFunctions[_i2].reset();
+    };
     function inlineMemoize(method, logic, args) {
         void 0 === args && (args = []);
         var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
@@ -949,7 +954,6 @@ window.spb = function(modules) {
         }(_extends({}, parseQuery(originalQuery), {}, props)) : originalQuery;
     }
     function extendUrl(url, options) {
-        void 0 === options && (options = {});
         var query = options.query || {};
         var hash = options.hash || {};
         var originalUrl;
@@ -973,9 +977,10 @@ window.spb = function(modules) {
             })(url) || resolve();
         }));
     }
-    function enablePerformance() {
-        return inlineMemoize(enablePerformance, (function() {
-            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
+    function getPerformance() {
+        return inlineMemoize(getPerformance, (function() {
+            var performance = window.performance;
+            if (performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0) return performance;
         }));
     }
     function dom_isBrowser() {
@@ -1392,6 +1397,14 @@ window.spb = function(modules) {
             return data.token;
         }));
     }
+    var getSupplementalOrderInfo = memoize((function(orderID) {
+        return callGraphQL({
+            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
+            variables: {
+                orderID: orderID
+            }
+        });
+    }));
     var loadFirebaseSDK = memoize((function(config) {
         return promise_ZalgoPromise.try((function() {
             if (!window.firebase || !window.firebase.auth || !window.firebase.database) return loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-app.js").then((function() {
@@ -2050,6 +2063,7 @@ window.spb = function(modules) {
             merchantDomain: merchantDomain,
             platform: platform,
             currency: currency,
+            intent: intent,
             getPopupBridge: getPopupBridge,
             getPrerenderDetails: getPrerenderDetails,
             getPageUrl: getPageUrl,
@@ -2080,7 +2094,6 @@ window.spb = function(modules) {
                 onCancel: xprops.onCancel,
                 onError: onError
             }, {
-                facilitatorAccessToken: facilitatorAccessToken,
                 createOrder: createOrder
             }),
             onShippingChange: getOnShippingChange({
@@ -2363,7 +2376,6 @@ window.spb = function(modules) {
                     config: config,
                     payment: {
                         button: button,
-                        win: win,
                         fundingSource: fundingSource,
                         card: card,
                         buyerIntent: buyerIntent,
@@ -2492,77 +2504,75 @@ window.spb = function(modules) {
             }));
             return {
                 click: function() {
-                    if (onClick) {
-                        supportsPopups() && (win = win || function(_ref) {
-                            var win = function(win) {
-                                if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
-                                return win;
-                            }(function(url, options) {
-                                var width = (options = options || {}).width, height = options.height;
-                                var top = 0;
-                                var left = 0;
-                                width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
-                                height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
-                                width && height && (options = _extends({
-                                    top: top,
-                                    left: left,
-                                    width: width,
-                                    height: height,
-                                    status: 1,
-                                    toolbar: 0,
-                                    menubar: 0,
-                                    resizable: 1,
-                                    scrollbars: 1
-                                }, options));
-                                var name = options.name || "";
-                                delete options.name;
-                                var params = Object.keys(options).map((function(key) {
-                                    if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
-                                    var item;
-                                })).filter(Boolean).join(",");
-                                var win;
-                                try {
-                                    win = window.open("", name, params, !0);
-                                } catch (err) {
-                                    throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
-                                }
-                                if (isWindowClosed(win)) {
-                                    var err;
-                                    throw new PopupOpenError("Can not open popup window - blocked");
-                                }
-                                window.addEventListener("unload", (function() {
-                                    return win.close();
-                                }));
-                                return win;
-                            }(0, {
-                                width: _ref.width,
-                                height: _ref.height
-                            }));
-                            var doc = win.document;
-                            !function(win, el) {
-                                var tag = el.tagName.toLowerCase();
-                                if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
-                                var documentElement = win.document.documentElement;
-                                for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
-                                for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
-                            }(win, node_node(SpinnerPage, {
-                                nonce: getNonce()
-                            }).render(dom({
-                                doc: doc
-                            })));
+                    supportsPopups() && (win = win || function(_ref) {
+                        var win = function(win) {
+                            if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
                             return win;
-                        }({
-                            width: 500,
-                            height: 590
+                        }(function(url, options) {
+                            var width = (options = options || {}).width, height = options.height;
+                            var top = 0;
+                            var left = 0;
+                            width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
+                            height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
+                            width && height && (options = _extends({
+                                top: top,
+                                left: left,
+                                width: width,
+                                height: height,
+                                status: 1,
+                                toolbar: 0,
+                                menubar: 0,
+                                resizable: 1,
+                                scrollbars: 1
+                            }, options));
+                            var name = options.name || "";
+                            delete options.name;
+                            var params = Object.keys(options).map((function(key) {
+                                if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
+                                var item;
+                            })).filter(Boolean).join(",");
+                            var win;
+                            try {
+                                win = window.open("", name, params, !0);
+                            } catch (err) {
+                                throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+                            }
+                            if (isWindowClosed(win)) {
+                                var err;
+                                throw new PopupOpenError("Can not open popup window - blocked");
+                            }
+                            window.addEventListener("unload", (function() {
+                                return win.close();
+                            }));
+                            return win;
+                        }(0, {
+                            width: _ref.width,
+                            height: _ref.height
                         }));
-                        return promise_ZalgoPromise.try((function() {
-                            return !onClick || onClick({
-                                fundingSource: fundingSource
-                            });
-                        })).then((function(valid) {
-                            win && !valid && win.close();
-                        }));
-                    }
+                        var doc = win.document;
+                        !function(win, el) {
+                            var tag = el.tagName.toLowerCase();
+                            if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+                            var documentElement = win.document.documentElement;
+                            for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
+                            for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
+                        }(win, node_node(SpinnerPage, {
+                            nonce: getNonce()
+                        }).render(dom({
+                            doc: doc
+                        })));
+                        return win;
+                    }({
+                        width: 500,
+                        height: 590
+                    }));
+                    if (onClick) return promise_ZalgoPromise.try((function() {
+                        return !onClick || onClick({
+                            fundingSource: fundingSource
+                        });
+                    })).then((function(valid) {
+                        win && !valid && win.close();
+                    }));
                     start();
                 },
                 start: start,
@@ -2717,10 +2727,10 @@ window.spb = function(modules) {
             return !_ref3.win && !!_ref3.paymentMethodID;
         },
         init: function(_ref6) {
-            var props = _ref6.props;
+            var props = _ref6.props, components = _ref6.components, payment = _ref6.payment, serviceData = _ref6.serviceData, config = _ref6.config;
             var createOrder = props.createOrder, onApprove = props.onApprove, clientAccessToken = props.clientAccessToken, enableThreeDomainSecure = props.enableThreeDomainSecure, buttonSessionID = props.buttonSessionID, partnerAttributionID = props.partnerAttributionID, getParent = props.getParent;
-            var ThreeDomainSecure = _ref6.components.ThreeDomainSecure;
-            var paymentMethodID = _ref6.payment.paymentMethodID;
+            var ThreeDomainSecure = components.ThreeDomainSecure;
+            var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID;
             if (!paymentMethodID) throw new Error("Payment method id required for vault capture");
             if (!clientAccessToken) throw new Error("Client access token required for vault capture");
             var restart = function() {
@@ -2728,20 +2738,42 @@ window.spb = function(modules) {
                     throw new Error("Vault capture restart not implemented");
                 }));
             };
+            var shippingRequired = function(orderID) {
+                return getSupplementalOrderInfo(orderID).then((function(order) {
+                    var _order$checkoutSessio = order.checkoutSession, shippingAddress = _order$checkoutSessio.cart.shippingAddress;
+                    return !(!_order$checkoutSessio.flags.isShippingAddressRequired || shippingAddress && shippingAddress.isFullAddress);
+                }));
+            };
             return {
                 start: function() {
                     return promise_ZalgoPromise.try((function() {
                         return createOrder();
                     })).then((function(orderID) {
-                        return validatePaymentMethod({
-                            clientAccessToken: clientAccessToken,
-                            orderID: orderID,
-                            paymentMethodID: paymentMethodID,
-                            enableThreeDomainSecure: enableThreeDomainSecure,
-                            buttonSessionID: buttonSessionID,
-                            partnerAttributionID: partnerAttributionID
+                        return promise_ZalgoPromise.hash({
+                            validate: validatePaymentMethod({
+                                clientAccessToken: clientAccessToken,
+                                orderID: orderID,
+                                paymentMethodID: paymentMethodID,
+                                enableThreeDomainSecure: enableThreeDomainSecure,
+                                buttonSessionID: buttonSessionID,
+                                partnerAttributionID: partnerAttributionID
+                            }),
+                            requireShipping: shippingRequired(orderID)
                         });
                     })).then((function(_ref7) {
+                        var validate = _ref7.validate;
+                        if (_ref7.requireShipping) {
+                            if ("paypal" !== fundingSource) throw new Error("Shipping address requested for " + fundingSource + " payment");
+                            return checkout.init({
+                                props: props,
+                                components: components,
+                                serviceData: serviceData,
+                                payment: _extends({}, payment, {
+                                    isClick: !1
+                                }),
+                                config: config
+                            }).start();
+                        }
                         return function(_ref5) {
                             var ThreeDomainSecure = _ref5.ThreeDomainSecure, status = _ref5.status, body = _ref5.body, createOrder = _ref5.createOrder, getParent = _ref5.getParent;
                             return promise_ZalgoPromise.try((function() {
@@ -2774,15 +2806,15 @@ window.spb = function(modules) {
                             }));
                         }({
                             ThreeDomainSecure: ThreeDomainSecure,
-                            status: _ref7.status,
-                            body: _ref7.body,
+                            status: validate.status,
+                            body: validate.body,
                             createOrder: createOrder,
                             getParent: getParent
-                        });
-                    })).then((function() {
-                        return onApprove({}, {
-                            restart: restart
-                        });
+                        }).then((function() {
+                            return onApprove({}, {
+                                restart: restart
+                            });
+                        }));
                     }));
                 },
                 close: function() {
@@ -3656,19 +3688,17 @@ window.spb = function(modules) {
                                     personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
                                 }(serviceData.personalization);
                                 var _getPaymentFlow = function(_ref2) {
-                                    var props = _ref2.props, payment = _ref2.payment, config = _ref2.config, components = _ref2.components, serviceData = _ref2.serviceData;
+                                    var props = _ref2.props, payment = _ref2.payment, config = _ref2.config, serviceData = _ref2.serviceData;
                                     for (var _i2 = 0; _i2 < PAYMENT_FLOWS.length; _i2++) {
                                         var flow = PAYMENT_FLOWS[_i2];
                                         if (flow.isEligible({
                                             props: props,
                                             config: config,
-                                            components: components,
                                             serviceData: serviceData
                                         }) && flow.isPaymentEligible({
                                             props: props,
                                             payment: payment,
                                             config: config,
-                                            components: components,
                                             serviceData: serviceData
                                         })) return flow;
                                     }
@@ -3726,26 +3756,21 @@ window.spb = function(modules) {
                                                 err: stringifyError(err)
                                             });
                                         }));
+                                        var expectedIntent = props.intent, expectedCurrency = props.currency;
                                         return promise_ZalgoPromise.try(start).then((function() {
                                             return createOrder();
                                         })).then((function(orderID) {
                                             return function(orderID, _ref2) {
-                                                var clientID = _ref2.clientID, merchantID = _ref2.merchantID;
+                                                var clientID = _ref2.clientID, merchantID = _ref2.merchantID, expectedCurrency = _ref2.expectedCurrency, expectedIntent = _ref2.expectedIntent;
                                                 return promise_ZalgoPromise.hash({
-                                                    gql: callGraphQL({
-                                                        query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
-                                                        variables: {
-                                                            orderID: orderID
-                                                        }
-                                                    }),
+                                                    order: getSupplementalOrderInfo(orderID),
                                                     payee: getPayee(orderID)
                                                 }).then((function(_ref3) {
                                                     var payee = _ref3.payee;
-                                                    var cart = _ref3.gql.checkoutSession.cart;
+                                                    var cart = _ref3.order.checkoutSession.cart;
                                                     var intent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
                                                     var currency = cart.amounts && cart.amounts.total.currencyCode;
-                                                    var expectedCurrency = currency;
-                                                    if (intent != intent) throw new Error("Expected intent from order api call to be " + intent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk");
+                                                    if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk");
                                                     if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk");
                                                     var payeeMerchantID = payee && payee.merchant && payee.merchant.id;
                                                     var actualMerchantID = merchantID && merchantID.length && merchantID[0];
@@ -3754,10 +3779,17 @@ window.spb = function(modules) {
                                                     payeeMerchantID !== actualMerchantID && clientID && -1 === CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) && getLogger().info("client_id_payee_no_match_" + clientID).flush();
                                                     var xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
                                                     if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) throw new Error("Payee passed in transaction does not match expected merchant id: " + xpropMerchantID);
+                                                })).catch((function(err) {
+                                                    getLogger().warn("order_validation_error", {
+                                                        err: stringifyError(err)
+                                                    }).flush();
+                                                    throw err;
                                                 }));
                                             }(orderID, {
                                                 clientID: clientID,
-                                                merchantID: merchantID
+                                                merchantID: merchantID,
+                                                expectedCurrency: expectedCurrency,
+                                                expectedIntent: expectedIntent
                                             });
                                         })).then((function() {
                                             return clickPromise;
@@ -4033,7 +4065,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.208", _ref2;
+                _ref2.button_version = "2.0.209", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
@@ -4050,8 +4082,9 @@ window.spb = function(modules) {
                 return !1;
             })() && logger.warn("button_child_intranet_mode");
             return waitForDocumentReady().then((function() {
-                if (enablePerformance()) {
-                    var timing = window.performance.timing;
+                var performance = getPerformance();
+                if (performance) {
+                    var timing = performance.timing;
                     return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
                 }
             })).then((function(pageRenderTime) {
@@ -4095,8 +4128,7 @@ window.spb = function(modules) {
                 return flow.isEligible({
                     props: props,
                     config: config,
-                    serviceData: serviceData,
-                    components: components
+                    serviceData: serviceData
                 }) ? flow.setup({
                     props: props,
                     config: config,

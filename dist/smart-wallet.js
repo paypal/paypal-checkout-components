@@ -1213,6 +1213,7 @@
                 throw new Error("Arguments not serializable -- can not be used to memoize");
             }
         }
+        var memoizedFunctions = [];
         function memoize(method, options) {
             var _this = this;
             void 0 === options && (options = {});
@@ -1237,8 +1238,12 @@
             memoizedFunction.reset = function() {
                 cacheMap.delete(options.thisNamespace ? _this : method);
             };
+            memoizedFunctions.push(memoizedFunction);
             return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
         }
+        memoize.clear = function() {
+            for (var _i2 = 0; _i2 < memoizedFunctions.length; _i2++) memoizedFunctions[_i2].reset();
+        };
         function inlineMemoize(method, logic, args) {
             void 0 === args && (args = []);
             var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
@@ -1598,6 +1603,14 @@
                 return data.token;
             }));
         }
+        memoize((function(orderID) {
+            return callGraphQL({
+                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
+                variables: {
+                    orderID: orderID
+                }
+            });
+        }));
         memoize((function(config) {
             return promise_ZalgoPromise.try((function() {
                 if (!window.firebase || !window.firebase.auth || !window.firebase.database) return loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-app.js").then((function() {
@@ -2501,7 +2514,6 @@
                     onCancel: xprops.onCancel,
                     onError: onError
                 }, {
-                    facilitatorAccessToken: facilitatorAccessToken,
                     createOrder: createOrder
                 })
             }), {
