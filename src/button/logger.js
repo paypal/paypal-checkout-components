@@ -1,7 +1,7 @@
 /* @flow */
 
 import { isIEIntranet, getPageRenderTime } from 'belter/src';
-import { FUNDING, FPTI_KEY, ENV } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, ENV } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType } from '../types';
@@ -54,9 +54,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
     return getPageRenderTime().then(pageRenderTime => {
 
         const fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }]`)).map(el => {
-            return el.getAttribute(DATA_ATTRIBUTES.CARD) || el.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
-        }).filter(source => {
-            return source && source !== FUNDING.CARD;
+            return el.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
         });
 
         const { layout, color, shape, label, tagline = true } = style;
