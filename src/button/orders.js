@@ -67,7 +67,8 @@ export function validateOrder(orderID : string, { clientID, merchantID, expected
             throw new Error(`Payee passed in transaction does not match expected merchant id: ${ xpropMerchantID }`);
         }
     }).catch(err => {
-        getLogger().warn('order_validation_error', { err: stringifyError(err) }).flush();
+        getLogger().warn('order_validation_error', { err: stringifyError(err) });
+        getLogger().warn(`order_validation_error_${  clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
         throw err;
     });
 }
