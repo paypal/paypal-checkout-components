@@ -3770,8 +3770,8 @@ window.spb = function(modules) {
                                                     var cart = _ref3.order.checkoutSession.cart;
                                                     var intent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
                                                     var currency = cart.amounts && cart.amounts.total.currencyCode;
-                                                    if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk");
-                                                    if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk");
+                                                    if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
+                                                    if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     var payeeMerchantID = payee && payee.merchant && payee.merchant.id;
                                                     var actualMerchantID = merchantID && merchantID.length && merchantID[0];
                                                     if (!actualMerchantID) throw new Error("Could not determine correct merchant id");
@@ -3781,6 +3781,9 @@ window.spb = function(modules) {
                                                     if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) throw new Error("Payee passed in transaction does not match expected merchant id: " + xpropMerchantID);
                                                 })).catch((function(err) {
                                                     getLogger().warn("order_validation_error", {
+                                                        err: stringifyError(err)
+                                                    });
+                                                    getLogger().warn("order_validation_error_" + (clientID || "unknown"), {
                                                         err: stringifyError(err)
                                                     }).flush();
                                                     throw err;
@@ -4065,7 +4068,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.209", _ref2;
+                _ref2.button_version = "2.0.210", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
