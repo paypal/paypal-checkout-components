@@ -247,11 +247,6 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                                 }
                             }
                         }
-                        if (getClientID() === 'AaXrMQuzMiglUVTF6DWsGEXij4fOW_IQU5dZ49WvIGs-lBMiUtPW9PSVX8jQbwZZsDP10xEpAjUllgcr') {
-                            if (fundingEligibility && fundingEligibility.credit && fundingEligibility.credit.eligible) {
-                                fundingEligibility.credit.eligible = false;
-                            }
-                        }
                     } catch (err) {
                         // pass
                     }
