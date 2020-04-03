@@ -3771,7 +3771,7 @@ window.spb = function(modules) {
                                                     var cart = _ref3.order.checkoutSession.cart;
                                                     var intent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
                                                     var currency = cart.amounts && cart.amounts.total.currencyCode;
-                                                    if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
+                                                    if (intent !== expectedIntent && !window.xprops.createBillingAgreement) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     var payeeMerchantID = payee && payee.merchant && payee.merchant.id;
                                                     var actualMerchantID = merchantID && merchantID.length && merchantID[0];
@@ -4077,7 +4077,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.215", _ref2;
+                _ref2.button_version = "2.0.216", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
