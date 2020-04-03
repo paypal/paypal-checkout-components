@@ -61,7 +61,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
     return ZalgoPromise.try(() => {
         const { personalization, merchantID } = serviceData;
-        const { clientID, onClick, createOrder } = props;
+        const { clientID, onClick, createOrder, env } = props;
 
         sendPersonalizationBeacons(personalization);
 
@@ -99,7 +99,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
             return ZalgoPromise.try(start)
                 .then(() => createOrder())
-                .then(orderID => validateOrder(orderID, { clientID, merchantID, expectedCurrency, expectedIntent }))
+                .then(orderID => validateOrder(orderID, { env, clientID, merchantID, expectedCurrency, expectedIntent }))
                 .then(() => clickPromise)
                 .catch(err => {
                     return ZalgoPromise.all([

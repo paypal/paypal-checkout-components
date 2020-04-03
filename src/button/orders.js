@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { INTENT, SDK_QUERY_KEYS, FUNDING, CURRENCY } from '@paypal/sdk-constants/src';
+import { INTENT, SDK_QUERY_KEYS, FUNDING, CURRENCY, ENV } from '@paypal/sdk-constants/src';
 import { stringifyError } from 'belter/src';
 
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
@@ -20,13 +20,14 @@ export function updateButtonClientConfig({ orderID, fundingSource, inline = fals
 }
 
 type ValidateOptions = {|
+    env : $Values<typeof ENV>,
     clientID : ?string,
     merchantID : $ReadOnlyArray<string>,
     expectedIntent : $Values<typeof INTENT>,
     expectedCurrency : $Values<typeof CURRENCY>
 |};
 
-export function validateOrder(orderID : string, { clientID, merchantID, expectedCurrency, expectedIntent } : ValidateOptions) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { env, clientID, merchantID, expectedCurrency, expectedIntent } : ValidateOptions) : ZalgoPromise<void> {
     return ZalgoPromise.hash({
         order: getSupplementalOrderInfo(orderID),
         payee: getPayee(orderID)
@@ -69,6 +70,19 @@ export function validateOrder(orderID : string, { clientID, merchantID, expected
             throw new Error(`Payee passed in transaction does not match expected merchant id: ${ xpropMerchantID }`);
         }
     }).catch(err => {
+        if (env === ENV.SANDBOX) {
+            if (clientID && ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1) {
+                getLogger().warn(`sandbox_order_validation_error_whitelist`, { err: stringifyError(err) }).flush();
+                getLogger().warn(`sandbox_order_validation_error_whitelist_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
+                throw err;
+            }
+
+            getLogger().warn('sandbox_order_validation_error', { err: stringifyError(err) });
+            getLogger().warn(`sandbox_order_validation_error_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
+            throw err;
+        }
+
+
         if (clientID && ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1) {
             getLogger().warn(`order_validation_error_whitelist`, { err: stringifyError(err) }).flush();
             getLogger().warn(`order_validation_error_whitelist_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
