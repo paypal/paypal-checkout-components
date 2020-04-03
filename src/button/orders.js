@@ -38,9 +38,7 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
         const currency = cart.amounts && cart.amounts.total.currencyCode;
 
         if (intent !== expectedIntent) {
-            if (!window.xprops.createBillingAgreement) {
-                throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ intent } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
-            }
+            throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ intent } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
         }
 
         if (currency && currency !== expectedCurrency) {
