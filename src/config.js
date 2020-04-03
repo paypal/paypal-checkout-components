@@ -147,6 +147,10 @@ export const ORDER_VALIDATION_WHITELIST = [
     'AUoMvJA_FdhFwJEVL6Ri7YhdU2nrPQUoags0yhV22_17ZgWmfvh5Zqyyxpsba-dq-LH6w0tuIuEQJ2bp'
 ];
 
+export const SANDBOX_ORDER_VALIDATION_WHITELIST = [
+    'AcFUr3vhIePYLOXXuZzdvFL5th99W0Uygya9lqfjN3XCx-W2dGlr6A9mqiIZAHAMng1g0_haL2LitLAl'
+];
+
 
 export const FIREBASE_SCRIPTS = {
     APP:      'https://www.paypalobjects.com/checkout/js/lib/firebase-app.js',

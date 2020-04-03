@@ -7,7 +7,7 @@ import { stringifyError } from 'belter/src';
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
 import { updateClientConfig, getPayee, getSupplementalOrderInfo } from '../api';
 import { getLogger } from '../lib';
-import { CLIENT_ID_PAYEE_NO_MATCH, ORDER_VALIDATION_WHITELIST } from '../config';
+import { CLIENT_ID_PAYEE_NO_MATCH, ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '../config';
 
 export function updateButtonClientConfig({ orderID, fundingSource, inline = false } : {| orderID : string, fundingSource : $Values<typeof FUNDING>, inline : boolean | void |}) : ZalgoPromise<void> {
     return updateClientConfig({
@@ -71,10 +71,15 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
         }
     }).catch(err => {
         if (env === ENV.SANDBOX) {
+            if (SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1) {
+                getLogger().warn(`sandbox_order_validation_error_sandbox_whitelist`, { err: stringifyError(err) }).flush();
+                getLogger().warn(`sandbox_order_validation_error_sandbox_whitelist_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
+                return;
+            }
+
             if (clientID && ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1) {
                 getLogger().warn(`sandbox_order_validation_error_whitelist`, { err: stringifyError(err) }).flush();
                 getLogger().warn(`sandbox_order_validation_error_whitelist_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
-                throw err;
             }
 
             getLogger().warn('sandbox_order_validation_error', { err: stringifyError(err) });
