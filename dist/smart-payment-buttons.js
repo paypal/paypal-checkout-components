@@ -3683,7 +3683,7 @@ window.spb = function(modules) {
                             return promise_ZalgoPromise.try((function() {
                                 var _getLogger$info$info$;
                                 var merchantID = serviceData.merchantID;
-                                var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder;
+                                var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env;
                                 !function(personalization) {
                                     personalization && personalization.tagline && personalization.tagline.tracking && sendBeacon(personalization.tagline.tracking.click);
                                     personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
@@ -3762,7 +3762,7 @@ window.spb = function(modules) {
                                             return createOrder();
                                         })).then((function(orderID) {
                                             return function(orderID, _ref2) {
-                                                var clientID = _ref2.clientID, merchantID = _ref2.merchantID, expectedCurrency = _ref2.expectedCurrency, expectedIntent = _ref2.expectedIntent;
+                                                var env = _ref2.env, clientID = _ref2.clientID, merchantID = _ref2.merchantID, expectedCurrency = _ref2.expectedCurrency, expectedIntent = _ref2.expectedIntent;
                                                 return promise_ZalgoPromise.hash({
                                                     order: getSupplementalOrderInfo(orderID),
                                                     payee: getPayee(orderID)
@@ -3781,6 +3781,24 @@ window.spb = function(modules) {
                                                     var xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
                                                     if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) throw new Error("Payee passed in transaction does not match expected merchant id: " + xpropMerchantID);
                                                 })).catch((function(err) {
+                                                    if ("sandbox" === env) {
+                                                        if (clientID && -1 !== ORDER_VALIDATION_WHITELIST.indexOf(clientID)) {
+                                                            getLogger().warn("sandbox_order_validation_error_whitelist", {
+                                                                err: stringifyError(err)
+                                                            }).flush();
+                                                            getLogger().warn("sandbox_order_validation_error_whitelist_" + (clientID || "unknown"), {
+                                                                err: stringifyError(err)
+                                                            }).flush();
+                                                            throw err;
+                                                        }
+                                                        getLogger().warn("sandbox_order_validation_error", {
+                                                            err: stringifyError(err)
+                                                        });
+                                                        getLogger().warn("sandbox_order_validation_error_" + (clientID || "unknown"), {
+                                                            err: stringifyError(err)
+                                                        }).flush();
+                                                        throw err;
+                                                    }
                                                     if (!clientID || -1 === ORDER_VALIDATION_WHITELIST.indexOf(clientID)) {
                                                         getLogger().warn("order_validation_error", {
                                                             err: stringifyError(err)
@@ -3798,6 +3816,7 @@ window.spb = function(modules) {
                                                     }).flush();
                                                 }));
                                             }(orderID, {
+                                                env: env,
                                                 clientID: clientID,
                                                 merchantID: merchantID,
                                                 expectedCurrency: expectedCurrency,
@@ -4077,7 +4096,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.218", _ref2;
+                _ref2.button_version = "2.0.219", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
