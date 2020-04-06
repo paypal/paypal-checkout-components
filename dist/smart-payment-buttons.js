@@ -1730,6 +1730,7 @@ window.spb = function(modules) {
                                 });
                             }));
                             var execute = memoize((function() {
+                                if (!payerID) throw new Error("payerID required for payment execute");
                                 if ("capture" !== intent) throw new Error("Use intent=capture to use client-side capture");
                                 return function(paymentID, payerID, _ref5) {
                                     var _headers3;
@@ -3169,7 +3170,7 @@ window.spb = function(modules) {
                     })).then((function(_ref5) {
                         var opType = _ref5.opType, payerID = _ref5.PayerID, paymentID = _ref5.paymentId, billingToken = _ref5.ba_token;
                         if ("payment" === opType) {
-                            if (!payerID) throw new Error("Expected payerID to be passed");
+                            if (!payerID && !billingToken) throw new Error("Expected payerID to be passed");
                             return onApprove({
                                 payerID: payerID,
                                 paymentID: paymentID,
@@ -4105,7 +4106,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.221", _ref2;
+                _ref2.button_version = "2.0.222", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {

@@ -1955,6 +1955,7 @@
                                     });
                                 }));
                                 var execute = memoize((function() {
+                                    if (!payerID) throw new Error("payerID required for payment execute");
                                     if ("capture" !== intent) throw new Error("Use intent=capture to use client-side capture");
                                     return function(paymentID, payerID, _ref5) {
                                         var _headers3;
