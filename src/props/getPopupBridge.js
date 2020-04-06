@@ -13,7 +13,7 @@ export type PopupBridge = {|
         opType : $Values<typeof POPUP_BRIDGE_OPTYPE>,
         token : string,
         paymentId? : string,
-        PayerID? : string,
+        PayerID? : ?string,
         ba_token? : string
     |}>
 |};

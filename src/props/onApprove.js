@@ -48,7 +48,7 @@ export type XOnApproveActionsType = {|
 type ActionOptions = {|
     orderID : string,
     paymentID : ?string,
-    payerID : string,
+    payerID : ?string,
     restart : () => ZalgoPromise<void>,
     intent : $Values<typeof INTENT>,
     subscriptionID : ?string,
@@ -132,6 +132,10 @@ function buildPaymentActions({ intent, paymentID, payerID, restart, facilitatorA
     });
 
     const execute = memoize(() => {
+        if (!payerID) {
+            throw new Error(`payerID required for payment execute`);
+        }
+
         if (intent !== INTENT.CAPTURE) {
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.CAPTURE } to use client-side capture`);
         }
@@ -199,7 +203,7 @@ function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, su
 }
 
 export type OnApproveData = {|
-    payerID : string,
+    payerID? : ?string,
     paymentID? : ?string,
     billingToken? : ?string,
     subscriptionID? : ?string,

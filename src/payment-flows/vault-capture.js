@@ -140,7 +140,6 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
 
             const { status, body } = validate;
             return handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, getParent }).then(() => {
-                // $FlowFixMe
                 return onApprove({}, { restart });
             });
         });
