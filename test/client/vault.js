@@ -243,6 +243,14 @@ describe('vault cases', () => {
                                         currencyCode: 'USD'
                                     }
                                 },
+                                payees: [
+                                    {
+                                        merchantId: 'XYZ12345',
+                                        email:      {
+                                            stringValue: 'xyz-us-b1@paypal.com'
+                                        }
+                                    }
+                                ],
                                 shippingAddress: {
                                     isFullAddress: false
                                 }
@@ -310,6 +318,14 @@ describe('vault cases', () => {
                                         currencyCode: 'USD'
                                     }
                                 },
+                                payees: [
+                                    {
+                                        merchantId: 'XYZ12345',
+                                        email:      {
+                                            stringValue: 'xyz-us-b1@paypal.com'
+                                        }
+                                    }
+                                ],
                                 shippingAddress: {
                                     isFullAddress: false
                                 }
@@ -387,6 +403,14 @@ describe('vault cases', () => {
                                         currencyCode: 'USD'
                                     }
                                 },
+                                payees: [
+                                    {
+                                        merchantId: 'XYZ12345',
+                                        email:      {
+                                            stringValue: 'xyz-us-b1@paypal.com'
+                                        }
+                                    }
+                                ],
                                 shippingAddress: {
                                     isFullAddress: true
                                 }
@@ -454,6 +478,14 @@ describe('vault cases', () => {
                                         currencyCode: 'USD'
                                     }
                                 },
+                                payees: [
+                                    {
+                                        merchantId: 'XYZ12345',
+                                        email:      {
+                                            stringValue: 'xyz-us-b1@paypal.com'
+                                        }
+                                    }
+                                ],
                                 shippingAddress: {
                                     isFullAddress: true
                                 }
@@ -531,6 +563,14 @@ describe('vault cases', () => {
                                         currencyCode: 'USD'
                                     }
                                 },
+                                payees: [
+                                    {
+                                        merchantId: 'XYZ12345',
+                                        email:      {
+                                            stringValue: 'xyz-us-b1@paypal.com'
+                                        }
+                                    }
+                                ],
                                 shippingAddress: {
                                     isFullAddress: false
                                 }
@@ -600,6 +640,14 @@ describe('vault cases', () => {
                                         currencyCode: 'USD'
                                     }
                                 },
+                                payees: [
+                                    {
+                                        merchantId: 'XYZ12345',
+                                        email:      {
+                                            stringValue: 'xyz-us-b1@paypal.com'
+                                        }
+                                    }
+                                ],
                                 shippingAddress: {
                                     isFullAddress: false
                                 }
