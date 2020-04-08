@@ -240,15 +240,7 @@ describe('actions cases', () => {
                                     total: {
                                         currencyCode: 'USD'
                                     }
-                                },
-                                payees: [
-                                    {
-                                        merchantId: 'XYZ12345',
-                                        email:      {
-                                            stringValue: 'xyz-us-b1@paypal.com'
-                                        }
-                                    }
-                                ]
+                                }
                             }
                         }
                     }
