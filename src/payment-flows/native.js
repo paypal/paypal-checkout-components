@@ -38,6 +38,7 @@ const SOCKET_MESSAGE = {
 
 const NATIVE_DOMAIN = 'https://www.paypal.com';
 const NATIVE_POPUP_DOMAIN = 'https://ic.paypal.com';
+const NATIVE_POPUP_SANDBOX = 'https://sandbox.paypal.com';
 
 type NativeSocketOptions = {|
     sessionUID : string,
@@ -74,12 +75,8 @@ function isAndroidChrome() : boolean {
     return isAndroid() && isChrome();
 }
 
-function useTemporarySandboxIOSFix() : boolean {
-    return isIOSSafari() && window.location.hostname === 'www.sandbox.paypal.com';
-}
-
 function useDirectAppSwitch() : boolean {
-    return isAndroidChrome() || useTemporarySandboxIOSFix();
+    return isAndroidChrome();
 }
 
 function didAppSwitch(popupWin : ?CrossDomainWindowType) : boolean {
@@ -234,7 +231,9 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const getNativePopupDomain = memoize(() : string => {
-        return NATIVE_POPUP_DOMAIN;
+        return (env === ENV.SANDBOX)
+            ? NATIVE_POPUP_SANDBOX
+            : NATIVE_POPUP_DOMAIN;
     });
 
     const getNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
@@ -484,20 +483,20 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             return detectAppSwitch({ sessionUID });
         });
 
+        const onCompleteListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_COMPLETE, () => {
+            getLogger().info(`native_post_message_on_complete`).flush();
+            close();
+        });
+
         const detectWebSwitchListener = listen(popupWin, getNativeDomain(), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
             getLogger().info(`native_post_message_detect_web_switch`).flush();
             return detectWebSwitch(popupWin);
         });
 
-        const onCompleteListener = listen(popupWin, getNativeDomain(), POST_MESSAGE.ON_COMPLETE, () => {
-            getLogger().info(`native_post_message_on_complete`).flush();
-            close();
-        });
-
         clean.register(awaitRedirectListener.cancel);
         clean.register(detectAppSwitchListener.cancel);
-        clean.register(detectWebSwitchListener.cancel);
         clean.register(onCompleteListener.cancel);
+        clean.register(detectWebSwitchListener.cancel);
 
         return awaitRedirectListener.then(() => {
             return promiseOne([
