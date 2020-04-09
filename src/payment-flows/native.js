@@ -38,7 +38,7 @@ const SOCKET_MESSAGE = {
 
 const NATIVE_DOMAIN = 'https://www.paypal.com';
 const NATIVE_POPUP_DOMAIN = 'https://ic.paypal.com';
-const NATIVE_POPUP_SANDBOX = 'https://sandbox.paypal.com';
+const NATIVE_POPUP_SANDBOX = 'https://www.sandbox.paypal.com';
 
 type NativeSocketOptions = {|
     sessionUID : string,
