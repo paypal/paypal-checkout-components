@@ -4,13 +4,14 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
-    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain, getUserIDToken, getClientMetadataID, getAmount } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { uniqueID, values, memoize, noop, identity } from 'belter/src';
 import { FUNDING, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
+import { collectRiskData } from '@paypal/risk-data-collector/src';
 
 import { getSessionID } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
@@ -219,6 +220,13 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 value:      getEnv
             },
 
+            amount: {
+                type:       'string',
+                required:   false,
+                queryParam: true,
+                value:      getAmount
+            },
+
             stageHost: {
                 type:       'string',
                 value:      getStageHost,
@@ -341,6 +349,36 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 value: () => {
                     return () => window.location.href;
                 }
+            },
+
+            userIDToken: {
+                type:       'string',
+                value:      getUserIDToken,
+                queryParam: true
+            },
+
+            clientMetadataID: {
+                type:       'string',
+                value:      getClientMetadataID,
+                queryParam: true
+            },
+
+            riskData: {
+                type:  'object',
+                value: () => {
+                    if (getUserIDToken()) {
+                        try {
+                            return collectRiskData({
+                                clientMetadataID: getClientMetadataID(),
+                                appSourceID:      'SMART_PAYMENT_BUTTONS'
+                            });
+                        } catch (err) {
+                            // pass
+                        }
+                    }
+                },
+                queryParam:    true,
+                serialization: 'base64'
             },
 
             debug: {
