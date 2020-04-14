@@ -4,28 +4,9 @@ import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal
 import { params, types, query } from 'typed-graphqlify';
 import { values } from 'belter';
 
+import type { Wallet } from '../../src/types';
 import { type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
-
-type Instrument = {|
-    funding : $Values<typeof FUNDING>,
-    label? : string,
-    logoUrl? : string,
-    instrumentID? : string,
-    tokenID? : string,
-    vendor? : $Values<typeof CARD>,
-    oneClick : boolean
-|};
-
-type WalletPaymentType = {|
-    instruments : $ReadOnlyArray<Instrument>
-|};
-
-export type Wallet = {|
-    paypal : WalletPaymentType,
-    card : WalletPaymentType,
-    bank : WalletPaymentType
-|};
 
 type SmartWallet = {|
     funding_options : $ReadOnlyArray<{|

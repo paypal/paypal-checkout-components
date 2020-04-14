@@ -222,6 +222,7 @@ export type CheckoutFlowType = {
         sessionID : string,
         buttonSessionID : string,
         clientAccessToken? : ?string,
+        idToken? : string,
         createOrder : () => ZalgoPromise<string>,
         onApprove : ({| payerID : string, paymentID : ?string, billingToken : ?string, subscriptionID : ?string |}) => ZalgoPromise<void> | void,
         onAuth : ({| accessToken : string |}) => ZalgoPromise<void> | void,
@@ -303,4 +304,24 @@ export type PayPal = {|
     ThreeDomainSecure : ThreeDomainSecureFlowType,
     Menu : MenuFlowType,
     postRobot : PostRobot
+|};
+
+export type WalletInstrument = {|
+    funding : $Values<typeof FUNDING>,
+    label? : string,
+    logoUrl? : string,
+    instrumentID? : string,
+    tokenID? : string,
+    vendor? : $Values<typeof CARD>,
+    oneClick : boolean
+|};
+
+export type WalletPaymentType = {|
+    instruments : $ReadOnlyArray<WalletInstrument>
+|};
+
+export type Wallet = {|
+    paypal : WalletPaymentType,
+    card : WalletPaymentType,
+    bank : WalletPaymentType
 |};

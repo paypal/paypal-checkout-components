@@ -4,7 +4,7 @@ import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError 
 import { COUNTRY, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import type { FundingEligibilityType, PersonalizationType, ContentType } from '../types';
+import type { FundingEligibilityType, PersonalizationType, ContentType, Wallet } from '../types';
 import { fixClickFocus, getLogger } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
@@ -28,6 +28,8 @@ type ButtonOpts = {|
     facilitatorAccessToken : string,
     content : ContentType,
     sdkMeta : string,
+    wallet : ?Wallet,
+    buyerAccessToken : ?string,
     eligibility : {|
         cardFields : boolean,
         nativeCheckout : {
@@ -41,12 +43,14 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         throw new Error(`PayPal SDK not loaded`);
     }
 
-    const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, content, sdkMeta,
+    const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, content, sdkMeta, buyerAccessToken, wallet,
         cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig } = opts;
 
     const clientID = window.xprops.clientID;
 
-    const serviceData = getServiceData({ eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization, isCardFieldsExperimentEnabled, sdkMeta });
+    const serviceData = getServiceData({
+        eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization,
+        isCardFieldsExperimentEnabled, sdkMeta, buyerAccessToken, wallet });
     const { merchantID } = serviceData;
 
     let props = getProps({ facilitatorAccessToken });
@@ -103,8 +107,8 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     }
 
     getButtons().forEach(button => {
-        const { fundingSource, card, paymentMethodID } = getSelectedFunding(button);
-        const payment = { button, fundingSource, card, paymentMethodID, isClick: true, buyerIntent: BUYER_INTENT.PAY };
+        const { fundingSource, card, paymentMethodID, instrumentID } = getSelectedFunding(button);
+        const payment = { button, fundingSource, card, paymentMethodID, instrumentID, isClick: true, buyerIntent: BUYER_INTENT.PAY };
         
         fixClickFocus(button);
         renderButtonDropdown({ props, payment, content, initiatePayment });

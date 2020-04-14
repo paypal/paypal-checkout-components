@@ -8,6 +8,7 @@ import type { ThreeDomainSecureFlowType } from '../types';
 import type { CreateOrder } from '../props';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo } from '../api';
 import { TARGET_ELEMENT, BUYER_INTENT } from '../constants';
+import { getLogger } from '../lib';
 
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
 import { checkout } from './checkout';
@@ -102,6 +103,7 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
     };
 
     const fallbackToWebCheckout = () => {
+        getLogger().info('web_checkout_fallback').flush();
         return checkout.init({ props, components, serviceData, payment: { ...payment, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING }, config }).start();
     };
 

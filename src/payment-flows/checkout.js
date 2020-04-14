@@ -142,7 +142,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick, enableThreeDomainSecure,
         partnerAttributionID } = props;
-    let { button, win, fundingSource, card, isClick, buyerAccessToken, venmoPayloadID, buyerIntent, paymentMethodID } = payment;
+    let { button, win, fundingSource, card, isClick, buyerAccessToken, venmoPayloadID, buyerIntent,
+        paymentMethodID, idToken } = payment;
     const { fundingEligibility, buyerCountry } = serviceData;
     const { cspNonce } = config;
 
@@ -169,6 +170,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             clientAccessToken,
             buyerAccessToken,
             venmoPayloadID,
+            idToken,
     
             createOrder: () => {
                 return createOrder().then(orderID => {

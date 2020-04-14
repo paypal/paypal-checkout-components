@@ -4,7 +4,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY } from '@paypal/sdk-constants/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 
-import type { LocaleType, ProxyWindow, FundingEligibilityType, CheckoutFlowType, CardFieldsFlowType, ThreeDomainSecureFlowType, PersonalizationType } from '../types';
+import type { LocaleType, ProxyWindow, FundingEligibilityType, Wallet, CheckoutFlowType, CardFieldsFlowType, ThreeDomainSecureFlowType, PersonalizationType } from '../types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit, XOnInit,
     OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError, OnError,
     XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL } from '../props';
@@ -279,9 +279,11 @@ export type ServiceData = {|
     merchantID : $ReadOnlyArray<string>,
     buyerCountry : $Values<typeof COUNTRY>,
     fundingEligibility : FundingEligibilityType,
+    wallet : ?Wallet,
     personalization : PersonalizationType,
     facilitatorAccessToken : string,
     sdkMeta : string,
+    buyerAccessToken : ?string,
     eligibility : {|
         cardFields : boolean,
         nativeCheckout : {
@@ -295,6 +297,8 @@ type ServiceDataOptions = {|
     buyerGeoCountry : $Values<typeof COUNTRY>,
     isCardFieldsExperimentEnabled : boolean,
     fundingEligibility : FundingEligibilityType,
+    wallet : ?Wallet,
+    buyerAccessToken : ?string,
     personalization : PersonalizationType,
     serverMerchantID : $ReadOnlyArray<string>,
     sdkMeta : string,
@@ -306,12 +310,14 @@ type ServiceDataOptions = {|
     |}
 |};
 
-export function getServiceData({ facilitatorAccessToken, sdkMeta, buyerGeoCountry, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, sdkMeta, buyerGeoCountry, fundingEligibility, wallet, buyerAccessToken, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
         fundingEligibility,
+        wallet,
         sdkMeta,
+        buyerAccessToken,
         personalization,
         facilitatorAccessToken,
         eligibility

@@ -80,3 +80,22 @@ export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, {
         variables: { facilitatorAccessToken, buyerAccessToken, orderID }
     }).then(noop);
 }
+
+export function exchangeAccessTokenForIDToken(buyerAccessToken : string) : ZalgoPromise<string> {
+    return callGraphQL({
+        query: `
+            mutation GenerateIDToken(
+                $buyerAccessToken: String!
+            ) {
+                generateIDToken(
+                    accessToken: $buyerAccessToken
+                ) {
+                    idToken
+                }
+            }
+        `,
+        variables: { buyerAccessToken }
+    }).then(({ generateIDToken }) => {
+        return generateIDToken.idToken;
+    });
+}

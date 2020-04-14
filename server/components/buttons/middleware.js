@@ -142,7 +142,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const buttonHTML = render.button.Buttons(buttonProps).render(html());
 
             const setupParams = {
-                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta, wallet,
+                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta, wallet, buyerAccessToken,
                 isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content
             };
 
