@@ -5,7 +5,7 @@ import { memoize, redirect as redir, noop } from 'belter/src';
 import { INTENT, SDK_QUERY_KEYS, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse, getPayment, executePayment, patchPayment, upgradeFacilitatorAccessToken } from '../api';
-import { ORDER_API_ERROR, FPTI_TRANSITION } from '../constants';
+import { ORDER_API_ERROR, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { ENABLE_PAYMENT_API } from '../config';
 
@@ -254,8 +254,10 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
             getLogger()
                 .info('button_approve')
                 .track({
-                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CHECKOUT_APPROVE,
-                    [FPTI_KEY.TOKEN]:      orderID
+                    [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CHECKOUT_APPROVE,
+                    [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
+                    [FPTI_KEY.TOKEN]:        orderID,
+                    [FPTI_KEY.CONTEXT_ID]:   orderID
                 }).flush();
 
             const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken };
