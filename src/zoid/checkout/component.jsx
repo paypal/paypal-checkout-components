@@ -98,6 +98,12 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     value:    getCSPNonce
                 },
 
+                idToken: {
+                    type:       'string',
+                    required:   false,
+                    queryParam: 'id-token'
+                },
+
                 buyerCountry: {
                     type:       'string',
                     queryParam: true,
