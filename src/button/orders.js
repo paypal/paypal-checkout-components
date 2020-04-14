@@ -1,10 +1,10 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { INTENT, SDK_QUERY_KEYS, FUNDING, CURRENCY, ENV } from '@paypal/sdk-constants/src';
-import { stringifyError } from 'belter/src';
+import { INTENT, SDK_QUERY_KEYS, FUNDING, CURRENCY, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { stringifyError, stringifyErrorMessage } from 'belter/src';
 
-import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
+import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, FPTI_CONTEXT_TYPE, FTPI_CUSTOM_KEY } from '../constants';
 import { updateClientConfig, getPayee, getSupplementalOrderInfo } from '../api';
 import { getLogger } from '../lib';
 import { CLIENT_ID_PAYEE_NO_MATCH, ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '../config';
@@ -68,32 +68,26 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
             throw new Error(`Payee passed in transaction does not match expected merchant id: ${ xpropMerchantID }`);
         }
     }).catch(err => {
-        if (env === ENV.SANDBOX) {
-            if (SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1) {
-                getLogger().warn(`sandbox_order_validation_error_sandbox_whitelist`, { err: stringifyError(err) }).flush();
-                getLogger().warn(`sandbox_order_validation_error_sandbox_whitelist_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
-                return;
-            }
+        const isSandbox = (env === ENV.SANDBOX);
+        const isWhitelisted = isSandbox
+            ? (clientID && SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1)
+            : (clientID && ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1);
 
-            if (clientID && ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1) {
-                getLogger().warn(`sandbox_order_validation_error_whitelist`, { err: stringifyError(err) }).flush();
-                getLogger().warn(`sandbox_order_validation_error_whitelist_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
-            }
+        getLogger()
+            .warn(`${ isSandbox ? 'sandbox_' : '' }order_validation_error${ isWhitelisted ? '_whitelist' : '' }`, { err: stringifyError(err) })
+            .warn(`${ isSandbox ? 'sandbox_' : '' }order_validation_error${ isWhitelisted ? '_whitelist' : '' }_${ clientID || 'unknown' }`, { err: stringifyError(err) })
+            .track({
+                [ FPTI_KEY.TRANSITION ]:                  'process_order_validate',
+                [ FPTI_KEY.CONTEXT_TYPE ]:                FPTI_CONTEXT_TYPE.ORDER_ID,
+                [ FPTI_KEY.TOKEN ]:                       orderID,
+                [ FPTI_KEY.CONTEXT_ID ]:                  orderID,
+                [ FTPI_CUSTOM_KEY.INTEGRATION_ISSUE ]:    stringifyErrorMessage(err),
+                [FTPI_CUSTOM_KEY.INTEGRATION_WHITELIST ]: isWhitelisted ? 'true' : 'false'
+            })
+            .flush();
 
-            getLogger().warn('sandbox_order_validation_error', { err: stringifyError(err) });
-            getLogger().warn(`sandbox_order_validation_error_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
+        if (!isWhitelisted) {
             throw err;
         }
-
-
-        if (clientID && ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1) {
-            getLogger().warn(`order_validation_error_whitelist`, { err: stringifyError(err) }).flush();
-            getLogger().warn(`order_validation_error_whitelist_${ clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
-            return;
-        }
-
-        getLogger().warn('order_validation_error', { err: stringifyError(err) });
-        getLogger().warn(`order_validation_error_${  clientID || 'unknown' }`, { err: stringifyError(err) }).flush();
-        throw err;
     });
 }
