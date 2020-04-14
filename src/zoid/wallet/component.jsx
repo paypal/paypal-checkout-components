@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from 'jsx-pragmatic/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken, getClientAccessToken, getUserAuthCode, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID, getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault, getMerchantID, getCSPNonce, getDebug } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken, getClientAccessToken, getUserAuthCode, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID, getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault, getMerchantID, getCSPNonce, getDebug, getUserIDToken, getClientMetadataID } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, memoize, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -115,8 +115,19 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                 },
 
                 riskData: {
-                    type:          'object',
-                    value:         collectRiskData,
+                    type:  'object',
+                    value: () => {
+                        if (getUserIDToken()) {
+                            try {
+                                return collectRiskData({
+                                    clientMetadataID: getClientMetadataID(),
+                                    appSourceID:      'SMART_PAYMENT_BUTTONS'
+                                });
+                            } catch (err) {
+                                // pass
+                            }
+                        }
+                    },
                     queryParam:    true,
                     serialization: 'base64'
                 },
