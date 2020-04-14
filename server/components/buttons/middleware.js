@@ -4,9 +4,10 @@ import { html } from 'jsx-pragmatic';
 import { COUNTRY, LANG } from '@paypal/sdk-constants';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
-import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization, resolveNativeEligibility, resolveMerchantID } from '../../service';
+import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization, resolveNativeEligibility, resolveMerchantID, type GetWallet } from '../../service';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
 import { AUTH_ERROR_CODE } from '../../config';
+import { resolveWallet } from '../../service/wallet';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { EVENT } from './constants';
@@ -23,6 +24,8 @@ type InlineGuestElmoParams = {|
     buyerCountry : $Values<typeof COUNTRY>
 |};
 
+type RiskData = {||};
+
 type ButtonMiddlewareOptions = {|
     logger : LoggerType,
     graphQL : GraphQL,
@@ -31,6 +34,8 @@ type ButtonMiddlewareOptions = {|
     getInlineGuestExperiment? : (req : ExpressRequest, params : InlineGuestElmoParams) => Promise<boolean>,
     cache : CacheType,
     firebaseConfig? : FirebaseConfig,
+    exchangeIDToken : (ExpressRequest, string, ?string, ?RiskData) => Promise<string>,
+    getWallet : GetWallet,
     content : {
         [$Values<typeof COUNTRY>] : {
             [$Values<typeof LANG>] : {
@@ -40,13 +45,14 @@ type ButtonMiddlewareOptions = {|
     }
 |};
 
-export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, getWallet, exchangeIDToken } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     return sdkMiddleware({ logger, cache }, {
         app: async ({ req, res, params, meta, logBuffer, sdkMeta }) => {
             logger.info(req, EVENT.RENDER);
 
-            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, style,
-                merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale, onShippingChange } = getParams(params, req, res);
+            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, style, userIDToken, amount,
+                merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale, onShippingChange,
+                clientMetadataID, riskData } = getParams(params, req, res);
             const { label, period } = style;
             
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
@@ -59,6 +65,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const merchantIDPromise = facilitatorAccessTokenPromise.then(facilitatorAccessToken => resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken }));
             const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
             const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache });
+            const buyerAccessTokenPromise = userIDToken ? exchangeIDToken(req, userIDToken, clientMetadataID, riskData) : null;
 
             const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry }));
 
@@ -72,6 +79,12 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
                 disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility
+            });
+
+            const buyerAccessToken = await buyerAccessTokenPromise;
+            const walletPromise = resolveWallet(req, gqlBatch, getWallet, {
+                logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault, amount,
+                disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken
             });
 
             const personalizationPromise = resolvePersonalization(req, gqlBatch, {
@@ -101,6 +114,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const merchantID = await merchantIDPromise;
             const nativeEligibility = await nativeEligibilityPromise;
             const cardFieldsEligibility = await isCardFieldsExperimentEnabledPromise;
+            const wallet = await walletPromise;
 
             const eligibility = {
                 nativeCheckout: nativeEligibility,
@@ -113,7 +127,8 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const content = smartContent[locale.country][locale.lang] || {};
 
             const buttonProps = {
-                ...params, nonce: cspNonce, csp: { nonce: cspNonce }, fundingEligibility, personalization, content
+                ...params, nonce: cspNonce, csp: { nonce: cspNonce },
+                fundingEligibility, personalization, content, wallet
             };
 
             try {
@@ -127,7 +142,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const buttonHTML = render.button.Buttons(buttonProps).render(html());
 
             const setupParams = {
-                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta,
+                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta, wallet,
                 isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content
             };
 

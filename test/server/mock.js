@@ -65,6 +65,25 @@ export function mockRes(opts : Object = {}) : MockRes {
     };
 }
 
+export async function getWallet() : Promise<Object> {
+    return await {
+        'funding_options': [
+            {
+                'funding_sources': [
+                    {
+                        'primary_instrument': false,
+                        'credit':             {
+                            'id':   'BC-YMBX4GJLEKMQW',
+                            'type': 'BILL_ME_LATER'
+                        },
+                        'one_click_pay_allowed': false
+                    }
+                ]
+            }
+        ]
+    };
+}
+
 // eslint-disable-next-line require-await
 export async function graphQL(req : {||}, payload : $ReadOnlyArray<{| query : string, variables : Object |}>) : Promise<Object> {
     return Promise.resolve(payload.map(request => {
@@ -190,6 +209,10 @@ export function getAccessToken() : Promise<string> {
 }
 
 export function getMerchantID() : Promise<string> {
+    return Promise.resolve('ABCDEF12345');
+}
+
+export function exchangeIDToken() : Promise<string> {
     return Promise.resolve('ABCDEF12345');
 }
 

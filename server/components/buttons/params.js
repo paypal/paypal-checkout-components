@@ -18,6 +18,8 @@ function getNonce(res : ExpressResponse) : string {
     return nonce;
 }
 
+export type RiskData = {||};
+
 type StyleType = {|
     label? : string,
     period? : ?number
@@ -39,7 +41,11 @@ type ParamsType = {|
     clientAccessToken? : string,
     debug? : boolean,
     style : ?StyleType,
-    onShippingChange? : boolean
+    onShippingChange? : boolean,
+    userIDToken? : string,
+    amount? : string,
+    clientMetadataID? : string,
+    riskData? : string
 |};
 
 type RequestParams = {|
@@ -63,7 +69,11 @@ type RequestParams = {|
         label : string,
         period : ?number
     |},
-    onShippingChange : boolean
+    onShippingChange : boolean,
+    userIDToken : ?string,
+    amount : ?string,
+    clientMetadataID : ?string,
+    riskData : ?RiskData
 |};
 
 function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibility {
@@ -133,6 +143,18 @@ function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibility {
     };
 }
 
+function getRiskDataParam(req : ExpressRequest) : ?RiskData {
+    const serializedRiskData = req.query.riskData;
+
+    if (!serializedRiskData || typeof serializedRiskData !== 'string') {
+        return;
+    }
+
+    return JSON.parse(
+        Buffer.from(serializedRiskData, 'base64').toString('utf8')
+    );
+}
+
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
     const {
         env,
@@ -147,8 +169,11 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         disableFunding,
         disableCard,
         merchantID,
+        amount,
+        clientMetadataID,
         buttonSessionID,
         clientAccessToken,
+        userIDToken,
         debug = false,
         onShippingChange = false
     } = params;
@@ -161,12 +186,21 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
     const cspNonce = getNonce(res);
 
     const basicFundingEligibility = getFundingEligibilityParam(req);
+    const riskData = getRiskDataParam(req);
 
     const {
         label = 'paypal',
         period
     } = buttonStyle || {};
     const style = { label, period };
+
+    let finalAmount = amount;
+    if (finalAmount) {
+        finalAmount = finalAmount.toString();
+        if (finalAmount.match(/^\d+$/)) {
+            finalAmount = `${ finalAmount }.00`;
+        }
+    }
 
     return {
         env,
@@ -179,6 +213,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         disableFunding,
         disableCard,
         merchantID,
+        userIDToken,
         buttonSessionID,
         clientAccessToken,
         basicFundingEligibility,
@@ -186,6 +221,9 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         debug,
         style,
         onShippingChange,
-        locale: { country, lang }
+        locale: { country, lang },
+        amount: finalAmount,
+        riskData,
+        clientMetadataID
     };
 }
