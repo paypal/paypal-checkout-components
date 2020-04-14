@@ -256,7 +256,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                 } else if (fundingSource.payment_card) {
                     instrument = {
                         funding:      FUNDING.CARD,
-                        label:        fundingSource.payment_card.number,
+                        label:        `••••${ fundingSource.payment_card.number }`,
                         instrumentID: fundingSource.payment_card.id,
                         logoUrl:      fundingSource.logo_url,
                         oneClick:     one_click_pay_allowed
@@ -265,7 +265,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                     instrument = {
                         funding:      FUNDING.BANK || 'bank',
                         label:        fundingSource.bank_account.account_number,
-                        instrumentID: fundingSource.bank_account.id,
+                        instrumentID: `••••${ fundingSource.bank_account.id }`,
                         logoUrl:      fundingSource.logo_url,
                         oneClick:     one_click_pay_allowed
                     };
