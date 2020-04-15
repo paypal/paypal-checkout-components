@@ -313,4 +313,80 @@ describe('wallet cases', () => {
             gqlMock.done();
         });
     });
+
+    it('should pay with a wallet instrument, hit an error during approve, and fall back to checkout', async () => {
+        return await wrapPromise(async ({ expect }) => {
+            window.xprops.clientAccessToken = uniqueID();
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        }
+                                    },
+                                    flags: {
+                                        isShippingAddressRequired: false
+                                    }
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('mutation ApproveOrder')) {
+                        return {
+                            errors: [
+                                {
+                                    message: 'EXPIRED_CARD'
+                                }
+                            ]
+                        };
+                    }
+                }
+            }).expectCalls();
+
+            const orderID = generateOrderID();
+            const instrumentID = 'xyz123';
+
+            window.paypal.Checkout = expect('Checkout', window.paypal.Checkout);
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return orderID;
+            }));
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+            }));
+
+            const wallet = {
+                [FUNDING.PAYPAL]: {
+                    instruments: [
+                        {
+                            instrumentID,
+                            oneClick: true
+                        }
+                    ]
+                }
+            };
+
+            createButtonHTML({ wallet });
+            await mockSetupButton({
+                merchantID:       [ uniqueID() ],
+                wallet,
+                buyerAccessToken: uniqueID()
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+            gqlMock.done();
+        });
+    });
 });
