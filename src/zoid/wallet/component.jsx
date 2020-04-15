@@ -129,6 +129,7 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                         }
                     },
                     queryParam:    true,
+                    required:      false,
                     serialization: 'base64'
                 },
 

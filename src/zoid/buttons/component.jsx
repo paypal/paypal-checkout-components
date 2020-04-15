@@ -354,6 +354,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             userIDToken: {
                 type:       'string',
                 value:      getUserIDToken,
+                required:   false,
                 queryParam: true
             },
 
@@ -378,6 +379,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                     }
                 },
                 queryParam:    true,
+                required:      false,
                 serialization: 'base64'
             },
 
