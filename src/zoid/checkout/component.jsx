@@ -104,6 +104,12 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     queryParam: 'id-token'
                 },
 
+                authCode: {
+                    type:       'string',
+                    required:   false,
+                    queryParam: 'code'
+                },
+
                 buyerCountry: {
                     type:       'string',
                     queryParam: true,
