@@ -485,7 +485,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
         const onCompleteListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_COMPLETE, () => {
             getLogger().info(`native_post_message_on_complete`).flush();
-            close();
+            popupWin.close();
         });
 
         const detectWebSwitchListener = listen(popupWin, getNativeDomain(), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
