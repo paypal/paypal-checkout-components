@@ -42,8 +42,8 @@
   "dependencies": {
     "@paypal/checkout-components": "^5.0.30",
     "@paypal/common-components": "^1.0.5",
-    "@paypal/sdk-client": "^4.0.27",
-    "@paypal/sdk-constants": "^1.0.27",
+    "@paypal/sdk-client": "^4.0.112",
+    "@paypal/sdk-constants": "^1.0.45",
     "@paypal/sdk-logos": "^1.0.17",
     "beaver-logger": "^4.0.12",
     "belter": "^1.0.19",

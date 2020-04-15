@@ -594,7 +594,7 @@ describe('happy cases', () => {
 
             createButtonHTML();
 
-            await mockSetupButton({ merchantID: [ 'XYZ12345ABC' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });

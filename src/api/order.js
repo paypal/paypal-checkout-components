@@ -351,7 +351,13 @@ type SupplementalOrderInfo = {|
             |},
             shippingAddress? : {|
                 isFullAddress? : boolean
-            |}
+            |},
+            payees? : $ReadOnlyArray<{|
+                merchantId? : string,
+                email? : {|
+                    stringValue? : string
+                |}
+            |}>
         |},
         flags : {|
             isShippingAddressRequired? : boolean
@@ -373,6 +379,12 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                         }
                         shippingAddress {
                             isFullAddress
+                        }
+                        payees {
+                            merchantId
+                            email {
+                                stringValue
+                            }
                         }
                     }
                     flags {
