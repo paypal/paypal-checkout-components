@@ -107,7 +107,7 @@ describe('client config cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
@@ -151,7 +151,7 @@ describe('client config cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
@@ -194,7 +194,7 @@ describe('client config cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
@@ -237,7 +237,7 @@ describe('client config cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 

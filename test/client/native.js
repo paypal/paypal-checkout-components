@@ -1083,11 +1083,13 @@ describe('native chrome cases', () => {
                 }
             }));
 
-            createButtonHTML({
+            const fundingEligibility = {
                 venmo: {
                     eligible: true
                 }
-            });
+            };
+
+            createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({
                 eligibility: {
@@ -2832,11 +2834,13 @@ describe('native ios cases', () => {
                 }
             }));
 
-            createButtonHTML({
+            const fundingEligibility = {
                 venmo: {
                     eligible: true
                 }
-            });
+            };
+
+            createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({
                 eligibility: {

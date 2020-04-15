@@ -7,6 +7,7 @@ import './actions';
 import './auth';
 import './contingency';
 import './funding';
+import './wallet';
 import './error';
 import './eligibility';
 import './validation';

@@ -48,7 +48,7 @@ describe('vault cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
@@ -76,7 +76,7 @@ describe('vault cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL).catch(expect('clickCatch'));
@@ -122,7 +122,7 @@ describe('vault cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
@@ -168,7 +168,7 @@ describe('vault cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
@@ -220,7 +220,7 @@ describe('vault cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
@@ -286,7 +286,7 @@ describe('vault cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
@@ -363,7 +363,7 @@ describe('vault cases', () => {
 
             window.paypal.Checkout = avoid('Checkout', window.paypal.Checkout);
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.CARD);
@@ -430,7 +430,7 @@ describe('vault cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
@@ -507,7 +507,7 @@ describe('vault cases', () => {
 
             window.paypal.Checkout = avoid('Checkout', window.paypal.Checkout);
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.CARD);
@@ -576,7 +576,7 @@ describe('vault cases', () => {
 
             window.paypal.Checkout = expect('Checkout', window.paypal.Checkout);
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
@@ -647,7 +647,7 @@ describe('vault cases', () => {
 
             window.paypal.Checkout = avoid('Checkout', window.paypal.Checkout);
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.CARD).catch(expect('clickButtonCatch'));

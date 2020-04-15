@@ -202,7 +202,7 @@ export const DEFAULT_FUNDING_ELIGIBILITY = {
     }
 };
 
-export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_ELIGIBILITY) {
+export function createButtonHTML({ fundingEligibility = DEFAULT_FUNDING_ELIGIBILITY, wallet } : {| fundingEligibility? : Object, wallet? : Object |} = {}) {
     const buttons = [];
     
     for (const fundingSource of values(FUNDING)) {
@@ -231,6 +231,13 @@ export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_
             if (fundingConfig.vaultedInstruments && fundingConfig.vaultedInstruments.length) {
                 const vaultedInstrument = fundingConfig.vaultedInstruments[0];
                 buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
+            } else if (wallet && wallet[fundingSource] && wallet[fundingSource].instruments.length) {
+                const walletInstrument = wallet[fundingSource].instruments[0];
+                if (walletInstrument.instrumentID) {
+                    buttons.push(`<button data-funding-source="${ fundingSource }" data-instrument-id="${ walletInstrument.instrumentID }"></div>`);
+                } else if (walletInstrument.paymentID) {
+                    buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ walletInstrument.paymentID }"></div>`);
+                }
             } else {
                 buttons.push(`<button data-funding-source="${ fundingSource }"></div>`);
             }
@@ -456,6 +463,16 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                                 sessionUID:   data.variables.sessionUID,
                                 sessionToken: 'abc1234'
                             }
+                        }
+                    }
+                };
+            }
+
+            if (data.query.includes('query ExchangeIDToken')) {
+                return {
+                    data: {
+                        identity: {
+                            idToken: uniqueID()
                         }
                     }
                 };

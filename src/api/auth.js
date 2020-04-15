@@ -84,10 +84,10 @@ export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, {
 export function exchangeAccessTokenForIDToken(buyerAccessToken : string) : ZalgoPromise<string> {
     return callGraphQL({
         query: `
-            mutation GenerateIDToken(
+            query ExchangeIDToken(
                 $buyerAccessToken: String!
             ) {
-                generateIDToken(
+                identity(
                     accessToken: $buyerAccessToken
                 ) {
                     idToken
@@ -95,7 +95,7 @@ export function exchangeAccessTokenForIDToken(buyerAccessToken : string) : Zalgo
             }
         `,
         variables: { buyerAccessToken }
-    }).then(({ generateIDToken }) => {
-        return generateIDToken.idToken;
+    }).then(({ identity }) => {
+        return identity.idToken;
     });
 }

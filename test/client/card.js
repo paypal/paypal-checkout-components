@@ -75,7 +75,7 @@ describe('card field cases', () => {
                 }
             };
 
-            createButtonHTML(fundingEligibility);
+            createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
