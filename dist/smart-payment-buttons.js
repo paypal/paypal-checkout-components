@@ -1356,6 +1356,11 @@ window.spb = function(modules) {
             }
         });
     }
+    function getPayee(orderID) {
+        return callSmartAPI({
+            url: "/smart/api/checkout/" + orderID + "/payee"
+        });
+    }
     function validatePaymentMethod(_ref6) {
         var _headers6;
         var clientAccessToken = _ref6.clientAccessToken, orderID = _ref6.orderID, paymentMethodID = _ref6.paymentMethodID, enableThreeDomainSecure = _ref6.enableThreeDomainSecure, partnerAttributionID = _ref6.partnerAttributionID, buttonSessionID = _ref6.buttonSessionID;
@@ -1396,7 +1401,7 @@ window.spb = function(modules) {
     }
     var getSupplementalOrderInfo = memoize((function(orderID) {
         return callGraphQL({
-            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                        payees {\n                            merchantId\n                            email {\n                                stringValue\n                            }\n                        }\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
+            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
             variables: {
                 orderID: orderID
             }
@@ -3241,27 +3246,6 @@ window.spb = function(modules) {
     }
     var initialPageUrl;
     var parentPopupBridge;
-    var isValidMerchants = function(merchantIdsOrEmails, payees) {
-        if (merchantIdsOrEmails.length !== payees.length) return !1;
-        var merchantEmails = [];
-        var merchantIds = [];
-        merchantIdsOrEmails.forEach((function(id) {
-            -1 === id.indexOf("@") ? merchantIds.push(id) : merchantEmails.push(id.toLowerCase());
-        }));
-        var foundEmail = merchantEmails.every((function(email) {
-            return payees.some((function(payee) {
-                return email === (payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase());
-            }));
-        }));
-        var foundMerchantId = merchantIds.every((function(id) {
-            return payees.some((function(payee) {
-                return id === payee.merchantId;
-            }));
-        }));
-        return !(!foundEmail || !foundMerchantId) && payees.every((function(payee) {
-            return merchantIds.includes(payee.merchantId) || merchantEmails.includes(payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase());
-        }));
-    };
     var PAYMENT_FLOWS = [ vaultCapture, walletCapture, cardFields, {
         name: "popup_bridge",
         setup: function(_ref) {
@@ -3682,7 +3666,7 @@ window.spb = function(modules) {
                             }));
                             var onCompleteListener = listen(popupWin, getNativePopupDomain(), "onComplete", (function() {
                                 getLogger().info("native_post_message_on_complete").flush();
-                                close();
+                                popupWin.close();
                             }));
                             var detectWebSwitchListener = listen(popupWin, getNativeDomain(), "detectWebSwitch", (function() {
                                 getLogger().info("native_post_message_detect_web_switch").flush();
@@ -3899,18 +3883,23 @@ window.spb = function(modules) {
                                         })).then((function(orderID) {
                                             return function(orderID, _ref2) {
                                                 var env = _ref2.env, clientID = _ref2.clientID, merchantID = _ref2.merchantID, expectedCurrency = _ref2.expectedCurrency, expectedIntent = _ref2.expectedIntent;
-                                                return getSupplementalOrderInfo(orderID).then((function(order) {
-                                                    var cart = order.checkoutSession.cart;
+                                                return promise_ZalgoPromise.hash({
+                                                    order: getSupplementalOrderInfo(orderID),
+                                                    payee: getPayee(orderID)
+                                                }).then((function(_ref3) {
+                                                    var payee = _ref3.payee;
+                                                    var cart = _ref3.order.checkoutSession.cart;
                                                     var intent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
                                                     var currency = cart.amounts && cart.amounts.total.currencyCode;
                                                     if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
-                                                    var payees = cart.payees;
-                                                    if (!merchantID || 0 === merchantID.length) throw new Error("Could not determine correct merchant id");
-                                                    if (!payees || 0 === payees.length) throw new Error("No payee found in transaction. Expected " + merchantID.join());
-                                                    isValidMerchants(merchantID, payees) || clientID && -1 === CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) && getLogger().info("client_id_payee_no_match_" + clientID).flush();
-                                                    var xpropMerchantID = window.xprops.merchantID;
-                                                    if (xpropMerchantID && xpropMerchantID.length > 0 && !isValidMerchants(window.xprops.merchantID, payees)) throw new Error("Payee passed in transaction does not match expected merchant id: " + window.xprops.merchantID);
+                                                    var payeeMerchantID = payee && payee.merchant && payee.merchant.id;
+                                                    var actualMerchantID = merchantID && merchantID.length && merchantID[0];
+                                                    if (!actualMerchantID) throw new Error("Could not determine correct merchant id");
+                                                    if (!payeeMerchantID) throw new Error("No payee found in transaction. Expected " + actualMerchantID);
+                                                    payeeMerchantID !== actualMerchantID && clientID && -1 === CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) && getLogger().info("client_id_payee_no_match_" + clientID).flush();
+                                                    var xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
+                                                    if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) throw new Error("Payee passed in transaction does not match expected merchant id: " + xpropMerchantID);
                                                 })).catch((function(err) {
                                                     var _getLogger$warn$warn$;
                                                     var isSandbox = "sandbox" === env;
@@ -4209,7 +4198,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.229", _ref2;
+                _ref2.button_version = "2.0.230", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
