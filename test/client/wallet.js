@@ -29,7 +29,15 @@ describe('wallet cases', () => {
                                         },
                                         shippingAddress: {
                                             isFullAddress: false
-                                        }
+                                        },
+                                        payees: [
+                                            {
+                                                merchantId: 'XYZ12345',
+                                                email:      {
+                                                    stringValue: 'xyz-us-b1@paypal.com'
+                                                }
+                                            }
+                                        ]
                                     },
                                     flags: {
                                         isShippingAddressRequired: false
@@ -116,7 +124,15 @@ describe('wallet cases', () => {
                                         },
                                         shippingAddress: {
                                             isFullAddress: true
-                                        }
+                                        },
+                                        payees: [
+                                            {
+                                                merchantId: 'XYZ12345',
+                                                email:      {
+                                                    stringValue: 'xyz-us-b1@paypal.com'
+                                                }
+                                            }
+                                        ]
                                     },
                                     flags: {
                                         isShippingAddressRequired: true
@@ -198,7 +214,15 @@ describe('wallet cases', () => {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
-                                        }
+                                        },
+                                        payees: [
+                                            {
+                                                merchantId: 'XYZ12345',
+                                                email:      {
+                                                    stringValue: 'xyz-us-b1@paypal.com'
+                                                }
+                                            }
+                                        ]
                                     },
                                     flags: {
                                         isShippingAddressRequired: true
@@ -264,7 +288,15 @@ describe('wallet cases', () => {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
-                                        }
+                                        },
+                                        payees: [
+                                            {
+                                                merchantId: 'XYZ12345',
+                                                email:      {
+                                                    stringValue: 'xyz-us-b1@paypal.com'
+                                                }
+                                            }
+                                        ]
                                     },
                                     flags: {
                                         isShippingAddressRequired: false
@@ -330,7 +362,15 @@ describe('wallet cases', () => {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
-                                        }
+                                        },
+                                        payees: [
+                                            {
+                                                merchantId: 'XYZ12345',
+                                                email:      {
+                                                    stringValue: 'xyz-us-b1@paypal.com'
+                                                }
+                                            }
+                                        ]
                                     },
                                     flags: {
                                         isShippingAddressRequired: false
