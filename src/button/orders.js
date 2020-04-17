@@ -58,7 +58,7 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
 
         if (payeeMerchantID !== actualMerchantID) {
             if (clientID && CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) === -1) {
-                getLogger().info(`client_id_payee_no_match_${ clientID }`).flush();
+                getLogger().info(`client_id_payee_no_match`).flush();
                 // throw new Error(`Payee passed in transaction does not match expected merchant id: ${ actualMerchantID }`);
             }
         }
