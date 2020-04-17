@@ -71,7 +71,8 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
             accessToken: facilitatorAccessToken,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
             headers:     {
-                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
+                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || '',
+                [HEADERS.CLIENT_CONTEXT]:         orderID
             }
         })
         : callSmartAPI({
@@ -93,7 +94,10 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
         : callSmartAPI({
             accessToken: buyerAccessToken,
             method:      'post',
-            url:         `${ SMART_API_URI.ORDER }/${ orderID }/capture`
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }/capture`,
+            headers:     {
+                [HEADERS.CLIENT_CONTEXT]: orderID
+            }
         });
 }
 
@@ -110,7 +114,10 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
         : callSmartAPI({
             accessToken: buyerAccessToken,
             method:      'post',
-            url:         `${ SMART_API_URI.ORDER }/${ orderID }/authorize`
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }/authorize`,
+            headers:     {
+                [HEADERS.CLIENT_CONTEXT]: orderID
+            }
         });
 }
 
@@ -135,7 +142,10 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
             accessToken: buyerAccessToken,
             method:      'post',
             url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
-            json:        { data: patchData }
+            json:        { data: patchData },
+            headers:     {
+                [HEADERS.CLIENT_CONTEXT]: orderID
+            }
         });
 }
 
@@ -147,7 +157,10 @@ type PayeeResponse = {|
 
 export function getPayee(orderID : string) : ZalgoPromise<PayeeResponse> {
     return callSmartAPI({
-        url: `${ SMART_API_URI.CHECKOUT }/${ orderID }/payee`
+        url:     `${ SMART_API_URI.CHECKOUT }/${ orderID }/payee`,
+        headers: {
+            [HEADERS.CLIENT_CONTEXT]: orderID
+        }
     });
 }
 
@@ -243,7 +256,8 @@ export function enableVault({ orderID, clientAccessToken } : {| orderID : string
             orderID
         },
         headers: {
-            [ HEADERS.ACCESS_TOKEN ]: clientAccessToken
+            [ HEADERS.ACCESS_TOKEN ]:   clientAccessToken,
+            [ HEADERS.CLIENT_CONTEXT ]: orderID
         }
     });
 }
@@ -295,7 +309,10 @@ export function updateClientConfig({ orderID, fundingSource, integrationArtifact
                 )
             }
         `,
-        variables: { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow }
+        variables: { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow },
+        headers:   {
+            [HEADERS.CLIENT_CONTEXT]: orderID
+        }
     }).then(noop);
 }
 
@@ -331,7 +348,8 @@ export function approveOrder({ orderID, planID, instrumentID, buyerAccessToken }
         `,
         variables: { orderID, planID, instrumentID },
         headers:   {
-            [ HEADERS.ACCESS_TOKEN ]: buyerAccessToken
+            [ HEADERS.ACCESS_TOKEN ]:   buyerAccessToken,
+            [ HEADERS.CLIENT_CONTEXT ]: orderID
         }
     }).then(({ approvePayment }) => {
         return {
@@ -383,6 +401,9 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                 }
             }
         `,
-        variables: { orderID }
+        variables: { orderID },
+        headers:   {
+            [HEADERS.CLIENT_CONTEXT]: orderID
+        }
     });
 });

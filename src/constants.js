@@ -12,10 +12,11 @@ export const HEADERS = {
     AUTHORIZATION: 'authorization',
     CONTENT_TYPE:  'content-type',
 
-    ACCESS_TOKEN:  'x-paypal-internal-euat',
-    CSRF_TOKEN:    'x-csrf-jwt',
-    SOURCE:        'x-source',
-    REQUESTED_BY:  'x-requested-by',
+    ACCESS_TOKEN:   'x-paypal-internal-euat',
+    CSRF_TOKEN:     'x-csrf-jwt',
+    SOURCE:         'x-source',
+    REQUESTED_BY:   'x-requested-by',
+    CLIENT_CONTEXT: 'paypal-client-context',
 
     PARTNER_ATTRIBUTION_ID: 'paypal-partner-attribution-id',
     CLIENT_METADATA_ID:     'paypal-client-metadata-id',

@@ -44,14 +44,13 @@ type APIRequest = {|
     accessToken? : ?string,
     url : string,
     method? : string,
-    json? : $ReadOnlyArray<mixed> | Object
+    json? : $ReadOnlyArray<mixed> | Object,
+    headers? : { [string] : string }
 |};
 
-export function callSmartAPI({ accessToken, url, method = 'get', json } : APIRequest) : ZalgoPromise<Object> {
+export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHeaders = {}, json } : APIRequest) : ZalgoPromise<Object> {
 
-    const reqHeaders : { [string] : string } = {
-        [ HEADERS.REQUESTED_BY ]: SMART_PAYMENT_BUTTONS
-    };
+    reqHeaders[HEADERS.REQUESTED_BY] = SMART_PAYMENT_BUTTONS;
 
     if (accessToken) {
         reqHeaders[HEADERS.ACCESS_TOKEN] = accessToken;
