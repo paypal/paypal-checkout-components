@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-lines: off */
 
 import { FUNDING } from '@paypal/sdk-constants/src';
 
@@ -474,7 +475,17 @@ export const ORDER_VALIDATION_WHITELIST = [
     'AaVd3541KiAbjObfq8486KohVuhP6y_ZJWc0zY1ysMoOSeIx3OF5amcgw-BvxcMD0TNyayCQ9Agri_f_',
     'AUB2EIv-ZUzTepk_K4_yf6EnL3b8vX1LG1a4DaSZANNFiQ8QqPUIKej8_thsKURH8G8nbwrsrJB13bgz',
     'AUO4pKr0n9zirKGKfTQlOgQ8EfIDOjT24AUmKK1lGwaruTPyv3F4FbIBwzt3jqm7_m19fnu6AB5d5PNz',
-    'AcgZye2RdQr5aPKy83TuiedDJEYoUxQuEA8ot8ELuhJ9ya0U5GSXRsqw0zqrAgPbfSi3MWvaZMdm4mG2'
+    'AcgZye2RdQr5aPKy83TuiedDJEYoUxQuEA8ot8ELuhJ9ya0U5GSXRsqw0zqrAgPbfSi3MWvaZMdm4mG2',
+    'AU1AoXXAQ_pZhAhZPKMBgbqIalttfnvDhGieEucHsAYfFePjb_Gq-g4pOW9YtUBxJuEBkt4IlW098XCe',
+    'AYWZhcjTcWKK63g5TQ5dGdV2VhnBSQ4a1ZctLLpHPGW8NVI6FEOGIlprUkW7RwJ3ZSft2Yfjuv0e_GG-',
+    'Adc6rmNeqiVf9o6lwUPHLhYwUgApqWgIcQOmiSLAKXU9lRCVs-iMgs4MOdkbvn_pRaBtOqlBG_v6nu7C',
+    'AShG7lb-2gG6EHCP3LMZxo96dGYW23_Vu1KPeK3lWG01QcjZUarqJPbM3d7LqjFJiRMcFKNXD9gubJYC',
+    'AV32VxQG3VgFK4XBV2fszwTZ1SI1GR3056xWzvXNuNf_unHdT1lIwtXp4x-0-nKngOKLhk8K5odXZRh7',
+    'AZ_5b9jS3YKFPSeZ6J6YSavRS_WXD6ENRDfX_JGIL4qExwKkN45xBmLLy28tNQsQ0HkNkVKbGPqh_gGI',
+    'AR0xZKtsgHB6nA3THJuR-ONFov1r9Hpi8mUCYYHg8YoIcd5TDQfHtbKPv-7xlMVTRmvAW2R5oZ4HPzLe',
+    'AXyN1SOeUydASWS3ad68oxw4mAozfK6cGi1X7Wp2alKKZ3ycBKxt8lndwnATvAtAN5w-_HPm4ij39G6I',
+    'AdUZm6mA2lFH0Zeca_2JqIUk0qyAuaFr-D1n8OjN8dD9aXsEaGAF7Sw8rF--Td32LdoLXEsdvnIFbBfz',
+    'AccIQkAq3PaYhno7Lb7EfDChSPYVwRVSLjdG5xPGa7ryKBFVpImRM8_jc9_kGdC4PkgtlHFv6l_ET4aB'
 ];
 
 export const SANDBOX_ORDER_VALIDATION_WHITELIST = [
