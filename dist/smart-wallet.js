@@ -198,13 +198,13 @@
             return insertCss(content, options);
         };
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-fdd787a1]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-fdd787a1]{height:50px}}.wallet-item .icon[data-v-fdd787a1]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-fdd787a1]{max-height:90%;max-width:90%}.wallet-item .description[data-v-fdd787a1]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-fdd787a1]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-fdd787a1]{font-size:13px}}.wallet-item .description .details[data-v-fdd787a1]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-fdd787a1]{font-size:12px}}.wallet-item .preferred[data-v-fdd787a1]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-fdd787a1]:hover{background-color:#eee}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-d2ff3bcf]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-d2ff3bcf]{height:50px}}.wallet-item .icon[data-v-d2ff3bcf]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-d2ff3bcf]{max-height:90%;max-width:90%}.wallet-item .description[data-v-d2ff3bcf]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-d2ff3bcf]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-d2ff3bcf]{font-size:13px}}.wallet-item .description .details[data-v-d2ff3bcf]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-d2ff3bcf]{font-size:12px}}.wallet-item .preferred[data-v-d2ff3bcf]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-d2ff3bcf]:hover{background-color:#eee}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-d2ff3bcf]{padding:20px}.add-card-button a[data-v-d2ff3bcf]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-d2ff3bcf]:hover{text-decoration:underline}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-fdd787a1]{padding:20px}.add-card-button a[data-v-fdd787a1]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-fdd787a1]:hover{text-decoration:underline}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif}*{box-sizing:border-box}.flex-spacer{flex:1}\n", "" ]);
@@ -218,24 +218,24 @@
         __webpack_require__.d(__webpack_exports__, "renderWallet", (function() {
             return renderWallet;
         }));
-        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_o, preact_module_r, preact_module_f, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
+        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_o, preact_module_r, f, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
         function a(n, l) {
             for (var u in l) n[u] = l[u];
             return n;
         }
-        function v(n) {
+        function preact_module_v(n) {
             var l = n.parentNode;
             l && l.removeChild(n);
         }
-        function preact_module_h(n, l, u) {
+        function h(n, l, u) {
             var i, t = arguments, o = {};
             for (i in l) "key" !== i && "ref" !== i && (o[i] = l[i]);
             if (arguments.length > 3) for (u = [ u ], i = 3; i < arguments.length; i++) u.push(t[i]);
             if (null != u && (o.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === o[i] && (o[i] = n.defaultProps[i]);
-            return p(n, o, l && l.key, l && l.ref);
+            return preact_module_p(n, o, l && l.key, l && l.ref, null);
         }
-        function p(l, u, i, t) {
-            var o = {
+        function preact_module_p(l, u, i, t, o) {
+            var r = {
                 type: l,
                 props: u,
                 key: i,
@@ -246,9 +246,11 @@
                 __e: null,
                 __d: void 0,
                 __c: null,
-                constructor: void 0
+                constructor: void 0,
+                __v: o
             };
-            return preact_module_n.vnode && preact_module_n.vnode(o), o;
+            return null == o && (r.__v = r), preact_module_n.vnode && preact_module_n.vnode(r), 
+            r;
         }
         function preact_module_d(n) {
             return n.children;
@@ -272,21 +274,25 @@
             }
         }
         function preact_module_k(l) {
-            (!l.__d && (l.__d = !0) && preact_module_u.push(l) && !preact_module_i++ || preact_module_o !== preact_module_n.debounceRendering) && ((preact_module_o = preact_module_n.debounceRendering) || preact_module_t)(preact_module_);
+            (!l.__d && (l.__d = !0) && preact_module_u.push(l) && !preact_module_i++ || preact_module_o !== preact_module_n.debounceRendering) && ((preact_module_o = preact_module_n.debounceRendering) || preact_module_t)(_);
         }
-        function preact_module_() {
+        function _() {
             for (var n; preact_module_i = preact_module_u.length; ) n = preact_module_u.sort((function(n, l) {
                 return n.__v.__b - l.__v.__b;
             })), preact_module_u = [], n.some((function(n) {
-                var l, u, i, t, o, r;
-                n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], i = preact_module_A(r, t, a({}, t), l.__n, void 0 !== r.ownerSVGElement, null, u, null == o ? preact_module_w(t) : o), 
-                preact_module_T(u, t), i != o && g(t)));
+                var l, u, i, t, o, r, f;
+                n.__d && (r = (o = (l = n).__v).__e, (f = l.__P) && (u = [], (i = a({}, o)).__v = i, 
+                t = preact_module_A(f, o, i, l.__n, void 0 !== f.ownerSVGElement, null, u, null == r ? preact_module_w(o) : r), 
+                preact_module_T(u, o), t != r && g(o)));
             }));
         }
         function preact_module_b(n, l, u, i, t, o, r, f, s) {
             var a, h, p, y, d, m, g, k = u && u.__k || c, _ = k.length;
             if (f == e && (f = null != o ? o[0] : _ ? preact_module_w(u, 0) : null), a = 0, 
-            l.__k = preact_module_x(l.__k, (function(u) {
+            l.__k = function preact_module_x(n, l, u) {
+                if (null == u && (u = []), null == n || "boolean" == typeof n) l && u.push(l(null)); else if (Array.isArray(n)) for (var i = 0; i < n.length; i++) preact_module_x(n[i], l, u); else u.push(l ? l("string" == typeof n || "number" == typeof n ? preact_module_p(null, n, null, null, n) : null != n.__e || null != n.__c ? preact_module_p(n.type, n.props, n.key, null, n.__v) : n) : n);
+                return u;
+            }(l.__k, (function(u) {
                 if (null != u) {
                     if (u.__ = l, u.__b = l.__b + 1, null === (p = k[a]) || p && u.key == p.key && u.type === p.type) k[a] = void 0; else for (h = 0; h < _; h++) {
                         if ((p = k[h]) && u.key == p.key && u.type === p.type) {
@@ -309,13 +315,9 @@
                     } else f && p.__e == f && f.parentNode != n && (f = preact_module_w(p));
                 }
                 return a++, u;
-            })), l.__e = m, null != o && "function" != typeof l.type) for (a = o.length; a--; ) null != o[a] && v(o[a]);
+            })), l.__e = m, null != o && "function" != typeof l.type) for (a = o.length; a--; ) null != o[a] && preact_module_v(o[a]);
             for (a = _; a--; ) null != k[a] && preact_module_D(k[a], k[a]);
             if (g) for (a = 0; a < g.length; a++) preact_module_j(g[a], g[++a], g[++a]);
-        }
-        function preact_module_x(n, l, u) {
-            if (null == u && (u = []), null == n || "boolean" == typeof n) l && u.push(l(null)); else if (Array.isArray(n)) for (var i = 0; i < n.length; i++) preact_module_x(n[i], l, u); else u.push(l ? l("string" == typeof n || "number" == typeof n ? p(null, n, null, null) : null != n.__e || null != n.__c ? p(n.type, n.props, n.key, null) : n) : n);
-            return u;
         }
         function preact_module_C(n, l, u) {
             "-" === l[0] ? n.setProperty(l, u) : n[l] = "number" == typeof u && !1 === s.test(l) ? u + "px" : null == u ? "" : u;
@@ -323,12 +325,12 @@
         function preact_module_N(n, l, u, i, t) {
             var o, r, f, e, c;
             if (t ? "className" === l && (l = "class") : "class" === l && (l = "className"), 
-            "key" === l || "children" === l) ; else if ("style" === l) if (o = n.style, "string" == typeof u) o.cssText = u; else {
-                if ("string" == typeof i && (o.cssText = "", i = null), i) for (r in i) u && r in u || preact_module_C(o, r, "");
-                if (u) for (f in u) i && u[f] === i[f] || preact_module_C(o, f, u[f]);
-            } else "o" === l[0] && "n" === l[1] ? (e = l !== (l = l.replace(/Capture$/, "")), 
-            c = l.toLowerCase(), l = (c in n ? c : l).slice(2), u ? (i || n.addEventListener(l, preact_module_z, e), 
-            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_z, e)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
+            "style" === l) if (o = n.style, "string" == typeof u) o.cssText = u; else {
+                if ("string" == typeof i && (o.cssText = "", i = null), i) for (e in i) u && e in u || preact_module_C(o, e, "");
+                if (u) for (c in u) i && u[c] === i[c] || preact_module_C(o, c, u[c]);
+            } else "o" === l[0] && "n" === l[1] ? (r = l !== (l = l.replace(/Capture$/, "")), 
+            f = l.toLowerCase(), l = (f in n ? f : l).slice(2), u ? (i || n.addEventListener(l, preact_module_z, r), 
+            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_z, r)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
         }
         function preact_module_z(l) {
             this.l[l.type](preact_module_n.event ? preact_module_n.event(l) : l);
@@ -347,9 +349,9 @@
                     a(v.__s, P.getDerivedStateFromProps(k, v.__s))), p = v.props, y = v.state, h) null == P.getDerivedStateFromProps && null != v.componentWillMount && v.componentWillMount(), 
                     null != v.componentDidMount && v.__h.push(v.componentDidMount); else {
                         if (null == P.getDerivedStateFromProps && k !== p && null != v.componentWillReceiveProps && v.componentWillReceiveProps(k, x), 
-                        !v.__e && null != v.shouldComponentUpdate && !1 === v.shouldComponentUpdate(k, v.__s, x)) {
-                            for (v.props = k, v.state = v.__s, v.__d = !1, v.__v = u, u.__e = i.__e, u.__k = i.__k, 
-                            v.__h.length && f.push(v), s = 0; s < u.__k.length; s++) u.__k[s] && (u.__k[s].__ = u);
+                        !v.__e && null != v.shouldComponentUpdate && !1 === v.shouldComponentUpdate(k, v.__s, x) || u.__v === i.__v && !v.__) {
+                            for (v.props = k, v.state = v.__s, u.__v !== i.__v && (v.__d = !1), v.__v = u, u.__e = i.__e, 
+                            u.__k = i.__k, v.__h.length && f.push(v), s = 0; s < u.__k.length; s++) u.__k[s] && (u.__k[s].__ = u);
                             break n;
                         }
                         null != v.componentWillUpdate && v.componentWillUpdate(k, v.__s, x), null != v.componentDidUpdate && v.__h.push((function() {
@@ -361,10 +363,10 @@
                     null != v.getChildContext && (t = a(a({}, t), v.getChildContext())), h || null == v.getSnapshotBeforeUpdate || (w = v.getSnapshotBeforeUpdate(p, y)), 
                     preact_module_b(l, u, i, t, o, r, f, e, c), v.base = u.__e, v.__h.length && f.push(v), 
                     g && (v.__E = v.__ = null), v.__e = !1;
-                } else u.__e = preact_module_$(i.__e, u, i, t, o, r, f, c);
+                } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = preact_module_$(i.__e, u, i, t, o, r, f, c);
                 (s = preact_module_n.diffed) && s(u);
             } catch (l) {
-                preact_module_n.__e(l, u, i);
+                u.__v = null, preact_module_n.__e(l, u, i);
             }
             return u.__e;
         }
@@ -389,9 +391,9 @@
                 if (null === l.type) return document.createTextNode(d);
                 n = t ? document.createElementNS("http://www.w3.org/2000/svg", l.type) : document.createElement(l.type, d.is && {
                     is: d.is
-                }), o = null;
+                }), o = null, f = !1;
             }
-            if (null === l.type) y !== d && n.data != d && (n.data = d); else if (l !== u) {
+            if (null === l.type) y !== d && n.data != d && (n.data = d); else {
                 if (null != o && (o = c.slice.call(n.childNodes)), v = (y = u.props || e).dangerouslySetInnerHTML, 
                 h = d.dangerouslySetInnerHTML, !f) {
                     if (y === e) for (y = {}, p = 0; p < n.attributes.length; p++) y[n.attributes[p].name] = n.attributes[p].value;
@@ -399,8 +401,8 @@
                 }
                 (function(n, l, u, i, t) {
                     var o;
-                    for (o in u) o in l || preact_module_N(n, o, null, u[o], i);
-                    for (o in l) t && "function" != typeof l[o] || "value" === o || "checked" === o || u[o] === l[o] || preact_module_N(n, o, l[o], u[o], i);
+                    for (o in u) "children" === o || "key" === o || o in l || preact_module_N(n, o, null, u[o], i);
+                    for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || preact_module_N(n, o, l[o], u[o], i);
                 })(n, d, y, t, f), l.__k = l.props.children, h || preact_module_b(n, l, u, i, "foreignObject" !== l.type && t, o, r, e, f), 
                 f || ("value" in d && void 0 !== d.value && d.value !== n.value && (n.value = null == d.value ? "" : d.value), 
                 "checked" in d && void 0 !== d.checked && d.checked !== n.checked && (n.checked = d.checked));
@@ -427,7 +429,7 @@
                 t.base = t.__P = null;
             }
             if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && preact_module_D(t[r], u, i);
-            null != o && v(o);
+            null != o && preact_module_v(o);
         }
         function preact_module_E(n, l, u) {
             return this.constructor(n, u);
@@ -451,7 +453,7 @@
             this.__v && (this.__e = !0, n && this.__h.push(n), preact_module_k(this));
         }, preact_module_m.prototype.render = preact_module_d, preact_module_u = [], preact_module_i = 0, 
         preact_module_t = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
-        preact_module_r = e, preact_module_f = 0;
+        preact_module_r = e, f = 0;
         var index_module_n = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|^--/i, index_module_o = function(e) {
             return String(e).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }, index_module_a = function(e, t) {
@@ -469,54 +471,56 @@
             }
             return t || void 0;
         }
-        function index_module_p(e, t) {
+        function index_module_c(e, t) {
             for (var r in t) e[r] = t[r];
             return e;
         }
-        function index_module_c(e, t) {
-            return Array.isArray(t) ? t.reduce(index_module_c, e) : null != t && !1 !== t && e.push(t), 
+        function index_module_f(e, t) {
+            return Array.isArray(t) ? t.reduce(index_module_f, e) : null != t && !1 !== t && e.push(t), 
             e;
         }
-        var index_module_f = {
+        var index_module_p = {
             shallow: !0
-        }, index_module_u = [], index_module_g = /^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/;
-        index_module_v.render = index_module_v;
-        function index_module_v(n, l, f, _, h, d) {
+        }, index_module_u = [], index_module_g = /^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/, index_module_ = function() {};
+        index_module_h.render = index_module_h;
+        function index_module_h(n, l, p, v, d, m) {
             if (null == n || "boolean" == typeof n) return "";
-            Array.isArray(n) && (n = preact_module_h(preact_module_d, null, n));
-            var m = n.type, x = n.props, y = !1;
+            Array.isArray(n) && (n = h(preact_module_d, null, n));
+            var x = n.type, y = n.props, b = !1;
             l = l || {};
-            var b, S = (f = f || {}).pretty, w = S && "string" == typeof S ? S : "\t";
-            if ("object" != typeof n && !m) return index_module_o(n);
-            if ("function" == typeof m) {
-                if (y = !0, !f.shallow || !_ && !1 !== f.renderRootComponent) {
-                    if (m === preact_module_d) {
-                        var k = "", O = [];
-                        index_module_c(O, n.props.children);
-                        for (var C = 0; C < O.length; C++) k += (C > 0 && S ? "\n" : "") + index_module_v(O[C], l, f, !1 !== f.shallowHighOrder, h, d);
-                        return k;
+            var S, w = (p = p || {}).pretty, k = w && "string" == typeof w ? w : "\t";
+            if ("object" != typeof n && !x) return index_module_o(n);
+            if ("function" == typeof x) {
+                if (b = !0, !p.shallow || !v && !1 !== p.renderRootComponent) {
+                    if (x === preact_module_d) {
+                        var O = "", C = [];
+                        index_module_f(C, n.props.children);
+                        for (var A = 0; A < C.length; A++) O += (A > 0 && w ? "\n" : "") + index_module_h(C[A], l, p, !1 !== p.shallowHighOrder, d, m);
+                        return O;
                     }
-                    var A, H = n.__c = {
+                    var H, j = n.__c = {
                         __v: n,
                         context: l,
                         props: n.props,
+                        setState: index_module_,
+                        forceUpdate: index_module_,
                         __h: []
                     };
-                    if (preact_module_n.__r && preact_module_n.__r(n), m.prototype && "function" == typeof m.prototype.render) {
-                        var j = m.contextType, $ = j && l[j.__c], F = null != j ? $ ? $.props.value : j.__ : l;
-                        (H = n.__c = new m(x, F)).__v = n, H._dirty = H.__d = !0, H.props = x, null == H.state && (H.state = {}), 
-                        null == H._nextState && null == H.__s && (H._nextState = H.__s = H.state), H.context = F, 
-                        m.getDerivedStateFromProps ? H.state = index_module_p(index_module_p({}, H.state), m.getDerivedStateFromProps(H.props, H.state)) : H.componentWillMount && H.componentWillMount(), 
-                        H.state = H._nextState !== H.state ? H._nextState : H.__s !== H.state ? H.__s : H.state, 
-                        A = H.render(H.props, H.state, H.context);
+                    if (preact_module_n.__r && preact_module_n.__r(n), x.prototype && "function" == typeof x.prototype.render) {
+                        var $ = x.contextType, F = $ && l[$.__c], L = null != $ ? F ? F.props.value : $.__ : l;
+                        (j = n.__c = new x(y, L)).__v = n, j._dirty = j.__d = !0, j.props = y, null == j.state && (j.state = {}), 
+                        null == j._nextState && null == j.__s && (j._nextState = j.__s = j.state), j.context = L, 
+                        x.getDerivedStateFromProps ? j.state = index_module_c(index_module_c({}, j.state), x.getDerivedStateFromProps(j.props, j.state)) : j.componentWillMount && j.componentWillMount(), 
+                        j.state = j._nextState !== j.state ? j._nextState : j.__s !== j.state ? j.__s : j.state, 
+                        H = j.render(j.props, j.state, j.context);
                     } else {
-                        var L = m.contextType, M = L && l[L.__c];
-                        A = m.call(n.__c, x, null != L ? M ? M.props.value : L.__ : l);
+                        var M = x.contextType, T = M && l[M.__c];
+                        H = x.call(n.__c, y, null != M ? T ? T.props.value : M.__ : l);
                     }
-                    return H.getChildContext && (l = index_module_p(index_module_p({}, l), H.getChildContext())), 
-                    index_module_v(A, l, f, !1 !== f.shallowHighOrder, h, d);
+                    return j.getChildContext && (l = index_module_c(index_module_c({}, l), j.getChildContext())), 
+                    index_module_h(H, l, p, !1 !== p.shallowHighOrder, d, m);
                 }
-                m = (b = m).displayName || b !== Function && b.name || function(e) {
+                x = (S = x).displayName || S !== Function && S.name || function(e) {
                     var t = (function() {}.toString.call(e).match(/^\s*function\s+([^( ]+)/) || "")[1];
                     if (!t) {
                         for (var r = -1, n = index_module_u.length; n--; ) if (index_module_u[n] === e) {
@@ -526,66 +530,66 @@
                         r < 0 && (r = index_module_u.push(e) - 1), t = "UnnamedComponent" + r;
                     }
                     return t;
-                }(b);
+                }(S);
             }
-            var T, D = "";
-            if (x) {
-                var N = Object.keys(x);
-                f && !0 === f.sortAttributes && N.sort();
-                for (var P = 0; P < N.length; P++) {
-                    var R = N[P], W = x[R];
-                    if ("children" !== R && !R.match(/[\s\n\\/='"\0<>]/) && (f && f.allAttributes || "key" !== R && "ref" !== R)) {
-                        if ("className" === R) {
-                            if (x.class) continue;
-                            R = "class";
-                        } else h && R.match(/^xlink:?./) && (R = R.toLowerCase().replace(/^xlink:?/, "xlink:"));
-                        "style" === R && W && "object" == typeof W && (W = index_module_s(W));
-                        var q = f.attributeHook && f.attributeHook(R, W, l, f, y);
-                        if (q || "" === q) D += q; else if ("dangerouslySetInnerHTML" === R) T = W && W.__html; else if ((W || 0 === W || "" === W) && "function" != typeof W) {
-                            if (!(!0 !== W && "" !== W || (W = R, f && f.xml))) {
-                                D += " " + R;
+            var D, N = "";
+            if (y) {
+                var P = Object.keys(y);
+                p && !0 === p.sortAttributes && P.sort();
+                for (var R = 0; R < P.length; R++) {
+                    var U = P[R], W = y[U];
+                    if ("children" !== U && !U.match(/[\s\n\\/='"\0<>]/) && (p && p.allAttributes || "key" !== U && "ref" !== U)) {
+                        if ("className" === U) {
+                            if (y.class) continue;
+                            U = "class";
+                        } else d && U.match(/^xlink:?./) && (U = U.toLowerCase().replace(/^xlink:?/, "xlink:"));
+                        "style" === U && W && "object" == typeof W && (W = index_module_s(W));
+                        var q = p.attributeHook && p.attributeHook(U, W, l, p, b);
+                        if (q || "" === q) N += q; else if ("dangerouslySetInnerHTML" === U) D = W && W.__html; else if ((W || 0 === W || "" === W) && "function" != typeof W) {
+                            if (!(!0 !== W && "" !== W || (W = U, p && p.xml))) {
+                                N += " " + U;
                                 continue;
                             }
-                            if ("value" === R) {
-                                if ("select" === m) {
-                                    d = W;
+                            if ("value" === U) {
+                                if ("select" === x) {
+                                    m = W;
                                     continue;
                                 }
-                                "option" === m && d == W && (D += " selected");
+                                "option" === x && m == W && (N += " selected");
                             }
-                            D += " " + R + '="' + index_module_o(W) + '"';
+                            N += " " + U + '="' + index_module_o(W) + '"';
                         }
                     }
                 }
             }
-            if (S) {
-                var z = D.replace(/^\n\s*/, " ");
-                z === D || ~z.indexOf("\n") ? S && ~D.indexOf("\n") && (D += "\n") : D = z;
+            if (w) {
+                var z = N.replace(/^\n\s*/, " ");
+                z === N || ~z.indexOf("\n") ? w && ~N.indexOf("\n") && (N += "\n") : N = z;
             }
-            if (D = "<" + m + D + ">", String(m).match(/[\s\n\\/='"\0<>]/)) throw new Error(m + " is not a valid HTML tag name in " + D);
-            var E = String(m).match(index_module_g);
-            E && (D = D.replace(/>$/, " />"));
-            var I, U = [];
-            if (T) S && index_module_i(T) && (T = "\n" + w + index_module_a(T, w)), D += T; else if (x && index_module_c(I = [], x.children).length) {
-                for (var Z = S && ~D.indexOf("\n"), B = !1, G = 0; G < I.length; G++) {
-                    var J = I[G];
-                    if (null != J && !1 !== J) {
-                        var K = index_module_v(J, l, f, !0, "svg" === m || "foreignObject" !== m && h, d);
-                        if (S && !Z && index_module_i(K) && (Z = !0), K) if (S) {
-                            var Q = K.length > 0 && "<" != K[0];
-                            B && Q ? U[U.length - 1] += K : U.push(K), B = Q;
-                        } else U.push(K);
+            if (N = "<" + x + N + ">", String(x).match(/[\s\n\\/='"\0<>]/)) throw new Error(x + " is not a valid HTML tag name in " + N);
+            var E = String(x).match(index_module_g);
+            E && (N = N.replace(/>$/, " />"));
+            var I, Z = [];
+            if (D) w && index_module_i(D) && (D = "\n" + k + index_module_a(D, k)), N += D; else if (y && index_module_f(I = [], y.children).length) {
+                for (var B = w && ~N.indexOf("\n"), G = !1, J = 0; J < I.length; J++) {
+                    var K = I[J];
+                    if (null != K && !1 !== K) {
+                        var Q = index_module_h(K, l, p, !0, "svg" === x || "foreignObject" !== x && d, m);
+                        if (w && !B && index_module_i(Q) && (B = !0), Q) if (w) {
+                            var V = Q.length > 0 && "<" != Q[0];
+                            G && V ? Z[Z.length - 1] += Q : Z.push(Q), G = V;
+                        } else Z.push(Q);
                     }
                 }
-                if (S && Z) for (var V = U.length; V--; ) U[V] = "\n" + w + index_module_a(U[V], w);
+                if (w && B) for (var X = Z.length; X--; ) Z[X] = "\n" + k + index_module_a(Z[X], k);
             }
-            if (U.length) D += U.join(""); else if (f && f.xml) return D.substring(0, D.length - 1) + " />";
-            return E || (S && ~D.indexOf("\n") && (D += "\n"), D += "</" + m + ">"), D;
+            if (Z.length) N += Z.join(""); else if (p && p.xml) return N.substring(0, N.length - 1) + " />";
+            return E || (w && ~N.indexOf("\n") && (N += "\n"), N += "</" + x + ">"), N;
         }
-        index_module_v.shallowRender = function(e, t) {
-            return index_module_v(e, t, index_module_f);
+        index_module_h.shallowRender = function(e, t) {
+            return index_module_h(e, t, index_module_p);
         };
-        var index_module = index_module_v;
+        var index_module = index_module_h;
         function utils_isPromise(item) {
             try {
                 if (!item) return !1;
@@ -2097,7 +2101,7 @@
                 if (t.__P) try {
                     t.__H.__h.forEach(hooks_module_), t.__H.__h.forEach(hooks_module_g), t.__H.__h = [];
                 } catch (r) {
-                    return preact_module_n.__e(r, t.__v), !0;
+                    return t.__H.__h = [], preact_module_n.__e(r, t.__v), !0;
                 }
             })), hooks_module_i = [];
         }
@@ -2153,7 +2157,7 @@
             }
         };
         var StyleContext = (l = {}, (u = {
-            __c: "__cC" + preact_module_f++,
+            __c: "__cC" + f++,
             __: void 0,
             Consumer: function(n, l) {
                 return n.children(l);
@@ -2162,9 +2166,9 @@
                 var i, t = this;
                 return this.getChildContext || (i = [], this.getChildContext = function() {
                     return l[u.__c] = t, l;
-                }, this.shouldComponentUpdate = function(l) {
-                    n.value !== l.value && i.some((function(n) {
-                        n.context = l.value, preact_module_k(n);
+                }, this.shouldComponentUpdate = function(n) {
+                    t.props.value !== n.value && i.some((function(l) {
+                        l.context = n.value, preact_module_k(l);
                     }));
                 }, this.sub = function(n) {
                     i.push(n);
@@ -2179,7 +2183,7 @@
         var style_StyleSheet = function(_ref) {
             var cspNonce = _ref.cspNonce, _ref$children = _ref.children, children = void 0 === _ref$children ? null : _ref$children;
             var _useState = hooks_module_v({}), styles = _useState[0], setStyles = _useState[1];
-            return preact_module_h(StyleContext.Provider, {
+            return h(StyleContext.Provider, {
                 value: {
                     cspNonce: cspNonce,
                     addStyle: function(css) {
@@ -2203,11 +2207,11 @@
                         }));
                     }
                 }
-            }, children, preact_module_h((function() {
+            }, children, h((function() {
                 var styleString = Object.keys(styles).filter((function(style) {
                     return styles[style] > 0;
                 })).join("\n");
-                return preact_module_h("style", {
+                return h("style", {
                     nonce: cspNonce
                 }, styleString);
             }), null));
@@ -2230,40 +2234,40 @@
             return children;
         };
         var check_Check = function() {
-            return preact_module_h("svg", {
+            return h("svg", {
                 width: "18px",
                 height: "15px",
                 viewBox: "0 0 18 15",
                 version: "1.1",
                 xmlns: "http://www.w3.org/2000/svg"
-            }, preact_module_h("title", null, "Icons/check"), preact_module_h("desc", null, "Created with Sketch."), preact_module_h("g", {
+            }, h("title", null, "Icons/check"), h("desc", null, "Created with Sketch."), h("g", {
                 id: "✅-Icon-Library",
                 stroke: "none",
                 "stroke-width": "1",
                 fill: "none",
                 "fill-rule": "evenodd"
-            }, preact_module_h("g", {
+            }, h("g", {
                 id: "Icons/check",
                 transform: "translate(-6.000000, -7.000000)",
                 fill: "#0070BA",
                 "fill-rule": "nonzero"
-            }, preact_module_h("path", {
+            }, h("path", {
                 d: "M11.4121381,19.6994417 L22.6691362,7.6974334 C22.9052747,7.44566678 23.3008,7.43299769 23.5525666,7.6691362 C23.8043332,7.90527472 23.8170023,8.30079998 23.5808638,8.5525666 L11.8567862,21.0525666 C11.6057696,21.3201959 11.1792894,21.315028 10.9348317,21.0413946 L6.40890929,15.9753097 C6.17894091,15.7178949 6.20119062,15.3227928 6.45860541,15.0928244 C6.7160202,14.862856 7.11112232,14.8851057 7.34109071,15.1425205 L11.4121381,19.6994417 Z",
                 id: "Path"
             }))));
         };
-        var style_scopedscopeId_fdd787a1 = __webpack_require__(2);
-        var style_scopedscopeId_fdd787a1_default = __webpack_require__.n(style_scopedscopeId_fdd787a1);
+        var style_scopedscopeId_d2ff3bcf = __webpack_require__(2);
+        var style_scopedscopeId_d2ff3bcf_default = __webpack_require__.n(style_scopedscopeId_d2ff3bcf);
         var walletItem_WalletItem = function(_ref) {
             var selected = _ref.selected, details = _ref.details, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
             var _useState = hooks_module_v(selected), showSelected = _useState[0], setShowSelected = _useState[1];
             hooks_module_p((function() {
                 setShowSelected(selected);
             }), [ selected ]);
-            return preact_module_h(style_Style, {
-                css: style_scopedscopeId_fdd787a1_default.a,
-                "data-v-fdd787a1": ""
-            }, preact_module_h("div", {
+            return h(style_Style, {
+                css: style_scopedscopeId_d2ff3bcf_default.a,
+                "data-v-d2ff3bcf": ""
+            }, h("div", {
                 className: "wallet-item " + (selected ? "selected-wallet-item" : ""),
                 onClick: function() {
                     return function(item) {
@@ -2271,48 +2275,48 @@
                         listOpenHandler(!listOpen);
                     }(details.id);
                 },
-                "data-v-fdd787a1": ""
-            }, preact_module_h("div", {
+                "data-v-d2ff3bcf": ""
+            }, h("div", {
                 className: "icon",
-                "data-v-fdd787a1": ""
-            }, preact_module_h("img", {
+                "data-v-d2ff3bcf": ""
+            }, h("img", {
                 src: details.fundingOptionIcon,
-                "data-v-fdd787a1": ""
-            })), preact_module_h("div", {
+                "data-v-d2ff3bcf": ""
+            })), h("div", {
                 className: "description",
-                "data-v-fdd787a1": ""
-            }, preact_module_h("div", {
+                "data-v-d2ff3bcf": ""
+            }, h("div", {
                 className: "name",
-                "data-v-fdd787a1": ""
-            }, details.fundingOptionTitle), preact_module_h("div", {
+                "data-v-d2ff3bcf": ""
+            }, details.fundingOptionTitle), h("div", {
                 className: "details",
-                "data-v-fdd787a1": ""
-            }, preact_module_h("span", {
+                "data-v-d2ff3bcf": ""
+            }, h("span", {
                 className: "type",
-                "data-v-fdd787a1": ""
-            }, details.instrumentSubType, " "), preact_module_h("span", {
+                "data-v-d2ff3bcf": ""
+            }, details.instrumentSubType, " "), h("span", {
                 className: "digits",
-                "data-v-fdd787a1": ""
-            }, details.lastDigits))), details.showPreferredText ? preact_module_h("div", {
+                "data-v-d2ff3bcf": ""
+            }, details.lastDigits))), details.showPreferredText ? h("div", {
                 className: "preferred",
-                "data-v-fdd787a1": ""
-            }, "PREFERRED") : "", preact_module_h("div", {
+                "data-v-d2ff3bcf": ""
+            }, "PREFERRED") : "", h("div", {
                 className: "flex-spacer",
-                "data-v-fdd787a1": ""
-            }), showSelected ? preact_module_h("div", {
+                "data-v-d2ff3bcf": ""
+            }), showSelected ? h("div", {
                 className: "selected",
-                "data-v-fdd787a1": ""
-            }, preact_module_h(check_Check, {
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
+            }, h(check_Check, {
+                "data-v-d2ff3bcf": ""
             })) : ""));
         };
         var style_scopedscopeId_d7b06a5e = __webpack_require__(3);
         var style_scopedscopeId_d7b06a5e_default = __webpack_require__.n(style_scopedscopeId_d7b06a5e);
         var credit_CreditBanner = function() {
-            return preact_module_h(style_Style, {
+            return h(style_Style, {
                 css: style_scopedscopeId_d7b06a5e_default.a,
                 "data-v-d7b06a5e": ""
-            }, preact_module_h("div", {
+            }, h("div", {
                 "data-v-d7b06a5e": ""
             }, "This is where the credit messaging goes..."));
         };
@@ -2348,8 +2352,8 @@
                 lastDigits: "PAYPAL" === subType ? "" : "•••• " + (digits || "")
             };
         };
-        var style_scopedscopeId_d2ff3bcf = __webpack_require__(4);
-        var style_scopedscopeId_d2ff3bcf_default = __webpack_require__.n(style_scopedscopeId_d2ff3bcf);
+        var style_scopedscopeId_fdd787a1 = __webpack_require__(4);
+        var style_scopedscopeId_fdd787a1_default = __webpack_require__.n(style_scopedscopeId_fdd787a1);
         var wallet_Wallet = function(_ref) {
             var checkoutSession = _ref.checkoutSession;
             var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_v(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_v(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
@@ -2359,47 +2363,47 @@
                 }));
                 setSelectedWalletItem(newItem);
             };
-            return preact_module_h(style_Style, {
-                css: style_scopedscopeId_d2ff3bcf_default.a,
-                "data-v-d2ff3bcf": ""
-            }, preact_module_h("div", {
+            return h(style_Style, {
+                css: style_scopedscopeId_fdd787a1_default.a,
+                "data-v-fdd787a1": ""
+            }, h("div", {
                 className: "wallet",
-                "data-v-d2ff3bcf": ""
-            }, listOpen ? "" : preact_module_h(walletItem_WalletItem, {
+                "data-v-fdd787a1": ""
+            }, listOpen ? "" : h(walletItem_WalletItem, {
                 selected: !0,
                 details: buildWalletItemDetails(selectedWalletItem),
                 selectWalletItemHandler: changeSelectedWalletItem,
                 listOpen: listOpen,
                 listOpenHandler: setListOpen,
-                "data-v-d2ff3bcf": ""
-            }), listOpen ? preact_module_h("div", {
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
+            }), listOpen ? h("div", {
+                "data-v-fdd787a1": ""
             }, fundingOptions.map((function(option) {
-                return preact_module_h(walletItem_WalletItem, {
+                return h(walletItem_WalletItem, {
                     selected: option.id === selectedWalletItem.id,
                     details: buildWalletItemDetails(option),
                     selectWalletItemHandler: changeSelectedWalletItem,
                     listOpen: listOpen,
                     listOpenHandler: setListOpen,
-                    "data-v-d2ff3bcf": ""
+                    "data-v-fdd787a1": ""
                 });
-            })), preact_module_h(credit_CreditBanner, {
+            })), h(credit_CreditBanner, {
                 checkoutSession: checkoutSession,
-                "data-v-d2ff3bcf": ""
-            }), preact_module_h("div", {
+                "data-v-fdd787a1": ""
+            }), h("div", {
                 className: "add-card-button",
-                "data-v-d2ff3bcf": ""
-            }, preact_module_h("a", {
+                "data-v-fdd787a1": ""
+            }, h("a", {
                 href: "#",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, "Add debit or credit card"))) : ""));
         };
         var page_style = __webpack_require__(5);
         var style_default = __webpack_require__.n(page_style);
         var page_Page = function(_ref) {
-            return preact_module_h(style_Style, {
+            return h(style_Style, {
                 css: style_default.a
-            }, preact_module_h(wallet_Wallet, {
+            }, h(wallet_Wallet, {
                 checkoutSession: _ref.checkoutSession
             }));
         };
@@ -2407,14 +2411,14 @@
             throw new Error("Not implemented");
         }
         function App(_ref4) {
-            return preact_module_h(style_StyleSheet, {
+            return h(style_StyleSheet, {
                 cspNonce: _ref4.cspNonce
-            }, preact_module_h(page_Page, {
+            }, h(page_Page, {
                 checkoutSession: _ref4.checkoutSession
             }));
         }
         function renderWallet(props) {
-            return index_module(preact_module_h(App, props));
+            return index_module(h(App, props));
         }
         function setupWallet(_ref5) {
             var buyerAccessToken = _ref5.buyerAccessToken, cspNonce = _ref5.cspNonce, checkoutSession = _ref5.checkoutSession;
@@ -2528,9 +2532,9 @@
             !function(l, u, i) {
                 var t, o, f;
                 preact_module_n.__ && preact_module_n.__(l, u), o = (t = i === preact_module_r) ? null : u.__k, 
-                l = preact_module_h(preact_module_d, null, [ l ]), f = [], preact_module_A(u, u.__k = l, o || e, e, void 0 !== u.ownerSVGElement, o ? null : c.slice.call(u.childNodes), f, e, t), 
+                l = h(preact_module_d, null, [ l ]), f = [], preact_module_A(u, u.__k = l, o || e, e, void 0 !== u.ownerSVGElement, o ? null : c.slice.call(u.childNodes), f, e, t), 
                 preact_module_T(f, l);
-            }(preact_module_h(App, {
+            }(h(App, {
                 cspNonce: cspNonce,
                 checkoutSession: checkoutSession
             }), function() {
@@ -2541,4 +2545,3 @@
         }
     } ]);
 }));
-//# sourceMappingURL=smart-wallet.js.map

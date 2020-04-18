@@ -76,10 +76,10 @@ window.spb = function(modules) {
         for (i in l) "key" !== i && "ref" !== i && (o[i] = l[i]);
         if (arguments.length > 3) for (u = [ u ], i = 3; i < arguments.length; i++) u.push(t[i]);
         if (null != u && (o.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === o[i] && (o[i] = n.defaultProps[i]);
-        return p(n, o, l && l.key, l && l.ref);
+        return p(n, o, l && l.key, l && l.ref, null);
     }
-    function p(l, u, i, t) {
-        var o = {
+    function p(l, u, i, t, o) {
+        var r = {
             type: l,
             props: u,
             key: i,
@@ -90,9 +90,10 @@ window.spb = function(modules) {
             __e: null,
             __d: void 0,
             __c: null,
-            constructor: void 0
+            constructor: void 0,
+            __v: o
         };
-        return n.vnode && n.vnode(o), o;
+        return null == o && (r.__v = r), n.vnode && n.vnode(r), r;
     }
     function d(n) {
         return n.children;
@@ -122,9 +123,10 @@ window.spb = function(modules) {
         for (var n; preact_module_i = preact_module_u.length; ) n = preact_module_u.sort((function(n, l) {
             return n.__v.__b - l.__v.__b;
         })), preact_module_u = [], n.some((function(n) {
-            var l, u, i, t, o, r;
-            n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], i = A(r, t, a({}, t), l.__n, void 0 !== r.ownerSVGElement, null, u, null == o ? w(t) : o), 
-            T(u, t), i != o && g(t)));
+            var l, u, i, t, o, r, f;
+            n.__d && (r = (o = (l = n).__v).__e, (f = l.__P) && (u = [], (i = a({}, o)).__v = i, 
+            t = A(f, o, i, l.__n, void 0 !== f.ownerSVGElement, null, u, null == r ? w(o) : r), 
+            T(u, o), t != r && g(o)));
         }));
     }
     function b(n, l, u, i, t, o, r, f, s) {
@@ -157,7 +159,7 @@ window.spb = function(modules) {
         if (g) for (a = 0; a < g.length; a++) j(g[a], g[++a], g[++a]);
     }
     function x(n, l, u) {
-        if (null == u && (u = []), null == n || "boolean" == typeof n) l && u.push(l(null)); else if (Array.isArray(n)) for (var i = 0; i < n.length; i++) x(n[i], l, u); else u.push(l ? l("string" == typeof n || "number" == typeof n ? p(null, n, null, null) : null != n.__e || null != n.__c ? p(n.type, n.props, n.key, null) : n) : n);
+        if (null == u && (u = []), null == n || "boolean" == typeof n) l && u.push(l(null)); else if (Array.isArray(n)) for (var i = 0; i < n.length; i++) x(n[i], l, u); else u.push(l ? l("string" == typeof n || "number" == typeof n ? p(null, n, null, null, n) : null != n.__e || null != n.__c ? p(n.type, n.props, n.key, null, n.__v) : n) : n);
         return u;
     }
     function C(n, l, u) {
@@ -166,12 +168,12 @@ window.spb = function(modules) {
     function N(n, l, u, i, t) {
         var o, r, f, e, c;
         if (t ? "className" === l && (l = "class") : "class" === l && (l = "className"), 
-        "key" === l || "children" === l) ; else if ("style" === l) if (o = n.style, "string" == typeof u) o.cssText = u; else {
-            if ("string" == typeof i && (o.cssText = "", i = null), i) for (r in i) u && r in u || C(o, r, "");
-            if (u) for (f in u) i && u[f] === i[f] || C(o, f, u[f]);
-        } else "o" === l[0] && "n" === l[1] ? (e = l !== (l = l.replace(/Capture$/, "")), 
-        c = l.toLowerCase(), l = (c in n ? c : l).slice(2), u ? (i || n.addEventListener(l, z, e), 
-        (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, z, e)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
+        "style" === l) if (o = n.style, "string" == typeof u) o.cssText = u; else {
+            if ("string" == typeof i && (o.cssText = "", i = null), i) for (e in i) u && e in u || C(o, e, "");
+            if (u) for (c in u) i && u[c] === i[c] || C(o, c, u[c]);
+        } else "o" === l[0] && "n" === l[1] ? (r = l !== (l = l.replace(/Capture$/, "")), 
+        f = l.toLowerCase(), l = (f in n ? f : l).slice(2), u ? (i || n.addEventListener(l, z, r), 
+        (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, z, r)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
     }
     function z(l) {
         this.l[l.type](n.event ? n.event(l) : l);
@@ -190,9 +192,9 @@ window.spb = function(modules) {
                 a(v.__s, P.getDerivedStateFromProps(k, v.__s))), p = v.props, y = v.state, h) null == P.getDerivedStateFromProps && null != v.componentWillMount && v.componentWillMount(), 
                 null != v.componentDidMount && v.__h.push(v.componentDidMount); else {
                     if (null == P.getDerivedStateFromProps && k !== p && null != v.componentWillReceiveProps && v.componentWillReceiveProps(k, x), 
-                    !v.__e && null != v.shouldComponentUpdate && !1 === v.shouldComponentUpdate(k, v.__s, x)) {
-                        for (v.props = k, v.state = v.__s, v.__d = !1, v.__v = u, u.__e = i.__e, u.__k = i.__k, 
-                        v.__h.length && f.push(v), s = 0; s < u.__k.length; s++) u.__k[s] && (u.__k[s].__ = u);
+                    !v.__e && null != v.shouldComponentUpdate && !1 === v.shouldComponentUpdate(k, v.__s, x) || u.__v === i.__v && !v.__) {
+                        for (v.props = k, v.state = v.__s, u.__v !== i.__v && (v.__d = !1), v.__v = u, u.__e = i.__e, 
+                        u.__k = i.__k, v.__h.length && f.push(v), s = 0; s < u.__k.length; s++) u.__k[s] && (u.__k[s].__ = u);
                         break n;
                     }
                     null != v.componentWillUpdate && v.componentWillUpdate(k, v.__s, x), null != v.componentDidUpdate && v.__h.push((function() {
@@ -204,10 +206,10 @@ window.spb = function(modules) {
                 null != v.getChildContext && (t = a(a({}, t), v.getChildContext())), h || null == v.getSnapshotBeforeUpdate || (w = v.getSnapshotBeforeUpdate(p, y)), 
                 b(l, u, i, t, o, r, f, e, c), v.base = u.__e, v.__h.length && f.push(v), g && (v.__E = v.__ = null), 
                 v.__e = !1;
-            } else u.__e = $(i.__e, u, i, t, o, r, f, c);
+            } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = $(i.__e, u, i, t, o, r, f, c);
             (s = n.diffed) && s(u);
         } catch (l) {
-            n.__e(l, u, i);
+            u.__v = null, n.__e(l, u, i);
         }
         return u.__e;
     }
@@ -232,9 +234,9 @@ window.spb = function(modules) {
             if (null === l.type) return document.createTextNode(d);
             n = t ? document.createElementNS("http://www.w3.org/2000/svg", l.type) : document.createElement(l.type, d.is && {
                 is: d.is
-            }), o = null;
+            }), o = null, f = !1;
         }
-        if (null === l.type) y !== d && n.data != d && (n.data = d); else if (l !== u) {
+        if (null === l.type) y !== d && n.data != d && (n.data = d); else {
             if (null != o && (o = c.slice.call(n.childNodes)), v = (y = u.props || e).dangerouslySetInnerHTML, 
             h = d.dangerouslySetInnerHTML, !f) {
                 if (y === e) for (y = {}, p = 0; p < n.attributes.length; p++) y[n.attributes[p].name] = n.attributes[p].value;
@@ -242,8 +244,8 @@ window.spb = function(modules) {
             }
             (function(n, l, u, i, t) {
                 var o;
-                for (o in u) o in l || N(n, o, null, u[o], i);
-                for (o in l) t && "function" != typeof l[o] || "value" === o || "checked" === o || u[o] === l[o] || N(n, o, l[o], u[o], i);
+                for (o in u) "children" === o || "key" === o || o in l || N(n, o, null, u[o], i);
+                for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || N(n, o, l[o], u[o], i);
             })(n, d, y, t, f), l.__k = l.props.children, h || b(n, l, u, i, "foreignObject" !== l.type && t, o, r, e, f), 
             f || ("value" in d && void 0 !== d.value && d.value !== n.value && (n.value = null == d.value ? "" : d.value), 
             "checked" in d && void 0 !== d.checked && d.checked !== n.checked && (n.checked = d.checked));
@@ -321,7 +323,7 @@ window.spb = function(modules) {
             if (t.__P) try {
                 t.__H.__h.forEach(hooks_module_), t.__H.__h.forEach(hooks_module_g), t.__H.__h = [];
             } catch (r) {
-                return n.__e(r, t.__v), !0;
+                return t.__H.__h = [], n.__e(r, t.__v), !0;
             }
         })), hooks_module_i = [];
     }
@@ -1163,4 +1165,3 @@ window.spb = function(modules) {
         var l, u, i, t, o, f;
     }
 } ]);
-//# sourceMappingURL=smart-menu.js.map
