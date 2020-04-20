@@ -48,6 +48,10 @@ export function getCurrentScriptUrl() : string {
             scriptUrl = scriptUrl.replace('http://', 'https://');
         }
 
+        if (scriptUrl.indexOf('//www.paypalobjects.com') === 0) {
+            scriptUrl = `https://${ scriptUrl }`;
+        }
+
         return scriptUrl;
     }
 
