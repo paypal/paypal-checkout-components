@@ -1546,10 +1546,8 @@
             }));
         }
         function callSmartAPI(_ref3) {
-            var _reqHeaders;
-            var accessToken = _ref3.accessToken, url = _ref3.url, _ref3$method = _ref3.method, method = void 0 === _ref3$method ? "get" : _ref3$method, json = _ref3.json;
-            var reqHeaders = ((_reqHeaders = {})["x-requested-by"] = "smart-payment-buttons", 
-            _reqHeaders);
+            var accessToken = _ref3.accessToken, url = _ref3.url, _ref3$method = _ref3.method, method = void 0 === _ref3$method ? "get" : _ref3$method, _ref3$headers = _ref3.headers, reqHeaders = void 0 === _ref3$headers ? {} : _ref3$headers, json = _ref3.json;
+            reqHeaders["x-requested-by"] = "smart-payment-buttons";
             accessToken && (reqHeaders["x-paypal-internal-euat"] = accessToken);
             return request({
                 url: url,
@@ -1608,11 +1606,13 @@
             }));
         }
         memoize((function(orderID) {
+            var _headers15;
             return callGraphQL({
                 query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID
-                }
+                },
+                headers: (_headers15 = {}, _headers15["paypal-client-context"] = orderID, _headers15)
             });
         }));
         memoize((function(config) {
@@ -1759,7 +1759,7 @@
                             var buyerAccessToken = _ref2.buyerAccessToken, orderID = _ref2.orderID;
                             return callGraphQL({
                                 headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
-                                _headers),
+                                _headers["paypal-client-context"] = orderID, _headers),
                                 query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
                                 variables: {
                                     facilitatorAccessToken: facilitatorAccessToken,
@@ -1828,7 +1828,7 @@
                                         accessToken: _ref2.facilitatorAccessToken,
                                         url: "/v2/checkout/orders/" + orderID,
                                         headers: (_headers2 = {}, _headers2["paypal-partner-attribution-id"] = _ref2.partnerAttributionID || "", 
-                                        _headers2)
+                                        _headers2["paypal-client-context"] = orderID, _headers2)
                                     }) : callSmartAPI({
                                         accessToken: buyerAccessToken,
                                         url: "/smart/api/order/" + orderID
@@ -1843,7 +1843,7 @@
                             var capture = memoize((function() {
                                 if ("capture" !== intent) throw new Error("Use intent=capture to use client-side capture");
                                 return function(orderID, _ref3) {
-                                    var _headers3;
+                                    var _headers3, _headers4;
                                     var buyerAccessToken = _ref3.buyerAccessToken, _ref3$forceRestAPI = _ref3.forceRestAPI;
                                     return void 0 !== _ref3$forceRestAPI && _ref3$forceRestAPI ? callRestAPI({
                                         accessToken: _ref3.facilitatorAccessToken,
@@ -1854,7 +1854,8 @@
                                     }) : callSmartAPI({
                                         accessToken: buyerAccessToken,
                                         method: "post",
-                                        url: "/smart/api/order/" + orderID + "/capture"
+                                        url: "/smart/api/order/" + orderID + "/capture",
+                                        headers: (_headers4 = {}, _headers4["paypal-client-context"] = orderID, _headers4)
                                     });
                                 }(orderID, {
                                     facilitatorAccessToken: facilitatorAccessToken,
@@ -1866,18 +1867,19 @@
                             var authorize = memoize((function() {
                                 if ("authorize" !== intent) throw new Error("Use intent=authorize to use client-side authorize");
                                 return function(orderID, _ref4) {
-                                    var _headers4;
+                                    var _headers5, _headers6;
                                     var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI;
                                     return void 0 !== _ref4$forceRestAPI && _ref4$forceRestAPI ? callRestAPI({
                                         accessToken: _ref4.facilitatorAccessToken,
                                         method: "post",
                                         url: "/v2/checkout/orders/" + orderID + "/authorize",
-                                        headers: (_headers4 = {}, _headers4["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
-                                        _headers4)
+                                        headers: (_headers5 = {}, _headers5["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
+                                        _headers5)
                                     }) : callSmartAPI({
                                         accessToken: buyerAccessToken,
                                         method: "post",
-                                        url: "/smart/api/order/" + orderID + "/authorize"
+                                        url: "/smart/api/order/" + orderID + "/authorize",
+                                        headers: (_headers6 = {}, _headers6["paypal-client-context"] = orderID, _headers6)
                                     });
                                 }(orderID, {
                                     facilitatorAccessToken: facilitatorAccessToken,
@@ -1892,7 +1894,7 @@
                                 patch: function(data) {
                                     void 0 === data && (data = {});
                                     return function(orderID, data, _ref5) {
-                                        var _headers5;
+                                        var _headers7, _headers8;
                                         var facilitatorAccessToken = _ref5.facilitatorAccessToken, buyerAccessToken = _ref5.buyerAccessToken, partnerAttributionID = _ref5.partnerAttributionID, _ref5$forceRestAPI = _ref5.forceRestAPI, forceRestAPI = void 0 !== _ref5$forceRestAPI && _ref5$forceRestAPI;
                                         var patchData = Array.isArray(data) ? {
                                             patch: data
@@ -1902,15 +1904,16 @@
                                             method: "patch",
                                             url: "/v2/checkout/orders/" + orderID,
                                             data: patchData,
-                                            headers: (_headers5 = {}, _headers5["paypal-partner-attribution-id"] = partnerAttributionID || "", 
-                                            _headers5)
+                                            headers: (_headers7 = {}, _headers7["paypal-partner-attribution-id"] = partnerAttributionID || "", 
+                                            _headers7)
                                         }) : callSmartAPI({
                                             accessToken: buyerAccessToken,
                                             method: "post",
                                             url: "/smart/api/order/" + orderID + "/patch",
                                             json: {
                                                 data: patchData
-                                            }
+                                            },
+                                            headers: (_headers8 = {}, _headers8["paypal-client-context"] = orderID, _headers8)
                                         });
                                     }(orderID, data, {
                                         facilitatorAccessToken: facilitatorAccessToken,
@@ -2431,25 +2434,28 @@
                             var onApprove = props.onApprove;
                             var planID = _ref.checkoutSession.fundingOptions[0].allPlans[0].id;
                             return (0, props.createOrder)().then((function(orderID) {
-                                return callGraphQL({
-                                    query: "\n            mutation ApproveOrder(\n                $orderID : String!\n                $planID : String\n                $instrumentID : String\n            ) {\n                approvePayment(\n                    token: $orderID\n                    selectedPlanId: $planID\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    buyer {\n                        userId\n                    }\n                }\n            }\n        ",
-                                    variables: {
-                                        orderID: (_ref10 = {
+                                return function(_ref10) {
+                                    var _headers14;
+                                    var orderID = _ref10.orderID;
+                                    return callGraphQL({
+                                        query: "\n            mutation ApproveOrder(\n                $orderID : String!\n                $planID : String\n                $instrumentID : String\n            ) {\n                approvePayment(\n                    token: $orderID\n                    selectedPlanId: $planID\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    buyer {\n                        userId\n                    }\n                }\n            }\n        ",
+                                        variables: {
                                             orderID: orderID,
-                                            planID: planID,
-                                            buyerAccessToken: buyerAccessToken
-                                        }).orderID,
-                                        planID: _ref10.planID,
-                                        instrumentID: _ref10.instrumentID
-                                    },
-                                    headers: (_headers9 = {}, _headers9["x-paypal-internal-euat"] = _ref10.buyerAccessToken, 
-                                    _headers9)
-                                }).then((function(_ref11) {
-                                    return {
-                                        payerID: _ref11.approvePayment.buyer.userId
-                                    };
-                                }));
-                                var _ref10, _headers9;
+                                            planID: _ref10.planID,
+                                            instrumentID: _ref10.instrumentID
+                                        },
+                                        headers: (_headers14 = {}, _headers14["x-paypal-internal-euat"] = _ref10.buyerAccessToken, 
+                                        _headers14["paypal-client-context"] = orderID, _headers14)
+                                    }).then((function(_ref11) {
+                                        return {
+                                            payerID: _ref11.approvePayment.buyer.userId
+                                        };
+                                    }));
+                                }({
+                                    orderID: orderID,
+                                    planID: planID,
+                                    buyerAccessToken: buyerAccessToken
+                                });
                             })).then((function(_ref2) {
                                 return onApprove({
                                     payerID: _ref2.payerID
