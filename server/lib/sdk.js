@@ -5,9 +5,9 @@ import { undotify } from 'belter';
 
 import type { ExpressRequest, ExpressResponse, LoggerType, CacheType } from '../types';
 import { startWatchers } from '../watchers';
-import { EVENT } from '../config';
+import { EVENT, ERROR_CODE } from '../config';
 
-import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType, getLogBuffer, safeJSON } from './util';
+import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType, getLogBuffer, safeJSON, isError } from './util';
 
 function getSDKMetaString(req : ExpressRequest) : string {
     const sdkMeta = req.query.sdkMeta || '';
@@ -86,6 +86,10 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
             logBuffer.flush(req);
 
         } catch (err) {
+            if (isError(err, ERROR_CODE.VALIDATION_ERROR)) {
+                return clientErrorResponse(res, err.message);
+            }
+
             console.error(err.stack ? err.stack : err); // eslint-disable-line no-console
             logger.error(req, EVENT.ERROR, { err: err.stack ? err.stack : err.toString() });
             return serverErrorResponse(res, err.stack ? err.stack : err.toString());

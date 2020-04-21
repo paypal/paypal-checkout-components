@@ -31,3 +31,7 @@ export const EVENT = {
 export const AUTH_ERROR_CODE = {
     INVALID_CLIENT: 'invalid_client'
 };
+
+export const ERROR_CODE = {
+    VALIDATION_ERROR: 'validation_error'
+};

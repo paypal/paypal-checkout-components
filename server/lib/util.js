@@ -156,3 +156,19 @@ export function getCookieString(req : ExpressRequest) : string {
         return `${ key }=${ value };`;
     }).join('');
 }
+
+export function makeError(code : string, message : string, originalError? : Error) : Error {
+    if (originalError && originalError.stack) {
+        message = `${ message }\n\n${ originalError.stack }`;
+    }
+    const err = new Error(message);
+    // $FlowFixMe
+    err.code = code;
+    return err;
+}
+
+export function isError(error? : Error, ...codes : $ReadOnlyArray<string>) : boolean {
+    // $FlowFixMe
+    const errorCode = error && error.code;
+    return Boolean(errorCode && codes.some(code => (errorCode === code)));
+}
