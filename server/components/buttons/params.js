@@ -168,12 +168,24 @@ function getBuyerCountry(req : ExpressRequest, params : ParamsType) : $Values<ty
 }
 
 function getLocale(params : ParamsType) : LocaleType {
-    const {
+    let {
         locale: {
             country = DEFAULT_COUNTRY,
-            lang = COUNTRY_LANGS[country][0]
+            lang
         } = {}
     } = params;
+
+    const langs = COUNTRY_LANGS[country];
+
+    if (!langs) {
+        throw makeError(ERROR_CODE.VALIDATION_ERROR, `Invalid locale country: ${ country }`);
+    }
+
+    lang = lang || langs[0];
+
+    if (langs.indexOf(lang) === -1) {
+        throw makeError(ERROR_CODE.VALIDATION_ERROR, `Invalid locale language: ${ lang }`);
+    }
 
     return {
         country,
