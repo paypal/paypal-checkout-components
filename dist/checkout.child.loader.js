@@ -226,4 +226,3 @@
         for (var _i6 = 0, _namespaces4 = namespaces; _i6 < _namespaces4.length; _i6++) window[_namespaces4[_i6]] = xports;
     }(__webpack_require__(1), [ "paypal" ]);
 } ]);
-//# sourceMappingURL=checkout.child.loader.js.map

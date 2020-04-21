@@ -1990,7 +1990,7 @@
         locales: constants.z,
         scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.312",
+        version: "4.0.313",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -6442,7 +6442,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.312";
+            payload.version = "4.0.313";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -7287,18 +7287,18 @@
     var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
     __webpack_require__(24);
-    if (window.paypal && "4.0.312" === window.paypal.version) {
+    if (window.paypal && "4.0.313" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.312"
+            version: "4.0.313"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.312) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.313) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.312" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.313" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.312"
+            version: "4.0.313"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.312");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.313");
     }
     try {
         var _interface = __webpack_require__(42);
@@ -9972,16 +9972,17 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.312";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.313";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
         if (script && "string" == typeof script.src) {
             var scriptUrl = script.src;
             0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
+            0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https://" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.312.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.313.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -23346,7 +23347,7 @@
                 logoColor: "blue"
             })));
         }(props_normalizeProps(props)) : null;
-        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref20 = {}, _ref20[src_constants.c.VERSION] = "4.0.312", 
+        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref20 = {}, _ref20[src_constants.c.VERSION] = "4.0.313", 
         _ref20), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -24703,7 +24704,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.312"
+                    ver: "4.0.313"
                 };
             }));
             Object(beaver_logger_client.a)((function() {
@@ -24860,7 +24861,7 @@
     }
     var interface_postRobot = src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.312";
+    var interface_version = "4.0.313";
     var interface_Checkout;
     var interface_BillingPage;
     var PayPalCheckout;
@@ -24888,4 +24889,3 @@
     }
     __webpack_exports__.default = src_interface_namespaceObject;
 } ]);
-//# sourceMappingURL=checkout.v4.js.map
