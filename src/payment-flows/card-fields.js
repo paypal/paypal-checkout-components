@@ -166,8 +166,6 @@ function initCardFields({ props, components, payment, serviceData, config } : In
         cspNonce
     });
 
-    cardFieldsOpen = true;
-
     const start = () => {
         cardFieldsOpen = true;
         const renderPromise = render('#card-fields-container');
@@ -178,7 +176,9 @@ function initCardFields({ props, components, payment, serviceData, config } : In
 
     const close = () => {
         slideDownButtons();
-        return closeCardFields();
+        return closeCardFields().then(() => {
+            cardFieldsOpen = false;
+        });
     };
 
     return { start, close };
