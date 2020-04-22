@@ -242,9 +242,9 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         });
     });
 
-    const getNativePopupUrl = memoize(() : string => {
+    const getNativePopupUrl = memoize(({ sessionUID }) : string => {
         return extendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
-            query: { sdkMeta }
+            query: { sdkMeta, sessionUID }
         });
     });
 
@@ -444,7 +444,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
-        const popupWin = popup(getNativePopupUrl());
+        const popupWin = popup(getNativePopupUrl({ sessionUID }));
 
         const closeListener = onCloseWindow(popupWin, () => {
             return ZalgoPromise.delay(1000).then(() => {
