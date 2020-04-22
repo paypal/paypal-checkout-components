@@ -491,7 +491,12 @@ export const ORDER_VALIDATION_WHITELIST = [
     'AUKvgsLekmtbfmbTZadqyWaGa8DWOvMsiDaURUW02BxlXzHIBTBzxiUsLqEaHCrCdNJTB0wYV1zeU_7f',
     'Ae78ZfS3n0VwwsRs72OKgr5ftSyDzt1nDuNZOVkH5S_5kFWX_dEos-JxEPCtksCcF7hTESFIOl2aqFcT',
     'AZ0VQKlQnhFkU9Jbd96BIMPmyI_cvrRaPkWOuMoRW7UPvczAsnG-9S_mlPh4DWAZz4kd8OLbVa4w96Rs',
-    'AVuI4Yp-EWv6x9winEG-YiVcqzwbJvmArOBXXhzAQkCGP9TgMar3ubQdRmsJxREwmSFbLlzgR-Nj0CAW'
+    'AVuI4Yp-EWv6x9winEG-YiVcqzwbJvmArOBXXhzAQkCGP9TgMar3ubQdRmsJxREwmSFbLlzgR-Nj0CAW',
+    'AVprADxNJhFQNlRSRMfFt2jbD3tErjYUa7oe0gHfy6hoCREK_1pYEkp0_zwNwSmFMDLKATKdCOBn_Wfv',
+    'AasxOtHMRE4YYG9yuhj-b7AXliaTL0RX8A8Gxby5PKwqQarRhRWbh-52Me5-q02Y_i8_u5Chr2-FeLZL',
+    'Ae5TI7LcDvUcz2kn__X38Xzsxbxhm1vZxeyDVMxxEq4g6WlAs7WojPbvEfkKA0xMn98tumiSLvVKLDBs',
+    'AQKieExqN7l0BH2tRVHqwKqmO1OMheTGbSOFa88DntLF1X1gSBulgivXX3EtrgMta4EDSOSaefHF9XeU',
+    'AczvgJdJSXtSxPO58fyvUXsQcLdfIGerTZJ7llbZksgOb3z160wVtPoGoJlwjGDx1x4a42JMqe0C3Mdq'
 ];
 
 export const SANDBOX_ORDER_VALIDATION_WHITELIST = [
