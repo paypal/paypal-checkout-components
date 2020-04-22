@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { stringifyError } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { getSupplementalOrderInfo, approveOrder, exchangeAccessTokenForIDToken } from '../api';
+import { getSupplementalOrderInfo, exchangeAccessTokenForAuthCode, oneClickApproveOrder } from '../api';
 import { BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
 
@@ -71,13 +71,17 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
         return false;
     }
 
+    if (!instrument.type) {
+        return false;
+    }
+
     return true;
 }
 
 function initWalletCapture({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove } = props;
-    const { instrumentID } = payment;
-    const { buyerAccessToken } = serviceData;
+    const { fundingSource, instrumentID } = payment;
+    const { buyerAccessToken, wallet } = serviceData;
 
     if (!instrumentID) {
         throw new Error(`Instrument id required for wallet capture`);
@@ -87,11 +91,30 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
         throw new Error(`Buyer access token required for wallet capture`);
     }
 
+    // $FlowFixMe
+    const walletFunding = wallet[fundingSource];
+
+    if (!walletFunding) {
+        throw new Error(`Expected wallet to be present`);
+    }
+
+    const instrument = walletFunding.instruments.find(inst => inst.instrumentID === instrumentID);
+
+    if (!instrument) {
+        throw new Error(`Expected instrument to be present`);
+    }
+
+    const { type: instrumentType } = instrument;
+
+    if (!instrumentType) {
+        throw new Error(`Expected instrumen type`);
+    }
+
     const fallbackToWebCheckout = () => {
         getLogger().info('web_checkout_fallback').flush();
-        return exchangeAccessTokenForIDToken(buyerAccessToken).then(idToken => {
+        return exchangeAccessTokenForAuthCode(buyerAccessToken).then(authCode => {
             return checkout.init({ props, components, serviceData, payment: {
-                ...payment, idToken, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING
+                ...payment, authCode, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING
             }, config }).start();
         });
     };
@@ -125,7 +148,7 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
                     return fallbackToWebCheckout();
                 }
 
-                return approveOrder({ orderID, buyerAccessToken, instrumentID })
+                return oneClickApproveOrder({ orderID, instrumentType, buyerAccessToken, instrumentID })
                     .then(({ payerID }) => {
                         return onApprove({ payerID }, { restart });
                     }, err => {

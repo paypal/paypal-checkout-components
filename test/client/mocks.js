@@ -468,11 +468,11 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                 };
             }
 
-            if (data.query.includes('query ExchangeIDToken')) {
+            if (data.query.includes('query ExchangeAuthCode')) {
                 return {
                     data: {
-                        identity: {
-                            idToken: uniqueID()
+                        auth: {
+                            authCode: uniqueID()
                         }
                     }
                 };

@@ -2,7 +2,7 @@
 /* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
 
 import { wrapPromise, uniqueID } from 'belter/src';
-import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
+import { FUNDING, INTENT, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock, generateOrderID } from './mocks';
 
@@ -12,7 +12,6 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
             const payerID = uniqueID();
-            window.xprops.clientAccessToken = uniqueID();
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
@@ -47,13 +46,11 @@ describe('wallet cases', () => {
                         };
                     }
 
-                    if (data.query.includes('mutation ApproveOrder')) {
+                    if (data.query.includes('mutation OneClickApproveOrder')) {
                         return {
                             data: {
-                                approvePayment: {
-                                    buyer: {
-                                        userId: payerID
-                                    }
+                                oneClickPayment: {
+                                    userId: payerID
                                 }
                             }
                         };
@@ -84,6 +81,7 @@ describe('wallet cases', () => {
                 [ FUNDING.PAYPAL ]: {
                     instruments: [
                         {
+                            type:     WALLET_INSTRUMENT.CARD,
                             instrumentID,
                             oneClick: true
                         }
@@ -107,7 +105,6 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
             const payerID = uniqueID();
-            window.xprops.clientAccessToken = uniqueID();
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
@@ -142,13 +139,11 @@ describe('wallet cases', () => {
                         };
                     }
 
-                    if (data.query.includes('mutation ApproveOrder')) {
+                    if (data.query.includes('mutation OneClickApproveOrder')) {
                         return {
                             data: {
-                                approvePayment: {
-                                    buyer: {
-                                        userId: payerID
-                                    }
+                                oneClickPayment: {
+                                    userId: payerID
                                 }
                             }
                         };
@@ -179,6 +174,7 @@ describe('wallet cases', () => {
                 [FUNDING.PAYPAL]: {
                     instruments: [
                         {
+                            type:     WALLET_INSTRUMENT.CARD,
                             instrumentID,
                             oneClick: true
                         }
@@ -200,7 +196,6 @@ describe('wallet cases', () => {
 
     it('should pay with a wallet instrument with shipping required and fall back to checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
-            window.xprops.clientAccessToken = uniqueID();
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
@@ -253,6 +248,7 @@ describe('wallet cases', () => {
                 [FUNDING.PAYPAL]: {
                     instruments: [
                         {
+                            type:     WALLET_INSTRUMENT.CARD,
                             instrumentID,
                             oneClick: true
                         }
@@ -274,7 +270,6 @@ describe('wallet cases', () => {
 
     it('should pay with a wallet instrument with shipping not required and oneClick not allowed and fall back to checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
-            window.xprops.clientAccessToken = uniqueID();
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
@@ -327,6 +322,7 @@ describe('wallet cases', () => {
                 [FUNDING.PAYPAL]: {
                     instruments: [
                         {
+                            type:     WALLET_INSTRUMENT.CARD,
                             instrumentID,
                             oneClick: false
                         }
@@ -348,7 +344,6 @@ describe('wallet cases', () => {
 
     it('should pay with a wallet instrument, hit an error during approve, and fall back to checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
-            window.xprops.clientAccessToken = uniqueID();
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
@@ -380,7 +375,7 @@ describe('wallet cases', () => {
                         };
                     }
 
-                    if (data.query.includes('mutation ApproveOrder')) {
+                    if (data.query.includes('mutation OneClickApproveOrder')) {
                         return {
                             errors: [
                                 {
@@ -411,6 +406,7 @@ describe('wallet cases', () => {
                 [FUNDING.PAYPAL]: {
                     instruments: [
                         {
+                            type:     WALLET_INSTRUMENT.CARD,
                             instrumentID,
                             oneClick: true
                         }

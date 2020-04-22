@@ -2,7 +2,7 @@
 
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { COUNTRY, LANG, FUNDING, CARD } from '@paypal/sdk-constants/src';
+import { COUNTRY, LANG, FUNDING, CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { CONTEXT } from './constants';
 
@@ -222,7 +222,7 @@ export type CheckoutFlowType = {
         sessionID : string,
         buttonSessionID : string,
         clientAccessToken? : ?string,
-        idToken? : string,
+        authCode? : string,
         createOrder : () => ZalgoPromise<string>,
         onApprove : ({| payerID : string, paymentID : ?string, billingToken : ?string, subscriptionID : ?string |}) => ZalgoPromise<void> | void,
         onAuth : ({| accessToken : string |}) => ZalgoPromise<void> | void,
@@ -290,7 +290,9 @@ export type ContentType = {|
     chooseCardOrShipping : string,
     useDifferentAccount : string,
     deleteVaultedAccount : string,
-    deleteVaultedCard : string
+    deleteVaultedCard : string,
+    chooseCard : string,
+    balance : string
 |};
 
 export type PostRobot = {|
@@ -307,7 +309,7 @@ export type PayPal = {|
 |};
 
 export type WalletInstrument = {|
-    funding : $Values<typeof FUNDING>,
+    type? : $Values<typeof WALLET_INSTRUMENT>,
     label? : string,
     logoUrl? : string,
     instrumentID? : string,
@@ -323,5 +325,5 @@ export type WalletPaymentType = {|
 export type Wallet = {|
     paypal : WalletPaymentType,
     card : WalletPaymentType,
-    bank : WalletPaymentType
+    credit : WalletPaymentType
 |};

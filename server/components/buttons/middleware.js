@@ -8,6 +8,7 @@ import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, 
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
 import { AUTH_ERROR_CODE } from '../../config';
 import { resolveWallet } from '../../service/wallet';
+import type { ContentType } from '../../../src/types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { EVENT } from './constants';
@@ -38,9 +39,7 @@ type ButtonMiddlewareOptions = {|
     getWallet : GetWallet,
     content : {
         [$Values<typeof COUNTRY>] : {
-            [$Values<typeof LANG>] : {
-                [string] : string
-            }
+            [$Values<typeof LANG>] : ContentType
         }
     }
 |};
@@ -60,6 +59,8 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             if (!clientID) {
                 return clientErrorResponse(res, 'Please provide a clientID query parameter');
             }
+
+            const content = smartContent[locale.country][locale.lang] || {};
 
             const facilitatorAccessTokenPromise = getAccessToken(req, clientID);
             const merchantIDPromise = facilitatorAccessTokenPromise.then(facilitatorAccessToken => resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken }));
@@ -84,7 +85,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const buyerAccessToken = await buyerAccessTokenPromise;
             const walletPromise = resolveWallet(req, gqlBatch, getWallet, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault, amount,
-                disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken
+                disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, content
             });
 
             const personalizationPromise = resolvePersonalization(req, gqlBatch, {
@@ -123,8 +124,6 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             logger.info(req, `button_render_version_${ render.version }`);
             logger.info(req, `button_client_version_${ client.version }`);
-
-            const content = smartContent[locale.country][locale.lang] || {};
 
             const buttonProps = {
                 ...params, nonce: cspNonce, csp: { nonce: cspNonce },

@@ -143,7 +143,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
         createBillingAgreement, createSubscription, onClick, enableThreeDomainSecure,
         partnerAttributionID } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken, venmoPayloadID, buyerIntent,
-        paymentMethodID, idToken } = payment;
+        paymentMethodID, authCode } = payment;
     const { fundingEligibility, buyerCountry } = serviceData;
     const { cspNonce } = config;
 
@@ -170,7 +170,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             clientAccessToken,
             buyerAccessToken,
             venmoPayloadID,
-            idToken,
+            authCode,
     
             createOrder: () => {
                 return createOrder().then(orderID => {

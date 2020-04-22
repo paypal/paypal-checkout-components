@@ -249,7 +249,9 @@ const content = {
             chooseCardOrShipping: 'Choose card or shipping',
             useDifferentAccount:  'Use different account',
             deleteVaultedAccount: 'Forget this account',
-            deleteVaultedCard:    'Forget this card'
+            deleteVaultedCard:    'Forget this card',
+            chooseCard:           'Choose card',
+            balance:              'Balance'
         }
     }
 };

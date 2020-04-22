@@ -24,7 +24,7 @@ export type Payment = {|
     card : ?$Values<typeof CARD>,
     paymentMethodID? : ?string,
     instrumentID? : ?string,
-    idToken? : string,
+    authCode? : string,
     isClick? : boolean,
     buyerAccessToken? : ?string,
     venmoPayloadID? : string,

@@ -1,12 +1,14 @@
 /* @flow */
 
-import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal/sdk-constants';
+import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants';
 import { params, types, query } from 'typed-graphqlify';
 import { values } from 'belter';
 
-import type { Wallet } from '../../src/types';
+
+import type { Wallet, ContentType } from '../../src/types';
 import { type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
+
 
 type SmartWallet = {|
     funding_options : $ReadOnlyArray<{|
@@ -27,9 +29,8 @@ type SmartWallet = {|
                 id : string,
                 account_number : string
             |},
-            amount? : {|
-                value : string,
-                currency : string
+            balance? : {|
+                id : string
             |}
         |}>
     |}>
@@ -39,7 +40,7 @@ export type GetWallet = (ExpressRequest, {|
     clientID : string,
     merchantID : ?$ReadOnlyArray<string>,
     buyerAccessToken : string,
-    amount? : ?string,
+    amount : string,
     currency : $Values<typeof CURRENCY>
 |}) => Promise<SmartWallet>;
 
@@ -139,21 +140,22 @@ export type WalletOptions = {|
     buttonSessionID : string,
     clientAccessToken : ?string,
     buyerAccessToken : ?string,
-    amount : ?string
+    amount : ?string,
+    content : ContentType
 |};
 
 // eslint-disable-next-line complexity
 export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatch, getWallet : GetWallet, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount } : WalletOptions) : Promise<Wallet> {
+    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount, content } : WalletOptions) : Promise<Wallet> {
 
     const wallet : Wallet = {
         paypal: {
             instruments: []
         },
-        card: {
+        credit: {
             instruments: []
         },
-        bank: {
+        card: {
             instruments: []
         }
     };
@@ -179,7 +181,8 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                 accessToken: clientAccessToken
             }),
 
-            buyerAccessToken ? getWallet(req, { clientID, merchantID, buyerAccessToken, amount, currency }) : null
+            (buyerAccessToken && amount)
+                ? getWallet(req, { clientID, merchantID, buyerAccessToken, amount, currency }) : null
         ]);
 
         if (buyerVault && buyerVault.paypal && buyerVault.paypal.vaultedInstruments) {
@@ -187,7 +190,6 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                 wallet.paypal.instruments = [
                     ...wallet.paypal.instruments,
                     {
-                        funding:  FUNDING.PAYPAL,
                         tokenID:  vaultedInstrument.id,
                         label:    vaultedInstrument.label.description,
                         oneClick: true
@@ -205,7 +207,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                         wallet.card.instruments = [
                             ...wallet.card.instruments,
                             {
-                                funding:  FUNDING.CARD,
+                                type:     WALLET_INSTRUMENT.CARD,
                                 vendor:   card,
                                 tokenID:  vaultedInstrument.id,
                                 label:    vaultedInstrument.label.description,
@@ -230,29 +232,58 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
 
                 if (fundingSource.credit) {
                     instrument = {
-                        funding:      FUNDING.CREDIT,
+                        type:         WALLET_INSTRUMENT.CREDIT,
                         instrumentID: fundingSource.credit.id,
+                        label:        `daniel@gmail.com`,
                         oneClick:     one_click_pay_allowed
                     };
+
+                    wallet.paypal.instruments = [
+                        ...wallet.paypal.instruments,
+                        instrument
+                    ];
+
+                    wallet.credit.instruments = [
+                        ...wallet.credit.instruments,
+                        instrument
+                    ];
+
                 } else if (fundingSource.payment_card) {
                     instrument = {
-                        funding:      FUNDING.CARD,
-                        label:        `••••${ fundingSource.payment_card.number }`,
+                        type:         WALLET_INSTRUMENT.CARD,
                         instrumentID: fundingSource.payment_card.id,
+                        label:        `••••${ fundingSource.payment_card.number }`,
                         logoUrl:      fundingSource.logo_url,
                         oneClick:     one_click_pay_allowed
                     };
+
+                    wallet.paypal.instruments = [
+                        ...wallet.paypal.instruments,
+                        instrument
+                    ];
+
                 } else if (fundingSource.bank_account) {
                     instrument = {
-                        funding:      FUNDING.BANK || 'bank',
-                        label:        fundingSource.bank_account.account_number,
-                        instrumentID: `••••${ fundingSource.bank_account.id }`,
+                        type:         WALLET_INSTRUMENT.BANK,
+                        instrumentID: fundingSource.bank_account.id,
+                        label:        `••••${ fundingSource.bank_account.account_number }`,
                         logoUrl:      fundingSource.logo_url,
                         oneClick:     one_click_pay_allowed
                     };
-                }
 
-                if (instrument) {
+                    wallet.paypal.instruments = [
+                        ...wallet.paypal.instruments,
+                        instrument
+                    ];
+                } else if (fundingSource.balance) {
+                    instrument = {
+                        type:         WALLET_INSTRUMENT.BANK,
+                        instrumentID: fundingSource.balance.id,
+                        label:        content.balance,
+                        logoUrl:      fundingSource.logo_url,
+                        oneClick:     one_click_pay_allowed
+                    };
+
                     wallet.paypal.instruments = [
                         ...wallet.paypal.instruments,
                         instrument

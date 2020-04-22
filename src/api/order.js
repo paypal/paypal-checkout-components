@@ -1,7 +1,7 @@
 /* @flow */
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { request, noop, memoize } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
@@ -318,8 +318,7 @@ export function updateClientConfig({ orderID, fundingSource, integrationArtifact
 
 type ApproveOrderOptions = {|
     orderID : string,
-    planID? : string,
-    instrumentID? : string,
+    planID : string,
     buyerAccessToken : string
 |};
 
@@ -327,18 +326,16 @@ type ApproveData = {|
     payerID : string
 |};
 
-export function approveOrder({ orderID, planID, instrumentID, buyerAccessToken } : ApproveOrderOptions) : ZalgoPromise<ApproveData> {
+export function approveOrder({ orderID, planID, buyerAccessToken } : ApproveOrderOptions) : ZalgoPromise<ApproveData> {
     return callGraphQL({
         query: `
             mutation ApproveOrder(
                 $orderID : String!
-                $planID : String
-                $instrumentID : String
+                $planID : String!
             ) {
                 approvePayment(
                     token: $orderID
                     selectedPlanId: $planID
-                    selectedInstrumentId : $instrumentID
                 ) {
                     buyer {
                         userId
@@ -346,7 +343,7 @@ export function approveOrder({ orderID, planID, instrumentID, buyerAccessToken }
                 }
             }
         `,
-        variables: { orderID, planID, instrumentID },
+        variables: { orderID, planID },
         headers:   {
             [ HEADERS.ACCESS_TOKEN ]:   buyerAccessToken,
             [ HEADERS.CLIENT_CONTEXT ]: orderID
@@ -354,6 +351,42 @@ export function approveOrder({ orderID, planID, instrumentID, buyerAccessToken }
     }).then(({ approvePayment }) => {
         return {
             payerID: approvePayment.buyer.userId
+        };
+    });
+}
+
+type OneClickApproveOrderOptions = {|
+    orderID : string,
+    instrumentType : $Values<typeof WALLET_INSTRUMENT>,
+    instrumentID : string,
+    buyerAccessToken : string
+|};
+
+export function oneClickApproveOrder({ orderID, instrumentType, instrumentID, buyerAccessToken } : OneClickApproveOrderOptions) : ZalgoPromise<ApproveData> {
+    return callGraphQL({
+        query: `
+            mutation OneClickApproveOrder(
+                $orderID : String!
+                $instrumentType : String!
+                $instrumentID : String!
+            ) {
+                oneClickPayment(
+                    token: $orderID
+                    selectedInstrumentType : $instrumentType
+                    selectedInstrumentId : $instrumentID
+                ) {
+                    userId
+                }
+            }
+        `,
+        variables: { orderID, instrumentType, instrumentID },
+        headers:   {
+            [HEADERS.ACCESS_TOKEN]:   buyerAccessToken,
+            [HEADERS.CLIENT_CONTEXT]: orderID
+        }
+    }).then(({ oneClickPayment }) => {
+        return {
+            payerID: oneClickPayment.userId
         };
     });
 }
