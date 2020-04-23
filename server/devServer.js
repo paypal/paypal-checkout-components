@@ -237,8 +237,8 @@ const getMerchantID = () => {
     return Promise.resolve('XYZ12345');
 };
 
-const exchangeIDToken = () => {
-    return Promise.resolve('XYZ12345');
+const transportRiskData = () => {
+    return Promise.resolve();
 };
 
 const content = {
@@ -263,7 +263,7 @@ const buttonMiddleware = getButtonMiddleware({
     getWallet,
     getAccessToken,
     getMerchantID,
-    exchangeIDToken,
+    transportRiskData,
     content
 });
 

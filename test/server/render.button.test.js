@@ -5,7 +5,7 @@ import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
 
-import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID, mockContent, getWallet, exchangeIDToken } from './mock';
+import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID, mockContent, getWallet, transportRiskData } from './mock';
 
 function getRenderedFundingSources(template) : $ReadOnlyArray<string> {
     return regexMap(template, / data-funding-source="([^"]+)"/g, (result, group1) => group1);
@@ -28,7 +28,7 @@ const logger = {
     error: noop
 };
 
-const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, getWallet, exchangeIDToken, content: mockContent, cache, logger });
+const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, getWallet, transportRiskData, content: mockContent, cache, logger });
 
 test('should do a basic button render and succeed', async () => {
 
@@ -95,21 +95,11 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
     const res = mockRes();
     
     const errButtonMiddleware = getButtonMiddleware({
-        graphQL: () => {
-            throw new Error('Not implemented');
-        },
-        getWallet: () => {
-            throw new Error('Not implemented');
-        },
-        getAccessToken: () => {
-            return Promise.resolve('ABC123');
-        },
-        getMerchantID: () => {
-            return Promise.resolve('ABC123');
-        },
-        exchangeIDToken: () => {
-            return Promise.resolve('ABC123');
-        },
+        graphQL,
+        getWallet,
+        getAccessToken,
+        getMerchantID,
+        transportRiskData,
         content: mockContent,
         cache,
         logger

@@ -13,8 +13,9 @@ export type GraphQLBatch = {
 };
 
 export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLBatch {
-    const batch = [];
+    let batch = [];
     let accessToken;
+    let timer;
 
     const batchedGraphQL = async ({ query, variables, accessToken: callerAccessToken }) => {
         return await new Promise((resolve, reject) => {
@@ -27,10 +28,16 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
             }
 
             batch.push({ query, variables, resolve, reject });
+
+            timer = setTimeout(() => {
+                batchedGraphQL.flush();
+            }, 0);
         });
     };
 
     batchedGraphQL.flush = async () => {
+        clearTimeout(timer);
+
         const payload = batch.map(({ query, variables }) => {
             return { query, variables };
         });
@@ -67,6 +74,9 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
                 resolve(result);
             }
         }
+
+        // eslint-disable-next-line require-atomic-updates
+        batch = [];
     };
 
     return batchedGraphQL;

@@ -212,8 +212,8 @@ export function getMerchantID() : Promise<string> {
     return Promise.resolve('ABCDEF12345');
 }
 
-export function exchangeIDToken() : Promise<string> {
-    return Promise.resolve('ABCDEF12345');
+export function transportRiskData() : Promise<void> {
+    return Promise.resolve();
 }
 
 export const mockContent = {

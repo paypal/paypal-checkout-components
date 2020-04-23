@@ -29,6 +29,7 @@ type ParamsType = {|
     disableCard : $ReadOnlyArray<?$Values<typeof CARD>>,
     merchantID? : $ReadOnlyArray<string>,
     buttonSessionID : string,
+    pageSessionID : string,
     clientAccessToken? : string,
     debug? : boolean,
     style : ?StyleType,
@@ -65,7 +66,7 @@ type RequestParams = {|
     onShippingChange : boolean,
     userIDToken : ?string,
     amount : ?string,
-    clientMetadataID : ?string,
+    clientMetadataID : string,
     riskData : ?RiskData
 |};
 
@@ -223,8 +224,9 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         disableFunding,
         disableCard,
         merchantID,
-        clientMetadataID,
         buttonSessionID,
+        pageSessionID,
+        clientMetadataID = pageSessionID,
         clientAccessToken,
         userIDToken,
         debug = false,

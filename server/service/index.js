@@ -7,3 +7,4 @@ export * from './nativeEligibility';
 export * from './merchantID';
 export * from './checkoutSession';
 export * from './wallet';
+export * from './exchangeIDToken';
