@@ -63,7 +63,8 @@ function initPopupBridge({ props, payment } : InitOptions) : PaymentFlowInstance
                     fundingSource,
                     token:        orderID,
                     useraction:   commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
-                    redirect_uri: parentPopupBridge.nativeUrl
+                    redirect_uri: parentPopupBridge.nativeUrl,
+                    native_xo:    '1'
                 }
             });
 

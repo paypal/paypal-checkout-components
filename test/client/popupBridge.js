@@ -48,11 +48,15 @@ describe('popup bridge cases', () => {
                         }
 
                         if (query.fundingSource !== FUNDING.PAYPAL) {
-                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, fot ${ query.fundingSource }`);
+                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, got ${ query.fundingSource }`);
                         }
 
                         if (!query.redirect_uri) {
                             throw new Error(`Expected redirect_uri to be present in url`);
+                        }
+
+                        if (query.native_xo !== '1') {
+                            throw new Error(`Expected native_xo to be 1, got ${ query.native_xo }`);
                         }
 
                         return {
@@ -106,11 +110,15 @@ describe('popup bridge cases', () => {
                         }
 
                         if (query.fundingSource !== FUNDING.PAYPAL) {
-                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, fot ${ query.fundingSource }`);
+                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, got ${ query.fundingSource }`);
                         }
 
                         if (!query.redirect_uri) {
                             throw new Error(`Expected redirect_uri to be present in url`);
+                        }
+
+                        if (query.native_xo !== '1') {
+                            throw new Error(`Expected native_xo to be 1, got ${ query.native_xo }`);
                         }
 
                         return {
@@ -173,11 +181,15 @@ describe('popup bridge cases', () => {
                         }
 
                         if (query.fundingSource !== FUNDING.PAYPAL) {
-                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, fot ${ query.fundingSource }`);
+                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, got ${ query.fundingSource }`);
                         }
 
                         if (!query.redirect_uri) {
                             throw new Error(`Expected redirect_uri to be present in url`);
+                        }
+
+                        if (query.native_xo !== '1') {
+                            throw new Error(`Expected native_xo to be 1, got ${ query.native_xo }`);
                         }
                         
                         return {
@@ -242,11 +254,15 @@ describe('popup bridge cases', () => {
                         }
 
                         if (query.fundingSource !== FUNDING.PAYPAL) {
-                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, fot ${ query.fundingSource }`);
+                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, got ${ query.fundingSource }`);
                         }
 
                         if (!query.redirect_uri) {
                             throw new Error(`Expected redirect_uri to be present in url`);
+                        }
+
+                        if (query.native_xo !== '1') {
+                            throw new Error(`Expected native_xo to be 1, got ${ query.native_xo }`);
                         }
 
                         return {
