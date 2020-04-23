@@ -1068,7 +1068,7 @@ window.spb = function(modules) {
         return win;
     }
     function Menu(_ref) {
-        var choices = _ref.choices, onChoose = _ref.onChoose, onBlur = _ref.onBlur, cspNonce = _ref.cspNonce, verticalOffset = _ref.verticalOffset;
+        var choices = _ref.choices, onBlur = _ref.onBlur, cspNonce = _ref.cspNonce, verticalOffset = _ref.verticalOffset;
         var autoFocus = function() {
             var ref = function(n, r) {
                 var u = hooks_module_a(hooks_module_t++);
@@ -1102,8 +1102,7 @@ window.spb = function(modules) {
                             width: choice.popup.width,
                             height: choice.popup.height
                         }));
-                        return onChoose({
-                            id: choice.id,
+                        return choice.onSelect({
                             win: win
                         });
                     }(choice);
