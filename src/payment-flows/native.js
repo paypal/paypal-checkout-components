@@ -41,7 +41,7 @@ const NATIVE_DOMAIN_SANDBOX = 'https://www.paypal.com';
 
 // Popup domain needs to be different than native domain for app switch to work on iOS
 const NATIVE_POPUP_DOMAIN = 'https://ic.paypal.com';
-const NATIVE_POPUP_DOMAIN_SANDBOX = 'https://ic.paypal.com';
+const NATIVE_POPUP_DOMAIN_SANDBOX = 'https://www.sandbox.paypal.com';
 
 type NativeSocketOptions = {|
     sessionUID : string,
