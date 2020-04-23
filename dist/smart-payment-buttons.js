@@ -3544,7 +3544,7 @@ window.spb = function(modules) {
                 return "https://www.paypal.com";
             }));
             var getNativePopupDomain = memoize((function() {
-                return "https://ic.paypal.com";
+                return "sandbox" === env ? "https://www.sandbox.paypal.com" : "https://ic.paypal.com";
             }));
             var getNativeUrl = memoize((function(_temp) {
                 var _ref7 = void 0 === _temp ? {} : _temp, _ref7$pageUrl = _ref7.pageUrl, pageUrl = void 0 === _ref7$pageUrl ? initialPageUrl : _ref7$pageUrl, sessionUID = _ref7.sessionUID;
@@ -4333,7 +4333,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.239", _ref2;
+                _ref2.button_version = "2.0.240", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
