@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
 
-import { wrapPromise } from 'belter/src';
+import { wrapPromise, parseQuery } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
@@ -15,6 +15,7 @@ describe('popup bridge cases', () => {
             const nativeUrl = 'native://foobar';
             const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
+            window.xprops.commit = true;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -35,7 +36,25 @@ describe('popup bridge cases', () => {
             window.xprops.getPopupBridge = mockAsyncProp(expect('getPopupBridge', async () => {
                 return {
                     nativeUrl,
-                    start: expect('start', async () => {
+                    start: expect('start', async (url) => {
+                        const query = parseQuery(url.split('?')[1]);
+
+                        if (query.token !== orderID) {
+                            throw new Error(`Expected token to be ${ orderID }, got ${ query.token }`);
+                        }
+
+                        if (query.useraction !== 'commit') {
+                            throw new Error(`Expected useraction to be commit, got ${ query.useraction }`);
+                        }
+
+                        if (query.fundingSource !== FUNDING.PAYPAL) {
+                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, fot ${ query.fundingSource }`);
+                        }
+
+                        if (!query.redirect_uri) {
+                            throw new Error(`Expected redirect_uri to be present in url`);
+                        }
+
                         return {
                             opType:  'payment',
                             token:   orderID,
@@ -58,6 +77,7 @@ describe('popup bridge cases', () => {
 
             const nativeUrl = 'native://foobar';
             const orderID = generateOrderID();
+            window.xprops.commit = true;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -74,7 +94,25 @@ describe('popup bridge cases', () => {
             window.xprops.getPopupBridge = mockAsyncProp(expect('getPopupBridge', async () => {
                 return {
                     nativeUrl,
-                    start: expect('start', async () => {
+                    start: expect('start', async (url) => {
+                        const query = parseQuery(url.split('?')[1]);
+
+                        if (query.token !== orderID) {
+                            throw new Error(`Expected token to be ${ orderID }, got ${ query.token }`);
+                        }
+
+                        if (query.useraction !== 'commit') {
+                            throw new Error(`Expected useraction to be commit, got ${ query.useraction }`);
+                        }
+
+                        if (query.fundingSource !== FUNDING.PAYPAL) {
+                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, fot ${ query.fundingSource }`);
+                        }
+
+                        if (!query.redirect_uri) {
+                            throw new Error(`Expected redirect_uri to be present in url`);
+                        }
+
                         return {
                             opType:  'cancel',
                             token:   orderID
@@ -98,6 +136,7 @@ describe('popup bridge cases', () => {
             const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
             const paymentID = 'ZZZZZZZZZZ';
+            window.xprops.commit = true;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -122,7 +161,25 @@ describe('popup bridge cases', () => {
             window.xprops.getPopupBridge = mockAsyncProp(expect('getPopupBridge', async () => {
                 return {
                     nativeUrl,
-                    start: expect('start', async () => {
+                    start: expect('start', async (url) => {
+                        const query = parseQuery(url.split('?')[1]);
+
+                        if (query.token !== orderID) {
+                            throw new Error(`Expected token to be ${ orderID }, got ${ query.token }`);
+                        }
+
+                        if (query.useraction !== 'commit') {
+                            throw new Error(`Expected useraction to be commit, got ${ query.useraction }`);
+                        }
+
+                        if (query.fundingSource !== FUNDING.PAYPAL) {
+                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, fot ${ query.fundingSource }`);
+                        }
+
+                        if (!query.redirect_uri) {
+                            throw new Error(`Expected redirect_uri to be present in url`);
+                        }
+                        
                         return {
                             opType:    'payment',
                             token:     orderID,
@@ -148,6 +205,7 @@ describe('popup bridge cases', () => {
             const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
             const billingToken = 'BA-QQQQQQQQQQQ';
+            window.xprops.commit = true;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -172,7 +230,25 @@ describe('popup bridge cases', () => {
             window.xprops.getPopupBridge = mockAsyncProp(expect('getPopupBridge', async () => {
                 return {
                     nativeUrl,
-                    start: expect('start', async () => {
+                    start: expect('start', async (url) => {
+                        const query = parseQuery(url.split('?')[1]);
+
+                        if (query.token !== orderID) {
+                            throw new Error(`Expected token to be ${ orderID }, got ${ query.token }`);
+                        }
+
+                        if (query.useraction !== 'commit') {
+                            throw new Error(`Expected useraction to be commit, got ${ query.useraction }`);
+                        }
+
+                        if (query.fundingSource !== FUNDING.PAYPAL) {
+                            throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, fot ${ query.fundingSource }`);
+                        }
+
+                        if (!query.redirect_uri) {
+                            throw new Error(`Expected redirect_uri to be present in url`);
+                        }
+
                         return {
                             opType:    'payment',
                             token:     orderID,
