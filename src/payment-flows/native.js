@@ -199,7 +199,7 @@ type NativeSDKProps = {|
 |};
 
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
-    const { createOrder, onApprove, onCancel, onError, commit, getPageUrl,
+    const { createOrder, onApprove, onCancel, onError, commit,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange } = props;
     const { facilitatorAccessToken, sdkMeta } = serviceData;
     const { fundingSource } = payment;
@@ -266,13 +266,11 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const getSDKProps = memoize(() : ZalgoPromise<NativeSDKProps> => {
-        return ZalgoPromise.hash({
-            orderID: createOrder(),
-            pageUrl: getPageUrl()
-        }).then(({ orderID, pageUrl }) => {
+        return createOrder().then(orderID => {
             const userAgent = getUserAgent();
             const webCheckoutUrl = getWebCheckoutUrl({ orderID });
             const forceEligible = isNativeOptedIn({ props });
+            const pageUrl = '';
 
             return {
                 orderID, facilitatorAccessToken, pageUrl, commit, webCheckoutUrl,
