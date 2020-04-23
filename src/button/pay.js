@@ -11,6 +11,7 @@ import { FPTI_TRANSITION } from '../constants';
 import { type ButtonProps, type Config, type ServiceData, type Components } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
 import { updateButtonClientConfig, validateOrder } from './orders';
+import { renderMenu } from './menu';
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     vaultCapture,
@@ -49,7 +50,7 @@ const sendPersonalizationBeacons = (personalization) => {
     }
 };
 
-type InitiatePaymentType = {|
+type InitiatePaymentOptions = {|
     payment : Payment,
     props : ButtonProps,
     serviceData : ServiceData,
@@ -57,7 +58,7 @@ type InitiatePaymentType = {|
     components : Components
 |};
 
-export function initiatePaymentFlow({ payment, serviceData, config, components, props } : InitiatePaymentType) : ZalgoPromise<void> {
+export function initiatePaymentFlow({ payment, serviceData, config, components, props } : InitiatePaymentOptions) : ZalgoPromise<void> {
     const { button, fundingSource } = payment;
 
     return ZalgoPromise.try(() => {
@@ -112,5 +113,53 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
     }).finally(() => {
         disableLoadingSpinner(button);
+    });
+}
+
+type InitiateMenuOptions = {|
+    payment : Payment,
+    props : ButtonProps,
+    serviceData : ServiceData,
+    config : Config,
+    components : Components,
+    initiatePayment : ({| payment : Payment |}) => ZalgoPromise<void>
+|};
+
+export function initiateMenuFlow({ payment, serviceData, config, components, props, initiatePayment } : InitiateMenuOptions) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
+        const { fundingSource, button } = payment;
+
+        const { name, setupMenu } = getPaymentFlow({ props, payment, config, components, serviceData });
+
+        if (!setupMenu) {
+            throw new Error(`${ name } does not support menu`);
+        }
+
+        getLogger().info(`menu_click`).info(`pay_flow_${ name }`).track({
+            [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.MENU_CLICK,
+            [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
+            [FPTI_KEY.PAYMENT_FLOW]:   name
+        }).flush();
+
+        const choices = setupMenu({ props, payment, serviceData, initiatePayment }).map(choice => {
+            return {
+                ...choice,
+                onSelect: (...args) => {
+                    if (choice.spinner) {
+                        enableLoadingSpinner(button);
+                    }
+
+                    return ZalgoPromise.try(() => {
+                        return choice.onSelect(...args);
+                    }).then(() => {
+                        if (choice.spinner) {
+                            disableLoadingSpinner(button);
+                        }
+                    });
+                }
+            };
+        });
+
+        return renderMenu({ props, payment, components, choices });
     });
 }

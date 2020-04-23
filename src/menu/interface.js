@@ -3,53 +3,30 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize } from 'belter/src';
 
-import type { ProxyWindow } from '../types';
+import type { MenuFlowType, MenuFlowProps } from '../types';
 
 type SmartMenuProps = {|
-    clientID : string
+    clientID : string,
+    Menu : MenuFlowType
 |};
 
 type SmartMenu = {|
-    display : ({|
-        verticalOffset : number,
-        choices : $ReadOnlyArray<{|
-            id : string,
-        label : string,
-        popup? : {|
-            width : number,
-            height : number
-        |}
-            |}>,
-        onChoose : ({|
-            id : string,
-            win : ?ProxyWindow
-                |}) => void
-    |}) => ZalgoPromise<void>
+    display : (MenuFlowProps) => ZalgoPromise<void>
 |};
 
-export function renderSmartMenu({ clientID } : SmartMenuProps) : SmartMenu {
-
-    const { Menu } = paypal;
-
-    if (!Menu) {
-        throw new Error(`Menu component not found`);
-    }
-
+export function renderSmartMenu({ clientID, Menu } : SmartMenuProps) : SmartMenu {
     const { renderTo, updateProps, show, hide } = Menu({ clientID });
 
     const render = memoize(() => {
         return renderTo(window.xprops.getParent(), '#smart-menu');
     });
 
-    const display = ({ choices, verticalOffset, onChoose }) => {
+    const display = ({ choices, verticalOffset }) => {
         return render().then(() => {
             return updateProps({
+                clientID,
                 verticalOffset,
-                choices,
-                onChoose: ({ id, win }) => {
-                    hide();
-                    return onChoose({ id, win });
-                }
+                choices
             });
         }).then(() => {
             return show();

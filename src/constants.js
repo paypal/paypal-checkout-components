@@ -87,6 +87,8 @@ export const FPTI_TRANSITION = {
 
     WALLET_LOAD:              ('process_wallet_load' : 'process_wallet_load'),
 
+    MENU_CLICK:               ('process_menu_click' : 'process_menu_click'),
+
     CREATE_ORDER:             ('process_create_order' : 'process_create_order'),
     RECEIVE_ORDER:            ('process_receive_order' : 'process_receive_order'),
     CREATE_PAYMENT:           ('process_create_payment' : 'process_create_payment'),

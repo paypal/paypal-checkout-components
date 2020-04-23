@@ -4,7 +4,7 @@
 import { wrapPromise } from 'belter/src';
 import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock, generateOrderID } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock, generateOrderID, mockMenu, clickMenu } from './mocks';
 
 describe('vault cases', () => {
 
@@ -255,6 +255,8 @@ describe('vault cases', () => {
                 }
             }).expectCalls();
 
+            window.paypal.Menu = expect('Menu', mockMenu);
+
             const orderID = generateOrderID();
             const paymentMethodID = 'xyz123';
 
@@ -324,6 +326,8 @@ describe('vault cases', () => {
 
             const orderID = generateOrderID();
             const paymentMethodID = 'xyz123';
+
+            window.paypal.Menu = expect('Menu', mockMenu);
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
@@ -402,6 +406,8 @@ describe('vault cases', () => {
             const orderID = generateOrderID();
             const paymentMethodID = 'xyz123';
 
+            window.paypal.Menu = expect('Menu', mockMenu);
+
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
             }));
@@ -465,6 +471,8 @@ describe('vault cases', () => {
                     }
                 }
             }).expectCalls();
+
+            window.paypal.Menu = expect('Menu', mockMenu);
 
             const orderID = generateOrderID();
             const paymentMethodID = 'xyz123';
@@ -543,6 +551,8 @@ describe('vault cases', () => {
                 }
             }).expectCalls();
 
+            window.paypal.Menu = expect('Menu', mockMenu);
+
             const orderID = generateOrderID();
             const paymentMethodID = 'xyz123';
 
@@ -615,6 +625,8 @@ describe('vault cases', () => {
             const orderID = generateOrderID();
             const paymentMethodID = 'xyz123';
 
+            window.paypal.Menu = expect('Menu', mockMenu);
+
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
             }));
@@ -654,6 +666,291 @@ describe('vault cases', () => {
 
             gqlMock.done();
             vpmCall.done();
+        });
+    });
+
+    it('should pay with an existing vaulted paypal account but change FI using the menu', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.clientAccessToken = 'abc-123';
+
+            const orderID = generateOrderID();
+            const paymentMethodID = 'xyz123';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return orderID;
+            }));
+
+            const vpmCall = getValidatePaymentMethodApiMock().expectCalls();
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                vpmCall.done();
+            }));
+
+            const fundingEligibility = {
+                [FUNDING.PAYPAL]: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    paymentMethodID,
+                            label: {
+                                description: 'foo@bar.com'
+                            }
+                        }
+                    ]
+                }
+            };
+
+            const win = {};
+            
+            const Checkout = window.paypal.Checkout;
+            window.paypal.Checkout = expect('Checkout', (props) => {
+                if (!props.window) {
+                    throw new Error(`Expected window to be passed`);
+                }
+
+                if (props.window !== win) {
+                    throw new Error(`Expected correct window to be passed`);
+                }
+
+                return Checkout(props);
+            });
+
+            const content = {
+                chooseCardOrShipping: 'Choose card or shipping'
+            };
+
+            window.paypal.Menu = expect('Menu', (initialMenuProps) => {
+                if (!initialMenuProps.clientID) {
+                    throw new Error(`Expected initial menu props to contain clientID`);
+                }
+
+                return {
+                    renderTo: expect('menuRender', async (element) => {
+                        if (!element) {
+                            throw new Error(`Expected element to be passed`);
+                        }
+                    }),
+                    updateProps: expect('menuUpdateProps', async (menuProps) => {
+                        if (typeof menuProps.verticalOffset !== 'number') {
+                            throw new TypeError(`Expected vertical offset to be passed`);
+                        }
+
+                        if (!Array.isArray(menuProps.choices)) {
+                            throw new TypeError(`Expected choices array to be passed`);
+                        }
+
+                        const choice = menuProps.choices.find(({ label }) => label === content.chooseCardOrShipping);
+
+                        if (!choice) {
+                            throw new Error(`Expected to find choose card or shipping button`);
+                        }
+
+                        if (!choice.popup || !choice.popup.width || !choice.popup.height) {
+                            throw new Error(`Expected popup option to be passed`);
+                        }
+
+                        choice.onSelect({ win });
+                    }),
+                    hide: expect('hide', mockAsyncProp()),
+                    show: expect('show', mockAsyncProp())
+                };
+            });
+
+            createButtonHTML({ fundingEligibility });
+            await mockSetupButton({ content, merchantID: [ 'XYZ12345' ], fundingEligibility });
+
+            await clickMenu(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should pay with an existing vaulted paypal account but pay with a different account using the menu', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.clientAccessToken = 'abc-123';
+
+            const orderID = generateOrderID();
+            const paymentMethodID = 'xyz123';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return orderID;
+            }));
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+            }));
+
+            const fundingEligibility = {
+                [FUNDING.PAYPAL]: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    paymentMethodID,
+                            label: {
+                                description: 'foo@bar.com'
+                            }
+                        }
+                    ]
+                }
+            };
+
+            const win = {};
+
+            const Checkout = window.paypal.Checkout;
+            window.paypal.Checkout = expect('Checkout', (props) => {
+                if (!props.window) {
+                    throw new Error(`Expected window to be passed`);
+                }
+
+                if (props.window !== win) {
+                    throw new Error(`Expected correct window to be passed`);
+                }
+
+                return Checkout(props);
+            });
+
+            const content = {
+                useDifferentAccount: 'Use different account'
+            };
+
+            window.paypal.Menu = expect('Menu', (initialMenuProps) => {
+                if (!initialMenuProps.clientID) {
+                    throw new Error(`Expected initial menu props to contain clientID`);
+                }
+
+                return {
+                    renderTo: expect('menuRender', async (element) => {
+                        if (!element) {
+                            throw new Error(`Expected element to be passed`);
+                        }
+                    }),
+                    updateProps: expect('menuUpdateProps', async (menuProps) => {
+                        if (typeof menuProps.verticalOffset !== 'number') {
+                            throw new TypeError(`Expected vertical offset to be passed`);
+                        }
+
+                        if (!Array.isArray(menuProps.choices)) {
+                            throw new TypeError(`Expected choices array to be passed`);
+                        }
+
+                        const choice = menuProps.choices.find(({ label }) => label === content.useDifferentAccount);
+
+                        if (!choice) {
+                            throw new Error(`Expected to find choose card or shipping button`);
+                        }
+
+                        if (!choice.popup || !choice.popup.width || !choice.popup.height) {
+                            throw new Error(`Expected popup option to be passed`);
+                        }
+
+                        choice.onSelect({ win });
+                    }),
+                    hide: expect('hide', mockAsyncProp()),
+                    show: expect('show', mockAsyncProp())
+                };
+            });
+
+            createButtonHTML({ fundingEligibility });
+            await mockSetupButton({ content, merchantID: [ 'XYZ12345' ], fundingEligibility });
+
+            await clickMenu(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should pay with an existing vaulted card but delete using the menu', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.clientAccessToken = 'abc-123';
+            const paymentMethodID = 'xyz123';
+
+            let deleteVaultCalled;
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('mutation DeleteVault')) {
+                        if (data.variables.paymentMethodID !== paymentMethodID) {
+                            throw new Error(`Incorrect payment method id passed to deleteVault`);
+                        }
+                        deleteVaultCalled = true;
+                    }
+                }
+            }).expectCalls();
+
+            const fundingEligibility = {
+                [FUNDING.PAYPAL]: {
+                    eligible: true
+                },
+                [FUNDING.CARD]: {
+                    eligible: true,
+                    vendors:  {
+                        visa: {
+                            eligible:           true,
+                            vaultedInstruments: [
+                                {
+                                    id:    paymentMethodID,
+                                    label: {
+                                        description: 'Visa x-1234'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            };
+
+            const content = {
+                deleteVaultedCard: 'Unlink card'
+            };
+
+            window.paypal.Menu = expect('Menu', (initialMenuProps) => {
+                if (!initialMenuProps.clientID) {
+                    throw new Error(`Expected initial menu props to contain clientID`);
+                }
+
+                return {
+                    renderTo: expect('menuRender', async (element) => {
+                        if (!element) {
+                            throw new Error(`Expected element to be passed`);
+                        }
+                    }),
+                    updateProps: expect('menuUpdateProps', async (menuProps) => {
+                        if (typeof menuProps.verticalOffset !== 'number') {
+                            throw new TypeError(`Expected vertical offset to be passed`);
+                        }
+
+                        if (!Array.isArray(menuProps.choices)) {
+                            throw new TypeError(`Expected choices array to be passed`);
+                        }
+
+                        const choice = menuProps.choices.find(({ label }) => label === content.deleteVaultedCard);
+
+                        if (!choice) {
+                            throw new Error(`Expected to find choose card or shipping button`);
+                        }
+
+                        choice.onSelect();
+                    }),
+                    hide: expect('hide', mockAsyncProp()),
+                    show: expect('show', mockAsyncProp())
+                };
+            });
+
+            createButtonHTML({ fundingEligibility });
+            await mockSetupButton({ content, merchantID: [ 'XYZ12345' ], fundingEligibility });
+
+            await clickMenu(FUNDING.CARD);
+
+            gqlMock.done();
+
+            if (!deleteVaultCalled) {
+                throw new Error(`Expected delete vault to be called`);
+            }
         });
     });
 });

@@ -4,12 +4,13 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { stringifyError } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
+import type { MenuChoices } from '../types';
 import { getSupplementalOrderInfo, exchangeAccessTokenForAuthCode, oneClickApproveOrder } from '../api';
 import { BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
 
-import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
-import { checkout } from './checkout';
+import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
+import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
 function setupWalletCapture() {
     // pass
@@ -67,10 +68,6 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
         return false;
     }
 
-    if (!instrument.oneClick) {
-        return false;
-    }
-
     if (!instrument.type) {
         return false;
     }
@@ -107,17 +104,27 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
     const { type: instrumentType } = instrument;
 
     if (!instrumentType) {
-        throw new Error(`Expected instrumen type`);
+        throw new Error(`Expected instrument type`);
     }
+
+    const getWebCheckoutFallback = (authCode? : string) => {
+        return checkout.init({
+            props, components, serviceData, payment: {
+                ...payment, authCode, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING
+            }, config
+        });
+    };
 
     const fallbackToWebCheckout = () => {
         getLogger().info('web_checkout_fallback').flush();
         return exchangeAccessTokenForAuthCode(buyerAccessToken).then(authCode => {
-            return checkout.init({ props, components, serviceData, payment: {
-                ...payment, authCode, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING
-            }, config }).start();
+            return getWebCheckoutFallback(authCode).start();
         });
     };
+
+    if (!instrument.oneClick) {
+        return getWebCheckoutFallback();
+    }
 
     const restart = () => {
         return fallbackToWebCheckout();
@@ -165,12 +172,50 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
     };
 }
 
+const POPUP_OPTIONS = {
+    width:  CHECKOUT_POPUP_DIMENSIONS.WIDTH,
+    height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
+};
+
+function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions) : MenuChoices {
+    const { fundingSource } = payment;
+    const { content, buyerAccessToken } = serviceData;
+
+    if (!buyerAccessToken) {
+        throw new Error(`Can not render wallet menu without buyer access token`);
+    }
+
+    if (fundingSource === FUNDING.PAYPAL) {
+        return [
+            {
+                label:    content.chooseCardOrShipping,
+                popup:    POPUP_OPTIONS,
+                onSelect: ({ win }) => {
+                    return exchangeAccessTokenForAuthCode(buyerAccessToken).then(authCode => {
+                        return initiatePayment({ payment: { ...payment, authCode, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
+                    });
+                }
+            },
+            {
+                label:    content.useDifferentAccount,
+                popup:    POPUP_OPTIONS,
+                onSelect: ({ win }) => {
+                    return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
+                }
+            }
+        ];
+    }
+
+    throw new Error(`Can not render menu for ${ fundingSource }`);
+}
+
 export const walletCapture : PaymentFlow = {
     name:              'wallet_capture',
     setup:             setupWalletCapture,
     isEligible:        isWalletCaptureEligible,
     isPaymentEligible: isWalletCapturePaymentEligible,
     init:              initWalletCapture,
+    setupMenu:         setupWalletMenu,
     spinner:           true,
     inline:            true
 };

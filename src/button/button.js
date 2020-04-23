@@ -14,8 +14,8 @@ import { getProps, getConfig, getComponents, getServiceData } from './props';
 import { getSelectedFunding, getButtons } from './dom';
 import { setupButtonLogger } from './logger';
 import { setupRemember } from './remember';
-import { setupPaymentFlows, initiatePaymentFlow } from './pay';
-import { renderButtonDropdown } from './menu';
+import { setupPaymentFlows, initiatePaymentFlow, initiateMenuFlow } from './pay';
+import { prerenderMenu, clearSmartMenu } from './menu';
 
 type ButtonOpts = {|
     fundingEligibility : FundingEligibilityType,
@@ -43,17 +43,17 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         throw new Error(`PayPal SDK not loaded`);
     }
 
-    const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, content, sdkMeta, buyerAccessToken, wallet,
-        cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig } = opts;
+    const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, sdkMeta, buyerAccessToken, wallet,
+        cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig, content } = opts;
 
     const clientID = window.xprops.clientID;
 
     const serviceData = getServiceData({
         eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization,
-        isCardFieldsExperimentEnabled, sdkMeta, buyerAccessToken, wallet });
+        isCardFieldsExperimentEnabled, sdkMeta, buyerAccessToken, wallet, content });
     const { merchantID } = serviceData;
 
-    let props = getProps({ facilitatorAccessToken });
+    const props = getProps({ facilitatorAccessToken });
     const { env, sessionID, partnerAttributionID, commit, correlationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding,
         style } = props;
@@ -73,7 +73,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
                 return;
             }
 
-            props = getProps({ facilitatorAccessToken });
+            const paymentProps = getProps({ facilitatorAccessToken });
 
             const { win, fundingSource } = payment;
             const { onClick } = props;
@@ -85,7 +85,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             if (isEnabled()) {
                 paymentProcessing = true;
 
-                return initiatePaymentFlow({ payment, config, serviceData, components, props }).finally(() => {
+                return initiatePaymentFlow({ payment, config, serviceData, components, props: paymentProps }).finally(() => {
                     paymentProcessing = false;
                 });
             } else  {
@@ -106,13 +106,35 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         });
     }
 
+    function initiateMenu({ payment } : {| payment : Payment |}) : ZalgoPromise<void> {
+        return ZalgoPromise.try(() => {
+            if (paymentProcessing) {
+                return;
+            }
+
+            if (isEnabled()) {
+                return initiateMenuFlow({ payment, config, serviceData, components, props, initiatePayment });
+            }
+        }).catch(err => {
+            getLogger()
+                .info('smart_buttons_payment_error', { err: stringifyError(err) })
+                .track({
+                    [FPTI_KEY.ERROR_CODE]: 'smart_buttons_payment_error',
+                    [FPTI_KEY.ERROR_DESC]: stringifyErrorMessage(err)
+                });
+
+            throw err;
+        });
+    }
+
+    clearSmartMenu();
+    
     getButtons().forEach(button => {
         const { fundingSource, card, paymentMethodID, instrumentID } = getSelectedFunding(button);
         const payment = { button, fundingSource, card, paymentMethodID, instrumentID, isClick: true, buyerIntent: BUYER_INTENT.PAY };
-        
+        const menuToggle = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
+
         fixClickFocus(button);
-        renderButtonDropdown({ props, payment, content, initiatePayment });
-        
         onElementClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
@@ -122,6 +144,20 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             // $FlowFixMe
             button.payPromise = payPromise;
         });
+
+        if (menuToggle) {
+            prerenderMenu({ props, components });
+
+            onElementClick(menuToggle, (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const menuPromise = initiateMenu({ payment });
+
+                // $FlowFixMe
+                button.menuPromise = menuPromise;
+            });
+        }
     });
 
     const setupPrerenderTask = initPromise.then(() => {

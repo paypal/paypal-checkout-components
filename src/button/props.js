@@ -4,7 +4,8 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY } from '@paypal/sdk-constants/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 
-import type { LocaleType, ProxyWindow, FundingEligibilityType, Wallet, CheckoutFlowType, CardFieldsFlowType, ThreeDomainSecureFlowType, PersonalizationType } from '../types';
+import type { ContentType, LocaleType, ProxyWindow, FundingEligibilityType, Wallet, CheckoutFlowType, CardFieldsFlowType,
+    ThreeDomainSecureFlowType, PersonalizationType, MenuFlowType } from '../types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit, XOnInit,
     OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError, OnError,
     XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL } from '../props';
@@ -250,12 +251,13 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
 export type Components = {|
     Checkout : CheckoutFlowType,
     CardFields : CardFieldsFlowType,
-    ThreeDomainSecure : ThreeDomainSecureFlowType
+    ThreeDomainSecure : ThreeDomainSecureFlowType,
+    Menu : MenuFlowType
 |};
 
 export function getComponents() : Components {
-    const { Checkout, CardFields, ThreeDomainSecure } = paypal;
-    return { Checkout, CardFields, ThreeDomainSecure };
+    const { Checkout, CardFields, ThreeDomainSecure, Menu } = paypal;
+    return { Checkout, CardFields, ThreeDomainSecure, Menu };
 }
 
 export type Config = {|
@@ -284,6 +286,7 @@ export type ServiceData = {|
     facilitatorAccessToken : string,
     sdkMeta : string,
     buyerAccessToken : ?string,
+    content : ContentType,
     eligibility : {|
         cardFields : boolean,
         nativeCheckout : {
@@ -302,6 +305,7 @@ type ServiceDataOptions = {|
     personalization : PersonalizationType,
     serverMerchantID : $ReadOnlyArray<string>,
     sdkMeta : string,
+    content : ContentType,
     eligibility : {|
         cardFields : boolean,
         nativeCheckout : {
@@ -310,13 +314,14 @@ type ServiceDataOptions = {|
     |}
 |};
 
-export function getServiceData({ facilitatorAccessToken, sdkMeta, buyerGeoCountry, fundingEligibility, wallet, buyerAccessToken, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyerGeoCountry, fundingEligibility, wallet, buyerAccessToken, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
         fundingEligibility,
         wallet,
         sdkMeta,
+        content,
         buyerAccessToken,
         personalization,
         facilitatorAccessToken,

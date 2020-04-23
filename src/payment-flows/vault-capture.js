@@ -3,15 +3,16 @@
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
+import { destroyElement } from 'belter/src';
 
-import type { ThreeDomainSecureFlowType } from '../types';
+import type { ThreeDomainSecureFlowType, MenuChoices } from '../types';
 import type { CreateOrder } from '../props';
-import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo } from '../api';
+import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault } from '../api';
 import { TARGET_ELEMENT, BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
 
-import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
-import { checkout } from './checkout';
+import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
+import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
 function setupVaultCapture() {
     // pass
@@ -153,12 +154,65 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
     };
 }
 
+const POPUP_OPTIONS = {
+    width:  CHECKOUT_POPUP_DIMENSIONS.WIDTH,
+    height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
+};
+
+function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuOptions) : MenuChoices {
+    const { clientAccessToken } = props;
+    const { fundingSource, paymentMethodID, button } = payment;
+    const { content } = serviceData;
+
+    if (!clientAccessToken || !paymentMethodID) {
+        throw new Error(`Client access token and payment method id required`);
+    }
+
+    if (fundingSource === FUNDING.PAYPAL) {
+        return [
+            {
+                label:    content.chooseCardOrShipping,
+                popup:    POPUP_OPTIONS,
+                onSelect: ({ win }) => {
+                    return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
+                }
+            },
+            {
+                label:    content.useDifferentAccount,
+                popup:    POPUP_OPTIONS,
+                onSelect: ({ win }) => {
+                    return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
+                }
+            }
+        ];
+    }
+
+    if (fundingSource === FUNDING.CARD) {
+        return [
+            {
+                label:    content.deleteVaultedCard,
+                spinner:  true,
+                onSelect: () => {
+                    return deleteVault({ paymentMethodID, clientAccessToken }).then(() => {
+                        destroyElement(button);
+                    });
+                }
+            }
+        ];
+    }
+
+    throw new Error(`Can not render menu for ${ fundingSource }`);
+}
+
 export const vaultCapture : PaymentFlow = {
     name:              'vault_capture',
     setup:             setupVaultCapture,
     isEligible:        isVaultCaptureEligible,
     isPaymentEligible: isVaultCapturePaymentEligible,
     init:              initVaultCapture,
+    setupMenu:         setupVaultMenu,
     spinner:           true,
     inline:            true
 };
+
+

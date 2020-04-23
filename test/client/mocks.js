@@ -9,6 +9,7 @@ import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY } from '@paypal/sdk-constants/src';
 import { isWindowClosed, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
+import type { ZoidComponentInstance, MenuFlowProps } from '../../src/types';
 import { setupButton } from '../../src';
 import { loadFirebaseSDK } from '../../src/api';
 
@@ -16,7 +17,7 @@ import { triggerKeyPress } from './util';
 
 export const MOCK_BUYER_ACCESS_TOKEN = 'abc123xxxyyyzzz456';
 
-export function mockAsyncProp(handler : Function, time? : number = 1) : Function {
+export function mockAsyncProp(handler? : Function = noop, time? : number = 1) : Function {
     return (...args) => ZalgoPromise.delay(time).then(() => handler(...args));
 }
 
@@ -54,6 +55,9 @@ export function setupMocks() {
                 country: 'US',
                 lang:    'en'
             }
+        },
+        Menu: () => {
+            throw new Error(`Expected menu to not be rendered`);
         },
         Checkout: (props) => {
             return {
@@ -188,12 +192,41 @@ export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({| args :
 export async function clickButton(fundingSource? : string = FUNDING.PAYPAL) : ZalgoPromise<void> {
     const selector = `button[data-funding-source=${ fundingSource }]`;
     const button = window.document.querySelector(selector);
+
+    if (!button) {
+        throw new Error(`Can not find ${ fundingSource } button`);
+    }
+
     button.click();
     await button.payPromise;
 }
 
+export async function clickMenu(fundingSource? : string = FUNDING.PAYPAL) : ZalgoPromise<void> {
+    const selector = `button[data-funding-source=${ fundingSource }] [data-menu]`;
+    const menubutton = window.document.querySelector(selector);
+
+    if (!menubutton) {
+        throw new Error(`Can not find ${ fundingSource } menu button`);
+    }
+    
+    menubutton.click();
+    await menubutton.menuPromise;
+}
+
 export function enterButton(fundingSource? : string = FUNDING.PAYPAL) {
     triggerKeyPress(window.document.querySelector(`button[data-funding-source=${ fundingSource }]`), 13);
+}
+
+export function mockMenu() : ZoidComponentInstance<MenuFlowProps> {
+    return {
+        renderTo:    () => ZalgoPromise.resolve(),
+        render:      () => ZalgoPromise.resolve(),
+        onError:     () => ZalgoPromise.resolve(),
+        updateProps: () => ZalgoPromise.resolve(),
+        close:       () => ZalgoPromise.resolve(),
+        show:        () => ZalgoPromise.resolve(),
+        hide:        () => ZalgoPromise.resolve()
+    };
 }
 
 export const DEFAULT_FUNDING_ELIGIBILITY = {
@@ -222,7 +255,7 @@ export function createButtonHTML({ fundingEligibility = DEFAULT_FUNDING_ELIGIBIL
                 
                 if (cardConfig.vaultedInstruments && cardConfig.vaultedInstruments.length) {
                     const vaultedInstrument = cardConfig.vaultedInstruments[0];
-                    buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
+                    buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"><div data-menu></div></div>`);
                 } else {
                     buttons.push(`<button data-funding-source="${ fundingSource }"></div>`);
                 }
@@ -230,13 +263,13 @@ export function createButtonHTML({ fundingEligibility = DEFAULT_FUNDING_ELIGIBIL
         } else {
             if (fundingConfig.vaultedInstruments && fundingConfig.vaultedInstruments.length) {
                 const vaultedInstrument = fundingConfig.vaultedInstruments[0];
-                buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
+                buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"><div data-menu></div></div>`);
             } else if (wallet && wallet[fundingSource] && wallet[fundingSource].instruments.length) {
                 const walletInstrument = wallet[fundingSource].instruments[0];
                 if (walletInstrument.instrumentID) {
-                    buttons.push(`<button data-funding-source="${ fundingSource }" data-instrument-id="${ walletInstrument.instrumentID }"></div>`);
+                    buttons.push(`<button data-funding-source="${ fundingSource }" data-instrument-id="${ walletInstrument.instrumentID }"><div data-menu></div></div>`);
                 } else if (walletInstrument.paymentID) {
-                    buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ walletInstrument.paymentID }"></div>`);
+                    buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ walletInstrument.paymentID }"><div data-menu></div></div>`);
                 }
             } else {
                 buttons.push(`<button data-funding-source="${ fundingSource }"></div>`);

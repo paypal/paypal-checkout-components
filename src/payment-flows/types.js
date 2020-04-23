@@ -5,7 +5,7 @@ import type { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 
 import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
-import type { ProxyWindow } from '../types';
+import type { ProxyWindow, MenuChoices } from '../types';
 import { BUYER_INTENT } from '../constants';
 
 // export something to force webpack to see this as an ES module
@@ -59,12 +59,20 @@ export type InitOptions = {|
     config : Config
 |};
 
+export type MenuOptions = {|
+    props : ButtonProps,
+    payment : Payment,
+    serviceData : ServiceData,
+    initiatePayment : ({| payment : Payment |}) => ZalgoPromise<void>
+|};
+
 export type PaymentFlow = {|
     name : string,
     setup : (SetupOptions) => ZalgoPromise<void> | void,
     isEligible : (IsEligibleOptions) => boolean,
     isPaymentEligible : (IsPaymentEligibleOptions) => boolean,
     init : <T>(InitOptions, overrides? : T) => PaymentFlowInstance, // eslint-disable-line no-undef
+    setupMenu? : (MenuOptions) => MenuChoices,
     spinner? : boolean,
     inline? : boolean,
     popup? : boolean
