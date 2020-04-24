@@ -5,7 +5,7 @@ import { params, types, query } from 'typed-graphqlify';
 import { values } from 'belter';
 
 
-import type { Wallet, ContentType } from '../../src/types';
+import type { Wallet } from '../../src/types';
 import { type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
 
@@ -16,6 +16,7 @@ type SmartWallet = {|
             primary_instrument : boolean,
             one_click_pay_allowed : boolean,
             logo_url? : string,
+            email : string,
             credit? : {|
                 id : string,
                 type : string
@@ -140,13 +141,12 @@ export type WalletOptions = {|
     buttonSessionID : string,
     clientAccessToken : ?string,
     buyerAccessToken : ?string,
-    amount : ?string,
-    content : ContentType
+    amount : ?string
 |};
 
 // eslint-disable-next-line complexity
 export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatch, getWallet : GetWallet, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount, content } : WalletOptions) : Promise<Wallet> {
+    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount } : WalletOptions) : Promise<Wallet> {
 
     const wallet : Wallet = {
         paypal: {
@@ -234,7 +234,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                     instrument = {
                         type:         WALLET_INSTRUMENT.CREDIT,
                         instrumentID: fundingSource.credit.id,
-                        label:        `daniel@gmail.com`,
+                        label:        fundingSource.email,
                         oneClick:     one_click_pay_allowed
                     };
 
@@ -277,10 +277,9 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                     ];
                 } else if (fundingSource.balance) {
                     instrument = {
-                        type:         WALLET_INSTRUMENT.BANK,
+                        type:         WALLET_INSTRUMENT.BALANCE,
                         instrumentID: fundingSource.balance.id,
-                        label:        content.balance,
-                        logoUrl:      fundingSource.logo_url,
+                        label:        fundingSource.email,
                         oneClick:     one_click_pay_allowed
                     };
 

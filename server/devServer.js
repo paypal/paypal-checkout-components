@@ -216,6 +216,7 @@ const getWallet = () => {
             {
                 'funding_sources': [
                     {
+                        'email':              'foo@bar.com',
                         'primary_instrument': false,
                         'credit':             {
                             'id':   'BC-YMBX4GJLEKMQW',
