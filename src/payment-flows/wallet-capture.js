@@ -2,9 +2,9 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { stringifyError } from 'belter/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
-import type { MenuChoices } from '../types';
+import type { MenuChoices, Wallet, WalletInstrument } from '../types';
 import { getSupplementalOrderInfo, exchangeAccessTokenForAuthCode, oneClickApproveOrder } from '../api';
 import { BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
@@ -62,10 +62,6 @@ function getInstrument(wallet : Wallet, fundingSource : $Values<typeof FUNDING>,
 function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentEligibleOptions) : boolean {
     const { wallet } = serviceData;
     const { win, fundingSource, instrumentID } = payment;
-
-    if (fundingSource !== FUNDING.PAYPAL) {
-        return false;
-    }
 
     if (win) {
         return false;
@@ -195,31 +191,61 @@ const POPUP_OPTIONS = {
 };
 
 function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions) : MenuChoices {
-    const { fundingSource } = payment;
-    const { content, buyerAccessToken } = serviceData;
+    const { fundingSource, instrumentID } = payment;
+    const { wallet, content, buyerAccessToken } = serviceData;
 
     if (!buyerAccessToken) {
         throw new Error(`Can not render wallet menu without buyer access token`);
     }
 
+    if (!wallet) {
+        throw new Error(`Can not render wallet menu without wallet`);
+    }
+
+    if (!instrumentID) {
+        throw new Error(`Can not render wallet menu without instrumentID`);
+    }
+
+    const instrument = getInstrument(wallet, fundingSource, instrumentID);
+
+    if (!instrument) {
+        throw new Error(`Can not render wallet menu without instrument`);
+    }
+
+    const CHOOSE_CARD = {
+        label:    content.chooseCardOrShipping,
+        popup:    POPUP_OPTIONS,
+        onSelect: ({ win }) => {
+            return exchangeAccessTokenForAuthCode(buyerAccessToken).then(authCode => {
+                return initiatePayment({ payment: { ...payment, authCode, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
+            });
+        }
+    };
+
+    const CHOOSE_ACCOUNT = {
+        label:    content.useDifferentAccount,
+        popup:    POPUP_OPTIONS,
+        onSelect: ({ win }) => {
+            return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
+        }
+    };
+
     if (fundingSource === FUNDING.PAYPAL) {
+        if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
+            return [
+                CHOOSE_ACCOUNT
+            ];
+        }
+
         return [
-            {
-                label:    content.chooseCardOrShipping,
-                popup:    POPUP_OPTIONS,
-                onSelect: ({ win }) => {
-                    return exchangeAccessTokenForAuthCode(buyerAccessToken).then(authCode => {
-                        return initiatePayment({ payment: { ...payment, authCode, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
-                    });
-                }
-            },
-            {
-                label:    content.useDifferentAccount,
-                popup:    POPUP_OPTIONS,
-                onSelect: ({ win }) => {
-                    return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
-                }
-            }
+            CHOOSE_CARD,
+            CHOOSE_ACCOUNT
+        ];
+    }
+
+    if (fundingSource === FUNDING.CREDIT) {
+        return [
+            CHOOSE_ACCOUNT
         ];
     }
 
