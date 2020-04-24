@@ -3,7 +3,7 @@
 import { html } from 'jsx-pragmatic';
 import { COUNTRY, LANG } from '@paypal/sdk-constants';
 
-import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
+import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL, javascriptResponse } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization, resolveNativeEligibility, resolveMerchantID, type GetWallet, resolveWallet, exchangeIDToken } from '../../service';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
 import { AUTH_ERROR_CODE } from '../../config';
@@ -165,6 +165,15 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             allowFrame(res);
             return htmlResponse(res, pageHTML);
+        },
+
+        script: async ({ req, res, params, logBuffer }) => {
+            logger.info(req, EVENT.RENDER);
+
+            const { debug } = getParams(params, req, res);
+            const { script } = await getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
+
+            return javascriptResponse(res, script);
         }
     });
 }
