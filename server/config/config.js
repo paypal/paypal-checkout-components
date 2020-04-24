@@ -26,3 +26,5 @@ export const MENU_CLIENT_MIN_JS = 'dist/smart-menu.min.js';
 
 export const WALLET_CLIENT_JS = 'dist/smart-wallet.js';
 export const WALLET_CLIENT_MIN_JS = 'dist/smart-wallet.min.js';
+
+export const BROWSER_CACHE_TIME = 6 * 60 * 60;

@@ -4,7 +4,9 @@ export const HTTP_HEADER = {
     CONTENT_TYPE:        'content-type',
     CONTENT_DISPOSITION: 'Content-Disposition',
     X_FRAME_OPTIONS:     'X-Frame-Options',
-    PP_GEO_LOC:          'pp_geo_loc'
+    PP_GEO_LOC:          'pp_geo_loc',
+    CACHE_CONTROL:       'cache-control',
+    EXPIRES:             'expires'
 };
 
 export const HTTP_CONTENT_TYPE = {

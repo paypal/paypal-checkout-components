@@ -5,7 +5,7 @@ import { undotify } from 'belter';
 
 import type { ExpressRequest, ExpressResponse, LoggerType, CacheType } from '../types';
 import { startWatchers } from '../watchers';
-import { EVENT, ERROR_CODE } from '../config';
+import { EVENT, ERROR_CODE, BROWSER_CACHE_TIME, HTTP_HEADER } from '../config';
 
 import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType, getLogBuffer, safeJSON, isError } from './util';
 
@@ -130,6 +130,8 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
         }
 
         if (url === '/script') {
+            res.header(HTTP_HEADER.CACHE_CONTROL, `public, max-age=${ BROWSER_CACHE_TIME }`);
+            res.header(HTTP_HEADER.EXPIRES, new Date(Date.now() + (BROWSER_CACHE_TIME * 1000)).toUTCString());
             return await scriptMiddleware(req, res);
         }
 
