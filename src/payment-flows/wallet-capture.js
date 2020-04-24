@@ -12,6 +12,8 @@ import { getLogger } from '../lib';
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
+const WALLET_MIN_WIDTH = 350;
+
 function setupWalletCapture() {
     // pass
 }
@@ -35,6 +37,28 @@ function isWalletCaptureEligible({ props, serviceData } : IsEligibleOptions) : b
     return true;
 }
 
+function getInstrument(wallet : Wallet, fundingSource : $Values<typeof FUNDING>, instrumentID : string) : ?WalletInstrument {
+
+    // $FlowFixMe
+    const walletFunding = wallet[fundingSource];
+
+    if (!walletFunding) {
+        return;
+    }
+
+    const instrument = walletFunding.instruments.find(inst => inst.instrumentID === instrumentID);
+
+    if (!instrument) {
+        return;
+    }
+
+    if (!instrument.type) {
+        return;
+    }
+
+    return instrument;
+}
+
 function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentEligibleOptions) : boolean {
     const { wallet } = serviceData;
     const { win, fundingSource, instrumentID } = payment;
@@ -54,21 +78,14 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
     if (!instrumentID) {
         return false;
     }
-    
-    // $FlowFixMe
-    const walletFunding = wallet[fundingSource];
 
-    if (!walletFunding) {
-        return false;
-    }
+    const instrument = getInstrument(wallet, fundingSource, instrumentID);
 
-    const instrument = walletFunding.instruments.find(inst => inst.instrumentID === instrumentID);
-    
     if (!instrument) {
         return false;
     }
 
-    if (!instrument.type) {
+    if (window.innerWidth < WALLET_MIN_WIDTH) {
         return false;
     }
 
