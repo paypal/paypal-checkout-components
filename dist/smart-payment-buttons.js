@@ -2754,7 +2754,7 @@ window.spb = function(modules) {
         },
         isPaymentEligible: function(_ref2) {
             var _ref3 = _ref2.payment || {};
-            return !_ref3.win && !!_ref3.paymentMethodID;
+            return !(_ref3.win || !_ref3.paymentMethodID || window.innerWidth < 0);
         },
         init: function(_ref6) {
             var props = _ref6.props, components = _ref6.components, payment = _ref6.payment, serviceData = _ref6.serviceData, config = _ref6.config;
@@ -2913,6 +2913,15 @@ window.spb = function(modules) {
         spinner: !0,
         inline: !0
     };
+    function getInstrument(wallet, fundingSource, instrumentID) {
+        var walletFunding = wallet[fundingSource];
+        if (walletFunding) {
+            var instrument = walletFunding.instruments.find((function(inst) {
+                return inst.instrumentID === instrumentID;
+            }));
+            if (instrument && instrument.type) return instrument;
+        }
+    }
     var wallet_capture_POPUP_OPTIONS = {
         width: 500,
         height: 590
@@ -2927,17 +2936,8 @@ window.spb = function(modules) {
         isPaymentEligible: function(_ref2) {
             var payment = _ref2.payment;
             var wallet = _ref2.serviceData.wallet;
-            var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
-            if ("paypal" !== fundingSource) return !1;
-            if (payment.win) return !1;
-            if (!wallet) return !1;
-            if (!instrumentID) return !1;
-            var walletFunding = wallet[fundingSource];
-            if (!walletFunding) return !1;
-            var instrument = walletFunding.instruments.find((function(inst) {
-                return inst.instrumentID === instrumentID;
-            }));
-            return !!instrument && !!instrument.type;
+            var instrumentID = payment.instrumentID;
+            return !(payment.win || !wallet || !instrumentID || !getInstrument(wallet, payment.fundingSource, instrumentID) || window.innerWidth < 350);
         },
         init: function(_ref3) {
             var props = _ref3.props, components = _ref3.components, payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config;
@@ -3032,10 +3032,26 @@ window.spb = function(modules) {
         },
         setupMenu: function(_ref5) {
             var payment = _ref5.payment, serviceData = _ref5.serviceData, initiatePayment = _ref5.initiatePayment;
-            var fundingSource = payment.fundingSource;
-            var content = serviceData.content, buyerAccessToken = serviceData.buyerAccessToken;
+            var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
+            var wallet = serviceData.wallet, content = serviceData.content, buyerAccessToken = serviceData.buyerAccessToken;
             if (!buyerAccessToken) throw new Error("Can not render wallet menu without buyer access token");
-            if ("paypal" === fundingSource) return [ {
+            if (!wallet) throw new Error("Can not render wallet menu without wallet");
+            if (!instrumentID) throw new Error("Can not render wallet menu without instrumentID");
+            var instrument = getInstrument(wallet, fundingSource, instrumentID);
+            if (!instrument) throw new Error("Can not render wallet menu without instrument");
+            var CHOOSE_ACCOUNT = {
+                label: content.useDifferentAccount,
+                popup: wallet_capture_POPUP_OPTIONS,
+                onSelect: function(_ref7) {
+                    return initiatePayment({
+                        payment: _extends({}, payment, {
+                            win: _ref7.win,
+                            buyerIntent: "pay_with_different_account"
+                        })
+                    });
+                }
+            };
+            if ("paypal" === fundingSource) return "credit" === instrument.type ? [ CHOOSE_ACCOUNT ] : [ {
                 label: content.chooseCardOrShipping,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref6) {
@@ -3050,18 +3066,8 @@ window.spb = function(modules) {
                         });
                     }));
                 }
-            }, {
-                label: content.useDifferentAccount,
-                popup: wallet_capture_POPUP_OPTIONS,
-                onSelect: function(_ref7) {
-                    return initiatePayment({
-                        payment: _extends({}, payment, {
-                            win: _ref7.win,
-                            buyerIntent: "pay_with_different_account"
-                        })
-                    });
-                }
-            } ];
+            }, CHOOSE_ACCOUNT ];
+            if ("credit" === fundingSource) return [ CHOOSE_ACCOUNT ];
             throw new Error("Can not render menu for " + fundingSource);
         },
         spinner: !0,
@@ -4333,7 +4339,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.240", _ref2;
+                _ref2.button_version = "2.0.241", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
