@@ -71,7 +71,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry }));
             
             const sendRiskDataPromise = riskData ? transportRiskData(req, riskData) : null;
-            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken) ? sendRiskDataPromise.then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken })) : null;
+            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken) ? sendRiskDataPromise.then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID })) : null;
             const buyerAccessToken = await buyerAccessTokenPromise;
 
             const nativeEligibilityPromise = resolveNativeEligibility(req, gqlBatch, {

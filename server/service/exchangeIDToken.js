@@ -17,19 +17,20 @@ const EXCHANGE_ID_TOKEN_QUERY = `
 
 export type ExchangeIDTokenOptions = {|
     logger : LoggerType,
-    userIDToken : string
+    userIDToken : string,
+    clientMetadataID : string
 |};
 
 export async function exchangeIDToken(req : ExpressRequest, gqlBatch : GraphQLBatch, exchangeIDTokenOptions : ExchangeIDTokenOptions) : Promise<?string> {
-    const { logger, userIDToken } = exchangeIDTokenOptions;
+    const { logger, userIDToken, clientMetadataID } = exchangeIDTokenOptions;
 
     try {
-        
         const result = await gqlBatch({
             query:     EXCHANGE_ID_TOKEN_QUERY,
             variables: {
                 userIDToken
-            }
+            },
+            clientMetadataID
         });
 
         const buyerAccessToken = result.auth && result.auth.accessToken;

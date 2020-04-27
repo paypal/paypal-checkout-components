@@ -1,6 +1,7 @@
 /* @flow */
 
 import type { ExpressRequest } from '../types';
+import { HTTP_HEADER } from '../config';
 
 // $FlowFixMe
 export type GraphQL = <V, R>(ExpressRequest, $ReadOnlyArray<{| query : string, variables : V |}>) => Promise<R>; // eslint-disable-line no-undef
@@ -8,16 +9,17 @@ export type GraphQL = <V, R>(ExpressRequest, $ReadOnlyArray<{| query : string, v
 // eslint-disable-next-line flowtype/require-exact-type
 export type GraphQLBatch = {
     // eslint-disable-next-line no-undef
-    <V, R>({| query : string, variables : V, accessToken? : ?string |}) : Promise<R>,
+    <V, R>({| query : string, variables : V, accessToken? : ?string, clientMetadataID? : string |}) : Promise<R>,
     flush : () => void
 };
 
 export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLBatch {
     let batch = [];
     let accessToken;
+    let clientMetadataID = req.get(HTTP_HEADER.CLIENT_METADATA_ID);
     let timer;
 
-    const batchedGraphQL = async ({ query, variables, accessToken: callerAccessToken }) => {
+    const batchedGraphQL = async ({ query, variables, accessToken: callerAccessToken, clientMetadataID: callerClientMetadataID }) => {
         return await new Promise((resolve, reject) => {
             if (callerAccessToken) {
                 if (accessToken && callerAccessToken !== accessToken) {
@@ -25,6 +27,14 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
                 }
 
                 accessToken = callerAccessToken;
+            }
+
+            if (callerClientMetadataID) {
+                if (clientMetadataID && callerClientMetadataID !== clientMetadataID) {
+                    throw new Error(`Client Metadata id for graphql call already set`);
+                }
+
+                clientMetadataID = callerClientMetadataID;
             }
 
             batch.push({ query, variables, resolve, reject });
@@ -46,7 +56,7 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
         let gqlError;
 
         try {
-            response = await graphQL(req, payload, { accessToken });
+            response = await graphQL(req, payload, { accessToken, clientMetadataID });
         } catch (err) {
             gqlError = err;
         }
