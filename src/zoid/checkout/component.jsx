@@ -98,10 +98,12 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     value:    getCSPNonce
                 },
 
-                authCode: {
-                    type:       'string',
+                createAuthCode: {
+                    type:       'function',
+                    queryParam: 'code',
                     required:   false,
-                    queryParam: 'code'
+                    queryValue: ({ value }) => ZalgoPromise.try(value),
+                    decorate:   ({ value }) => memoize(value)
                 },
 
                 buyerCountry: {
