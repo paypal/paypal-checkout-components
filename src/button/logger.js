@@ -10,6 +10,16 @@ import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FTPI_BUTTON_KEY, FP
 
 import type { ButtonStyle } from './props';
 
+function getTemplateVersion() : string {
+    const templateVersion = document.body && document.body.getAttribute(`${ DATA_ATTRIBUTES.RENDER_VERSION }`);
+    return (templateVersion || 'unknown').replace(/[^a-zA-Z0-9]+/g, '_');
+}
+
+function getClientVersion() : string {
+    const clientVersion = document.body && document.body.getAttribute(`${ DATA_ATTRIBUTES.CLIENT_VERSION }`);
+    return (clientVersion || 'unknown').replace(/[^a-zA-Z0-9]+/g, '_');
+}
+
 type ButtonLoggerOptions = {|
     env : $Values<typeof ENV>,
     sessionID : string,
@@ -59,6 +69,9 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
 
         const { layout, color, shape, label, tagline = true } = style;
 
+        logger.info(`button_render`);
+        logger.info(`button_render_template_version_${ getTemplateVersion() }`);
+        logger.info(`button_render_client_version_${ getClientVersion() }`);
         logger.info(`button_render_color_${ color }`);
         logger.info(`button_render_shape_${ shape }`);
         logger.info(`button_render_label_${ label }`);

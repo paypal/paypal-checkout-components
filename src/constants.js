@@ -29,7 +29,9 @@ export const DATA_ATTRIBUTES = {
     PAYMENT_METHOD_ID: 'data-payment-method-id',
     INSTRUMENT_ID:     'data-instrument-id',
     MENU:              'data-menu',
-    NONCE:             'data-nonce'
+    NONCE:             'data-nonce',
+    RENDER_VERSION:    'data-render-version',
+    CLIENT_VERSION:    'data-client-version'
 };
 
 export const CLASS = {
