@@ -198,13 +198,13 @@
             return insertCss(content, options);
         };
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-d2ff3bcf]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-d2ff3bcf]{height:50px}}.wallet-item .icon[data-v-d2ff3bcf]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-d2ff3bcf]{max-height:90%;max-width:90%}.wallet-item .description[data-v-d2ff3bcf]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-d2ff3bcf]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-d2ff3bcf]{font-size:13px}}.wallet-item .description .details[data-v-d2ff3bcf]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-d2ff3bcf]{font-size:12px}}.wallet-item .preferred[data-v-d2ff3bcf]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-d2ff3bcf]:hover{background-color:#eee}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-fdd787a1]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-fdd787a1]{height:50px}}.wallet-item .icon[data-v-fdd787a1]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-fdd787a1]{max-height:90%;max-width:90%}.wallet-item .description[data-v-fdd787a1]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-fdd787a1]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-fdd787a1]{font-size:13px}}.wallet-item .description .details[data-v-fdd787a1]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-fdd787a1]{font-size:12px}}.wallet-item .preferred[data-v-fdd787a1]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-fdd787a1]:hover{background-color:#eee}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-fdd787a1]{padding:20px}.add-card-button a[data-v-fdd787a1]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-fdd787a1]:hover{text-decoration:underline}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-d2ff3bcf]{padding:20px}.add-card-button a[data-v-d2ff3bcf]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-d2ff3bcf]:hover{text-decoration:underline}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif}*{box-sizing:border-box}.flex-spacer{flex:1}\n", "" ]);
@@ -1606,13 +1606,13 @@
             }));
         }
         memoize((function(orderID) {
-            var _headers16;
+            var _headers17;
             return callGraphQL({
                 query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID
                 },
-                headers: (_headers16 = {}, _headers16["paypal-client-context"] = orderID, _headers16)
+                headers: (_headers17 = {}, _headers17["paypal-client-context"] = orderID, _headers17)
             });
         }));
         memoize((function(config) {
@@ -1822,16 +1822,17 @@
                             };
                             var get = memoize((function() {
                                 return function(orderID, _ref2) {
-                                    var _headers2;
+                                    var _headers2, _headers3;
                                     var buyerAccessToken = _ref2.buyerAccessToken, _ref2$forceRestAPI = _ref2.forceRestAPI;
                                     return void 0 !== _ref2$forceRestAPI && _ref2$forceRestAPI ? callRestAPI({
                                         accessToken: _ref2.facilitatorAccessToken,
                                         url: "/v2/checkout/orders/" + orderID,
                                         headers: (_headers2 = {}, _headers2["paypal-partner-attribution-id"] = _ref2.partnerAttributionID || "", 
-                                        _headers2["paypal-client-context"] = orderID, _headers2)
+                                        _headers2)
                                     }) : callSmartAPI({
                                         accessToken: buyerAccessToken,
-                                        url: "/smart/api/order/" + orderID
+                                        url: "/smart/api/order/" + orderID,
+                                        headers: (_headers3 = {}, _headers3["paypal-client-context"] = orderID, _headers3)
                                     });
                                 }(orderID, {
                                     facilitatorAccessToken: facilitatorAccessToken,
@@ -1843,19 +1844,19 @@
                             var capture = memoize((function() {
                                 if ("capture" !== intent) throw new Error("Use intent=capture to use client-side capture");
                                 return function(orderID, _ref3) {
-                                    var _headers3, _headers4;
+                                    var _headers4, _headers5;
                                     var buyerAccessToken = _ref3.buyerAccessToken, _ref3$forceRestAPI = _ref3.forceRestAPI;
                                     return void 0 !== _ref3$forceRestAPI && _ref3$forceRestAPI ? callRestAPI({
                                         accessToken: _ref3.facilitatorAccessToken,
                                         method: "post",
                                         url: "/v2/checkout/orders/" + orderID + "/capture",
-                                        headers: (_headers3 = {}, _headers3["paypal-partner-attribution-id"] = _ref3.partnerAttributionID || "", 
-                                        _headers3)
+                                        headers: (_headers4 = {}, _headers4["paypal-partner-attribution-id"] = _ref3.partnerAttributionID || "", 
+                                        _headers4)
                                     }) : callSmartAPI({
                                         accessToken: buyerAccessToken,
                                         method: "post",
                                         url: "/smart/api/order/" + orderID + "/capture",
-                                        headers: (_headers4 = {}, _headers4["paypal-client-context"] = orderID, _headers4)
+                                        headers: (_headers5 = {}, _headers5["paypal-client-context"] = orderID, _headers5)
                                     });
                                 }(orderID, {
                                     facilitatorAccessToken: facilitatorAccessToken,
@@ -1867,19 +1868,19 @@
                             var authorize = memoize((function() {
                                 if ("authorize" !== intent) throw new Error("Use intent=authorize to use client-side authorize");
                                 return function(orderID, _ref4) {
-                                    var _headers5, _headers6;
+                                    var _headers6, _headers7;
                                     var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI;
                                     return void 0 !== _ref4$forceRestAPI && _ref4$forceRestAPI ? callRestAPI({
                                         accessToken: _ref4.facilitatorAccessToken,
                                         method: "post",
                                         url: "/v2/checkout/orders/" + orderID + "/authorize",
-                                        headers: (_headers5 = {}, _headers5["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
-                                        _headers5)
+                                        headers: (_headers6 = {}, _headers6["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
+                                        _headers6)
                                     }) : callSmartAPI({
                                         accessToken: buyerAccessToken,
                                         method: "post",
                                         url: "/smart/api/order/" + orderID + "/authorize",
-                                        headers: (_headers6 = {}, _headers6["paypal-client-context"] = orderID, _headers6)
+                                        headers: (_headers7 = {}, _headers7["paypal-client-context"] = orderID, _headers7)
                                     });
                                 }(orderID, {
                                     facilitatorAccessToken: facilitatorAccessToken,
@@ -1894,7 +1895,7 @@
                                 patch: function(data) {
                                     void 0 === data && (data = {});
                                     return function(orderID, data, _ref5) {
-                                        var _headers7, _headers8;
+                                        var _headers8, _headers9;
                                         var facilitatorAccessToken = _ref5.facilitatorAccessToken, buyerAccessToken = _ref5.buyerAccessToken, partnerAttributionID = _ref5.partnerAttributionID, _ref5$forceRestAPI = _ref5.forceRestAPI, forceRestAPI = void 0 !== _ref5$forceRestAPI && _ref5$forceRestAPI;
                                         var patchData = Array.isArray(data) ? {
                                             patch: data
@@ -1904,8 +1905,8 @@
                                             method: "patch",
                                             url: "/v2/checkout/orders/" + orderID,
                                             data: patchData,
-                                            headers: (_headers7 = {}, _headers7["paypal-partner-attribution-id"] = partnerAttributionID || "", 
-                                            _headers7)
+                                            headers: (_headers8 = {}, _headers8["paypal-partner-attribution-id"] = partnerAttributionID || "", 
+                                            _headers8)
                                         }) : callSmartAPI({
                                             accessToken: buyerAccessToken,
                                             method: "post",
@@ -1913,7 +1914,7 @@
                                             json: {
                                                 data: patchData
                                             },
-                                            headers: (_headers8 = {}, _headers8["paypal-client-context"] = orderID, _headers8)
+                                            headers: (_headers9 = {}, _headers9["paypal-client-context"] = orderID, _headers9)
                                         });
                                     }(orderID, data, {
                                         facilitatorAccessToken: facilitatorAccessToken,
@@ -2259,8 +2260,8 @@
                 id: "Path"
             }))));
         };
-        var style_scopedscopeId_d2ff3bcf = __webpack_require__(2);
-        var style_scopedscopeId_d2ff3bcf_default = __webpack_require__.n(style_scopedscopeId_d2ff3bcf);
+        var style_scopedscopeId_fdd787a1 = __webpack_require__(2);
+        var style_scopedscopeId_fdd787a1_default = __webpack_require__.n(style_scopedscopeId_fdd787a1);
         var walletItem_WalletItem = function(_ref) {
             var selected = _ref.selected, details = _ref.details, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
             var _useState = hooks_module_v(selected), showSelected = _useState[0], setShowSelected = _useState[1];
@@ -2268,8 +2269,8 @@
                 setShowSelected(selected);
             }), [ selected ]);
             return h(style_Style, {
-                css: style_scopedscopeId_d2ff3bcf_default.a,
-                "data-v-d2ff3bcf": ""
+                css: style_scopedscopeId_fdd787a1_default.a,
+                "data-v-fdd787a1": ""
             }, h("div", {
                 className: "wallet-item " + (selected ? "selected-wallet-item" : ""),
                 onClick: function() {
@@ -2278,39 +2279,39 @@
                         listOpenHandler(!listOpen);
                     }(details.id);
                 },
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h("div", {
                 className: "icon",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h("img", {
                 src: details.fundingOptionIcon,
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             })), h("div", {
                 className: "description",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h("div", {
                 className: "name",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, details.fundingOptionTitle), h("div", {
                 className: "details",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h("span", {
                 className: "type",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, details.instrumentSubType, " "), h("span", {
                 className: "digits",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, details.lastDigits))), details.showPreferredText ? h("div", {
                 className: "preferred",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, "PREFERRED") : "", h("div", {
                 className: "flex-spacer",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }), showSelected ? h("div", {
                 className: "selected",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h(check_Check, {
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             })) : ""));
         };
         var style_scopedscopeId_d7b06a5e = __webpack_require__(3);
@@ -2355,8 +2356,8 @@
                 lastDigits: "PAYPAL" === subType ? "" : "•••• " + (digits || "")
             };
         };
-        var style_scopedscopeId_fdd787a1 = __webpack_require__(4);
-        var style_scopedscopeId_fdd787a1_default = __webpack_require__.n(style_scopedscopeId_fdd787a1);
+        var style_scopedscopeId_d2ff3bcf = __webpack_require__(4);
+        var style_scopedscopeId_d2ff3bcf_default = __webpack_require__.n(style_scopedscopeId_d2ff3bcf);
         var wallet_Wallet = function(_ref) {
             var checkoutSession = _ref.checkoutSession;
             var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_v(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_v(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
@@ -2367,20 +2368,20 @@
                 setSelectedWalletItem(newItem);
             };
             return h(style_Style, {
-                css: style_scopedscopeId_fdd787a1_default.a,
-                "data-v-fdd787a1": ""
+                css: style_scopedscopeId_d2ff3bcf_default.a,
+                "data-v-d2ff3bcf": ""
             }, h("div", {
                 className: "wallet",
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }, listOpen ? "" : h(walletItem_WalletItem, {
                 selected: !0,
                 details: buildWalletItemDetails(selectedWalletItem),
                 selectWalletItemHandler: changeSelectedWalletItem,
                 listOpen: listOpen,
                 listOpenHandler: setListOpen,
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }), listOpen ? h("div", {
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }, fundingOptions.map((function(option) {
                 return h(walletItem_WalletItem, {
                     selected: option.id === selectedWalletItem.id,
@@ -2388,17 +2389,17 @@
                     selectWalletItemHandler: changeSelectedWalletItem,
                     listOpen: listOpen,
                     listOpenHandler: setListOpen,
-                    "data-v-fdd787a1": ""
+                    "data-v-d2ff3bcf": ""
                 });
             })), h(credit_CreditBanner, {
                 checkoutSession: checkoutSession,
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }), h("div", {
                 className: "add-card-button",
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }, h("a", {
                 href: "#",
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }, "Add debit or credit card"))) : ""));
         };
         var page_style = __webpack_require__(5);
@@ -2435,7 +2436,7 @@
                             var planID = _ref.checkoutSession.fundingOptions[0].allPlans[0].id;
                             return (0, props.createOrder)().then((function(orderID) {
                                 return function(_ref10) {
-                                    var _headers14;
+                                    var _headers15;
                                     var orderID = _ref10.orderID;
                                     return callGraphQL({
                                         query: "\n            mutation ApproveOrder(\n                $orderID : String!\n                $planID : String!\n            ) {\n                approvePayment(\n                    token: $orderID\n                    selectedPlanId: $planID\n                ) {\n                    buyer {\n                        userId\n                    }\n                }\n            }\n        ",
@@ -2443,8 +2444,8 @@
                                             orderID: orderID,
                                             planID: _ref10.planID
                                         },
-                                        headers: (_headers14 = {}, _headers14["x-paypal-internal-euat"] = _ref10.buyerAccessToken, 
-                                        _headers14["paypal-client-context"] = orderID, _headers14)
+                                        headers: (_headers15 = {}, _headers15["x-paypal-internal-euat"] = _ref10.buyerAccessToken, 
+                                        _headers15["paypal-client-context"] = orderID, _headers15)
                                     }).then((function(_ref11) {
                                         return {
                                             payerID: _ref11.approvePayment.buyer.userId
