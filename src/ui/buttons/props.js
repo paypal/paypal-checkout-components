@@ -221,7 +221,8 @@ export type ButtonProps = {|
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
     clientAccessToken : ?string,
-    nonce : string
+    nonce : string,
+    userIDToken : ?string
 |};
 
 export type ButtonPropsInputs = {|

@@ -366,8 +366,8 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
             riskData: {
                 type:  'object',
-                value: () => {
-                    if (getUserIDToken()) {
+                value: ({ props }) => {
+                    if (props.userIDToken) {
                         try {
                             return collectRiskData({
                                 clientMetadataID: getClientMetadataID(),
