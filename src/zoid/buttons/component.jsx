@@ -11,7 +11,7 @@ import { create, type ZoidComponent } from 'zoid/src';
 import { uniqueID, values, memoize, noop, identity } from 'belter/src';
 import { FUNDING, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
-import { collectRiskData } from '@paypal/risk-data-collector/src';
+import { collectRiskData, persistRiskData } from '@paypal/risk-data-collector/src';
 
 import { getSessionID } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
@@ -381,6 +381,11 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 queryParam:    true,
                 required:      false,
                 serialization: 'base64'
+            },
+
+            persistRiskData: {
+                type:  'function',
+                value: () => persistRiskData
             },
 
             debug: {
