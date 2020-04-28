@@ -15,10 +15,11 @@ export const getPayPalCheckoutComponentsWatcher = ({ logBuffer, cache } : {| log
     }
 
     paypalCheckoutComponentsWatcher = paypalCheckoutComponentsWatcher || poll({
-        name:   BUTTON_RENDER_MODULE,
-        period: MODULE_POLL_INTERVAL,
-        flat:   true,
-        logger: logBuffer,
+        name:         BUTTON_RENDER_MODULE,
+        period:       MODULE_POLL_INTERVAL,
+        flat:         true,
+        dependencies: false,
+        logger:       logBuffer,
         cache
     });
 
@@ -31,10 +32,11 @@ export const getPayPalSmartPaymentButtonsWatcher = ({ logBuffer, cache } : {| lo
     }
 
     paypalSmartButtonsWatcher = paypalSmartButtonsWatcher || poll({
-        name:   BUTTON_CLIENT_MODULE,
-        period: MODULE_POLL_INTERVAL,
-        flat:   true,
-        logger: logBuffer,
+        name:         BUTTON_CLIENT_MODULE,
+        period:       MODULE_POLL_INTERVAL,
+        flat:         true,
+        dependencies: false,
+        logger:       logBuffer,
         cache
     });
     
