@@ -4339,7 +4339,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.241", _ref2;
+                _ref2.button_version = "2.0.242", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
@@ -4367,6 +4367,9 @@ window.spb = function(modules) {
                     return el.getAttribute("data-funding-source");
                 }));
                 var layout = style.layout, color = style.color, shape = style.shape, label = style.label, _style$tagline = style.tagline, tagline = void 0 === _style$tagline || _style$tagline;
+                logger.info("button_render");
+                logger.info("button_render_template_version_" + (document.body && document.body.getAttribute("data-render-version") || "unknown").replace(/[^a-zA-Z0-9]+/g, "_"));
+                logger.info("button_render_client_version_" + (document.body && document.body.getAttribute("data-client-version") || "unknown").replace(/[^a-zA-Z0-9]+/g, "_"));
                 logger.info("button_render_color_" + color);
                 logger.info("button_render_shape_" + shape);
                 logger.info("button_render_label_" + label);
