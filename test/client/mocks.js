@@ -502,6 +502,10 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
             }
 
             if (data.query.includes('query ExchangeAuthCode')) {
+                if (!data.variables.buyerAccessToken) {
+                    throw new Error(`Expected buyer access token to be passed`);
+                }
+                
                 return {
                     data: {
                         auth: {

@@ -227,7 +227,7 @@ export type CheckoutProps = {|
     sessionID : string,
     buttonSessionID : string,
     clientAccessToken? : ?string,
-    authCode? : string,
+    createAuthCode? : () => ZalgoPromise<?string>,
     createOrder : () => ZalgoPromise<string>,
     onApprove : ({| payerID : string, paymentID : ?string, billingToken : ?string, subscriptionID : ?string |}) => ZalgoPromise<void> | void,
     onAuth : ({| accessToken : string |}) => ZalgoPromise<void> | void,
@@ -241,7 +241,6 @@ export type CheckoutProps = {|
     locale : LocaleType,
     commit : boolean,
     cspNonce : ?string,
-    buyerAccessToken : ?string,
     venmoPayloadID? : ?string
 |};
 

@@ -471,9 +471,15 @@ describe('wallet cases', () => {
                     throw new Error(`Expected correct window to be passed`);
                 }
 
-                if (!props.authCode) {
-                    throw new Error(`Expected auth code to be passed to checkout`);
+                if (!props.createAuthCode) {
+                    throw new Error(`Expected createAuthCode to be passed to checkout`);
                 }
+
+                props.createAuthCode().then(expect('createAuthCodeThen', authCode => {
+                    if (!authCode) {
+                        throw new Error(`Expected auth code`);
+                    }
+                }));
 
                 return Checkout(props);
             });
@@ -570,8 +576,12 @@ describe('wallet cases', () => {
                     throw new Error(`Expected correct window to be passed`);
                 }
 
-                if (props.authCode) {
-                    throw new Error(`Expected auth code to not be passed to checkout`);
+                if (props.createAuthCode) {
+                    props.createAuthCode().then(expect('createAuthCodeThen', authCode => {
+                        if (authCode) {
+                            throw new Error(`Expected auth code to not be passed`);
+                        }
+                    }));
                 }
 
                 return Checkout(props);
@@ -669,9 +679,15 @@ describe('wallet cases', () => {
                     throw new Error(`Expected correct window to be passed`);
                 }
 
-                if (!props.authCode) {
-                    throw new Error(`Expected auth code to be passed to checkout`);
+                if (!props.createAuthCode) {
+                    throw new Error(`Expected createAuthCode to be passed to checkout`);
                 }
+
+                props.createAuthCode().then(expect('createAuthCodeThen', authCode => {
+                    if (!authCode) {
+                        throw new Error(`Expected auth code`);
+                    }
+                }));
 
                 return Checkout(props);
             });

@@ -5,7 +5,7 @@ import { stringifyError } from 'belter/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
-import { getSupplementalOrderInfo, exchangeAccessTokenForAuthCode, oneClickApproveOrder } from '../api';
+import { getSupplementalOrderInfo, oneClickApproveOrder } from '../api';
 import { BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
 
@@ -120,19 +120,17 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
         throw new Error(`Expected instrument type`);
     }
 
-    const getWebCheckoutFallback = (authCode? : string) => {
+    const getWebCheckoutFallback = () => {
         return checkout.init({
             props, components, serviceData, payment: {
-                ...payment, authCode, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING
+                ...payment, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING
             }, config
         });
     };
 
     const fallbackToWebCheckout = () => {
         getLogger().info('web_checkout_fallback').flush();
-        return exchangeAccessTokenForAuthCode(buyerAccessToken).then(authCode => {
-            return getWebCheckoutFallback(authCode).start();
-        });
+        return getWebCheckoutFallback().start();
     };
 
     if (!instrument.oneClick) {
@@ -216,9 +214,7 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
         label:    content.chooseCardOrShipping,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
-            return exchangeAccessTokenForAuthCode(buyerAccessToken).then(authCode => {
-                return initiatePayment({ payment: { ...payment, authCode, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
-            });
+            return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
         }
     };
 

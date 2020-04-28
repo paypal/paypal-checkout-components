@@ -1,13 +1,13 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, noop, supportsPopups } from 'belter/src';
+import { memoize, noop, supportsPopups, stringifyError } from 'belter/src';
 import { FUNDING, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { FundingEligibilityType, ProxyWindow } from '../types';
-import type { CreateBillingAgreement, CreateSubscription } from '../props';
-import { enableVault, validatePaymentMethod } from '../api';
+import { type CreateBillingAgreement, type CreateSubscription } from '../props';
+import { enableVault, validatePaymentMethod, exchangeAccessTokenForAuthCode } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
@@ -142,25 +142,14 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick, enableThreeDomainSecure,
         partnerAttributionID } = props;
-    let { button, win, fundingSource, card, isClick, buyerAccessToken, venmoPayloadID, buyerIntent,
-        paymentMethodID, authCode } = payment;
+    let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken, venmoPayloadID, buyerIntent,
+        paymentMethodID } = payment;
     const { fundingEligibility, buyerCountry } = serviceData;
     const { cspNonce } = config;
 
     const context = getContext({ win, isClick });
 
     let approved = false;
-
-    const restart = memoize(() : ZalgoPromise<void> =>
-        initCheckout({ props, components, serviceData, config, payment: { button, fundingSource, card, buyerIntent, isClick: false } })
-            .start().finally(unresolvedPromise));
-
-    const onClose = () => {
-        checkoutOpen = false;
-        if (!approved) {
-            return onCancel();
-        }
-    };
     
     const init = () => {
         return Checkout({
@@ -168,9 +157,17 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             sessionID,
             buttonSessionID,
             clientAccessToken,
-            buyerAccessToken,
             venmoPayloadID,
-            authCode,
+
+            createAuthCode: () => {
+                return ZalgoPromise.try(() => {
+                    if (buyerAccessToken && (buyerIntent === BUYER_INTENT.PAY || buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING)) {
+                        return exchangeAccessTokenForAuthCode(buyerAccessToken).catch(err => {
+                            getLogger().warn('exchange_access_token_auth_code_error', { err: stringifyError(err) });
+                        });
+                    }
+                });
+            },
     
             createOrder: () => {
                 return createOrder().then(orderID => {
@@ -192,6 +189,10 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     
                 // eslint-disable-next-line no-use-before-define
                 return close().then(() => {
+                    const restart = memoize(() : ZalgoPromise<void> =>
+                        initCheckout({ props, components, serviceData, config, payment: { button, fundingSource, card, buyerIntent, isClick: false } })
+                            .start().finally(unresolvedPromise));
+                            
                     return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart }).catch(noop);
                 });
             },
@@ -215,8 +216,14 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     return onShippingChange({ buyerAccessToken, ...data }, actions);
                 } : null,
     
+            onClose: () => {
+                checkoutOpen = false;
+                if (!approved) {
+                    return onCancel();
+                }
+            },
+
             onError,
-            onClose,
     
             fundingSource,
             card,
