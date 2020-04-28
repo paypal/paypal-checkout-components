@@ -211,7 +211,7 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
     }
 
     const CHOOSE_CARD = {
-        label:    content.chooseCardOrShipping,
+        label:    content.chooseCard || content.chooseCardOrShipping,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
             return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });

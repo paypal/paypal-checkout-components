@@ -177,7 +177,7 @@ function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuO
     if (fundingSource === FUNDING.PAYPAL) {
         return [
             {
-                label:    content.chooseCardOrShipping,
+                label:    content.chooseCard || content.chooseCardOrShipping,
                 popup:    POPUP_OPTIONS,
                 onSelect: ({ win }) => {
                     return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
