@@ -37,6 +37,8 @@ export type ButtonStyle = {|
     tagline : boolean | void
 |};
 
+export type ServerRiskData = {||};
+
 export type ButtonXProps = {|
     env : $Values<typeof ENV>,
     locale : LocaleType,
@@ -71,6 +73,7 @@ export type ButtonXProps = {|
     getParentDomain : () => string,
     getPageUrl : GetPageURL,
     getParent : () => CrossDomainWindowType,
+    persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -111,6 +114,7 @@ export type ButtonProps = {|
     merchantDomain : string,
     getPageUrl : GetPageURL,
     getParent : () => CrossDomainWindowType,
+    persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -162,6 +166,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         currency,
         intent,
         merchantID,
+        persistRiskData,
         upgradeLSAT = false
     } = xprops;
 
@@ -228,6 +233,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         getPageUrl,
         rememberFunding,
         getParent,
+        persistRiskData,
 
         enableThreeDomainSecure,
         enableStandardCardFields,
@@ -292,7 +298,8 @@ export type ServiceData = {|
         nativeCheckout : {
             [ $Values<typeof FUNDING> ] : ?boolean
         }
-    |}
+    |},
+serverRiskData : ? ServerRiskData
 |};
 
 type ServiceDataOptions = {|
@@ -311,10 +318,11 @@ type ServiceDataOptions = {|
         nativeCheckout : {
             [$Values<typeof FUNDING> ] : ?boolean
         }
-    |}
+    |},
+    serverRiskData : ?ServerRiskData
 |};
 
-export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyerGeoCountry, fundingEligibility, wallet, buyerAccessToken, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta, content, buyerGeoCountry, fundingEligibility, wallet, buyerAccessToken, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
@@ -325,6 +333,7 @@ export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyer
         buyerAccessToken,
         personalization,
         facilitatorAccessToken,
-        eligibility
+        eligibility,
+        serverRiskData
     };
 }

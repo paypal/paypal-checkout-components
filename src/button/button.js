@@ -10,7 +10,7 @@ import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
 import { type Payment } from '../payment-flows';
 
-import { getProps, getConfig, getComponents, getServiceData } from './props';
+import { getProps, getConfig, getComponents, getServiceData, type ServerRiskData } from './props';
 import { getSelectedFunding, getButtons } from './dom';
 import { setupButtonLogger } from './logger';
 import { setupRemember } from './remember';
@@ -35,7 +35,8 @@ type ButtonOpts = {|
         nativeCheckout : {
             [$Values<typeof FUNDING> ] : ?boolean
         }
-    |}
+    |},
+    serverRiskData : ?ServerRiskData
 |};
 
 export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
@@ -43,20 +44,20 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         throw new Error(`PayPal SDK not loaded`);
     }
 
-    const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, sdkMeta, buyerAccessToken, wallet,
+    const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, sdkMeta, buyerAccessToken, wallet, serverRiskData,
         cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig, content } = opts;
 
     const clientID = window.xprops.clientID;
 
     const serviceData = getServiceData({
         eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, personalization,
-        isCardFieldsExperimentEnabled, sdkMeta, buyerAccessToken, wallet, content });
+        isCardFieldsExperimentEnabled, sdkMeta, buyerAccessToken, wallet, content, serverRiskData });
     const { merchantID } = serviceData;
 
     const props = getProps({ facilitatorAccessToken });
     const { env, sessionID, partnerAttributionID, commit, correlationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding,
-        style } = props;
+        style, persistRiskData } = props;
         
     const config = getConfig({ serverCSPNonce, firebaseConfig });
     const { version } = config;
@@ -186,10 +187,11 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         style, env, version, sessionID, clientID, partnerAttributionID, commit,
         correlationID, locale, merchantID, buttonSessionID, merchantDomain });
     const setupPaymentFlowsTask = setupPaymentFlows({ props, config, serviceData, components });
+    const setupPersistRiskDataTask = (persistRiskData && serverRiskData) ? persistRiskData(serverRiskData) : null;
 
     return ZalgoPromise.hash({
         initPromise, facilitatorAccessToken,
         setupButtonLogsTask, setupPrerenderTask, setupRememberTask,
-        setupPaymentFlowsTask
+        setupPaymentFlowsTask, setupPersistRiskDataTask
     }).then(noop);
 }
