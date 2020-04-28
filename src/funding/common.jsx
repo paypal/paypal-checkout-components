@@ -7,11 +7,11 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
+import type { ContentType, WalletInstrument } from '../types';
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
 
 import { componentContent } from './content';
-
 
 export type CardConfig = {|
     Label : () => ChildType
@@ -43,13 +43,15 @@ export type LabelOptions = {|
     personalization : Personalization,
     nonce : ?string,
     tagline : ?boolean,
-    content : { [string] : string }
+    content : ?ContentType
 |};
 
-export type VaultLabelOptions = {|
+export type WalletLabelOptions = {|
+    locale : LocaleType,
     logoColor : $Values<typeof LOGO_COLOR>,
-    label : string,
-    vendor? : $Values<typeof CARD>
+    instrument : WalletInstrument,
+    content : ?ContentType,
+    commit : boolean
 |};
 
 export type TagOptions = {|
@@ -67,7 +69,7 @@ export type FundingSourceConfig = {|
     eligible? : ({| components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType, fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT> |}) => boolean,
     Logo : (LogoOptions) => ChildType,
     Label : (LabelOptions) => ChildType,
-    VaultLabel? : (VaultLabelOptions) => ChildType,
+    WalletLabel? : (WalletLabelOptions) => ?ChildType,
     Tag? : (TagOptions) => ?ChildType,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     textColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },

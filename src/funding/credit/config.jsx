@@ -8,6 +8,7 @@ import { CreditLogo, PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/sr
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { Space } from '../../ui/text';
+import { WalletLabel } from '../paypal/template';
 
 export function getCreditConfig() : FundingSourceConfig {
     return {
@@ -33,6 +34,8 @@ export function getCreditConfig() : FundingSourceConfig {
                 </Fragment>
             );
         },
+
+        WalletLabel,
     
         colors: [
             BUTTON_COLOR.DARKBLUE,

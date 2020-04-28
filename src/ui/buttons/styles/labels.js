@@ -26,6 +26,7 @@ export const VISIBLE = `
 export const labelStyle = `
 
     .${ CLASS.BUTTON } .${ CLASS.TEXT } {
+        height: 100%;
         ${ HIDDEN }
     }
 

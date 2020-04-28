@@ -38,6 +38,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                 }
 
                 .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
+                    margin: 0px ${ perc(buttonHeight - (perc(buttonHeight, 35) + 5), 50) }px;
                     height: ${ perc(buttonHeight, 35) + 5 }px;
                     max-height: ${ perc(buttonHeight, 60) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;

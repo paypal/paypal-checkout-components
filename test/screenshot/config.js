@@ -205,6 +205,113 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
+    container: {
+        width: 350
+    },
+    button: {
+        fundingSource: 'paypal'
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible:           true,
+            vaultedInstruments: [
+                {
+                    id:    'xyz',
+                    label: {
+                        description: 'foo@bar.com'
+                    }
+                }
+            ]
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    'abc',
+                            label: {
+                                description: 'Visa x-1234'
+                            }
+                        }
+                    ]
+                },
+                mastercard: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    'abc',
+                            label: {
+                                description: 'Mastercard x-1234'
+                            }
+                        }
+                    ]
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    container: {
+        width: 350
+    },
+    button: {
+        fundingSource: 'card'
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible:           true,
+            vaultedInstruments: [
+                {
+                    id:    'xyz',
+                    label: {
+                        description: 'foo@bar.com'
+                    }
+                }
+            ]
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    'abc',
+                            label: {
+                                description: 'Visa x-1234'
+                            }
+                        }
+                    ]
+                },
+                mastercard: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    'abc',
+                            label: {
+                                description: 'Mastercard x-1234'
+                            }
+                        }
+                    ]
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    container: {
+        width: 350
+    },
     fundingEligibility: {
         paypal: {
             eligible:           true,

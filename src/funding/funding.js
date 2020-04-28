@@ -4,6 +4,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 
+import type { Wallet } from '../types';
 import { BUTTON_LAYOUT } from '../constants';
 import type { OnShippingChange } from '../ui/buttons/props';
 
@@ -58,7 +59,11 @@ export function determineEligibleFunding({ fundingSource, layout, platform, fund
     return eligibleFunding;
 }
 
-export function isVaultedFundingEligible({ onShippingChange } : {| onShippingChange : ?OnShippingChange |}) : boolean {
+export function isVaultedFundingEligible({ wallet, onShippingChange } : {| wallet : ?Wallet, onShippingChange : ?OnShippingChange |}) : boolean {
+    if (!wallet) {
+        return false;
+    }
+
     if (onShippingChange) {
         return false;
     }

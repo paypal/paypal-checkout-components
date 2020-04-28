@@ -6,7 +6,7 @@ import { CARD, COUNTRY, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig, type VaultLabelOptions } from '../common';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig, type WalletLabelOptions } from '../common';
 import { Text, Space } from '../../ui/text';
 import { isRTLLanguage } from '../../lib';
 
@@ -115,14 +115,14 @@ export function getCardConfig() : FundingSourceConfig {
             const isRTL = isRTLLanguage(lang);
             return (
                 <Fragment>
-                    { isRTL ? (
+                    { (isRTL && !__WEB__ && content) ? (
                         <Fragment>
                             <Text optional>{ content.payWithDebitOrCreditCard }</Text>
                             <Space />
                         </Fragment>
                     ) : null }
                     { logo }
-                    { !isRTL ? (
+                    {(!isRTL && !__WEB__ && content) ? (
                         <Fragment>
                             <Space />
                             <Text optional>{ content.payWithDebitOrCreditCard }</Text>
@@ -132,22 +132,22 @@ export function getCardConfig() : FundingSourceConfig {
             );
         },
 
-        VaultLabel: ({ vendor, label } : VaultLabelOptions) => {
-            if (!vendor) {
+        WalletLabel: ({ instrument } : WalletLabelOptions) => {
+            if (!instrument.vendor) {
                 throw new Error(`Vendor required for card vault label`);
             }
 
-            const vendorConfig = vendors[vendor];
+            const vendorConfig = vendors[instrument.vendor];
 
             if (!vendorConfig) {
-                throw new Error(`Could not find vendor config for ${ vendor }`);
+                throw new Error(`Could not find vendor config for ${ instrument.vendor }`);
             }
 
             const { Label } = vendorConfig;
 
             return (
                 <Fragment>
-                    <Label optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
+                    <Label optional /> <Text className={ CLASS.VAULT_LABEL }>{ instrument.label }</Text>
                 </Fragment>
             );
         }

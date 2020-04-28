@@ -1,16 +1,18 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
-import { PPLogo, PayPalLogo, LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { node, Fragment, Style, type ChildType } from 'jsx-pragmatic/src';
+import { PPLogo, PayPalLogo, CreditLogo, GlyphCard, LOGO_CLASS } from '@paypal/sdk-logos/src';
+import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
-import { type LogoOptions, type LabelOptions, type VaultLabelOptions, type TagOptions, BasicLabel } from '../common';
+import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
 import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
 import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/labels';
+
+import css from './style.scoped.scss';
 
 export function Logo({ logoColor } : LogoOptions) : ChildType {
     return (
@@ -158,11 +160,55 @@ export function Label(opts : LabelOptions) : ChildType {
     );
 }
 
-export function VaultLabel({ logoColor, label } : VaultLabelOptions) : ChildType {
+export function WalletLabel({ logoColor, instrument, locale, content, commit } : WalletLabelOptions) : ?ChildType {
+    if (__WEB__) {
+        return;
+    }
+
+    let logo;
+
+    if (instrument.logoUrl) {
+        logo = <img class='card-art' src={ instrument.logoUrl } />;
+    } else if (instrument.type === WALLET_INSTRUMENT.CARD) {
+        logo = <GlyphCard />;
+    } else if (instrument.type === WALLET_INSTRUMENT.BANK) {
+        logo = <GlyphCard />;
+    } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
+        logo = <CreditLogo locale={ locale } logoColor={ logoColor } />;
+    }
+
     return (
-        <Fragment>
-            <PPLogo logoColor={ logoColor } optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
-        </Fragment>
+        <Style css={ css }>
+            <div class='wallet-label'>
+                <div class='paypal-mark'>
+                    <PPLogo logoColor={ logoColor } />
+                </div>
+                <Space />
+                {
+                    (instrument.oneClick && commit && content) &&
+                        <div class='pay-now'>
+                            <Text>{ content.payNow }</Text>
+                        </div>
+                }
+                <div class='paypal-wordmark'>
+                    <Space />
+                    <PayPalLogo logoColor={ logoColor } />
+                </div>
+                <div class='divider'>|</div>
+                {
+                    logo &&
+                        <div class='logo'>
+                            { logo }
+                            <Space />
+                        </div>
+                }
+                <div class='label'>
+                    <div class='limit'>
+                        <Text>{instrument.label}</Text>
+                    </div>
+                </div>
+            </div>
+        </Style>
     );
 }
 

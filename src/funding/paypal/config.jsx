@@ -6,7 +6,7 @@ import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
-import { Logo, Label, VaultLabel, Tag } from './template';
+import { Logo, Label, WalletLabel, Tag } from './template';
 
 export function getPayPalConfig() : FundingSourceConfig {
     return {
@@ -35,7 +35,7 @@ export function getPayPalConfig() : FundingSourceConfig {
 
         Logo,
         Label,
-        VaultLabel,
+        WalletLabel,
         Tag
     };
 }

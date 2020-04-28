@@ -1,0 +1,45 @@
+
+.wallet-label {
+    display: block;
+    height: 100%;
+    text-align: center;
+
+    * {
+        display: inline-block;
+        vertical-align: top;
+        height: 100%;
+    }
+
+    .divider {
+        margin: 0 7px;
+        color: rgba(100, 100, 100, 0.5);
+    }
+
+    .paypal-wordmark {
+        display: none;
+    }
+
+    .card-art {
+        border-radius: 3px;
+    }
+
+    .label {
+        max-width: 50%;
+
+       .limit {
+           display: block;
+           overflow: hidden;
+           text-overflow: ellipsis;
+       }
+    }
+
+    @media only screen and (max-width: 349px) {
+        .paypal-mark, .paypal-wordmark {
+            display: inline-block;
+        }
+
+        .label, .divider, .card-art, .pay-now, .logo {
+            display: none;
+        }
+    }
+}
