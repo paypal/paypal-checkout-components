@@ -71,13 +71,15 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
             accessToken: facilitatorAccessToken,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
             headers:     {
-                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || '',
-                [HEADERS.CLIENT_CONTEXT]:         orderID
+                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
             }
         })
         : callSmartAPI({
             accessToken: buyerAccessToken,
-            url:         `${ SMART_API_URI.ORDER }/${ orderID }`
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }`,
+            headers:     {
+                [HEADERS.CLIENT_CONTEXT]:         orderID
+            }
         });
 }
 
