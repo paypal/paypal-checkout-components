@@ -77,7 +77,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             const paymentProps = getProps({ facilitatorAccessToken });
 
             const { win, fundingSource } = payment;
-            const { onClick } = props;
+            const { onClick } = paymentProps;
 
             if (onClick) {
                 onClick({ fundingSource });

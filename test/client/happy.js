@@ -665,4 +665,80 @@ describe('happy cases', () => {
             await clickButton(FUNDING.PAYPAL);
         });
     });
+
+    it('should only call onClick a single time', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            const orderID = generateOrderID();
+            const payerID = 'YYYYYYYYYY';
+            let onClickTimes = 0;
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+
+                if (onClickTimes !== 1) {
+                    throw new Error(`Expected onClick to be called 1 time got ${ onClickTimes } calls`);
+                }
+            }));
+
+            window.xprops.onClick = expect('onClick', mockAsyncProp(() => {
+                onClickTimes += 1;
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    const [ win, element, context ] = args;
+
+                    if (!win) {
+                        throw new Error(`Expected window to be passed to renderTo`);
+                    }
+
+                    if (!element || typeof element !== 'string') {
+                        throw new Error(`Expected string element to be passed to renderTo`);
+                    }
+
+                    if (context !== 'popup') {
+                        throw new Error(`Expected context to be popup, got ${ context }`);
+                    }
+
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
 });
