@@ -2245,9 +2245,12 @@ window.spb = function(modules) {
         var result = [];
         for (var _i6 = 0; _i6 < children.length; _i6++) {
             var child = children[_i6];
-            if (child) if ("string" == typeof child) result.push(new node_TextNode(child)); else if (Array.isArray(child)) for (var _i8 = 0, _normalizeChildren2 = normalizeChildren(child); _i8 < _normalizeChildren2.length; _i8++) result.push(_normalizeChildren2[_i8]); else {
-                if (!child || "element" !== child.type && "text" !== child.type && "component" !== child.type) throw new TypeError("Unrecognized node type: " + typeof child);
-                result.push(child);
+            if (child) if ("string" == typeof child || "number" == typeof child) result.push(new node_TextNode("" + child)); else {
+                if ("boolean" == typeof child) continue;
+                if (Array.isArray(child)) for (var _i8 = 0, _normalizeChildren2 = normalizeChildren(child); _i8 < _normalizeChildren2.length; _i8++) result.push(_normalizeChildren2[_i8]); else {
+                    if (!child || "element" !== child.type && "text" !== child.type && "component" !== child.type) throw new TypeError("Unrecognized node type: " + typeof child);
+                    result.push(child);
+                }
             }
         }
         return result;
@@ -2871,7 +2874,7 @@ window.spb = function(modules) {
             var content = _ref8.serviceData.content;
             if (!clientAccessToken || !paymentMethodID) throw new Error("Client access token and payment method id required");
             if ("paypal" === fundingSource) return [ {
-                label: content.chooseCardOrShipping,
+                label: content.chooseCard || content.chooseCardOrShipping,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref9) {
                     return initiatePayment({
@@ -3057,7 +3060,7 @@ window.spb = function(modules) {
                 }
             };
             if ("paypal" === fundingSource) return "credit" === instrument.type ? [ CHOOSE_ACCOUNT ] : [ {
-                label: content.chooseCardOrShipping,
+                label: content.chooseCard || content.chooseCardOrShipping,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref6) {
                     return initiatePayment({
@@ -3959,7 +3962,7 @@ window.spb = function(modules) {
                         facilitatorAccessToken: facilitatorAccessToken
                     });
                     var win = payment.win;
-                    var onClick = props.onClick;
+                    var onClick = paymentProps.onClick;
                     onClick && onClick({
                         fundingSource: payment.fundingSource
                     });
@@ -4341,7 +4344,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.243", _ref2;
+                _ref2.button_version = "2.0.244", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
