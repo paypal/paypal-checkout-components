@@ -1,3 +1,22 @@
+## <small>5.0.87 (2020-04-29)</small>
+
+* Add authCode param to checkout component ([81a22a9](http://github.paypal.com/paypal/paypal-checkout/commit/81a22a9))
+* Add extra params to button for remember-me ([3ed59f4](http://github.paypal.com/paypal/paypal-checkout/commit/3ed59f4))
+* Add idToken param to checkout ([c32845b](http://github.paypal.com/paypal/paypal-checkout/commit/c32845b))
+* Add missing screenshots ([3124f6b](http://github.paypal.com/paypal/paypal-checkout/commit/3124f6b))
+* Disable personalization when multiple horizontal buttons ([8820ebf](http://github.paypal.com/paypal/paypal-checkout/commit/8820ebf))
+* Do not call getUserIDToken multiple times ([f588ba9](http://github.paypal.com/paypal/paypal-checkout/commit/f588ba9))
+* Ensure new params are not required ([bba674c](http://github.paypal.com/paypal/paypal-checkout/commit/bba674c))
+* Fix jsx-pragmatic import ([fc86abd](http://github.paypal.com/paypal/paypal-checkout/commit/fc86abd))
+* Fix lint and flow ([d55855a](http://github.paypal.com/paypal/paypal-checkout/commit/d55855a))
+* Flow fixes ([95b318c](http://github.paypal.com/paypal/paypal-checkout/commit/95b318c))
+* Remove temporary credit blacklist ([32b33f1](http://github.paypal.com/paypal/paypal-checkout/commit/32b33f1))
+* Send persistRiskData to button child ([183759f](http://github.paypal.com/paypal/paypal-checkout/commit/183759f))
+* Turn authCode into a lazy createAuthCode function ([a7f30f6](http://github.paypal.com/paypal/paypal-checkout/commit/a7f30f6))
+* Wallet button ([6887ba6](http://github.paypal.com/paypal/paypal-checkout/commit/6887ba6))
+
+
+
 ## <small>5.0.86 (2020-03-26)</small>
 
 * Add temporary credit button blacklist ([5057e9c](http://github.paypal.com/paypal/paypal-checkout/commit/5057e9c))
