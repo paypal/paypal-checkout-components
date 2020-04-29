@@ -89,5 +89,11 @@ export const buttonContent : ButtonContentMap = {
     },
     tr: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Çalıştıran </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
+    vi: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Được hỗ trợ bởi </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
+    ro: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Cu tehnologia </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     }
 };
