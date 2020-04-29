@@ -2764,11 +2764,11 @@ window.spb = function(modules) {
             return !_ref.props.onShippingChange;
         },
         isPaymentEligible: function(_ref2) {
-            var _ref3 = _ref2.payment || {};
-            return !(_ref3.win || !_ref3.paymentMethodID || window.innerWidth < 0);
+            var payment = _ref2.payment;
+            return !(payment.win || !payment.paymentMethodID || window.innerWidth < 350 && "paypal" === payment.fundingSource);
         },
-        init: function(_ref6) {
-            var props = _ref6.props, components = _ref6.components, payment = _ref6.payment, serviceData = _ref6.serviceData, config = _ref6.config;
+        init: function(_ref5) {
+            var props = _ref5.props, components = _ref5.components, payment = _ref5.payment, serviceData = _ref5.serviceData, config = _ref5.config;
             var createOrder = props.createOrder, onApprove = props.onApprove, clientAccessToken = props.clientAccessToken, enableThreeDomainSecure = props.enableThreeDomainSecure, buttonSessionID = props.buttonSessionID, partnerAttributionID = props.partnerAttributionID, getParent = props.getParent;
             var ThreeDomainSecure = components.ThreeDomainSecure;
             var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID;
@@ -2801,9 +2801,9 @@ window.spb = function(modules) {
                             }),
                             requireShipping: shippingRequired(orderID)
                         });
-                    })).then((function(_ref7) {
-                        var validate = _ref7.validate;
-                        if (_ref7.requireShipping) {
+                    })).then((function(_ref6) {
+                        var validate = _ref6.validate;
+                        if (_ref6.requireShipping) {
                             if ("paypal" !== fundingSource) throw new Error("Shipping address requested for " + fundingSource + " payment");
                             return function() {
                                 getLogger().info("web_checkout_fallback").flush();
@@ -2819,13 +2819,13 @@ window.spb = function(modules) {
                                 }).start();
                             }();
                         }
-                        return function(_ref5) {
-                            var ThreeDomainSecure = _ref5.ThreeDomainSecure, status = _ref5.status, body = _ref5.body, createOrder = _ref5.createOrder, getParent = _ref5.getParent;
+                        return function(_ref4) {
+                            var ThreeDomainSecure = _ref4.ThreeDomainSecure, status = _ref4.status, body = _ref4.body, createOrder = _ref4.createOrder, getParent = _ref4.getParent;
                             return promise_ZalgoPromise.try((function() {
                                 if (422 === status && body.links && body.links.some((function(link) {
                                     return "3ds-contingency-resolution" === link.rel;
-                                }))) return function(_ref4) {
-                                    var ThreeDomainSecure = _ref4.ThreeDomainSecure, createOrder = _ref4.createOrder, getParent = _ref4.getParent;
+                                }))) return function(_ref3) {
+                                    var ThreeDomainSecure = _ref3.ThreeDomainSecure, createOrder = _ref3.createOrder, getParent = _ref3.getParent;
                                     var promise = new promise_ZalgoPromise;
                                     var instance = ThreeDomainSecure({
                                         createOrder: createOrder,
@@ -2867,19 +2867,19 @@ window.spb = function(modules) {
                 }
             };
         },
-        setupMenu: function(_ref8) {
-            var payment = _ref8.payment, initiatePayment = _ref8.initiatePayment;
-            var clientAccessToken = _ref8.props.clientAccessToken;
+        setupMenu: function(_ref7) {
+            var payment = _ref7.payment, initiatePayment = _ref7.initiatePayment;
+            var clientAccessToken = _ref7.props.clientAccessToken;
             var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID, button = payment.button;
-            var content = _ref8.serviceData.content;
+            var content = _ref7.serviceData.content;
             if (!clientAccessToken || !paymentMethodID) throw new Error("Client access token and payment method id required");
             if ("paypal" === fundingSource) return [ {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: POPUP_OPTIONS,
-                onSelect: function(_ref9) {
+                onSelect: function(_ref8) {
                     return initiatePayment({
                         payment: _extends({}, payment, {
-                            win: _ref9.win,
+                            win: _ref8.win,
                             buyerIntent: "pay_with_different_funding_shipping"
                         })
                     });
@@ -2887,10 +2887,10 @@ window.spb = function(modules) {
             }, {
                 label: content.useDifferentAccount,
                 popup: POPUP_OPTIONS,
-                onSelect: function(_ref10) {
+                onSelect: function(_ref9) {
                     return initiatePayment({
                         payment: _extends({}, payment, {
-                            win: _ref10.win,
+                            win: _ref9.win,
                             buyerIntent: "pay_with_different_account"
                         })
                     });
@@ -2900,23 +2900,21 @@ window.spb = function(modules) {
                 label: content.deleteVaultedCard,
                 spinner: !0,
                 onSelect: function() {
-                    return function(_ref8) {
-                        var _headers13;
-                        return callGraphQL({
-                            query: "\n            mutation DeleteVault(\n                $paymentMethodID : String!\n            ) {\n                deleteVault(\n                    paymentMethodID: $paymentMethodID\n                )\n            }\n        ",
-                            variables: {
-                                paymentMethodID: _ref8.paymentMethodID
-                            },
-                            headers: (_headers13 = {}, _headers13["x-paypal-internal-euat"] = _ref8.clientAccessToken, 
-                            _headers13)
-                        });
-                    }({
+                    return (_ref8 = {
                         paymentMethodID: paymentMethodID,
                         clientAccessToken: clientAccessToken
-                    }).then((function() {
+                    }, callGraphQL({
+                        query: "\n            mutation DeleteVault(\n                $paymentMethodID : String!\n            ) {\n                deleteVault(\n                    paymentMethodID: $paymentMethodID\n                )\n            }\n        ",
+                        variables: {
+                            paymentMethodID: _ref8.paymentMethodID
+                        },
+                        headers: (_headers13 = {}, _headers13["x-paypal-internal-euat"] = _ref8.clientAccessToken, 
+                        _headers13)
+                    })).then((function() {
                         (element = button) && element.parentNode && element.parentNode.removeChild(element);
                         var element;
                     }));
+                    var _ref8, _headers13;
                 }
             } ];
             throw new Error("Can not render menu for " + fundingSource);
@@ -4344,7 +4342,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.244", _ref2;
+                _ref2.button_version = "2.0.245", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
