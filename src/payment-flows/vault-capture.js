@@ -14,7 +14,7 @@ import { getLogger } from '../lib';
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
-const VAULT_MIN_WIDTH = 0;
+const VAULT_MIN_WIDTH = 350;
 
 function setupVaultCapture() {
     // pass
@@ -31,7 +31,7 @@ function isVaultCaptureEligible({ props } : IsEligibleOptions) : boolean {
 }
 
 function isVaultCapturePaymentEligible({ payment } : IsPaymentEligibleOptions) : boolean {
-    const { win, paymentMethodID } = payment || {};
+    const { win, paymentMethodID, fundingSource } = payment;
 
     if (win) {
         return false;
@@ -41,7 +41,7 @@ function isVaultCapturePaymentEligible({ payment } : IsPaymentEligibleOptions) :
         return false;
     }
 
-    if (window.innerWidth < VAULT_MIN_WIDTH) {
+    if (window.innerWidth < VAULT_MIN_WIDTH && fundingSource === FUNDING.PAYPAL) {
         return false;
     }
 
