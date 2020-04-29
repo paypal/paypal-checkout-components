@@ -110,5 +110,13 @@ export const containerContent : ContentMap = {
     cs: {
         windowMessage:   'Nezobrazuje se vám bezpečný prohlížeč PayPal? Pomůžeme vám okno znovu otevřít, abyste mohli nákup dokončit',
         continueMessage: 'Pokračovat'
+    },
+    vi: {
+        windowMessage:   'Bạn không thấy trình duyệt PayPal bảo mật? Chúng tôi sẽ giúp bạn mở lại cửa sổ để hoàn tất giao dịch mua hàng',
+        continueMessage: 'Nhấp để tiếp tục'
+    },
+    ro: {
+        windowMessage:   'Nu vezi browser-ul securizat PayPal? Te vom ajuta să lansezi din nou fereastra pentru a finaliza achiziția',
+        continueMessage: 'Dă clic pentru a continua'
     }
 };

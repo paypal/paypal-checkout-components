@@ -226,5 +226,19 @@ export const componentContent : ContentMap = {
         SaferTag:  () => <Text optional>Ödeme yapmanın daha güvenli ve kolay yolu</Text>,
         Pay:       ({ logo }) => <Fragment>{ logo }<Text optional> ile Öde</Text></Fragment>,
         BuyNow:    ({ logo }) => <Fragment>{ logo }<Text optional> Hemen Satın Alın</Text></Fragment>
+    },
+    vi: {
+        Checkout:  ({ logo }) => <Fragment>{ logo }<Text optional> Thanh toán</Text></Fragment>,
+        Subscribe: ({ logo }) => <Fragment>{ logo }<Text optional> Đăng ký</Text></Fragment>,
+        SaferTag:  () => <Text optional>Cách thanh toán an toàn hơn, dễ dàng hơn</Text>,
+        Pay:       ({ logo }) => <Fragment><Text optional>Thanh toán bằng </Text>{ logo }</Fragment>,
+        BuyNow:    ({ logo }) => <Fragment>{ logo }<Text optional> Mua ngay</Text></Fragment>
+    },
+    ro: {
+        Checkout:  ({ logo }) => <Fragment>{ logo }<Text optional> Checkout</Text></Fragment>,
+        Subscribe: ({ logo }) => <Fragment>{ logo }<Text optional> Abonează-te</Text></Fragment>,
+        SaferTag:  () => <Text optional>Modalitatea sigură și ușoară de plată</Text>,
+        Pay:       ({ logo }) => <Fragment><Text optional>Plătește cu </Text>{ logo }</Fragment>,
+        BuyNow:    ({ logo }) => <Fragment>{ logo }<Text optional> Cumpără acum</Text></Fragment>
     }
 };
