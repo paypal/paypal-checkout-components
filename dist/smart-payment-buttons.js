@@ -802,18 +802,17 @@ window.spb = function(modules) {
         fn.__name__ = fn.displayName = name;
         return fn;
     }
-    function base64encode(str) {
-        if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
-            return String.fromCharCode(parseInt(p1, 16));
-        })));
-        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-        throw new Error("Can not find window.btoa or Buffer");
-    }
     function uniqueID() {
         var chars = "0123456789abcdef";
         return "xxxxxxxxxx".replace(/./g, (function() {
             return chars.charAt(Math.floor(Math.random() * chars.length));
-        })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        })) + "_" + function(str) {
+            if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+                return String.fromCharCode(parseInt(p1, 16));
+            })));
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            throw new Error("Can not find window.btoa or Buffer");
+        }((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     }
     var objectIDs;
     function serializeArgs(args) {
@@ -1320,30 +1319,6 @@ window.spb = function(modules) {
             return body.data;
         }));
     }
-    function createAccessToken(clientID, _temp) {
-        var targetSubject = (void 0 === _temp ? {} : _temp).targetSubject;
-        return inlineMemoize(createAccessToken, (function() {
-            getLogger().info("rest_api_create_access_token");
-            var basicAuth = base64encode((clientID || "") + ":");
-            var data = {
-                grant_type: "client_credentials"
-            };
-            targetSubject && (data.target_subject = targetSubject);
-            return request({
-                method: "post",
-                url: "/v1/oauth2/token",
-                headers: {
-                    Authorization: "Basic " + basicAuth
-                },
-                data: data
-            }).then((function(_ref2) {
-                var body = _ref2.body;
-                if (body && "invalid_client" === body.error) throw new Error("Auth Api invalid client id: " + (clientID || "") + ":\n\n" + JSON.stringify(body, null, 4));
-                if (!body || !body.access_token) throw new Error("Auth Api response error:\n\n" + JSON.stringify(body, null, 4));
-                return body.access_token;
-            }));
-        }), [ clientID, targetSubject ]);
-    }
     function getFirebaseSessionToken(sessionUID) {
         return callGraphQL({
             query: "\n            query GetFireBaseSessionToken($sessionUID: String!) {\n                firebase {\n                    auth(sessionUID: $sessionUID) {\n                        sessionToken\n                    }\n                }\n            }\n        ",
@@ -1433,36 +1408,6 @@ window.spb = function(modules) {
             headers: (_headers17 = {}, _headers17["paypal-client-context"] = orderID, _headers17)
         });
     }));
-    function createRequest(accessToken, subscriptionPayload, partnerAttributionID) {
-        return request({
-            method: "post",
-            url: "/v1/billing/subscriptions",
-            headers: {
-                Authorization: "Bearer " + accessToken,
-                "PayPal-Partner-Attribution-Id": partnerAttributionID || ""
-            },
-            json: subscriptionPayload
-        }).then((function(_ref) {
-            var body = _ref.body;
-            if (!body || !body.id) throw new Error("Create Subscription Api response error:\n\n" + JSON.stringify(body, null, 4));
-            return body.id;
-        }));
-    }
-    function reviseRequest(accessToken, subscriptionID, subscriptionPayload, partnerAttributionID) {
-        return request({
-            method: "post",
-            url: "/v1/billing/subscriptions/" + subscriptionID + "/revise",
-            headers: {
-                Authorization: "Bearer " + accessToken,
-                "PayPal-Partner-Attribution-Id": partnerAttributionID || ""
-            },
-            json: subscriptionPayload
-        }).then((function(_ref3) {
-            var status = _ref3.status;
-            if (200 !== status) throw new Error("Revise Subscription Api HTTP-" + status + " response: error:\n\n" + JSON.stringify(_ref3.body, null, 4));
-            return subscriptionID;
-        }));
-    }
     var loadFirebaseSDK = memoize((function(config) {
         return promise_ZalgoPromise.try((function() {
             if (!window.firebase || !window.firebase.auth || !window.firebase.database) return loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-app.js").then((function() {
@@ -1602,9 +1547,9 @@ window.spb = function(modules) {
             var restart = _ref7.restart;
             return promise_ZalgoPromise.try((function() {
                 if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
-                    return function(facilitatorAccessToken, _ref3) {
+                    return function(facilitatorAccessToken, _ref2) {
                         var _headers;
-                        var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
+                        var buyerAccessToken = _ref2.buyerAccessToken, orderID = _ref2.orderID;
                         return callGraphQL({
                             headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
                             _headers["paypal-client-context"] = orderID, _headers),
@@ -2032,81 +1977,73 @@ window.spb = function(modules) {
             createBillingAgreement: xprops.createBillingAgreement
         });
         var createSubscription = function(_ref2, _ref3) {
-            var createSubscription = _ref2.createSubscription, partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
+            var createSubscription = _ref2.createSubscription, partnerAttributionID = _ref2.partnerAttributionID;
             var facilitatorAccessToken = _ref3.facilitatorAccessToken;
-            if (createSubscription) {
-                if (merchantID) {
-                    getLogger().info("src_props_subscriptions_recreate_access_token_cache");
-                    createAccessToken(clientID, {
-                        targetSubject: merchantID
-                    });
-                }
-                return function() {
-                    return createSubscription({}, function(_ref) {
-                        var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID, merchantID = _ref.merchantID, clientID = _ref.clientID;
-                        return {
-                            subscription: {
-                                create: function(data) {
-                                    return function(accessToken, subscriptionPayload, _ref2) {
-                                        var partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
-                                        getLogger().info("rest_api_create_subscription_id");
-                                        if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
-                                        if (merchantID) {
-                                            getLogger().info("rest_api_subscriptions_recreate_access_token");
-                                            return createAccessToken(clientID, {
-                                                targetSubject: merchantID
-                                            }).then((function(thirdPartyAccessToken) {
-                                                return createRequest(thirdPartyAccessToken, subscriptionPayload, partnerAttributionID);
-                                            }));
-                                        }
-                                        if (!accessToken) throw new Error("Access token not passed");
-                                        return createRequest(accessToken, subscriptionPayload, partnerAttributionID);
-                                    }(facilitatorAccessToken, data, {
-                                        partnerAttributionID: partnerAttributionID,
-                                        merchantID: merchantID,
-                                        clientID: clientID
-                                    });
-                                },
-                                revise: function(subscriptionID, data) {
-                                    return function(accessToken, subscriptionID, subscriptionPayload, _ref4) {
-                                        var partnerAttributionID = _ref4.partnerAttributionID, merchantID = _ref4.merchantID, clientID = _ref4.clientID;
-                                        getLogger().info("rest_api_create_subscription_id");
-                                        if (!subscriptionID) throw new Error("Expected subscription id to be passed as first argument to revise subscription api");
-                                        if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
-                                        if (merchantID) {
-                                            getLogger().info("rest_api_subscriptions_recreate_access_token");
-                                            return createAccessToken(clientID, {
-                                                targetSubject: merchantID
-                                            }).then((function(thirdPartyAccessToken) {
-                                                return reviseRequest(thirdPartyAccessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
-                                            }));
-                                        }
-                                        if (!accessToken) throw new Error("Access token not passed");
-                                        return reviseRequest(accessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
-                                    }(facilitatorAccessToken, subscriptionID, data, {
-                                        partnerAttributionID: partnerAttributionID,
-                                        merchantID: merchantID,
-                                        clientID: clientID
-                                    });
-                                }
+            if (createSubscription) return function() {
+                return createSubscription({}, function(_ref) {
+                    var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID;
+                    return {
+                        subscription: {
+                            create: function(data) {
+                                return function(accessToken, subscriptionPayload, _ref) {
+                                    var partnerAttributionID = _ref.partnerAttributionID;
+                                    getLogger().info("rest_api_create_subscription_id");
+                                    if (!accessToken) throw new Error("Access token not passed");
+                                    if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
+                                    return request({
+                                        method: "post",
+                                        url: "/v1/billing/subscriptions",
+                                        headers: {
+                                            Authorization: "Bearer " + accessToken,
+                                            "PayPal-Partner-Attribution-Id": partnerAttributionID
+                                        },
+                                        json: subscriptionPayload
+                                    }).then((function(_ref2) {
+                                        var body = _ref2.body;
+                                        if (!body || !body.id) throw new Error("Create Subscription Api response error:\n\n" + JSON.stringify(body, null, 4));
+                                        return body.id;
+                                    }));
+                                }(facilitatorAccessToken, data, {
+                                    partnerAttributionID: partnerAttributionID
+                                });
+                            },
+                            revise: function(subscriptionID, data) {
+                                return function(accessToken, subscriptionID, subscriptionPayload, _ref3) {
+                                    var partnerAttributionID = _ref3.partnerAttributionID;
+                                    getLogger().info("rest_api_create_subscription_id");
+                                    if (!accessToken) throw new Error("Access token not passed");
+                                    if (!subscriptionID) throw new Error("Expected subscription id to be passed as first argument to revise subscription api");
+                                    if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
+                                    return request({
+                                        method: "post",
+                                        url: "/v1/billing/subscriptions/" + subscriptionID + "/revise",
+                                        headers: {
+                                            Authorization: "Bearer " + accessToken,
+                                            "PayPal-Partner-Attribution-Id": partnerAttributionID
+                                        },
+                                        json: subscriptionPayload
+                                    }).then((function(_ref4) {
+                                        var status = _ref4.status;
+                                        if (200 !== status) throw new Error("Revise Subscription Api HTTP-" + status + " response: error:\n\n" + JSON.stringify(_ref4.body, null, 4));
+                                        return subscriptionID;
+                                    }));
+                                }(facilitatorAccessToken, subscriptionID, data, {
+                                    partnerAttributionID: partnerAttributionID
+                                });
                             }
-                        };
-                    }({
-                        facilitatorAccessToken: facilitatorAccessToken,
-                        partnerAttributionID: partnerAttributionID,
-                        merchantID: merchantID,
-                        clientID: clientID
-                    })).then((function(subscriptionID) {
-                        if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
-                        return subscriptionID;
-                    }));
-                };
-            }
+                        }
+                    };
+                }({
+                    facilitatorAccessToken: facilitatorAccessToken,
+                    partnerAttributionID: partnerAttributionID
+                })).then((function(subscriptionID) {
+                    if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
+                    return subscriptionID;
+                }));
+            };
         }({
             createSubscription: xprops.createSubscription,
-            partnerAttributionID: partnerAttributionID,
-            merchantID: merchantID,
-            clientID: clientID
+            partnerAttributionID: partnerAttributionID
         }, {
             facilitatorAccessToken: facilitatorAccessToken
         });
@@ -2469,8 +2406,8 @@ window.spb = function(modules) {
                                     variables: {
                                         buyerAccessToken: buyerAccessToken
                                     }
-                                }).then((function(_ref4) {
-                                    return _ref4.auth.authCode;
+                                }).then((function(_ref3) {
+                                    return _ref3.auth.authCode;
                                 }));
                             }(buyerAccessToken).catch((function(err) {
                                 getLogger().warn("exchange_access_token_auth_code_error", {
@@ -4410,7 +4347,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.248", _ref2;
+                _ref2.button_version = "2.0.249", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {

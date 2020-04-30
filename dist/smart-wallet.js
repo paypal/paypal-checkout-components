@@ -1754,9 +1754,9 @@
                 var restart = _ref7.restart;
                 return promise_ZalgoPromise.try((function() {
                     if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
-                        return function(facilitatorAccessToken, _ref3) {
+                        return function(facilitatorAccessToken, _ref2) {
                             var _headers;
-                            var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
+                            var buyerAccessToken = _ref2.buyerAccessToken, orderID = _ref2.orderID;
                             return callGraphQL({
                                 headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
                                 _headers["paypal-client-context"] = orderID, _headers),
