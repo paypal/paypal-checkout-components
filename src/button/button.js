@@ -39,6 +39,18 @@ type ButtonOpts = {|
     serverRiskData : ?ServerRiskData
 |};
 
+try {
+    if (!window.paypal) {
+        const script = [ ...document.querySelectorAll('script') ].find(el => el.getAttribute('data-namespace'));
+
+        if (script) {
+            window.paypal = window[script.getAttribute('data-namespace')];
+        }
+    }
+} catch (err) {
+    // pass
+}
+
 export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal SDK not loaded`);
