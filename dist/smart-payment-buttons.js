@@ -3923,7 +3923,7 @@ window.spb = function(modules) {
     }
     try {
         if (!window.paypal) {
-            var script = [].concat(document.querySelectorAll("script")).find((function(el) {
+            var script = [].slice.call(document.querySelectorAll("script")).find((function(el) {
                 return el.getAttribute("data-namespace");
             }));
             script && (window.paypal = window[script.getAttribute("data-namespace")]);
@@ -4350,7 +4350,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.246", _ref2;
+                _ref2.button_version = "2.0.247", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
