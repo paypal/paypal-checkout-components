@@ -48,7 +48,14 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
     batchedGraphQL.flush = async () => {
         clearTimeout(timer);
 
-        const payload = batch.map(({ query, variables }) => {
+        if (!batch.length) {
+            return;
+        }
+
+        const currentBatch = batch;
+        batch = [];
+
+        const payload = currentBatch.map(({ query, variables }) => {
             return { query, variables };
         });
 
@@ -61,8 +68,8 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
             gqlError = err;
         }
         
-        for (let i = 0; i < batch.length; i++) {
-            const { resolve, reject } = batch[i];
+        for (let i = 0; i < currentBatch.length; i++) {
+            const { resolve, reject } = currentBatch[i];
 
             if (gqlError) {
                 reject(gqlError);
@@ -84,9 +91,6 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
                 resolve(result);
             }
         }
-
-        // eslint-disable-next-line require-atomic-updates
-        batch = [];
     };
 
     return batchedGraphQL;
