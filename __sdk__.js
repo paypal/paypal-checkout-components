@@ -16,5 +16,9 @@ module.exports = {
     wallet: {
         entry: './src/interface/wallet',
         globals
+    },
+    fields: {
+        entry: './src/interface/fields',
+        globals
     }
 };

@@ -25,7 +25,8 @@ module.exports = {
             __MENU__:        '/smart/menu',
             __MODAL__:       '/smart/modal',
             __CARD_FIELDS__: '/smart/card-fields',
-            __WALLET__:      '/smart/wallet'
+            __WALLET__:      '/smart/wallet',
+            __FIELDS__:      '/smart/fields'
         }
     }
 };
