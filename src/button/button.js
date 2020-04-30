@@ -41,7 +41,7 @@ type ButtonOpts = {|
 
 try {
     if (!window.paypal) {
-        const script = [ ...document.querySelectorAll('script') ].find(el => el.getAttribute('data-namespace'));
+        const script = Array.prototype.slice.call(document.querySelectorAll('script')).find(el => el.getAttribute('data-namespace'));
 
         if (script) {
             window.paypal = window[script.getAttribute('data-namespace')];
