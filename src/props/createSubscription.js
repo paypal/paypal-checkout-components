@@ -2,8 +2,7 @@
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
-import { createAccessToken, createSubscription as createSubcriptionID, reviseSubscription } from '../api';
-import { getLogger } from '../lib';
+import { createSubscription as createSubcriptionID, reviseSubscription } from '../api';
 
 export type XCreateSubscriptionDataType = {||};
 
@@ -21,13 +20,13 @@ export function buildXCreateSubscriptionData() : XCreateSubscriptionDataType {
     return {};
 }
 
-export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID, merchantID, clientID } : {| facilitatorAccessToken : string, partnerAttributionID? : string, merchantID? : $ReadOnlyArray<string>, clientID : ?string |}) : XCreateSubscriptionActionsType {
+export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID } : {| facilitatorAccessToken : string, partnerAttributionID : ?string |}) : XCreateSubscriptionActionsType {
     const create = (data) => {
-        return createSubcriptionID(facilitatorAccessToken, data, { partnerAttributionID, merchantID, clientID });
+        return createSubcriptionID(facilitatorAccessToken, data, { partnerAttributionID });
     };
 
     const revise = (subscriptionID : string, data) => {
-        return reviseSubscription(facilitatorAccessToken, subscriptionID, data, { partnerAttributionID, merchantID, clientID });
+        return reviseSubscription(facilitatorAccessToken, subscriptionID, data, { partnerAttributionID });
     };
 
     return {
@@ -39,20 +38,13 @@ export type CreateSubscription = XCreateSubscription;
 
 type CreateSubscriptionXProps = {|
     createSubscription : ?XCreateSubscription,
-    partnerAttributionID? : string,
-    merchantID? : $ReadOnlyArray<string>,
-    clientID : ?string
+    partnerAttributionID : ?string
 |};
 
-export function getCreateSubscription({ createSubscription, partnerAttributionID, merchantID, clientID } : CreateSubscriptionXProps, { facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ?CreateSubscription {
+export function getCreateSubscription({ createSubscription, partnerAttributionID } : CreateSubscriptionXProps, { facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ?CreateSubscription {
     if (createSubscription) {
-        // Recreate the accessToken if merchantId is passed.
-        if (merchantID) {
-            getLogger().info(`src_props_subscriptions_recreate_access_token_cache`);
-            createAccessToken(clientID, { targetSubject: merchantID });
-        }
         return () => {
-            return createSubscription(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID, merchantID, clientID })).then(subscriptionID => {
+            return createSubscription(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID })).then(subscriptionID => {
                 if (!subscriptionID || typeof subscriptionID !== 'string') {
                     throw new Error(`Expected an subscription id to be passed to createSubscription`);
                 }

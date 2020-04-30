@@ -5,19 +5,8 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import {
-    clickButton,
-    createButtonHTML,
-    DEFAULT_FUNDING_ELIGIBILITY,
-    enterButton,
-    generateOrderID,
-    getCreateSubscriptionIdApiMock,
-    getReviseSubscriptionIdApiMock,
-    getMockWindowOpen,
-    mockAsyncProp,
-    mockFunction,
-    mockSetupButton
-} from './mocks';
+import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML,
+    DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, enterButton, getMockWindowOpen } from './mocks';
 import { triggerKeyPress } from './util';
 
 describe('happy cases', () => {
@@ -257,122 +246,6 @@ describe('happy cases', () => {
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
-        });
-    });
-
-    it('should render a button with createSubscription with create call, click the button, and render checkout', async () => {
-        return await wrapPromise(async ({ expect, avoid }) => {
-            const cartID = 'CARTIDOFSUBSCRIPTIONS';
-            const subscriptionID = 'I-SUBSCRIPTIONID';
-            const payerID = 'YYYYYYYYYY';
-            const createSubscriptionIdApiMock = getCreateSubscriptionIdApiMock({}, subscriptionID);
-            createSubscriptionIdApiMock.expectCalls();
-
-            window.xprops.vault = true;
-            delete window.xprops.createOrder;
-            window.xprops.createSubscription = mockAsyncProp(expect('createSubscription', async (data, actions) => {
-                return actions.subscription.create({
-                    plan_id: 'P-ASDFGHJKL:'
-                });
-            }));
-
-            window.xprops.onCancel = avoid('onCancel');
-
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
-                if (data.subscriptionID !== subscriptionID) {
-                    throw new Error(`Expected billingToken to be ${ subscriptionID }, got ${ data.subscriptionID }`);
-                }
-
-                if (data.payerID !== payerID) {
-                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                }
-            }));
-
-            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
-
-                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
-                    return onApproveOriginal({ ...data, payerID, subscriptionID }, actions);
-                }));
-
-                const checkoutInstance = CheckoutOriginal(props);
-
-                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
-                    return props.createOrder().then(id => {
-                        if (id !== cartID) {
-                            throw new Error(`Expected cartID to be ${ cartID }, got ${ id }`);
-                        }
-
-                        return renderToOriginal(...args);
-                    });
-                }));
-
-                return checkoutInstance;
-            }));
-
-            createButtonHTML();
-
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
-
-            await clickButton(FUNDING.PAYPAL);
-            createSubscriptionIdApiMock.done();
-        });
-    });
-
-    it('should render a button with createSubscription with revise call, click the button, and render checkout', async () => {
-        return await wrapPromise(async ({ expect, avoid }) => {
-            const cartID = 'CARTIDOFSUBSCRIPTIONS';
-            const subscriptionID = 'I-SUBSCRIPTIONID';
-            const payerID = 'YYYYYYYYYY';
-            const reviseSubscriptionIdApiMock = getReviseSubscriptionIdApiMock({}, subscriptionID);
-            reviseSubscriptionIdApiMock.expectCalls();
-
-            window.xprops.vault = true;
-            delete window.xprops.createOrder;
-            window.xprops.createSubscription = mockAsyncProp(expect('createSubscription', async (data, actions) => {
-                return actions.subscription.revise(subscriptionID, {
-                    plan_id: 'P-ASDFGHJKL:'
-                });
-            }));
-
-            window.xprops.onCancel = avoid('onCancel');
-
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
-                if (data.subscriptionID !== subscriptionID) {
-                    throw new Error(`Expected billingToken to be ${ subscriptionID }, got ${ data.subscriptionID }`);
-                }
-
-                if (data.payerID !== payerID) {
-                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                }
-            }));
-
-            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
-
-                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
-                    return onApproveOriginal({ ...data, payerID, subscriptionID }, actions);
-                }));
-
-                const checkoutInstance = CheckoutOriginal(props);
-
-                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
-                    return props.createOrder().then(id => {
-                        if (id !== cartID) {
-                            throw new Error(`Expected cartID to be ${ cartID }, got ${ id }`);
-                        }
-
-                        return renderToOriginal(...args);
-                    });
-                }));
-
-                return checkoutInstance;
-            }));
-
-            createButtonHTML();
-
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
-
-            await clickButton(FUNDING.PAYPAL);
-            reviseSubscriptionIdApiMock.done();
         });
     });
 
