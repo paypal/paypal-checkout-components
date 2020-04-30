@@ -3921,6 +3921,14 @@ window.spb = function(modules) {
         }
         throw new Error("Could not find eligible payment flow");
     }
+    try {
+        if (!window.paypal) {
+            var script = [].concat(document.querySelectorAll("script")).find((function(el) {
+                return el.getAttribute("data-namespace");
+            }));
+            script && (window.paypal = window[script.getAttribute("data-namespace")]);
+        }
+    } catch (err) {}
     function setupButton(opts) {
         if (!window.paypal) throw new Error("PayPal SDK not loaded");
         var facilitatorAccessToken = opts.facilitatorAccessToken, fundingEligibility = opts.fundingEligibility, serverRiskData = opts.serverRiskData, serverCSPNonce = opts.cspNonce, firebaseConfig = opts.firebaseConfig;
@@ -4342,7 +4350,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.245", _ref2;
+                _ref2.button_version = "2.0.246", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
