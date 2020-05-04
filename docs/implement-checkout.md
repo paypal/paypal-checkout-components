@@ -81,6 +81,7 @@ Please see https://github.com/paypal/paypal-sdk-constants for the full list of c
 - `intent` - [required] the intent of the transaction (aka payment-action) e.g. sale, authorize, order
 - `paymentToken` - [required] the EC- token for the transaction
 - `orderID` - [required] the EC- token or order id for the transaction
+- `payerID` - [required] the payer id of the buyer
 
 - `paymentID` - [optional] the payment ID for the transaction, if the transaction was created using the payments api
 - `billingToken` - [optional] the BA- token for the transaction, if a billing-agreement flow
