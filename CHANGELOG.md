@@ -1,3 +1,13 @@
+## <small>5.0.88 (2020-05-04)</small>
+
+* Add Fields component ([dcf1922](http://github.paypal.com/paypal/paypal-checkout/commit/dcf1922))
+* Fix divider color ([a40b656](http://github.paypal.com/paypal/paypal-checkout/commit/a40b656))
+* Fix screenshots ([37be9b5](http://github.paypal.com/paypal/paypal-checkout/commit/37be9b5))
+* Pass logoColor to glyph card ([c0db6b3](http://github.paypal.com/paypal/paypal-checkout/commit/c0db6b3))
+* Update implement-checkout.md ([7b0e5ac](http://github.paypal.com/paypal/paypal-checkout/commit/7b0e5ac))
+
+
+
 ## <small>5.0.87 (2020-04-29)</small>
 
 * Add authCode param to checkout component ([81a22a9](http://github.paypal.com/paypal/paypal-checkout/commit/81a22a9))
