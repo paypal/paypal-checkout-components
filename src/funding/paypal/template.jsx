@@ -183,10 +183,10 @@ export function WalletLabel({ logoColor, instrument, locale, content, commit } :
                 <div class='paypal-mark'>
                     <PPLogo logoColor={ logoColor } />
                 </div>
-                <Space />
                 {
                     (instrument.oneClick && commit && content) &&
                         <div class='pay-now'>
+                            <Space />
                             <Text>{ content.payNow }</Text>
                         </div>
                 }
