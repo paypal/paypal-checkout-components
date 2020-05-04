@@ -106,7 +106,7 @@ export function getCardConfig() : FundingSourceConfig {
 
         Logo: ({ logoColor }) => {
             return (
-                <GlyphCard color={ logoColor } />
+                <GlyphCard logoColor={ logoColor } />
             );
         },
 

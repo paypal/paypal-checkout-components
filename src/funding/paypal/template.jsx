@@ -170,9 +170,9 @@ export function WalletLabel({ logoColor, instrument, locale, content, commit } :
     if (instrument.logoUrl) {
         logo = <img class='card-art' src={ instrument.logoUrl } />;
     } else if (instrument.type === WALLET_INSTRUMENT.CARD) {
-        logo = <GlyphCard />;
+        logo = <GlyphCard logoColor={ logoColor } />;
     } else if (instrument.type === WALLET_INSTRUMENT.BANK) {
-        logo = <GlyphCard />;
+        logo = <GlyphCard logoColor={ logoColor } />;
     } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
         logo = <CreditLogo locale={ locale } logoColor={ logoColor } />;
     }
