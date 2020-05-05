@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, Fragment, Style, type ChildType } from 'jsx-pragmatic/src';
-import { PPLogo, PayPalLogo, CreditLogo, GlyphCard, LOGO_CLASS } from '@paypal/sdk-logos/src';
+import { PPLogo, PayPalLogo, CreditLogo, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
@@ -172,7 +172,7 @@ export function WalletLabel({ logoColor, instrument, locale, content, commit } :
     } else if (instrument.type === WALLET_INSTRUMENT.CARD) {
         logo = <GlyphCard logoColor={ logoColor } />;
     } else if (instrument.type === WALLET_INSTRUMENT.BANK) {
-        logo = <GlyphCard logoColor={ logoColor } />;
+        logo = <GlyphBank logoColor={ logoColor } />;
     } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
         logo = <CreditLogo locale={ locale } logoColor={ logoColor } />;
     }
