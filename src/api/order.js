@@ -1,7 +1,7 @@
 /* @flow */
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { FPTI_KEY, FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FUNDING, WALLET_INSTRUMENT, INTENT } from '@paypal/sdk-constants/src';
 import { request, noop, memoize } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
@@ -401,7 +401,9 @@ export function oneClickApproveOrder({ orderID, instrumentType, instrumentID, bu
 type SupplementalOrderInfo = {|
     checkoutSession : {|
         cart : {|
-            intent : string,
+            intent : $Values<typeof INTENT>,
+            paymentId? : ?string,
+            billingToken? : ?string,
             amounts? : {|
                 total : {|
                     currencyCode : string
@@ -410,6 +412,9 @@ type SupplementalOrderInfo = {|
             shippingAddress? : {|
                 isFullAddress? : boolean
             |}
+        |},
+        user? : {|
+            userId? : string
         |},
         flags : {|
             isShippingAddressRequired? : boolean
@@ -425,6 +430,8 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                 checkoutSession(token: $orderID) {
                     cart {
                         intent
+                        paymentId
+                        billingToken
                         amounts {
                             total {
                                 currencyCode
@@ -433,6 +440,9 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                         shippingAddress {
                             isFullAddress
                         }
+                    }
+                    user {
+                        userId
                     }
                     flags {
                         hideShipping

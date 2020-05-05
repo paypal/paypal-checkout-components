@@ -1,10 +1,11 @@
 /* @flow */
+/* eslint max-nested-callbacks: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, redirect as redir, noop } from 'belter/src';
 import { INTENT, SDK_QUERY_KEYS, FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse, getPayment, executePayment, patchPayment, upgradeFacilitatorAccessToken } from '../api';
+import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse, getPayment, executePayment, patchPayment, upgradeFacilitatorAccessToken, getSupplementalOrderInfo } from '../api';
 import { ORDER_API_ERROR, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { ENABLE_PAYMENT_API } from '../config';
@@ -250,7 +251,6 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
         }).then(() => {
             return createOrder();
         }).then(orderID => {
-
             getLogger()
                 .info('button_approve')
                 .track({
@@ -260,14 +260,24 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
                     [FPTI_KEY.CONTEXT_ID]:   orderID
                 }).flush();
 
-            const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken };
-            const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
+            if (!payerID) {
+                getSupplementalOrderInfo.reset();
+            }
 
-            return onApprove(data, actions).catch(err => {
-                return ZalgoPromise.try(() => {
-                    return onError(err);
-                }).then(() => {
-                    throw err;
+            return getSupplementalOrderInfo(orderID).then(supplementalData => {
+                intent = intent || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.intent);
+                billingToken = billingToken || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken);
+                payerID = payerID || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.user && supplementalData.checkoutSession.user.userId);
+                
+                const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken };
+                const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
+
+                return onApprove(data, actions).catch(err => {
+                    return ZalgoPromise.try(() => {
+                        return onError(err);
+                    }).then(() => {
+                        throw err;
+                    });
                 });
             });
         });

@@ -23,9 +23,9 @@ describe('vault cases', () => {
             let enableVaultCalled = false;
 
             const gqlMock = getGraphQLApiMock({
-                handler: expect('graphqlCall', ({ data }) => {
+                extraHandler: expect('graphqlCall', ({ data }) => {
                     if (!data.query.includes('mutation EnableVault')) {
-                        return {};
+                        return;
                     }
 
                     enableVaultCalled = true;
@@ -97,9 +97,9 @@ describe('vault cases', () => {
             let enableVaultCalled = false;
 
             const gqlMock = getGraphQLApiMock({
-                handler: expect('graphqlCall', ({ data }) => {
+                extraHandler: expect('graphqlCall', ({ data }) => {
                     if (!data.query.includes('mutation EnableVault')) {
-                        return {};
+                        return;
                     }
 
                     enableVaultCalled = true;
@@ -143,9 +143,9 @@ describe('vault cases', () => {
             let enableVaultCalled = false;
 
             const gqlMock = getGraphQLApiMock({
-                handler: ({ data }) => {
+                extraHandler: ({ data }) => {
                     if (!data.query.includes('mutation EnableVault')) {
-                        return {};
+                        return;
                     }
 
                     enableVaultCalled = true;
@@ -189,9 +189,9 @@ describe('vault cases', () => {
             let enableVaultCalled = false;
 
             const gqlMock = getGraphQLApiMock({
-                handler: expect('graphqlCall', ({ data }) => {
+                extraHandler: expect('graphqlCall', ({ data }) => {
                     if (!data.query.includes('mutation EnableVault')) {
-                        return {};
+                        return;
                     }
 
                     enableVaultCalled = true;
