@@ -1398,6 +1398,24 @@ window.spb = function(modules) {
             return data.token;
         }));
     }
+    function oneClickApproveOrder(_ref12) {
+        var _headers16;
+        var orderID = _ref12.orderID;
+        return callGraphQL({
+            query: "\n            mutation OneClickApproveOrder(\n                $orderID : String!\n                $instrumentType : String!\n                $instrumentID : String!\n            ) {\n                oneClickPayment(\n                    token: $orderID\n                    selectedInstrumentType : $instrumentType\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    userId\n                }\n            }\n        ",
+            variables: {
+                orderID: orderID,
+                instrumentType: _ref12.instrumentType,
+                instrumentID: _ref12.instrumentID
+            },
+            headers: (_headers16 = {}, _headers16["x-paypal-internal-euat"] = _ref12.buyerAccessToken, 
+            _headers16["paypal-client-context"] = orderID, _headers16)
+        }).then((function(_ref13) {
+            return {
+                payerID: _ref13.oneClickPayment.userId
+            };
+        }));
+    }
     var getSupplementalOrderInfo = memoize((function(orderID) {
         var _headers17;
         return callGraphQL({
@@ -2980,51 +2998,37 @@ window.spb = function(modules) {
             var restart = function() {
                 return fallbackToWebCheckout();
             };
+            var shippingRequired = function(orderID) {
+                return getSupplementalOrderInfo(orderID).then((function(order) {
+                    var _order$checkoutSessio = order.checkoutSession, shippingAddress = _order$checkoutSessio.cart.shippingAddress;
+                    return !(!_order$checkoutSessio.flags.isShippingAddressRequired || shippingAddress && shippingAddress.isFullAddress);
+                }));
+            };
             return {
                 start: function() {
                     return promise_ZalgoPromise.try((function() {
                         return createOrder();
                     })).then((function(orderID) {
-                        return function(orderID) {
-                            return getSupplementalOrderInfo(orderID).then((function(order) {
-                                var _order$checkoutSessio = order.checkoutSession, shippingAddress = _order$checkoutSessio.cart.shippingAddress;
-                                return !(!_order$checkoutSessio.flags.isShippingAddressRequired || shippingAddress && shippingAddress.isFullAddress);
-                            }));
-                        }(orderID).then((function(requireShipping) {
-                            return requireShipping ? fallbackToWebCheckout() : function(_ref12) {
-                                var _headers16;
-                                var orderID = _ref12.orderID;
-                                return callGraphQL({
-                                    query: "\n            mutation OneClickApproveOrder(\n                $orderID : String!\n                $instrumentType : String!\n                $instrumentID : String!\n            ) {\n                oneClickPayment(\n                    token: $orderID\n                    selectedInstrumentType : $instrumentType\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    userId\n                }\n            }\n        ",
-                                    variables: {
-                                        orderID: orderID,
-                                        instrumentType: _ref12.instrumentType,
-                                        instrumentID: _ref12.instrumentID
-                                    },
-                                    headers: (_headers16 = {}, _headers16["x-paypal-internal-euat"] = _ref12.buyerAccessToken, 
-                                    _headers16["paypal-client-context"] = orderID, _headers16)
-                                }).then((function(_ref13) {
-                                    return {
-                                        payerID: _ref13.oneClickPayment.userId
-                                    };
-                                }));
-                            }({
+                        return promise_ZalgoPromise.hash({
+                            requireShipping: shippingRequired(orderID),
+                            orderApproval: oneClickApproveOrder({
                                 orderID: orderID,
                                 instrumentType: instrumentType,
                                 buyerAccessToken: buyerAccessToken,
                                 instrumentID: instrumentID
-                            }).then((function(_ref4) {
-                                return onApprove({
-                                    payerID: _ref4.payerID
-                                }, {
-                                    restart: restart
-                                });
-                            }), (function(err) {
-                                getLogger().warn("approve_order_error", {
-                                    err: stringifyError(err)
-                                }).flush();
-                                return fallbackToWebCheckout();
-                            }));
+                            })
+                        }).then((function(_ref4) {
+                            var orderApproval = _ref4.orderApproval;
+                            return _ref4.requireShipping ? fallbackToWebCheckout() : onApprove({
+                                payerID: orderApproval.payerID
+                            }, {
+                                restart: restart
+                            });
+                        })).catch((function(err) {
+                            getLogger().warn("approve_order_error", {
+                                err: stringifyError(err)
+                            }).flush();
+                            return fallbackToWebCheckout();
                         }));
                     }));
                 },
@@ -3567,7 +3571,8 @@ window.spb = function(modules) {
                 return extendUrl("" + getNativePopupDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
                     query: {
                         sdkMeta: sdkMeta,
-                        sessionUID: sessionUID
+                        sessionUID: sessionUID,
+                        buttonSessionID: buttonSessionID
                     }
                 });
             }));
@@ -4347,7 +4352,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.249", _ref2;
+                _ref2.button_version = "2.0.250", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
