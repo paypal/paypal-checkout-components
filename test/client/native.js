@@ -1375,13 +1375,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -1413,7 +1413,7 @@ describe('native ios cases', () => {
                         return postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
+                            domain: 'https://history.paypal.com'
                         });
                     }));
                 }
@@ -1535,13 +1535,13 @@ describe('native ios cases', () => {
             }));
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -1604,7 +1604,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-            
+
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -1634,14 +1634,14 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 times:              2,
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -1673,7 +1673,7 @@ describe('native ios cases', () => {
                         return postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
+                            domain: 'https://history.paypal.com'
                         });
                     }));
                 }
@@ -1808,14 +1808,14 @@ describe('native ios cases', () => {
             }));
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 times:              2,
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -1890,7 +1890,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-            
+
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -1920,13 +1920,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -1958,7 +1958,7 @@ describe('native ios cases', () => {
                         return postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
+                            domain: 'https://history.paypal.com'
                         });
                     }));
                 }
@@ -2026,7 +2026,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-            
+
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2057,7 +2057,7 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:   'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:   'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery: [ 'sdkMeta', 'sessionUID' ],
                 onOpen:        ({ win }) => {
                     popupWin = win;
@@ -2065,7 +2065,7 @@ describe('native ios cases', () => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2097,7 +2097,7 @@ describe('native ios cases', () => {
                         return postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
+                            domain: 'https://history.paypal.com'
                         });
                     }));
                 }
@@ -2165,7 +2165,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-            
+
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2195,13 +2195,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2233,7 +2233,7 @@ describe('native ios cases', () => {
                         return postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
+                            domain: 'https://history.paypal.com'
                         });
                     }));
                 }
@@ -2297,7 +2297,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-            
+
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2327,13 +2327,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2365,7 +2365,7 @@ describe('native ios cases', () => {
                         return postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
+                            domain: 'https://history.paypal.com'
                         });
                     }));
                 }
@@ -2444,13 +2444,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2496,13 +2496,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2581,13 +2581,13 @@ describe('native ios cases', () => {
             }));
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2670,13 +2670,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2721,7 +2721,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-            
+
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2751,13 +2751,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/venmo/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/venmo/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2789,7 +2789,7 @@ describe('native ios cases', () => {
                         return postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
+                            domain: 'https://history.paypal.com'
                         });
                     }));
                 }
@@ -2868,7 +2868,7 @@ describe('native ios cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
-            
+
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -2900,13 +2900,13 @@ describe('native ios cases', () => {
             const postRobotMock = getPostRobotMock();
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:        'https://ic.paypal.com/smart/checkout/native/popup',
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID' ],
                 onOpen:             ({ win }) => {
                     return postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
-                        domain: 'https://ic.paypal.com',
+                        domain: 'https://history.paypal.com',
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
@@ -2938,7 +2938,7 @@ describe('native ios cases', () => {
                         return postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
-                            domain: 'https://ic.paypal.com'
+                            domain: 'https://history.paypal.com'
                         });
                     }));
                 }
