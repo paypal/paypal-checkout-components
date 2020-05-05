@@ -245,6 +245,7 @@ export function subscriptionIdToCartId(subscriptionID : string) : ZalgoPromise<s
 
 export function enableVault({ orderID, clientAccessToken } : {| orderID : string, clientAccessToken : string |}) : ZalgoPromise<mixed> {
     return callGraphQL({
+        name:  'EnableVault',
         query: `
             mutation EnableVault(
                 $orderID : String!
@@ -266,6 +267,7 @@ export function enableVault({ orderID, clientAccessToken } : {| orderID : string
 
 export function deleteVault({ paymentMethodID, clientAccessToken } : {| paymentMethodID : string, clientAccessToken : string |}) : ZalgoPromise<mixed> {
     return callGraphQL({
+        name:  'DeleteVault',
         query: `
             mutation DeleteVault(
                 $paymentMethodID : String!
@@ -294,6 +296,7 @@ type ClientConfig = {|
 
 export function updateClientConfig({ orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow } : ClientConfig) : ZalgoPromise<void> {
     return callGraphQL({
+        name:  'UpdateClientConfig',
         query: `
             mutation UpdateClientConfig(
                 $orderID : String!,
@@ -330,6 +333,7 @@ type ApproveData = {|
 
 export function approveOrder({ orderID, planID, buyerAccessToken } : ApproveOrderOptions) : ZalgoPromise<ApproveData> {
     return callGraphQL({
+        name:  'ApproveOrder',
         query: `
             mutation ApproveOrder(
                 $orderID : String!
@@ -366,6 +370,7 @@ type OneClickApproveOrderOptions = {|
 
 export function oneClickApproveOrder({ orderID, instrumentType, instrumentID, buyerAccessToken } : OneClickApproveOrderOptions) : ZalgoPromise<ApproveData> {
     return callGraphQL({
+        name:  'OneClickApproveOrder',
         query: `
             mutation OneClickApproveOrder(
                 $orderID : String!
@@ -414,6 +419,7 @@ type SupplementalOrderInfo = {|
 
 export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromise<SupplementalOrderInfo> => {
     return callGraphQL({
+        name:  'GetCheckoutDetails',
         query: `
             query GetCheckoutDetails($orderID: String!) {
                 checkoutSession(token: $orderID) {

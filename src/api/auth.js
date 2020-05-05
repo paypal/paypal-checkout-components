@@ -46,6 +46,7 @@ export function createAccessToken (clientID : string) : ZalgoPromise<string> {
 
 export function getFirebaseSessionToken(sessionUID : string) : ZalgoPromise<string> {
     return callGraphQL({
+        name:  'GetFireBaseSessionToken',
         query: `
             query GetFireBaseSessionToken($sessionUID: String!) {
                 firebase {
@@ -63,6 +64,7 @@ export function getFirebaseSessionToken(sessionUID : string) : ZalgoPromise<stri
 
 export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, { buyerAccessToken, orderID } : {| buyerAccessToken : string, orderID : string |}) : ZalgoPromise<void> {
     return callGraphQL({
+        name:    'UpgradeFacilitatorAccessToken',
         headers: {
             [ HEADERS.ACCESS_TOKEN ]:   buyerAccessToken,
             [ HEADERS.CLIENT_CONTEXT ]: orderID
@@ -86,6 +88,7 @@ export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, {
 
 export function exchangeAccessTokenForAuthCode(buyerAccessToken : string) : ZalgoPromise<string> {
     return callGraphQL({
+        name:  'ExchangeAuthCode',
         query: `
             query ExchangeAuthCode(
                 $buyerAccessToken: String!
@@ -113,6 +116,7 @@ export function getConnectURL({ clientID, fundingSource, connect } : ConnectURLO
     const { scopes, responseType, billingType } = connect;
 
     return callGraphQL({
+        name:  'GetConnectURL',
         query: `
             query GetConnectURL(
                 $clientID: String!
