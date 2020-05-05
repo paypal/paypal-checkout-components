@@ -161,18 +161,20 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
         return ZalgoPromise.try(() => {
             return createOrder();
         }).then(orderID => {
-            return shippingRequired(orderID).then(requireShipping => {
+            return ZalgoPromise.hash({
+                requireShipping: shippingRequired(orderID),
+                orderApproval:   oneClickApproveOrder({ orderID, instrumentType, buyerAccessToken, instrumentID })
+            }).then(({ requireShipping, orderApproval }) => {
                 if (requireShipping) {
                     return fallbackToWebCheckout();
                 }
 
-                return oneClickApproveOrder({ orderID, instrumentType, buyerAccessToken, instrumentID })
-                    .then(({ payerID }) => {
-                        return onApprove({ payerID }, { restart });
-                    }, err => {
-                        getLogger().warn('approve_order_error', { err: stringifyError(err) }).flush();
-                        return fallbackToWebCheckout();
-                    });
+                const { payerID } = orderApproval;
+                return onApprove({ payerID }, { restart });
+                
+            }).catch(err => {
+                getLogger().warn('approve_order_error', { err: stringifyError(err) }).flush();
+                return fallbackToWebCheckout();
             });
         });
     };
