@@ -249,7 +249,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const getNativePopupUrl = memoize(({ sessionUID }) : string => {
         return extendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
-            query: { sdkMeta, sessionUID }
+            query: { sdkMeta, sessionUID, buttonSessionID }
         });
     });
 
