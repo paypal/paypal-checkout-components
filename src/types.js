@@ -10,7 +10,8 @@ import { CONTEXT } from './constants';
 export const TYPES = true;
 
 export type ProxyWindow = {|
-    close : () => ZalgoPromise<void>
+    close : () => ZalgoPromise<void>,
+    setLocation : (string) => ZalgoPromise<void>
 |};
 
 export type LocaleType = {|
@@ -228,6 +229,7 @@ export type CheckoutProps = {|
     buttonSessionID : string,
     clientAccessToken? : ?string,
     createAuthCode? : () => ZalgoPromise<?string>,
+    getConnectURL? : ?() => ZalgoPromise<string>,
     createOrder : () => ZalgoPromise<string>,
     onApprove : ({| payerID : string, paymentID : ?string, billingToken : ?string, subscriptionID : ?string |}) => ZalgoPromise<void> | void,
     onAuth : ({| accessToken : string |}) => ZalgoPromise<void> | void,
@@ -339,4 +341,10 @@ export type Wallet = {|
     paypal : WalletPaymentType,
     card : WalletPaymentType,
     credit : WalletPaymentType
+|};
+
+export type ConnectOptions = {|
+    scopes : $ReadOnlyArray<string>,
+    billingType? : string,
+    responseType? : string
 |};

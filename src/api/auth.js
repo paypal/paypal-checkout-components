@@ -2,7 +2,9 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { inlineMemoize, base64encode, request, noop } from 'belter/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
+import type { ConnectOptions } from '../types';
 import { AUTH_API_URL } from '../config';
 import { getLogger } from '../lib';
 import { HEADERS } from '../constants';
@@ -98,5 +100,41 @@ export function exchangeAccessTokenForAuthCode(buyerAccessToken : string) : Zalg
         variables: { buyerAccessToken }
     }).then(({ auth }) => {
         return auth.authCode;
+    });
+}
+
+type ConnectURLOptions = {|
+    clientID : string,
+    fundingSource : $Values<typeof FUNDING>,
+    connect : ConnectOptions
+|};
+
+export function getConnectURL({ clientID, fundingSource, connect } : ConnectURLOptions) : ZalgoPromise<string> {
+    const { scopes, responseType, billingType } = connect;
+
+    return callGraphQL({
+        query: `
+            query GetConnectURL(
+                $clientID: String!
+                $scopes: [String]!
+                $billingType: String
+                $fundingSource: String
+            ) {
+                auth(
+                    clientId: $clientID
+                ) {
+                    connectUrl(
+                        scopes: $scopes
+                        billingType: $billingType
+                        fundingSource: $fundingSource
+                    ) {
+                        href
+                    }
+                }
+            }
+        `,
+        variables: { clientID, scopes, responseType, billingType, fundingSource }
+    }).then(({ auth }) => {
+        return auth.connectUrl.href;
     });
 }

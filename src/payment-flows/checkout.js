@@ -1,13 +1,13 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, noop, supportsPopups, stringifyError } from 'belter/src';
+import { memoize, noop, supportsPopups, stringifyError, extendUrl } from 'belter/src';
 import { FUNDING, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { FundingEligibilityType, ProxyWindow } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
-import { enableVault, validatePaymentMethod, exchangeAccessTokenForAuthCode } from '../api';
+import { enableVault, validatePaymentMethod, exchangeAccessTokenForAuthCode, getConnectURL } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
@@ -141,10 +141,10 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick, enableThreeDomainSecure,
-        partnerAttributionID } = props;
+        partnerAttributionID, clientID, connect } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken, venmoPayloadID, buyerIntent,
         paymentMethodID } = payment;
-    const { fundingEligibility, buyerCountry } = serviceData;
+    const { fundingEligibility, buyerCountry, sdkMeta } = serviceData;
     const { cspNonce } = config;
 
     const context = getContext({ win, isClick });
@@ -168,6 +168,20 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     }
                 });
             },
+
+            getConnectURL: connect ? () => {
+                if (!clientID) {
+                    throw new Error(`Expected clientID`);
+                }
+
+                return getConnectURL({ clientID, fundingSource, connect }).then(connectURL => {
+                    return extendUrl(connectURL, {
+                        query: {
+                            sdkMeta
+                        }
+                    });
+                });
+            } : null,
     
             createOrder: () => {
                 return createOrder().then(orderID => {

@@ -5,7 +5,7 @@ import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY } from '@paypal
 import type { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { ContentType, LocaleType, ProxyWindow, FundingEligibilityType, Wallet, CheckoutFlowType, CardFieldsFlowType,
-    ThreeDomainSecureFlowType, PersonalizationType, MenuFlowType } from '../types';
+    ThreeDomainSecureFlowType, PersonalizationType, MenuFlowType, ConnectOptions } from '../types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit, XOnInit,
     OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError, OnError,
     XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL } from '../props';
@@ -78,6 +78,7 @@ export type ButtonXProps = {|
     stageHost : ?string,
     apiStageHost : ?string,
     upgradeLSAT? : boolean,
+    connect? : ConnectOptions,
     
     onInit : XOnInit,
     onApprove : ?XOnApprove,
@@ -123,6 +124,7 @@ export type ButtonProps = {|
     onError : OnError,
     onClick : ?OnClick,
     enableStandardCardFields : ?boolean,
+    connect : ?ConnectOptions,
 
     createOrder : CreateOrder,
     createBillingAgreement : ?CreateBillingAgreement,
@@ -164,6 +166,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         style,
         getParent,
         currency,
+        connect,
         intent,
         merchantID,
         persistRiskData,
@@ -234,6 +237,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         rememberFunding,
         getParent,
         persistRiskData,
+        connect,
 
         enableThreeDomainSecure,
         enableStandardCardFields,
