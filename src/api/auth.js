@@ -108,11 +108,12 @@ export function exchangeAccessTokenForAuthCode(buyerAccessToken : string) : Zalg
 
 type ConnectURLOptions = {|
     clientID : string,
+    orderID : string,
     fundingSource : $Values<typeof FUNDING>,
     connect : ConnectOptions
 |};
 
-export function getConnectURL({ clientID, fundingSource, connect } : ConnectURLOptions) : ZalgoPromise<string> {
+export function getConnectURL({ clientID, orderID, fundingSource, connect } : ConnectURLOptions) : ZalgoPromise<string> {
     const { scopes, billingType } = connect;
 
     return callGraphQL({
@@ -120,6 +121,7 @@ export function getConnectURL({ clientID, fundingSource, connect } : ConnectURLO
         query: `
             query GetConnectURL(
                 $clientID: String!
+                $orderID: String!
                 $scopes: [String]!
                 $billingType: String
                 $fundingSource: String
@@ -128,6 +130,7 @@ export function getConnectURL({ clientID, fundingSource, connect } : ConnectURLO
                     clientId: $clientID
                 ) {
                     connectUrl(
+                        token: $orderID
                         scopes: $scopes
                         billingType: $billingType
                         fundingSource: $fundingSource
@@ -137,7 +140,7 @@ export function getConnectURL({ clientID, fundingSource, connect } : ConnectURLO
                 }
             }
         `,
-        variables: { clientID, scopes, billingType, fundingSource }
+        variables: { clientID, orderID, scopes, billingType, fundingSource }
     }).then(({ auth }) => {
         return auth.connectUrl.href;
     });

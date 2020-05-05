@@ -174,11 +174,13 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     throw new Error(`Expected clientID`);
                 }
 
-                return getConnectURL({ clientID, fundingSource, connect }).then(connectURL => {
-                    return extendUrl(connectURL, {
-                        query: {
-                            sdkMeta
-                        }
+                return createOrder().then(orderID => {
+                    return getConnectURL({ orderID, clientID, fundingSource, connect }).then(connectURL => {
+                        return extendUrl(connectURL, {
+                            query: {
+                                sdkMeta
+                            }
+                        });
                     });
                 });
             } : null,
