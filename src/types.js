@@ -345,6 +345,5 @@ export type Wallet = {|
 
 export type ConnectOptions = {|
     scopes : $ReadOnlyArray<string>,
-    billingType? : string,
-    responseType? : string
+    billingType? : string
 |};

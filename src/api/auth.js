@@ -113,7 +113,7 @@ type ConnectURLOptions = {|
 |};
 
 export function getConnectURL({ clientID, fundingSource, connect } : ConnectURLOptions) : ZalgoPromise<string> {
-    const { scopes, responseType, billingType } = connect;
+    const { scopes, billingType } = connect;
 
     return callGraphQL({
         name:  'GetConnectURL',
@@ -137,7 +137,7 @@ export function getConnectURL({ clientID, fundingSource, connect } : ConnectURLO
                 }
             }
         `,
-        variables: { clientID, scopes, responseType, billingType, fundingSource }
+        variables: { clientID, scopes, billingType, fundingSource }
     }).then(({ auth }) => {
         return auth.connectUrl.href;
     });
