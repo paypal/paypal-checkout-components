@@ -55,7 +55,7 @@ describe('vault cases', () => {
         });
     });
 
-    it('should set up a new forced-vaulted funding source, and fail because paypal is not vaulable', async () => {
+    it('should set up a new forced-vaulted funding source, and work even if paypal is not vaulable', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
             window.xprops.vault = true;
@@ -67,7 +67,7 @@ describe('vault cases', () => {
                 return orderID;
             }));
 
-            window.xprops.onApprove = avoid('onApprove');
+            window.xprops.onApprove = expect('onApprove');
 
             const fundingEligibility = {
                 [FUNDING.PAYPAL]: {
@@ -79,7 +79,7 @@ describe('vault cases', () => {
             createButtonHTML({ fundingEligibility });
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
-            await clickButton(FUNDING.PAYPAL).catch(expect('clickCatch'));
+            await clickButton(FUNDING.PAYPAL).catch(avoid('clickCatch'));
         });
     });
 

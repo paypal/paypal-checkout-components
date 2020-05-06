@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups, stringifyError, extendUrl } from 'belter/src';
-import { FUNDING, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { FundingEligibilityType, ProxyWindow } from '../types';
@@ -77,17 +77,12 @@ function isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgree
         return false;
     }
 
-    const fundingSourceEligible = Boolean(fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable);
-
-    if (vault && !fundingSourceEligible) {
-        throw new Error(`SDK received ${ SDK_QUERY_KEYS.VAULT }=true parameter, but ${ fundingSource } is not vaultable.`);
-    }
-
     if (vault) {
         return true;
     }
 
-    if (fundingSourceEligible) {
+    if (fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable) {
+        // In future, make this an optional checkbox during checkout flow
         return true;
     }
 
