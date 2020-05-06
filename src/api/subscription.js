@@ -7,6 +7,7 @@ import { CREATE_SUBSCRIPTIONS_API_URL, SMART_API_URI } from '../config';
 import { getLogger } from '../lib';
 
 import { callSmartAPI } from './api';
+import { createAccessToken } from './auth';
 
 export type SubscriptionCreateRequest = {|
     plan_id : string,
@@ -27,24 +28,18 @@ export type SubscriptionCreateRequest = {|
 
 export type SubscriptionResponse = {||};
 
-type SubsriptionOptions = {|
-    partnerAttributionID : ?string
+type SubscriptionOptions = {|
+    clientID : ?string,
+    merchantID? : $ReadOnlyArray<string>,
+    partnerAttributionID? : string
 |};
 
-export function createSubscription(accessToken : string, subscriptionPayload : SubscriptionCreateRequest, { partnerAttributionID } : SubsriptionOptions) : ZalgoPromise<string> {
-    getLogger().info(`rest_api_create_subscription_id`);
 
-    if (!accessToken) {
-        throw new Error(`Access token not passed`);
-    }
-
-    if (!subscriptionPayload) {
-        throw new Error(`Expected subscription payload to be passed`);
-    }
-
+// Create Subscription Request method
+function createRequest(accessToken : string, subscriptionPayload : SubscriptionCreateRequest, partnerAttributionID? : string) : ZalgoPromise<string> {
     const headers : Object = {
         'Authorization':                 `Bearer ${ accessToken }`,
-        'PayPal-Partner-Attribution-Id': partnerAttributionID
+        'PayPal-Partner-Attribution-Id': partnerAttributionID || ''
     };
 
     return request({
@@ -61,24 +56,31 @@ export function createSubscription(accessToken : string, subscriptionPayload : S
     });
 }
 
-export function reviseSubscription(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest, { partnerAttributionID } : SubsriptionOptions) : ZalgoPromise<string> {
+export function createSubscription(accessToken : string, subscriptionPayload : SubscriptionCreateRequest, { partnerAttributionID, merchantID, clientID } : SubscriptionOptions) : ZalgoPromise<string> {
     getLogger().info(`rest_api_create_subscription_id`);
-
-    if (!accessToken) {
-        throw new Error(`Access token not passed`);
-    }
-
-    if (!subscriptionID) {
-        throw new Error(`Expected subscription id to be passed as first argument to revise subscription api`);
-    }
 
     if (!subscriptionPayload) {
         throw new Error(`Expected subscription payload to be passed`);
     }
 
+    if (merchantID && merchantID[0]) {
+        getLogger().info(`rest_api_subscriptions_recreate_access_token`);
+        return createAccessToken(clientID, { targetSubject: merchantID[0] }).then((thirdPartyAccessToken) : ZalgoPromise<string> => {
+            return createRequest(thirdPartyAccessToken, subscriptionPayload, partnerAttributionID);
+        });
+    }
+
+    if (!accessToken) {
+        throw new Error(`Access token not passed`);
+    }
+    return createRequest(accessToken, subscriptionPayload, partnerAttributionID);
+}
+
+// Revise Subscription API request
+function reviseRequest(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest, partnerAttributionID? : string) : ZalgoPromise<string> {
     const headers : Object = {
         'Authorization':                 `Bearer ${ accessToken }`,
-        'PayPal-Partner-Attribution-Id': partnerAttributionID
+        'PayPal-Partner-Attribution-Id': partnerAttributionID || ''
     };
 
     return request({
@@ -94,6 +96,30 @@ export function reviseSubscription(accessToken : string, subscriptionID : string
         // for revision flow the same subscription id is returned
         return subscriptionID;
     });
+}
+
+export function reviseSubscription(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest, { partnerAttributionID, merchantID, clientID } : SubscriptionOptions) : ZalgoPromise<string> {
+    getLogger().info(`rest_api_create_subscription_id`);
+
+    if (!subscriptionID) {
+        throw new Error(`Expected subscription id to be passed as first argument to revise subscription api`);
+    }
+
+    if (!subscriptionPayload) {
+        throw new Error(`Expected subscription payload to be passed`);
+    }
+
+    if (merchantID && merchantID[0]) {
+        getLogger().info(`rest_api_subscriptions_recreate_access_token`);
+        return createAccessToken(clientID, { targetSubject: merchantID[0] }).then((thirdPartyAccessToken) : ZalgoPromise<string> => {
+            return reviseRequest(thirdPartyAccessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
+        });
+    }
+
+    if (!accessToken) {
+        throw new Error(`Access token not passed`);
+    }
+    return reviseRequest(accessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
 }
 
 type SubscriptionAPICredentials = {|

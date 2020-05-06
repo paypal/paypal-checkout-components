@@ -11,12 +11,23 @@ import { HEADERS } from '../constants';
 
 import { callGraphQL } from './api';
 
-export function createAccessToken (clientID : string) : ZalgoPromise<string> {
+type GenerateAccessTokenOptions = {|
+    targetSubject? : string
+|};
+
+export function createAccessToken(clientID : ?string, { targetSubject } : GenerateAccessTokenOptions = {}) : ZalgoPromise<string> {
     return inlineMemoize(createAccessToken, () => {
 
         getLogger().info(`rest_api_create_access_token`);
 
-        const basicAuth = base64encode(`${ clientID }:`);
+        const basicAuth = base64encode(`${ clientID || '' }:`);
+        const data : Object = {
+            grant_type: `client_credentials`
+        };
+
+        if (targetSubject) {
+            data.target_subject = targetSubject;
+        }
 
         return request({
 
@@ -25,14 +36,12 @@ export function createAccessToken (clientID : string) : ZalgoPromise<string> {
             headers: {
                 Authorization: `Basic ${ basicAuth }`
             },
-            data: {
-                grant_type: `client_credentials`
-            }
+            data
 
         }).then(({ body }) => {
 
             if (body && body.error === 'invalid_client') {
-                throw new Error(`Auth Api invalid client id: ${ clientID }:\n\n${ JSON.stringify(body, null, 4) }`);
+                throw new Error(`Auth Api invalid client id: ${ clientID || '' }:\n\n${ JSON.stringify(body, null, 4) }`);
             }
 
             if (!body || !body.access_token) {
@@ -41,7 +50,7 @@ export function createAccessToken (clientID : string) : ZalgoPromise<string> {
 
             return body.access_token;
         });
-    }, [ clientID ]);
+    }, [ clientID, targetSubject ]);
 }
 
 export function getFirebaseSessionToken(sessionUID : string) : ZalgoPromise<string> {
