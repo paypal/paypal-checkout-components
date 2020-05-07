@@ -66,7 +66,8 @@ type RequestParams = {|
     onShippingChange : boolean,
     userIDToken : ?string,
     amount : ?string,
-    clientMetadataID : string,
+    clientMetadataID : ?string,
+    pageSessionID : string,
     riskData : ?RiskData
 |};
 
@@ -226,7 +227,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         merchantID,
         buttonSessionID,
         pageSessionID,
-        clientMetadataID = pageSessionID,
+        clientMetadataID,
         clientAccessToken,
         userIDToken,
         debug = false,
@@ -264,6 +265,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         locale,
         amount,
         riskData,
+        pageSessionID,
         clientMetadataID
     };
 }

@@ -136,11 +136,13 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick, enableThreeDomainSecure,
-        partnerAttributionID, clientID, connect } = props;
+        partnerAttributionID, clientID, connect, clientMetadataID: cmid } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken, venmoPayloadID, buyerIntent,
         paymentMethodID } = payment;
     const { fundingEligibility, buyerCountry, sdkMeta } = serviceData;
     const { cspNonce } = config;
+
+    const clientMetadataID = cmid || sessionID;
 
     const context = getContext({ win, isClick });
 
@@ -186,7 +188,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                         if (buyerIntent === BUYER_INTENT.PAY) {
                             return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription });
                         } else if (buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING && clientAccessToken && paymentMethodID) {
-                            return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, buttonSessionID });
+                            return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID });
                         }
                     }).then(() => {
                         return orderID;
@@ -241,7 +243,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             buyerCountry,
             locale,
             commit,
-            cspNonce
+            cspNonce,
+            clientMetadataID: cmid
         });
     };
 

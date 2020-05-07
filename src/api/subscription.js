@@ -31,12 +31,12 @@ export type SubscriptionResponse = {||};
 type SubscriptionOptions = {|
     clientID : ?string,
     merchantID? : $ReadOnlyArray<string>,
-    partnerAttributionID? : string
+    partnerAttributionID? : ?string
 |};
 
 
 // Create Subscription Request method
-function createRequest(accessToken : string, subscriptionPayload : SubscriptionCreateRequest, partnerAttributionID? : string) : ZalgoPromise<string> {
+function createRequest(accessToken : string, subscriptionPayload : SubscriptionCreateRequest, partnerAttributionID? : ?string) : ZalgoPromise<string> {
     const headers : Object = {
         'Authorization':                 `Bearer ${ accessToken }`,
         'PayPal-Partner-Attribution-Id': partnerAttributionID || ''
@@ -77,7 +77,7 @@ export function createSubscription(accessToken : string, subscriptionPayload : S
 }
 
 // Revise Subscription API request
-function reviseRequest(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest, partnerAttributionID? : string) : ZalgoPromise<string> {
+function reviseRequest(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest, partnerAttributionID? : ?string) : ZalgoPromise<string> {
     const headers : Object = {
         'Authorization':                 `Bearer ${ accessToken }`,
         'PayPal-Partner-Attribution-Id': partnerAttributionID || ''

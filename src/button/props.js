@@ -47,7 +47,7 @@ export type ButtonXProps = {|
     sessionID : string,
     buttonSessionID : string,
     clientID : ?string,
-    partnerAttributionID : string,
+    partnerAttributionID : ?string,
     correlationID : string,
     platform : $Values<typeof PLATFORM>,
     merchantID : $ReadOnlyArray<string>,
@@ -74,6 +74,7 @@ export type ButtonXProps = {|
     getPageUrl : GetPageURL,
     getParent : () => CrossDomainWindowType,
     persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
+    clientMetadataID : ?string,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -96,7 +97,8 @@ export type ButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     clientID : ?string,
-    partnerAttributionID : string,
+    partnerAttributionID : ?string,
+    clientMetadataID : ?string,
     correlationID : string,
     platform : $Values<typeof PLATFORM>,
 
@@ -150,6 +152,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         buttonSessionID,
         clientID,
         partnerAttributionID,
+        clientMetadataID,
         correlationID,
         getParentDomain,
         clientAccessToken,
@@ -225,6 +228,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         buttonSessionID,
         clientID,
         partnerAttributionID,
+        clientMetadataID,
         correlationID,
         merchantDomain,
         platform,
@@ -303,7 +307,7 @@ export type ServiceData = {|
             [ $Values<typeof FUNDING> ] : ?boolean
         }
     |},
-serverRiskData : ? ServerRiskData
+    serverRiskData : ? ServerRiskData
 |};
 
 type ServiceDataOptions = {|

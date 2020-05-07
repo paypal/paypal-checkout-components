@@ -90,10 +90,12 @@ function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, 
 }
 
 function initVaultCapture({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
-    const { createOrder, onApprove, clientAccessToken,
-        enableThreeDomainSecure, buttonSessionID, partnerAttributionID, getParent } = props;
+    const { createOrder, onApprove, clientAccessToken, clientMetadataID: cmid,
+        enableThreeDomainSecure, sessionID, partnerAttributionID, getParent } = props;
     const { ThreeDomainSecure } = components;
     const { fundingSource, paymentMethodID } = payment;
+
+    const clientMetadataID = cmid || sessionID;
 
     if (!paymentMethodID) {
         throw new Error(`Payment method id required for vault capture`);
@@ -135,7 +137,7 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
             return createOrder();
         }).then(orderID => {
             return ZalgoPromise.hash({
-                validate:        validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, buttonSessionID, partnerAttributionID }),
+                validate:        validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, clientMetadataID, partnerAttributionID }),
                 requireShipping: shippingRequired(orderID)
             });
         }).then(({ validate, requireShipping }) => {

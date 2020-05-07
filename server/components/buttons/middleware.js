@@ -50,7 +50,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, style, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale, onShippingChange,
-                clientMetadataID, riskData } = getParams(params, req, res);
+                clientMetadataID, riskData, pageSessionID } = getParams(params, req, res);
             const { label, period } = style;
             
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
@@ -71,7 +71,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry }));
             
             const sendRiskDataPromise = riskData ? transportRiskData(req, riskData) : null;
-            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken) ? sendRiskDataPromise.then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID })) : null;
+            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken && clientMetadataID) ? sendRiskDataPromise.then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID })) : null;
             const buyerAccessToken = await buyerAccessTokenPromise;
 
             const nativeEligibilityPromise = resolveNativeEligibility(req, gqlBatch, {
@@ -159,7 +159,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
                     <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON(setupParams) })</script>
-                    ${ shouldRenderFraudnet({ wallet }) ? renderFraudnetScript({ id: clientMetadataID, cspNonce, env }) : '' }
+                    ${ shouldRenderFraudnet({ wallet }) ? renderFraudnetScript({ id: clientMetadataID || pageSessionID, cspNonce, env }) : '' }
                 </body>
             `;
 

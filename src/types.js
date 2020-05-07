@@ -243,7 +243,8 @@ export type CheckoutProps = {|
     locale : LocaleType,
     commit : boolean,
     cspNonce : ?string,
-    venmoPayloadID? : ?string
+    venmoPayloadID? : ?string,
+    clientMetadataID : ?string
 |};
 
 export type CheckoutFlowType = ZoidComponent<CheckoutProps>;

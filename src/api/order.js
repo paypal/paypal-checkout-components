@@ -172,7 +172,7 @@ export type ValidatePaymentMethodOptions = {|
     paymentMethodID : string,
     enableThreeDomainSecure : boolean,
     partnerAttributionID : ?string,
-    buttonSessionID : string
+    clientMetadataID : string
 |};
 
 const VALIDATE_CONTINGENCIES = {
@@ -193,13 +193,13 @@ type PaymentSource = {|
     contingencies? : $ReadOnlyArray<$Values<typeof VALIDATE_CONTINGENCIES>>
 |};
 
-export function validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, buttonSessionID } : ValidatePaymentMethodOptions) : ZalgoPromise<{| status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } |}> {
+export function validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID } : ValidatePaymentMethodOptions) : ZalgoPromise<{| status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } |}> {
     getLogger().info(`rest_api_create_order_token`);
 
     const headers : Object = {
         [ HEADERS.AUTHORIZATION ]:          `Bearer ${ clientAccessToken }`,
         [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID,
-        [ HEADERS.CLIENT_METADATA_ID ]:     buttonSessionID
+        [ HEADERS.CLIENT_METADATA_ID ]:     clientMetadataID
     };
 
     const paymentSource : PaymentSource = {
