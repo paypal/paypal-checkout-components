@@ -198,13 +198,13 @@
             return insertCss(content, options);
         };
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-d2ff3bcf]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-d2ff3bcf]{height:50px}}.wallet-item .icon[data-v-d2ff3bcf]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-d2ff3bcf]{max-height:90%;max-width:90%}.wallet-item .description[data-v-d2ff3bcf]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-d2ff3bcf]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-d2ff3bcf]{font-size:13px}}.wallet-item .description .details[data-v-d2ff3bcf]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-d2ff3bcf]{font-size:12px}}.wallet-item .preferred[data-v-d2ff3bcf]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-d2ff3bcf]:hover{background-color:#eee}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-fdd787a1]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-fdd787a1]{height:50px}}.wallet-item .icon[data-v-fdd787a1]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-fdd787a1]{max-height:90%;max-width:90%}.wallet-item .description[data-v-fdd787a1]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-fdd787a1]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-fdd787a1]{font-size:13px}}.wallet-item .description .details[data-v-fdd787a1]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-fdd787a1]{font-size:12px}}.wallet-item .preferred[data-v-fdd787a1]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-fdd787a1]:hover{background-color:#eee}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-fdd787a1]{padding:20px}.add-card-button a[data-v-fdd787a1]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-fdd787a1]:hover{text-decoration:underline}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-d2ff3bcf]{padding:20px}.add-card-button a[data-v-d2ff3bcf]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-d2ff3bcf]:hover{text-decoration:underline}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif}*{box-sizing:border-box}.flex-spacer{flex:1}\n", "" ]);
@@ -218,7 +218,7 @@
         __webpack_require__.d(__webpack_exports__, "renderWallet", (function() {
             return renderWallet;
         }));
-        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_o, preact_module_r, f, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
+        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_r, preact_module_o, f, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
         function a(n, l) {
             for (var u in l) n[u] = l[u];
             return n;
@@ -228,14 +228,14 @@
             l && l.removeChild(n);
         }
         function h(n, l, u) {
-            var i, t = arguments, o = {};
-            for (i in l) "key" !== i && "ref" !== i && (o[i] = l[i]);
+            var i, t = arguments, r = {};
+            for (i in l) "key" !== i && "ref" !== i && (r[i] = l[i]);
             if (arguments.length > 3) for (u = [ u ], i = 3; i < arguments.length; i++) u.push(t[i]);
-            if (null != u && (o.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === o[i] && (o[i] = n.defaultProps[i]);
-            return preact_module_p(n, o, l && l.key, l && l.ref, null);
+            if (null != u && (r.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === r[i] && (r[i] = n.defaultProps[i]);
+            return preact_module_p(n, r, l && l.key, l && l.ref, null);
         }
-        function preact_module_p(l, u, i, t, o) {
-            var r = {
+        function preact_module_p(l, u, i, t, r) {
+            var o = {
                 type: l,
                 props: u,
                 key: i,
@@ -247,10 +247,10 @@
                 __d: void 0,
                 __c: null,
                 constructor: void 0,
-                __v: o
+                __v: r
             };
-            return null == o && (r.__v = r), preact_module_n.vnode && preact_module_n.vnode(r), 
-            r;
+            return null == r && (o.__v = o), preact_module_n.vnode && preact_module_n.vnode(o), 
+            o;
         }
         function preact_module_d(n) {
             return n.children;
@@ -263,48 +263,48 @@
             for (var u; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) return u.__e;
             return "function" == typeof n.type ? preact_module_w(n) : null;
         }
-        function g(n) {
+        function preact_module_k(n) {
             var l, u;
             if (null != (n = n.__) && null != n.__c) {
                 for (n.__e = n.__c.base = null, l = 0; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) {
                     n.__e = n.__c.base = u.__e;
                     break;
                 }
-                return g(n);
+                return preact_module_k(n);
             }
         }
-        function preact_module_k(l) {
-            (!l.__d && (l.__d = !0) && preact_module_u.push(l) && !preact_module_i++ || preact_module_o !== preact_module_n.debounceRendering) && ((preact_module_o = preact_module_n.debounceRendering) || preact_module_t)(_);
+        function g(l) {
+            (!l.__d && (l.__d = !0) && preact_module_u.push(l) && !preact_module_i++ || preact_module_r !== preact_module_n.debounceRendering) && ((preact_module_r = preact_module_n.debounceRendering) || preact_module_t)(_);
         }
         function _() {
             for (var n; preact_module_i = preact_module_u.length; ) n = preact_module_u.sort((function(n, l) {
                 return n.__v.__b - l.__v.__b;
             })), preact_module_u = [], n.some((function(n) {
-                var l, u, i, t, o, r, f;
-                n.__d && (r = (o = (l = n).__v).__e, (f = l.__P) && (u = [], (i = a({}, o)).__v = i, 
-                t = preact_module_A(f, o, i, l.__n, void 0 !== f.ownerSVGElement, null, u, null == r ? preact_module_w(o) : r), 
-                preact_module_T(u, o), t != r && g(o)));
+                var l, u, i, t, r, o, f;
+                n.__d && (o = (r = (l = n).__v).__e, (f = l.__P) && (u = [], (i = a({}, r)).__v = i, 
+                t = preact_module_A(f, r, i, l.__n, void 0 !== f.ownerSVGElement, null, u, null == o ? preact_module_w(r) : o), 
+                preact_module_T(u, r), t != o && preact_module_k(r)));
             }));
         }
-        function preact_module_b(n, l, u, i, t, o, r, f, s) {
-            var a, h, p, y, d, m, g, k = u && u.__k || c, _ = k.length;
-            if (f == e && (f = null != o ? o[0] : _ ? preact_module_w(u, 0) : null), a = 0, 
+        function preact_module_b(n, l, u, i, t, r, o, f, s) {
+            var a, h, p, y, d, m, k, g = u && u.__k || c, _ = g.length;
+            if (f == e && (f = null != r ? r[0] : _ ? preact_module_w(u, 0) : null), a = 0, 
             l.__k = function preact_module_x(n, l, u) {
                 if (null == u && (u = []), null == n || "boolean" == typeof n) l && u.push(l(null)); else if (Array.isArray(n)) for (var i = 0; i < n.length; i++) preact_module_x(n[i], l, u); else u.push(l ? l("string" == typeof n || "number" == typeof n ? preact_module_p(null, n, null, null, n) : null != n.__e || null != n.__c ? preact_module_p(n.type, n.props, n.key, null, n.__v) : n) : n);
                 return u;
             }(l.__k, (function(u) {
                 if (null != u) {
-                    if (u.__ = l, u.__b = l.__b + 1, null === (p = k[a]) || p && u.key == p.key && u.type === p.type) k[a] = void 0; else for (h = 0; h < _; h++) {
-                        if ((p = k[h]) && u.key == p.key && u.type === p.type) {
-                            k[h] = void 0;
+                    if (u.__ = l, u.__b = l.__b + 1, null === (p = g[a]) || p && u.key == p.key && u.type === p.type) g[a] = void 0; else for (h = 0; h < _; h++) {
+                        if ((p = g[h]) && u.key == p.key && u.type === p.type) {
+                            g[h] = void 0;
                             break;
                         }
                         p = null;
                     }
-                    if (y = preact_module_A(n, u, p = p || e, i, t, o, r, f, s), (h = u.ref) && p.ref != h && (g || (g = []), 
-                    p.ref && g.push(p.ref, null, u), g.push(h, u.__c || y, u)), null != y) {
+                    if (y = preact_module_A(n, u, p = p || e, i, t, r, o, f, s), (h = u.ref) && p.ref != h && (k || (k = []), 
+                    p.ref && k.push(p.ref, null, u), k.push(h, u.__c || y, u)), null != y) {
                         var c;
-                        if (null == m && (m = y), void 0 !== u.__d) c = u.__d, u.__d = void 0; else if (o == p || y != f || null == y.parentNode) {
+                        if (null == m && (m = y), void 0 !== u.__d) c = u.__d, u.__d = void 0; else if (r == p || y != f || null == y.parentNode) {
                             n: if (null == f || f.parentNode !== n) n.appendChild(y), c = null; else {
                                 for (d = f, h = 0; (d = d.nextSibling) && h < _; h += 2) if (d == y) break n;
                                 n.insertBefore(y, f), c = f;
@@ -315,55 +315,55 @@
                     } else f && p.__e == f && f.parentNode != n && (f = preact_module_w(p));
                 }
                 return a++, u;
-            })), l.__e = m, null != o && "function" != typeof l.type) for (a = o.length; a--; ) null != o[a] && preact_module_v(o[a]);
-            for (a = _; a--; ) null != k[a] && preact_module_D(k[a], k[a]);
-            if (g) for (a = 0; a < g.length; a++) preact_module_j(g[a], g[++a], g[++a]);
+            })), l.__e = m, null != r && "function" != typeof l.type) for (a = r.length; a--; ) null != r[a] && preact_module_v(r[a]);
+            for (a = _; a--; ) null != g[a] && preact_module_D(g[a], g[a]);
+            if (k) for (a = 0; a < k.length; a++) preact_module_j(k[a], k[++a], k[++a]);
         }
         function preact_module_C(n, l, u) {
             "-" === l[0] ? n.setProperty(l, u) : n[l] = "number" == typeof u && !1 === s.test(l) ? u + "px" : null == u ? "" : u;
         }
         function preact_module_N(n, l, u, i, t) {
-            var o, r, f, e, c;
+            var r, o, f, e, c;
             if (t ? "className" === l && (l = "class") : "class" === l && (l = "className"), 
-            "style" === l) if (o = n.style, "string" == typeof u) o.cssText = u; else {
-                if ("string" == typeof i && (o.cssText = "", i = null), i) for (e in i) u && e in u || preact_module_C(o, e, "");
-                if (u) for (c in u) i && u[c] === i[c] || preact_module_C(o, c, u[c]);
-            } else "o" === l[0] && "n" === l[1] ? (r = l !== (l = l.replace(/Capture$/, "")), 
-            f = l.toLowerCase(), l = (f in n ? f : l).slice(2), u ? (i || n.addEventListener(l, preact_module_z, r), 
-            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_z, r)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
+            "style" === l) if (r = n.style, "string" == typeof u) r.cssText = u; else {
+                if ("string" == typeof i && (r.cssText = "", i = null), i) for (e in i) u && e in u || preact_module_C(r, e, "");
+                if (u) for (c in u) i && u[c] === i[c] || preact_module_C(r, c, u[c]);
+            } else "o" === l[0] && "n" === l[1] ? (o = l !== (l = l.replace(/Capture$/, "")), 
+            f = l.toLowerCase(), l = (f in n ? f : l).slice(2), u ? (i || n.addEventListener(l, preact_module_z, o), 
+            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_z, o)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
         }
         function preact_module_z(l) {
             this.l[l.type](preact_module_n.event ? preact_module_n.event(l) : l);
         }
-        function preact_module_A(l, u, i, t, o, r, f, e, c) {
-            var s, v, h, p, y, w, g, k, _, x, P = u.type;
+        function preact_module_A(l, u, i, t, r, o, f, e, c) {
+            var s, v, h, p, y, w, k, g, _, x, P = u.type;
             if (void 0 !== u.constructor) return null;
             (s = preact_module_n.__b) && s(u);
             try {
                 n: if ("function" == typeof P) {
-                    if (k = u.props, _ = (s = P.contextType) && t[s.__c], x = s ? _ ? _.props.value : s.__ : t, 
-                    i.__c ? g = (v = u.__c = i.__c).__ = v.__E : ("prototype" in P && P.prototype.render ? u.__c = v = new P(k, x) : (u.__c = v = new preact_module_m(k, x), 
-                    v.constructor = P, v.render = preact_module_E), _ && _.sub(v), v.props = k, v.state || (v.state = {}), 
+                    if (g = u.props, _ = (s = P.contextType) && t[s.__c], x = s ? _ ? _.props.value : s.__ : t, 
+                    i.__c ? k = (v = u.__c = i.__c).__ = v.__E : ("prototype" in P && P.prototype.render ? u.__c = v = new P(g, x) : (u.__c = v = new preact_module_m(g, x), 
+                    v.constructor = P, v.render = preact_module_E), _ && _.sub(v), v.props = g, v.state || (v.state = {}), 
                     v.context = x, v.__n = t, h = v.__d = !0, v.__h = []), null == v.__s && (v.__s = v.state), 
                     null != P.getDerivedStateFromProps && (v.__s == v.state && (v.__s = a({}, v.__s)), 
-                    a(v.__s, P.getDerivedStateFromProps(k, v.__s))), p = v.props, y = v.state, h) null == P.getDerivedStateFromProps && null != v.componentWillMount && v.componentWillMount(), 
+                    a(v.__s, P.getDerivedStateFromProps(g, v.__s))), p = v.props, y = v.state, h) null == P.getDerivedStateFromProps && null != v.componentWillMount && v.componentWillMount(), 
                     null != v.componentDidMount && v.__h.push(v.componentDidMount); else {
-                        if (null == P.getDerivedStateFromProps && k !== p && null != v.componentWillReceiveProps && v.componentWillReceiveProps(k, x), 
-                        !v.__e && null != v.shouldComponentUpdate && !1 === v.shouldComponentUpdate(k, v.__s, x) || u.__v === i.__v && !v.__) {
-                            for (v.props = k, v.state = v.__s, u.__v !== i.__v && (v.__d = !1), v.__v = u, u.__e = i.__e, 
+                        if (null == P.getDerivedStateFromProps && g !== p && null != v.componentWillReceiveProps && v.componentWillReceiveProps(g, x), 
+                        !v.__e && null != v.shouldComponentUpdate && !1 === v.shouldComponentUpdate(g, v.__s, x) || u.__v === i.__v && !v.__) {
+                            for (v.props = g, v.state = v.__s, u.__v !== i.__v && (v.__d = !1), v.__v = u, u.__e = i.__e, 
                             u.__k = i.__k, v.__h.length && f.push(v), s = 0; s < u.__k.length; s++) u.__k[s] && (u.__k[s].__ = u);
                             break n;
                         }
-                        null != v.componentWillUpdate && v.componentWillUpdate(k, v.__s, x), null != v.componentDidUpdate && v.__h.push((function() {
+                        null != v.componentWillUpdate && v.componentWillUpdate(g, v.__s, x), null != v.componentDidUpdate && v.__h.push((function() {
                             v.componentDidUpdate(p, y, w);
                         }));
                     }
-                    v.context = x, v.props = k, v.state = v.__s, (s = preact_module_n.__r) && s(u), 
+                    v.context = x, v.props = g, v.state = v.__s, (s = preact_module_n.__r) && s(u), 
                     v.__d = !1, v.__v = u, v.__P = l, s = v.render(v.props, v.state, v.context), u.__k = null != s && s.type == preact_module_d && null == s.key ? s.props.children : Array.isArray(s) ? s : [ s ], 
                     null != v.getChildContext && (t = a(a({}, t), v.getChildContext())), h || null == v.getSnapshotBeforeUpdate || (w = v.getSnapshotBeforeUpdate(p, y)), 
-                    preact_module_b(l, u, i, t, o, r, f, e, c), v.base = u.__e, v.__h.length && f.push(v), 
-                    g && (v.__E = v.__ = null), v.__e = !1;
-                } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = preact_module_$(i.__e, u, i, t, o, r, f, c);
+                    preact_module_b(l, u, i, t, r, o, f, e, c), v.base = u.__e, v.__h.length && f.push(v), 
+                    k && (v.__E = v.__ = null), v.__e = !1;
+                } else null == o && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = preact_module_$(i.__e, u, i, t, r, o, f, c);
                 (s = preact_module_n.diffed) && s(u);
             } catch (l) {
                 u.__v = null, preact_module_n.__e(l, u, i);
@@ -381,31 +381,31 @@
                 }
             }));
         }
-        function preact_module_$(n, l, u, i, t, o, r, f) {
+        function preact_module_$(n, l, u, i, t, r, o, f) {
             var s, a, v, h, p, y = u.props, d = l.props;
-            if (t = "svg" === l.type || t, null != o) for (s = 0; s < o.length; s++) if (null != (a = o[s]) && ((null === l.type ? 3 === a.nodeType : a.localName === l.type) || n == a)) {
-                n = a, o[s] = null;
+            if (t = "svg" === l.type || t, null != r) for (s = 0; s < r.length; s++) if (null != (a = r[s]) && ((null === l.type ? 3 === a.nodeType : a.localName === l.type) || n == a)) {
+                n = a, r[s] = null;
                 break;
             }
             if (null == n) {
                 if (null === l.type) return document.createTextNode(d);
                 n = t ? document.createElementNS("http://www.w3.org/2000/svg", l.type) : document.createElement(l.type, d.is && {
                     is: d.is
-                }), o = null, f = !1;
+                }), r = null, f = !1;
             }
             if (null === l.type) y !== d && n.data != d && (n.data = d); else {
-                if (null != o && (o = c.slice.call(n.childNodes)), v = (y = u.props || e).dangerouslySetInnerHTML, 
+                if (null != r && (r = c.slice.call(n.childNodes)), v = (y = u.props || e).dangerouslySetInnerHTML, 
                 h = d.dangerouslySetInnerHTML, !f) {
                     if (y === e) for (y = {}, p = 0; p < n.attributes.length; p++) y[n.attributes[p].name] = n.attributes[p].value;
                     (h || v) && (h && v && h.__html == v.__html || (n.innerHTML = h && h.__html || ""));
                 }
                 (function(n, l, u, i, t) {
-                    var o;
-                    for (o in u) "children" === o || "key" === o || o in l || preact_module_N(n, o, null, u[o], i);
-                    for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || preact_module_N(n, o, l[o], u[o], i);
-                })(n, d, y, t, f), l.__k = l.props.children, h || preact_module_b(n, l, u, i, "foreignObject" !== l.type && t, o, r, e, f), 
-                f || ("value" in d && void 0 !== d.value && d.value !== n.value && (n.value = null == d.value ? "" : d.value), 
-                "checked" in d && void 0 !== d.checked && d.checked !== n.checked && (n.checked = d.checked));
+                    var r;
+                    for (r in u) "children" === r || "key" === r || r in l || preact_module_N(n, r, null, u[r], i);
+                    for (r in l) t && "function" != typeof l[r] || "children" === r || "key" === r || "value" === r || "checked" === r || u[r] === l[r] || preact_module_N(n, r, l[r], u[r], i);
+                })(n, d, y, t, f), h ? l.__k = [] : (l.__k = l.props.children, preact_module_b(n, l, u, i, "foreignObject" !== l.type && t, r, o, e, f)), 
+                f || ("value" in d && void 0 !== (s = d.value) && s !== n.value && preact_module_N(n, "value", s, y.value, !1), 
+                "checked" in d && void 0 !== (s = d.checked) && s !== n.checked && preact_module_N(n, "checked", s, y.checked, !1));
             }
             return n;
         }
@@ -417,9 +417,9 @@
             }
         }
         function preact_module_D(l, u, i) {
-            var t, o, r;
+            var t, r, o;
             if (preact_module_n.unmount && preact_module_n.unmount(l), (t = l.ref) && (t.current && t.current !== l.__e || preact_module_j(t, null, u)), 
-            i || "function" == typeof l.type || (i = null != (o = l.__e)), l.__e = l.__d = void 0, 
+            i || "function" == typeof l.type || (i = null != (r = l.__e)), l.__e = l.__d = void 0, 
             null != (t = l.__c)) {
                 if (t.componentWillUnmount) try {
                     t.componentWillUnmount();
@@ -428,8 +428,8 @@
                 }
                 t.base = t.__P = null;
             }
-            if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && preact_module_D(t[r], u, i);
-            null != o && preact_module_v(o);
+            if (t = l.__k) for (o = 0; o < t.length; o++) t[o] && preact_module_D(t[o], u, i);
+            null != r && preact_module_v(r);
         }
         function preact_module_E(n, l, u) {
             return this.constructor(n, u);
@@ -439,7 +439,7 @@
                 for (var u, i; l = l.__; ) if ((u = l.__c) && !u.__) try {
                     if (u.constructor && null != u.constructor.getDerivedStateFromError && (i = !0, 
                     u.setState(u.constructor.getDerivedStateFromError(n))), null != u.componentDidCatch && (i = !0, 
-                    u.componentDidCatch(n)), i) return preact_module_k(u.__E = u);
+                    u.componentDidCatch(n)), i) return g(u.__E = u);
                 } catch (l) {
                     n = l;
                 }
@@ -448,12 +448,12 @@
         }, preact_module_m.prototype.setState = function(n, l) {
             var u;
             u = this.__s !== this.state ? this.__s : this.__s = a({}, this.state), "function" == typeof n && (n = n(u, this.props)), 
-            n && a(u, n), null != n && this.__v && (l && this.__h.push(l), preact_module_k(this));
+            n && a(u, n), null != n && this.__v && (l && this.__h.push(l), g(this));
         }, preact_module_m.prototype.forceUpdate = function(n) {
-            this.__v && (this.__e = !0, n && this.__h.push(n), preact_module_k(this));
+            this.__v && (this.__e = !0, n && this.__h.push(n), g(this));
         }, preact_module_m.prototype.render = preact_module_d, preact_module_u = [], preact_module_i = 0, 
         preact_module_t = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
-        preact_module_r = e, f = 0;
+        preact_module_o = e, f = 0;
         var index_module_n = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|^--/i, index_module_o = function(e) {
             return String(e).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }, index_module_a = function(e, t) {
@@ -1453,7 +1453,7 @@
                         void 0 === payload && (payload = {});
                         if (!dom_isBrowser()) return logger;
                         prefix && (event = prefix + "_" + event);
-                        var logPayload = _extends({}, objFilter(payload), {
+                        var logPayload = _extends(_extends({}, objFilter(payload)), {}, {
                             timestamp: Date.now().toString()
                         });
                         for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
@@ -1569,7 +1569,7 @@
         function callGraphQL(_ref5) {
             var _ref5$variables = _ref5.variables, _ref5$headers = _ref5.headers;
             return request({
-                url: "/graphql",
+                url: "/graphql?" + _ref5.name,
                 method: "POST",
                 json: {
                     query: _ref5.query,
@@ -1605,10 +1605,11 @@
                 return data.token;
             }));
         }
-        memoize((function(orderID) {
+        var getSupplementalOrderInfo = memoize((function(orderID) {
             var _headers17;
             return callGraphQL({
-                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
+                name: "GetCheckoutDetails",
+                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                    }\n                    user {\n                        userId\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID
                 },
@@ -1639,7 +1640,7 @@
                         create: function(data) {
                             var order = _extends({}, data);
                             if (order.intent && order.intent.toLowerCase() !== intent) throw new Error("Unexpected intent: " + order.intent + " passed to order.create. Please ensure you are passing /sdk/js?intent=" + order.intent.toLowerCase() + " in the paypal script tag.");
-                            (order = _extends({}, order, {
+                            (order = _extends(_extends({}, order), {}, {
                                 intent: intent.toUpperCase()
                             })).purchase_units = order.purchase_units.map((function(unit) {
                                 if (unit.amount.currency_code && unit.amount.currency_code !== currency) throw new Error("Unexpected currency: " + unit.amount.currency_code + " passed to order.create. Please ensure you are passing /sdk/js?currency=" + unit.amount.currency_code + " in the paypal script tag.");
@@ -1648,12 +1649,12 @@
                                     if (!merchantID[0]) throw new Error("Pass merchant-id=XYZ in the paypal script tag.");
                                     if (payee.merchant_id && payee.merchant_id !== merchantID[0]) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
                                 }
-                                merchantID && (payee = _extends({}, payee, {
+                                merchantID && (payee = _extends(_extends({}, payee), {}, {
                                     merchant_id: merchantID[0]
                                 }));
-                                return _extends({}, unit, {
+                                return _extends(_extends({}, unit), {}, {
                                     payee: payee,
-                                    amount: _extends({}, unit.amount, {
+                                    amount: _extends(_extends({}, unit.amount), {}, {
                                         currency_code: currency
                                     })
                                 });
@@ -1754,10 +1755,11 @@
                 var restart = _ref7.restart;
                 return promise_ZalgoPromise.try((function() {
                     if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
-                        return function(facilitatorAccessToken, _ref2) {
+                        return function(facilitatorAccessToken, _ref3) {
                             var _headers;
-                            var buyerAccessToken = _ref2.buyerAccessToken, orderID = _ref2.orderID;
+                            var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
                             return callGraphQL({
+                                name: "UpgradeFacilitatorAccessToken",
                                 headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
                                 _headers["paypal-client-context"] = orderID, _headers),
                                 query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
@@ -1779,169 +1781,43 @@
                     getLogger().info("button_approve").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_approve", 
                     _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                     _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                    var data = {
-                        orderID: orderID,
-                        payerID: payerID,
-                        paymentID: paymentID,
-                        billingToken: billingToken,
-                        subscriptionID: subscriptionID,
-                        facilitatorAccessToken: facilitatorAccessToken
-                    };
-                    var actions = function(_ref3) {
-                        var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, subscriptionID = _ref3.subscriptionID, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI;
-                        var getSubscriptionApi = memoize((function() {
-                            if (!subscriptionID) throw new Error("No subscription ID present");
-                            return function(subscriptionID, _ref6) {
-                                return callSmartAPI({
-                                    accessToken: _ref6.buyerAccessToken,
-                                    url: "/smart/api/billagmt/subscriptions/" + subscriptionID
-                                });
-                            }(subscriptionID, {
-                                buyerAccessToken: buyerAccessToken
-                            });
-                        }));
-                        var activateSubscriptionApi = memoize((function() {
-                            if (!subscriptionID) throw new Error("No subscription ID present");
-                            return function(subscriptionID, _ref5) {
-                                return callSmartAPI({
-                                    accessToken: _ref5.buyerAccessToken,
-                                    method: "post",
-                                    url: "/smart/api/billagmt/subscriptions/" + subscriptionID + "/activate"
-                                });
-                            }(subscriptionID, {
-                                buyerAccessToken: buyerAccessToken
-                            });
-                        }));
-                        var order = function(_ref) {
-                            var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
-                            var handleProcessorError = function(err) {
-                                if (err && err.data && err.data.details && err.data.details.some((function(detail) {
-                                    return "INSTRUMENT_DECLINED" === detail.issue || "PAYER_ACTION_REQUIRED" === detail.issue;
-                                }))) return restart().then(unresolvedPromise);
-                                throw new Error("Order could not be captured");
-                            };
-                            var get = memoize((function() {
-                                return function(orderID, _ref2) {
-                                    var _headers2, _headers3;
-                                    var buyerAccessToken = _ref2.buyerAccessToken, _ref2$forceRestAPI = _ref2.forceRestAPI;
-                                    return void 0 !== _ref2$forceRestAPI && _ref2$forceRestAPI ? callRestAPI({
-                                        accessToken: _ref2.facilitatorAccessToken,
-                                        url: "/v2/checkout/orders/" + orderID,
-                                        headers: (_headers2 = {}, _headers2["paypal-partner-attribution-id"] = _ref2.partnerAttributionID || "", 
-                                        _headers2)
-                                    }) : callSmartAPI({
-                                        accessToken: buyerAccessToken,
-                                        url: "/smart/api/order/" + orderID,
-                                        headers: (_headers3 = {}, _headers3["paypal-client-context"] = orderID, _headers3)
-                                    });
-                                }(orderID, {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
-                                    partnerAttributionID: partnerAttributionID,
-                                    forceRestAPI: forceRestAPI
-                                });
-                            }));
-                            var capture = memoize((function() {
-                                if ("capture" !== intent) throw new Error("Use intent=capture to use client-side capture");
-                                return function(orderID, _ref3) {
-                                    var _headers4, _headers5;
-                                    var buyerAccessToken = _ref3.buyerAccessToken, _ref3$forceRestAPI = _ref3.forceRestAPI;
-                                    return void 0 !== _ref3$forceRestAPI && _ref3$forceRestAPI ? callRestAPI({
-                                        accessToken: _ref3.facilitatorAccessToken,
-                                        method: "post",
-                                        url: "/v2/checkout/orders/" + orderID + "/capture",
-                                        headers: (_headers4 = {}, _headers4["paypal-partner-attribution-id"] = _ref3.partnerAttributionID || "", 
-                                        _headers4)
-                                    }) : callSmartAPI({
-                                        accessToken: buyerAccessToken,
-                                        method: "post",
-                                        url: "/smart/api/order/" + orderID + "/capture",
-                                        headers: (_headers5 = {}, _headers5["paypal-client-context"] = orderID, _headers5)
-                                    });
-                                }(orderID, {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
-                                    partnerAttributionID: partnerAttributionID,
-                                    forceRestAPI: forceRestAPI
-                                }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
-                            }));
-                            var authorize = memoize((function() {
-                                if ("authorize" !== intent) throw new Error("Use intent=authorize to use client-side authorize");
-                                return function(orderID, _ref4) {
-                                    var _headers6, _headers7;
-                                    var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI;
-                                    return void 0 !== _ref4$forceRestAPI && _ref4$forceRestAPI ? callRestAPI({
-                                        accessToken: _ref4.facilitatorAccessToken,
-                                        method: "post",
-                                        url: "/v2/checkout/orders/" + orderID + "/authorize",
-                                        headers: (_headers6 = {}, _headers6["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
-                                        _headers6)
-                                    }) : callSmartAPI({
-                                        accessToken: buyerAccessToken,
-                                        method: "post",
-                                        url: "/smart/api/order/" + orderID + "/authorize",
-                                        headers: (_headers7 = {}, _headers7["paypal-client-context"] = orderID, _headers7)
-                                    });
-                                }(orderID, {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
-                                    partnerAttributionID: partnerAttributionID,
-                                    forceRestAPI: forceRestAPI
-                                }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
-                            }));
-                            return {
-                                capture: capture,
-                                authorize: authorize,
-                                patch: function(data) {
-                                    void 0 === data && (data = {});
-                                    return function(orderID, data, _ref5) {
-                                        var _headers8, _headers9;
-                                        var facilitatorAccessToken = _ref5.facilitatorAccessToken, buyerAccessToken = _ref5.buyerAccessToken, partnerAttributionID = _ref5.partnerAttributionID, _ref5$forceRestAPI = _ref5.forceRestAPI, forceRestAPI = void 0 !== _ref5$forceRestAPI && _ref5$forceRestAPI;
-                                        var patchData = Array.isArray(data) ? {
-                                            patch: data
-                                        } : data;
-                                        return forceRestAPI ? callRestAPI({
-                                            accessToken: facilitatorAccessToken,
-                                            method: "patch",
-                                            url: "/v2/checkout/orders/" + orderID,
-                                            data: patchData,
-                                            headers: (_headers8 = {}, _headers8["paypal-partner-attribution-id"] = partnerAttributionID || "", 
-                                            _headers8)
-                                        }) : callSmartAPI({
-                                            accessToken: buyerAccessToken,
-                                            method: "post",
-                                            url: "/smart/api/order/" + orderID + "/patch",
-                                            json: {
-                                                data: patchData
-                                            },
-                                            headers: (_headers9 = {}, _headers9["paypal-client-context"] = orderID, _headers9)
-                                        });
-                                    }(orderID, data, {
-                                        facilitatorAccessToken: facilitatorAccessToken,
-                                        buyerAccessToken: buyerAccessToken,
-                                        partnerAttributionID: partnerAttributionID,
-                                        forceRestAPI: forceRestAPI
-                                    }).catch((function() {
-                                        throw new Error("Order could not be patched");
-                                    }));
-                                },
-                                get: get
-                            };
-                        }({
-                            intent: intent,
+                    payerID || getSupplementalOrderInfo.reset();
+                    return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
+                        var data = {
                             orderID: orderID,
+                            payerID: payerID = payerID || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.user && supplementalData.checkoutSession.user.userId,
                             paymentID: paymentID,
-                            payerID: payerID,
+                            billingToken: billingToken = billingToken || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken,
                             subscriptionID: subscriptionID,
-                            restart: restart,
-                            facilitatorAccessToken: facilitatorAccessToken,
-                            buyerAccessToken: buyerAccessToken,
-                            partnerAttributionID: partnerAttributionID,
-                            forceRestAPI: forceRestAPI
-                        });
-                        !function(_ref2) {
-                            var intent = _ref2.intent, paymentID = _ref2.paymentID, payerID = _ref2.payerID, restart = _ref2.restart, facilitatorAccessToken = _ref2.facilitatorAccessToken, buyerAccessToken = _ref2.buyerAccessToken, partnerAttributionID = _ref2.partnerAttributionID;
-                            if (paymentID) {
+                            facilitatorAccessToken: facilitatorAccessToken
+                        };
+                        var actions = function(_ref3) {
+                            var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, subscriptionID = _ref3.subscriptionID, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI;
+                            var getSubscriptionApi = memoize((function() {
+                                if (!subscriptionID) throw new Error("No subscription ID present");
+                                return function(subscriptionID, _ref6) {
+                                    return callSmartAPI({
+                                        accessToken: _ref6.buyerAccessToken,
+                                        url: "/smart/api/billagmt/subscriptions/" + subscriptionID
+                                    });
+                                }(subscriptionID, {
+                                    buyerAccessToken: buyerAccessToken
+                                });
+                            }));
+                            var activateSubscriptionApi = memoize((function() {
+                                if (!subscriptionID) throw new Error("No subscription ID present");
+                                return function(subscriptionID, _ref5) {
+                                    return callSmartAPI({
+                                        accessToken: _ref5.buyerAccessToken,
+                                        method: "post",
+                                        url: "/smart/api/billagmt/subscriptions/" + subscriptionID + "/activate"
+                                    });
+                                }(subscriptionID, {
+                                    buyerAccessToken: buyerAccessToken
+                                });
+                            }));
+                            var order = function(_ref) {
+                                var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
                                 var handleProcessorError = function(err) {
                                     if (err && err.data && err.data.details && err.data.details.some((function(detail) {
                                         return "INSTRUMENT_DECLINED" === detail.issue || "PAYER_ACTION_REQUIRED" === detail.issue;
@@ -1949,93 +1825,222 @@
                                     throw new Error("Order could not be captured");
                                 };
                                 var get = memoize((function() {
-                                    return function(paymentID, _ref4) {
-                                        var _headers2;
-                                        return callRestAPI({
-                                            accessToken: _ref4.facilitatorAccessToken,
-                                            url: "/v1/payments/payment/" + paymentID,
-                                            headers: (_headers2 = {}, _headers2["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
+                                    return function(orderID, _ref2) {
+                                        var _headers2, _headers3;
+                                        var buyerAccessToken = _ref2.buyerAccessToken, _ref2$forceRestAPI = _ref2.forceRestAPI;
+                                        return void 0 !== _ref2$forceRestAPI && _ref2$forceRestAPI ? callRestAPI({
+                                            accessToken: _ref2.facilitatorAccessToken,
+                                            url: "/v2/checkout/orders/" + orderID,
+                                            headers: (_headers2 = {}, _headers2["paypal-partner-attribution-id"] = _ref2.partnerAttributionID || "", 
                                             _headers2)
+                                        }) : callSmartAPI({
+                                            accessToken: buyerAccessToken,
+                                            url: "/smart/api/order/" + orderID,
+                                            headers: (_headers3 = {}, _headers3["paypal-client-context"] = orderID, _headers3)
                                         });
-                                    }(paymentID, {
+                                    }(orderID, {
                                         facilitatorAccessToken: facilitatorAccessToken,
                                         buyerAccessToken: buyerAccessToken,
-                                        partnerAttributionID: partnerAttributionID
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
                                     });
                                 }));
-                                var execute = memoize((function() {
-                                    if (!payerID) throw new Error("payerID required for payment execute");
+                                var capture = memoize((function() {
                                     if ("capture" !== intent) throw new Error("Use intent=capture to use client-side capture");
-                                    return function(paymentID, payerID, _ref5) {
-                                        var _headers3;
-                                        return callRestAPI({
-                                            accessToken: _ref5.facilitatorAccessToken,
+                                    return function(orderID, _ref3) {
+                                        var _headers4, _headers5;
+                                        var buyerAccessToken = _ref3.buyerAccessToken, _ref3$forceRestAPI = _ref3.forceRestAPI;
+                                        return void 0 !== _ref3$forceRestAPI && _ref3$forceRestAPI ? callRestAPI({
+                                            accessToken: _ref3.facilitatorAccessToken,
                                             method: "post",
-                                            url: "/v1/payments/payment/" + paymentID + "/execute",
-                                            headers: (_headers3 = {}, _headers3["paypal-partner-attribution-id"] = _ref5.partnerAttributionID || "", 
-                                            _headers3),
-                                            data: {
-                                                payer_id: payerID
-                                            }
+                                            url: "/v2/checkout/orders/" + orderID + "/capture",
+                                            headers: (_headers4 = {}, _headers4["paypal-partner-attribution-id"] = _ref3.partnerAttributionID || "", 
+                                            _headers4)
+                                        }) : callSmartAPI({
+                                            accessToken: buyerAccessToken,
+                                            method: "post",
+                                            url: "/smart/api/order/" + orderID + "/capture",
+                                            headers: (_headers5 = {}, _headers5["paypal-client-context"] = orderID, _headers5)
                                         });
-                                    }(paymentID, payerID, {
+                                    }(orderID, {
                                         facilitatorAccessToken: facilitatorAccessToken,
                                         buyerAccessToken: buyerAccessToken,
-                                        partnerAttributionID: partnerAttributionID
-                                    }).finally(get.reset).finally(execute.reset).catch(handleProcessorError);
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
+                                    }).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
                                 }));
-                            }
+                                var authorize = memoize((function() {
+                                    if ("authorize" !== intent) throw new Error("Use intent=authorize to use client-side authorize");
+                                    return function(orderID, _ref4) {
+                                        var _headers6, _headers7;
+                                        var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI;
+                                        return void 0 !== _ref4$forceRestAPI && _ref4$forceRestAPI ? callRestAPI({
+                                            accessToken: _ref4.facilitatorAccessToken,
+                                            method: "post",
+                                            url: "/v2/checkout/orders/" + orderID + "/authorize",
+                                            headers: (_headers6 = {}, _headers6["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
+                                            _headers6)
+                                        }) : callSmartAPI({
+                                            accessToken: buyerAccessToken,
+                                            method: "post",
+                                            url: "/smart/api/order/" + orderID + "/authorize",
+                                            headers: (_headers7 = {}, _headers7["paypal-client-context"] = orderID, _headers7)
+                                        });
+                                    }(orderID, {
+                                        facilitatorAccessToken: facilitatorAccessToken,
+                                        buyerAccessToken: buyerAccessToken,
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
+                                    }).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
+                                }));
+                                return {
+                                    capture: capture,
+                                    authorize: authorize,
+                                    patch: function(data) {
+                                        void 0 === data && (data = {});
+                                        return function(orderID, data, _ref5) {
+                                            var _headers8, _headers9;
+                                            var facilitatorAccessToken = _ref5.facilitatorAccessToken, buyerAccessToken = _ref5.buyerAccessToken, partnerAttributionID = _ref5.partnerAttributionID, _ref5$forceRestAPI = _ref5.forceRestAPI, forceRestAPI = void 0 !== _ref5$forceRestAPI && _ref5$forceRestAPI;
+                                            var patchData = Array.isArray(data) ? {
+                                                patch: data
+                                            } : data;
+                                            return forceRestAPI ? callRestAPI({
+                                                accessToken: facilitatorAccessToken,
+                                                method: "patch",
+                                                url: "/v2/checkout/orders/" + orderID,
+                                                data: patchData,
+                                                headers: (_headers8 = {}, _headers8["paypal-partner-attribution-id"] = partnerAttributionID || "", 
+                                                _headers8)
+                                            }) : callSmartAPI({
+                                                accessToken: buyerAccessToken,
+                                                method: "post",
+                                                url: "/smart/api/order/" + orderID + "/patch",
+                                                json: {
+                                                    data: patchData
+                                                },
+                                                headers: (_headers9 = {}, _headers9["paypal-client-context"] = orderID, _headers9)
+                                            });
+                                        }(orderID, data, {
+                                            facilitatorAccessToken: facilitatorAccessToken,
+                                            buyerAccessToken: buyerAccessToken,
+                                            partnerAttributionID: partnerAttributionID,
+                                            forceRestAPI: forceRestAPI
+                                        }).catch((function() {
+                                            throw new Error("Order could not be patched");
+                                        }));
+                                    },
+                                    get: get
+                                };
+                            }({
+                                intent: intent,
+                                orderID: orderID,
+                                paymentID: paymentID,
+                                payerID: payerID,
+                                subscriptionID: subscriptionID,
+                                restart: restart,
+                                facilitatorAccessToken: facilitatorAccessToken,
+                                buyerAccessToken: buyerAccessToken,
+                                partnerAttributionID: partnerAttributionID,
+                                forceRestAPI: forceRestAPI
+                            });
+                            !function(_ref2) {
+                                var intent = _ref2.intent, paymentID = _ref2.paymentID, payerID = _ref2.payerID, restart = _ref2.restart, facilitatorAccessToken = _ref2.facilitatorAccessToken, buyerAccessToken = _ref2.buyerAccessToken, partnerAttributionID = _ref2.partnerAttributionID;
+                                if (paymentID) {
+                                    var handleProcessorError = function(err) {
+                                        if (err && err.data && err.data.details && err.data.details.some((function(detail) {
+                                            return "INSTRUMENT_DECLINED" === detail.issue || "PAYER_ACTION_REQUIRED" === detail.issue;
+                                        }))) return restart().then(unresolvedPromise);
+                                        throw new Error("Order could not be captured");
+                                    };
+                                    var get = memoize((function() {
+                                        return function(paymentID, _ref4) {
+                                            var _headers2;
+                                            return callRestAPI({
+                                                accessToken: _ref4.facilitatorAccessToken,
+                                                url: "/v1/payments/payment/" + paymentID,
+                                                headers: (_headers2 = {}, _headers2["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
+                                                _headers2)
+                                            });
+                                        }(paymentID, {
+                                            facilitatorAccessToken: facilitatorAccessToken,
+                                            buyerAccessToken: buyerAccessToken,
+                                            partnerAttributionID: partnerAttributionID
+                                        });
+                                    }));
+                                    var execute = memoize((function() {
+                                        if (!payerID) throw new Error("payerID required for payment execute");
+                                        if ("capture" !== intent) throw new Error("Use intent=capture to use client-side capture");
+                                        return function(paymentID, payerID, _ref5) {
+                                            var _headers3;
+                                            return callRestAPI({
+                                                accessToken: _ref5.facilitatorAccessToken,
+                                                method: "post",
+                                                url: "/v1/payments/payment/" + paymentID + "/execute",
+                                                headers: (_headers3 = {}, _headers3["paypal-partner-attribution-id"] = _ref5.partnerAttributionID || "", 
+                                                _headers3),
+                                                data: {
+                                                    payer_id: payerID
+                                                }
+                                            });
+                                        }(paymentID, payerID, {
+                                            facilitatorAccessToken: facilitatorAccessToken,
+                                            buyerAccessToken: buyerAccessToken,
+                                            partnerAttributionID: partnerAttributionID
+                                        }).finally(get.reset).finally(execute.reset).catch(handleProcessorError);
+                                    }));
+                                }
+                            }({
+                                intent: intent,
+                                orderID: orderID,
+                                paymentID: paymentID,
+                                payerID: payerID,
+                                subscriptionID: subscriptionID,
+                                restart: restart,
+                                facilitatorAccessToken: facilitatorAccessToken,
+                                buyerAccessToken: buyerAccessToken,
+                                partnerAttributionID: partnerAttributionID,
+                                forceRestAPI: forceRestAPI
+                            });
+                            return {
+                                order: order,
+                                payment: null,
+                                subscription: {
+                                    get: getSubscriptionApi,
+                                    activate: activateSubscriptionApi
+                                },
+                                restart: restart,
+                                redirect: function(url) {
+                                    if (!url) throw new Error("Expected redirect url");
+                                    if (-1 === url.indexOf("://")) {
+                                        getLogger().warn("redir_url_non_scheme", {
+                                            url: url
+                                        }).flush();
+                                        throw new Error("Invalid redirect url: " + url + " - must be fully qualified url");
+                                    }
+                                    url.match(/^https?:\/\//) || getLogger().warn("redir_url_non_http", {
+                                        url: url
+                                    }).flush();
+                                    return dom_redirect(url, window.top);
+                                }
+                            };
                         }({
-                            intent: intent,
                             orderID: orderID,
                             paymentID: paymentID,
                             payerID: payerID,
-                            subscriptionID: subscriptionID,
+                            intent: intent = intent || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.intent,
                             restart: restart,
+                            subscriptionID: subscriptionID,
                             facilitatorAccessToken: facilitatorAccessToken,
                             buyerAccessToken: buyerAccessToken,
                             partnerAttributionID: partnerAttributionID,
                             forceRestAPI: forceRestAPI
                         });
-                        return {
-                            order: order,
-                            payment: null,
-                            subscription: {
-                                get: getSubscriptionApi,
-                                activate: activateSubscriptionApi
-                            },
-                            restart: restart,
-                            redirect: function(url) {
-                                if (!url) throw new Error("Expected redirect url");
-                                if (-1 === url.indexOf("://")) {
-                                    getLogger().warn("redir_url_non_scheme", {
-                                        url: url
-                                    }).flush();
-                                    throw new Error("Invalid redirect url: " + url + " - must be fully qualified url");
-                                }
-                                url.match(/^https?:\/\//) || getLogger().warn("redir_url_non_http", {
-                                    url: url
-                                }).flush();
-                                return dom_redirect(url, window.top);
-                            }
-                        };
-                    }({
-                        orderID: orderID,
-                        paymentID: paymentID,
-                        payerID: payerID,
-                        intent: intent,
-                        restart: restart,
-                        subscriptionID: subscriptionID,
-                        facilitatorAccessToken: facilitatorAccessToken,
-                        buyerAccessToken: buyerAccessToken,
-                        partnerAttributionID: partnerAttributionID,
-                        forceRestAPI: forceRestAPI
-                    });
-                    return onApprove(data, actions).catch((function(err) {
-                        return promise_ZalgoPromise.try((function() {
-                            return onError(err);
-                        })).then((function() {
-                            throw err;
+                        return onApprove(data, actions).catch((function(err) {
+                            return promise_ZalgoPromise.try((function() {
+                                return onError(err);
+                            })).then((function() {
+                                throw err;
+                            }));
                         }));
                     }));
                 }));
@@ -2074,89 +2079,90 @@
                 }));
             }));
         }
-        var hooks_module_t, hooks_module_r, hooks_module_u, hooks_module_i = [], hooks_module_o = preact_module_n.__r, hooks_module_f = preact_module_n.diffed, hooks_module_c = preact_module_n.__c, hooks_module_e = preact_module_n.unmount;
-        function hooks_module_a(t) {
-            preact_module_n.__h && preact_module_n.__h(hooks_module_r);
-            var u = hooks_module_r.__H || (hooks_module_r.__H = {
+        var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_i = 0, hooks_module_o = [], hooks_module_c = preact_module_n.__r, hooks_module_f = preact_module_n.diffed, hooks_module_e = preact_module_n.__c, hooks_module_a = preact_module_n.unmount;
+        function hooks_module_v(t, r) {
+            preact_module_n.__h && preact_module_n.__h(hooks_module_u, t, hooks_module_i || r), 
+            hooks_module_i = 0;
+            var o = hooks_module_u.__H || (hooks_module_u.__H = {
                 __: [],
                 __h: []
             });
-            return t >= u.__.length && u.__.push({}), u.__[t];
+            return t >= o.__.length && o.__.push({}), o.__[t];
         }
-        function hooks_module_v(n) {
-            return function(n, u, i) {
-                var o = hooks_module_a(hooks_module_t++);
-                return o.__c || (o.__c = hooks_module_r, o.__ = [ hooks_module_x(void 0, u), function(t) {
-                    var r = n(o.__[0], t);
-                    o.__[0] !== r && (o.__[0] = r, o.__c.setState({}));
+        function hooks_module_m(n) {
+            return hooks_module_i = 1, function(n, r, i) {
+                var o = hooks_module_v(hooks_module_t++, 2);
+                return o.__c || (o.__c = hooks_module_u, o.__ = [ hooks_module_E(void 0, r), function(t) {
+                    var u = n(o.__[0], t);
+                    o.__[0] !== u && (o.__[0] = u, o.__c.setState({}));
                 } ]), o.__;
-            }(hooks_module_x, n);
+            }(hooks_module_E, n);
         }
-        function hooks_module_p(n, u) {
-            var i = hooks_module_a(hooks_module_t++);
-            (function(n, t) {
-                return !n || t.some((function(t, r) {
-                    return t !== n[r];
+        function hooks_module_l(r, i) {
+            var o = hooks_module_v(hooks_module_t++, 3);
+            !preact_module_n.__s && function(n, t) {
+                return !n || t.some((function(t, u) {
+                    return t !== n[u];
                 }));
-            })(i.__H, u) && (i.__ = n, i.__H = u, hooks_module_r.__H.__h.push(i));
+            }(o.__H, i) && (o.__ = r, o.__H = i, hooks_module_u.__H.__h.push(o));
         }
-        function hooks_module_F() {
-            hooks_module_i.some((function(t) {
+        function hooks_module_() {
+            hooks_module_o.some((function(t) {
                 if (t.__P) try {
-                    t.__H.__h.forEach(hooks_module_), t.__H.__h.forEach(hooks_module_g), t.__H.__h = [];
-                } catch (r) {
-                    return t.__H.__h = [], preact_module_n.__e(r, t.__v), !0;
+                    t.__H.__h.forEach(hooks_module_g), t.__H.__h.forEach(hooks_module_q), t.__H.__h = [];
+                } catch (u) {
+                    return t.__H.__h = [], preact_module_n.__e(u, t.__v), !0;
                 }
-            })), hooks_module_i = [];
-        }
-        function hooks_module_(n) {
-            n.t && n.t();
+            })), hooks_module_o = [];
         }
         function hooks_module_g(n) {
+            n.t && n.t();
+        }
+        function hooks_module_q(n) {
             var t = n.__();
             "function" == typeof t && (n.t = t);
         }
-        function hooks_module_x(n, t) {
+        function hooks_module_E(n, t) {
             return "function" == typeof t ? t(n) : t;
         }
         preact_module_n.__r = function(n) {
-            hooks_module_o && hooks_module_o(n), hooks_module_t = 0, (hooks_module_r = n.__c).__H && (hooks_module_r.__H.__h.forEach(hooks_module_), 
-            hooks_module_r.__H.__h.forEach(hooks_module_g), hooks_module_r.__H.__h = []);
+            hooks_module_c && hooks_module_c(n), hooks_module_t = 0, (hooks_module_u = n.__c).__H && (hooks_module_u.__H.__h.forEach(hooks_module_g), 
+            hooks_module_u.__H.__h.forEach(hooks_module_q), hooks_module_u.__H.__h = []);
         }, preact_module_n.diffed = function(t) {
             hooks_module_f && hooks_module_f(t);
-            var r = t.__c;
-            if (r) {
-                var o = r.__H;
-                o && o.__h.length && (1 !== hooks_module_i.push(r) && hooks_module_u === preact_module_n.requestAnimationFrame || ((hooks_module_u = preact_module_n.requestAnimationFrame) || function(n) {
-                    var t, r = function() {
-                        clearTimeout(u), cancelAnimationFrame(t), setTimeout(n);
-                    }, u = setTimeout(r, 100);
-                    "undefined" != typeof window && (t = requestAnimationFrame(r));
-                })(hooks_module_F));
+            var u = t.__c;
+            if (u) {
+                var i = u.__H;
+                i && i.__h.length && (1 !== hooks_module_o.push(u) && hooks_module_r === preact_module_n.requestAnimationFrame || ((hooks_module_r = preact_module_n.requestAnimationFrame) || function(n) {
+                    var t, u = function() {
+                        clearTimeout(r), cancelAnimationFrame(t), setTimeout(n);
+                    }, r = setTimeout(u, 100);
+                    "undefined" != typeof window && (t = requestAnimationFrame(u));
+                })(hooks_module_));
             }
-        }, preact_module_n.__c = function(t, r) {
-            r.some((function(t) {
+        }, preact_module_n.__c = function(t, u) {
+            u.some((function(t) {
                 try {
-                    t.__h.forEach(hooks_module_), t.__h = t.__h.filter((function(n) {
-                        return !n.__ || hooks_module_g(n);
+                    t.__h.forEach(hooks_module_g), t.__h = t.__h.filter((function(n) {
+                        return !n.__ || hooks_module_q(n);
                     }));
-                } catch (u) {
-                    r.some((function(n) {
+                } catch (r) {
+                    u.some((function(n) {
                         n.__h && (n.__h = []);
-                    })), r = [], preact_module_n.__e(u, t.__v);
+                    })), u = [], preact_module_n.__e(r, t.__v);
                 }
-            })), hooks_module_c && hooks_module_c(t, r);
+            })), hooks_module_e && hooks_module_e(t, u);
         }, preact_module_n.unmount = function(t) {
-            hooks_module_e && hooks_module_e(t);
-            var r = t.__c;
-            if (r) {
-                var u = r.__H;
-                if (u) try {
-                    u.__.forEach((function(n) {
+            hooks_module_a && hooks_module_a(t);
+            var u = t.__c;
+            if (u) {
+                var r = u.__H;
+                if (r) try {
+                    r.__.forEach((function(n) {
                         return n.t && n.t();
                     }));
                 } catch (t) {
-                    preact_module_n.__e(t, r.__v);
+                    preact_module_n.__e(t, u.__v);
                 }
             }
         };
@@ -2172,7 +2178,7 @@
                     return l[u.__c] = t, l;
                 }, this.shouldComponentUpdate = function(n) {
                     t.props.value !== n.value && i.some((function(l) {
-                        l.context = n.value, preact_module_k(l);
+                        l.context = n.value, g(l);
                     }));
                 }, this.sub = function(n) {
                     i.push(n);
@@ -2182,31 +2188,33 @@
                     };
                 }), n.children;
             }
-        }).Consumer.contextType = u, u);
+        }).Consumer.contextType = u, u.Provider.__ = u, u);
         var l, u;
         var style_StyleSheet = function(_ref) {
             var cspNonce = _ref.cspNonce, _ref$children = _ref.children, children = void 0 === _ref$children ? null : _ref$children;
-            var _useState = hooks_module_v({}), styles = _useState[0], setStyles = _useState[1];
+            var _useState = hooks_module_m({}), styles = _useState[0], setStyles = _useState[1];
             return h(StyleContext.Provider, {
                 value: {
                     cspNonce: cspNonce,
                     addStyle: function(css) {
                         if (isServer()) {
                             var _extends2;
-                            styles = _extends({}, styles, ((_extends2 = {})[css] = (styles[css] || 0) + 1, _extends2));
+                            styles = _extends(_extends({}, styles), {}, ((_extends2 = {})[css] = (styles[css] || 0) + 1, 
+                            _extends2));
                         } else setStyles((function(prevState) {
                             var _extends3;
-                            return _extends({}, prevState, ((_extends3 = {})[css] = (prevState[css] || 0) + 1, 
+                            return _extends(_extends({}, prevState), {}, ((_extends3 = {})[css] = (prevState[css] || 0) + 1, 
                             _extends3));
                         }));
                     },
                     removeStyle: function(css) {
                         if (isServer()) {
                             var _extends4;
-                            styles = _extends({}, styles, ((_extends4 = {})[css] = (styles[css] || 0) - 1, _extends4));
+                            styles = _extends(_extends({}, styles), {}, ((_extends4 = {})[css] = (styles[css] || 0) - 1, 
+                            _extends4));
                         } else setStyles((function(prevState) {
                             var _extends5;
-                            return _extends({}, prevState, ((_extends5 = {})[css] = (prevState[css] || 0) - 1, 
+                            return _extends(_extends({}, prevState), {}, ((_extends5 = {})[css] = (prevState[css] || 0) - 1, 
                             _extends5));
                         }));
                     }
@@ -2223,13 +2231,11 @@
         var style_Style = function(_ref2) {
             var css = _ref2.css, _ref2$children = _ref2.children, children = void 0 === _ref2$children ? null : _ref2$children;
             var _useContext = function(n) {
-                var u = hooks_module_r.context[n.__c];
-                if (!u) return n.__;
-                var i = hooks_module_a(hooks_module_t++);
-                return null == i.__ && (i.__ = !0, u.sub(hooks_module_r)), u.props.value;
+                var r = hooks_module_u.context[n.__c], i = hooks_module_v(hooks_module_t++, 9);
+                return i.__c = n, r ? (null == i.__ && (i.__ = !0, r.sub(hooks_module_u)), r.props.value) : n.__;
             }(StyleContext), addStyle = _useContext.addStyle, removeStyle = _useContext.removeStyle;
             var cssText = css._getCss();
-            isServer() ? addStyle(cssText) : hooks_module_p((function() {
+            isServer() ? addStyle(cssText) : hooks_module_l((function() {
                 addStyle(cssText);
                 return function() {
                     return removeStyle(cssText);
@@ -2260,17 +2266,17 @@
                 id: "Path"
             }))));
         };
-        var style_scopedscopeId_d2ff3bcf = __webpack_require__(2);
-        var style_scopedscopeId_d2ff3bcf_default = __webpack_require__.n(style_scopedscopeId_d2ff3bcf);
+        var style_scopedscopeId_fdd787a1 = __webpack_require__(2);
+        var style_scopedscopeId_fdd787a1_default = __webpack_require__.n(style_scopedscopeId_fdd787a1);
         var walletItem_WalletItem = function(_ref) {
             var selected = _ref.selected, details = _ref.details, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
-            var _useState = hooks_module_v(selected), showSelected = _useState[0], setShowSelected = _useState[1];
-            hooks_module_p((function() {
+            var _useState = hooks_module_m(selected), showSelected = _useState[0], setShowSelected = _useState[1];
+            hooks_module_l((function() {
                 setShowSelected(selected);
             }), [ selected ]);
             return h(style_Style, {
-                css: style_scopedscopeId_d2ff3bcf_default.a,
-                "data-v-d2ff3bcf": ""
+                css: style_scopedscopeId_fdd787a1_default.a,
+                "data-v-fdd787a1": ""
             }, h("div", {
                 className: "wallet-item " + (selected ? "selected-wallet-item" : ""),
                 onClick: function() {
@@ -2279,39 +2285,39 @@
                         listOpenHandler(!listOpen);
                     }(details.id);
                 },
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h("div", {
                 className: "icon",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h("img", {
                 src: details.fundingOptionIcon,
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             })), h("div", {
                 className: "description",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h("div", {
                 className: "name",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, details.fundingOptionTitle), h("div", {
                 className: "details",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h("span", {
                 className: "type",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, details.instrumentSubType, " "), h("span", {
                 className: "digits",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, details.lastDigits))), details.showPreferredText ? h("div", {
                 className: "preferred",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, "PREFERRED") : "", h("div", {
                 className: "flex-spacer",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }), showSelected ? h("div", {
                 className: "selected",
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             }, h(check_Check, {
-                "data-v-d2ff3bcf": ""
+                "data-v-fdd787a1": ""
             })) : ""));
         };
         var style_scopedscopeId_d7b06a5e = __webpack_require__(3);
@@ -2356,11 +2362,11 @@
                 lastDigits: "PAYPAL" === subType ? "" : "•••• " + (digits || "")
             };
         };
-        var style_scopedscopeId_fdd787a1 = __webpack_require__(4);
-        var style_scopedscopeId_fdd787a1_default = __webpack_require__.n(style_scopedscopeId_fdd787a1);
+        var style_scopedscopeId_d2ff3bcf = __webpack_require__(4);
+        var style_scopedscopeId_d2ff3bcf_default = __webpack_require__.n(style_scopedscopeId_d2ff3bcf);
         var wallet_Wallet = function(_ref) {
             var checkoutSession = _ref.checkoutSession;
-            var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_v(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_v(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
+            var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_m(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_m(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
             var changeSelectedWalletItem = function(itemId) {
                 var newItem = fundingOptions.find((function(option) {
                     return option.id === itemId;
@@ -2368,20 +2374,20 @@
                 setSelectedWalletItem(newItem);
             };
             return h(style_Style, {
-                css: style_scopedscopeId_fdd787a1_default.a,
-                "data-v-fdd787a1": ""
+                css: style_scopedscopeId_d2ff3bcf_default.a,
+                "data-v-d2ff3bcf": ""
             }, h("div", {
                 className: "wallet",
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }, listOpen ? "" : h(walletItem_WalletItem, {
                 selected: !0,
                 details: buildWalletItemDetails(selectedWalletItem),
                 selectWalletItemHandler: changeSelectedWalletItem,
                 listOpen: listOpen,
                 listOpenHandler: setListOpen,
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }), listOpen ? h("div", {
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }, fundingOptions.map((function(option) {
                 return h(walletItem_WalletItem, {
                     selected: option.id === selectedWalletItem.id,
@@ -2389,17 +2395,17 @@
                     selectWalletItemHandler: changeSelectedWalletItem,
                     listOpen: listOpen,
                     listOpenHandler: setListOpen,
-                    "data-v-fdd787a1": ""
+                    "data-v-d2ff3bcf": ""
                 });
             })), h(credit_CreditBanner, {
                 checkoutSession: checkoutSession,
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }), h("div", {
                 className: "add-card-button",
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }, h("a", {
                 href: "#",
-                "data-v-fdd787a1": ""
+                "data-v-d2ff3bcf": ""
             }, "Add debit or credit card"))) : ""));
         };
         var page_style = __webpack_require__(5);
@@ -2439,6 +2445,7 @@
                                     var _headers15;
                                     var orderID = _ref10.orderID;
                                     return callGraphQL({
+                                        name: "ApproveOrder",
                                         query: "\n            mutation ApproveOrder(\n                $orderID : String!\n                $planID : String!\n            ) {\n                approvePayment(\n                    token: $orderID\n                    selectedPlanId: $planID\n                ) {\n                    buyer {\n                        userId\n                    }\n                }\n            }\n        ",
                                         variables: {
                                             orderID: orderID,
@@ -2536,9 +2543,9 @@
             });
             var _ref, facilitatorAccessToken, xprops, env, vault, commit, locale, platform, sessionID, intent, walletSessionID, clientID, partnerAttributionID, correlationID, getParentDomain, clientAccessToken, getPageUrl, rememberFunding, onError, stageHost, apiStageHost, style, getParent, currency, merchantID, _xprops$setup, setup, merchantDomain, createOrder;
             !function(l, u, i) {
-                var t, o, f;
-                preact_module_n.__ && preact_module_n.__(l, u), o = (t = i === preact_module_r) ? null : u.__k, 
-                l = h(preact_module_d, null, [ l ]), f = [], preact_module_A(u, u.__k = l, o || e, e, void 0 !== u.ownerSVGElement, o ? null : c.slice.call(u.childNodes), f, e, t), 
+                var t, r, f;
+                preact_module_n.__ && preact_module_n.__(l, u), r = (t = i === preact_module_o) ? null : u.__k, 
+                l = h(preact_module_d, null, [ l ]), f = [], preact_module_A(u, u.__k = l, r || e, e, void 0 !== u.ownerSVGElement, r ? null : c.slice.call(u.childNodes), f, e, t), 
                 preact_module_T(f, l);
             }(h(App, {
                 cspNonce: cspNonce,
