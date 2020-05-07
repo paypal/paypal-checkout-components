@@ -413,7 +413,7 @@ type SupplementalOrderInfo = {|
                 isFullAddress? : boolean
             |}
         |},
-        user? : {|
+        buyer? : {|
             userId? : string
         |},
         flags : {|
@@ -441,7 +441,7 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                             isFullAddress
                         }
                     }
-                    user {
+                    buyer {
                         userId
                     }
                     flags {
