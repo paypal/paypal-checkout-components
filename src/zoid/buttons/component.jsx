@@ -360,6 +360,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
             clientMetadataID: {
                 type:       'string',
+                required:   false,
                 value:      getClientMetadataID,
                 queryParam: true
             },

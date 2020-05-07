@@ -4,7 +4,7 @@
 
 import { node, dom } from 'jsx-pragmatic/src';
 import { getPayPalDomainRegex, getLogger, getLocale,
-    getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion, getPayPalDomain } from '@paypal/sdk-client/src';
+    getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion, getPayPalDomain, getClientMetadataID } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent, EVENT } from 'zoid/src';
 import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/src';
@@ -161,6 +161,13 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                 onShippingChange: {
                     type:     'function',
                     required: false
+                },
+
+                clientMetadataID: {
+                    type:       'string',
+                    required:   false,
+                    default:     getClientMetadataID,
+                    queryParam: 'client-metadata-id'
                 },
         
                 onAuth: {
