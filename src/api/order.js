@@ -441,9 +441,6 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                             isFullAddress
                         }
                     }
-                    buyer {
-                        userId
-                    }
                     flags {
                         hideShipping
                         isShippingAddressRequired
