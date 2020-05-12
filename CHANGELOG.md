@@ -1,3 +1,12 @@
+## <small>5.0.89 (2020-05-12)</small>
+
+* Add bank logo for wallet ([c7446f5](http://github.paypal.com/paypal/paypal-checkout/commit/c7446f5))
+* Add clientMetadataID to checkout and make non-optional ([d86f449](http://github.paypal.com/paypal/paypal-checkout/commit/d86f449))
+* Allow vault and wallet buttons to be 250px and greater ([7563ce4](http://github.paypal.com/paypal/paypal-checkout/commit/7563ce4))
+* Only consider immediate children for optional hiding ([07bb7d1](http://github.paypal.com/paypal/paypal-checkout/commit/07bb7d1))
+
+
+
 ## <small>5.0.88 (2020-05-04)</small>
 
 * Add Fields component ([dcf1922](http://github.paypal.com/paypal/paypal-checkout/commit/dcf1922))
