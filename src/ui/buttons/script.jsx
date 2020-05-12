@@ -18,7 +18,6 @@ function getComponentScript() : () => void {
         };
 
         const SELECTOR = {
-            ALL:      '*',
             OPTIONAL: `[${ ATTRIBUTE.OPTIONAL }]`
         };
 
@@ -51,11 +50,15 @@ function getComponentScript() : () => void {
             return Array.prototype.slice.call(item);
         }
 
-        function getElements(selector, parent) : $ReadOnlyArray<HTMLElement> {
-            parent = parent || document;
-            return toArray(parent.querySelectorAll(selector)).filter(el => {
+        function elementArray(elements : HTMLCollection<HTMLElement> | NodeList<HTMLElement> | $ReadOnlyArray<HTMLElement>) : $ReadOnlyArray<HTMLElement> {
+            return toArray(elements).filter(el => {
                 return el.tagName.toLowerCase() !== TAG.STYLE;
             });
+        }
+
+        function getElements(selector, parent) : $ReadOnlyArray<HTMLElement> {
+            parent = parent || document;
+            return elementArray(parent.querySelectorAll(selector));
         }
 
         function getParent(element : HTMLElement) : HTMLElement {
@@ -92,7 +95,7 @@ function getComponentScript() : () => void {
         }
 
         function getAllChildren(element : HTMLElement) : $ReadOnlyArray<HTMLElement> {
-            return getElements(SELECTOR.ALL, element);
+            return elementArray(element.children);
         }
 
         function getOptionalIndex(element : HTMLElement) : number {
