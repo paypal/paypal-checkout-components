@@ -197,7 +197,7 @@ export function WalletLabel({ logoColor, instrument, locale, content, commit } :
                 <div class='divider'>|</div>
                 {
                     logo &&
-                        <div class='logo'>
+                        <div class='logo' optional>
                             { logo }
                             <Space />
                         </div>

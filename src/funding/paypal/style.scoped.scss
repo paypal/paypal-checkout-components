@@ -33,6 +33,16 @@
     }
 
     @media only screen and (max-width: 349px) {
+        .divider {
+            margin: 0 5px;
+        }
+
+        .logo {
+            display: none;
+        }
+    }
+
+    @media only screen and (max-width: 249px) {
         .paypal-mark, .paypal-wordmark {
             display: inline-block;
         }
