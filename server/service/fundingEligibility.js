@@ -326,9 +326,9 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
             //    delete fundingQuery[fundingSource].vaultable;
             // }
 
-            if (isDefined(basicFundingEligibility[fundingSource].branded)) {
-                delete fundingQuery[fundingSource].branded;
-            }
+            // if (isDefined(basicFundingEligibility[fundingSource].branded)) {
+            //    delete fundingQuery[fundingSource].branded;
+            // }
 
             if (!Object.keys(fundingQuery[fundingSource]).length) {
                 delete fundingQuery[fundingSource];

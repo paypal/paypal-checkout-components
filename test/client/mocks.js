@@ -481,7 +481,15 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                                     total: {
                                         currencyCode: 'USD'
                                     }
-                                }
+                                },
+                                payees: [
+                                    {
+                                        merchantId: 'XYZ12345',
+                                        email:       {
+                                            stringValue: 'xyz-us-b1@paypal.com'
+                                        }
+                                    }
+                                ]
                             }
                         }
                     }
