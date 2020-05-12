@@ -14,7 +14,7 @@ import { getLogger } from '../lib';
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
-const VAULT_MIN_WIDTH = 350;
+const VAULT_MIN_WIDTH = 250;
 
 function setupVaultCapture() {
     // pass

@@ -12,7 +12,7 @@ import { getLogger } from '../lib';
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
-const WALLET_MIN_WIDTH = 350;
+const WALLET_MIN_WIDTH = 250;
 
 function setupWalletCapture() {
     // pass
