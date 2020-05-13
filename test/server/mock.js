@@ -76,7 +76,9 @@ export async function getWallet() : Promise<Object> {
                             'id':   'BC-YMBX4GJLEKMQW',
                             'type': 'BILL_ME_LATER'
                         },
-                        'one_click_pay_allowed': false
+                        'one_click_eligibility': {
+                            eligible: false
+                        }
                     }
                 ]
             }

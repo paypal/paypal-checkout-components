@@ -217,12 +217,13 @@ const getWallet = () => {
                 'funding_sources': [
                     {
                         'email':              'foo@bar.com',
-                        'primary_instrument': false,
                         'credit':             {
                             'id':   'BC-YMBX4GJLEKMQW',
                             'type': 'BILL_ME_LATER'
                         },
-                        'one_click_pay_allowed': false
+                        'one_click_eligibility': {
+                            eligible: false
+                        }
                     }
                 ]
             }

@@ -13,8 +13,6 @@ import type { ExpressRequest, LoggerType } from '../types';
 type SmartWallet = {|
     funding_options : $ReadOnlyArray<{|
         funding_sources : $ReadOnlyArray<{|
-            primary_instrument : boolean,
-            one_click_pay_allowed : boolean,
             logo_url? : string,
             email : string,
             credit? : {|
@@ -32,6 +30,9 @@ type SmartWallet = {|
             |},
             balance? : {|
                 id : string
+            |},
+            one_click_eligibility : {|
+                eligible : boolean
             |}
         |}>
     |}>
@@ -226,7 +227,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                 }
 
                 const fundingSource = fundingOption.funding_sources[0];
-                const { one_click_pay_allowed = false } = fundingSource;
+                const { one_click_eligibility: { eligible: one_click_pay_allowed } } = fundingSource;
 
                 let instrument;
 
