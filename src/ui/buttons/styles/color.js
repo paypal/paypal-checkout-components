@@ -154,7 +154,6 @@ export const buttonColorStyle = `
         border: 0.125rem solid #009cde;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
-        pointer-events: none;
     }
 
 
