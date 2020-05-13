@@ -4461,7 +4461,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.255", _ref2;
+                _ref2.button_version = "2.0.256", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
