@@ -3674,7 +3674,7 @@ window.spb = function(modules) {
             }));
             var getNativePopupUrl = memoize((function(_ref8) {
                 var sessionUID = _ref8.sessionUID;
-                var parentDomain = getNativeDomain();
+                var parentDomain = getDomain();
                 return extendUrl("" + getNativePopupDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
                     query: {
                         sdkMeta: sdkMeta,
@@ -4461,7 +4461,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.256", _ref2;
+                _ref2.button_version = "2.0.257", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
