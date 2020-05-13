@@ -368,10 +368,12 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             riskData: {
                 type:  'object',
                 value: ({ props }) => {
-                    if (props.userIDToken) {
+                    const clientMetadataID = getClientMetadataID();
+
+                    if (props.userIDToken && clientMetadataID) {
                         try {
                             return collectRiskData({
-                                clientMetadataID: getClientMetadataID(),
+                                clientMetadataID,
                                 appSourceID:      'SMART_PAYMENT_BUTTONS'
                             });
                         } catch (err) {

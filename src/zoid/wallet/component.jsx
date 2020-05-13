@@ -3,7 +3,10 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from 'jsx-pragmatic/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken, getClientAccessToken, getUserAuthCode, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID, getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault, getMerchantID, getCSPNonce, getDebug, getUserIDToken, getClientMetadataID } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken,
+    getClientAccessToken, getUserIDToken, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID,
+    getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault,
+    getMerchantID, getCSPNonce, getDebug, getClientMetadataID } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, memoize, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -80,13 +83,6 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                     value:      getUserAccessToken
                 },
 
-                buyerAuthCode: {
-                    type:       'string',
-                    queryParam: true,
-                    required:   false,
-                    value:      getUserAuthCode
-                },
-
                 fundingSource: {
                     type:       'string',
                     queryParam: true,
@@ -114,13 +110,22 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                     type: 'function'
                 },
 
+                userIDToken: {
+                    type:       'string',
+                    value:      getUserIDToken,
+                    required:   false,
+                    queryParam: true
+                },
+
                 riskData: {
                     type:  'object',
-                    value: () => {
-                        if (getUserIDToken()) {
+                    value: ({ props }) => {
+                        const clientMetadataID = getClientMetadataID();
+
+                        if (props.userIDToken && clientMetadataID) {
                             try {
                                 return collectRiskData({
-                                    clientMetadataID: getClientMetadataID(),
+                                    clientMetadataID,
                                     appSourceID:      'SMART_PAYMENT_BUTTONS'
                                 });
                             } catch (err) {
