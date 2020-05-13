@@ -5,7 +5,7 @@ import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyEr
     isSafari, isChrome, stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
-import { type CrossDomainWindowType, isWindowClosed, onCloseWindow } from 'cross-domain-utils/src';
+import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } from 'cross-domain-utils/src';
 
 import type { ButtonProps } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
@@ -248,7 +248,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const getNativePopupUrl = memoize(({ sessionUID }) : string => {
-        const parentDomain = getNativeDomain();
+        const parentDomain = getDomain();
         return extendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
             query: { sdkMeta, sessionUID, buttonSessionID, parentDomain }
         });
