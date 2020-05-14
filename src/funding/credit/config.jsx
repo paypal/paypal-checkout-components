@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { COUNTRY } from '@paypal/sdk-constants/src';
+import { COUNTRY, FUNDING } from '@paypal/sdk-constants/src';
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CreditLogo, PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -51,6 +51,8 @@ export function getCreditConfig() : FundingSourceConfig {
         logoColors: {
             [ DEFAULT ]:            LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.WHITE ]: LOGO_COLOR.BLUE
-        }
+        },
+        
+        labelText: `${ FUNDING.PAYPAL } ${ FUNDING.CREDIT }`
     };
 }

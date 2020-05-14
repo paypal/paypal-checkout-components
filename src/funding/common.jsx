@@ -76,7 +76,8 @@ export type FundingSourceConfig = {|
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
-    shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
+    shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
+    labelText? : string
 |};
 
 export function BasicLabel({ logo, label, layout, multiple, period, locale: { lang } } : LabelOptions) : ChildType {

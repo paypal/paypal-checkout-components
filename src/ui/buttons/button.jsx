@@ -98,6 +98,8 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     };
 
     const { layout, shape } = style;
+    
+    const labelText =  fundingConfig.labelText || fundingSource;
 
     const logoNode = (
         <Logo
@@ -164,7 +166,8 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             ].join(' ') }
             onClick={ clickHandler }
             onKeyPress={ keypressHandler }
-            tabindex='0'>
+            tabindex='0'
+            aria-label={ labelText }>
 
             <div class={ CLASS.BUTTON_LABEL }>
                 { labelNode }
