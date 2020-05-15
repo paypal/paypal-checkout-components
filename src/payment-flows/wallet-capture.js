@@ -89,7 +89,7 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
 }
 
 function initWalletCapture({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
-    const { createOrder, onApprove } = props;
+    const { createOrder, onApprove, clientMetadataID } = props;
     const { fundingSource, instrumentID } = payment;
     const { buyerAccessToken, wallet } = serviceData;
 
@@ -163,7 +163,7 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
         }).then(orderID => {
             return ZalgoPromise.hash({
                 requireShipping: shippingRequired(orderID),
-                orderApproval:   oneClickApproveOrder({ orderID, instrumentType, buyerAccessToken, instrumentID })
+                orderApproval:   oneClickApproveOrder({ orderID, instrumentType, buyerAccessToken, instrumentID, clientMetadataID })
             }).then(({ requireShipping, orderApproval }) => {
                 if (requireShipping) {
                     return fallbackToWebCheckout();
