@@ -70,7 +70,10 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry }));
             
-            const sendRiskDataPromise = riskData ? transportRiskData(req, riskData) : null;
+            const sendRiskDataPromise = riskData ? transportRiskData(req, riskData).catch(err => {
+                logger.warn(req, 'risk_data_transport_error', { err: err.stack || err.toString() });
+            }) : null;
+
             const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken && clientMetadataID) ? sendRiskDataPromise.then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID })) : null;
             const buyerAccessToken = await buyerAccessTokenPromise;
 
