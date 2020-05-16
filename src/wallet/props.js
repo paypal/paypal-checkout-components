@@ -3,8 +3,9 @@
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, INTENT, COUNTRY, FUNDING, PLATFORM, CURRENCY } from '@paypal/sdk-constants/src';
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
-import type { FundingEligibilityType, CheckoutFlowType, PersonalizationType, LocaleType } from '../types';
+import type { CheckoutFlowType, PersonalizationType, LocaleType } from '../types';
 import { getNonce, promiseNoop } from '../lib';
 import { getCreateOrder } from '../props/createOrder';
 import { getOnApprove } from '../props/onApprove';

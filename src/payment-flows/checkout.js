@@ -4,8 +4,9 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups, stringifyError, extendUrl } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
-import type { FundingEligibilityType, ProxyWindow } from '../types';
+import type { ProxyWindow } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
 import { enableVault, validatePaymentMethod, exchangeAccessTokenForAuthCode, getConnectURL } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT } from '../constants';

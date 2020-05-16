@@ -3,8 +3,9 @@
 import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError } from 'belter/src';
 import { COUNTRY, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
-import type { FundingEligibilityType, PersonalizationType, ContentType, Wallet } from '../types';
+import type { PersonalizationType, ContentType, Wallet } from '../types';
 import { fixClickFocus, getLogger } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
