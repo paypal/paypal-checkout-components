@@ -258,5 +258,6 @@ export const walletCapture : PaymentFlow = {
     init:              initWalletCapture,
     setupMenu:         setupWalletMenu,
     spinner:           true,
-    inline:            true
+    inline:            true,
+    instant:           true
 };

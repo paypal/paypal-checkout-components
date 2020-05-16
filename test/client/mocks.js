@@ -534,10 +534,17 @@ export function getLoggerApiMock(options : Object = {}) : MockEndpoint {
 
 export function getValidatePaymentMethodApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
-        method: 'POST',
-        uri:    new RegExp('/v2/checkout/orders/[^/]+/validate-payment-method'),
-        data:   {
-        
+        method:  'POST',
+        uri:     new RegExp('/v2/checkout/orders/[^/]+/validate-payment-method'),
+        handler: ({ data }) => {
+            if (options.extraHandler) {
+                const result = options.extraHandler({ data });
+                if (result) {
+                    return result;
+                }
+            }
+
+            return {};
         },
         ...options
     });

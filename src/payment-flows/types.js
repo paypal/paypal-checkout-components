@@ -74,5 +74,6 @@ export type PaymentFlow = {|
     setupMenu? : (MenuOptions) => MenuChoices,
     spinner? : boolean,
     inline? : boolean,
-    popup? : boolean
+    popup? : boolean,
+    instant? : boolean
 |};

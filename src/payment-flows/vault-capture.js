@@ -220,7 +220,8 @@ export const vaultCapture : PaymentFlow = {
     init:              initVaultCapture,
     setupMenu:         setupVaultMenu,
     spinner:           true,
-    inline:            true
+    inline:            true,
+    instant:           true
 };
 
 

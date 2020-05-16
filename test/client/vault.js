@@ -3,6 +3,7 @@
 
 import { wrapPromise } from 'belter/src';
 import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock, generateOrderID, mockMenu, clickMenu } from './mocks';
 
@@ -951,6 +952,107 @@ describe('vault cases', () => {
             if (!deleteVaultCalled) {
                 throw new Error(`Expected delete vault to be called`);
             }
+        });
+    });
+
+    it('should run client config and validate calls sequentially', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.clientAccessToken = 'abc-123';
+
+            window.paypal.Menu = expect('Menu', mockMenu);
+
+            const orderID = generateOrderID();
+            const paymentMethodID = 'xyz123';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return orderID;
+            }));
+
+            let vpmCallInProgress = false;
+            let updateClientConfigCallInProgress = false;
+
+            const vpmCall = getValidatePaymentMethodApiMock({
+                extraHandler: expect('vpmCall', () => {
+                    if (updateClientConfigCallInProgress) {
+                        throw new Error(`Expected client config call to not be in progress during validate call`);
+                    }
+
+                    vpmCallInProgress = true;
+                    return ZalgoPromise.delay(100).then(() => {
+                        vpmCallInProgress = false;
+                        return {};
+                    });
+                })
+            }).expectCalls();
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('gqlCall', ({ data }) => {
+
+                    if (data.query.includes('mutation UpdateClientConfig')) {
+                        if (vpmCallInProgress) {
+                            throw new Error(`Expected vpm call to not be in progress during client config call`);
+                        }
+
+                        updateClientConfigCallInProgress = true;
+                        return ZalgoPromise.delay(100).then(() => {
+                            updateClientConfigCallInProgress = false;
+                            return {};
+                        });
+                    }
+
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: false
+                                        }
+                                    },
+                                    flags: {
+                                        isShippingAddressRequired: false
+                                    }
+                                }
+                            }
+                        };
+                    }
+                })
+            }).expectCalls();
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                vpmCall.done();
+            }));
+
+            const fundingEligibility = {
+                [ FUNDING.PAYPAL ]: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    paymentMethodID,
+                            label: {
+                                description: 'foo@bar.com'
+                            }
+                        }
+                    ]
+                }
+            };
+
+            createButtonHTML({ fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+
+            await clickButton(FUNDING.PAYPAL);
+            gqlMock.done();
         });
     });
 });
