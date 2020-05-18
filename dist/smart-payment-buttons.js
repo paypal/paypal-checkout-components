@@ -952,7 +952,7 @@ window.spb = function(modules) {
             })).map((function(key) {
                 return urlEncode(key) + "=" + urlEncode(obj[key]);
             })).join("&");
-        }(_extends({}, parseQuery(originalQuery), {}, props)) : originalQuery;
+        }(_extends(_extends({}, parseQuery(originalQuery)), props)) : originalQuery;
     }
     function extendUrl(url, options) {
         var query = options.query || {};
@@ -1179,7 +1179,7 @@ window.spb = function(modules) {
                     void 0 === payload && (payload = {});
                     if (!dom_isBrowser()) return logger;
                     prefix && (event = prefix + "_" + event);
-                    var logPayload = _extends({}, objFilter(payload), {
+                    var logPayload = _extends(_extends({}, objFilter(payload)), {}, {
                         timestamp: Date.now().toString()
                     });
                     for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
@@ -1426,7 +1426,7 @@ window.spb = function(modules) {
     }
     function oneClickApproveOrder(_ref12) {
         var _headers16;
-        var orderID = _ref12.orderID;
+        var orderID = _ref12.orderID, clientMetadataID = _ref12.clientMetadataID;
         return callGraphQL({
             name: "OneClickApproveOrder",
             query: "\n            mutation OneClickApproveOrder(\n                $orderID : String!\n                $instrumentType : String!\n                $instrumentID : String!\n            ) {\n                oneClickPayment(\n                    token: $orderID\n                    selectedInstrumentType : $instrumentType\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    userId\n                }\n            }\n        ",
@@ -1436,7 +1436,8 @@ window.spb = function(modules) {
                 instrumentID: _ref12.instrumentID
             },
             headers: (_headers16 = {}, _headers16["x-paypal-internal-euat"] = _ref12.buyerAccessToken, 
-            _headers16["paypal-client-context"] = orderID, _headers16)
+            _headers16["paypal-client-context"] = orderID, _headers16["paypal-client-metadata-id"] = clientMetadataID || orderID, 
+            _headers16)
         }).then((function(_ref13) {
             return {
                 payerID: _ref13.oneClickPayment.userId
@@ -1508,7 +1509,7 @@ window.spb = function(modules) {
                     create: function(data) {
                         var order = _extends({}, data);
                         if (order.intent && order.intent.toLowerCase() !== intent) throw new Error("Unexpected intent: " + order.intent + " passed to order.create. Please ensure you are passing /sdk/js?intent=" + order.intent.toLowerCase() + " in the paypal script tag.");
-                        (order = _extends({}, order, {
+                        (order = _extends(_extends({}, order), {}, {
                             intent: intent.toUpperCase()
                         })).purchase_units = order.purchase_units.map((function(unit) {
                             if (unit.amount.currency_code && unit.amount.currency_code !== currency) throw new Error("Unexpected currency: " + unit.amount.currency_code + " passed to order.create. Please ensure you are passing /sdk/js?currency=" + unit.amount.currency_code + " in the paypal script tag.");
@@ -1517,12 +1518,12 @@ window.spb = function(modules) {
                                 if (!merchantID[0]) throw new Error("Pass merchant-id=XYZ in the paypal script tag.");
                                 if (payee.merchant_id && payee.merchant_id !== merchantID[0]) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
                             }
-                            merchantID && (payee = _extends({}, payee, {
+                            merchantID && (payee = _extends(_extends({}, payee), {}, {
                                 merchant_id: merchantID[0]
                             }));
-                            return _extends({}, unit, {
+                            return _extends(_extends({}, unit), {}, {
                                 payee: payee,
-                                amount: _extends({}, unit.amount, {
+                                amount: _extends(_extends({}, unit.amount), {}, {
                                     currency_code: currency
                                 })
                             });
@@ -2335,9 +2336,12 @@ window.spb = function(modules) {
         var result = [];
         for (var _i6 = 0; _i6 < children.length; _i6++) {
             var child = children[_i6];
-            if (child) if ("string" == typeof child) result.push(new node_TextNode(child)); else if (Array.isArray(child)) for (var _i8 = 0, _normalizeChildren2 = normalizeChildren(child); _i8 < _normalizeChildren2.length; _i8++) result.push(_normalizeChildren2[_i8]); else {
-                if (!child || "element" !== child.type && "text" !== child.type && "component" !== child.type) throw new TypeError("Unrecognized node type: " + typeof child);
-                result.push(child);
+            if (child) if ("string" == typeof child || "number" == typeof child) result.push(new node_TextNode("" + child)); else {
+                if ("boolean" == typeof child) continue;
+                if (Array.isArray(child)) for (var _i8 = 0, _normalizeChildren2 = normalizeChildren(child); _i8 < _normalizeChildren2.length; _i8++) result.push(_normalizeChildren2[_i8]); else {
+                    if (!child || "element" !== child.type && "text" !== child.type && "component" !== child.type) throw new TypeError("Unrecognized node type: " + typeof child);
+                    result.push(child);
+                }
             }
         }
         return result;
@@ -2781,7 +2785,7 @@ window.spb = function(modules) {
                 return checkout.init({
                     props: props,
                     components: components,
-                    payment: _extends({}, payment, {
+                    payment: _extends(_extends({}, payment), {}, {
                         isClick: !1
                     }),
                     serviceData: serviceData,
@@ -2931,7 +2935,7 @@ window.spb = function(modules) {
                                     props: props,
                                     components: components,
                                     serviceData: serviceData,
-                                    payment: _extends({}, payment, {
+                                    payment: _extends(_extends({}, payment), {}, {
                                         isClick: !1,
                                         buyerIntent: "pay_with_different_funding_shipping"
                                     }),
@@ -2997,9 +3001,10 @@ window.spb = function(modules) {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref8) {
+                    var win = _ref8.win;
                     return initiatePayment({
-                        payment: _extends({}, payment, {
-                            win: _ref8.win,
+                        payment: _extends(_extends({}, payment), {}, {
+                            win: win,
                             buyerIntent: "pay_with_different_funding_shipping"
                         })
                     });
@@ -3008,9 +3013,10 @@ window.spb = function(modules) {
                 label: content.useDifferentAccount,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref9) {
+                    var win = _ref9.win;
                     return initiatePayment({
-                        payment: _extends({}, payment, {
-                            win: _ref9.win,
+                        payment: _extends(_extends({}, payment), {}, {
+                            win: win,
                             buyerIntent: "pay_with_different_account"
                         })
                     });
@@ -3041,7 +3047,8 @@ window.spb = function(modules) {
             throw new Error("Can not render menu for " + fundingSource);
         },
         spinner: !0,
-        inline: !0
+        inline: !0,
+        instant: !0
     };
     function getInstrument(wallet, fundingSource, instrumentID) {
         var walletFunding = wallet[fundingSource];
@@ -3071,7 +3078,7 @@ window.spb = function(modules) {
         },
         init: function(_ref3) {
             var props = _ref3.props, components = _ref3.components, payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config;
-            var createOrder = props.createOrder, onApprove = props.onApprove;
+            var createOrder = props.createOrder, onApprove = props.onApprove, clientMetadataID = props.clientMetadataID;
             var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
             var buyerAccessToken = serviceData.buyerAccessToken, wallet = serviceData.wallet;
             if (!instrumentID) throw new Error("Instrument id required for wallet capture");
@@ -3089,7 +3096,7 @@ window.spb = function(modules) {
                     props: props,
                     components: components,
                     serviceData: serviceData,
-                    payment: _extends({}, payment, {
+                    payment: _extends(_extends({}, payment), {}, {
                         isClick: !1,
                         buyerIntent: "pay_with_different_funding_shipping"
                     }),
@@ -3121,7 +3128,8 @@ window.spb = function(modules) {
                                 orderID: orderID,
                                 instrumentType: instrumentType,
                                 buyerAccessToken: buyerAccessToken,
-                                instrumentID: instrumentID
+                                instrumentID: instrumentID,
+                                clientMetadataID: clientMetadataID
                             })
                         }).then((function(_ref4) {
                             var orderApproval = _ref4.orderApproval;
@@ -3156,9 +3164,10 @@ window.spb = function(modules) {
                 label: content.useDifferentAccount,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref7) {
+                    var win = _ref7.win;
                     return initiatePayment({
-                        payment: _extends({}, payment, {
-                            win: _ref7.win,
+                        payment: _extends(_extends({}, payment), {}, {
+                            win: win,
                             buyerIntent: "pay_with_different_account"
                         })
                     });
@@ -3168,9 +3177,10 @@ window.spb = function(modules) {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref6) {
+                    var win = _ref6.win;
                     return initiatePayment({
-                        payment: _extends({}, payment, {
-                            win: _ref6.win,
+                        payment: _extends(_extends({}, payment), {}, {
+                            win: win,
                             buyerIntent: "pay_with_different_funding_shipping"
                         })
                     });
@@ -3180,7 +3190,8 @@ window.spb = function(modules) {
             throw new Error("Can not render menu for " + fundingSource);
         },
         spinner: !0,
-        inline: !0
+        inline: !0,
+        instant: !0
     };
     var getNativeSocket = memoize((function(_ref) {
         var nativeSocket = (config = (_ref9 = {
@@ -3639,7 +3650,7 @@ window.spb = function(modules) {
             };
             var fallbackToWebCheckout = function(fallbackWin) {
                 didFallback = !0;
-                var checkoutPayment = _extends({}, payment, {
+                var checkoutPayment = _extends(_extends({}, payment), {}, {
                     win: fallbackWin,
                     isClick: !1
                 });
@@ -4101,7 +4112,7 @@ window.spb = function(modules) {
                                     config: config,
                                     components: components,
                                     serviceData: serviceData
-                                }), name = _getPaymentFlow.name, inline = _getPaymentFlow.inline, spinner = _getPaymentFlow.spinner;
+                                }), name = _getPaymentFlow.name, inline = _getPaymentFlow.inline, spinner = _getPaymentFlow.spinner, _getPaymentFlow$insta = _getPaymentFlow.instant, instant = void 0 !== _getPaymentFlow$insta && _getPaymentFlow$insta;
                                 var _init = (0, _getPaymentFlow.init)({
                                     props: props,
                                     config: config,
@@ -4121,7 +4132,7 @@ window.spb = function(modules) {
                                 }).then((function(_ref4) {
                                     if (_ref4.valid) {
                                         spinner && enableLoadingSpinner(button);
-                                        createOrder().then((function(orderID) {
+                                        var clientConfigPromise = createOrder().then((function(orderID) {
                                             return function(_ref) {
                                                 var _ref$inline = _ref.inline;
                                                 return callGraphQL({
@@ -4154,7 +4165,11 @@ window.spb = function(modules) {
                                             });
                                         }));
                                         var expectedIntent = props.intent, expectedCurrency = props.currency;
-                                        return promise_ZalgoPromise.try(start).then((function() {
+                                        return promise_ZalgoPromise.resolve().then((function() {
+                                            return instant ? clientConfigPromise : null;
+                                        })).then((function() {
+                                            return start();
+                                        })).then((function() {
                                             return createOrder();
                                         })).then((function(orderID) {
                                             return function(orderID, _ref2) {
@@ -4310,7 +4325,7 @@ window.spb = function(modules) {
                                         serviceData: serviceData,
                                         initiatePayment: initiatePayment
                                     }).map((function(choice) {
-                                        return _extends({}, choice, {
+                                        return _extends(_extends({}, choice), {}, {
                                             onSelect: function() {
                                                 for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
                                                 choice.spinner && enableLoadingSpinner(button);
@@ -4461,7 +4476,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.257", _ref2;
+                _ref2.button_version = "2.0.258", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
