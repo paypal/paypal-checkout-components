@@ -6,10 +6,8 @@ import { values } from 'belter';
 
 import { HTTP_HEADER, ERROR_CODE } from '../../config';
 import type { FundingEligibility } from '../../service';
-import type { ExpressRequest, ExpressResponse, LocaleType } from '../../types';
+import type { ExpressRequest, ExpressResponse, LocaleType, RiskData } from '../../types';
 import { makeError } from '../../lib';
-
-export type RiskData = {||};
 
 type StyleType = {|
     label? : string,

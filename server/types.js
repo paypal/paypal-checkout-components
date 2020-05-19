@@ -38,3 +38,6 @@ export type FirebaseConfig = {|
     measurementId : string
 |};
 
+export type RiskData = {|
+    
+|};

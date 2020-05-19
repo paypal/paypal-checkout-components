@@ -2,7 +2,7 @@
 
 import { ENV, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
-import type { ExpressRequest, ExpressResponse, LocaleType } from '../../types';
+import type { ExpressRequest, ExpressResponse, LocaleType, RiskData } from '../../types';
 
 function getNonce(res : ExpressResponse) : string {
     let nonce = res.locals && res.locals.nonce;
@@ -13,10 +13,6 @@ function getNonce(res : ExpressResponse) : string {
     
     return nonce;
 }
-
-export type RiskData = {|
-    
-|};
 
 type StyleType = {|
     height : number

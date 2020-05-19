@@ -5,7 +5,7 @@ import { COUNTRY, LANG } from '@paypal/sdk-constants';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL, javascriptResponse } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization, resolveNativeEligibility, resolveMerchantID, type GetWallet, resolveWallet, exchangeIDToken } from '../../service';
-import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
+import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig, RiskData } from '../../types';
 import { AUTH_ERROR_CODE } from '../../config';
 import type { ContentType } from '../../../src/types';
 
@@ -23,8 +23,6 @@ type InlineGuestElmoParams = {|
     |},
     buyerCountry : $Values<typeof COUNTRY>
 |};
-
-type RiskData = {||};
 
 type ButtonMiddlewareOptions = {|
     logger : LoggerType,
@@ -74,7 +72,9 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                 logger.warn(req, 'risk_data_transport_error', { err: err.stack || err.toString() });
             }) : null;
 
-            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken && clientMetadataID) ? sendRiskDataPromise.then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID })) : null;
+            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken && clientMetadataID && riskData) ? sendRiskDataPromise
+                .then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID, riskData })) : null;
+
             const buyerAccessToken = await buyerAccessTokenPromise;
 
             const nativeEligibilityPromise = resolveNativeEligibility(req, gqlBatch, {

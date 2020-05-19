@@ -2,11 +2,11 @@
 
 import { ZalgoPromise } from 'zalgo-promise';
 
-import type { ExpressRequest, LoggerType, CacheType } from '../../types';
+import type { ExpressRequest, LoggerType, CacheType, RiskData } from '../../types';
 import { clientErrorResponse, htmlResponse, javascriptResponse, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL } from '../../lib';
 import { resolveCheckoutSession } from '../../service';
 
-import { getParams, type RiskData } from './params';
+import { getParams } from './params';
 import { EVENT } from './constants';
 import { getSmartWalletClientScript } from './script';
 
