@@ -6,7 +6,7 @@ import type { ExpressRequest, LoggerType, RiskData } from '../types';
 const EXCHANGE_ID_TOKEN_QUERY = `
     query ExchangeIDToken(
         $userIDToken: String!
-        riskData: String!
+        $riskData: String!
     ) {
         auth(
             idToken: $userIDToken
