@@ -704,8 +704,14 @@ const buttonConfigs = [
                 label:  `trustly`,
                 commit: true,
                 valid:  false
-            }
+            },
 
+            {
+                layout: `vertical`,
+                label:  `mercadopage`,
+                commit: true,
+                valid:  false
+            }
 
         // $FlowFixMe
         ].map(({ layout, label, tagline, fundingicons, size, valid, commit }) => ({
