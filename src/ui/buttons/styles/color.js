@@ -1,6 +1,8 @@
 /* @flow */
 
-import { BUTTON_COLOR, CLASS, TEXT_COLOR } from '../../../constants';
+import { FUNDING } from '@paypal/sdk-constants/src';
+
+import { BUTTON_COLOR, CLASS, TEXT_COLOR, ATTRIBUTE } from '../../../constants';
 
 export const buttonColorStyle = `
 
@@ -48,6 +50,10 @@ export const buttonColorStyle = `
 
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
+        background: #0070ba;
+    }
+
+    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.VENMO }].${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
         background: #009cde;
     }
 
