@@ -365,9 +365,7 @@ window.spb = function(modules) {
         hooks_module_a && hooks_module_a(t);
         var u = t.__c;
         if (u && u.__H) try {
-            u.__H.__.forEach((function(n) {
-                return n.u && n.u();
-            }));
+            u.__H.__.forEach(hooks_module_g);
         } catch (t) {
             n.__e(t, u.__v);
         }
