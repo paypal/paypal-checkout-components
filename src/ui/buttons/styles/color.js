@@ -35,18 +35,10 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD }:focus {
         outline: none;
+        box-shadow: 0px 0px 1px 3px #0c67ff inset;
     }
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD }:focus::after {
-        content: '';
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        bottom: 5px;
-        left: 5px;
-        border: 0.125rem solid #009cde;
-        border-radius: inherit;
-        box-shadow: 0 0 0 0.5rem #0000a6;
-    }
+
+
 
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
@@ -63,18 +55,10 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE }:focus {
         outline: none;
+        box-shadow: 0px 0px 1px 3px #0c67ff inset;
     }
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE }:focus::after {
-        content: '';
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        bottom: 5px;
-        left: 5px;
-        border: 0.125rem solid #0000a6;
-        border-radius: inherit;
-        box-shadow: 0 0 0 0.5rem #009cde;
-    }
+
+
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } {
         background: #eee;
@@ -86,18 +70,10 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER }:focus {
         outline: none;
+        box-shadow: 0px 0px 1px 3px #0c67ff inset;
     }
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER }:focus::after {
-        content: '';
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        bottom: 5px;
-        left: 5px;
-        border: 0.125rem solid #009cde;
-        border-radius: inherit;
-        box-shadow: 0 0 0 0.5rem #0000a6;
-    }
+
+
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } {
         background: #003087;
@@ -109,17 +85,7 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE }:focus {
         outline: none;
-    }
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE }:focus::after {
-        content: '';
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        bottom: 5px;
-        left: 5px;
-        border: 0.125rem solid #009cde;
-        border-radius: inherit;
-        box-shadow: 0 0 0 0.5rem #0000a6;
+        box-shadow: 0px 0px 1px 3px #0c67ff inset;
     }
 
 
@@ -134,18 +100,10 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK }:focus {
         outline: none;
+        box-shadow: 0px 0px 1px 3px #0c67ff inset;
     }
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK }:focus::after {
-        content: '';
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        bottom: 5px;
-        left: 5px;
-        border: 0.125rem solid #009cde;
-        border-radius: inherit;
-        box-shadow: 0 0 0 0.5rem #0000a6;
-    }
+
+
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } {
         background: #fff;
@@ -158,17 +116,7 @@ export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE }:focus {
         outline: none;
-    }
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE }:focus::after {
-        content: '';
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        bottom: 5px;
-        left: 5px;
-        border: 0.125rem solid #009cde;
-        border-radius: inherit;
-        box-shadow: 0 0 0 0.5rem #0000a6;
+        box-shadow: 0px 0px 1px 3px #0c67ff inset;
     }
 
 
