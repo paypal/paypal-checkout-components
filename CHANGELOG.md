@@ -1,3 +1,9 @@
+## <small>5.0.91 (2020-05-20)</small>
+
+* Revert "Updated style of buttons when on focus to improve a11y (#1307)" ([4d548d6](http://github.paypal.com/paypal/paypal-checkout/commit/4d548d6)), closes [#1307](http://github.paypal.com/paypal/paypal-checkout/issues/1307)
+
+
+
 ## <small>5.0.90 (2020-05-20)</small>
 
 * [APM] adding mercadopago payment source to payment sdk (#1313) ([6dd0957](http://github.paypal.com/paypal/paypal-checkout/commit/6dd0957)), closes [#1313](http://github.paypal.com/paypal/paypal-checkout/issues/1313)
