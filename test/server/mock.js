@@ -176,6 +176,9 @@ export async function graphQL(req : {||}, payload : $ReadOnlyArray<{| query : st
                     },
                     boleto: {
                         eligible: false
+                    },
+                    mercadopago: {
+                        eligible: false
                     }
                 }
             };

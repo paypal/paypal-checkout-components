@@ -95,6 +95,10 @@ export type FundingEligibility = {|
         eligible : boolean,
         vaultable : boolean
     |},
+    mercadopago : {|
+        eligible : boolean,
+        vaultable : boolean
+    |},
     card : {|
         eligible : boolean,
         branded : boolean,
