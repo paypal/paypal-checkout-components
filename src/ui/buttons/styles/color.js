@@ -13,6 +13,15 @@ export const buttonColorStyle = `
         color: #fff;
     }
 
+    .${ CLASS.BUTTON }.${ CLASS.TEXT_COLOR }-${ TEXT_COLOR.BLACK } .${ CLASS.SPINNER } {
+        border: 3px solid rgba(100, 100, 100, .2);
+        border-top-color: rgba(33, 128, 192, 0.8);
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.TEXT_COLOR }-${ TEXT_COLOR.WHITE } .${ CLASS.SPINNER } {
+        border: 3px solid rgba(200, 200, 200, 0.2);
+        border-top-color: rgba(255, 255, 255, .85);
+    }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } {
         background: #ffc439;
