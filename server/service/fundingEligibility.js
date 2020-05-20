@@ -1,5 +1,6 @@
 /* @flow */
 
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal/sdk-constants';
 import { params, types, query } from 'typed-graphqlify';
 import { values } from 'belter';
@@ -8,176 +9,7 @@ import { strictMerge } from 'strict-merge';
 import { isDefined, type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
 
-export type FundingEligibility = {|
-    paypal : {|
-        eligible : boolean,
-        vaultable : boolean,
-        vaultedInstruments : {|
-            id : string,
-            label : {|
-                description : string
-            |}
-        |}
-    |},
-    venmo : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    itau : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    credit : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    sepa : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    ideal : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    bancontact : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    giropay : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    eps : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    sofort : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    mybank : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    p24 : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    zimpler : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    wechatpay : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    payu : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    trustly : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    blik : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    oxxo : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    maxima : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    boleto : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    mercadopago : {|
-        eligible : boolean,
-        vaultable : boolean
-    |},
-    card : {|
-        eligible : boolean,
-        branded : boolean,
-        vendors : {|
-            visa : {|
-                eligible : boolean,
-                vaultable : boolean,
-                vaultedInstruments : {|
-                    id : string,
-                    label : {|
-                        description : string
-                    |}
-                |}
-            |},
-            mastercard : {|
-                eligible : boolean,
-                vaultable : boolean,
-                vaultedInstruments : {|
-                    id : string,
-                    label : {|
-                        description : string
-                    |}
-                |}
-            |},
-            amex : {|
-                eligible : boolean,
-                vaultable : boolean,
-                vaultedInstruments : {|
-                    id : string,
-                    label : {|
-                        description : string
-                    |}
-                |}
-            |},
-            discover : {|
-                eligible : boolean,
-                vaultable : boolean,
-                vaultedInstruments : {|
-                    id : string,
-                    label : {|
-                        description : string
-                    |}
-                |}
-            |},
-            hiper : {|
-                eligible : boolean,
-                vaultable : boolean,
-                vaultedInstruments : {|
-                    id : string,
-                    label : {|
-                        description : string
-                    |}
-                |}
-            |},
-            elo : {|
-                eligible : boolean,
-                vaultable : boolean,
-                vaultedInstruments : {|
-                    id : string,
-                    label : {|
-                        description : string
-                    |}
-                |}
-            |},
-            jcb : {|
-                eligible : boolean,
-                vaultable : boolean,
-                vaultedInstruments : {|
-                    id : string,
-                    label : {|
-                        description : string
-                    |}
-                |}
-            |}
-        |}
-    |}
-|};
-
-function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibility) : string {
+function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibilityType) : string {
     const InputTypes = {
         $clientID:        'String',
         $buyerCountry:    'CountryCodes',
@@ -358,11 +190,11 @@ export type FundingEligibilityOptions = {|
     merchantID : ?$ReadOnlyArray<string>,
     buttonSessionID : string,
     clientAccessToken : ?string,
-    basicFundingEligibility : FundingEligibility
+    basicFundingEligibility : FundingEligibilityType
 |};
 
 export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility } : FundingEligibilityOptions) : Promise<FundingEligibility> {
+    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
 
     try {
         const ip = req.ip;
