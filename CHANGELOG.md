@@ -1,3 +1,15 @@
+## <small>5.0.90 (2020-05-20)</small>
+
+* [APM] adding mercadopago payment source to payment sdk (#1313) ([6dd0957](http://github.paypal.com/paypal/paypal-checkout/commit/6dd0957)), closes [#1313](http://github.paypal.com/paypal/paypal-checkout/issues/1313)
+* Add aria-labels for button containers (#1306) ([cefb925](http://github.paypal.com/paypal/paypal-checkout/commit/cefb925)), closes [#1306](http://github.paypal.com/paypal/paypal-checkout/issues/1306)
+* Add Vietnamese (vi) and Romanian (ro) (#1297) ([e260ed4](http://github.paypal.com/paypal/paypal-checkout/commit/e260ed4)), closes [#1297](http://github.paypal.com/paypal/paypal-checkout/issues/1297)
+* Fix spinner color to correspond with text color ([a4dccc1](http://github.paypal.com/paypal/paypal-checkout/commit/a4dccc1))
+* Type fixes ([0e3bb65](http://github.paypal.com/paypal/paypal-checkout/commit/0e3bb65))
+* Update blue button color ([1b64664](http://github.paypal.com/paypal/paypal-checkout/commit/1b64664))
+* Updated style of buttons when on focus to improve a11y (#1307) ([cb6eff7](http://github.paypal.com/paypal/paypal-checkout/commit/cb6eff7)), closes [#1307](http://github.paypal.com/paypal/paypal-checkout/issues/1307)
+
+
+
 ## <small>5.0.89 (2020-05-12)</small>
 
 * Add bank logo for wallet ([c7446f5](http://github.paypal.com/paypal/paypal-checkout/commit/c7446f5))
