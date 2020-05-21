@@ -157,7 +157,7 @@ function getRiskDataParam(req : ExpressRequest) : ?RiskData {
     try {
         return JSON.parse(Buffer.from(serializedRiskData, 'base64').toString('utf8'));
     } catch (err) {
-        throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Invalid risk data: ${ serializedRiskData }`, err);
+        // pass
     }
 }
 
