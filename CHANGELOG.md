@@ -1,3 +1,11 @@
+## <small>5.0.92 (2020-05-21)</small>
+
+* add new title for buttons iframe (#1315) ([725bd42](http://github.paypal.com/paypal/paypal-checkout/commit/725bd42)), closes [#1315](http://github.paypal.com/paypal/paypal-checkout/issues/1315)
+* Added dev vault button ([f6a77c9](http://github.paypal.com/paypal/paypal-checkout/commit/f6a77c9))
+* Do not pass riskData for IE, to avoid url size limit ([c6fd8e9](http://github.paypal.com/paypal/paypal-checkout/commit/c6fd8e9))
+
+
+
 ## <small>5.0.91 (2020-05-20)</small>
 
 * Revert "Updated style of buttons when on focus to improve a11y (#1307)" ([4d548d6](http://github.paypal.com/paypal/paypal-checkout/commit/4d548d6)), closes [#1307](http://github.paypal.com/paypal/paypal-checkout/issues/1307)
