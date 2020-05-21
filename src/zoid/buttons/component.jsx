@@ -51,7 +51,8 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
         attributes: {
             iframe: {
                 allowpaymentrequest: 'allowpaymentrequest',
-                scrolling:           'no'
+                scrolling:           'no',
+                title:               'paypal'
             }
         },
 
