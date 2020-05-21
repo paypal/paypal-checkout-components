@@ -72,7 +72,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                 logger.warn(req, 'risk_data_transport_error', { err: err.stack || err.toString() });
             }) : null;
 
-            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken && clientMetadataID && riskData) ? sendRiskDataPromise
+            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken && clientMetadataID) ? sendRiskDataPromise
                 .then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID, riskData })) : null;
 
             const buyerAccessToken = await buyerAccessTokenPromise;

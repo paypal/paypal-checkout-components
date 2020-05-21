@@ -6,7 +6,7 @@ import type { ExpressRequest, LoggerType, RiskData } from '../types';
 const EXCHANGE_ID_TOKEN_QUERY = `
     query ExchangeIDToken(
         $userIDToken: String!
-        $riskData: String!
+        $riskData: String
     ) {
         auth(
             idToken: $userIDToken
@@ -21,7 +21,7 @@ export type ExchangeIDTokenOptions = {|
     logger : LoggerType,
     userIDToken : string,
     clientMetadataID : string,
-    riskData : RiskData
+    riskData : ?RiskData
 |};
 
 export async function exchangeIDToken(req : ExpressRequest, gqlBatch : GraphQLBatch, exchangeIDTokenOptions : ExchangeIDTokenOptions) : Promise<?string> {
