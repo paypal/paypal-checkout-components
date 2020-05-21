@@ -10,14 +10,27 @@
 
 <body>
     <script>
-        document.write(button.Buttons({
+        const props = {
             ...xprops,
             content: {
-                payWithDebitOrCreditCard: 'Pay with Debit or Credit Card'
+                payWithDebitOrCreditCard: 'Pay with Debit or Credit Card',
+                payNow: 'Pay Now'
             }
-        }).render(jsx.html()));
+        }
+
+        document.write(button.Buttons(props).render(jsx.html()));
 
         document.querySelectorAll('[data-funding-source]').forEach(button => {
+            if (button.querySelector('[data-menu]')) {
+                button.querySelector('[data-menu]').addEventListener('click', event => {
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                    alert('menu triggered');
+                });
+            }
+
+
             button.addEventListener('click', () => {
                 const instance = paypal.Checkout({
                     createOrder: () => {

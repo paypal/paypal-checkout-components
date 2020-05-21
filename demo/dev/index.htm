@@ -13,5 +13,20 @@
     <script>
         paypal.Marks().render('#paypal-marks-container');
         paypal.Buttons().render('#paypal-buttons-container');
+
+        paypal.Buttons({
+            fundingSource: 'paypal',
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'card',
+                            label: '...1234',
+                            oneClick: true
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
     </script>
 </body>
