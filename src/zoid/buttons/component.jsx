@@ -8,7 +8,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, values, memoize, noop, identity } from 'belter/src';
+import { uniqueID, values, memoize, noop, identity, isIE } from 'belter/src';
 import { FUNDING, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { collectRiskData, persistRiskData } from '@paypal/risk-data-collector/src';
@@ -371,7 +371,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 value: ({ props }) => {
                     const clientMetadataID = getClientMetadataID();
 
-                    if (props.userIDToken && clientMetadataID) {
+                    if (props.userIDToken && clientMetadataID && !isIE()) {
                         try {
                             return collectRiskData({
                                 clientMetadataID,
