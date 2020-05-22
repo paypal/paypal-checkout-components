@@ -87,6 +87,7 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
 
         } catch (err) {
             if (isError(err, ERROR_CODE.VALIDATION_ERROR)) {
+                logger.warn(req, EVENT.VALIDATION, { err: err.stack ? err.stack : err.toString() });
                 return clientErrorResponse(res, err.message);
             }
 

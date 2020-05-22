@@ -27,8 +27,9 @@ export const HTTP_STATUS_CODE = {
 };
 
 export const EVENT = {
-    RENDER: 'render',
-    ERROR:  'error'
+    RENDER:     'render',
+    VALIDATION: 'validation',
+    ERROR:      'error'
 };
 
 export const AUTH_ERROR_CODE = {
