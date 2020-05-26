@@ -73,11 +73,20 @@ export function buildOrderActions({ facilitatorAccessToken, intent, currency, me
                 }
             }
     
-            if (merchantID) {
-                payee = {
-                    ...payee,
-                    merchant_id: merchantID[0]
-                };
+            if (merchantID && merchantID[0]) {
+                const payeeID = merchantID[0];
+
+                if (payeeID.indexOf('@') !== -1) {
+                    payee = {
+                        ...payee,
+                        email_address: payeeID
+                    };
+                } else {
+                    payee = {
+                        ...payee,
+                        merchant_id: payeeID
+                    };
+                }
             }
     
             return { ...unit, payee, amount: { ...unit.amount, currency_code: currency } };
