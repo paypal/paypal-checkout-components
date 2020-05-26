@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { stringifyError } from 'belter/src';
-import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
 import { getSupplementalOrderInfo, oneClickApproveOrder } from '../api';
@@ -229,12 +229,6 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
     };
 
     if (fundingSource === FUNDING.PAYPAL) {
-        if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-            return [
-                CHOOSE_ACCOUNT
-            ];
-        }
-
         return [
             CHOOSE_CARD,
             CHOOSE_ACCOUNT
@@ -243,6 +237,7 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
 
     if (fundingSource === FUNDING.CREDIT) {
         return [
+            CHOOSE_CARD,
             CHOOSE_ACCOUNT
         ];
     }
