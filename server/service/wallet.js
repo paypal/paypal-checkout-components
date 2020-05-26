@@ -33,7 +33,8 @@ type SmartWallet = {|
             |},
             one_click_eligibility : {|
                 eligible : boolean
-            |}
+            |},
+            one_click_pay_allowed? : boolean
         |}>
     |}>
 |};
@@ -227,7 +228,10 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                 }
 
                 const fundingSource = fundingOption.funding_sources[0];
-                const { one_click_eligibility: { eligible: one_click_pay_allowed } } = fundingSource;
+                const one_click_pay_allowed =
+                    fundingSource.one_click_pay_allowed ||
+                    (fundingSource.one_click_eligibility && fundingSource.one_click_eligibility.eligible) ||
+                    false;
 
                 let instrument;
 
