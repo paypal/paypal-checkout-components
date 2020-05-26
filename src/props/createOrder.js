@@ -7,7 +7,7 @@ import { getDomain } from 'cross-domain-utils/src';
 
 import { createOrderID, billingTokenToOrderID, subscriptionIdToCartId, createPaymentToken } from '../api';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
-import { getLogger } from '../lib';
+import { getLogger, isEmailAddress } from '../lib';
 import { ENABLE_PAYMENT_API } from '../config';
 
 import type { CreateSubscription } from './createSubscription';
@@ -63,20 +63,10 @@ export function buildOrderActions({ facilitatorAccessToken, intent, currency, me
 
             let payee = unit.payee;
     
-            if (payee && merchantID && merchantID.length) {
-                if (!merchantID[0]) {
-                    throw new Error(`Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=XYZ in the paypal script tag.`);
-                }
-    
-                if (payee.merchant_id && payee.merchant_id !== merchantID[0]) {
-                    throw new Error(`Expected payee.merchant_id to be "${ merchantID[0] }"`);
-                }
-            }
-    
-            if (merchantID && merchantID[0]) {
+            if (merchantID && merchantID.length === 1 && merchantID[0]) {
                 const payeeID = merchantID[0];
 
-                if (payeeID.indexOf('@') !== -1) {
+                if (isEmailAddress(payeeID)) {
                     payee = {
                         ...payee,
                         email_address: payeeID
@@ -119,22 +109,20 @@ export function buildPaymentActions({ facilitatorAccessToken, intent, currency, 
             }
 
             let payee = transaction.payee;
+            if (merchantID && merchantID.length === 1 && merchantID[0]) {
+                const payeeID = merchantID[0];
 
-            if (payee && merchantID && merchantID.length) {
-                if (!merchantID[0]) {
-                    throw new Error(`Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=XYZ in the paypal script tag.`);
+                if (isEmailAddress(payeeID)) {
+                    payee = {
+                        ...payee,
+                        email_address: payeeID
+                    };
+                } else {
+                    payee = {
+                        ...payee,
+                        merchant_id: payeeID
+                    };
                 }
-
-                if (payee.merchant_id && payee.merchant_id !== merchantID[0]) {
-                    throw new Error(`Expected payee.merchant_id to be "${ merchantID[0] }"`);
-                }
-            }
-
-            if (merchantID) {
-                payee = {
-                    ...payee,
-                    merchant_id: merchantID[0]
-                };
             }
 
             return { ...transaction, payee, amount: { ...transaction.amount, currency } };

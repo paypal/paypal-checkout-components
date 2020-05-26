@@ -150,7 +150,6 @@ export function setupMocks() {
         getPopupBridge:           mockAsyncProp(noop),
         getParent:                () => window,
         getParentDomain:          () => 'https://www.merchant.com',
-        merchantID:               [ 'XYZ12345' ],
         enableStandardCardFields: false,
         enableNativeCheckout:     false
     };
@@ -463,6 +462,10 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
             if (options.extraHandler) {
                 const result = options.extraHandler({ data });
                 if (result) {
+                    if (result.data && result.data.checkoutSession && result.data.checkoutSession.payees) {
+                        result.data.checkoutSession.cart.payees = result.data.checkoutSession.payees;
+                    }
+
                     return result;
                 }
             }

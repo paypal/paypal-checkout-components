@@ -99,18 +99,27 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 currency: expectedCurrency
             } = props;
 
-            return ZalgoPromise.resolve()
-                .then(() => (instant ? clientConfigPromise : null))
-                .then(() => start())
-                .then(() => createOrder())
-                .then(orderID => validateOrder(orderID, { env, clientID, merchantID, expectedCurrency, expectedIntent }))
-                .then(() => clickPromise)
-                .catch(err => {
-                    return ZalgoPromise.all([
-                        close(),
-                        ZalgoPromise.reject(err)
-                    ]);
-                }).then(noop);
+            const startPromise = ZalgoPromise.try(() => {
+                if (instant) {
+                    return clientConfigPromise;
+                }
+            }).then(() => {
+                return start();
+            });
+
+            const validateOrderPromise = createOrder().then(orderID => {
+                return validateOrder(orderID, { env, clientID, merchantID, expectedCurrency, expectedIntent });
+            });
+
+            return ZalgoPromise.all([
+                clickPromise,
+                startPromise,
+                validateOrderPromise
+            ]).catch(err => {
+                return ZalgoPromise.try(close).then(() => {
+                    throw err;
+                });
+            }).then(noop);
         });
 
     }).finally(() => {

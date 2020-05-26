@@ -93,3 +93,7 @@ export function isServer() : boolean {
 export function isClient() : boolean {
     return (typeof window !== 'undefined');
 }
+
+export function isEmailAddress(str : string) : boolean {
+    return Boolean(str.match(/^.+@.+\..+$/));
+}

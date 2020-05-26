@@ -148,6 +148,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const context = getContext({ win, isClick });
 
     let approved = false;
+    let forceClosed = false;
     
     const init = () => {
         return Checkout({
@@ -232,7 +233,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     
             onClose: () => {
                 checkoutOpen = false;
-                if (!approved) {
+                if (!forceClosed && !approved) {
                     return onCancel();
                 }
             },
@@ -255,6 +256,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
         checkoutOpen = false;
         return ZalgoPromise.try(() => {
             if (instance) {
+                forceClosed = true;
                 return instance.close();
             }
         });
@@ -262,7 +264,11 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
 
     const start = memoize(() => {
         instance = init();
-        return instance.renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
+        return instance.renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context).catch(err => {
+            if (checkoutOpen) {
+                throw err;
+            }
+        });
     });
 
     const click = () => {
