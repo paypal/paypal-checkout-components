@@ -202,7 +202,15 @@ describe('contingency cases', () => {
                                         currencyCode: 'USD'
                                     }
                                 }
-                            }
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:      {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -310,7 +318,15 @@ describe('contingency cases', () => {
                                         currencyCode: 'USD'
                                     }
                                 }
-                            }
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:      {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
                         }
                     }
                 }

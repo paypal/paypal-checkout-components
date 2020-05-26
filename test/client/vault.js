@@ -250,7 +250,15 @@ describe('vault cases', () => {
                             },
                             flags: {
                                 isShippingAddressRequired: false
-                            }
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:       {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -319,7 +327,15 @@ describe('vault cases', () => {
                             },
                             flags: {
                                 isShippingAddressRequired: false
-                            }
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:       {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -398,7 +414,15 @@ describe('vault cases', () => {
                             },
                             flags: {
                                 isShippingAddressRequired: true
-                            }
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:       {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -467,7 +491,15 @@ describe('vault cases', () => {
                             },
                             flags: {
                                 isShippingAddressRequired: true
-                            }
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:       {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -546,7 +578,15 @@ describe('vault cases', () => {
                             },
                             flags: {
                                 isShippingAddressRequired: true
-                            }
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:       {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -617,7 +657,15 @@ describe('vault cases', () => {
                             },
                             flags: {
                                 isShippingAddressRequired: true
-                            }
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:       {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -1018,7 +1066,15 @@ describe('vault cases', () => {
                                     },
                                     flags: {
                                         isShippingAddressRequired: false
-                                    }
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
                             }
                         };

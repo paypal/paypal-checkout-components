@@ -151,21 +151,6 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
         });
 }
 
-type PayeeResponse = {|
-    merchant? : {|
-        id? : string
-    |}
-|};
-
-export function getPayee(orderID : string) : ZalgoPromise<PayeeResponse> {
-    return callSmartAPI({
-        url:     `${ SMART_API_URI.CHECKOUT }/${ orderID }/payee`,
-        headers: {
-            [HEADERS.CLIENT_CONTEXT]: orderID
-        }
-    });
-}
-
 export type ValidatePaymentMethodOptions = {|
     clientAccessToken : string,
     orderID : string,
@@ -420,7 +405,13 @@ type SupplementalOrderInfo = {|
         |},
         flags : {|
             isShippingAddressRequired? : boolean
-        |}
+        |},
+        payees? : $ReadOnlyArray<{|
+            merchantId? : string,
+            email? : {|
+                stringValue? : string
+            |}
+        |}>
     |}
 |};
 
@@ -447,6 +438,12 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                         hideShipping
                         isShippingAddressRequired
                         isChangeShippingAddressAllowed
+                    },
+                    payees {
+                        merchantId
+                        email {
+                            stringValue
+                        }
                     }
                 }
             }
