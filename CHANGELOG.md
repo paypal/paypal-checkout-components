@@ -1,3 +1,10 @@
+## <small>5.0.93 (2020-05-27)</small>
+
+* Fix dropdown menu left border ([3519056](http://github.paypal.com/paypal/paypal-checkout/commit/3519056))
+* Updated style of buttons when on focus to improve a11y (#1317) ([159724e](http://github.paypal.com/paypal/paypal-checkout/commit/159724e)), closes [#1317](http://github.paypal.com/paypal/paypal-checkout/issues/1317)
+
+
+
 ## <small>5.0.92 (2020-05-21)</small>
 
 * add new title for buttons iframe (#1315) ([725bd42](http://github.paypal.com/paypal/paypal-checkout/commit/725bd42)), closes [#1315](http://github.paypal.com/paypal/paypal-checkout/issues/1315)
