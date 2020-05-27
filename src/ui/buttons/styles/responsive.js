@@ -82,8 +82,8 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     height: 100%;
                     right: 0;
                     top: 0;
-                    width: ${ buttonHeight }px;
-                    border-left: 1px solid rgba(100, 100, 100, 0.1);
+                    width: ${ buttonHeight + 2 }px;
+                    border-left: 2px solid white;
                 }
 
                 .${ CLASS.MENU_TOGGLE }:hover {
