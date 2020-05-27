@@ -361,14 +361,14 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     const hasTabIndex = [
         FUNDING.CARD
     ].indexOf(source) === -1;
-    const role = source === FUNDING.CARD ? {} : { role: 'button'};
+    const role = source === FUNDING.CARD ? {} : { role: 'button' };
     return (
         <div
             { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
             { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
             { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
-            { ...role }  
+            { ...role }
             tabindex={ hasTabIndex && 0 }>
             { source === FUNDING.CARD ? contentText : renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding, allowedAnimation }) }
         </div>
