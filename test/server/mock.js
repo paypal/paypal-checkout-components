@@ -71,16 +71,14 @@ export async function getWallet() : Promise<Object> {
             {
                 'funding_sources': [
                     {
-                        'primary_instrument': false,
                         'credit':             {
-                            'id':   'BC-YMBX4GJLEKMQW',
-                            'type': 'BILL_ME_LATER'
-                        },
-                        'one_click_eligibility': {
-                            eligible: false
+                            'id':   'BC-YMBX4GJLEKMQW'
                         }
                     }
-                ]
+                ],
+                'one_click_eligibility': {
+                    eligible: false
+                }
             }
         ]
     };

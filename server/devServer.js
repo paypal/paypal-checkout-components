@@ -216,16 +216,15 @@ const getWallet = () => {
             {
                 'funding_sources': [
                     {
-                        'email':              'foo@bar.com',
-                        'credit':             {
-                            'id':   'BC-YMBX4GJLEKMQW',
-                            'type': 'BILL_ME_LATER'
-                        },
-                        'one_click_eligibility': {
-                            eligible: false
+                        'email':  'foo@bar.com',
+                        'credit': {
+                            'id': 'BC-YMBX4GJLEKMQW'
                         }
                     }
-                ]
+                ],
+                'one_click_eligibility': {
+                    eligible: false
+                }
             }
         ]
     });
