@@ -952,7 +952,7 @@ window.spb = function(modules) {
             })).map((function(key) {
                 return urlEncode(key) + "=" + urlEncode(obj[key]);
             })).join("&");
-        }(_extends(_extends({}, parseQuery(originalQuery)), props)) : originalQuery;
+        }(_extends({}, parseQuery(originalQuery), props)) : originalQuery;
     }
     function extendUrl(url, options) {
         var query = options.query || {};
@@ -1181,7 +1181,7 @@ window.spb = function(modules) {
                     void 0 === payload && (payload = {});
                     if (!dom_isBrowser()) return logger;
                     prefix && (event = prefix + "_" + event);
-                    var logPayload = _extends(_extends({}, objFilter(payload)), {}, {
+                    var logPayload = _extends({}, objFilter(payload), {
                         timestamp: Date.now().toString()
                     });
                     for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
@@ -1504,22 +1504,22 @@ window.spb = function(modules) {
                     create: function(data) {
                         var order = _extends({}, data);
                         if (order.intent && order.intent.toLowerCase() !== intent) throw new Error("Unexpected intent: " + order.intent + " passed to order.create. Please ensure you are passing /sdk/js?intent=" + order.intent.toLowerCase() + " in the paypal script tag.");
-                        (order = _extends(_extends({}, order), {}, {
+                        (order = _extends({}, order, {
                             intent: intent.toUpperCase()
                         })).purchase_units = order.purchase_units.map((function(unit) {
                             if (unit.amount.currency_code && unit.amount.currency_code !== currency) throw new Error("Unexpected currency: " + unit.amount.currency_code + " passed to order.create. Please ensure you are passing /sdk/js?currency=" + unit.amount.currency_code + " in the paypal script tag.");
                             var payee = unit.payee;
                             if (merchantID && 1 === merchantID.length && merchantID[0]) {
                                 var payeeID = merchantID[0];
-                                payee = isEmailAddress(payeeID) ? _extends(_extends({}, payee), {}, {
+                                payee = isEmailAddress(payeeID) ? _extends({}, payee, {
                                     email_address: payeeID
-                                }) : _extends(_extends({}, payee), {}, {
+                                }) : _extends({}, payee, {
                                     merchant_id: payeeID
                                 });
                             }
-                            return _extends(_extends({}, unit), {}, {
+                            return _extends({}, unit, {
                                 payee: payee,
-                                amount: _extends(_extends({}, unit.amount), {}, {
+                                amount: _extends({}, unit.amount, {
                                     currency_code: currency
                                 })
                             });
@@ -2516,15 +2516,13 @@ window.spb = function(modules) {
                         if (!clientID) throw new Error("Expected clientID");
                         return _createOrder().then((function(orderID) {
                             return function(_ref5) {
-                                var connect = _ref5.connect;
                                 return callGraphQL({
                                     name: "GetConnectURL",
-                                    query: "\n            query GetConnectURL(\n                $clientID: String!\n                $orderID: String!\n                $scopes: [String]!\n                $billingType: String\n                $fundingSource: String\n            ) {\n                auth(\n                    clientId: $clientID\n                ) {\n                    connectUrl(\n                        token: $orderID\n                        scopes: $scopes\n                        billingType: $billingType\n                        fundingSource: $fundingSource\n                    ) {\n                        href\n                    }\n                }\n            }\n        ",
+                                    query: "\n            query GetConnectURL(\n                $clientID: String!\n                $orderID: String!\n                $scopes: [String]!\n                $fundingSource: String\n            ) {\n                auth(\n                    clientId: $clientID\n                ) {\n                    connectUrl(\n                        token: $orderID\n                        scopes: $scopes\n                        fundingSource: $fundingSource\n                    ) {\n                        href\n                    }\n                }\n            }\n        ",
                                     variables: {
                                         clientID: _ref5.clientID,
                                         orderID: _ref5.orderID,
-                                        scopes: connect.scopes,
-                                        billingType: connect.billingType,
+                                        scopes: _ref5.connect.scopes,
                                         fundingSource: _ref5.fundingSource
                                     }
                                 }).then((function(_ref6) {
@@ -2536,11 +2534,22 @@ window.spb = function(modules) {
                                 fundingSource: fundingSource,
                                 connect: connect
                             }).then((function(connectURL) {
+                                var _getLogger$info$track;
+                                getLogger().info("connect_redirect", {
+                                    connectURL: connectURL
+                                }).track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_connect_redirect", 
+                                _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
+                                _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
                                 return extendUrl(connectURL, {
                                     query: {
                                         sdkMeta: sdkMeta
                                     }
                                 });
+                            })).catch((function(err) {
+                                getLogger().error("connect_redirect_error", {
+                                    err: stringifyError(err)
+                                });
+                                throw err;
                             }));
                         }));
                     } : null,
@@ -2787,7 +2796,7 @@ window.spb = function(modules) {
                 return checkout.init({
                     props: props,
                     components: components,
-                    payment: _extends(_extends({}, payment), {}, {
+                    payment: _extends({}, payment, {
                         isClick: !1
                     }),
                     serviceData: serviceData,
@@ -2937,7 +2946,7 @@ window.spb = function(modules) {
                                     props: props,
                                     components: components,
                                     serviceData: serviceData,
-                                    payment: _extends(_extends({}, payment), {}, {
+                                    payment: _extends({}, payment, {
                                         isClick: !1,
                                         buyerIntent: "pay_with_different_funding_shipping"
                                     }),
@@ -3003,10 +3012,9 @@ window.spb = function(modules) {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref8) {
-                    var win = _ref8.win;
                     return initiatePayment({
-                        payment: _extends(_extends({}, payment), {}, {
-                            win: win,
+                        payment: _extends({}, payment, {
+                            win: _ref8.win,
                             buyerIntent: "pay_with_different_funding_shipping"
                         })
                     });
@@ -3015,10 +3023,9 @@ window.spb = function(modules) {
                 label: content.useDifferentAccount,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref9) {
-                    var win = _ref9.win;
                     return initiatePayment({
-                        payment: _extends(_extends({}, payment), {}, {
-                            win: win,
+                        payment: _extends({}, payment, {
+                            win: _ref9.win,
                             buyerIntent: "pay_with_different_account"
                         })
                     });
@@ -3098,7 +3105,7 @@ window.spb = function(modules) {
                     props: props,
                     components: components,
                     serviceData: serviceData,
-                    payment: _extends(_extends({}, payment), {}, {
+                    payment: _extends({}, payment, {
                         isClick: !1,
                         buyerIntent: "pay_with_different_funding_shipping"
                     }),
@@ -3165,10 +3172,9 @@ window.spb = function(modules) {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref6) {
-                    var win = _ref6.win;
                     return initiatePayment({
-                        payment: _extends(_extends({}, payment), {}, {
-                            win: win,
+                        payment: _extends({}, payment, {
+                            win: _ref6.win,
                             buyerIntent: "pay_with_different_funding_shipping"
                         })
                     });
@@ -3178,10 +3184,9 @@ window.spb = function(modules) {
                 label: content.useDifferentAccount,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref7) {
-                    var win = _ref7.win;
                     return initiatePayment({
-                        payment: _extends(_extends({}, payment), {}, {
-                            win: win,
+                        payment: _extends({}, payment, {
+                            win: _ref7.win,
                             buyerIntent: "pay_with_different_account"
                         })
                     });
@@ -3673,7 +3678,7 @@ window.spb = function(modules) {
             };
             var fallbackToWebCheckout = function(fallbackWin) {
                 didFallback = !0;
-                var checkoutPayment = _extends(_extends({}, payment), {}, {
+                var checkoutPayment = _extends({}, payment, {
                     win: fallbackWin,
                     isClick: !1
                 });
@@ -4120,7 +4125,7 @@ window.spb = function(modules) {
                         paymentProcessing = !0;
                         return function(_ref3) {
                             var payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config, components = _ref3.components, props = _ref3.props;
-                            var button = payment.button, fundingSource = payment.fundingSource;
+                            var button = payment.button, fundingSource = payment.fundingSource, instrumentType = payment.instrumentType;
                             return promise_ZalgoPromise.try((function() {
                                 var _getLogger$info$info$;
                                 var merchantID = serviceData.merchantID;
@@ -4145,9 +4150,10 @@ window.spb = function(modules) {
                                 }), _init$click = _init.click, start = _init.start, close = _init.close;
                                 var clickPromise = promise_ZalgoPromise.try(void 0 === _init$click ? promiseNoop : _init$click);
                                 clickPromise.catch(src_util_noop);
-                                getLogger().info("button_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, 
+                                getLogger().info("button_click").info("button_click_pay_flow_" + name).info("button_click_fundingsource_" + fundingSource).info("button_click_instrument_" + (instrumentType || "default")).track((_getLogger$info$info$ = {}, 
                                 _getLogger$info$info$.transition_name = "process_button_click", _getLogger$info$info$.selected_payment_method = fundingSource, 
-                                _getLogger$info$info$.payment_flow = name, _getLogger$info$info$)).flush();
+                                _getLogger$info$info$.chosen_fi_type = instrumentType, _getLogger$info$info$.payment_flow = name, 
+                                _getLogger$info$info$)).flush();
                                 return promise_ZalgoPromise.hash({
                                     valid: !onClick || onClick({
                                         fundingSource: fundingSource
@@ -4297,11 +4303,13 @@ window.spb = function(modules) {
                 var fundingSource = button.getAttribute("data-funding-source");
                 var paymentMethodID = button.getAttribute("data-payment-method-id");
                 var instrumentID = button.getAttribute("data-instrument-id");
+                var instrumentType = button.getAttribute("data-instrument-type");
                 return {
                     fundingSource: fundingSource,
                     card: button.getAttribute("data-card"),
                     paymentMethodID: paymentMethodID,
-                    instrumentID: instrumentID
+                    instrumentID: instrumentID,
+                    instrumentType: instrumentType
                 };
             }(button);
             var payment = {
@@ -4310,22 +4318,23 @@ window.spb = function(modules) {
                 card: _getSelectedFunding.card,
                 paymentMethodID: _getSelectedFunding.paymentMethodID,
                 instrumentID: _getSelectedFunding.instrumentID,
+                instrumentType: _getSelectedFunding.instrumentType,
                 isClick: !0,
                 buyerIntent: "pay"
             };
             var menuToggle = button.querySelector("[data-menu]");
-            !function(el) {
-                el.addEventListener("mousedown", (function() {
-                    el.classList.add("paypal-button-clicked");
-                }));
-                el.addEventListener("hover", (function(event) {
-                    if (el.classList.contains("paypal-button-clicked")) {
-                        event.preventDefault();
-                        el.blur();
-                        el.classList.remove("paypal-button-clicked");
-                    }
-                }));
-            }(button);
+            onFocus = function onFocus(event) {
+                el.removeEventListener("focus", onFocus);
+                event.preventDefault();
+                el.blur();
+                return !1;
+            }, (el = button).addEventListener("mousedown", (function() {
+                el.addEventListener("focus", onFocus);
+                setTimeout((function() {
+                    el.removeEventListener("focus", onFocus);
+                }), 1);
+            }));
+            var el, onFocus;
             dom_onClick(button, (function(event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -4373,7 +4382,7 @@ window.spb = function(modules) {
                                         serviceData: serviceData,
                                         initiatePayment: initiatePayment
                                     }).map((function(choice) {
-                                        return _extends(_extends({}, choice), {}, {
+                                        return _extends({}, choice, {
                                             onSelect: function() {
                                                 for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
                                                 choice.spinner && enableLoadingSpinner(button);
@@ -4524,7 +4533,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.263", _ref2;
+                _ref2.button_version = "2.0.264", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
@@ -4551,6 +4560,9 @@ window.spb = function(modules) {
                 var fundingSources = [].slice.call(document.querySelectorAll("[data-funding-source]")).map((function(el) {
                     return el.getAttribute("data-funding-source");
                 }));
+                var walletInstruments = [].slice.call(document.querySelectorAll("[data-instrument-type]")).map((function(el) {
+                    return el.getAttribute("data-instrument-type");
+                }));
                 var layout = style.layout, color = style.color, shape = style.shape, label = style.label, _style$tagline = style.tagline, tagline = void 0 === _style$tagline || _style$tagline;
                 logger.info("button_render");
                 logger.info("button_render_template_version_" + (document.body && document.body.getAttribute("data-render-version") || "unknown").replace(/[^a-zA-Z0-9]+/g, "_"));
@@ -4560,8 +4572,11 @@ window.spb = function(modules) {
                 logger.info("button_render_label_" + label);
                 logger.info("button_render_layout_" + layout);
                 logger.info("button_render_tagline_" + tagline.toString());
+                logger.info("button_render_funding_count_" + fundingSources.length);
+                logger.info("button_render_wallet_instrument_count_" + walletInstruments.length);
                 logger.track(((_logger$track = {}).transition_name = "process_button_load", _logger$track.eligible_payment_methods = fundingSources.join(":"), 
-                _logger$track.eligible_payment_count = fundingSources.length.toString(), _logger$track.page_load_time = pageRenderTime ? pageRenderTime.toString() : "", 
+                _logger$track.fi_list = walletInstruments.join(":"), _logger$track.eligible_payment_count = fundingSources.length.toString(), 
+                _logger$track.page_load_time = pageRenderTime ? pageRenderTime.toString() : "", 
                 _logger$track.button_layout = layout, _logger$track.button_color = color, _logger$track.button_size = "responsive", 
                 _logger$track.button_shape = shape, _logger$track.button_label = label, _logger$track.button_width = window.innerWidth, 
                 _logger$track.button_type = "iframe", _logger$track.button_tagline_enabled = tagline ? "1" : "0", 
