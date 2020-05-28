@@ -67,6 +67,10 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             return el.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
         });
 
+        const walletInstruments = Array.prototype.slice.call(document.querySelectorAll(`[${ DATA_ATTRIBUTES.INSTRUMENT_TYPE }]`)).map(el => {
+            return el.getAttribute(DATA_ATTRIBUTES.INSTRUMENT_TYPE);
+        });
+
         const { layout, color, shape, label, tagline = true } = style;
 
         logger.info(`button_render`);
@@ -81,6 +85,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
         logger.track({
             [FPTI_KEY.TRANSITION]:                    FPTI_TRANSITION.BUTTON_LOAD,
             [FPTI_KEY.FUNDING_LIST]:                  fundingSources.join(':'),
+            [FPTI_KEY.FI_LIST]:                       walletInstruments.join(':'),
             [FPTI_KEY.FUNDING_COUNT]:                 fundingSources.length.toString(),
             [FPTI_KEY.PAGE_LOAD_TIME]:                pageRenderTime ? pageRenderTime.toString() : '',
             [FTPI_BUTTON_KEY.BUTTON_LAYOUT]:          layout,

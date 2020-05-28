@@ -1,6 +1,6 @@
 /* @flow */
 
-import { FUNDING, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { querySelectorAll } from 'belter/src';
 
 import { DATA_ATTRIBUTES, CLASS } from '../constants';
@@ -9,14 +9,15 @@ export function getButtons() : $ReadOnlyArray<HTMLElement> {
     return querySelectorAll(`[ ${ DATA_ATTRIBUTES.FUNDING_SOURCE } ]`);
 }
 
-export function getSelectedFunding(button : HTMLElement) : {| fundingSource : $Values<typeof FUNDING>, card : $Values<typeof CARD>, paymentMethodID : ?string, instrumentID : ?string |} {
+export function getSelectedFunding(button : HTMLElement) : {| fundingSource : $Values<typeof FUNDING>, card : $Values<typeof CARD>, paymentMethodID : ?string, instrumentID : ?string, instrumentType : ?$Values<typeof WALLET_INSTRUMENT> |} {
     const fundingSource = button.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
     const paymentMethodID = button.getAttribute(DATA_ATTRIBUTES.PAYMENT_METHOD_ID);
     const instrumentID = button.getAttribute(DATA_ATTRIBUTES.INSTRUMENT_ID);
+    const instrumentType = button.getAttribute(DATA_ATTRIBUTES.INSTRUMENT_TYPE);
     const card = button.getAttribute(DATA_ATTRIBUTES.CARD);
 
     // $FlowFixMe
-    return { fundingSource, card, paymentMethodID, instrumentID };
+    return { fundingSource, card, paymentMethodID, instrumentID, instrumentType };
 }
 
 export function enableLoadingSpinner(button : HTMLElement) {

@@ -2,14 +2,14 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups, stringifyError, extendUrl } from 'belter/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
 import type { ProxyWindow } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
 import { enableVault, validatePaymentMethod, exchangeAccessTokenForAuthCode, getConnectURL } from '../api';
-import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT } from '../constants';
+import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
 
@@ -175,11 +175,23 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
 
                 return createOrder().then(orderID => {
                     return getConnectURL({ orderID, clientID, fundingSource, connect }).then(connectURL => {
+                        getLogger()
+                            .info('connect_redirect', { connectURL })
+                            .track({
+                                [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CONNECT_REDIRECT,
+                                [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
+                                [FPTI_KEY.TOKEN]:        orderID,
+                                [FPTI_KEY.CONTEXT_ID]:   orderID
+                            }).flush();
+
                         return extendUrl(connectURL, {
                             query: {
                                 sdkMeta
                             }
                         });
+                    }).catch(err => {
+                        getLogger().error('connect_redirect_error', { err: stringifyError(err) });
+                        throw err;
                     });
                 });
             } : null,

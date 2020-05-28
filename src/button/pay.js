@@ -59,7 +59,7 @@ type InitiatePaymentOptions = {|
 |};
 
 export function initiatePaymentFlow({ payment, serviceData, config, components, props } : InitiatePaymentOptions) : ZalgoPromise<void> {
-    const { button, fundingSource } = payment;
+    const { button, fundingSource, instrumentType } = payment;
 
     return ZalgoPromise.try(() => {
         const { personalization, merchantID } = serviceData;
@@ -73,11 +73,15 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
         const clickPromise = ZalgoPromise.try(click);
         clickPromise.catch(noop);
 
-        getLogger().info(`button_click`).info(`pay_flow_${ name }`).track({
-            [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.BUTTON_CLICK,
-            [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
-            [FPTI_KEY.PAYMENT_FLOW]:   name
-        }).flush();
+        getLogger()
+            .info(`button_click`)
+            .info(`pay_flow_${ name }`)
+            .track({
+                [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.BUTTON_CLICK,
+                [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
+                [FPTI_KEY.CHOSEN_FI_TYPE]: instrumentType,
+                [FPTI_KEY.PAYMENT_FLOW]:   name
+            }).flush();
 
         return ZalgoPromise.hash({
             valid: onClick ? onClick({ fundingSource }) : true

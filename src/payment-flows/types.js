@@ -2,7 +2,7 @@
 
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import type { ButtonProps, Components, ServiceData, Config } from '../button/props';
 import type { ProxyWindow, MenuChoices } from '../types';
@@ -21,6 +21,7 @@ export type Payment = {|
     button : HTMLElement,
     win? : ?(ProxyWindow | CrossDomainWindowType),
     fundingSource : $Values<typeof FUNDING>,
+    instrumentType? : ?$Values<typeof WALLET_INSTRUMENT>,
     card : ?$Values<typeof CARD>,
     paymentMethodID? : ?string,
     instrumentID? : ?string,

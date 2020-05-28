@@ -28,6 +28,7 @@ export const DATA_ATTRIBUTES = {
     CARD:              'data-card',
     PAYMENT_METHOD_ID: 'data-payment-method-id',
     INSTRUMENT_ID:     'data-instrument-id',
+    INSTRUMENT_TYPE:   'data-instrument-type',
     MENU:              'data-menu',
     NONCE:             'data-nonce',
     RENDER_VERSION:    'data-render-version',
@@ -98,6 +99,8 @@ export const FPTI_TRANSITION = {
     CHECKOUT_SHIPPING_CHANGE: ('process_checkout_shipping_change' : 'process_checkout_shipping_change'),
     CHECKOUT_APPROVE:         ('process_checkout_approve' : 'process_checkout_approve'),
     CHECKOUT_CANCEL:          ('process_checkout_cancel' : 'process_checkout_cancel'),
+
+    CONNECT_REDIRECT:         ('process_connect_redirect' : 'process_connect_redirect'),
 
     NATIVE_DETECT_APP_SWITCH: ('native_detect_app_switch' : 'native_detect_app_switch'),
     NATIVE_DETECT_WEB_SWITCH: ('native_detect_web_switch' : 'native_detect_web_switch'),
