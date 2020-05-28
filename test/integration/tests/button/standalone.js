@@ -18,6 +18,10 @@ describe(`paypal standalone buttons`, () => {
     });
 
     for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
+        if (!window.__TEST_FUNDING_ELIGIBILITY__[fundingSource]) {
+            continue;
+        }
+
         it(`should render a standalone ${ fundingSource } button and succeed when eligible`, () => {
             return wrapPromise(({ expect }) => {
                 if (fundingSource === FUNDING.VENMO) {
