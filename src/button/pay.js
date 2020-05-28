@@ -75,7 +75,9 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
         getLogger()
             .info(`button_click`)
-            .info(`pay_flow_${ name }`)
+            .info(`button_click_pay_flow_${ name }`)
+            .info(`button_click_fundingsource_${ fundingSource }`)
+            .info(`button_click_instrument_${ instrumentType || 'default' }`)
             .track({
                 [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.BUTTON_CLICK,
                 [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,

@@ -81,6 +81,8 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
         logger.info(`button_render_label_${ label }`);
         logger.info(`button_render_layout_${ layout }`);
         logger.info(`button_render_tagline_${ tagline.toString() }`);
+        logger.info(`button_render_funding_count_${ fundingSources.length }`);
+        logger.info(`button_render_wallet_instrument_count_${ walletInstruments.length }`);
 
         logger.track({
             [FPTI_KEY.TRANSITION]:                    FPTI_TRANSITION.BUTTON_LOAD,
