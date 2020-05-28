@@ -204,7 +204,7 @@ export function WalletLabel({ logoColor, instrument, locale, content, commit } :
                 }
                 <div class='label'>
                     <div class='limit'>
-                        <Text>{instrument.label}</Text>
+                        <span>{ instrument.label }</span>
                     </div>
                 </div>
             </div>
