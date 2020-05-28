@@ -63,11 +63,6 @@ export const USER_EXPERIENCE_FLOW = {
     INLINE:    'INLINE'
 };
 
-export const DOM_EVENT = {
-    MOUSEDOWN: 'mousedown',
-    HOVER:     'hover'
-};
-
 export const PRODUCT_FLOW = {
     SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
 };

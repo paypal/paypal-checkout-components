@@ -1,12 +1,12 @@
 /* @flow */
 
-import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError } from 'belter/src';
+import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError, preventClickFocus } from 'belter/src';
 import { COUNTRY, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
 import type { PersonalizationType, ContentType, Wallet } from '../types';
-import { fixClickFocus, getLogger } from '../lib';
+import { getLogger } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
 import { type Payment } from '../payment-flows';
@@ -148,7 +148,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         const payment = { button, fundingSource, card, paymentMethodID, instrumentID, instrumentType, isClick: true, buyerIntent: BUYER_INTENT.PAY };
         const menuToggle = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
 
-        fixClickFocus(button);
+        preventClickFocus(button);
         onElementClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
