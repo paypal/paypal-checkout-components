@@ -5,7 +5,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { FUNDING, ENV, type LocaleType } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { noop } from 'belter/src';
+import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 
 import type { ContentType, Wallet, WalletInstrument } from '../../types';
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR } from '../../constants';
@@ -87,13 +87,18 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     const clickHandler = (event, opts) => {
         event.preventDefault();
         event.stopPropagation();
-        event.target.blur();
         onClick(event, { fundingSource, ...opts });
     };
 
     const keypressHandler = (event, opts) => {
         if (event.keyCode === 13 || event.keyCode === 32) {
             clickHandler(event, opts);
+        }
+    };
+
+    const onButtonRender = el => {
+        if (isBrowser() && isElement(el)) {
+            preventClickFocus(el);
         }
     };
 
@@ -166,6 +171,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
             ].join(' ') }
             onClick={ clickHandler }
+            onRender={ onButtonRender }
             onKeyPress={ keypressHandler }
             tabindex='0'
             aria-label={ labelText }>
