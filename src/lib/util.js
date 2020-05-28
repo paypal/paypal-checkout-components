@@ -3,8 +3,6 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { noop } from 'belter/src';
 
-import { CLASS } from '../constants';
-
 export function unresolvedPromise<T>() : ZalgoPromise<T> {
     return new ZalgoPromise(noop);
 }
