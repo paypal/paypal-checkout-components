@@ -1,3 +1,11 @@
+## <small>5.0.94 (2020-05-28)</small>
+
+* Add data-instrument-type to button ([3a2533a](http://github.paypal.com/paypal/paypal-checkout/commit/3a2533a))
+* Fix standalone tests ([8dc61e0](http://github.paypal.com/paypal/paypal-checkout/commit/8dc61e0))
+* Use preventClickFocus on buttons ([58e3f5c](http://github.paypal.com/paypal/paypal-checkout/commit/58e3f5c))
+
+
+
 ## <small>5.0.93 (2020-05-27)</small>
 
 * Fix dropdown menu left border ([3519056](http://github.paypal.com/paypal/paypal-checkout/commit/3519056))
