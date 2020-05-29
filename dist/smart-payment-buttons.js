@@ -3107,7 +3107,8 @@ window.spb = function(modules) {
                     serviceData: serviceData,
                     payment: _extends({}, payment, {
                         isClick: !1,
-                        buyerIntent: "pay_with_different_funding_shipping"
+                        buyerIntent: "pay_with_different_funding_shipping",
+                        fundingSource: "credit" === instrument.type ? "credit" : fundingSource
                     }),
                     config: config
                 });
@@ -3167,7 +3168,9 @@ window.spb = function(modules) {
             if (!serviceData.buyerAccessToken) throw new Error("Can not render wallet menu without buyer access token");
             if (!wallet) throw new Error("Can not render wallet menu without wallet");
             if (!instrumentID) throw new Error("Can not render wallet menu without instrumentID");
-            if (!getInstrument(wallet, fundingSource, instrumentID)) throw new Error("Can not render wallet menu without instrument");
+            var instrument = getInstrument(wallet, fundingSource, instrumentID);
+            if (!instrument) throw new Error("Can not render wallet menu without instrument");
+            var newFundingSource = "credit" === instrument.type ? "credit" : fundingSource;
             var CHOOSE_CARD = {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: wallet_capture_POPUP_OPTIONS,
@@ -3175,7 +3178,8 @@ window.spb = function(modules) {
                     return initiatePayment({
                         payment: _extends({}, payment, {
                             win: _ref6.win,
-                            buyerIntent: "pay_with_different_funding_shipping"
+                            buyerIntent: "pay_with_different_funding_shipping",
+                            fundingSource: newFundingSource
                         })
                     });
                 }
@@ -3187,7 +3191,8 @@ window.spb = function(modules) {
                     return initiatePayment({
                         payment: _extends({}, payment, {
                             win: _ref7.win,
-                            buyerIntent: "pay_with_different_account"
+                            buyerIntent: "pay_with_different_account",
+                            fundingSource: newFundingSource
                         })
                     });
                 }
@@ -4533,7 +4538,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.264", _ref2;
+                _ref2.button_version = "2.0.265", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
