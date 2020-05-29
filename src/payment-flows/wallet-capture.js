@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { stringifyError } from 'belter/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
 import { getSupplementalOrderInfo, oneClickApproveOrder } from '../api';
@@ -123,7 +123,10 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
     const getWebCheckoutFallback = () => {
         return checkout.init({
             props, components, serviceData, payment: {
-                ...payment, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING
+                ...payment,
+                isClick:       false,
+                buyerIntent:   BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING,
+                fundingSource: (instrument.type === WALLET_INSTRUMENT.CREDIT) ? FUNDING.CREDIT : fundingSource
             }, config
         });
     };
@@ -212,11 +215,17 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
         throw new Error(`Can not render wallet menu without instrument`);
     }
 
+    const newFundingSource = (instrument.type === WALLET_INSTRUMENT.CREDIT)
+        ? FUNDING.CREDIT
+        : fundingSource;
+
     const CHOOSE_CARD = {
         label:    content.chooseCard || content.chooseCardOrShipping,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
-            return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
+            return initiatePayment({
+                payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING, fundingSource: newFundingSource }
+            });
         }
     };
 
@@ -224,7 +233,9 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
         label:    content.useDifferentAccount,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
-            return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
+            return initiatePayment({
+                payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT, fundingSource: newFundingSource }
+            });
         }
     };
 
