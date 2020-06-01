@@ -210,7 +210,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                 });
             },
     
-            onApprove: ({ payerID, paymentID, billingToken, subscriptionID }) => {
+            onApprove: ({ payerID, paymentID, billingToken, subscriptionID, authCode }) => {
                 approved = true;
                 getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
     
@@ -220,7 +220,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                         initCheckout({ props, components, serviceData, config, payment: { button, fundingSource, card, buyerIntent, isClick: false } })
                             .start().finally(unresolvedPromise));
                             
-                    return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken }, { restart }).catch(noop);
+                    return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart }).catch(noop);
                 });
             },
     

@@ -19,6 +19,7 @@ export type XOnApproveDataType = {|
     paymentID : ?string,
     subscriptionID? : ?string,
     billingToken? : ?string,
+    authCode? : ?string,
     facilitatorAccessToken : string
 |};
 
@@ -209,6 +210,7 @@ export type OnApproveData = {|
     billingToken? : ?string,
     subscriptionID? : ?string,
     buyerAccessToken? : ?string,
+    authCode? : ?string,
     forceRestAPI? : boolean
 |};
 
@@ -243,7 +245,7 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
         throw new Error(`Expected onApprove`);
     }
 
-    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
+    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
         return ZalgoPromise.try(() => {
             if (upgradeLSAT && buyerAccessToken) {
                 return createOrder().then(orderID => upgradeFacilitatorAccessToken(facilitatorAccessToken, { buyerAccessToken, orderID }));
@@ -269,7 +271,7 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
                 billingToken = billingToken || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken);
                 payerID = payerID || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.buyer && supplementalData.checkoutSession.buyer.userId);
                 
-                const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken };
+                const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken, authCode };
                 const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
 
                 return onApprove(data, actions).catch(err => {
