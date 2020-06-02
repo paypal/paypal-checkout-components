@@ -1111,4 +1111,166 @@ describe('vault cases', () => {
             gqlMock.done();
         });
     });
+
+    it('should run client config and validate calls sequentially for edit-fi case', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.clientAccessToken = 'abc-123';
+
+            const orderID = generateOrderID();
+            const paymentMethodID = 'xyz123';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return orderID;
+            }));
+
+            let vpmCallInProgress = false;
+            let updateClientConfigCallInProgress = false;
+
+            const vpmCall = getValidatePaymentMethodApiMock({
+                extraHandler: expect('vpmCall', () => {
+                    if (updateClientConfigCallInProgress) {
+                        throw new Error(`Expected client config call to not be in progress during validate call`);
+                    }
+
+                    vpmCallInProgress = true;
+                    return ZalgoPromise.delay(100).then(() => {
+                        vpmCallInProgress = false;
+                        return {};
+                    });
+                })
+            }).expectCalls();
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('gqlCall', ({ data }) => {
+                    if (data.query.includes('mutation UpdateClientConfig')) {
+                        if (vpmCallInProgress) {
+                            throw new Error(`Expected vpm call to not be in progress during client config call`);
+                        }
+
+                        updateClientConfigCallInProgress = true;
+                        return ZalgoPromise.delay(100).then(() => {
+                            updateClientConfigCallInProgress = false;
+                            return {};
+                        });
+                    }
+
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: false
+                                        }
+                                    },
+                                    flags: {
+                                        isShippingAddressRequired: false
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        };
+                    }
+                })
+            }).expectCalls();
+
+            const win = {};
+            
+            const Checkout = window.paypal.Checkout;
+            window.paypal.Checkout = expect('Checkout', (props) => {
+                if (!props.window) {
+                    throw new Error(`Expected window to be passed`);
+                }
+
+                if (props.window !== win) {
+                    throw new Error(`Expected correct window to be passed`);
+                }
+
+                return Checkout(props);
+            });
+
+            const content = {
+                chooseCardOrShipping: 'Choose card or shipping'
+            };
+
+            window.paypal.Menu = expect('Menu', (initialMenuProps) => {
+                if (!initialMenuProps.clientID) {
+                    throw new Error(`Expected initial menu props to contain clientID`);
+                }
+
+                return {
+                    renderTo: expect('menuRender', async (element) => {
+                        if (!element) {
+                            throw new Error(`Expected element to be passed`);
+                        }
+                    }),
+                    updateProps: expect('menuUpdateProps', async (menuProps) => {
+                        if (typeof menuProps.verticalOffset !== 'number') {
+                            throw new TypeError(`Expected vertical offset to be passed`);
+                        }
+
+                        if (!Array.isArray(menuProps.choices)) {
+                            throw new TypeError(`Expected choices array to be passed`);
+                        }
+
+                        const choice = menuProps.choices.find(({ label }) => label === content.chooseCardOrShipping);
+
+                        if (!choice) {
+                            throw new Error(`Expected to find choose card or shipping button`);
+                        }
+
+                        if (!choice.popup || !choice.popup.width || !choice.popup.height) {
+                            throw new Error(`Expected popup option to be passed`);
+                        }
+
+                        choice.onSelect({ win });
+                    }),
+                    hide: expect('hide', mockAsyncProp()),
+                    show: expect('show', mockAsyncProp())
+                };
+            });
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                vpmCall.done();
+                gqlMock.done();
+            }));
+
+            const fundingEligibility = {
+                [ FUNDING.PAYPAL ]: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    paymentMethodID,
+                            label: {
+                                description: 'foo@bar.com'
+                            }
+                        }
+                    ]
+                }
+            };
+
+            createButtonHTML({ fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility, content });
+
+            await clickMenu(FUNDING.PAYPAL);
+        });
+    });
 });

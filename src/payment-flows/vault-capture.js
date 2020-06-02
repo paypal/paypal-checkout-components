@@ -10,6 +10,7 @@ import type { CreateOrder } from '../props';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault } from '../api';
 import { TARGET_ELEMENT, BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
+import { updateButtonClientConfig } from '../button/orders';
 
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
@@ -168,7 +169,7 @@ const POPUP_OPTIONS = {
 };
 
 function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuOptions) : MenuChoices {
-    const { clientAccessToken } = props;
+    const { clientAccessToken, createOrder, enableThreeDomainSecure, partnerAttributionID, sessionID, clientMetadataID } = props;
     const { fundingSource, paymentMethodID, button } = payment;
     const { content } = serviceData;
 
@@ -182,7 +183,13 @@ function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuO
                 label:    content.chooseCard || content.chooseCardOrShipping,
                 popup:    POPUP_OPTIONS,
                 onSelect: ({ win }) => {
-                    return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
+                    return ZalgoPromise.try(() => {
+                        return createOrder();
+                    }).then(orderID => {
+                        return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID: clientMetadataID || sessionID });
+                    }).then(() => {
+                        return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
+                    });
                 }
             },
             {
@@ -212,16 +219,21 @@ function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuO
     throw new Error(`Can not render menu for ${ fundingSource }`);
 }
 
+function updateVaultClientConfig({ orderID, payment }) : ZalgoPromise<void> {
+    const { fundingSource } = payment;
+    return updateButtonClientConfig({ fundingSource, orderID, inline: true });
+}
+
 export const vaultCapture : PaymentFlow = {
-    name:              'vault_capture',
-    setup:             setupVaultCapture,
-    isEligible:        isVaultCaptureEligible,
-    isPaymentEligible: isVaultCapturePaymentEligible,
-    init:              initVaultCapture,
-    setupMenu:         setupVaultMenu,
-    spinner:           true,
-    inline:            true,
-    instant:           true
+    name:               'vault_capture',
+    setup:              setupVaultCapture,
+    isEligible:         isVaultCaptureEligible,
+    isPaymentEligible:  isVaultCapturePaymentEligible,
+    init:               initVaultCapture,
+    setupMenu:          setupVaultMenu,
+    updateClientConfig: updateVaultClientConfig,
+    spinner:            true,
+    inline:             true
 };
 
 

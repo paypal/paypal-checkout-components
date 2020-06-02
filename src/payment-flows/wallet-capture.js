@@ -8,6 +8,7 @@ import type { MenuChoices, Wallet, WalletInstrument } from '../types';
 import { getSupplementalOrderInfo, oneClickApproveOrder } from '../api';
 import { BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
+import { updateButtonClientConfig } from '../button/orders';
 
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
@@ -256,14 +257,19 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
     throw new Error(`Can not render menu for ${ fundingSource }`);
 }
 
+function updateWalletClientConfig({ orderID, payment }) : ZalgoPromise<void> {
+    const { fundingSource } = payment;
+    return updateButtonClientConfig({ fundingSource, orderID, inline: true });
+}
+
 export const walletCapture : PaymentFlow = {
-    name:              'wallet_capture',
-    setup:             setupWalletCapture,
-    isEligible:        isWalletCaptureEligible,
-    isPaymentEligible: isWalletCapturePaymentEligible,
-    init:              initWalletCapture,
-    setupMenu:         setupWalletMenu,
-    spinner:           true,
-    inline:            true,
-    instant:           true
+    name:               'wallet_capture',
+    setup:              setupWalletCapture,
+    isEligible:         isWalletCaptureEligible,
+    isPaymentEligible:  isWalletCapturePaymentEligible,
+    init:               initWalletCapture,
+    setupMenu:          setupWalletMenu,
+    updateClientConfig: updateWalletClientConfig,
+    spinner:            true,
+    inline:             true
 };

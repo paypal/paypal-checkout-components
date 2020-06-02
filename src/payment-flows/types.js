@@ -66,6 +66,11 @@ export type MenuOptions = {|
     initiatePayment : ({| payment : Payment |}) => ZalgoPromise<void>
 |};
 
+export type UpdateClientConfigOptions = {|
+    orderID : string,
+    payment : Payment
+|};
+
 export type PaymentFlow = {|
     name : string,
     setup : (SetupOptions) => ZalgoPromise<void> | void,
@@ -73,8 +78,8 @@ export type PaymentFlow = {|
     isPaymentEligible : (IsPaymentEligibleOptions) => boolean,
     init : <T>(InitOptions, overrides? : T) => PaymentFlowInstance, // eslint-disable-line no-undef
     setupMenu? : (MenuOptions) => MenuChoices,
+    updateClientConfig? : (UpdateClientConfigOptions) => ZalgoPromise<void>,
     spinner? : boolean,
     inline? : boolean,
-    popup? : boolean,
-    instant? : boolean
+    popup? : boolean
 |};

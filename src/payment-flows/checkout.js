@@ -8,10 +8,11 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
 import type { ProxyWindow } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
-import { enableVault, validatePaymentMethod, exchangeAccessTokenForAuthCode, getConnectURL } from '../api';
+import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
+import { updateButtonClientConfig } from '../button/orders';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from './types';
 
@@ -136,14 +137,12 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { Checkout } = components;
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
-        createBillingAgreement, createSubscription, onClick, enableThreeDomainSecure,
-        partnerAttributionID, clientID, connect, clientMetadataID: cmid } = props;
-    let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken, venmoPayloadID, buyerIntent,
-        paymentMethodID } = payment;
+        createBillingAgreement, createSubscription, onClick,
+        clientID, connect, clientMetadataID: cmid } = props;
+    let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
+        venmoPayloadID, buyerIntent } = payment;
     const { fundingEligibility, buyerCountry, sdkMeta } = serviceData;
     const { cspNonce } = config;
-
-    const clientMetadataID = cmid || sessionID;
 
     const context = getContext({ win, isClick });
 
@@ -201,8 +200,6 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     return ZalgoPromise.try(() => {
                         if (buyerIntent === BUYER_INTENT.PAY) {
                             return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription });
-                        } else if (buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING && clientAccessToken && paymentMethodID) {
-                            return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID });
                         }
                     }).then(() => {
                         return orderID;
@@ -305,10 +302,23 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     return { click, start, close };
 }
 
+function updateCheckoutClientConfig({ orderID, payment }) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
+        const { buyerIntent, fundingSource } = payment;
+        const updateClientConfigPromise = updateButtonClientConfig({ fundingSource, orderID, inline: false });
+    
+        // Block
+        if (buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING) {
+            return updateClientConfigPromise;
+        }
+    });
+}
+
 export const checkout : PaymentFlow = {
-    name:              'checkout',
-    setup:             setupCheckout,
-    isEligible:        isCheckoutEligible,
-    isPaymentEligible: isCheckoutPaymentEligible,
-    init:              initCheckout
+    name:               'checkout',
+    setup:              setupCheckout,
+    isEligible:         isCheckoutEligible,
+    isPaymentEligible:  isCheckoutPaymentEligible,
+    init:               initCheckout,
+    updateClientConfig: updateCheckoutClientConfig
 };

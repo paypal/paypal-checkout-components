@@ -67,7 +67,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
         sendPersonalizationBeacons(personalization);
 
-        const { name, init, inline, spinner, instant = false } = getPaymentFlow({ props, payment, config, components, serviceData });
+        const { name, init, inline, spinner, updateClientConfig } = getPaymentFlow({ props, payment, config, components, serviceData });
         const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
 
         const clickPromise = ZalgoPromise.try(click);
@@ -96,9 +96,15 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 enableLoadingSpinner(button);
             }
 
-            const clientConfigPromise = createOrder()
-                .then(orderID => updateButtonClientConfig({ orderID, fundingSource, inline }))
-                .catch(err => getLogger().error('update_client_config_error', { err: stringifyError(err) }));
+            const updateClientConfigPromise = createOrder()
+                .then(orderID => {
+                    if (updateClientConfig) {
+                        return updateClientConfig({ orderID, payment });
+                    }
+
+                    // Do not block by default
+                    updateButtonClientConfig({ orderID, fundingSource, inline });
+                }).catch(err => getLogger().error('update_client_config_error', { err: stringifyError(err) }));
 
             const {
                 intent:   expectedIntent,
@@ -106,9 +112,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             } = props;
 
             const startPromise = ZalgoPromise.try(() => {
-                if (instant) {
-                    return clientConfigPromise;
-                }
+                return updateClientConfigPromise;
             }).then(() => {
                 return start();
             });
