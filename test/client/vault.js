@@ -249,7 +249,7 @@ describe('vault cases', () => {
                                 }
                             },
                             flags: {
-                                isShippingAddressRequired: false
+                                isChangeShippingAddressAllowed: false
                             },
                             payees: [
                                 {
@@ -326,7 +326,7 @@ describe('vault cases', () => {
                                 }
                             },
                             flags: {
-                                isShippingAddressRequired: false
+                                isChangeShippingAddressAllowed: false
                             },
                             payees: [
                                 {
@@ -413,7 +413,7 @@ describe('vault cases', () => {
                                 }
                             },
                             flags: {
-                                isShippingAddressRequired: true
+                                isChangeShippingAddressAllowed: false
                             },
                             payees: [
                                 {
@@ -490,7 +490,7 @@ describe('vault cases', () => {
                                 }
                             },
                             flags: {
-                                isShippingAddressRequired: true
+                                isChangeShippingAddressAllowed: false
                             },
                             payees: [
                                 {
@@ -577,7 +577,7 @@ describe('vault cases', () => {
                                 }
                             },
                             flags: {
-                                isShippingAddressRequired: true
+                                isChangeShippingAddressAllowed: true
                             },
                             payees: [
                                 {
@@ -656,7 +656,7 @@ describe('vault cases', () => {
                                 }
                             },
                             flags: {
-                                isShippingAddressRequired: true
+                                isChangeShippingAddressAllowed: true
                             },
                             payees: [
                                 {
@@ -1065,7 +1065,7 @@ describe('vault cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: false
+                                        isChangeShippingAddressAllowed: false
                                     },
                                     payees: [
                                         {
@@ -1171,7 +1171,7 @@ describe('vault cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: false
+                                        isChangeShippingAddressAllowed: false
                                     },
                                     payees: [
                                         {

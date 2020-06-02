@@ -119,17 +119,13 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
 
     const shippingRequired = (orderID) => {
         return getSupplementalOrderInfo(orderID).then(order => {
-            const { flags: { isShippingAddressRequired }, cart: { shippingAddress } } = order.checkoutSession;
+            const { flags: { isChangeShippingAddressAllowed } } = order.checkoutSession;
 
-            if (!isShippingAddressRequired) {
-                return false;
+            if (isChangeShippingAddressAllowed) {
+                return true;
             }
 
-            if (shippingAddress && shippingAddress.isFullAddress) {
-                return false;
-            }
-
-            return true;
+            return false;
         });
     };
 

@@ -32,7 +32,7 @@ describe('wallet cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: false
+                                        isChangeShippingAddressAllowed: false
                                     },
                                     payees: [
                                         {
@@ -126,7 +126,7 @@ describe('wallet cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: true
+                                        isChangeShippingAddressAllowed: false
                                     },
                                     payees: [
                                         {
@@ -215,7 +215,7 @@ describe('wallet cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: true
+                                        isChangeShippingAddressAllowed: true
                                     },
                                     payees: [
                                         {
@@ -290,7 +290,7 @@ describe('wallet cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: false
+                                        isChangeShippingAddressAllowed: false
                                     },
                                     payees: [
                                         {
@@ -365,7 +365,7 @@ describe('wallet cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: false
+                                        isChangeShippingAddressAllowed: false
                                     },
                                     payees: [
                                         {
@@ -447,7 +447,7 @@ describe('wallet cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: false
+                                        isChangeShippingAddressAllowed: false
                                     },
                                     payees: [
                                         {
@@ -1071,7 +1071,7 @@ describe('wallet cases', () => {
                                         }
                                     },
                                     flags: {
-                                        isShippingAddressRequired: false
+                                        isChangeShippingAddressAllowed: false
                                     },
                                     payees: [
                                         {

@@ -396,9 +396,6 @@ type SupplementalOrderInfo = {|
                     currencyCode : string
                 |}
             |},
-            shippingAddress? : {|
-                isFullAddress? : boolean
-            |},
             payees? : $ReadOnlyArray<{|
                 merchantId? : string,
                 email? : {|
@@ -410,7 +407,7 @@ type SupplementalOrderInfo = {|
             userId? : string
         |},
         flags : {|
-            isShippingAddressRequired? : boolean
+            isChangeShippingAddressAllowed? : boolean
         |}
     |}
 |};
@@ -430,9 +427,6 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                                 currencyCode
                             }
                         }
-                        shippingAddress {
-                            isFullAddress
-                        }
                         payees {
                             merchantId
                             email {
@@ -441,8 +435,6 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                         }
                     }
                     flags {
-                        hideShipping
-                        isShippingAddressRequired
                         isChangeShippingAddressAllowed
                     }
                 }
