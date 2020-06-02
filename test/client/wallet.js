@@ -107,9 +107,15 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
             const payerID = uniqueID();
+            const orderID = generateOrderID();
+            const instrumentID = 'xyz123';
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
+                    
                     if (data.query.includes('query GetCheckoutDetails')) {
                         return {
                             data: {
@@ -152,9 +158,6 @@ describe('wallet cases', () => {
                     }
                 }
             }).expectCalls();
-
-            const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
 
             window.paypal.Menu = expect('Menu', mockMenu);
             window.paypal.Checkout = avoid('Checkout', window.paypal.Checkout);
@@ -200,8 +203,15 @@ describe('wallet cases', () => {
     it('should pay with a wallet instrument with shipping required and fall back to checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
 
+            const orderID = generateOrderID();
+            const instrumentID = 'xyz123';
+
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
+
                     if (data.query.includes('query GetCheckoutDetails')) {
                         return {
                             data: {
@@ -231,9 +241,6 @@ describe('wallet cases', () => {
                     }
                 }
             }).expectCalls();
-
-            const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
 
             window.paypal.Menu = expect('Menu', mockMenu);
             window.paypal.Checkout = expect('Checkout', window.paypal.Checkout);
@@ -275,8 +282,15 @@ describe('wallet cases', () => {
     it('should pay with a wallet instrument with shipping not required and oneClick not allowed and fall back to checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
 
+            const orderID = generateOrderID();
+            const instrumentID = 'xyz123';
+
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
+
                     if (data.query.includes('query GetCheckoutDetails')) {
                         return {
                             data: {
@@ -306,9 +320,6 @@ describe('wallet cases', () => {
                     }
                 }
             }).expectCalls();
-
-            const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
 
             window.paypal.Menu = expect('Menu', mockMenu);
             window.paypal.Checkout = expect('Checkout', window.paypal.Checkout);
@@ -350,8 +361,15 @@ describe('wallet cases', () => {
     it('should pay with credit wallet instrument with shipping not required and oneClick not allowed and fall back to checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
 
+            const orderID = generateOrderID();
+            const instrumentID = 'xyz123';
+
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
+
                     if (data.query.includes('query GetCheckoutDetails')) {
                         return {
                             data: {
@@ -381,9 +399,6 @@ describe('wallet cases', () => {
                     }
                 }
             }).expectCalls();
-
-            const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
 
             window.paypal.Menu = expect('Menu', mockMenu);
 
@@ -431,9 +446,15 @@ describe('wallet cases', () => {
 
     it('should pay with a wallet instrument, hit an error during approve, and fall back to checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
+            const orderID = generateOrderID();
+            const instrumentID = 'xyz123';
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
+
                     if (data.query.includes('query GetCheckoutDetails')) {
                         return {
                             data: {
@@ -473,9 +494,6 @@ describe('wallet cases', () => {
                     }
                 }
             }).expectCalls();
-
-            const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
 
             window.paypal.Menu = expect('Menu', mockMenu);
             window.paypal.Checkout = expect('Checkout', window.paypal.Checkout);
@@ -1049,12 +1067,18 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
             const payerID = uniqueID();
+            const orderID = generateOrderID();
+            const instrumentID = 'xyz123';
 
             let oneClickPayCallInProgress = false;
             let updateClientConfigCallInProgress = false;
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
+
                     if (data.query.includes('query GetCheckoutDetails')) {
                         return {
                             data: {
@@ -1118,9 +1142,6 @@ describe('wallet cases', () => {
                     }
                 }
             }).expectCalls();
-
-            const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
 
             window.paypal.Menu = expect('Menu', mockMenu);
             window.paypal.Checkout = avoid('Checkout', window.paypal.Checkout);

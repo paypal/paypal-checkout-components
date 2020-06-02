@@ -184,7 +184,7 @@ function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuO
                     }).then(orderID => {
                         return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID: clientMetadataID || sessionID });
                     }).then(() => {
-                        return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
+                        return initiatePayment({ props, payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
                     });
                 }
             },
@@ -192,7 +192,7 @@ function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuO
                 label:    content.useDifferentAccount,
                 popup:    POPUP_OPTIONS,
                 onSelect: ({ win }) => {
-                    return initiatePayment({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
+                    return initiatePayment({ props, payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
                 }
             }
         ];

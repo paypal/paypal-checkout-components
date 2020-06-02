@@ -143,7 +143,7 @@ type InitiateMenuOptions = {|
     serviceData : ServiceData,
     config : Config,
     components : Components,
-    initiatePayment : ({| payment : Payment |}) => ZalgoPromise<void>
+    initiatePayment : ({| props : ButtonProps, payment : Payment |}) => ZalgoPromise<void>
 |};
 
 export function initiateMenuFlow({ payment, serviceData, config, components, props, initiatePayment } : InitiateMenuOptions) : ZalgoPromise<void> {

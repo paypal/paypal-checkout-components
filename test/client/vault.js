@@ -1021,7 +1021,11 @@ describe('vault cases', () => {
             let updateClientConfigCallInProgress = false;
 
             const vpmCall = getValidatePaymentMethodApiMock({
-                extraHandler: expect('vpmCall', () => {
+                extraHandler: expect('vpmCall', ({ uri }) => {
+                    if (uri.indexOf(`/${ orderID }/`) === -1) {
+                        throw new Error(`Expected validate uri ${ uri } to contain order id ${ orderID }`);
+                    }
+
                     if (updateClientConfigCallInProgress) {
                         throw new Error(`Expected client config call to not be in progress during validate call`);
                     }
@@ -1036,6 +1040,9 @@ describe('vault cases', () => {
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('gqlCall', ({ data }) => {
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
 
                     if (data.query.includes('mutation UpdateClientConfig')) {
                         if (vpmCallInProgress) {
@@ -1112,6 +1119,7 @@ describe('vault cases', () => {
         });
     });
 
+
     it('should run client config and validate calls sequentially for edit-fi case', async () => {
         return await wrapPromise(async ({ expect }) => {
 
@@ -1128,7 +1136,11 @@ describe('vault cases', () => {
             let updateClientConfigCallInProgress = false;
 
             const vpmCall = getValidatePaymentMethodApiMock({
-                extraHandler: expect('vpmCall', () => {
+                extraHandler: expect('vpmCall', ({ uri }) => {
+                    if (uri.indexOf(`/${ orderID }/`) === -1) {
+                        throw new Error(`Expected validate uri ${ uri } to contain order id ${ orderID }`);
+                    }
+
                     if (updateClientConfigCallInProgress) {
                         throw new Error(`Expected client config call to not be in progress during validate call`);
                     }
@@ -1143,6 +1155,10 @@ describe('vault cases', () => {
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('gqlCall', ({ data }) => {
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
+                    
                     if (data.query.includes('mutation UpdateClientConfig')) {
                         if (vpmCallInProgress) {
                             throw new Error(`Expected vpm call to not be in progress during client config call`);

@@ -63,7 +63,7 @@ export type MenuOptions = {|
     props : ButtonProps,
     payment : Payment,
     serviceData : ServiceData,
-    initiatePayment : ({| payment : Payment |}) => ZalgoPromise<void>
+    initiatePayment : ({| props : ButtonProps, payment : Payment |}) => ZalgoPromise<void>
 |};
 
 export type UpdateClientConfigOptions = {|

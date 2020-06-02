@@ -458,9 +458,9 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method:  'POST',
         uri:     '/graphql',
-        handler: ({ data }) => {
+        handler: ({ uri, method, query, data }) => {
             if (options.extraHandler) {
-                const result = options.extraHandler({ data });
+                const result = options.extraHandler({ uri, method, query, data });
                 if (result) {
                     if (result.data && result.data.checkoutSession && result.data.checkoutSession.payees) {
                         result.data.checkoutSession.cart.payees = result.data.checkoutSession.payees;
@@ -547,9 +547,9 @@ export function getValidatePaymentMethodApiMock(options : Object = {}) : MockEnd
     return $mockEndpoint.register({
         method:  'POST',
         uri:     new RegExp('/v2/checkout/orders/[^/]+/validate-payment-method'),
-        handler: ({ data }) => {
+        handler: ({ uri, method, query, data }) => {
             if (options.extraHandler) {
-                const result = options.extraHandler({ data });
+                const result = options.extraHandler({ uri, method, query, data });
                 if (result) {
                     return result;
                 }

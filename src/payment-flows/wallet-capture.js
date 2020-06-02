@@ -190,7 +190,7 @@ const POPUP_OPTIONS = {
     height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
 };
 
-function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions) : MenuChoices {
+function setupWalletMenu({ props, payment, serviceData, initiatePayment } : MenuOptions) : MenuChoices {
     const { fundingSource, instrumentID } = payment;
     const { wallet, content, buyerAccessToken } = serviceData;
 
@@ -221,7 +221,7 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
             return initiatePayment({
-                payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING, fundingSource: newFundingSource }
+                props, payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING, fundingSource: newFundingSource }
             });
         }
     };
@@ -231,7 +231,7 @@ function setupWalletMenu({ payment, serviceData, initiatePayment } : MenuOptions
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
             return initiatePayment({
-                payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT, fundingSource: newFundingSource }
+                props, payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT, fundingSource: newFundingSource }
             });
         }
     };

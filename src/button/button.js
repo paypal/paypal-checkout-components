@@ -11,7 +11,7 @@ import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
 import { type Payment } from '../payment-flows';
 
-import { getProps, getConfig, getComponents, getServiceData, type ServerRiskData } from './props';
+import { getProps, getConfig, getComponents, getServiceData, type ServerRiskData, type ButtonProps } from './props';
 import { getSelectedFunding, getButtons } from './dom';
 import { setupButtonLogger } from './logger';
 import { setupRemember } from './remember';
@@ -81,13 +81,11 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
     let paymentProcessing = false;
 
-    function initiatePayment({ payment } : {| payment : Payment |}) : ZalgoPromise<void> {
+    function initiatePayment({ payment, props: paymentProps } : {| props : ButtonProps, payment : Payment |}) : ZalgoPromise<void> {
         return ZalgoPromise.try(() => {
             if (paymentProcessing) {
                 return;
             }
-
-            const paymentProps = getProps({ facilitatorAccessToken });
 
             const { win, fundingSource } = payment;
             const { onClick } = paymentProps;
@@ -152,8 +150,9 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         onElementClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
-            
-            const payPromise = initiatePayment({ payment });
+
+            const paymentProps = getProps({ facilitatorAccessToken });
+            const payPromise = initiatePayment({ payment, props: paymentProps });
 
             // $FlowFixMe
             button.payPromise = payPromise;
@@ -187,8 +186,9 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
                 throw new Error(`Can not find button element`);
             }
 
+            const paymentProps = getProps({ facilitatorAccessToken });
             const payment = { win, button, fundingSource, card, buyerIntent: BUYER_INTENT.PAY };
-            const payPromise = initiatePayment({ payment });
+            const payPromise = initiatePayment({ payment, props: paymentProps });
 
             // $FlowFixMe
             button.payPromise = payPromise;
