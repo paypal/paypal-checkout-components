@@ -1443,7 +1443,7 @@ window.spb = function(modules) {
         var _headers16;
         return callGraphQL({
             name: "GetCheckoutDetails",
-            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        shippingAddress {\n                            isFullAddress\n                        }\n                        payees {\n                            merchantId\n                            email {\n                                stringValue\n                            }\n                        }\n                    }\n                    flags {\n                        hideShipping\n                        isShippingAddressRequired\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
+            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        payees {\n                            merchantId\n                            email {\n                                stringValue\n                            }\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
             variables: {
                 orderID: orderID
             },
@@ -2965,8 +2965,7 @@ window.spb = function(modules) {
             };
             var shippingRequired = function(orderID) {
                 return getSupplementalOrderInfo(orderID).then((function(order) {
-                    var _order$checkoutSessio = order.checkoutSession, shippingAddress = _order$checkoutSessio.cart.shippingAddress;
-                    return !(!_order$checkoutSessio.flags.isShippingAddressRequired || shippingAddress && shippingAddress.isFullAddress);
+                    return !!order.checkoutSession.flags.isChangeShippingAddressAllowed;
                 }));
             };
             return {
@@ -3192,8 +3191,7 @@ window.spb = function(modules) {
             };
             var shippingRequired = function(orderID) {
                 return getSupplementalOrderInfo(orderID).then((function(order) {
-                    var _order$checkoutSessio = order.checkoutSession, shippingAddress = _order$checkoutSessio.cart.shippingAddress;
-                    return !(!_order$checkoutSessio.flags.isShippingAddressRequired || shippingAddress && shippingAddress.isFullAddress);
+                    return !!order.checkoutSession.flags.isChangeShippingAddressAllowed;
                 }));
             };
             return {
@@ -4575,7 +4573,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.267", _ref2;
+                _ref2.button_version = "2.0.268", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
