@@ -15,7 +15,7 @@ import { buttonConfigs } from './config';
 
 const IMAGE_DIR = `${ __dirname }/images`;
 
-const DIFF_THRESHOLD = 100;
+const DIFF_THRESHOLD = 200;
 
 const HEADLESS = (process.env.HEADLESS !== '0');
 const DEVTOOLS = (process.env.DEVTOOLS === '1');
