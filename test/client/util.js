@@ -5,5 +5,6 @@ export function triggerKeyPress(el : Element, keyCode : number) {
     eventObj.initEvent('keypress', true, true);
     eventObj.which = keyCode;
     eventObj.keyCode = keyCode;
+    eventObj.key = keyCode;
     el.dispatchEvent(eventObj);
 }

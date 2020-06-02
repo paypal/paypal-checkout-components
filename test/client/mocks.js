@@ -1486,3 +1486,56 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
 export function generateOrderID() : string {
     return uniqueID().slice(0, 8);
 }
+
+const ensureWindowOpenOnClick = () => {
+    
+    let isClick = false;
+    let clickTimeout;
+    
+    function doClick() {
+        isClick = true;
+    
+        clearTimeout(clickTimeout);
+        clickTimeout = setTimeout(() => {
+            isClick = false;
+        }, 1);
+    }
+    
+    const HTMLElementClick = window.HTMLElement.prototype.click;
+    window.HTMLElement.prototype.click = function overrideHTMLElementClick() : void {
+        doClick();
+        return HTMLElementClick.apply(this, arguments);
+    };
+
+    const HTMLElementDispatchEvent = window.HTMLElement.prototype.dispatchEvent;
+    window.HTMLElement.prototype.dispatchEvent = function overrideHTMLElementDispatchEvent(event : Event) : void {
+        // $FlowFixMe
+        if (event.type === 'keypress' && (event.key === 13 || event.key === 32)) {
+            doClick();
+        }
+        return HTMLElementDispatchEvent.apply(this, arguments);
+    };
+    
+    if (!document.body) {
+        throw new Error(`Expected to find document body`);
+    }
+    
+    document.body.addEventListener('keydown', (event : Event) => {
+        // $FlowFixMe
+        if (event.key === 13 || event.key === 32) {
+            doClick();
+        }
+    });
+    
+    const windowOpen = window.open;
+    window.open = function patchedWindowOpen() : CrossDomainWindowType {
+    
+        if (!isClick) {
+            throw new Error(`Attempted to open window not in click event`);
+        }
+    
+        return windowOpen.apply(this, arguments);
+    };
+};
+
+ensureWindowOpenOnClick();
