@@ -1616,7 +1616,7 @@ window.spb = function(modules) {
         var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
         if (!onApprove) throw new Error("Expected onApprove");
         return memoize((function(_ref6, _ref7) {
-            var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
+            var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
             var restart = _ref7.restart;
             return promise_ZalgoPromise.try((function() {
                 if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
@@ -1654,7 +1654,8 @@ window.spb = function(modules) {
                         paymentID: paymentID,
                         billingToken: billingToken = billingToken || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken,
                         subscriptionID: subscriptionID,
-                        facilitatorAccessToken: facilitatorAccessToken
+                        facilitatorAccessToken: facilitatorAccessToken,
+                        authCode: authCode
                     };
                     var actions = function(_ref3) {
                         var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, subscriptionID = _ref3.subscriptionID, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI;
@@ -2440,6 +2441,49 @@ window.spb = function(modules) {
             class: "loader"
         }))), children));
     }
+    function updateButtonClientConfig(_ref) {
+        var _ref$inline = _ref.inline;
+        return callGraphQL({
+            name: "UpdateClientConfig",
+            query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
+            variables: {
+                orderID: orderID = (_ref9 = {
+                    orderID: _ref.orderID,
+                    fundingSource: _ref.fundingSource,
+                    integrationArtifact: "PAYPAL_JS_SDK",
+                    userExperienceFlow: void 0 !== _ref$inline && _ref$inline ? "INLINE" : "INCONTEXT",
+                    productFlow: "SMART_PAYMENT_BUTTONS"
+                }).orderID,
+                fundingSource: _ref9.fundingSource,
+                integrationArtifact: _ref9.integrationArtifact,
+                userExperienceFlow: _ref9.userExperienceFlow,
+                productFlow: _ref9.productFlow
+            },
+            headers: (_headers13 = {}, _headers13["paypal-client-context"] = orderID, _headers13)
+        }).then(src_util_noop);
+        var _ref9, _headers13, orderID;
+    }
+    function isValidMerchantIDs(merchantIDs, payees) {
+        if (merchantIDs.length !== payees.length) return !1;
+        var merchantEmails = [];
+        var merchantIds = [];
+        merchantIDs.forEach((function(id) {
+            isEmailAddress(id) ? merchantEmails.push(id.toLowerCase()) : merchantIds.push(id);
+        }));
+        var foundEmail = merchantEmails.every((function(email) {
+            return payees.some((function(payee) {
+                return email === (payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase());
+            }));
+        }));
+        var foundMerchantId = merchantIds.every((function(id) {
+            return payees.some((function(payee) {
+                return id === payee.merchantId;
+            }));
+        }));
+        return !(!foundEmail || !foundMerchantId) && payees.every((function(payee) {
+            return merchantIds.indexOf(payee.merchantId) > -1 || merchantEmails.indexOf(payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase()) > -1;
+        }));
+    }
     var checkoutOpen = !1;
     var canRenderTop = !1;
     var checkout = {
@@ -2464,11 +2508,10 @@ window.spb = function(modules) {
             var props = _ref6.props, components = _ref6.components, serviceData = _ref6.serviceData, payment = _ref6.payment, config = _ref6.config;
             if (checkoutOpen) throw new Error("Checkout already rendered");
             var Checkout = components.Checkout;
-            var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID;
-            var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent, paymentMethodID = payment.paymentMethodID;
+            var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID;
+            var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent;
             var fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta;
             var cspNonce = config.cspNonce;
-            var clientMetadataID = cmid || sessionID;
             var context = (_ref5 = {
                 win: win,
                 isClick: payment.isClick
@@ -2556,7 +2599,7 @@ window.spb = function(modules) {
                     createOrder: function() {
                         return _createOrder().then((function(orderID) {
                             return promise_ZalgoPromise.try((function() {
-                                return "pay" === buyerIntent ? function(_ref4) {
+                                if ("pay" === buyerIntent) return function(_ref4) {
                                     var orderID = _ref4.orderID, vault = _ref4.vault, clientAccessToken = _ref4.clientAccessToken, createBillingAgreement = _ref4.createBillingAgreement, createSubscription = _ref4.createSubscription, fundingSource = _ref4.fundingSource, fundingEligibility = _ref4.fundingEligibility;
                                     return promise_ZalgoPromise.try((function() {
                                         if (clientAccessToken) return function(_ref3) {
@@ -2596,21 +2639,14 @@ window.spb = function(modules) {
                                     fundingSource: fundingSource,
                                     createBillingAgreement: createBillingAgreement,
                                     createSubscription: createSubscription
-                                }) : "pay_with_different_funding_shipping" === buyerIntent && clientAccessToken && paymentMethodID ? validatePaymentMethod({
-                                    clientAccessToken: clientAccessToken,
-                                    orderID: orderID,
-                                    paymentMethodID: paymentMethodID,
-                                    enableThreeDomainSecure: enableThreeDomainSecure,
-                                    partnerAttributionID: partnerAttributionID,
-                                    clientMetadataID: clientMetadataID
-                                }) : void 0;
+                                });
                             })).then((function() {
                                 return orderID;
                             }));
                         }));
                     },
                     onApprove: function(_ref7) {
-                        var payerID = _ref7.payerID, paymentID = _ref7.paymentID, billingToken = _ref7.billingToken, subscriptionID = _ref7.subscriptionID;
+                        var payerID = _ref7.payerID, paymentID = _ref7.paymentID, billingToken = _ref7.billingToken, subscriptionID = _ref7.subscriptionID, authCode = _ref7.authCode;
                         approved = !0;
                         getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
                         return close().then((function() {
@@ -2634,7 +2670,8 @@ window.spb = function(modules) {
                                 paymentID: paymentID,
                                 billingToken: billingToken,
                                 subscriptionID: subscriptionID,
-                                buyerAccessToken: buyerAccessToken
+                                buyerAccessToken: buyerAccessToken,
+                                authCode: authCode
                             }, {
                                 restart: restart
                             }).catch(src_util_noop);
@@ -2748,6 +2785,18 @@ window.spb = function(modules) {
                 start: start,
                 close: close
             };
+        },
+        updateClientConfig: function(_ref9) {
+            var orderID = _ref9.orderID, payment = _ref9.payment;
+            return promise_ZalgoPromise.try((function() {
+                var buyerIntent = payment.buyerIntent;
+                var updateClientConfigPromise = updateButtonClientConfig({
+                    fundingSource: payment.fundingSource,
+                    orderID: orderID,
+                    inline: !1
+                });
+                if ("pay_with_different_funding_shipping" === buyerIntent) return updateClientConfigPromise;
+            }));
         }
     };
     var cardFieldsOpen = !1;
@@ -3003,8 +3052,8 @@ window.spb = function(modules) {
             };
         },
         setupMenu: function(_ref7) {
-            var payment = _ref7.payment, initiatePayment = _ref7.initiatePayment;
-            var clientAccessToken = _ref7.props.clientAccessToken;
+            var props = _ref7.props, payment = _ref7.payment, initiatePayment = _ref7.initiatePayment;
+            var clientAccessToken = props.clientAccessToken, createOrder = props.createOrder, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, sessionID = props.sessionID, clientMetadataID = props.clientMetadataID;
             var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID, button = payment.button;
             var content = _ref7.serviceData.content;
             if (!clientAccessToken || !paymentMethodID) throw new Error("Client access token and payment method id required");
@@ -3012,12 +3061,26 @@ window.spb = function(modules) {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref8) {
-                    return initiatePayment({
-                        payment: _extends({}, payment, {
-                            win: _ref8.win,
-                            buyerIntent: "pay_with_different_funding_shipping"
-                        })
-                    });
+                    var win = _ref8.win;
+                    return promise_ZalgoPromise.try((function() {
+                        return createOrder();
+                    })).then((function(orderID) {
+                        return validatePaymentMethod({
+                            clientAccessToken: clientAccessToken,
+                            orderID: orderID,
+                            paymentMethodID: paymentMethodID,
+                            enableThreeDomainSecure: enableThreeDomainSecure,
+                            partnerAttributionID: partnerAttributionID,
+                            clientMetadataID: clientMetadataID || sessionID
+                        });
+                    })).then((function() {
+                        return initiatePayment({
+                            payment: _extends({}, payment, {
+                                win: win,
+                                buyerIntent: "pay_with_different_funding_shipping"
+                            })
+                        });
+                    }));
                 }
             }, {
                 label: content.useDifferentAccount,
@@ -3055,9 +3118,15 @@ window.spb = function(modules) {
             } ];
             throw new Error("Can not render menu for " + fundingSource);
         },
+        updateClientConfig: function(_ref10) {
+            return updateButtonClientConfig({
+                fundingSource: _ref10.payment.fundingSource,
+                orderID: _ref10.orderID,
+                inline: !0
+            });
+        },
         spinner: !0,
-        inline: !0,
-        instant: !0
+        inline: !0
     };
     function getInstrument(wallet, fundingSource, instrumentID) {
         var walletFunding = wallet[fundingSource];
@@ -3201,9 +3270,15 @@ window.spb = function(modules) {
             if ("credit" === fundingSource) return [ CHOOSE_CARD, CHOOSE_ACCOUNT ];
             throw new Error("Can not render menu for " + fundingSource);
         },
+        updateClientConfig: function(_ref8) {
+            return updateButtonClientConfig({
+                fundingSource: _ref8.payment.fundingSource,
+                orderID: _ref8.orderID,
+                inline: !0
+            });
+        },
         spinner: !0,
-        inline: !0,
-        instant: !0
+        inline: !0
     };
     var getNativeSocket = memoize((function(_ref) {
         var nativeSocket = (config = (_ref9 = {
@@ -3504,27 +3579,6 @@ window.spb = function(modules) {
     }
     var initialPageUrl;
     var parentPopupBridge;
-    function isValidMerchantIDs(merchantIDs, payees) {
-        if (merchantIDs.length !== payees.length) return !1;
-        var merchantEmails = [];
-        var merchantIds = [];
-        merchantIDs.forEach((function(id) {
-            isEmailAddress(id) ? merchantEmails.push(id.toLowerCase()) : merchantIds.push(id);
-        }));
-        var foundEmail = merchantEmails.every((function(email) {
-            return payees.some((function(payee) {
-                return email === (payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase());
-            }));
-        }));
-        var foundMerchantId = merchantIds.every((function(id) {
-            return payees.some((function(payee) {
-                return id === payee.merchantId;
-            }));
-        }));
-        return !(!foundEmail || !foundMerchantId) && payees.every((function(payee) {
-            return merchantIds.indexOf(payee.merchantId) > -1 || merchantEmails.indexOf(payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase()) > -1;
-        }));
-    }
     function renderSmartMenu(_ref) {
         var clientID = _ref.clientID;
         var _Menu = (0, _ref.Menu)({
@@ -4145,7 +4199,7 @@ window.spb = function(modules) {
                                     config: config,
                                     components: components,
                                     serviceData: serviceData
-                                }), name = _getPaymentFlow.name, inline = _getPaymentFlow.inline, spinner = _getPaymentFlow.spinner, _getPaymentFlow$insta = _getPaymentFlow.instant, instant = void 0 !== _getPaymentFlow$insta && _getPaymentFlow$insta;
+                                }), name = _getPaymentFlow.name, inline = _getPaymentFlow.inline, spinner = _getPaymentFlow.spinner, updateClientConfig = _getPaymentFlow.updateClientConfig;
                                 var _init = (0, _getPaymentFlow.init)({
                                     props: props,
                                     config: config,
@@ -4166,29 +4220,12 @@ window.spb = function(modules) {
                                 }).then((function(_ref4) {
                                     if (_ref4.valid) {
                                         spinner && enableLoadingSpinner(button);
-                                        var clientConfigPromise = createOrder().then((function(orderID) {
-                                            return function(_ref) {
-                                                var _ref$inline = _ref.inline;
-                                                return callGraphQL({
-                                                    name: "UpdateClientConfig",
-                                                    query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
-                                                    variables: {
-                                                        orderID: orderID = (_ref9 = {
-                                                            orderID: _ref.orderID,
-                                                            fundingSource: _ref.fundingSource,
-                                                            integrationArtifact: "PAYPAL_JS_SDK",
-                                                            userExperienceFlow: void 0 !== _ref$inline && _ref$inline ? "INLINE" : "INCONTEXT",
-                                                            productFlow: "SMART_PAYMENT_BUTTONS"
-                                                        }).orderID,
-                                                        fundingSource: _ref9.fundingSource,
-                                                        integrationArtifact: _ref9.integrationArtifact,
-                                                        userExperienceFlow: _ref9.userExperienceFlow,
-                                                        productFlow: _ref9.productFlow
-                                                    },
-                                                    headers: (_headers13 = {}, _headers13["paypal-client-context"] = orderID, _headers13)
-                                                }).then(src_util_noop);
-                                                var _ref9, _headers13, orderID;
-                                            }({
+                                        var updateClientConfigPromise = createOrder().then((function(orderID) {
+                                            if (updateClientConfig) return updateClientConfig({
+                                                orderID: orderID,
+                                                payment: payment
+                                            });
+                                            updateButtonClientConfig({
                                                 orderID: orderID,
                                                 fundingSource: fundingSource,
                                                 inline: inline
@@ -4200,7 +4237,7 @@ window.spb = function(modules) {
                                         }));
                                         var expectedIntent = props.intent, expectedCurrency = props.currency;
                                         var startPromise = promise_ZalgoPromise.try((function() {
-                                            if (instant) return clientConfigPromise;
+                                            return updateClientConfigPromise;
                                         })).then((function() {
                                             return start();
                                         }));
@@ -4538,7 +4575,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.266", _ref2;
+                _ref2.button_version = "2.0.267", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
