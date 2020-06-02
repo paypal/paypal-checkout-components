@@ -1,3 +1,12 @@
+## <small>5.0.95 (2020-06-02)</small>
+
+* Fix screenshots ([c933975](http://github.paypal.com/paypal/paypal-checkout/commit/c933975))
+* Put instrument label in span to allow for overflow ellipsis ([d85403b](http://github.paypal.com/paypal/paypal-checkout/commit/d85403b))
+* Reduce max width for vault button label ([5a9e16d](http://github.paypal.com/paypal/paypal-checkout/commit/5a9e16d))
+* Reduce size and impact of vault button divider ([452a3b4](http://github.paypal.com/paypal/paypal-checkout/commit/452a3b4))
+
+
+
 ## <small>5.0.94 (2020-05-28)</small>
 
 * Add data-instrument-type to button ([3a2533a](http://github.paypal.com/paypal/paypal-checkout/commit/3a2533a))
