@@ -11,7 +11,8 @@
     }
 
     .divider {
-        margin: 0 10px;
+        margin: 0 5px;
+        opacity: 0.2;
     }
 
     .paypal-wordmark {
@@ -34,7 +35,7 @@
 
     @media only screen and (max-width: 349px) {
         .divider {
-            margin: 0 5px;
+            margin: 0 3px;
         }
 
         .logo {
