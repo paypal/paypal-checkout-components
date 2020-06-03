@@ -3051,29 +3051,53 @@ window.spb = function(modules) {
             };
         },
         setupMenu: function(_ref7) {
-            var props = _ref7.props, payment = _ref7.payment, initiatePayment = _ref7.initiatePayment;
+            var props = _ref7.props, payment = _ref7.payment, serviceData = _ref7.serviceData, components = _ref7.components, config = _ref7.config;
             var clientAccessToken = props.clientAccessToken, createOrder = props.createOrder, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, sessionID = props.sessionID, clientMetadataID = props.clientMetadataID;
             var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID, button = payment.button;
-            var content = _ref7.serviceData.content;
+            var content = serviceData.content;
             if (!clientAccessToken || !paymentMethodID) throw new Error("Client access token and payment method id required");
+            var updateClientConfig = function() {
+                return promise_ZalgoPromise.try((function() {
+                    return createOrder();
+                })).then((function(orderID) {
+                    return updateButtonClientConfig({
+                        fundingSource: fundingSource,
+                        orderID: orderID,
+                        inline: !1
+                    });
+                }));
+            };
+            var loadCheckout = function(_ref8) {
+                return checkout.init({
+                    props: props,
+                    components: components,
+                    serviceData: serviceData,
+                    config: config,
+                    payment: _ref8.payment
+                }).start();
+            };
             if ("paypal" === fundingSource) return [ {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: POPUP_OPTIONS,
-                onSelect: function(_ref8) {
-                    var win = _ref8.win;
+                onSelect: function(_ref9) {
+                    var win = _ref9.win;
                     return promise_ZalgoPromise.try((function() {
-                        return createOrder();
-                    })).then((function(orderID) {
-                        return validatePaymentMethod({
-                            clientAccessToken: clientAccessToken,
-                            orderID: orderID,
-                            paymentMethodID: paymentMethodID,
-                            enableThreeDomainSecure: enableThreeDomainSecure,
-                            partnerAttributionID: partnerAttributionID,
-                            clientMetadataID: clientMetadataID || sessionID
-                        });
+                        return updateClientConfig();
                     })).then((function() {
-                        return initiatePayment({
+                        return promise_ZalgoPromise.try((function() {
+                            return createOrder();
+                        })).then((function(orderID) {
+                            return validatePaymentMethod({
+                                clientAccessToken: clientAccessToken,
+                                orderID: orderID,
+                                paymentMethodID: paymentMethodID,
+                                enableThreeDomainSecure: enableThreeDomainSecure,
+                                partnerAttributionID: partnerAttributionID,
+                                clientMetadataID: clientMetadataID || sessionID
+                            });
+                        }));
+                    })).then((function() {
+                        return loadCheckout({
                             payment: _extends({}, payment, {
                                 win: win,
                                 buyerIntent: "pay_with_different_funding_shipping"
@@ -3084,13 +3108,18 @@ window.spb = function(modules) {
             }, {
                 label: content.useDifferentAccount,
                 popup: POPUP_OPTIONS,
-                onSelect: function(_ref9) {
-                    return initiatePayment({
-                        payment: _extends({}, payment, {
-                            win: _ref9.win,
-                            buyerIntent: "pay_with_different_account"
-                        })
-                    });
+                onSelect: function(_ref10) {
+                    var win = _ref10.win;
+                    return promise_ZalgoPromise.try((function() {
+                        return updateClientConfig();
+                    })).then((function() {
+                        return loadCheckout({
+                            payment: _extends({}, payment, {
+                                win: win,
+                                buyerIntent: "pay_with_different_account"
+                            })
+                        });
+                    }));
                 }
             } ];
             if ("card" === fundingSource) return [ {
@@ -3117,10 +3146,10 @@ window.spb = function(modules) {
             } ];
             throw new Error("Can not render menu for " + fundingSource);
         },
-        updateClientConfig: function(_ref10) {
+        updateClientConfig: function(_ref11) {
             return updateButtonClientConfig({
-                fundingSource: _ref10.payment.fundingSource,
-                orderID: _ref10.orderID,
+                fundingSource: _ref11.payment.fundingSource,
+                orderID: _ref11.orderID,
                 inline: !0
             });
         },
@@ -3229,7 +3258,8 @@ window.spb = function(modules) {
             };
         },
         setupMenu: function(_ref5) {
-            var payment = _ref5.payment, serviceData = _ref5.serviceData, initiatePayment = _ref5.initiatePayment;
+            var props = _ref5.props, payment = _ref5.payment, serviceData = _ref5.serviceData, components = _ref5.components, config = _ref5.config;
+            var createOrder = props.createOrder;
             var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
             var wallet = serviceData.wallet, content = serviceData.content;
             if (!serviceData.buyerAccessToken) throw new Error("Can not render wallet menu without buyer access token");
@@ -3237,41 +3267,60 @@ window.spb = function(modules) {
             if (!instrumentID) throw new Error("Can not render wallet menu without instrumentID");
             var instrument = getInstrument(wallet, fundingSource, instrumentID);
             if (!instrument) throw new Error("Can not render wallet menu without instrument");
+            var loadCheckout = function(_ref6) {
+                return checkout.init({
+                    props: props,
+                    components: components,
+                    serviceData: serviceData,
+                    config: config,
+                    payment: _ref6.payment
+                }).start();
+            };
             var newFundingSource = "credit" === instrument.type ? "credit" : fundingSource;
-            var CHOOSE_CARD = {
+            if ("paypal" === fundingSource || "credit" === fundingSource) return [ {
                 label: content.chooseCard || content.chooseCardOrShipping,
                 popup: wallet_capture_POPUP_OPTIONS,
-                onSelect: function(_ref6) {
-                    return initiatePayment({
-                        payment: _extends({}, payment, {
-                            win: _ref6.win,
-                            buyerIntent: "pay_with_different_funding_shipping",
-                            fundingSource: newFundingSource
-                        })
-                    });
+                onSelect: function(_ref7) {
+                    var win = _ref7.win;
+                    return promise_ZalgoPromise.try((function() {
+                        return promise_ZalgoPromise.try((function() {
+                            return createOrder();
+                        })).then((function(orderID) {
+                            return updateButtonClientConfig({
+                                fundingSource: fundingSource,
+                                orderID: orderID,
+                                inline: !1
+                            });
+                        }));
+                    })).then((function() {
+                        return loadCheckout({
+                            payment: _extends({}, payment, {
+                                win: win,
+                                buyerIntent: "pay_with_different_funding_shipping",
+                                fundingSource: newFundingSource
+                            })
+                        });
+                    }));
                 }
-            };
-            var CHOOSE_ACCOUNT = {
+            }, {
                 label: content.useDifferentAccount,
                 popup: wallet_capture_POPUP_OPTIONS,
-                onSelect: function(_ref7) {
-                    return initiatePayment({
+                onSelect: function(_ref8) {
+                    return loadCheckout({
                         payment: _extends({}, payment, {
-                            win: _ref7.win,
+                            win: _ref8.win,
                             buyerIntent: "pay_with_different_account",
                             fundingSource: newFundingSource
                         })
                     });
                 }
-            };
-            if ("paypal" === fundingSource) return [ CHOOSE_CARD, CHOOSE_ACCOUNT ];
-            if ("credit" === fundingSource) return [ CHOOSE_CARD, CHOOSE_ACCOUNT ];
+            } ];
             throw new Error("Can not render menu for " + fundingSource);
         },
-        updateClientConfig: function(_ref8) {
+        updateClientConfig: function(_ref9) {
             return updateButtonClientConfig({
-                fundingSource: _ref8.payment.fundingSource,
-                orderID: _ref8.orderID,
+                fundingSource: _ref9.payment.fundingSource,
+                orderID: _ref9.orderID,
                 inline: !0
             });
         },
@@ -4167,12 +4216,9 @@ window.spb = function(modules) {
         var _onInit = onInit(), initPromise = _onInit.initPromise, isEnabled = _onInit.isEnabled;
         var paymentProcessing = !1;
         function initiatePayment(_ref) {
-            var payment = _ref.payment;
+            var payment = _ref.payment, paymentProps = _ref.props;
             return promise_ZalgoPromise.try((function() {
                 if (!paymentProcessing) {
-                    var paymentProps = getProps({
-                        facilitatorAccessToken: facilitatorAccessToken
-                    });
                     var win = payment.win;
                     var onClick = paymentProps.onClick;
                     onClick && onClick({
@@ -4378,8 +4424,12 @@ window.spb = function(modules) {
             dom_onClick(button, (function(event) {
                 event.preventDefault();
                 event.stopPropagation();
+                var paymentProps = getProps({
+                    facilitatorAccessToken: facilitatorAccessToken
+                });
                 var payPromise = initiatePayment({
-                    payment: payment
+                    payment: payment,
+                    props: paymentProps
                 });
                 button.payPromise = payPromise;
             }));
@@ -4401,7 +4451,7 @@ window.spb = function(modules) {
                         var payment = _ref2.payment;
                         return promise_ZalgoPromise.try((function() {
                             if (!paymentProcessing) return isEnabled() ? function(_ref5) {
-                                var payment = _ref5.payment, serviceData = _ref5.serviceData, config = _ref5.config, components = _ref5.components, props = _ref5.props, initiatePayment = _ref5.initiatePayment;
+                                var payment = _ref5.payment, serviceData = _ref5.serviceData, config = _ref5.config, components = _ref5.components, props = _ref5.props;
                                 return promise_ZalgoPromise.try((function() {
                                     var _getLogger$info$info$2;
                                     var fundingSource = payment.fundingSource, button = payment.button;
@@ -4420,7 +4470,8 @@ window.spb = function(modules) {
                                         props: props,
                                         payment: payment,
                                         serviceData: serviceData,
-                                        initiatePayment: initiatePayment
+                                        components: components,
+                                        config: config
                                     }).map((function(choice) {
                                         return _extends({}, choice, {
                                             onSelect: function() {
@@ -4469,8 +4520,7 @@ window.spb = function(modules) {
                                 config: config,
                                 serviceData: serviceData,
                                 components: components,
-                                props: props,
-                                initiatePayment: initiatePayment
+                                props: props
                             }) : void 0;
                         })).catch((function(err) {
                             var _getLogger$info$track2;
@@ -4504,7 +4554,10 @@ window.spb = function(modules) {
                             fundingSource: fundingSource,
                             card: card,
                             buyerIntent: "pay"
-                        }
+                        },
+                        props: getProps({
+                            facilitatorAccessToken: facilitatorAccessToken
+                        })
                     });
                     button.payPromise = payPromise;
                 }
@@ -4573,7 +4626,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.268", _ref2;
+                _ref2.button_version = "2.0.269", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
