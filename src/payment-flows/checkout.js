@@ -6,7 +6,7 @@ import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
-import type { ProxyWindow } from '../types';
+import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
 import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
@@ -58,6 +58,35 @@ function isCheckoutEligible() : boolean {
 }
 
 function isCheckoutPaymentEligible() : boolean {
+    return true;
+}
+
+type ConnectEligibleOptions = {|
+    connect : ?ConnectOptions,
+    vault : boolean,
+    createBillingAgreement : ?CreateBillingAgreement,
+    createSubscription : ?CreateSubscription,
+    fundingSource : $Values<typeof FUNDING>
+|};
+
+
+function isConnectEligible({ connect, vault, fundingSource, createBillingAgreement, createSubscription } : ConnectEligibleOptions) : boolean {
+    if (!connect) {
+        return false;
+    }
+
+    if (vault) {
+        return false;
+    }
+
+    if (fundingSource !== FUNDING.PAYPAL && fundingSource !== FUNDING.CREDIT) {
+        return false;
+    }
+
+    if (createBillingAgreement || createSubscription) {
+        return false;
+    }
+
     return true;
 }
 
@@ -145,6 +174,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { cspNonce } = config;
 
     const context = getContext({ win, isClick });
+    const connectEligible = isConnectEligible({ connect, createBillingAgreement, createSubscription, vault, fundingSource });
 
     let approved = false;
     let forceClosed = false;
@@ -167,7 +197,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                 });
             },
 
-            getConnectURL: connect ? () => {
+            getConnectURL: (connect && connectEligible) ? () => {
                 if (!clientID) {
                     throw new Error(`Expected clientID`);
                 }
