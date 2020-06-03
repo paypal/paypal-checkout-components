@@ -1646,6 +1646,12 @@ window.spb = function(modules) {
                 getLogger().info("button_approve").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_approve", 
                 _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                 _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
+                billingToken || getLogger().info("on_approve_payer_id_" + (payerID ? "present" : "not_present"), {
+                    orderID: orderID,
+                    paymentID: paymentID,
+                    billingToken: billingToken,
+                    subscriptionID: subscriptionID
+                }).flush();
                 payerID || getSupplementalOrderInfo.reset();
                 return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
                     var data = {
@@ -2649,6 +2655,7 @@ window.spb = function(modules) {
                         var payerID = _ref7.payerID, paymentID = _ref7.paymentID, billingToken = _ref7.billingToken, subscriptionID = _ref7.subscriptionID, authCode = _ref7.authCode;
                         approved = !0;
                         getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
+                        if (connect && !payerID) throw new Error("Expected payerID to be present in onApprove call");
                         return close().then((function() {
                             var restart = memoize((function() {
                                 return initCheckout({
@@ -3801,10 +3808,10 @@ window.spb = function(modules) {
                 return instance.start();
             };
             var getNativeDomain = memoize((function() {
-                return "https://www.paypal.com";
+                return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://www.sandbox.paypal.com" : "https://www.paypal.com";
             }));
             var getNativePopupDomain = memoize((function() {
-                return "sandbox" === env ? "https://www.sandbox.paypal.com" : "https://history.paypal.com";
+                return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://history.paypal.com" : "sandbox" === env ? "https://www.sandbox.paypal.com" : "https://history.paypal.com";
             }));
             var getNativeUrl = memoize((function(_temp) {
                 var _ref7 = void 0 === _temp ? {} : _temp, _ref7$pageUrl = _ref7.pageUrl, pageUrl = void 0 === _ref7$pageUrl ? initialPageUrl : _ref7$pageUrl, sessionUID = _ref7.sessionUID;
@@ -3995,7 +4002,7 @@ window.spb = function(modules) {
                             var delayPromise = promise_ZalgoPromise.delay(500);
                             var detectWebSwitchListener = listen(nativeWin, getNativeDomain(), "detectWebSwitch", (function() {
                                 getLogger().info("native_post_message_detect_web_switch").flush();
-                                return detectWebSwitch(nativeWin);
+                                return detectWebSwitch(nativeWin).then(unresolvedPromise);
                             }));
                             clean.register(detectWebSwitchListener.cancel);
                             return validatePromise.then((function(valid) {
@@ -4626,7 +4633,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.269", _ref2;
+                _ref2.button_version = "2.0.270", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
