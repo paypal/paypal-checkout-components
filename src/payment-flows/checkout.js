@@ -210,10 +210,6 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             onApprove: ({ payerID, paymentID, billingToken, subscriptionID, authCode }) => {
                 approved = true;
                 getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
-
-                if (connect && !payerID) {
-                    throw new Error(`Expected payerID to be present in onApprove call`);
-                }
     
                 // eslint-disable-next-line no-use-before-define
                 return close().then(() => {
