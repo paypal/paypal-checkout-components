@@ -262,7 +262,7 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
                     [FPTI_KEY.CONTEXT_ID]:   orderID
                 }).flush();
 
-            if (!billingToken) {
+            if (!billingToken && !subscriptionID) {
                 getLogger().info(`on_approve_payer_id_${ payerID ? 'present' : 'not_present' }`, {
                     orderID, paymentID, billingToken, subscriptionID
                 }).flush();
