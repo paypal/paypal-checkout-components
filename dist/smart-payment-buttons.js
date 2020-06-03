@@ -1646,7 +1646,7 @@ window.spb = function(modules) {
                 getLogger().info("button_approve").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_approve", 
                 _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                 _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                billingToken || getLogger().info("on_approve_payer_id_" + (payerID ? "present" : "not_present"), {
+                billingToken || subscriptionID || getLogger().info("on_approve_payer_id_" + (payerID ? "present" : "not_present"), {
                     orderID: orderID,
                     paymentID: paymentID,
                     billingToken: billingToken,
@@ -4633,7 +4633,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.270", _ref2;
+                _ref2.button_version = "2.0.271", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
