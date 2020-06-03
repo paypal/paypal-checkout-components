@@ -230,12 +230,20 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const getNativeDomain = memoize(() : string => {
+        if (env === ENV.SANDBOX && window.xprops && window.xprops.useCorrectNativeSandboxDomain) {
+            return 'https://www.sandbox.paypal.com';
+        }
+
         return (env === ENV.SANDBOX)
             ? NATIVE_DOMAIN_SANDBOX
             : NATIVE_DOMAIN;
     });
 
     const getNativePopupDomain = memoize(() : string => {
+        if (env === ENV.SANDBOX && window.xprops && window.xprops.useCorrectNativeSandboxDomain) {
+            return 'https://history.paypal.com';
+        }
+
         return (env === ENV.SANDBOX)
             ? NATIVE_POPUP_DOMAIN_SANDBOX
             : NATIVE_POPUP_DOMAIN;
