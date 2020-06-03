@@ -12,7 +12,7 @@ import { TARGET_ELEMENT, BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
 import { updateButtonClientConfig } from '../button/orders';
 
-import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
+import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
 const VAULT_MIN_WIDTH = 250;
@@ -164,7 +164,7 @@ const POPUP_OPTIONS = {
     height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
 };
 
-function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuOptions) : MenuChoices {
+function setupVaultMenu({ props, payment, serviceData, components, config } : MenuOptions) : MenuChoices {
     const { clientAccessToken, createOrder, enableThreeDomainSecure, partnerAttributionID, sessionID, clientMetadataID } = props;
     const { fundingSource, paymentMethodID, button } = payment;
     const { content } = serviceData;
@@ -173,42 +173,74 @@ function setupVaultMenu({ props, payment, serviceData, initiatePayment } : MenuO
         throw new Error(`Client access token and payment method id required`);
     }
 
+    const updateClientConfig = () => {
+        return ZalgoPromise.try(() => {
+            return createOrder();
+        }).then(orderID => {
+            return updateButtonClientConfig({ fundingSource, orderID, inline: false });
+        });
+    };
+
+    const validate = () => {
+        return ZalgoPromise.try(() => {
+            return createOrder();
+        }).then(orderID => {
+            return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID: clientMetadataID || sessionID });
+        });
+    };
+
+    const loadCheckout = ({ payment: checkoutPayment } : {| payment : Payment |}) => {
+        return checkout.init({
+            props, components, serviceData, config, payment: checkoutPayment
+        }).start();
+    };
+
+    const CHOOSE_FUNDING_SHIPPING = {
+        label:    content.chooseCard || content.chooseCardOrShipping,
+        popup:    POPUP_OPTIONS,
+        onSelect: ({ win }) => {
+            return ZalgoPromise.try(() => {
+                return updateClientConfig();
+            }).then(() => {
+                return validate();
+            }).then(() => {
+                return loadCheckout({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
+            });
+        }
+    };
+
+    const CHOOSE_ACCOUNT = {
+        label:    content.useDifferentAccount,
+        popup:    POPUP_OPTIONS,
+        onSelect: ({ win }) => {
+            return ZalgoPromise.try(() => {
+                return updateClientConfig();
+            }).then(() => {
+                return loadCheckout({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
+            });
+        }
+    };
+
+    const DELETE_CARD = {
+        label:    content.deleteVaultedCard,
+        spinner:  true,
+        onSelect: () => {
+            return deleteVault({ paymentMethodID, clientAccessToken }).then(() => {
+                destroyElement(button);
+            });
+        }
+    };
+
     if (fundingSource === FUNDING.PAYPAL) {
         return [
-            {
-                label:    content.chooseCard || content.chooseCardOrShipping,
-                popup:    POPUP_OPTIONS,
-                onSelect: ({ win }) => {
-                    return ZalgoPromise.try(() => {
-                        return createOrder();
-                    }).then(orderID => {
-                        return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID: clientMetadataID || sessionID });
-                    }).then(() => {
-                        return initiatePayment({ props, payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING } });
-                    });
-                }
-            },
-            {
-                label:    content.useDifferentAccount,
-                popup:    POPUP_OPTIONS,
-                onSelect: ({ win }) => {
-                    return initiatePayment({ props, payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
-                }
-            }
+            CHOOSE_FUNDING_SHIPPING,
+            CHOOSE_ACCOUNT
         ];
     }
 
     if (fundingSource === FUNDING.CARD) {
         return [
-            {
-                label:    content.deleteVaultedCard,
-                spinner:  true,
-                onSelect: () => {
-                    return deleteVault({ paymentMethodID, clientAccessToken }).then(() => {
-                        destroyElement(button);
-                    });
-                }
-            }
+            DELETE_CARD
         ];
     }
 

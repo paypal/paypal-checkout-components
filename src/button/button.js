@@ -125,7 +125,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             }
 
             if (isEnabled()) {
-                return initiateMenuFlow({ payment, config, serviceData, components, props, initiatePayment });
+                return initiateMenuFlow({ payment, config, serviceData, components, props });
             }
         }).catch(err => {
             getLogger()

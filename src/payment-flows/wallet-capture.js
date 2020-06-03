@@ -10,7 +10,7 @@ import { BUYER_INTENT } from '../constants';
 import { getLogger } from '../lib';
 import { updateButtonClientConfig } from '../button/orders';
 
-import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions } from './types';
+import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
 const WALLET_MIN_WIDTH = 250;
@@ -190,7 +190,8 @@ const POPUP_OPTIONS = {
     height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
 };
 
-function setupWalletMenu({ props, payment, serviceData, initiatePayment } : MenuOptions) : MenuChoices {
+function setupWalletMenu({ props, payment, serviceData, components, config } : MenuOptions) : MenuChoices {
+    const { createOrder } = props;
     const { fundingSource, instrumentID } = payment;
     const { wallet, content, buyerAccessToken } = serviceData;
 
@@ -212,16 +213,34 @@ function setupWalletMenu({ props, payment, serviceData, initiatePayment } : Menu
         throw new Error(`Can not render wallet menu without instrument`);
     }
 
+    const updateClientConfig = () => {
+        return ZalgoPromise.try(() => {
+            return createOrder();
+        }).then(orderID => {
+            return updateButtonClientConfig({ fundingSource, orderID, inline: false });
+        });
+    };
+
+    const loadCheckout = ({ payment: checkoutPayment } : {| payment : Payment |}) => {
+        return checkout.init({
+            props, components, serviceData, config, payment: checkoutPayment
+        }).start();
+    };
+
     const newFundingSource = (instrument.type === WALLET_INSTRUMENT.CREDIT)
         ? FUNDING.CREDIT
         : fundingSource;
 
-    const CHOOSE_CARD = {
+    const CHOOSE_FUNDING_SHIPPING = {
         label:    content.chooseCard || content.chooseCardOrShipping,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
-            return initiatePayment({
-                props, payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING, fundingSource: newFundingSource }
+            return ZalgoPromise.try(() => {
+                return updateClientConfig();
+            }).then(() => {
+                return loadCheckout({
+                    payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING, fundingSource: newFundingSource }
+                });
             });
         }
     };
@@ -230,26 +249,19 @@ function setupWalletMenu({ props, payment, serviceData, initiatePayment } : Menu
         label:    content.useDifferentAccount,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
-            return initiatePayment({
-                props, payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT, fundingSource: newFundingSource }
+            return loadCheckout({
+                payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT, fundingSource: newFundingSource }
             });
         }
     };
 
-    if (fundingSource === FUNDING.PAYPAL) {
+    if (fundingSource === FUNDING.PAYPAL || fundingSource === FUNDING.CREDIT) {
         return [
-            CHOOSE_CARD,
+            CHOOSE_FUNDING_SHIPPING,
             CHOOSE_ACCOUNT
         ];
     }
-
-    if (fundingSource === FUNDING.CREDIT) {
-        return [
-            CHOOSE_CARD,
-            CHOOSE_ACCOUNT
-        ];
-    }
-
+    
     throw new Error(`Can not render menu for ${ fundingSource }`);
 }
 

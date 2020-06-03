@@ -142,11 +142,10 @@ type InitiateMenuOptions = {|
     props : ButtonProps,
     serviceData : ServiceData,
     config : Config,
-    components : Components,
-    initiatePayment : ({| props : ButtonProps, payment : Payment |}) => ZalgoPromise<void>
+    components : Components
 |};
 
-export function initiateMenuFlow({ payment, serviceData, config, components, props, initiatePayment } : InitiateMenuOptions) : ZalgoPromise<void> {
+export function initiateMenuFlow({ payment, serviceData, config, components, props } : InitiateMenuOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { fundingSource, button } = payment;
 
@@ -162,7 +161,7 @@ export function initiateMenuFlow({ payment, serviceData, config, components, pro
             [FPTI_KEY.PAYMENT_FLOW]:   name
         }).flush();
 
-        const choices = setupMenu({ props, payment, serviceData, initiatePayment }).map(choice => {
+        const choices = setupMenu({ props, payment, serviceData, components, config }).map(choice => {
             return {
                 ...choice,
                 onSelect: (...args) => {
