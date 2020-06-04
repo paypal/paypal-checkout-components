@@ -197,13 +197,13 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                 });
             },
 
-            getConnectURL: (connect && connectEligible) ? () => {
+            getConnectURL: (connect && connectEligible) ? ({ payerID }) => {
                 if (!clientID) {
                     throw new Error(`Expected clientID`);
                 }
 
                 return createOrder().then(orderID => {
-                    return getConnectURL({ orderID, clientID, fundingSource, connect }).then(connectURL => {
+                    return getConnectURL({ orderID, payerID, clientID, fundingSource, connect }).then(connectURL => {
                         getLogger()
                             .info('connect_redirect', { connectURL })
                             .track({
