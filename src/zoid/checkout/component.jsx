@@ -196,6 +196,18 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                 test: {
                     type:    'object',
                     default: () => (window.__test__ || { action: 'checkout' })
+                },
+
+                creditProductIdentifier: {
+                    type:       'string',
+                    queryParam: 'credit_product_identifier',
+                    required:   false
+                },
+
+                creditToken: {
+                    type:       'string',
+                    queryParam: 'credit_token',
+                    required:   false
                 }
             },
         

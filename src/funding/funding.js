@@ -39,6 +39,10 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
         return false;
     }
 
+    if (source === FUNDING.CREDIT && fundingEligibility.paylater && fundingEligibility.paylater.eligible) {
+        return false;
+    }
+
     return true;
 }
 

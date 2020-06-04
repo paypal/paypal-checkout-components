@@ -35,6 +35,9 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     credit: {
         eligible: false
     },
+    paylater: {
+        eligible: false
+    },
     sepa: {
         eligible: false
     },
