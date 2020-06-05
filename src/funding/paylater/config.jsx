@@ -3,15 +3,14 @@
 
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { node, Style } from 'jsx-pragmatic/src';
-import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { Text, Space } from '../../ui/text';
 import { WalletLabel } from '../paypal/template';
 
-import labelCss from './label.scoped.scss';
-import logoCss from './logo.scoped.scss';
+import css from './style.scoped.scss';
 
 export function getPaylaterConfig() : FundingSourceConfig {
     return {
@@ -22,26 +21,14 @@ export function getPaylaterConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Label: ({ logoColor, nonce }) => {
+        Logo: ({ logoColor, nonce }) => {
             return (
-                <Style css={ labelCss } nonce={ nonce }>
+                <Style css={ css } nonce={ nonce }>
                     <PPLogo logoColor={ logoColor } />
                     <Space />
                     <Text className="message-small" optional>PayPal </Text>
                     <Text className="message-small">Flex</Text>
                     <Text className="message-large">Pay Later with Flex</Text>
-                </Style>
-            );
-        },
-
-        Logo: ({ logoColor, nonce }) => {
-            return (
-                <Style css={ logoCss } nonce={ nonce }>
-                    <PPLogo logoColor={ logoColor } />
-                    <Space />
-                    <PayPalLogo logoColor={ logoColor } />
-                    <Space />
-                    <Text>Flex</Text>
                 </Style>
             );
         },
