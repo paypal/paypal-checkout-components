@@ -9,7 +9,7 @@ import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } f
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { uniqueID, values, memoize, noop, identity, isIE } from 'belter/src';
-import { FUNDING, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { collectRiskData, persistRiskData } from '@paypal/risk-data-collector/src';
 
@@ -52,7 +52,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             iframe: {
                 allowpaymentrequest: 'allowpaymentrequest',
                 scrolling:           'no',
-                title:               'paypal'
+                title:               FUNDING_BRAND_LABEL.PAYPAL
             }
         },
 
