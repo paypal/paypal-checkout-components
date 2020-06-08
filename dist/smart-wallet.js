@@ -462,7 +462,7 @@
             var t = "";
             for (var r in e) {
                 var o = e[r];
-                null != o && (t && (t += " "), t += index_module_l[r] || (index_module_l[r] = r.replace(/([A-Z])/g, "-$1").toLowerCase()), 
+                null != o && (t && (t += " "), t += "-" == r[0] ? r : index_module_l[r] || (index_module_l[r] = r.replace(/([A-Z])/g, "-$1").toLowerCase()), 
                 t += ": ", t += o, "number" == typeof o && !1 === index_module_n.test(r) && (t += "px"), 
                 t += ";");
             }
@@ -478,7 +478,7 @@
         }
         var index_module_p = {
             shallow: !0
-        }, index_module_u = [], index_module_g = /^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/, index_module_ = function() {};
+        }, index_module_u = [], index_module_ = /^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/, index_module_g = function() {};
         index_module_v.render = index_module_v;
         function index_module_v(n, l, p, h, d, m) {
             if (null == n || "boolean" == typeof n) return "";
@@ -499,8 +499,8 @@
                         __v: n,
                         context: l,
                         props: n.props,
-                        setState: index_module_,
-                        forceUpdate: index_module_,
+                        setState: index_module_g,
+                        forceUpdate: index_module_g,
                         __h: []
                     };
                     if (preact_module_n.__r && preact_module_n.__r(n), x.prototype && "function" == typeof x.prototype.render) {
@@ -535,7 +535,7 @@
                 p && !0 === p.sortAttributes && P.sort();
                 for (var R = 0; R < P.length; R++) {
                     var U = P[R], W = y[U];
-                    if ("children" !== U && !U.match(/[\s\n\\/='"\0<>]/) && (p && p.allAttributes || "key" !== U && "ref" !== U)) {
+                    if ("children" !== U && !U.match(/[\s\n\\/='"\0<>]/) && (p && p.allAttributes || "key" !== U && "ref" !== U && "__self" !== U && "__source" !== U)) {
                         if ("className" === U) {
                             if (y.class) continue;
                             U = "class";
@@ -568,7 +568,7 @@
                 z === N || ~z.indexOf("\n") ? w && ~N.indexOf("\n") && (N += "\n") : N = z;
             }
             if (N = "<" + x + N + ">", String(x).match(/[\s\n\\/='"\0<>]/)) throw new Error(x + " is not a valid HTML tag name in " + N);
-            var E = String(x).match(index_module_g);
+            var E = String(x).match(index_module_);
             E && (N = N.replace(/>$/, " />"));
             var I, Z = [];
             if (D) w && index_module_i(D) && (D = "\n" + k + index_module_a(D, k)), N += D; else if (y && index_module_c(I = [], y.children).length) {
@@ -1752,7 +1752,7 @@
                     if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                     throw new Error("Unsupported intent for auto-capture: " + intent);
                 };
-            }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
+            }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
             var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
             if (!onApprove) throw new Error("Expected onApprove");
             return memoize((function(_ref6, _ref7) {
@@ -1786,17 +1786,16 @@
                     getLogger().info("button_approve").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_approve", 
                     _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                     _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                    billingToken || subscriptionID || getLogger().info("on_approve_payer_id_" + (payerID ? "present" : "not_present"), {
-                        orderID: orderID,
-                        paymentID: paymentID,
-                        billingToken: billingToken,
-                        subscriptionID: subscriptionID
-                    }).flush();
-                    payerID || getSupplementalOrderInfo.reset();
+                    if (!(billingToken || subscriptionID || clientAccessToken || vault || payerID)) {
+                        getLogger().error("onapprove_payerid_not_present", {
+                            orderID: orderID
+                        }).flush();
+                        throw new Error("payerID not present in onApprove call");
+                    }
                     return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
                         var data = {
                             orderID: orderID,
-                            payerID: payerID = payerID || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.buyer && supplementalData.checkoutSession.buyer.userId,
+                            payerID: payerID,
                             paymentID: paymentID,
                             billingToken: billingToken = billingToken || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken,
                             subscriptionID: subscriptionID,
@@ -2528,6 +2527,8 @@
                     intent: intent,
                     onError: onError,
                     partnerAttributionID: partnerAttributionID,
+                    clientAccessToken: clientAccessToken,
+                    vault: vault,
                     upgradeLSAT: !1
                 }, {
                     facilitatorAccessToken: facilitatorAccessToken,
