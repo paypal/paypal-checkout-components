@@ -212,11 +212,13 @@ const graphQL = (req, payload) => {
 
 const getWallet = () => {
     return Promise.resolve({
+        'payer': {
+            'email_address': 'foo@bar.com'
+        },
         'funding_options': [
             {
                 'funding_sources': [
                     {
-                        'email':  'foo@bar.com',
                         'credit': {
                             'id': 'BC-YMBX4GJLEKMQW'
                         }

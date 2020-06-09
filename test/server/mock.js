@@ -67,6 +67,9 @@ export function mockRes(opts : Object = {}) : MockRes {
 
 export async function getWallet() : Promise<Object> {
     return await {
+        'payer': {
+            'email_address': 'foo@bar.com'
+        },
         'funding_options': [
             {
                 'funding_sources': [

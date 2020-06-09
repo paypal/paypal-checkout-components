@@ -11,10 +11,12 @@ import type { ExpressRequest, LoggerType } from '../types';
 
 
 type SmartWallet = {|
+    payer? : {|
+        email_address? : string
+    |},
     funding_options : $ReadOnlyArray<{|
         funding_sources : $ReadOnlyArray<{|
             logo_url? : string,
-            email : string,
             credit? : {|
                 id : string
             |},
@@ -241,7 +243,9 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                 const one_click_reason = fundingOption.one_click_eligibility &&
                     fundingOption.one_click_eligibility.ineligible_reason;
 
-                const { credit, card, bank_account, balance, email, logo_url } = fundingSource;
+                const email = (smartWallet.payer && smartWallet.payer.email_address);
+
+                const { credit, card, bank_account, balance, logo_url } = fundingSource;
                 let instrument;
 
                 if (credit) {
