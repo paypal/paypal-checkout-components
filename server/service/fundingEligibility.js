@@ -99,6 +99,7 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
         [ FUNDING.VENMO ]:      getBasicFundingEligibilityQuery(),
         [ FUNDING.ITAU ]:       getBasicFundingEligibilityQuery(),
         [ FUNDING.CREDIT ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.PAYLATER ]:   getBasicFundingEligibilityQuery(),
         [ FUNDING.SEPA ]:       getBasicFundingEligibilityQuery(),
         [ FUNDING.IDEAL ]:      getBasicFundingEligibilityQuery(),
         [ FUNDING.BANCONTACT ]: getBasicFundingEligibilityQuery(),
