@@ -1786,12 +1786,9 @@
                     getLogger().info("button_approve").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_approve", 
                     _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                     _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                    if (!(billingToken || subscriptionID || clientAccessToken || vault || payerID)) {
-                        getLogger().error("onapprove_payerid_not_present", {
-                            orderID: orderID
-                        }).flush();
-                        throw new Error("payerID not present in onApprove call");
-                    }
+                    billingToken || subscriptionID || clientAccessToken || vault || payerID || getLogger().error("onapprove_payerid_not_present", {
+                        orderID: orderID
+                    }).flush();
                     return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
                         var data = {
                             orderID: orderID,

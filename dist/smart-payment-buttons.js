@@ -1646,12 +1646,9 @@ window.spb = function(modules) {
                 getLogger().info("button_approve").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_approve", 
                 _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                 _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                if (!(billingToken || subscriptionID || clientAccessToken || vault || payerID)) {
-                    getLogger().error("onapprove_payerid_not_present", {
-                        orderID: orderID
-                    }).flush();
-                    throw new Error("payerID not present in onApprove call");
-                }
+                billingToken || subscriptionID || clientAccessToken || vault || payerID || getLogger().error("onapprove_payerid_not_present", {
+                    orderID: orderID
+                }).flush();
                 return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
                     var data = {
                         orderID: orderID,
@@ -4343,6 +4340,10 @@ window.spb = function(modules) {
                                                             merchantID: JSON.stringify(merchantID)
                                                         }).flush();
                                                         if (1 !== payees.length) throw new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
+                                                        "sandbox" === env && getLogger().warn("derived_payee_transaction_mismatch_sandbox", {
+                                                            payees: JSON.stringify(payees),
+                                                            merchantID: JSON.stringify(merchantID)
+                                                        }).flush();
                                                         console.warn("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (payees[0] && payees[0].email && payees[0].email.stringValue ? payees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     }
                                                 })).catch((function(err) {
@@ -4645,7 +4646,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.273", _ref2;
+                _ref2.button_version = "2.0.274", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
