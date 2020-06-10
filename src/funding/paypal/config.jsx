@@ -2,6 +2,7 @@
 /** @jsx node */
 
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { FUNDING_BRAND_LABEL } from '@paypal/sdk-constants/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
@@ -32,6 +33,8 @@ export function getPayPalConfig() : FundingSourceConfig {
             [BUTTON_COLOR.BLACK]:  LOGO_COLOR.WHITE,
             [BUTTON_COLOR.WHITE]:  LOGO_COLOR.BLUE
         },
+    
+        labelText: `${ FUNDING_BRAND_LABEL.PAYPAL }`,
 
         Logo,
         Label,
