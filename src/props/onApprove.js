@@ -267,7 +267,7 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
             if (!billingToken && !subscriptionID && !clientAccessToken && !vault) {
                 if (!payerID) {
                     getLogger().error('onapprove_payerid_not_present', { orderID }).flush();
-                    throw new Error(`payerID not present in onApprove call`);
+                    // throw new Error(`payerID not present in onApprove call`);
                 }
             }
 
