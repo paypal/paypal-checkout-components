@@ -1,0 +1,58 @@
+$class-mark:                'paypal-mark';
+$class-button:              'paypal-button';
+$class-button-layout:       'paypal-button-layout';
+$class-text:                'paypal-button-text';
+$button-layout-horizontal:  'horizontal';
+$button-layout-vertical:    'vertical';
+
+.#{$class-button} {
+    .#{$class-text} {
+        font-style: italic;
+        font-weight: 600;
+    }
+
+    .message-large {
+        font-size: 1.1em;
+    }
+
+    .message-small {
+        font-size: 1.2em;
+        margin-top: -1px;
+    }
+
+    &.#{$class-button-layout}-#{$button-layout-vertical} {
+        .message-small {
+            display: none;
+        }
+    }
+    
+    &.#{$class-button-layout}-#{$button-layout-horizontal} {
+        .message-large {
+            display: none;
+        }
+        
+        @media only screen and (min-width: 364px) {
+            .message-small {
+                display: none;
+            }
+            .message-large {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.#{$class-mark} {
+    .#{$class-text} {
+        display: inline-block;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        position: relative;
+        top: -5px;
+    }
+
+    .message-small {
+        display: none;
+    }
+}

@@ -35,6 +35,9 @@ export const fundingEligibility = {
     credit: {
         eligible: false
     },
+    paylater: {
+        eligible: false
+    },
     sepa: {
         eligible: false
     },

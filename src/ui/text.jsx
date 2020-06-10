@@ -5,9 +5,9 @@ import { node, type ChildType, type ChildrenType } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../constants';
 
-export function Text({ optional, className = [] } : {| optional? : boolean, className? : $ReadOnlyArray<string> |}, children : ChildrenType) : ChildType {
+export function Text({ optional, className = [], ...rest } : {| optional? : boolean, className? : $ReadOnlyArray<string> |}, children : ChildrenType) : ChildType {
     return (
-        <span class={ [ CLASS.TEXT, ...className  ].join(' ') } optional={ optional }>{ children }</span>
+        <span class={ [ CLASS.TEXT, ...className  ].join(' ') } optional={ optional } { ...rest }>{ children }</span>
     );
 }
 
