@@ -667,5 +667,4 @@ describe('actions cases', () => {
             gqlMock.done();
         });
     });
-
 });

@@ -395,20 +395,20 @@ type SupplementalOrderInfo = {|
                 total : {|
                     currencyCode : string
                 |}
-            |},
-            payees? : $ReadOnlyArray<{|
-                merchantId? : string,
-                email? : {|
-                    stringValue? : string
-                |}
-            |}>
+            |}
         |},
         buyer? : {|
             userId? : string
         |},
         flags : {|
             isChangeShippingAddressAllowed? : boolean
-        |}
+        |},
+        payees? : $ReadOnlyArray<{|
+            merchantId? : string,
+            email? : {|
+                stringValue? : string
+            |}
+        |}>
     |}
 |};
 
@@ -427,15 +427,15 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
                                 currencyCode
                             }
                         }
-                        payees {
-                            merchantId
-                            email {
-                                stringValue
-                            }
-                        }
                     }
                     flags {
                         isChangeShippingAddressAllowed
+                    }
+                    payees {
+                        merchantId
+                        email {
+                            stringValue
+                        }
                     }
                 }
             }

@@ -98,7 +98,7 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
             throw new Error(`Could not determine correct merchant id`);
         }
 
-        const payees = order.checkoutSession.cart && order.checkoutSession.cart.payees;
+        const payees = order.checkoutSession.payees;
 
         if (!payees) {
             return getLogger().warn(`supplemental_order_missing_payees`).flush();
@@ -108,13 +108,29 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
             return getLogger().warn(`supplemental_order_payees_empty`).flush();
         }
 
+        // find and remove duplicated payees
+        const dict = {};
+        const uniquePayees = [];
+
         for (const payee of payees) {
             if (!payee.merchantId && (!payee.email || !payee.email.stringValue)) {
                 return getLogger().warn(`supplemental_order_payees_missing_value`, { payees: JSON.stringify(payees) }).flush();
             }
+
+            if (payee.merchantId) {
+                if (!dict[payee.merchantId]) {
+                    dict[payee.merchantId] = 1;
+                    uniquePayees.push(payee);
+                }
+            } else if (payee.email && payee.email.stringValue) {
+                if (!dict[payee.email.stringValue]) {
+                    dict[payee.email.stringValue] = 1;
+                    uniquePayees.push(payee);
+                }
+            }
         }
 
-        const payeesStr = payees.map(payee => {
+        const payeesStr = uniquePayees.map(payee => {
             if (payee.merchantId) {
                 return payee.merchantId;
             }
@@ -123,7 +139,7 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
                 return payee.email.stringValue;
             }
 
-            throw new Error(`Invalid payee state: ${ JSON.stringify(payees) }`);
+            throw new Error(`Invalid payee state: ${ JSON.stringify(uniquePayees) }`);
         }).join(',');
 
         const xpropMerchantID = window.xprops.merchantID;
@@ -131,11 +147,11 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
         if (xpropMerchantID && xpropMerchantID.length) {
             
             // Validate merchant-id value(s) passed explicitly to SDK
-            if (!isValidMerchantIDs(xpropMerchantID, payees)) {
-                getLogger().warn(`explicit_payee_transaction_mismatch`, { payees: JSON.stringify(payees), merchantID: JSON.stringify(merchantID) }).flush();
+            if (!isValidMerchantIDs(xpropMerchantID, uniquePayees)) {
+                getLogger().warn(`explicit_payee_transaction_mismatch`, { payees: JSON.stringify(uniquePayees), merchantID: JSON.stringify(merchantID) }).flush();
 
-                if (payees.length === 1) {
-                    throw new Error(`Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ payeesStr } or ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ (payees[0] && payees[0].email && payees[0].email.stringValue) ? payees[0].email.stringValue : 'payee@merchant.com' } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
+                if (uniquePayees.length === 1) {
+                    throw new Error(`Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ payeesStr } or ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue) ? uniquePayees[0].email.stringValue : 'payee@merchant.com' } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
                 } else {
                     throw new Error(`Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=* to the sdk url and ${ SDK_SETTINGS.MERCHANT_ID }="${ payeesStr }" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
                 }
@@ -143,16 +159,16 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
         } else {
 
             // Validate merchant-id value derived from client id
-            if (!isValidMerchantIDs(merchantID, payees)) {
-                getLogger().warn(`derived_payee_transaction_mismatch`, { payees: JSON.stringify(payees), merchantID: JSON.stringify(merchantID) }).flush();
+            if (!isValidMerchantIDs(merchantID, uniquePayees)) {
+                getLogger().warn(`derived_payee_transaction_mismatch`, { payees: JSON.stringify(uniquePayees), merchantID: JSON.stringify(merchantID) }).flush();
 
-                if (payees.length === 1) {
+                if (uniquePayees.length === 1) {
                     if (env === ENV.SANDBOX) {
                         getLogger().warn(`derived_payee_transaction_mismatch_sandbox`, { payees: JSON.stringify(payees), merchantID: JSON.stringify(merchantID) }).flush();
                     }
 
                     // eslint-disable-next-line no-console
-                    console.warn(`Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ payeesStr } or ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ (payees[0] && payees[0].email && payees[0].email.stringValue) ? payees[0].email.stringValue : 'payee@merchant.com' } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
+                    console.warn(`Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ payeesStr } or ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue) ? uniquePayees[0].email.stringValue : 'payee@merchant.com' } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
                 } else {
                     throw new Error(`Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=* to the sdk url and ${ SDK_SETTINGS.MERCHANT_ID }="${ payeesStr }" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
                 }

@@ -462,10 +462,6 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
             if (options.extraHandler) {
                 const result = options.extraHandler({ uri, method, query, data });
                 if (result) {
-                    if (result.data && result.data.checkoutSession && result.data.checkoutSession.payees) {
-                        result.data.checkoutSession.cart.payees = result.data.checkoutSession.payees;
-                    }
-
                     return result;
                 }
             }

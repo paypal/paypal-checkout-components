@@ -966,7 +966,6 @@ describe('payee cases', () => {
         });
     });
 
-
     it('should render a button, click the button, and render checkout with an explicit email merchantID and single correct payee, and succeed', async () => {
         return await wrapPromise(async ({ expect }) => {
 
@@ -1492,7 +1491,6 @@ describe('payee cases', () => {
         });
     });
 
-
     it('should render a button, click the button, and render checkout with multiple explicit email and non-email merchantIDs and multiple correct payees, and succeed', async () => {
         return await wrapPromise(async ({ expect }) => {
 
@@ -1914,6 +1912,348 @@ describe('payee cases', () => {
             });
 
             await clickButton(FUNDING.PAYPAL).catch(expect('clickCatch'));
+
+            gqlMock.done();
+        });
+    });
+
+    it('should render a button, click the button, and render checkout with an explicit merchantID and multiple correct payees with the same merchantId, and succeed', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = generateOrderID();
+            const payerID = 'YYYYYYYYYY';
+            const merchantID = [ 'ABCDEF123' ];
+            const payees = [ 'ABCDEF123', 'ABCDEF123' ];
+
+            window.xprops.intent = INTENT.AUTHORIZE;
+            window.xprops.merchantID = merchantID;
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('GetCheckoutDetailsGQLCall', ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        if (!data.query.includes('payees')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payees`);
+                        }
+                        if (!data.query.includes('merchantId')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payee merchantId`);
+                        }
+                        if (!data.query.includes('email')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payee email`);
+                        }
+                        if (!data.variables.orderID) {
+                            throw new Error(`Expected orderID to be passed`);
+                        }
+                    }
+
+                    return {
+                        data: {
+                            checkoutSession: {
+                                cart: {
+                                    intent:  INTENT.AUTHORIZE,
+                                    amounts: {
+                                        total: {
+                                            currencyCode: 'USD'
+                                        }
+                                    }
+                                },
+                                payees: payees.map(id => {
+                                    return (id.indexOf('@') === -1)
+                                        ? {
+                                            merchantId: id
+                                        }
+                                        : {
+                                            email: {
+                                                stringValue: id
+                                            }
+                                        };
+                                })
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
+                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                authorizeOrderMock.expectCalls();
+                await actions.order.authorize();
+                authorizeOrderMock.done();
+
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                merchantID,
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
+        });
+    });
+
+    it('should render a button, click the button, and render checkout with an explicit email merchantID and multiple correct payees with the same email, and succeed', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = generateOrderID();
+            const payerID = 'YYYYYYYYYY';
+            const merchantID = [ 'foo@bar.com' ];
+            const payees = [ 'foo@bar.com', 'foo@bar.com' ];
+
+            window.xprops.intent = INTENT.AUTHORIZE;
+            window.xprops.merchantID = merchantID;
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('GetCheckoutDetailsGQLCall', ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        if (!data.query.includes('payees')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payees`);
+                        }
+                        if (!data.query.includes('merchantId')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payee merchantId`);
+                        }
+                        if (!data.query.includes('email')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payee email`);
+                        }
+                        if (!data.variables.orderID) {
+                            throw new Error(`Expected orderID to be passed`);
+                        }
+                    }
+
+                    return {
+                        data: {
+                            checkoutSession: {
+                                cart: {
+                                    intent:  INTENT.AUTHORIZE,
+                                    amounts: {
+                                        total: {
+                                            currencyCode: 'USD'
+                                        }
+                                    }
+                                },
+                                payees: payees.map(id => {
+                                    return (id.indexOf('@') === -1)
+                                        ? {
+                                            merchantId: id
+                                        }
+                                        : {
+                                            email: {
+                                                stringValue: id
+                                            }
+                                        };
+                                })
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
+                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                authorizeOrderMock.expectCalls();
+                await actions.order.authorize();
+                authorizeOrderMock.done();
+
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                merchantID,
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
+        });
+    });
+    
+    it('should render a button, click the button, and render checkout with multiple explicit merchantIDs and multiple correct payees with the some duplicated merchantId, and succeed', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = generateOrderID();
+            const payerID = 'YYYYYYYYYY';
+            const merchantID = [ 'foo@bar.com', 'ABCDEF123' ];
+            const payees = [ 'ABCDEF123', 'ABCDEF123', 'foo@bar.com' ];
+
+            window.xprops.intent = INTENT.AUTHORIZE;
+            window.xprops.merchantID = merchantID;
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('GetCheckoutDetailsGQLCall', ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        if (!data.query.includes('payees')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payees`);
+                        }
+                        if (!data.query.includes('merchantId')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payee merchantId`);
+                        }
+                        if (!data.query.includes('email')) {
+                            throw new Error(`Expected query GetCheckoutDetails to have payee email`);
+                        }
+                        if (!data.variables.orderID) {
+                            throw new Error(`Expected orderID to be passed`);
+                        }
+                    }
+
+                    return {
+                        data: {
+                            checkoutSession: {
+                                cart: {
+                                    intent:  INTENT.AUTHORIZE,
+                                    amounts: {
+                                        total: {
+                                            currencyCode: 'USD'
+                                        }
+                                    }
+                                },
+                                payees: payees.map(id => {
+                                    return (id.indexOf('@') === -1)
+                                        ? {
+                                            merchantId: id
+                                        }
+                                        : {
+                                            email: {
+                                                stringValue: id
+                                            }
+                                        };
+                                })
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
+                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                authorizeOrderMock.expectCalls();
+                await actions.order.authorize();
+                authorizeOrderMock.done();
+
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                merchantID,
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
+
+            await clickButton(FUNDING.PAYPAL);
 
             gqlMock.done();
         });
