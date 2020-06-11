@@ -1443,7 +1443,7 @@ window.spb = function(modules) {
         var _headers16;
         return callGraphQL({
             name: "GetCheckoutDetails",
-            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                        payees {\n                            merchantId\n                            email {\n                                stringValue\n                            }\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                }\n            }\n        ",
+            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
             variables: {
                 orderID: orderID
             },
@@ -4311,40 +4311,51 @@ window.spb = function(modules) {
                                                     if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     if (!merchantID || 0 === merchantID.length) throw new Error("Could not determine correct merchant id");
-                                                    var payees = order.checkoutSession.cart && order.checkoutSession.cart.payees;
+                                                    var payees = order.checkoutSession.payees;
                                                     if (!payees) return getLogger().warn("supplemental_order_missing_payees").flush();
                                                     if (!payees.length) return getLogger().warn("supplemental_order_payees_empty").flush();
+                                                    var dict = {};
+                                                    var uniquePayees = [];
                                                     for (var _i2 = 0; _i2 < payees.length; _i2++) {
                                                         var payee = payees[_i2];
                                                         if (!(payee.merchantId || payee.email && payee.email.stringValue)) return getLogger().warn("supplemental_order_payees_missing_value", {
                                                             payees: JSON.stringify(payees)
                                                         }).flush();
+                                                        if (payee.merchantId) {
+                                                            if (!dict[payee.merchantId]) {
+                                                                dict[payee.merchantId] = 1;
+                                                                uniquePayees.push(payee);
+                                                            }
+                                                        } else if (payee.email && payee.email.stringValue && !dict[payee.email.stringValue]) {
+                                                            dict[payee.email.stringValue] = 1;
+                                                            uniquePayees.push(payee);
+                                                        }
                                                     }
-                                                    var payeesStr = payees.map((function(payee) {
+                                                    var payeesStr = uniquePayees.map((function(payee) {
                                                         if (payee.merchantId) return payee.merchantId;
                                                         if (payee.email && payee.email.stringValue) return payee.email.stringValue;
-                                                        throw new Error("Invalid payee state: " + JSON.stringify(payees));
+                                                        throw new Error("Invalid payee state: " + JSON.stringify(uniquePayees));
                                                     })).join(",");
                                                     var xpropMerchantID = window.xprops.merchantID;
                                                     if (xpropMerchantID && xpropMerchantID.length) {
-                                                        if (!isValidMerchantIDs(xpropMerchantID, payees)) {
+                                                        if (!isValidMerchantIDs(xpropMerchantID, uniquePayees)) {
                                                             getLogger().warn("explicit_payee_transaction_mismatch", {
-                                                                payees: JSON.stringify(payees),
+                                                                payees: JSON.stringify(uniquePayees),
                                                                 merchantID: JSON.stringify(merchantID)
                                                             }).flush();
-                                                            throw 1 === payees.length ? new Error("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (payees[0] && payees[0].email && payees[0].email.stringValue ? payees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/") : new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
+                                                            throw 1 === uniquePayees.length ? new Error("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/") : new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
                                                         }
-                                                    } else if (!isValidMerchantIDs(merchantID, payees)) {
+                                                    } else if (!isValidMerchantIDs(merchantID, uniquePayees)) {
                                                         getLogger().warn("derived_payee_transaction_mismatch", {
-                                                            payees: JSON.stringify(payees),
+                                                            payees: JSON.stringify(uniquePayees),
                                                             merchantID: JSON.stringify(merchantID)
                                                         }).flush();
-                                                        if (1 !== payees.length) throw new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
+                                                        if (1 !== uniquePayees.length) throw new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
                                                         "sandbox" === env && getLogger().warn("derived_payee_transaction_mismatch_sandbox", {
                                                             payees: JSON.stringify(payees),
                                                             merchantID: JSON.stringify(merchantID)
                                                         }).flush();
-                                                        console.warn("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (payees[0] && payees[0].email && payees[0].email.stringValue ? payees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
+                                                        console.warn("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     }
                                                 })).catch((function(err) {
                                                     var _getLogger$warn$warn$;
@@ -4646,7 +4657,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.274", _ref2;
+                _ref2.button_version = "2.0.275", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
