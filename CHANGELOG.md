@@ -1,3 +1,15 @@
+## <small>5.0.96 (2020-06-16)</small>
+
+* Add Flex/Pay Later button (#1328) ([9649ae5](https://github.com/paypal/paypal-checkout-components/commit/9649ae5)), closes [#1328](https://github.com/paypal/paypal-checkout-components/issues/1328)
+* Add funding and cards to __sdk__ config ([d816995](https://github.com/paypal/paypal-checkout-components/commit/d816995))
+* Add new issue templates (#1327) ([67dbea1](https://github.com/paypal/paypal-checkout-components/commit/67dbea1)), closes [#1327](https://github.com/paypal/paypal-checkout-components/issues/1327)
+* Bump up image diff threshold ([97b3632](https://github.com/paypal/paypal-checkout-components/commit/97b3632))
+* fix iframe title name, aria-label text (#1331) ([c476e94](https://github.com/paypal/paypal-checkout-components/commit/c476e94)), closes [#1331](https://github.com/paypal/paypal-checkout-components/issues/1331)
+* Fix links in changelog (#1326) ([6a80f44](https://github.com/paypal/paypal-checkout-components/commit/6a80f44)), closes [#1326](https://github.com/paypal/paypal-checkout-components/issues/1326)
+* Sort content alphabetically by language (#1330) ([689d17a](https://github.com/paypal/paypal-checkout-components/commit/689d17a)), closes [#1330](https://github.com/paypal/paypal-checkout-components/issues/1330)
+
+
+
 ## <small>5.0.95 (2020-06-02)</small>
 
 * Fix screenshots ([c933975](http://github.paypal.com/paypal/paypal-checkout/commit/c933975))
