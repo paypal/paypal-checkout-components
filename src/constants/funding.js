@@ -24,6 +24,11 @@ export const FUNDING = {
     OXXO:         'oxxo'
 };
 
+export const FUNDING_BRAND_LABEL = {
+    PAYPAL:         'PayPal',
+    CREDIT:         'PayPal Credit'
+};
+
 export const CARD = {
     VISA:        'visa',
     MASTERCARD:  'mastercard',

@@ -1,12 +1,13 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
 
-import { FUNDING, DEFAULT, COUNTRY, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
+import { FUNDING, FUNDING_BRAND_LABEL, DEFAULT, COUNTRY, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LOGO } from '../constants';
 
 type ButtonConfig = {
     [ string ] : {
-        colors? : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>
+        colors? : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
+        title? : string
     }
 };
 
@@ -111,7 +112,9 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimary: true,
 
         allowPrimaryVertical:   true,
-        allowPrimaryHorizontal: true
+        allowPrimaryHorizontal: true,
+        
+        title: `${ FUNDING_BRAND_LABEL.PAYPAL }`
     },
 
     [ BUTTON_LABEL.CHECKOUT ]: {
@@ -204,7 +207,9 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryVertical:   false,
         allowPrimaryHorizontal: false,
 
-        allowFundingIcons: false
+        allowFundingIcons: false,
+    
+        title: `${ FUNDING_BRAND_LABEL.CREDIT }`
     },
 
     [ BUTTON_LABEL.VENMO ]: {
