@@ -59,6 +59,16 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     border-radius: ${ Math.ceil(buttonHeight / 2) }px;
                 }
 
+                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } .${ CLASS.MENU_TOGGLE } {
+                    border-top-right-radius: 4px;
+                    border-bottom-right-radius: 4px;
+                }
+
+                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } .${ CLASS.MENU_TOGGLE } {
+                    border-top-right-radius: ${ Math.ceil(buttonHeight / 2) }px;
+                    border-bottom-right-radius: ${ Math.ceil(buttonHeight / 2) }px;
+                }
+
                 .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL } {
                     margin-bottom: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) }px;
                 }
@@ -88,6 +98,12 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
                 .${ CLASS.MENU_TOGGLE }:hover {
                     background: rgba(100, 100, 100, 0.1);
+                }
+
+                .${ CLASS.MENU_TOGGLE }:focus {
+                    outline: none;
+                    background: rgba(100, 100, 100, 0.1);
+                    box-shadow: 0 0 0 2px rgba(50, 50, 50, 0.9) inset;
                 }
 
                 .${ CLASS.MENU_TOGGLE } img {

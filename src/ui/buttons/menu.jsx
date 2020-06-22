@@ -15,6 +15,7 @@ export function MenuButton({ color = TEXT_COLOR.BLACK } : {| color? : $Values<ty
                 { ...{
                     [ATTRIBUTE.MENU]: true
                 } }
+                tabindex='0'
                 class={ CLASS.MENU_TOGGLE }>
                 <Chevron color={ color } />
             </div>
