@@ -13,7 +13,7 @@ import { debounce, once } from 'zoid/src/lib';
 import { pptm } from '../external';
 import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
-    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
+    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY, FUNDING_BRAND_LABEL } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible, getCurrentScriptUrl,
@@ -182,7 +182,8 @@ export const Button : Component<ButtonOptions> = create({
 
     attributes: {
         iframe: {
-            allowpaymentrequest: 'allowpaymentrequest'
+            allowpaymentrequest: 'allowpaymentrequest',
+            title:               FUNDING_BRAND_LABEL.PAYPAL
         }
     },
 
