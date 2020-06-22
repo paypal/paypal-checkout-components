@@ -306,11 +306,11 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
     }
 
     if (color && fundingConfig.colors.indexOf(color) === -1) {
-        throw new Error(`Unexpected style.color for ${ FUNDING.PAYPAL } button: ${ color }, expected ${ fundingConfig.colors.join(', ') }`);
+        throw new Error(`Unexpected style.color for ${ fundingSource || FUNDING.PAYPAL } button: ${ color }, expected ${ fundingConfig.colors.join(', ') }`);
     }
 
     if (shape && fundingConfig.shapes.indexOf(shape) === -1) {
-        throw new Error(`Unexpected style.shape for ${ FUNDING.PAYPAL } button: ${ shape }, expected ${ fundingConfig.shapes.join(', ') }`);
+        throw new Error(`Unexpected style.shape for ${ fundingSource || FUNDING.PAYPAL } button: ${ shape }, expected ${ fundingConfig.shapes.join(', ') }`);
     }
 
     if (height !== undefined) {

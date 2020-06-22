@@ -8,7 +8,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, values, memoize, noop, identity, isIE } from 'belter/src';
+import { uniqueID, values, memoize, isIE } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { collectRiskData, persistRiskData } from '@paypal/risk-data-collector/src';
@@ -21,7 +21,7 @@ import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 
 export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
-    const Buttons = create({
+    return create({
         tag:  'paypal-buttons',
         url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
 
@@ -56,7 +56,53 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             }
         },
 
+        eligible: ({ props }) => {
+            const { fundingSource, onShippingChange, style = {} } = props;
+
+            if (!fundingSource) {
+                return {
+                    eligible: true
+                };
+            }
+
+            const { layout } = style;
+
+            const platform           = getPlatform();
+            const fundingEligibility = getRefinedFundingEligibility();
+            const components         = getComponents();
+
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange })) {
+                return {
+                    eligible: true
+                };
+            }
+
+            return {
+                eligible: false,
+                reason:   `${ fundingSource } is not eligible`
+            };
+        },
+
         props: {
+            fundingSource: {
+                type:       'string',
+                queryParam: true,
+                required:   false,
+
+                validate: ({ props }) => {
+                    const { fundingSource, onShippingChange, style = {} } = props;
+                    const { layout } = style;
+        
+                    const platform           = getPlatform();
+                    const fundingEligibility = getRefinedFundingEligibility();
+                    const components         = getComponents();
+
+                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange })) {
+                        throw new Error(`${ fundingSource } is not eligible`);
+                    }
+                }
+            },
+
             style: {
                 type:       'object',
                 queryParam: true,
@@ -84,12 +130,6 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 type:       'object',
                 queryParam: true,
                 value:      getLocale
-            },
-
-            fundingSource: {
-                type:       'string',
-                queryParam: true,
-                required:   false
             },
 
             sdkMeta: {
@@ -408,53 +448,4 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             }
         }
     });
-
-    const instances = [];
-
-    const ButtonsWrapper = (props = {}) => {
-        // eslint-disable-next-line prefer-const
-        let instance;
-
-        const onDestroy = props.onDestroy || noop;
-        props.onDestroy = (...args) => {
-            if (instance) {
-                instances.splice(instances.indexOf(instance), 1);
-            }
-            return onDestroy(...args);
-        };
-
-        instance = Buttons(props);
-        instances.push(instance);
-
-        // $FlowFixMe
-        instance.isEligible = () => {
-            const { fundingSource, onShippingChange, style = {} } = props;
-            const { layout } = style;
-
-            const platform           = getPlatform();
-            const fundingEligibility = getRefinedFundingEligibility();
-            const components         = getComponents();
-
-            if (fundingSource) {
-                return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange });
-            }
-
-            return true;
-        };
-
-        // $FlowFixMe
-        instance.clone = ({ decorate = identity } = {}) => {
-            return ButtonsWrapper(decorate(props));
-        };
-
-        return instance;
-    };
-
-    ButtonsWrapper.driver = Buttons.driver;
-    ButtonsWrapper.isChild = Buttons.isChild;
-    ButtonsWrapper.canRenderTo = Buttons.canRenderTo;
-    ButtonsWrapper.instances = instances;
-
-    // $FlowFixMe
-    return ButtonsWrapper;
 });
