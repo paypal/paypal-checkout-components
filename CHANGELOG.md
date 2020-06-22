@@ -1,3 +1,10 @@
+## <small>5.0.97 (2020-06-22)</small>
+
+* Fix email ellipsis in vault button ([8d459b6](https://github.com/paypal/paypal-checkout-components/commit/8d459b6))
+* Move isEligible, instances, and clone to zoid ([c57c77a](https://github.com/paypal/paypal-checkout-components/commit/c57c77a))
+
+
+
 ## <small>5.0.96 (2020-06-16)</small>
 
 * Add Flex/Pay Later button (#1328) ([9649ae5](https://github.com/paypal/paypal-checkout-components/commit/9649ae5)), closes [#1328](https://github.com/paypal/paypal-checkout-components/issues/1328)
