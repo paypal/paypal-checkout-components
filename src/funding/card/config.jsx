@@ -103,6 +103,13 @@ export function getCardConfig() : FundingSourceConfig {
             [ BUTTON_COLOR.WHITE  ]:  BUTTON_COLOR.BLACK,
             [ DEFAULT ]:              BUTTON_COLOR.WHITE
         },
+        
+        labelText: ({ content }) => {
+            if (!__WEB__ && content) {
+                return content.payWithDebitOrCreditCard;
+            }
+            return FUNDING.CARD;
+        },
 
         Logo: ({ logoColor }) => {
             return (
