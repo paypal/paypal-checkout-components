@@ -4,8 +4,8 @@
 
 import { base64encode } from 'belter/src';
 
-import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
-import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
+import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING, FUNDING_BRAND_LABEL } from '../../constants';
+import { getButtonConfig, labelToFunding, fundingToDefaultLabel, BUTTON_CONFIG } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx';
 import { fundingLogos, cardLogos } from '../../resources';
@@ -255,8 +255,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
             return (
                 <img
                     class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ name } ${ CLASS.LOGO }-${ color }` }
-                    src={ `data:image/svg+xml;base64,${ base64encode(logo.toString()) }` }
-                    alt={ name } />
+                    src={ `data:image/svg+xml;base64,${ base64encode(logo.toString()) }` } />
             );
         },
 
@@ -318,13 +317,31 @@ function renderButtonTextDiv({ contentText, personalizedButtonText, impression, 
     );
 }
 
+export function determineButtonTitle({ locale, label, branding } : { label : $Values<typeof BUTTON_LABEL>, locale : Object, branding : boolean }) : string {
+    const localeContent = getLocaleContent(locale);
+    const labelContent = localeContent && localeContent[label];
+    
+    if (labelContent) {
+        const regex = /({logo:(pp|paypal)})+(\s)*({logo:(pp|paypal)})*/;
+        let str = labelContent.replace(regex, FUNDING_BRAND_LABEL.PAYPAL);
+        // removes PayPal from unbranded BuyNow button
+        if (label === BUTTON_LABEL.BUYNOW && !branding) {
+            str = str.replace(FUNDING_BRAND_LABEL.PAYPAL, '');
+        }
+        return str;
+    }
+    
+    return label;
+    
+}
+
 function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, tagline, i, env, cards, installmentperiod, checkoutCustomization } :
     { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, tagline : boolean, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, installmentperiod : number }) : JsxHTMLNode {
 
     const logoColor = getButtonConfig(label, 'logoColors')[color];
 
     const buttonLabel = determineLabel({ label, source, multiple, layout });
-
+    
     // If the determined button label matches up with the label passed by the merchant, use
     // the label template, otherwise use the logo template.
     let contentText;
@@ -356,7 +373,12 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     
     contentText = (typeof contentText === 'function') ? contentText(dynamicContent) : contentText;
     contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
-
+    
+    
+    // button title used to set aria-label for the button div -- a11y
+    const title = BUTTON_CONFIG[label].title;
+    const buttonTitle = (typeof  title === 'string') ? title : determineButtonTitle({ locale, label, branding });
+    
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
         FUNDING.CARD
@@ -369,7 +391,8 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
             { ...role }
-            tabindex={ hasTabIndex && 0 }>
+            tabindex={ hasTabIndex && 0 }
+            aria-label={ buttonTitle }>
             { source === FUNDING.CARD ? contentText : renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding, allowedAnimation }) }
         </div>
     );
