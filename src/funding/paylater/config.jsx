@@ -7,7 +7,7 @@ import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
-import { Text, Space } from '../../ui/text';
+import { Space } from '../../ui/text';
 import { WalletLabel } from '../paypal/template';
 
 import css from './style.scoped.scss';
@@ -26,9 +26,9 @@ export function getPaylaterConfig() : FundingSourceConfig {
                 <Style css={ css } nonce={ nonce }>
                     <PPLogo logoColor={ logoColor } />
                     <Space />
-                    <Text className="message-small" optional>PayPal </Text>
-                    <Text className="message-small">Flex</Text>
-                    <Text className="message-large">Pay Later with Flex</Text>
+                    <span class="text text-small" optional>PayPal<Space /></span>
+                    <span class="text text-small">Flex</span>
+                    <span class="text text-large">Pay Later with Flex</span>
                 </Style>
             );
         },
