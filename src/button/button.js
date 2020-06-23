@@ -142,9 +142,10 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     clearSmartMenu();
     
     getButtons().forEach(button => {
-        const { fundingSource, card, paymentMethodID, instrumentID, instrumentType } = getSelectedFunding(button);
-        const payment = { button, fundingSource, card, paymentMethodID, instrumentID, instrumentType, isClick: true, buyerIntent: BUYER_INTENT.PAY };
         const menuToggle = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
+        const { fundingSource, card, paymentMethodID, instrumentID, instrumentType } = getSelectedFunding(button);
+
+        const payment = { button, menuToggle, fundingSource, card, paymentMethodID, instrumentID, instrumentType, isClick: true, buyerIntent: BUYER_INTENT.PAY };
 
         preventClickFocus(button);
         onElementClick(button, event => {

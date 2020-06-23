@@ -11,7 +11,8 @@ type SmartMenuProps = {|
 |};
 
 type SmartMenu = {|
-    display : (MenuFlowProps) => ZalgoPromise<void>
+    display : (MenuFlowProps) => ZalgoPromise<void>,
+    hide : () => ZalgoPromise<void>
 |};
 
 export function renderSmartMenu({ clientID, Menu } : SmartMenuProps) : SmartMenu {
@@ -36,5 +37,5 @@ export function renderSmartMenu({ clientID, Menu } : SmartMenuProps) : SmartMenu
     hide();
     render();
 
-    return { display };
+    return { display, hide };
 }

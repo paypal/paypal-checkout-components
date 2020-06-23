@@ -19,6 +19,7 @@ export type PaymentFlowInstance = {|
 
 export type Payment = {|
     button : HTMLElement,
+    menuToggle? : ?HTMLElement,
     win? : ?(ProxyWindow | CrossDomainWindowType),
     fundingSource : $Values<typeof FUNDING>,
     instrumentType? : ?$Values<typeof WALLET_INSTRUMENT>,
