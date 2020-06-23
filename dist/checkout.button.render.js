@@ -61,6 +61,9 @@
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
+    __webpack_require__.d(__webpack_exports__, "determineButtonTitle", (function() {
+        return determineButtonTitle;
+    }));
     __webpack_require__.d(__webpack_exports__, "componentTemplate", (function() {
         return componentTemplate;
     }));
@@ -268,7 +271,8 @@
         logoLabel: "{ logo: pp } { logo: paypal }",
         allowPrimary: !0,
         allowPrimaryVertical: !0,
-        allowPrimaryHorizontal: !0
+        allowPrimaryHorizontal: !0,
+        title: "PayPal"
     }, _BUTTON_CONFIG.checkout = {
         label: "{ content: checkout }",
         logoLabel: "{ logo: pp } { logo: paypal }",
@@ -317,7 +321,8 @@
         allowPrimary: !0,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1,
-        allowFundingIcons: !1
+        allowFundingIcons: !1,
+        title: "PayPal Credit"
     }, _BUTTON_CONFIG.venmo = {
         label: "{ logo: venmo }",
         logoLabel: "{ logo: venmo }",
@@ -8449,6 +8454,9 @@
     function getCommonButtonClasses(_ref) {
         return [ CLASS.LAYOUT + "-" + _ref.layout, CLASS.SHAPE + "-" + _ref.shape, CLASS.BRANDING + "-" + (_ref.branding ? "branded" : "unbranded"), CLASS.NUMBER + "-" + (_ref.multiple ? "multiple" : "single"), CLASS.ENV + "-" + _ref.env, "" + CLASS.SHOULD_FOCUS ].join(" ");
     }
+    function getLocaleContent(locale) {
+        return componentContent[locale.country][locale.lang];
+    }
     function determineLabel(_ref3) {
         var label = _ref3.label, source = _ref3.source, multiple = _ref3.multiple, layout = _ref3.layout;
         var defaultLabel = FUNDING_TO_DEFAULT_LABEL[source];
@@ -8473,9 +8481,7 @@
     }
     function renderContent(text, _ref11) {
         var label = _ref11.label, locale = _ref11.locale, color = _ref11.color, branding = _ref11.branding, logoColor = _ref11.logoColor, funding = _ref11.funding, env = _ref11.env, _cards = _ref11.cards, dynamicContent = _ref11.dynamicContent, layout = _ref11.layout, size = _ref11.size;
-        var _content = function(locale) {
-            return componentContent[locale.country][locale.lang];
-        }(locale);
+        var _content = getLocaleContent(locale);
         return renderers = {
             text: function(value) {
                 return jsxToHTML("span", {
@@ -8498,8 +8504,7 @@
                     }) : fundingLogos[name][logoColor] || fundingLogos[name][BUTTON_LOGO_COLOR.ANY];
                     return jsxToHTML("img", {
                         class: CLASS.LOGO + " " + CLASS.LOGO + "-" + name + " " + CLASS.LOGO + "-" + color,
-                        src: "data:image/svg+xml;base64," + base64encode(logo.toString()),
-                        alt: name
+                        src: "data:image/svg+xml;base64," + base64encode(logo.toString())
                     });
                 }
             },
@@ -8559,9 +8564,20 @@
         })), new jsx_JsxHTMLNodeContainer(nodes);
         var renderers, nodes;
     }
-    function componentTemplate(_ref19) {
-        var _ref20;
-        var props = _ref19.props;
+    function determineButtonTitle(_ref13) {
+        var label = _ref13.label, branding = _ref13.branding;
+        var localeContent = getLocaleContent(_ref13.locale);
+        var labelContent = localeContent && localeContent[label];
+        if (labelContent) {
+            var str = labelContent.replace(/({logo:(pp|paypal)})+(\s)*({logo:(pp|paypal)})*/, "PayPal");
+            "buynow" !== label || branding || (str = str.replace("PayPal", ""));
+            return str;
+        }
+        return label;
+    }
+    function componentTemplate(_ref20) {
+        var _ref21;
+        var props = _ref20.props;
         if (props && props.style) {
             var style = props.style;
             "generic" === style.label && (style.label = "paypal");
@@ -8647,9 +8663,9 @@
             multiple: multiple,
             layout: layout
         }).map((function(button, i) {
-            return function(_ref13) {
-                var _ref14, _ref15, _ref16;
-                var size = _ref13.size, label = _ref13.label, color = _ref13.color, locale = _ref13.locale, branding = _ref13.branding, multiple = _ref13.multiple, layout = _ref13.layout, shape = _ref13.shape, source = _ref13.source, funding = _ref13.funding, tagline = _ref13.tagline, i = _ref13.i, env = _ref13.env, cards = _ref13.cards, installmentperiod = _ref13.installmentperiod, checkoutCustomization = _ref13.checkoutCustomization;
+            return function(_ref14) {
+                var _ref15, _ref16, _ref17;
+                var size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, tagline = _ref14.tagline, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, checkoutCustomization = _ref14.checkoutCustomization;
                 var logoColor = getButtonConfig(label, "logoColors")[color];
                 var buttonLabel = determineLabel({
                     label: label,
@@ -8690,10 +8706,19 @@
                     layout: layout,
                     size: size
                 });
+                var title = BUTTON_CONFIG[label].title;
+                var buttonTitle = "string" == typeof title ? title : determineButtonTitle({
+                    locale: locale,
+                    label: label,
+                    branding: branding
+                });
                 var hasTabIndex = -1 === [ FUNDING.CARD ].indexOf(source);
-                return jsxToHTML("div", _extends({}, ((_ref14 = {})["data-layout"] = layout || "", 
-                _ref14), ((_ref15 = {})["data-size"] = size || "", _ref15), ((_ref16 = {})["data-funding-source"] = source, 
-                _ref16["data-button"] = !0, _ref16), {
+                var role = source === FUNDING.CARD ? {} : {
+                    role: "button"
+                };
+                return jsxToHTML("div", _extends({}, ((_ref15 = {})["data-layout"] = layout || "", 
+                _ref15), ((_ref16 = {})["data-size"] = size || "", _ref16), ((_ref17 = {})["data-funding-source"] = source, 
+                _ref17["data-button"] = !0, _ref17), {
                     class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                         layout: layout,
                         shape: shape,
@@ -8704,9 +8729,10 @@
                         label: label,
                         color: color,
                         logoColor: logoColor
-                    }, [ CLASS.LABEL + "-" + _ref2.label, CLASS.COLOR + "-" + _ref2.color, CLASS.LOGO_COLOR + "-" + _ref2.logoColor ].join(" ")),
-                    role: "button",
-                    tabindex: hasTabIndex && 0
+                    }, [ CLASS.LABEL + "-" + _ref2.label, CLASS.COLOR + "-" + _ref2.color, CLASS.LOGO_COLOR + "-" + _ref2.logoColor ].join(" "))
+                }, role, {
+                    tabindex: hasTabIndex && 0,
+                    "aria-label": buttonTitle
                 }), source === FUNDING.CARD ? contentText : function(_ref12) {
                     var contentText = _ref12.contentText, personalizedButtonText = _ref12.personalizedButtonText, impression = _ref12.impression;
                     return jsxToHTML("div", {
@@ -8766,10 +8792,10 @@
                 checkoutCustomization: checkoutCustomization
             });
         }));
-        var taglineNode = function(_ref17) {
-            var label = _ref17.label, color = _ref17.color, locale = _ref17.locale, env = _ref17.env, cards = _ref17.cards, checkoutCustomization = _ref17.checkoutCustomization;
-            if (_ref17.tagline) {
-                var tag = _ref17.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag");
+        var taglineNode = function(_ref18) {
+            var label = _ref18.label, color = _ref18.color, locale = _ref18.locale, env = _ref18.env, cards = _ref18.cards, checkoutCustomization = _ref18.checkoutCustomization;
+            if (_ref18.tagline) {
+                var tag = _ref18.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag");
                 var text = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.text ? checkoutCustomization.tagline.text : renderContent(tag, {
                     locale: locale,
                     color: color,
@@ -8820,11 +8846,11 @@
         });
         var styleNode = jsxToHTML("style", {
             innerHTML: (_ref = {
-                height: (_ref18 = {
+                height: (_ref19 = {
                     height: height,
                     cardNumber: cards.length
                 }).height,
-                cardNumber: _ref18.cardNumber
+                cardNumber: _ref19.cardNumber
             }, "\n        " + pageStyle + "\n        " + buttonStyle + "\n        " + buttonColorStyle + "\n        " + layoutStyle + "\n        " + brandingStyle + "\n        " + labelStyle + "\n        " + function(_ref) {
                 var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
                 return Object.keys(BUTTON_STYLE).map((function(size) {
@@ -8840,7 +8866,7 @@
             }) + "\n    ")
         });
         var _ref;
-        var _ref18;
+        var _ref19;
         var scriptNode = jsxToHTML("script", {
             innerHTML: "(" + function() {
                 var SELECTOR_ALL = "*", SELECTOR_OPTIONAL = "[optional]";
@@ -8954,8 +8980,8 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref20 = {}, _ref20["data-version"] = "4.0.314", 
-        _ref20), {
+        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.315", 
+        _ref21), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
                 shape: shape,

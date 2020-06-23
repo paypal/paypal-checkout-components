@@ -56,7 +56,7 @@
         return {}.hasOwnProperty.call(object, property);
     };
     __webpack_require__.p = "";
-    __webpack_require__(__webpack_require__.s = 48);
+    __webpack_require__(__webpack_require__.s = 45);
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "m", (function() {
@@ -98,10 +98,13 @@
     __webpack_require__.d(__webpack_exports__, "v", (function() {
         return FUNDING;
     }));
+    __webpack_require__.d(__webpack_exports__, "w", (function() {
+        return FUNDING_BRAND_LABEL;
+    }));
     __webpack_require__.d(__webpack_exports__, "o", (function() {
         return CARD;
     }));
-    __webpack_require__.d(__webpack_exports__, "w", (function() {
+    __webpack_require__.d(__webpack_exports__, "x", (function() {
         return FUNDING_ELIGIBILITY_REASON;
     }));
     __webpack_require__.d(__webpack_exports__, "p", (function() {
@@ -113,10 +116,10 @@
     __webpack_require__.d(__webpack_exports__, "r", (function() {
         return COUNTRY;
     }));
-    __webpack_require__.d(__webpack_exports__, "x", (function() {
+    __webpack_require__.d(__webpack_exports__, "y", (function() {
         return LANG;
     }));
-    __webpack_require__.d(__webpack_exports__, "y", (function() {
+    __webpack_require__.d(__webpack_exports__, "z", (function() {
         return LANG_TO_DEFAULT_COUNTRY;
     }));
     __webpack_require__.d(__webpack_exports__, "a", (function() {
@@ -128,31 +131,31 @@
     __webpack_require__.d(__webpack_exports__, "t", (function() {
         return ENV;
     }));
-    __webpack_require__.d(__webpack_exports__, "F", (function() {
+    __webpack_require__.d(__webpack_exports__, "G", (function() {
         return USERS;
     }));
-    __webpack_require__.d(__webpack_exports__, "E", (function() {
+    __webpack_require__.d(__webpack_exports__, "F", (function() {
         return SOURCE;
     }));
-    __webpack_require__.d(__webpack_exports__, "A", (function() {
+    __webpack_require__.d(__webpack_exports__, "B", (function() {
         return LOG_LEVEL;
     }));
-    __webpack_require__.d(__webpack_exports__, "B", (function() {
+    __webpack_require__.d(__webpack_exports__, "C", (function() {
         return PAYMENT_TYPE;
     }));
-    __webpack_require__.d(__webpack_exports__, "D", (function() {
+    __webpack_require__.d(__webpack_exports__, "E", (function() {
         return PPTM_ID;
     }));
     __webpack_require__.d(__webpack_exports__, "c", (function() {
         return ATTRIBUTE;
     }));
-    __webpack_require__.d(__webpack_exports__, "C", (function() {
+    __webpack_require__.d(__webpack_exports__, "D", (function() {
         return PLATFORM;
     }));
     __webpack_require__.d(__webpack_exports__, "s", (function() {
         return DEFAULT;
     }));
-    __webpack_require__.d(__webpack_exports__, "z", (function() {
+    __webpack_require__.d(__webpack_exports__, "A", (function() {
         return LOCALE;
     }));
     var BUTTON_STYLE_OPTIONS = {
@@ -285,6 +288,10 @@
         MAXIMA: "maxima",
         BOLETO: "boleto",
         OXXO: "oxxo"
+    };
+    var FUNDING_BRAND_LABEL = {
+        PAYPAL: "PayPal",
+        CREDIT: "PayPal Credit"
     };
     var CARD = {
         VISA: "visa",
@@ -805,10 +812,8 @@
     __webpack_require__.d(__webpack_exports__, "b", (function() {
         return jsxRender;
     }));
-    __webpack_require__(24);
-    __webpack_require__(18);
-    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
-    var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
+    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
+    var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
     function htmlEncode(html) {
         void 0 === html && (html = "");
         return html.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
@@ -849,7 +854,7 @@
         return JsxHTMLNode;
     }();
     var JsxHTMLNodeContainer = function(_JsxHTMLNode) {
-        Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_2__.a)(JsxHTMLNodeContainer, _JsxHTMLNode);
+        Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(JsxHTMLNodeContainer, _JsxHTMLNode);
         function JsxHTMLNodeContainer(children) {
             return _JsxHTMLNode.call(this, "", {}, children) || this;
         }
@@ -863,7 +868,7 @@
         return new JsxHTMLNode(name, props, children);
     }
     function jsxRender(template, renderers) {
-        var nodes = Object(_util__WEBPACK_IMPORTED_MODULE_3__.n)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, (function(match, type, value, text) {
+        var nodes = Object(_util__WEBPACK_IMPORTED_MODULE_1__.n)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, (function(match, type, value, text) {
             if (type) {
                 if (!renderers[type]) throw new Error("Can not render type: " + type);
                 return renderers[type](value);
@@ -1332,16 +1337,16 @@
     __webpack_require__.d(__webpack_exports__, "G", (function() {
         return security.b;
     }));
-    var device = __webpack_require__(22);
+    var device = __webpack_require__(21);
     var util = __webpack_require__(12);
     var src = __webpack_require__(13);
     var client = __webpack_require__(5);
     var cross_domain_utils_src = __webpack_require__(7);
     var config = __webpack_require__(4);
     var constants = __webpack_require__(0);
-    var session = __webpack_require__(20);
-    var dom = __webpack_require__(27);
-    var security = __webpack_require__(29);
+    var session = __webpack_require__(19);
+    var dom = __webpack_require__(24);
+    var security = __webpack_require__(26);
     function getRefererDomain() {
         return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
     }
@@ -1380,7 +1385,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.314"
+                ver: "4.0.315"
             };
         }));
         Object(client.a)((function() {
@@ -1408,7 +1413,7 @@
             var contextType;
             var contextID;
             if (paymentToken) {
-                contextType = constants.u.CONTEXT_TYPE[constants.B.EC_TOKEN];
+                contextType = constants.u.CONTEXT_TYPE[constants.C.EC_TOKEN];
                 contextID = paymentToken;
             } else if (buttonSessionID) {
                 contextType = constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID;
@@ -1443,8 +1448,8 @@
     function getBowser() {
         var userAgent = Object(device.a)();
         if (bowserCache[userAgent]) return bowserCache[userAgent];
-        delete __webpack_require__.c[45];
-        var bowser = __webpack_require__(45);
+        delete __webpack_require__.c[42];
+        var bowser = __webpack_require__(42);
         bowserCache[userAgent] = bowser;
         return bowser;
     }
@@ -1618,7 +1623,7 @@
     request.addHeaderBuilder = function(method) {
         headerBuilders.push(method);
     };
-    __webpack_require__(32);
+    __webpack_require__(29);
     function getThrottle(name, sample, sticky) {
         void 0 === sticky && (sticky = !0);
         var uid = Object(session.e)();
@@ -1675,7 +1680,7 @@
         var payer = Object(util.g)(window.location.href, /PayerID=([A-Z0-9]+)/);
         if (token && payer) return token;
     }
-    __webpack_require__(35);
+    __webpack_require__(32);
     var getCurrentScript = Object(util.i)((function() {
         var scripts = [].slice.call(document.getElementsByTagName("script"));
         for (var _i2 = 0; _i2 < scripts.length; _i2++) {
@@ -1688,7 +1693,7 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.314";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.315";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1698,7 +1703,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.314.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.315.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1813,16 +1818,16 @@
     var constants = __webpack_require__(0);
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls;
     var config = {
-        locales: constants.z,
+        locales: constants.A,
         scriptUrl: "//www.paypalobjects.com/api/checkout.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.314",
+        version: "4.0.315",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
         locale: {
             country: constants.r.US,
-            lang: constants.x.EN
+            lang: constants.y.EN
         },
         stage: "msmaster",
         stageDomain: "qa.paypal.com",
@@ -2567,7 +2572,7 @@
         },
         defaultLocale: {
             country: constants.r.US,
-            lang: constants.x.EN
+            lang: constants.y.EN
         }
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -3269,7 +3274,7 @@
     var src = __webpack_require__(7);
     var zalgo_promise_src = __webpack_require__(2);
     var cross_domain_safe_weakmap_src = __webpack_require__(17);
-    var error = __webpack_require__(28);
+    var error = __webpack_require__(25);
     function urlEncode(str) {
         return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
     }
@@ -3688,7 +3693,7 @@
             })).map((function(key) {
                 return urlEncode(key) + "=" + urlEncode(obj[key]);
             })).join("&");
-        }(Object(esm_extends.a)({}, parseQuery(originalQuery), {}, props)) : originalQuery;
+        }(Object(esm_extends.a)({}, parseQuery(originalQuery), props)) : originalQuery;
     }
     function extendUrl(url, options) {
         void 0 === options && (options = {});
@@ -5043,7 +5048,7 @@
     var SEND_MESSAGE_STRATEGIES = {};
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
         try {
-            __webpack_require__(46).emulateIERestrictions(window, win);
+            __webpack_require__(43).emulateIERestrictions(window, win);
         } catch (err) {
             return;
         }
@@ -5058,7 +5063,7 @@
             return win.postMessage(serializedMessage, dom);
         }));
     };
-    var _require = __webpack_require__(25), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
+    var _require = __webpack_require__(23), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
         if (needsBridgeForBrowser() || isBridge()) {
             if (Object(src.v)(win)) throw new Error("Post message through bridge disabled between same domain windows");
@@ -5087,7 +5092,7 @@
                 var id = Object(lib.q)();
                 var type = Object(lib.c)();
                 var sourceDomain = Object(src.h)(window);
-                return Object(esm_extends.a)({}, message, {}, options, {
+                return Object(esm_extends.a)({}, message, options, {
                     sourceDomain: sourceDomain,
                     id: message.id || id,
                     windowType: type
@@ -5264,7 +5269,7 @@
             data: event.data
         };
         try {
-            __webpack_require__(46).emulateIERestrictions(messageEvent.source, window);
+            __webpack_require__(43).emulateIERestrictions(messageEvent.source, window);
         } catch (err) {
             return;
         }
@@ -5547,11 +5552,11 @@
         global.a.methods.delete(win);
         global.a.readyPromises.delete(win);
     }
-    var bridge = __webpack_require__(49);
+    var bridge = __webpack_require__(46);
     function init() {
         if (!global.a.initialized) {
             Object(lib.a)(window, "message", messageListener);
-            __webpack_require__(25).openTunnelToOpener();
+            __webpack_require__(23).openTunnelToOpener();
             Object(lib.d)();
             Object(lib.h)({
                 on: _on,
@@ -6132,7 +6137,7 @@
     var esm_extends = __webpack_require__(11);
     var src = __webpack_require__(2);
     var beaver_logger_client = __webpack_require__(5);
-    var zoid_src = __webpack_require__(21);
+    var zoid_src = __webpack_require__(20);
     var belter_src = __webpack_require__(15);
     var lib = __webpack_require__(3);
     var config = __webpack_require__(4);
@@ -6217,8 +6222,8 @@
         }), 100);
     };
     window.onLegacyFallback = window.watchForLegacyFallback;
-    var integrations = __webpack_require__(30);
-    var template = __webpack_require__(33);
+    var integrations = __webpack_require__(27);
+    var template = __webpack_require__(30);
     var Checkout = Object(zoid_src.c)({
         tag: "paypal-checkout",
         name: "ppcheckout",
@@ -6527,7 +6532,7 @@
                         var _track;
                         Object(beaver_logger_client.k)("checkout_init");
                         Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
-                        _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_INIT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[constants.B.EC_TOKEN], 
+                        _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_INIT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[constants.C.EC_TOKEN], 
                         _track[constants.u.KEY.TOKEN] = data.paymentToken, _track[constants.u.KEY.SELLER_ID] = data.merchantID, 
                         _track[constants.u.KEY.CONTEXT_ID] = data.paymentToken, _track));
                         Object(beaver_logger_client.h)();
@@ -6808,16 +6813,6 @@
         };
         return CrossDomainSafeWeakMap;
     }();
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return _getPrototypeOf;
-    }));
-    function _getPrototypeOf(o) {
-        return (_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function(o) {
-            return o.__proto__ || Object.getPrototypeOf(o);
-        })(o);
-    }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "b", (function() {
@@ -8333,8 +8328,8 @@
     }));
     var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
     var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
-    var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(27);
-    var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(29);
+    var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
+    var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26);
     var accessedStorage;
     function getStorageState(handler) {
         var localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__.f)();
@@ -8440,10 +8435,11 @@
         return CONSTANTS;
     }));
     var src = __webpack_require__(13);
-    var assertThisInitialized = __webpack_require__(26);
-    __webpack_require__(24);
-    __webpack_require__(18);
-    var inheritsLoose = __webpack_require__(23);
+    function _assertThisInitialized(self) {
+        if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        return self;
+    }
+    var inheritsLoose = __webpack_require__(22);
     function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
         var desc = {};
         Object.keys(descriptor).forEach((function(key) {
@@ -8580,7 +8576,7 @@
     var esm_extends = __webpack_require__(11);
     var client = __webpack_require__(5);
     var belter_src = __webpack_require__(15);
-    var base32 = __webpack_require__(37);
+    var base32 = __webpack_require__(34);
     var base32_default = __webpack_require__.n(base32);
     var constants = __webpack_require__(8);
     function normalize(str) {
@@ -8634,7 +8630,7 @@
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.renderParent);
     }));
-    var src_error = __webpack_require__(28);
+    var src_error = __webpack_require__(25);
     function normalizeChildProp(component, props, key, value) {
         var prop = component.getProp(key);
         return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
@@ -8653,7 +8649,7 @@
             _this.component = component;
             if (!_this.hasValidParentDomain()) {
                 _this.error(new src_error.c("Can not be rendered by domain: " + _this.getParentDomain()));
-                return Object(assertThisInitialized.a)(_this);
+                return _assertThisInitialized(_this);
             }
             _this.component.log("construct_child");
             _this.onPropHandlers = [];
@@ -8672,7 +8668,7 @@
                     });
                 };
                 for (var _i4 = 0, _ref4 = [ [ "xchild", function() {
-                    return Object(assertThisInitialized.a)(_this);
+                    return _assertThisInitialized(_this);
                 } ], [ "xprops", function() {
                     return _this.props;
                 } ] ]; _i4 < _ref4.length; _i4++) _loop2(_i4, _ref4);
@@ -8687,7 +8683,7 @@
                 _this.context = data.context;
                 _this.setProps(data.props, origin);
                 _this.watchForResize();
-                return Object(assertThisInitialized.a)(_this);
+                return _assertThisInitialized(_this);
             })).catch((function(err) {
                 _this.error(err);
                 throw err;
@@ -9495,7 +9491,7 @@
         };
         _proto.buildUrl = function() {
             var _this7 = this;
-            return zalgo_promise_src.a.all([ this.props.url, (propsDef = Object(esm_extends.a)({}, this.component.props, {}, this.component.builtinProps), 
+            return zalgo_promise_src.a.all([ this.props.url, (propsDef = Object(esm_extends.a)({}, this.component.props, this.component.builtinProps), 
             props = this.props, params = {}, zalgo_promise_src.a.all(Object.keys(props).map((function(key) {
                 var prop = propsDef[key];
                 if (prop) return zalgo_promise_src.a.resolve().then((function() {
@@ -10098,7 +10094,7 @@
             _this.focus = function() {
                 return zalgo_promise_src.a.all([ _this.isWindowClosed().then((function(closed) {
                     closed || window.open("", _this.childWindowName);
-                })), options.overrides.focus.call(Object(assertThisInitialized.a)(_this)) ]).then(lib.F);
+                })), options.overrides.focus.call(_assertThisInitialized(_this)) ]).then(lib.F);
             };
             _this.clean.register("destroyFocusOverride", (function() {
                 _this.focus = lib.F;
@@ -10113,7 +10109,7 @@
             }
             _this.childWindowName = options.childWindowName;
             _this.isWindowClosed = options.isWindowClosed;
-            parent_ParentComponent.prototype.registerActiveComponent.call(Object(assertThisInitialized.a)(_this));
+            parent_ParentComponent.prototype.registerActiveComponent.call(_assertThisInitialized(_this));
             _this.watchForClose();
             return _this;
         }
@@ -10149,7 +10145,7 @@
         } ]);
         return DelegateComponent;
     }(base_BaseComponent);
-    var drivers = __webpack_require__(31);
+    var drivers = __webpack_require__(28);
     function defaultContainerTemplate(_ref) {
         var id = _ref.id, CLASS = _ref.CLASS, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _ref$dimensions = _ref.dimensions;
         return jsxDom("div", {
@@ -10406,7 +10402,7 @@
             _this.addProp(options, "prerenderTemplate", defaultPrerenderTemplate);
             _this.addProp(options, "validate");
             _this.addProp(options, "unsafeRenderTo", !1);
-            Component.components[_this.tag] = Object(assertThisInitialized.a)(_this);
+            Component.components[_this.tag] = _assertThisInitialized(_this);
             _this.registerDrivers();
             _this.registerChild();
             _this.listenDelegate();
@@ -10751,22 +10747,6 @@
         subClass.prototype = Object.create(superClass.prototype);
         subClass.prototype.constructor = subClass;
         subClass.__proto__ = superClass;
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return _possibleConstructorReturn;
-    }));
-    function _typeof(obj) {
-        return (_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        })(obj);
-    }
-    var assertThisInitialized = __webpack_require__(26);
-    function _possibleConstructorReturn(self, call) {
-        return !call || "object" !== _typeof(call) && "function" != typeof call ? Object(assertThisInitialized.a)(self) : call;
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -11155,15 +11135,6 @@
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return _assertThisInitialized;
-    }));
-    function _assertThisInitialized(self) {
-        if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        return self;
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
     __webpack_require__.d(__webpack_exports__, "i", (function() {
         return loadScript;
     }));
@@ -11205,7 +11176,7 @@
     var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
     var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
     var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
-    __webpack_require__(22);
+    __webpack_require__(21);
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
     }
@@ -11334,15 +11305,15 @@
     function normalizeLocale(locale) {
         if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
             var _locale$split = locale.split(/[-_]/), lang = _locale$split[0], country = _locale$split[1];
-            if (_constants__WEBPACK_IMPORTED_MODULE_2__.z[country] && -1 !== _constants__WEBPACK_IMPORTED_MODULE_2__.z[country].indexOf(lang)) return {
+            if (_constants__WEBPACK_IMPORTED_MODULE_2__.A[country] && -1 !== _constants__WEBPACK_IMPORTED_MODULE_2__.A[country].indexOf(lang)) return {
                 country: country,
                 lang: lang
             };
         }
     }
     function normalizeLang(lang) {
-        if (lang && lang.match(/^[a-z]{2}$/) && _constants__WEBPACK_IMPORTED_MODULE_2__.y[lang]) return {
-            country: _constants__WEBPACK_IMPORTED_MODULE_2__.y[lang],
+        if (lang && lang.match(/^[a-z]{2}$/) && _constants__WEBPACK_IMPORTED_MODULE_2__.z[lang]) return {
+            country: _constants__WEBPACK_IMPORTED_MODULE_2__.z[lang],
             lang: lang
         };
     }
@@ -11424,7 +11395,7 @@
     }));
     var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
     var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
-    var _device__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(22);
+    var _device__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(21);
     function allowIframe() {
         if (!Object(_device__WEBPACK_IMPORTED_MODULE_2__.g)()) return !0;
         var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.n)(window);
@@ -11452,7 +11423,7 @@
     __webpack_require__.d(__webpack_exports__, "e", (function() {
         return mapPaymentToBraintree;
     }));
-    var checkout = __webpack_require__(34);
+    var checkout = __webpack_require__(31);
     var src = __webpack_require__(2);
     function awaitBraintreeClient(braintree, auth) {
         return src.a.resolve(auth).then((function(authorization) {
@@ -11534,34 +11505,34 @@
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38);
+    var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(35);
     __webpack_require__.d(__webpack_exports__, "script", (function() {
         return _script__WEBPACK_IMPORTED_MODULE_0__.a;
     }));
-    var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(39);
+    var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36);
     __webpack_require__.d(__webpack_exports__, "react", (function() {
         return _react__WEBPACK_IMPORTED_MODULE_1__.a;
     }));
-    var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(40);
+    var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(37);
     __webpack_require__.d(__webpack_exports__, "vue", (function() {
         return _vue__WEBPACK_IMPORTED_MODULE_2__.a;
     }));
-    var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(41);
+    var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(38);
     __webpack_require__.d(__webpack_exports__, "angular", (function() {
         return _angular__WEBPACK_IMPORTED_MODULE_3__.a;
     }));
-    var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(42);
+    var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(39);
     __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.angular2;
     }));
     __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.glimmer;
     }));
-    var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(43);
+    var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(40);
     __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _glimmer__WEBPACK_IMPORTED_MODULE_5__.a;
     }));
-    var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(44);
+    var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(41);
     __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _angular2__WEBPACK_IMPORTED_MODULE_6__.a;
     }));
@@ -11573,13 +11544,13 @@
     __webpack_require__(11);
     var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
     var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-    var _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
+    var _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
     var BEACON_URL = _config__WEBPACK_IMPORTED_MODULE_1__.a.loggerUrl;
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.314";
+            payload.version = "4.0.315";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -11588,7 +11559,7 @@
             query = query.join("&");
             (new window.Image).src = BEACON_URL + "?" + query;
             setTimeout((function() {
-                _config__WEBPACK_IMPORTED_MODULE_1__.a.logLevel === _constants__WEBPACK_IMPORTED_MODULE_2__.A.DEBUG && window.console && window.console.log && window.console.log("*", event, payload);
+                _config__WEBPACK_IMPORTED_MODULE_1__.a.logLevel === _constants__WEBPACK_IMPORTED_MODULE_2__.B.DEBUG && window.console && window.console.log && window.console.log("*", event, payload);
             }), 1);
         } catch (err) {}
     }
@@ -11623,10 +11594,10 @@
     }
     var src = __webpack_require__(15);
     var zalgo_promise_src = __webpack_require__(2);
-    var resources = __webpack_require__(19);
+    var resources = __webpack_require__(18);
     var constants = __webpack_require__(0);
     var lib = __webpack_require__(3);
-    var containerContent = __webpack_require__(36);
+    var containerContent = __webpack_require__(33);
     function getContainerStyle(_ref) {
         var id = _ref.id, tag = _ref.tag, CONTEXT = _ref.CONTEXT, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION;
         return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: calc(95vh - 60px);\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
@@ -11735,11 +11706,11 @@
         return token && 0 === token.indexOf("BA-") ? "ba_token" : "token";
     }
     function getPaymentType(payment) {
-        return 0 === payment.indexOf("BA-") ? _constants__WEBPACK_IMPORTED_MODULE_1__.B.BA_TOKEN : 0 === payment.indexOf("PAY-") || 0 === payment.indexOf("PAYID-") ? _constants__WEBPACK_IMPORTED_MODULE_1__.B.PAY_ID : (payment.indexOf("EC-"), 
-        _constants__WEBPACK_IMPORTED_MODULE_1__.B.EC_TOKEN);
+        return 0 === payment.indexOf("BA-") ? _constants__WEBPACK_IMPORTED_MODULE_1__.C.BA_TOKEN : 0 === payment.indexOf("PAY-") || 0 === payment.indexOf("PAYID-") ? _constants__WEBPACK_IMPORTED_MODULE_1__.C.PAY_ID : (payment.indexOf("EC-"), 
+        _constants__WEBPACK_IMPORTED_MODULE_1__.C.EC_TOKEN);
     }
     function determineUrl(env, fundingSource, payment) {
-        return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.B.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.CARD || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.ELV ? _config__WEBPACK_IMPORTED_MODULE_0__.a.guestUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.OXXO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
+        return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.C.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.CARD || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.ELV ? _config__WEBPACK_IMPORTED_MODULE_0__.a.guestUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.OXXO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -11756,8 +11727,8 @@
                 var _extends2;
                 var childname = _childnamespaces2[_i4];
                 var childnamespace = xports[childname];
-                namespace[childname] && (childnamespace = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace[childname], {}, childnamespace));
-                xports = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace, {}, xports, ((_extends2 = {})[childname] = childnamespace, 
+                namespace[childname] && (childnamespace = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace[childname], childnamespace));
+                xports = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
                 _extends2));
             }
         }
@@ -15008,7 +14979,7 @@
         var root = "object" == typeof window ? window : {};
         !root.HI_BASE32_NO_NODE_JS && "object" == typeof process && process.versions && process.versions.node && (root = window);
         var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" == typeof module && module.exports;
-        var AMD = __webpack_require__(50);
+        var AMD = __webpack_require__(47);
         var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
         var BASE32_DECODE_CHAR = {
             A: 0,
@@ -15317,10 +15288,8 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return react;
     }));
-    __webpack_require__(24);
-    __webpack_require__(18);
-    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
-    var _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
+    var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
     var react = {
         global: function() {
             if (window.React && window.ReactDOM) return {
@@ -15338,20 +15307,20 @@
                 componentDidMount: function() {
                     component.log("instantiate_react_component");
                     var el = ReactDOM.findDOMNode(this);
-                    var parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_3__.q)({}, this.props), null, el);
+                    var parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props), null, el);
                     this.setState({
                         parent: parent
                     });
                     parent.render(el);
                 },
                 componentDidUpdate: function() {
-                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_3__.q)({}, this.props));
+                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props));
                 },
                 componentWillUnmount: function() {
                     this.state && this.state.parent && this.state.parent.destroy();
                 }
             }) : function(_React$Component) {
-                Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_2__.a)(_class, _React$Component);
+                Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(_class, _React$Component);
                 function _class() {
                     return _React$Component.apply(this, arguments) || this;
                 }
@@ -15362,14 +15331,14 @@
                 _proto.componentDidMount = function() {
                     component.log("instantiate_react_component");
                     var el = ReactDOM.findDOMNode(this);
-                    var parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_3__.q)({}, this.props), null, el);
+                    var parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props), null, el);
                     this.setState({
                         parent: parent
                     });
                     parent.render(el);
                 };
                 _proto.componentDidUpdate = function() {
-                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_3__.q)({}, this.props));
+                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props));
                 };
                 _proto.componentWillUnmount = function() {
                     this.state && this.state.parent && this.state.parent.destroy();
@@ -15465,14 +15434,12 @@
         return glimmer;
     }));
     var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
-    __webpack_require__(24);
-    __webpack_require__(18);
-    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(23);
+    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
     var glimmer = {
         global: function() {},
         register: function(component, GlimmerComponent) {
             return function(_GlimmerComponent) {
-                Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_3__.a)(_class, _GlimmerComponent);
+                Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__.a)(_class, _GlimmerComponent);
                 function _class() {
                     return _GlimmerComponent.apply(this, arguments) || this;
                 }
@@ -15496,7 +15463,7 @@
             var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
             zoid.log("initializing angular2 component");
             var getProps = function(component) {
-                return Object(_lib__WEBPACK_IMPORTED_MODULE_1__.M)(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, component.internalProps, {}, component.props), {
+                return Object(_lib__WEBPACK_IMPORTED_MODULE_1__.M)(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, component.internalProps, component.props), {
                     function: function(value) {
                         if ("function" == typeof value) return function() {
                             var _arguments = arguments, _this = this;
@@ -15536,7 +15503,7 @@
     };
 }, function(module, exports, __webpack_require__) {
     !function(e, t, n) {
-        module.exports ? module.exports = n() : __webpack_require__(51)("bowser", n);
+        module.exports ? module.exports = n() : __webpack_require__(48)("bowser", n);
     }(0, 0, (function() {
         function t(t) {
             function n(e) {
@@ -15887,25 +15854,25 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
-    var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(35);
+    var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+    var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-    __webpack_require__(29);
-    if (window.paypal && "4.0.314" === window.paypal.version) {
+    __webpack_require__(26);
+    if (window.paypal && "4.0.315" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.314"
+            version: "4.0.315"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.314) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.315) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.314" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.315" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.314"
+            version: "4.0.315"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.314");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.315");
     }
     try {
-        var _interface = __webpack_require__(52);
+        var _interface = __webpack_require__(49);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
     } catch (err) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_error", {
@@ -15917,7 +15884,7 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
+    var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
     __webpack_require__.d(__webpack_exports__, "openBridge", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.openBridge;
     }));
@@ -15987,10 +15954,10 @@
         return constants.t;
     }));
     __webpack_require__.d(__webpack_exports__, "USERS", (function() {
-        return constants.F;
+        return constants.G;
     }));
     __webpack_require__.d(__webpack_exports__, "SOURCE", (function() {
-        return constants.E;
+        return constants.F;
     }));
     __webpack_require__.d(__webpack_exports__, "FUNDING", (function() {
         return constants.v;
@@ -16085,10 +16052,10 @@
         return constants.t;
     }));
     __webpack_require__.d(interface_namespaceObject, "USERS", (function() {
-        return constants.F;
+        return constants.G;
     }));
     __webpack_require__.d(interface_namespaceObject, "SOURCE", (function() {
-        return constants.E;
+        return constants.F;
     }));
     __webpack_require__.d(interface_namespaceObject, "FUNDING", (function() {
         return constants.v;
@@ -16154,7 +16121,7 @@
         return interface_ThreeDomainSecure;
     }));
     var beaver_logger_client = __webpack_require__(5);
-    var src = __webpack_require__(21);
+    var src = __webpack_require__(20);
     var zalgo_promise_src = __webpack_require__(2);
     var post_robot_src = __webpack_require__(13);
     var lib = __webpack_require__(3);
@@ -16163,9 +16130,9 @@
     var belter_src = __webpack_require__(15);
     var constants = __webpack_require__(0);
     var config = __webpack_require__(4);
-    var resources = __webpack_require__(19);
-    var containerContent = __webpack_require__(36);
-    var checkout_template = __webpack_require__(33);
+    var resources = __webpack_require__(18);
+    var containerContent = __webpack_require__(33);
+    var checkout_template = __webpack_require__(30);
     var _LOGO_COLOR;
     var LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, 
     _LOGO_COLOR);
@@ -16469,7 +16436,7 @@
             var fullUrl = Object(lib.g)(config.a.pptmUrl, params);
             Object(lib.H)(fullUrl, 0, {
                 async: !0,
-                id: constants.D
+                id: constants.E
             }).then((function() {
                 var _track2;
                 window.paypalDDL && window.paypalDDL[0] && "snippetRun" === window.paypalDDL[0].event || window[callback]();
@@ -16484,7 +16451,7 @@
         shouldCreateInitialPptmScript: function() {
             if (!window.location.hostname) return !1;
             if (Object(lib.G)()) return !1;
-            var existingScript = Object(lib.n)(constants.D);
+            var existingScript = Object(lib.n)(constants.E);
             if (Boolean(existingScript)) {
                 Object(beaver_logger_client.k)("pptm_tried_loading_twice");
                 return !1;
@@ -16495,7 +16462,7 @@
             return !1 !== noContentFoundInContainer && !Object(lib.G)() && !config.a.merchantID && !!clientId;
         },
         removePptm: function() {
-            var script = Object(lib.n)(constants.D);
+            var script = Object(lib.n)(constants.E);
             script && script.parentNode.removeChild(script);
         }
     });
@@ -16559,7 +16526,7 @@
                 match && (paymentToken = match[1]);
             }
             Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
-            _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CREATE_PAYMENT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[constants.B.PAY_ID], 
+            _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CREATE_PAYMENT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[constants.C.PAY_ID], 
             _track[constants.u.KEY.PAY_ID] = paymentID, _track[constants.u.KEY.TOKEN] = paymentToken, 
             _track[constants.u.KEY.CONTEXT_ID] = paymentID, _track));
         }
@@ -16732,7 +16699,7 @@
                 Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                 _track[constants.u.KEY.TRANSITION] = state, _track[constants.u.KEY.EXPERIMENT_NAME] = experiment, 
                 _track[constants.u.KEY.TREATMENT_NAME] = treatment, _track[constants.u.KEY.TOKEN] = token, 
-                _track[constants.u.KEY.CONTEXT_ID] = token, _track[constants.u.KEY.CONTEXT_TYPE] = token ? constants.u.CONTEXT_TYPE[constants.B.EC_TOKEN] : constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID, 
+                _track[constants.u.KEY.CONTEXT_ID] = token, _track[constants.u.KEY.CONTEXT_TYPE] = token ? constants.u.CONTEXT_TYPE[constants.C.EC_TOKEN] : constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID, 
                 _track));
                 Object(beaver_logger_client.j)();
             }
@@ -16772,8 +16739,8 @@
             returnToken && logReturn(returnToken);
         }), 1);
     }
-    var integrations = __webpack_require__(30);
-    var integrations_checkout = __webpack_require__(34);
+    var integrations = __webpack_require__(27);
+    var integrations_checkout = __webpack_require__(31);
     function normalizeCheckoutProps(props) {
         return {
             env: props.env = props.env || config.a.env,
@@ -16839,7 +16806,7 @@
     }, _FUNDING_CONFIG[constants.v.CREDIT] = {
         allowedCountries: [ constants.r.US, constants.r.GB, constants.r.DE ],
         defaultVerticalCountries: [ constants.r.US ],
-        platforms: [ constants.C.MOBILE ],
+        platforms: [ constants.D.MOBILE ],
         allowHorizontal: !0,
         allowVertical: !0,
         allowRemember: !0
@@ -16953,18 +16920,18 @@
     var fundingEligibilityReasons = [];
     function isFundingIneligible(source, _ref) {
         var locale = _ref.locale, funding = _ref.funding, commit = _ref.commit, env = _ref.env;
-        if (!getFundingConfig(source, _ref.layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal")) return constants.w.SECONDARY_DISALLOWED;
-        if (-1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut")) return constants.w.OPT_OUT;
-        if (-1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO) return constants.w.OPT_OUT;
-        if (-1 !== funding.disallowed.indexOf(source) && source === constants.v.ITAU) return constants.w.OPT_OUT;
-        if (-1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country)) return constants.w.DISALLOWED_COUNTRY;
-        if (getFundingConfig(source, "requireCommitAsTrue") && !commit) return constants.w.COMMIT_NOT_SET;
+        if (!getFundingConfig(source, _ref.layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal")) return constants.x.SECONDARY_DISALLOWED;
+        if (-1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut")) return constants.x.OPT_OUT;
+        if (-1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO) return constants.x.OPT_OUT;
+        if (-1 !== funding.disallowed.indexOf(source) && source === constants.v.ITAU) return constants.x.OPT_OUT;
+        if (-1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country)) return constants.x.DISALLOWED_COUNTRY;
+        if (getFundingConfig(source, "requireCommitAsTrue") && !commit) return constants.x.COMMIT_NOT_SET;
         var allowedEnvs = getFundingConfig(source, "allowedEnvs");
-        return allowedEnvs && -1 === allowedEnvs.indexOf(env) ? constants.w.INVALID_ENV : void 0;
+        return allowedEnvs && -1 === allowedEnvs.indexOf(env) ? constants.x.INVALID_ENV : void 0;
     }
     function isFundingAutoEligible(source, _ref2) {
         var locale = _ref2.locale, funding = _ref2.funding;
-        return _ref2.layout === constants.g.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.w.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.w.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.w.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.w.REMEMBERED : void 0;
+        return _ref2.layout === constants.g.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.x.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.x.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.x.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.x.REMEMBERED : void 0;
     }
     function determineEligibleCards(_ref5) {
         var funding = _ref5.funding;
@@ -17038,7 +17005,8 @@
         logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
         allowPrimary: !0,
         allowPrimaryVertical: !0,
-        allowPrimaryHorizontal: !0
+        allowPrimaryHorizontal: !0,
+        title: "" + constants.w.PAYPAL
     }, _BUTTON_CONFIG[constants.f.CHECKOUT] = {
         label: "{ content: checkout }",
         logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
@@ -17089,7 +17057,8 @@
         allowPrimary: !0,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1,
-        allowFundingIcons: !1
+        allowFundingIcons: !1,
+        title: "" + constants.w.CREDIT
     }, _BUTTON_CONFIG[constants.f.VENMO] = {
         label: "{ logo: " + constants.h.VENMO + " }",
         logoLabel: "{ logo: " + constants.h.VENMO + " }",
@@ -17487,11 +17456,11 @@
                     var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected, commit = _ref3.commit;
                     if (selected && source === selected) return {
                         eligible: !0,
-                        reason: constants.w.PRIMARY
+                        reason: constants.x.PRIMARY
                     };
                     if (!(getFundingConfig(source, "enabled") || env === constants.t.TEST && getFundingConfig(source, "test"))) return {
                         eligible: !1,
-                        reason: constants.w.NOT_ENABLED
+                        reason: constants.x.NOT_ENABLED
                     };
                     var ineligibleReason = isFundingIneligible(source, {
                         locale: locale,
@@ -17514,7 +17483,7 @@
                         reason: autoEligibleReason
                     } : {
                         eligible: !1,
-                        reason: constants.w.NEED_OPT_IN
+                        reason: constants.x.NEED_OPT_IN
                     };
                 }(source, {
                     selected: selected,
@@ -17584,7 +17553,7 @@
         if (!locale) throw new Error("Expected props.locale to be set");
         if (!locale.match(/^[a-z]{2}[_][A-Z][A-Z0-9]$/)) throw new Error("Expected props.locale to be valid, got " + locale);
         var _locale$split = locale.split("_"), country = _locale$split[1];
-        if (!constants.z[country] || -1 === constants.z[country].indexOf(_locale$split[0])) throw new Error("Expected props.locale to be valid");
+        if (!constants.A[country] || -1 === constants.A[country].indexOf(_locale$split[0])) throw new Error("Expected props.locale to be valid");
     }
     function validateButtonStyle(style, props) {
         void 0 === style && (style = {});
@@ -23557,6 +23526,9 @@
     function getCommonButtonClasses(_ref) {
         return [ class_CLASS.LAYOUT + "-" + _ref.layout, class_CLASS.SHAPE + "-" + _ref.shape, class_CLASS.BRANDING + "-" + (_ref.branding ? constants.d.BRANDED : constants.d.UNBRANDED), class_CLASS.NUMBER + "-" + (_ref.multiple ? constants.j.MULTIPLE : constants.j.SINGLE), class_CLASS.ENV + "-" + _ref.env, "" + class_CLASS.SHOULD_FOCUS ].join(" ");
     }
+    function getLocaleContent(locale) {
+        return componentContent[locale.country][locale.lang];
+    }
     function determineLabel(_ref3) {
         var label = _ref3.label, source = _ref3.source, multiple = _ref3.multiple, layout = _ref3.layout;
         var defaultLabel = FUNDING_TO_DEFAULT_LABEL[source];
@@ -23581,9 +23553,7 @@
     }
     function renderContent(text, _ref11) {
         var label = _ref11.label, locale = _ref11.locale, color = _ref11.color, branding = _ref11.branding, logoColor = _ref11.logoColor, funding = _ref11.funding, env = _ref11.env, _cards = _ref11.cards, dynamicContent = _ref11.dynamicContent, layout = _ref11.layout, size = _ref11.size;
-        var _content = function(locale) {
-            return componentContent[locale.country][locale.lang];
-        }(locale);
+        var _content = getLocaleContent(locale);
         return Object(jsx.b)(text, {
             text: function(value) {
                 var className = "" + class_CLASS.TEXT;
@@ -23607,8 +23577,7 @@
                     }) : resources.b[name][logoColor] || resources.b[name][constants.i.ANY];
                     return Object(jsx.c)("img", {
                         class: class_CLASS.LOGO + " " + class_CLASS.LOGO + "-" + name + " " + class_CLASS.LOGO + "-" + color,
-                        src: "data:image/svg+xml;base64," + Object(belter_src.a)(logo.toString()),
-                        alt: name
+                        src: "data:image/svg+xml;base64," + Object(belter_src.a)(logo.toString())
                     });
                 }
             },
@@ -23656,9 +23625,9 @@
             }
         });
     }
-    function componentTemplate(_ref19) {
-        var _ref20;
-        var props = _ref19.props;
+    function componentTemplate(_ref20) {
+        var _ref21;
+        var props = _ref20.props;
         if (props && props.style) {
             var style = props.style;
             "generic" === style.label && (style.label = "paypal");
@@ -23694,9 +23663,9 @@
             multiple: multiple,
             layout: layout
         }).map((function(button, i) {
-            return function(_ref13) {
-                var _ref14, _ref15, _ref16;
-                var size = _ref13.size, label = _ref13.label, color = _ref13.color, locale = _ref13.locale, branding = _ref13.branding, multiple = _ref13.multiple, layout = _ref13.layout, shape = _ref13.shape, source = _ref13.source, funding = _ref13.funding, i = _ref13.i, env = _ref13.env, cards = _ref13.cards, installmentperiod = _ref13.installmentperiod;
+            return function(_ref14) {
+                var _ref15, _ref16, _ref17;
+                var size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod;
                 var logoColor = getButtonConfig(label, "logoColors")[color];
                 var buttonLabel = determineLabel({
                     label: label,
@@ -23724,10 +23693,29 @@
                     layout: layout,
                     size: size
                 });
+                var title = BUTTON_CONFIG[label].title;
+                var buttonTitle = "string" == typeof title ? title : function(_ref13) {
+                    var label = _ref13.label, branding = _ref13.branding;
+                    var localeContent = getLocaleContent(_ref13.locale);
+                    var labelContent = localeContent && localeContent[label];
+                    if (labelContent) {
+                        var str = labelContent.replace(/({logo:(pp|paypal)})+(\s)*({logo:(pp|paypal)})*/, constants.w.PAYPAL);
+                        label !== constants.f.BUYNOW || branding || (str = str.replace(constants.w.PAYPAL, ""));
+                        return str;
+                    }
+                    return label;
+                }({
+                    locale: locale,
+                    label: label,
+                    branding: branding
+                });
                 var hasTabIndex = -1 === [ constants.v.CARD ].indexOf(source);
-                return Object(jsx.c)("div", Object(esm_extends.a)({}, ((_ref14 = {})[constants.c.LAYOUT] = layout || "", 
-                _ref14), ((_ref15 = {})[constants.c.SIZE] = size || "", _ref15), ((_ref16 = {})[constants.c.FUNDING_SOURCE] = source, 
-                _ref16[constants.c.BUTTON] = !0, _ref16), {
+                var role = source === constants.v.CARD ? {} : {
+                    role: "button"
+                };
+                return Object(jsx.c)("div", Object(esm_extends.a)({}, ((_ref15 = {})[constants.c.LAYOUT] = layout || "", 
+                _ref15), ((_ref16 = {})[constants.c.SIZE] = size || "", _ref16), ((_ref17 = {})[constants.c.FUNDING_SOURCE] = source, 
+                _ref17[constants.c.BUTTON] = !0, _ref17), {
                     class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                         layout: layout,
                         shape: shape,
@@ -23738,9 +23726,10 @@
                         label: label,
                         color: color,
                         logoColor: logoColor
-                    }, [ class_CLASS.LABEL + "-" + _ref2.label, class_CLASS.COLOR + "-" + _ref2.color, class_CLASS.LOGO_COLOR + "-" + _ref2.logoColor ].join(" ")),
-                    role: "button",
-                    tabindex: hasTabIndex && 0
+                    }, [ class_CLASS.LABEL + "-" + _ref2.label, class_CLASS.COLOR + "-" + _ref2.color, class_CLASS.LOGO_COLOR + "-" + _ref2.logoColor ].join(" "))
+                }, role, {
+                    tabindex: hasTabIndex && 0,
+                    "aria-label": buttonTitle
                 }), source === constants.v.CARD ? contentText : function(_ref12) {
                     var contentText = _ref12.contentText, personalizedButtonText = _ref12.personalizedButtonText, impression = _ref12.impression, branding = _ref12.branding, allowedAnimation = _ref12.allowedAnimation;
                     return Object(jsx.c)("div", {
@@ -23801,10 +23790,10 @@
                 checkoutCustomization: checkoutCustomization
             });
         }));
-        var taglineNode = function(_ref17) {
-            var label = _ref17.label, color = _ref17.color, locale = _ref17.locale, env = _ref17.env, cards = _ref17.cards, checkoutCustomization = _ref17.checkoutCustomization;
-            if (_ref17.tagline && _ref17.layout === constants.g.VERTICAL) {
-                var tag = _ref17.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag");
+        var taglineNode = function(_ref18) {
+            var label = _ref18.label, color = _ref18.color, locale = _ref18.locale, env = _ref18.env, cards = _ref18.cards, checkoutCustomization = _ref18.checkoutCustomization;
+            if (_ref18.tagline && _ref18.layout === constants.g.VERTICAL) {
+                var tag = _ref18.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag");
                 var text = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.text ? checkoutCustomization.tagline.text : renderContent(tag, {
                     locale: locale,
                     color: color,
@@ -23854,8 +23843,8 @@
             size: size,
             layout: layout
         });
-        var styleNode = function(_ref18) {
-            var height = _ref18.height, cardNumber = _ref18.cardNumber;
+        var styleNode = function(_ref19) {
+            var height = _ref19.height, cardNumber = _ref19.cardNumber;
             return Object(jsx.c)("style", {
                 innerHTML: (_ref = {
                     height: height,
@@ -23996,8 +23985,8 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref20 = {}, _ref20[constants.c.VERSION] = "4.0.314", 
-        _ref20), {
+        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.315", 
+        _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
                 shape: shape,
@@ -24083,7 +24072,8 @@
         },
         attributes: {
             iframe: {
-                allowpaymentrequest: "allowpaymentrequest"
+                allowpaymentrequest: "allowpaymentrequest",
+                title: constants.w.PAYPAL
             }
         },
         validate: function() {
@@ -24161,7 +24151,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return constants.E.MANUAL;
+                    return constants.F.MANUAL;
                 }
             },
             prefetchLogin: {
@@ -25308,10 +25298,10 @@
     }
     var postRobot = post_robot_src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.314";
+    var interface_version = "4.0.315";
     var interface_checkout;
     var apps;
-    var legacy = __webpack_require__(53);
+    var legacy = __webpack_require__(50);
     interface_checkout = legacy.checkout;
     apps = legacy.apps;
     var interface_Checkout;
@@ -25385,7 +25375,7 @@
     };
     var esm_extends = __webpack_require__(11);
     var src = __webpack_require__(2);
-    var form_serialize = __webpack_require__(47);
+    var form_serialize = __webpack_require__(44);
     var form_serialize_default = __webpack_require__.n(form_serialize);
     var checkout = __webpack_require__(16);
     var config = __webpack_require__(4);
@@ -25395,25 +25385,25 @@
     }
     var warn = Object(client.n)(LOG_PREFIX).warn;
     var DEFAULT_COUNTRY = constants.r.US;
-    var DEFAULT_LANG = constants.x.EN;
+    var DEFAULT_LANG = constants.y.EN;
     function normalizeLocale(locale) {
         var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
-        if (!country) if (constants.z[lang]) {
+        if (!country) if (constants.A[lang]) {
             country = lang;
             lang = null;
         } else country = DEFAULT_COUNTRY;
-        if (!constants.z[country]) {
+        if (!constants.A[country]) {
             warn("invalid_user_country", {
                 country: country
             });
             country = DEFAULT_COUNTRY;
         }
         lang || (lang = DEFAULT_LANG);
-        if (-1 === constants.z[country].indexOf(lang)) {
+        if (-1 === constants.A[country].indexOf(lang)) {
             warn("invalid_user_lang", {
                 lang: lang
             });
-            lang = -1 !== constants.z[country].indexOf(DEFAULT_LANG) ? DEFAULT_LANG : constants.z[country][0];
+            lang = -1 !== constants.A[country].indexOf(DEFAULT_LANG) ? DEFAULT_LANG : constants.A[country][0];
         }
         return {
             country: country,

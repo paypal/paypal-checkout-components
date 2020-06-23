@@ -218,8 +218,8 @@
                 var _extends2;
                 var childname = _childnamespaces2[_i4];
                 var childnamespace = xports[childname];
-                namespace[childname] && (childnamespace = Object(esm_extends.a)({}, namespace[childname], {}, childnamespace));
-                xports = Object(esm_extends.a)({}, namespace, {}, xports, ((_extends2 = {})[childname] = childnamespace, 
+                namespace[childname] && (childnamespace = Object(esm_extends.a)({}, namespace[childname], childnamespace));
+                xports = Object(esm_extends.a)({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
                 _extends2));
             }
         }
