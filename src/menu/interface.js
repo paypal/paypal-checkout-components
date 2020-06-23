@@ -7,7 +7,9 @@ import type { MenuFlowType, MenuFlowProps } from '../types';
 
 type SmartMenuProps = {|
     clientID : string,
-    Menu : MenuFlowType
+    Menu : MenuFlowType,
+    onFocus? : () => void,
+    onFocusFail? : () => void
 |};
 
 type SmartMenu = {|
@@ -22,12 +24,14 @@ export function renderSmartMenu({ clientID, Menu } : SmartMenuProps) : SmartMenu
         return renderTo(window.xprops.getParent(), '#smart-menu');
     });
 
-    const display = ({ choices, verticalOffset }) => {
+    const display = ({ choices, verticalOffset, onFocus, onFocusFail }) => {
         return render().then(() => {
             return updateProps({
                 clientID,
                 verticalOffset,
-                choices
+                choices,
+                onFocus,
+                onFocusFail
             });
         }).then(() => {
             return show();

@@ -19,12 +19,14 @@ type MenuProps = {|
         |},
         onSelect : ({| win? : ?CrossDomainWindowType |}) => void
     |}>,
-    onBlur : () => void
+    onBlur : () => void,
+    onFocus : () => void,
+    onFocusFail : () => void
 |};
 
-export function Menu({ choices, onBlur, cspNonce, verticalOffset } : MenuProps) : Node {
+export function Menu({ choices, onBlur, cspNonce, verticalOffset, onFocus, onFocusFail } : MenuProps) : Node {
 
-    const autoFocus = useAutoFocus();
+    const autoFocus = useAutoFocus({ onFocus, onFocusFail });
 
     const selectChoice = (choice) => {
         let win;

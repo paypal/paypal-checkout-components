@@ -18,7 +18,7 @@ type PageProps = {|
 |};
 
 function Page({ cspNonce } : PageProps) : Node {
-    const { choices, onChoose, verticalOffset, hide, onBlur = noop } = useXProps();
+    const { choices, onChoose, verticalOffset, hide, onBlur = noop, onFocus = noop, onFocusFail = noop } = useXProps();
     const [ opaque, setOpaque ] = useState(false);
     const [ visible, setVisible ] = useState(false);
 
@@ -67,8 +67,13 @@ function Page({ cspNonce } : PageProps) : Node {
             {
                 (choices && visible)
                     ? <Menu
-                        choices={ choices } onChoose={ onChooseHandler } onBlur={ onBlurHandler }
-                        cspNonce={ cspNonce } verticalOffset={ verticalOffset } />
+                        choices={ choices }
+                        onChoose={ onChooseHandler }
+                        onBlur={ onBlurHandler }
+                        onFocus={ onFocus }
+                        onFocusFail={ onFocusFail }
+                        cspNonce={ cspNonce }
+                        verticalOffset={ verticalOffset } />
                     : null
             }
         </Fragment>

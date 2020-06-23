@@ -122,6 +122,8 @@ export type MenuChoices = $ReadOnlyArray<MenuChoice>;
 
 export type MenuFlowProps = {|
     clientID : string,
+    onFocus? : () => void,
+    onFocusFail? : () => void,
     verticalOffset? : number,
     choices? : MenuChoices
 |};

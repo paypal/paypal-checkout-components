@@ -43,15 +43,15 @@ export function renderMenu({ props, payment, components, choices } : ButtonDropd
     const verticalOffset = button.getBoundingClientRect().bottom;
     const loadingTimeout = setTimeout(() => enableLoadingSpinner(button), 50);
 
-    const handleBlur = () => {
-        if (menuToggle && document.activeElement === menuToggle) {
+    const onFocusFail = () => {
+        if (menuToggle) {
             const blur = () => {
                 menuToggle.removeEventListener('blur', blur);
                 if (smartMenu) {
                     smartMenu.hide();
                 }
             };
-
+    
             menuToggle.addEventListener('blur', blur);
         }
     };
@@ -59,13 +59,12 @@ export function renderMenu({ props, payment, components, choices } : ButtonDropd
     return smartMenu.display({
         clientID,
         choices,
-        verticalOffset
+        verticalOffset,
+        onFocusFail
     }).then(() => {
         disableLoadingSpinner(button);
     }).finally(() => {
         clearTimeout(loadingTimeout);
-    }).then(() => {
-        handleBlur();
     });
 }
 

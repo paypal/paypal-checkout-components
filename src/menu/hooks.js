@@ -1,6 +1,7 @@
 /* @flow */
 
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { noop } from 'belter/src';
 
 export function useXProps<T>() : T {
     const [ xprops, setXProps ] = useState(window.xprops);
@@ -10,12 +11,22 @@ export function useXProps<T>() : T {
     return { ...xprops };
 }
 
-export function useAutoFocus() : Object {
+type UseAutoFocusOptions = {|
+    onFocus? : () => void,
+    onFocusFail? : () => void
+|};
+
+export function useAutoFocus({ onFocus = noop, onFocusFail = noop } : UseAutoFocusOptions = {}) : Object {
     const ref = useRef();
 
     useEffect(() => {
         if (ref.current) {
             ref.current.focus();
+            if (document.activeElement === ref.current) {
+                onFocus();
+            } else {
+                onFocusFail();
+            }
         }
     });
 
