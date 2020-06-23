@@ -3664,7 +3664,8 @@ window.spb = function(modules) {
                 })).then((function() {
                     return show();
                 }));
-            }
+            },
+            hide: hide
         };
     }
     var smartMenu;
@@ -4416,6 +4417,7 @@ window.spb = function(modules) {
         }
         smartMenu = null;
         querySelectorAll("[ data-funding-source ]").forEach((function(button) {
+            var menuToggle = button.querySelector("[data-menu]");
             var _getSelectedFunding = function(button) {
                 var fundingSource = button.getAttribute("data-funding-source");
                 var paymentMethodID = button.getAttribute("data-payment-method-id");
@@ -4431,6 +4433,7 @@ window.spb = function(modules) {
             }(button);
             var payment = {
                 button: button,
+                menuToggle: menuToggle,
                 fundingSource: _getSelectedFunding.fundingSource,
                 card: _getSelectedFunding.card,
                 paymentMethodID: _getSelectedFunding.paymentMethodID,
@@ -4439,7 +4442,6 @@ window.spb = function(modules) {
                 isClick: !0,
                 buyerIntent: "pay"
             };
-            var menuToggle = button.querySelector("[data-menu]");
             onFocus = function onFocus(event) {
                 el.removeEventListener("focus", onFocus);
                 event.preventDefault();
@@ -4517,9 +4519,9 @@ window.spb = function(modules) {
                                         });
                                     }));
                                     return function(_ref2) {
-                                        var choices = _ref2.choices;
+                                        var payment = _ref2.payment, choices = _ref2.choices;
                                         var clientID = _ref2.props.clientID;
-                                        var button = _ref2.payment.button;
+                                        var button = payment.button, menuToggle = payment.menuToggle;
                                         var Menu = _ref2.components.Menu;
                                         if (!clientID) throw new Error("Can not render menu without client id");
                                         smartMenu = smartMenu || renderSmartMenu({
@@ -4538,6 +4540,11 @@ window.spb = function(modules) {
                                             disableLoadingSpinner(button);
                                         })).finally((function() {
                                             clearTimeout(loadingTimeout);
+                                        })).then((function() {
+                                            menuToggle && document.activeElement === menuToggle && menuToggle.addEventListener("blur", (function blur() {
+                                                menuToggle.removeEventListener("blur", blur);
+                                                smartMenu && smartMenu.hide();
+                                            }));
                                         }));
                                     }({
                                         props: props,
@@ -4657,7 +4664,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.275", _ref2;
+                _ref2.button_version = "2.0.276", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
