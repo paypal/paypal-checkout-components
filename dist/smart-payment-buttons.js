@@ -3654,12 +3654,14 @@ window.spb = function(modules) {
         render();
         return {
             display: function(_ref2) {
-                var choices = _ref2.choices, verticalOffset = _ref2.verticalOffset;
+                var choices = _ref2.choices, verticalOffset = _ref2.verticalOffset, onFocus = _ref2.onFocus, onFocusFail = _ref2.onFocusFail;
                 return render().then((function() {
                     return updateProps({
                         clientID: clientID,
                         verticalOffset: verticalOffset,
-                        choices: choices
+                        choices: choices,
+                        onFocus: onFocus,
+                        onFocusFail: onFocusFail
                     });
                 })).then((function() {
                     return show();
@@ -4535,16 +4537,17 @@ window.spb = function(modules) {
                                         return smartMenu.display({
                                             clientID: clientID,
                                             choices: choices,
-                                            verticalOffset: verticalOffset
+                                            verticalOffset: verticalOffset,
+                                            onFocusFail: function() {
+                                                menuToggle && menuToggle.addEventListener("blur", (function blur() {
+                                                    menuToggle.removeEventListener("blur", blur);
+                                                    smartMenu && smartMenu.hide();
+                                                }));
+                                            }
                                         }).then((function() {
                                             disableLoadingSpinner(button);
                                         })).finally((function() {
                                             clearTimeout(loadingTimeout);
-                                        })).then((function() {
-                                            menuToggle && document.activeElement === menuToggle && menuToggle.addEventListener("blur", (function blur() {
-                                                menuToggle.removeEventListener("blur", blur);
-                                                smartMenu && smartMenu.hide();
-                                            }));
                                         }));
                                     }({
                                         props: props,
@@ -4664,7 +4667,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.276", _ref2;
+                _ref2.button_version = "2.0.277", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {

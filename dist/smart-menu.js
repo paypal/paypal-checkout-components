@@ -1059,7 +1059,8 @@ window.spb = function(modules) {
     }
     function Menu(_ref) {
         var choices = _ref.choices, onBlur = _ref.onBlur, cspNonce = _ref.cspNonce, verticalOffset = _ref.verticalOffset;
-        var autoFocus = function() {
+        var autoFocus = function(_temp) {
+            var _ref = void 0 === _temp ? {} : _temp, _ref$onFocus = _ref.onFocus, onFocus = void 0 === _ref$onFocus ? src_util_noop : _ref$onFocus, _ref$onFocusFail = _ref.onFocusFail, onFocusFail = void 0 === _ref$onFocusFail ? src_util_noop : _ref$onFocusFail;
             var ref = (hooks_module_i = 5, function(n, u) {
                 var r = hooks_module_v(hooks_module_t++, 7);
                 return hooks_module_x(r.__H, u) ? (r.__H = u, r.__h = n, r.__ = {
@@ -1071,10 +1072,16 @@ window.spb = function(modules) {
                 };
             }), []));
             hooks_module_l((function() {
-                ref.current && ref.current.focus();
+                if (ref.current) {
+                    ref.current.focus();
+                    document.activeElement === ref.current ? onFocus() : onFocusFail();
+                }
             }));
             return ref;
-        }();
+        }({
+            onFocus: _ref.onFocus,
+            onFocusFail: _ref.onFocusFail
+        });
         return h(d, null, h("style", {
             nonce: cspNonce
         }, "\n                    .menu {\n                        width: 100%;\n                        z-index: 5000;\n                        background: white;\n                        border-radius: 3px;\n                        font-family: Helvetica, sans-serif;\n                        font-size: 14px;\n                        letter-spacing: 0.5px;\n                        box-shadow: 0px 0px 3px 1px rgba(222,222,222,1);\n                        outline-style: none;\n                        user-select: none;\n                        text-align: center;\n                        margin-top: " + verticalOffset + "px;\n                    }\n                    \n                    .menu-item {\n                        border-top: 2px solid rgba(230, 230, 230, 0.5);;\n                        padding: 14px 18px;\n                        color: #0070ba;\n                        cursor: pointer;\n                        line-height: 18px;\n                    }\n                    \n                    .menu-item:first-child {\n                        border-top: none;\n                    }\n                    \n                    .menu-item:hover {\n                        background: #fcfcfc;\n                        text-decoration: underline;\n                    }\n                "), h("div", {
@@ -1110,7 +1117,7 @@ window.spb = function(modules) {
                 }));
             }), []);
             return _extends({}, xprops);
-        }(), choices = _useXProps.choices, onChoose = _useXProps.onChoose, verticalOffset = _useXProps.verticalOffset, hide = _useXProps.hide, _useXProps$onBlur = _useXProps.onBlur, onBlur = void 0 === _useXProps$onBlur ? src_util_noop : _useXProps$onBlur;
+        }(), choices = _useXProps.choices, onChoose = _useXProps.onChoose, verticalOffset = _useXProps.verticalOffset, hide = _useXProps.hide, _useXProps$onBlur = _useXProps.onBlur, onBlur = void 0 === _useXProps$onBlur ? src_util_noop : _useXProps$onBlur, _useXProps$onFocus = _useXProps.onFocus, onFocus = void 0 === _useXProps$onFocus ? src_util_noop : _useXProps$onFocus, _useXProps$onFocusFai = _useXProps.onFocusFail, onFocusFail = void 0 === _useXProps$onFocusFai ? src_util_noop : _useXProps$onFocusFai;
         var _useState = hooks_module_m(!1), opaque = _useState[0], setOpaque = _useState[1];
         var _useState2 = hooks_module_m(!1), visible = _useState2[0], setVisible = _useState2[1];
         hooks_module_l((function() {
@@ -1137,6 +1144,8 @@ window.spb = function(modules) {
                     return promise_ZalgoPromise.all([ onBlur(), hide() ]);
                 }));
             },
+            onFocus: onFocus,
+            onFocusFail: onFocusFail,
             cspNonce: cspNonce,
             verticalOffset: verticalOffset
         }) : null);
