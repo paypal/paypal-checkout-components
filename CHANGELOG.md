@@ -1,3 +1,9 @@
+## <small>5.0.98 (2020-06-23)</small>
+
+* Allow menu button to be focusable ([5959a3d](https://github.com/paypal/paypal-checkout-components/commit/5959a3d))
+
+
+
 ## <small>5.0.97 (2020-06-22)</small>
 
 * Fix email ellipsis in vault button ([8d459b6](https://github.com/paypal/paypal-checkout-components/commit/8d459b6))
