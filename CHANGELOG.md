@@ -1,3 +1,10 @@
+## <small>5.0.99 (2020-06-25)</small>
+
+* a11y: aria-label for card (#1350) ([a2e5e67](https://github.com/paypal/paypal-checkout-components/commit/a2e5e67)), closes [#1350](https://github.com/paypal/paypal-checkout-components/issues/1350)
+* Add Vue.js demo (#1351) ([008d539](https://github.com/paypal/paypal-checkout-components/commit/008d539)), closes [#1351](https://github.com/paypal/paypal-checkout-components/issues/1351)
+
+
+
 ## <small>5.0.98 (2020-06-23)</small>
 
 * Allow menu button to be focusable ([5959a3d](https://github.com/paypal/paypal-checkout-components/commit/5959a3d))
