@@ -255,7 +255,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         clientAccessToken,
         basicFundingEligibility,
         cspNonce,
-        debug,
+        debug: Boolean(debug),
         style,
         onShippingChange,
         locale,

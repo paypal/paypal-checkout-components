@@ -48,7 +48,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         env,
         clientID,
         cspNonce,
-        debug,
+        debug:  Boolean(debug),
         locale: { country, lang }
     };
 }

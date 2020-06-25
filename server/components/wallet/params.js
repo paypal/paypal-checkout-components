@@ -85,7 +85,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         buyerAuthCode,
         buyerAccessToken,
         cspNonce,
-        debug,
+        debug:  Boolean(debug),
         locale: { country, lang },
         style
     };
