@@ -1,3 +1,9 @@
+## <small>5.0.100 (2020-06-30)</small>
+
+* Remove 350px vaulted button styling rule ([8ff8556](https://github.com/paypal/paypal-checkout-components/commit/8ff8556))
+
+
+
 ## <small>5.0.99 (2020-06-25)</small>
 
 * a11y: aria-label for card (#1350) ([a2e5e67](https://github.com/paypal/paypal-checkout-components/commit/a2e5e67)), closes [#1350](https://github.com/paypal/paypal-checkout-components/issues/1350)
