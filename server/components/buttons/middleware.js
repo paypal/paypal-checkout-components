@@ -70,9 +70,9 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             
             const sendRiskDataPromise = riskData ? transportRiskData(req, riskData).catch(err => {
                 logger.warn(req, 'risk_data_transport_error', { err: err.stack || err.toString() });
-            }) : null;
+            }) : Promise.resolve();
 
-            const buyerAccessTokenPromise = (sendRiskDataPromise && userIDToken && clientMetadataID) ? sendRiskDataPromise
+            const buyerAccessTokenPromise = (userIDToken && clientMetadataID) ? sendRiskDataPromise
                 .then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID, riskData })) : null;
 
             const buyerAccessToken = await buyerAccessTokenPromise;
