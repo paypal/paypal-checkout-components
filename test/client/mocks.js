@@ -577,6 +577,7 @@ type NativeMockWebSocket = {|
     onApprove : () => void,
     onCancel : () => void,
     onError : () => void,
+    onShippingChange : () => void,
     fallback : ({| buyerAccessToken : string |}) => void
 |};
 
@@ -587,6 +588,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     let onApproveRequestID;
     let onCancelRequestID;
     let onErrorRequestID;
+    let onShippingChangeRequestID;
 
     const { send, expect } = mockWebSocket({
         uri:     'wss://127.0.0.1/paypal/native',
@@ -625,6 +627,12 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
             if (messageType === 'response' && messageName === 'onError') {
                 if (requestUID !== onErrorRequestID) {
                     throw new Error(`Request uid doest not match for onError response`);
+                }
+            }
+
+            if (messageType === 'response' && messageName === 'onShippingChange') {
+                if (requestUID !== onShippingChangeRequestID) {
+                    throw new Error(`Request uid doest not match for onShippingChange response`);
                 }
             }
         }
@@ -712,8 +720,26 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
         }));
     };
 
+    const onShippingChange = () => {
+        onShippingChangeRequestID = uniqueID();
+
+        send(JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onShippingChangeRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onShippingChange',
+            message_data:       {
+
+            }
+        }));
+    };
+
     return {
-        expect, onApprove, onCancel, onError, fallback: noop
+        expect, onApprove, onCancel, onError, onShippingChange, fallback: noop
     };
 }
 
@@ -879,13 +905,14 @@ function mockFirebase({ handler } : {| handler : ({| data : Object |}) => void |
                                     return;
                                 }
 
-                                hasCalls = true;
-                                const { namespace } = splitPath(path);
-                                send(path, data);
-                                handler({
-                                    data: messages[namespace]
+                                ZalgoPromise.delay(0).then(() => {
+                                    hasCalls = true;
+                                    const { namespace } = splitPath(path);
+                                    send(path, data);
+                                    handler({
+                                        data: messages[namespace]
+                                    });
                                 });
-
                             },
                             on: (item, onHandler) => {
                                 listeners[path] = listeners[path] || [];
@@ -935,6 +962,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
     let onApproveRequestID;
     let onCancelRequestID;
     let onErrorRequestID;
+    let onShippingChangeRequestID;
     let fallbackRequestID;
 
     const received = {};
@@ -1055,6 +1083,12 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                         throw new Error(`Request uid doest not match for onError response`);
                     }
                 }
+
+                if (messageType === 'response' && messageName === 'onShippingChange') {
+                    if (requestUID !== onShippingChangeRequestID) {
+                        throw new Error(`Request uid doest not match for onShippingChange response`);
+                    }
+                }
             }
         }
     });
@@ -1149,6 +1183,30 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
         waitingForResponse.push(onErrorRequestID);
     };
 
+    const onShippingChange = () => {
+        if (!props) {
+            throw new Error(`Can not approve without getting props`);
+        }
+
+        onShippingChangeRequestID = `${ uniqueID()  }_onShippingChange`;
+
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onShippingChangeRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onShippingChange',
+            message_data:       {
+
+            }
+        }));
+
+        waitingForResponse.push(onShippingChangeRequestID);
+    };
+
     const fallback = ({ buyerAccessToken } : {| buyerAccessToken : string |}) => {
         fallbackRequestID = `${ uniqueID() }_fallback`;
 
@@ -1186,7 +1244,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
     };
 
     return {
-        expect, onApprove, onCancel, onError, fallback
+        expect, onApprove, onCancel, onError, onShippingChange, fallback
     };
 }
 
