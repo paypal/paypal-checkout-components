@@ -1,46 +1,47 @@
 $class-mark:                'paypal-mark';
 $class-button:              'paypal-button';
+$class-text:                'paypal-button-text';
 $class-button-layout:       'paypal-button-layout';
 $button-layout-horizontal:  'horizontal';
 $button-layout-vertical:    'vertical';
 
 .#{$class-button} {
-    .text {
+    .#{$class-text} {
         display: inline-block;
         font-style: italic;
         font-weight: 600;
-        line-height: 1.2em;
-
-        &-large {
+        
+        &.text-large {
             font-size: 1.1em;
         }
-
-        &-small {
+        
+        &.text-small {
             font-size: 1.2em;
+            margin-top: -1px;
         }
     }
 
     &.#{$class-button-layout}-#{$button-layout-vertical} {
-        .text {
-            &-small {
+        .#{$class-text} {
+            &.text-small {
                 display: none;
             }
         }
     }
     
     &.#{$class-button-layout}-#{$button-layout-horizontal} {
-        .text {
-            &-large {
+        .#{$class-text} {
+            &.text-large {
                 display: none;
             }
         }
         
         @media only screen and (min-width: 364px) {
-            .text {
-                &-small {
+            .#{$class-text} {
+                &.text-small {
                    display: none;
                 }
-                &-large {
+                &.text-large {
                     display: inline-block;
                 }
             }
@@ -49,7 +50,7 @@ $button-layout-vertical:    'vertical';
 }
 
 .#{$class-mark} {
-    .text {
+    .#{$class-text} {
         display: inline-block;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 400;
@@ -57,7 +58,7 @@ $button-layout-vertical:    'vertical';
         position: relative;
         top: -5px;
 
-        &-small {
+        &.text-small {
             display: none;
         }
     }
