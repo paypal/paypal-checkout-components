@@ -35,5 +35,7 @@ export const CLASS = {
 
     DOM_READY: ('dom-ready' : 'dom-ready'),
 
-    HIDDEN:  ('hidden' : 'hidden')
+    HIDDEN:  ('hidden' : 'hidden'),
+
+    IMMEDIATE: ('immediate' : 'immediate')
 };
