@@ -1,3 +1,9 @@
+## <small>5.0.101 (2020-07-01)</small>
+
+* Tweak paylater styles (#1352) ([c884aaa](https://github.com/paypal/paypal-checkout-components/commit/c884aaa)), closes [#1352](https://github.com/paypal/paypal-checkout-components/issues/1352)
+
+
+
 ## <small>5.0.100 (2020-06-30)</small>
 
 * Remove 350px vaulted button styling rule ([8ff8556](https://github.com/paypal/paypal-checkout-components/commit/8ff8556))
