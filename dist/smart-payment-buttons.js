@@ -3175,9 +3175,11 @@ window.spb = function(modules) {
     function getInstrument(wallet, fundingSource, instrumentID) {
         var walletFunding = wallet[fundingSource];
         if (walletFunding) {
-            var instrument = walletFunding.instruments.find((function(inst) {
-                return inst.instrumentID === instrumentID;
-            }));
+            var instrument;
+            for (var _i2 = 0, _walletFunding$instru2 = walletFunding.instruments; _i2 < _walletFunding$instru2.length; _i2++) {
+                var inst = _walletFunding$instru2[_i2];
+                inst.instrumentID === instrumentID && (instrument = inst);
+            }
             if (instrument && instrument.type) return instrument;
         }
     }
@@ -3207,9 +3209,11 @@ window.spb = function(modules) {
             if (!buyerAccessToken) throw new Error("Buyer access token required for wallet capture");
             var walletFunding = wallet[fundingSource];
             if (!walletFunding) throw new Error("Expected wallet to be present");
-            var instrument = walletFunding.instruments.find((function(inst) {
-                return inst.instrumentID === instrumentID;
-            }));
+            var instrument;
+            for (var _i4 = 0, _walletFunding$instru4 = walletFunding.instruments; _i4 < _walletFunding$instru4.length; _i4++) {
+                var inst = _walletFunding$instru4[_i4];
+                inst.instrumentID === instrumentID && (instrument = inst);
+            }
             if (!instrument) throw new Error("Expected instrument to be present");
             var instrumentType = instrument.type;
             if (!instrumentType) throw new Error("Expected instrument type");
@@ -3221,7 +3225,7 @@ window.spb = function(modules) {
                     payment: _extends({}, payment, {
                         isClick: !1,
                         buyerIntent: "pay_with_different_funding_shipping",
-                        fundingSource: "credit" === instrument.type ? "credit" : fundingSource
+                        fundingSource: instrument && "credit" === instrument.type ? "credit" : fundingSource
                     }),
                     config: config
                 });
@@ -4667,7 +4671,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.279", _ref2;
+                _ref2.button_version = "2.0.280", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
