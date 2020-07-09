@@ -154,7 +154,9 @@ export function setupMocks() {
         enableNativeCheckout:     false
     };
 
+    // eslint-disable-next-line compat/compat
     window.Promise.try = (method) => {
+        // eslint-disable-next-line compat/compat
         return window.Promise.resolve().then(method);
     };
 
