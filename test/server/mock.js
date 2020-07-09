@@ -228,14 +228,16 @@ export function transportRiskData() : Promise<void> {
 export const mockContent = {
     US: {
         en: {
-            instantlyPayWith:     'Pay instantly with',
-            poweredBy:            'Powered by PayPal',
-            chooseCardOrShipping: 'Choose card or shipping',
-            useDifferentAccount:  'Use different account',
-            deleteVaultedAccount: 'Forget this account',
-            deleteVaultedCard:    'Forget this card',
-            chooseCard:           'Choose card',
-            balance:              'Balance'
+            instantlyPayWith:        'Pay instantly with',
+            poweredBy:               'Powered by PayPal',
+            chooseCardOrShipping:    'Choose card or shipping',
+            useDifferentAccount:     'Use different account',
+            deleteVaultedAccount:    'Forget this account',
+            deleteVaultedCard:       'Forget this card',
+            chooseCard:              'Choose card',
+            balance:                 'Balance',
+            payWithDifferentAccount: 'Pay with a different account',
+            payWithDifferentMethod:  'Pay with a different funding method'
         }
     }
 };

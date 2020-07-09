@@ -138,7 +138,9 @@ export type ContentType = {|
     deleteVaultedAccount : string,
     deleteVaultedCard : string,
     chooseCard : string,
-    balance : string
+    balance : string,
+    payWithDifferentAccount : string,
+    payWithDifferentMethod : string
 |};
 
 export type PostRobot = {|

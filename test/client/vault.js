@@ -770,7 +770,7 @@ describe('vault cases', () => {
             });
 
             const content = {
-                chooseCardOrShipping: 'Choose card or shipping'
+                payWithDifferentMethod: 'Choose card or shipping'
             };
 
             window.paypal.Menu = expect('Menu', (initialMenuProps) => {
@@ -793,7 +793,7 @@ describe('vault cases', () => {
                             throw new TypeError(`Expected choices array to be passed`);
                         }
 
-                        const choice = menuProps.choices.find(({ label }) => label === content.chooseCardOrShipping);
+                        const choice = menuProps.choices.find(({ label }) => label === content.payWithDifferentMethod);
 
                         if (!choice) {
                             throw new Error(`Expected to find choose card or shipping button`);
@@ -865,7 +865,7 @@ describe('vault cases', () => {
             });
 
             const content = {
-                useDifferentAccount: 'Use different account'
+                payWithDifferentAccount: 'Use different account'
             };
 
             window.paypal.Menu = expect('Menu', (initialMenuProps) => {
@@ -888,7 +888,7 @@ describe('vault cases', () => {
                             throw new TypeError(`Expected choices array to be passed`);
                         }
 
-                        const choice = menuProps.choices.find(({ label }) => label === content.useDifferentAccount);
+                        const choice = menuProps.choices.find(({ label }) => label === content.payWithDifferentAccount);
 
                         if (!choice) {
                             throw new Error(`Expected to find choose card or shipping button`);
@@ -1220,7 +1220,7 @@ describe('vault cases', () => {
             });
 
             const content = {
-                chooseCardOrShipping: 'Choose card or shipping'
+                payWithDifferentMethod: 'Choose card or shipping'
             };
 
             window.paypal.Menu = expect('Menu', (initialMenuProps) => {
@@ -1243,7 +1243,7 @@ describe('vault cases', () => {
                             throw new TypeError(`Expected choices array to be passed`);
                         }
 
-                        const choice = menuProps.choices.find(({ label }) => label === content.chooseCardOrShipping);
+                        const choice = menuProps.choices.find(({ label }) => label === content.payWithDifferentMethod);
 
                         if (!choice) {
                             throw new Error(`Expected to find choose card or shipping button`);

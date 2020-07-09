@@ -196,7 +196,7 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
     };
 
     const CHOOSE_FUNDING_SHIPPING = {
-        label:    content.chooseCard || content.chooseCardOrShipping,
+        label:    content.payWithDifferentMethod,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
             return ZalgoPromise.try(() => {
@@ -210,7 +210,7 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
     };
 
     const CHOOSE_ACCOUNT = {
-        label:    content.useDifferentAccount,
+        label:    content.payWithDifferentAccount,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
             return ZalgoPromise.try(() => {
