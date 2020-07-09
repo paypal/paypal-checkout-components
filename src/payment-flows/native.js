@@ -112,10 +112,6 @@ function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : 
     const { firebase: firebaseConfig } = config;
     const { eligibility } = serviceData;
 
-    if (env === ENV.LOCAL || env === ENV.STAGE) {
-        return false;
-    }
-
     if (platform !== PLATFORM.MOBILE) {
         return false;
     }
@@ -142,6 +138,10 @@ function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : 
 
     if (isNativeOptedIn({ props })) {
         return true;
+    }
+
+    if (env === ENV.LOCAL || env === ENV.STAGE) {
+        return false;
     }
 
     if (eligibility.nativeCheckout.paypal || eligibility.nativeCheckout.venmo) {
