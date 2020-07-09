@@ -198,13 +198,13 @@
             return insertCss(content, options);
         };
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-d2ff3bcf]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-d2ff3bcf]{height:50px}}.wallet-item .icon[data-v-d2ff3bcf]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-d2ff3bcf]{max-height:90%;max-width:90%}.wallet-item .description[data-v-d2ff3bcf]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-d2ff3bcf]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-d2ff3bcf]{font-size:13px}}.wallet-item .description .details[data-v-d2ff3bcf]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-d2ff3bcf]{font-size:12px}}.wallet-item .preferred[data-v-d2ff3bcf]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-d2ff3bcf]:hover{background-color:#eee}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-8c6b3f59]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-8c6b3f59]{height:50px}}.wallet-item .icon[data-v-8c6b3f59]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-8c6b3f59]{max-height:90%;max-width:90%}.wallet-item .description[data-v-8c6b3f59]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-8c6b3f59]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-8c6b3f59]{font-size:13px}}.wallet-item .description .details[data-v-8c6b3f59]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-8c6b3f59]{font-size:12px}}.wallet-item .preferred[data-v-8c6b3f59]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-8c6b3f59]:hover{background-color:#eee}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-fdd787a1]{padding:20px}.add-card-button a[data-v-fdd787a1]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-fdd787a1]:hover{text-decoration:underline}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-e150f0b4]{padding:20px}.add-card-button a[data-v-e150f0b4]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-e150f0b4]:hover{text-decoration:underline}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif}*{box-sizing:border-box}.flex-spacer{flex:1}\n", "" ]);
@@ -218,24 +218,24 @@
         __webpack_require__.d(__webpack_exports__, "renderWallet", (function() {
             return renderWallet;
         }));
-        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_o, preact_module_r, f, e = {}, c = [], a = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
+        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_r, preact_module_o, f = {}, e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
         function s(n, l) {
             for (var u in l) n[u] = l[u];
             return n;
         }
-        function v(n) {
+        function a(n) {
             var l = n.parentNode;
             l && l.removeChild(n);
         }
-        function preact_module_h(n, l, u) {
-            var i, t = arguments, o = {};
-            for (i in l) "key" !== i && "ref" !== i && (o[i] = l[i]);
+        function v(n, l, u) {
+            var i, t = arguments, r = {};
+            for (i in l) "key" !== i && "ref" !== i && (r[i] = l[i]);
             if (arguments.length > 3) for (u = [ u ], i = 3; i < arguments.length; i++) u.push(t[i]);
-            if (null != u && (o.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === o[i] && (o[i] = n.defaultProps[i]);
-            return preact_module_y(n, o, l && l.key, l && l.ref, null);
+            if (null != u && (r.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === r[i] && (r[i] = n.defaultProps[i]);
+            return preact_module_h(n, r, l && l.key, l && l.ref, null);
         }
-        function preact_module_y(l, u, i, t, o) {
-            var r = {
+        function preact_module_h(l, u, i, t, r) {
+            var o = {
                 type: l,
                 props: u,
                 key: i,
@@ -247,21 +247,21 @@
                 __d: void 0,
                 __c: null,
                 constructor: void 0,
-                __v: o
+                __v: r
             };
-            return null == o && (r.__v = r), preact_module_n.vnode && preact_module_n.vnode(r), 
-            r;
+            return null == r && (o.__v = o), preact_module_n.vnode && preact_module_n.vnode(o), 
+            o;
         }
-        function preact_module_d(n) {
+        function preact_module_p(n) {
             return n.children;
         }
-        function preact_module_m(n, l) {
+        function preact_module_d(n, l) {
             this.props = n, this.context = l;
         }
-        function preact_module_w(n, l) {
-            if (null == l) return n.__ ? preact_module_w(n.__, n.__.__k.indexOf(n) + 1) : null;
+        function _(n, l) {
+            if (null == l) return n.__ ? _(n.__, n.__.__k.indexOf(n) + 1) : null;
             for (var u; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) return u.__e;
-            return "function" == typeof n.type ? preact_module_w(n) : null;
+            return "function" == typeof n.type ? _(n) : null;
         }
         function preact_module_k(n) {
             var l, u;
@@ -273,101 +273,105 @@
                 return preact_module_k(n);
             }
         }
-        function g(l) {
-            (!l.__d && (l.__d = !0) && preact_module_u.push(l) && !preact_module_i++ || preact_module_o !== preact_module_n.debounceRendering) && ((preact_module_o = preact_module_n.debounceRendering) || preact_module_t)(_);
+        function preact_module_w(l) {
+            (!l.__d && (l.__d = !0) && preact_module_u.push(l) && !preact_module_m.__r++ || preact_module_t !== preact_module_n.debounceRendering) && ((preact_module_t = preact_module_n.debounceRendering) || preact_module_i)(preact_module_m);
         }
-        function _() {
-            for (var n; preact_module_i = preact_module_u.length; ) n = preact_module_u.sort((function(n, l) {
+        function preact_module_m() {
+            for (var n; preact_module_m.__r = preact_module_u.length; ) n = preact_module_u.sort((function(n, l) {
                 return n.__v.__b - l.__v.__b;
             })), preact_module_u = [], n.some((function(n) {
-                var l, u, i, t, o, r, f;
-                n.__d && (r = (o = (l = n).__v).__e, (f = l.__P) && (u = [], (i = s({}, o)).__v = i, 
-                t = preact_module_z(f, o, i, l.__n, void 0 !== f.ownerSVGElement, null, u, null == r ? preact_module_w(o) : r), 
-                preact_module_T(u, o), t != r && preact_module_k(o)));
+                var l, u, i, t, r, o, f;
+                n.__d && (o = (r = (l = n).__v).__e, (f = l.__P) && (u = [], (i = s({}, r)).__v = i, 
+                t = preact_module_T(f, r, i, l.__n, void 0 !== f.ownerSVGElement, null, u, null == o ? _(r) : o), 
+                preact_module_$(u, r), t != o && preact_module_k(r)));
             }));
         }
-        function preact_module_b(n, l, u, i, t, o, r, f, a, s) {
-            var h, p, m, k, g, _, b, x, A, P = i && i.__k || c, C = P.length;
-            for (a == e && (a = null != r ? r[0] : C ? preact_module_w(i, 0) : null), u.__k = [], 
-            h = 0; h < l.length; h++) if (null != (k = u.__k[h] = null == (k = l[h]) || "boolean" == typeof k ? null : "string" == typeof k || "number" == typeof k ? preact_module_y(null, k, null, null, k) : Array.isArray(k) ? preact_module_y(preact_module_d, {
-                children: k
-            }, null, null, null) : null != k.__e || null != k.__c ? preact_module_y(k.type, k.props, k.key, null, k.__v) : k)) {
-                if (k.__ = u, k.__b = u.__b + 1, null === (m = P[h]) || m && k.key == m.key && k.type === m.type) P[h] = void 0; else for (p = 0; p < C; p++) {
-                    if ((m = P[p]) && k.key == m.key && k.type === m.type) {
-                        P[p] = void 0;
+        function g(n, l, u, i, t, r, o, c, s, v) {
+            var y, d, k, w, m, g, b, A = i && i.__k || e, P = A.length;
+            for (s == f && (s = null != o ? o[0] : P ? _(i, 0) : null), u.__k = [], y = 0; y < l.length; y++) if (null != (w = u.__k[y] = null == (w = l[y]) || "boolean" == typeof w ? null : "string" == typeof w || "number" == typeof w ? preact_module_h(null, w, null, null, w) : Array.isArray(w) ? preact_module_h(preact_module_p, {
+                children: w
+            }, null, null, null) : null != w.__e || null != w.__c ? preact_module_h(w.type, w.props, w.key, null, w.__v) : w)) {
+                if (w.__ = u, w.__b = u.__b + 1, null === (k = A[y]) || k && w.key == k.key && w.type === k.type) A[y] = void 0; else for (d = 0; d < P; d++) {
+                    if ((k = A[d]) && w.key == k.key && w.type === k.type) {
+                        A[d] = void 0;
                         break;
                     }
-                    m = null;
+                    k = null;
                 }
-                if (g = preact_module_z(n, k, m = m || e, t, o, r, f, a, s), (p = k.ref) && m.ref != p && (x || (x = []), 
-                m.ref && x.push(m.ref, null, k), x.push(p, k.__c || g, k)), null != g) {
-                    if (null == b && (b = g), A = void 0, void 0 !== k.__d) A = k.__d, k.__d = void 0; else if (r == m || g != a || null == g.parentNode) {
-                        n: if (null == a || a.parentNode !== n) n.appendChild(g), A = null; else {
-                            for (_ = a, p = 0; (_ = _.nextSibling) && p < C; p += 2) if (_ == g) break n;
-                            n.insertBefore(g, a), A = a;
-                        }
-                        "option" == u.type && (n.value = "");
-                    }
-                    a = void 0 !== A ? A : g.nextSibling, "function" == typeof u.type && (u.__d = a);
-                } else a && m.__e == a && a.parentNode != n && (a = preact_module_w(m));
+                m = preact_module_T(n, w, k = k || f, t, r, o, c, s, v), (d = w.ref) && k.ref != d && (b || (b = []), 
+                k.ref && b.push(k.ref, null, w), b.push(d, w.__c || m, w)), null != m ? (null == g && (g = m), 
+                s = preact_module_x(n, w, k, A, o, m, s), "option" == u.type ? n.value = "" : "function" == typeof u.type && (u.__d = s)) : s && k.__e == s && s.parentNode != n && (s = _(k));
             }
-            if (u.__e = b, null != r && "function" != typeof u.type) for (h = r.length; h--; ) null != r[h] && v(r[h]);
-            for (h = C; h--; ) null != P[h] && preact_module_D(P[h], P[h]);
-            if (x) for (h = 0; h < x.length; h++) preact_module_j(x[h], x[++h], x[++h]);
+            if (u.__e = g, null != o && "function" != typeof u.type) for (y = o.length; y--; ) null != o[y] && a(o[y]);
+            for (y = P; y--; ) null != A[y] && preact_module_I(A[y], A[y]);
+            if (b) for (y = 0; y < b.length; y++) preact_module_H(b[y], b[++y], b[++y]);
+        }
+        function preact_module_x(n, l, u, i, t, r, o) {
+            var f, e, c;
+            if (void 0 !== l.__d) f = l.__d, l.__d = void 0; else if (t == u || r != o || null == r.parentNode) n: if (null == o || o.parentNode !== n) n.appendChild(r), 
+            f = null; else {
+                for (e = o, c = 0; (e = e.nextSibling) && c < i.length; c += 2) if (e == r) break n;
+                n.insertBefore(r, o), f = o;
+            }
+            return void 0 !== f ? f : r.nextSibling;
         }
         function preact_module_P(n, l, u) {
-            "-" === l[0] ? n.setProperty(l, u) : n[l] = "number" == typeof u && !1 === a.test(l) ? u + "px" : null == u ? "" : u;
+            "-" === l[0] ? n.setProperty(l, u) : n[l] = "number" == typeof u && !1 === c.test(l) ? u + "px" : null == u ? "" : u;
         }
         function preact_module_C(n, l, u, i, t) {
-            var o, r, f, e, c;
+            var r, o, f, e, c;
             if (t ? "className" === l && (l = "class") : "class" === l && (l = "className"), 
-            "style" === l) if (o = n.style, "string" == typeof u) o.cssText = u; else {
-                if ("string" == typeof i && (o.cssText = "", i = null), i) for (e in i) u && e in u || preact_module_P(o, e, "");
-                if (u) for (c in u) i && u[c] === i[c] || preact_module_P(o, c, u[c]);
-            } else "o" === l[0] && "n" === l[1] ? (r = l !== (l = l.replace(/Capture$/, "")), 
-            f = l.toLowerCase(), l = (f in n ? f : l).slice(2), u ? (i || n.addEventListener(l, preact_module_N, r), 
-            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_N, r)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
+            "style" === l) if (r = n.style, "string" == typeof u) r.cssText = u; else {
+                if ("string" == typeof i && (r.cssText = "", i = null), i) for (e in i) u && e in u || preact_module_P(r, e, "");
+                if (u) for (c in u) i && u[c] === i[c] || preact_module_P(r, c, u[c]);
+            } else "o" === l[0] && "n" === l[1] ? (o = l !== (l = l.replace(/Capture$/, "")), 
+            f = l.toLowerCase(), l = (f in n ? f : l).slice(2), u ? (i || n.addEventListener(l, preact_module_N, o), 
+            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_N, o)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
         }
         function preact_module_N(l) {
             this.l[l.type](preact_module_n.event ? preact_module_n.event(l) : l);
         }
-        function preact_module_z(l, u, i, t, o, r, f, e, c) {
-            var a, v, h, y, p, w, k, g, _, x, A, P = u.type;
+        function preact_module_T(l, u, i, t, r, o, f, e, c) {
+            var a, v, h, y, _, k, w, m, b, x, A, P = u.type;
             if (void 0 !== u.constructor) return null;
             (a = preact_module_n.__b) && a(u);
             try {
                 n: if ("function" == typeof P) {
-                    if (g = u.props, _ = (a = P.contextType) && t[a.__c], x = a ? _ ? _.props.value : a.__ : t, 
-                    i.__c ? k = (v = u.__c = i.__c).__ = v.__E : ("prototype" in P && P.prototype.render ? u.__c = v = new P(g, x) : (u.__c = v = new preact_module_m(g, x), 
-                    v.constructor = P, v.render = preact_module_E), _ && _.sub(v), v.props = g, v.state || (v.state = {}), 
+                    if (m = u.props, b = (a = P.contextType) && t[a.__c], x = a ? b ? b.props.value : a.__ : t, 
+                    i.__c ? w = (v = u.__c = i.__c).__ = v.__E : ("prototype" in P && P.prototype.render ? u.__c = v = new P(m, x) : (u.__c = v = new preact_module_d(m, x), 
+                    v.constructor = P, v.render = preact_module_L), b && b.sub(v), v.props = m, v.state || (v.state = {}), 
                     v.context = x, v.__n = t, h = v.__d = !0, v.__h = []), null == v.__s && (v.__s = v.state), 
                     null != P.getDerivedStateFromProps && (v.__s == v.state && (v.__s = s({}, v.__s)), 
-                    s(v.__s, P.getDerivedStateFromProps(g, v.__s))), y = v.props, p = v.state, h) null == P.getDerivedStateFromProps && null != v.componentWillMount && v.componentWillMount(), 
+                    s(v.__s, P.getDerivedStateFromProps(m, v.__s))), y = v.props, _ = v.state, h) null == P.getDerivedStateFromProps && null != v.componentWillMount && v.componentWillMount(), 
                     null != v.componentDidMount && v.__h.push(v.componentDidMount); else {
-                        if (null == P.getDerivedStateFromProps && g !== y && null != v.componentWillReceiveProps && v.componentWillReceiveProps(g, x), 
-                        !v.__e && null != v.shouldComponentUpdate && !1 === v.shouldComponentUpdate(g, v.__s, x) || u.__v === i.__v) {
-                            for (v.props = g, v.state = v.__s, u.__v !== i.__v && (v.__d = !1), v.__v = u, u.__e = i.__e, 
-                            u.__k = i.__k, v.__h.length && f.push(v), a = 0; a < u.__k.length; a++) u.__k[a] && (u.__k[a].__ = u);
+                        if (null == P.getDerivedStateFromProps && m !== y && null != v.componentWillReceiveProps && v.componentWillReceiveProps(m, x), 
+                        !v.__e && null != v.shouldComponentUpdate && !1 === v.shouldComponentUpdate(m, v.__s, x) || u.__v === i.__v) {
+                            v.props = m, v.state = v.__s, u.__v !== i.__v && (v.__d = !1), v.__v = u, u.__e = i.__e, 
+                            u.__k = i.__k, v.__h.length && f.push(v), function preact_module_z(n, l, u) {
+                                var i, t;
+                                for (i = 0; i < n.__k.length; i++) (t = n.__k[i]) && (t.__ = n, t.__e && ("function" == typeof t.type && t.__k.length > 1 && preact_module_z(t, l, u), 
+                                l = preact_module_x(u, t, t, n.__k, null, t.__e, l), "function" == typeof n.type && (n.__d = l)));
+                            }(u, e, l);
                             break n;
                         }
-                        null != v.componentWillUpdate && v.componentWillUpdate(g, v.__s, x), null != v.componentDidUpdate && v.__h.push((function() {
-                            v.componentDidUpdate(y, p, w);
+                        null != v.componentWillUpdate && v.componentWillUpdate(m, v.__s, x), null != v.componentDidUpdate && v.__h.push((function() {
+                            v.componentDidUpdate(y, _, k);
                         }));
                     }
-                    v.context = x, v.props = g, v.state = v.__s, (a = preact_module_n.__r) && a(u), 
-                    v.__d = !1, v.__v = u, v.__P = l, a = v.render(v.props, v.state, v.context), null != v.getChildContext && (t = s(s({}, t), v.getChildContext())), 
-                    h || null == v.getSnapshotBeforeUpdate || (w = v.getSnapshotBeforeUpdate(y, p)), 
-                    A = null != a && a.type == preact_module_d && null == a.key ? a.props.children : a, 
-                    preact_module_b(l, Array.isArray(A) ? A : [ A ], u, i, t, o, r, f, e, c), v.base = u.__e, 
-                    v.__h.length && f.push(v), k && (v.__E = v.__ = null), v.__e = !1;
-                } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = preact_module_$(i.__e, u, i, t, o, r, f, c);
+                    v.context = x, v.props = m, v.state = v.__s, (a = preact_module_n.__r) && a(u), 
+                    v.__d = !1, v.__v = u, v.__P = l, a = v.render(v.props, v.state, v.context), v.state = v.__s, 
+                    null != v.getChildContext && (t = s(s({}, t), v.getChildContext())), h || null == v.getSnapshotBeforeUpdate || (k = v.getSnapshotBeforeUpdate(y, _)), 
+                    A = null != a && a.type == preact_module_p && null == a.key ? a.props.children : a, 
+                    g(l, Array.isArray(A) ? A : [ A ], u, i, t, r, o, f, e, c), v.base = u.__e, v.__h.length && f.push(v), 
+                    w && (v.__E = v.__ = null), v.__e = !1;
+                } else null == o && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = preact_module_j(i.__e, u, i, t, r, o, f, c);
                 (a = preact_module_n.diffed) && a(u);
             } catch (l) {
                 u.__v = null, preact_module_n.__e(l, u, i);
             }
             return u.__e;
         }
-        function preact_module_T(l, u) {
+        function preact_module_$(l, u) {
             preact_module_n.__c && preact_module_n.__c(u, l), l.some((function(u) {
                 try {
                     l = u.__h, u.__h = [], l.some((function(n) {
@@ -378,45 +382,45 @@
                 }
             }));
         }
-        function preact_module_$(n, l, u, i, t, o, r, f) {
-            var a, s, v, h, y, p = u.props, d = l.props;
-            if (t = "svg" === l.type || t, null != o) for (a = 0; a < o.length; a++) if (null != (s = o[a]) && ((null === l.type ? 3 === s.nodeType : s.localName === l.type) || n == s)) {
-                n = s, o[a] = null;
+        function preact_module_j(n, l, u, i, t, r, o, c) {
+            var s, a, v, h, y, p = u.props, d = l.props;
+            if (t = "svg" === l.type || t, null != r) for (s = 0; s < r.length; s++) if (null != (a = r[s]) && ((null === l.type ? 3 === a.nodeType : a.localName === l.type) || n == a)) {
+                n = a, r[s] = null;
                 break;
             }
             if (null == n) {
                 if (null === l.type) return document.createTextNode(d);
                 n = t ? document.createElementNS("http://www.w3.org/2000/svg", l.type) : document.createElement(l.type, d.is && {
                     is: d.is
-                }), o = null, f = !1;
+                }), r = null, c = !1;
             }
             if (null === l.type) p !== d && n.data != d && (n.data = d); else {
-                if (null != o && (o = c.slice.call(n.childNodes)), v = (p = u.props || e).dangerouslySetInnerHTML, 
-                h = d.dangerouslySetInnerHTML, !f) {
-                    if (null != o) for (p = {}, y = 0; y < n.attributes.length; y++) p[n.attributes[y].name] = n.attributes[y].value;
+                if (null != r && (r = e.slice.call(n.childNodes)), v = (p = u.props || f).dangerouslySetInnerHTML, 
+                h = d.dangerouslySetInnerHTML, !c) {
+                    if (null != r) for (p = {}, y = 0; y < n.attributes.length; y++) p[n.attributes[y].name] = n.attributes[y].value;
                     (h || v) && (h && v && h.__html == v.__html || (n.innerHTML = h && h.__html || ""));
                 }
                 (function(n, l, u, i, t) {
-                    var o;
-                    for (o in u) "children" === o || "key" === o || o in l || preact_module_C(n, o, null, u[o], i);
-                    for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || preact_module_C(n, o, l[o], u[o], i);
-                })(n, d, p, t, f), h ? l.__k = [] : (a = l.props.children, preact_module_b(n, Array.isArray(a) ? a : [ a ], l, u, i, "foreignObject" !== l.type && t, o, r, e, f)), 
-                f || ("value" in d && void 0 !== (a = d.value) && a !== n.value && preact_module_C(n, "value", a, p.value, !1), 
-                "checked" in d && void 0 !== (a = d.checked) && a !== n.checked && preact_module_C(n, "checked", a, p.checked, !1));
+                    var r;
+                    for (r in u) "children" === r || "key" === r || r in l || preact_module_C(n, r, null, u[r], i);
+                    for (r in l) t && "function" != typeof l[r] || "children" === r || "key" === r || "value" === r || "checked" === r || u[r] === l[r] || preact_module_C(n, r, l[r], u[r], i);
+                })(n, d, p, t, c), h ? l.__k = [] : (s = l.props.children, g(n, Array.isArray(s) ? s : [ s ], l, u, i, "foreignObject" !== l.type && t, r, o, f, c)), 
+                c || ("value" in d && void 0 !== (s = d.value) && s !== n.value && preact_module_C(n, "value", s, p.value, !1), 
+                "checked" in d && void 0 !== (s = d.checked) && s !== n.checked && preact_module_C(n, "checked", s, p.checked, !1));
             }
             return n;
         }
-        function preact_module_j(l, u, i) {
+        function preact_module_H(l, u, i) {
             try {
                 "function" == typeof l ? l(u) : l.current = u;
             } catch (l) {
                 preact_module_n.__e(l, i);
             }
         }
-        function preact_module_D(l, u, i) {
-            var t, o, r;
-            if (preact_module_n.unmount && preact_module_n.unmount(l), (t = l.ref) && (t.current && t.current !== l.__e || preact_module_j(t, null, u)), 
-            i || "function" == typeof l.type || (i = null != (o = l.__e)), l.__e = l.__d = void 0, 
+        function preact_module_I(l, u, i) {
+            var t, r, o;
+            if (preact_module_n.unmount && preact_module_n.unmount(l), (t = l.ref) && (t.current && t.current !== l.__e || preact_module_H(t, null, u)), 
+            i || "function" == typeof l.type || (i = null != (r = l.__e)), l.__e = l.__d = void 0, 
             null != (t = l.__c)) {
                 if (t.componentWillUnmount) try {
                     t.componentWillUnmount();
@@ -425,10 +429,10 @@
                 }
                 t.base = t.__P = null;
             }
-            if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && preact_module_D(t[r], u, i);
-            null != o && v(o);
+            if (t = l.__k) for (o = 0; o < t.length; o++) t[o] && preact_module_I(t[o], u, i);
+            null != r && a(r);
         }
-        function preact_module_E(n, l, u) {
+        function preact_module_L(n, l, u) {
             return this.constructor(n, u);
         }
         preact_module_n = {
@@ -436,21 +440,20 @@
                 for (var u, i; l = l.__; ) if ((u = l.__c) && !u.__) try {
                     if (u.constructor && null != u.constructor.getDerivedStateFromError && (i = !0, 
                     u.setState(u.constructor.getDerivedStateFromError(n))), null != u.componentDidCatch && (i = !0, 
-                    u.componentDidCatch(n)), i) return g(u.__E = u);
+                    u.componentDidCatch(n)), i) return preact_module_w(u.__E = u);
                 } catch (l) {
                     n = l;
                 }
                 throw n;
             }
-        }, preact_module_m.prototype.setState = function(n, l) {
+        }, preact_module_d.prototype.setState = function(n, l) {
             var u;
             u = this.__s !== this.state ? this.__s : this.__s = s({}, this.state), "function" == typeof n && (n = n(u, this.props)), 
-            n && s(u, n), null != n && this.__v && (l && this.__h.push(l), g(this));
-        }, preact_module_m.prototype.forceUpdate = function(n) {
-            this.__v && (this.__e = !0, n && this.__h.push(n), g(this));
-        }, preact_module_m.prototype.render = preact_module_d, preact_module_u = [], preact_module_i = 0, 
-        preact_module_t = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
-        preact_module_r = e, f = 0;
+            n && s(u, n), null != n && this.__v && (l && this.__h.push(l), preact_module_w(this));
+        }, preact_module_d.prototype.forceUpdate = function(n) {
+            this.__v && (this.__e = !0, n && this.__h.push(n), preact_module_w(this));
+        }, preact_module_d.prototype.render = preact_module_p, preact_module_u = [], preact_module_i = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
+        preact_module_m.__r = 0, preact_module_r = f, preact_module_o = 0;
         var index_module_n = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|^--/i, index_module_o = function(e) {
             return String(e).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }, index_module_a = function(e, t) {
@@ -482,14 +485,14 @@
         index_module_v.render = index_module_v;
         function index_module_v(n, l, p, h, d, m) {
             if (null == n || "boolean" == typeof n) return "";
-            Array.isArray(n) && (n = preact_module_h(preact_module_d, null, n));
+            Array.isArray(n) && (n = v(preact_module_p, null, n));
             var x = n.type, y = n.props, b = !1;
             l = l || {};
             var S, w = (p = p || {}).pretty, k = w && "string" == typeof w ? w : "\t";
             if ("object" != typeof n && !x) return index_module_o(n);
             if ("function" == typeof x) {
                 if (b = !0, !p.shallow || !h && !1 !== p.renderRootComponent) {
-                    if (x === preact_module_d) {
+                    if (x === preact_module_p) {
                         var O = "", C = [];
                         index_module_c(C, n.props.children);
                         for (var A = 0; A < C.length; A++) O += (A > 0 && w ? "\n" : "") + index_module_v(C[A], l, p, !1 !== p.shallowHighOrder, d, m);
@@ -1042,6 +1045,9 @@
             } catch (err) {
                 return !0;
             }
+            try {
+                if ("postMessage" in obj && "self" in obj && "location" in obj) return !0;
+            } catch (err) {}
             return !1;
         }
         function util_safeIndexOf(collection, item) {
@@ -2087,69 +2093,60 @@
                 }));
             }));
         }
-        var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_i = 0, hooks_module_o = [], hooks_module_c = preact_module_n.__r, hooks_module_f = preact_module_n.diffed, hooks_module_e = preact_module_n.__c, hooks_module_a = preact_module_n.unmount;
+        var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o = 0, hooks_module_i = [], hooks_module_c = preact_module_n.__r, hooks_module_f = preact_module_n.diffed, hooks_module_e = preact_module_n.__c, hooks_module_a = preact_module_n.unmount;
         function hooks_module_v(t, r) {
-            preact_module_n.__h && preact_module_n.__h(hooks_module_u, t, hooks_module_i || r), 
-            hooks_module_i = 0;
-            var o = hooks_module_u.__H || (hooks_module_u.__H = {
+            preact_module_n.__h && preact_module_n.__h(hooks_module_u, t, hooks_module_o || r), 
+            hooks_module_o = 0;
+            var i = hooks_module_u.__H || (hooks_module_u.__H = {
                 __: [],
                 __h: []
             });
-            return t >= o.__.length && o.__.push({}), o.__[t];
+            return t >= i.__.length && i.__.push({}), i.__[t];
         }
         function hooks_module_m(n) {
-            return hooks_module_i = 1, function(n, r, i) {
-                var o = hooks_module_v(hooks_module_t++, 2);
-                return o.t = n, o.__c || (o.__c = hooks_module_u, o.__ = [ hooks_module_E(void 0, r), function(n) {
-                    var t = o.t(o.__[0], n);
-                    o.__[0] !== t && (o.__[0] = t, o.__c.setState({}));
-                } ]), o.__;
-            }(hooks_module_E, n);
+            return hooks_module_o = 1, function(n, r, o) {
+                var i = hooks_module_v(hooks_module_t++, 2);
+                return i.t = n, i.__c || (i.__c = hooks_module_u, i.__ = [ hooks_module_k(void 0, r), function(n) {
+                    var t = i.t(i.__[0], n);
+                    i.__[0] !== t && (i.__ = [ t, i.__[1] ], i.__c.setState({}));
+                } ]), i.__;
+            }(hooks_module_k, n);
         }
-        function hooks_module_l(r, i) {
-            var o = hooks_module_v(hooks_module_t++, 3);
+        function hooks_module_y(r, o) {
+            var i = hooks_module_v(hooks_module_t++, 3);
             !preact_module_n.__s && function(n, t) {
                 return !n || t.some((function(t, u) {
                     return t !== n[u];
                 }));
-            }(o.__H, i) && (o.__ = r, o.__H = i, hooks_module_u.__H.__h.push(o));
+            }(i.__H, o) && (i.__ = r, i.__H = o, hooks_module_u.__H.__h.push(i));
         }
-        function hooks_module_() {
-            hooks_module_o.some((function(t) {
+        function hooks_module_q() {
+            hooks_module_i.some((function(t) {
                 if (t.__P) try {
-                    t.__H.__h.forEach(hooks_module_g), t.__H.__h.forEach(hooks_module_q), t.__H.__h = [];
+                    t.__H.__h.forEach(hooks_module_b), t.__H.__h.forEach(hooks_module_g), t.__H.__h = [];
                 } catch (u) {
                     return t.__H.__h = [], preact_module_n.__e(u, t.__v), !0;
                 }
-            })), hooks_module_o = [];
-        }
-        function hooks_module_g(n) {
-            "function" == typeof n.u && n.u();
-        }
-        function hooks_module_q(n) {
-            n.u = n.__();
-        }
-        function hooks_module_E(n, t) {
-            return "function" == typeof t ? t(n) : t;
+            })), hooks_module_i = [];
         }
         preact_module_n.__r = function(n) {
             hooks_module_c && hooks_module_c(n), hooks_module_t = 0;
             var r = (hooks_module_u = n.__c).__H;
-            r && (r.__h.forEach(hooks_module_g), r.__h.forEach(hooks_module_q), r.__h = []);
+            r && (r.__h.forEach(hooks_module_b), r.__h.forEach(hooks_module_g), r.__h = []);
         }, preact_module_n.diffed = function(t) {
             hooks_module_f && hooks_module_f(t);
             var u = t.__c;
-            u && u.__H && u.__H.__h.length && (1 !== hooks_module_o.push(u) && hooks_module_r === preact_module_n.requestAnimationFrame || ((hooks_module_r = preact_module_n.requestAnimationFrame) || function(n) {
+            u && u.__H && u.__H.__h.length && (1 !== hooks_module_i.push(u) && hooks_module_r === preact_module_n.requestAnimationFrame || ((hooks_module_r = preact_module_n.requestAnimationFrame) || function(n) {
                 var t, u = function() {
-                    clearTimeout(r), cancelAnimationFrame(t), setTimeout(n);
+                    clearTimeout(r), hooks_module_x && cancelAnimationFrame(t), setTimeout(n);
                 }, r = setTimeout(u, 100);
-                "undefined" != typeof window && (t = requestAnimationFrame(u));
-            })(hooks_module_));
+                hooks_module_x && (t = requestAnimationFrame(u));
+            })(hooks_module_q));
         }, preact_module_n.__c = function(t, u) {
             u.some((function(t) {
                 try {
-                    t.__h.forEach(hooks_module_g), t.__h = t.__h.filter((function(n) {
-                        return !n.__ || hooks_module_q(n);
+                    t.__h.forEach(hooks_module_b), t.__h = t.__h.filter((function(n) {
+                        return !n.__ || hooks_module_g(n);
                     }));
                 } catch (r) {
                     u.some((function(n) {
@@ -2161,13 +2158,23 @@
             hooks_module_a && hooks_module_a(t);
             var u = t.__c;
             if (u && u.__H) try {
-                u.__H.__.forEach(hooks_module_g);
+                u.__H.__.forEach(hooks_module_b);
             } catch (t) {
                 preact_module_n.__e(t, u.__v);
             }
         };
+        var hooks_module_x = "function" == typeof requestAnimationFrame;
+        function hooks_module_b(n) {
+            "function" == typeof n.u && n.u();
+        }
+        function hooks_module_g(n) {
+            n.u = n.__();
+        }
+        function hooks_module_k(n, t) {
+            return "function" == typeof t ? t(n) : t;
+        }
         var StyleContext = (l = {}, (u = {
-            __c: "__cC" + f++,
+            __c: "__cC" + preact_module_o++,
             __: void 0,
             Consumer: function(n, l) {
                 return n.children(l);
@@ -2178,7 +2185,7 @@
                     return l[u.__c] = t, l;
                 }, this.shouldComponentUpdate = function(n) {
                     t.props.value !== n.value && i.some((function(l) {
-                        l.context = n.value, g(l);
+                        l.context = n.value, preact_module_w(l);
                     }));
                 }, this.sub = function(n) {
                     i.push(n);
@@ -2193,7 +2200,7 @@
         var style_StyleSheet = function(_ref) {
             var cspNonce = _ref.cspNonce, _ref$children = _ref.children, children = void 0 === _ref$children ? null : _ref$children;
             var _useState = hooks_module_m({}), styles = _useState[0], setStyles = _useState[1];
-            return preact_module_h(StyleContext.Provider, {
+            return v(StyleContext.Provider, {
                 value: {
                     cspNonce: cspNonce,
                     addStyle: function(css) {
@@ -2217,11 +2224,11 @@
                         }));
                     }
                 }
-            }, children, preact_module_h((function() {
+            }, children, v((function() {
                 var styleString = Object.keys(styles).filter((function(style) {
                     return styles[style] > 0;
                 })).join("\n");
-                return preact_module_h("style", {
+                return v("style", {
                     nonce: cspNonce
                 }, styleString);
             }), null));
@@ -2229,11 +2236,11 @@
         var style_Style = function(_ref2) {
             var css = _ref2.css, _ref2$children = _ref2.children, children = void 0 === _ref2$children ? null : _ref2$children;
             var _useContext = function(n) {
-                var r = hooks_module_u.context[n.__c], i = hooks_module_v(hooks_module_t++, 9);
-                return i.__c = n, r ? (null == i.__ && (i.__ = !0, r.sub(hooks_module_u)), r.props.value) : n.__;
+                var r = hooks_module_u.context[n.__c], o = hooks_module_v(hooks_module_t++, 9);
+                return o.__c = n, r ? (null == o.__ && (o.__ = !0, r.sub(hooks_module_u)), r.props.value) : n.__;
             }(StyleContext), addStyle = _useContext.addStyle, removeStyle = _useContext.removeStyle;
             var cssText = css._getCss();
-            isServer() ? addStyle(cssText) : hooks_module_l((function() {
+            isServer() ? addStyle(cssText) : hooks_module_y((function() {
                 addStyle(cssText);
                 return function() {
                     return removeStyle(cssText);
@@ -2242,40 +2249,40 @@
             return children;
         };
         var check_Check = function() {
-            return preact_module_h("svg", {
+            return v("svg", {
                 width: "18px",
                 height: "15px",
                 viewBox: "0 0 18 15",
                 version: "1.1",
                 xmlns: "http://www.w3.org/2000/svg"
-            }, preact_module_h("title", null, "Icons/check"), preact_module_h("desc", null, "Created with Sketch."), preact_module_h("g", {
+            }, v("title", null, "Icons/check"), v("desc", null, "Created with Sketch."), v("g", {
                 id: "✅-Icon-Library",
                 stroke: "none",
                 "stroke-width": "1",
                 fill: "none",
                 "fill-rule": "evenodd"
-            }, preact_module_h("g", {
+            }, v("g", {
                 id: "Icons/check",
                 transform: "translate(-6.000000, -7.000000)",
                 fill: "#0070BA",
                 "fill-rule": "nonzero"
-            }, preact_module_h("path", {
+            }, v("path", {
                 d: "M11.4121381,19.6994417 L22.6691362,7.6974334 C22.9052747,7.44566678 23.3008,7.43299769 23.5525666,7.6691362 C23.8043332,7.90527472 23.8170023,8.30079998 23.5808638,8.5525666 L11.8567862,21.0525666 C11.6057696,21.3201959 11.1792894,21.315028 10.9348317,21.0413946 L6.40890929,15.9753097 C6.17894091,15.7178949 6.20119062,15.3227928 6.45860541,15.0928244 C6.7160202,14.862856 7.11112232,14.8851057 7.34109071,15.1425205 L11.4121381,19.6994417 Z",
                 id: "Path"
             }))));
         };
-        var style_scopedscopeId_d2ff3bcf = __webpack_require__(2);
-        var style_scopedscopeId_d2ff3bcf_default = __webpack_require__.n(style_scopedscopeId_d2ff3bcf);
+        var style_scopedscopeId_8c6b3f59 = __webpack_require__(2);
+        var style_scopedscopeId_8c6b3f59_default = __webpack_require__.n(style_scopedscopeId_8c6b3f59);
         var walletItem_WalletItem = function(_ref) {
             var selected = _ref.selected, details = _ref.details, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
             var _useState = hooks_module_m(selected), showSelected = _useState[0], setShowSelected = _useState[1];
-            hooks_module_l((function() {
+            hooks_module_y((function() {
                 setShowSelected(selected);
             }), [ selected ]);
-            return preact_module_h(style_Style, {
-                css: style_scopedscopeId_d2ff3bcf_default.a,
-                "data-v-d2ff3bcf": ""
-            }, preact_module_h("div", {
+            return v(style_Style, {
+                css: style_scopedscopeId_8c6b3f59_default.a,
+                "data-v-8c6b3f59": ""
+            }, v("div", {
                 className: "wallet-item " + (selected ? "selected-wallet-item" : ""),
                 onClick: function() {
                     return function(item) {
@@ -2283,49 +2290,49 @@
                         listOpenHandler(!listOpen);
                     }(details.id);
                 },
-                "data-v-d2ff3bcf": ""
-            }, preact_module_h("div", {
+                "data-v-8c6b3f59": ""
+            }, v("div", {
                 className: "icon",
-                "data-v-d2ff3bcf": ""
-            }, preact_module_h("img", {
+                "data-v-8c6b3f59": ""
+            }, v("img", {
                 src: details.fundingOptionIcon,
-                "data-v-d2ff3bcf": ""
-            })), preact_module_h("div", {
+                "data-v-8c6b3f59": ""
+            })), v("div", {
                 className: "description",
-                "data-v-d2ff3bcf": ""
-            }, preact_module_h("div", {
+                "data-v-8c6b3f59": ""
+            }, v("div", {
                 className: "name",
-                "data-v-d2ff3bcf": ""
-            }, details.fundingOptionTitle), preact_module_h("div", {
+                "data-v-8c6b3f59": ""
+            }, details.fundingOptionTitle), v("div", {
                 className: "details",
-                "data-v-d2ff3bcf": ""
-            }, preact_module_h("span", {
+                "data-v-8c6b3f59": ""
+            }, v("span", {
                 className: "type",
-                "data-v-d2ff3bcf": ""
-            }, details.instrumentSubType, " "), preact_module_h("span", {
+                "data-v-8c6b3f59": ""
+            }, details.instrumentSubType, " "), v("span", {
                 className: "digits",
-                "data-v-d2ff3bcf": ""
-            }, details.lastDigits))), details.showPreferredText ? preact_module_h("div", {
+                "data-v-8c6b3f59": ""
+            }, details.lastDigits))), details.showPreferredText ? v("div", {
                 className: "preferred",
-                "data-v-d2ff3bcf": ""
-            }, "PREFERRED") : "", preact_module_h("div", {
+                "data-v-8c6b3f59": ""
+            }, "PREFERRED") : "", v("div", {
                 className: "flex-spacer",
-                "data-v-d2ff3bcf": ""
-            }), showSelected ? preact_module_h("div", {
+                "data-v-8c6b3f59": ""
+            }), showSelected ? v("div", {
                 className: "selected",
-                "data-v-d2ff3bcf": ""
-            }, preact_module_h(check_Check, {
-                "data-v-d2ff3bcf": ""
+                "data-v-8c6b3f59": ""
+            }, v(check_Check, {
+                "data-v-8c6b3f59": ""
             })) : ""));
         };
-        var style_scopedscopeId_d7b06a5e = __webpack_require__(3);
-        var style_scopedscopeId_d7b06a5e_default = __webpack_require__.n(style_scopedscopeId_d7b06a5e);
+        var style_scopedscopeId_5b670b17 = __webpack_require__(3);
+        var style_scopedscopeId_5b670b17_default = __webpack_require__.n(style_scopedscopeId_5b670b17);
         var credit_CreditBanner = function() {
-            return preact_module_h(style_Style, {
-                css: style_scopedscopeId_d7b06a5e_default.a,
-                "data-v-d7b06a5e": ""
-            }, preact_module_h("div", {
-                "data-v-d7b06a5e": ""
+            return v(style_Style, {
+                css: style_scopedscopeId_5b670b17_default.a,
+                "data-v-5b670b17": ""
+            }, v("div", {
+                "data-v-5b670b17": ""
             }, "This is where the credit messaging goes..."));
         };
         var buildWalletItemDetails = function(fundingOption) {
@@ -2360,8 +2367,8 @@
                 lastDigits: "PAYPAL" === subType ? "" : "•••• " + (digits || "")
             };
         };
-        var style_scopedscopeId_fdd787a1 = __webpack_require__(4);
-        var style_scopedscopeId_fdd787a1_default = __webpack_require__.n(style_scopedscopeId_fdd787a1);
+        var style_scopedscopeId_e150f0b4 = __webpack_require__(4);
+        var style_scopedscopeId_e150f0b4_default = __webpack_require__.n(style_scopedscopeId_e150f0b4);
         var wallet_Wallet = function(_ref) {
             var checkoutSession = _ref.checkoutSession;
             var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_m(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_m(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
@@ -2371,47 +2378,47 @@
                 }));
                 setSelectedWalletItem(newItem);
             };
-            return preact_module_h(style_Style, {
-                css: style_scopedscopeId_fdd787a1_default.a,
-                "data-v-fdd787a1": ""
-            }, preact_module_h("div", {
+            return v(style_Style, {
+                css: style_scopedscopeId_e150f0b4_default.a,
+                "data-v-e150f0b4": ""
+            }, v("div", {
                 className: "wallet",
-                "data-v-fdd787a1": ""
-            }, listOpen ? "" : preact_module_h(walletItem_WalletItem, {
+                "data-v-e150f0b4": ""
+            }, listOpen ? "" : v(walletItem_WalletItem, {
                 selected: !0,
                 details: buildWalletItemDetails(selectedWalletItem),
                 selectWalletItemHandler: changeSelectedWalletItem,
                 listOpen: listOpen,
                 listOpenHandler: setListOpen,
-                "data-v-fdd787a1": ""
-            }), listOpen ? preact_module_h("div", {
-                "data-v-fdd787a1": ""
+                "data-v-e150f0b4": ""
+            }), listOpen ? v("div", {
+                "data-v-e150f0b4": ""
             }, fundingOptions.map((function(option) {
-                return preact_module_h(walletItem_WalletItem, {
+                return v(walletItem_WalletItem, {
                     selected: option.id === selectedWalletItem.id,
                     details: buildWalletItemDetails(option),
                     selectWalletItemHandler: changeSelectedWalletItem,
                     listOpen: listOpen,
                     listOpenHandler: setListOpen,
-                    "data-v-fdd787a1": ""
+                    "data-v-e150f0b4": ""
                 });
-            })), preact_module_h(credit_CreditBanner, {
+            })), v(credit_CreditBanner, {
                 checkoutSession: checkoutSession,
-                "data-v-fdd787a1": ""
-            }), preact_module_h("div", {
+                "data-v-e150f0b4": ""
+            }), v("div", {
                 className: "add-card-button",
-                "data-v-fdd787a1": ""
-            }, preact_module_h("a", {
+                "data-v-e150f0b4": ""
+            }, v("a", {
                 href: "#",
-                "data-v-fdd787a1": ""
+                "data-v-e150f0b4": ""
             }, "Add debit or credit card"))) : ""));
         };
         var page_style = __webpack_require__(5);
         var style_default = __webpack_require__.n(page_style);
         var page_Page = function(_ref) {
-            return preact_module_h(style_Style, {
+            return v(style_Style, {
                 css: style_default.a
-            }, preact_module_h(wallet_Wallet, {
+            }, v(wallet_Wallet, {
                 checkoutSession: _ref.checkoutSession
             }));
         };
@@ -2419,14 +2426,14 @@
             throw new Error("Not implemented");
         }
         function App(_ref4) {
-            return preact_module_h(style_StyleSheet, {
+            return v(style_StyleSheet, {
                 cspNonce: _ref4.cspNonce
-            }, preact_module_h(page_Page, {
+            }, v(page_Page, {
                 checkoutSession: _ref4.checkoutSession
             }));
         }
         function renderWallet(props) {
-            return index_module(preact_module_h(App, props));
+            return index_module(v(App, props));
         }
         function setupWallet(_ref5) {
             var buyerAccessToken = _ref5.buyerAccessToken, cspNonce = _ref5.cspNonce, checkoutSession = _ref5.checkoutSession;
@@ -2543,11 +2550,11 @@
             });
             var _ref, facilitatorAccessToken, xprops, env, vault, commit, locale, platform, sessionID, intent, walletSessionID, clientID, partnerAttributionID, correlationID, getParentDomain, clientAccessToken, getPageUrl, rememberFunding, onError, stageHost, apiStageHost, style, getParent, currency, merchantID, _xprops$setup, setup, merchantDomain, createOrder;
             !function(l, u, i) {
-                var t, o, f;
+                var t, o, c;
                 preact_module_n.__ && preact_module_n.__(l, u), o = (t = i === preact_module_r) ? null : u.__k, 
-                l = preact_module_h(preact_module_d, null, [ l ]), f = [], preact_module_z(u, u.__k = l, o || e, e, void 0 !== u.ownerSVGElement, o ? null : u.childNodes.length ? c.slice.call(u.childNodes) : null, f, e, t), 
-                preact_module_T(f, l);
-            }(preact_module_h(App, {
+                l = v(preact_module_p, null, [ l ]), c = [], preact_module_T(u, u.__k = l, o || f, f, void 0 !== u.ownerSVGElement, o ? null : u.childNodes.length ? e.slice.call(u.childNodes) : null, c, f, t), 
+                preact_module_$(c, l);
+            }(v(App, {
                 cspNonce: cspNonce,
                 checkoutSession: checkoutSession
             }), function() {

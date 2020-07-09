@@ -654,6 +654,9 @@ window.spb = function(modules) {
         } catch (err) {
             return !0;
         }
+        try {
+            if ("postMessage" in obj && "self" in obj && "location" in obj) return !0;
+        } catch (err) {}
         return !1;
     }
     function util_safeIndexOf(collection, item) {
@@ -3093,7 +3096,7 @@ window.spb = function(modules) {
                 }).start();
             };
             if ("paypal" === fundingSource) return [ {
-                label: content.chooseCard || content.chooseCardOrShipping,
+                label: content.payWithDifferentMethod,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref9) {
                     var win = _ref9.win;
@@ -3122,7 +3125,7 @@ window.spb = function(modules) {
                     }));
                 }
             }, {
-                label: content.useDifferentAccount,
+                label: content.payWithDifferentAccount,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref10) {
                     var win = _ref10.win;
@@ -3298,7 +3301,7 @@ window.spb = function(modules) {
             };
             var newFundingSource = "credit" === instrument.type ? "credit" : fundingSource;
             if ("paypal" === fundingSource || "credit" === fundingSource) return [ {
-                label: content.chooseCard || content.chooseCardOrShipping,
+                label: content.payWithDifferentMethod,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref7) {
                     var win = _ref7.win;
@@ -3323,7 +3326,7 @@ window.spb = function(modules) {
                     }));
                 }
             }, {
-                label: content.useDifferentAccount,
+                label: content.payWithDifferentAccount,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref8) {
                     return loadCheckout({
@@ -3745,14 +3748,14 @@ window.spb = function(modules) {
             var createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, env = props.env;
             var firebaseConfig = _ref3.config.firebase;
             var eligibility = _ref3.serviceData.eligibility;
-            return !("local" === env || "stage" === env || "mobile" !== props.platform || props.onShippingChange && !isNativeOptedIn({
+            return !("mobile" !== props.platform || props.onShippingChange && !isNativeOptedIn({
                 props: props
             }) || createBillingAgreement || createSubscription || !supportsPopups() || !firebaseConfig || !(isIos() && function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /Safari/.test(ua) && !isChrome(ua);
             }() || isAndroidChrome()) || !isNativeOptedIn({
                 props: props
-            }) && !eligibility.nativeCheckout.paypal && !eligibility.nativeCheckout.venmo);
+            }) && ("local" === env || "stage" === env || !eligibility.nativeCheckout.paypal && !eligibility.nativeCheckout.venmo));
         },
         isPaymentEligible: function(_ref4) {
             var payment = _ref4.payment;
@@ -4671,7 +4674,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.280", _ref2;
+                _ref2.button_version = "2.0.281", _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
