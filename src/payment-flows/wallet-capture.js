@@ -242,7 +242,7 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
         : fundingSource;
 
     const CHOOSE_FUNDING_SHIPPING = {
-        label:    content.chooseCard || content.chooseCardOrShipping,
+        label:    content.payWithDifferentMethod,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
             return ZalgoPromise.try(() => {
@@ -256,7 +256,7 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
     };
 
     const CHOOSE_ACCOUNT = {
-        label:    content.useDifferentAccount,
+        label:    content.payWithDifferentAccount,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
             return loadCheckout({
