@@ -13,7 +13,8 @@ export function MenuButton({ color = TEXT_COLOR.BLACK } : {| color? : $Values<ty
         <Style css={ css }>
             <div
                 role="button"
-                aria-label="funding-options dropdown"
+                // localize this, then it can be released
+                // aria-label="funding-options dropdown"
                 { ...{
                     [ATTRIBUTE.MENU]: true
                 } }
