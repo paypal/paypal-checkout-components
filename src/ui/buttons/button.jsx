@@ -174,7 +174,8 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             onRender={ onButtonRender }
             onKeyPress={ keypressHandler }
             tabindex='0'
-            aria-label={ labelText }>
+            aria-label={ labelText }
+        >
 
             <div class={ CLASS.BUTTON_LABEL }>
                 { labelNode }
