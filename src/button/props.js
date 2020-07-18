@@ -50,6 +50,7 @@ export type ButtonXProps = {|
     clientID : ?string,
     partnerAttributionID : ?string,
     correlationID : string,
+    sdkCorrelationID? : string,
     platform : $Values<typeof PLATFORM>,
     merchantID : $ReadOnlyArray<string>,
 
@@ -100,7 +101,7 @@ export type ButtonProps = {|
     clientID : ?string,
     partnerAttributionID : ?string,
     clientMetadataID : ?string,
-    correlationID : string,
+    sdkCorrelationID : string,
     platform : $Values<typeof PLATFORM>,
 
     vault : boolean,
@@ -155,6 +156,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         partnerAttributionID,
         clientMetadataID,
         correlationID,
+        sdkCorrelationID = correlationID,
         getParentDomain,
         clientAccessToken,
         getPopupBridge,
@@ -230,7 +232,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         clientID,
         partnerAttributionID,
         clientMetadataID,
-        correlationID,
+        sdkCorrelationID,
         merchantDomain,
         platform,
         currency,

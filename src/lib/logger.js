@@ -21,19 +21,20 @@ type LoggerOptions = {|
     clientID : ?string,
     partnerAttributionID : ?string,
     commit : boolean,
-    correlationID : string,
+    sdkCorrelationID : string,
     locale : LocaleType,
     merchantID : $ReadOnlyArray<string>,
     merchantDomain : string,
     version : string
 |};
 
-export function setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version } : LoggerOptions) {
+export function setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version } : LoggerOptions) {
     const logger = getLogger();
 
     logger.addPayloadBuilder(() => {
         return {
             referer: window.location.host,
+            sdkCorrelationID,
             sessionID,
             env
         };
@@ -57,7 +58,7 @@ export function setupLogger({ env, sessionID, clientID, partnerAttributionID, co
             [FPTI_KEY.SDK_VERSION]:            version,
             [FPTI_KEY.USER_AGENT]:             window.navigator && window.navigator.userAgent,
             [FPTI_KEY.USER_ACTION]:            commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE,
-            [FPTI_KEY.CONTEXT_CORRID]:         correlationID
+            [FPTI_KEY.CONTEXT_CORRID]:         sdkCorrelationID
         };
     });
 

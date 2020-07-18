@@ -68,7 +68,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     const { merchantID } = serviceData;
 
     const props = getProps({ facilitatorAccessToken });
-    const { env, sessionID, partnerAttributionID, commit, correlationID, locale,
+    const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding,
         style, persistRiskData } = props;
         
@@ -199,7 +199,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     const setupRememberTask = setupRemember({ rememberFunding, fundingEligibility });
     const setupButtonLogsTask = setupButtonLogger({
         style, env, version, sessionID, clientID, partnerAttributionID, commit,
-        correlationID, locale, merchantID, buttonSessionID, merchantDomain });
+        sdkCorrelationID, locale, merchantID, buttonSessionID, merchantDomain });
     const setupPaymentFlowsTask = setupPaymentFlows({ props, config, serviceData, components });
     const setupPersistRiskDataTask = (persistRiskData && serverRiskData) ? persistRiskData(serverRiskData) : null;
 

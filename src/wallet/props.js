@@ -33,6 +33,7 @@ export type WalletXProps = {|
     clientID : ?string,
     partnerAttributionID : string,
     correlationID : string,
+    sdkCorrelationID? : string,
     platform : $Values<typeof PLATFORM>,
     merchantID : $ReadOnlyArray<string>,
 
@@ -70,7 +71,7 @@ export type WalletProps = {|
     walletSessionID : string,
     clientID : ?string,
     partnerAttributionID : string,
-    correlationID : string,
+    sdkCorrelationID : string,
     platform : $Values<typeof PLATFORM>,
 
     vault : boolean,
@@ -125,6 +126,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         clientID,
         partnerAttributionID,
         correlationID,
+        sdkCorrelationID = correlationID,
         getParentDomain,
         clientAccessToken,
         getPageUrl,
@@ -155,7 +157,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         walletSessionID,
         clientID,
         partnerAttributionID,
-        correlationID,
+        sdkCorrelationID,
         platform,
         currency,
         commit,

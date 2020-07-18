@@ -14,7 +14,7 @@ type WalletLoggerOptions = {|
     clientID : ?string,
     partnerAttributionID : ?string,
     commit : boolean,
-    correlationID : string,
+    sdkCorrelationID : string,
     locale : LocaleType,
     walletSessionID : string,
     merchantID : $ReadOnlyArray<string>,
@@ -22,10 +22,10 @@ type WalletLoggerOptions = {|
     version : string
 |};
 
-export function setupWalletLogger({ env, sessionID, walletSessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version } : WalletLoggerOptions) : ZalgoPromise<void> {
+export function setupWalletLogger({ env, sessionID, walletSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version } : WalletLoggerOptions) : ZalgoPromise<void> {
     const logger = getLogger();
 
-    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version });
+    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version });
 
     logger.addPayloadBuilder(() => {
         return {

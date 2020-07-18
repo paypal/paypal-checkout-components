@@ -26,7 +26,7 @@ type ButtonLoggerOptions = {|
     clientID : ?string,
     partnerAttributionID : ?string,
     commit : boolean,
-    correlationID : string,
+    sdkCorrelationID : string,
     locale : LocaleType,
     buttonSessionID : string,
     merchantID : $ReadOnlyArray<string>,
@@ -35,10 +35,10 @@ type ButtonLoggerOptions = {|
     style : ButtonStyle
 |};
 
-export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version, style } : ButtonLoggerOptions) : ZalgoPromise<void> {
+export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version, style } : ButtonLoggerOptions) : ZalgoPromise<void> {
     const logger = getLogger();
 
-    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain, version });
+    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version });
 
     logger.addPayloadBuilder(() => {
         return {
