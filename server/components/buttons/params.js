@@ -66,7 +66,8 @@ type RequestParams = {|
     amount : ?string,
     clientMetadataID : ?string,
     pageSessionID : string,
-    riskData : ?RiskData
+    riskData : ?RiskData,
+    correlationID : string
 |};
 
 function getCSPNonce(res : ExpressResponse) : string {
@@ -238,6 +239,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
 
     const basicFundingEligibility = getFundingEligibilityParam(req);
     const riskData = getRiskDataParam(req);
+    const correlationID = req.correlationId || '';
 
     return {
         env,
@@ -262,6 +264,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         amount,
         riskData,
         pageSessionID,
-        clientMetadataID
+        clientMetadataID,
+        correlationID
     };
 }

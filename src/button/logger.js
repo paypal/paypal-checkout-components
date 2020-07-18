@@ -27,6 +27,7 @@ type ButtonLoggerOptions = {|
     partnerAttributionID : ?string,
     commit : boolean,
     sdkCorrelationID : string,
+    buttonCorrelationID : string,
     locale : LocaleType,
     buttonSessionID : string,
     merchantID : $ReadOnlyArray<string>,
@@ -35,25 +36,27 @@ type ButtonLoggerOptions = {|
     style : ButtonStyle
 |};
 
-export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version, style } : ButtonLoggerOptions) : ZalgoPromise<void> {
+export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, buttonCorrelationID, locale, merchantID, merchantDomain, version, style } : ButtonLoggerOptions) : ZalgoPromise<void> {
     const logger = getLogger();
 
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version });
 
     logger.addPayloadBuilder(() => {
         return {
-            buttonSessionID
+            buttonSessionID,
+            buttonCorrelationID
         };
     });
 
     logger.addTrackingBuilder(() => {
         return {
-            [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
-            [FPTI_KEY.CONTEXT_TYPE]:           FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
-            [FPTI_KEY.CONTEXT_ID]:             buttonSessionID,
-            [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
-            [FPTI_KEY.BUTTON_SESSION_UID]:     buttonSessionID,
-            [FPTI_KEY.BUTTON_VERSION]:         __SMART_BUTTONS__.__MINOR_VERSION__
+            [FPTI_KEY.STATE]:                        FPTI_STATE.BUTTON,
+            [FPTI_KEY.CONTEXT_TYPE]:                 FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
+            [FPTI_KEY.CONTEXT_ID]:                   buttonSessionID,
+            [FPTI_KEY.STATE]:                        FPTI_STATE.BUTTON,
+            [FPTI_KEY.BUTTON_SESSION_UID]:           buttonSessionID,
+            [FPTI_KEY.BUTTON_VERSION]:               __SMART_BUTTONS__.__MINOR_VERSION__,
+            [FTPI_BUTTON_KEY.BUTTON_CORRELATION_ID]: buttonSessionID
         };
     });
 

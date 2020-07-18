@@ -48,7 +48,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, style, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale, onShippingChange,
-                clientMetadataID, riskData, pageSessionID } = getParams(params, req, res);
+                clientMetadataID, riskData, pageSessionID, correlationID } = getParams(params, req, res);
             const { label, period } = style;
             
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
@@ -146,7 +146,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const buttonHTML = render.button.Buttons(buttonProps).render(html());
 
             const setupParams = {
-                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta, wallet, buyerAccessToken,
+                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta, wallet, buyerAccessToken, correlationID,
                 isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content, serverRiskData
             };
 

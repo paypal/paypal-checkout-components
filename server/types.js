@@ -3,7 +3,10 @@
 import { COUNTRY, LANG } from '@paypal/sdk-constants';
 
 
-export type ExpressRequest = express$Request; // eslint-disable-line no-undef
+export type ExpressRequest = express$Request & {| // eslint-disable-line no-undef
+    correlationId? : string
+|};
+
 export type ExpressResponse = express$Response; // eslint-disable-line no-undef
 
 export type LoggerPayload = {

@@ -124,7 +124,8 @@ export const FTPI_BUTTON_KEY = {
     BUTTON_LABEL:           ('button_label' : 'button_label'),
     BUTTON_WIDTH:           ('button_width' : 'button_width'),
     BUTTON_TYPE:            ('button_type' : 'button_type'),
-    BUTTON_TAGLINE_ENABLED: ('button_tagline_enabled' : 'button_tagline_enabled')
+    BUTTON_TAGLINE_ENABLED: ('button_tagline_enabled' : 'button_tagline_enabled'),
+    BUTTON_CORRELATION_ID:  ('button_correlation_id' : 'button_correlation_id')
 };
 
 export const FTPI_WALLET_KEY = {

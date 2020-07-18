@@ -1,6 +1,8 @@
 /* @flow */
 /* eslint no-restricted-globals: off, promise/no-native: off, compat/compat: off */
 
+import type { ExpressRequest } from '../../server/types';
+
 type MockReq = {|
     query : { [string] : string }
 |};
@@ -87,9 +89,8 @@ export async function getWallet() : Promise<Object> {
     };
 }
 
-// eslint-disable-next-line require-await
-export async function graphQL(req : {||}, payload : $ReadOnlyArray<{| query : string, variables : Object |}>) : Promise<Object> {
-    return Promise.resolve(payload.map(request => {
+export async function graphQL(req : ExpressRequest, payload : $ReadOnlyArray<{| query : string, variables : Object |}>) : Promise<Object> {
+    return await Promise.resolve(payload.map(request => {
         if (request.query.match(/FundingEligibility/)) {
             return {
                 fundingEligibility: {

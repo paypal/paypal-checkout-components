@@ -37,7 +37,8 @@ type ButtonOpts = {|
             [$Values<typeof FUNDING> ] : ?boolean
         }
     |},
-    serverRiskData : ?ServerRiskData
+    serverRiskData : ?ServerRiskData,
+    buttonCorrelationID? : string
 |};
 
 try {
@@ -58,7 +59,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     }
 
     const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, sdkMeta, buyerAccessToken, wallet, serverRiskData,
-        cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig, content } = opts;
+        cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization, isCardFieldsExperimentEnabled, firebaseConfig, content, buttonCorrelationID = '' } = opts;
 
     const clientID = window.xprops.clientID;
 
@@ -77,7 +78,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     
     const components = getComponents();
 
-    const { initPromise, isEnabled } = onInit();
+    const { initPromise, isEnabled } = onInit({ correlationID: buttonCorrelationID });
 
     let paymentProcessing = false;
 
@@ -198,8 +199,8 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
     const setupRememberTask = setupRemember({ rememberFunding, fundingEligibility });
     const setupButtonLogsTask = setupButtonLogger({
-        style, env, version, sessionID, clientID, partnerAttributionID, commit,
-        sdkCorrelationID, locale, merchantID, buttonSessionID, merchantDomain });
+        style, env, version, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID,
+        buttonCorrelationID, locale, merchantID, buttonSessionID, merchantDomain });
     const setupPaymentFlowsTask = setupPaymentFlows({ props, config, serviceData, components });
     const setupPersistRiskDataTask = (persistRiskData && serverRiskData) ? persistRiskData(serverRiskData) : null;
 

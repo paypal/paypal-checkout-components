@@ -3,7 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 export type XOnInitDataType = {|
-    
+    correlationID : string
 |};
 
 export type XOnInitActionsType = {|
@@ -13,11 +13,6 @@ export type XOnInitActionsType = {|
 
 export type XOnInit = (XOnInitDataType, XOnInitActionsType) => ZalgoPromise<void>;
 
-export function buildXOnInitData() : XOnInitDataType {
-    // $FlowFixMe
-    return {};
-}
-
 export function buildXOnInitActions(set : (boolean) => void) : XOnInitActionsType {
     return {
         enable:  () => ZalgoPromise.try(() => set(true)),
@@ -25,18 +20,22 @@ export function buildXOnInitActions(set : (boolean) => void) : XOnInitActionsTyp
     };
 }
 
-export type OnInit = () => {|
+export type OnInitDataType = {|
+    correlationID : string
+|};
+
+export type OnInit = (OnInitDataType) => {|
     initPromise : ZalgoPromise<void>,
     isEnabled : () => boolean
 |};
 
 export function getOnInit({ onInit } : {| onInit : ?XOnInit |}) : OnInit {
-    return () => {
+    return (data) => {
         let enabled = true;
 
         const initPromise = ZalgoPromise.try(() => {
             if (onInit) {
-                return onInit(buildXOnInitData(), buildXOnInitActions(val => {
+                return onInit(data, buildXOnInitActions(val => {
                     enabled = val;
                 }));
             }
