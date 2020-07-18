@@ -1981,14 +1981,14 @@ window.spb = function(modules) {
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken;
         var xprops = window.xprops;
-        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, correlationID = xprops.correlationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableStandardCardFields = xprops.enableStandardCardFields, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, persistRiskData = xprops.persistRiskData, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
+        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableStandardCardFields = xprops.enableStandardCardFields, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, persistRiskData = xprops.persistRiskData, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
         var onInit = function(_ref) {
             var onInit = _ref.onInit;
-            return function() {
+            return function(data) {
                 var enabled = !0;
                 return {
                     initPromise: promise_ZalgoPromise.try((function() {
-                        if (onInit) return onInit({}, (set = function(val) {
+                        if (onInit) return onInit(data, (set = function(val) {
                             enabled = val;
                         }, {
                             enable: function() {
@@ -2161,7 +2161,7 @@ window.spb = function(modules) {
             clientID: clientID,
             partnerAttributionID: partnerAttributionID,
             clientMetadataID: clientMetadataID,
-            correlationID: correlationID,
+            sdkCorrelationID: sdkCorrelationID,
             merchantDomain: merchantDomain,
             platform: platform,
             currency: currency,
@@ -4212,7 +4212,7 @@ window.spb = function(modules) {
     } catch (err) {}
     function setupButton(opts) {
         if (!window.paypal) throw new Error("PayPal SDK not loaded");
-        var facilitatorAccessToken = opts.facilitatorAccessToken, fundingEligibility = opts.fundingEligibility, serverRiskData = opts.serverRiskData, serverCSPNonce = opts.cspNonce, firebaseConfig = opts.firebaseConfig;
+        var facilitatorAccessToken = opts.facilitatorAccessToken, fundingEligibility = opts.fundingEligibility, serverRiskData = opts.serverRiskData, serverCSPNonce = opts.cspNonce, firebaseConfig = opts.firebaseConfig, _opts$buttonCorrelati = opts.buttonCorrelationID, buttonCorrelationID = void 0 === _opts$buttonCorrelati ? "" : _opts$buttonCorrelati;
         var clientID = window.xprops.clientID;
         var serviceData = getServiceData({
             eligibility: opts.eligibility,
@@ -4232,14 +4232,16 @@ window.spb = function(modules) {
         var props = getProps({
             facilitatorAccessToken: facilitatorAccessToken
         });
-        var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, correlationID = props.correlationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, style = props.style, persistRiskData = props.persistRiskData;
+        var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, style = props.style, persistRiskData = props.persistRiskData;
         var config = getConfig({
             serverCSPNonce: serverCSPNonce,
             firebaseConfig: firebaseConfig
         });
         var version = config.version;
         var components = getComponents();
-        var _onInit = onInit(), initPromise = _onInit.initPromise, isEnabled = _onInit.isEnabled;
+        var _onInit = onInit({
+            correlationID: buttonCorrelationID
+        }), initPromise = _onInit.initPromise, isEnabled = _onInit.isEnabled;
         var paymentProcessing = !1;
         function initiatePayment(_ref) {
             var payment = _ref.payment, paymentProps = _ref.props;
@@ -4621,14 +4623,15 @@ window.spb = function(modules) {
             fundingEligibility: fundingEligibility
         });
         var setupButtonLogsTask = function(_ref) {
-            var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, correlationID = _ref.correlationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version, style = _ref.style;
+            var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version, style = _ref.style;
             var logger = getLogger();
             !function(_ref) {
-                var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, correlationID = _ref.correlationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version;
+                var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version;
                 var logger = getLogger();
                 logger.addPayloadBuilder((function() {
                     return {
                         referer: window.location.host,
+                        sdkCorrelationID: sdkCorrelationID,
                         sessionID: sessionID,
                         env: env
                     };
@@ -4641,7 +4644,7 @@ window.spb = function(modules) {
                     _ref2.referer_url = window.location.host, _ref2.merchant_domain = merchantDomain, 
                     _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, _ref2.bn_code = partnerAttributionID, 
                     _ref2.sdk_name = "payments_sdk", _ref2.sdk_version = version, _ref2.user_agent = window.navigator && window.navigator.userAgent, 
-                    _ref2.user_action = commit ? "commit" : "continue", _ref2.context_correlation_id = correlationID, 
+                    _ref2.user_action = commit ? "commit" : "continue", _ref2.context_correlation_id = sdkCorrelationID, 
                     _ref2;
                 }));
                 promise_ZalgoPromise.onPossiblyUnhandledException((function(err) {
@@ -4659,7 +4662,7 @@ window.spb = function(modules) {
                 clientID: clientID,
                 partnerAttributionID: partnerAttributionID,
                 commit: commit,
-                correlationID: correlationID,
+                sdkCorrelationID: sdkCorrelationID,
                 locale: locale,
                 merchantID: merchantID,
                 merchantDomain: merchantDomain,
@@ -4667,14 +4670,16 @@ window.spb = function(modules) {
             });
             logger.addPayloadBuilder((function() {
                 return {
-                    buttonSessionID: buttonSessionID
+                    buttonSessionID: buttonSessionID,
+                    buttonCorrelationID: buttonCorrelationID
                 };
             }));
             logger.addTrackingBuilder((function() {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.281", _ref2;
+                _ref2.button_version = "2.0.282", _ref2.button_correlation_id = buttonSessionID, 
+                _ref2;
             }));
             (function() {
                 if (window.document.documentMode) try {
@@ -4732,7 +4737,8 @@ window.spb = function(modules) {
             clientID: clientID,
             partnerAttributionID: partnerAttributionID,
             commit: commit,
-            correlationID: correlationID,
+            sdkCorrelationID: sdkCorrelationID,
+            buttonCorrelationID: buttonCorrelationID,
             locale: locale,
             merchantID: merchantID,
             buttonSessionID: buttonSessionID,
