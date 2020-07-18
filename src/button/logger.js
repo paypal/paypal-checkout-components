@@ -87,6 +87,10 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
         logger.info(`button_render_funding_count_${ fundingSources.length }`);
         logger.info(`button_render_wallet_instrument_count_${ walletInstruments.length }`);
 
+        for (const walletInstrument of walletInstruments) {
+            logger.info(`button_render_wallet_instrument_${ walletInstrument }`);
+        }
+
         logger.track({
             [FPTI_KEY.TRANSITION]:                    FPTI_TRANSITION.BUTTON_LOAD,
             [FPTI_KEY.FUNDING_LIST]:                  fundingSources.join(':'),
