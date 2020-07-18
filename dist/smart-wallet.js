@@ -198,13 +198,13 @@
             return insertCss(content, options);
         };
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-8c6b3f59]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-8c6b3f59]{height:50px}}.wallet-item .icon[data-v-8c6b3f59]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-8c6b3f59]{max-height:90%;max-width:90%}.wallet-item .description[data-v-8c6b3f59]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-8c6b3f59]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-8c6b3f59]{font-size:13px}}.wallet-item .description .details[data-v-8c6b3f59]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-8c6b3f59]{font-size:12px}}.wallet-item .preferred[data-v-8c6b3f59]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-8c6b3f59]:hover{background-color:#eee}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-4291cbec]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-4291cbec]{height:50px}}.wallet-item .icon[data-v-4291cbec]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-4291cbec]{max-height:90%;max-width:90%}.wallet-item .description[data-v-4291cbec]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-4291cbec]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-4291cbec]{font-size:13px}}.wallet-item .description .details[data-v-4291cbec]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-4291cbec]{font-size:12px}}.wallet-item .preferred[data-v-4291cbec]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-4291cbec]:hover{background-color:#eee}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-e150f0b4]{padding:20px}.add-card-button a[data-v-e150f0b4]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-e150f0b4]:hover{text-decoration:underline}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-0c5d1f24]{padding:20px}.add-card-button a[data-v-0c5d1f24]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-0c5d1f24]:hover{text-decoration:underline}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif}*{box-sizing:border-box}.flex-spacer{flex:1}\n", "" ]);
@@ -2271,8 +2271,8 @@
                 id: "Path"
             }))));
         };
-        var style_scopedscopeId_8c6b3f59 = __webpack_require__(2);
-        var style_scopedscopeId_8c6b3f59_default = __webpack_require__.n(style_scopedscopeId_8c6b3f59);
+        var style_scopedscopeId_4291cbec = __webpack_require__(2);
+        var style_scopedscopeId_4291cbec_default = __webpack_require__.n(style_scopedscopeId_4291cbec);
         var walletItem_WalletItem = function(_ref) {
             var selected = _ref.selected, details = _ref.details, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
             var _useState = hooks_module_m(selected), showSelected = _useState[0], setShowSelected = _useState[1];
@@ -2280,8 +2280,8 @@
                 setShowSelected(selected);
             }), [ selected ]);
             return v(style_Style, {
-                css: style_scopedscopeId_8c6b3f59_default.a,
-                "data-v-8c6b3f59": ""
+                css: style_scopedscopeId_4291cbec_default.a,
+                "data-v-4291cbec": ""
             }, v("div", {
                 className: "wallet-item " + (selected ? "selected-wallet-item" : ""),
                 onClick: function() {
@@ -2290,49 +2290,49 @@
                         listOpenHandler(!listOpen);
                     }(details.id);
                 },
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, v("div", {
                 className: "icon",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, v("img", {
                 src: details.fundingOptionIcon,
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             })), v("div", {
                 className: "description",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, v("div", {
                 className: "name",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, details.fundingOptionTitle), v("div", {
                 className: "details",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, v("span", {
                 className: "type",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, details.instrumentSubType, " "), v("span", {
                 className: "digits",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, details.lastDigits))), details.showPreferredText ? v("div", {
                 className: "preferred",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, "PREFERRED") : "", v("div", {
                 className: "flex-spacer",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }), showSelected ? v("div", {
                 className: "selected",
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             }, v(check_Check, {
-                "data-v-8c6b3f59": ""
+                "data-v-4291cbec": ""
             })) : ""));
         };
-        var style_scopedscopeId_5b670b17 = __webpack_require__(3);
-        var style_scopedscopeId_5b670b17_default = __webpack_require__.n(style_scopedscopeId_5b670b17);
+        var style_scopedscopeId_7e146866 = __webpack_require__(3);
+        var style_scopedscopeId_7e146866_default = __webpack_require__.n(style_scopedscopeId_7e146866);
         var credit_CreditBanner = function() {
             return v(style_Style, {
-                css: style_scopedscopeId_5b670b17_default.a,
-                "data-v-5b670b17": ""
+                css: style_scopedscopeId_7e146866_default.a,
+                "data-v-7e146866": ""
             }, v("div", {
-                "data-v-5b670b17": ""
+                "data-v-7e146866": ""
             }, "This is where the credit messaging goes..."));
         };
         var buildWalletItemDetails = function(fundingOption) {
@@ -2367,8 +2367,8 @@
                 lastDigits: "PAYPAL" === subType ? "" : "•••• " + (digits || "")
             };
         };
-        var style_scopedscopeId_e150f0b4 = __webpack_require__(4);
-        var style_scopedscopeId_e150f0b4_default = __webpack_require__.n(style_scopedscopeId_e150f0b4);
+        var style_scopedscopeId_0c5d1f24 = __webpack_require__(4);
+        var style_scopedscopeId_0c5d1f24_default = __webpack_require__.n(style_scopedscopeId_0c5d1f24);
         var wallet_Wallet = function(_ref) {
             var checkoutSession = _ref.checkoutSession;
             var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_m(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_m(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
@@ -2379,20 +2379,20 @@
                 setSelectedWalletItem(newItem);
             };
             return v(style_Style, {
-                css: style_scopedscopeId_e150f0b4_default.a,
-                "data-v-e150f0b4": ""
+                css: style_scopedscopeId_0c5d1f24_default.a,
+                "data-v-0c5d1f24": ""
             }, v("div", {
                 className: "wallet",
-                "data-v-e150f0b4": ""
+                "data-v-0c5d1f24": ""
             }, listOpen ? "" : v(walletItem_WalletItem, {
                 selected: !0,
                 details: buildWalletItemDetails(selectedWalletItem),
                 selectWalletItemHandler: changeSelectedWalletItem,
                 listOpen: listOpen,
                 listOpenHandler: setListOpen,
-                "data-v-e150f0b4": ""
+                "data-v-0c5d1f24": ""
             }), listOpen ? v("div", {
-                "data-v-e150f0b4": ""
+                "data-v-0c5d1f24": ""
             }, fundingOptions.map((function(option) {
                 return v(walletItem_WalletItem, {
                     selected: option.id === selectedWalletItem.id,
@@ -2400,17 +2400,17 @@
                     selectWalletItemHandler: changeSelectedWalletItem,
                     listOpen: listOpen,
                     listOpenHandler: setListOpen,
-                    "data-v-e150f0b4": ""
+                    "data-v-0c5d1f24": ""
                 });
             })), v(credit_CreditBanner, {
                 checkoutSession: checkoutSession,
-                "data-v-e150f0b4": ""
+                "data-v-0c5d1f24": ""
             }), v("div", {
                 className: "add-card-button",
-                "data-v-e150f0b4": ""
+                "data-v-0c5d1f24": ""
             }, v("a", {
                 href: "#",
-                "data-v-e150f0b4": ""
+                "data-v-0c5d1f24": ""
             }, "Add debit or credit card"))) : ""));
         };
         var page_style = __webpack_require__(5);

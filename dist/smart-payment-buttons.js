@@ -4678,7 +4678,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.283", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.284", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
@@ -4720,6 +4720,7 @@ window.spb = function(modules) {
                 logger.info("button_render_tagline_" + tagline.toString());
                 logger.info("button_render_funding_count_" + fundingSources.length);
                 logger.info("button_render_wallet_instrument_count_" + walletInstruments.length);
+                for (var _i2 = 0; _i2 < walletInstruments.length; _i2++) logger.info("button_render_wallet_instrument_" + walletInstruments[_i2]);
                 logger.track(((_logger$track = {}).transition_name = "process_button_load", _logger$track.eligible_payment_methods = fundingSources.join(":"), 
                 _logger$track.fi_list = walletInstruments.join(":"), _logger$track.eligible_payment_count = fundingSources.length.toString(), 
                 _logger$track.page_load_time = pageRenderTime ? pageRenderTime.toString() : "", 
