@@ -151,8 +151,6 @@ export type WalletOptions = {|
 export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatch, getWallet : GetWallet, { logger, clientID, merchantID, buttonSessionID,
     currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount } : WalletOptions) : Promise<Wallet> {
 
-    logger.info(req, 'resolve_wallet');
-
     const wallet : Wallet = {
         paypal: {
             instruments: []
@@ -164,6 +162,21 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
             instruments: []
         }
     };
+
+    if (!clientAccessToken && !buyerAccessToken) {
+        logger.info(req, 'resolve_wallet_no_recognized_user');
+        return wallet;
+    }
+
+    logger.info(req, 'resolve_wallet');
+
+    if (clientAccessToken) {
+        logger.info(req, 'resolve_wallet_vault');
+    }
+
+    if (buyerAccessToken) {
+        logger.info(req, 'resolve_wallet_account');
+    }
 
     try {
         const ip = req.ip;
@@ -177,14 +190,15 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
         const [ buyerVault, smartWallet ] = await Promise.all([
-            gqlBatch({
-                query:     buildVaultQuery(),
-                variables: {
-                    clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
-                    vault, disableFunding, disableCard, userAgent, buttonSessionID
-                },
-                accessToken: clientAccessToken
-            }),
+            (clientAccessToken)
+                ? gqlBatch({
+                    query:     buildVaultQuery(),
+                    variables: {
+                        clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
+                        vault, disableFunding, disableCard, userAgent, buttonSessionID
+                    },
+                    accessToken: clientAccessToken
+                }) : null,
 
             (buyerAccessToken && amount)
                 ? getWallet(req, { clientID, merchantID, buyerAccessToken, amount, currency }) : null
@@ -326,6 +340,10 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                     ];
                 }
             }
+        }
+
+        if (!wallet.paypal.instruments.length && !wallet.card.instruments.length && !wallet.credit.instruments.length) {
+            logger.info(req, 'wallet_no_instruments');
         }
 
         return wallet;
