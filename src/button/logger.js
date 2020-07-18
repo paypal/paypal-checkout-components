@@ -56,7 +56,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.STATE]:                        FPTI_STATE.BUTTON,
             [FPTI_KEY.BUTTON_SESSION_UID]:           buttonSessionID,
             [FPTI_KEY.BUTTON_VERSION]:               __SMART_BUTTONS__.__MINOR_VERSION__,
-            [FTPI_BUTTON_KEY.BUTTON_CORRELATION_ID]: buttonSessionID
+            [FTPI_BUTTON_KEY.BUTTON_CORRELATION_ID]: buttonCorrelationID
         };
     });
 
