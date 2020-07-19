@@ -107,7 +107,7 @@ function isNativeOptedIn({ props } : {| props : ButtonProps |}) : boolean {
 let initialPageUrl;
 
 function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
-    
+
     const { platform, onShippingChange, createBillingAgreement, createSubscription, env } = props;
     const { firebase: firebaseConfig } = config;
     const { eligibility } = serviceData;
@@ -197,6 +197,17 @@ type NativeSDKProps = {|
     apiStageHost : ?string,
     forceEligible : boolean
 |};
+
+function instrumentNativeSDKProps(props : NativeSDKProps) {
+    const sanitizedProps = {
+        ...props,
+        facilitatorAccessToken: props.facilitatorAccessToken ? '********************' : ''
+    };
+
+    getLogger().info('native_setprops_request', sanitizedProps).track({
+        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_SET_PROPS_ATTEMPT
+    });
+}
 
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit,
@@ -296,6 +307,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const setNativeProps = memoize(() => {
             return getSDKProps().then(sdkProps => {
                 getLogger().info(`native_message_setprops`).flush();
+                instrumentNativeSDKProps(sdkProps);
                 return socket.send(SOCKET_MESSAGE.SET_PROPS, sdkProps);
             }).then(() => {
                 getLogger().info(`native_response_setprops`).track({
@@ -343,7 +355,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
         const onApproveListener = socket.on(SOCKET_MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
             approved = true;
-            getLogger().info(`native_message_onapprove`).flush();
+            getLogger().info(`native_message_onapprove`)
+                .track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_CLOSED
+                })
+                .flush();
+
             const data = { payerID, paymentID, billingToken, forceRestAPI: true };
             const actions = { restart: () => fallbackToWebCheckout() };
             return ZalgoPromise.all([
@@ -376,7 +393,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         clean.register(onErrorListener.cancel);
 
         socket.reconnect();
-        
+
         return {
             setProps: setNativeProps,
             close:    closeNative
@@ -417,7 +434,14 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const initDirectAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
-        const nativeWin = popup(getNativeUrl({ sessionUID }));
+        const nativeUrl = getNativeUrl({ sessionUID });
+
+        getLogger().info(`native_attempt_appswitch_url_direct`, { url: nativeUrl })
+            .track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH
+            }).flush();
+
+        const nativeWin = popup(nativeUrl);
         const validatePromise = validate();
         const delayPromise = ZalgoPromise.delay(500);
 
@@ -485,7 +509,14 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 }
 
                 return createOrder().then(() => {
-                    return { redirectUrl: getNativeUrl({ sessionUID, pageUrl }) };
+                    const nativeUrl = getNativeUrl({ sessionUID, pageUrl });
+
+                    getLogger().info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
+                        .track({
+                            [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH
+                        }).flush();
+
+                    return { redirectUrl: nativeUrl };
                 });
             });
         });
