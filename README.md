@@ -1,8 +1,7 @@
 PayPal Checkout
 ---------------
 
-[![build status](https://img.shields.io/travis/paypal/paypal-checkout-components/master.svg?style=flat-square)](https://travis-ci.org/paypal/paypal-checkout-components)
-[![npm version](https://img.shields.io/npm/v/@paypal/checkout-components.svg?style=flat-square)](https://www.npmjs.com/package/@paypal/checkout-components)
+[![npm version](https://img.shields.io/npm/v/@paypal/checkout-components.svg?style=flat-square)](https://www.npmjs.com/package/@paypal/checkout-components) [![build status](https://img.shields.io/travis/paypal/paypal-checkout-components/master.svg?style=flat-square)](https://travis-ci.org/paypal/paypal-checkout-components)
 
 [![dependencies Status](https://david-dm.org/paypal/paypal-checkout/status.svg)](https://david-dm.org/paypal/paypal-checkout-components) [![devDependencies Status](https://david-dm.org/paypal/paypal-checkout/dev-status.svg)](https://david-dm.org/paypal/paypal-checkout-components?type=dev)
 
