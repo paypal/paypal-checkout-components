@@ -25,9 +25,7 @@ const logger = {
     debug: noop,
     info:  noop,
     warn:  noop,
-    error: (err) => {
-        throw new Error(err);
-    }
+    error: noop
 };
 
 const graphQL = (req, payload) => {
