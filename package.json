@@ -71,7 +71,7 @@
     "memory-fs": "0.5.0",
     "mocha": "4.1.0",
     "mocketeer": "0.3.1",
-    "pixelmatch": "4.0.2",
+    "pixelmatch": "5.2.1",
     "pngjs": "3.4.0",
     "puppeteer": "1.20.0",
     "serve": "10.1.2",
