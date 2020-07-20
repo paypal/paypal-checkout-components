@@ -198,13 +198,13 @@
             return insertCss(content, options);
         };
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-4291cbec]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-4291cbec]{height:50px}}.wallet-item .icon[data-v-4291cbec]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-4291cbec]{max-height:90%;max-width:90%}.wallet-item .description[data-v-4291cbec]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-4291cbec]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-4291cbec]{font-size:13px}}.wallet-item .description .details[data-v-4291cbec]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-4291cbec]{font-size:12px}}.wallet-item .preferred[data-v-4291cbec]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-4291cbec]:hover{background-color:#eee}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-8c6b3f59]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-8c6b3f59]{height:50px}}.wallet-item .icon[data-v-8c6b3f59]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-8c6b3f59]{max-height:90%;max-width:90%}.wallet-item .description[data-v-8c6b3f59]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-8c6b3f59]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-8c6b3f59]{font-size:13px}}.wallet-item .description .details[data-v-8c6b3f59]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-8c6b3f59]{font-size:12px}}.wallet-item .preferred[data-v-8c6b3f59]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-8c6b3f59]:hover{background-color:#eee}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-0c5d1f24]{padding:20px}.add-card-button a[data-v-0c5d1f24]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-0c5d1f24]:hover{text-decoration:underline}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-e150f0b4]{padding:20px}.add-card-button a[data-v-e150f0b4]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-e150f0b4]:hover{text-decoration:underline}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif}*{box-sizing:border-box}.flex-spacer{flex:1}\n", "" ]);
@@ -227,14 +227,14 @@
             var l = n.parentNode;
             l && l.removeChild(n);
         }
-        function v(n, l, u) {
+        function preact_module_v(n, l, u) {
             var i, t = arguments, r = {};
             for (i in l) "key" !== i && "ref" !== i && (r[i] = l[i]);
             if (arguments.length > 3) for (u = [ u ], i = 3; i < arguments.length; i++) u.push(t[i]);
             if (null != u && (r.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === r[i] && (r[i] = n.defaultProps[i]);
-            return preact_module_h(n, r, l && l.key, l && l.ref, null);
+            return h(n, r, l && l.key, l && l.ref, null);
         }
-        function preact_module_h(l, u, i, t, r) {
+        function h(l, u, i, t, r) {
             var o = {
                 type: l,
                 props: u,
@@ -288,9 +288,9 @@
         }
         function g(n, l, u, i, t, r, o, c, s, v) {
             var y, d, k, w, m, g, b, A = i && i.__k || e, P = A.length;
-            for (s == f && (s = null != o ? o[0] : P ? _(i, 0) : null), u.__k = [], y = 0; y < l.length; y++) if (null != (w = u.__k[y] = null == (w = l[y]) || "boolean" == typeof w ? null : "string" == typeof w || "number" == typeof w ? preact_module_h(null, w, null, null, w) : Array.isArray(w) ? preact_module_h(preact_module_p, {
+            for (s == f && (s = null != o ? o[0] : P ? _(i, 0) : null), u.__k = [], y = 0; y < l.length; y++) if (null != (w = u.__k[y] = null == (w = l[y]) || "boolean" == typeof w ? null : "string" == typeof w || "number" == typeof w ? h(null, w, null, null, w) : Array.isArray(w) ? h(preact_module_p, {
                 children: w
-            }, null, null, null) : null != w.__e || null != w.__c ? preact_module_h(w.type, w.props, w.key, null, w.__v) : w)) {
+            }, null, null, null) : null != w.__e || null != w.__c ? h(w.type, w.props, w.key, null, w.__v) : w)) {
                 if (w.__ = u, w.__b = u.__b + 1, null === (k = A[y]) || k && w.key == k.key && w.type === k.type) A[y] = void 0; else for (d = 0; d < P; d++) {
                     if ((k = A[d]) && w.key == k.key && w.type === k.type) {
                         A[d] = void 0;
@@ -482,20 +482,20 @@
         var index_module_p = {
             shallow: !0
         }, index_module_u = [], index_module_ = /^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/, index_module_g = function() {};
-        index_module_v.render = index_module_v;
-        function index_module_v(n, l, p, h, d, m) {
+        index_module_h.render = index_module_h;
+        function index_module_h(n, l, p, v, d, m) {
             if (null == n || "boolean" == typeof n) return "";
-            Array.isArray(n) && (n = v(preact_module_p, null, n));
-            var x = n.type, y = n.props, b = !1;
+            Array.isArray(n) && (n = preact_module_v(preact_module_p, null, n));
+            var x = n.type, y = n.props, S = !1;
             l = l || {};
-            var S, w = (p = p || {}).pretty, k = w && "string" == typeof w ? w : "\t";
+            var b, w = (p = p || {}).pretty, k = w && "string" == typeof w ? w : "\t";
             if ("object" != typeof n && !x) return index_module_o(n);
             if ("function" == typeof x) {
-                if (b = !0, !p.shallow || !h && !1 !== p.renderRootComponent) {
+                if (S = !0, !p.shallow || !v && !1 !== p.renderRootComponent) {
                     if (x === preact_module_p) {
                         var O = "", C = [];
                         index_module_c(C, n.props.children);
-                        for (var A = 0; A < C.length; A++) O += (A > 0 && w ? "\n" : "") + index_module_v(C[A], l, p, !1 !== p.shallowHighOrder, d, m);
+                        for (var A = 0; A < C.length; A++) O += (A > 0 && w ? "\n" : "") + index_module_h(C[A], l, p, !1 !== p.shallowHighOrder, d, m);
                         return O;
                     }
                     var H, j = n.__c = {
@@ -507,20 +507,20 @@
                         __h: []
                     };
                     if (preact_module_n.__r && preact_module_n.__r(n), x.prototype && "function" == typeof x.prototype.render) {
-                        var F = x.contextType, $ = F && l[F.__c], L = null != F ? $ ? $.props.value : F.__ : l;
-                        (j = n.__c = new x(y, L)).__v = n, j._dirty = j.__d = !0, j.props = y, null == j.state && (j.state = {}), 
-                        null == j._nextState && null == j.__s && (j._nextState = j.__s = j.state), j.context = L, 
-                        x.getDerivedStateFromProps ? j.state = index_module_f(index_module_f({}, j.state), x.getDerivedStateFromProps(j.props, j.state)) : j.componentWillMount && j.componentWillMount(), 
-                        j.state = j._nextState !== j.state ? j._nextState : j.__s !== j.state ? j.__s : j.state, 
+                        var F = x.contextType, M = F && l[F.__c], T = null != F ? M ? M.props.value : F.__ : l;
+                        (j = n.__c = new x(y, T)).__v = n, j._dirty = j.__d = !0, j.props = y, null == j.state && (j.state = {}), 
+                        null == j._nextState && null == j.__s && (j._nextState = j.__s = j.state), j.context = T, 
+                        x.getDerivedStateFromProps ? j.state = index_module_f(index_module_f({}, j.state), x.getDerivedStateFromProps(j.props, j.state)) : j.componentWillMount && (j.componentWillMount(), 
+                        j.state = j._nextState !== j.state ? j._nextState : j.__s !== j.state ? j.__s : j.state), 
                         H = j.render(j.props, j.state, j.context);
                     } else {
-                        var M = x.contextType, T = M && l[M.__c];
-                        H = x.call(n.__c, y, null != M ? T ? T.props.value : M.__ : l);
+                        var $ = x.contextType, L = $ && l[$.__c];
+                        H = x.call(n.__c, y, null != $ ? L ? L.props.value : $.__ : l);
                     }
                     return j.getChildContext && (l = index_module_f(index_module_f({}, l), j.getChildContext())), 
-                    index_module_v(H, l, p, !1 !== p.shallowHighOrder, d, m);
+                    index_module_h(H, l, p, !1 !== p.shallowHighOrder, d, m);
                 }
-                x = (S = x).displayName || S !== Function && S.name || function(e) {
+                x = (b = x).displayName || b !== Function && b.name || function(e) {
                     var t = (function() {}.toString.call(e).match(/^\s*function\s+([^( ]+)/) || "")[1];
                     if (!t) {
                         for (var r = -1, n = index_module_u.length; n--; ) if (index_module_u[n] === e) {
@@ -530,40 +530,42 @@
                         r < 0 && (r = index_module_u.push(e) - 1), t = "UnnamedComponent" + r;
                     }
                     return t;
-                }(S);
+                }(b);
             }
-            var D, N = "";
+            var E, D, N = "";
             if (y) {
                 var P = Object.keys(y);
                 p && !0 === p.sortAttributes && P.sort();
                 for (var R = 0; R < P.length; R++) {
                     var U = P[R], W = y[U];
-                    if ("children" !== U && !U.match(/[\s\n\\/='"\0<>]/) && (p && p.allAttributes || "key" !== U && "ref" !== U && "__self" !== U && "__source" !== U)) {
-                        if ("className" === U) {
-                            if (y.class) continue;
-                            U = "class";
-                        } else d && U.match(/^xlink:?./) && (U = U.toLowerCase().replace(/^xlink:?/, "xlink:"));
-                        if ("htmlFor" === U) {
-                            if (y.for) continue;
-                            U = "for";
-                        }
-                        "style" === U && W && "object" == typeof W && (W = index_module_s(W));
-                        var q = p.attributeHook && p.attributeHook(U, W, l, p, b);
-                        if (q || "" === q) N += q; else if ("dangerouslySetInnerHTML" === U) D = W && W.__html; else if ((W || 0 === W || "" === W) && "function" != typeof W) {
-                            if (!(!0 !== W && "" !== W || (W = U, p && p.xml))) {
-                                N += " " + U;
-                                continue;
+                    if ("children" !== U) {
+                        if (!U.match(/[\s\n\\/='"\0<>]/) && (p && p.allAttributes || "key" !== U && "ref" !== U && "__self" !== U && "__source" !== U)) {
+                            if ("className" === U) {
+                                if (y.class) continue;
+                                U = "class";
+                            } else d && U.match(/^xlink:?./) && (U = U.toLowerCase().replace(/^xlink:?/, "xlink:"));
+                            if ("htmlFor" === U) {
+                                if (y.for) continue;
+                                U = "for";
                             }
-                            if ("value" === U) {
-                                if ("select" === x) {
-                                    m = W;
+                            "style" === U && W && "object" == typeof W && (W = index_module_s(W)), "a" === U[0] && "r" === U[1] && "boolean" == typeof W && (W = String(W));
+                            var q = p.attributeHook && p.attributeHook(U, W, l, p, S);
+                            if (q || "" === q) N += q; else if ("dangerouslySetInnerHTML" === U) D = W && W.__html; else if ("textarea" === x && "value" === U) E = W; else if ((W || 0 === W || "" === W) && "function" != typeof W) {
+                                if (!(!0 !== W && "" !== W || (W = U, p && p.xml))) {
+                                    N += " " + U;
                                     continue;
                                 }
-                                "option" === x && m == W && (N += " selected");
+                                if ("value" === U) {
+                                    if ("select" === x) {
+                                        m = W;
+                                        continue;
+                                    }
+                                    "option" === x && m == W && (N += " selected");
+                                }
+                                N += " " + U + '="' + index_module_o(W) + '"';
                             }
-                            N += " " + U + '="' + index_module_o(W) + '"';
                         }
-                    }
+                    } else E = W;
                 }
             }
             if (w) {
@@ -571,29 +573,29 @@
                 z === N || ~z.indexOf("\n") ? w && ~N.indexOf("\n") && (N += "\n") : N = z;
             }
             if (N = "<" + x + N + ">", String(x).match(/[\s\n\\/='"\0<>]/)) throw new Error(x + " is not a valid HTML tag name in " + N);
-            var E = String(x).match(index_module_);
-            E && (N = N.replace(/>$/, " />"));
-            var I, Z = [];
-            if (D) w && index_module_i(D) && (D = "\n" + k + index_module_a(D, k)), N += D; else if (y && index_module_c(I = [], y.children).length) {
-                for (var B = w && ~N.indexOf("\n"), G = !1, J = 0; J < I.length; J++) {
-                    var K = I[J];
-                    if (null != K && !1 !== K) {
-                        var Q = index_module_v(K, l, p, !0, "svg" === x || "foreignObject" !== x && d, m);
-                        if (w && !B && index_module_i(Q) && (B = !0), Q) if (w) {
-                            var V = Q.length > 0 && "<" != Q[0];
-                            G && V ? Z[Z.length - 1] += Q : Z.push(Q), G = V;
-                        } else Z.push(Q);
+            var I = String(x).match(index_module_) || p.voidElements && String(x).match(p.voidElements);
+            I && (N = N.replace(/>$/, " />"));
+            var Z, B = [];
+            if (D) w && index_module_i(D) && (D = "\n" + k + index_module_a(D, k)), N += D; else if (null != E && index_module_c(Z = [], E).length) {
+                for (var G = w && ~N.indexOf("\n"), J = !1, K = 0; K < Z.length; K++) {
+                    var Q = Z[K];
+                    if (null != Q && !1 !== Q) {
+                        var V = index_module_h(Q, l, p, !0, "svg" === x || "foreignObject" !== x && d, m);
+                        if (w && !G && index_module_i(V) && (G = !0), V) if (w) {
+                            var X = V.length > 0 && "<" != V[0];
+                            J && X ? B[B.length - 1] += V : B.push(V), J = X;
+                        } else B.push(V);
                     }
                 }
-                if (w && B) for (var X = Z.length; X--; ) Z[X] = "\n" + k + index_module_a(Z[X], k);
+                if (w && G) for (var Y = B.length; Y--; ) B[Y] = "\n" + k + index_module_a(B[Y], k);
             }
-            if (Z.length) N += Z.join(""); else if (p && p.xml) return N.substring(0, N.length - 1) + " />";
-            return E || (w && ~N.indexOf("\n") && (N += "\n"), N += "</" + x + ">"), N;
+            if (B.length) N += B.join(""); else if (p && p.xml) return N.substring(0, N.length - 1) + " />";
+            return I || (w && ~N.indexOf("\n") && (N += "\n"), N += "</" + x + ">"), N;
         }
-        index_module_v.shallowRender = function(e, t) {
-            return index_module_v(e, t, index_module_p);
+        index_module_h.shallowRender = function(e, t) {
+            return index_module_h(e, t, index_module_p);
         };
-        var index_module = index_module_v;
+        var index_module = index_module_h;
         function utils_isPromise(item) {
             try {
                 if (!item) return !1;
@@ -2200,7 +2202,7 @@
         var style_StyleSheet = function(_ref) {
             var cspNonce = _ref.cspNonce, _ref$children = _ref.children, children = void 0 === _ref$children ? null : _ref$children;
             var _useState = hooks_module_m({}), styles = _useState[0], setStyles = _useState[1];
-            return v(StyleContext.Provider, {
+            return preact_module_v(StyleContext.Provider, {
                 value: {
                     cspNonce: cspNonce,
                     addStyle: function(css) {
@@ -2224,11 +2226,11 @@
                         }));
                     }
                 }
-            }, children, v((function() {
+            }, children, preact_module_v((function() {
                 var styleString = Object.keys(styles).filter((function(style) {
                     return styles[style] > 0;
                 })).join("\n");
-                return v("style", {
+                return preact_module_v("style", {
                     nonce: cspNonce
                 }, styleString);
             }), null));
@@ -2249,40 +2251,40 @@
             return children;
         };
         var check_Check = function() {
-            return v("svg", {
+            return preact_module_v("svg", {
                 width: "18px",
                 height: "15px",
                 viewBox: "0 0 18 15",
                 version: "1.1",
                 xmlns: "http://www.w3.org/2000/svg"
-            }, v("title", null, "Icons/check"), v("desc", null, "Created with Sketch."), v("g", {
+            }, preact_module_v("title", null, "Icons/check"), preact_module_v("desc", null, "Created with Sketch."), preact_module_v("g", {
                 id: "✅-Icon-Library",
                 stroke: "none",
                 "stroke-width": "1",
                 fill: "none",
                 "fill-rule": "evenodd"
-            }, v("g", {
+            }, preact_module_v("g", {
                 id: "Icons/check",
                 transform: "translate(-6.000000, -7.000000)",
                 fill: "#0070BA",
                 "fill-rule": "nonzero"
-            }, v("path", {
+            }, preact_module_v("path", {
                 d: "M11.4121381,19.6994417 L22.6691362,7.6974334 C22.9052747,7.44566678 23.3008,7.43299769 23.5525666,7.6691362 C23.8043332,7.90527472 23.8170023,8.30079998 23.5808638,8.5525666 L11.8567862,21.0525666 C11.6057696,21.3201959 11.1792894,21.315028 10.9348317,21.0413946 L6.40890929,15.9753097 C6.17894091,15.7178949 6.20119062,15.3227928 6.45860541,15.0928244 C6.7160202,14.862856 7.11112232,14.8851057 7.34109071,15.1425205 L11.4121381,19.6994417 Z",
                 id: "Path"
             }))));
         };
-        var style_scopedscopeId_4291cbec = __webpack_require__(2);
-        var style_scopedscopeId_4291cbec_default = __webpack_require__.n(style_scopedscopeId_4291cbec);
+        var style_scopedscopeId_8c6b3f59 = __webpack_require__(2);
+        var style_scopedscopeId_8c6b3f59_default = __webpack_require__.n(style_scopedscopeId_8c6b3f59);
         var walletItem_WalletItem = function(_ref) {
             var selected = _ref.selected, details = _ref.details, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
             var _useState = hooks_module_m(selected), showSelected = _useState[0], setShowSelected = _useState[1];
             hooks_module_y((function() {
                 setShowSelected(selected);
             }), [ selected ]);
-            return v(style_Style, {
-                css: style_scopedscopeId_4291cbec_default.a,
-                "data-v-4291cbec": ""
-            }, v("div", {
+            return preact_module_v(style_Style, {
+                css: style_scopedscopeId_8c6b3f59_default.a,
+                "data-v-8c6b3f59": ""
+            }, preact_module_v("div", {
                 className: "wallet-item " + (selected ? "selected-wallet-item" : ""),
                 onClick: function() {
                     return function(item) {
@@ -2290,49 +2292,49 @@
                         listOpenHandler(!listOpen);
                     }(details.id);
                 },
-                "data-v-4291cbec": ""
-            }, v("div", {
+                "data-v-8c6b3f59": ""
+            }, preact_module_v("div", {
                 className: "icon",
-                "data-v-4291cbec": ""
-            }, v("img", {
+                "data-v-8c6b3f59": ""
+            }, preact_module_v("img", {
                 src: details.fundingOptionIcon,
-                "data-v-4291cbec": ""
-            })), v("div", {
+                "data-v-8c6b3f59": ""
+            })), preact_module_v("div", {
                 className: "description",
-                "data-v-4291cbec": ""
-            }, v("div", {
+                "data-v-8c6b3f59": ""
+            }, preact_module_v("div", {
                 className: "name",
-                "data-v-4291cbec": ""
-            }, details.fundingOptionTitle), v("div", {
+                "data-v-8c6b3f59": ""
+            }, details.fundingOptionTitle), preact_module_v("div", {
                 className: "details",
-                "data-v-4291cbec": ""
-            }, v("span", {
+                "data-v-8c6b3f59": ""
+            }, preact_module_v("span", {
                 className: "type",
-                "data-v-4291cbec": ""
-            }, details.instrumentSubType, " "), v("span", {
+                "data-v-8c6b3f59": ""
+            }, details.instrumentSubType, " "), preact_module_v("span", {
                 className: "digits",
-                "data-v-4291cbec": ""
-            }, details.lastDigits))), details.showPreferredText ? v("div", {
+                "data-v-8c6b3f59": ""
+            }, details.lastDigits))), details.showPreferredText ? preact_module_v("div", {
                 className: "preferred",
-                "data-v-4291cbec": ""
-            }, "PREFERRED") : "", v("div", {
+                "data-v-8c6b3f59": ""
+            }, "PREFERRED") : "", preact_module_v("div", {
                 className: "flex-spacer",
-                "data-v-4291cbec": ""
-            }), showSelected ? v("div", {
+                "data-v-8c6b3f59": ""
+            }), showSelected ? preact_module_v("div", {
                 className: "selected",
-                "data-v-4291cbec": ""
-            }, v(check_Check, {
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
+            }, preact_module_v(check_Check, {
+                "data-v-8c6b3f59": ""
             })) : ""));
         };
-        var style_scopedscopeId_7e146866 = __webpack_require__(3);
-        var style_scopedscopeId_7e146866_default = __webpack_require__.n(style_scopedscopeId_7e146866);
+        var style_scopedscopeId_5b670b17 = __webpack_require__(3);
+        var style_scopedscopeId_5b670b17_default = __webpack_require__.n(style_scopedscopeId_5b670b17);
         var credit_CreditBanner = function() {
-            return v(style_Style, {
-                css: style_scopedscopeId_7e146866_default.a,
-                "data-v-7e146866": ""
-            }, v("div", {
-                "data-v-7e146866": ""
+            return preact_module_v(style_Style, {
+                css: style_scopedscopeId_5b670b17_default.a,
+                "data-v-5b670b17": ""
+            }, preact_module_v("div", {
+                "data-v-5b670b17": ""
             }, "This is where the credit messaging goes..."));
         };
         var buildWalletItemDetails = function(fundingOption) {
@@ -2367,8 +2369,8 @@
                 lastDigits: "PAYPAL" === subType ? "" : "•••• " + (digits || "")
             };
         };
-        var style_scopedscopeId_0c5d1f24 = __webpack_require__(4);
-        var style_scopedscopeId_0c5d1f24_default = __webpack_require__.n(style_scopedscopeId_0c5d1f24);
+        var style_scopedscopeId_e150f0b4 = __webpack_require__(4);
+        var style_scopedscopeId_e150f0b4_default = __webpack_require__.n(style_scopedscopeId_e150f0b4);
         var wallet_Wallet = function(_ref) {
             var checkoutSession = _ref.checkoutSession;
             var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_m(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_m(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
@@ -2378,47 +2380,47 @@
                 }));
                 setSelectedWalletItem(newItem);
             };
-            return v(style_Style, {
-                css: style_scopedscopeId_0c5d1f24_default.a,
-                "data-v-0c5d1f24": ""
-            }, v("div", {
+            return preact_module_v(style_Style, {
+                css: style_scopedscopeId_e150f0b4_default.a,
+                "data-v-e150f0b4": ""
+            }, preact_module_v("div", {
                 className: "wallet",
-                "data-v-0c5d1f24": ""
-            }, listOpen ? "" : v(walletItem_WalletItem, {
+                "data-v-e150f0b4": ""
+            }, listOpen ? "" : preact_module_v(walletItem_WalletItem, {
                 selected: !0,
                 details: buildWalletItemDetails(selectedWalletItem),
                 selectWalletItemHandler: changeSelectedWalletItem,
                 listOpen: listOpen,
                 listOpenHandler: setListOpen,
-                "data-v-0c5d1f24": ""
-            }), listOpen ? v("div", {
-                "data-v-0c5d1f24": ""
+                "data-v-e150f0b4": ""
+            }), listOpen ? preact_module_v("div", {
+                "data-v-e150f0b4": ""
             }, fundingOptions.map((function(option) {
-                return v(walletItem_WalletItem, {
+                return preact_module_v(walletItem_WalletItem, {
                     selected: option.id === selectedWalletItem.id,
                     details: buildWalletItemDetails(option),
                     selectWalletItemHandler: changeSelectedWalletItem,
                     listOpen: listOpen,
                     listOpenHandler: setListOpen,
-                    "data-v-0c5d1f24": ""
+                    "data-v-e150f0b4": ""
                 });
-            })), v(credit_CreditBanner, {
+            })), preact_module_v(credit_CreditBanner, {
                 checkoutSession: checkoutSession,
-                "data-v-0c5d1f24": ""
-            }), v("div", {
+                "data-v-e150f0b4": ""
+            }), preact_module_v("div", {
                 className: "add-card-button",
-                "data-v-0c5d1f24": ""
-            }, v("a", {
+                "data-v-e150f0b4": ""
+            }, preact_module_v("a", {
                 href: "#",
-                "data-v-0c5d1f24": ""
+                "data-v-e150f0b4": ""
             }, "Add debit or credit card"))) : ""));
         };
         var page_style = __webpack_require__(5);
         var style_default = __webpack_require__.n(page_style);
         var page_Page = function(_ref) {
-            return v(style_Style, {
+            return preact_module_v(style_Style, {
                 css: style_default.a
-            }, v(wallet_Wallet, {
+            }, preact_module_v(wallet_Wallet, {
                 checkoutSession: _ref.checkoutSession
             }));
         };
@@ -2426,14 +2428,14 @@
             throw new Error("Not implemented");
         }
         function App(_ref4) {
-            return v(style_StyleSheet, {
+            return preact_module_v(style_StyleSheet, {
                 cspNonce: _ref4.cspNonce
-            }, v(page_Page, {
+            }, preact_module_v(page_Page, {
                 checkoutSession: _ref4.checkoutSession
             }));
         }
         function renderWallet(props) {
-            return index_module(v(App, props));
+            return index_module(preact_module_v(App, props));
         }
         function setupWallet(_ref5) {
             var buyerAccessToken = _ref5.buyerAccessToken, cspNonce = _ref5.cspNonce, checkoutSession = _ref5.checkoutSession;
@@ -2553,9 +2555,9 @@
             !function(l, u, i) {
                 var t, o, c;
                 preact_module_n.__ && preact_module_n.__(l, u), o = (t = i === preact_module_r) ? null : u.__k, 
-                l = v(preact_module_p, null, [ l ]), c = [], preact_module_T(u, u.__k = l, o || f, f, void 0 !== u.ownerSVGElement, o ? null : u.childNodes.length ? e.slice.call(u.childNodes) : null, c, f, t), 
+                l = preact_module_v(preact_module_p, null, [ l ]), c = [], preact_module_T(u, u.__k = l, o || f, f, void 0 !== u.ownerSVGElement, o ? null : u.childNodes.length ? e.slice.call(u.childNodes) : null, c, f, t), 
                 preact_module_$(c, l);
-            }(v(App, {
+            }(preact_module_v(App, {
                 cspNonce: cspNonce,
                 checkoutSession: checkoutSession
             }), function() {

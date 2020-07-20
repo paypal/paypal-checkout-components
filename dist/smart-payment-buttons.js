@@ -3900,11 +3900,19 @@ window.spb = function(modules) {
                 var setNativeProps = memoize((function() {
                     return getSDKProps().then((function(sdkProps) {
                         getLogger().info("native_message_setprops").flush();
+                        !function(props) {
+                            var _getLogger$info$track;
+                            var sanitizedProps = _extends({}, props, {
+                                facilitatorAccessToken: props.facilitatorAccessToken ? "********************" : ""
+                            });
+                            getLogger().info("native_setprops_request", sanitizedProps).track((_getLogger$info$track = {}, 
+                            _getLogger$info$track.transition_name = "process_set_props_attempt", _getLogger$info$track)).flush();
+                        }(sdkProps);
                         return socket.send("setProps", sdkProps);
                     })).then((function() {
-                        var _getLogger$info$track;
-                        getLogger().info("native_response_setprops").track((_getLogger$info$track = {}, 
-                        _getLogger$info$track.transition_name = "native_app_switch_ack", _getLogger$info$track)).flush();
+                        var _getLogger$info$track2;
+                        getLogger().info("native_response_setprops").track((_getLogger$info$track2 = {}, 
+                        _getLogger$info$track2.transition_name = "native_app_switch_ack", _getLogger$info$track2)).flush();
                     }));
                 }));
                 var closeNative = memoize((function() {
@@ -3942,9 +3950,11 @@ window.spb = function(modules) {
                     }
                 }));
                 var onApproveListener = socket.on("onApprove", (function(_ref12) {
+                    var _getLogger$info$track3;
                     var _ref12$data = _ref12.data, payerID = _ref12$data.payerID, paymentID = _ref12$data.paymentID, billingToken = _ref12$data.billingToken;
                     approved = !0;
-                    getLogger().info("native_message_onapprove").flush();
+                    getLogger().info("native_message_onapprove").track((_getLogger$info$track3 = {}, 
+                    _getLogger$info$track3.transition_name = "process_popup_closed", _getLogger$info$track3)).flush();
                     return promise_ZalgoPromise.all([ onApprove({
                         payerID: payerID,
                         paymentID: paymentID,
@@ -3980,18 +3990,18 @@ window.spb = function(modules) {
                 };
             }));
             var detectAppSwitch = once((function(_ref14) {
-                var _getLogger$info$track2;
+                var _getLogger$info$track4;
                 var sessionUID = _ref14.sessionUID;
-                getLogger().info("native_detect_app_switch").track((_getLogger$info$track2 = {}, 
-                _getLogger$info$track2.transition_name = "native_detect_app_switch", _getLogger$info$track2)).flush();
+                getLogger().info("native_detect_app_switch").track((_getLogger$info$track4 = {}, 
+                _getLogger$info$track4.transition_name = "native_detect_app_switch", _getLogger$info$track4)).flush();
                 return connectNative({
                     sessionUID: sessionUID
                 }).setProps();
             }));
             var detectWebSwitch = once((function(fallbackWin) {
-                var _getLogger$info$track3;
-                getLogger().info("native_detect_web_switch").track((_getLogger$info$track3 = {}, 
-                _getLogger$info$track3.transition_name = "native_detect_web_switch", _getLogger$info$track3)).flush();
+                var _getLogger$info$track5;
+                getLogger().info("native_detect_web_switch").track((_getLogger$info$track5 = {}, 
+                _getLogger$info$track5.transition_name = "native_detect_web_switch", _getLogger$info$track5)).flush();
                 return fallbackToWebCheckout(fallbackWin);
             }));
             var validate = memoize((function() {
@@ -4013,10 +4023,16 @@ window.spb = function(modules) {
                     return promise_ZalgoPromise.try((function() {
                         var sessionUID = uniqueID();
                         return isAndroidChrome() ? function(_ref15) {
+                            var _getLogger$info$track6;
                             var sessionUID = _ref15.sessionUID;
-                            var nativeWin = popup(getNativeUrl({
+                            var nativeUrl = getNativeUrl({
                                 sessionUID: sessionUID
-                            }));
+                            });
+                            getLogger().info("native_attempt_appswitch_url_direct", {
+                                url: nativeUrl
+                            }).track((_getLogger$info$track6 = {}, _getLogger$info$track6.transition_name = "app_switch_attempted", 
+                            _getLogger$info$track6)).flush();
+                            var nativeWin = popup(nativeUrl);
                             var validatePromise = validate();
                             var delayPromise = promise_ZalgoPromise.delay(500);
                             var detectWebSwitchListener = listen(nativeWin, getNativeDomain(), "detectWebSwitch", (function() {
@@ -4083,11 +4099,17 @@ window.spb = function(modules) {
                                 getLogger().info("native_post_message_await_redirect").flush();
                                 return validatePromise.then((function(valid) {
                                     return valid ? createOrder().then((function() {
+                                        var _getLogger$info$track7;
+                                        var nativeUrl = getNativeUrl({
+                                            sessionUID: sessionUID,
+                                            pageUrl: pageUrl
+                                        });
+                                        getLogger().info("native_attempt_appswitch_url_popup", {
+                                            url: nativeUrl
+                                        }).track((_getLogger$info$track7 = {}, _getLogger$info$track7.transition_name = "app_switch_attempted", 
+                                        _getLogger$info$track7)).flush();
                                         return {
-                                            redirectUrl: getNativeUrl({
-                                                sessionUID: sessionUID,
-                                                pageUrl: pageUrl
-                                            })
+                                            redirectUrl: nativeUrl
                                         };
                                     })) : close().then((function() {
                                         throw new Error("Validation failed");
@@ -4212,7 +4234,7 @@ window.spb = function(modules) {
     } catch (err) {}
     function setupButton(opts) {
         if (!window.paypal) throw new Error("PayPal SDK not loaded");
-        var facilitatorAccessToken = opts.facilitatorAccessToken, fundingEligibility = opts.fundingEligibility, serverRiskData = opts.serverRiskData, serverCSPNonce = opts.cspNonce, firebaseConfig = opts.firebaseConfig, _opts$buttonCorrelati = opts.buttonCorrelationID, buttonCorrelationID = void 0 === _opts$buttonCorrelati ? "" : _opts$buttonCorrelati;
+        var facilitatorAccessToken = opts.facilitatorAccessToken, fundingEligibility = opts.fundingEligibility, serverRiskData = opts.serverRiskData, serverCSPNonce = opts.cspNonce, firebaseConfig = opts.firebaseConfig, _opts$correlationID = opts.correlationID, buttonCorrelationID = void 0 === _opts$correlationID ? "" : _opts$correlationID;
         var clientID = window.xprops.clientID;
         var serviceData = getServiceData({
             eligibility: opts.eligibility,
@@ -4678,7 +4700,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.284", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.285", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
