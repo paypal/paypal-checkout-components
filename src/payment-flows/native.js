@@ -206,7 +206,7 @@ function instrumentNativeSDKProps(props : NativeSDKProps) {
 
     getLogger().info('native_setprops_request', sanitizedProps).track({
         [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_SET_PROPS_ATTEMPT
-    });
+    }).flush();
 }
 
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
