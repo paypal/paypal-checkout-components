@@ -45,6 +45,7 @@
     "@paypal/sdk-client": "^4.0.123",
     "@paypal/sdk-constants": "^1.0.57",
     "@paypal/sdk-logos": "^1.0.26",
+    "@paypal/sdk-release": "^5.0.138",
     "beaver-logger": "^4.0.12",
     "belter": "^1.0.19",
     "cross-domain-utils": "^2.0.16",

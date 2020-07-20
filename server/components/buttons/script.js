@@ -5,9 +5,9 @@ import { join } from 'path';
 import { ENV } from '@paypal/sdk-constants';
 
 import type { CacheType } from '../../types';
-import { BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS, WEBPACK_CONFIG } from '../../config';
+import { BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_RENDER_CHILD_MODULE, BUTTON_CLIENT_MIN_JS, WEBPACK_CONFIG } from '../../config';
 import { isLocal, compileWebpack, babelRequire, evalRequireScript, type LoggerBufferType } from '../../lib';
-import { getPayPalCheckoutComponentsWatcher, getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
+import { getPayPalSDKWatcher, getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
 
 export async function compileLocalSmartPaymentButtonRenderScript(dir : string) : Promise<{| button : Object, version : string |}> {
@@ -20,10 +20,10 @@ export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cach
     if (isLocal() && process.env.BUTTON_RENDER_DIR) {
         return await compileLocalSmartPaymentButtonRenderScript(process.env.BUTTON_RENDER_DIR);
     }
-
-    const watcher = getPayPalCheckoutComponentsWatcher({ logBuffer, cache });
+    
+    const watcher = getPayPalSDKWatcher({ logBuffer, cache });
     const { version } = await watcher.get();
-    const button = await watcher.import(BUTTON_RENDER_JS);
+    const button = await watcher.importDependency(BUTTON_RENDER_CHILD_MODULE, BUTTON_RENDER_JS);
     return { button, version };
 }
 

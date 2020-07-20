@@ -9,7 +9,7 @@ import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, MODULE_POLL_INTERVAL } from
 let paypalCheckoutComponentsWatcher;
 let paypalSmartButtonsWatcher;
 
-export const getPayPalCheckoutComponentsWatcher = ({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) => {
+export const getPayPalSDKWatcher = ({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) => {
     if (!cache || !logBuffer) {
         throw new Error(`Cache and logBuffer required`);
     }
@@ -18,7 +18,7 @@ export const getPayPalCheckoutComponentsWatcher = ({ logBuffer, cache } : {| log
         name:         BUTTON_RENDER_MODULE,
         period:       MODULE_POLL_INTERVAL,
         flat:         true,
-        dependencies: false,
+        dependencies: true,
         logger:       logBuffer,
         cache
     });
@@ -44,7 +44,7 @@ export const getPayPalSmartPaymentButtonsWatcher = ({ logBuffer, cache } : {| lo
 };
 
 export function startWatchers({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |} = {}) {
-    getPayPalCheckoutComponentsWatcher({ logBuffer, cache });
+    getPayPalSDKWatcher({ logBuffer, cache });
     getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
 }
 
