@@ -10,7 +10,6 @@
   "semanticCommits": true,
   "timezone": "America/Los_Angeles",
   "rebaseStalePrs": true,
-  "bumpVersion": "major",
   "labels": [
     ":christmas_tree: dependencies"
   ],
