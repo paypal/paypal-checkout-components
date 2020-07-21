@@ -11,3 +11,6 @@ npm version ${1-patch};
 git push;
 git push --tags;
 npm publish;
+
+sleep 3;
+npm run cdnify;
