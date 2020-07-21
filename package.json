@@ -58,13 +58,13 @@
     "zalgo-promise": "^1.0.28"
   },
   "devDependencies": {
-    "babel-core": "7.0.0-bridge.0",
-    "express": "4.17.1",
-    "flow-bin": "0.110.1",
-    "grumbler-scripts": "3.0.70",
-    "post-robot": "10.0.37",
-    "sync-browser-mocks": "2.0.8",
-    "webpack-mem-compile": "1.0.2"
+    "babel-core": "^7.0.0-bridge.0",
+    "express": "^4.16.3",
+    "flow-bin": "^0.110.1",
+    "grumbler-scripts": "^3.0.18",
+    "post-robot": "^10.0.13",
+    "sync-browser-mocks": "^2.0.8",
+    "webpack-mem-compile": "^1.0.2"
   },
   "license": "PayPal",
   "author": "DL-PP-Hermes-Integration@paypal.com"
