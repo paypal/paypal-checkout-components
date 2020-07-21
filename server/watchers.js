@@ -4,9 +4,9 @@ import { poll } from 'grabthar';
 
 import type { CacheType } from './types';
 import type { LoggerBufferType } from './lib';
-import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, MODULE_POLL_INTERVAL } from './config';
+import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, MODULE_POLL_INTERVAL, SDK_CDN_NAMESPACE, SMART_BUTTONS_CDN_NAMESPACE } from './config';
 
-let paypalCheckoutComponentsWatcher;
+let paypalSDKWatcher;
 let paypalSmartButtonsWatcher;
 
 export const getPayPalSDKWatcher = ({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) => {
@@ -14,7 +14,8 @@ export const getPayPalSDKWatcher = ({ logBuffer, cache } : {| logBuffer : ?Logge
         throw new Error(`Cache and logBuffer required`);
     }
 
-    paypalCheckoutComponentsWatcher = paypalCheckoutComponentsWatcher || poll({
+    paypalSDKWatcher = paypalSDKWatcher || poll({
+        cdnRegistry:  SDK_CDN_NAMESPACE,
         name:         BUTTON_RENDER_MODULE,
         period:       MODULE_POLL_INTERVAL,
         flat:         true,
@@ -23,7 +24,7 @@ export const getPayPalSDKWatcher = ({ logBuffer, cache } : {| logBuffer : ?Logge
         cache
     });
 
-    return paypalCheckoutComponentsWatcher;
+    return paypalSDKWatcher;
 };
 
 export const getPayPalSmartPaymentButtonsWatcher = ({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) => {
@@ -32,6 +33,7 @@ export const getPayPalSmartPaymentButtonsWatcher = ({ logBuffer, cache } : {| lo
     }
 
     paypalSmartButtonsWatcher = paypalSmartButtonsWatcher || poll({
+        cdnRegistry:  SMART_BUTTONS_CDN_NAMESPACE,
         name:         BUTTON_CLIENT_MODULE,
         period:       MODULE_POLL_INTERVAL,
         flat:         true,
@@ -49,8 +51,8 @@ export function startWatchers({ logBuffer, cache } : {| logBuffer : ?LoggerBuffe
 }
 
 export function cancelWatchers() {
-    if (paypalCheckoutComponentsWatcher) {
-        paypalCheckoutComponentsWatcher.cancel();
+    if (paypalSDKWatcher) {
+        paypalSDKWatcher.cancel();
     }
 
     if (paypalSmartButtonsWatcher) {
