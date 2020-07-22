@@ -9,7 +9,7 @@
         "flow-typed": "rm -rf flow-typed && flow-typed install",
         "flow": "flow",
         "karma": "cross-env NODE_ENV=test babel-node $(npm bin)/karma start",
-        "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run jest-ssr && npm run karma && npm run jest-screenshot && npm run check-size; fi;",
+        "test": "npm run jest-screenshot",
         "webpack": "babel-node $(npm bin)/webpack --progress",
         "webpack-size": "babel-node $(npm bin)/webpack --progress --config webpack.config.size && echo && echo Final bundle size: $( npm run -s get-size );",
         "build": "npm run test && npm run webpack",
