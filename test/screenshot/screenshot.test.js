@@ -138,10 +138,10 @@ for (const config of buttonConfigs) {
                 let imgurUrl = '';
 
                 if (process.env.TRAVIS) {
-                    imgurUrl = await uploadToImgur(filepath);
+                    imgurUrl = await uploadToImgur(diffpath);
                 }
 
-                throw new Error(`Button style changed with delta of ${ delta } for configuration:\n\n${ JSON.stringify(config, null, 4) }\n\nSee ${ oldpath } or ${ imgurUrl || '' }`);
+                throw new Error(`Button style changed with delta of ${ delta } for configuration:\n\n${ JSON.stringify(config, null, 4) }\n\nSee ${ diffpath } or ${ imgurUrl || '' }`);
             }
 
         } else {
