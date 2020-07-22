@@ -51,6 +51,14 @@ export async function diffPNG(one : PngType, two : PngType) : Promise<number> {
     return await pixelmatch(one.data, two.data, null, one.width, one.height, { threshold: 0 });
 }
 
+export function writeDiffPNG(one, two, diffpath) : Promise<number> {
+    const diff = new PNG({ width: one.width, height: one.height });
+
+    pixelmatch(one.data, two.data, diff.data, one.width, one.height, { threshold: 0 });
+
+    fs.writeFileSync(diffpath, PNG.sync.write(diff)); // eslint-disable-line no-sync
+}
+
 export async function uploadToImgur(path : string) : Promise<?string> {
     const result = await imgur.uploadFile(path);
     if (result) {
