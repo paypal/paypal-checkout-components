@@ -13,6 +13,14 @@
   "jest": {
     "coverageDirectory": "./server-coverage/"
   },
+  "files": [
+    "dist",
+    "server",
+    "src",
+    "babel.config.js",
+    "index.js",
+    "globals.js"
+  ],
   "scripts": {
     "start": "babel-node ./server/devServer",
     "setup": "npm install && npm run flow-typed",
