@@ -4,7 +4,7 @@ import { poll } from 'grabthar';
 
 import type { CacheType } from './types';
 import type { LoggerBufferType } from './lib';
-import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, MODULE_POLL_INTERVAL, SDK_CDN_NAMESPACE, SMART_BUTTONS_CDN_NAMESPACE } from './config';
+import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, MODULE_POLL_INTERVAL, SDK_CDN_NAMESPACE, SMART_BUTTONS_CDN_NAMESPACE, BUTTON_RENDER_CHILD_MODULE } from './config';
 
 let paypalSDKWatcher;
 let paypalSmartButtonsWatcher;
@@ -18,6 +18,7 @@ export const getPayPalSDKWatcher = ({ logBuffer, cache } : {| logBuffer : ?Logge
         cdnRegistry:  SDK_CDN_NAMESPACE,
         name:         BUTTON_RENDER_MODULE,
         period:       MODULE_POLL_INTERVAL,
+        childModules: [ BUTTON_RENDER_CHILD_MODULE ],
         flat:         true,
         dependencies: true,
         logger:       logBuffer,
