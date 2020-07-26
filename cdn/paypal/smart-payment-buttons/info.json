@@ -3,7 +3,7 @@
     "_rev": "277-57f3a8cf994252b8f61f7657e284ec83",
     "name": "@paypal/smart-payment-buttons",
     "dist-tags": {
-        "latest": "2.0.289",
+        "latest": "2.0.290",
         "noop": "2.0.290"
     },
     "versions": {
