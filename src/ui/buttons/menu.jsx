@@ -12,9 +12,6 @@ export function MenuButton({ color = TEXT_COLOR.BLACK } : {| color? : $Values<ty
     return (
         <Style css={ css }>
             <div
-                role="button"
-                // localize this, then it can be released
-                // aria-label="funding-options dropdown"
                 { ...{
                     [ATTRIBUTE.MENU]: true
                 } }
