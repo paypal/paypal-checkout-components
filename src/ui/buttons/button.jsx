@@ -57,7 +57,6 @@ function getWalletInstrument({ wallet, fundingSource, onShippingChange } : Vault
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, wallet, i, nonce, clientAccessToken, personalization, onShippingChange, onClick = noop, content, tagline, commit } : IndividualButtonProps) : ElementNode {
 
-    console.log("SOURCE", fundingSource);
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
