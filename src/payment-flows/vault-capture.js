@@ -2,13 +2,13 @@
 
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { destroyElement } from 'belter/src';
 
 import type { ThreeDomainSecureFlowType, MenuChoices } from '../types';
 import type { CreateOrder } from '../props';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault } from '../api';
-import { TARGET_ELEMENT, BUYER_INTENT } from '../constants';
+import { TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION } from '../constants';
 import { getLogger } from '../lib';
 import { updateButtonClientConfig } from '../button/orders';
 
@@ -199,6 +199,11 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
         label:    content.payWithDifferentMethod,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
+
+            getLogger().info('click_choose_funding').track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_CHOOSE_FUNDING
+            }).flush();
+            
             return ZalgoPromise.try(() => {
                 return updateClientConfig();
             }).then(() => {
@@ -213,6 +218,11 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
         label:    content.payWithDifferentAccount,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
+
+            getLogger().info('click_choose_account').track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_CHOOSE_ACCOUNT
+            }).flush();
+
             return ZalgoPromise.try(() => {
                 return updateClientConfig();
             }).then(() => {
@@ -225,6 +235,11 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
         label:    content.deleteVaultedCard,
         spinner:  true,
         onSelect: () => {
+
+            getLogger().info('click_unlink_account').track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_UNLINK_ACCOUNT
+            }).flush();
+
             return deleteVault({ paymentMethodID, clientAccessToken }).then(() => {
                 destroyElement(button);
             });

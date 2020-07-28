@@ -2,11 +2,11 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { stringifyError } from 'belter/src';
-import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
 import { getSupplementalOrderInfo, oneClickApproveOrder } from '../api';
-import { BUYER_INTENT } from '../constants';
+import { BUYER_INTENT, FPTI_TRANSITION } from '../constants';
 import { getLogger } from '../lib';
 import { updateButtonClientConfig } from '../button/orders';
 
@@ -245,6 +245,11 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
         label:    content.payWithDifferentMethod,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
+
+            getLogger().info('click_choose_funding').track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_CHOOSE_FUNDING
+            }).flush();
+
             return ZalgoPromise.try(() => {
                 return updateClientConfig();
             }).then(() => {
@@ -259,6 +264,11 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
         label:    content.payWithDifferentAccount,
         popup:    POPUP_OPTIONS,
         onSelect: ({ win }) => {
+
+            getLogger().info('click_choose_account').track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_CHOOSE_ACCOUNT
+            }).flush();
+
             return loadCheckout({
                 payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT, fundingSource: newFundingSource }
             });

@@ -86,6 +86,9 @@ export const FPTI_TRANSITION = {
     WALLET_LOAD:              ('process_wallet_load' : 'process_wallet_load'),
 
     MENU_CLICK:               ('process_menu_click' : 'process_menu_click'),
+    CLICK_CHOOSE_FUNDING:     ('process_click_pay_with_different_payment_method' : 'process_click_pay_with_different_payment_method'),
+    CLICK_CHOOSE_ACCOUNT:     ('process_click_pay_with_different_account' : 'process_click_pay_with_different_account'),
+    CLICK_UNLINK_ACCOUNT:     ('process_click_unlink_account' : 'process_click_unlink_account'),
 
     CREATE_ORDER:             ('process_create_order' : 'process_create_order'),
     RECEIVE_ORDER:            ('process_receive_order' : 'process_receive_order'),
