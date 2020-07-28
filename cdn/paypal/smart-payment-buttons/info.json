@@ -1,6 +1,6 @@
 {
     "_id": "@paypal/smart-payment-buttons",
-    "_rev": "277-57f3a8cf994252b8f61f7657e284ec83",
+    "_rev": "278-6762671c79706901e0b3095c0aef9500",
     "name": "@paypal/smart-payment-buttons",
     "dist-tags": {
         "latest": "2.0.290",
@@ -34713,7 +34713,7 @@
             "dist": {
                 "integrity": "sha512-L4PnrJLralyi5B93ceyBsVGicqKADenaYxBf3m5UFdaR0xtpFG88ARu2irYYa16qIeFZ3AdmZ13IsqLcZE+brA==",
                 "shasum": "60982f490c9328822249b649f909a61ce8b8a7a6",
-                "tarball": "https://registry.npmjs.org/@paypal/smart-payment-buttons/-/smart-payment-buttons-2.0.290.tgz",
+                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/paypal/smart-payment-buttons/tarballs/2.0.290.tgz",
                 "fileCount": 131,
                 "unpackedSize": 3359886,
                 "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfHffYCRA9TVsSAnZWagAARJUP/jA6CEARwfMvHaQWXKGu\nPD7XGBuPOeyN5Uyj8yXoTluC0dtVeKMy53wWpskvd1cHiYDvIxtrWU/BkODy\nqFlVHJNOy8GOgc1zLTttOchAOKTrtf0T5GvwwW8y5a2lrGCm5WTFmiwZ7HfL\ncQwedk3l+31UZMu6tBUTWwYBhtriRD+pNiPriXk8/rSlfq2C2DAUd81IRNi6\nFEicqnbcAjc/N4DzOYX507VSmu+SAn+gl5dqXLXdE7whXcsyJzvzc61VO9Nh\nzXUktulcfygNs4m+MdmN70L7Ga2iIaPy3hQv5YtW1nHjjRmC9iKuUywSzhZW\nWQAtBA0zxgOJOIaFLx3r8wpuD32bH3Uz24bH+Gw8T1CaZxsGeNvEtfKubx3G\nce4+xYMrFfQv1GX7t98/J7XLzM3YLNgLUWQPJ7foLtgzef/JixToD3d5CrPW\ne57qbQ87S4gfS7Gqq9K9heA+6eFany5CWiWVoBX5zqFYSVoiO84mLVuI2PtK\npu/a80sj8wZsii/Y9wckp/kycEk5t9ENjOKWNJb04908Tc081SCVVeb0nJxY\nWQ9ikXN8EfkBR5P0+phiqnmygCwRE9w7d0d3ph3F/w5a+vhiRwjPiQz8ICNq\nlNT7HwD/9AjwZirN4dsuHSCurMySNKAxUEO9LTlMSV4mcii6Yfk7QNk+Z/71\nj+BO\r\n=JODL\r\n-----END PGP SIGNATURE-----\r\n"
@@ -34815,7 +34815,7 @@
     "time": {
         "created": "2018-12-12T01:25:35.138Z",
         "2.0.35": "2018-12-12T01:25:35.467Z",
-        "modified": "2020-07-26T21:38:33.878Z",
+        "modified": "2020-07-28T20:45:14.077Z",
         "2.0.36": "2018-12-12T01:51:00.125Z",
         "2.0.37": "2018-12-12T23:37:39.357Z",
         "2.0.38": "2018-12-13T21:50:46.463Z",
