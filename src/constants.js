@@ -140,3 +140,8 @@ export const USER_ACTION = {
     COMMIT:   'commit',
     CONTINUE: 'continue'
 };
+
+export const UPGRADE_LSAT_RAMP = {
+    EXP_NAME: 'UPGRADE_LSAT_EXPERIMENT',
+    RAMP:      1
+};

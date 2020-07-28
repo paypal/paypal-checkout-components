@@ -108,7 +108,7 @@ const slideDownButtons = () => {
 
 function initCardFields({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel,
-        locale, commit, onError, sessionID, buttonSessionID } = props;
+        locale, commit, onError, sessionID, buttonSessionID, onAuth } = props;
     const { CardFields } = components;
     const { fundingSource, card } = payment;
     const { cspNonce } = config;
@@ -150,7 +150,11 @@ function initCardFields({ props, components, payment, serviceData, config } : In
         },
 
         onAuth: ({ accessToken }) => {
-            buyerAccessToken = accessToken;
+            const access_token = accessToken ? accessToken : buyerAccessToken;
+
+            return onAuth({ accessToken: access_token }).then(token => {
+                buyerAccessToken = token;
+            });
         },
 
         onCancel,

@@ -4,7 +4,9 @@
 import { wrapPromise } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, MOCK_BUYER_ACCESS_TOKEN } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock,
+    DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, MOCK_BUYER_ACCESS_TOKEN, getRestfulCapturedOrderApiMock,
+    getRestfulGetOrderApiMock, getGraphQLApiMock } from './mocks';
 
 describe('auth cases', () => {
 
@@ -56,6 +58,114 @@ describe('auth cases', () => {
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should render a button, call onAuth, call upgradeLSAT if flag is set, call restful auth/capture endpoints in onApprove cb', async () => {
+        return await wrapPromise(async ({ expect }) => {
+            const accessToken = MOCK_BUYER_ACCESS_TOKEN;
+            let isUpgradeLSATCalled = false;
+            window.xprops.upgradeLSAT = true;
+
+            const upgradeLSATMock = getGraphQLApiMock({
+                extraHandler: expect('upgradeLSATGQLCall', ({ data }) => {
+
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  'capture',
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        }
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('mutation UpgradeFacilitatorAccessToken')) {
+                        isUpgradeLSATCalled = true;
+                        if (!data.variables.facilitatorAccessToken) {
+                            throw new Error(`We haven't received the facilitatorAccessToken`);
+                        }
+
+                        if (!data.variables.buyerAccessToken) {
+                            throw new Error(`We haven't received the buyer's access token`);
+                        }
+
+                        if (!data.variables.orderID) {
+                            throw new Error(`We haven't received the orderID`);
+                        }
+
+                        return {
+                            data: {
+                                upgradeLowScopeAccessToken: true
+                            }
+                        };
+                    }
+
+                    return {};
+
+
+                })
+            }).expectCalls();
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
+                const getOrderMock = getRestfulGetOrderApiMock({
+                    handler: expect('getOrder', () => {
+                        return {
+                            ack:  'success',
+                            data: {}
+                        };
+                    })
+                });
+                getOrderMock.expectCalls();
+                await actions.order.get();
+                getOrderMock.done();
+
+                const captureOrderApiMock = getRestfulCapturedOrderApiMock({
+                    handler: expect('captureOrder', () => {
+                        return {
+                            ack:  'success',
+                            data: {}
+                        };
+                    })
+                });
+                captureOrderApiMock.expectCalls();
+                await actions.order.capture();
+                captureOrderApiMock.done();
+            }));
+
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                props.onAuth({ accessToken });
+                return CheckoutOriginal(props);
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            if (!isUpgradeLSATCalled) {
+                throw new Error('Failed Low Scope Access Token Upgrade');
+            }
+
+            upgradeLSATMock.done();
+
         });
     });
 });

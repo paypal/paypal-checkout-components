@@ -18,7 +18,7 @@ import type {
 export type WalletSetup = ({||}, {| submit : () => ZalgoPromise<void> |}) => ZalgoPromise<void>;
 
 export type WalletStyle = {|
-    
+
 |};
 
 export type WalletXProps = {|
@@ -54,7 +54,7 @@ export type WalletXProps = {|
 
     stageHost : ?string,
     apiStageHost : ?string,
-    
+
     onApprove : ?XOnApprove,
     onCancel : XOnCancel,
     onError : XOnError
@@ -142,10 +142,10 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
     } = xprops;
 
     const merchantDomain = (typeof getParentDomain === 'function') ? getParentDomain() : 'unknown';
-    
+
     const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken });
 
-    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, clientAccessToken, vault, upgradeLSAT: false }, { facilitatorAccessToken, createOrder });
+    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, clientAccessToken, vault, upgradeLSAT: false, isLSATExperiment: false }, { facilitatorAccessToken, createOrder });
     const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
 
     return {
@@ -199,7 +199,7 @@ export type Config = {|
 export function getConfig({ serverCSPNonce } : {| serverCSPNonce : ?string |}) : Config {
     const cspNonce = serverCSPNonce || getNonce();
     const { version } = paypal;
-    
+
     return {
         version,
         cspNonce

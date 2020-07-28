@@ -12,3 +12,4 @@ export * from './onError';
 export * from './getPopupBridge';
 export * from './rememberFunding';
 export * from './getPageUrl';
+export * from './onAuth';
