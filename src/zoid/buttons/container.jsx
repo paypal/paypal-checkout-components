@@ -82,12 +82,11 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
         });
     };
 
-    const version = getVersion();
     const element = (
         <div
             id={ uid }
             class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }
-            { ...({ [ATTRIBUTE.VERSION]: `${ version }` }) }
+            { ...({ [ATTRIBUTE.VERSION]: `${ getVersion() }` }) }
             onRender={ setupAutoResize } >
             
             <style>
