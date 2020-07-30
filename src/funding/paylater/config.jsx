@@ -8,11 +8,22 @@ import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { Text, Space } from '../../ui/text';
-import { WalletLabel } from '../paypal/template';
 
 import css from './style.scoped.scss';
 
 export function getPaylaterConfig() : FundingSourceConfig {
+    const flexLabel = ({ logoColor, nonce }) => {
+        return (
+            <Style css={ css } nonce={ nonce }>
+                <PPLogo logoColor={ logoColor } />
+                <Space />
+                <Text className="text-small" optional immediate>PayPal<Space /></Text>
+                <Text className="text-small" immediate>Flex</Text>
+                <Text className="text-large" immediate>Pay Later with Flex</Text>
+            </Style>
+        );
+    };
+
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
@@ -21,19 +32,9 @@ export function getPaylaterConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, nonce }) => {
-            return (
-                <Style css={ css } nonce={ nonce }>
-                    <PPLogo logoColor={ logoColor } />
-                    <Space />
-                    <Text className="text-small" optional immediate>PayPal<Space /></Text>
-                    <Text className="text-small" immediate>Flex</Text>
-                    <Text className="text-large" immediate>Pay Later with Flex</Text>
-                </Style>
-            );
-        },
+        Label: flexLabel,
 
-        WalletLabel,
+        Logo: flexLabel,
     
         colors: [
             BUTTON_COLOR.DARKBLUE,
