@@ -69,7 +69,7 @@ window.spb = function(modules) {
         return getProps;
     }));
     __webpack_require__.d(__webpack_exports__, "getComponents", (function() {
-        return getComponents;
+        return props_getComponents;
     }));
     __webpack_require__.d(__webpack_exports__, "getConfig", (function() {
         return getConfig;
@@ -818,6 +818,12 @@ window.spb = function(modules) {
             return chars.charAt(Math.floor(Math.random() * chars.length));
         })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     }
+    function getGlobal() {
+        if ("undefined" != typeof window) return window;
+        if ("undefined" != typeof window) return window;
+        if ("undefined" != typeof global) return global;
+        throw new Error("No global found");
+    }
     var objectIDs;
     function serializeArgs(args) {
         try {
@@ -1001,10 +1007,112 @@ window.spb = function(modules) {
             if (13 === event.keyCode || 32 === event.keyCode) return handler(event);
         }));
     }
+    function getScript(_ref) {
+        var _ref$host = _ref.host, host = void 0 === _ref$host ? window.location.host : _ref$host, path = _ref.path;
+        return inlineMemoize(getScript, (function() {
+            var url = "" + host + path;
+            var scripts = [].slice.call(document.getElementsByTagName("script"));
+            for (var _i4 = 0; _i4 < scripts.length; _i4++) {
+                var script = scripts[_i4];
+                if (script.src && script.src.replace(/^https?:\/\//, "").split("?")[0] === url) return script;
+            }
+        }), [ path ]);
+    }
+    function isLocalStorageEnabled() {
+        return inlineMemoize(isLocalStorageEnabled, (function() {
+            try {
+                if ("undefined" == typeof window) return !1;
+                if (window.localStorage) {
+                    var value = Math.random().toString();
+                    window.localStorage.setItem("__test__localStorage__", value);
+                    var result = window.localStorage.getItem("__test__localStorage__");
+                    window.localStorage.removeItem("__test__localStorage__");
+                    if (value === result) return !0;
+                }
+            } catch (err) {}
+            return !1;
+        }));
+    }
     function PopupOpenError(message) {
         this.message = message;
     }
     PopupOpenError.prototype = Object.create(Error.prototype);
+    function getStorage(_ref) {
+        var name = _ref.name, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 12e5 : _ref$lifetime;
+        return inlineMemoize(getStorage, (function() {
+            var STORAGE_KEY = "__" + name + "_storage__";
+            var accessedStorage;
+            function getState(handler) {
+                var localStorageEnabled = isLocalStorageEnabled();
+                var storage;
+                accessedStorage && (storage = accessedStorage);
+                if (!storage && localStorageEnabled) {
+                    var rawStorage = window.localStorage.getItem(STORAGE_KEY);
+                    rawStorage && (storage = JSON.parse(rawStorage));
+                }
+                storage || (storage = getGlobal()[STORAGE_KEY]);
+                storage || (storage = {
+                    id: uniqueID()
+                });
+                storage.id || (storage.id = uniqueID());
+                accessedStorage = storage;
+                var result = handler(storage);
+                localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : getGlobal()[STORAGE_KEY] = storage;
+                accessedStorage = null;
+                return result;
+            }
+            function getSession(handler) {
+                return getState((function(storage) {
+                    var session = storage.__session__;
+                    var now = Date.now();
+                    session && now - session.created > lifetime && (session = null);
+                    session || (session = {
+                        guid: uniqueID(),
+                        created: now
+                    });
+                    storage.__session__ = session;
+                    return handler(session);
+                }));
+            }
+            return {
+                getState: getState,
+                getID: function() {
+                    return getState((function(storage) {
+                        return storage.id;
+                    }));
+                },
+                getSessionState: function(handler) {
+                    return getSession((function(session) {
+                        session.state = session.state || {};
+                        return handler(session.state);
+                    }));
+                },
+                getSessionID: function() {
+                    return getSession((function(session) {
+                        return session.guid;
+                    }));
+                }
+            };
+        }), [ {
+            name: name,
+            lifetime: lifetime
+        } ]);
+    }
+    function getBelterExperimentStorage() {
+        return getStorage({
+            name: "belter_experiment"
+        });
+    }
+    function isEventUnique(name) {
+        return getBelterExperimentStorage().getSessionState((function(state) {
+            state.loggedBeacons = state.loggedBeacons || [];
+            if (-1 === state.loggedBeacons.indexOf(name)) {
+                state.loggedBeacons.push(name);
+                return !0;
+            }
+            return !1;
+        }));
+    }
     var http_headerBuilders = [];
     function request(_ref) {
         var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
@@ -1109,6 +1217,142 @@ window.spb = function(modules) {
     function extendIfDefined(target, source) {
         for (var key in source) source.hasOwnProperty(key) && source[key] && !target[key] && (target[key] = source[key]);
     }
+    function Logger(_ref2) {
+        var url = _ref2.url, prefix = _ref2.prefix, _ref2$logLevel = _ref2.logLevel, logLevel = void 0 === _ref2$logLevel ? "warn" : _ref2$logLevel, _ref2$transport = _ref2.transport, transport = void 0 === _ref2$transport ? httpTransport : _ref2$transport, _ref2$flushInterval = _ref2.flushInterval, flushInterval = void 0 === _ref2$flushInterval ? 6e4 : _ref2$flushInterval;
+        var events = [];
+        var tracking = [];
+        var payloadBuilders = [];
+        var metaBuilders = [];
+        var trackingBuilders = [];
+        var headerBuilders = [];
+        function print(level, event, payload) {
+            if (dom_isBrowser() && window.console && window.console.log && !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(logLevel))) {
+                var args = [ event ];
+                args.push(payload);
+                (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
+                try {
+                    window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
+                } catch (err) {}
+            }
+        }
+        function immediateFlush() {
+            return promise_ZalgoPromise.try((function() {
+                if (dom_isBrowser() && "file:" !== window.location.protocol && (events.length || tracking.length)) {
+                    var meta = {};
+                    for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, metaBuilders[_i2])(meta));
+                    var headers = {};
+                    for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
+                    headerBuilders[_i4])(headers));
+                    var req = transport({
+                        method: "POST",
+                        url: url,
+                        headers: headers,
+                        json: {
+                            events: events,
+                            meta: meta,
+                            tracking: tracking
+                        }
+                    });
+                    events = [];
+                    tracking = [];
+                    return req.then(src_util_noop);
+                }
+            }));
+        }
+        var flush = function(method, delay) {
+            void 0 === delay && (delay = 50);
+            var promise;
+            var timeout;
+            return setFunctionName((function() {
+                timeout && clearTimeout(timeout);
+                var localPromise = promise = promise || new promise_ZalgoPromise;
+                timeout = setTimeout((function() {
+                    promise = null;
+                    timeout = null;
+                    promise_ZalgoPromise.try(method).then((function(result) {
+                        localPromise.resolve(result);
+                    }), (function(err) {
+                        localPromise.reject(err);
+                    }));
+                }), delay);
+                return localPromise;
+            }), getFunctionName(method) + "::promiseDebounced");
+        }(immediateFlush);
+        function log(level, event, payload) {
+            void 0 === payload && (payload = {});
+            if (!dom_isBrowser()) return logger;
+            prefix && (event = prefix + "_" + event);
+            var logPayload = _extends({}, objFilter(payload), {
+                timestamp: Date.now().toString()
+            });
+            for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
+            payloadBuilders[_i6])(logPayload));
+            !function(level, event, payload) {
+                events.push({
+                    level: level,
+                    event: event,
+                    payload: payload
+                });
+                -1 !== AUTO_FLUSH_LEVEL.indexOf(level) && flush();
+            }(level, event, logPayload);
+            print(level, event, logPayload);
+            return logger;
+        }
+        function addBuilder(builders, builder) {
+            builders.push(builder);
+            return logger;
+        }
+        dom_isBrowser() && (method = flush, time = flushInterval, function loop() {
+            setTimeout((function() {
+                method();
+                loop();
+            }), time);
+        }());
+        var method, time;
+        var logger = {
+            debug: function(event, payload) {
+                return log("debug", event, payload);
+            },
+            info: function(event, payload) {
+                return log("info", event, payload);
+            },
+            warn: function(event, payload) {
+                return log("warn", event, payload);
+            },
+            error: function(event, payload) {
+                return log("error", event, payload);
+            },
+            track: function(payload) {
+                void 0 === payload && (payload = {});
+                if (!dom_isBrowser()) return logger;
+                var trackingPayload = objFilter(payload);
+                for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
+                trackingBuilders[_i8])(trackingPayload));
+                print("debug", "track", trackingPayload);
+                tracking.push(trackingPayload);
+                return logger;
+            },
+            flush: flush,
+            immediateFlush: immediateFlush,
+            addPayloadBuilder: function(builder) {
+                return addBuilder(payloadBuilders, builder);
+            },
+            addMetaBuilder: function(builder) {
+                return addBuilder(metaBuilders, builder);
+            },
+            addTrackingBuilder: function(builder) {
+                return addBuilder(trackingBuilders, builder);
+            },
+            addHeaderBuilder: function(builder) {
+                return addBuilder(headerBuilders, builder);
+            },
+            setTransport: function(newTransport) {
+                transport = newTransport;
+                return logger;
+            }
+        };
+        return logger;
+    }
     var _NATIVE_CHECKOUT_URI, _NATIVE_CHECKOUT_POPU;
     var ORDERS_API_URL = "/v2/checkout/orders";
     var NATIVE_CHECKOUT_URI = ((_NATIVE_CHECKOUT_URI = {}).paypal = "/smart/checkout/native", 
@@ -1119,142 +1363,7 @@ window.spb = function(modules) {
     var SANDBOX_ORDER_VALIDATION_WHITELIST = [ "AcFUr3vhIePYLOXXuZzdvFL5th99W0Uygya9lqfjN3XCx-W2dGlr6A9mqiIZAHAMng1g0_haL2LitLAl", "ASmWKJfGIEy4BmvwWA3PpAX-uOdz0EYCQ89Y-oLww8LgaqqHtXEcB4dfxr88kmcp3no-efNznSFDcVjg", "AY-UBQDZ53U9-lrZ-7RGWIn-CLhVJEaZI9HsWcqqApUx_CET1nlkkNow0HpLb-y0kTUuyIA3uwbME6Dd" ];
     function getLogger() {
         return inlineMemoize(getLogger, (function() {
-            return function(_ref2) {
-                var url = _ref2.url, prefix = _ref2.prefix, _ref2$logLevel = _ref2.logLevel, logLevel = void 0 === _ref2$logLevel ? "warn" : _ref2$logLevel, _ref2$transport = _ref2.transport, transport = void 0 === _ref2$transport ? httpTransport : _ref2$transport, _ref2$flushInterval = _ref2.flushInterval, flushInterval = void 0 === _ref2$flushInterval ? 6e4 : _ref2$flushInterval;
-                var events = [];
-                var tracking = [];
-                var payloadBuilders = [];
-                var metaBuilders = [];
-                var trackingBuilders = [];
-                var headerBuilders = [];
-                function print(level, event, payload) {
-                    if (dom_isBrowser() && window.console && window.console.log && !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(logLevel))) {
-                        var args = [ event ];
-                        args.push(payload);
-                        (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
-                        try {
-                            window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
-                        } catch (err) {}
-                    }
-                }
-                function immediateFlush() {
-                    return promise_ZalgoPromise.try((function() {
-                        if (dom_isBrowser() && "file:" !== window.location.protocol && (events.length || tracking.length)) {
-                            var meta = {};
-                            for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, metaBuilders[_i2])(meta));
-                            var headers = {};
-                            for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
-                            headerBuilders[_i4])(headers));
-                            var req = transport({
-                                method: "POST",
-                                url: url,
-                                headers: headers,
-                                json: {
-                                    events: events,
-                                    meta: meta,
-                                    tracking: tracking
-                                }
-                            });
-                            events = [];
-                            tracking = [];
-                            return req.then(src_util_noop);
-                        }
-                    }));
-                }
-                var flush = function(method, delay) {
-                    void 0 === delay && (delay = 50);
-                    var promise;
-                    var timeout;
-                    return setFunctionName((function() {
-                        timeout && clearTimeout(timeout);
-                        var localPromise = promise = promise || new promise_ZalgoPromise;
-                        timeout = setTimeout((function() {
-                            promise = null;
-                            timeout = null;
-                            promise_ZalgoPromise.try(method).then((function(result) {
-                                localPromise.resolve(result);
-                            }), (function(err) {
-                                localPromise.reject(err);
-                            }));
-                        }), delay);
-                        return localPromise;
-                    }), getFunctionName(method) + "::promiseDebounced");
-                }(immediateFlush);
-                function log(level, event, payload) {
-                    void 0 === payload && (payload = {});
-                    if (!dom_isBrowser()) return logger;
-                    prefix && (event = prefix + "_" + event);
-                    var logPayload = _extends({}, objFilter(payload), {
-                        timestamp: Date.now().toString()
-                    });
-                    for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
-                    payloadBuilders[_i6])(logPayload));
-                    !function(level, event, payload) {
-                        events.push({
-                            level: level,
-                            event: event,
-                            payload: payload
-                        });
-                        -1 !== AUTO_FLUSH_LEVEL.indexOf(level) && flush();
-                    }(level, event, logPayload);
-                    print(level, event, logPayload);
-                    return logger;
-                }
-                function addBuilder(builders, builder) {
-                    builders.push(builder);
-                    return logger;
-                }
-                dom_isBrowser() && (method = flush, time = flushInterval, function loop() {
-                    setTimeout((function() {
-                        method();
-                        loop();
-                    }), time);
-                }());
-                var method, time;
-                var logger = {
-                    debug: function(event, payload) {
-                        return log("debug", event, payload);
-                    },
-                    info: function(event, payload) {
-                        return log("info", event, payload);
-                    },
-                    warn: function(event, payload) {
-                        return log("warn", event, payload);
-                    },
-                    error: function(event, payload) {
-                        return log("error", event, payload);
-                    },
-                    track: function(payload) {
-                        void 0 === payload && (payload = {});
-                        if (!dom_isBrowser()) return logger;
-                        var trackingPayload = objFilter(payload);
-                        for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
-                        trackingBuilders[_i8])(trackingPayload));
-                        print("debug", "track", trackingPayload);
-                        tracking.push(trackingPayload);
-                        return logger;
-                    },
-                    flush: flush,
-                    immediateFlush: immediateFlush,
-                    addPayloadBuilder: function(builder) {
-                        return addBuilder(payloadBuilders, builder);
-                    },
-                    addMetaBuilder: function(builder) {
-                        return addBuilder(metaBuilders, builder);
-                    },
-                    addTrackingBuilder: function(builder) {
-                        return addBuilder(trackingBuilders, builder);
-                    },
-                    addHeaderBuilder: function(builder) {
-                        return addBuilder(headerBuilders, builder);
-                    },
-                    setTransport: function(newTransport) {
-                        transport = newTransport;
-                        return logger;
-                    }
-                };
-                return logger;
-            }({
+            return Logger({
                 url: "/xoplatform/logger/api/logger"
             });
         }));
@@ -1263,6 +1372,46 @@ window.spb = function(modules) {
         var nonce = "";
         document.body && (nonce = document.body.getAttribute("data-nonce") || "");
         return nonce;
+    }
+    function getProtocol() {
+        return "undefined" != typeof __PROTOCOL__ ? __PROTOCOL__ : "https";
+    }
+    function getHost() {
+        return __HOST__;
+    }
+    function getSDKScript() {
+        return inlineMemoize(getSDKScript, (function() {
+            var host = getHost();
+            var path = __PATH__;
+            var script = getScript({
+                host: host,
+                path: path
+            });
+            if (!script) throw new Error('PayPal Payments SDK script not present on page! Excected to find <script src="https://' + host + path + '">');
+            return script;
+        }));
+    }
+    function getSDKAttributes() {
+        return inlineMemoize(getSDKAttributes, (function() {
+            var result = {};
+            for (var _i2 = 0, _sdkScript$attributes2 = getSDKScript().attributes; _i2 < _sdkScript$attributes2.length; _i2++) {
+                var attr = _sdkScript$attributes2[_i2];
+                0 === attr.name.indexOf("data-") && (result[attr.name] = attr.value);
+            }
+            return result;
+        }));
+    }
+    function buildPayPalUrl(path) {
+        void 0 === path && (path = "");
+        return (getProtocol(), getHost(), getProtocol(), __STAGE_HOST__, getSDKAttributes(), 
+        getProtocol(), getProtocol() + "://www.paypal.com") + path;
+    }
+    function logger_getLogger() {
+        return inlineMemoize(logger_getLogger, (function() {
+            return Logger({
+                url: buildPayPalUrl("/xoplatform/logger/api/logger")
+            });
+        }));
     }
     function callRestAPI(_ref) {
         var _extends2;
@@ -1302,7 +1451,7 @@ window.spb = function(modules) {
             return body.data;
         }));
     }
-    function callGraphQL(_ref5) {
+    function api_callGraphQL(_ref5) {
         var _ref5$variables = _ref5.variables, _ref5$headers = _ref5.headers;
         return request({
             url: "/graphql?" + _ref5.name,
@@ -1325,9 +1474,9 @@ window.spb = function(modules) {
             return body.data;
         }));
     }
-    function createAccessToken(clientID, _temp) {
+    function auth_createAccessToken(clientID, _temp) {
         var targetSubject = (void 0 === _temp ? {} : _temp).targetSubject;
-        return inlineMemoize(createAccessToken, (function() {
+        return inlineMemoize(auth_createAccessToken, (function() {
             getLogger().info("rest_api_create_access_token");
             var basicAuth = base64encode((clientID || "") + ":");
             var data = {
@@ -1350,7 +1499,7 @@ window.spb = function(modules) {
         }), [ clientID, targetSubject ]);
     }
     function getFirebaseSessionToken(sessionUID) {
-        return callGraphQL({
+        return api_callGraphQL({
             name: "GetFireBaseSessionToken",
             query: "\n            query GetFireBaseSessionToken($sessionUID: String!) {\n                firebase {\n                    auth(sessionUID: $sessionUID) {\n                        sessionToken\n                    }\n                }\n            }\n        ",
             variables: {
@@ -1425,7 +1574,7 @@ window.spb = function(modules) {
     function oneClickApproveOrder(_ref12) {
         var _headers15;
         var orderID = _ref12.orderID, clientMetadataID = _ref12.clientMetadataID;
-        return callGraphQL({
+        return api_callGraphQL({
             name: "OneClickApproveOrder",
             query: "\n            mutation OneClickApproveOrder(\n                $orderID : String!\n                $instrumentType : String!\n                $instrumentID : String!\n            ) {\n                oneClickPayment(\n                    token: $orderID\n                    selectedInstrumentType : $instrumentType\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    userId\n                }\n            }\n        ",
             variables: {
@@ -1444,7 +1593,7 @@ window.spb = function(modules) {
     }
     var getSupplementalOrderInfo = memoize((function(orderID) {
         var _headers16;
-        return callGraphQL({
+        return api_callGraphQL({
             name: "GetCheckoutDetails",
             query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
             variables: {
@@ -1615,34 +1764,13 @@ window.spb = function(modules) {
                 if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                 throw new Error("Unsupported intent for auto-capture: " + intent);
             };
-        }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
+        }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT, _ref4$isLSATExperimen = _ref4.isLSATExperiment, isLSATExperiment = void 0 !== _ref4$isLSATExperimen && _ref4$isLSATExperimen;
         var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
         if (!onApprove) throw new Error("Expected onApprove");
         return memoize((function(_ref6, _ref7) {
-            var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
+            var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT || isLSATExperiment : _ref6$forceRestAPI;
             var restart = _ref7.restart;
             return promise_ZalgoPromise.try((function() {
-                if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
-                    return function(facilitatorAccessToken, _ref3) {
-                        var _headers;
-                        var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
-                        return callGraphQL({
-                            name: "UpgradeFacilitatorAccessToken",
-                            headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
-                            _headers["paypal-client-context"] = orderID, _headers),
-                            query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
-                            variables: {
-                                facilitatorAccessToken: facilitatorAccessToken,
-                                buyerAccessToken: buyerAccessToken,
-                                orderID: orderID
-                            }
-                        }).then(src_util_noop);
-                    }(facilitatorAccessToken, {
-                        buyerAccessToken: buyerAccessToken,
-                        orderID: orderID
-                    });
-                }));
-            })).then((function() {
                 return createOrder();
             })).then((function(orderID) {
                 var _getLogger$info$track;
@@ -1977,11 +2105,117 @@ window.spb = function(modules) {
             }));
         };
     }
+    function getOnAuth(_ref) {
+        var facilitatorAccessToken = _ref.facilitatorAccessToken, createOrder = _ref.createOrder, isLSATExperiment = _ref.isLSATExperiment, upgradeLSAT = _ref.upgradeLSAT;
+        return function(_ref2) {
+            var accessToken = _ref2.accessToken;
+            getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
+            return promise_ZalgoPromise.try((function() {
+                if (accessToken) return isLSATExperiment || upgradeLSAT ? createOrder().then((function(orderID) {
+                    return function(facilitatorAccessToken, _ref3) {
+                        var _headers;
+                        var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
+                        return api_callGraphQL({
+                            name: "UpgradeFacilitatorAccessToken",
+                            headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
+                            _headers["paypal-client-context"] = orderID, _headers),
+                            query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
+                            variables: {
+                                facilitatorAccessToken: facilitatorAccessToken,
+                                buyerAccessToken: buyerAccessToken,
+                                orderID: orderID
+                            }
+                        }).then(src_util_noop);
+                    }(facilitatorAccessToken, {
+                        buyerAccessToken: accessToken,
+                        orderID: orderID
+                    });
+                })).then((function() {
+                    getLogger().info("upgrade_lsat_success");
+                    return accessToken;
+                })).catch((function(err) {
+                    getLogger().warn("upgrade_lsat_failure", {
+                        error: stringifyError(err)
+                    });
+                    return accessToken;
+                })) : accessToken;
+            }));
+        };
+    }
     var props_TYPES = !0;
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken;
         var xprops = window.xprops;
-        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableStandardCardFields = xprops.enableStandardCardFields, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, persistRiskData = xprops.persistRiskData, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
+        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableStandardCardFields = xprops.enableStandardCardFields, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, persistRiskData = xprops.persistRiskData, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
+        var upgradeLSATExperiment = (name = "UPGRADE_LSAT_EXPERIMENT", logger = logger_getLogger(), 
+        function(_ref) {
+            var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint;
+            var throttle = function(name) {
+                return getBelterExperimentStorage().getState((function(state) {
+                    state.throttlePercentiles = state.throttlePercentiles || {};
+                    state.throttlePercentiles[name] = state.throttlePercentiles[name] || Math.floor(100 * Math.random());
+                    return state.throttlePercentiles[name];
+                }));
+            }(name);
+            var group;
+            var treatment = name + "_" + (group = throttle < sample ? "test" : sample >= 50 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle");
+            var started = !1;
+            var forced = !1;
+            try {
+                window.localStorage && window.localStorage.getItem(name) && (forced = !0);
+            } catch (err) {}
+            return {
+                isEnabled: function() {
+                    return "test" === group || forced;
+                },
+                isDisabled: function() {
+                    return "test" !== group && !forced;
+                },
+                getTreatment: function() {
+                    return treatment;
+                },
+                log: function(checkpoint, payload) {
+                    void 0 === payload && (payload = {});
+                    if (!started) return this;
+                    isEventUnique(name + "_" + treatment + "_" + JSON.stringify(payload)) && logTreatment({
+                        name: name,
+                        treatment: treatment,
+                        payload: payload
+                    });
+                    isEventUnique(name + "_" + treatment + "_" + checkpoint + "_" + JSON.stringify(payload)) && logCheckpoint({
+                        name: name,
+                        treatment: treatment,
+                        checkpoint: checkpoint,
+                        payload: payload
+                    });
+                    return this;
+                },
+                logStart: function(payload) {
+                    void 0 === payload && (payload = {});
+                    started = !0;
+                    return this.log("start", payload);
+                },
+                logComplete: function(payload) {
+                    void 0 === payload && (payload = {});
+                    return this.log("complete", payload);
+                }
+            };
+        }({
+            name: name,
+            sample: 1,
+            logTreatment: function(_ref) {
+                var _extends2;
+                var treatment = _ref.treatment, payload = _ref.payload;
+                logger.track(_extends(((_extends2 = {}).state_name = "PXP_CHECK", _extends2.transition_name = "process_pxp_check", 
+                _extends2.pxp_exp_id = name, _extends2.pxp_trtmnt_id = treatment, _extends2), payload));
+                logger.flush();
+            },
+            logCheckpoint: function(_ref2) {
+                logger.info(name + "_" + _ref2.treatment + "_" + _ref2.checkpoint, _ref2.payload);
+                logger.flush();
+            }
+        }));
+        var name, logger;
         var onInit = function(_ref) {
             var onInit = _ref.onInit;
             return function(data) {
@@ -2065,7 +2299,7 @@ window.spb = function(modules) {
             if (createSubscription) {
                 if (merchantID && merchantID[0]) {
                     getLogger().info("src_props_subscriptions_recreate_access_token_cache");
-                    createAccessToken(clientID, {
+                    auth_createAccessToken(clientID, {
                         targetSubject: merchantID[0]
                     });
                 }
@@ -2081,7 +2315,7 @@ window.spb = function(modules) {
                                         if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
                                         if (merchantID && merchantID[0]) {
                                             getLogger().info("rest_api_subscriptions_recreate_access_token");
-                                            return createAccessToken(clientID, {
+                                            return auth_createAccessToken(clientID, {
                                                 targetSubject: merchantID[0]
                                             }).then((function(thirdPartyAccessToken) {
                                                 return createRequest(thirdPartyAccessToken, subscriptionPayload, partnerAttributionID);
@@ -2103,7 +2337,7 @@ window.spb = function(modules) {
                                         if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
                                         if (merchantID && merchantID[0]) {
                                             getLogger().info("rest_api_subscriptions_recreate_access_token");
-                                            return createAccessToken(clientID, {
+                                            return auth_createAccessToken(clientID, {
                                                 targetSubject: merchantID[0]
                                             }).then((function(thirdPartyAccessToken) {
                                                 return reviseRequest(thirdPartyAccessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
@@ -2173,6 +2407,7 @@ window.spb = function(modules) {
             getParent: getParent,
             persistRiskData: persistRiskData,
             connect: connect,
+            fundingSource: fundingSource,
             enableThreeDomainSecure: enableThreeDomainSecure,
             enableStandardCardFields: enableStandardCardFields,
             enableNativeCheckout: enableNativeCheckout,
@@ -2191,7 +2426,8 @@ window.spb = function(modules) {
                 partnerAttributionID: partnerAttributionID,
                 upgradeLSAT: upgradeLSAT,
                 clientAccessToken: clientAccessToken,
-                vault: vault
+                vault: vault,
+                isLSATExperiment: upgradeLSATExperiment.isEnabled()
             }, {
                 facilitatorAccessToken: facilitatorAccessToken,
                 createOrder: createOrder
@@ -2208,10 +2444,16 @@ window.spb = function(modules) {
             }, {
                 facilitatorAccessToken: facilitatorAccessToken,
                 createOrder: createOrder
+            }),
+            onAuth: getOnAuth({
+                facilitatorAccessToken: facilitatorAccessToken,
+                createOrder: createOrder,
+                isLSATExperiment: upgradeLSATExperiment.isEnabled(),
+                upgradeLSAT: upgradeLSAT
             })
         };
     }
-    function getComponents() {
+    function props_getComponents() {
         var _paypal = paypal;
         return {
             Checkout: _paypal.Checkout,
@@ -2450,7 +2692,7 @@ window.spb = function(modules) {
     }
     function updateButtonClientConfig(_ref) {
         var _ref$inline = _ref.inline;
-        return callGraphQL({
+        return api_callGraphQL({
             name: "UpdateClientConfig",
             query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
             variables: {
@@ -2515,7 +2757,7 @@ window.spb = function(modules) {
             var props = _ref7.props, components = _ref7.components, serviceData = _ref7.serviceData, payment = _ref7.payment, config = _ref7.config;
             if (checkoutOpen) throw new Error("Checkout already rendered");
             var Checkout = components.Checkout;
-            var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID;
+            var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth;
             var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent;
             var fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta;
             var cspNonce = config.cspNonce;
@@ -2556,7 +2798,7 @@ window.spb = function(modules) {
                     createAuthCode: function() {
                         return promise_ZalgoPromise.try((function() {
                             if (buyerAccessToken && ("pay" === buyerIntent || "pay_with_different_funding_shipping" === buyerIntent)) return function(buyerAccessToken) {
-                                return callGraphQL({
+                                return api_callGraphQL({
                                     name: "ExchangeAuthCode",
                                     query: "\n            query ExchangeAuthCode(\n                $buyerAccessToken: String!\n            ) {\n                auth(\n                    accessToken: $buyerAccessToken\n                ) {\n                    authCode\n                }\n            }\n        ",
                                     variables: {
@@ -2582,7 +2824,7 @@ window.spb = function(modules) {
                                 clientID: clientID,
                                 fundingSource: fundingSource,
                                 connect: connect
-                            }, callGraphQL({
+                            }, api_callGraphQL({
                                 name: "GetConnectURL",
                                 query: "\n            query GetConnectURL(\n                $clientID: String!\n                $orderID: String!\n                $scopes: [String]!\n                $fundingSource: String\n                $payerID: String\n            ) {\n                auth(\n                    clientId: $clientID\n                ) {\n                    connectUrl(\n                        token: $orderID\n                        scopes: $scopes\n                        fundingSource: $fundingSource\n                        payerId: $payerID\n                    ) {\n                        href\n                    }\n                }\n            }\n        ",
                                 variables: {
@@ -2634,7 +2876,7 @@ window.spb = function(modules) {
                                         }) ? function(_ref7) {
                                             var _headers11;
                                             var orderID = _ref7.orderID;
-                                            return callGraphQL({
+                                            return api_callGraphQL({
                                                 name: "EnableVault",
                                                 query: "\n            mutation EnableVault(\n                $orderID : String!\n            ) {\n                enableVault(\n                    token: $orderID\n                )\n            }\n        ",
                                                 variables: {
@@ -2697,9 +2939,11 @@ window.spb = function(modules) {
                         }));
                     },
                     onAuth: function(_ref10) {
-                        var accessToken = _ref10.accessToken;
-                        getLogger().info("spb_onauth_access_token_" + (accessToken || buyerAccessToken ? "present" : "not_present"));
-                        accessToken && (buyerAccessToken = accessToken);
+                        return _onAuth({
+                            accessToken: _ref10.accessToken || buyerAccessToken
+                        }).then((function(token) {
+                            buyerAccessToken = token;
+                        }));
                     },
                     onCancel: function() {
                         return close().then((function() {
@@ -2848,7 +3092,7 @@ window.spb = function(modules) {
         },
         init: function(_ref4) {
             var props = _ref4.props, components = _ref4.components, payment = _ref4.payment, serviceData = _ref4.serviceData, config = _ref4.config;
-            var createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, locale = props.locale, commit = props.commit, onError = props.onError, sessionID = props.sessionID, buttonSessionID = props.buttonSessionID;
+            var createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, locale = props.locale, commit = props.commit, onError = props.onError, sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _onAuth = props.onAuth;
             var CardFields = components.CardFields;
             var fundingSource = payment.fundingSource, card = payment.card;
             var cspNonce = config.cspNonce;
@@ -2890,7 +3134,11 @@ window.spb = function(modules) {
                     }));
                 },
                 onAuth: function(_ref7) {
-                    buyerAccessToken = _ref7.accessToken;
+                    return _onAuth({
+                        accessToken: _ref7.accessToken || buyerAccessToken
+                    }).then((function(token) {
+                        buyerAccessToken = token;
+                    }));
                 },
                 onCancel: onCancel,
                 onError: onError,
@@ -3099,7 +3347,10 @@ window.spb = function(modules) {
                 label: content.payWithDifferentMethod,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref9) {
+                    var _getLogger$info$track;
                     var win = _ref9.win;
+                    getLogger().info("click_choose_funding").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_click_pay_with_different_payment_method", 
+                    _getLogger$info$track)).flush();
                     return promise_ZalgoPromise.try((function() {
                         return updateClientConfig();
                     })).then((function() {
@@ -3128,7 +3379,10 @@ window.spb = function(modules) {
                 label: content.payWithDifferentAccount,
                 popup: POPUP_OPTIONS,
                 onSelect: function(_ref10) {
+                    var _getLogger$info$track2;
                     var win = _ref10.win;
+                    getLogger().info("click_choose_account").track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "process_click_pay_with_different_account", 
+                    _getLogger$info$track2)).flush();
                     return promise_ZalgoPromise.try((function() {
                         return updateClientConfig();
                     })).then((function() {
@@ -3145,10 +3399,13 @@ window.spb = function(modules) {
                 label: content.deleteVaultedCard,
                 spinner: !0,
                 onSelect: function() {
+                    var _getLogger$info$track3;
+                    getLogger().info("click_unlink_account").track((_getLogger$info$track3 = {}, _getLogger$info$track3.transition_name = "process_click_unlink_account", 
+                    _getLogger$info$track3)).flush();
                     return (_ref8 = {
                         paymentMethodID: paymentMethodID,
                         clientAccessToken: clientAccessToken
-                    }, callGraphQL({
+                    }, api_callGraphQL({
                         name: "DeleteVault",
                         query: "\n            mutation DeleteVault(\n                $paymentMethodID : String!\n            ) {\n                deleteVault(\n                    paymentMethodID: $paymentMethodID\n                )\n            }\n        ",
                         variables: {
@@ -3304,7 +3561,10 @@ window.spb = function(modules) {
                 label: content.payWithDifferentMethod,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref7) {
+                    var _getLogger$info$track;
                     var win = _ref7.win;
+                    getLogger().info("click_choose_funding").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_click_pay_with_different_payment_method", 
+                    _getLogger$info$track)).flush();
                     return promise_ZalgoPromise.try((function() {
                         return promise_ZalgoPromise.try((function() {
                             return createOrder();
@@ -3329,9 +3589,13 @@ window.spb = function(modules) {
                 label: content.payWithDifferentAccount,
                 popup: wallet_capture_POPUP_OPTIONS,
                 onSelect: function(_ref8) {
+                    var _getLogger$info$track2;
+                    var win = _ref8.win;
+                    getLogger().info("click_choose_account").track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "process_click_pay_with_different_account", 
+                    _getLogger$info$track2)).flush();
                     return loadCheckout({
                         payment: _extends({}, payment, {
-                            win: _ref8.win,
+                            win: win,
                             buyerIntent: "pay_with_different_account",
                             fundingSource: newFundingSource
                         })
@@ -4226,10 +4490,10 @@ window.spb = function(modules) {
     }
     try {
         if (!window.paypal) {
-            var script = [].slice.call(document.querySelectorAll("script")).find((function(el) {
+            var button_script = [].slice.call(document.querySelectorAll("script")).find((function(el) {
                 return el.getAttribute("data-namespace");
             }));
-            script && (window.paypal = window[script.getAttribute("data-namespace")]);
+            button_script && (window.paypal = window[button_script.getAttribute("data-namespace")]);
         }
     } catch (err) {}
     function setupButton(opts) {
@@ -4254,13 +4518,13 @@ window.spb = function(modules) {
         var props = getProps({
             facilitatorAccessToken: facilitatorAccessToken
         });
-        var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, style = props.style, persistRiskData = props.persistRiskData;
+        var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, style = props.style, persistRiskData = props.persistRiskData, fundingSource = props.fundingSource;
         var config = getConfig({
             serverCSPNonce: serverCSPNonce,
             firebaseConfig: firebaseConfig
         });
         var version = config.version;
-        var components = getComponents();
+        var components = props_getComponents();
         var _onInit = onInit({
             correlationID: buttonCorrelationID
         }), initPromise = _onInit.initPromise, isEnabled = _onInit.isEnabled;
@@ -4616,14 +4880,14 @@ window.spb = function(modules) {
             }).then((function(_ref3) {
                 var prerenderDetails = _ref3.prerenderDetails;
                 if (prerenderDetails) {
-                    var win = prerenderDetails.win, fundingSource = prerenderDetails.fundingSource, card = prerenderDetails.card;
-                    var button = document.querySelector("[data-funding-source=" + fundingSource + "]");
+                    var win = prerenderDetails.win, paymentFundingSource = prerenderDetails.fundingSource, card = prerenderDetails.card;
+                    var button = document.querySelector("[data-funding-source=" + paymentFundingSource + "]");
                     if (!button) throw new Error("Can not find button element");
                     var payPromise = initiatePayment({
                         payment: {
                             win: win,
                             button: button,
-                            fundingSource: fundingSource,
+                            fundingSource: paymentFundingSource,
                             card: card,
                             buyerIntent: "pay"
                         },
@@ -4645,7 +4909,7 @@ window.spb = function(modules) {
             fundingEligibility: fundingEligibility
         });
         var setupButtonLogsTask = function(_ref) {
-            var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version, style = _ref.style;
+            var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version, style = _ref.style, fundingSource = _ref.fundingSource;
             var logger = getLogger();
             !function(_ref) {
                 var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version;
@@ -4700,7 +4964,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.290", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.291", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
@@ -4744,8 +5008,8 @@ window.spb = function(modules) {
                 logger.info("button_render_wallet_instrument_count_" + walletInstruments.length);
                 for (var _i2 = 0; _i2 < walletInstruments.length; _i2++) logger.info("button_render_wallet_instrument_" + walletInstruments[_i2]);
                 logger.track(((_logger$track = {}).transition_name = "process_button_load", _logger$track.eligible_payment_methods = fundingSources.join(":"), 
-                _logger$track.fi_list = walletInstruments.join(":"), _logger$track.eligible_payment_count = fundingSources.length.toString(), 
-                _logger$track.page_load_time = pageRenderTime ? pageRenderTime.toString() : "", 
+                _logger$track.fi_list = walletInstruments.join(":"), _logger$track.merchant_selected_funding_source = fundingSource, 
+                _logger$track.eligible_payment_count = fundingSources.length.toString(), _logger$track.page_load_time = pageRenderTime ? pageRenderTime.toString() : "", 
                 _logger$track.button_layout = layout, _logger$track.button_color = color, _logger$track.button_size = "responsive", 
                 _logger$track.button_shape = shape, _logger$track.button_label = label, _logger$track.button_width = window.innerWidth, 
                 _logger$track.button_type = "iframe", _logger$track.button_tagline_enabled = tagline ? "1" : "0", 
@@ -4765,7 +5029,8 @@ window.spb = function(modules) {
             locale: locale,
             merchantID: merchantID,
             buttonSessionID: buttonSessionID,
-            merchantDomain: merchantDomain
+            merchantDomain: merchantDomain,
+            fundingSource: fundingSource
         });
         var setupPaymentFlowsTask = function(_ref) {
             var props = _ref.props, config = _ref.config, serviceData = _ref.serviceData, components = _ref.components;
