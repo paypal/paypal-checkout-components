@@ -4,8 +4,9 @@
 import { values, destroyElement, toCSS } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
+import { getVersion } from '@paypal/sdk-client/src';
 
-import { BUTTON_SIZE } from '../../constants';
+import { BUTTON_SIZE, ATTRIBUTE } from '../../constants';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/config';
 import { type ButtonProps } from '../../ui/buttons/props';
 
@@ -82,7 +83,12 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
     };
 
     const element = (
-        <div id={ uid } onRender={ setupAutoResize } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
+        <div
+            id={ uid }
+            class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }
+            { ...({ [ATTRIBUTE.VERSION]: `${ getVersion() }` }) }
+            onRender={ setupAutoResize } >
+            
             <style>
                 {`
                     #${ uid } {
