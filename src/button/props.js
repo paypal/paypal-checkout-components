@@ -3,14 +3,13 @@
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY } from '@paypal/sdk-constants/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { type FundingEligibilityType, createExperiment } from '@paypal/sdk-client/src';
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
-import {  UPGRADE_LSAT_RAMP } from '../constants';
 import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
     ThreeDomainSecureFlowType, PersonalizationType, MenuFlowType, ConnectOptions } from '../types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit, XOnInit,
     OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError, OnError,
-    XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth } from '../props';
+    XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL } from '../props';
 import { type FirebaseConfig } from '../api';
 import { getNonce } from '../lib';
 import { getOnInit } from '../props/onInit';
@@ -21,7 +20,6 @@ import { getOnShippingChange } from '../props/onShippingChange';
 import { getOnClick } from '../props/onClick';
 import { getCreateBillingAgreement } from '../props/createBillingAgreement';
 import { getCreateSubscription } from '../props/createSubscription';
-import { getOnAuth } from '../props/onAuth';
 
 // export something to force webpack to see this as an ES module
 export const TYPES = true;
@@ -85,7 +83,7 @@ export type ButtonXProps = {|
     apiStageHost : ?string,
     upgradeLSAT? : boolean,
     connect? : ConnectOptions,
-
+    
     onInit : XOnInit,
     onApprove : ?XOnApprove,
     onCancel : XOnCancel,
@@ -141,8 +139,7 @@ export type ButtonProps = {|
     onApprove : OnApprove,
 
     onCancel : OnCancel,
-    onShippingChange : ?OnShippingChange,
-    onAuth : OnAuth
+    onShippingChange : ?OnShippingChange
 |};
 
 export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ButtonProps {
@@ -185,8 +182,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         upgradeLSAT = false
     } = xprops;
 
-    const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, UPGRADE_LSAT_RAMP.RAMP);
-
     const onInit = getOnInit({ onInit: xprops.onInit });
     const merchantDomain = (typeof getParentDomain === 'function') ? getParentDomain() : 'unknown';
 
@@ -218,13 +213,12 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
 
     const createBillingAgreement = getCreateBillingAgreement({ createBillingAgreement: xprops.createBillingAgreement });
     const createSubscription = getCreateSubscription({ createSubscription: xprops.createSubscription, partnerAttributionID, merchantID, clientID }, { facilitatorAccessToken });
-
+    
     const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken, createBillingAgreement, createSubscription });
 
-    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, upgradeLSAT, clientAccessToken, vault, isLSATExperiment: upgradeLSATExperiment.isEnabled() }, { facilitatorAccessToken, createOrder });
+    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, upgradeLSAT, clientAccessToken, vault }, { facilitatorAccessToken, createOrder });
     const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
     const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID }, { facilitatorAccessToken, createOrder });
-    const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, isLSATExperiment: upgradeLSATExperiment.isEnabled(), upgradeLSAT });
 
     return {
         env,
@@ -271,9 +265,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         createSubscription,
         onApprove,
         onCancel,
-        onShippingChange,
-
-        onAuth
+        onShippingChange
     };
 }
 
@@ -298,7 +290,7 @@ export type Config = {|
 export function getConfig({ serverCSPNonce, firebaseConfig } : {| serverCSPNonce : ?string, firebaseConfig : ?FirebaseConfig |}) : Config {
     const cspNonce = serverCSPNonce || getNonce();
     const { version } = paypal;
-
+    
     return {
         version,
         cspNonce,

@@ -209,7 +209,7 @@ export async function clickMenu(fundingSource? : string = FUNDING.PAYPAL) : Zalg
     if (!menubutton) {
         throw new Error(`Can not find ${ fundingSource } menu button`);
     }
-
+    
     menubutton.click();
     await menubutton.menuPromise;
 }
@@ -238,7 +238,7 @@ export const DEFAULT_FUNDING_ELIGIBILITY = {
 
 export function createButtonHTML({ fundingEligibility = DEFAULT_FUNDING_ELIGIBILITY, wallet } : {| fundingEligibility? : Object, wallet? : Object |} = {}) {
     const buttons = [];
-
+    
     for (const fundingSource of values(FUNDING)) {
         const fundingConfig = fundingEligibility[fundingSource];
 
@@ -253,7 +253,7 @@ export function createButtonHTML({ fundingEligibility = DEFAULT_FUNDING_ELIGIBIL
                 if (!cardConfig || !cardConfig.eligible) {
                     continue;
                 }
-
+                
                 if (cardConfig.vaultedInstruments && cardConfig.vaultedInstruments.length) {
                     const vaultedInstrument = cardConfig.vaultedInstruments[0];
                     buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"><div data-menu></div></div>`);
@@ -331,38 +331,10 @@ export function getGetOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
-export function getRestfulGetOrderApiMock(options : Object = {}) : MockEndpoint {
-    return $mockEndpoint.register({
-        method: 'GET',
-        uri:    new RegExp('/v2/checkout/orders/[^/]+'),
-        data:   {
-            ack:  'success',
-            data: {
-
-            }
-        },
-        ...options
-    });
-}
-
 export function getCaptureOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
         uri:    new RegExp('/smart/api/order/[^/]+/capture'),
-        data:   {
-            ack:  'success',
-            data: {
-
-            }
-        },
-        ...options
-    });
-}
-
-export function getRestfulCapturedOrderApiMock(options : Object = {}) : MockEndpoint {
-    return $mockEndpoint.register({
-        method: 'POST',
-        uri:    new RegExp('/v2/checkout/orders/[^/]+/capture'),
         data:   {
             ack:  'success',
             data: {
@@ -542,32 +514,12 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                 if (!data.variables.buyerAccessToken) {
                     throw new Error(`Expected buyer access token to be passed`);
                 }
-
+                
                 return {
                     data: {
                         auth: {
                             authCode: uniqueID()
                         }
-                    }
-                };
-            }
-
-            if (data.query.includes('mutation UpgradeFacilitatorAccessToken')) {
-                if (!data.variables.facilitatorAccessToken) {
-                    throw new Error(`We haven't received the facilitatorAccessToken`);
-                }
-
-                if (!data.variables.buyerAccessToken) {
-                    throw new Error(`We haven't received the buyer's access token`);
-                }
-
-                if (!data.variables.orderID) {
-                    throw new Error(`We haven't received the orderID`);
-                }
-
-                return {
-                    data: {
-                        upgradeLowScopeAccessToken: true
                     }
                 };
             }
@@ -804,7 +756,7 @@ export function mockScript({ src, expect = true, block = true } : {| src : strin
             return promise;
         },
         done: () => {
-
+            
             if (expect && (!mockScripts[src] || !mockScripts[src].created)) {
                 throw new Error(`Expected script with src ${ src } to have been created`);
             }
@@ -1088,7 +1040,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                         message_data:       {}
                     }));
                 }
-
+    
                 if (messageType === 'response' && messageStatus === 'error') {
                     if (messageName === 'onError') {
                         throw new Error(messageData.message);
@@ -1108,26 +1060,26 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                         }
                     }));
                 }
-
+    
                 if (messageType === 'response' && messageName === 'getProps') {
                     if (requestUID !== getPropsRequestID) {
                         throw new Error(`Request uid doest not match for getProps response`);
                     }
                     props = messageData;
                 }
-
+    
                 if (messageType === 'response' && messageName === 'onApprove') {
                     if (requestUID !== onApproveRequestID) {
                         throw new Error(`Request uid doest not match for onApprove response`);
                     }
                 }
-
+    
                 if (messageType === 'response' && messageName === 'onCancel') {
                     if (requestUID !== onCancelRequestID) {
                         throw new Error(`Request uid doest not match for onCancel response`);
                     }
                 }
-
+    
                 if (messageType === 'response' && messageName === 'onError') {
                     if (requestUID !== onErrorRequestID) {
                         throw new Error(`Request uid doest not match for onError response`);
@@ -1327,7 +1279,7 @@ type PostRobotMock = {|
     |}) => ZalgoPromise<T>,  // eslint-disable-line no-undef
         done : () => void
     |};
-
+    
 export function getPostRobotMock() : PostRobotMock {
     let active = true;
 
@@ -1431,7 +1383,7 @@ const getDefaultMockWindowOptions = () : MockWindowOptions => {
     // $FlowFixMe
     return {};
 };
-
+        
 export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, expectClose = false, onOpen = noop, expectedQuery = [], expectImmediateUrl = true } : MockWindowOptions = getDefaultMockWindowOptions()) : MockWindow {
 
     let windowOpenedTimes = 0;
@@ -1443,9 +1395,9 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
         if (expectImmediateUrl && !url) {
             throw new Error(`Expected url to be immediately passed to window.open`);
         }
-
+    
         windowOpenedTimes += 1;
-
+            
         if (windowOpenedTimes === times) {
             window.open = windowOpen;
         }
@@ -1541,7 +1493,7 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
             if (appSwitch) {
                 newWin.closed = true;
             }
-
+                            
             if (url) {
                 newWin.location = url;
             }
@@ -1592,19 +1544,19 @@ export function generateOrderID() : string {
 }
 
 const ensureWindowOpenOnClick = () => {
-
+    
     let isClick = false;
     let clickTimeout;
-
+    
     function doClick() {
         isClick = true;
-
+    
         clearTimeout(clickTimeout);
         clickTimeout = setTimeout(() => {
             isClick = false;
         }, 1);
     }
-
+    
     const HTMLElementClick = window.HTMLElement.prototype.click;
     window.HTMLElement.prototype.click = function overrideHTMLElementClick() : void {
         doClick();
@@ -1619,25 +1571,25 @@ const ensureWindowOpenOnClick = () => {
         }
         return HTMLElementDispatchEvent.apply(this, arguments);
     };
-
+    
     if (!document.body) {
         throw new Error(`Expected to find document body`);
     }
-
+    
     document.body.addEventListener('keydown', (event : Event) => {
         // $FlowFixMe
         if (event.key === 13 || event.key === 32) {
             doClick();
         }
     });
-
+    
     const windowOpen = window.open;
     window.open = function patchedWindowOpen() : CrossDomainWindowType {
-
+    
         if (!isClick) {
             throw new Error(`Attempted to open window not in click event`);
         }
-
+    
         return windowOpen.apply(this, arguments);
     };
 };
