@@ -19,7 +19,8 @@
     "src",
     "babel.config.js",
     "index.js",
-    "globals.js"
+    "globals.js",
+    "webpack.config.js"
   ],
   "scripts": {
     "start": "babel-node ./server/devServer",
