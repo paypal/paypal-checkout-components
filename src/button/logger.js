@@ -1,7 +1,7 @@
 /* @flow */
 
 import { isIEIntranet, getPageRenderTime } from 'belter/src';
-import { FPTI_KEY, ENV } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType } from '../types';
@@ -33,10 +33,11 @@ type ButtonLoggerOptions = {|
     merchantID : $ReadOnlyArray<string>,
     merchantDomain : string,
     version : string,
-    style : ButtonStyle
+    style : ButtonStyle,
+    fundingSource : ?$Values<typeof FUNDING>
 |};
 
-export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, buttonCorrelationID, locale, merchantID, merchantDomain, version, style } : ButtonLoggerOptions) : ZalgoPromise<void> {
+export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, buttonCorrelationID, locale, merchantID, merchantDomain, version, style, fundingSource } : ButtonLoggerOptions) : ZalgoPromise<void> {
     const logger = getLogger();
 
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version });
@@ -95,6 +96,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.TRANSITION]:                    FPTI_TRANSITION.BUTTON_LOAD,
             [FPTI_KEY.FUNDING_LIST]:                  fundingSources.join(':'),
             [FPTI_KEY.FI_LIST]:                       walletInstruments.join(':'),
+            [FPTI_KEY.SELECTED_FI]:                   fundingSource,
             [FPTI_KEY.FUNDING_COUNT]:                 fundingSources.length.toString(),
             [FPTI_KEY.PAGE_LOAD_TIME]:                pageRenderTime ? pageRenderTime.toString() : '',
             [FTPI_BUTTON_KEY.BUTTON_LAYOUT]:          layout,

@@ -79,6 +79,7 @@ export type ButtonXProps = {|
     getParent : () => CrossDomainWindowType,
     persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
     clientMetadataID : ?string,
+    fundingSource : ?$Values<typeof FUNDING>,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -122,6 +123,7 @@ export type ButtonProps = {|
     getPageUrl : GetPageURL,
     getParent : () => CrossDomainWindowType,
     persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
+    fundingSource : ?$Values<typeof FUNDING>,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -174,6 +176,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         apiStageHost,
         style,
         getParent,
+        fundingSource,
         currency,
         connect,
         intent,
@@ -251,6 +254,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         getParent,
         persistRiskData,
         connect,
+        fundingSource,
 
         enableThreeDomainSecure,
         enableStandardCardFields,
