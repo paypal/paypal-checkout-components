@@ -2,9 +2,8 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups, stringifyError, extendUrl } from 'belter/src';
-import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { FUNDING, FPTI_KEY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
-import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
 import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';

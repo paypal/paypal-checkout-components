@@ -1,9 +1,8 @@
 /* @flow */
 
 import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError, preventClickFocus } from 'belter/src';
-import { COUNTRY, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
+import { COUNTRY, FPTI_KEY, FUNDING, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 
 import type { PersonalizationType, ContentType, Wallet } from '../types';
 import { getLogger } from '../lib';

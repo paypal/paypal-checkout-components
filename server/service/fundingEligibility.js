@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { FundingEligibilityType } from '@paypal/sdk-client/src';
+import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal/sdk-constants';
 import { params, types, query } from 'typed-graphqlify';
 import { values } from 'belter';

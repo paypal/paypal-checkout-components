@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-depth: off */
 
-import type { FundingEligibilityType } from '@paypal/sdk-client/src';
+import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
 import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 import { values } from 'belter';
 
@@ -80,6 +80,11 @@ function getCSPNonce(res : ExpressResponse) : string {
     return nonce;
 }
 
+const getDefaultFundingEligibility = () : FundingEligibilityType => {
+    // $FlowFixMe
+    return {};
+};
+
 function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibilityType {
     const encodedFundingEligibility = req.query.fundingEligibility;
 
@@ -91,7 +96,7 @@ function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibilityTy
         } catch (err) {
             throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Invalid funding eligibility: ${ encodedFundingEligibility }`, err);
         }
-        const fundingEligibility = {};
+        const fundingEligibility = getDefaultFundingEligibility();
         
         for (const fundingSource of values(FUNDING)) {
             const fundingSourceEligibilityInput = fundingEligibilityInput[fundingSource] || {};
