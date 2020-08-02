@@ -291,7 +291,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                         }
                         if (fundingEligibility.card && fundingEligibility.card.vendors) {
                             for (const vendor of values(CARD)) {
-                                if (fundingEligibility.card.vendors[vendor]) {
+                                if (fundingEligibility.card && fundingEligibility.card.vendors[vendor]) {
                                     delete fundingEligibility.card.vendors[vendor].vaultable;
                                 }
                             }
