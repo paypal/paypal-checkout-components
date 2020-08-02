@@ -197,7 +197,7 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         // $FlowFixMe
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
-        const result = await gqlBatch({
+        const { fundingEligibility } = await gqlBatch({
             query:     buildFundingEligibilityQuery(basicFundingEligibility),
             variables: {
                 clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
@@ -206,9 +206,11 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
             accessToken: clientAccessToken
         });
 
-        return strictMerge(basicFundingEligibility, result.fundingEligibility, (first, second) => {
-            return second;
-        });
+        if (fundingEligibility && fundingEligibility.paypal && fundingEligibility.paypal.vaultable && basicFundingEligibility && basicFundingEligibility.paypal && !basicFundingEligibility.paypal.vaultable) {
+            logger.info(req, 'paypal_basic_full_vaultable_mismatch', { basicFundingEligibility: JSON.stringify(basicFundingEligibility), fundingEligibility: JSON.stringify(fundingEligibility) });
+        }
+
+        return strictMerge(basicFundingEligibility, fundingEligibility, (first, second) => second);
 
     } catch (err) {
         logger.error(req, 'funding_eligibility_error_fallback', { err: err.stack ? err.stack : err.toString() });
