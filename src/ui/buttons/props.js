@@ -5,7 +5,7 @@ import { values, uniqueID } from 'belter/src';
 import { type OrderCreateRequest, type FundingEligibilityType,
     type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
-    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
@@ -350,64 +350,6 @@ const COUNTRIES = values(COUNTRY);
 const FUNDING_SOURCES = values(FUNDING);
 const ENVS = values(ENV);
 const PLATFORMS = values(PLATFORM);
-const CARDS = values(CARD);
-
-function getDefaultWallet(fundingEligibility : FundingEligibilityType, wallet : ?Wallet) : Wallet {
-    
-    // $FlowFixMe
-    wallet = wallet || {};
-
-    wallet.paypal = wallet.paypal || { instruments: [] };
-    // $FlowFixMe
-    wallet.paypal.instruments = wallet.paypal.instruments || [];
-
-    wallet.card = wallet.card || { instruments: [] };
-    wallet.card.instruments = wallet.card.instruments || [];
-
-    wallet.credit = wallet.credit || { instruments: [] };
-    wallet.credit.instruments = wallet.credit.instruments || [];
-
-    if (fundingEligibility.paypal && fundingEligibility.paypal.vaultedInstruments && fundingEligibility.paypal.vaultedInstruments.length) {
-        for (const vaultedInstrument of fundingEligibility.paypal.vaultedInstruments) {
-            if (!wallet.paypal.instruments.find(instrument => instrument.tokenID === vaultedInstrument.id)) {
-                wallet.paypal.instruments = [
-                    ...wallet.paypal.instruments,
-                    {
-                        tokenID:  vaultedInstrument.id,
-                        label:    vaultedInstrument.label.description,
-                        oneClick: true
-                    }
-                ];
-            }
-        }
-    }
-
-    for (const vendor of CARDS) {
-        if (fundingEligibility.card && fundingEligibility.card.vendors && fundingEligibility.card.vendors[vendor]) {
-            const vendorEligibility = fundingEligibility.card.vendors[vendor];
-
-            if (vendorEligibility && vendorEligibility.vaultedInstruments && vendorEligibility.vaultedInstruments.length) {
-                for (const vaultedInstrument of vendorEligibility.vaultedInstruments) {
-                    if (!wallet.card.instruments.find(instrument => instrument.tokenID === vaultedInstrument.id)) {
-                        wallet.card.instruments = [
-                            ...wallet.card.instruments,
-                            {
-                                type:     WALLET_INSTRUMENT.CARD,
-                                tokenID:  vaultedInstrument.id,
-                                label:    vaultedInstrument.label.description,
-                                oneClick: true,
-                                vendor
-                            }
-                        ];
-                    }
-                }
-            }
-        }
-    }
-
-    // $FlowFixMe
-    return wallet;
-}
 
 const getDefaultStyle = () : ButtonStyleInputs => {
     // $FlowFixMe
@@ -490,7 +432,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     }
 
     style = normalizeButtonStyle(props, style);
-    wallet = getDefaultWallet(fundingEligibility, wallet);
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
