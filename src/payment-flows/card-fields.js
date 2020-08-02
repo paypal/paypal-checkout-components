@@ -17,7 +17,7 @@ function setupCardFields() {
 let cardFieldsOpen = false;
 
 function isCardFieldsEligible({ props, serviceData } : IsEligibleOptions) : boolean {
-    const { vault, onShippingChange, enableStandardCardFields } = props;
+    const { vault, onShippingChange } = props;
     const { eligibility } = serviceData;
 
     if (vault) {
@@ -26,11 +26,6 @@ function isCardFieldsEligible({ props, serviceData } : IsEligibleOptions) : bool
 
     if (onShippingChange) {
         return false;
-    }
-
-    // if merchant opt-in inline guest, they will ALWAYS see inline guest guest
-    if (enableStandardCardFields) {
-        return true;
     }
 
     return eligibility.cardFields;

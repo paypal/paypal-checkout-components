@@ -69,7 +69,6 @@ export type ButtonXProps = {|
     getPopupBridge : XGetPopupBridge,
     remember : RememberFunding,
     enableThreeDomainSecure : boolean,
-    enableStandardCardFields : ?boolean,
     enableNativeCheckout : boolean | void,
     getParentDomain : () => string,
     getPageUrl : GetPageURL,
@@ -128,7 +127,6 @@ export type ButtonProps = {|
     onInit : OnInit,
     onError : OnError,
     onClick : ?OnClick,
-    enableStandardCardFields : ?boolean,
     connect : ?ConnectOptions,
 
     createOrder : CreateOrder,
@@ -164,7 +162,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         getPrerenderDetails,
         getPageUrl,
         enableThreeDomainSecure,
-        enableStandardCardFields,
         enableNativeCheckout = false,
         remember: rememberFunding,
         onError,
@@ -250,7 +247,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         fundingSource,
 
         enableThreeDomainSecure,
-        enableStandardCardFields,
         enableNativeCheckout,
 
         onClick,

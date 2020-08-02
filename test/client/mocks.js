@@ -150,7 +150,6 @@ export function setupMocks() {
         getPopupBridge:           mockAsyncProp(noop),
         getParent:                () => window,
         getParentDomain:          () => 'https://www.merchant.com',
-        enableStandardCardFields: false,
         enableNativeCheckout:     false
     };
 

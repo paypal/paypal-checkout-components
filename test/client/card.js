@@ -11,8 +11,6 @@ describe('card field cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.xprops.enableStandardCardFields = true;
-
             const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
 
@@ -77,7 +75,7 @@ describe('card field cases', () => {
 
             createButtonHTML({ fundingEligibility });
 
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility, eligibility: { cardFields: true } });
 
             await clickButton(FUNDING.CARD);
         });

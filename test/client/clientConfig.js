@@ -57,8 +57,6 @@ describe('client config cases', () => {
 
     it('should pass the correct basic values for inline card fields', async () => {
         return await wrapPromise(async ({ expect }) => {
-            window.xprops.enableStandardCardFields = true;
-
             let clientConfigCalled = false;
 
             const gqlMock = getGraphQLApiMock({
@@ -109,7 +107,7 @@ describe('client config cases', () => {
 
             createButtonHTML({ fundingEligibility });
 
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility, eligibility: { cardFields: true } });
 
             await clickButton(FUNDING.CARD);
         });
