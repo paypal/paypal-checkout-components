@@ -47,7 +47,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, style, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale, onShippingChange,
-                clientMetadataID, riskData, pageSessionID, correlationID } = getParams(params, req, res);
+                clientMetadataID, riskData, pageSessionID, correlationID, enableBNPL, platform } = getParams(params, req, res);
             const { label, period } = style;
             
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
@@ -67,18 +67,18 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry }));
             
-            const sendRiskDataPromise = riskData ? transportRiskData(req, riskData).catch(err => {
+            const sendRiskDataPromise = (riskData && !enableBNPL) ? transportRiskData(req, riskData).catch(err => {
                 logger.warn(req, 'risk_data_transport_error', { err: err.stack || err.toString() });
             }) : Promise.resolve();
 
-            const buyerAccessTokenPromise = (userIDToken && clientMetadataID) ? sendRiskDataPromise
+            const buyerAccessTokenPromise = (userIDToken && clientMetadataID && !enableBNPL) ? sendRiskDataPromise
                 .then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID, riskData })) : null;
 
             const buyerAccessToken = await buyerAccessTokenPromise;
 
             const nativeEligibilityPromise = resolveNativeEligibility(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, vault,
-                buyerCountry, onShippingChange
+                buyerCountry, onShippingChange, platform
             });
 
             const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
@@ -88,7 +88,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const walletPromise = resolveWallet(req, gqlBatch, getWallet, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault, amount,
-                disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken
+                disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, userIDToken, enableBNPL
             });
 
             const personalizationPromise = resolvePersonalization(req, gqlBatch, {
@@ -145,7 +145,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const buttonHTML = render.button.Buttons(buttonProps).render(html());
 
             const setupParams = {
-                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta, wallet, buyerAccessToken, correlationID,
+                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta, wallet: enableBNPL ? null : wallet, buyerAccessToken, correlationID,
                 isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content, serverRiskData
             };
 
@@ -161,7 +161,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
                     <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON(setupParams) })</script>
-                    ${ shouldRenderFraudnet({ wallet }) ? renderFraudnetScript({ id: clientMetadataID || pageSessionID, cspNonce, env }) : '' }
+                    ${ shouldRenderFraudnet({ wallet, enableBNPL }) ? renderFraudnetScript({ id: clientMetadataID || pageSessionID, cspNonce, env }) : '' }
                 </body>
             `;
 

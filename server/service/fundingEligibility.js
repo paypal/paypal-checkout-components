@@ -42,15 +42,6 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
         userAgent:       '$userAgent'
     };
 
-    const getVaultedInstrumentQuery = () => {
-        return {
-            id:    types.string,
-            label: {
-                description: types.string
-            }
-        };
-    };
-
     const getBasicFundingEligibilityQuery = () => {
         return {
             eligible: types.boolean
@@ -60,8 +51,7 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
     const getBasicCardVendorQuery = () => {
         return {
             eligible:           types.boolean,
-            vaultable:          types.boolean,
-            vaultedInstruments: getVaultedInstrumentQuery()
+            vaultable:          types.boolean
         };
     };
 
@@ -80,8 +70,7 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
     const getPayPalQuery = () => {
         return {
             eligible:           types.boolean,
-            vaultable:          types.boolean,
-            vaultedInstruments: getVaultedInstrumentQuery()
+            vaultable:          types.boolean
         };
     };
 

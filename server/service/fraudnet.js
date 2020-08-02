@@ -14,7 +14,11 @@ const FRAUDNET_URL = {
     [ ENV.TEST ]:       'https://c.paypal.com/da/r/fb.js'
 };
 
-export function shouldRenderFraudnet({ wallet } : {| wallet : Wallet |}) : boolean {
+export function shouldRenderFraudnet({ wallet, enableBNPL } : {| wallet : Wallet, enableBNPL : boolean |}) : boolean {
+    if (enableBNPL) {
+        return false;
+    }
+
     for (const fundingSource of Object.values(FUNDING)) {
         // $FlowFixMe
         const walletConfig = wallet && wallet[fundingSource];

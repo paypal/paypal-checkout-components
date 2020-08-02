@@ -1,6 +1,6 @@
 /* @flow */
 
-import { COUNTRY, CURRENCY, VAULT } from '@paypal/sdk-constants';
+import { COUNTRY, CURRENCY, VAULT, PLATFORM } from '@paypal/sdk-constants';
 
 import { getCookieString, type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
@@ -48,7 +48,8 @@ export type NativeEligibilityOptions = {|
     vault : $Values<typeof VAULT>,
     merchantID : ?$ReadOnlyArray<string>,
     buttonSessionID : string,
-    onShippingChange : boolean
+    onShippingChange : boolean,
+    platform : $Values<typeof PLATFORM>
 |};
 
 export type NativeEligibility = {|
@@ -57,7 +58,14 @@ export type NativeEligibility = {|
 |};
 
 export async function resolveNativeEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, nativeEligibilityOptions : NativeEligibilityOptions) : Promise<NativeEligibility> {
-    let { logger, clientID, merchantID, buttonSessionID, currency, vault, buyerCountry, onShippingChange } = nativeEligibilityOptions;
+    let { logger, clientID, merchantID, buttonSessionID, currency, vault, buyerCountry, onShippingChange, platform } = nativeEligibilityOptions;
+
+    if (platform !== PLATFORM.MOBILE) {
+        return {
+            paypal: false,
+            venmo:  false
+        };
+    }
 
     try {
         const userAgent = req.get('user-agent') || '';

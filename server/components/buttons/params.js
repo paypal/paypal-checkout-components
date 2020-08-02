@@ -2,7 +2,7 @@
 /* eslint max-depth: off */
 
 import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
-import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
+import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS, PLATFORM } from '@paypal/sdk-constants';
 import { values } from 'belter';
 
 import { HTTP_HEADER, ERROR_CODE } from '../../config';
@@ -35,7 +35,9 @@ type ParamsType = {|
     userIDToken? : string,
     amount? : string,
     clientMetadataID? : string,
-    riskData? : string
+    riskData? : string,
+    enableBNPL? : boolean,
+    platform : ?$Values<typeof PLATFORM>
 |};
 
 type Style = {|
@@ -67,7 +69,9 @@ type RequestParams = {|
     clientMetadataID : ?string,
     pageSessionID : string,
     riskData : ?RiskData,
-    correlationID : string
+    correlationID : string,
+    enableBNPL : boolean,
+    platform : $Values<typeof PLATFORM>
 |};
 
 function getCSPNonce(res : ExpressResponse) : string {
@@ -233,7 +237,9 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         clientAccessToken,
         userIDToken,
         debug = false,
-        onShippingChange = false
+        onShippingChange = false,
+        enableBNPL = false,
+        platform = PLATFORM.DESKTOP
     } = params;
 
     const locale = getLocale(params);
@@ -270,6 +276,8 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         riskData,
         pageSessionID,
         clientMetadataID,
-        correlationID
+        correlationID,
+        enableBNPL,
+        platform
     };
 }
