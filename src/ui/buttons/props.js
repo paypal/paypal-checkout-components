@@ -222,7 +222,8 @@ export type ButtonProps = {|
     onShippingChange : ?OnShippingChange,
     clientAccessToken : ?string,
     nonce : string,
-    userIDToken : ?string
+    userIDToken : ?string,
+    enableBNPL : boolean
 |};
 
 export type ButtonPropsInputs = {|

@@ -255,6 +255,12 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 queryParam: true
             },
 
+            enableBNPL: {
+                type:       'boolean',
+                required:   false,
+                queryParam: true
+            },
+
             env: {
                 type:       'string',
                 queryParam: true,
@@ -392,7 +398,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 value: ({ props }) => {
                     const clientMetadataID = getClientMetadataID();
 
-                    if (props.userIDToken && clientMetadataID && !isIE()) {
+                    if (props.userIDToken && clientMetadataID && !isIE() && !props.enableBNPL) {
                         try {
                             return collectRiskData({
                                 clientMetadataID,
