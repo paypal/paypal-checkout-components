@@ -9,7 +9,8 @@ import { strictMerge } from 'strict-merge';
 import { isDefined, type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
 
-function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibilityType) : string {
+// eslint-disable-next-line complexity
+function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibilityType, merchantID : ?$ReadOnlyArray<string>) : string {
     const InputTypes = {
         $clientID:        'String',
         $buyerCountry:    'CountryCodes',
@@ -152,9 +153,9 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
             //    delete fundingQuery[fundingSource].vaultable;
             // }
 
-            // if (isDefined(basicFundingEligibility[fundingSource].branded)) {
-            //     delete fundingQuery[fundingSource].branded;
-            // }
+            if (isDefined(basicFundingEligibility[fundingSource].branded) && !(merchantID && merchantID.length > 1)) {
+                delete fundingQuery[fundingSource].branded;
+            }
 
             if (!Object.keys(fundingQuery[fundingSource]).length) {
                 delete fundingQuery[fundingSource];
@@ -198,7 +199,7 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
         const { fundingEligibility } = await gqlBatch({
-            query:     buildFundingEligibilityQuery(basicFundingEligibility),
+            query:     buildFundingEligibilityQuery(basicFundingEligibility, merchantID),
             variables: {
                 clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
                 vault, disableFunding, disableCard, userAgent, buttonSessionID
