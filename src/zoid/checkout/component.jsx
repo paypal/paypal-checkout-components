@@ -102,6 +102,7 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     type:       'function',
                     queryParam: 'code',
                     required:   false,
+                    // $FlowFixMe
                     queryValue: ({ value }) => ZalgoPromise.try(value),
                     decorate:   ({ value }) => memoize(value)
                 },
@@ -125,6 +126,7 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     type:       'function',
                     queryParam: 'token',
                     alias:      'payment',
+                    // $FlowFixMe
                     queryValue: ({ value }) => ZalgoPromise.try(value),
                     decorate:   ({ value }) => memoize(value)
                 },

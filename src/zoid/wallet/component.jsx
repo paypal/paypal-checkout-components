@@ -102,6 +102,7 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                 createOrder: {
                     type:       'function',
                     queryParam: 'orderID',
+                    // $FlowFixMe
                     queryValue: ({ value }) => ZalgoPromise.try(value),
                     decorate:   ({ value }) => memoize(value)
                 },
