@@ -432,6 +432,12 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                         action: 'checkout'
                     };
                 }
+            },
+
+            wallet: {
+                type:     'object',
+                required: false,
+                value:    () => window.__TEST_WALLET__
             }
         }
     });

@@ -39,6 +39,7 @@ type ButtonConfig = {|
         width : number
     |},
     fundingEligibility? : Object,
+    wallet? : Object,
     rememberedFunding? : $ReadOnlyArray<string>,
     button? : {|
         locale? : string,
@@ -212,42 +213,45 @@ buttonConfigs.push({
     button: {
         fundingSource: 'paypal'
     },
-    fundingEligibility: {
+    wallet: {
         paypal: {
-            eligible:           true,
-            vaultedInstruments: [
+            instruments: [
                 {
-                    id:    'xyz',
-                    label: {
-                        description: 'foo@bar.com'
-                    }
+                    label:    'foo@bar.com',
+                    oneClick: true,
+                    tokenID:  '12345'
                 }
             ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
         },
         card: {
             eligible: true,
             vendors:  {
                 visa: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Visa x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 mastercard: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Mastercard x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 amex: {
                     eligible: true
@@ -264,42 +268,45 @@ buttonConfigs.push({
     button: {
         fundingSource: 'card'
     },
-    fundingEligibility: {
+    wallet: {
         paypal: {
-            eligible:           true,
-            vaultedInstruments: [
+            instruments: [
                 {
-                    id:    'xyz',
-                    label: {
-                        description: 'foo@bar.com'
-                    }
+                    label:    'foo@bar.com',
+                    oneClick: true,
+                    tokenID:  '12345'
                 }
             ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
         },
         card: {
             eligible: true,
             vendors:  {
                 visa: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Visa x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 mastercard: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Mastercard x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 amex: {
                     eligible: true
@@ -313,42 +320,45 @@ buttonConfigs.push({
     container: {
         width: 350
     },
-    fundingEligibility: {
+    wallet: {
         paypal: {
-            eligible:           true,
-            vaultedInstruments: [
+            instruments: [
                 {
-                    id:    'xyz',
-                    label: {
-                        description: 'foo@bar.com'
-                    }
+                    label:    'foo@bar.com',
+                    oneClick: true,
+                    tokenID:  '12345'
                 }
             ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
         },
         card: {
             eligible: true,
             vendors:  {
                 visa: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Visa x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 mastercard: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Mastercard x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 amex: {
                     eligible: true

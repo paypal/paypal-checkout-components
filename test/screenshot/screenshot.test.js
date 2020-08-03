@@ -72,6 +72,10 @@ for (const config of buttonConfigs) {
                 window.__TEST_FUNDING_ELIGIBILITY__ = options.fundingEligibility;
             }
 
+            if (options.wallet) {
+                window.__TEST_WALLET__ = options.wallet;
+            }
+
             if (options.rememberedFunding) {
                 window.__TEST_REMEMBERED_FUNDING__ = options.rememberedFunding;
             }
