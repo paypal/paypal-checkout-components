@@ -272,13 +272,18 @@ export const DEFAULT_PROPS = {
     PLATFORM: PLATFORM.DESKTOP
 };
 
-// $FlowFixMe
+const getDefaultButtonPropsInput = () : ButtonPropsInputs => {
+    // $FlowFixMe
+    return {};
+};
+
 export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonStyleInputs) : ButtonStyle {
 
     if (!style) {
         throw new Error(`Expected props.style to be set`);
     }
 
+    props = props || getDefaultButtonPropsInput();
     const { fundingSource } = props;
 
     const FUNDING_CONFIG = getFundingConfig();
@@ -340,6 +345,11 @@ const FUNDING_SOURCES = values(FUNDING);
 const ENVS = values(ENV);
 const PLATFORMS = values(PLATFORM);
 
+const getDefaultStyle = () : ButtonStyleInputs => {
+    // $FlowFixMe
+    return {};
+};
+
 export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonProps {
 
     if (!props) {
@@ -349,8 +359,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     let {
         clientID,
         fundingSource,
-        // $FlowFixMe
-        style = {},
+        style = getDefaultStyle(),
         remembered = [],
         locale = DEFAULT_PROPS.LOCALE,
         env = DEFAULT_PROPS.ENV,

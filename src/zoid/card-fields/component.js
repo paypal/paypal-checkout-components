@@ -28,7 +28,6 @@ type CardProps = {|
 
 export function getCardFieldsComponent() : ZoidComponent<CardProps> {
     return inlineMemoize(getCardFieldsComponent, () => {
-        // $FlowFixMe
         return create({
             tag:  'paypal-card-fields',
             url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELDS__ }`,
@@ -54,7 +53,7 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
                 sessionID: {
                     type:       'string',
                     required:   false,
-                    def:        getSessionID,
+                    default:    getSessionID,
                     queryParam: true
                 },
 
