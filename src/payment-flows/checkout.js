@@ -134,7 +134,7 @@ function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgre
         if (!clientAccessToken) {
             return;
         }
-        
+
         if (isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility })) {
             return enableVault({ orderID, clientAccessToken }).catch(err => {
                 if (vault) {
@@ -166,7 +166,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick,
-        clientID, connect, clientMetadataID: cmid } = props;
+        clientID, connect, clientMetadataID: cmid, onAuth } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
         venmoPayloadID, buyerIntent } = payment;
     const { fundingEligibility, buyerCountry, sdkMeta } = serviceData;
@@ -177,7 +177,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
 
     let approved = false;
     let forceClosed = false;
-    
+
     const init = () => {
         return Checkout({
             window: win,
@@ -223,7 +223,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     });
                 });
             } : null,
-    
+
             createOrder: () => {
                 return createOrder().then(orderID => {
                     return ZalgoPromise.try(() => {
@@ -235,40 +235,42 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     });
                 });
             },
-    
+
             onApprove: ({ payerID, paymentID, billingToken, subscriptionID, authCode }) => {
                 approved = true;
                 getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
-    
+
                 // eslint-disable-next-line no-use-before-define
                 return close().then(() => {
                     const restart = memoize(() : ZalgoPromise<void> =>
                         initCheckout({ props, components, serviceData, config, payment: { button, fundingSource, card, buyerIntent, isClick: false } })
                             .start().finally(unresolvedPromise));
-                            
+
                     return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart }).catch(noop);
                 });
             },
-    
+
             onAuth: ({ accessToken }) => {
-                getLogger().info(`spb_onauth_access_token_${ (accessToken || buyerAccessToken)  ? 'present' : 'not_present' }`);
-                if (accessToken) {
-                    buyerAccessToken = accessToken;
-                }
+
+                const access_token = accessToken ? accessToken : buyerAccessToken;
+
+                return onAuth({ accessToken: access_token }).then(token => {
+                    buyerAccessToken = token;
+                });
             },
-    
+
             onCancel: () => {
                 // eslint-disable-next-line no-use-before-define
                 return close().then(() => {
                     return onCancel();
                 });
             },
-    
+
             onShippingChange: onShippingChange
                 ? (data, actions) => {
                     return onShippingChange({ buyerAccessToken, ...data }, actions);
                 } : null,
-    
+
             onClose: () => {
                 checkoutOpen = false;
                 if (!forceClosed && !approved) {
@@ -277,7 +279,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             },
 
             onError,
-    
+
             fundingSource,
             card,
             buyerCountry,
@@ -335,7 +337,7 @@ function updateCheckoutClientConfig({ orderID, payment }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { buyerIntent, fundingSource } = payment;
         const updateClientConfigPromise = updateButtonClientConfig({ fundingSource, orderID, inline: false });
-    
+
         // Block
         if (buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING) {
             return updateClientConfigPromise;

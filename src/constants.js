@@ -76,12 +76,14 @@ export const FPTI_CONTEXT_TYPE = {
 
 export const FPTI_STATE = {
     BUTTON:   ('smart_button' : 'smart_button'),
-    WALLET:   ('smart_wallet' : 'smart_wallet')
+    WALLET:   ('smart_wallet' : 'smart_wallet'),
+    PXP:      ('PXP_CHECK' : 'PXP_CHECK')
 };
 
 export const FPTI_TRANSITION = {
     BUTTON_LOAD:              ('process_button_load' : 'process_button_load'),
     BUTTON_CLICK:             ('process_button_click' : 'process_button_click'),
+    PXP:                      ('process_pxp_check' : 'process_pxp_check'),
 
     WALLET_LOAD:              ('process_wallet_load' : 'process_wallet_load'),
 
@@ -142,4 +144,9 @@ export const FTPI_WALLET_KEY = {
 export const USER_ACTION = {
     COMMIT:   'commit',
     CONTINUE: 'continue'
+};
+
+export const UPGRADE_LSAT_RAMP = {
+    EXP_NAME: 'UPGRADE_LSAT_EXPERIMENT',
+    RAMP:      1
 };
