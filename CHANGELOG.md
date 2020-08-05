@@ -1,3 +1,36 @@
+## <small>5.0.102 (2020-08-05)</small>
+
+* Add enableBNPL feature flag ([3f538aa](https://github.com/paypal/paypal-checkout-components/commit/3f538aa))
+* Added aliases for Issue Label Bot, a GitHub App ([173830d](https://github.com/paypal/paypal-checkout-components/commit/173830d))
+* Configure Renovate (#1369) ([f430001](https://github.com/paypal/paypal-checkout-components/commit/f430001)), closes [#1369](https://github.com/paypal/paypal-checkout-components/issues/1369)
+* Create CODE_OF_CONDUCT.md ([8cc5c29](https://github.com/paypal/paypal-checkout-components/commit/8cc5c29))
+* feature/sdk version data attribute (#1399) ([557b44a](https://github.com/paypal/paypal-checkout-components/commit/557b44a)), closes [#1399](https://github.com/paypal/paypal-checkout-components/issues/1399)
+* Fix flow ([8d32552](https://github.com/paypal/paypal-checkout-components/commit/8d32552))
+* Fix type error ([36083fb](https://github.com/paypal/paypal-checkout-components/commit/36083fb))
+* Fix wallet button screenshots ([115eb8d](https://github.com/paypal/paypal-checkout-components/commit/115eb8d))
+* onAuthorize => onApprove (#1360) ([c40649f](https://github.com/paypal/paypal-checkout-components/commit/c40649f)), closes [#1360](https://github.com/paypal/paypal-checkout-components/issues/1360)
+* Override Flex label (#1398) ([b8ee1e0](https://github.com/paypal/paypal-checkout-components/commit/b8ee1e0)), closes [#1398](https://github.com/paypal/paypal-checkout-components/issues/1398)
+* Pin dependencies (#1370) ([ffdec4e](https://github.com/paypal/paypal-checkout-components/commit/ffdec4e)), closes [#1370](https://github.com/paypal/paypal-checkout-components/issues/1370)
+* Remove temporary vaultable fix ([2af0464](https://github.com/paypal/paypal-checkout-components/commit/2af0464))
+* Remove Wallet polyfill from fundingEligibility ([29909de](https://github.com/paypal/paypal-checkout-components/commit/29909de))
+* Reverting PR #1370 - Pin dependencies (#1386) ([b0ed7bb](https://github.com/paypal/paypal-checkout-components/commit/b0ed7bb)), closes [#1370](https://github.com/paypal/paypal-checkout-components/issues/1370) [#1386](https://github.com/paypal/paypal-checkout-components/issues/1386)
+* Update dependency angular.js to v1.8.0 (#1371) ([aa2843f](https://github.com/paypal/paypal-checkout-components/commit/aa2843f)), closes [#1371](https://github.com/paypal/paypal-checkout-components/issues/1371)
+* Update dependency babel-core to v6 (#1373) ([1ce0535](https://github.com/paypal/paypal-checkout-components/commit/1ce0535)), closes [#1373](https://github.com/paypal/paypal-checkout-components/issues/1373)
+* Update dependency fs-extra to v9 (#1377) ([7f76057](https://github.com/paypal/paypal-checkout-components/commit/7f76057)), closes [#1377](https://github.com/paypal/paypal-checkout-components/issues/1377)
+* Update dependency imgur to v0.3.1 (#1375) ([0ccb25d](https://github.com/paypal/paypal-checkout-components/commit/0ccb25d)), closes [#1375](https://github.com/paypal/paypal-checkout-components/issues/1375)
+* Update dependency memory-fs to v0.5.0 (#1376) ([8ce122d](https://github.com/paypal/paypal-checkout-components/commit/8ce122d)), closes [#1376](https://github.com/paypal/paypal-checkout-components/issues/1376)
+* Update dependency pixelmatch to v5 (#1379) ([12ffe69](https://github.com/paypal/paypal-checkout-components/commit/12ffe69)), closes [#1379](https://github.com/paypal/paypal-checkout-components/issues/1379)
+* Update dependency pngjs to v5 (#1380) ([61d5c38](https://github.com/paypal/paypal-checkout-components/commit/61d5c38)), closes [#1380](https://github.com/paypal/paypal-checkout-components/issues/1380)
+* Update dependency serve to v11 (#1382) ([699e317](https://github.com/paypal/paypal-checkout-components/commit/699e317)), closes [#1382](https://github.com/paypal/paypal-checkout-components/issues/1382)
+* Update README.md ([832ad60](https://github.com/paypal/paypal-checkout-components/commit/832ad60))
+* Update README.md ([3625ea9](https://github.com/paypal/paypal-checkout-components/commit/3625ea9))
+* Update README.md ([edcaf39](https://github.com/paypal/paypal-checkout-components/commit/edcaf39))
+* Update renovate.json ([48c32ee](https://github.com/paypal/paypal-checkout-components/commit/48c32ee))
+* Upgrade .travis.yml to latest Node LTS (Node 12) (#1388) ([d50ef42](https://github.com/paypal/paypal-checkout-components/commit/d50ef42)), closes [#1388](https://github.com/paypal/paypal-checkout-components/issues/1388)
+* Upgrade flow ([e440968](https://github.com/paypal/paypal-checkout-components/commit/e440968))
+
+
+
 ## <small>5.0.101 (2020-07-01)</small>
 
 * Tweak paylater styles (#1352) ([c884aaa](https://github.com/paypal/paypal-checkout-components/commit/c884aaa)), closes [#1352](https://github.com/paypal/paypal-checkout-components/issues/1352)
