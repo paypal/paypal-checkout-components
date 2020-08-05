@@ -22,7 +22,7 @@ export function getFieldsComponent() : ZoidComponent<FieldsProps> {
             autoResize: {
                 width:   false,
                 height:  true,
-                element: '#fields'
+                element: '#payment-fields'
             },
 
             dimensions: {
@@ -51,6 +51,23 @@ export function getFieldsComponent() : ZoidComponent<FieldsProps> {
             },
 
             props: {
+
+                fields: {
+                    type:       'object',
+                    queryParam: true,
+                    required:   false,
+                    decorate:   ({ value }) => value,
+                    default:    () => ({})
+                },
+
+                style: {
+                    type:       'object',
+                    queryParam: true,
+                    required:   false,
+                    decorate:   ({ value }) => value,
+                    default:    () => ({})
+                },
+
                 sdkMeta: {
                     type:        'string',
                     queryParam:  true,
