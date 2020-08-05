@@ -818,6 +818,12 @@ window.spb = function(modules) {
             return chars.charAt(Math.floor(Math.random() * chars.length));
         })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     }
+    function getGlobal() {
+        if ("undefined" != typeof window) return window;
+        if ("undefined" != typeof window) return window;
+        if ("undefined" != typeof global) return global;
+        throw new Error("No global found");
+    }
     var objectIDs;
     function serializeArgs(args) {
         try {
@@ -1001,10 +1007,101 @@ window.spb = function(modules) {
             if (13 === event.keyCode || 32 === event.keyCode) return handler(event);
         }));
     }
+    function isLocalStorageEnabled() {
+        return inlineMemoize(isLocalStorageEnabled, (function() {
+            try {
+                if ("undefined" == typeof window) return !1;
+                if (window.localStorage) {
+                    var value = Math.random().toString();
+                    window.localStorage.setItem("__test__localStorage__", value);
+                    var result = window.localStorage.getItem("__test__localStorage__");
+                    window.localStorage.removeItem("__test__localStorage__");
+                    if (value === result) return !0;
+                }
+            } catch (err) {}
+            return !1;
+        }));
+    }
     function PopupOpenError(message) {
         this.message = message;
     }
     PopupOpenError.prototype = Object.create(Error.prototype);
+    function getStorage(_ref) {
+        var name = _ref.name, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 12e5 : _ref$lifetime;
+        return inlineMemoize(getStorage, (function() {
+            var STORAGE_KEY = "__" + name + "_storage__";
+            var accessedStorage;
+            function getState(handler) {
+                var localStorageEnabled = isLocalStorageEnabled();
+                var storage;
+                accessedStorage && (storage = accessedStorage);
+                if (!storage && localStorageEnabled) {
+                    var rawStorage = window.localStorage.getItem(STORAGE_KEY);
+                    rawStorage && (storage = JSON.parse(rawStorage));
+                }
+                storage || (storage = getGlobal()[STORAGE_KEY]);
+                storage || (storage = {
+                    id: uniqueID()
+                });
+                storage.id || (storage.id = uniqueID());
+                accessedStorage = storage;
+                var result = handler(storage);
+                localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : getGlobal()[STORAGE_KEY] = storage;
+                accessedStorage = null;
+                return result;
+            }
+            function getSession(handler) {
+                return getState((function(storage) {
+                    var session = storage.__session__;
+                    var now = Date.now();
+                    session && now - session.created > lifetime && (session = null);
+                    session || (session = {
+                        guid: uniqueID(),
+                        created: now
+                    });
+                    storage.__session__ = session;
+                    return handler(session);
+                }));
+            }
+            return {
+                getState: getState,
+                getID: function() {
+                    return getState((function(storage) {
+                        return storage.id;
+                    }));
+                },
+                getSessionState: function(handler) {
+                    return getSession((function(session) {
+                        session.state = session.state || {};
+                        return handler(session.state);
+                    }));
+                },
+                getSessionID: function() {
+                    return getSession((function(session) {
+                        return session.guid;
+                    }));
+                }
+            };
+        }), [ {
+            name: name,
+            lifetime: lifetime
+        } ]);
+    }
+    function getBelterExperimentStorage() {
+        return getStorage({
+            name: "belter_experiment"
+        });
+    }
+    function isEventUnique(name) {
+        return getBelterExperimentStorage().getSessionState((function(state) {
+            state.loggedBeacons = state.loggedBeacons || [];
+            if (-1 === state.loggedBeacons.indexOf(name)) {
+                state.loggedBeacons.push(name);
+                return !0;
+            }
+            return !1;
+        }));
+    }
     var http_headerBuilders = [];
     function request(_ref) {
         var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
@@ -1064,37 +1161,6 @@ window.spb = function(modules) {
             };
             xhr.send(body);
         }));
-    }
-    function unresolvedPromise() {
-        return new promise_ZalgoPromise(src_util_noop);
-    }
-    function promiseNoop() {
-        return promise_ZalgoPromise.resolve();
-    }
-    function sendBeacon(url) {
-        var img = document.createElement("img");
-        img.src = url;
-        img.style.visibility = "hidden";
-        img.style.position = "absolute";
-        document.body && document.body.appendChild(img);
-    }
-    function loadScript(url) {
-        return new promise_ZalgoPromise((function(resolve, reject) {
-            var container = document.body || document.head;
-            if (!container) return reject(new Error("Can not find container for script: " + url));
-            var script = document.createElement("script");
-            script.setAttribute("src", url);
-            script.addEventListener("load", (function() {
-                return resolve(script);
-            }));
-            script.addEventListener("error", (function(err) {
-                return reject(err);
-            }));
-            container.appendChild(script);
-        }));
-    }
-    function isEmailAddress(str) {
-        return Boolean(str.match(/^.+@.+\..+$/));
     }
     var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
     var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
@@ -1258,6 +1324,37 @@ window.spb = function(modules) {
                 url: "/xoplatform/logger/api/logger"
             });
         }));
+    }
+    function unresolvedPromise() {
+        return new promise_ZalgoPromise(src_util_noop);
+    }
+    function promiseNoop() {
+        return promise_ZalgoPromise.resolve();
+    }
+    function sendBeacon(url) {
+        var img = document.createElement("img");
+        img.src = url;
+        img.style.visibility = "hidden";
+        img.style.position = "absolute";
+        document.body && document.body.appendChild(img);
+    }
+    function loadScript(url) {
+        return new promise_ZalgoPromise((function(resolve, reject) {
+            var container = document.body || document.head;
+            if (!container) return reject(new Error("Can not find container for script: " + url));
+            var script = document.createElement("script");
+            script.setAttribute("src", url);
+            script.addEventListener("load", (function() {
+                return resolve(script);
+            }));
+            script.addEventListener("error", (function(err) {
+                return reject(err);
+            }));
+            container.appendChild(script);
+        }));
+    }
+    function isEmailAddress(str) {
+        return Boolean(str.match(/^.+@.+\..+$/));
     }
     function getNonce() {
         var nonce = "";
@@ -1615,34 +1712,13 @@ window.spb = function(modules) {
                 if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                 throw new Error("Unsupported intent for auto-capture: " + intent);
             };
-        }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
+        }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT, _ref4$isLSATExperimen = _ref4.isLSATExperiment, isLSATExperiment = void 0 !== _ref4$isLSATExperimen && _ref4$isLSATExperimen;
         var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
         if (!onApprove) throw new Error("Expected onApprove");
         return memoize((function(_ref6, _ref7) {
-            var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
+            var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT || isLSATExperiment : _ref6$forceRestAPI;
             var restart = _ref7.restart;
             return promise_ZalgoPromise.try((function() {
-                if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
-                    return function(facilitatorAccessToken, _ref3) {
-                        var _headers;
-                        var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
-                        return callGraphQL({
-                            name: "UpgradeFacilitatorAccessToken",
-                            headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
-                            _headers["paypal-client-context"] = orderID, _headers),
-                            query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
-                            variables: {
-                                facilitatorAccessToken: facilitatorAccessToken,
-                                buyerAccessToken: buyerAccessToken,
-                                orderID: orderID
-                            }
-                        }).then(src_util_noop);
-                    }(facilitatorAccessToken, {
-                        buyerAccessToken: buyerAccessToken,
-                        orderID: orderID
-                    });
-                }));
-            })).then((function() {
                 return createOrder();
             })).then((function(orderID) {
                 var _getLogger$info$track;
@@ -1977,11 +2053,118 @@ window.spb = function(modules) {
             }));
         };
     }
+    function getOnAuth(_ref) {
+        var facilitatorAccessToken = _ref.facilitatorAccessToken, createOrder = _ref.createOrder, isLSATExperiment = _ref.isLSATExperiment, upgradeLSAT = _ref.upgradeLSAT;
+        return function(_ref2) {
+            var accessToken = _ref2.accessToken;
+            getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
+            return promise_ZalgoPromise.try((function() {
+                if (accessToken) return isLSATExperiment || upgradeLSAT ? createOrder().then((function(orderID) {
+                    return function(facilitatorAccessToken, _ref3) {
+                        var _headers;
+                        var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
+                        return callGraphQL({
+                            name: "UpgradeFacilitatorAccessToken",
+                            headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
+                            _headers["paypal-client-context"] = orderID, _headers),
+                            query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
+                            variables: {
+                                facilitatorAccessToken: facilitatorAccessToken,
+                                buyerAccessToken: buyerAccessToken,
+                                orderID: orderID
+                            }
+                        }).then(src_util_noop);
+                    }(facilitatorAccessToken, {
+                        buyerAccessToken: accessToken,
+                        orderID: orderID
+                    });
+                })).then((function() {
+                    getLogger().info("upgrade_lsat_success");
+                    return accessToken;
+                })).catch((function(err) {
+                    getLogger().warn("upgrade_lsat_failure", {
+                        error: stringifyError(err)
+                    });
+                    return accessToken;
+                })) : accessToken;
+            }));
+        };
+    }
     var props_TYPES = !0;
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken;
         var xprops = window.xprops;
-        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableStandardCardFields = xprops.enableStandardCardFields, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, persistRiskData = xprops.persistRiskData, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
+        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, persistRiskData = xprops.persistRiskData, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
+        var upgradeLSATExperiment = (name = "UPGRADE_LSAT_EXPERIMENT", logger = getLogger(), 
+        function(_ref) {
+            var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint;
+            var throttle = function(name) {
+                return getBelterExperimentStorage().getState((function(state) {
+                    state.throttlePercentiles = state.throttlePercentiles || {};
+                    state.throttlePercentiles[name] = state.throttlePercentiles[name] || Math.floor(100 * Math.random());
+                    return state.throttlePercentiles[name];
+                }));
+            }(name);
+            var group;
+            var treatment = name + "_" + (group = throttle < sample ? "test" : sample >= 50 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle");
+            var started = !1;
+            var forced = !1;
+            try {
+                window.localStorage && window.localStorage.getItem(name) && (forced = !0);
+            } catch (err) {}
+            return {
+                isEnabled: function() {
+                    return "test" === group || forced;
+                },
+                isDisabled: function() {
+                    return "test" !== group && !forced;
+                },
+                getTreatment: function() {
+                    return treatment;
+                },
+                log: function(checkpoint, payload) {
+                    void 0 === payload && (payload = {});
+                    if (!started) return this;
+                    isEventUnique(name + "_" + treatment + "_" + JSON.stringify(payload)) && logTreatment({
+                        name: name,
+                        treatment: treatment,
+                        payload: payload
+                    });
+                    isEventUnique(name + "_" + treatment + "_" + checkpoint + "_" + JSON.stringify(payload)) && logCheckpoint({
+                        name: name,
+                        treatment: treatment,
+                        checkpoint: checkpoint,
+                        payload: payload
+                    });
+                    return this;
+                },
+                logStart: function(payload) {
+                    void 0 === payload && (payload = {});
+                    started = !0;
+                    return this.log("start", payload);
+                },
+                logComplete: function(payload) {
+                    void 0 === payload && (payload = {});
+                    return this.log("complete", payload);
+                }
+            };
+        }({
+            name: name,
+            sample: 1,
+            logTreatment: function(_ref) {
+                var _extends2;
+                var treatment = _ref.treatment, payload = _ref.payload;
+                var fullPayload = _extends(((_extends2 = {}).state_name = "PXP_CHECK", _extends2.transition_name = "process_pxp_check", 
+                _extends2.pxp_exp_id = name, _extends2.pxp_trtmnt_id = treatment, _extends2), payload);
+                logger.track(fullPayload);
+                logger.flush();
+            },
+            logCheckpoint: function(_ref2) {
+                logger.info(name + "_" + _ref2.treatment + "_" + _ref2.checkpoint, _ref2.payload);
+                logger.flush();
+            }
+        }));
+        var name, logger;
         var onInit = function(_ref) {
             var onInit = _ref.onInit;
             return function(data) {
@@ -2175,7 +2358,6 @@ window.spb = function(modules) {
             connect: connect,
             fundingSource: fundingSource,
             enableThreeDomainSecure: enableThreeDomainSecure,
-            enableStandardCardFields: enableStandardCardFields,
             enableNativeCheckout: enableNativeCheckout,
             onClick: onClick,
             onInit: onInit,
@@ -2192,7 +2374,8 @@ window.spb = function(modules) {
                 partnerAttributionID: partnerAttributionID,
                 upgradeLSAT: upgradeLSAT,
                 clientAccessToken: clientAccessToken,
-                vault: vault
+                vault: vault,
+                isLSATExperiment: upgradeLSATExperiment.isEnabled()
             }, {
                 facilitatorAccessToken: facilitatorAccessToken,
                 createOrder: createOrder
@@ -2209,6 +2392,12 @@ window.spb = function(modules) {
             }, {
                 facilitatorAccessToken: facilitatorAccessToken,
                 createOrder: createOrder
+            }),
+            onAuth: getOnAuth({
+                facilitatorAccessToken: facilitatorAccessToken,
+                createOrder: createOrder,
+                isLSATExperiment: upgradeLSATExperiment.isEnabled(),
+                upgradeLSAT: upgradeLSAT
             })
         };
     }
@@ -2516,7 +2705,7 @@ window.spb = function(modules) {
             var props = _ref7.props, components = _ref7.components, serviceData = _ref7.serviceData, payment = _ref7.payment, config = _ref7.config;
             if (checkoutOpen) throw new Error("Checkout already rendered");
             var Checkout = components.Checkout;
-            var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID;
+            var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth;
             var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent;
             var fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta;
             var cspNonce = config.cspNonce;
@@ -2698,9 +2887,11 @@ window.spb = function(modules) {
                         }));
                     },
                     onAuth: function(_ref10) {
-                        var accessToken = _ref10.accessToken;
-                        getLogger().info("spb_onauth_access_token_" + (accessToken || buyerAccessToken ? "present" : "not_present"));
-                        accessToken && (buyerAccessToken = accessToken);
+                        return _onAuth({
+                            accessToken: _ref10.accessToken || buyerAccessToken
+                        }).then((function(token) {
+                            buyerAccessToken = token;
+                        }));
                     },
                     onCancel: function() {
                         return close().then((function() {
@@ -2841,7 +3032,7 @@ window.spb = function(modules) {
         setup: function() {},
         isEligible: function(_ref) {
             var props = _ref.props;
-            return !props.vault && !props.onShippingChange && (!!props.enableStandardCardFields || _ref.serviceData.eligibility.cardFields);
+            return !props.vault && !props.onShippingChange && _ref.serviceData.eligibility.cardFields;
         },
         isPaymentEligible: function(_ref2) {
             var _ref3 = _ref2.payment || {}, fundingSource = _ref3.fundingSource;
@@ -2849,7 +3040,7 @@ window.spb = function(modules) {
         },
         init: function(_ref4) {
             var props = _ref4.props, components = _ref4.components, payment = _ref4.payment, serviceData = _ref4.serviceData, config = _ref4.config;
-            var createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, locale = props.locale, commit = props.commit, onError = props.onError, sessionID = props.sessionID, buttonSessionID = props.buttonSessionID;
+            var createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, locale = props.locale, commit = props.commit, onError = props.onError, sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _onAuth = props.onAuth;
             var CardFields = components.CardFields;
             var fundingSource = payment.fundingSource, card = payment.card;
             var cspNonce = config.cspNonce;
@@ -2891,7 +3082,11 @@ window.spb = function(modules) {
                     }));
                 },
                 onAuth: function(_ref7) {
-                    buyerAccessToken = _ref7.accessToken;
+                    return _onAuth({
+                        accessToken: _ref7.accessToken || buyerAccessToken
+                    }).then((function(token) {
+                        buyerAccessToken = token;
+                    }));
                 },
                 onCancel: onCancel,
                 onError: onError,
@@ -4467,7 +4662,7 @@ window.spb = function(modules) {
         }
         smartMenu = null;
         querySelectorAll("[ data-funding-source ]").forEach((function(button) {
-            var menuToggle = button.querySelector("[data-menu]");
+            var menuToggle = button.querySelector("[data-menu]") || button.parentElement && button.parentElement.querySelector("[data-menu]");
             var _getSelectedFunding = function(button) {
                 var fundingSource = button.getAttribute("data-funding-source");
                 var paymentMethodID = button.getAttribute("data-payment-method-id");
@@ -4717,7 +4912,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.292", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.293", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {

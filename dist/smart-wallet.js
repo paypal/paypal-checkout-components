@@ -1355,33 +1355,6 @@
                 xhr.send(body);
             }));
         }
-        function unresolvedPromise() {
-            return new promise_ZalgoPromise(src_util_noop);
-        }
-        function promiseNoop() {
-            return promise_ZalgoPromise.resolve();
-        }
-        function loadScript(url) {
-            return new promise_ZalgoPromise((function(resolve, reject) {
-                var container = document.body || document.head;
-                if (!container) return reject(new Error("Can not find container for script: " + url));
-                var script = document.createElement("script");
-                script.setAttribute("src", url);
-                script.addEventListener("load", (function() {
-                    return resolve(script);
-                }));
-                script.addEventListener("error", (function(err) {
-                    return reject(err);
-                }));
-                container.appendChild(script);
-            }));
-        }
-        function isServer() {
-            return "undefined" == typeof window;
-        }
-        function isEmailAddress(str) {
-            return Boolean(str.match(/^.+@.+\..+$/));
-        }
         var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
         function httpTransport(_ref) {
@@ -1539,6 +1512,33 @@
                     url: "/xoplatform/logger/api/logger"
                 });
             }));
+        }
+        function unresolvedPromise() {
+            return new promise_ZalgoPromise(src_util_noop);
+        }
+        function promiseNoop() {
+            return promise_ZalgoPromise.resolve();
+        }
+        function loadScript(url) {
+            return new promise_ZalgoPromise((function(resolve, reject) {
+                var container = document.body || document.head;
+                if (!container) return reject(new Error("Can not find container for script: " + url));
+                var script = document.createElement("script");
+                script.setAttribute("src", url);
+                script.addEventListener("load", (function() {
+                    return resolve(script);
+                }));
+                script.addEventListener("error", (function(err) {
+                    return reject(err);
+                }));
+                container.appendChild(script);
+            }));
+        }
+        function isServer() {
+            return "undefined" == typeof window;
+        }
+        function isEmailAddress(str) {
+            return Boolean(str.match(/^.+@.+\..+$/));
         }
         function callRestAPI(_ref) {
             var _extends2;
@@ -1760,34 +1760,13 @@
                     if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                     throw new Error("Unsupported intent for auto-capture: " + intent);
                 };
-            }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
+            }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT, _ref4$isLSATExperimen = _ref4.isLSATExperiment, isLSATExperiment = void 0 !== _ref4$isLSATExperimen && _ref4$isLSATExperimen;
             var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
             if (!onApprove) throw new Error("Expected onApprove");
             return memoize((function(_ref6, _ref7) {
-                var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
+                var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT || isLSATExperiment : _ref6$forceRestAPI;
                 var restart = _ref7.restart;
                 return promise_ZalgoPromise.try((function() {
-                    if (upgradeLSAT && buyerAccessToken) return createOrder().then((function(orderID) {
-                        return function(facilitatorAccessToken, _ref3) {
-                            var _headers;
-                            var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
-                            return callGraphQL({
-                                name: "UpgradeFacilitatorAccessToken",
-                                headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
-                                _headers["paypal-client-context"] = orderID, _headers),
-                                query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
-                                variables: {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
-                                    orderID: orderID
-                                }
-                            }).then(src_util_noop);
-                        }(facilitatorAccessToken, {
-                            buyerAccessToken: buyerAccessToken,
-                            orderID: orderID
-                        });
-                    }));
-                })).then((function() {
                     return createOrder();
                 })).then((function(orderID) {
                     var _getLogger$info$track;
@@ -2536,7 +2515,8 @@
                     partnerAttributionID: partnerAttributionID,
                     clientAccessToken: clientAccessToken,
                     vault: vault,
-                    upgradeLSAT: !1
+                    upgradeLSAT: !1,
+                    isLSATExperiment: !1
                 }, {
                     facilitatorAccessToken: facilitatorAccessToken,
                     createOrder: createOrder
