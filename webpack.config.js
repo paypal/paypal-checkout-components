@@ -26,7 +26,8 @@ function getSmartWebpackConfig({ entry, env, filename, minify = true, debug = fa
         minify,
         debug,
         libraryTarget,
-        vars:          globals
+        vars:          globals,
+        sourcemaps:    false
     });
 }
 
