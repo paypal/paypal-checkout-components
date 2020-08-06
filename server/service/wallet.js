@@ -125,7 +125,7 @@ function buildVaultQuery() : string {
         [ FUNDING.CARD ]:   getCardQuery()
     };
 
-    return query('GetFundingEligibility', params(InputTypes, {
+    return query('GetVaultedInstruments', params(InputTypes, {
         fundingEligibility: params(Inputs, fundingQuery)
     }));
 }
@@ -274,7 +274,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
         // $FlowFixMe
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
-        const [ buyerVault, smartWallet ] = await Promise.all([
+        const [ fundingElig, smartWallet ] = await Promise.all([
             (clientAccessToken)
                 ? gqlBatch({
                     query:     buildVaultQuery(),
@@ -288,44 +288,6 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
             (buyerAccessToken && amount)
                 ? getWallet(req, { clientID, merchantID, buyerAccessToken, amount, currency }) : null
         ]);
-
-        if (buyerVault && buyerVault.paypal && buyerVault.paypal.vaultedInstruments) {
-            for (const vaultedInstrument of buyerVault.paypal.vaultedInstruments) {
-                logger.info(req, 'resolve_vault_paypal', { oneClick: 'true' });
-
-                wallet.paypal.instruments = [
-                    ...wallet.paypal.instruments,
-                    {
-                        tokenID:  vaultedInstrument.id,
-                        label:    vaultedInstrument.label.description,
-                        oneClick: true
-                    }
-                ];
-            }
-        }
-
-        if (buyerVault && buyerVault.card) {
-            for (const card of values(CARD)) {
-                const vendorVault = buyerVault.card.vendors[card];
-
-                if (vendorVault && vendorVault.vaultedInstruments) {
-                    for (const vaultedInstrument of vendorVault.vaultedInstruments) {
-                        logger.info(req, 'resolve_vault_card', { oneClick: 'true' });
-
-                        wallet.card.instruments = [
-                            ...wallet.card.instruments,
-                            {
-                                type:     WALLET_INSTRUMENT.CARD,
-                                vendor:   card,
-                                tokenID:  vaultedInstrument.id,
-                                label:    vaultedInstrument.label.description,
-                                oneClick: true
-                            }
-                        ];
-                    }
-                }
-            }
-        }
 
         if (smartWallet) {
             for (const fundingOption of smartWallet.funding_options) {
@@ -423,6 +385,48 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                         ...wallet.paypal.instruments,
                         instrument
                     ];
+                }
+            }
+        }
+
+        const buyerVault = fundingElig && fundingElig.fundingEligibility;
+        
+        if (buyerVault) {
+            if (buyerVault && buyerVault.paypal && buyerVault.paypal.vaultedInstruments) {
+                for (const vaultedInstrument of buyerVault.paypal.vaultedInstruments) {
+                    logger.info(req, 'resolve_vault_paypal', { oneClick: 'true' });
+
+                    wallet.paypal.instruments = [
+                        ...wallet.paypal.instruments,
+                        {
+                            tokenID:  vaultedInstrument.id,
+                            label:    vaultedInstrument.label.description,
+                            oneClick: true
+                        }
+                    ];
+                }
+            }
+
+            if (buyerVault && buyerVault.card) {
+                for (const card of values(CARD)) {
+                    const vendorVault = buyerVault.card.vendors[card];
+
+                    if (vendorVault && vendorVault.vaultedInstruments) {
+                        for (const vaultedInstrument of vendorVault.vaultedInstruments) {
+                            logger.info(req, 'resolve_vault_card', { oneClick: 'true' });
+
+                            wallet.card.instruments = [
+                                ...wallet.card.instruments,
+                                {
+                                    type:     WALLET_INSTRUMENT.CARD,
+                                    vendor:   card,
+                                    tokenID:  vaultedInstrument.id,
+                                    label:    vaultedInstrument.label.description,
+                                    oneClick: true
+                                }
+                            ];
+                        }
+                    }
                 }
             }
         }
