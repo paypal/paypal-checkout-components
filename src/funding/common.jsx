@@ -8,7 +8,7 @@ import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING } from '@
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import type { ContentType, WalletInstrument } from '../types';
-import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
+import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
 
 import { componentContent } from './content';
@@ -63,6 +63,7 @@ export type FundingSourceConfig = {|
     shippingChange? : boolean,
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
+    flows : $ReadOnlyArray<$Values<typeof BUTTON_FLOW>>,
     maxCards? : { [$Values<typeof COUNTRY>] : number },
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
@@ -123,6 +124,10 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
     platforms: [
         PLATFORM.DESKTOP,
         PLATFORM.MOBILE
+    ],
+
+    flows: [
+        BUTTON_FLOW.PURCHASE
     ],
 
     colors: [

@@ -12,7 +12,7 @@ import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
 import type { ContentType, Wallet } from '../../types';
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../../constants';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig, isFundingEligible } from '../../funding';
 
 import { BUTTON_SIZE_STYLE } from './config';
@@ -185,7 +185,8 @@ export type RenderButtonProps = {|
     onShippingChange : ?OnShippingChange,
     personalization : ?Personalization,
     clientAccessToken : ?string,
-    content? : ContentType
+    content? : ContentType,
+    flow : $Values<typeof BUTTON_FLOW>
 |};
 
 export type PrerenderDetails = {|
@@ -223,7 +224,8 @@ export type ButtonProps = {|
     clientAccessToken : ?string,
     nonce : string,
     userIDToken : ?string,
-    enableBNPL : boolean
+    enableBNPL : boolean,
+    flow : $Values<typeof BUTTON_FLOW>
 |};
 
 export type ButtonPropsInputs = {|
@@ -251,7 +253,8 @@ export type ButtonPropsInputs = {|
     csp? : {|
         nonce? : string
     |},
-    content? : ContentType
+    content? : ContentType,
+    flow? : $Values<typeof BUTTON_FLOW>
 |};
 
 export const DEFAULT_STYLE = {
@@ -433,7 +436,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         personalization,
         clientAccessToken,
         content,
-        wallet
+        wallet,
+        flow = BUTTON_FLOW.PURCHASE
     } = props;
 
     const { country, lang } = locale;
@@ -471,7 +475,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Invalid funding source: ${ fundingSource }`);
         }
 
-        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange })) {
+        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
@@ -480,5 +484,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     wallet = getDefaultWallet(fundingEligibility, wallet);
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet };
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow };
 }

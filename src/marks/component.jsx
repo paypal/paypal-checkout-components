@@ -9,7 +9,7 @@ import { getRememberedFunding } from '@paypal/funding-components/src';
 import { getComponents, getFundingEligibility } from '@paypal/sdk-client/src';
 
 import type { OnShippingChange } from '../ui/buttons/props';
-import { BUTTON_LAYOUT } from '../constants';
+import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
 import { determineEligibleFunding, isFundingEligible } from '../funding';
 
 import { MarksElement } from './template';
@@ -30,14 +30,15 @@ export const getMarksComponent = memoize(() => {
         const remembered = getRememberedFunding();
         const layout = BUTTON_LAYOUT.VERTICAL;
         const components = getComponents();
-        const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout });
+        const flow = BUTTON_FLOW.PURCHASE;
+        const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout, flow });
 
         const isEligible = () => {
             if (!fundingSource) {
                 return true;
             }
 
-            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange });
+            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow });
         };
 
         const render = (container) => {

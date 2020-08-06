@@ -28,10 +28,10 @@ export function validateButtonProps(props : ButtonsProps) {
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick = noop } = props;
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit,
-        nonce, components, onShippingChange, personalization, clientAccessToken, content } = normalizeButtonProps(props);
+        nonce, components, onShippingChange, personalization, clientAccessToken, content, flow } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
 
-    const fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange });
+    const fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow });
     const multiple = fundingSources.length > 1;
 
     if (!fundingSources.length) {

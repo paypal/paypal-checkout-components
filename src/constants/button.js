@@ -49,3 +49,9 @@ export const BUTTON_NUMBER = {
     SINGLE:   ('single' : 'single'),
     MULTIPLE: ('multiple' : 'multiple')
 };
+
+export const BUTTON_FLOW = {
+    PURCHASE:           ('purchase' : 'purchase'),
+    BILLING_SETUP:      ('billing_setup' : 'billing_setup'),
+    SUBSCRIPTION_SETUP: ('subscription_setup' : 'subscription_setup')
+};

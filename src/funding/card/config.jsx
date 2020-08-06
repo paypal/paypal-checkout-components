@@ -5,7 +5,7 @@ import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, COUNTRY, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, BUTTON_FLOW } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig, type WalletLabelOptions } from '../common';
 import { Text, Space } from '../../ui/text';
 import { isRTLLanguage } from '../../lib';
@@ -80,6 +80,12 @@ export function getCardConfig() : FundingSourceConfig {
             // Otherwise default to show card buttons
             return true;
         },
+
+        flows: [
+            BUTTON_FLOW.PURCHASE,
+            BUTTON_FLOW.BILLING_SETUP,
+            BUTTON_FLOW.SUBSCRIPTION_SETUP
+        ],
         
         layouts: [
             BUTTON_LAYOUT.VERTICAL

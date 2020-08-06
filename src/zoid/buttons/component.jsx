@@ -19,6 +19,7 @@ import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
+import { determineFlow } from './util';
 
 export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
     return create({
@@ -58,6 +59,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
         eligible: ({ props }) => {
             const { fundingSource, onShippingChange, style = {} } = props;
+            const flow = determineFlow(props);
 
             if (!fundingSource) {
                 return {
@@ -71,7 +73,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             const fundingEligibility = getRefinedFundingEligibility();
             const components         = getComponents();
 
-            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange })) {
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
                 return {
                     eligible: true
                 };
@@ -91,13 +93,14 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
                 validate: ({ props }) => {
                     const { fundingSource, onShippingChange, style = {} } = props;
+                    const flow = determineFlow(props);
                     const { layout } = style;
         
                     const platform           = getPlatform();
                     const fundingEligibility = getRefinedFundingEligibility();
                     const components         = getComponents();
 
-                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange })) {
+                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
                         throw new Error(`${ fundingSource } is not eligible`);
                     }
                 }
@@ -303,6 +306,12 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 type:       'array',
                 queryParam: true,
                 value:      getRememberedFunding
+            },
+
+            flow: {
+                type:       'string',
+                queryParam: true,
+                value:      ({ props }) => determineFlow(props)
             },
 
             remember: {
