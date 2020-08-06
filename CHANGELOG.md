@@ -1,3 +1,9 @@
+## <small>5.0.103 (2020-08-06)</small>
+
+* Revert "Remove Wallet polyfill from fundingEligibility" ([075bccc](https://github.com/paypal/paypal-checkout-components/commit/075bccc))
+
+
+
 ## <small>5.0.102 (2020-08-05)</small>
 
 * Add enableBNPL feature flag ([3f538aa](https://github.com/paypal/paypal-checkout-components/commit/3f538aa))
