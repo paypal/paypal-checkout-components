@@ -82,6 +82,7 @@
     "webpack-dev-server": "^3"
   },
   "dependencies": {
+    "@paypal/sdk-constants": "^1.0.64",
     "Base64": "^1.0.0",
     "beaver-logger": "^3.0.6",
     "belter": "^1.0.96",

@@ -13,6 +13,7 @@ import { proxyMethod } from './proxy';
 import { once } from './util';
 import { getQueryParam } from './dom';
 import { isPayPalDomain } from './security';
+impoty { getPageType } from './script';
 
 function getRefererDomain() : string {
     return (window.xchild && window.xchild.getParentDomain)
@@ -97,6 +98,7 @@ export function initLogger() {
             [ FPTI.KEY.BUTTON_SESSION_UID ]: buttonSessionID,
             [ FPTI.KEY.VERSION ]:            config.version,
             [ FPTI.KEY.TOKEN ]:              paymentToken,
+            [ FPTI.KEY.PAGE_TYPE]:           getPageType(),
             [ FPTI.KEY.REFERER ]:            getRefererDomain()
         };
     });
