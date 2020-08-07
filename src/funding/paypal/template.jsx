@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, Fragment, Style, type ChildType } from 'jsx-pragmatic/src';
-import { PPLogo, PayPalLogo, CreditLogo, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
+import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
@@ -160,9 +160,84 @@ export function Label(opts : LabelOptions) : ChildType {
     );
 }
 
-export function WalletLabel({ logoColor, instrument, locale, content, commit } : WalletLabelOptions) : ?ChildType {
+export function WalletLabelNew({ logoColor, instrument, content, commit } : WalletLabelOptions) : ?ChildType {
     if (__WEB__) {
         return;
+    }
+
+    let logo;
+    let label;
+
+    if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
+        logo = instrument.logoUrl
+            ? <img class='card-art' src={ instrument.logoUrl } />
+            : <GlyphCard logoColor={ logoColor } />;
+
+        label = instrument.label.replace('••••', '••');
+
+    } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
+        logo = instrument.logoUrl
+            ? <img class='card-art' src={ instrument.logoUrl } />
+            : <GlyphBank logoColor={ logoColor } />;
+
+        label = instrument.label.replace('••••', '••');
+
+    } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
+        logo = <CreditMark />;
+
+        label = content && content.credit;
+        
+    } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
+        logo = <PayPalMark />;
+
+        label = content && content.balance;
+    } else {
+        return;
+    }
+
+    return (
+        <Style css={ css }>
+            <div class='wallet-label-new'>
+                <div class='paypal-mark'>
+                    <PPLogo logoColor={ logoColor } />
+                    <Space />
+                </div>
+                {
+                    content && (
+                        <div class='pay-label' optional>
+                            <Space />
+                            <Text>{ (instrument.oneClick && commit) ? content.payNow : content.payWith }</Text>
+                            <Space />
+                        </div>
+                    )
+                }
+                {
+                    logo &&
+                        <div class='logo'>
+                            { logo }
+                        </div>
+                }
+                {
+                    label &&
+                        <div class='label'>
+                            <Space />
+                            <Text>{ label }</Text>
+                        </div>
+                }
+            </div>
+        </Style>
+    );
+}
+
+export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
+    const { logoColor, instrument, locale, content, commit, experiment } = opts;
+
+    if (__WEB__) {
+        return;
+    }
+
+    if (experiment.newWalletDesign) {
+        return WalletLabelNew(opts);
     }
 
     let logo;
@@ -185,7 +260,7 @@ export function WalletLabel({ logoColor, instrument, locale, content, commit } :
                 </div>
                 {
                     (instrument.oneClick && commit && content) &&
-                        <div class='pay-now'>
+                        <div class='pay-label'>
                             <Space />
                             <Text>{ content.payNow }</Text>
                         </div>

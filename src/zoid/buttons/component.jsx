@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
-    getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
+    getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform, createExperiment,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain, getUserIDToken, getClientMetadataID, getAmount } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -22,6 +22,8 @@ import { PrerenderedButtons } from './prerender';
 import { determineFlow } from './util';
 
 export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
+    const walletExperiment = createExperiment('wallet_button_new_design', 0);
+
     return create({
         tag:  'paypal-buttons',
         url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
@@ -191,6 +193,8 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 required: false,
                 value:    () => {
                     return () => {
+                        walletExperiment.logStart();
+
                         if (!window.popupBridge) {
                             return;
                         }
@@ -306,6 +310,16 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 type:       'array',
                 queryParam: true,
                 value:      getRememberedFunding
+            },
+
+            experiment: {
+                type:       'object',
+                queryParam: true,
+                value:      ({ props }) => {
+                    return {
+                        newWalletDesign: walletExperiment.isEnabled() || Boolean(props.enableBNPL)
+                    };
+                }
             },
 
             flow: {
@@ -446,7 +460,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             wallet: {
                 type:     'object',
                 required: false,
-                value:    () => window.__TEST_WALLET__
+                default:  () => window.__TEST_WALLET__
             }
         }
     });

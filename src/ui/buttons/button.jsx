@@ -7,7 +7,7 @@ import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 
-import type { ContentType, Wallet, WalletInstrument } from '../../types';
+import type { ContentType, Wallet, WalletInstrument, Experiment } from '../../types';
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR } from '../../constants';
 import { getFundingConfig, isVaultedFundingEligible } from '../../funding';
 
@@ -31,7 +31,8 @@ type IndividualButtonProps = {|
     personalization : Personalization,
     content : ?ContentType,
     tagline : ?boolean,
-    commit : boolean
+    commit : boolean,
+    experiment : Experiment
 |};
 
 type VaultedInstrumentOptions = {|
@@ -55,7 +56,8 @@ function getWalletInstrument({ wallet, fundingSource, onShippingChange } : Vault
     return instruments[0];
 }
 
-export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, wallet, i, nonce, clientAccessToken, personalization, onShippingChange, onClick = noop, content, tagline, commit } : IndividualButtonProps) : ElementNode {
+export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, wallet, i, nonce,
+    clientAccessToken, personalization, onShippingChange, onClick = noop, content, tagline, commit, experiment } : IndividualButtonProps) : ElementNode {
 
     const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -127,6 +129,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 locale={ locale }
                 content={ content }
                 commit={ commit }
+                experiment={ experiment }
             />
         ) : (
             <Label
@@ -149,18 +152,12 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             />
         );
 
+    const showMenu = Boolean(instrument && !__WEB__);
+
     return (
         <div
-            role='button'
-            { ...{
-                [ ATTRIBUTE.BUTTON ]:            true,
-                [ ATTRIBUTE.FUNDING_SOURCE ]:    fundingSource,
-                [ ATTRIBUTE.PAYMENT_METHOD_ID ]: instrument ? instrument.tokenID : null,
-                [ ATTRIBUTE.INSTRUMENT_ID ]:     instrument ? instrument.instrumentID : null,
-                [ ATTRIBUTE.INSTRUMENT_TYPE ]:   instrument ? instrument.type : null
-            } }
             class={ [
-                CLASS.BUTTON,
+                CLASS.BUTTON_ROW,
                 `${ CLASS.NUMBER }-${ i }`,
                 `${ CLASS.LAYOUT }-${ layout }`,
                 `${ CLASS.SHAPE }-${ shape }`,
@@ -168,20 +165,45 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 `${ CLASS.ENV }-${ env }`,
                 `${ CLASS.COLOR }-${ color }`,
                 `${ CLASS.TEXT_COLOR }-${ textColor }`,
-                `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
+                `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
+                `${ CLASS.HAS_MENU }-${ showMenu.toString() }`
             ].join(' ') }
-            onClick={ clickHandler }
-            onRender={ onButtonRender }
-            onKeyPress={ keypressHandler }
-            tabindex='0'
-            aria-label={ labelText }>
+        >
+            <div
+                role='button'
+                { ...{
+                    [ ATTRIBUTE.BUTTON ]:            true,
+                    [ ATTRIBUTE.FUNDING_SOURCE ]:    fundingSource,
+                    [ ATTRIBUTE.PAYMENT_METHOD_ID ]: instrument ? instrument.tokenID : null,
+                    [ ATTRIBUTE.INSTRUMENT_ID ]:     instrument ? instrument.instrumentID : null,
+                    [ ATTRIBUTE.INSTRUMENT_TYPE ]:   instrument ? instrument.type : null
+                } }
+                class={ [
+                    CLASS.BUTTON,
+                    `${ CLASS.NUMBER }-${ i }`,
+                    `${ CLASS.LAYOUT }-${ layout }`,
+                    `${ CLASS.SHAPE }-${ shape }`,
+                    `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
+                    `${ CLASS.ENV }-${ env }`,
+                    `${ CLASS.COLOR }-${ color }`,
+                    `${ CLASS.TEXT_COLOR }-${ textColor }`,
+                    `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
+                    `${ CLASS.HAS_MENU }-${ showMenu.toString() }`
+                ].join(' ') }
+                onClick={ clickHandler }
+                onRender={ onButtonRender }
+                onKeyPress={ keypressHandler }
+                tabindex='0'
+                aria-label={ labelText }>
 
-            <div class={ CLASS.BUTTON_LABEL }>
-                { labelNode }
+                <div class={ CLASS.BUTTON_LABEL }>
+                    { labelNode }
+                </div>
+
+                <Spinner />
             </div>
 
-            <Spinner />
-            { instrument ? <MenuButton color={ textColor } /> : null }
+            { showMenu ? <MenuButton color={ textColor } /> : null }
         </div>
     );
 }

@@ -25,7 +25,8 @@ export const buttonColorStyle = `
         border-top-color: rgba(255, 255, 255, .85);
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } .${ CLASS.MENU_TOGGLE } {
         background: #ffc439;
     }
 
@@ -50,7 +51,8 @@ export const buttonColorStyle = `
     }
 
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } .${ CLASS.MENU_TOGGLE } {
         background: #0070ba;
     }
 
@@ -78,7 +80,8 @@ export const buttonColorStyle = `
         pointer-events: none;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } .${ CLASS.MENU_TOGGLE } {
         background: #eee;
     }
 
@@ -102,7 +105,8 @@ export const buttonColorStyle = `
         pointer-events: none;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } .${ CLASS.MENU_TOGGLE } {
         background: #003087;
     }
 
@@ -128,7 +132,8 @@ export const buttonColorStyle = `
 
 
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } .${ CLASS.MENU_TOGGLE } {
         background: #2C2E2F;
     }
 
@@ -152,7 +157,8 @@ export const buttonColorStyle = `
         pointer-events: none;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } .${ CLASS.MENU_TOGGLE } {
         background: #fff;
         border: 1px solid #2C2E2F;
     }

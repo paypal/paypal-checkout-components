@@ -130,7 +130,7 @@ export function getCardConfig() : FundingSourceConfig {
                 <Fragment>
                     { (isRTL && !__WEB__ && content) ? (
                         <Fragment>
-                            <Text optional>{ content.payWithDebitOrCreditCard }</Text>
+                            <Text animate optional>{ content.payWithDebitOrCreditCard }</Text>
                             <Space />
                         </Fragment>
                     ) : null }
@@ -138,7 +138,7 @@ export function getCardConfig() : FundingSourceConfig {
                     {(!isRTL && !__WEB__ && content) ? (
                         <Fragment>
                             <Space />
-                            <Text optional>{ content.payWithDebitOrCreditCard }</Text>
+                            <Text animate optional>{ content.payWithDebitOrCreditCard }</Text>
                         </Fragment>
                     ) : null }
                 </Fragment>

@@ -2,6 +2,7 @@
 
 export const CLASS = {
     CONTAINER:    ('paypal-button-container' : 'paypal-button-container'),
+    BUTTON_ROW:   ('paypal-button-row' : 'paypal-button-row'),
     BUTTON:       ('paypal-button' : 'paypal-button'),
     BUTTON_LABEL: ('paypal-button-label-container' : 'paypal-button-label-container'),
 
@@ -13,6 +14,7 @@ export const CLASS = {
     NUMBER:     ('paypal-button-number' : 'paypal-button-number'),
     ENV:        ('paypal-button-env' : 'paypal-button-env'),
     VAULT:      ('paypal-button-vault' : 'paypal-button-vault'),
+    HAS_MENU:   ('paypal-button-has-menu' : 'paypal-button-has-menu'),
 
     LOADING:    ('paypal-button-loading' : 'paypal-button-loading'),
     SPINNER:    ('paypal-button-spinner' : 'paypal-button-spinner'),

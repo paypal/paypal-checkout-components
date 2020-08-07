@@ -131,7 +131,15 @@ for (const config of buttonConfigs) {
         ]);
 
         if (existing) {
-            const delta = await diffPNG(screenshot, existing);
+            let delta;
+
+            try {
+                delta = await diffPNG(screenshot, existing);
+            } catch (err) {
+                await existing.write(diffpath);
+                await screenshot.write(filepath);
+                throw err;
+            }
 
             if (delta > DIFF_THRESHOLD) {
                 await existing.write(diffpath);

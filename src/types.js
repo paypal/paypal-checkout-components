@@ -32,5 +32,13 @@ export type ContentType = {|
     chooseCard : string,
     balance : string,
     payNow : string,
-    payWithDebitOrCreditCard : string
+    payWithDebitOrCreditCard : string,
+    credit : string,
+    payWith : string,
+    payLater : string,
+    flex : string
+|};
+
+export type Experiment = {|
+    newWalletDesign : boolean
 |};

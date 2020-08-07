@@ -26,10 +26,24 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     font-size: ${ max(perc(buttonHeight, 32), 10) }px;
                 }
 
-                .${ CLASS.BUTTON } {
+                .${ CLASS.BUTTON_ROW } {
                     height: ${ buttonHeight }px;
                     min-height: ${ height || style.minHeight }px;
                     max-height: ${ height || style.maxHeight }px;
+                }
+
+                .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL } {
+                    margin-bottom: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) }px;
+                }
+
+                .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL }:last-of-type {
+                    margin-bottom: 0;
+                }
+
+                .${ CLASS.BUTTON } {
+                    display: inline-block;
+                    text-align: center;
+                    height: 100%;
                 }
                 
                 .${ CLASS.BUTTON } .${ CLASS.SPINNER } {
@@ -59,22 +73,14 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     border-radius: ${ Math.ceil(buttonHeight / 2) }px;
                 }
 
-                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } .${ CLASS.MENU_TOGGLE } {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } .${ CLASS.MENU_TOGGLE } {
                     border-top-right-radius: 4px;
                     border-bottom-right-radius: 4px;
                 }
 
-                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } .${ CLASS.MENU_TOGGLE } {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } .${ CLASS.MENU_TOGGLE } {
                     border-top-right-radius: ${ Math.ceil(buttonHeight / 2) }px;
                     border-bottom-right-radius: ${ Math.ceil(buttonHeight / 2) }px;
-                }
-
-                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL } {
-                    margin-bottom: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) }px;
-                }
-
-                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL }:last-of-type {
-                    margin-bottom: 0;
                 }
                 
                 .${ CLASS.TAGLINE } .${ CLASS.TEXT } {
@@ -87,13 +93,18 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     height: 100%;
                 }
 
+                .${ CLASS.BUTTON_ROW }.${ CLASS.HAS_MENU }-true .${ CLASS.BUTTON } {
+                    width: calc(100% - ${ buttonHeight + 2 }px);
+                    border-top-right-radius: 0px;
+                    border-bottom-right-radius: 0px;
+                }
+
                 .${ CLASS.MENU_TOGGLE } {
-                    position: absolute;
-                    height: 100%;
-                    right: 0;
-                    top: 0;
-                    width: ${ buttonHeight + 2 }px;
-                    border-left: 2px solid white;
+                    position: relative;
+                    display: inline-block;
+                    height: ${ buttonHeight }px;
+                    width: ${ buttonHeight }px;
+                    margin-left: 2px;
                 }
 
                 .${ CLASS.MENU_TOGGLE }:hover {
@@ -107,6 +118,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                 }
 
                 .${ CLASS.MENU_TOGGLE } img {
+                    height: 30%;
                     width: 30%;
                     position: absolute;
                     top: 50%;

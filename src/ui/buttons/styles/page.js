@@ -8,7 +8,7 @@ export const pageStyle = `
         margin: 0;
         width: 100%;
         overflow: hidden;
-        text-align: center;
+        text-align: left;
     }
 
     body {
@@ -24,8 +24,9 @@ export const pageStyle = `
         box-sizing: border-box;
     }
 
-    .${ CLASS.HIDDEN } {
-        position: absolute;
-        visibility: hidden;
+    .${ CLASS.HIDDEN },
+    .${ CLASS.HIDDEN } * {
+        position: absolute !important;
+        visibility: hidden !important;
     }
 `;

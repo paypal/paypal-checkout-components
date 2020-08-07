@@ -7,7 +7,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import type { ContentType, WalletInstrument } from '../types';
+import type { ContentType, WalletInstrument, Experiment } from '../types';
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
 
@@ -51,7 +51,8 @@ export type WalletLabelOptions = {|
     logoColor : $Values<typeof LOGO_COLOR>,
     instrument : WalletInstrument,
     content : ?ContentType,
-    commit : boolean
+    commit : boolean,
+    experiment : Experiment
 |};
 
 export type TagOptions = {|

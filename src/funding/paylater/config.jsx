@@ -17,9 +17,9 @@ export function getPaylaterConfig() : FundingSourceConfig {
             <Style css={ css } nonce={ nonce }>
                 <PPLogo logoColor={ logoColor } />
                 <Space />
-                <Text className="text-small" optional immediate>PayPal<Space /></Text>
-                <Text className="text-small" immediate>Flex</Text>
-                <Text className="text-large" immediate>Pay Later with Flex</Text>
+                <Text className="text-small" optional>PayPal<Space /></Text>
+                <Text className="text-small">Flex</Text>
+                <Text className="text-large">Pay Later with Flex</Text>
             </Style>
         );
     };

@@ -11,7 +11,7 @@ import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
-import type { ContentType, Wallet } from '../../types';
+import type { ContentType, Wallet, Experiment } from '../../types';
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig, isFundingEligible } from '../../funding';
 
@@ -186,7 +186,8 @@ export type RenderButtonProps = {|
     personalization : ?Personalization,
     clientAccessToken : ?string,
     content? : ContentType,
-    flow : $Values<typeof BUTTON_FLOW>
+    flow : $Values<typeof BUTTON_FLOW>,
+    experiment : Experiment
 |};
 
 export type PrerenderDetails = {|
@@ -225,7 +226,8 @@ export type ButtonProps = {|
     nonce : string,
     userIDToken : ?string,
     enableBNPL : boolean,
-    flow : $Values<typeof BUTTON_FLOW>
+    flow : $Values<typeof BUTTON_FLOW>,
+    experiment : Experiment
 |};
 
 export type ButtonPropsInputs = {|
@@ -254,7 +256,8 @@ export type ButtonPropsInputs = {|
         nonce? : string
     |},
     content? : ContentType,
-    flow? : $Values<typeof BUTTON_FLOW>
+    flow? : $Values<typeof BUTTON_FLOW>,
+    experiment : Experiment
 |};
 
 export const DEFAULT_STYLE = {
@@ -437,7 +440,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         clientAccessToken,
         content,
         wallet,
-        flow = BUTTON_FLOW.PURCHASE
+        flow = BUTTON_FLOW.PURCHASE,
+        experiment
     } = props;
 
     const { country, lang } = locale;
@@ -484,5 +488,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     wallet = getDefaultWallet(fundingEligibility, wallet);
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow };
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
+        experiment };
 }
