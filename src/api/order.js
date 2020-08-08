@@ -152,7 +152,7 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
 }
 
 export type ValidatePaymentMethodOptions = {|
-    clientAccessToken : string,
+    accessToken : string,
     orderID : string,
     paymentMethodID : string,
     enableThreeDomainSecure : boolean,
@@ -178,11 +178,11 @@ type PaymentSource = {|
     contingencies? : $ReadOnlyArray<$Values<typeof VALIDATE_CONTINGENCIES>>
 |};
 
-export function validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID } : ValidatePaymentMethodOptions) : ZalgoPromise<{| status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } |}> {
+export function validatePaymentMethod({ accessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID } : ValidatePaymentMethodOptions) : ZalgoPromise<{| status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } |}> {
     getLogger().info(`rest_api_create_order_token`);
 
     const headers : Object = {
-        [ HEADERS.AUTHORIZATION ]:          `Bearer ${ clientAccessToken }`,
+        [ HEADERS.AUTHORIZATION ]:          `Bearer ${ accessToken }`,
         [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID,
         [ HEADERS.CLIENT_METADATA_ID ]:     clientMetadataID
     };

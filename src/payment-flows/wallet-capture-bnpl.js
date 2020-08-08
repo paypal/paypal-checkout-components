@@ -5,29 +5,23 @@ import { stringifyError } from 'belter/src';
 import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
-import { getSupplementalOrderInfo, oneClickApproveOrder } from '../api';
+import { getSupplementalOrderInfo, oneClickApproveOrder, loadFraudnet, getSmartWallet } from '../api';
 import { BUYER_INTENT, FPTI_TRANSITION } from '../constants';
 import { getLogger } from '../lib';
 import { updateButtonClientConfig } from '../button/orders';
 
-import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
+import type { PaymentFlow, PaymentFlowInstance, SetupOptions, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
-const WALLET_MIN_WIDTH = 250;
-
-function setupWalletCapture() {
-    // pass
-}
-
 function isWalletCaptureEligible({ props, serviceData } : IsEligibleOptions) : boolean {
-    const { buyerAccessToken, wallet } = serviceData;
+    const { wallet } = serviceData;
     const { onShippingChange } = props;
 
-    if (!wallet) {
+    if (!window.xprops.enableBNPL) {
         return false;
     }
 
-    if (!buyerAccessToken) {
+    if (!wallet) {
         return false;
     }
 
@@ -35,21 +29,37 @@ function isWalletCaptureEligible({ props, serviceData } : IsEligibleOptions) : b
         return false;
     }
 
-    if (window.xprops.enableBNPL) {
-        return false;
-    }
-
-
     return true;
 }
 
-function getInstrument(wallet : Wallet, fundingSource : $Values<typeof FUNDING>, instrumentID : string) : ?WalletInstrument {
+let smartWalletPromise;
+
+function setupWalletCapture({ props, config, serviceData } : SetupOptions) {
+    const { env, sessionID, clientID, currency, amount, userIDToken, enableBNPL, clientMetadataID: cmid } = props;
+    const { cspNonce } = config;
+    const { merchantID, wallet } = serviceData;
+
+    const clientMetadataID = cmid || sessionID;
+
+    if (clientID && enableBNPL && userIDToken) {
+        smartWalletPromise = loadFraudnet({ env, clientMetadataID, cspNonce }).then(() => {
+            return getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken });
+        }).catch(err => {
+            getLogger().warn('load_smart_wallet_error', { err: stringifyError(err) });
+            throw err;
+        });
+    } else if (wallet) {
+        smartWalletPromise = ZalgoPromise.resolve(wallet);
+    }
+}
+
+function getInstrument(wallet : Wallet, fundingSource : $Values<typeof FUNDING>, instrumentID : string) : WalletInstrument {
 
     // $FlowFixMe
     const walletFunding = wallet[fundingSource];
 
     if (!walletFunding) {
-        return;
+        throw new Error(`Wallet has no ${ fundingSource }`);
     }
 
     let instrument;
@@ -60,11 +70,7 @@ function getInstrument(wallet : Wallet, fundingSource : $Values<typeof FUNDING>,
     }
 
     if (!instrument) {
-        return;
-    }
-
-    if (!instrument.type) {
-        return;
+        throw new Error(`Can not find instrument with id ${ instrumentID }`);
     }
 
     return instrument;
@@ -86,13 +92,13 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
         return false;
     }
 
-    const instrument = getInstrument(wallet, fundingSource, instrumentID);
-
-    if (!instrument) {
+    try {
+        getInstrument(wallet, fundingSource, instrumentID);
+    } catch (err) {
         return false;
     }
 
-    if (window.innerWidth < WALLET_MIN_WIDTH) {
+    if (!smartWalletPromise) {
         return false;
     }
 
@@ -102,44 +108,37 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
 function initWalletCapture({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, clientMetadataID } = props;
     const { fundingSource, instrumentID } = payment;
-    const { buyerAccessToken, wallet } = serviceData;
+    const { wallet } = serviceData;
+
+    if (!wallet || !smartWalletPromise) {
+        throw new Error(`No smart wallet found`);
+    }
 
     if (!instrumentID) {
         throw new Error(`Instrument id required for wallet capture`);
     }
 
-    if (!buyerAccessToken) {
-        throw new Error(`Buyer access token required for wallet capture`);
-    }
-
-    // $FlowFixMe
-    const walletFunding = wallet[fundingSource];
-
-    if (!walletFunding) {
-        throw new Error(`Expected wallet to be present`);
-    }
-
-    let instrument;
-    for (const inst of walletFunding.instruments) {
-        if (inst.instrumentID === instrumentID) {
-            instrument = inst;
-        }
-    }
-
-    if (!instrument) {
-        throw new Error(`Expected instrument to be present`);
-    }
-
-    const { type: instrumentType } = instrument;
-
-    if (!instrumentType) {
-        throw new Error(`Expected instrument type`);
-    }
+    const instrument = getInstrument(wallet, fundingSource, instrumentID);
 
     const getWebCheckoutFallback = () => {
         return checkout.init({
             props, components, serviceData, payment: {
                 ...payment,
+                createAccessToken: () => {
+                    return smartWalletPromise.then(smartWallet => {
+                        const smartInstrument = getInstrument(smartWallet, fundingSource, instrumentID);
+
+                        if (!smartInstrument) {
+                            throw new Error(`Instrument not found`);
+                        }
+
+                        if (!smartInstrument.accessToken) {
+                            throw new Error(`Instrument access token not found`);
+                        }
+
+                        return smartInstrument.accessToken;
+                    });
+                },
                 isClick:       false,
                 buyerIntent:   BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING,
                 fundingSource: (instrument && instrument.type === WALLET_INSTRUMENT.CREDIT) ? FUNDING.CREDIT : fundingSource
@@ -173,9 +172,21 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
     };
 
     const start = () => {
-        return ZalgoPromise.try(() => {
-            return createOrder();
-        }).then(orderID => {
+        return ZalgoPromise.hash({
+            orderID:     createOrder(),
+            smartWallet: smartWalletPromise
+        }).then(({ orderID, smartWallet }) => {
+            const { accessToken: buyerAccessToken } = getInstrument(smartWallet, fundingSource, instrumentID);
+
+            if (!buyerAccessToken) {
+                throw new Error(`No access token available for instrument`);
+            }
+
+            const instrumentType = instrument.type;
+            if (!instrumentType) {
+                throw new Error(`Instrument has no type`);
+            }
+            
             return ZalgoPromise.hash({
                 requireShipping: shippingRequired(orderID),
                 orderApproval:   oneClickApproveOrder({ orderID, instrumentType, buyerAccessToken, instrumentID, clientMetadataID })
@@ -187,10 +198,10 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
                 const { payerID } = orderApproval;
                 return onApprove({ payerID }, { restart });
                 
-            }).catch(err => {
-                getLogger().warn('approve_order_error', { err: stringifyError(err) }).flush();
-                return fallbackToWebCheckout();
             });
+        }).catch(err => {
+            getLogger().warn('approve_order_error', { err: stringifyError(err) }).flush();
+            return fallbackToWebCheckout();
         });
     };
 
@@ -208,11 +219,7 @@ const POPUP_OPTIONS = {
 function setupWalletMenu({ props, payment, serviceData, components, config } : MenuOptions) : MenuChoices {
     const { createOrder } = props;
     const { fundingSource, instrumentID } = payment;
-    const { wallet, content, buyerAccessToken } = serviceData;
-
-    if (!buyerAccessToken) {
-        throw new Error(`Can not render wallet menu without buyer access token`);
-    }
+    const { wallet, content } = serviceData;
 
     if (!wallet) {
         throw new Error(`Can not render wallet menu without wallet`);
@@ -295,8 +302,8 @@ function updateWalletClientConfig({ orderID, payment }) : ZalgoPromise<void> {
     return updateButtonClientConfig({ fundingSource, orderID, inline: true });
 }
 
-export const walletCapture : PaymentFlow = {
-    name:               'wallet_capture',
+export const walletCaptureBNPL : PaymentFlow = {
+    name:               'wallet_capture_bnpl',
     setup:              setupWalletCapture,
     isEligible:         isWalletCaptureEligible,
     isPaymentEligible:  isWalletCapturePaymentEligible,

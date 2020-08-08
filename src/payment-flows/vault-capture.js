@@ -92,17 +92,19 @@ function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, 
 
 function initVaultCapture({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, clientAccessToken, clientMetadataID: cmid,
-        enableThreeDomainSecure, sessionID, partnerAttributionID, getParent } = props;
+        enableThreeDomainSecure, sessionID, partnerAttributionID, getParent, userIDToken } = props;
     const { ThreeDomainSecure } = components;
     const { fundingSource, paymentMethodID } = payment;
+    const { facilitatorAccessToken } = serviceData;
 
     const clientMetadataID = cmid || sessionID;
+    const accessToken = userIDToken ? facilitatorAccessToken : clientAccessToken;
 
     if (!paymentMethodID) {
         throw new Error(`Payment method id required for vault capture`);
     }
 
-    if (!clientAccessToken) {
+    if (!accessToken) {
         throw new Error(`Client access token required for vault capture`);
     }
 
@@ -134,7 +136,7 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
             return createOrder();
         }).then(orderID => {
             return ZalgoPromise.hash({
-                validate:        validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, clientMetadataID, partnerAttributionID }),
+                validate:        validatePaymentMethod({ accessToken, orderID, paymentMethodID, enableThreeDomainSecure, clientMetadataID, partnerAttributionID }),
                 requireShipping: shippingRequired(orderID)
             });
         }).then(({ validate, requireShipping }) => {
@@ -165,9 +167,9 @@ const POPUP_OPTIONS = {
 };
 
 function setupVaultMenu({ props, payment, serviceData, components, config } : MenuOptions) : MenuChoices {
-    const { clientAccessToken, createOrder, enableThreeDomainSecure, partnerAttributionID, sessionID, clientMetadataID } = props;
+    const { clientAccessToken, createOrder, enableThreeDomainSecure, partnerAttributionID, sessionID, clientMetadataID, userIDToken } = props;
     const { fundingSource, paymentMethodID, button } = payment;
-    const { content } = serviceData;
+    const { content, facilitatorAccessToken } = serviceData;
 
     if (!clientAccessToken || !paymentMethodID) {
         throw new Error(`Client access token and payment method id required`);
@@ -182,10 +184,12 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
     };
 
     const validate = () => {
+        const accessToken = userIDToken ? facilitatorAccessToken : clientAccessToken;
+
         return ZalgoPromise.try(() => {
             return createOrder();
         }).then(orderID => {
-            return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID: clientMetadataID || sessionID });
+            return validatePaymentMethod({ accessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID: clientMetadataID || sessionID });
         });
     };
 

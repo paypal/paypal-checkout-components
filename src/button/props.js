@@ -84,6 +84,10 @@ export type ButtonXProps = {|
     upgradeLSAT? : boolean,
     connect? : ConnectOptions,
 
+    amount : ?string,
+    userIDToken : ?string,
+    enableBNPL : ?boolean,
+    
     onInit : XOnInit,
     onApprove : ?XOnApprove,
     onCancel : XOnCancel,
@@ -125,6 +129,10 @@ export type ButtonProps = {|
 
     stageHost : ?string,
     apiStageHost : ?string,
+
+    amount : ?string,
+    userIDToken : ?string,
+    enableBNPL : boolean,
 
     onInit : OnInit,
     onError : OnError,
@@ -178,7 +186,10 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         intent,
         merchantID,
         persistRiskData,
-        upgradeLSAT = false
+        upgradeLSAT = false,
+        amount,
+        userIDToken,
+        enableBNPL = false
     } = xprops;
 
     const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, UPGRADE_LSAT_RAMP.RAMP);
@@ -251,6 +262,10 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         persistRiskData,
         connect,
         fundingSource,
+
+        amount,
+        userIDToken,
+        enableBNPL: enableBNPL || false,
 
         enableThreeDomainSecure,
         enableNativeCheckout,

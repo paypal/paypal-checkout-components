@@ -166,8 +166,7 @@ function buildSmartWalletQuery() : string {
             instrumentID: types.string,
             tokenID:      types.string,
             vendor:       types.string,
-            oneClick:     types.boolean,
-            accessToken:  types.string
+            oneClick:     types.boolean
         };
     };
 
