@@ -146,6 +146,22 @@ export function isDefined(item : mixed) : boolean {
     return (item !== null && typeof item !== 'undefined');
 }
 
+export function isEmpty(obj : Object) : boolean {
+    const keys = Object.keys(obj);
+
+    if (keys.length === 0) {
+        return true;
+    }
+
+    for (const key of keys) {
+        if (isDefined(obj[key])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 export function getCookieString(req : ExpressRequest) : string {
     if (!req.cookies) {
         return '';
@@ -171,4 +187,15 @@ export function isError(error? : Error, ...codes : $ReadOnlyArray<string>) : boo
     // $FlowFixMe
     const errorCode = error && error.code;
     return Boolean(errorCode && codes.some(code => (errorCode === code)));
+}
+
+export function copy<T>(obj : T) : T {
+    const stringified = JSON.stringify(obj);
+
+    if (typeof stringified === 'undefined') {
+        // $FlowFixMe
+        return;
+    }
+    
+    return JSON.parse(stringified);
 }

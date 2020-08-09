@@ -1,7 +1,11 @@
 /* @flow */
 
+import { params as gqlParams, query as gqlQuery, types as gqlTypes } from 'typed-graphqlify';
+
 import type { ExpressRequest } from '../types';
 import { HTTP_HEADER } from '../config';
+
+import { isDefined, isEmpty } from './util';
 
 // $FlowFixMe
 export type GraphQL = <V, R>(ExpressRequest, $ReadOnlyArray<{| query : string, variables : V |}>) => Promise<R>; // eslint-disable-line no-undef
@@ -94,4 +98,108 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
     };
 
     return batchedGraphQL;
+}
+
+export const graphqlTypes = {
+    boolean: gqlTypes.boolean,
+    string:  gqlTypes.string
+};
+
+function isGraphQLType(val : mixed) : boolean {
+    for (const type of Object.values(graphqlTypes)) {
+        if (val === type) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+type Query = {|
+    [ string ] : Symbol | Query
+|};
+
+function treeShakeQuery(query : Query) : Query {
+    const result = {};
+
+    for (const key of Object.keys(query)) {
+        const value = query[key];
+
+        if (!isDefined(value)) {
+            continue;
+        }
+
+        if (isGraphQLType(value)) {
+            result[key] = value;
+            continue;
+        }
+  
+        if (typeof value === 'object' && value !== null) {
+            // $FlowFixMe
+            const treeShakedQuery = treeShakeQuery(value);
+            if (!isEmpty(treeShakedQuery)) {
+                result[key] = treeShakedQuery;
+            }
+            continue;
+        }
+
+        throw new Error(`Unrecognized type: ${ typeof value }`);
+    }
+
+    // $FlowFixMe
+    return result;
+}
+
+export function pruneQuery<T>(query : Query, existingData : T) : Query {
+    const result = {};
+
+    for (const key of Object.keys(query)) {
+        const value = query[key];
+        // $FlowFixMe
+        const existingValue = existingData[key];
+
+        if (!isDefined(existingValue)) {
+            result[key] = value;
+            continue;
+        }
+
+        if (!isDefined(value) || isGraphQLType(value)) {
+            continue;
+        }
+            
+        if (typeof value === 'object' && value !== null) {
+            if (typeof existingValue !== 'object' || existingValue === null) {
+                throw new Error(`Expected existing value to be object`);
+            }
+
+            // $FlowFixMe
+            result[key] = pruneQuery(value, existingValue);
+            continue;
+        }
+
+        throw new Error(`Unrecognized type: ${ typeof value }`);
+    }
+
+    // $FlowFixMe
+    return result;
+}
+
+type BuildQueryOptions<I, V> = {|
+    name : string,
+    key : string,
+    inputTypes : I,
+    inputs : V,
+    query : Query
+|};
+
+export function buildQuery<I, V>({ name, key, inputTypes, inputs, query } : BuildQueryOptions<I, V>) : ?string {
+    const treeShakedQuery = treeShakeQuery(query);
+
+    if (isEmpty(treeShakedQuery)) {
+        return;
+    }
+
+    return gqlQuery(name, gqlParams(inputTypes, {
+        [key]: gqlParams(inputs, treeShakedQuery)
+    }));
 }

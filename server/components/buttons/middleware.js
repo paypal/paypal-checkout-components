@@ -83,7 +83,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
-                disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility
+                disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility, enableBNPL
             });
 
             const walletPromise = resolveWallet(req, gqlBatch, getWallet, {
