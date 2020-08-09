@@ -13,7 +13,7 @@ import { proxyMethod } from './proxy';
 import { once } from './util';
 import { getQueryParam } from './dom';
 import { isPayPalDomain } from './security';
-impoty { getPageType } from './script';
+import { getPageType } from './script';
 
 function getRefererDomain() : string {
     return (window.xchild && window.xchild.getParentDomain)
