@@ -42,7 +42,7 @@
     "debug": "cross-env NODE_ENV=debug",
     "jest": "jest test/server --collectCoverage --collectCoverageFrom='server/' --env=node --no-cache --silent",
     "cover": "echo no-cover",
-    "prepublish": "in-publish && npm run babel || not-in-publish",
+    "prepublishOnly": "npm run babel",
     "postpublish": "git clean -f && git checkout .",
     "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com"
   },
