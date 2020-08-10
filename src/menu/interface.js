@@ -39,7 +39,7 @@ export function renderSmartMenu({ clientID, Menu } : SmartMenuProps) : SmartMenu
     };
 
     hide();
-    render();
+    render().then(hide);
 
     return { display, hide };
 }
