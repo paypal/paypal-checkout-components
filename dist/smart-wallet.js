@@ -59,7 +59,7 @@
             return {}.hasOwnProperty.call(object, property);
         };
         __webpack_require__.p = "";
-        return __webpack_require__(__webpack_require__.s = 10);
+        return __webpack_require__(__webpack_require__.s = 12);
     }([ function(module, exports, __webpack_require__) {
         "use strict";
         module.exports = function(useSourceMap) {
@@ -146,31 +146,7 @@
             return removeCss.bind(null, ids);
         };
     }, function(module, exports, __webpack_require__) {
-        var css = __webpack_require__(6);
-        var insertCss = __webpack_require__(1);
-        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
-        (exports = module.exports = css.locals || {})._getContent = function() {
-            return content;
-        };
-        exports._getCss = function() {
-            return "" + css;
-        };
-        exports._insertCss = function(options) {
-            return insertCss(content, options);
-        };
-    }, function(module, exports, __webpack_require__) {
-        var css = __webpack_require__(7);
-        var insertCss = __webpack_require__(1);
-        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
-        (exports = module.exports = css.locals || {})._getContent = function() {
-            return content;
-        };
-        exports._getCss = function() {
-            return "" + css;
-        };
-        exports._insertCss = function(options) {
-            return insertCss(content, options);
-        };
+        module.exports = __webpack_require__(7);
     }, function(module, exports, __webpack_require__) {
         var css = __webpack_require__(8);
         var insertCss = __webpack_require__(1);
@@ -198,13 +174,373 @@
             return insertCss(content, options);
         };
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-4291cbec]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-4291cbec]{height:50px}}.wallet-item .icon[data-v-4291cbec]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-4291cbec]{max-height:90%;max-width:90%}.wallet-item .description[data-v-4291cbec]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-4291cbec]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-4291cbec]{font-size:13px}}.wallet-item .description .details[data-v-4291cbec]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-4291cbec]{font-size:12px}}.wallet-item .preferred[data-v-4291cbec]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-4291cbec]:hover{background-color:#eee}\n", "" ]);
+        var css = __webpack_require__(10);
+        var insertCss = __webpack_require__(1);
+        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+        (exports = module.exports = css.locals || {})._getContent = function() {
+            return content;
+        };
+        exports._getCss = function() {
+            return "" + css;
+        };
+        exports._insertCss = function(options) {
+            return insertCss(content, options);
+        };
+    }, function(module, exports, __webpack_require__) {
+        var css = __webpack_require__(11);
+        var insertCss = __webpack_require__(1);
+        var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+        (exports = module.exports = css.locals || {})._getContent = function() {
+            return content;
+        };
+        exports._getCss = function() {
+            return "" + css;
+        };
+        exports._insertCss = function(options) {
+            return insertCss(content, options);
+        };
+    }, function(module, exports, __webpack_require__) {
+        "undefined" != typeof self && self, module.exports = function(modules) {
+            var installedModules = {};
+            function __webpack_require__(moduleId) {
+                if (installedModules[moduleId]) return installedModules[moduleId].exports;
+                var module = installedModules[moduleId] = {
+                    i: moduleId,
+                    l: !1,
+                    exports: {}
+                };
+                modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+                module.l = !0;
+                return module.exports;
+            }
+            __webpack_require__.m = modules;
+            __webpack_require__.c = installedModules;
+            __webpack_require__.d = function(exports, name, getter) {
+                __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
+                    configurable: !1,
+                    enumerable: !0,
+                    get: getter
+                });
+            };
+            __webpack_require__.n = function(module) {
+                var getter = module && module.__esModule ? function() {
+                    return module.default;
+                } : function() {
+                    return module;
+                };
+                __webpack_require__.d(getter, "a", getter);
+                return getter;
+            };
+            __webpack_require__.o = function(object, property) {
+                return {}.hasOwnProperty.call(object, property);
+            };
+            __webpack_require__.p = "";
+            return __webpack_require__(__webpack_require__.s = "./src/index.js");
+        }({
+            "./src/index.js": function(module, __webpack_exports__, __webpack_require__) {
+                "use strict";
+                Object.defineProperty(__webpack_exports__, "__esModule", {
+                    value: !0
+                });
+                function utils_isPromise(item) {
+                    try {
+                        if (!item) return !1;
+                        if ("undefined" != typeof Promise && item instanceof Promise) return !0;
+                        if ("undefined" != typeof window && "function" == typeof window.Window && item instanceof window.Window) return !1;
+                        if ("undefined" != typeof window && "function" == typeof window.constructor && item instanceof window.constructor) return !1;
+                        var _toString = {}.toString;
+                        if (_toString) {
+                            var name = _toString.call(item);
+                            if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
+                        }
+                        if ("function" == typeof item.then) return !0;
+                    } catch (err) {
+                        return !1;
+                    }
+                    return !1;
+                }
+                var dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [], activeCount = 0, flushPromise = void 0;
+                function flushActive() {
+                    if (!activeCount && flushPromise) {
+                        var promise = flushPromise;
+                        flushPromise = null;
+                        promise.resolve();
+                    }
+                }
+                function startActive() {
+                    activeCount += 1;
+                }
+                function endActive() {
+                    activeCount -= 1;
+                    flushActive();
+                }
+                var promise_ZalgoPromise = function() {
+                    function ZalgoPromise(handler) {
+                        var _this = this;
+                        !function(instance, Constructor) {
+                            if (!(instance instanceof ZalgoPromise)) throw new TypeError("Cannot call a class as a function");
+                        }(this);
+                        this.resolved = !1;
+                        this.rejected = !1;
+                        this.errorHandled = !1;
+                        this.handlers = [];
+                        if (handler) {
+                            var _result = void 0, _error = void 0, resolved = !1, rejected = !1, isAsync = !1;
+                            startActive();
+                            try {
+                                handler((function(res) {
+                                    if (isAsync) _this.resolve(res); else {
+                                        resolved = !0;
+                                        _result = res;
+                                    }
+                                }), (function(err) {
+                                    if (isAsync) _this.reject(err); else {
+                                        rejected = !0;
+                                        _error = err;
+                                    }
+                                }));
+                            } catch (err) {
+                                endActive();
+                                this.reject(err);
+                                return;
+                            }
+                            endActive();
+                            isAsync = !0;
+                            resolved ? this.resolve(_result) : rejected && this.reject(_error);
+                        }
+                    }
+                    ZalgoPromise.prototype.resolve = function(result) {
+                        if (this.resolved || this.rejected) return this;
+                        if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
+                        this.resolved = !0;
+                        this.value = result;
+                        this.dispatch();
+                        return this;
+                    };
+                    ZalgoPromise.prototype.reject = function(error) {
+                        var _this2 = this;
+                        if (this.resolved || this.rejected) return this;
+                        if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
+                        if (!error) {
+                            var _err = error && "function" == typeof error.toString ? error.toString() : {}.toString.call(error);
+                            error = new Error("Expected reject to be called with Error, got " + _err);
+                        }
+                        this.rejected = !0;
+                        this.error = error;
+                        this.errorHandled || setTimeout((function() {
+                            _this2.errorHandled || function(err, promise) {
+                                if (-1 === dispatchedErrors.indexOf(err)) {
+                                    dispatchedErrors.push(err);
+                                    setTimeout((function() {
+                                        throw err;
+                                    }), 1);
+                                    for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
+                                }
+                            }(error, _this2);
+                        }), 1);
+                        this.dispatch();
+                        return this;
+                    };
+                    ZalgoPromise.prototype.asyncReject = function(error) {
+                        this.errorHandled = !0;
+                        this.reject(error);
+                        return this;
+                    };
+                    ZalgoPromise.prototype.dispatch = function() {
+                        var resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
+                        if (!this.dispatching && (resolved || rejected)) {
+                            this.dispatching = !0;
+                            startActive();
+                            for (var chain = function(firstPromise, secondPromise) {
+                                return firstPromise.then((function(res) {
+                                    secondPromise.resolve(res);
+                                }), (function(err) {
+                                    secondPromise.reject(err);
+                                }));
+                            }, i = 0; i < handlers.length; i++) {
+                                var _handlers$i = handlers[i], _onSuccess = _handlers$i.onSuccess, _onError = _handlers$i.onError, _promise = _handlers$i.promise, _result2 = void 0;
+                                if (resolved) try {
+                                    _result2 = _onSuccess ? _onSuccess(this.value) : this.value;
+                                } catch (err) {
+                                    _promise.reject(err);
+                                    continue;
+                                } else if (rejected) {
+                                    if (!_onError) {
+                                        _promise.reject(this.error);
+                                        continue;
+                                    }
+                                    try {
+                                        _result2 = _onError(this.error);
+                                    } catch (err) {
+                                        _promise.reject(err);
+                                        continue;
+                                    }
+                                }
+                                if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
+                                    _result2.resolved ? _promise.resolve(_result2.value) : _promise.reject(_result2.error);
+                                    _result2.errorHandled = !0;
+                                } else utils_isPromise(_result2) ? _result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected) ? _result2.resolved ? _promise.resolve(_result2.value) : _promise.reject(_result2.error) : chain(_result2, _promise) : _promise.resolve(_result2);
+                            }
+                            handlers.length = 0;
+                            this.dispatching = !1;
+                            endActive();
+                        }
+                    };
+                    ZalgoPromise.prototype.then = function(onSuccess, onError) {
+                        if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
+                        if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
+                        var promise = new ZalgoPromise;
+                        this.handlers.push({
+                            promise: promise,
+                            onSuccess: onSuccess,
+                            onError: onError
+                        });
+                        this.errorHandled = !0;
+                        this.dispatch();
+                        return promise;
+                    };
+                    ZalgoPromise.prototype.catch = function(onError) {
+                        return this.then(void 0, onError);
+                    };
+                    ZalgoPromise.prototype.finally = function(onFinally) {
+                        if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
+                        return this.then((function(result) {
+                            return ZalgoPromise.try(onFinally).then((function() {
+                                return result;
+                            }));
+                        }), (function(err) {
+                            return ZalgoPromise.try(onFinally).then((function() {
+                                throw err;
+                            }));
+                        }));
+                    };
+                    ZalgoPromise.prototype.timeout = function(time, err) {
+                        var _this3 = this;
+                        if (this.resolved || this.rejected) return this;
+                        var timeout = setTimeout((function() {
+                            _this3.resolved || _this3.rejected || _this3.reject(err || new Error("Promise timed out after " + time + "ms"));
+                        }), time);
+                        return this.then((function(result) {
+                            clearTimeout(timeout);
+                            return result;
+                        }));
+                    };
+                    ZalgoPromise.prototype.toPromise = function() {
+                        if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
+                        return Promise.resolve(this);
+                    };
+                    ZalgoPromise.resolve = function(value) {
+                        return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
+                            return value.then(resolve, reject);
+                        })) : (new ZalgoPromise).resolve(value);
+                    };
+                    ZalgoPromise.reject = function(error) {
+                        return (new ZalgoPromise).reject(error);
+                    };
+                    ZalgoPromise.asyncReject = function(error) {
+                        return (new ZalgoPromise).asyncReject(error);
+                    };
+                    ZalgoPromise.all = function(promises) {
+                        var promise = new ZalgoPromise, count = promises.length, results = [];
+                        if (!count) {
+                            promise.resolve(results);
+                            return promise;
+                        }
+                        for (var chain = function(i, firstPromise, secondPromise) {
+                            return firstPromise.then((function(res) {
+                                results[i] = res;
+                                0 == (count -= 1) && promise.resolve(results);
+                            }), (function(err) {
+                                secondPromise.reject(err);
+                            }));
+                        }, i = 0; i < promises.length; i++) {
+                            var prom = promises[i];
+                            if (prom instanceof ZalgoPromise) {
+                                if (prom.resolved) {
+                                    results[i] = prom.value;
+                                    count -= 1;
+                                    continue;
+                                }
+                            } else if (!utils_isPromise(prom)) {
+                                results[i] = prom;
+                                count -= 1;
+                                continue;
+                            }
+                            chain(i, ZalgoPromise.resolve(prom), promise);
+                        }
+                        0 === count && promise.resolve(results);
+                        return promise;
+                    };
+                    ZalgoPromise.hash = function(promises) {
+                        var result = {}, awaitPromises = [], _loop = function(key) {
+                            if (promises.hasOwnProperty(key)) {
+                                var value = promises[key];
+                                utils_isPromise(value) ? awaitPromises.push(value.then((function(res) {
+                                    result[key] = res;
+                                }))) : result[key] = value;
+                            }
+                        };
+                        for (var key in promises) _loop(key);
+                        return ZalgoPromise.all(awaitPromises).then((function() {
+                            return result;
+                        }));
+                    };
+                    ZalgoPromise.map = function(items, method) {
+                        return ZalgoPromise.all(items.map(method));
+                    };
+                    ZalgoPromise.onPossiblyUnhandledException = function(handler) {
+                        return function(handler) {
+                            possiblyUnhandledPromiseHandlers.push(handler);
+                            return {
+                                cancel: function() {
+                                    possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                                }
+                            };
+                        }(handler);
+                    };
+                    ZalgoPromise.try = function(method, context, args) {
+                        if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
+                        var result = void 0;
+                        startActive();
+                        try {
+                            result = method.apply(context, args || []);
+                        } catch (err) {
+                            endActive();
+                            return ZalgoPromise.reject(err);
+                        }
+                        endActive();
+                        return ZalgoPromise.resolve(result);
+                    };
+                    ZalgoPromise.delay = function(_delay) {
+                        return new ZalgoPromise((function(resolve) {
+                            setTimeout(resolve, _delay);
+                        }));
+                    };
+                    ZalgoPromise.isPromise = function(value) {
+                        return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
+                    };
+                    ZalgoPromise.flush = function() {
+                        return function(Zalgo) {
+                            var promise = flushPromise = flushPromise || new ZalgoPromise;
+                            flushActive();
+                            return promise;
+                        }();
+                    };
+                    return ZalgoPromise;
+                }();
+                __webpack_require__.d(__webpack_exports__, "ZalgoPromise", (function() {
+                    return promise_ZalgoPromise;
+                }));
+            }
+        });
+    }, function(module, exports, __webpack_require__) {
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-item[data-v-8c6b3f59]{cursor:pointer;width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 20px;box-sizing:border-box;transition:background-color 0.3s ease-in-out;height:60px}@media only screen and (max-width: 600px){.wallet-item[data-v-8c6b3f59]{height:50px}}.wallet-item .icon[data-v-8c6b3f59]{display:inline-block;vertical-align:top;text-align:center;width:50px;margin-right:20px}.wallet-item .icon img[data-v-8c6b3f59]{max-height:90%;max-width:90%}.wallet-item .description[data-v-8c6b3f59]{display:inline-block;vertical-align:top}.wallet-item .description .name[data-v-8c6b3f59]{font-size:16px;margin-bottom:5px}@media only screen and (max-width: 600px){.wallet-item .description .name[data-v-8c6b3f59]{font-size:13px}}.wallet-item .description .details[data-v-8c6b3f59]{color:#6c7378;font-size:14px}@media only screen and (max-width: 600px){.wallet-item .description .details[data-v-8c6b3f59]{font-size:12px}}.wallet-item .preferred[data-v-8c6b3f59]{background-color:#eaf7e9;color:#2d542b;font-size:10px;padding:2px 5px;border-radius:3px;margin:0 5px}.wallet-item[data-v-8c6b3f59]:hover{background-color:#eee}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
-        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-0c5d1f24]{padding:20px}.add-card-button a[data-v-0c5d1f24]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-0c5d1f24]:hover{text-decoration:underline}\n", "" ]);
+        (exports = __webpack_require__(0)(!1)).push([ module.i, ".add-card-button[data-v-e150f0b4]{padding:20px}.add-card-button a[data-v-e150f0b4]{color:#007ab7;font-weight:400;font-size:16px;text-decoration:none}.add-card-button a[data-v-e150f0b4]:hover{text-decoration:underline}\n", "" ]);
         module.exports = exports;
     }, function(module, exports, __webpack_require__) {
         (exports = __webpack_require__(0)(!1)).push([ module.i, "html,body{margin:0;width:100%;overflow:hidden;font-family:Helvetica Neue, HelveticaNeue, HelveticaNeue-Light, Helvetica Neue Light, helvetica, arial, sans-serif}*{box-sizing:border-box}.flex-spacer{flex:1}\n", "" ]);
@@ -218,7 +554,7 @@
         __webpack_require__.d(__webpack_exports__, "renderWallet", (function() {
             return renderWallet;
         }));
-        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_r, preact_module_o, f = {}, e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
+        var preact_module_n, preact_module_u, preact_module_i, preact_module_t, preact_module_o, preact_module_r, f = {}, e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
         function s(n, l) {
             for (var u in l) n[u] = l[u];
             return n;
@@ -228,14 +564,14 @@
             l && l.removeChild(n);
         }
         function preact_module_v(n, l, u) {
-            var i, t = arguments, r = {};
-            for (i in l) "key" !== i && "ref" !== i && (r[i] = l[i]);
+            var i, t = arguments, o = {};
+            for (i in l) "key" !== i && "ref" !== i && (o[i] = l[i]);
             if (arguments.length > 3) for (u = [ u ], i = 3; i < arguments.length; i++) u.push(t[i]);
-            if (null != u && (r.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === r[i] && (r[i] = n.defaultProps[i]);
-            return h(n, r, l && l.key, l && l.ref, null);
+            if (null != u && (o.children = u), "function" == typeof n && null != n.defaultProps) for (i in n.defaultProps) void 0 === o[i] && (o[i] = n.defaultProps[i]);
+            return h(n, o, l && l.key, l && l.ref, null);
         }
-        function h(l, u, i, t, r) {
-            var o = {
+        function h(l, u, i, t, o) {
+            var r = {
                 type: l,
                 props: u,
                 key: i,
@@ -247,10 +583,10 @@
                 __d: void 0,
                 __c: null,
                 constructor: void 0,
-                __v: r
+                __v: o
             };
-            return null == r && (o.__v = o), preact_module_n.vnode && preact_module_n.vnode(o), 
-            o;
+            return null == o && (r.__v = r), preact_module_n.vnode && preact_module_n.vnode(r), 
+            r;
         }
         function preact_module_p(n) {
             return n.children;
@@ -263,82 +599,82 @@
             for (var u; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) return u.__e;
             return "function" == typeof n.type ? _(n) : null;
         }
-        function preact_module_k(n) {
+        function preact_module_w(n) {
             var l, u;
             if (null != (n = n.__) && null != n.__c) {
                 for (n.__e = n.__c.base = null, l = 0; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) {
                     n.__e = n.__c.base = u.__e;
                     break;
                 }
-                return preact_module_k(n);
+                return preact_module_w(n);
             }
         }
-        function preact_module_w(l) {
+        function preact_module_k(l) {
             (!l.__d && (l.__d = !0) && preact_module_u.push(l) && !preact_module_m.__r++ || preact_module_t !== preact_module_n.debounceRendering) && ((preact_module_t = preact_module_n.debounceRendering) || preact_module_i)(preact_module_m);
         }
         function preact_module_m() {
             for (var n; preact_module_m.__r = preact_module_u.length; ) n = preact_module_u.sort((function(n, l) {
                 return n.__v.__b - l.__v.__b;
             })), preact_module_u = [], n.some((function(n) {
-                var l, u, i, t, r, o, f;
-                n.__d && (o = (r = (l = n).__v).__e, (f = l.__P) && (u = [], (i = s({}, r)).__v = i, 
-                t = preact_module_T(f, r, i, l.__n, void 0 !== f.ownerSVGElement, null, u, null == o ? _(r) : o), 
-                preact_module_$(u, r), t != o && preact_module_k(r)));
+                var l, u, i, t, o, r, f;
+                n.__d && (r = (o = (l = n).__v).__e, (f = l.__P) && (u = [], (i = s({}, o)).__v = i, 
+                t = preact_module_T(f, o, i, l.__n, void 0 !== f.ownerSVGElement, null, u, null == r ? _(o) : r), 
+                preact_module_$(u, o), t != r && preact_module_w(o)));
             }));
         }
-        function g(n, l, u, i, t, r, o, c, s, v) {
-            var y, d, k, w, m, g, b, A = i && i.__k || e, P = A.length;
-            for (s == f && (s = null != o ? o[0] : P ? _(i, 0) : null), u.__k = [], y = 0; y < l.length; y++) if (null != (w = u.__k[y] = null == (w = l[y]) || "boolean" == typeof w ? null : "string" == typeof w || "number" == typeof w ? h(null, w, null, null, w) : Array.isArray(w) ? h(preact_module_p, {
-                children: w
-            }, null, null, null) : null != w.__e || null != w.__c ? h(w.type, w.props, w.key, null, w.__v) : w)) {
-                if (w.__ = u, w.__b = u.__b + 1, null === (k = A[y]) || k && w.key == k.key && w.type === k.type) A[y] = void 0; else for (d = 0; d < P; d++) {
-                    if ((k = A[d]) && w.key == k.key && w.type === k.type) {
+        function g(n, l, u, i, t, o, r, c, s, v) {
+            var y, d, w, k, m, g, b, A = i && i.__k || e, P = A.length;
+            for (s == f && (s = null != r ? r[0] : P ? _(i, 0) : null), u.__k = [], y = 0; y < l.length; y++) if (null != (k = u.__k[y] = null == (k = l[y]) || "boolean" == typeof k ? null : "string" == typeof k || "number" == typeof k ? h(null, k, null, null, k) : Array.isArray(k) ? h(preact_module_p, {
+                children: k
+            }, null, null, null) : null != k.__e || null != k.__c ? h(k.type, k.props, k.key, null, k.__v) : k)) {
+                if (k.__ = u, k.__b = u.__b + 1, null === (w = A[y]) || w && k.key == w.key && k.type === w.type) A[y] = void 0; else for (d = 0; d < P; d++) {
+                    if ((w = A[d]) && k.key == w.key && k.type === w.type) {
                         A[d] = void 0;
                         break;
                     }
-                    k = null;
+                    w = null;
                 }
-                m = preact_module_T(n, w, k = k || f, t, r, o, c, s, v), (d = w.ref) && k.ref != d && (b || (b = []), 
-                k.ref && b.push(k.ref, null, w), b.push(d, w.__c || m, w)), null != m ? (null == g && (g = m), 
-                s = preact_module_x(n, w, k, A, o, m, s), "option" == u.type ? n.value = "" : "function" == typeof u.type && (u.__d = s)) : s && k.__e == s && s.parentNode != n && (s = _(k));
+                m = preact_module_T(n, k, w = w || f, t, o, r, c, s, v), (d = k.ref) && w.ref != d && (b || (b = []), 
+                w.ref && b.push(w.ref, null, k), b.push(d, k.__c || m, k)), null != m ? (null == g && (g = m), 
+                s = preact_module_x(n, k, w, A, r, m, s), v || "option" != u.type ? "function" == typeof u.type && (u.__d = s) : n.value = "") : s && w.__e == s && s.parentNode != n && (s = _(w));
             }
-            if (u.__e = g, null != o && "function" != typeof u.type) for (y = o.length; y--; ) null != o[y] && a(o[y]);
+            if (u.__e = g, null != r && "function" != typeof u.type) for (y = r.length; y--; ) null != r[y] && a(r[y]);
             for (y = P; y--; ) null != A[y] && preact_module_I(A[y], A[y]);
             if (b) for (y = 0; y < b.length; y++) preact_module_H(b[y], b[++y], b[++y]);
         }
-        function preact_module_x(n, l, u, i, t, r, o) {
+        function preact_module_x(n, l, u, i, t, o, r) {
             var f, e, c;
-            if (void 0 !== l.__d) f = l.__d, l.__d = void 0; else if (t == u || r != o || null == r.parentNode) n: if (null == o || o.parentNode !== n) n.appendChild(r), 
+            if (void 0 !== l.__d) f = l.__d, l.__d = void 0; else if (t == u || o != r || null == o.parentNode) n: if (null == r || r.parentNode !== n) n.appendChild(o), 
             f = null; else {
-                for (e = o, c = 0; (e = e.nextSibling) && c < i.length; c += 2) if (e == r) break n;
-                n.insertBefore(r, o), f = o;
+                for (e = r, c = 0; (e = e.nextSibling) && c < i.length; c += 2) if (e == o) break n;
+                n.insertBefore(o, r), f = r;
             }
-            return void 0 !== f ? f : r.nextSibling;
+            return void 0 !== f ? f : o.nextSibling;
         }
         function preact_module_P(n, l, u) {
             "-" === l[0] ? n.setProperty(l, u) : n[l] = "number" == typeof u && !1 === c.test(l) ? u + "px" : null == u ? "" : u;
         }
         function preact_module_C(n, l, u, i, t) {
-            var r, o, f, e, c;
+            var o, r, f, e, c;
             if (t ? "className" === l && (l = "class") : "class" === l && (l = "className"), 
-            "style" === l) if (r = n.style, "string" == typeof u) r.cssText = u; else {
-                if ("string" == typeof i && (r.cssText = "", i = null), i) for (e in i) u && e in u || preact_module_P(r, e, "");
-                if (u) for (c in u) i && u[c] === i[c] || preact_module_P(r, c, u[c]);
-            } else "o" === l[0] && "n" === l[1] ? (o = l !== (l = l.replace(/Capture$/, "")), 
-            f = l.toLowerCase(), l = (f in n ? f : l).slice(2), u ? (i || n.addEventListener(l, preact_module_N, o), 
-            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_N, o)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
+            "style" === l) if (o = n.style, "string" == typeof u) o.cssText = u; else {
+                if ("string" == typeof i && (o.cssText = "", i = null), i) for (e in i) u && e in u || preact_module_P(o, e, "");
+                if (u) for (c in u) i && u[c] === i[c] || preact_module_P(o, c, u[c]);
+            } else "o" === l[0] && "n" === l[1] ? (r = l !== (l = l.replace(/Capture$/, "")), 
+            f = l.toLowerCase(), l = (f in n ? f : l).slice(2), u ? (i || n.addEventListener(l, preact_module_N, r), 
+            (n.l || (n.l = {}))[l] = u) : n.removeEventListener(l, preact_module_N, r)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && "download" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/^xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
         }
         function preact_module_N(l) {
             this.l[l.type](preact_module_n.event ? preact_module_n.event(l) : l);
         }
-        function preact_module_T(l, u, i, t, r, o, f, e, c) {
-            var a, v, h, y, _, k, w, m, b, x, A, P = u.type;
+        function preact_module_T(l, u, i, t, o, r, f, e, c) {
+            var a, v, h, y, _, w, k, m, b, x, A, P = u.type;
             if (void 0 !== u.constructor) return null;
             (a = preact_module_n.__b) && a(u);
             try {
                 n: if ("function" == typeof P) {
                     if (m = u.props, b = (a = P.contextType) && t[a.__c], x = a ? b ? b.props.value : a.__ : t, 
-                    i.__c ? w = (v = u.__c = i.__c).__ = v.__E : ("prototype" in P && P.prototype.render ? u.__c = v = new P(m, x) : (u.__c = v = new preact_module_d(m, x), 
+                    i.__c ? k = (v = u.__c = i.__c).__ = v.__E : ("prototype" in P && P.prototype.render ? u.__c = v = new P(m, x) : (u.__c = v = new preact_module_d(m, x), 
                     v.constructor = P, v.render = preact_module_L), b && b.sub(v), v.props = m, v.state || (v.state = {}), 
                     v.context = x, v.__n = t, h = v.__d = !0, v.__h = []), null == v.__s && (v.__s = v.state), 
                     null != P.getDerivedStateFromProps && (v.__s == v.state && (v.__s = s({}, v.__s)), 
@@ -355,16 +691,16 @@
                             break n;
                         }
                         null != v.componentWillUpdate && v.componentWillUpdate(m, v.__s, x), null != v.componentDidUpdate && v.__h.push((function() {
-                            v.componentDidUpdate(y, _, k);
+                            v.componentDidUpdate(y, _, w);
                         }));
                     }
                     v.context = x, v.props = m, v.state = v.__s, (a = preact_module_n.__r) && a(u), 
                     v.__d = !1, v.__v = u, v.__P = l, a = v.render(v.props, v.state, v.context), v.state = v.__s, 
-                    null != v.getChildContext && (t = s(s({}, t), v.getChildContext())), h || null == v.getSnapshotBeforeUpdate || (k = v.getSnapshotBeforeUpdate(y, _)), 
+                    null != v.getChildContext && (t = s(s({}, t), v.getChildContext())), h || null == v.getSnapshotBeforeUpdate || (w = v.getSnapshotBeforeUpdate(y, _)), 
                     A = null != a && a.type == preact_module_p && null == a.key ? a.props.children : a, 
-                    g(l, Array.isArray(A) ? A : [ A ], u, i, t, r, o, f, e, c), v.base = u.__e, v.__h.length && f.push(v), 
-                    w && (v.__E = v.__ = null), v.__e = !1;
-                } else null == o && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = preact_module_j(i.__e, u, i, t, r, o, f, c);
+                    g(l, Array.isArray(A) ? A : [ A ], u, i, t, o, r, f, e, c), v.base = u.__e, v.__h.length && f.push(v), 
+                    k && (v.__E = v.__ = null), v.__e = !1;
+                } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = preact_module_j(i.__e, u, i, t, o, r, f, c);
                 (a = preact_module_n.diffed) && a(u);
             } catch (l) {
                 u.__v = null, preact_module_n.__e(l, u, i);
@@ -382,29 +718,29 @@
                 }
             }));
         }
-        function preact_module_j(n, l, u, i, t, r, o, c) {
+        function preact_module_j(n, l, u, i, t, o, r, c) {
             var s, a, v, h, y, p = u.props, d = l.props;
-            if (t = "svg" === l.type || t, null != r) for (s = 0; s < r.length; s++) if (null != (a = r[s]) && ((null === l.type ? 3 === a.nodeType : a.localName === l.type) || n == a)) {
-                n = a, r[s] = null;
+            if (t = "svg" === l.type || t, null != o) for (s = 0; s < o.length; s++) if (null != (a = o[s]) && ((null === l.type ? 3 === a.nodeType : a.localName === l.type) || n == a)) {
+                n = a, o[s] = null;
                 break;
             }
             if (null == n) {
                 if (null === l.type) return document.createTextNode(d);
                 n = t ? document.createElementNS("http://www.w3.org/2000/svg", l.type) : document.createElement(l.type, d.is && {
                     is: d.is
-                }), r = null, c = !1;
+                }), o = null, c = !1;
             }
-            if (null === l.type) p !== d && n.data != d && (n.data = d); else {
-                if (null != r && (r = e.slice.call(n.childNodes)), v = (p = u.props || f).dangerouslySetInnerHTML, 
+            if (null === l.type) p !== d && n.data !== d && (n.data = d); else {
+                if (null != o && (o = e.slice.call(n.childNodes)), v = (p = u.props || f).dangerouslySetInnerHTML, 
                 h = d.dangerouslySetInnerHTML, !c) {
-                    if (null != r) for (p = {}, y = 0; y < n.attributes.length; y++) p[n.attributes[y].name] = n.attributes[y].value;
+                    if (null != o) for (p = {}, y = 0; y < n.attributes.length; y++) p[n.attributes[y].name] = n.attributes[y].value;
                     (h || v) && (h && v && h.__html == v.__html || (n.innerHTML = h && h.__html || ""));
                 }
                 (function(n, l, u, i, t) {
-                    var r;
-                    for (r in u) "children" === r || "key" === r || r in l || preact_module_C(n, r, null, u[r], i);
-                    for (r in l) t && "function" != typeof l[r] || "children" === r || "key" === r || "value" === r || "checked" === r || u[r] === l[r] || preact_module_C(n, r, l[r], u[r], i);
-                })(n, d, p, t, c), h ? l.__k = [] : (s = l.props.children, g(n, Array.isArray(s) ? s : [ s ], l, u, i, "foreignObject" !== l.type && t, r, o, f, c)), 
+                    var o;
+                    for (o in u) "children" === o || "key" === o || o in l || preact_module_C(n, o, null, u[o], i);
+                    for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || preact_module_C(n, o, l[o], u[o], i);
+                })(n, d, p, t, c), h ? l.__k = [] : (s = l.props.children, g(n, Array.isArray(s) ? s : [ s ], l, u, i, "foreignObject" !== l.type && t, o, r, f, c)), 
                 c || ("value" in d && void 0 !== (s = d.value) && s !== n.value && preact_module_C(n, "value", s, p.value, !1), 
                 "checked" in d && void 0 !== (s = d.checked) && s !== n.checked && preact_module_C(n, "checked", s, p.checked, !1));
             }
@@ -418,9 +754,9 @@
             }
         }
         function preact_module_I(l, u, i) {
-            var t, r, o;
+            var t, o, r;
             if (preact_module_n.unmount && preact_module_n.unmount(l), (t = l.ref) && (t.current && t.current !== l.__e || preact_module_H(t, null, u)), 
-            i || "function" == typeof l.type || (i = null != (r = l.__e)), l.__e = l.__d = void 0, 
+            i || "function" == typeof l.type || (i = null != (o = l.__e)), l.__e = l.__d = void 0, 
             null != (t = l.__c)) {
                 if (t.componentWillUnmount) try {
                     t.componentWillUnmount();
@@ -429,8 +765,8 @@
                 }
                 t.base = t.__P = null;
             }
-            if (t = l.__k) for (o = 0; o < t.length; o++) t[o] && preact_module_I(t[o], u, i);
-            null != r && a(r);
+            if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && preact_module_I(t[r], u, i);
+            null != o && a(o);
         }
         function preact_module_L(n, l, u) {
             return this.constructor(n, u);
@@ -440,7 +776,7 @@
                 for (var u, i; l = l.__; ) if ((u = l.__c) && !u.__) try {
                     if (u.constructor && null != u.constructor.getDerivedStateFromError && (i = !0, 
                     u.setState(u.constructor.getDerivedStateFromError(n))), null != u.componentDidCatch && (i = !0, 
-                    u.componentDidCatch(n)), i) return preact_module_w(u.__E = u);
+                    u.componentDidCatch(n)), i) return preact_module_k(u.__E = u);
                 } catch (l) {
                     n = l;
                 }
@@ -448,12 +784,13 @@
             }
         }, preact_module_d.prototype.setState = function(n, l) {
             var u;
-            u = this.__s !== this.state ? this.__s : this.__s = s({}, this.state), "function" == typeof n && (n = n(u, this.props)), 
-            n && s(u, n), null != n && this.__v && (l && this.__h.push(l), preact_module_w(this));
+            u = null != this.__s && this.__s !== this.state ? this.__s : this.__s = s({}, this.state), 
+            "function" == typeof n && (n = n(u, this.props)), n && s(u, n), null != n && this.__v && (l && this.__h.push(l), 
+            preact_module_k(this));
         }, preact_module_d.prototype.forceUpdate = function(n) {
-            this.__v && (this.__e = !0, n && this.__h.push(n), preact_module_w(this));
+            this.__v && (this.__e = !0, n && this.__h.push(n), preact_module_k(this));
         }, preact_module_d.prototype.render = preact_module_p, preact_module_u = [], preact_module_i = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
-        preact_module_m.__r = 0, preact_module_r = f, preact_module_o = 0;
+        preact_module_m.__r = 0, preact_module_o = f, preact_module_r = 0;
         var index_module_n = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|^--/i, index_module_o = function(e) {
             return String(e).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }, index_module_a = function(e, t) {
@@ -845,11 +1182,17 @@
             };
             ZalgoPromise.hash = function(promises) {
                 var result = {};
-                return ZalgoPromise.all(Object.keys(promises).map((function(key) {
-                    return ZalgoPromise.resolve(promises[key]).then((function(value) {
-                        result[key] = value;
-                    }));
-                }))).then((function() {
+                var awaitPromises = [];
+                var _loop = function(key) {
+                    if (promises.hasOwnProperty(key)) {
+                        var value = promises[key];
+                        utils_isPromise(value) ? awaitPromises.push(value.then((function(res) {
+                            result[key] = res;
+                        }))) : result[key] = value;
+                    }
+                };
+                for (var key in promises) _loop(key);
+                return ZalgoPromise.all(awaitPromises).then((function() {
                     return result;
                 }));
             };
@@ -1640,6 +1983,11 @@
                 return firebase;
             }));
         }));
+        __webpack_require__(2);
+        var _FRAUDNET_URL;
+        (_FRAUDNET_URL = {}).local = "https://www.msmaster.qa.paypal.com/en_US/m/fb-raw.js", 
+        _FRAUDNET_URL.stage = "https://www.msmaster.qa.paypal.com/en_US/m/fb-raw.js", _FRAUDNET_URL.sandbox = "https://c.paypal.com/da/r/fb.js", 
+        _FRAUDNET_URL.production = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL.test = "https://c.paypal.com/da/r/fb.js";
         function getCreateOrder(_ref4, _ref5) {
             var createOrder = _ref4.createOrder, currency = _ref4.currency;
             var createBillingAgreement = _ref5.createBillingAgreement, createSubscription = _ref5.createSubscription;
@@ -2093,7 +2441,7 @@
                 } ]), i.__;
             }(hooks_module_k, n);
         }
-        function hooks_module_y(r, o) {
+        function hooks_module_p(r, o) {
             var i = hooks_module_v(hooks_module_t++, 3);
             !preact_module_n.__s && function(n, t) {
                 return !n || t.some((function(t, u) {
@@ -2155,7 +2503,7 @@
             return "function" == typeof t ? t(n) : t;
         }
         var StyleContext = (l = {}, (u = {
-            __c: "__cC" + preact_module_o++,
+            __c: "__cC" + preact_module_r++,
             __: void 0,
             Consumer: function(n, l) {
                 return n.children(l);
@@ -2166,7 +2514,7 @@
                     return l[u.__c] = t, l;
                 }, this.shouldComponentUpdate = function(n) {
                     t.props.value !== n.value && i.some((function(l) {
-                        l.context = n.value, preact_module_w(l);
+                        l.context = n.value, preact_module_k(l);
                     }));
                 }, this.sub = function(n) {
                     i.push(n);
@@ -2221,7 +2569,7 @@
                 return o.__c = n, r ? (null == o.__ && (o.__ = !0, r.sub(hooks_module_u)), r.props.value) : n.__;
             }(StyleContext), addStyle = _useContext.addStyle, removeStyle = _useContext.removeStyle;
             var cssText = css._getCss();
-            isServer() ? addStyle(cssText) : hooks_module_y((function() {
+            isServer() ? addStyle(cssText) : hooks_module_p((function() {
                 addStyle(cssText);
                 return function() {
                     return removeStyle(cssText);
@@ -2252,17 +2600,17 @@
                 id: "Path"
             }))));
         };
-        var style_scopedscopeId_4291cbec = __webpack_require__(2);
-        var style_scopedscopeId_4291cbec_default = __webpack_require__.n(style_scopedscopeId_4291cbec);
+        var style_scopedscopeId_8c6b3f59 = __webpack_require__(3);
+        var style_scopedscopeId_8c6b3f59_default = __webpack_require__.n(style_scopedscopeId_8c6b3f59);
         var walletItem_WalletItem = function(_ref) {
             var selected = _ref.selected, details = _ref.details, selectWalletItemHandler = _ref.selectWalletItemHandler, listOpen = _ref.listOpen, listOpenHandler = _ref.listOpenHandler;
             var _useState = hooks_module_m(selected), showSelected = _useState[0], setShowSelected = _useState[1];
-            hooks_module_y((function() {
+            hooks_module_p((function() {
                 setShowSelected(selected);
             }), [ selected ]);
             return preact_module_v(style_Style, {
-                css: style_scopedscopeId_4291cbec_default.a,
-                "data-v-4291cbec": ""
+                css: style_scopedscopeId_8c6b3f59_default.a,
+                "data-v-8c6b3f59": ""
             }, preact_module_v("div", {
                 className: "wallet-item " + (selected ? "selected-wallet-item" : ""),
                 onClick: function() {
@@ -2271,49 +2619,49 @@
                         listOpenHandler(!listOpen);
                     }(details.id);
                 },
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, preact_module_v("div", {
                 className: "icon",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, preact_module_v("img", {
                 src: details.fundingOptionIcon,
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             })), preact_module_v("div", {
                 className: "description",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, preact_module_v("div", {
                 className: "name",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, details.fundingOptionTitle), preact_module_v("div", {
                 className: "details",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, preact_module_v("span", {
                 className: "type",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, details.instrumentSubType, " "), preact_module_v("span", {
                 className: "digits",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, details.lastDigits))), details.showPreferredText ? preact_module_v("div", {
                 className: "preferred",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, "PREFERRED") : "", preact_module_v("div", {
                 className: "flex-spacer",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }), showSelected ? preact_module_v("div", {
                 className: "selected",
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             }, preact_module_v(check_Check, {
-                "data-v-4291cbec": ""
+                "data-v-8c6b3f59": ""
             })) : ""));
         };
-        var style_scopedscopeId_7e146866 = __webpack_require__(3);
-        var style_scopedscopeId_7e146866_default = __webpack_require__.n(style_scopedscopeId_7e146866);
+        var style_scopedscopeId_5b670b17 = __webpack_require__(4);
+        var style_scopedscopeId_5b670b17_default = __webpack_require__.n(style_scopedscopeId_5b670b17);
         var credit_CreditBanner = function() {
             return preact_module_v(style_Style, {
-                css: style_scopedscopeId_7e146866_default.a,
-                "data-v-7e146866": ""
+                css: style_scopedscopeId_5b670b17_default.a,
+                "data-v-5b670b17": ""
             }, preact_module_v("div", {
-                "data-v-7e146866": ""
+                "data-v-5b670b17": ""
             }, "This is where the credit messaging goes..."));
         };
         var buildWalletItemDetails = function(fundingOption) {
@@ -2348,8 +2696,8 @@
                 lastDigits: "PAYPAL" === subType ? "" : "•••• " + (digits || "")
             };
         };
-        var style_scopedscopeId_0c5d1f24 = __webpack_require__(4);
-        var style_scopedscopeId_0c5d1f24_default = __webpack_require__.n(style_scopedscopeId_0c5d1f24);
+        var style_scopedscopeId_e150f0b4 = __webpack_require__(5);
+        var style_scopedscopeId_e150f0b4_default = __webpack_require__.n(style_scopedscopeId_e150f0b4);
         var wallet_Wallet = function(_ref) {
             var checkoutSession = _ref.checkoutSession;
             var fundingOptions = checkoutSession.fundingOptions, _useState = hooks_module_m(!1), listOpen = _useState[0], setListOpen = _useState[1], _useState2 = hooks_module_m(fundingOptions[0]), selectedWalletItem = _useState2[0], setSelectedWalletItem = _useState2[1];
@@ -2360,20 +2708,20 @@
                 setSelectedWalletItem(newItem);
             };
             return preact_module_v(style_Style, {
-                css: style_scopedscopeId_0c5d1f24_default.a,
-                "data-v-0c5d1f24": ""
+                css: style_scopedscopeId_e150f0b4_default.a,
+                "data-v-e150f0b4": ""
             }, preact_module_v("div", {
                 className: "wallet",
-                "data-v-0c5d1f24": ""
+                "data-v-e150f0b4": ""
             }, listOpen ? "" : preact_module_v(walletItem_WalletItem, {
                 selected: !0,
                 details: buildWalletItemDetails(selectedWalletItem),
                 selectWalletItemHandler: changeSelectedWalletItem,
                 listOpen: listOpen,
                 listOpenHandler: setListOpen,
-                "data-v-0c5d1f24": ""
+                "data-v-e150f0b4": ""
             }), listOpen ? preact_module_v("div", {
-                "data-v-0c5d1f24": ""
+                "data-v-e150f0b4": ""
             }, fundingOptions.map((function(option) {
                 return preact_module_v(walletItem_WalletItem, {
                     selected: option.id === selectedWalletItem.id,
@@ -2381,20 +2729,20 @@
                     selectWalletItemHandler: changeSelectedWalletItem,
                     listOpen: listOpen,
                     listOpenHandler: setListOpen,
-                    "data-v-0c5d1f24": ""
+                    "data-v-e150f0b4": ""
                 });
             })), preact_module_v(credit_CreditBanner, {
                 checkoutSession: checkoutSession,
-                "data-v-0c5d1f24": ""
+                "data-v-e150f0b4": ""
             }), preact_module_v("div", {
                 className: "add-card-button",
-                "data-v-0c5d1f24": ""
+                "data-v-e150f0b4": ""
             }, preact_module_v("a", {
                 href: "#",
-                "data-v-0c5d1f24": ""
+                "data-v-e150f0b4": ""
             }, "Add debit or credit card"))) : ""));
         };
-        var page_style = __webpack_require__(5);
+        var page_style = __webpack_require__(6);
         var style_default = __webpack_require__.n(page_style);
         var page_Page = function(_ref) {
             return preact_module_v(style_Style, {
@@ -2533,9 +2881,9 @@
             });
             var _ref, facilitatorAccessToken, xprops, env, vault, commit, locale, platform, sessionID, intent, walletSessionID, clientID, partnerAttributionID, _xprops$sdkCorrelatio, sdkCorrelationID, getParentDomain, clientAccessToken, getPageUrl, rememberFunding, onError, stageHost, apiStageHost, style, getParent, currency, merchantID, _xprops$setup, setup, merchantDomain, createOrder;
             !function(l, u, i) {
-                var t, o, c;
-                preact_module_n.__ && preact_module_n.__(l, u), o = (t = i === preact_module_r) ? null : u.__k, 
-                l = preact_module_v(preact_module_p, null, [ l ]), c = [], preact_module_T(u, u.__k = l, o || f, f, void 0 !== u.ownerSVGElement, o ? null : u.childNodes.length ? e.slice.call(u.childNodes) : null, c, f, t), 
+                var t, r, c;
+                preact_module_n.__ && preact_module_n.__(l, u), r = (t = i === preact_module_o) ? null : u.__k, 
+                l = preact_module_v(preact_module_p, null, [ l ]), c = [], preact_module_T(u, u.__k = l, r || f, f, void 0 !== u.ownerSVGElement, r ? null : u.childNodes.length ? e.slice.call(u.childNodes) : null, c, f, t), 
                 preact_module_$(c, l);
             }(preact_module_v(App, {
                 cspNonce: cspNonce,

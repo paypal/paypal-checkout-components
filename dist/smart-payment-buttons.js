@@ -55,8 +55,344 @@ window.spb = function(modules) {
         return {}.hasOwnProperty.call(object, property);
     };
     __webpack_require__.p = "";
-    return __webpack_require__(__webpack_require__.s = 0);
-}([ function(module, __webpack_exports__, __webpack_require__) {
+    return __webpack_require__(__webpack_require__.s = 2);
+}([ function(module, exports, __webpack_require__) {
+    module.exports = __webpack_require__(1);
+}, function(module, exports, __webpack_require__) {
+    "undefined" != typeof self && self, module.exports = function(modules) {
+        var installedModules = {};
+        function __webpack_require__(moduleId) {
+            if (installedModules[moduleId]) return installedModules[moduleId].exports;
+            var module = installedModules[moduleId] = {
+                i: moduleId,
+                l: !1,
+                exports: {}
+            };
+            modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+            module.l = !0;
+            return module.exports;
+        }
+        __webpack_require__.m = modules;
+        __webpack_require__.c = installedModules;
+        __webpack_require__.d = function(exports, name, getter) {
+            __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
+                configurable: !1,
+                enumerable: !0,
+                get: getter
+            });
+        };
+        __webpack_require__.n = function(module) {
+            var getter = module && module.__esModule ? function() {
+                return module.default;
+            } : function() {
+                return module;
+            };
+            __webpack_require__.d(getter, "a", getter);
+            return getter;
+        };
+        __webpack_require__.o = function(object, property) {
+            return {}.hasOwnProperty.call(object, property);
+        };
+        __webpack_require__.p = "";
+        return __webpack_require__(__webpack_require__.s = "./src/index.js");
+    }({
+        "./src/index.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            Object.defineProperty(__webpack_exports__, "__esModule", {
+                value: !0
+            });
+            function utils_isPromise(item) {
+                try {
+                    if (!item) return !1;
+                    if ("undefined" != typeof Promise && item instanceof Promise) return !0;
+                    if ("undefined" != typeof window && "function" == typeof window.Window && item instanceof window.Window) return !1;
+                    if ("undefined" != typeof window && "function" == typeof window.constructor && item instanceof window.constructor) return !1;
+                    var _toString = {}.toString;
+                    if (_toString) {
+                        var name = _toString.call(item);
+                        if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
+                    }
+                    if ("function" == typeof item.then) return !0;
+                } catch (err) {
+                    return !1;
+                }
+                return !1;
+            }
+            var dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [], activeCount = 0, flushPromise = void 0;
+            function flushActive() {
+                if (!activeCount && flushPromise) {
+                    var promise = flushPromise;
+                    flushPromise = null;
+                    promise.resolve();
+                }
+            }
+            function startActive() {
+                activeCount += 1;
+            }
+            function endActive() {
+                activeCount -= 1;
+                flushActive();
+            }
+            var promise_ZalgoPromise = function() {
+                function ZalgoPromise(handler) {
+                    var _this = this;
+                    !function(instance, Constructor) {
+                        if (!(instance instanceof ZalgoPromise)) throw new TypeError("Cannot call a class as a function");
+                    }(this);
+                    this.resolved = !1;
+                    this.rejected = !1;
+                    this.errorHandled = !1;
+                    this.handlers = [];
+                    if (handler) {
+                        var _result = void 0, _error = void 0, resolved = !1, rejected = !1, isAsync = !1;
+                        startActive();
+                        try {
+                            handler((function(res) {
+                                if (isAsync) _this.resolve(res); else {
+                                    resolved = !0;
+                                    _result = res;
+                                }
+                            }), (function(err) {
+                                if (isAsync) _this.reject(err); else {
+                                    rejected = !0;
+                                    _error = err;
+                                }
+                            }));
+                        } catch (err) {
+                            endActive();
+                            this.reject(err);
+                            return;
+                        }
+                        endActive();
+                        isAsync = !0;
+                        resolved ? this.resolve(_result) : rejected && this.reject(_error);
+                    }
+                }
+                ZalgoPromise.prototype.resolve = function(result) {
+                    if (this.resolved || this.rejected) return this;
+                    if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
+                    this.resolved = !0;
+                    this.value = result;
+                    this.dispatch();
+                    return this;
+                };
+                ZalgoPromise.prototype.reject = function(error) {
+                    var _this2 = this;
+                    if (this.resolved || this.rejected) return this;
+                    if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
+                    if (!error) {
+                        var _err = error && "function" == typeof error.toString ? error.toString() : {}.toString.call(error);
+                        error = new Error("Expected reject to be called with Error, got " + _err);
+                    }
+                    this.rejected = !0;
+                    this.error = error;
+                    this.errorHandled || setTimeout((function() {
+                        _this2.errorHandled || function(err, promise) {
+                            if (-1 === dispatchedErrors.indexOf(err)) {
+                                dispatchedErrors.push(err);
+                                setTimeout((function() {
+                                    throw err;
+                                }), 1);
+                                for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
+                            }
+                        }(error, _this2);
+                    }), 1);
+                    this.dispatch();
+                    return this;
+                };
+                ZalgoPromise.prototype.asyncReject = function(error) {
+                    this.errorHandled = !0;
+                    this.reject(error);
+                    return this;
+                };
+                ZalgoPromise.prototype.dispatch = function() {
+                    var resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
+                    if (!this.dispatching && (resolved || rejected)) {
+                        this.dispatching = !0;
+                        startActive();
+                        for (var chain = function(firstPromise, secondPromise) {
+                            return firstPromise.then((function(res) {
+                                secondPromise.resolve(res);
+                            }), (function(err) {
+                                secondPromise.reject(err);
+                            }));
+                        }, i = 0; i < handlers.length; i++) {
+                            var _handlers$i = handlers[i], _onSuccess = _handlers$i.onSuccess, _onError = _handlers$i.onError, _promise = _handlers$i.promise, _result2 = void 0;
+                            if (resolved) try {
+                                _result2 = _onSuccess ? _onSuccess(this.value) : this.value;
+                            } catch (err) {
+                                _promise.reject(err);
+                                continue;
+                            } else if (rejected) {
+                                if (!_onError) {
+                                    _promise.reject(this.error);
+                                    continue;
+                                }
+                                try {
+                                    _result2 = _onError(this.error);
+                                } catch (err) {
+                                    _promise.reject(err);
+                                    continue;
+                                }
+                            }
+                            if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
+                                _result2.resolved ? _promise.resolve(_result2.value) : _promise.reject(_result2.error);
+                                _result2.errorHandled = !0;
+                            } else utils_isPromise(_result2) ? _result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected) ? _result2.resolved ? _promise.resolve(_result2.value) : _promise.reject(_result2.error) : chain(_result2, _promise) : _promise.resolve(_result2);
+                        }
+                        handlers.length = 0;
+                        this.dispatching = !1;
+                        endActive();
+                    }
+                };
+                ZalgoPromise.prototype.then = function(onSuccess, onError) {
+                    if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
+                    if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
+                    var promise = new ZalgoPromise;
+                    this.handlers.push({
+                        promise: promise,
+                        onSuccess: onSuccess,
+                        onError: onError
+                    });
+                    this.errorHandled = !0;
+                    this.dispatch();
+                    return promise;
+                };
+                ZalgoPromise.prototype.catch = function(onError) {
+                    return this.then(void 0, onError);
+                };
+                ZalgoPromise.prototype.finally = function(onFinally) {
+                    if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
+                    return this.then((function(result) {
+                        return ZalgoPromise.try(onFinally).then((function() {
+                            return result;
+                        }));
+                    }), (function(err) {
+                        return ZalgoPromise.try(onFinally).then((function() {
+                            throw err;
+                        }));
+                    }));
+                };
+                ZalgoPromise.prototype.timeout = function(time, err) {
+                    var _this3 = this;
+                    if (this.resolved || this.rejected) return this;
+                    var timeout = setTimeout((function() {
+                        _this3.resolved || _this3.rejected || _this3.reject(err || new Error("Promise timed out after " + time + "ms"));
+                    }), time);
+                    return this.then((function(result) {
+                        clearTimeout(timeout);
+                        return result;
+                    }));
+                };
+                ZalgoPromise.prototype.toPromise = function() {
+                    if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
+                    return Promise.resolve(this);
+                };
+                ZalgoPromise.resolve = function(value) {
+                    return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
+                        return value.then(resolve, reject);
+                    })) : (new ZalgoPromise).resolve(value);
+                };
+                ZalgoPromise.reject = function(error) {
+                    return (new ZalgoPromise).reject(error);
+                };
+                ZalgoPromise.asyncReject = function(error) {
+                    return (new ZalgoPromise).asyncReject(error);
+                };
+                ZalgoPromise.all = function(promises) {
+                    var promise = new ZalgoPromise, count = promises.length, results = [];
+                    if (!count) {
+                        promise.resolve(results);
+                        return promise;
+                    }
+                    for (var chain = function(i, firstPromise, secondPromise) {
+                        return firstPromise.then((function(res) {
+                            results[i] = res;
+                            0 == (count -= 1) && promise.resolve(results);
+                        }), (function(err) {
+                            secondPromise.reject(err);
+                        }));
+                    }, i = 0; i < promises.length; i++) {
+                        var prom = promises[i];
+                        if (prom instanceof ZalgoPromise) {
+                            if (prom.resolved) {
+                                results[i] = prom.value;
+                                count -= 1;
+                                continue;
+                            }
+                        } else if (!utils_isPromise(prom)) {
+                            results[i] = prom;
+                            count -= 1;
+                            continue;
+                        }
+                        chain(i, ZalgoPromise.resolve(prom), promise);
+                    }
+                    0 === count && promise.resolve(results);
+                    return promise;
+                };
+                ZalgoPromise.hash = function(promises) {
+                    var result = {}, awaitPromises = [], _loop = function(key) {
+                        if (promises.hasOwnProperty(key)) {
+                            var value = promises[key];
+                            utils_isPromise(value) ? awaitPromises.push(value.then((function(res) {
+                                result[key] = res;
+                            }))) : result[key] = value;
+                        }
+                    };
+                    for (var key in promises) _loop(key);
+                    return ZalgoPromise.all(awaitPromises).then((function() {
+                        return result;
+                    }));
+                };
+                ZalgoPromise.map = function(items, method) {
+                    return ZalgoPromise.all(items.map(method));
+                };
+                ZalgoPromise.onPossiblyUnhandledException = function(handler) {
+                    return function(handler) {
+                        possiblyUnhandledPromiseHandlers.push(handler);
+                        return {
+                            cancel: function() {
+                                possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                            }
+                        };
+                    }(handler);
+                };
+                ZalgoPromise.try = function(method, context, args) {
+                    if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
+                    var result = void 0;
+                    startActive();
+                    try {
+                        result = method.apply(context, args || []);
+                    } catch (err) {
+                        endActive();
+                        return ZalgoPromise.reject(err);
+                    }
+                    endActive();
+                    return ZalgoPromise.resolve(result);
+                };
+                ZalgoPromise.delay = function(_delay) {
+                    return new ZalgoPromise((function(resolve) {
+                        setTimeout(resolve, _delay);
+                    }));
+                };
+                ZalgoPromise.isPromise = function(value) {
+                    return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
+                };
+                ZalgoPromise.flush = function() {
+                    return function(Zalgo) {
+                        var promise = flushPromise = flushPromise || new ZalgoPromise;
+                        flushActive();
+                        return promise;
+                    }();
+                };
+                return ZalgoPromise;
+            }();
+            __webpack_require__.d(__webpack_exports__, "ZalgoPromise", (function() {
+                return promise_ZalgoPromise;
+            }));
+        }
+    });
+}, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     __webpack_require__.d(__webpack_exports__, "setupButton", (function() {
@@ -381,11 +717,17 @@ window.spb = function(modules) {
         };
         ZalgoPromise.hash = function(promises) {
             var result = {};
-            return ZalgoPromise.all(Object.keys(promises).map((function(key) {
-                return ZalgoPromise.resolve(promises[key]).then((function(value) {
-                    result[key] = value;
-                }));
-            }))).then((function() {
+            var awaitPromises = [];
+            var _loop = function(key) {
+                if (promises.hasOwnProperty(key)) {
+                    var value = promises[key];
+                    utils_isPromise(value) ? awaitPromises.push(value.then((function(res) {
+                        result[key] = res;
+                    }))) : result[key] = value;
+                }
+            };
+            for (var key in promises) _loop(key);
+            return ZalgoPromise.all(awaitPromises).then((function() {
                 return result;
             }));
         };
@@ -1331,13 +1673,6 @@ window.spb = function(modules) {
     function promiseNoop() {
         return promise_ZalgoPromise.resolve();
     }
-    function sendBeacon(url) {
-        var img = document.createElement("img");
-        img.src = url;
-        img.style.visibility = "hidden";
-        img.style.position = "absolute";
-        document.body && document.body.appendChild(img);
-    }
     function loadScript(url) {
         return new promise_ZalgoPromise((function(resolve, reject) {
             var container = document.body || document.head;
@@ -1482,11 +1817,10 @@ window.spb = function(modules) {
     }
     function validatePaymentMethod(_ref6) {
         var _headers10;
-        var clientAccessToken = _ref6.clientAccessToken, orderID = _ref6.orderID, paymentMethodID = _ref6.paymentMethodID, enableThreeDomainSecure = _ref6.enableThreeDomainSecure, partnerAttributionID = _ref6.partnerAttributionID, clientMetadataID = _ref6.clientMetadataID;
+        var accessToken = _ref6.accessToken, orderID = _ref6.orderID, paymentMethodID = _ref6.paymentMethodID, enableThreeDomainSecure = _ref6.enableThreeDomainSecure, partnerAttributionID = _ref6.partnerAttributionID, clientMetadataID = _ref6.clientMetadataID;
         getLogger().info("rest_api_create_order_token");
-        var headers = ((_headers10 = {}).authorization = "Bearer " + clientAccessToken, 
-        _headers10["paypal-partner-attribution-id"] = partnerAttributionID, _headers10["paypal-client-metadata-id"] = clientMetadataID, 
-        _headers10);
+        var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
+        _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10);
         var paymentSource = {
             token: {
                 id: paymentMethodID,
@@ -1592,6 +1926,12 @@ window.spb = function(modules) {
             return firebase;
         }));
     }));
+    var zalgo_promise = __webpack_require__(0);
+    var _FRAUDNET_URL;
+    var FRAUDNET_URL = ((_FRAUDNET_URL = {}).local = "https://www.msmaster.qa.paypal.com/en_US/m/fb-raw.js", 
+    _FRAUDNET_URL.stage = "https://www.msmaster.qa.paypal.com/en_US/m/fb-raw.js", _FRAUDNET_URL.sandbox = "https://c.paypal.com/da/r/fb.js", 
+    _FRAUDNET_URL.production = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL.test = "https://c.paypal.com/da/r/fb.js", 
+    _FRAUDNET_URL);
     function getCreateOrder(_ref4, _ref5) {
         var createOrder = _ref4.createOrder, currency = _ref4.currency;
         var createBillingAgreement = _ref5.createBillingAgreement, createSubscription = _ref5.createSubscription;
@@ -2094,7 +2434,7 @@ window.spb = function(modules) {
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken;
         var xprops = window.xprops;
-        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, persistRiskData = xprops.persistRiskData, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT;
+        var env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, onError = xprops.onError, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, persistRiskData = xprops.persistRiskData, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, _xprops$enableBNPL = xprops.enableBNPL, enableBNPL = void 0 !== _xprops$enableBNPL && _xprops$enableBNPL;
         var upgradeLSATExperiment = (name = "UPGRADE_LSAT_EXPERIMENT", logger = getLogger(), 
         function(_ref) {
             var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint;
@@ -2357,6 +2697,9 @@ window.spb = function(modules) {
             persistRiskData: persistRiskData,
             connect: connect,
             fundingSource: fundingSource,
+            amount: amount,
+            userIDToken: userIDToken,
+            enableBNPL: enableBNPL || !1,
             enableThreeDomainSecure: enableThreeDomainSecure,
             enableNativeCheckout: enableNativeCheckout,
             onClick: onClick,
@@ -2428,7 +2771,6 @@ window.spb = function(modules) {
             sdkMeta: _ref3.sdkMeta,
             content: _ref3.content,
             buyerAccessToken: _ref3.buyerAccessToken,
-            personalization: _ref3.personalization,
             facilitatorAccessToken: _ref3.facilitatorAccessToken,
             eligibility: _ref3.eligibility,
             serverRiskData: _ref3.serverRiskData
@@ -2745,7 +3087,9 @@ window.spb = function(modules) {
                     venmoPayloadID: venmoPayloadID,
                     createAuthCode: function() {
                         return promise_ZalgoPromise.try((function() {
-                            if (buyerAccessToken && ("pay" === buyerIntent || "pay_with_different_funding_shipping" === buyerIntent)) return function(buyerAccessToken) {
+                            return payment.createAccessToken ? payment.createAccessToken() : buyerAccessToken || void 0;
+                        })).then((function(accessToken) {
+                            if (accessToken && ("pay" === buyerIntent || "pay_with_different_funding_shipping" === buyerIntent)) return function(buyerAccessToken) {
                                 return callGraphQL({
                                     name: "ExchangeAuthCode",
                                     query: "\n            query ExchangeAuthCode(\n                $buyerAccessToken: String!\n            ) {\n                auth(\n                    accessToken: $buyerAccessToken\n                ) {\n                    authCode\n                }\n            }\n        ",
@@ -2755,7 +3099,7 @@ window.spb = function(modules) {
                                 }).then((function(_ref4) {
                                     return _ref4.auth.authCode;
                                 }));
-                            }(buyerAccessToken).catch((function(err) {
+                            }(accessToken).catch((function(err) {
                                 getLogger().warn("exchange_access_token_auth_code_error", {
                                     err: stringifyError(err)
                                 });
@@ -3167,12 +3511,13 @@ window.spb = function(modules) {
         },
         init: function(_ref5) {
             var props = _ref5.props, components = _ref5.components, payment = _ref5.payment, serviceData = _ref5.serviceData, config = _ref5.config;
-            var createOrder = props.createOrder, onApprove = props.onApprove, clientAccessToken = props.clientAccessToken, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, getParent = props.getParent;
+            var createOrder = props.createOrder, onApprove = props.onApprove, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, getParent = props.getParent;
             var ThreeDomainSecure = components.ThreeDomainSecure;
             var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID;
             var clientMetadataID = props.clientMetadataID || props.sessionID;
+            var accessToken = props.userIDToken ? serviceData.facilitatorAccessToken : props.clientAccessToken;
             if (!paymentMethodID) throw new Error("Payment method id required for vault capture");
-            if (!clientAccessToken) throw new Error("Client access token required for vault capture");
+            if (!accessToken) throw new Error("Client access token required for vault capture");
             var restart = function() {
                 return promise_ZalgoPromise.try((function() {
                     throw new Error("Vault capture restart not implemented");
@@ -3190,7 +3535,7 @@ window.spb = function(modules) {
                     })).then((function(orderID) {
                         return promise_ZalgoPromise.hash({
                             validate: validatePaymentMethod({
-                                clientAccessToken: clientAccessToken,
+                                accessToken: accessToken,
                                 orderID: orderID,
                                 paymentMethodID: paymentMethodID,
                                 enableThreeDomainSecure: enableThreeDomainSecure,
@@ -3267,9 +3612,9 @@ window.spb = function(modules) {
         },
         setupMenu: function(_ref7) {
             var props = _ref7.props, payment = _ref7.payment, serviceData = _ref7.serviceData, components = _ref7.components, config = _ref7.config;
-            var clientAccessToken = props.clientAccessToken, createOrder = props.createOrder, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, sessionID = props.sessionID, clientMetadataID = props.clientMetadataID;
+            var clientAccessToken = props.clientAccessToken, createOrder = props.createOrder, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, sessionID = props.sessionID, clientMetadataID = props.clientMetadataID, userIDToken = props.userIDToken;
             var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID, button = payment.button;
-            var content = serviceData.content;
+            var content = serviceData.content, facilitatorAccessToken = serviceData.facilitatorAccessToken;
             if (!clientAccessToken || !paymentMethodID) throw new Error("Client access token and payment method id required");
             var updateClientConfig = function() {
                 return promise_ZalgoPromise.try((function() {
@@ -3302,11 +3647,11 @@ window.spb = function(modules) {
                     return promise_ZalgoPromise.try((function() {
                         return updateClientConfig();
                     })).then((function() {
-                        return promise_ZalgoPromise.try((function() {
+                        return accessToken = userIDToken ? facilitatorAccessToken : clientAccessToken, promise_ZalgoPromise.try((function() {
                             return createOrder();
                         })).then((function(orderID) {
                             return validatePaymentMethod({
-                                clientAccessToken: clientAccessToken,
+                                accessToken: accessToken,
                                 orderID: orderID,
                                 paymentMethodID: paymentMethodID,
                                 enableThreeDomainSecure: enableThreeDomainSecure,
@@ -3314,6 +3659,7 @@ window.spb = function(modules) {
                                 clientMetadataID: clientMetadataID || sessionID
                             });
                         }));
+                        var accessToken;
                     })).then((function() {
                         return loadCheckout({
                             payment: _extends({}, payment, {
@@ -3400,7 +3746,7 @@ window.spb = function(modules) {
         setup: function() {},
         isEligible: function(_ref) {
             var serviceData = _ref.serviceData;
-            return !!serviceData.wallet && !!serviceData.buyerAccessToken && !_ref.props.onShippingChange;
+            return !(!serviceData.wallet || !serviceData.buyerAccessToken || _ref.props.onShippingChange || window.xprops.enableBNPL);
         },
         isPaymentEligible: function(_ref2) {
             var payment = _ref2.payment;
@@ -3556,6 +3902,267 @@ window.spb = function(modules) {
             return updateButtonClientConfig({
                 fundingSource: _ref9.payment.fundingSource,
                 orderID: _ref9.orderID,
+                inline: !0
+            });
+        },
+        spinner: !0,
+        inline: !0
+    };
+    var smartWalletPromise;
+    function wallet_capture_bnpl_getInstrument(wallet, fundingSource, instrumentID) {
+        var walletFunding = wallet[fundingSource];
+        if (!walletFunding) throw new Error("Wallet has no " + fundingSource);
+        var instrument;
+        for (var _i2 = 0, _walletFunding$instru2 = walletFunding.instruments; _i2 < _walletFunding$instru2.length; _i2++) {
+            var inst = _walletFunding$instru2[_i2];
+            inst.instrumentID === instrumentID && (instrument = inst);
+        }
+        if (!instrument) throw new Error("Can not find instrument with id " + instrumentID);
+        return instrument;
+    }
+    var wallet_capture_bnpl_POPUP_OPTIONS = {
+        width: 500,
+        height: 590
+    };
+    var walletCaptureBNPL = {
+        name: "wallet_capture_bnpl",
+        setup: function(_ref2) {
+            var props = _ref2.props, serviceData = _ref2.serviceData;
+            var clientID = props.clientID, currency = props.currency, amount = props.amount, userIDToken = props.userIDToken;
+            var merchantID = serviceData.merchantID, wallet = serviceData.wallet;
+            var clientMetadataID = props.clientMetadataID || props.sessionID;
+            clientID && props.enableBNPL && userIDToken ? smartWalletPromise = function(_ref) {
+                var env = _ref.env, clientMetadataID = _ref.clientMetadataID, cspNonce = _ref.cspNonce, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 1e3 : _ref$timeout;
+                return new zalgo_promise.ZalgoPromise((function(resolve) {
+                    var config = {
+                        f: clientMetadataID,
+                        s: "SMART_PAYMENT_BUTTONS"
+                    };
+                    var configScript = document.createElement("script");
+                    configScript.setAttribute("nonce", cspNonce || "");
+                    configScript.setAttribute("type", "application/json");
+                    configScript.setAttribute("id", "fconfig");
+                    configScript.setAttribute("fncls", "fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99");
+                    configScript.textContent = JSON.stringify(config);
+                    var fraudnetScript = document.createElement("script");
+                    fraudnetScript.setAttribute("nonce", cspNonce || "");
+                    fraudnetScript.setAttribute("src", FRAUDNET_URL[env]);
+                    fraudnetScript.addEventListener("error", resolve);
+                    window.fnCallback = resolve;
+                    setTimeout(resolve, timeout);
+                    var body = function() {
+                        var body = document.body;
+                        if (!body) throw new Error("Document body not found");
+                        return body;
+                    }();
+                    body.appendChild(configScript);
+                    body.appendChild(fraudnetScript);
+                }));
+            }({
+                env: props.env,
+                clientMetadataID: clientMetadataID,
+                cspNonce: _ref2.config.cspNonce
+            }).then((function() {
+                return callGraphQL({
+                    name: "GetSmartWallet",
+                    query: "\n            query GetSmartWallet(\n                $clientID: String!\n                $merchantID: [String!]\n                $currency: String\n                $amount: String\n                $userIDToken: String\n                $vetted: Boolean\n            ) {\n                smartWallet(\n                    clientId: $clientID\n                    merchantId: $merchantID\n                    currency: $currency\n                    amount: $amount\n                    userIdToken: $userIDToken\n                    vetted: $vetted\n                ) {\n                    paypal {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                            accessToken\n                        }\n                    }\n                    credit {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                            accessToken\n                        }\n                    }\n                    card {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                        }\n                    }\n                }\n            }\n        ",
+                    variables: {
+                        clientID: (_ref = {
+                            clientID: clientID,
+                            merchantID: merchantID,
+                            currency: currency,
+                            amount: amount,
+                            clientMetadataID: clientMetadataID,
+                            userIDToken: userIDToken
+                        }).clientID,
+                        merchantID: _ref.merchantID,
+                        currency: _ref.currency,
+                        amount: _ref.amount,
+                        userIDToken: _ref.userIDToken,
+                        vetted: void 0 === (_ref$vetted = _ref.vetted) || _ref$vetted
+                    },
+                    headers: (_headers = {}, _headers["paypal-client-metadata-id"] = _ref.clientMetadataID, 
+                    _headers)
+                }).then((function(_ref2) {
+                    return _ref2.smartWallet;
+                }));
+                var _ref, _headers, _ref$vetted;
+            })).catch((function(err) {
+                getLogger().warn("load_smart_wallet_error", {
+                    err: stringifyError(err)
+                });
+                throw err;
+            })) : wallet && (smartWalletPromise = promise_ZalgoPromise.resolve(wallet));
+        },
+        isEligible: function(_ref) {
+            return !!window.xprops.enableBNPL && !!_ref.serviceData.wallet && !_ref.props.onShippingChange;
+        },
+        isPaymentEligible: function(_ref3) {
+            var payment = _ref3.payment;
+            var wallet = _ref3.serviceData.wallet;
+            var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
+            if (payment.win) return !1;
+            if (!wallet) return !1;
+            if (!instrumentID) return !1;
+            try {
+                wallet_capture_bnpl_getInstrument(wallet, fundingSource, instrumentID);
+            } catch (err) {
+                return !1;
+            }
+            return !!smartWalletPromise;
+        },
+        init: function(_ref4) {
+            var props = _ref4.props, components = _ref4.components, payment = _ref4.payment, serviceData = _ref4.serviceData, config = _ref4.config;
+            var createOrder = props.createOrder, onApprove = props.onApprove, clientMetadataID = props.clientMetadataID;
+            var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
+            var wallet = serviceData.wallet;
+            if (!wallet || !smartWalletPromise) throw new Error("No smart wallet found");
+            if (!instrumentID) throw new Error("Instrument id required for wallet capture");
+            var instrument = wallet_capture_bnpl_getInstrument(wallet, fundingSource, instrumentID);
+            var getWebCheckoutFallback = function() {
+                return checkout.init({
+                    props: props,
+                    components: components,
+                    serviceData: serviceData,
+                    payment: _extends({}, payment, {
+                        createAccessToken: function() {
+                            return smartWalletPromise.then((function(smartWallet) {
+                                var smartInstrument = wallet_capture_bnpl_getInstrument(smartWallet, fundingSource, instrumentID);
+                                if (!smartInstrument) throw new Error("Instrument not found");
+                                if (!smartInstrument.accessToken) throw new Error("Instrument access token not found");
+                                return smartInstrument.accessToken;
+                            }));
+                        },
+                        isClick: !1,
+                        buyerIntent: "pay_with_different_funding_shipping",
+                        fundingSource: instrument && "credit" === instrument.type ? "credit" : fundingSource
+                    }),
+                    config: config
+                });
+            };
+            var fallbackToWebCheckout = function() {
+                getLogger().info("web_checkout_fallback").flush();
+                return getWebCheckoutFallback().start();
+            };
+            if (!instrument.oneClick) return getWebCheckoutFallback();
+            var restart = function() {
+                return fallbackToWebCheckout();
+            };
+            var shippingRequired = function(orderID) {
+                return getSupplementalOrderInfo(orderID).then((function(order) {
+                    return !!order.checkoutSession.flags.isChangeShippingAddressAllowed;
+                }));
+            };
+            return {
+                start: function() {
+                    return promise_ZalgoPromise.hash({
+                        orderID: createOrder(),
+                        smartWallet: smartWalletPromise
+                    }).then((function(_ref5) {
+                        var orderID = _ref5.orderID;
+                        var buyerAccessToken = wallet_capture_bnpl_getInstrument(_ref5.smartWallet, fundingSource, instrumentID).accessToken;
+                        if (!buyerAccessToken) throw new Error("No access token available for instrument");
+                        var instrumentType = instrument.type;
+                        if (!instrumentType) throw new Error("Instrument has no type");
+                        return promise_ZalgoPromise.hash({
+                            requireShipping: shippingRequired(orderID),
+                            orderApproval: oneClickApproveOrder({
+                                orderID: orderID,
+                                instrumentType: instrumentType,
+                                buyerAccessToken: buyerAccessToken,
+                                instrumentID: instrumentID,
+                                clientMetadataID: clientMetadataID
+                            })
+                        }).then((function(_ref6) {
+                            var orderApproval = _ref6.orderApproval;
+                            return _ref6.requireShipping ? fallbackToWebCheckout() : onApprove({
+                                payerID: orderApproval.payerID
+                            }, {
+                                restart: restart
+                            });
+                        }));
+                    })).catch((function(err) {
+                        getLogger().warn("approve_order_error", {
+                            err: stringifyError(err)
+                        }).flush();
+                        return fallbackToWebCheckout();
+                    }));
+                },
+                close: function() {
+                    return promise_ZalgoPromise.resolve();
+                }
+            };
+        },
+        setupMenu: function(_ref7) {
+            var props = _ref7.props, payment = _ref7.payment, serviceData = _ref7.serviceData, components = _ref7.components, config = _ref7.config;
+            var createOrder = props.createOrder;
+            var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
+            var wallet = serviceData.wallet, content = serviceData.content;
+            if (!wallet) throw new Error("Can not render wallet menu without wallet");
+            if (!instrumentID) throw new Error("Can not render wallet menu without instrumentID");
+            var instrument = wallet_capture_bnpl_getInstrument(wallet, fundingSource, instrumentID);
+            if (!instrument) throw new Error("Can not render wallet menu without instrument");
+            var loadCheckout = function(_ref8) {
+                return checkout.init({
+                    props: props,
+                    components: components,
+                    serviceData: serviceData,
+                    config: config,
+                    payment: _ref8.payment
+                }).start();
+            };
+            var newFundingSource = "credit" === instrument.type ? "credit" : fundingSource;
+            if ("paypal" === fundingSource || "credit" === fundingSource) return [ {
+                label: content.payWithDifferentMethod,
+                popup: wallet_capture_bnpl_POPUP_OPTIONS,
+                onSelect: function(_ref9) {
+                    var _getLogger$info$track;
+                    var win = _ref9.win;
+                    getLogger().info("click_choose_funding").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_click_pay_with_different_payment_method", 
+                    _getLogger$info$track)).flush();
+                    return promise_ZalgoPromise.try((function() {
+                        return promise_ZalgoPromise.try((function() {
+                            return createOrder();
+                        })).then((function(orderID) {
+                            return updateButtonClientConfig({
+                                fundingSource: fundingSource,
+                                orderID: orderID,
+                                inline: !1
+                            });
+                        }));
+                    })).then((function() {
+                        return loadCheckout({
+                            payment: _extends({}, payment, {
+                                win: win,
+                                buyerIntent: "pay_with_different_funding_shipping",
+                                fundingSource: newFundingSource
+                            })
+                        });
+                    }));
+                }
+            }, {
+                label: content.payWithDifferentAccount,
+                popup: wallet_capture_bnpl_POPUP_OPTIONS,
+                onSelect: function(_ref10) {
+                    var _getLogger$info$track2;
+                    var win = _ref10.win;
+                    getLogger().info("click_choose_account").track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "process_click_pay_with_different_account", 
+                    _getLogger$info$track2)).flush();
+                    return loadCheckout({
+                        payment: _extends({}, payment, {
+                            win: win,
+                            buyerIntent: "pay_with_different_account",
+                            fundingSource: newFundingSource
+                        })
+                    });
+                }
+            } ];
+            throw new Error("Can not render menu for " + fundingSource);
+        },
+        updateClientConfig: function(_ref11) {
+            return updateButtonClientConfig({
+                fundingSource: _ref11.payment.fundingSource,
+                orderID: _ref11.orderID,
                 inline: !0
             });
         },
@@ -3870,7 +4477,7 @@ window.spb = function(modules) {
             return renderTo(window.xprops.getParent(), "#smart-menu");
         }));
         hide();
-        render();
+        render().then(hide);
         return {
             display: function(_ref2) {
                 var choices = _ref2.choices, verticalOffset = _ref2.verticalOffset, onFocus = _ref2.onFocus, onFocusFail = _ref2.onFocusFail;
@@ -3890,7 +4497,7 @@ window.spb = function(modules) {
         };
     }
     var smartMenu;
-    var PAYMENT_FLOWS = [ vaultCapture, walletCapture, cardFields, {
+    var PAYMENT_FLOWS = [ vaultCapture, walletCaptureBNPL, walletCapture, cardFields, {
         name: "popup_bridge",
         setup: function(_ref) {
             var props = _ref.props;
@@ -4454,7 +5061,6 @@ window.spb = function(modules) {
             buyerGeoCountry: opts.buyerCountry,
             serverMerchantID: opts.merchantID,
             fundingEligibility: fundingEligibility,
-            personalization: opts.personalization,
             isCardFieldsExperimentEnabled: opts.isCardFieldsExperimentEnabled,
             sdkMeta: opts.sdkMeta,
             buyerAccessToken: opts.buyerAccessToken,
@@ -4495,10 +5101,6 @@ window.spb = function(modules) {
                                 var _getLogger$info$info$;
                                 var merchantID = serviceData.merchantID;
                                 var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env;
-                                !function(personalization) {
-                                    personalization && personalization.tagline && personalization.tagline.tracking && sendBeacon(personalization.tagline.tracking.click);
-                                    personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
-                                }(serviceData.personalization);
                                 var _getPaymentFlow = getPaymentFlow({
                                     props: props,
                                     payment: payment,
@@ -4912,7 +5514,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.293", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.294", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
