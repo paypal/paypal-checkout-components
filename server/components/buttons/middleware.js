@@ -4,7 +4,7 @@ import { html } from 'jsx-pragmatic';
 import { COUNTRY, LANG } from '@paypal/sdk-constants';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL, javascriptResponse } from '../../lib';
-import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization, resolveNativeEligibility, resolveMerchantID, type GetWallet, resolveWallet, exchangeIDToken } from '../../service';
+import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveNativeEligibility, resolveMerchantID, type GetWallet, resolveWallet, exchangeIDToken } from '../../service';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig, RiskData } from '../../types';
 import type { ContentType } from '../../../src/types';
 
@@ -45,10 +45,9 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
         app: async ({ req, res, params, meta, logBuffer, sdkMeta }) => {
             logger.info(req, EVENT.RENDER);
 
-            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, style, userIDToken, amount,
+            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale, onShippingChange,
                 clientMetadataID, riskData, pageSessionID, correlationID, enableBNPL, platform } = getParams(params, req, res);
-            const { label, period } = style;
             
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
 
@@ -91,11 +90,6 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                 disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, userIDToken, enableBNPL
             });
 
-            const personalizationPromise = resolvePersonalization(req, gqlBatch, {
-                logger, clientID, merchantID: sdkMerchantID, buyerCountry, locale, buttonSessionID,
-                currency, intent, commit, vault, label, period
-            });
-
             gqlBatch.flush();
 
             let facilitatorAccessToken;
@@ -114,7 +108,6 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const render = await renderPromise;
             const client = await clientPromise;
             const fundingEligibility = await fundingEligibilityPromise;
-            const personalization = await personalizationPromise;
             const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
             const merchantID = await merchantIDPromise;
             const nativeEligibility = await nativeEligibilityPromise;
@@ -131,7 +124,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const buttonProps = {
                 ...params, nonce: cspNonce, csp: { nonce: cspNonce },
-                fundingEligibility, personalization, content, wallet
+                fundingEligibility, content, wallet
             };
 
             try {
@@ -145,7 +138,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const buttonHTML = render.button.Buttons(buttonProps).render(html());
 
             const setupParams = {
-                fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, sdkMeta, wallet, buyerAccessToken, correlationID,
+                fundingEligibility, buyerCountry, cspNonce, merchantID, sdkMeta, wallet, buyerAccessToken, correlationID,
                 isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content, serverRiskData
             };
 

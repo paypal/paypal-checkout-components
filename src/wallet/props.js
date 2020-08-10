@@ -4,7 +4,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, INTENT, COUNTRY, FUNDING, PLATFORM, CURRENCY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 
-import type { CheckoutFlowType, PersonalizationType, LocaleType } from '../types';
+import type { CheckoutFlowType, LocaleType } from '../types';
 import { getNonce, promiseNoop } from '../lib';
 import { getCreateOrder } from '../props/createOrder';
 import { getOnApprove } from '../props/onApprove';
@@ -209,7 +209,6 @@ export type ServiceData = {|
     merchantID : $ReadOnlyArray<string>,
     buyerCountry : $Values<typeof COUNTRY>,
     fundingEligibility : FundingEligibilityType,
-    personalization : PersonalizationType,
     facilitatorAccessToken : string,
     sdkMeta : string,
     eligibility : {|
@@ -224,7 +223,6 @@ type ServiceDataOptions = {|
     facilitatorAccessToken : string,
     buyerGeoCountry : $Values<typeof COUNTRY>,
     fundingEligibility : FundingEligibilityType,
-    personalization : PersonalizationType,
     serverMerchantID : $ReadOnlyArray<string>,
     sdkMeta : string,
     eligibility : {|
@@ -235,13 +233,12 @@ type ServiceDataOptions = {|
     |}
 |};
 
-export function getServiceData({ facilitatorAccessToken, sdkMeta, buyerGeoCountry, fundingEligibility, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, sdkMeta, buyerGeoCountry, fundingEligibility, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
         fundingEligibility,
         sdkMeta,
-        personalization,
         facilitatorAccessToken,
         eligibility
     };

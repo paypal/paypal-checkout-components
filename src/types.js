@@ -19,23 +19,6 @@ export type LocaleType = {|
     lang : $Values<typeof LANG>
 |};
 
-export type PersonalizationType = {|
-    buttonText? : {|
-        text : string,
-        tracking : {|
-            impression : string,
-            click : string
-        |}
-    |},
-    tagline? : {|
-        text : string,
-        tracking : {|
-            impression : string,
-            click : string
-        |}
-    |}
-|};
-
 export type ZoidComponentInstance<P> = {|
     render : (string, ?$Values<typeof CONTEXT>) => ZalgoPromise<void>,
     renderTo : (CrossDomainWindowType, string, ?$Values<typeof CONTEXT>) => ZalgoPromise<void>,

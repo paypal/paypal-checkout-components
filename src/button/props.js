@@ -6,7 +6,7 @@ import type { ZalgoPromise } from 'zalgo-promise/src';
 
 import {  UPGRADE_LSAT_RAMP } from '../constants';
 import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
-    ThreeDomainSecureFlowType, PersonalizationType, MenuFlowType, ConnectOptions } from '../types';
+    ThreeDomainSecureFlowType, MenuFlowType, ConnectOptions } from '../types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit, XOnInit,
     OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError, OnError,
     XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth } from '../props';
@@ -321,7 +321,6 @@ export type ServiceData = {|
     buyerCountry : $Values<typeof COUNTRY>,
     fundingEligibility : FundingEligibilityType,
     wallet : ?Wallet,
-    personalization : PersonalizationType,
     facilitatorAccessToken : string,
     sdkMeta : string,
     buyerAccessToken : ?string,
@@ -342,7 +341,6 @@ type ServiceDataOptions = {|
     fundingEligibility : FundingEligibilityType,
     wallet : ?Wallet,
     buyerAccessToken : ?string,
-    personalization : PersonalizationType,
     serverMerchantID : $ReadOnlyArray<string>,
     sdkMeta : string,
     content : ContentType,
@@ -355,7 +353,7 @@ type ServiceDataOptions = {|
     serverRiskData : ?ServerRiskData
 |};
 
-export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta, content, buyerGeoCountry, fundingEligibility, wallet, buyerAccessToken, personalization, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta, content, buyerGeoCountry, fundingEligibility, wallet, buyerAccessToken, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
@@ -364,7 +362,6 @@ export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta
         sdkMeta,
         content,
         buyerAccessToken,
-        personalization,
         facilitatorAccessToken,
         eligibility,
         serverRiskData
