@@ -7,8 +7,7 @@ import { HTTP_HEADER } from '../config';
 
 import { isDefined, isEmpty } from './util';
 
-// $FlowFixMe
-export type GraphQL = <V, R>(ExpressRequest, $ReadOnlyArray<{| query : string, variables : V |}>) => Promise<R>; // eslint-disable-line no-undef
+export type GraphQL = (ExpressRequest, $ReadOnlyArray<{| query : string, variables : Object |}>, opts? : {| accessToken? : string, clientMetadataID? : string |}) => Promise<$ReadOnlyArray<{| result : Object |}>>;
 
 // eslint-disable-next-line flowtype/require-exact-type
 export type GraphQLBatch = {
@@ -135,7 +134,6 @@ function treeShakeQuery(query : Query) : Query {
         }
   
         if (typeof value === 'object' && value !== null) {
-            // $FlowFixMe
             const treeShakedQuery = treeShakeQuery(value);
             if (!isEmpty(treeShakedQuery)) {
                 result[key] = treeShakedQuery;
@@ -146,7 +144,6 @@ function treeShakeQuery(query : Query) : Query {
         throw new Error(`Unrecognized type: ${ typeof value }`);
     }
 
-    // $FlowFixMe
     return result;
 }
 
@@ -172,7 +169,6 @@ export function pruneQuery<T>(query : Query, existingData : T) : Query {
                 throw new Error(`Expected existing value to be object`);
             }
 
-            // $FlowFixMe
             result[key] = pruneQuery(value, existingValue);
             continue;
         }
@@ -180,7 +176,6 @@ export function pruneQuery<T>(query : Query, existingData : T) : Query {
         throw new Error(`Unrecognized type: ${ typeof value }`);
     }
 
-    // $FlowFixMe
     return result;
 }
 

@@ -20,6 +20,7 @@ export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : 
         throw new Error(`No access token passed to ${ url }`);
     }
 
+    // $FlowFixMe
     const requestHeaders = {
         [ HEADERS.AUTHORIZATION ]: `Bearer ${ accessToken }`,
         [ HEADERS.CONTENT_TYPE ]:  `application/json`,

@@ -70,7 +70,7 @@
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
     "express": "^4.16.3",
-    "flow-bin": "^0.110.1",
+    "flow-bin": "^0.131",
     "grabthar-release": "^1.0.8",
     "grumbler-scripts": "^3.0.18",
     "post-robot": "^10.0.13",

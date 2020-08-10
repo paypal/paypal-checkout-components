@@ -95,6 +95,8 @@ export function createExperiment(name : string, sample : number) : Experiment {
         sample,
 
         logTreatment({ treatment, payload }) {
+
+            // $FlowFixMe
             const fullPayload = {
                 [FPTI_KEY.STATE]:           FPTI_STATE.PXP,
                 [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.PXP,

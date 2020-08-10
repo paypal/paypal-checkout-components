@@ -9,6 +9,7 @@ import { noop } from 'belter';
 
 import { WEBPACK_CONFIG_WALLET_LOCAL_DEBUG } from '../webpack.config';
 
+import type { GraphQL } from './lib/graphql';
 import type { ExpressRequest, ExpressResponse } from './types';
 import { getButtonMiddleware, getMenuMiddleware, getWalletMiddleware } from './components';
 
@@ -28,7 +29,7 @@ const logger = {
     error: noop
 };
 
-const graphQL = (req, payload) => {
+const graphQL : GraphQL = (req, payload) => {
     return Promise.resolve(payload.map(({ query }) => {
         if (query.match(/query GetFundingEligibility/)) {
             return {
@@ -203,7 +204,7 @@ const graphQL = (req, payload) => {
         }
 
         return {
-            data: {}
+            result: {}
         };
     }));
 };
