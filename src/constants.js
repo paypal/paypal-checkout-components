@@ -16,6 +16,8 @@ export const HEADERS = {
     CSRF_TOKEN:     'x-csrf-jwt',
     SOURCE:         'x-source',
     REQUESTED_BY:   'x-requested-by',
+    APP_NAME:       'x-app-name',
+    APP_VERSION:    'x-app-version',
     CLIENT_CONTEXT: 'paypal-client-context',
 
     PARTNER_ATTRIBUTION_ID: 'paypal-partner-attribution-id',

@@ -6,7 +6,7 @@ import { request, noop, memoize } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
-import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS } from '../constants';
+import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS } from '../constants';
 
 import { callSmartAPI, callGraphQL, callRestAPI } from './api';
 
@@ -184,7 +184,9 @@ export function validatePaymentMethod({ accessToken, orderID, paymentMethodID, e
     const headers : Object = {
         [ HEADERS.AUTHORIZATION ]:          `Bearer ${ accessToken }`,
         [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID,
-        [ HEADERS.CLIENT_METADATA_ID ]:     clientMetadataID
+        [ HEADERS.CLIENT_METADATA_ID ]:     clientMetadataID,
+        [ HEADERS.APP_NAME ]:               SMART_PAYMENT_BUTTONS,
+        [ HEADERS.APP_VERSION ]:            __SMART_BUTTONS__.__MINOR_VERSION__
     };
 
     const paymentSource : PaymentSource = {
