@@ -186,7 +186,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             clientAccessToken,
             venmoPayloadID,
 
-            createAuthCode: (() => {
+            createAuthCode: () => {
                 return ZalgoPromise.try(() => {
                     if (payment.createAccessToken) {
                         return payment.createAccessToken();
@@ -195,12 +195,12 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     }
                 }).then(accessToken => {
                     if (accessToken && (buyerIntent === BUYER_INTENT.PAY || buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING)) {
-                        return exchangeAccessTokenForAuthCode(accessToken).catch(err => {
-                            getLogger().warn('exchange_access_token_auth_code_error', { err: stringifyError(err) });
-                        });
+                        return exchangeAccessTokenForAuthCode(accessToken);
                     }
+                }).catch(err => {
+                    getLogger().warn('exchange_access_token_auth_code_error', { err: stringifyError(err) });
                 });
-            }),
+            },
 
             getConnectURL: (connect && connectEligible) ? ({ payerID }) => {
                 if (!clientID) {
