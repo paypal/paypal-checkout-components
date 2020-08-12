@@ -2,6 +2,8 @@
 
 import { debug } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
+import { PAGE_TYPES, SDK_SETTINGS } from '@paypal/sdk-constants/src';
+import { values } from 'belter/src';
 
 import { config } from '../config';
 
@@ -73,4 +75,20 @@ export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
     }
 
     return def;
+}
+
+export function getPageType() : string {
+    const script = getCurrentScript();
+    if (script && script.hasAttribute(SDK_SETTINGS.PAGE_TYPE)) {
+        // $FlowFixMe we know that pageType will be set from hasAttribute
+        const pageType = script.getAttribute(SDK_SETTINGS.PAGE_TYPE).toLowerCase();
+        const validPageType = values(PAGE_TYPES).indexOf(pageType) !== -1;
+
+        if (!validPageType && pageType.length) {
+            throw new Error(`Invalid page type, '${ pageType }'`);
+        }
+        return pageType;
+    }
+
+    return '';
 }
