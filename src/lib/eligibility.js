@@ -61,7 +61,7 @@ export function isEligible() : boolean {
     if (isIEIntranet()) {
         return false;
     }
-
+    // eslint-disable-next-line compat/compat
     const userAgent = window.navigator.userAgent;
 
     if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) {

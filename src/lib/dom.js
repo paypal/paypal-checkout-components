@@ -260,6 +260,7 @@ export function hasMetaViewPort() : boolean {
 }
 
 export function getBrowserLocales() : $ReadOnlyArray<string> {
+    // eslint-disable-next-line compat/compat
     const nav = window.navigator;
 
     const locales = nav.languages
@@ -356,7 +357,7 @@ export function getResourceLoadTime(url : string) : ?number {
         return;
     }
 
-    if (!window.performance || typeof window.performance.getEntries !== 'function') { // eslint-disable-line compat/compat
+    if (!window.performance || typeof window.performance.getEntries !== 'function') {
         return;
     }
 
