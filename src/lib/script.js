@@ -23,8 +23,8 @@ export const getCurrentScript = memoize(() : ?HTMLScriptElement => {
         }
     }
 
-    if (document.currentScript) { // eslint-disable-line compat/compat
-        debug(`current_script_not_recognized`, { src: document.currentScript.src }); // eslint-disable-line compat/compat
+    if (document.currentScript) {
+        debug(`current_script_not_recognized`, { src: document.currentScript.src });
     }
 });
 
