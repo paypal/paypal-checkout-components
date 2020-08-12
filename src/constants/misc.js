@@ -35,12 +35,13 @@ export const PAYMENT_TYPE = {
 export const PPTM_ID = 'xo-pptm';
 
 export const ATTRIBUTE = {
-    BUTTON:         'data-button',
-    FUNDING_SOURCE: 'data-funding-source',
-    CARD:           'data-card',
-    VERSION:        'data-version',
-    LAYOUT:         'data-layout',
-    SIZE:           'data-size'
+    BUTTON:                 'data-button',
+    FUNDING_SOURCE:         'data-funding-source',
+    CARD:                   'data-card',
+    VERSION:                'data-version',
+    LAYOUT:                 'data-layout',
+    SIZE:                   'data-size',
+    SMART_BUTTON_VERSION:   'data-paypal-smart-button-version'
 };
 
 export const PLATFORM = {

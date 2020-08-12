@@ -8,6 +8,7 @@ import { stringifyError, extendUrl, loadScript, getElement, isPayPalDomain } fro
 
 
 function shouldCreateInitialPptmScript() : boolean {
+    // eslint-disable-next-line compat/compat
     const id = window.location.hostname;
 
     if (!id) {
@@ -94,9 +95,9 @@ export function pptmFactory() : Object {
                 [ FPTI.KEY.STATE ]:      FPTI.STATE.PPTM,
                 [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.PPTM_LOAD
             });
-        
             const params = {
                 t:         'xo',
+                // eslint-disable-next-line compat/compat
                 id:        window.location.hostname,
                 mrid:      config.merchantID,
                 client_id: '',

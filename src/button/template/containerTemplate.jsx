@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx jsxDom */
 
-import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
+import { BUTTON_SIZE, BUTTON_LAYOUT, ATTRIBUTE } from '../../constants';
 import { getButtonConfig, BUTTON_STYLE } from '../config';
 import { normalizeProps } from '../props';
 import { values } from '../../lib/util';
@@ -46,7 +46,11 @@ export function containerTemplate({ id, props, CLASS, tag, context, outlet, jsxD
     }, 3000);
 
     return (
-        <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size } ${ tag }-layout-${ layout }` }>
+        <div
+            id={ id }
+            class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size } ${ tag }-layout-${ layout }` }
+            { ...({ [ATTRIBUTE.SMART_BUTTON_VERSION]: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ }) }
+        >
             <style>
                 {`
                     #${ id } {

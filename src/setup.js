@@ -242,8 +242,8 @@ if (!isPayPalDomain()) {
         debug(`no_current_script`);
         debug(`no_current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
 
-        if (document.currentScript) {  // eslint-disable-line compat/compat
-            debug(`current_script_not_recognized`, { src: document.currentScript.src });  // eslint-disable-line compat/compat
+        if (document.currentScript) {
+            debug(`current_script_not_recognized`, { src: document.currentScript.src });
         }
 
         track({

@@ -6,6 +6,7 @@ import {
 } from 'cross-domain-utils/src';
 
 export function getUserAgent() : string {
+    // eslint-disable-next-line compat/compat
     return window.navigator.mockUserAgent || window.navigator.userAgent;
 }
 
@@ -25,6 +26,7 @@ export function isInsidePopup() : boolean {
 
 export function isStandAlone() : boolean {
     // Chrome interprets pop-up windows as standalone windows
+    // eslint-disable-next-line compat/compat
     return !isInsidePopup() && (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
 }
 

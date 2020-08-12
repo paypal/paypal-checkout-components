@@ -146,5 +146,4 @@ window.watchForLegacyFallback = (win : SameDomainWindowType) => {
     }, 100);
 };
 
-
 window.onLegacyFallback = window.watchForLegacyFallback;
