@@ -69,13 +69,13 @@ export function FieldsContainer({ uid, frame, prerenderFrame, event, props } : R
 
                     @media only screen and (min-width: 0px) {
                         #${ uid } {
-                            min-height: 50px;
+                            min-height: 100px;
                         }
                     }
 
                     @media only screen and (min-width: 600px) {
                         #${ uid } {
-                            min-height: 60px;
+                            min-height: 100px;
                         }
                     }
 
