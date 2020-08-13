@@ -107,12 +107,12 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
             @media only screen and (min-width: ${ style.minWidth }px) and (max-width: ${ minDualWidth }px) {
 
-                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
                     width: 100%;
                     margin-right: 0;
                 }
 
-                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
                     display: none;
                 }
 
@@ -123,13 +123,13 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
             @media only screen and (min-width: ${ max(style.minWidth, minDualWidth) }px) {
 
-                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
                     display: inline-block;
                     width: calc(50% - 2px);
                     margin-right: 4px;
                 }
 
-                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
                     display: inline-block;
                     width: calc(50% - 2px);
                 }

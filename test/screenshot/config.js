@@ -185,6 +185,39 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal'
+        }
+    },
+    userAgent:          IPHONE6_USER_AGENT,
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        venmo: {
+            eligible: true
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal'
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        credit: {
+            eligible: true
+        }
+    }
+});
+
+buttonConfigs.push({
     container: {
         width: 340
     },
