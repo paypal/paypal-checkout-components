@@ -1,4 +1,4 @@
-/*! For license information please see checkout.4.0.315.js.LICENSE.txt */
+/*! For license information please see checkout.4.0.316.js.LICENSE.txt */
 !function(modules) {
     var installedModules = {};
     function __webpack_require__(moduleId) {
@@ -358,7 +358,8 @@
         CARD: "data-card",
         VERSION: "data-version",
         LAYOUT: "data-layout",
-        SIZE: "data-size"
+        SIZE: "data-size",
+        SMART_BUTTON_VERSION: "data-paypal-smart-button-version"
     };
     var PLATFORM = {
         DESKTOP: "desktop",
@@ -403,7 +404,8 @@
             BUTTON_TAGLINE_ENABLED: "button_tagline_enabled",
             RESPONSE_DURATION: "response_duration",
             PAYMENT_FLOW: "payment_flow",
-            BUTTON_VERSION: "button_version"
+            BUTTON_VERSION: "button_version",
+            PAGE_TYPE: "pp_placement"
         },
         BUTTON_TYPE: {
             IFRAME: "iframe",
@@ -1131,11 +1133,17 @@
         };
         ZalgoPromise.hash = function(promises) {
             var result = {};
-            return ZalgoPromise.all(Object.keys(promises).map((function(key) {
-                return ZalgoPromise.resolve(promises[key]).then((function(value) {
-                    result[key] = value;
-                }));
-            }))).then((function() {
+            var awaitPromises = [];
+            var _loop = function(key) {
+                if (promises.hasOwnProperty(key)) {
+                    var value = promises[key];
+                    utils_isPromise(value) ? awaitPromises.push(value.then((function(res) {
+                        result[key] = res;
+                    }))) : result[key] = value;
+                }
+            };
+            for (var key in promises) _loop(key);
+            return ZalgoPromise.all(awaitPromises).then((function() {
                 return result;
             }));
         };
@@ -1347,6 +1355,45 @@
     var session = __webpack_require__(19);
     var dom = __webpack_require__(24);
     var security = __webpack_require__(25);
+    var PAGE_TYPES = {
+        HOME: "home",
+        PRODUCT: "product",
+        CART: "cart",
+        CHECKOUT: "checkout"
+    };
+    var belter_src = __webpack_require__(14);
+    var getCurrentScript = Object(util.i)((function() {
+        var scripts = [].slice.call(document.getElementsByTagName("script"));
+        for (var _i2 = 0; _i2 < scripts.length; _i2++) {
+            var script = scripts[_i2];
+            if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
+            if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
+        }
+        document.currentScript && Object(client.f)("current_script_not_recognized", {
+            src: document.currentScript.src
+        });
+    }));
+    function getScriptVersion() {
+        return "4.0.316";
+    }
+    function getCurrentScriptUrl() {
+        var script = getCurrentScript();
+        if (script && "string" == typeof script.src) {
+            var scriptUrl = script.src;
+            0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
+            0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
+            return scriptUrl;
+        }
+        return "https://www.paypalobjects.com/api/checkout.4.0.316.js";
+    }
+    function getDomainSetting(name, def) {
+        var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
+        if (config.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(config.a.domain_settings); _i4 < _Object$keys2.length; _i4++) {
+            var domain = _Object$keys2[_i4];
+            if (Object(util.b)(hostname, domain)) return config.a.domain_settings[domain][name];
+        }
+        return def;
+    }
     function getRefererDomain() {
         return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
     }
@@ -1385,7 +1432,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.315"
+                ver: "4.0.316"
             };
         }));
         Object(client.a)((function() {
@@ -1426,8 +1473,15 @@
             _ref[constants.u.KEY.CONTEXT_TYPE] = contextType, _ref[constants.u.KEY.CONTEXT_ID] = contextID, 
             _ref[constants.u.KEY.SELLER_ID] = config.a.merchantID, _ref[constants.u.KEY.SESSION_UID] = sessionID, 
             _ref[constants.u.KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref[constants.u.KEY.VERSION] = config.a.version, 
-            _ref[constants.u.KEY.TOKEN] = paymentToken, _ref[constants.u.KEY.REFERER] = getRefererDomain(), 
-            _ref;
+            _ref[constants.u.KEY.TOKEN] = paymentToken, _ref[constants.u.KEY.PAGE_TYPE] = function() {
+                var script = getCurrentScript();
+                if (script && script.hasAttribute("data-page-type")) {
+                    var pageType = script.getAttribute("data-page-type").toLowerCase();
+                    if (-1 === Object(belter_src.l)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
+                    return pageType;
+                }
+                return "";
+            }(), _ref[constants.u.KEY.REFERER] = getRefererDomain(), _ref;
         }));
         window.location.protocol !== cross_domain_utils_src.a.FILE && Object(client.l)({
             uri: config.a.loggerUrl,
@@ -1681,38 +1735,6 @@
         if (token && payer) return token;
     }
     __webpack_require__(32);
-    var getCurrentScript = Object(util.i)((function() {
-        var scripts = [].slice.call(document.getElementsByTagName("script"));
-        for (var _i2 = 0; _i2 < scripts.length; _i2++) {
-            var script = scripts[_i2];
-            if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
-            if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
-        }
-        document.currentScript && Object(client.f)("current_script_not_recognized", {
-            src: document.currentScript.src
-        });
-    }));
-    function getScriptVersion() {
-        return "4.0.315";
-    }
-    function getCurrentScriptUrl() {
-        var script = getCurrentScript();
-        if (script && "string" == typeof script.src) {
-            var scriptUrl = script.src;
-            0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
-            0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
-            return scriptUrl;
-        }
-        return "https://www.paypalobjects.com/api/checkout.4.0.315.js";
-    }
-    function getDomainSetting(name, def) {
-        var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
-        if (config.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(config.a.domain_settings); _i4 < _Object$keys2.length; _i4++) {
-            var domain = _Object$keys2[_i4];
-            if (Object(util.b)(hostname, domain)) return config.a.domain_settings[domain][name];
-        }
-        return def;
-    }
     var openMetaFrame = Object(util.i)((function(env) {
         void 0 === env && (env = config.a.env);
         return zalgo_promise_src.a.try((function() {
@@ -1729,7 +1751,7 @@
                     domain: metaFrameDomain
                 });
                 return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.315"
+                    version: "4.0.316"
                 }), metaFrameDomain).then((function() {
                     return metaListener;
                 })).then((function(_ref) {
@@ -1819,9 +1841,9 @@
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls;
     var config = {
         locales: constants.A,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.315.js",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.316.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.315",
+        version: "4.0.316",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -4486,6 +4508,9 @@
         } catch (err) {
             return !0;
         }
+        try {
+            if ("postMessage" in obj && "self" in obj && "location" in obj) return !0;
+        } catch (err) {}
         return !1;
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -4770,7 +4795,7 @@
         return regexMap;
     }));
     var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-    var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
+    var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
     __webpack_require__.d(__webpack_exports__, "j", (function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.g;
     }));
@@ -5039,7 +5064,7 @@
     __webpack_require__.d(interface_namespaceObject, "init", (function() {
         return init;
     }));
-    var lib = __webpack_require__(14);
+    var lib = __webpack_require__(15);
     var src = __webpack_require__(7);
     var conf = __webpack_require__(10);
     var global = __webpack_require__(9);
@@ -5569,6 +5594,234 @@
     __webpack_exports__.default = interface_namespaceObject;
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
+    __webpack_require__.d(__webpack_exports__, "j", (function() {
+        return supportsPopups;
+    }));
+    __webpack_require__.d(__webpack_exports__, "e", (function() {
+        return isLocalStorageEnabled;
+    }));
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
+        return getElementSafe;
+    }));
+    __webpack_require__.d(__webpack_exports__, "h", (function() {
+        return onResize;
+    }));
+    __webpack_require__.d(__webpack_exports__, "f", (function() {
+        return isShadowElement;
+    }));
+    __webpack_require__.d(__webpack_exports__, "d", (function() {
+        return insertShadowSlot;
+    }));
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return base64encode;
+    }));
+    __webpack_require__.d(__webpack_exports__, "k", (function() {
+        return uniqueID;
+    }));
+    __webpack_require__.d(__webpack_exports__, "g", (function() {
+        return noop;
+    }));
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
+        return once;
+    }));
+    __webpack_require__.d(__webpack_exports__, "l", (function() {
+        return values;
+    }));
+    __webpack_require__.d(__webpack_exports__, "c", (function() {
+        return identity;
+    }));
+    function getUserAgent() {
+        return window.navigator.mockUserAgent || window.navigator.userAgent;
+    }
+    function isOperaMini(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return ua.indexOf("Opera Mini") > -1;
+    }
+    function supportsPopups(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return !(function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return !!function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /iPhone|iPod|iPad/.test(ua);
+            }(ua) && (!!function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /\bGSA\b/.test(ua);
+            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return !!function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /Android/.test(ua);
+            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
+        }(ua) || isOperaMini(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /FxiOS/i.test(ua);
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /EdgiOS/i.test(ua);
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /QQBrowser/.test(ua);
+        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
+        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
+        var userAgent;
+    }
+    __webpack_require__(11);
+    __webpack_require__(2);
+    __webpack_require__(7);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
+    function base64encode(str) {
+        if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+            return String.fromCharCode(parseInt(p1, 16));
+        })));
+        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+        throw new Error("Can not find window.btoa or Buffer");
+    }
+    function uniqueID() {
+        var chars = "0123456789abcdef";
+        return "xxxxxxxxxx".replace(/./g, (function() {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+    }
+    var objectIDs;
+    function noop() {}
+    function once(method) {
+        var called = !1;
+        return function(fn, name) {
+            try {
+                delete fn.name;
+                fn.name = name;
+            } catch (err) {}
+            fn.__name__ = fn.displayName = name;
+            return fn;
+        }((function() {
+            if (!called) {
+                called = !0;
+                return method.apply(this, arguments);
+            }
+        }), ((fn = method).name || fn.__name__ || fn.displayName || "anonymous") + "::once");
+        var fn;
+    }
+    function values(obj) {
+        var result = [];
+        for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
+        return result;
+    }
+    function identity(item) {
+        return item;
+    }
+    function isLocalStorageEnabled() {
+        return function(method, logic, args) {
+            void 0 === args && (args = []);
+            var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
+            var key = function(args) {
+                try {
+                    return JSON.stringify([].slice.call(args), (function(subkey, val) {
+                        return "function" == typeof val ? "memoize[" + function(obj) {
+                            objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a;
+                            if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                            var uid = objectIDs.get(obj);
+                            if (!uid) {
+                                uid = typeof obj + ":" + uniqueID();
+                                objectIDs.set(obj, uid);
+                            }
+                            return uid;
+                        }(val) + "]" : val;
+                    }));
+                } catch (err) {
+                    throw new Error("Arguments not serializable -- can not be used to memoize");
+                }
+            }(args);
+            return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
+                try {
+                    if ("undefined" == typeof window) return !1;
+                    if (window.localStorage) {
+                        var value = Math.random().toString();
+                        window.localStorage.setItem("__test__localStorage__", value);
+                        var result = window.localStorage.getItem("__test__localStorage__");
+                        window.localStorage.removeItem("__test__localStorage__");
+                        if (value === result) return !0;
+                    }
+                } catch (err) {}
+                return !1;
+            }.apply(void 0, args);
+        }(isLocalStorageEnabled);
+    }
+    function getElementSafe(id, doc) {
+        void 0 === doc && (doc = document);
+        return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
+        var element;
+    }
+    Object.create(Error.prototype);
+    function onResize(el, handler, _temp) {
+        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
+        var currentWidth = el.offsetWidth;
+        var currentHeight = el.offsetHeight;
+        handler({
+            width: currentWidth,
+            height: currentHeight
+        });
+        var check = function() {
+            var newWidth = el.offsetWidth;
+            var newHeight = el.offsetHeight;
+            (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
+                width: newWidth,
+                height: newHeight
+            });
+            currentWidth = newWidth;
+            currentHeight = newHeight;
+        };
+        var observer;
+        var timeout;
+        if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
+            (observer = new win.MutationObserver(check)).observe(el, {
+                attributes: !0,
+                childList: !0,
+                subtree: !0,
+                characterData: !1
+            });
+            win.addEventListener("resize", check);
+        } else !function loop() {
+            check();
+            timeout = setTimeout(loop, interval);
+        }();
+        return {
+            cancel: function() {
+                observer.disconnect();
+                window.removeEventListener("resize", check);
+                clearTimeout(timeout);
+            }
+        };
+    }
+    function isShadowElement(element) {
+        for (;element.parentNode; ) element = element.parentNode;
+        return "[object ShadowRoot]" === element.toString();
+    }
+    function insertShadowSlot(element) {
+        var shadowHost = function(element) {
+            var shadowRoot = function(element) {
+                for (;element.parentNode; ) element = element.parentNode;
+                if (isShadowElement(element)) return element;
+            }(element);
+            if (shadowRoot.host) return shadowRoot.host;
+        }(element);
+        if (!shadowHost) throw new Error("Element is not in shadow dom");
+        if (isShadowElement(shadowHost)) throw new Error("Host element is also in shadow dom");
+        var slotName = "shadow-slot-" + uniqueID();
+        var slot = document.createElement("slot");
+        slot.setAttribute("name", slotName);
+        element.appendChild(slot);
+        var slotProvider = document.createElement("div");
+        slotProvider.setAttribute("slot", slotName);
+        shadowHost.appendChild(slotProvider);
+        return slotProvider;
+    }
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
     __webpack_require__.d(__webpack_exports__, "p", (function() {
         return stringifyError;
     }));
@@ -5911,226 +6164,6 @@
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return supportsPopups;
-    }));
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return isLocalStorageEnabled;
-    }));
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return getElementSafe;
-    }));
-    __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return onResize;
-    }));
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return isShadowElement;
-    }));
-    __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return insertShadowSlot;
-    }));
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return base64encode;
-    }));
-    __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return uniqueID;
-    }));
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return noop;
-    }));
-    __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return once;
-    }));
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return identity;
-    }));
-    function getUserAgent() {
-        return window.navigator.mockUserAgent || window.navigator.userAgent;
-    }
-    function isOperaMini(ua) {
-        void 0 === ua && (ua = getUserAgent());
-        return ua.indexOf("Opera Mini") > -1;
-    }
-    function supportsPopups(ua) {
-        void 0 === ua && (ua = getUserAgent());
-        return !(function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return !!function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /iPhone|iPod|iPad/.test(ua);
-            }(ua) && (!!function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /\bGSA\b/.test(ua);
-            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return !!function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /Android/.test(ua);
-            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
-        }(ua) || isOperaMini(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /FxiOS/i.test(ua);
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /EdgiOS/i.test(ua);
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /QQBrowser/.test(ua);
-        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
-        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
-        var userAgent;
-    }
-    __webpack_require__(11);
-    __webpack_require__(2);
-    __webpack_require__(7);
-    var cross_domain_safe_weakmap_src = __webpack_require__(17);
-    function base64encode(str) {
-        if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
-            return String.fromCharCode(parseInt(p1, 16));
-        })));
-        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-        throw new Error("Can not find window.btoa or Buffer");
-    }
-    function uniqueID() {
-        var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, (function() {
-            return chars.charAt(Math.floor(Math.random() * chars.length));
-        })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-    }
-    var objectIDs;
-    function noop() {}
-    function once(method) {
-        var called = !1;
-        return function(fn, name) {
-            try {
-                delete fn.name;
-                fn.name = name;
-            } catch (err) {}
-            fn.__name__ = fn.displayName = name;
-            return fn;
-        }((function() {
-            if (!called) {
-                called = !0;
-                return method.apply(this, arguments);
-            }
-        }), ((fn = method).name || fn.__name__ || fn.displayName || "anonymous") + "::once");
-        var fn;
-    }
-    function identity(item) {
-        return item;
-    }
-    function isLocalStorageEnabled() {
-        return function(method, logic, args) {
-            void 0 === args && (args = []);
-            var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
-            var key = function(args) {
-                try {
-                    return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                        return "function" == typeof val ? "memoize[" + function(obj) {
-                            objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a;
-                            if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
-                            var uid = objectIDs.get(obj);
-                            if (!uid) {
-                                uid = typeof obj + ":" + uniqueID();
-                                objectIDs.set(obj, uid);
-                            }
-                            return uid;
-                        }(val) + "]" : val;
-                    }));
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
-                }
-            }(args);
-            return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
-                try {
-                    if ("undefined" == typeof window) return !1;
-                    if (window.localStorage) {
-                        var value = Math.random().toString();
-                        window.localStorage.setItem("__test__localStorage__", value);
-                        var result = window.localStorage.getItem("__test__localStorage__");
-                        window.localStorage.removeItem("__test__localStorage__");
-                        if (value === result) return !0;
-                    }
-                } catch (err) {}
-                return !1;
-            }.apply(void 0, args);
-        }(isLocalStorageEnabled);
-    }
-    function getElementSafe(id, doc) {
-        void 0 === doc && (doc = document);
-        return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
-        var element;
-    }
-    Object.create(Error.prototype);
-    function onResize(el, handler, _temp) {
-        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
-        var currentWidth = el.offsetWidth;
-        var currentHeight = el.offsetHeight;
-        handler({
-            width: currentWidth,
-            height: currentHeight
-        });
-        var check = function() {
-            var newWidth = el.offsetWidth;
-            var newHeight = el.offsetHeight;
-            (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
-                width: newWidth,
-                height: newHeight
-            });
-            currentWidth = newWidth;
-            currentHeight = newHeight;
-        };
-        var observer;
-        var timeout;
-        if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
-            (observer = new win.MutationObserver(check)).observe(el, {
-                attributes: !0,
-                childList: !0,
-                subtree: !0,
-                characterData: !1
-            });
-            win.addEventListener("resize", check);
-        } else !function loop() {
-            check();
-            timeout = setTimeout(loop, interval);
-        }();
-        return {
-            cancel: function() {
-                observer.disconnect();
-                window.removeEventListener("resize", check);
-                clearTimeout(timeout);
-            }
-        };
-    }
-    function isShadowElement(element) {
-        for (;element.parentNode; ) element = element.parentNode;
-        return "[object ShadowRoot]" === element.toString();
-    }
-    function insertShadowSlot(element) {
-        var shadowHost = function(element) {
-            var shadowRoot = function(element) {
-                for (;element.parentNode; ) element = element.parentNode;
-                if (isShadowElement(element)) return element;
-            }(element);
-            if (shadowRoot.host) return shadowRoot.host;
-        }(element);
-        if (!shadowHost) throw new Error("Element is not in shadow dom");
-        if (isShadowElement(shadowHost)) throw new Error("Host element is also in shadow dom");
-        var slotName = "shadow-slot-" + uniqueID();
-        var slot = document.createElement("slot");
-        slot.setAttribute("name", slotName);
-        element.appendChild(slot);
-        var slotProvider = document.createElement("div");
-        slotProvider.setAttribute("slot", slotName);
-        shadowHost.appendChild(slotProvider);
-        return slotProvider;
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return Checkout;
     }));
@@ -6138,7 +6171,7 @@
     var src = __webpack_require__(2);
     var beaver_logger_client = __webpack_require__(5);
     var zoid_src = __webpack_require__(20);
-    var belter_src = __webpack_require__(15);
+    var belter_src = __webpack_require__(14);
     var lib = __webpack_require__(3);
     var config = __webpack_require__(4);
     var constants = __webpack_require__(0);
@@ -8575,7 +8608,7 @@
     }();
     var esm_extends = __webpack_require__(11);
     var client = __webpack_require__(5);
-    var belter_src = __webpack_require__(15);
+    var belter_src = __webpack_require__(14);
     var base32 = __webpack_require__(34);
     var base32_default = __webpack_require__.n(base32);
     var constants = __webpack_require__(8);
@@ -10804,7 +10837,7 @@
     }));
     var src = __webpack_require__(7);
     var conf = __webpack_require__(10);
-    var lib = __webpack_require__(14);
+    var lib = __webpack_require__(15);
     var global = __webpack_require__(9);
     global.a.tunnelWindows = global.a.tunnelWindows || {};
     global.a.tunnelWindowId = 0;
@@ -11550,7 +11583,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.315";
+            payload.version = "4.0.316";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -11592,7 +11625,7 @@
             class: "loader"
         })))));
     }
-    var src = __webpack_require__(15);
+    var src = __webpack_require__(14);
     var zalgo_promise_src = __webpack_require__(2);
     var resources = __webpack_require__(18);
     var constants = __webpack_require__(0);
@@ -15859,18 +15892,18 @@
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
     var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.315" === window.paypal.version) {
+    if (window.paypal && "4.0.316" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.315"
+            version: "4.0.316"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.315) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.316) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.315" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.316" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.315"
+            version: "4.0.316"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.315");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.316");
     }
     try {
         var _interface = __webpack_require__(49);
@@ -16128,7 +16161,7 @@
     var lib = __webpack_require__(3);
     var src_checkout = __webpack_require__(16);
     var esm_extends = __webpack_require__(11);
-    var belter_src = __webpack_require__(15);
+    var belter_src = __webpack_require__(14);
     var constants = __webpack_require__(0);
     var config = __webpack_require__(4);
     var resources = __webpack_require__(18);
@@ -23986,7 +24019,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.315", 
+        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.316", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -24012,6 +24045,7 @@
         scrolling: !1,
         listenForResize: !0,
         containerTemplate: function(_ref) {
+            var _ref3;
             var id = _ref.id, CLASS = _ref.CLASS, tag = _ref.tag, context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom;
             var _normalizeProps = normalizeProps(_ref.props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height;
             var minimumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize");
@@ -24030,10 +24064,10 @@
             setTimeout((function() {
                 outlet.style.transition = "all 0.5s ease-in-out 0.3s";
             }), 3e3);
-            return jsxDom("div", {
+            return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.316", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -25299,7 +25333,7 @@
     }
     var postRobot = post_robot_src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.315";
+    var interface_version = "4.0.316";
     var interface_checkout;
     var apps;
     var legacy = __webpack_require__(50);
