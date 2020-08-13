@@ -73,12 +73,12 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     border-radius: ${ Math.ceil(buttonHeight / 2) }px;
                 }
 
-                .${ CLASS.BUTTON_ROW }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } .${ CLASS.MENU_TOGGLE } {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } .menu-button {
                     border-top-right-radius: 4px;
                     border-bottom-right-radius: 4px;
                 }
 
-                .${ CLASS.BUTTON_ROW }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } .${ CLASS.MENU_TOGGLE } {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } .menu-button {
                     border-top-right-radius: ${ Math.ceil(buttonHeight / 2) }px;
                     border-bottom-right-radius: ${ Math.ceil(buttonHeight / 2) }px;
                 }
@@ -99,31 +99,9 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     border-bottom-right-radius: 0px;
                 }
 
-                .${ CLASS.MENU_TOGGLE } {
-                    position: relative;
-                    display: inline-block;
+                .menu-button {
                     height: ${ buttonHeight }px;
                     width: ${ buttonHeight }px;
-                    margin-left: 2px;
-                }
-
-                .${ CLASS.MENU_TOGGLE }:hover {
-                    background: rgba(100, 100, 100, 0.1);
-                }
-
-                .${ CLASS.MENU_TOGGLE }:focus {
-                    outline: none;
-                    background: rgba(100, 100, 100, 0.1);
-                    box-shadow: 0 0 0 2px rgba(50, 50, 50, 0.9) inset;
-                }
-
-                .${ CLASS.MENU_TOGGLE } img {
-                    height: 30%;
-                    width: 30%;
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translateX(-50%) translateY(-50%);
                 }
             }
 

@@ -26,7 +26,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD },
-    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } .${ CLASS.MENU_TOGGLE } {
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } .menu-button {
         background: #ffc439;
     }
 
@@ -52,7 +52,7 @@ export const buttonColorStyle = `
 
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE },
-    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } .${ CLASS.MENU_TOGGLE } {
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } .menu-button {
         background: #0070ba;
     }
 
@@ -81,7 +81,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER },
-    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } .${ CLASS.MENU_TOGGLE } {
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } .menu-button {
         background: #eee;
     }
 
@@ -106,7 +106,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE },
-    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } .${ CLASS.MENU_TOGGLE } {
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } .menu-button {
         background: #003087;
     }
 
@@ -133,7 +133,7 @@ export const buttonColorStyle = `
 
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK },
-    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } .${ CLASS.MENU_TOGGLE } {
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } .menu-button {
         background: #2C2E2F;
     }
 
@@ -158,7 +158,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE },
-    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } .${ CLASS.MENU_TOGGLE } {
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } .menu-button {
         background: #fff;
         border: 1px solid #2C2E2F;
     }

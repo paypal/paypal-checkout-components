@@ -13,7 +13,7 @@ import { getFundingConfig, isVaultedFundingEligible } from '../../funding';
 
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
-import { MenuButton } from './menu';
+import { MenuButton } from './menu-button';
 
 type IndividualButtonProps = {|
     style : ButtonStyle,

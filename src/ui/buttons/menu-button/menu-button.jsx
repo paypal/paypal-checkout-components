@@ -3,10 +3,10 @@
 
 import { node, type ChildType, Style } from 'jsx-pragmatic/src';
 
-import { ATTRIBUTE, CLASS, TEXT_COLOR } from '../../constants';
-import { Chevron } from '../chevron';
+import { ATTRIBUTE, TEXT_COLOR } from '../../../constants';
+import { Chevron } from '../../chevron';
 
-import css from './menu.scoped.scss';
+import css from './menu-button.scoped.scss';
 
 export function MenuButton({ color = TEXT_COLOR.BLACK } : {| color? : $Values<typeof TEXT_COLOR> |} = { }) : ChildType {
     return (
@@ -16,7 +16,7 @@ export function MenuButton({ color = TEXT_COLOR.BLACK } : {| color? : $Values<ty
                     [ATTRIBUTE.MENU]: true
                 } }
                 tabindex='0'
-                class={ CLASS.MENU_TOGGLE }>
+                class='menu-button'>
                 <Chevron color={ color } />
             </div>
         </Style>

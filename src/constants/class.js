@@ -31,8 +31,6 @@ export const CLASS = {
     VAULT_LABEL:  ('paypal-vault-label' : 'paypal-vault-label'),
     VAULT_HEADER: ('paypal-vault-header' : 'paypal-vault-header'),
 
-    MENU_TOGGLE: ('menu-toggle' : 'menu-toggle'),
-
     SEPARATOR: ('paypal-separator' : 'paypal-separator'),
 
     DOM_READY: ('dom-ready' : 'dom-ready'),
