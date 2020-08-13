@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://localhost.paypal.com:9000/sdk.js?client-id=alc_client1"></script>
+    <style>
+        .disclaimer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            margin: 15px;
+        }
+        .fi {
+            width: 70%;
+            font-size: 19px;
+        }
+        .fiNumber {
+            font-size: 0.85em;
+            color: gray;
+        }
+        .title {
+            width: 70%;
+            font-size: 19px;
+            overflow: hidden; /* make sure it hides the content that overflows */
+            white-space: nowrap; /* don't break the line */
+            text-overflow: ellipsis;
+        }
+        .tile {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 30px;
+            height: 30px;
+            background-color: pink;
+        }
+        .container {
+            box-shadow: 0 0 4px #888;
+            width: 400px;
+        }
+
+        .dividerContainer {
+            border-bottom: 1px solid #dbdbdb;
+            clear: both;
+            position: relative;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<!--<button id="paypal-pay">Pay</button><br />-->
+<!--<button id="paypal-cancel">Cancel</button><br />-->
+<div class="container">
+    <div class="tile">
+        <div class="logo"></div>
+        <div class="title">Hi Laura
+            <span>  Not You?</span>
+        </div>
+        <div class="logo"></div>
+    </div>
+    <div class="dividerContainer"></div>
+    <div class="tile">
+        <div class="logo"></div>
+        <div class="title">8114 Grow Drive #9. Captain Enclave</div>
+        <div class="logo"></div>
+    </div>
+    <div class="dividerContainer"></div>
+    <div class="tile">
+        <div class="logo"></div>
+        <div class="fi">
+            <div class="fiName">Chase Sapphire Preferred</div>
+            <div class="fiNumber">Credit ****2706</div>
+        </div>
+        <div class="logo"></div>
+    </div>
+    <div class="dividerContainer"></div>
+    <div>
+        <div class="disclaimer">PayPal policies and your payment method rights</div>
+    </div>
+    <div class="dividerContainer"></div>
+    <div>
+
+<script>
+//    document.querySelector('#paypal-pay').addEventListener('click', function() {
+//        window.xprops.onAuthorize({
+//            paymentToken: 'EC-XXXXXXXXXX',
+//            paymentID: 'PAY-XXXXXXXXXXXXXXXX',
+//            returnUrl: 'http://google.com?action=return&token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYYYYYY',
+//            cancelUrl: 'http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX'
+//        });
+//    });
+//
+//    document.querySelector('#paypal-cancel').addEventListener('click', function() {
+//        window.xprops.onCancel({
+//            paymentToken: 'EC-XXXXXXXXXX',
+//            paymentID: 'PAY-XXXXXXXXXXXXXXXX',
+//            returnUrl: 'http://google.com?action=return&token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYYYYYY',
+//            cancelUrl: 'http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX'
+//        });
+//    });
+</script>
+
+</body>

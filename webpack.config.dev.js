@@ -32,7 +32,8 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
             __URI__:                {
                 __CHECKOUT__: `/demo/dev/checkout.htm`,
                 __BUTTONS__:  `/demo/dev/button.htm`,
-                __MENU__:     `/demo/dev/menu.htm`
+                __MENU__:     `/demo/dev/menu.htm`,
+                __INLINE_WALLET__: `/demo/dev/inline-wallet.htm`
             }
         }
     }
