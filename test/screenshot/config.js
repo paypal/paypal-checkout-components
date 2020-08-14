@@ -190,6 +190,9 @@ buttonConfigs.push({
             layout:  'horizontal'
         }
     },
+    container: {
+        width: 300
+    },
     userAgent:          IPHONE6_USER_AGENT,
     fundingEligibility: {
         paypal: {
@@ -207,11 +210,52 @@ buttonConfigs.push({
             layout:  'horizontal'
         }
     },
+    container: {
+        width: 300
+    },
     fundingEligibility: {
         paypal: {
             eligible: true
         },
         credit: {
+            eligible: true
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal'
+        }
+    },
+    container: {
+        width: 300
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        paylater: {
+            eligible: true
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal'
+        }
+    },
+    container: {
+        width: 300
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        itau: {
             eligible: true
         }
     }

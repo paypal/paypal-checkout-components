@@ -204,7 +204,7 @@ export function WalletLabelNew({ logoColor, instrument, content, commit } : Wall
                 </div>
                 {
                     content && (
-                        <div class='pay-label' optional>
+                        <div class='pay-label' optional={ 2 }>
                             <Space />
                             <Text>{ (instrument.oneClick && commit) ? content.payNow : content.payWith }</Text>
                             <Space />
@@ -213,7 +213,7 @@ export function WalletLabelNew({ logoColor, instrument, content, commit } : Wall
                 }
                 {
                     logo &&
-                        <div class='logo'>
+                        <div class='logo' optional={ 1 }>
                             { logo }
                         </div>
                 }
