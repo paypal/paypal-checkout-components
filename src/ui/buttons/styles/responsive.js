@@ -6,7 +6,9 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from '../../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 
-const DUAL_BUTTON_MIN_RATIO = 2.8;
+const BUTTON_MIN_ASPECT_RATIO = 2.2;
+const MIN_SPLIT_BUTTON_WIDTH = 300;
+const SECOND_BUTTON_PERC = 40;
 
 export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : string {
 
@@ -14,7 +16,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
         const style = BUTTON_SIZE_STYLE[size];
         const buttonHeight = height || style.defaultHeight;
-        const minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
+        const minDualWidth = Math.max(Math.round(buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / SECOND_BUTTON_PERC)), MIN_SPLIT_BUTTON_WIDTH);
 
         return `
 
@@ -28,6 +30,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
                 .${ CLASS.BUTTON_ROW } {
                     height: ${ buttonHeight }px;
+                    vertical-align: top;
                     min-height: ${ height || style.minHeight }px;
                     max-height: ${ height || style.maxHeight }px;
                 }
@@ -52,7 +55,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                 }
 
                 .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
-                    margin: 0px ${ perc(buttonHeight - (perc(buttonHeight, 35) + 5), 50) }px;
+                    margin: 0px 4vw;
                     height: ${ perc(buttonHeight, 35) + 5 }px;
                     max-height: ${ perc(buttonHeight, 60) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;
@@ -125,13 +128,13 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
                 .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
                     display: inline-block;
-                    width: calc(50% - 2px);
+                    width: calc(${ 100 - SECOND_BUTTON_PERC }% - 2px);
                     margin-right: 4px;
                 }
 
                 .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
                     display: inline-block;
-                    width: calc(50% - 2px);
+                    width: calc(${ SECOND_BUTTON_PERC }% - 2px);
                 }
 
                 .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.TAGLINE } {
