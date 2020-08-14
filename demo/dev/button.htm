@@ -30,22 +30,33 @@
                 });
             }
 
+            const checkoutComponent = paypal.Checkout({
+                createOrder: () => {
+                    return 'EC-XXXXXXXXXX';
+                },
+                onApprove: () => {
+                    console.log('Approved');
+                    instance.close();
+                },
+                onCancel: () => {
+                    console.log('Cancelled');
+                    instance.close();
+                }
+            });
+
+            const inlineWalletComponent = paypal.InlineWallet({
+                createOrder: () => {
+                    return 'EC-XXXXXXXXXX';
+                },
+                onApprove: () => {
+                    return;
+                }
+            });
+
 
             button.addEventListener('click', () => {
-                const instance = paypal.Checkout({
-                    createOrder: () => {
-                        return 'EC-XXXXXXXXXX';
-                    },
-                    onApprove: () => {
-                        console.log('Approved');
-                        instance.close();
-                    },
-                    onCancel: () => {
-                        console.log('Cancelled');
-                        instance.close();
-                    }
-                });
-                
+                const instance = props.enablePWB ? inlineWalletComponent : checkoutComponent;
+
                 instance.renderTo(window.parent, 'body');
             });
         });

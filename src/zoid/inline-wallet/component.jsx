@@ -253,7 +253,13 @@ export function getInlineWalletComponent() {
                     type:       'boolean',
                     value:      getDebug,
                     queryParam: true
-                }
+                },
+    
+                enablePWB: {
+                    type:       'boolean',
+                    required:   false,
+                    queryParam: true
+                },
             }
         });
     });

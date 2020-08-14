@@ -9,7 +9,7 @@
 <body>
     <p id="paypal-marks-container"></p>
     <p id="paypal-buttons-container"></p>
-    <p id="paypal-inline-wallet-container"></p>
+    <p id="paypal-pwb-container"></p>
 
     <script>
        paypal.Marks().render('#paypal-marks-container');
@@ -30,13 +30,29 @@
             }
         }).render('#paypal-buttons-container');
 
-        paypal.InlineWallet({
-            createOrder: () => {
-                return 'EC-XXXXXXXXXX';
-            },
-            onApprove: () => {
-                return;
-            }
-        }).render('#paypal-inline-wallet-container');
+       paypal.Buttons({
+           fundingSource: 'paypal',
+           wallet: {
+               paypal: {
+                   instruments: [
+                       {
+                           type: 'card',
+                           label: '...2067',
+                           oneClick: true
+                       }
+                   ]
+               }
+           },
+           enablePWB: true
+       }).render('#paypal-pwb-container');
+
+//        paypal.InlineWallet({
+//            createOrder: () => {
+//                return 'EC-XXXXXXXXXX';
+//            },
+//            onApprove: () => {
+//                return;
+//            }
+//        }).render('#paypal-inline-wallet-container');
     </script>
 </body>
