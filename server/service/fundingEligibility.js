@@ -82,7 +82,8 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
         }
 
         return {
-            flex: getPayLaterProductQuery()
+            flex:   getPayLaterProductQuery(),
+            payIn4: getPayLaterProductQuery()
         };
     };
 
