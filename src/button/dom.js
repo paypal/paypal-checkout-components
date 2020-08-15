@@ -9,6 +9,21 @@ export function getButtons() : $ReadOnlyArray<HTMLElement> {
     return querySelectorAll(`[ ${ DATA_ATTRIBUTES.FUNDING_SOURCE } ]`);
 }
 
+export function getMenuButton(button : HTMLElement) : ?HTMLElement {
+    let menu = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
+
+    if (menu) {
+        return button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
+    }
+
+    menu = button.nextSibling;
+    // $FlowFixMe
+    if (menu && menu.hasAttribute(DATA_ATTRIBUTES.MENU)) {
+        // $FlowFixMe
+        return menu;
+    }
+}
+
 export function getSelectedFunding(button : HTMLElement) : {| fundingSource : $Values<typeof FUNDING>, card : $Values<typeof CARD>, paymentMethodID : ?string, instrumentID : ?string, instrumentType : ?$Values<typeof WALLET_INSTRUMENT> |} {
     const fundingSource = button.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
     const paymentMethodID = button.getAttribute(DATA_ATTRIBUTES.PAYMENT_METHOD_ID);

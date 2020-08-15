@@ -11,7 +11,7 @@ import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
 import { type Payment } from '../payment-flows';
 
 import { getProps, getConfig, getComponents, getServiceData, type ServerRiskData, type ButtonProps } from './props';
-import { getSelectedFunding, getButtons } from './dom';
+import { getSelectedFunding, getButtons, getMenuButton } from './dom';
 import { setupButtonLogger } from './logger';
 import { setupRemember } from './remember';
 import { setupPaymentFlows, initiatePaymentFlow, initiateMenuFlow } from './pay';
@@ -141,7 +141,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     clearSmartMenu();
     
     getButtons().forEach(button => {
-        const menuToggle = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`) || (button.parentElement && button.parentElement.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`));
+        const menuToggle = getMenuButton(button);
         const { fundingSource: paymentFundingSource, card, paymentMethodID, instrumentID, instrumentType } = getSelectedFunding(button);
 
         const payment = { button, menuToggle, fundingSource: paymentFundingSource, card, paymentMethodID, instrumentID, instrumentType, isClick: true, buyerIntent: BUYER_INTENT.PAY };
