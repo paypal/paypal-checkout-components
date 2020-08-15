@@ -2,10 +2,13 @@
 /* eslint unicorn/prefer-add-event-listener: off, max-lines: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { uniqueID, noop, memoize } from 'belter/src';
+import { uniqueID, noop, memoize, stringifyError } from 'belter/src';
+import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { FIREBASE_SCRIPTS } from '../config';
 import { loadScript } from '../lib/util';
+import { getLogger } from '../lib';
+import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
 import { getFirebaseSessionToken } from './auth';
 
@@ -507,6 +510,11 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
 
                 open = true;
     
+                getLogger().info('firebase_connection_opened').track({
+                    [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.FIREBASE_CONNECTION_OPENED
+                }).flush();
+
                 for (const handler of onOpenHandlers) {
                     handler();
                 }
@@ -528,7 +536,12 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
             });
         });
 
-        databasePromise.catch(noop);
+        databasePromise.catch(err => {
+            getLogger().info('firebase_connection_errored', { err: stringifyError(err) }).track({
+                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.FIREBASE_CONNECTION_ERRORED
+            }).flush();
+        });
 
         return {
             send: (data) => {

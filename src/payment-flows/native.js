@@ -436,12 +436,17 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const initDirectAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         const nativeUrl = getNativeUrl({ sessionUID });
 
-        getLogger().info(`native_attempt_appswitch_url_direct`, { url: nativeUrl })
+        const nativeWin = popup(nativeUrl);
+        getLogger()
+            .info(`native_attempt_appswitch_popup_shown`, { url: nativeUrl })
+            .info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
+            .track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
+            })
             .track({
                 [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH
             }).flush();
 
-        const nativeWin = popup(nativeUrl);
         const validatePromise = validate();
         const delayPromise = ZalgoPromise.delay(500);
 
@@ -481,6 +486,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         const popupWin = popup(getNativePopupUrl({ sessionUID }));
+        getLogger().info(`native_attempt_appswitch_popup_shown`)
+            .track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
+            }).flush();
 
         const closeListener = onCloseWindow(popupWin, () => {
             return ZalgoPromise.delay(1000).then(() => {
