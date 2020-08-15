@@ -2,12 +2,12 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups, stringifyError, extendUrl } from 'belter/src';
-import { FUNDING, FPTI_KEY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
+import { FUNDING, FPTI_KEY, CURRENCY, COUNTRY, INTENT, CARD, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
-import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL } from '../api';
+import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL, getFundingEligibility } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
@@ -89,34 +89,74 @@ function isConnectEligible({ connect, vault, fundingSource, createBillingAgreeme
     return true;
 }
 
+type IsFundingSourceVaultableOptions = {|
+    accessToken : string,
+    fundingSource : $Values<typeof FUNDING>,
+    clientID : string,
+    merchantID : ?$ReadOnlyArray<string>,
+    currency : $Values<typeof CURRENCY>,
+    buyerCountry : $Values<typeof COUNTRY>,
+    intent : $Values<typeof INTENT>,
+    commit : boolean,
+    vault : boolean,
+    disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
+    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>
+|};
+
+function isFundingSourceVaultable({ accessToken, fundingSource, clientID, merchantID, buyerCountry, currency, commit, vault, intent, disableFunding, disableCard } : IsFundingSourceVaultableOptions) : ZalgoPromise<boolean> {
+    return ZalgoPromise.try(() => {
+        return getFundingEligibility(`
+                ${ fundingSource } {
+                    vaultable
+                }
+            `, {
+            accessToken, clientID, merchantID, buyerCountry, currency, commit, vault,
+            intent, disableFunding, disableCard
+        }).then(newFundingEligibility => {
+            if (newFundingEligibility[fundingSource] && newFundingEligibility[fundingSource].vaultable) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+}
+
 type VaultAutoSetupEligibleProps = {|
     vault : boolean,
     clientAccessToken : ?string,
     createBillingAgreement : ?CreateBillingAgreement,
     createSubscription : ?CreateSubscription,
     fundingSource : $Values<typeof FUNDING>,
-    fundingEligibility : FundingEligibilityType
+    clientID : string,
+    merchantID : ?$ReadOnlyArray<string>,
+    currency : $Values<typeof CURRENCY>,
+    buyerCountry : $Values<typeof COUNTRY>,
+    intent : $Values<typeof INTENT>,
+    commit : boolean,
+    disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
+    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>
 |};
 
-function isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility } : VaultAutoSetupEligibleProps) : boolean {
-    if (!clientAccessToken) {
-        return false;
-    }
+function isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource,
+    clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard } : VaultAutoSetupEligibleProps) : ZalgoPromise<boolean> {
 
-    if (createBillingAgreement || createSubscription) {
-        return false;
-    }
+    return ZalgoPromise.try(() => {
+        if (!clientAccessToken) {
+            return false;
+        }
 
-    if (vault) {
-        return true;
-    }
+        if (createBillingAgreement || createSubscription) {
+            return false;
+        }
 
-    if (fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable) {
-        // In future, make this an optional checkbox during checkout flow
-        return true;
-    }
+        if (vault) {
+            return true;
+        }
 
-    return false;
+        return isFundingSourceVaultable({ accessToken: clientAccessToken, fundingSource, clientID, merchantID, buyerCountry, currency,
+            commit, vault, intent, disableFunding, disableCard });
+    });
 }
 
 type EnableVaultSetupOptions = {|
@@ -126,16 +166,26 @@ type EnableVaultSetupOptions = {|
     fundingEligibility : FundingEligibilityType,
     fundingSource : $Values<typeof FUNDING>,
     createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?CreateSubscription
+    createSubscription : ?CreateSubscription,
+    clientID : string,
+    merchantID : ?$ReadOnlyArray<string>,
+    currency : $Values<typeof CURRENCY>,
+    buyerCountry : $Values<typeof COUNTRY>,
+    intent : $Values<typeof INTENT>,
+    commit : boolean,
+    disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
+    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>
 |};
 
-function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility } : EnableVaultSetupOptions) : ZalgoPromise<void> {
-    return ZalgoPromise.try(() => {
-        if (!clientAccessToken) {
-            return;
-        }
+function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource,
+    clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard } : EnableVaultSetupOptions) : ZalgoPromise<void> {
 
-        if (isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility })) {
+    return ZalgoPromise.try(() => {
+        return isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource,
+            clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard });
+
+    }).then(eligible => {
+        if (eligible && clientAccessToken) {
             return enableVault({ orderID, clientAccessToken }).catch(err => {
                 if (vault) {
                     throw err;
@@ -166,10 +216,11 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick,
-        clientID, connect, clientMetadataID: cmid, onAuth } = props;
+        clientID, connect, clientMetadataID: cmid, onAuth,
+        currency, intent, disableFunding, disableCard } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
         venmoPayloadID, buyerIntent } = payment;
-    const { fundingEligibility, buyerCountry, sdkMeta } = serviceData;
+    const { fundingEligibility, buyerCountry, sdkMeta, merchantID } = serviceData;
     const { cspNonce } = config;
 
     const context = getContext({ win, isClick });
@@ -233,8 +284,9 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             createOrder: () => {
                 return createOrder().then(orderID => {
                     return ZalgoPromise.try(() => {
-                        if (buyerIntent === BUYER_INTENT.PAY) {
-                            return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription });
+                        if (clientID && buyerIntent === BUYER_INTENT.PAY) {
+                            return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription,
+                                clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard });
                         }
                     }).then(() => {
                         return orderID;

@@ -78,6 +78,8 @@ export type ButtonXProps = {|
     persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
     clientMetadataID : ?string,
     fundingSource : ?$Values<typeof FUNDING>,
+    disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
+    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -126,6 +128,8 @@ export type ButtonProps = {|
     getParent : () => CrossDomainWindowType,
     persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
     fundingSource : ?$Values<typeof FUNDING>,
+    disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
+    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -189,7 +193,9 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         upgradeLSAT = false,
         amount,
         userIDToken,
-        enableBNPL = false
+        enableBNPL = false,
+        disableFunding,
+        disableCard
     } = xprops;
 
     const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, UPGRADE_LSAT_RAMP.RAMP);
@@ -262,6 +268,8 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         persistRiskData,
         connect,
         fundingSource,
+        disableFunding,
+        disableCard,
 
         amount,
         userIDToken,

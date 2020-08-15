@@ -56,7 +56,7 @@ describe('vault cases', () => {
         });
     });
 
-    it('should set up a new forced-vaulted funding source, and work even if paypal is not vaulable', async () => {
+    it('should set up a new forced-vaulted funding source, and work even if paypal is not vaultable', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
             window.xprops.vault = true;
@@ -99,12 +99,22 @@ describe('vault cases', () => {
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('graphqlCall', ({ data }) => {
-                    if (!data.query.includes('mutation EnableVault')) {
-                        return;
+                    if (data.query.includes('mutation EnableVault')) {
+                        enableVaultCalled = true;
+                        return {};
                     }
 
-                    enableVaultCalled = true;
-                    return {};
+                    if (data.query.includes('query GetFundingEligibility')) {
+                        return {
+                            data: {
+                                fundingEligibility: {
+                                    paypal: {
+                                        vaultable: true
+                                    }
+                                }
+                            }
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -119,7 +129,7 @@ describe('vault cases', () => {
             const fundingEligibility = {
                 [FUNDING.PAYPAL]: {
                     eligible:  true,
-                    vaultable: true
+                    vaultable: false
                 }
             };
 
@@ -145,12 +155,22 @@ describe('vault cases', () => {
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ data }) => {
-                    if (!data.query.includes('mutation EnableVault')) {
-                        return;
+                    if (data.query.includes('mutation EnableVault')) {
+                        enableVaultCalled = true;
+                        return {};
                     }
 
-                    enableVaultCalled = true;
-                    return {};
+                    if (data.query.includes('query GetFundingEligibility')) {
+                        return {
+                            data: {
+                                fundingEligibility: {
+                                    paypal: {
+                                        vaultable: false
+                                    }
+                                }
+                            }
+                        };
+                    }
                 }
             }).enable();
 
@@ -191,18 +211,28 @@ describe('vault cases', () => {
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('graphqlCall', ({ data }) => {
-                    if (!data.query.includes('mutation EnableVault')) {
-                        return;
+                    if (data.query.includes('mutation EnableVault')) {
+                        enableVaultCalled = true;
+                        return {
+                            errors: [
+                                {
+                                    message: 'enableVault intentionally failed'
+                                }
+                            ]
+                        };
                     }
 
-                    enableVaultCalled = true;
-                    return {
-                        errors: [
-                            {
-                                message: 'enableVault intentionally failed'
+                    if (data.query.includes('query GetFundingEligibility')) {
+                        return {
+                            data: {
+                                fundingEligibility: {
+                                    paypal: {
+                                        vaultable: true
+                                    }
+                                }
                             }
-                        ]
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 

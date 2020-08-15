@@ -89,8 +89,7 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
 
     const getPayPalQuery = () => {
         return {
-            eligible:  graphqlTypes.boolean,
-            vaultable: graphqlTypes.boolean
+            eligible:  graphqlTypes.boolean
         };
     };
 
@@ -160,7 +159,6 @@ export type FundingEligibilityOptions = {|
     enableBNPL : boolean
 |};
 
-// eslint-disable-next-line complexity
 export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
     currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility, enableBNPL } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
 
@@ -176,10 +174,6 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
         basicFundingEligibility = copy(basicFundingEligibility);
-
-        if (basicFundingEligibility.paypal) {
-            delete basicFundingEligibility.paypal.vaultable;
-        }
 
         if (basicFundingEligibility.venmo && !basicFundingEligibility.venmo.eligible) {
             // $FlowFixMe
@@ -211,10 +205,6 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
             },
             accessToken: clientAccessToken
         });
-
-        if (fundingEligibility && fundingEligibility.paypal && fundingEligibility.paypal.vaultable && basicFundingEligibility && basicFundingEligibility.paypal && !basicFundingEligibility.paypal.vaultable) {
-            logger.info(req, 'paypal_basic_full_vaultable_mismatch', { basicFundingEligibility: JSON.stringify(basicFundingEligibility), fundingEligibility: JSON.stringify(fundingEligibility) });
-        }
 
         return strictMerge(basicFundingEligibility, fundingEligibility, (first, second) => second);
 
