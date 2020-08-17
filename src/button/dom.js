@@ -13,13 +13,16 @@ export function getMenuButton(button : HTMLElement) : ?HTMLElement {
     let menu = button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
 
     if (menu) {
-        return button.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
+        return menu;
     }
 
-    menu = button.nextSibling;
-    // $FlowFixMe
-    if (menu && menu.hasAttribute(DATA_ATTRIBUTES.MENU)) {
+    const parent = button.parentNode;
+    if (parent) {
         // $FlowFixMe
+        menu = parent.querySelector(`[${ DATA_ATTRIBUTES.MENU }]`);
+    }
+
+    if (menu) {
         return menu;
     }
 }
