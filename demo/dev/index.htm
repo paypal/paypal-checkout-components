@@ -8,20 +8,310 @@
 
 <body>
     <p id="paypal-marks-container"></p>
-    <p id="paypal-buttons-container"></p>
+    <p id="paypal-buttons-container" style='width: 50%'></p>
 
     <script>
-        paypal.Marks().render('#paypal-marks-container');
-        paypal.Buttons().render('#paypal-buttons-container');
+        paypal.Marks({
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            }
+        }).render('#paypal-marks-container');
 
         paypal.Buttons({
-            fundingSource: 'paypal',
+            enableBNPL: true,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false,
+                shape: 'pill'
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                venmo: {
+                    eligible: true
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false,
+                shape: 'pill'
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                itau: {
+                    eligible: true
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: false,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: false,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        flex: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                credit: {
+                    eligible: true
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                layout: 'horizontal',
+                tagline: false
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'credit',
+                            label: 'foo@bar.com',
+                            oneClick: false
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                color: 'blue',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'balance',
+                            label: 'foo@bar.com',
+                            oneClick: false
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                color: 'silver',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
             wallet: {
                 paypal: {
                     instruments: [
                         {
                             type: 'card',
-                            label: '...1234',
+                            label: '••••1234',
+                            oneClick: true
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                color: 'black',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'bank',
+                            label: '••••7331',
+                            oneClick: false
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                color: 'white',
+                shape: 'pill',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'credit',
+                            label: 'foo@bar.com',
                             oneClick: true
                         }
                     ]

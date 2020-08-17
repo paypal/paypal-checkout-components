@@ -295,7 +295,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
             fundingEligibility: {
                 type:          'object',
-                value:         getRefinedFundingEligibility,
+                default:        getRefinedFundingEligibility,
                 queryParam:    true,
                 serialization: 'base64'
             },
