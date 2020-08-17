@@ -414,6 +414,11 @@ const getDefaultStyle = () : ButtonStyleInputs => {
     return {};
 };
 
+const getDefaultExperiment = () : Experiment => {
+    // $FlowFixMe
+    return {};
+};
+
 export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonProps {
 
     if (!props) {
@@ -441,7 +446,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         content,
         wallet,
         flow = BUTTON_FLOW.PURCHASE,
-        experiment
+        experiment = getDefaultExperiment()
     } = props;
 
     const { country, lang } = locale;
