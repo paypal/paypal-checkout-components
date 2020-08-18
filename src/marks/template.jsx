@@ -7,6 +7,7 @@ import { getLocale, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { toPx } from 'belter/src';
 
 import { getFundingConfig } from '../funding';
+import { CLASS } from '../constants';
 
 function Mark({ fundingSource, fundingEligibility } : {| fundingSource : $Values<typeof FUNDING>, fundingEligibility : FundingEligibilityType |}) : ChildNodeType {
     const fundingConfig = getFundingConfig()[fundingSource];
@@ -29,8 +30,10 @@ export function MarksElement({ fundingEligibility, fundingSources, height } : {|
         <div class='paypal-marks'>
             <style>
                 {`
-                    .paypal-marks {
-                        font-size: ${ height }px;
+                    .${ CLASS.TEXT } {
+                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                        font-size: 12px;
+                        vertical-align: middle;
                     }
 
                     .paypal-mark {
@@ -53,6 +56,7 @@ export function MarksElement({ fundingEligibility, fundingSources, height } : {|
                     .paypal-mark img {
                         height: ${ toPx(height) };
                         display: inline-block;
+                        vertical-align: middle;
                     }
 
                     .paypal-button-card {

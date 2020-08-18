@@ -24,9 +24,16 @@ export const pageStyle = `
         box-sizing: border-box;
     }
 
-    .${ CLASS.HIDDEN },
-    .${ CLASS.HIDDEN } * {
+    span {
+        display: inline-block;
+    }
+
+    .${ CLASS.HIDDEN } {
         position: absolute !important;
+        visibility: hidden !important;
+    }
+
+    .${ CLASS.HIDDEN } * {
         visibility: hidden !important;
     }
 `;
