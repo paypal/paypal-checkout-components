@@ -1821,7 +1821,7 @@ window.spb = function(modules) {
         getLogger().info("rest_api_create_order_token");
         var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
         _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-        _headers10["x-app-version"] = "2.0.298", _headers10);
+        _headers10["x-app-version"] = "2.0.299", _headers10);
         var paymentSource = {
             token: {
                 id: paymentMethodID,
@@ -3164,7 +3164,7 @@ window.spb = function(modules) {
                                                 return !!clientAccessToken && !createBillingAgreement && !createSubscription && (!!vault || function(_ref4) {
                                                     var accessToken = _ref4.accessToken, fundingSource = _ref4.fundingSource, clientID = _ref4.clientID, merchantID = _ref4.merchantID, buyerCountry = _ref4.buyerCountry, currency = _ref4.currency, commit = _ref4.commit, vault = _ref4.vault, intent = _ref4.intent, disableFunding = _ref4.disableFunding, disableCard = _ref4.disableCard;
                                                     return promise_ZalgoPromise.try((function() {
-                                                        return function(query, _ref) {
+                                                        return "paypal" === fundingSource && function(query, _ref) {
                                                             var _headers;
                                                             var accessToken = _ref.accessToken, intent = _ref.intent, disableFunding = _ref.disableFunding, disableCard = _ref.disableCard;
                                                             return callGraphQL({
@@ -3988,6 +3988,7 @@ window.spb = function(modules) {
         inline: !0
     };
     var smartWalletPromise;
+    var smartWalletErrored = !1;
     function wallet_capture_bnpl_getInstrument(wallet, fundingSource, instrumentID) {
         var walletFunding = wallet[fundingSource];
         if (!walletFunding) throw new Error("Wallet has no " + fundingSource);
@@ -4070,6 +4071,7 @@ window.spb = function(modules) {
                 getLogger().warn("load_smart_wallet_error", {
                     err: stringifyError(err)
                 });
+                smartWalletErrored = !0;
                 throw err;
             })) : wallet && (smartWalletPromise = promise_ZalgoPromise.resolve(wallet));
         },
@@ -4123,7 +4125,7 @@ window.spb = function(modules) {
                 getLogger().info("web_checkout_fallback").flush();
                 return getWebCheckoutFallback().start();
             };
-            if (!instrument.oneClick) return getWebCheckoutFallback();
+            if (!instrument.oneClick || smartWalletErrored) return getWebCheckoutFallback();
             var restart = function() {
                 return fallbackToWebCheckout();
             };
@@ -5615,7 +5617,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.298", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.299", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
