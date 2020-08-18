@@ -159,7 +159,11 @@ function isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgree
         }
 
         return isFundingSourceVaultable({ accessToken: clientAccessToken, fundingSource, clientID, merchantID, buyerCountry, currency,
-            commit, vault, intent, disableFunding, disableCard });
+            commit, vault, intent, disableFunding, disableCard }).catch(err => {
+
+            getLogger().warn('funding_vaultable_error', { err: stringifyError(err) });
+            return false;
+        });
     });
 }
 
