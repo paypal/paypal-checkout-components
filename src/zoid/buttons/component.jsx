@@ -315,9 +315,9 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      ({ props }) => {
+                value:      () => {
                     return {
-                        newWalletDesign: walletExperiment.isEnabled() || Boolean(props.enableBNPL)
+                        oldWalletDesign: walletExperiment.isEnabled()
                     };
                 }
             },

@@ -160,84 +160,11 @@ export function Label(opts : LabelOptions) : ChildType {
     );
 }
 
-export function WalletLabelNew({ logoColor, instrument, content, commit } : WalletLabelOptions) : ?ChildType {
-    if (__WEB__) {
-        return;
-    }
-
-    let logo;
-    let label;
-
-    if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
-        logo = instrument.logoUrl
-            ? <img class='card-art' src={ instrument.logoUrl } />
-            : <GlyphCard logoColor={ logoColor } />;
-
-        label = instrument.label.replace('••••', '••');
-
-    } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
-        logo = instrument.logoUrl
-            ? <img class='card-art' src={ instrument.logoUrl } />
-            : <GlyphBank logoColor={ logoColor } />;
-
-        label = instrument.label.replace('••••', '••');
-
-    } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-        logo = <CreditMark />;
-
-        label = content && content.credit;
-        
-    } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
-        logo = <PayPalMark />;
-
-        label = content && content.balance;
-    } else {
-        return;
-    }
-
-    return (
-        <Style css={ css }>
-            <div class='wallet-label-new'>
-                <div class='paypal-mark'>
-                    <PPLogo logoColor={ logoColor } />
-                    <Space />
-                </div>
-                {
-                    content && (
-                        <div class='pay-label' optional={ 2 }>
-                            <Space />
-                            <Text>{ (instrument.oneClick && commit) ? content.payNow : content.payWith }</Text>
-                            <Space />
-                        </div>
-                    )
-                }
-                {
-                    logo &&
-                        <div class='logo' optional={ 1 }>
-                            { logo }
-                        </div>
-                }
-                {
-                    label &&
-                        <div class='label'>
-                            <Space />
-                            <Text>{ label }</Text>
-                        </div>
-                }
-            </div>
-        </Style>
-    );
-}
-
-export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, locale, content, commit, experiment } = opts;
+export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
+    const { logoColor, instrument, locale, content, commit } = opts;
 
     if (__WEB__) {
         return;
-    }
-
-    if (experiment.newWalletDesign) {
-        return WalletLabelNew(opts);
     }
 
     let logo;
@@ -282,6 +209,82 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                         { instrument.label }
                     </Text>
                 </div>
+            </div>
+        </Style>
+    );
+}
+
+export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
+    const { logoColor, instrument, content, commit, experiment } = opts;
+
+    if (__WEB__) {
+        return;
+    }
+
+    if (experiment.oldWalletDesign || !instrument.type) {
+        return WalletLabelOld(opts);
+    }
+
+    let logo;
+    let label;
+
+    if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
+        logo = instrument.logoUrl
+            ? <img class='card-art' src={ instrument.logoUrl } />
+            : <GlyphCard logoColor={ logoColor } />;
+
+        label = instrument.label.replace('••••', '••');
+
+    } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
+        logo = instrument.logoUrl
+            ? <img class='card-art' src={ instrument.logoUrl } />
+            : <GlyphBank logoColor={ logoColor } />;
+
+        label = instrument.label.replace('••••', '••');
+
+    } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
+        logo = <CreditMark />;
+
+        label = content && content.credit;
+        
+    } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
+        logo = <PayPalMark />;
+
+        label = content && content.balance;
+        
+    } else if (instrument.label) {
+        label = instrument.label;
+    }
+
+    return (
+        <Style css={ css }>
+            <div class='wallet-label-new'>
+                <div class='paypal-mark'>
+                    <PPLogo logoColor={ logoColor } />
+                    <Space />
+                </div>
+                {
+                    content && (
+                        <div class='pay-label' optional={ 2 }>
+                            <Space />
+                            <Text>{ (instrument.oneClick && commit) ? content.payNow : content.payWith }</Text>
+                            <Space />
+                        </div>
+                    )
+                }
+                {
+                    logo &&
+                        <div class='logo' optional={ 1 }>
+                            { logo }
+                        </div>
+                }
+                {
+                    label &&
+                        <div class='label'>
+                            <Space />
+                            <Text>{ label }</Text>
+                        </div>
+                }
             </div>
         </Style>
     );

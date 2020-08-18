@@ -40,5 +40,5 @@ export type ContentType = {|
 |};
 
 export type Experiment = {|
-    newWalletDesign : boolean
+    oldWalletDesign : boolean
 |};

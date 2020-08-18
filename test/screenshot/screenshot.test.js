@@ -6,6 +6,7 @@ import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
 import { testGlobals } from '../globals';
 import globals from '../../globals';
+import { testContent } from '../content';
 
 import { webpackCompile } from './lib/compile';
 import { openPage, takeScreenshot } from './lib/browser';
@@ -59,6 +60,9 @@ for (const config of buttonConfigs) {
 
         const filepath = `${ IMAGE_DIR }/${ filename }.png`;
         const diffpath = `${ IMAGE_DIR }/${ filename }-old.png`;
+
+        buttonConfig.button = buttonConfig.button || {};
+        buttonConfig.button.content = testContent;
 
         const { x, y, width, height } = await page.evaluate(async (options) => {
 
