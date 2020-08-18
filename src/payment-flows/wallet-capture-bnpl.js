@@ -33,6 +33,7 @@ function isWalletCaptureEligible({ props, serviceData } : IsEligibleOptions) : b
 }
 
 let smartWalletPromise;
+let smartWalletErrored = false;
 
 function setupWalletCapture({ props, config, serviceData } : SetupOptions) {
     const { env, sessionID, clientID, currency, amount, userIDToken, enableBNPL, clientMetadataID: cmid } = props;
@@ -46,6 +47,7 @@ function setupWalletCapture({ props, config, serviceData } : SetupOptions) {
             return getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken });
         }).catch(err => {
             getLogger().warn('load_smart_wallet_error', { err: stringifyError(err) });
+            smartWalletErrored = true;
             throw err;
         });
     } else if (wallet) {
@@ -151,7 +153,7 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
         return getWebCheckoutFallback().start();
     };
 
-    if (!instrument.oneClick) {
+    if (!instrument.oneClick || smartWalletErrored) {
         return getWebCheckoutFallback();
     }
 
