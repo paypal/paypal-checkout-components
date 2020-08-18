@@ -105,6 +105,10 @@ type IsFundingSourceVaultableOptions = {|
 
 function isFundingSourceVaultable({ accessToken, fundingSource, clientID, merchantID, buyerCountry, currency, commit, vault, intent, disableFunding, disableCard } : IsFundingSourceVaultableOptions) : ZalgoPromise<boolean> {
     return ZalgoPromise.try(() => {
+        if (fundingSource !== FUNDING.PAYPAL) {
+            return false;
+        }
+
         return getFundingEligibility(`
                 ${ fundingSource } {
                     vaultable
