@@ -44,7 +44,8 @@
     "cover": "echo no-cover",
     "prepublishOnly": "npm run babel",
     "postpublish": "git clean -f && git checkout .",
-    "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com"
+    "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com",
+    "postinstall": "npm_config_registry=https://npm.paypal.com npm install @paypalcorp/web --no-save --proxy='null' --https-proxy='null' || echo 'Unable to install cdnx cli tools'"
   },
   "peerDependencies": {
     "express": "^4.16.3"
