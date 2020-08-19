@@ -37,13 +37,16 @@ type ButtonMiddlewareOptions = {|
         [$Values<typeof COUNTRY>] : {
             [$Values<typeof LANG>] : ContentType
         }
-    }
+    },
+    tracking : (ExpressRequest) => void
 |};
 
-export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, getWallet, transportRiskData } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, getWallet, transportRiskData, tracking } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     return sdkMiddleware({ logger, cache }, {
         app: async ({ req, res, params, meta, logBuffer, sdkMeta }) => {
             logger.info(req, EVENT.RENDER);
+            
+            tracking(req);
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale, onShippingChange,

@@ -242,3 +242,6 @@ export const mockContent = {
         }
     }
 };
+
+/* eslint-disable-next-line no-empty-function */
+export const tracking = () => {};

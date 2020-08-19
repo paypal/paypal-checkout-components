@@ -231,6 +231,9 @@ const getWallet = () => {
     });
 };
 
+/* eslint-disable-next-line no-empty-function */
+const tracking = () => {};
+
 const getAccessToken = () => {
     return Promise.resolve('XYZ12345');
 };
@@ -268,7 +271,8 @@ const buttonMiddleware = getButtonMiddleware({
     getAccessToken,
     getMerchantID,
     transportRiskData,
-    content
+    content,
+    tracking
 });
 
 const walletMiddleware = getWalletMiddleware({

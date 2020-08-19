@@ -5,7 +5,7 @@ import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
 
-import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID, mockContent, getWallet, transportRiskData } from './mock';
+import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID, mockContent, getWallet, transportRiskData, tracking } from './mock';
 
 function getRenderedFundingSources(template) : $ReadOnlyArray<string> {
     return regexMap(template, / data-funding-source="([^"]+)"/g, (result, group1) => group1);
@@ -28,7 +28,7 @@ const logger = {
     error: noop
 };
 
-const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, getWallet, transportRiskData, content: mockContent, cache, logger });
+const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, getWallet, transportRiskData, content: mockContent, cache, logger, tracking });
 
 test('should do a basic button render and succeed', async () => {
 
@@ -102,7 +102,8 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
         transportRiskData,
         content: mockContent,
         cache,
-        logger
+        logger,
+        tracking
     });
     // $FlowFixMe
     await errButtonMiddleware(req, res);
