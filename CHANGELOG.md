@@ -1,3 +1,20 @@
+## <small>5.0.104 (2020-08-19)</small>
+
+* Add button eligibility config for purchase, billing setup, subscription setup ([21447b1](https://github.com/paypal/paypal-checkout-components/commit/21447b1))
+* Add CODEOWNERS ([33293d6](https://github.com/paypal/paypal-checkout-components/commit/33293d6))
+* Default experiment to empty object ([8f31d97](https://github.com/paypal/paypal-checkout-components/commit/8f31d97))
+* Default to new vaulted button design and fix screenshots ([647fe72](https://github.com/paypal/paypal-checkout-components/commit/647fe72))
+* Encapsulate menu button in component ([167efd6](https://github.com/paypal/paypal-checkout-components/commit/167efd6))
+* Fix .npmrc ([583424f](https://github.com/paypal/paypal-checkout-components/commit/583424f))
+* Fix horizontal multiple button layout ([6ef7301](https://github.com/paypal/paypal-checkout-components/commit/6ef7301))
+* New wallet button design experiment ([d05888e](https://github.com/paypal/paypal-checkout-components/commit/d05888e))
+* Pay Later button (#1408) ([e383aaf](https://github.com/paypal/paypal-checkout-components/commit/e383aaf)), closes [#1408](https://github.com/paypal/paypal-checkout-components/issues/1408)
+* Update CODEOWNERS ([d25b1ce](https://github.com/paypal/paypal-checkout-components/commit/d25b1ce))
+* update fields (#1403) ([0a5ad6d](https://github.com/paypal/paypal-checkout-components/commit/0a5ad6d)), closes [#1403](https://github.com/paypal/paypal-checkout-components/issues/1403)
+* chore(deps): update dependency flow-bin to ^0.131.0 (#1402) ([b207ec0](https://github.com/paypal/paypal-checkout-components/commit/b207ec0)), closes [#1402](https://github.com/paypal/paypal-checkout-components/issues/1402)
+
+
+
 ## <small>5.0.103 (2020-08-06)</small>
 
 * Revert "Remove Wallet polyfill from fundingEligibility" ([075bccc](https://github.com/paypal/paypal-checkout-components/commit/075bccc))
