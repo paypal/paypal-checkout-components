@@ -23,12 +23,24 @@ type FraudnetOptions = {|
     timeout? : number
 |};
 
+type FraudnetConfig = {|
+    f : string,
+    s : string,
+    cb1 : string,
+    sandbox? : boolean
+|};
+
 export function loadFraudnet({ env, clientMetadataID, cspNonce, timeout = 1000 } : FraudnetOptions) : ZalgoPromise<void> {
     return new ZalgoPromise(resolve => {
-        const config = {
-            f: clientMetadataID,
-            s: FRAUDNET_APP_NAME
+        const config : FraudnetConfig = {
+            f:   clientMetadataID,
+            s:   FRAUDNET_APP_NAME,
+            cb1: 'fnCallback'
         };
+
+        if (env === ENV.SANDBOX) {
+            config.sandbox = true;
+        }
 
         const configScript = document.createElement('script');
         configScript.setAttribute('nonce', cspNonce || '');
