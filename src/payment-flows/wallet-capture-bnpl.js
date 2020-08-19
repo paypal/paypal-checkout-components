@@ -94,6 +94,10 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
         return false;
     }
 
+    if (smartWalletErrored) {
+        return false;
+    }
+
     try {
         getInstrument(wallet, fundingSource, instrumentID);
     } catch (err) {
