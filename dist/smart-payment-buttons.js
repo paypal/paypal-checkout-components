@@ -1821,7 +1821,7 @@ window.spb = function(modules) {
         getLogger().info("rest_api_create_order_token");
         var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
         _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-        _headers10["x-app-version"] = "2.0.299", _headers10);
+        _headers10["x-app-version"] = "2.0.300", _headers10);
         var paymentSource = {
             token: {
                 id: paymentMethodID,
@@ -3218,7 +3218,12 @@ window.spb = function(modules) {
                                                     intent: intent,
                                                     disableFunding: disableFunding,
                                                     disableCard: disableCard
-                                                }));
+                                                }).catch((function(err) {
+                                                    getLogger().warn("funding_vaultable_error", {
+                                                        err: stringifyError(err)
+                                                    });
+                                                    return !1;
+                                                })));
                                             }));
                                         }({
                                             vault: vault,
@@ -4016,8 +4021,10 @@ window.spb = function(modules) {
                 return new zalgo_promise.ZalgoPromise((function(resolve) {
                     var config = {
                         f: clientMetadataID,
-                        s: "SMART_PAYMENT_BUTTONS"
+                        s: "SMART_PAYMENT_BUTTONS",
+                        cb1: "fnCallback"
                     };
+                    "sandbox" === env && (config.sandbox = !0);
                     var configScript = document.createElement("script");
                     configScript.setAttribute("nonce", cspNonce || "");
                     configScript.setAttribute("type", "application/json");
@@ -4045,7 +4052,7 @@ window.spb = function(modules) {
             }).then((function() {
                 return callGraphQL({
                     name: "GetSmartWallet",
-                    query: "\n            query GetSmartWallet(\n                $clientID: String!\n                $merchantID: [String!]\n                $currency: String\n                $amount: String\n                $userIDToken: String\n                $vetted: Boolean\n            ) {\n                smartWallet(\n                    clientId: $clientID\n                    merchantId: $merchantID\n                    currency: $currency\n                    amount: $amount\n                    userIdToken: $userIDToken\n                    vetted: $vetted\n                ) {\n                    paypal {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                            accessToken\n                        }\n                    }\n                    credit {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                            accessToken\n                        }\n                    }\n                    card {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                        }\n                    }\n                }\n            }\n        ",
+                    query: "\n            query GetSmartWallet(\n                $clientID: String!\n                $merchantID: [String!]\n                $currency: String\n                $amount: String\n                $userIDToken: String\n                $vetted: Boolean\n            ) {\n                smartWallet(\n                    clientId: $clientID\n                    merchantId: $merchantID\n                    currency: $currency\n                    amount: $amount\n                    userIdToken: $userIDToken\n                    vetted: $vetted\n                ) {\n                    paypal {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                            accessToken\n                        }\n                    }\n                    card {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                        }\n                    }\n                }\n            }\n        ",
                     variables: {
                         clientID: (_ref = {
                             clientID: clientID,
@@ -4085,6 +4092,7 @@ window.spb = function(modules) {
             if (payment.win) return !1;
             if (!wallet) return !1;
             if (!instrumentID) return !1;
+            if (smartWalletErrored) return !1;
             try {
                 wallet_capture_bnpl_getInstrument(wallet, fundingSource, instrumentID);
             } catch (err) {
@@ -5617,7 +5625,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.299", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.300", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
