@@ -2,7 +2,7 @@
 /* eslint max-depth: off */
 
 import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
-import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS, PLATFORM } from '@paypal/sdk-constants';
+import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS, PLATFORM, FUNDING_PRODUCTS } from '@paypal/sdk-constants';
 import { values } from 'belter';
 
 import { HTTP_HEADER, ERROR_CODE } from '../../config';
@@ -89,6 +89,7 @@ const getDefaultFundingEligibility = () : FundingEligibilityType => {
     return {};
 };
 
+// eslint-disable-next-line complexity
 function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibilityType {
     const encodedFundingEligibility = req.query.fundingEligibility;
 
@@ -141,6 +142,23 @@ function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibilityTy
         
                         if (typeof vendorEligibilityInput.vaultable === 'boolean') {
                             vendorEligibility.vaultable = vendorEligibilityInput.vaultable;
+                        }
+                    }
+                }
+
+                const productsEligibilityInput = fundingSourceEligibilityInput.products;
+                const productsEligibility = fundingSourceEligibility.products || {};
+
+                if (productsEligibilityInput) {
+                    fundingSourceEligibility.products = productsEligibility;
+
+                    for (const product of values(FUNDING_PRODUCTS)) {
+                        const productEligibilityInput = productsEligibilityInput[product] || {};
+                        const productEligibility = productsEligibility[product] || {};
+
+                        if (typeof productEligibilityInput.eligible === 'boolean') {
+                            productEligibility.eligible = productEligibilityInput.eligible;
+                            productsEligibility[product] = productEligibility;
                         }
                     }
                 }
