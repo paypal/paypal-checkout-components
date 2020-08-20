@@ -13,16 +13,19 @@
         const props = {
             ...xprops,
             content: {
-                payWithDebitOrCreditCard: 'Pay with Debit or Credit Card',
-                payNow: 'Pay Now'
+                payWithDebitOrCreditCard: 'Debit or Credit Card',
+                payNow: 'Pay Now',
+                payWith: 'Pay with',
+                credit: 'Credit',
+                balance: 'Balance'
             }
         }
 
         document.write(button.Buttons(props).render(jsx.html()));
 
         document.querySelectorAll('[data-funding-source]').forEach(button => {
-            if (button.querySelector('[data-menu]')) {
-                button.querySelector('[data-menu]').addEventListener('click', event => {
+            if (button.parentElement.querySelector('[data-menu]')) {
+                button.parentElement.querySelector('[data-menu]').addEventListener('click', event => {
                     event.stopPropagation();
                     event.preventDefault();
 
@@ -45,7 +48,7 @@
                         instance.close();
                     }
                 });
-                
+
                 instance.renderTo(window.parent, 'body');
             });
         });

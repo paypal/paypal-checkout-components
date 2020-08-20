@@ -7,26 +7,609 @@
 </head>
 
 <body>
-    <p id="paypal-marks-container"></p>
-    <p id="paypal-buttons-container"></p>
+    <style>
+        p {
+            border: 1px solid lightblue;
+            padding: 20px 40px;
+            display: inline-block;
+            margin: 10px;
+            vertical-align: top;
+        }
+    </style>
 
     <script>
-        paypal.Marks().render('#paypal-marks-container');
-        paypal.Buttons().render('#paypal-buttons-container');
+        const colors = ['gold', 'blue', 'silver', 'black', 'white'];
+        const widths = ['450px', '300px', '150px'];
+        const fis = ['venmo', 'credit'];
+        const taglines = [true, false];
+        const labels = ['checkout', 'pay', 'buynow'];
+        const products = ['flex'];
+        const instruments = ['card', 'bank', 'credit', 'balance'];
+        const shapes = ['rect', 'pill']
+
+        const markOpts = [
+            {
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    venmo: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true,
+                        products: {
+                            payIn4: {
+                                eligible: true
+                            }
+                        }
+                    }
+                }
+            }
+        ];
+
+        const buttonOpts = [];
+
+        for (const color of colors) {
+            buttonOpts.push({
+                style: {
+                    color
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    venmo: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true,
+                        products: {
+                            payIn4: {
+                                eligible: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        for (const label of labels) {
+            buttonOpts.push({
+                style: {
+                    label
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    venmo: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true,
+                        products: {
+                            payIn4: {
+                                eligible: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        for (const shape of shapes) {
+            buttonOpts.push({
+                style: {
+                    layout: 'horizontal',
+                    shape
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true,
+                        products: {
+                            payIn4: {
+                                eligible: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        for (const label of labels) {
+            buttonOpts.push({
+                style: {
+                    layout: 'horizontal',
+                    label
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true,
+                        products: {
+                            payIn4: {
+                                eligible: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        for (const fi of fis) {
+            buttonOpts.push({
+                style: {
+                    layout: 'horizontal'
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    [fi]: {
+                        eligible: true
+                    }
+                }
+            });
+        }
+
+        for (const product of products) {
+            buttonOpts.push({
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true,
+                        products: {
+                            [product]: {
+                                eligible: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        for (const product of products) {
+            buttonOpts.push({
+                style: {
+                    layout: 'horizontal'
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true,
+                        products: {
+                            [product]: {
+                                eligible: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        for (const tagline of taglines) {
+            buttonOpts.push({
+                style: {
+                    layout: 'horizontal',
+                    tagline
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true
+                    }
+                }
+            });
+        }
+
+        for (const instrument of instruments) {
+            buttonOpts.push({
+                style: {
+                    layout: 'horizontal',
+                    tagline: false
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true
+                    }
+                },
+                wallet: {
+                    paypal: {
+                        instruments: [
+                            {
+                                type: instrument,
+                                label: '••1337',
+                                oneClick: (instrument === 'card' || instrument === 'balance')
+                            }
+                        ]
+                    }
+                }
+            });
+        }
+
+        for (const instrument of instruments) {
+            buttonOpts.push({
+                style: {
+                    color: 'blue'
+                },
+                fundingEligibility: {
+                    paypal: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true
+                    }
+                },
+                wallet: {
+                    paypal: {
+                        instruments: [
+                            {
+                                type: instrument,
+                                label: '••1337',
+                                oneClick: (instrument === 'card' || instrument === 'balance')
+                            }
+                        ]
+                    }
+                }
+            });
+        }
+
+        for (opts of markOpts) {
+            break;
+            const p = document.createElement('p');
+            document.body.appendChild(p);
+            paypal.Marks(opts).render(p);
+        }
+
+        for (opts of buttonOpts) {
+            for (const width of widths) {
+                const p = document.createElement('p');
+                p.style.minWidth = width;
+                document.body.appendChild(p);
+                paypal.Buttons(opts).render(p);
+            }
+        }
+
+
+
+        /*
 
         paypal.Buttons({
-            fundingSource: 'paypal',
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false,
+                shape: 'pill'
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                venmo: {
+                    eligible: true
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false,
+                shape: 'pill'
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                itau: {
+                    eligible: true
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: false,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: false,
+            style: {
+                label: 'pay',
+                color: 'blue'
+                // layout: 'horizontal',
+                // tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        flex: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: false,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        credit: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                label: 'pay',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                credit: {
+                    eligible: true
+                }
+            },
+            personalization: {
+                buttonText: {
+                    text: 'This is personalization!'
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                layout: 'horizontal',
+                tagline: false
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'credit',
+                            label: 'foo@bar.com',
+                            oneClick: false
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                color: 'blue',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'balance',
+                            label: 'foo@bar.com',
+                            oneClick: false
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                color: 'silver',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
             wallet: {
                 paypal: {
                     instruments: [
                         {
                             type: 'card',
-                            label: '...1234',
+                            label: '••••1234',
                             oneClick: true
                         }
                     ]
                 }
             }
         }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                color: 'black',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'bank',
+                            label: '••••7331',
+                            oneClick: false
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        document.querySelector('#paypal-buttons-container').appendChild(document.createElement('br'));
+
+        paypal.Buttons({
+            enableBNPL: true,
+            style: {
+                color: 'white',
+                shape: 'pill',
+                layout: 'horizontal',
+                tagline: false
+            },
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+                paylater: {
+                    eligible: true,
+                    products: {
+                        payIn4: {
+                            eligible: true
+                        }
+                    }
+                }
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            type: 'credit',
+                            label: 'foo@bar.com',
+                            oneClick: true
+                        }
+                    ]
+                }
+            }
+        }).render('#paypal-buttons-container');
+
+        */
     </script>
 </body>
