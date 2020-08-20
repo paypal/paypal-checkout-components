@@ -54,11 +54,13 @@ export function getPaylaterConfig() : FundingSourceConfig {
         ],
 
         secondaryColors: {
-            [ DEFAULT ]: BUTTON_COLOR.WHITE
+            [ DEFAULT ]:            BUTTON_COLOR.WHITE,
+            [ BUTTON_COLOR.BLACK ]: BUTTON_COLOR.BLACK
         },
 
         logoColors: {
-            [ BUTTON_COLOR.WHITE ]: LOGO_COLOR.BLUE
+            [ BUTTON_COLOR.WHITE ]: LOGO_COLOR.BLUE,
+            [ BUTTON_COLOR.BLACK ]: LOGO_COLOR.WHITE
         },
         
         labelText: `${ FUNDING.PAYPAL } ${ FUNDING.PAYLATER }`

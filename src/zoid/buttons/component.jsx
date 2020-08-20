@@ -9,7 +9,7 @@ import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } f
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { uniqueID, memoize, isIE } from 'belter/src';
-import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL } from '@paypal/sdk-constants/src';
+import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { collectRiskData, persistRiskData } from '@paypal/risk-data-collector/src';
 
@@ -295,7 +295,8 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
             fundingEligibility: {
                 type:          'object',
-                value:         getRefinedFundingEligibility,
+                default:       getRefinedFundingEligibility,
+                value:         (__ENV__ === ENV.LOCAL) ? undefined : getRefinedFundingEligibility,
                 queryParam:    true,
                 serialization: 'base64'
             },
