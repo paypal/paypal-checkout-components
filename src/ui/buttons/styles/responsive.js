@@ -128,13 +128,13 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
                 .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
                     display: inline-block;
-                    width: calc(${ 100 - SECOND_BUTTON_PERC }% - 2px);
-                    margin-right: 4px;
+                    width: calc(${ 100 - SECOND_BUTTON_PERC }% - ${ perc(buttonHeight, 7) }px);
+                    margin-right: ${ perc(buttonHeight, 7) * 2 }px;
                 }
 
                 .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
                     display: inline-block;
-                    width: calc(${ SECOND_BUTTON_PERC }% - 2px);
+                    width: calc(${ SECOND_BUTTON_PERC }% - ${ perc(buttonHeight, 7) }px);
                 }
 
                 .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.TAGLINE } {

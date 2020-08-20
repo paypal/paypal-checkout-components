@@ -82,11 +82,7 @@ export type FundingSourceConfig = {|
     labelText? : string | (({| content : ?ContentType |}) => string)
 |};
 
-export function BasicLabel({ logo, label, layout, multiple, period, locale: { lang } } : LabelOptions) : ChildType {
-    if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
-        return logo;
-    }
-
+export function BasicLabel({ logo, label, period, locale: { lang } } : LabelOptions) : ChildType {
     if (__WEB__) {
         return logo;
     }

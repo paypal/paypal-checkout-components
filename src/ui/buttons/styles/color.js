@@ -160,7 +160,7 @@ export const buttonColorStyle = `
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE },
     .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } .menu-button {
         background: #fff;
-        border: 1px solid #2C2E2F;
+        border: 1px solid #555;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE }:hover {

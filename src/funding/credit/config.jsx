@@ -34,8 +34,10 @@ export function getCreditConfig() : FundingSourceConfig {
                 <Fragment>
                     <PPLogo logoColor={ logoColor } />
                     <Space />
-                    <PayPalLogo optional logoColor={ logoColor } />
-                    <Space />
+                    <span optional>
+                        <PayPalLogo logoColor={ logoColor } />
+                        <Space />
+                    </span>
                     <CreditLogo logoColor={ logoColor } locale={ locale } />
                 </Fragment>
             );
