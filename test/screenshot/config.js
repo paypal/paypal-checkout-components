@@ -33,6 +33,7 @@ const RESPONSIVE_WIDTHS = [ 144, 222, 465, 670 ];
 
 type ButtonConfig = {|
     only? : boolean,
+    diffThreshold? : number,
     filename? : string,
     userAgent? : string,
     container? : {|
@@ -285,7 +286,8 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     button: {
@@ -340,7 +342,8 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     button: {
@@ -395,7 +398,8 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     wallet: {
@@ -447,7 +451,8 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     button: {
@@ -503,7 +508,8 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     button: {
@@ -559,7 +565,8 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     wallet: {
@@ -612,7 +619,8 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     wallet: {

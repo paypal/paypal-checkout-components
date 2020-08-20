@@ -16,7 +16,7 @@ import { buttonConfigs } from './config';
 
 const IMAGE_DIR = `${ __dirname }/images`;
 
-const DIFF_THRESHOLD = 200;
+const DEFAULT_DIFF_THRESHOLD = 500;
 
 const HEADLESS = (process.env.HEADLESS !== '0');
 const DEVTOOLS = (process.env.DEVTOOLS === '1');
@@ -51,7 +51,7 @@ afterAll(async () => {
 });
 
 for (const config of buttonConfigs) {
-    const { only, ...buttonConfig } = config;
+    const { only, diffThreshold = DEFAULT_DIFF_THRESHOLD, ...buttonConfig } = config;
     const description = dotifyToString(buttonConfig) || 'base';
     const filename = sha256(JSON.stringify(buttonConfig));
 
@@ -145,7 +145,7 @@ for (const config of buttonConfigs) {
                 throw err;
             }
 
-            if (delta > DIFF_THRESHOLD) {
+            if (delta > diffThreshold) {
                 await existing.write(diffpath);
                 await screenshot.write(filepath);
 
