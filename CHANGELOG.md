@@ -1,3 +1,14 @@
+## <small>5.0.105 (2020-08-20)</small>
+
+* Add permutations of button to dev demo ([f310e9f](https://github.com/paypal/paypal-checkout-components/commit/f310e9f))
+* Bump up screenshot diff threshold for vault buttons ([5364dfe](https://github.com/paypal/paypal-checkout-components/commit/5364dfe))
+* Default paylater to flex button for now ([75f4f7f](https://github.com/paypal/paypal-checkout-components/commit/75f4f7f))
+* Minor button style updates ([4e45798](https://github.com/paypal/paypal-checkout-components/commit/4e45798))
+* Regenerate button screenshots ([5a1a7f2](https://github.com/paypal/paypal-checkout-components/commit/5a1a7f2))
+* Style fixes ([2c36b45](https://github.com/paypal/paypal-checkout-components/commit/2c36b45))
+
+
+
 ## <small>5.0.104 (2020-08-19)</small>
 
 * Add button eligibility config for purchase, billing setup, subscription setup ([21447b1](https://github.com/paypal/paypal-checkout-components/commit/21447b1))
