@@ -1,3 +1,9 @@
+## <small>5.0.106 (2020-08-20)</small>
+
+* Disable pay later label ([9ddafe4](https://github.com/paypal/paypal-checkout-components/commit/9ddafe4))
+
+
+
 ## <small>5.0.105 (2020-08-20)</small>
 
 * Add permutations of button to dev demo ([f310e9f](https://github.com/paypal/paypal-checkout-components/commit/f310e9f))
