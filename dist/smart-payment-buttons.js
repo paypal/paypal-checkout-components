@@ -1821,7 +1821,7 @@ window.spb = function(modules) {
         getLogger().info("rest_api_create_order_token");
         var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
         _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-        _headers10["x-app-version"] = "2.0.301", _headers10);
+        _headers10["x-app-version"] = "2.0.302", _headers10);
         var paymentSource = {
             token: {
                 id: paymentMethodID,
@@ -4510,7 +4510,8 @@ window.spb = function(modules) {
                     getLogger().info("firebase_connection_errored", {
                         err: stringifyError(err)
                     }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.state_name = "smart_button", 
-                    _getLogger$info$track2.transition_name = "firebase_connection_errored", _getLogger$info$track2)).flush();
+                    _getLogger$info$track2.transition_name = "firebase_connection_errored", _getLogger$info$track2.int_error_desc = stringifyError(err), 
+                    _getLogger$info$track2)).flush();
                 }));
                 return {
                     send: function(data) {
@@ -4831,6 +4832,10 @@ window.spb = function(modules) {
                         var _getLogger$info$track2;
                         getLogger().info("native_response_setprops").track((_getLogger$info$track2 = {}, 
                         _getLogger$info$track2.transition_name = "native_app_switch_ack", _getLogger$info$track2)).flush();
+                    })).catch((function(err) {
+                        var _getLogger$info$track3;
+                        getLogger().info("native_response_setprops_error").track((_getLogger$info$track3 = {}, 
+                        _getLogger$info$track3.int_error_desc = stringifyError(err), _getLogger$info$track3)).flush();
                     }));
                 }));
                 var closeNative = memoize((function() {
@@ -4868,11 +4873,11 @@ window.spb = function(modules) {
                     }
                 }));
                 var onApproveListener = socket.on("onApprove", (function(_ref12) {
-                    var _getLogger$info$track3;
+                    var _getLogger$info$track4;
                     var _ref12$data = _ref12.data, payerID = _ref12$data.payerID, paymentID = _ref12$data.paymentID, billingToken = _ref12$data.billingToken;
                     approved = !0;
-                    getLogger().info("native_message_onapprove").track((_getLogger$info$track3 = {}, 
-                    _getLogger$info$track3.transition_name = "process_popup_closed", _getLogger$info$track3)).flush();
+                    getLogger().info("native_message_onapprove").track((_getLogger$info$track4 = {}, 
+                    _getLogger$info$track4.transition_name = "process_popup_closed", _getLogger$info$track4)).flush();
                     return promise_ZalgoPromise.all([ onApprove({
                         payerID: payerID,
                         paymentID: paymentID,
@@ -4908,18 +4913,18 @@ window.spb = function(modules) {
                 };
             }));
             var detectAppSwitch = once((function(_ref14) {
-                var _getLogger$info$track4;
+                var _getLogger$info$track5;
                 var sessionUID = _ref14.sessionUID;
-                getLogger().info("native_detect_app_switch").track((_getLogger$info$track4 = {}, 
-                _getLogger$info$track4.transition_name = "native_detect_app_switch", _getLogger$info$track4)).flush();
+                getLogger().info("native_detect_app_switch").track((_getLogger$info$track5 = {}, 
+                _getLogger$info$track5.transition_name = "native_detect_app_switch", _getLogger$info$track5)).flush();
                 return connectNative({
                     sessionUID: sessionUID
                 }).setProps();
             }));
             var detectWebSwitch = once((function(fallbackWin) {
-                var _getLogger$info$track5;
-                getLogger().info("native_detect_web_switch").track((_getLogger$info$track5 = {}, 
-                _getLogger$info$track5.transition_name = "native_detect_web_switch", _getLogger$info$track5)).flush();
+                var _getLogger$info$track6;
+                getLogger().info("native_detect_web_switch").track((_getLogger$info$track6 = {}, 
+                _getLogger$info$track6.transition_name = "native_detect_web_switch", _getLogger$info$track6)).flush();
                 return fallbackToWebCheckout(fallbackWin);
             }));
             var validate = memoize((function() {
@@ -4951,8 +4956,9 @@ window.spb = function(modules) {
                                 url: nativeUrl
                             }).info("native_attempt_appswitch_url_popup", {
                                 url: nativeUrl
-                            }).track((_getLogger$info$info$ = {}, _getLogger$info$info$.transition_name = "popup_shown", 
-                            _getLogger$info$info$)).track((_getLogger$info$info$2 = {}, _getLogger$info$info$2.transition_name = "app_switch_attempted", 
+                            }).track((_getLogger$info$info$ = {}, _getLogger$info$info$.state_name = "smart_button", 
+                            _getLogger$info$info$.transition_name = "popup_shown", _getLogger$info$info$)).track((_getLogger$info$info$2 = {}, 
+                            _getLogger$info$info$2.state_name = "smart_button", _getLogger$info$info$2.transition_name = "app_switch_attempted", 
                             _getLogger$info$info$2)).flush();
                             var validatePromise = validate();
                             var delayPromise = promise_ZalgoPromise.delay(500);
@@ -4969,6 +4975,12 @@ window.spb = function(modules) {
                                     if (nativeWin) return detectWebSwitch(nativeWin);
                                     throw new Error("No window found");
                                 })).catch((function(err) {
+                                    var _getLogger$info$track7;
+                                    getLogger().info("native_attempt_appswitch_url_popup_errored", {
+                                        url: nativeUrl
+                                    }).track((_getLogger$info$track7 = {}, _getLogger$info$track7.state_name = "smart_button", 
+                                    _getLogger$info$track7.transition_name = "app_switch_attempted_errored", _getLogger$info$track7.int_error_desc = stringifyError(err), 
+                                    _getLogger$info$track7)).flush();
                                     return connectNative({
                                         sessionUID: sessionUID
                                     }).close().then((function() {
@@ -4985,13 +4997,14 @@ window.spb = function(modules) {
                         }({
                             sessionUID: sessionUID
                         }) : function(_ref16) {
-                            var _getLogger$info$track6;
+                            var _getLogger$info$track8;
                             var sessionUID = _ref16.sessionUID;
                             var popupWin = popup(getNativePopupUrl({
                                 sessionUID: sessionUID
                             }));
-                            getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track6 = {}, 
-                            _getLogger$info$track6.transition_name = "popup_shown", _getLogger$info$track6)).flush();
+                            getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track8 = {}, 
+                            _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.transition_name = "popup_shown", 
+                            _getLogger$info$track8)).flush();
                             var closeListener = function(win, callback, delay, maxtime) {
                                 void 0 === delay && (delay = 1e3);
                                 void 0 === maxtime && (maxtime = 1 / 0);
@@ -5023,18 +5036,28 @@ window.spb = function(modules) {
                                 getLogger().info("native_post_message_await_redirect").flush();
                                 return validatePromise.then((function(valid) {
                                     return valid ? createOrder().then((function() {
-                                        var _getLogger$info$track7;
+                                        var _getLogger$info$track9;
                                         var nativeUrl = getNativeUrl({
                                             sessionUID: sessionUID,
                                             pageUrl: pageUrl
                                         });
                                         getLogger().info("native_attempt_appswitch_url_popup", {
                                             url: nativeUrl
-                                        }).track((_getLogger$info$track7 = {}, _getLogger$info$track7.transition_name = "app_switch_attempted", 
-                                        _getLogger$info$track7)).flush();
+                                        }).track((_getLogger$info$track9 = {}, _getLogger$info$track9.state_name = "smart_button", 
+                                        _getLogger$info$track9.transition_name = "app_switch_attempted", _getLogger$info$track9)).flush();
                                         return {
                                             redirectUrl: nativeUrl
                                         };
+                                    })).catch((function(err) {
+                                        var _getLogger$info$track10;
+                                        getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track10 = {}, 
+                                        _getLogger$info$track10.state_name = "smart_button", _getLogger$info$track10.transition_name = "app_switch_attempted_errored", 
+                                        _getLogger$info$track10.int_error_desc = stringifyError(err), _getLogger$info$track10)).flush();
+                                        return connectNative({
+                                            sessionUID: sessionUID
+                                        }).close().then((function() {
+                                            throw err;
+                                        }));
                                     })) : close().then((function() {
                                         throw new Error("Validation failed");
                                     }));
@@ -5625,7 +5648,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.301", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.302", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
