@@ -11,7 +11,7 @@ import type { ButtonProps } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { getLogger, promiseOne, promiseNoop, unresolvedPromise } from '../lib';
-import { USER_ACTION, FPTI_TRANSITION } from '../constants';
+import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
 import { checkout } from './checkout';
@@ -313,6 +313,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 getLogger().info(`native_response_setprops`).track({
                     [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK
                 }).flush();
+            }).catch(err => {
+                getLogger().info(`native_response_setprops_error`).track({
+                    [FTPI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                }).flush();
             });
         });
 
@@ -441,9 +445,11 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             .info(`native_attempt_appswitch_popup_shown`, { url: nativeUrl })
             .info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
             .track({
+                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
             })
             .track({
+                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH
             }).flush();
 
@@ -477,6 +483,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     throw new Error(`No window found`);
                 }
             }).catch(err => {
+                getLogger().info(`native_attempt_appswitch_url_popup_errored`, { url: nativeUrl })
+                    .track({
+                        [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
+                        [FTPI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                    }).flush();
                 return connectNative({ sessionUID }).close().then(() => {
                     throw err;
                 });
@@ -488,6 +500,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const popupWin = popup(getNativePopupUrl({ sessionUID }));
         getLogger().info(`native_attempt_appswitch_popup_shown`)
             .track({
+                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
             }).flush();
 
@@ -522,10 +535,22 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
                     getLogger().info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
                         .track({
+                            [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
                             [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH
                         }).flush();
 
                     return { redirectUrl: nativeUrl };
+                }).catch(err => {
+                    getLogger().info(`native_attempt_appswitch_url_popup_errored`)
+                        .track({
+                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
+                            [FTPI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                        }).flush();
+
+                    return connectNative({ sessionUID }).close().then(() => {
+                        throw err;
+                    });
                 });
             });
         });

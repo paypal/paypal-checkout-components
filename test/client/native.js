@@ -2717,7 +2717,7 @@ describe('native ios cases', () => {
     });
 
     it('should render a button with createOrder rejecting, click the button, and render checkout via popup to native path in iOS', async () => {
-        return await wrapPromise(async ({ expect, avoid, expectError, wait }) => {
+        return await wrapPromise(async ({ avoid, expectError, wait }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
@@ -2736,7 +2736,7 @@ describe('native ios cases', () => {
                         data:   {
                             pageUrl: `${ window.location.href }#close`
                         }
-                    }).catch(expect('awaitRedirectError'));
+                    });
                 }
             });
 

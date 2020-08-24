@@ -107,16 +107,17 @@ export const FPTI_TRANSITION = {
     FIREBASE_CONNECTION_OPENED:     ('firebase_connection_opened' : 'firebase_connection_opened'),
     FIREBASE_CONNECTION_ERRORED:    ('firebase_connection_errored' : 'firebase_connection_errored'),
 
-    NATIVE_DETECT_APP_SWITCH:  ('native_detect_app_switch' : 'native_detect_app_switch'),
-    NATIVE_DETECT_WEB_SWITCH:  ('native_detect_web_switch' : 'native_detect_web_switch'),
-    NATIVE_APP_SWITCH_ACK:     ('native_app_switch_ack' : 'native_app_switch_ack'),
-    NATIVE_ERROR:              ('native_app_switch_ack' : 'native_app_switch_ack'),
-    NATIVE_SET_PROPS_ATTEMPT:  ('process_set_props_attempt' : 'process_set_props_attempt'),
-    NATIVE_ATTEMPT_APP_SWITCH: ('app_switch_attempted' : 'app_switch_attempted'),
-    NATIVE_POPUP_SHOWN:        ('popup_shown' : 'popup_shown'),
-    NATIVE_POPUP_CLOSED:       ('process_popup_closed' : 'process_popup_closed'),
+    NATIVE_DETECT_APP_SWITCH:           ('native_detect_app_switch' : 'native_detect_app_switch'),
+    NATIVE_DETECT_WEB_SWITCH:           ('native_detect_web_switch' : 'native_detect_web_switch'),
+    NATIVE_APP_SWITCH_ACK:              ('native_app_switch_ack' : 'native_app_switch_ack'),
+    NATIVE_ERROR:                       ('native_app_switch_ack' : 'native_app_switch_ack'),
+    NATIVE_SET_PROPS_ATTEMPT:           ('process_set_props_attempt' : 'process_set_props_attempt'),
+    NATIVE_ATTEMPT_APP_SWITCH:          ('app_switch_attempted' : 'app_switch_attempted'),
+    NATIVE_ATTEMPT_APP_SWITCH_ERRORED:  ('app_switch_attempted_errored' : 'app_switch_attempted_errored'),
+    NATIVE_POPUP_SHOWN:                 ('popup_shown' : 'popup_shown'),
+    NATIVE_POPUP_CLOSED:                ('process_popup_closed' : 'process_popup_closed'),
 
-    HONEY_IDENTIFY:            ('honey_identify')
+    HONEY_IDENTIFY:                     ('honey_identify')
 };
 
 export const FPTI_BUTTON_TYPE = {
@@ -124,6 +125,7 @@ export const FPTI_BUTTON_TYPE = {
 };
 
 export const FTPI_CUSTOM_KEY = {
+    ERR_DESC:              ('int_error_desc' : 'int_error_desc'),
     HONEY_DEVICE_ID:       ('honey_device_id' : 'honey_device_id'),
     HONEY_SESSION_ID:      ('honey_session_id' : 'honey_session_id'),
     INTEGRATION_ISSUE:     ('integration_issue' : 'integration_issue'),

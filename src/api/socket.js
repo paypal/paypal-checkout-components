@@ -8,7 +8,7 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { FIREBASE_SCRIPTS } from '../config';
 import { loadScript } from '../lib/util';
 import { getLogger } from '../lib';
-import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
+import { FTPI_CUSTOM_KEY, FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
 import { getFirebaseSessionToken } from './auth';
 
@@ -538,8 +538,9 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
 
         databasePromise.catch(err => {
             getLogger().info('firebase_connection_errored', { err: stringifyError(err) }).track({
-                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.FIREBASE_CONNECTION_ERRORED
+                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.FIREBASE_CONNECTION_ERRORED,
+                [FTPI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
             }).flush();
         });
 
