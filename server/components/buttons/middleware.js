@@ -12,6 +12,7 @@ import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderS
 import { EVENT } from './constants';
 import { getParams } from './params';
 import { buttonStyle } from './style';
+import { setRootTransaction } from './instrumentation';
 
 type InlineGuestElmoParams = {|
     merchantID : string,
@@ -161,6 +162,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                 </body>
             `;
 
+            setRootTransaction(req, { wallet });
             allowFrame(res);
             return htmlResponse(res, pageHTML);
         },
