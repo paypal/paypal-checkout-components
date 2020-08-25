@@ -1,3 +1,10 @@
+## <small>5.0.107 (2020-08-25)</small>
+
+* Fix card eligibility when wallet present ([5a08f16](https://github.com/paypal/paypal-checkout-components/commit/5a08f16))
+* Remove Wallet polyfill from fundingEligibility ([9daf583](https://github.com/paypal/paypal-checkout-components/commit/9daf583))
+
+
+
 ## <small>5.0.106 (2020-08-20)</small>
 
 * Disable pay later label ([9ddafe4](https://github.com/paypal/paypal-checkout-components/commit/9ddafe4))
