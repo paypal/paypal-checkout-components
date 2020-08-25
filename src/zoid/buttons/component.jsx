@@ -265,7 +265,10 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
             enableBNPL: {
                 type:       'boolean',
                 required:   false,
-                queryParam: true
+                queryParam: true,
+                default:    () => {
+                    return __ENV__ === ENV.LOCAL || __ENV__ === ENV.STAGE || __ENV__ === ENV.TEST;
+                }
             },
 
             env: {
