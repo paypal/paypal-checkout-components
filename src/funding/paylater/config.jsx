@@ -29,10 +29,6 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
             let text;
 
-            // if (products.payIn4 && products.payIn4.eligible) {
-            //    text = <Text>Pay Later</Text>;
-            // } else
-            
             if (products.flex && products.flex.eligible) {
                 text = (
                     <Fragment>
@@ -41,12 +37,7 @@ export function getPaylaterConfig() : FundingSourceConfig {
                     </Fragment>
                 );
             } else {
-                text = (
-                    <Fragment>
-                        <Text optional>PayPal </Text>
-                        <Text>Flex</Text>
-                    </Fragment>
-                );
+                text = <Text>Pay Later</Text>;
             }
 
             return (
