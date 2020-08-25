@@ -31,7 +31,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         nonce, components, onShippingChange, personalization, clientAccessToken, content, flow, experiment } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
 
-    const fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow });
+    const fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet });
     const multiple = fundingSources.length > 1;
 
     if (!fundingSources.length) {

@@ -7,7 +7,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import type { ContentType, WalletInstrument, Experiment } from '../types';
+import type { ContentType, WalletInstrument, Experiment, Wallet } from '../types';
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
 
@@ -68,7 +68,8 @@ export type FundingSourceConfig = {|
     maxCards? : { [$Values<typeof COUNTRY>] : number },
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
-    eligible? : ({| components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType, fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT> |}) => boolean,
+    eligible? : ({| components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType,
+        fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT>, wallet : ?Wallet |}) => boolean,
     Logo : (LogoOptions) => ChildType,
     Label : (LabelOptions) => ChildType,
     WalletLabel? : (WalletLabelOptions) => ?ChildType,

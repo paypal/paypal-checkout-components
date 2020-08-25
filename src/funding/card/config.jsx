@@ -41,16 +41,13 @@ export function getCardConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        eligible: ({ components, fundingSource, fundingEligibility }) => {
+        eligible: ({ components, fundingSource, fundingEligibility, wallet }) => {
             const cardEligibility = fundingEligibility.card;
-            const vendorEligibility = cardEligibility && cardEligibility.vendors;
 
             const hostedFieldsRequested = Boolean(components.indexOf(COMPONENTS.HOSTED_FIELDS) !== -1);
             const cardEligible = Boolean(cardEligibility && cardEligibility.eligible);
             const cardBranded = Boolean(cardEligibility && cardEligibility.branded);
-            const cardVaulted = Boolean(vendorEligibility && Object.keys(vendorEligibility).some(vendor => {
-                return Boolean(vendorEligibility[vendor] && vendorEligibility[vendor].vaultedInstruments && vendorEligibility[vendor].vaultedInstruments.length);
-            }));
+            const cardVaulted = Boolean(wallet && wallet.card && wallet.card.instruments && wallet.card.instruments.length);
 
             // If card is not eligible, never show card buttons
             if (!cardEligible) {

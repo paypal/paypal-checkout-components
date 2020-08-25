@@ -426,7 +426,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Invalid funding source: ${ fundingSource }`);
         }
 
-        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
+        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet })) {
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
