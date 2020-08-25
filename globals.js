@@ -27,7 +27,7 @@ module.exports = {
             __CARD_FIELDS__:    '/smart/card-fields',
             __WALLET__:         '/smart/wallet',
             __FIELDS__:         '/smart/fields',
-            __INLINE_WALLET__:  '/checkoutweb/wallet'
+            __WALLET__:         '/checkoutweb/wallet'
         }
     }
 };

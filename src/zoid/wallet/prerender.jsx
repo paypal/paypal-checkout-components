@@ -5,15 +5,15 @@ import { node, type ChildType } from 'jsx-pragmatic/src';
 
 type PrerenderedWalletProps = {|
     nonce : ?string
-|};
+    |};
 
 export function WalletPrerender({ nonce } : PrerenderedWalletProps) : ChildType {
     return (
         <html>
-            <body>
-                <style
-                    nonce={ nonce }
-                    innerHTML={ `
+        <body>
+        <style
+    nonce={ nonce }
+    innerHTML={ `
                         html, body {
                             padding: 0;
                             margin: 0;
@@ -50,8 +50,9 @@ export function WalletPrerender({ nonce } : PrerenderedWalletProps) : ChildType 
                             }
                         }
                     ` }
-                />
-            </body>
-        </html>
-    );
+/>
+</body>
+    </html>
+);
 }
+

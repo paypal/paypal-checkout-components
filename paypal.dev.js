@@ -4,7 +4,7 @@ import { setupSDK } from '@paypal/sdk-client/src';
 
 import * as paypalButtons from './src/interface/button'; // eslint-disable-line import/no-namespace
 import * as paypalMarks from './src/interface/marks'; // eslint-disable-line import/no-namespace
-import * as paypalInlineWallet from './src/interface/inline-wallet'; // eslint-disable-line import/no-namespace
+import * as paypalWallet from './src/interface/wallet'; // eslint-disable-line import/no-namespace
 
 setupSDK([
     {
@@ -16,7 +16,7 @@ setupSDK([
         requirer: () => paypalMarks
     },
     {
-        name:     'inlineWallet',
-        requirer: () => paypalInlineWallet
+        name:     'wallet',
+        requirer: () => paypalWallet
     }
 ]);

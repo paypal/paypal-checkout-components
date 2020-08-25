@@ -15,41 +15,41 @@ const CLASS = {
 };
 
 export function WalletContainer({ uid, frame, prerenderFrame, event, props } : RenderOptionsType<ButtonProps>) : ?ChildType {
-
+    
     if (!frame || !prerenderFrame) {
         throw new Error(`Expected frame and prerenderframe`);
     }
-
+    
     frame.classList.add(CLASS.COMPONENT_FRAME);
     prerenderFrame.classList.add(CLASS.PRERENDER_FRAME);
-
+    
     frame.classList.add(CLASS.INVISIBLE);
     prerenderFrame.classList.add(CLASS.VISIBLE);
-
+    
     event.on(EVENT.RENDERED, () => {
         prerenderFrame.classList.remove(CLASS.VISIBLE);
         prerenderFrame.classList.add(CLASS.INVISIBLE);
-
+        
         frame.classList.remove(CLASS.INVISIBLE);
         frame.classList.add(CLASS.VISIBLE);
-
+        
         setTimeout(() => {
             destroyElement(prerenderFrame);
         }, 1000);
     });
-
+    
     const setupAutoResize = (el) => {
         event.on(EVENT.RESIZE, ({ width: newWidth, height: newHeight }) => {
             if (typeof newWidth === 'number') {
                 el.style.width = toCSS(newWidth);
             }
-
+            
             if (typeof newHeight === 'number') {
                 el.style.height = toCSS(newHeight);
             }
         });
     };
-
+    
     const element = (
         <div id={ uid } onRender={ setupAutoResize }>
             <style nonce={ props.nonce }>
@@ -74,7 +74,7 @@ export function WalletContainer({ uid, frame, prerenderFrame, event, props } : R
 
                     @media only screen and (min-width: 600px) {
                         #${ uid } {
-                            min-height: 60px;
+                            min-height: 350px;
                         }
                     }
 
@@ -105,11 +105,11 @@ export function WalletContainer({ uid, frame, prerenderFrame, event, props } : R
                     }
                 `}
             </style>
-
+            
             <node el={ frame } />
             <node el={ prerenderFrame } />
         </div>
     );
-
+    
     return element;
 }

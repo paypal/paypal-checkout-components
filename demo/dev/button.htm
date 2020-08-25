@@ -21,6 +21,7 @@
         document.write(button.Buttons(props).render(jsx.html()));
 
         document.querySelectorAll('[data-funding-source]').forEach(button => {
+            if (props.enablePWB) { console.log('this one had pwb enabled'); }
             if (button.querySelector('[data-menu]')) {
                 button.querySelector('[data-menu]').addEventListener('click', event => {
                     event.stopPropagation();
@@ -44,7 +45,7 @@
                 }
             });
 
-            const inlineWalletComponent = paypal.InlineWallet({
+            const walletComponent = paypal.Wallet({
                 createOrder: () => {
                     return 'EC-XXXXXXXXXX';
                 },
@@ -55,7 +56,7 @@
 
 
             button.addEventListener('click', () => {
-                const instance = props.enablePWB ? inlineWalletComponent : checkoutComponent;
+                const instance = props.enablePWB ? walletComponent : checkoutComponent;
 
                 instance.renderTo(window.parent, 'body');
             });
