@@ -1,3 +1,10 @@
+## <small>5.0.108 (2020-08-25)</small>
+
+* Default to pay later label ([6b09ea5](https://github.com/paypal/paypal-checkout-components/commit/6b09ea5))
+* Enable new wallet experience in local and stage envs ([eee3c84](https://github.com/paypal/paypal-checkout-components/commit/eee3c84))
+
+
+
 ## <small>5.0.107 (2020-08-25)</small>
 
 * Fix card eligibility when wallet present ([5a08f16](https://github.com/paypal/paypal-checkout-components/commit/5a08f16))
