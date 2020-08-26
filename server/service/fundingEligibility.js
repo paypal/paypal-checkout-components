@@ -174,17 +174,7 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
         basicFundingEligibility = copy(basicFundingEligibility);
-
-        if (basicFundingEligibility.venmo && !basicFundingEligibility.venmo.eligible) {
-            // $FlowFixMe
-            delete basicFundingEligibility.venmo.eligible;
-        }
-
-        if (basicFundingEligibility.itau && !basicFundingEligibility.itau.eligible) {
-            // $FlowFixMe
-            delete basicFundingEligibility.itau.eligible;
-        }
-
+        
         if (basicFundingEligibility.card && merchantID && merchantID.length > 1) {
             // $FlowFixMe
             delete basicFundingEligibility.card.branded;
