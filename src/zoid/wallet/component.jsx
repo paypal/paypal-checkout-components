@@ -6,7 +6,7 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken,
     getClientAccessToken, getUserIDToken, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID,
     getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault,
-    getMerchantID, getCSPNonce, getDebug, getClientMetadataID } from '@paypal/sdk-client/src';
+    getMerchantID, getCSPNonce, getDebug, getClientMetadataID, getAmount } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, memoize, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -199,6 +199,13 @@ export function getWalletComponent() {
                     type:       'string',
                     queryParam: true,
                     value:      getCurrency
+                },
+    
+                amount: {
+                    type:       'string',
+                    required:   false,
+                    queryParam: true,
+                    value:      getAmount
                 },
                 
                 intent: {

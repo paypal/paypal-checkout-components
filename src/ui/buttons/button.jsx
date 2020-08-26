@@ -57,7 +57,7 @@ function getWalletInstrument({ wallet, fundingSource, onShippingChange } : Vault
 }
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, wallet, i, nonce,
-    clientAccessToken, personalization, onShippingChange, onClick = noop, content, tagline, commit, experiment } : IndividualButtonProps) : ElementNode {
+    clientAccessToken, personalization, onShippingChange, onClick = noop, content, tagline, commit, experiment, enablePWB } : IndividualButtonProps) : ElementNode {
 
     const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -152,7 +152,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             />
         );
 
-    const showMenu = Boolean(instrument && !__WEB__);
+    const showMenu = Boolean(instrument && !__WEB__ && !enablePWB);
 
     return (
         <div
