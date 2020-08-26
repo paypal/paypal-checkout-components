@@ -7,10 +7,9 @@ import { destroyElement } from 'belter/src';
 
 import type { ThreeDomainSecureFlowType, MenuChoices } from '../types';
 import type { CreateOrder } from '../props';
-import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault } from '../api';
+import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault, updateButtonClientConfig } from '../api';
 import { TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION } from '../constants';
 import { getLogger } from '../lib';
-import { updateButtonClientConfig } from '../button/orders';
 
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';

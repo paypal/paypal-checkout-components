@@ -7,11 +7,10 @@ import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-util
 
 import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
-import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL, getFundingEligibility } from '../api';
+import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL, getFundingEligibility, updateButtonClientConfig  } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
-import { updateButtonClientConfig } from '../button/orders';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from './types';
 

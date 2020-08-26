@@ -1,23 +1,13 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { INTENT, SDK_QUERY_KEYS, FUNDING, CURRENCY, ENV, FPTI_KEY, SDK_SETTINGS } from '@paypal/sdk-constants/src';
+import { INTENT, SDK_QUERY_KEYS, CURRENCY, ENV, FPTI_KEY, SDK_SETTINGS } from '@paypal/sdk-constants/src';
 import { stringifyError, stringifyErrorMessage } from 'belter/src';
 
-import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, FPTI_CONTEXT_TYPE, FTPI_CUSTOM_KEY } from '../constants';
-import { updateClientConfig, getSupplementalOrderInfo } from '../api';
+import { FPTI_CONTEXT_TYPE, FTPI_CUSTOM_KEY } from '../constants';
+import { getSupplementalOrderInfo } from '../api';
 import { getLogger, isEmailAddress } from '../lib';
 import { ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '../config';
-
-export function updateButtonClientConfig({ orderID, fundingSource, inline = false } : {| orderID : string, fundingSource : $Values<typeof FUNDING>, inline : boolean | void |}) : ZalgoPromise<void> {
-    return updateClientConfig({
-        orderID,
-        fundingSource,
-        integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
-        userExperienceFlow:  inline ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT,
-        productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
-    });
-}
 
 type ValidateOptions = {|
     env : $Values<typeof ENV>,

@@ -6,7 +6,7 @@ import { request, noop, memoize } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
-import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS } from '../constants';
+import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS, INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
 
 import { callSmartAPI, callGraphQL, callRestAPI } from './api';
 
@@ -448,3 +448,13 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
         }
     });
 });
+
+export function updateButtonClientConfig({ orderID, fundingSource, inline = false } : {| orderID : string, fundingSource : $Values<typeof FUNDING>, inline : boolean | void |}) : ZalgoPromise<void> {
+    return updateClientConfig({
+        orderID,
+        fundingSource,
+        integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
+        userExperienceFlow:  inline ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT,
+        productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
+    });
+}

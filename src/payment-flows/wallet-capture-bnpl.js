@@ -5,10 +5,9 @@ import { stringifyError } from 'belter/src';
 import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
-import { getSupplementalOrderInfo, oneClickApproveOrder, loadFraudnet, getSmartWallet } from '../api';
+import { getSupplementalOrderInfo, oneClickApproveOrder, loadFraudnet, getSmartWallet, updateButtonClientConfig } from '../api';
 import { BUYER_INTENT, FPTI_TRANSITION } from '../constants';
 import { getLogger } from '../lib';
-import { updateButtonClientConfig } from '../button/orders';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';

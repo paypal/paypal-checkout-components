@@ -7,10 +7,11 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { checkout, cardFields, native, honey, vaultCapture, walletCapture, walletCaptureBNPL, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
 import { getLogger, promiseNoop } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
+import { updateButtonClientConfig } from '../api';
 
 import { type ButtonProps, type Config, type ServiceData, type Components } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
-import { updateButtonClientConfig, validateOrder } from './orders';
+import { validateOrder } from './validation';
 import { renderMenu } from './menu';
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
