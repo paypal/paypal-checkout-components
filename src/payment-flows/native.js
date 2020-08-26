@@ -163,6 +163,10 @@ function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentElig
         return false;
     }
 
+    if (!NATIVE_CHECKOUT_URI[fundingSource]) {
+        return false;
+    }
+
     if (isNativeOptedIn({ props })) {
         return true;
     }
