@@ -4,12 +4,37 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { INTENT, SDK_QUERY_KEYS, CURRENCY, ENV, FPTI_KEY, SDK_SETTINGS } from '@paypal/sdk-constants/src';
 import { stringifyError, stringifyErrorMessage } from 'belter/src';
 
+import type { CreateBillingAgreement, CreateSubscription } from '../props';
 import { FPTI_CONTEXT_TYPE, FTPI_CUSTOM_KEY } from '../constants';
 import { getSupplementalOrderInfo } from '../api';
 import { getLogger, isEmailAddress } from '../lib';
 import { ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '../config';
 
-type ValidateOptions = {|
+type ValidatePropsOptions = {|
+    intent : $Values<typeof INTENT>,
+    createBillingAgreement : ?CreateBillingAgreement,
+    createSubscription : ?CreateSubscription
+|};
+
+export function validateProps({ intent, createBillingAgreement, createSubscription } : ValidatePropsOptions) {
+    const logger = getLogger();
+
+    if (createBillingAgreement && intent !== INTENT.TOKENIZE) {
+        logger.warn('smart_button_validation_error_expected_intent_tokenize', { intent });
+        // eslint-disable-next-line no-console
+        console.warn(`Expected intent=${ INTENT.TOKENIZE } to be passed to SDK, but got intent=${ intent }`);
+    }
+
+    if (createSubscription && intent !== INTENT.SUBSCRIPTION) {
+        logger.warn('smart_button_validation_error_expected_intent_subscription', { intent });
+        // eslint-disable-next-line no-console
+        console.warn(`Expected intent=${ INTENT.SUBSCRIPTION } to be passed to SDK, but got intent=${ intent }`);
+    }
+
+    logger.flush();
+}
+
+type OrderValidateOptions = {|
     env : $Values<typeof ENV>,
     clientID : ?string,
     merchantID : $ReadOnlyArray<string>,
@@ -69,7 +94,7 @@ function isValidMerchantIDs(merchantIDs : $ReadOnlyArray<string>, payees : $Read
     return foundPayee;
 }
 
-export function validateOrder(orderID : string, { env, clientID, merchantID, expectedCurrency, expectedIntent } : ValidateOptions) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { env, clientID, merchantID, expectedCurrency, expectedIntent } : OrderValidateOptions) : ZalgoPromise<void> {
     const logger = getLogger();
     
     // eslint-disable-next-line complexity

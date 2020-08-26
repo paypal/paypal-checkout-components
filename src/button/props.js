@@ -229,6 +229,26 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         }
     }
 
+    if (intent === INTENT.TOKENIZE) {
+        if (!xprops.createBillingAgreement) {
+            throw new Error(`Must pass createBillingAgreement with intent=tokenize`);
+        }
+
+        if (xprops.createOrder || xprops.createSubscription) {
+            throw new Error(`Must not pass createOrder or createSubscription with intent=tokenize`);
+        }
+    }
+
+    if (intent === INTENT.SUBSCRIPTION) {
+        if (!xprops.createSubscription) {
+            throw new Error(`Must pass createSubscription with intent=subscription`);
+        }
+
+        if (xprops.createOrder || xprops.createBillingAgreement) {
+            throw new Error(`Must not pass createOrder or createBillingAgreement with intent=tokenize`);
+        }
+    }
+
     const createBillingAgreement = getCreateBillingAgreement({ createBillingAgreement: xprops.createBillingAgreement });
     const createSubscription = getCreateSubscription({ createSubscription: xprops.createSubscription, partnerAttributionID, merchantID, clientID }, { facilitatorAccessToken });
 
