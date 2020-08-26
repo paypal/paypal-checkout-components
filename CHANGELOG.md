@@ -1,3 +1,9 @@
+## <small>5.0.109 (2020-08-26)</small>
+
+* Only show wallet button for purchase flows ([92444e1](https://github.com/paypal/paypal-checkout-components/commit/92444e1))
+
+
+
 ## <small>5.0.108 (2020-08-25)</small>
 
 * Default to pay later label ([6b09ea5](https://github.com/paypal/paypal-checkout-components/commit/6b09ea5))
