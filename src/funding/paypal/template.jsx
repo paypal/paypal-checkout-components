@@ -215,7 +215,7 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
 }
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, experiment } = opts;
+    const { logoColor, instrument, content, commit, experiment, vault } = opts;
 
     if (__WEB__) {
         return;
@@ -256,6 +256,8 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         label = instrument.label;
     }
 
+    const payNow = Boolean(instrument.oneClick && commit && !vault);
+
     return (
         <Style css={ css }>
             <div class='wallet-label-new'>
@@ -267,7 +269,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                     content && (
                         <div class='pay-label' optional={ 2 }>
                             <Space />
-                            <Text>{ (instrument.oneClick && commit) ? content.payNow : content.payWith }</Text>
+                            <Text>{ payNow ? content.payNow : content.payWith }</Text>
                             <Space />
                         </div>
                     )

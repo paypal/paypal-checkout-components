@@ -52,7 +52,8 @@ export type WalletLabelOptions = {|
     instrument : WalletInstrument,
     content : ?ContentType,
     commit : boolean,
-    experiment : Experiment
+    experiment : Experiment,
+    vault : boolean
 |};
 
 export type TagOptions = {|

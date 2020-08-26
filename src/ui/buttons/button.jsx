@@ -8,7 +8,7 @@ import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 
 import type { ContentType, Wallet, WalletInstrument, Experiment } from '../../types';
-import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR } from '../../constants';
+import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig, isVaultedFundingEligible } from '../../funding';
 
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
@@ -32,7 +32,9 @@ type IndividualButtonProps = {|
     content : ?ContentType,
     tagline : ?boolean,
     commit : boolean,
-    experiment : Experiment
+    experiment : Experiment,
+    flow : $Values<typeof BUTTON_FLOW>,
+    vault : boolean
 |};
 
 type VaultedInstrumentOptions = {|
@@ -56,7 +58,7 @@ function getWalletInstrument({ wallet, fundingSource, onShippingChange } : Vault
     return instruments[0];
 }
 
-export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, wallet, i, nonce,
+export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, wallet, i, nonce, flow, vault,
     clientAccessToken, personalization, onShippingChange, onClick = noop, content, tagline, commit, experiment } : IndividualButtonProps) : ElementNode {
 
     const fundingConfig = getFundingConfig()[fundingSource];
@@ -120,7 +122,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         />
     );
 
-    const labelNode = (instrument && WalletLabel && !__WEB__)
+    const labelNode = (instrument && WalletLabel && !__WEB__ && flow === BUTTON_FLOW.PURCHASE)
         ? (
             <WalletLabel
                 nonce={ nonce }
@@ -130,6 +132,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 content={ content }
                 commit={ commit }
                 experiment={ experiment }
+                vault={ vault }
             />
         ) : (
             <Label
