@@ -112,7 +112,7 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
 }
 
 function initWalletCapture({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
-    const { createOrder, onApprove, clientMetadataID } = props;
+    const { createOrder, onApprove, clientMetadataID, vault } = props;
     const { fundingSource, instrumentID } = payment;
     const { wallet } = serviceData;
 
@@ -157,7 +157,7 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
         return getWebCheckoutFallback().start();
     };
 
-    if (!instrument.oneClick || smartWalletErrored) {
+    if (!instrument.oneClick || smartWalletErrored || vault) {
         return getWebCheckoutFallback();
     }
 
