@@ -7,11 +7,11 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { noop } from 'belter';
 
-import { WEBPACK_CONFIG_WALLET_LOCAL_DEBUG } from '../webpack.config';
+import { WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG } from '../webpack.config';
 
 import type { GraphQL } from './lib/graphql';
 import type { ExpressRequest, ExpressResponse } from './types';
-import { getButtonMiddleware, getMenuMiddleware, getWalletMiddleware } from './components';
+import { getButtonMiddleware, getMenuMiddleware } from './components';
 
 const app = express();
 const PORT = process.env.PORT || 8003;
@@ -275,17 +275,12 @@ const buttonMiddleware = getButtonMiddleware({
     tracking
 });
 
-const walletMiddleware = getWalletMiddleware({
-    cache,
-    logger,
-    graphQL,
-    exchangeAuthCode: () => 'foobar'
-});
-
 const menuMiddleware = getMenuMiddleware({
     cache,
     logger
 });
+
+const buttonsScriptMiddleware = webpackDevMiddleware(webpack(WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG), { serverSideRender: true });
 
 app.use('/smart/buttons', (req : ExpressRequest, res : ExpressResponse, next) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
@@ -296,7 +291,7 @@ app.use('/smart/buttons', (req : ExpressRequest, res : ExpressResponse, next) =>
     res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
     
     next();
-}, buttonMiddleware);
+}, buttonsScriptMiddleware, buttonMiddleware);
 
 app.use('/smart/menu', (req : ExpressRequest, res : ExpressResponse, next) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
@@ -309,26 +304,11 @@ app.use('/smart/menu', (req : ExpressRequest, res : ExpressResponse, next) => {
     next();
 }, menuMiddleware);
 
-const walletScriptMiddleware = webpackDevMiddleware(webpack(WEBPACK_CONFIG_WALLET_LOCAL_DEBUG), { serverSideRender: true });
-
-app.use('/smart/wallet', (req : ExpressRequest, res : ExpressResponse, next) => {
-    const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
-    
-    res.locals = res.locals || {};
-    res.locals.nonce = nonce;
-    
-    res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
-
-    next();
-}, walletScriptMiddleware, walletMiddleware);
-
 app.listen(PORT, () => {
     // eslint-disable-next-line no-console
     console.log(`
         Smart Button server listening
           - http://localhost.paypal.com:${ PORT }/smart/buttons?clientID=alc_client1
           - http://localhost.paypal.com:${ PORT }/smart/menu?clientID=alc_client1
-          - http://localhost.paypal.com:${ PORT }/smart/wallet?clientID=alc_client1&orderID=ORDER123&buyerAccessToken=access1234
-    
     `);
 });

@@ -25,9 +25,6 @@ export const BUTTON_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
 export const MENU_CLIENT_JS = 'dist/smart-menu.js';
 export const MENU_CLIENT_MIN_JS = 'dist/smart-menu.min.js';
 
-export const WALLET_CLIENT_JS = 'dist/smart-wallet.js';
-export const WALLET_CLIENT_MIN_JS = 'dist/smart-wallet.min.js';
-
 export const BROWSER_CACHE_TIME = 6 * 60 * 60;
 
 export const SDK_CDN_NAMESPACE = 'https://www.paypalobjects.com/js-sdk-release';

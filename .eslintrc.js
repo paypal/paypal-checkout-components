@@ -12,7 +12,6 @@ module.exports = {
 
     'globals': {
         '__SMART_BUTTONS__': true,
-        '__SMART_WALLET__': true,
         'paypal': true
     }
 };

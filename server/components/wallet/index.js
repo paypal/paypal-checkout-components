@@ -1,4 +1,0 @@
-/* @flow */
-
-export * from './middleware';
-
