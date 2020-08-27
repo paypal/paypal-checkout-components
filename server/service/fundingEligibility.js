@@ -130,7 +130,8 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
         [ FUNDING.TRUSTLY ]:    getBasicFundingEligibilityQuery(),
         [ FUNDING.OXXO ]:       getBasicFundingEligibilityQuery(),
         [ FUNDING.MAXIMA ]:     getBasicFundingEligibilityQuery(),
-        [ FUNDING.BOLETO ]:     getBasicFundingEligibilityQuery()
+        [ FUNDING.BOLETO ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.MERCADOPAGO ]:getBasicFundingEligibilityQuery()
     };
 
     return buildQuery({
