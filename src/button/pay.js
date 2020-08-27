@@ -56,7 +56,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
     return ZalgoPromise.try(() => {
         const { merchantID } = serviceData;
-        const { clientID, onClick, createOrder, env } = props;
+        const { clientID, onClick, createOrder, env, vault } = props;
 
         const { name, init, inline, spinner, updateClientConfig } = getPaymentFlow({ props, payment, config, components, serviceData });
         const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
@@ -109,7 +109,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             });
 
             const validateOrderPromise = createOrder().then(orderID => {
-                return validateOrder(orderID, { env, clientID, merchantID, expectedCurrency, expectedIntent });
+                return validateOrder(orderID, { env, clientID, merchantID, expectedCurrency, expectedIntent, vault });
             });
 
             return ZalgoPromise.all([

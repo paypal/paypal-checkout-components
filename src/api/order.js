@@ -390,11 +390,13 @@ export function oneClickApproveOrder({ orderID, instrumentType, instrumentID, bu
 type SupplementalOrderInfo = {|
     checkoutSession : {|
         cart : {|
+            billingType? : string,
             intent : $Values<typeof INTENT>,
             paymentId? : ?string,
             billingToken? : ?string,
             amounts? : {|
                 total : {|
+                    currencyValue : string,
                     currencyCode : string
                 |}
             |}
@@ -421,11 +423,13 @@ export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromis
             query GetCheckoutDetails($orderID: String!) {
                 checkoutSession(token: $orderID) {
                     cart {
+                        billingType
                         intent
                         paymentId
                         billingToken
                         amounts {
                             total {
+                                currencyValue
                                 currencyCode
                             }
                         }

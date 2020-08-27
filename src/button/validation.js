@@ -1,7 +1,8 @@
 /* @flow */
+/* eslint no-console: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { INTENT, SDK_QUERY_KEYS, CURRENCY, ENV, FPTI_KEY, SDK_SETTINGS } from '@paypal/sdk-constants/src';
+import { INTENT, SDK_QUERY_KEYS, CURRENCY, ENV, FPTI_KEY, SDK_SETTINGS, VAULT } from '@paypal/sdk-constants/src';
 import { stringifyError, stringifyErrorMessage } from 'belter/src';
 
 import type { CreateBillingAgreement, CreateSubscription } from '../props';
@@ -21,13 +22,11 @@ export function validateProps({ intent, createBillingAgreement, createSubscripti
 
     if (createBillingAgreement && intent !== INTENT.TOKENIZE) {
         logger.warn('smart_button_validation_error_expected_intent_tokenize', { intent });
-        // eslint-disable-next-line no-console
         console.warn(`Expected intent=${ INTENT.TOKENIZE } to be passed to SDK, but got intent=${ intent }`);
     }
 
     if (createSubscription && intent !== INTENT.SUBSCRIPTION) {
         logger.warn('smart_button_validation_error_expected_intent_subscription', { intent });
-        // eslint-disable-next-line no-console
         console.warn(`Expected intent=${ INTENT.SUBSCRIPTION } to be passed to SDK, but got intent=${ intent }`);
     }
 
@@ -39,7 +38,8 @@ type OrderValidateOptions = {|
     clientID : ?string,
     merchantID : $ReadOnlyArray<string>,
     expectedIntent : $Values<typeof INTENT>,
-    expectedCurrency : $Values<typeof CURRENCY>
+    expectedCurrency : $Values<typeof CURRENCY>,
+    vault : boolean
 |};
 
 type Payee = {|
@@ -94,7 +94,7 @@ function isValidMerchantIDs(merchantIDs : $ReadOnlyArray<string>, payees : $Read
     return foundPayee;
 }
 
-export function validateOrder(orderID : string, { env, clientID, merchantID, expectedCurrency, expectedIntent } : OrderValidateOptions) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { env, clientID, merchantID, expectedCurrency, expectedIntent, vault } : OrderValidateOptions) : ZalgoPromise<void> {
     const logger = getLogger();
     
     // eslint-disable-next-line complexity
@@ -102,6 +102,8 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
         const cart = order.checkoutSession.cart;
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
         const currency = cart.amounts && cart.amounts.total.currencyCode;
+        const amount = cart.amounts && cart.amounts.total.currencyValue;
+        const billingType = cart.billingType;
 
         if (intent !== expectedIntent) {
             logger.warn('smart_button_validation_error_incorrect_intent', { intent, expectedIntent });
@@ -116,6 +118,16 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
         if (!merchantID || merchantID.length === 0) {
             logger.warn('smart_button_validation_error_no_merchant_id');
             throw new Error(`Could not determine correct merchant id`);
+        }
+
+        if (billingType && !vault) {
+            logger.warn(`smart_button_validation_error_billing_${ amount ? 'with' : 'without' }_purchase_no_vault`);
+            console.warn(`Expected ${ SDK_QUERY_KEYS.VAULT }=${ VAULT.TRUE.toString() } for a billing transaction`);
+        }
+
+        if (vault && !billingType && !window.xprops.createBillingAgreement && !window.xprops.createSubscription && !window.xprops.clientAccessToken && !window.xprops.userIDToken) {
+            logger.warn(`smart_button_validation_error_vault_passed_not_needed`);
+            console.warn(`Expected ${ SDK_QUERY_KEYS.VAULT }=${ VAULT.FALSE.toString() } for a non-billing, non-subscription transaction`);
         }
 
         const payees = order.checkoutSession.payees;
@@ -188,7 +200,6 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
                         logger.warn(`smart_button_validation_error_derived_payee_transaction_mismatch_sandbox`, { payees: JSON.stringify(payees), merchantID: JSON.stringify(merchantID) });
                     }
 
-                    // eslint-disable-next-line no-console
                     console.warn(`Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ payeesStr } or ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue) ? uniquePayees[0].email.stringValue : 'payee@merchant.com' } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
                 } else {
                     throw new Error(`Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=* to the sdk url and ${ SDK_SETTINGS.MERCHANT_ID }="${ payeesStr }" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`);
@@ -220,11 +231,9 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
 
 
         if (!isWhitelisted) {
-            // eslint-disable-next-line no-console
             console.error(stringifyError(err));
             throw err;
         } else {
-            // eslint-disable-next-line no-console
             console.warn(stringifyError(err));
         }
     });
