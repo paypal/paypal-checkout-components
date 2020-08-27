@@ -109,29 +109,29 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
     };
 
     const fundingQuery = {
-        [ FUNDING.PAYPAL ]:     getPayPalQuery(),
-        [ FUNDING.CARD ]:       getCardQuery(),
-        [ FUNDING.VENMO ]:      getBasicFundingEligibilityQuery(),
-        [ FUNDING.ITAU ]:       getBasicFundingEligibilityQuery(),
-        [ FUNDING.CREDIT ]:     getBasicFundingEligibilityQuery(),
-        [ FUNDING.PAYLATER ]:   getPayLaterQuery(),
-        [ FUNDING.SEPA ]:       getBasicFundingEligibilityQuery(),
-        [ FUNDING.IDEAL ]:      getBasicFundingEligibilityQuery(),
-        [ FUNDING.BANCONTACT ]: getBasicFundingEligibilityQuery(),
-        [ FUNDING.GIROPAY ]:    getBasicFundingEligibilityQuery(),
-        [ FUNDING.EPS ]:        getBasicFundingEligibilityQuery(),
-        [ FUNDING.SOFORT ]:     getBasicFundingEligibilityQuery(),
-        [ FUNDING.MYBANK ]:     getBasicFundingEligibilityQuery(),
-        [ FUNDING.P24 ]:        getBasicFundingEligibilityQuery(),
-        [ FUNDING.ZIMPLER ]:    getBasicFundingEligibilityQuery(),
-        [ FUNDING.WECHATPAY ]:  getBasicFundingEligibilityQuery(),
-        [ FUNDING.PAYU ]:       getBasicFundingEligibilityQuery(),
-        [ FUNDING.BLIK ]:       getBasicFundingEligibilityQuery(),
-        [ FUNDING.TRUSTLY ]:    getBasicFundingEligibilityQuery(),
-        [ FUNDING.OXXO ]:       getBasicFundingEligibilityQuery(),
-        [ FUNDING.MAXIMA ]:     getBasicFundingEligibilityQuery(),
-        [ FUNDING.BOLETO ]:     getBasicFundingEligibilityQuery(),
-        [ FUNDING.MERCADOPAGO ]:getBasicFundingEligibilityQuery()
+        [ FUNDING.PAYPAL ]:      getPayPalQuery(),
+        [ FUNDING.CARD ]:        getCardQuery(),
+        [ FUNDING.VENMO ]:       getBasicFundingEligibilityQuery(),
+        [ FUNDING.ITAU ]:        getBasicFundingEligibilityQuery(),
+        [ FUNDING.CREDIT ]:      getBasicFundingEligibilityQuery(),
+        [ FUNDING.PAYLATER ]:    getPayLaterQuery(),
+        [ FUNDING.SEPA ]:        getBasicFundingEligibilityQuery(),
+        [ FUNDING.IDEAL ]:       getBasicFundingEligibilityQuery(),
+        [ FUNDING.BANCONTACT ]:  getBasicFundingEligibilityQuery(),
+        [ FUNDING.GIROPAY ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.EPS ]:         getBasicFundingEligibilityQuery(),
+        [ FUNDING.SOFORT ]:      getBasicFundingEligibilityQuery(),
+        [ FUNDING.MYBANK ]:      getBasicFundingEligibilityQuery(),
+        [ FUNDING.P24 ]:         getBasicFundingEligibilityQuery(),
+        [ FUNDING.ZIMPLER ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.WECHATPAY ]:   getBasicFundingEligibilityQuery(),
+        [ FUNDING.PAYU ]:        getBasicFundingEligibilityQuery(),
+        [ FUNDING.BLIK ]:        getBasicFundingEligibilityQuery(),
+        [ FUNDING.TRUSTLY ]:     getBasicFundingEligibilityQuery(),
+        [ FUNDING.OXXO ]:        getBasicFundingEligibilityQuery(),
+        [ FUNDING.MAXIMA ]:      getBasicFundingEligibilityQuery(),
+        [ FUNDING.BOLETO ]:      getBasicFundingEligibilityQuery(),
+        [ FUNDING.MERCADOPAGO ]: getBasicFundingEligibilityQuery()
     };
 
     return buildQuery({
@@ -175,7 +175,7 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
         basicFundingEligibility = copy(basicFundingEligibility);
-        
+
         if (basicFundingEligibility.card && merchantID && merchantID.length > 1) {
             // $FlowFixMe
             delete basicFundingEligibility.card.branded;
