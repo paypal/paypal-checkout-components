@@ -1,15 +1,16 @@
 /* @flow */
 
 import { html } from 'jsx-pragmatic';
-import { COUNTRY, LANG } from '@paypal/sdk-constants';
+import { COUNTRY, LANG, SDK_QUERY_KEYS, CURRENCY } from '@paypal/sdk-constants';
+import { constHas, stringifyError } from 'belter';
 
-import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL, javascriptResponse } from '../../lib';
+import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL, javascriptResponse, emptyResponse } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveNativeEligibility, resolveMerchantID, type GetWallet, resolveWallet, exchangeIDToken } from '../../service';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig, RiskData } from '../../types';
 import type { ContentType } from '../../../src/types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
-import { EVENT } from './constants';
+import { EVENT, SPB_QUERY_KEYS } from './constants';
 import { getParams } from './params';
 import { buttonStyle } from './style';
 import { setRootTransaction } from './instrumentation';
@@ -174,6 +175,54 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const { script } = await getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
 
             return javascriptResponse(res, script);
+        },
+
+        preflight: ({ req, res, params, logBuffer }) => {
+            const {
+                [ SDK_QUERY_KEYS.CLIENT_ID ]: clientID,
+                [ SDK_QUERY_KEYS.MERCHANT_ID ]: merchantIDParam,
+                [ SDK_QUERY_KEYS.CURRENCY ]: currency,
+                [ SPB_QUERY_KEYS.USER_ID_TOKEN ]: userIDToken,
+                [ SPB_QUERY_KEYS.AMOUNT ]: amount
+            } = params;
+
+            const merchantID = merchantIDParam
+                ? merchantIDParam.split(',')
+                : [];
+
+            if (!clientID) {
+                return clientErrorResponse(res, `Please provide a ${ SDK_QUERY_KEYS.CLIENT_ID } query parameter`);
+            }
+
+            if (!userIDToken) {
+                return clientErrorResponse(res, `Please provide a ${ SPB_QUERY_KEYS.USER_ID_TOKEN } query parameter`);
+            }
+
+            for (const merchant of merchantID) {
+                if (!merchant.match(/^[A-Z0-9]+$/)) {
+                    return clientErrorResponse(res, `Invalid ${ SDK_QUERY_KEYS.MERCHANT_ID } query parameter`);
+                }
+            }
+
+            if (currency && !constHas(CURRENCY, currency)) {
+                return clientErrorResponse(res, `Invalid ${ SDK_QUERY_KEYS.CURRENCY } query parameter`);
+            }
+
+            if (amount && !amount.match(/^\d+\.\d{2}$/)) {
+                return clientErrorResponse(res, `Invalid ${ SPB_QUERY_KEYS.AMOUNT } query parameter`);
+            }
+
+            const gqlBatch = graphQLBatch(req, graphQL);
+
+            resolveWallet(req, gqlBatch, getWallet, {
+                logger, clientID, merchantID, currency, amount, userIDToken, enableBNPL: true
+            }).catch(err => {
+                logBuffer.warn('preflight_error', { err: stringifyError(err) });
+            });
+
+            gqlBatch.flush();
+
+            return emptyResponse(res);
         }
     });
 }

@@ -7,7 +7,8 @@ import type { ExpressRequest, ExpressResponse, LoggerType, CacheType } from '../
 import { startWatchers } from '../watchers';
 import { EVENT, ERROR_CODE, BROWSER_CACHE_TIME, HTTP_HEADER } from '../config';
 
-import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType, getLogBuffer, safeJSON, isError } from './util';
+import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType,
+    getLogBuffer, safeJSON, isError, emptyResponse } from './util';
 
 function getSDKMetaString(req : ExpressRequest) : string {
     const sdkMeta = req.query.sdkMeta || '';
@@ -48,6 +49,14 @@ export type SDKScriptMiddleware = ({|
     params : Object
 |}) => void | Promise<void>;
 
+export type SDKPreflightMiddleware = ({|
+    req : ExpressRequest,
+    res : ExpressResponse,
+    logBuffer : LoggerBufferType,
+    params : Object
+|}) => void | Promise<void>;
+
+
 export type ExpressMiddleware = (
     req : ExpressRequest,
     res : ExpressResponse
@@ -55,7 +64,7 @@ export type ExpressMiddleware = (
 
 let logBuffer;
 
-export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareOptions, { app, script } : {| app : SDKMiddleware, script? : SDKScriptMiddleware |}) : ExpressMiddleware {
+export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareOptions, { app, script, preflight } : {| app : SDKMiddleware, script? : SDKScriptMiddleware, preflight? : SDKPreflightMiddleware |}) : ExpressMiddleware {
     logBuffer = logBuffer || getLogBuffer(logger);
     startWatchers({ logBuffer, cache });
 
@@ -123,6 +132,34 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
         }
     };
 
+    const preflightMiddleware = async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
+        logBuffer.flush(req);
+
+        let params;
+
+        try {
+            params = undotify(req.query);
+        } catch (err) {
+            return clientErrorResponse(res, `Invalid params: ${ safeJSON(req.query) }`);
+        }
+
+        if (!preflight) {
+            return emptyResponse(res);
+        }
+
+        try {
+            return await preflight({ req, res, params, logBuffer });
+
+        } catch (err) {
+            console.error(err.stack ? err.stack : err); // eslint-disable-line no-console
+            logger.error(req, EVENT.ERROR, { err: err.stack ? err.stack : err.toString() });
+            return serverErrorResponse(res, err.stack ? err.stack : err.toString());
+            
+        } finally {
+            logBuffer.flush(req);
+        }
+    };
+
     const middleware = async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
         const url = req.url.split('?')[0];
 
@@ -134,6 +171,10 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
             res.header(HTTP_HEADER.CACHE_CONTROL, `public, max-age=${ BROWSER_CACHE_TIME }`);
             res.header(HTTP_HEADER.EXPIRES, new Date(Date.now() + (BROWSER_CACHE_TIME * 1000)).toUTCString());
             return await scriptMiddleware(req, res);
+        }
+
+        if (url === '/preload') {
+            return await preflightMiddleware(req, res);
         }
 
         res.status(404).send(`404 not found`);

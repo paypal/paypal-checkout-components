@@ -33,6 +33,10 @@ export function javascriptResponse(res : ExpressResponse, javascript : string) {
     response(res, HTTP_STATUS_CODE.SUCCESS, HTTP_CONTENT_TYPE.JAVASCRIPT, javascript);
 }
 
+export function emptyResponse(res : ExpressResponse) {
+    response(res, HTTP_STATUS_CODE.SUCCESS, HTTP_CONTENT_TYPE.TEXT, '');
+}
+
 export function allowFrame(res : ExpressResponse) {
     res.removeHeader(HTTP_HEADER.X_FRAME_OPTIONS);
 }
