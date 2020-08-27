@@ -441,7 +441,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         content,
         wallet,
         flow = BUTTON_FLOW.PURCHASE,
-        experiment
+        experiment,
+        enablePWB = false
     } = props;
 
     const { country, lang } = locale;
@@ -489,5 +490,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
-        experiment };
+        experiment, enablePWB };
 }
