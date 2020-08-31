@@ -258,9 +258,14 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
 
     const payNow = Boolean(instrument.oneClick && commit && !vault);
 
+    const attrs = {};
+    if (payNow) {
+        attrs[ATTRIBUTE.PAY_NOW] = true;
+    }
+
     return (
         <Style css={ css }>
-            <div class='wallet-label-new'>
+            <div class='wallet-label-new' { ...attrs }>
                 <div class='paypal-mark'>
                     <PPLogo logoColor={ logoColor } />
                     <Space />
