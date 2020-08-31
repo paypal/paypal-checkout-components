@@ -23,6 +23,7 @@ import { determineFlow } from './util';
 
 export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
     const walletExperiment = createExperiment('wallet_button_new_design', 0);
+    const queriedEligibleFunding = [];
 
     return create({
         tag:  'paypal-buttons',
@@ -68,6 +69,8 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                     eligible: true
                 };
             }
+
+            queriedEligibleFunding.push(fundingSource);
 
             const { layout } = style;
 
@@ -211,6 +214,13 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                             }
                         };
                     };
+                }
+            },
+
+            getQueriedEligibleFunding: {
+                type:  'function',
+                value: () => {
+                    return () => queriedEligibleFunding;
                 }
             },
 
