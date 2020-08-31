@@ -693,6 +693,7 @@ window.spb = function(modules) {
         };
         return ZalgoPromise;
     }();
+    var IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n";
     function isAboutProtocol(win) {
         void 0 === win && (win = window);
         return "about:" === win.location.protocol;
@@ -754,10 +755,303 @@ window.spb = function(modules) {
     }
     var iframeWindows = [];
     var iframeFrames = [];
+    function isWindowClosed(win, allowMock) {
+        void 0 === allowMock && (allowMock = !0);
+        try {
+            if (win === window) return !1;
+        } catch (err) {
+            return !0;
+        }
+        try {
+            if (!win) return !0;
+        } catch (err) {
+            return !0;
+        }
+        try {
+            if (win.closed) return !0;
+        } catch (err) {
+            return !err || err.message !== IE_WIN_ACCESS_ERROR;
+        }
+        if (allowMock && isSameDomain(win)) try {
+            if (win.mockclosed) return !0;
+        } catch (err) {}
+        try {
+            if (!win.parent || !win.top) return !0;
+        } catch (err) {}
+        var iframeIndex = function(collection, item) {
+            for (var i = 0; i < collection.length; i++) try {
+                if (collection[i] === item) return i;
+            } catch (err) {}
+            return -1;
+        }(iframeWindows, win);
+        if (-1 !== iframeIndex) {
+            var frame = iframeFrames[iframeIndex];
+            if (frame && function(frame) {
+                if (!frame.contentWindow) return !0;
+                if (!frame.parentNode) return !0;
+                var doc = frame.ownerDocument;
+                if (doc && doc.documentElement && !doc.documentElement.contains(frame)) {
+                    var parent = frame;
+                    for (;parent.parentNode && parent.parentNode !== parent; ) parent = parent.parentNode;
+                    if (!parent.host || !doc.documentElement.contains(parent.host)) return !0;
+                }
+                return !1;
+            }(frame)) return !0;
+        }
+        return !1;
+    }
+    function isWindow(obj) {
+        try {
+            if (obj === window) return !0;
+        } catch (err) {
+            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+        }
+        try {
+            if ("[object Window]" === {}.toString.call(obj)) return !0;
+        } catch (err) {
+            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+        }
+        try {
+            if (window.Window && obj instanceof window.Window) return !0;
+        } catch (err) {
+            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+        }
+        try {
+            if (obj && obj.self === obj) return !0;
+        } catch (err) {
+            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+        }
+        try {
+            if (obj && obj.parent === obj) return !0;
+        } catch (err) {
+            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+        }
+        try {
+            if (obj && obj.top === obj) return !0;
+        } catch (err) {
+            if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+        }
+        try {
+            if (obj && "__unlikely_value__" === obj.__cross_domain_utils_window_check__) return !1;
+        } catch (err) {
+            return !0;
+        }
+        try {
+            if ("postMessage" in obj && "self" in obj && "location" in obj) return !0;
+        } catch (err) {}
+        return !1;
+    }
+    function util_safeIndexOf(collection, item) {
+        for (var i = 0; i < collection.length; i++) try {
+            if (collection[i] === item) return i;
+        } catch (err) {}
+        return -1;
+    }
+    var weakmap_CrossDomainSafeWeakMap = function() {
+        function CrossDomainSafeWeakMap() {
+            this.name = void 0;
+            this.weakmap = void 0;
+            this.keys = void 0;
+            this.values = void 0;
+            this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__";
+            if (function() {
+                if ("undefined" == typeof WeakMap) return !1;
+                if (void 0 === Object.freeze) return !1;
+                try {
+                    var testWeakMap = new WeakMap;
+                    var testKey = {};
+                    Object.freeze(testKey);
+                    testWeakMap.set(testKey, "__testvalue__");
+                    return "__testvalue__" === testWeakMap.get(testKey);
+                } catch (err) {
+                    return !1;
+                }
+            }()) try {
+                this.weakmap = new WeakMap;
+            } catch (err) {}
+            this.keys = [];
+            this.values = [];
+        }
+        var _proto = CrossDomainSafeWeakMap.prototype;
+        _proto._cleanupClosedWindows = function() {
+            var weakmap = this.weakmap;
+            var keys = this.keys;
+            for (var i = 0; i < keys.length; i++) {
+                var value = keys[i];
+                if (isWindow(value) && isWindowClosed(value)) {
+                    if (weakmap) try {
+                        weakmap.delete(value);
+                    } catch (err) {}
+                    keys.splice(i, 1);
+                    this.values.splice(i, 1);
+                    i -= 1;
+                }
+            }
+        };
+        _proto.isSafeToReadWrite = function(key) {
+            return !isWindow(key);
+        };
+        _proto.set = function(key, value) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                weakmap.set(key, value);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var name = this.name;
+                var entry = key[name];
+                entry && entry[0] === key ? entry[1] = value : Object.defineProperty(key, name, {
+                    value: [ key, value ],
+                    writable: !0
+                });
+                return;
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys;
+            var values = this.values;
+            var index = util_safeIndexOf(keys, key);
+            if (-1 === index) {
+                keys.push(key);
+                values.push(value);
+            } else values[index] = value;
+        };
+        _proto.get = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                if (weakmap.has(key)) return weakmap.get(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return entry && entry[0] === key ? entry[1] : void 0;
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var index = util_safeIndexOf(this.keys, key);
+            if (-1 !== index) return this.values[index];
+        };
+        _proto.delete = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                weakmap.delete(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                entry && entry[0] === key && (entry[0] = entry[1] = void 0);
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys;
+            var index = util_safeIndexOf(keys, key);
+            if (-1 !== index) {
+                keys.splice(index, 1);
+                this.values.splice(index, 1);
+            }
+        };
+        _proto.has = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                if (weakmap.has(key)) return !0;
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return !(!entry || entry[0] !== key);
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            return -1 !== util_safeIndexOf(this.keys, key);
+        };
+        _proto.getOrSet = function(key, getter) {
+            if (this.has(key)) return this.get(key);
+            var value = getter();
+            this.set(key, value);
+            return value;
+        };
+        return CrossDomainSafeWeakMap;
+    }();
+    var objectIDs;
+    function serializeArgs(args) {
+        try {
+            return JSON.stringify([].slice.call(args), (function(subkey, val) {
+                return "function" == typeof val ? "memoize[" + function(obj) {
+                    objectIDs = objectIDs || new weakmap_CrossDomainSafeWeakMap;
+                    if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                    var uid = objectIDs.get(obj);
+                    if (!uid) {
+                        uid = typeof obj + ":" + (chars = "0123456789abcdef", "xxxxxxxxxx".replace(/./g, (function() {
+                            return chars.charAt(Math.floor(Math.random() * chars.length));
+                        })) + "_" + function(str) {
+                            if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+                                return String.fromCharCode(parseInt(p1, 16));
+                            })));
+                            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+                            throw new Error("Can not find window.btoa or Buffer");
+                        }((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase());
+                        objectIDs.set(obj, uid);
+                    }
+                    var chars;
+                    return uid;
+                }(val) + "]" : val;
+            }));
+        } catch (err) {
+            throw new Error("Arguments not serializable -- can not be used to memoize");
+        }
+    }
+    var memoizedFunctions = [];
+    function memoize(method, options) {
+        var _this = this;
+        void 0 === options && (options = {});
+        var cacheMap = new weakmap_CrossDomainSafeWeakMap;
+        var memoizedFunction = function() {
+            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+            var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, (function() {
+                return {};
+            }));
+            var key = serializeArgs(args);
+            var cacheTime = options.time;
+            cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
+            if (cache[key]) return cache[key].value;
+            var time = Date.now();
+            var value = method.apply(this, arguments);
+            cache[key] = {
+                time: time,
+                value: value
+            };
+            return cache[key].value;
+        };
+        memoizedFunction.reset = function() {
+            cacheMap.delete(options.thisNamespace ? _this : method);
+        };
+        memoizedFunctions.push(memoizedFunction);
+        return function(fn, name) {
+            try {
+                delete fn.name;
+                fn.name = name;
+            } catch (err) {}
+            fn.__name__ = fn.displayName = name;
+            return fn;
+        }(memoizedFunction, (options.name || (fn = method).name || fn.__name__ || fn.displayName || "anonymous") + "::memoized");
+        var fn;
+    }
+    memoize.clear = function() {
+        for (var _i2 = 0; _i2 < memoizedFunctions.length; _i2++) memoizedFunctions[_i2].reset();
+    };
     function src_util_noop() {}
     function arrayFrom(item) {
         return [].slice.call(item);
     }
+    memoize((function(obj) {
+        var result = [];
+        for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
+        return result;
+    }));
     function PopupOpenError(message) {
         this.message = message;
     }
@@ -968,109 +1262,6 @@ window.spb = function(modules) {
             class: "loader"
         }))), children));
     }
-    function openPopup(_ref) {
-        var win = function(win) {
-            if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
-            return win;
-        }(function(url, options) {
-            var width = (options = options || {}).width, height = options.height;
-            var top = 0;
-            var left = 0;
-            width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
-            height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
-            width && height && (options = _extends({
-                top: top,
-                left: left,
-                width: width,
-                height: height,
-                status: 1,
-                toolbar: 0,
-                menubar: 0,
-                resizable: 1,
-                scrollbars: 1
-            }, options));
-            var name = options.name || "";
-            delete options.name;
-            var params = Object.keys(options).map((function(key) {
-                if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
-                var item;
-            })).filter(Boolean).join(",");
-            var win;
-            try {
-                win = window.open("", name, params, !0);
-            } catch (err) {
-                throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
-            }
-            if (function(win, allowMock) {
-                void 0 === allowMock && (allowMock = !0);
-                try {
-                    if (win === window) return !1;
-                } catch (err) {
-                    return !0;
-                }
-                try {
-                    if (!win) return !0;
-                } catch (err) {
-                    return !0;
-                }
-                try {
-                    if (win.closed) return !0;
-                } catch (err) {
-                    return !err || "Call was rejected by callee.\r\n" !== err.message;
-                }
-                if (allowMock && isSameDomain(win)) try {
-                    if (win.mockclosed) return !0;
-                } catch (err) {}
-                try {
-                    if (!win.parent || !win.top) return !0;
-                } catch (err) {}
-                var iframeIndex = function(collection, item) {
-                    for (var i = 0; i < collection.length; i++) try {
-                        if (collection[i] === item) return i;
-                    } catch (err) {}
-                    return -1;
-                }(iframeWindows, win);
-                if (-1 !== iframeIndex) {
-                    var frame = iframeFrames[iframeIndex];
-                    if (frame && function(frame) {
-                        if (!frame.contentWindow) return !0;
-                        if (!frame.parentNode) return !0;
-                        var doc = frame.ownerDocument;
-                        if (doc && doc.documentElement && !doc.documentElement.contains(frame)) {
-                            var parent = frame;
-                            for (;parent.parentNode && parent.parentNode !== parent; ) parent = parent.parentNode;
-                            if (!parent.host || !doc.documentElement.contains(parent.host)) return !0;
-                        }
-                        return !1;
-                    }(frame)) return !0;
-                }
-                return !1;
-            }(win)) {
-                var err;
-                throw new PopupOpenError("Can not open popup window - blocked");
-            }
-            window.addEventListener("unload", (function() {
-                return win.close();
-            }));
-            return win;
-        }(0, {
-            width: _ref.width,
-            height: _ref.height
-        }));
-        var doc = win.document;
-        !function(win, el) {
-            var tag = el.tagName.toLowerCase();
-            if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
-            var documentElement = win.document.documentElement;
-            for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
-            for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
-        }(win, node_node(SpinnerPage, {
-            nonce: getNonce()
-        }).render(dom({
-            doc: doc
-        })));
-        return win;
-    }
     function Menu(_ref) {
         var choices = _ref.choices, onBlur = _ref.onBlur, cspNonce = _ref.cspNonce, verticalOffset = _ref.verticalOffset;
         var autoFocus = function(_temp) {
@@ -1109,7 +1300,65 @@ window.spb = function(modules) {
                 onClick: function() {
                     return function(choice) {
                         var win;
-                        choice.popup && (win = openPopup({
+                        choice.popup && (win = function(_ref) {
+                            var win = function(win) {
+                                if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
+                                return win;
+                            }(function(url, options) {
+                                var width = (options = options || {}).width, height = options.height;
+                                var top = 0;
+                                var left = 0;
+                                width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
+                                height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
+                                width && height && (options = _extends({
+                                    top: top,
+                                    left: left,
+                                    width: width,
+                                    height: height,
+                                    status: 1,
+                                    toolbar: 0,
+                                    menubar: 0,
+                                    resizable: 1,
+                                    scrollbars: 1
+                                }, options));
+                                var name = options.name || "";
+                                delete options.name;
+                                var params = Object.keys(options).map((function(key) {
+                                    if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
+                                    var item;
+                                })).filter(Boolean).join(",");
+                                var win;
+                                try {
+                                    win = window.open("", name, params, !0);
+                                } catch (err) {
+                                    throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+                                }
+                                if (isWindowClosed(win)) {
+                                    var err;
+                                    throw new PopupOpenError("Can not open popup window - blocked");
+                                }
+                                window.addEventListener("unload", (function() {
+                                    return win.close();
+                                }));
+                                return win;
+                            }(0, {
+                                width: _ref.width,
+                                height: _ref.height
+                            }));
+                            var doc = win.document;
+                            !function(win, el) {
+                                var tag = el.tagName.toLowerCase();
+                                if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+                                var documentElement = win.document.documentElement;
+                                for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
+                                for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
+                            }(win, node_node(SpinnerPage, {
+                                nonce: getNonce()
+                            }).render(dom({
+                                doc: doc
+                            })));
+                            return win;
+                        }({
                             width: choice.popup.width,
                             height: choice.popup.height
                         }));

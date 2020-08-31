@@ -1263,6 +1263,11 @@ window.spb = function(modules) {
     function arrayFrom(item) {
         return [].slice.call(item);
     }
+    memoize((function(obj) {
+        var result = [];
+        for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
+        return result;
+    }));
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
     }
@@ -1504,6 +1509,10 @@ window.spb = function(modules) {
             xhr.send(body);
         }));
     }
+    var VAULT = {
+        TRUE: !0,
+        FALSE: !1
+    };
     var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
     var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
     function httpTransport(_ref) {
@@ -1757,9 +1766,9 @@ window.spb = function(modules) {
             return body.data;
         }));
     }
-    function createAccessToken(clientID, _temp) {
+    function auth_createAccessToken(clientID, _temp) {
         var targetSubject = (void 0 === _temp ? {} : _temp).targetSubject;
-        return inlineMemoize(createAccessToken, (function() {
+        return inlineMemoize(auth_createAccessToken, (function() {
             getLogger().info("rest_api_create_access_token");
             var basicAuth = base64encode((clientID || "") + ":");
             var data = {
@@ -1821,7 +1830,7 @@ window.spb = function(modules) {
         getLogger().info("rest_api_create_order_token");
         var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
         _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-        _headers10["x-app-version"] = "2.0.303", _headers10);
+        _headers10["x-app-version"] = "2.0.304", _headers10);
         var paymentSource = {
             token: {
                 id: paymentMethodID,
@@ -1878,13 +1887,35 @@ window.spb = function(modules) {
         var _headers16;
         return callGraphQL({
             name: "GetCheckoutDetails",
-            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
+            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                            }\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
             variables: {
                 orderID: orderID
             },
             headers: (_headers16 = {}, _headers16["paypal-client-context"] = orderID, _headers16)
         });
     }));
+    function updateButtonClientConfig(_ref14) {
+        var _ref14$inline = _ref14.inline;
+        return callGraphQL({
+            name: "UpdateClientConfig",
+            query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
+            variables: {
+                orderID: orderID = (_ref9 = {
+                    orderID: _ref14.orderID,
+                    fundingSource: _ref14.fundingSource,
+                    integrationArtifact: "PAYPAL_JS_SDK",
+                    userExperienceFlow: void 0 !== _ref14$inline && _ref14$inline ? "INLINE" : "INCONTEXT",
+                    productFlow: "SMART_PAYMENT_BUTTONS"
+                }).orderID,
+                fundingSource: _ref9.fundingSource,
+                integrationArtifact: _ref9.integrationArtifact,
+                userExperienceFlow: _ref9.userExperienceFlow,
+                productFlow: _ref9.productFlow
+            },
+            headers: (_headers13 = {}, _headers13["paypal-client-context"] = orderID, _headers13)
+        }).then(src_util_noop);
+        var _ref9, _headers13, orderID;
+    }
     function createRequest(accessToken, subscriptionPayload, partnerAttributionID) {
         return request({
             method: "post",
@@ -2572,6 +2603,14 @@ window.spb = function(modules) {
             if (xprops.createOrder) throw new Error("Do not pass both createSubscription and createBillingAgreement");
             if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createSubscription");
         }
+        if ("tokenize" === intent) {
+            if (!xprops.createBillingAgreement) throw new Error("Must pass createBillingAgreement with intent=tokenize");
+            if (xprops.createOrder || xprops.createSubscription) throw new Error("Must not pass createOrder or createSubscription with intent=tokenize");
+        }
+        if ("subscription" === intent) {
+            if (!xprops.createSubscription) throw new Error("Must pass createSubscription with intent=subscription");
+            if (xprops.createOrder || xprops.createBillingAgreement) throw new Error("Must not pass createOrder or createBillingAgreement with intent=tokenize");
+        }
         var createBillingAgreement = function(_ref) {
             var createBillingAgreement = _ref.createBillingAgreement;
             if (createBillingAgreement) return function() {
@@ -2589,7 +2628,7 @@ window.spb = function(modules) {
             if (createSubscription) {
                 if (merchantID && merchantID[0]) {
                     getLogger().info("src_props_subscriptions_recreate_access_token_cache");
-                    createAccessToken(clientID, {
+                    auth_createAccessToken(clientID, {
                         targetSubject: merchantID[0]
                     });
                 }
@@ -2605,7 +2644,7 @@ window.spb = function(modules) {
                                         if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
                                         if (merchantID && merchantID[0]) {
                                             getLogger().info("rest_api_subscriptions_recreate_access_token");
-                                            return createAccessToken(clientID, {
+                                            return auth_createAccessToken(clientID, {
                                                 targetSubject: merchantID[0]
                                             }).then((function(thirdPartyAccessToken) {
                                                 return createRequest(thirdPartyAccessToken, subscriptionPayload, partnerAttributionID);
@@ -2627,7 +2666,7 @@ window.spb = function(modules) {
                                         if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
                                         if (merchantID && merchantID[0]) {
                                             getLogger().info("rest_api_subscriptions_recreate_access_token");
-                                            return createAccessToken(clientID, {
+                                            return auth_createAccessToken(clientID, {
                                                 targetSubject: merchantID[0]
                                             }).then((function(thirdPartyAccessToken) {
                                                 return reviseRequest(thirdPartyAccessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
@@ -2982,49 +3021,6 @@ window.spb = function(modules) {
         }), node_node("p", {
             class: "loader"
         }))), children));
-    }
-    function updateButtonClientConfig(_ref) {
-        var _ref$inline = _ref.inline;
-        return callGraphQL({
-            name: "UpdateClientConfig",
-            query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
-            variables: {
-                orderID: orderID = (_ref9 = {
-                    orderID: _ref.orderID,
-                    fundingSource: _ref.fundingSource,
-                    integrationArtifact: "PAYPAL_JS_SDK",
-                    userExperienceFlow: void 0 !== _ref$inline && _ref$inline ? "INLINE" : "INCONTEXT",
-                    productFlow: "SMART_PAYMENT_BUTTONS"
-                }).orderID,
-                fundingSource: _ref9.fundingSource,
-                integrationArtifact: _ref9.integrationArtifact,
-                userExperienceFlow: _ref9.userExperienceFlow,
-                productFlow: _ref9.productFlow
-            },
-            headers: (_headers13 = {}, _headers13["paypal-client-context"] = orderID, _headers13)
-        }).then(src_util_noop);
-        var _ref9, _headers13, orderID;
-    }
-    function isValidMerchantIDs(merchantIDs, payees) {
-        if (merchantIDs.length !== payees.length) return !1;
-        var merchantEmails = [];
-        var merchantIds = [];
-        merchantIDs.forEach((function(id) {
-            isEmailAddress(id) ? merchantEmails.push(id.toLowerCase()) : merchantIds.push(id);
-        }));
-        var foundEmail = merchantEmails.every((function(email) {
-            return payees.some((function(payee) {
-                return email === (payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase());
-            }));
-        }));
-        var foundMerchantId = merchantIds.every((function(id) {
-            return payees.some((function(payee) {
-                return id === payee.merchantId;
-            }));
-        }));
-        return !(!foundEmail || !foundMerchantId) && payees.every((function(payee) {
-            return merchantIds.indexOf(payee.merchantId) > -1 || merchantEmails.indexOf(payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase()) > -1;
-        }));
     }
     var checkoutOpen = !1;
     var canRenderTop = !1;
@@ -4102,7 +4098,7 @@ window.spb = function(modules) {
         },
         init: function(_ref4) {
             var props = _ref4.props, components = _ref4.components, payment = _ref4.payment, serviceData = _ref4.serviceData, config = _ref4.config;
-            var createOrder = props.createOrder, onApprove = props.onApprove, clientMetadataID = props.clientMetadataID;
+            var createOrder = props.createOrder, onApprove = props.onApprove, clientMetadataID = props.clientMetadataID, vault = props.vault;
             var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
             var wallet = serviceData.wallet;
             if (!wallet || !smartWalletPromise) throw new Error("No smart wallet found");
@@ -4115,12 +4111,12 @@ window.spb = function(modules) {
                     serviceData: serviceData,
                     payment: _extends({}, payment, {
                         createAccessToken: function() {
-                            return smartWalletPromise.then((function(smartWallet) {
+                            return smartWalletPromise ? smartWalletPromise.then((function(smartWallet) {
                                 var smartInstrument = wallet_capture_bnpl_getInstrument(smartWallet, fundingSource, instrumentID);
                                 if (!smartInstrument) throw new Error("Instrument not found");
                                 if (!smartInstrument.accessToken) throw new Error("Instrument access token not found");
                                 return smartInstrument.accessToken;
-                            }));
+                            })) : promise_ZalgoPromise.resolve();
                         },
                         isClick: !1,
                         buyerIntent: "pay_with_different_funding_shipping",
@@ -4133,7 +4129,7 @@ window.spb = function(modules) {
                 getLogger().info("web_checkout_fallback").flush();
                 return getWebCheckoutFallback().start();
             };
-            if (!instrument.oneClick || smartWalletErrored) return getWebCheckoutFallback();
+            if (!instrument.oneClick || smartWalletErrored || vault) return getWebCheckoutFallback();
             var restart = function() {
                 return fallbackToWebCheckout();
             };
@@ -4224,7 +4220,15 @@ window.spb = function(modules) {
                             payment: _extends({}, payment, {
                                 win: win,
                                 buyerIntent: "pay_with_different_funding_shipping",
-                                fundingSource: newFundingSource
+                                fundingSource: newFundingSource,
+                                createAccessToken: function() {
+                                    return smartWalletPromise.then((function(smartWallet) {
+                                        var smartInstrument = wallet_capture_bnpl_getInstrument(smartWallet, fundingSource, instrumentID);
+                                        if (!smartInstrument) throw new Error("Instrument not found");
+                                        if (!smartInstrument.accessToken) throw new Error("Instrument access token not found");
+                                        return smartInstrument.accessToken;
+                                    }));
+                                }
                             })
                         });
                     }));
@@ -4568,6 +4572,27 @@ window.spb = function(modules) {
     }
     var initialPageUrl;
     var parentPopupBridge;
+    function isValidMerchantIDs(merchantIDs, payees) {
+        if (merchantIDs.length !== payees.length) return !1;
+        var merchantEmails = [];
+        var merchantIds = [];
+        merchantIDs.forEach((function(id) {
+            isEmailAddress(id) ? merchantEmails.push(id.toLowerCase()) : merchantIds.push(id);
+        }));
+        var foundEmail = merchantEmails.every((function(email) {
+            return payees.some((function(payee) {
+                return email === (payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase());
+            }));
+        }));
+        var foundMerchantId = merchantIds.every((function(id) {
+            return payees.some((function(payee) {
+                return id === payee.merchantId;
+            }));
+        }));
+        return !(!foundEmail || !foundMerchantId) && payees.every((function(payee) {
+            return merchantIds.indexOf(payee.merchantId) > -1 || merchantEmails.indexOf(payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase()) > -1;
+        }));
+    }
     function renderSmartMenu(_ref) {
         var clientID = _ref.clientID;
         var _Menu = (0, _ref.Menu)({
@@ -4680,7 +4705,7 @@ window.spb = function(modules) {
             var payment = _ref4.payment;
             var fundingSource = payment.fundingSource;
             var eligibility = _ref4.serviceData.eligibility;
-            return !(payment.win || !initialPageUrl || !isNativeOptedIn({
+            return !(payment.win || !initialPageUrl || !NATIVE_CHECKOUT_URI[fundingSource] || !isNativeOptedIn({
                 props: _ref4.props
             }) && !eligibility.nativeCheckout[fundingSource]);
         },
@@ -5200,7 +5225,7 @@ window.spb = function(modules) {
         var props = getProps({
             facilitatorAccessToken: facilitatorAccessToken
         });
-        var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, style = props.style, persistRiskData = props.persistRiskData, fundingSource = props.fundingSource;
+        var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, style = props.style, persistRiskData = props.persistRiskData, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription;
         var config = getConfig({
             serverCSPNonce: serverCSPNonce,
             firebaseConfig: firebaseConfig
@@ -5228,7 +5253,7 @@ window.spb = function(modules) {
                             return promise_ZalgoPromise.try((function() {
                                 var _getLogger$info$info$;
                                 var merchantID = serviceData.merchantID;
-                                var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env;
+                                var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault;
                                 var _getPaymentFlow = getPaymentFlow({
                                     props: props,
                                     payment: payment,
@@ -5279,24 +5304,50 @@ window.spb = function(modules) {
                                         }));
                                         var validateOrderPromise = createOrder().then((function(orderID) {
                                             return function(orderID, _ref2) {
-                                                var env = _ref2.env, clientID = _ref2.clientID, merchantID = _ref2.merchantID, expectedCurrency = _ref2.expectedCurrency, expectedIntent = _ref2.expectedIntent;
+                                                var env = _ref2.env, clientID = _ref2.clientID, merchantID = _ref2.merchantID, expectedCurrency = _ref2.expectedCurrency, expectedIntent = _ref2.expectedIntent, vault = _ref2.vault;
+                                                var logger = getLogger();
                                                 return getSupplementalOrderInfo(orderID).then((function(order) {
                                                     var cart = order.checkoutSession.cart;
                                                     var intent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
                                                     var currency = cart.amounts && cart.amounts.total.currencyCode;
-                                                    if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
-                                                    if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
-                                                    if (!merchantID || 0 === merchantID.length) throw new Error("Could not determine correct merchant id");
+                                                    var amount = cart.amounts && cart.amounts.total.currencyValue;
+                                                    var billingType = cart.billingType;
+                                                    if (intent !== expectedIntent) {
+                                                        logger.warn("smart_button_validation_error_incorrect_intent", {
+                                                            intent: intent,
+                                                            expectedIntent: expectedIntent
+                                                        });
+                                                        throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
+                                                    }
+                                                    if (currency && currency !== expectedCurrency) {
+                                                        logger.warn("smart_button_validation_error_incorrect_currency", {
+                                                            currency: currency,
+                                                            expectedCurrency: expectedCurrency
+                                                        });
+                                                        throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
+                                                    }
+                                                    if (!merchantID || 0 === merchantID.length) {
+                                                        logger.warn("smart_button_validation_error_no_merchant_id");
+                                                        throw new Error("Could not determine correct merchant id");
+                                                    }
+                                                    if (billingType && !vault) {
+                                                        logger.warn("smart_button_validation_error_billing_" + (amount ? "with" : "without") + "_purchase_no_vault");
+                                                        console.warn("Expected vault=" + VAULT.TRUE.toString() + " for a billing transaction");
+                                                    }
+                                                    if (vault && !billingType && !window.xprops.createBillingAgreement && !window.xprops.createSubscription && !window.xprops.clientAccessToken && !window.xprops.userIDToken) {
+                                                        logger.warn("smart_button_validation_error_vault_passed_not_needed");
+                                                        console.warn("Expected vault=" + VAULT.FALSE.toString() + " for a non-billing, non-subscription transaction");
+                                                    }
                                                     var payees = order.checkoutSession.payees;
-                                                    if (!payees) return getLogger().warn("supplemental_order_missing_payees").flush();
-                                                    if (!payees.length) return getLogger().warn("supplemental_order_payees_empty").flush();
+                                                    if (!payees) return logger.warn("smart_button_validation_error_supplemental_order_missing_payees");
+                                                    if (!payees.length) return logger.warn("smart_button_validation_error_supplemental_order_no_payees");
                                                     var dict = {};
                                                     var uniquePayees = [];
                                                     for (var _i2 = 0; _i2 < payees.length; _i2++) {
                                                         var payee = payees[_i2];
-                                                        if (!(payee.merchantId || payee.email && payee.email.stringValue)) return getLogger().warn("supplemental_order_payees_missing_value", {
+                                                        if (!(payee.merchantId || payee.email && payee.email.stringValue)) return logger.warn("smart_button_validation_error_supplemental_order_missing_values", {
                                                             payees: JSON.stringify(payees)
-                                                        }).flush();
+                                                        });
                                                         if (payee.merchantId) {
                                                             if (!dict[payee.merchantId]) {
                                                                 dict[payee.merchantId] = 1;
@@ -5310,41 +5361,46 @@ window.spb = function(modules) {
                                                     var payeesStr = uniquePayees.map((function(payee) {
                                                         if (payee.merchantId) return payee.merchantId;
                                                         if (payee.email && payee.email.stringValue) return payee.email.stringValue;
+                                                        logger.warn("smart_button_validation_error_invalid_payee_state", {
+                                                            uniquePayees: JSON.stringify(uniquePayees)
+                                                        });
                                                         throw new Error("Invalid payee state: " + JSON.stringify(uniquePayees));
                                                     })).join(",");
                                                     var xpropMerchantID = window.xprops.merchantID;
                                                     if (xpropMerchantID && xpropMerchantID.length) {
                                                         if (!isValidMerchantIDs(xpropMerchantID, uniquePayees)) {
-                                                            getLogger().warn("explicit_payee_transaction_mismatch", {
+                                                            logger.warn("smart_button_validation_error_explicit_payee_transaction_mismatch", {
                                                                 payees: JSON.stringify(uniquePayees),
                                                                 merchantID: JSON.stringify(merchantID)
-                                                            }).flush();
+                                                            });
                                                             throw 1 === uniquePayees.length ? new Error("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/") : new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
                                                         }
                                                     } else if (!isValidMerchantIDs(merchantID, uniquePayees)) {
-                                                        getLogger().warn("derived_payee_transaction_mismatch", {
+                                                        logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch", {
                                                             payees: JSON.stringify(uniquePayees),
                                                             merchantID: JSON.stringify(merchantID)
-                                                        }).flush();
+                                                        });
                                                         if (1 !== uniquePayees.length) throw new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
-                                                        "sandbox" === env && getLogger().warn("derived_payee_transaction_mismatch_sandbox", {
+                                                        "sandbox" === env && logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch_sandbox", {
                                                             payees: JSON.stringify(payees),
                                                             merchantID: JSON.stringify(merchantID)
-                                                        }).flush();
+                                                        });
                                                         console.warn("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                     }
+                                                })).then((function() {
+                                                    logger.flush();
                                                 })).catch((function(err) {
-                                                    var _getLogger$warn$warn$;
+                                                    var _logger$warn$warn$tra;
                                                     var isSandbox = "sandbox" === env;
                                                     var isWhitelisted = isSandbox ? clientID && -1 !== SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) : clientID && -1 !== ORDER_VALIDATION_WHITELIST.indexOf(clientID);
-                                                    getLogger().warn((isSandbox ? "sandbox_" : "") + "order_validation_error" + (isWhitelisted ? "_whitelist" : ""), {
+                                                    logger.warn((isSandbox ? "sandbox_" : "") + "order_validation_error" + (isWhitelisted ? "_whitelist" : ""), {
                                                         err: stringifyError(err)
                                                     }).warn((isSandbox ? "sandbox_" : "") + "order_validation_error" + (isWhitelisted ? "_whitelist" : "") + "_" + (clientID || "unknown"), {
                                                         err: stringifyError(err)
-                                                    }).track((_getLogger$warn$warn$ = {}, _getLogger$warn$warn$.transition_name = "process_order_validate", 
-                                                    _getLogger$warn$warn$.context_type = "EC-Token", _getLogger$warn$warn$.token = orderID, 
-                                                    _getLogger$warn$warn$.context_id = orderID, _getLogger$warn$warn$.integration_issue = stringifyErrorMessage(err), 
-                                                    _getLogger$warn$warn$.whitelist = isWhitelisted ? "true" : "false", _getLogger$warn$warn$)).flush();
+                                                    }).track((_logger$warn$warn$tra = {}, _logger$warn$warn$tra.transition_name = "process_order_validate", 
+                                                    _logger$warn$warn$tra.context_type = "EC-Token", _logger$warn$warn$tra.token = orderID, 
+                                                    _logger$warn$warn$tra.context_id = orderID, _logger$warn$warn$tra.integration_issue = stringifyErrorMessage(err), 
+                                                    _logger$warn$warn$tra.whitelist = isWhitelisted ? "true" : "false", _logger$warn$warn$tra)).flush();
                                                     if (!isWhitelisted) {
                                                         console.error(stringifyError(err));
                                                         throw err;
@@ -5356,7 +5412,8 @@ window.spb = function(modules) {
                                                 clientID: clientID,
                                                 merchantID: merchantID,
                                                 expectedCurrency: expectedCurrency,
-                                                expectedIntent: expectedIntent
+                                                expectedIntent: expectedIntent,
+                                                vault: vault
                                             });
                                         }));
                                         return promise_ZalgoPromise.all([ clickPromise, startPromise, validateOrderPromise ]).catch((function(err) {
@@ -5648,7 +5705,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.303", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.304", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
@@ -5737,6 +5794,29 @@ window.spb = function(modules) {
             components: components
         });
         var setupPersistRiskDataTask = persistRiskData && serverRiskData ? persistRiskData(serverRiskData) : null;
+        var validatePropsTask = setupButtonLogsTask.then((function() {
+            return function(_ref) {
+                var intent = _ref.intent, createBillingAgreement = _ref.createBillingAgreement, createSubscription = _ref.createSubscription;
+                var logger = getLogger();
+                if (createBillingAgreement && "tokenize" !== intent) {
+                    logger.warn("smart_button_validation_error_expected_intent_tokenize", {
+                        intent: intent
+                    });
+                    console.warn("Expected intent=tokenize to be passed to SDK, but got intent=" + intent);
+                }
+                if (createSubscription && "subscription" !== intent) {
+                    logger.warn("smart_button_validation_error_expected_intent_subscription", {
+                        intent: intent
+                    });
+                    console.warn("Expected intent=subscription to be passed to SDK, but got intent=" + intent);
+                }
+                logger.flush();
+            }({
+                intent: intent,
+                createBillingAgreement: createBillingAgreement,
+                createSubscription: createSubscription
+            });
+        }));
         return promise_ZalgoPromise.hash({
             initPromise: initPromise,
             facilitatorAccessToken: facilitatorAccessToken,
@@ -5744,7 +5824,8 @@ window.spb = function(modules) {
             setupPrerenderTask: setupPrerenderTask,
             setupRememberTask: setupRememberTask,
             setupPaymentFlowsTask: setupPaymentFlowsTask,
-            setupPersistRiskDataTask: setupPersistRiskDataTask
+            setupPersistRiskDataTask: setupPersistRiskDataTask,
+            validatePropsTask: validatePropsTask
         }).then(src_util_noop);
     }
 } ]);
