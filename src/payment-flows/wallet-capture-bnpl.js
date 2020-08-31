@@ -130,6 +130,10 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
             props, components, serviceData, payment: {
                 ...payment,
                 createAccessToken: () => {
+                    if (!smartWalletPromise) {
+                        return ZalgoPromise.resolve();
+                    }
+                    
                     return smartWalletPromise.then(smartWallet => {
                         const smartInstrument = getInstrument(smartWallet, fundingSource, instrumentID);
 
@@ -271,7 +275,27 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
                 return updateClientConfig();
             }).then(() => {
                 return loadCheckout({
-                    payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING, fundingSource: newFundingSource }
+                    payment: {
+                        ...payment,
+                        win,
+                        buyerIntent:       BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING,
+                        fundingSource:     newFundingSource,
+                        createAccessToken: () => {
+                            return smartWalletPromise.then(smartWallet => {
+                                const smartInstrument = getInstrument(smartWallet, fundingSource, instrumentID);
+
+                                if (!smartInstrument) {
+                                    throw new Error(`Instrument not found`);
+                                }
+
+                                if (!smartInstrument.accessToken) {
+                                    throw new Error(`Instrument access token not found`);
+                                }
+
+                                return smartInstrument.accessToken;
+                            });
+                        }
+                    }
                 });
             });
         }
