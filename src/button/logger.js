@@ -7,6 +7,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import type { LocaleType } from '../types';
 import { getLogger, setupLogger } from '../lib';
 import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FTPI_BUTTON_KEY, FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
+import type { GetQueriedEligibleFunding } from '../props';
 
 import type { ButtonStyle } from './props';
 
@@ -34,10 +35,13 @@ type ButtonLoggerOptions = {|
     merchantDomain : string,
     version : string,
     style : ButtonStyle,
-    fundingSource : ?$Values<typeof FUNDING>
+    fundingSource : ?$Values<typeof FUNDING>,
+    getQueriedEligibleFunding : GetQueriedEligibleFunding
 |};
 
-export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, buttonCorrelationID, locale, merchantID, merchantDomain, version, style, fundingSource } : ButtonLoggerOptions) : ZalgoPromise<void> {
+export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, buttonCorrelationID, locale,
+    merchantID, merchantDomain, version, style, fundingSource, getQueriedEligibleFunding } : ButtonLoggerOptions) : ZalgoPromise<void> {
+
     const logger = getLogger();
 
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version });
@@ -65,7 +69,10 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
         logger.warn('button_child_intranet_mode');
     }
 
-    return getPageRenderTime().then(pageRenderTime => {
+    return ZalgoPromise.hash({
+        pageRenderTime:         getPageRenderTime(),
+        queriedEligibleFunding: getQueriedEligibleFunding()
+    }).then(({ pageRenderTime, queriedEligibleFunding }) => {
 
         const fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }]`)).map(el => {
             return el.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
@@ -99,6 +106,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.SELECTED_FI]:                   fundingSource,
             [FPTI_KEY.FUNDING_COUNT]:                 fundingSources.length.toString(),
             [FPTI_KEY.PAGE_LOAD_TIME]:                pageRenderTime ? pageRenderTime.toString() : '',
+            [FPTI_KEY.POTENTIAL_PAYMENT_METHODS]:     queriedEligibleFunding.join(':'),
             [FTPI_BUTTON_KEY.BUTTON_LAYOUT]:          layout,
             [FTPI_BUTTON_KEY.BUTTON_COLOR]:           color,
             [FTPI_BUTTON_KEY.BUTTON_SIZE]:            'responsive',

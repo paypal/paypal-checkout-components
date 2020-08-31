@@ -2,14 +2,14 @@
 
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import {  UPGRADE_LSAT_RAMP } from '../constants';
 import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
     ThreeDomainSecureFlowType, MenuFlowType, ConnectOptions } from '../types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit, XOnInit,
     OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError, OnError,
-    XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth } from '../props';
+    XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding } from '../props';
 import { type FirebaseConfig } from '../api';
 import { getNonce, createExperiment } from '../lib';
 import { getOnInit } from '../props/onInit';
@@ -80,6 +80,7 @@ export type ButtonXProps = {|
     fundingSource : ?$Values<typeof FUNDING>,
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
+    getQueriedEligibleFunding? : GetQueriedEligibleFunding,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -130,6 +131,7 @@ export type ButtonProps = {|
     fundingSource : ?$Values<typeof FUNDING>,
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
+    getQueriedEligibleFunding : GetQueriedEligibleFunding,
 
     stageHost : ?string,
     apiStageHost : ?string,
@@ -195,7 +197,8 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         userIDToken,
         enableBNPL = false,
         disableFunding,
-        disableCard
+        disableCard,
+        getQueriedEligibleFunding = () => ZalgoPromise.resolve([])
     } = xprops;
 
     const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, UPGRADE_LSAT_RAMP.RAMP);
@@ -290,6 +293,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         fundingSource,
         disableFunding,
         disableCard,
+        getQueriedEligibleFunding,
 
         amount,
         userIDToken,
