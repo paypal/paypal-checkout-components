@@ -1,3 +1,11 @@
+## <small>5.0.110 (2020-08-31)</small>
+
+* Add data-pay-now attribute to pay now button ([1036e50](https://github.com/paypal/paypal-checkout-components/commit/1036e50))
+* Add getQueriedEligibleFunding prop to buttons ([a00aa2d](https://github.com/paypal/paypal-checkout-components/commit/a00aa2d))
+* Remove tagline from demo buttons ([54e79ff](https://github.com/paypal/paypal-checkout-components/commit/54e79ff))
+
+
+
 ## <small>5.0.109 (2020-08-26)</small>
 
 * Only show wallet button for purchase flows ([92444e1](https://github.com/paypal/paypal-checkout-components/commit/92444e1))
