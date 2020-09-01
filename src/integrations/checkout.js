@@ -27,10 +27,6 @@ export function determineUrl(env : string, fundingSource : ?string, payment : st
         return config.billingUrls[env];
     }
 
-    if (fundingSource === FUNDING.CARD || fundingSource === FUNDING.ELV) {
-        return config.guestUrls[env];
-    }
-
     if (fundingSource === FUNDING.IDEAL || fundingSource === FUNDING.BANCONTACT || fundingSource === FUNDING.GIROPAY ||
         fundingSource === FUNDING.SOFORT || fundingSource === FUNDING.EPS || fundingSource === FUNDING.MYBANK ||
         fundingSource === FUNDING.P24 || fundingSource === FUNDING.PAYU || fundingSource === FUNDING.VERKKOPANKKI ||
