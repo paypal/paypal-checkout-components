@@ -49,6 +49,7 @@ export function WalletContainer({ uid, frame, prerenderFrame, event, props } : R
             }
         });
     };
+    const defaultVerticalOffSet = '70';
     
     const element = (
         <div id={ uid } onRender={ setupAutoResize }>
@@ -64,6 +65,7 @@ export function WalletContainer({ uid, frame, prerenderFrame, event, props } : R
                         min-height: 50px;
                         background-color: white;
                         transition: all 0.2s ease-in-out;
+                        margin-top: ${ props.verticalOffset || defaultVerticalOffSet }px;
                     }
 
                     @media only screen and (min-width: 0px) {

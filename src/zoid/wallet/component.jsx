@@ -26,7 +26,7 @@ export function getWalletComponent() {
             domain: getPayPalDomainRegex(),
             
             autoResize: {
-                width:  true,
+                width:  false,
                 height: true
             },
             
@@ -36,18 +36,22 @@ export function getWalletComponent() {
             },
             
             logger: getLogger(),
-            
-            containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
-                return (
-                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } props={ props } />
-                ).render(dom({ doc }));
-            },
+            //
+            // containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
+            //     return (
+            //         <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } props={ props } />
+            //     ).render(dom({ doc }));
+            // },
 
-            prerenderTemplate: ({ props, doc }) => {
-                return (
-                    <WalletPrerender nonce={ props.nonce } />
-                ).render(dom({ doc }));
-            },
+            // prerenderTemplate: ({ props, doc }) => {
+            //     return (
+            //         <WalletPrerender nonce={ props.nonce } />
+            //     ).render(dom({ doc }));
+            // },
+    
+            // prerenderTemplate: () => {
+            //     return null;
+            // },
             
             attributes: {
                 iframe: {
@@ -98,17 +102,15 @@ export function getWalletComponent() {
                     type:     'function',
                     required: false
                 },
-                
+    
                 createOrder: {
-                    type:       'function',
-                    queryParam: 'orderID',
-                    // $FlowFixMe
-                    queryValue: ({ value }) => ZalgoPromise.try(value),
-                    decorate:   ({ value }) => memoize(value)
+                    type:     'function',
+                    required: false
                 },
                 
                 onApprove: {
-                    type: 'function'
+                    type: 'function',
+                    required: false
                 },
                 
                 // riskData: {

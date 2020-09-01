@@ -15,11 +15,13 @@ const CLASS = {
     INVISIBLE:       'invisible',
     COMPONENT_FRAME: 'component-frame',
     PRERENDER_FRAME: 'prerender-frame',
-    SMART_MENU:      'smart-menu'
+    SMART_MENU:      'smart-menu',
+    SMART_WALLET:    'smart-wallet'
 };
 
 const ID = {
-    SMART_MENU: 'smart-menu'
+    SMART_MENU:    'smart-menu',
+    SMART_WALLET:  'smart-wallet'
 };
 
 export function containerTemplate({ uid, props, tag, context, frame, prerenderFrame, doc, container, event } : RenderOptionsType<ButtonProps>) : ?HTMLElement {
@@ -134,6 +136,14 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                         left: 0;
                         width: 100%;
                     }
+                    
+                    #${ uid } > .${ CLASS.SMART_WALLET } {
+                        position: absolute;
+                        z-index: 300;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                    }
                 `}
             </style>
 
@@ -141,6 +151,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
             <node el={ prerenderFrame } />
 
             <div id={ ID.SMART_MENU } class={ CLASS.SMART_MENU } />
+            <div id={ ID.SMART_WALLET } class={ CLASS.SMART_WALLET } />
         </div>
     ).render(dom({ doc }));
 

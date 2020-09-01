@@ -6,6 +6,7 @@ import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyCompo
 import { allowIframe as _allowIframe } from '../lib';
 import { getCheckoutComponent } from '../zoid/checkout';
 import { getButtonsComponent } from '../zoid/buttons';
+import { getWalletComponent } from '../zoid/wallet';
 import { getCardFieldsComponent } from '../zoid/card-fields';
 import { getMenuComponent } from '../zoid/menu';
 import { Buttons as _ButtonsTemplate } from '../ui/buttons';
@@ -31,6 +32,10 @@ export const CardFields = {
 
 export const Menu = {
     __get__: () => protectedExport(getMenuComponent())
+};
+
+export const Wallet = {
+        __get__: () => getWalletComponent()
 };
 
 export const Modal = {
