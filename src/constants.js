@@ -133,7 +133,7 @@ export const FTPI_CUSTOM_KEY = {
     INTEGRATION_WHITELIST: ('whitelist' : 'whitelist')
 };
 
-export const FTPI_BUTTON_KEY = {
+export const FPTI_BUTTON_KEY = {
     BUTTON_LAYOUT:          ('button_layout' : 'button_layout'),
     BUTTON_COLOR:           ('button_color' : 'button_color'),
     BUTTON_SIZE:            ('button_size' : 'button_size'),

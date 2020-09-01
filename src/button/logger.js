@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType } from '../types';
 import { getLogger, setupLogger } from '../lib';
-import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FTPI_BUTTON_KEY, FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
+import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_BUTTON_KEY, FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
 import type { GetQueriedEligibleFunding } from '../props';
 
 import type { ButtonStyle } from './props';
@@ -61,7 +61,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.STATE]:                        FPTI_STATE.BUTTON,
             [FPTI_KEY.BUTTON_SESSION_UID]:           buttonSessionID,
             [FPTI_KEY.BUTTON_VERSION]:               __SMART_BUTTONS__.__MINOR_VERSION__,
-            [FTPI_BUTTON_KEY.BUTTON_CORRELATION_ID]: buttonCorrelationID
+            [FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID]: buttonCorrelationID
         };
     });
 
@@ -112,14 +112,14 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.PAGE_LOAD_TIME]:                pageRenderTime ? pageRenderTime.toString() : '',
             [FPTI_KEY.POTENTIAL_PAYMENT_METHODS]:     queriedEligibleFunding.join(':'),
             [FPTI_KEY.PAY_NOW]:                       payNow.toString(),
-            [FTPI_BUTTON_KEY.BUTTON_LAYOUT]:          layout,
-            [FTPI_BUTTON_KEY.BUTTON_COLOR]:           color,
-            [FTPI_BUTTON_KEY.BUTTON_SIZE]:            'responsive',
-            [FTPI_BUTTON_KEY.BUTTON_SHAPE]:           shape,
-            [FTPI_BUTTON_KEY.BUTTON_LABEL]:           label,
-            [FTPI_BUTTON_KEY.BUTTON_WIDTH]:           window.innerWidth,
-            [FTPI_BUTTON_KEY.BUTTON_TYPE]:            FPTI_BUTTON_TYPE.IFRAME,
-            [FTPI_BUTTON_KEY.BUTTON_TAGLINE_ENABLED]: tagline ? '1' : '0'
+            [FPTI_BUTTON_KEY.BUTTON_LAYOUT]:          layout,
+            [FPTI_BUTTON_KEY.BUTTON_COLOR]:           color,
+            [FPTI_BUTTON_KEY.BUTTON_SIZE]:            'responsive',
+            [FPTI_BUTTON_KEY.BUTTON_SHAPE]:           shape,
+            [FPTI_BUTTON_KEY.BUTTON_LABEL]:           label,
+            [FPTI_BUTTON_KEY.BUTTON_WIDTH]:           window.innerWidth,
+            [FPTI_BUTTON_KEY.BUTTON_TYPE]:            FPTI_BUTTON_TYPE.IFRAME,
+            [FPTI_BUTTON_KEY.BUTTON_TAGLINE_ENABLED]: tagline ? '1' : '0'
         });
 
         logger.flush();
