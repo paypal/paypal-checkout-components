@@ -1,6 +1,6 @@
 /* @flow */
 
-import { isIEIntranet, getPageRenderTime } from 'belter/src';
+import { isIEIntranet, getPageRenderTime, querySelectorAll } from 'belter/src';
 import { FPTI_KEY, ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -74,13 +74,17 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
         queriedEligibleFunding: getQueriedEligibleFunding()
     }).then(({ pageRenderTime, queriedEligibleFunding }) => {
 
-        const fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }]`)).map(el => {
+        const fundingSources = querySelectorAll(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }]`).map(el => {
             return el.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
-        });
+        }).filter(Boolean);
 
-        const walletInstruments = Array.prototype.slice.call(document.querySelectorAll(`[${ DATA_ATTRIBUTES.INSTRUMENT_TYPE }]`)).map(el => {
+        const walletInstruments = querySelectorAll(`[${ DATA_ATTRIBUTES.INSTRUMENT_TYPE }]`).map(el => {
             return el.getAttribute(DATA_ATTRIBUTES.INSTRUMENT_TYPE);
-        });
+        }).filter(Boolean);
+
+        const payNow = querySelectorAll(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }]`).map(el => {
+            return el.getAttribute(DATA_ATTRIBUTES.PAY_NOW);
+        }).some(Boolean);
 
         const { layout, color, shape, label, tagline = true } = style;
 
@@ -107,6 +111,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.FUNDING_COUNT]:                 fundingSources.length.toString(),
             [FPTI_KEY.PAGE_LOAD_TIME]:                pageRenderTime ? pageRenderTime.toString() : '',
             [FPTI_KEY.POTENTIAL_PAYMENT_METHODS]:     queriedEligibleFunding.join(':'),
+            [FPTI_KEY.PAY_NOW]:                       payNow.toString(),
             [FTPI_BUTTON_KEY.BUTTON_LAYOUT]:          layout,
             [FTPI_BUTTON_KEY.BUTTON_COLOR]:           color,
             [FTPI_BUTTON_KEY.BUTTON_SIZE]:            'responsive',

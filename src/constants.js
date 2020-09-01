@@ -34,7 +34,8 @@ export const DATA_ATTRIBUTES = {
     MENU:              'data-menu',
     NONCE:             'data-nonce',
     RENDER_VERSION:    'data-render-version',
-    CLIENT_VERSION:    'data-client-version'
+    CLIENT_VERSION:    'data-client-version',
+    PAY_NOW:           'data-pay-now'
 };
 
 export const CLASS = {
