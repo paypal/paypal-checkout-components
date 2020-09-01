@@ -6,8 +6,8 @@ import { ENV } from '@paypal/sdk-constants/src';
 import { getBody } from '../lib';
 
 const FRAUDNET_URL = {
-    [ ENV.LOCAL ]:      'https://www.msmaster.qa.paypal.com/en_US/m/fb-raw.js',
-    [ ENV.STAGE ]:      'https://www.msmaster.qa.paypal.com/en_US/m/fb-raw.js',
+    [ ENV.LOCAL ]:      'https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js',
+    [ ENV.STAGE ]:      'https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js',
     [ ENV.SANDBOX ]:    'https://c.paypal.com/da/r/fb.js',
     [ ENV.PRODUCTION ]: 'https://c.paypal.com/da/r/fb.js',
     [ ENV.TEST ]:       'https://c.paypal.com/da/r/fb.js'
