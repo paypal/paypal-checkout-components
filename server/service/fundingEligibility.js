@@ -151,8 +151,8 @@ export type FundingEligibilityOptions = {|
     intent : $Values<typeof INTENT>,
     commit : $Values<typeof COMMIT>,
     vault : $Values<typeof VAULT>,
-    disableFunding : $ReadOnlyArray<?$Values<typeof FUNDING>>,
-    disableCard : $ReadOnlyArray<?$Values<typeof CARD>>,
+    disableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    disableCard : $ReadOnlyArray<$Values<typeof CARD>>,
     merchantID : ?$ReadOnlyArray<string>,
     buttonSessionID : string,
     clientAccessToken : ?string,
@@ -161,23 +161,16 @@ export type FundingEligibilityOptions = {|
 |};
 
 export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility, enableBNPL } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
+    currency, intent, commit, vault, disableFunding = [], disableCard = [], clientAccessToken, buyerCountry, basicFundingEligibility, enableBNPL } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
 
     try {
         const ip = req.ip;
         const cookies = req.get('cookie') || '';
         const userAgent = req.get('user-agent') || '';
 
-        intent = intent ? intent.toUpperCase() : intent;
-        // $FlowFixMe
-        disableFunding = disableFunding ? disableFunding.map(source => source.toUpperCase()) : disableFunding;
-        // $FlowFixMe
-        disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
-
         basicFundingEligibility = copy(basicFundingEligibility);
 
         if (basicFundingEligibility.card && merchantID && merchantID.length > 1) {
-            // $FlowFixMe
             delete basicFundingEligibility.card.branded;
         }
 
@@ -191,8 +184,11 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         const { fundingEligibility } = await gqlBatch({
             query:     fundingEligibilityQuery,
             variables: {
-                clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
-                vault, disableFunding, disableCard, userAgent, buttonSessionID
+                clientID, merchantID, buyerCountry, cookies, ip, currency, commit,
+                vault, userAgent, buttonSessionID,
+                intent:         intent.toUpperCase(),
+                disableFunding: disableFunding.map(source => source.toUpperCase()),
+                disableCard:    disableCard.map(card => card.toUpperCase())
             },
             accessToken: clientAccessToken
         });
