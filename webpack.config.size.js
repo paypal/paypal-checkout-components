@@ -6,6 +6,10 @@ import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 import { testGlobals, fundingEligibility } from './test/globals';
 import globals from './globals';
 
+for (const fundingSource of Object.keys(fundingEligibility)) {
+    fundingEligibility[fundingSource].eligible = (fundingSource === 'paypal');
+}
+
 const CHECK_SIZE_CONFIG = getWebpackConfig({
     filename:   'size',
     entry:      './src/interface/button.js',
