@@ -17,7 +17,7 @@ describe(`paypal button component props`, () => {
         destroyTestContainer();
     });
 
-    it.only('should render a button and get any queried FIs', () => {
+    it('should render a button and get any queried FIs', () => {
         const fundingSources = [
             FUNDING.PAYPAL,
             FUNDING.CREDIT,
