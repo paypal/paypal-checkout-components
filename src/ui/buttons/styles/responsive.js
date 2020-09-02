@@ -8,7 +8,9 @@ import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
-const SECOND_BUTTON_PERC = 40;
+
+const FIRST_BUTTON_PERC = 60;
+const WALLET_BUTTON_PERC = 60;
 
 export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : string {
 
@@ -16,7 +18,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
         const style = BUTTON_SIZE_STYLE[size];
         const buttonHeight = height || style.defaultHeight;
-        const minDualWidth = Math.max(Math.round(buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / SECOND_BUTTON_PERC)), MIN_SPLIT_BUTTON_WIDTH);
+        const minDualWidth = Math.max(Math.round(buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)), MIN_SPLIT_BUTTON_WIDTH);
 
         return `
 
@@ -96,7 +98,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     height: 100%;
                 }
 
-                .${ CLASS.BUTTON_ROW }.${ CLASS.HAS_MENU }-true .${ CLASS.BUTTON } {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.WALLET } .${ CLASS.BUTTON } {
                     width: calc(100% - ${ buttonHeight + 2 }px);
                     border-top-right-radius: 0px;
                     border-bottom-right-radius: 0px;
@@ -128,13 +130,21 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
                 .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
                     display: inline-block;
-                    width: calc(${ 100 - SECOND_BUTTON_PERC }% - ${ perc(buttonHeight, 7) }px);
+                    width: calc(${ FIRST_BUTTON_PERC }% - ${ perc(buttonHeight, 7) }px);
                     margin-right: ${ perc(buttonHeight, 7) * 2 }px;
                 }
 
                 .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
                     display: inline-block;
-                    width: calc(${ SECOND_BUTTON_PERC }% - ${ perc(buttonHeight, 7) }px);
+                    width: calc(${ 100 - FIRST_BUTTON_PERC }% - ${ perc(buttonHeight, 7) }px);
+                }
+
+                .${ CLASS.CONTAINER }.${ CLASS.WALLET } .${ CLASS.BUTTON_ROW }.${ CLASS.WALLET }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } {
+                    width: calc(${ WALLET_BUTTON_PERC }% - ${ perc(buttonHeight, 7) }px);
+                }
+
+                .${ CLASS.CONTAINER }.${ CLASS.WALLET } .${ CLASS.BUTTON_ROW }:not(.${ CLASS.WALLET }).${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } {
+                    width: calc(${ 100 - WALLET_BUTTON_PERC }% - ${ perc(buttonHeight, 7) }px);
                 }
 
                 .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.TAGLINE } {

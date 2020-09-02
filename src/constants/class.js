@@ -13,8 +13,7 @@ export const CLASS = {
     LAYOUT:     ('paypal-button-layout' : 'paypal-button-layout'),
     NUMBER:     ('paypal-button-number' : 'paypal-button-number'),
     ENV:        ('paypal-button-env' : 'paypal-button-env'),
-    VAULT:      ('paypal-button-vault' : 'paypal-button-vault'),
-    HAS_MENU:   ('paypal-button-has-menu' : 'paypal-button-has-menu'),
+    WALLET:     ('paypal-button-wallet' : 'paypal-button-wallet'),
 
     LOADING:    ('paypal-button-loading' : 'paypal-button-loading'),
     SPINNER:    ('paypal-button-spinner' : 'paypal-button-spinner'),

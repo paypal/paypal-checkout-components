@@ -61,12 +61,14 @@ export function determineEligibleFunding({ fundingSource, layout, platform, fund
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {
         eligibleFunding = eligibleFunding.slice(0, 2);
+    } else if (layout === BUTTON_LAYOUT.VERTICAL) {
+        eligibleFunding = eligibleFunding.slice(0, 6);
     }
 
     return eligibleFunding;
 }
 
-export function isVaultedFundingEligible({ wallet, onShippingChange } : {| wallet : ?Wallet, onShippingChange : ?OnShippingChange |}) : boolean {
+export function isWalletFundingEligible({ wallet, onShippingChange } : {| wallet : ?Wallet, onShippingChange : ?OnShippingChange |}) : boolean {
     if (!wallet) {
         return false;
     }

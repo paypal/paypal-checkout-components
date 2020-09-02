@@ -2,19 +2,86 @@
 /** @jsx node */
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { noop } from 'belter/src';
 
-import type { Wallet } from '../../types';
+import type { Wallet, WalletInstrument } from '../../types';
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT } from '../../constants';
-import { determineEligibleFunding } from '../../funding';
+import { determineEligibleFunding, isWalletFundingEligible } from '../../funding';
 
-import { normalizeButtonProps, type ButtonPropsInputs } from './props';
+import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
 import { TagLine } from './tagline';
 import { Script } from './script';
 import { PoweredByPayPal } from './poweredBy';
+
+type GetWalletInstrumentOptions = {|
+    wallet : ?Wallet,
+    fundingSource : $Values<typeof FUNDING>,
+    onShippingChange : ?OnShippingChange
+|};
+
+function getWalletInstrument({ wallet, fundingSource, onShippingChange } : GetWalletInstrumentOptions) : ?WalletInstrument {
+    if (!isWalletFundingEligible({ wallet, onShippingChange })) {
+        return;
+    }
+
+    const walletFunding = wallet && wallet && wallet[fundingSource.toString()];
+    const instruments = walletFunding && walletFunding.instruments;
+
+    if (!instruments || !instruments.length) {
+        return;
+    }
+
+    return instruments[0];
+}
+
+const FUNDING_TO_INSTRUMENT = {
+    [ FUNDING.CREDIT ]: WALLET_INSTRUMENT.CREDIT
+};
+
+type GetWalletInstrumentsOptions = {|
+    wallet : ?Wallet,
+    fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    onShippingChange : ?OnShippingChange,
+    layout : $Values<typeof BUTTON_LAYOUT>
+|};
+
+function getWalletInstruments({ wallet, layout, fundingSources, onShippingChange } : GetWalletInstrumentsOptions) : {| [$Values<typeof FUNDING>] : WalletInstrument |} {
+
+    const instruments = {};
+    for (const source of fundingSources) {
+        const instrument = getWalletInstrument({ wallet, fundingSource: source, onShippingChange });
+
+        if (instrument) {
+            instruments[source] = instrument;
+        }
+    }
+
+    for (const source of Object.keys(instruments)) {
+        for (const mapSource of Object.keys(FUNDING_TO_INSTRUMENT)) {
+            if (source !== mapSource && fundingSources.indexOf(mapSource) !== -1 && instruments[source] && instruments[source].type === FUNDING_TO_INSTRUMENT[mapSource]) {
+                delete instruments[source];
+            }
+        }
+    }
+
+    if (layout === BUTTON_LAYOUT.HORIZONTAL) {
+        let found = false;
+        for (const source of fundingSources) {
+            if (instruments[source]) {
+                if (found) {
+                    delete instruments[source];
+                } else {
+                    found = true;
+                }
+            }
+        }
+    }
+
+    return instruments;
+}
 
 type ButtonsProps = ButtonPropsInputs & {|
     onClick? : Function,
@@ -38,13 +105,16 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         throw new Error(`No eligible funding fundingSources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
     }
 
+    const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
+
     return (
         <div class={ [
             CLASS.CONTAINER,
             `${ CLASS.LAYOUT }-${ layout }`,
             `${ CLASS.SHAPE }-${ shape }`,
             `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
-            `${ CLASS.ENV }-${ env }`
+            `${ CLASS.ENV }-${ env }`,
+            `${ Object.keys(instruments).length ? CLASS.WALLET : '' }`
         ].join(' ') }>
 
             <Style
@@ -58,6 +128,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         content={ content }
                         i={ i }
                         style={ style }
+                        merchantFundingSource={ fundingSource }
                         fundingSource={ source }
                         multiple={ multiple }
                         env={ env }
@@ -74,6 +145,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         experiment={ experiment }
                         flow={ flow }
                         vault={ vault }
+                        instrument={ instruments[source] }
                     />
                 ))
             }

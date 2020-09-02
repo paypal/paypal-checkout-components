@@ -7,9 +7,9 @@ import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 
-import type { ContentType, Wallet, WalletInstrument, Experiment } from '../../types';
+import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../types';
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
-import { getFundingConfig, isVaultedFundingEligible } from '../../funding';
+import { getFundingConfig } from '../../funding';
 
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
@@ -34,32 +34,13 @@ type IndividualButtonProps = {|
     commit : boolean,
     experiment : Experiment,
     flow : $Values<typeof BUTTON_FLOW>,
-    vault : boolean
+    vault : boolean,
+    merchantFundingSource : ?$Values<typeof FUNDING>,
+    instrument : ?WalletInstrument
 |};
 
-type VaultedInstrumentOptions = {|
-    wallet : ?Wallet,
-    fundingSource : $Values<typeof FUNDING>,
-    onShippingChange : ?OnShippingChange
-|};
-
-function getWalletInstrument({ wallet, fundingSource, onShippingChange } : VaultedInstrumentOptions) : ?WalletInstrument {
-    if (!isVaultedFundingEligible({ wallet, onShippingChange })) {
-        return;
-    }
-
-    const walletFunding = wallet && wallet && wallet[fundingSource.toString()];
-    const instruments = walletFunding && walletFunding.instruments;
-
-    if (!instruments || !instruments.length) {
-        return;
-    }
-
-    return instruments[0];
-}
-
-export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, wallet, i, nonce, flow, vault,
-    clientAccessToken, personalization, onShippingChange, onClick = noop, content, tagline, commit, experiment } : IndividualButtonProps) : ElementNode {
+export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
+    clientAccessToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
 
     const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -69,7 +50,6 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     const colors = fundingConfig.colors;
     const secondaryColors = fundingConfig.secondaryColors || {};
-    const instrument = getWalletInstrument({ wallet, fundingSource, onShippingChange });
 
     let {
         color = colors[0],
@@ -122,8 +102,36 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         />
     );
 
-    const labelNode = (instrument && WalletLabel && !__WEB__ && flow === BUTTON_FLOW.PURCHASE)
-        ? (
+    let labelNode = (
+        <Label
+            i={ i }
+            logo={ logoNode }
+            label={ label }
+            nonce={ nonce }
+            locale={ locale }
+            logoColor={ logoColor }
+            period={ period }
+            layout={ layout }
+            multiple={ multiple }
+            fundingEligibility={ fundingEligibility }
+            onClick={ clickHandler }
+            onKeyPress={ keypressHandler }
+            clientAccessToken={ clientAccessToken }
+            personalization={ personalization }
+            tagline={ tagline }
+            content={ content }
+        />
+    );
+
+    let isWallet = false;
+
+    if (
+        instrument &&
+        WalletLabel &&
+        !__WEB__ &&
+        flow === BUTTON_FLOW.PURCHASE
+    ) {
+        labelNode = (
             <WalletLabel
                 nonce={ nonce }
                 logoColor={ logoColor }
@@ -134,28 +142,10 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 experiment={ experiment }
                 vault={ vault }
             />
-        ) : (
-            <Label
-                i={ i }
-                logo={ logoNode }
-                label={ label }
-                nonce={ nonce }
-                locale={ locale }
-                logoColor={ logoColor }
-                period={ period }
-                layout={ layout }
-                multiple={ multiple }
-                fundingEligibility={ fundingEligibility }
-                onClick={ clickHandler }
-                onKeyPress={ keypressHandler }
-                clientAccessToken={ clientAccessToken }
-                personalization={ personalization }
-                tagline={ tagline }
-                content={ content }
-            />
         );
 
-    const showMenu = Boolean(instrument && !__WEB__);
+        isWallet = true;
+    }
 
     return (
         <div
@@ -169,7 +159,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 `${ CLASS.COLOR }-${ color }`,
                 `${ CLASS.TEXT_COLOR }-${ textColor }`,
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
-                `${ CLASS.HAS_MENU }-${ showMenu.toString() }`
+                `${ isWallet ? CLASS.WALLET : '' }`
             ].join(' ') }
         >
             <div
@@ -191,7 +181,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                     `${ CLASS.COLOR }-${ color }`,
                     `${ CLASS.TEXT_COLOR }-${ textColor }`,
                     `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
-                    `${ CLASS.HAS_MENU }-${ showMenu.toString() }`
+                    `${ isWallet ? CLASS.WALLET : '' }`
                 ].join(' ') }
                 onClick={ clickHandler }
                 onRender={ onButtonRender }
@@ -206,7 +196,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 <Spinner />
             </div>
 
-            { showMenu ? <MenuButton color={ textColor } /> : null }
+            { isWallet ? <MenuButton color={ textColor } /> : null }
         </div>
     );
 }
