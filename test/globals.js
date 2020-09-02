@@ -33,7 +33,7 @@ export const fundingEligibility = {
         }
     },
     credit: {
-        eligible: false
+        eligible: true
     },
     paylater: {
         eligible: false
