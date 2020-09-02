@@ -21,7 +21,7 @@ type ButtonsProps = ButtonPropsInputs & {|
     wallet? : ?Wallet
 |};
 
-export function validateButtonProps(props : ButtonsProps) {
+export function validateButtonProps(props : ButtonPropsInputs) {
     normalizeButtonProps(props);
 }
 
@@ -50,7 +50,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             <Style
                 nonce={ nonce }
                 style={ style }
-                locale={ locale }
             />
 
             {

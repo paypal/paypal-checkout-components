@@ -157,7 +157,7 @@ export function getCardConfig() : FundingSourceConfig {
 
             return (
                 <Fragment>
-                    <Label optional /> <Text className={ CLASS.VAULT_LABEL }>{ instrument.label }</Text>
+                    <Label optional /> <Text className={ [ CLASS.VAULT_LABEL ] }>{ instrument.label }</Text>
                 </Fragment>
             );
         }

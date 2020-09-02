@@ -10,10 +10,8 @@ import { TrackingBeacon } from '../tracking';
 
 import { type ButtonStyle, type Personalization } from './props';
 
-export function TagLine({ fundingSource, style, locale, multiple, nonce, personalization } :
+export function TagLine({ fundingSource, locale, multiple, nonce, personalization } :
     {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string, personalization : ?Personalization |}) : ?ElementNode {
-
-    const { label } = style;
 
     const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -50,8 +48,6 @@ export function TagLine({ fundingSource, style, locale, multiple, nonce, persona
                     )
                     : (
                         <Tag
-                            label={ label }
-                            nonce={ nonce }
                             locale={ locale }
                             multiple={ multiple }
                         />

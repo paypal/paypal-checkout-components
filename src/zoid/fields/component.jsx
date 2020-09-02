@@ -34,7 +34,7 @@ export function getFieldsComponent() : ZoidComponent<FieldsProps> {
 
             containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
                 return (
-                    <FieldsContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } props={ props } />
+                    <FieldsContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ props.nonce } />
                 ).render(dom({ doc }));
             },
 

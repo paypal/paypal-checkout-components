@@ -122,7 +122,7 @@ export type OnClickActions = {|
 export type OnClick = (OnClickData, OnClickActions) => void;
 
 export type ButtonStyle = {|
-    label : ?$Values<typeof BUTTON_LABEL>,
+    label : $Values<typeof BUTTON_LABEL> | void,
     color : $Values<typeof BUTTON_COLOR>,
     shape : $Values<typeof BUTTON_SHAPE>,
     tagline : boolean,
@@ -132,13 +132,13 @@ export type ButtonStyle = {|
 |};
 
 export type ButtonStyleInputs = {|
-    label? : $PropertyType<ButtonStyle, 'label'> | void,
-    color? : $PropertyType<ButtonStyle, 'color'> | void,
-    shape? : $PropertyType<ButtonStyle, 'shape'> | void,
-    tagline? : $PropertyType<ButtonStyle, 'tagline'> | void,
-    layout? : $PropertyType<ButtonStyle, 'layout'> | void,
-    period? : $PropertyType<ButtonStyle, 'period'> | void,
-    height? : $PropertyType<ButtonStyle, 'height'> | void
+    label? : $Values<typeof BUTTON_LABEL> | void,
+    color? : $Values<typeof BUTTON_COLOR> | void,
+    shape? : $Values<typeof BUTTON_SHAPE> | void,
+    tagline? : boolean | void,
+    layout? : $Values<typeof BUTTON_LAYOUT> | void,
+    period? : number | void,
+    height? : number | void
 |};
 
 type PersonalizationComponentProps = {|
@@ -200,7 +200,7 @@ export type PrerenderDetails = {|
 export type GetPrerenderDetails = () => PrerenderDetails | void;
 
 export type ButtonProps = {|
-    fundingSource : ?$Values<typeof FUNDING>,
+    fundingSource? : ?$Values<typeof FUNDING>,
     intent : $Values<typeof INTENT>,
     createOrder : CreateOrder,
     createBillingAgreement : CreateBillingAgreement,
@@ -223,18 +223,20 @@ export type ButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
-    clientAccessToken : ?string,
+    clientAccessToken? : ?string,
     nonce : string,
     userIDToken : ?string,
     enableBNPL : boolean,
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
-    vault : boolean
+    vault : boolean,
+    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>
 |};
 
-export type ButtonPropsInputs = {|
+// eslint-disable-next-line flowtype/require-exact-type
+export type ButtonPropsInputs = {
     clientID : string,
-    fundingSource? : $Values<typeof FUNDING>,
+    fundingSource? : ?$Values<typeof FUNDING>,
     style? : ButtonStyleInputs | void,
     locale? : $PropertyType<ButtonProps, 'locale'> | void,
     commit? : $PropertyType<ButtonProps, 'commit'> | void,
@@ -252,7 +254,7 @@ export type ButtonPropsInputs = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
     personalization? : Personalization,
-    clientAccessToken? : string,
+    clientAccessToken? : ?string,
     wallet? : ?Wallet,
     csp? : {|
         nonce? : string
@@ -261,7 +263,7 @@ export type ButtonPropsInputs = {|
     flow? : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean
-|};
+};
 
 export const DEFAULT_STYLE = {
     LAYOUT: BUTTON_LAYOUT.VERTICAL,
@@ -282,7 +284,6 @@ export const DEFAULT_PROPS = {
 };
 
 const getDefaultButtonPropsInput = () : ButtonPropsInputs => {
-    // $FlowFixMe
     return {};
 };
 

@@ -137,7 +137,7 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 
     return (
         <Fragment>
-            <Text className={ CLASS.PERSONALIZATION_TEXT } optional={ 2 }>{ personalizationText }</Text>
+            <Text className={ [ CLASS.PERSONALIZATION_TEXT ] } optional={ 2 }>{ personalizationText }</Text>
             {
                 personalizationTracker &&
                     <TrackingBeacon url={ personalizationTracker } nonce={ nonce } />

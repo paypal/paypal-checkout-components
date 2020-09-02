@@ -8,7 +8,7 @@ import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING } from '@
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import type { ContentType, WalletInstrument, Experiment, Wallet } from '../types';
-import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW } from '../constants';
+import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW, TEXT_COLOR } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
 
 import { componentContent } from './content';
@@ -19,12 +19,13 @@ export type CardConfig = {|
 
 export type LogoOptions = {|
     locale : LocaleType,
-    label : ?$Values<typeof BUTTON_LABEL>,
-    logoColor : $Values<typeof LOGO_COLOR>,
+    label? : ?$Values<typeof BUTTON_LABEL>,
+    logoColor? : $Values<typeof LOGO_COLOR>,
     optional? : boolean,
     fundingEligibility : FundingEligibilityType,
-    onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
-    nonce : string
+    onClick? : (event : MouseEvent, ...args: $ReadOnlyArray<mixed>) => void,
+    onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
+    nonce? : ?string
 |};
 
 export type LabelOptions = {|
@@ -38,9 +39,10 @@ export type LabelOptions = {|
     fundingEligibility : FundingEligibilityType,
     optional? : boolean,
     onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
+    onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
     layout : $Values<typeof BUTTON_LAYOUT>,
     clientAccessToken : ?string,
-    personalization : Personalization,
+    personalization : ?Personalization,
     nonce : ?string,
     tagline : ?boolean,
     content : ?ContentType
@@ -53,7 +55,8 @@ export type WalletLabelOptions = {|
     content : ?ContentType,
     commit : boolean,
     experiment : Experiment,
-    vault : boolean
+    vault : boolean,
+    nonce? : ?string
 |};
 
 export type TagOptions = {|
@@ -70,13 +73,13 @@ export type FundingSourceConfig = {|
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
     eligible? : ({| components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType,
-        fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT>, wallet : ?Wallet |}) => boolean,
+    fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT>, wallet : ?Wallet |}) => boolean,
     Logo : (LogoOptions) => ChildType,
     Label : (LabelOptions) => ChildType,
     WalletLabel? : (WalletLabelOptions) => ?ChildType,
     Tag? : (TagOptions) => ?ChildType,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
-    textColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
+    textColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof TEXT_COLOR> },
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },

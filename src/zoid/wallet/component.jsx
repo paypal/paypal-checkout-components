@@ -39,7 +39,7 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
 
             containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
                 return (
-                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } props={ props } />
+                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ props.nonce } />
                 ).render(dom({ doc }));
             },
 

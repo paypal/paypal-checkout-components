@@ -24,11 +24,11 @@ type IndividualButtonProps = {|
     env : $Values<typeof ENV>,
     wallet? : ?Wallet,
     fundingEligibility : FundingEligibilityType,
-    onShippingChange : OnShippingChange,
+    onShippingChange : ?OnShippingChange,
     i : number,
     nonce : string,
     clientAccessToken : ?string,
-    personalization : Personalization,
+    personalization : ?Personalization,
     content : ?ContentType,
     tagline : ?boolean,
     commit : boolean,
@@ -40,7 +40,7 @@ type IndividualButtonProps = {|
 type VaultedInstrumentOptions = {|
     wallet : ?Wallet,
     fundingSource : $Values<typeof FUNDING>,
-    onShippingChange : OnShippingChange
+    onShippingChange : ?OnShippingChange
 |};
 
 function getWalletInstrument({ wallet, fundingSource, onShippingChange } : VaultedInstrumentOptions) : ?WalletInstrument {
@@ -94,7 +94,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         onClick(event, { fundingSource, ...opts });
     };
 
-    const keypressHandler = (event, opts) => {
+    const keypressHandler = (event : KeyboardEvent, opts) => {
         if (event.keyCode === 13 || event.keyCode === 32) {
             clickHandler(event, opts);
         }
