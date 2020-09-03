@@ -5,7 +5,7 @@
 import { node, dom } from 'jsx-pragmatic/src';
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { inlineMemoize } from 'belter/src';
+import { inlineMemoize, uniqueID } from 'belter/src';
 
 import { type FieldsProps } from './props';
 import { FieldsPrerender } from './prerender';
@@ -100,8 +100,9 @@ export function getFieldsComponent() : ZoidComponent<FieldsProps> {
                     required:   false
                 },
 
-                buttonSessionID: {
+                fieldsSessionID: {
                     type:       'string',
+                    value:      uniqueID,
                     queryParam: true
                 },
 
