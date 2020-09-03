@@ -163,7 +163,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                 </body>
             `;
 
-            setRootTransaction(req, { wallet });
+            setRootTransaction(req, { userIDToken });
             allowFrame(res);
             return htmlResponse(res, pageHTML);
         },
