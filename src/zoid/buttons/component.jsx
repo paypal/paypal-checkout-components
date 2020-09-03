@@ -69,7 +69,9 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 };
             }
 
-            queriedEligibleFunding.push(fundingSource);
+            if (queriedEligibleFunding.indexOf(fundingSource) === -1) {
+                queriedEligibleFunding.push(fundingSource);
+            }
 
             const { layout } = style;
 
