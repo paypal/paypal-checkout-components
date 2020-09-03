@@ -8,10 +8,9 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize, isIE } from 'belter/src';
+import { uniqueID, memoize } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
-import { collectRiskData, persistRiskData } from '@paypal/risk-data-collector/src';
 
 import { getSessionID } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
@@ -276,9 +275,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 type:       'boolean',
                 required:   false,
                 queryParam: true,
-                default:    () => {
-                    return __ENV__ === ENV.LOCAL || __ENV__ === ENV.STAGE || __ENV__ === ENV.TEST;
-                }
+                default:    () => true
             },
 
             env: {
@@ -428,32 +425,6 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 required:   false,
                 value:      getClientMetadataID,
                 queryParam: true
-            },
-
-            riskData: {
-                type:  'object',
-                value: ({ props }) => {
-                    const clientMetadataID = getClientMetadataID();
-
-                    if (props.userIDToken && clientMetadataID && !isIE() && !props.enableBNPL) {
-                        try {
-                            return collectRiskData({
-                                clientMetadataID,
-                                appSourceID:      'SMART_PAYMENT_BUTTONS'
-                            });
-                        } catch (err) {
-                            // pass
-                        }
-                    }
-                },
-                queryParam:    true,
-                required:      false,
-                serialization: 'base64'
-            },
-
-            persistRiskData: {
-                type:  'function',
-                value: () => persistRiskData
             },
 
             debug: {

@@ -80,7 +80,6 @@
     "dependencies": {
         "@paypal/common-components": "^1.0.10",
         "@paypal/funding-components": "^1.0.17",
-        "@paypal/risk-data-collector": "^1.0.1",
         "@paypal/sdk-client": "^4.0.123",
         "@paypal/sdk-constants": "^1.0.57",
         "@paypal/sdk-logos": "^1.0.26",
