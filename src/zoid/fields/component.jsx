@@ -3,9 +3,9 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from 'jsx-pragmatic/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { inlineMemoize } from 'belter/src';
+import { inlineMemoize, uniqueID } from 'belter/src';
 
 import { type FieldsProps } from './props';
 import { FieldsPrerender } from './prerender';
@@ -85,6 +85,49 @@ export function getFieldsComponent() : ZoidComponent<FieldsProps> {
                     type:       'string',
                     queryParam: true,
                     required:   true
+                },
+
+                correlationID: {
+                    type:       'string',
+                    required:   false,
+                    value:      getCorrelationID
+                },
+
+                sessionID: {
+                    type:       'string',
+                    value:      getSessionID,
+                    queryParam: true,
+                    required:   false
+                },
+
+                fieldsSessionID: {
+                    type:       'string',
+                    value:      uniqueID,
+                    queryParam: true
+                },
+
+                env: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getEnv
+                },
+
+                buyerCountry: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    default:    getBuyerCountry
+                },
+
+                locale: {
+                    type:          'object',
+                    queryParam:    'locale.x',
+                    allowDelegate: true,
+                    queryValue({ value }) : string {
+                        const { lang, country } = value;
+                        return `${ lang }_${ country }`;
+                    },
+                    value: getLocale
                 }
             }
         });
