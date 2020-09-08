@@ -9,7 +9,7 @@ import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
 
-const FIRST_BUTTON_PERC = 60;
+const FIRST_BUTTON_PERC = 50;
 const WALLET_BUTTON_PERC = 60;
 
 export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : string {
