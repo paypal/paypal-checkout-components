@@ -1,3 +1,19 @@
+## <small>5.0.111 (2020-09-08)</small>
+
+* Add variations to demo ([e9dd805](https://github.com/paypal/paypal-checkout-components/commit/e9dd805))
+* De-dupe queriedEligibleFunding ([5cb27d9](https://github.com/paypal/paypal-checkout-components/commit/5cb27d9))
+* Default enableBNPL feature flag on in all envs ([fd80c90](https://github.com/paypal/paypal-checkout-components/commit/fd80c90))
+* Fix check-size task ([9a837d4](https://github.com/paypal/paypal-checkout-components/commit/9a837d4))
+* Make credit eligible for tests ([41e3e50](https://github.com/paypal/paypal-checkout-components/commit/41e3e50))
+* pass more query parameters to fields (#1419) ([d847ab6](https://github.com/paypal/paypal-checkout-components/commit/d847ab6)), closes [#1419](https://github.com/paypal/paypal-checkout-components/issues/1419)
+* Re-enable all tests ([2fdf4b5](https://github.com/paypal/paypal-checkout-components/commit/2fdf4b5))
+* Resolve between multiple wallet instruments, and make horizontal wallet button 60% width ([0463ed2](https://github.com/paypal/paypal-checkout-components/commit/0463ed2))
+* Type fixes ([1b66b64](https://github.com/paypal/paypal-checkout-components/commit/1b66b64))
+* update fields endpoint (#1418) ([61890ae](https://github.com/paypal/paypal-checkout-components/commit/61890ae)), closes [#1418](https://github.com/paypal/paypal-checkout-components/issues/1418)
+* Update vaulted credit button screenshot ([3b91f24](https://github.com/paypal/paypal-checkout-components/commit/3b91f24))
+
+
+
 ## <small>5.0.110 (2020-08-31)</small>
 
 * Add data-pay-now attribute to pay now button ([1036e50](https://github.com/paypal/paypal-checkout-components/commit/1036e50))
