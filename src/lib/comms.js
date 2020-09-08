@@ -4,7 +4,7 @@ import { getAllFramesInWindow, isSameDomain } from 'cross-domain-utils/src';
 import type { SmartFields } from '../types';
 import { FRAME_NAME } from '../constants';
 
-export function getFieldsByFundingSource(fundingSource : string) : ?SmartFields {
+export function getSmartFieldsByFundingSource(fundingSource : string) : ?SmartFields {
 
     try {
         for (const win of getAllFramesInWindow(window)) {
@@ -19,6 +19,6 @@ export function getFieldsByFundingSource(fundingSource : string) : ?SmartFields 
             }
         }
     } catch (err) {
-    // pass
+        // pass
     }
 }
