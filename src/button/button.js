@@ -5,7 +5,7 @@ import { COUNTRY, FPTI_KEY, FUNDING, type FundingEligibilityType } from '@paypal
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { ContentType, Wallet } from '../types';
-import { getLogger } from '../lib';
+import { getLogger, getFieldsByFundingSource } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
 import { type Payment } from '../payment-flows';
@@ -89,6 +89,19 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
             const { win, fundingSource: paymentFundingSource } = payment;
             const { onClick } = paymentProps;
+
+            const altPayment = getFieldsByFundingSource(paymentFundingSource);
+
+            if (altPayment) {
+                if (!altPayment.isValid()) {
+                    if (win) {
+                        win.close();
+                    }
+                    return;
+                } else {
+                // initiatePaymentFlow + confirm flow here ..
+                }
+            }
 
             if (onClick) {
                 onClick({ fundingSource: paymentFundingSource });

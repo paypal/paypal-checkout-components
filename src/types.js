@@ -163,3 +163,9 @@ export type Wallet = {|
 export type ConnectOptions = {|
     scopes : $ReadOnlyArray<string>
 |};
+
+export type SmartFields = {|
+    fundingSource : $Values<typeof FUNDING>,
+    confirm : (orderId : string) => ZalgoPromise<string>,
+    isValid : () => boolean
+|};
