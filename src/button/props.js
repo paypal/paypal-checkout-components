@@ -363,7 +363,8 @@ export type ServiceData = {|
             [ $Values<typeof FUNDING> ] : ?boolean
         }
     |},
-    serverRiskData : ? ServerRiskData
+    serverRiskData : ? ServerRiskData,
+    cookies : string
 |};
 
 type ServiceDataOptions = {|
@@ -379,13 +380,16 @@ type ServiceDataOptions = {|
     eligibility : {|
         cardFields : boolean,
         nativeCheckout : {
-            [$Values<typeof FUNDING> ] : ?boolean
+            [ $Values<typeof FUNDING> ] : ?boolean
         }
     |},
-    serverRiskData : ?ServerRiskData
+    serverRiskData : ?ServerRiskData,
+    cookies : string
 |};
 
-export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta, content, buyerGeoCountry, fundingEligibility, wallet, buyerAccessToken, serverMerchantID, eligibility } : ServiceDataOptions) : ServiceData {
+export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta, content, buyerGeoCountry,
+    fundingEligibility, wallet, buyerAccessToken, serverMerchantID, eligibility, cookies } : ServiceDataOptions) : ServiceData {
+
     return {
         merchantID:   serverMerchantID,
         buyerCountry: buyerGeoCountry || COUNTRY.US,
@@ -396,6 +400,7 @@ export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta
         buyerAccessToken,
         facilitatorAccessToken,
         eligibility,
-        serverRiskData
+        serverRiskData,
+        cookies
     };
 }

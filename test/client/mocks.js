@@ -524,6 +524,21 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                 };
             }
 
+            if (data.query.includes('query GetNativeEligibility')) {
+                return {
+                    data: {
+                        mobileSDKEligibility: {
+                            paypal: {
+                                eligibility: true
+                            },
+                            venmo: {
+                                eligibility: true
+                            }
+                        }
+                    }
+                };
+            }
+
             if (data.query.includes('query GetFireBaseSessionToken')) {
                 return {
                     data: {

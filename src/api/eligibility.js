@@ -1,7 +1,8 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { CURRENCY, COUNTRY, INTENT, FUNDING, CARD, type FundingEligibilityType } from '@paypal/sdk-constants/src';
+import { CURRENCY, COUNTRY, INTENT, FUNDING, CARD, PLATFORM, type FundingEligibilityType } from '@paypal/sdk-constants/src';
+import { getUserAgent } from 'belter/src';
 
 import { HEADERS } from '../constants';
 
@@ -69,5 +70,74 @@ export function getFundingEligibility(query : string, { accessToken, clientID, m
             throw new Error(`GraphQL fundingEligibility returned no fundingEligibility object`);
         }
         return gqlResult && gqlResult.fundingEligibility;
+    });
+}
+
+type NativeEligibilityOptions = {|
+    clientID : ?string,
+    buyerCountry : ?$Values<typeof COUNTRY>,
+    currency : $Values<typeof CURRENCY>,
+    vault : boolean,
+    merchantID : string,
+    buttonSessionID : string,
+    shippingCallbackEnabled : boolean,
+    platform : $Values<typeof PLATFORM>,
+    cookies : string
+|};
+
+type NativeEligibility = {|
+    [ $Values<typeof FUNDING> ] : ?{|
+        eligibility : boolean
+    |}
+|};
+
+export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantID, clientID, buyerCountry, currency, buttonSessionID, cookies } : NativeEligibilityOptions) : ZalgoPromise<NativeEligibility> {
+    const userAgent = getUserAgent();
+    
+    return callGraphQL({
+        name:  'GetNativeEligibility',
+        query: `
+            query GetNativeEligibility(
+                $vault : Boolean,
+                $shippingCallbackEnabled : Boolean,
+                $merchantID : String,
+                $clientID : String,
+                $buyerCountry : String,
+                $currency : String,
+                $userAgent : String,
+                $buttonSessionID : String,
+                $cookies : String
+            ) {
+                mobileSDKEligibility(
+                    vault: $vault,
+                    shippingCallbackEnabled: $shippingCallbackEnabled,
+                    merchantID: $merchantID,
+                    facilitatorClientID: $clientID,
+                    buyerCountry: $buyerCountry,
+                    currency: $currency,
+                    userAgent: $userAgent,
+                    buttonSessionID: $buttonSessionID,
+                    cookies: $cookies
+                ) {
+                    paypal {
+                        eligibility
+                        ineligibilityReason
+                    }
+                    venmo {
+                        eligibility
+                        ineligibilityReason
+                    }
+                }
+            }
+        `,
+        variables: {
+            vault, shippingCallbackEnabled, merchantID, clientID,
+            buyerCountry, currency, userAgent, buttonSessionID, cookies
+        }
+    }).then((gqlResult) => {
+        if (!gqlResult || !gqlResult.mobileSDKEligibility) {
+            throw new Error(`GraphQL GetNativeEligibility returned no mobileSDKEligibility object`);
+        }
+        return gqlResult.mobileSDKEligibility;
     });
 }

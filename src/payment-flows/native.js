@@ -9,7 +9,7 @@ import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } 
 
 import type { ButtonProps } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
-import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
+import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { getLogger, promiseOne, promiseNoop, unresolvedPromise } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
 
@@ -105,12 +105,13 @@ function isNativeOptedIn({ props } : {| props : ButtonProps |}) : boolean {
 }
 
 let initialPageUrl;
+let nativeEligibility;
 
 function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
 
     const { platform, onShippingChange, createBillingAgreement, createSubscription, env } = props;
     const { firebase: firebaseConfig } = config;
-    const { eligibility } = serviceData;
+    const { merchantID } = serviceData;
 
     if (platform !== PLATFORM.MOBILE) {
         return false;
@@ -144,11 +145,11 @@ function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : 
         return false;
     }
 
-    if (eligibility.nativeCheckout.paypal || eligibility.nativeCheckout.venmo) {
-        return true;
+    if (merchantID.length > 1) {
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentEligibleOptions) : boolean {
@@ -175,17 +176,32 @@ function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentElig
         return true;
     }
 
+    if (nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) {
+        return true;
+    }
+
     return false;
 }
 
-function setupNative({ props } : SetupOptions) : ZalgoPromise<void> {
+function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        const { getPageUrl } = props;
+        const { getPageUrl, clientID, onShippingChange, currency, platform, vault, buttonSessionID } = props;
+        const { merchantID, buyerCountry, cookies } = serviceData;
 
-        return getPageUrl().then(pageUrl => {
-            initialPageUrl = pageUrl;
-        });
-    });
+        const shippingCallbackEnabled = Boolean(onShippingChange);
+
+        return ZalgoPromise.all([
+            getNativeEligibility({ vault, platform, shippingCallbackEnabled, merchantID: merchantID[0],
+                clientID, buyerCountry, currency, buttonSessionID, cookies
+            }).then(result => {
+                nativeEligibility = result;
+            }),
+
+            getPageUrl().then(pageUrl => {
+                initialPageUrl = pageUrl;
+            })
+        ]);
+    }).then(noop);
 }
 
 type NativeSDKProps = {|
