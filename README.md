@@ -23,10 +23,36 @@ npm start
 
 Then load http://localhost/smart/buttons?clientID=alc_client1 in your browser.
 
-### Using local paypal-checkout-components
+## Using local paypal-checkout-components
 
 This repo uses the button renderer from [github.com/paypal/paypal-checkout-components](https://github.com/paypal/paypal-checkout-components). To pull in local changes from `paypal-checkout-components` to this module:
 
 - Clone and set up the [github.com/paypal/paypal-checkout-components](https://github.com/paypal/paypal-checkout-components) repo
 - Run this module with `BUTTON_RENDER_DIR=/path/to/paypal-checkout-components npm start`
 - Load http://localhost/smart/buttons?clientID=alc_client1 in your browser
+
+## Preflight call
+
+This section is relevant to integrations passing `data-user-id-token`, for vaulted/one-click button renders.
+
+Rendering the vaulted button can be time consuming. The Smart Buttons server allows a pre-flight call to be made. This pre-caches the button, ready to be rendered immediately when the buyer lands on your page. This should typically be done in one of the following places:
+
+- On a page immediately prior to displaying the Smart Buttons
+- On a single-page app prior to displaying the Smart Buttons, if the Smart Buttons are displayed after a user action
+- On the server-side prior to rendering the cart or checkout page containing the Smart Buttons
+
+To invoke, simply make a call to the following URL:
+
+```bash
+https://www.paypal.com/smart/buttons/preload?client-id=CLIENT_ID&user-id-token=ID_TOKEN
+```
+
+The following URL params can be passed:
+
+- `client-id`: (required) Your PayPal client id
+- `user-id-token`: (required) Your customer's id token
+- `merchant-id` (optional) The merchant id or email of the transaction payee
+- `amount`: (optional) The estimated amount of the transaction
+- `currency`: (optional) The currency of the transaction
+
+This request can be made as a fire-and-forget call: you do not need to wait for a response, or check the status code of the response.
