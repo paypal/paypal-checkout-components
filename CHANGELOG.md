@@ -1,3 +1,10 @@
+## <small>5.0.112 (2020-09-08)</small>
+
+* Make non-vaulted buttons equal size ([837c744](https://github.com/paypal/paypal-checkout-components/commit/837c744))
+* Remove unused flow suppression ([4cd49b7](https://github.com/paypal/paypal-checkout-components/commit/4cd49b7))
+
+
+
 ## <small>5.0.111 (2020-09-08)</small>
 
 * Add variations to demo ([e9dd805](https://github.com/paypal/paypal-checkout-components/commit/e9dd805))
