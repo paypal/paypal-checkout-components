@@ -135,6 +135,8 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
     const preflightMiddleware = async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
         logBuffer.flush(req);
 
+        res.header('Access-Control-Allow-Origin', '*');
+
         let params;
 
         try {
