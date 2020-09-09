@@ -154,6 +154,18 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     queryParam: true,
                     default:    () => FUNDING.PAYPAL
                 },
+
+                standaloneFundingSource: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false
+                },
+
+                enableFunding: {
+                    type:       'array',
+                    queryParam: true,
+                    required:   false
+                },
                 
                 onApprove: {
                     type:     'function',
