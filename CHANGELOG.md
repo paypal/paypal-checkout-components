@@ -1,3 +1,12 @@
+## <small>5.0.113 (2020-09-10)</small>
+
+* clean up (#1401) ([190d4ca](https://github.com/paypal/paypal-checkout-components/commit/190d4ca)), closes [#1401](https://github.com/paypal/paypal-checkout-components/issues/1401)
+* Increase delay before taking screenshot ([eaf3dcb](https://github.com/paypal/paypal-checkout-components/commit/eaf3dcb))
+* Revert "Remove unused flow suppression" ([5a8002d](https://github.com/paypal/paypal-checkout-components/commit/5a8002d))
+* Use new paylater button color scheme ([db3b588](https://github.com/paypal/paypal-checkout-components/commit/db3b588))
+
+
+
 ## <small>5.0.112 (2020-09-08)</small>
 
 * Make non-vaulted buttons equal size ([837c744](https://github.com/paypal/paypal-checkout-components/commit/837c744))
