@@ -96,7 +96,7 @@ for (const config of buttonConfigs) {
 
             const renderPromise = window.paypal.Buttons(options.button || {}).render(container);
 
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 300));
 
             const frame = container.querySelector('iframe');
 
