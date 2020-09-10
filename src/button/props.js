@@ -79,6 +79,7 @@ export type ButtonXProps = {|
     clientMetadataID : ?string,
     fundingSource : ?$Values<typeof FUNDING>,
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
+    enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
     getQueriedEligibleFunding? : GetQueriedEligibleFunding,
 
@@ -129,7 +130,9 @@ export type ButtonProps = {|
     getParent : () => CrossDomainWindowType,
     persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
     fundingSource : ?$Values<typeof FUNDING>,
+    standaloneFundingSource : ?$Values<typeof FUNDING>,
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
+    enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
     getQueriedEligibleFunding : GetQueriedEligibleFunding,
 
@@ -196,6 +199,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         amount,
         userIDToken,
         enableBNPL = false,
+        enableFunding,
         disableFunding,
         disableCard,
         getQueriedEligibleFunding = () => ZalgoPromise.resolve([])
@@ -291,6 +295,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         persistRiskData,
         connect,
         fundingSource,
+        enableFunding,
         disableFunding,
         disableCard,
         getQueriedEligibleFunding,
@@ -315,7 +320,8 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         onCancel,
         onShippingChange,
 
-        onAuth
+        onAuth,
+        standaloneFundingSource: fundingSource
     };
 }
 

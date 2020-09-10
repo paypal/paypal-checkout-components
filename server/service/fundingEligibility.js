@@ -23,6 +23,7 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
         $intent:          'FundingEligibilityIntent',
         $commit:          'Boolean',
         $vault:           'Boolean',
+        $enableFunding:   '[ SupportedPaymentMethodsType ]',
         $disableFunding:  '[ SupportedPaymentMethodsType ]',
         $disableCard:     '[ SupportedCardsType ]',
         $merchantID:      '[ String ]',
@@ -39,6 +40,7 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
         intent:          '$intent',
         commit:          '$commit',
         vault:           '$vault',
+        enableFunding:   '$enableFunding',
         disableFunding:  '$disableFunding',
         disableCard:     '$disableCard',
         merchantId:      '$merchantID',
@@ -151,6 +153,7 @@ export type FundingEligibilityOptions = {|
     intent : $Values<typeof INTENT>,
     commit : $Values<typeof COMMIT>,
     vault : $Values<typeof VAULT>,
+    enableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
     disableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : $ReadOnlyArray<$Values<typeof CARD>>,
     merchantID : ?$ReadOnlyArray<string>,
@@ -161,7 +164,7 @@ export type FundingEligibilityOptions = {|
 |};
 
 export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, disableFunding = [], disableCard = [], clientAccessToken, buyerCountry, basicFundingEligibility, enableBNPL } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
+    currency, intent, commit, vault, enableFunding = [], disableFunding = [], disableCard = [], clientAccessToken, buyerCountry, basicFundingEligibility, enableBNPL } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
 
     try {
         const ip = req.ip;
@@ -188,7 +191,8 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
                 vault, userAgent, buttonSessionID,
                 intent:         intent.toUpperCase(),
                 disableFunding: disableFunding.map(source => source.toUpperCase()),
-                disableCard:    disableCard.map(card => card.toUpperCase())
+                disableCard:    disableCard.map(card => card.toUpperCase()),
+                enableFunding:  enableFunding.map(source => source.toUpperCase())
             },
             accessToken: clientAccessToken
         });
