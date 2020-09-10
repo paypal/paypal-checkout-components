@@ -59,24 +59,31 @@ export function WalletContainer({ uid, frame, prerenderFrame, event, props } : R
                         position: relative;
                         display: inline-block;
                         width: 100%;
-                        min-width: 500px;
+                        min-width: 400px;
                         max-width: 100%;
                         font-size: 0;
-                        min-height: 50px;
+                        min-height: 100px;
                         background-color: white;
+                        border: 2px solid blue;
                         transition: all 0.2s ease-in-out;
-                        margin-top: ${ props.verticalOffset || defaultVerticalOffSet }px;
+                        margin-top: ${ defaultVerticalOffSet }px;
+                    }
+                    
+                    @media only screen and (max-width: 400px) {
+                        #${ uid } {
+                            height: 0px;
+                        }
                     }
 
-                    @media only screen and (min-width: 0px) {
+                    @media only screen and (min-width: 401px) {
                         #${ uid } {
-                            min-height: 50px;
+                            min-height: 300px;
                         }
                     }
 
                     @media only screen and (min-width: 600px) {
                         #${ uid } {
-                            min-height: 350px;
+                            min-height: 400px;
                         }
                     }
 
@@ -89,12 +96,12 @@ export function WalletContainer({ uid, frame, prerenderFrame, event, props } : R
                     }
 
                     #${ uid } > iframe.${ CLASS.COMPONENT_FRAME } {
-                        z-index: 100;
+                        z-index: 300;
                     }
 
                     #${ uid } > iframe.${ CLASS.PRERENDER_FRAME } {
                         transition: opacity .2s linear;
-                        z-index: 200;
+                        z-index: 400;
                     }
 
                     #${ uid } > iframe.${ CLASS.VISIBLE } {

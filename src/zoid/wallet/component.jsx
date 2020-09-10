@@ -36,12 +36,12 @@ export function getWalletComponent() {
             },
             
             logger: getLogger(),
-            //
-            // containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
-            //     return (
-            //         <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } props={ props } />
-            //     ).render(dom({ doc }));
-            // },
+
+            containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
+                return (
+                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } props={ props } />
+                ).render(dom({ doc }));
+            },
 
             // prerenderTemplate: ({ props, doc }) => {
             //     return (
@@ -83,8 +83,7 @@ export function getWalletComponent() {
                 buyerAccessToken: {
                     type:       'string',
                     queryParam: true,
-                    required:   false,
-                    value:      getUserAccessToken
+                    required:   false
                 },
                 
                 fundingSource: {
@@ -104,7 +103,11 @@ export function getWalletComponent() {
                 },
     
                 createOrder: {
-                    type:     'function',
+                    type:       'function',
+                    // queryParam: 'token',
+                    // $FlowFixMe
+                    // queryValue: ({ value }) => ZalgoPromise.try(value),
+                    decorate:   ({ value }) => memoize(value),
                     required: false
                 },
                 
@@ -269,6 +272,17 @@ export function getWalletComponent() {
                     required:   false,
                     queryParam: true
                 },
+    
+                verticalOffset: {
+                    type:       'string',
+                    required:   false,
+                    queryParam: true
+                },
+                
+                wallet: {
+                    type:       'object',
+                    required:   false
+                }
             }
         });
     });
