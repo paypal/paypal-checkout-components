@@ -1831,7 +1831,7 @@ window.spb = function(modules) {
         getLogger().info("rest_api_create_order_token");
         var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
         _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-        _headers10["x-app-version"] = "2.0.309", _headers10);
+        _headers10["x-app-version"] = "2.0.310", _headers10);
         var paymentSource = {
             token: {
                 id: paymentMethodID,
@@ -4624,6 +4624,22 @@ window.spb = function(modules) {
             return merchantIds.indexOf(payee.merchantId) > -1 || merchantEmails.indexOf(payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase()) > -1;
         }));
     }
+    function triggerIntegrationError(_ref2) {
+        var _getLogger$warn$track;
+        var error = _ref2.error, _ref2$message = _ref2.message, message = void 0 === _ref2$message ? error : _ref2$message, clientID = _ref2.clientID, orderID = _ref2.orderID, _ref2$loggerPayload = _ref2.loggerPayload, loggerPayload = void 0 === _ref2$loggerPayload ? {} : _ref2$loggerPayload, _ref2$throwError = _ref2.throwError, throwError = void 0 === _ref2$throwError || _ref2$throwError;
+        var isWhitelisted = "sandbox" === _ref2.env ? clientID && -1 !== SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) : clientID && -1 !== ORDER_VALIDATION_WHITELIST.indexOf(clientID);
+        var shouldThrow = throwError && !isWhitelisted;
+        getLogger().warn(error, loggerPayload).track((_getLogger$warn$track = {}, _getLogger$warn$track.transition_name = "process_order_validate", 
+        _getLogger$warn$track.context_type = "EC-Token", _getLogger$warn$track.token = orderID, 
+        _getLogger$warn$track.context_id = orderID, _getLogger$warn$track.integration_issue = error, 
+        _getLogger$warn$track.whitelist = shouldThrow ? "false" : "true", _getLogger$warn$track.ext_error_desc = message, 
+        _getLogger$warn$track)).flush();
+        if (shouldThrow) {
+            console.error(message);
+            throw new Error(message);
+        }
+        console.warn(message);
+    }
     function renderSmartMenu(_ref) {
         var clientID = _ref.clientID;
         var _Menu = (0, _ref.Menu)({
@@ -5365,8 +5381,8 @@ window.spb = function(modules) {
                                                 return start();
                                             }));
                                             var validateOrderPromise = createOrder().then((function(orderID) {
-                                                return function(orderID, _ref2) {
-                                                    var env = _ref2.env, clientID = _ref2.clientID, merchantID = _ref2.merchantID, expectedCurrency = _ref2.expectedCurrency, expectedIntent = _ref2.expectedIntent, vault = _ref2.vault;
+                                                return function(orderID, _ref3) {
+                                                    var env = _ref3.env, clientID = _ref3.clientID, merchantID = _ref3.merchantID, expectedCurrency = _ref3.expectedCurrency, expectedIntent = _ref3.expectedIntent, vault = _ref3.vault;
                                                     var logger = getLogger();
                                                     return getSupplementalOrderInfo(orderID).then((function(order) {
                                                         var cart = order.checkoutSession.cart;
@@ -5374,41 +5390,87 @@ window.spb = function(modules) {
                                                         var currency = cart.amounts && cart.amounts.total.currencyCode;
                                                         var amount = cart.amounts && cart.amounts.total.currencyValue;
                                                         var billingType = cart.billingType;
-                                                        if (intent !== expectedIntent) {
-                                                            logger.warn("smart_button_validation_error_incorrect_intent", {
+                                                        intent !== expectedIntent && triggerIntegrationError({
+                                                            error: "smart_button_validation_error_incorrect_intent",
+                                                            message: "Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                            loggerPayload: {
                                                                 intent: intent,
                                                                 expectedIntent: expectedIntent
-                                                            });
-                                                            throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
-                                                        }
-                                                        if (currency && currency !== expectedCurrency) {
-                                                            logger.warn("smart_button_validation_error_incorrect_currency", {
+                                                            },
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID
+                                                        });
+                                                        currency && currency !== expectedCurrency && triggerIntegrationError({
+                                                            error: "smart_button_validation_error_incorrect_currency",
+                                                            message: "Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                            loggerPayload: {
                                                                 currency: currency,
                                                                 expectedCurrency: expectedCurrency
-                                                            });
-                                                            throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
-                                                        }
-                                                        if (!merchantID || 0 === merchantID.length) {
-                                                            logger.warn("smart_button_validation_error_no_merchant_id");
-                                                            throw new Error("Could not determine correct merchant id");
-                                                        }
-                                                        if (billingType && !vault) {
-                                                            logger.warn("smart_button_validation_error_billing_" + (amount ? "with" : "without") + "_purchase_no_vault");
-                                                            console.warn("Expected vault=" + VAULT.TRUE.toString() + " for a billing transaction");
-                                                        }
-                                                        if (vault && !billingType && !window.xprops.createBillingAgreement && !window.xprops.createSubscription && !window.xprops.clientAccessToken && !window.xprops.userIDToken) {
-                                                            logger.warn("smart_button_validation_error_vault_passed_not_needed");
-                                                            console.warn("Expected vault=" + VAULT.FALSE.toString() + " for a non-billing, non-subscription transaction");
-                                                        }
+                                                            },
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID
+                                                        });
+                                                        merchantID && 0 !== merchantID.length || triggerIntegrationError({
+                                                            error: "smart_button_validation_error_no_merchant_id",
+                                                            message: "Could not determine correct merchant id",
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID
+                                                        });
+                                                        billingType && !vault && triggerIntegrationError({
+                                                            error: "smart_button_validation_error_billing_" + (amount ? "with" : "without") + "_purchase_no_vault",
+                                                            message: "Expected vault=" + VAULT.TRUE.toString() + " for a billing transaction",
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID,
+                                                            loggerPayload: {
+                                                                billingType: billingType,
+                                                                vault: vault
+                                                            },
+                                                            throwError: !1
+                                                        });
+                                                        !vault || billingType || window.xprops.createBillingAgreement || window.xprops.createSubscription || window.xprops.clientAccessToken || window.xprops.userIDToken || triggerIntegrationError({
+                                                            error: "smart_button_validation_error_vault_passed_not_needed",
+                                                            message: "Expected vault=" + VAULT.FALSE.toString() + " for a non-billing, non-subscription transaction",
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID,
+                                                            loggerPayload: {
+                                                                vault: vault,
+                                                                billingType: billingType
+                                                            },
+                                                            throwError: !1
+                                                        });
                                                         var payees = order.checkoutSession.payees;
-                                                        if (!payees) return logger.warn("smart_button_validation_error_supplemental_order_missing_payees");
-                                                        if (!payees.length) return logger.warn("smart_button_validation_error_supplemental_order_no_payees");
+                                                        if (!payees) return triggerIntegrationError({
+                                                            error: "smart_button_validation_error_supplemental_order_missing_payees",
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID,
+                                                            throwError: !1
+                                                        });
+                                                        if (!payees.length) return triggerIntegrationError({
+                                                            error: "smart_button_validation_error_supplemental_order_no_payees",
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID,
+                                                            throwError: !1
+                                                        });
                                                         var dict = {};
                                                         var uniquePayees = [];
                                                         for (var _i2 = 0; _i2 < payees.length; _i2++) {
                                                             var payee = payees[_i2];
-                                                            if (!(payee.merchantId || payee.email && payee.email.stringValue)) return logger.warn("smart_button_validation_error_supplemental_order_missing_values", {
-                                                                payees: JSON.stringify(payees)
+                                                            if (!(payee.merchantId || payee.email && payee.email.stringValue)) return triggerIntegrationError({
+                                                                error: "smart_button_validation_error_supplemental_order_missing_values",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID,
+                                                                loggerPayload: {
+                                                                    payees: JSON.stringify(payees)
+                                                                },
+                                                                throwError: !1
                                                             });
                                                             if (payee.merchantId) {
                                                                 if (!dict[payee.merchantId]) {
@@ -5423,51 +5485,57 @@ window.spb = function(modules) {
                                                         var payeesStr = uniquePayees.map((function(payee) {
                                                             if (payee.merchantId) return payee.merchantId;
                                                             if (payee.email && payee.email.stringValue) return payee.email.stringValue;
-                                                            logger.warn("smart_button_validation_error_invalid_payee_state", {
-                                                                uniquePayees: JSON.stringify(uniquePayees)
+                                                            triggerIntegrationError({
+                                                                error: "smart_button_validation_error_invalid_payee_state",
+                                                                message: "Invalid payee state: " + JSON.stringify(uniquePayees),
+                                                                loggerPayload: {
+                                                                    uniquePayees: JSON.stringify(uniquePayees)
+                                                                },
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID
                                                             });
-                                                            throw new Error("Invalid payee state: " + JSON.stringify(uniquePayees));
+                                                            throw new Error("Payees Incorrect");
                                                         })).join(",");
                                                         var xpropMerchantID = window.xprops.merchantID;
-                                                        if (xpropMerchantID && xpropMerchantID.length) {
-                                                            if (!isValidMerchantIDs(xpropMerchantID, uniquePayees)) {
-                                                                logger.warn("smart_button_validation_error_explicit_payee_transaction_mismatch", {
-                                                                    payees: JSON.stringify(uniquePayees),
-                                                                    merchantID: JSON.stringify(merchantID)
-                                                                });
-                                                                throw 1 === uniquePayees.length ? new Error("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/") : new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
-                                                            }
-                                                        } else if (!isValidMerchantIDs(merchantID, uniquePayees)) {
+                                                        if (xpropMerchantID && xpropMerchantID.length) isValidMerchantIDs(xpropMerchantID, uniquePayees) || triggerIntegrationError(1 === uniquePayees.length ? {
+                                                            error: "smart_button_validation_error_payee_no_match",
+                                                            message: "Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID
+                                                        } : {
+                                                            error: "smart_button_validation_error_payee_no_match",
+                                                            message: 'Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/',
+                                                            env: env,
+                                                            clientID: clientID,
+                                                            orderID: orderID
+                                                        }); else if (!isValidMerchantIDs(merchantID, uniquePayees)) {
                                                             logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch", {
                                                                 payees: JSON.stringify(uniquePayees),
                                                                 merchantID: JSON.stringify(merchantID)
                                                             });
-                                                            if (1 !== uniquePayees.length) throw new Error('Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/');
-                                                            "sandbox" === env && logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch_sandbox", {
-                                                                payees: JSON.stringify(payees),
-                                                                merchantID: JSON.stringify(merchantID)
+                                                            if (1 === uniquePayees.length) {
+                                                                "sandbox" === env && logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch_sandbox", {
+                                                                    payees: JSON.stringify(payees),
+                                                                    merchantID: JSON.stringify(merchantID)
+                                                                });
+                                                                triggerIntegrationError({
+                                                                    error: "smart_button_validation_error_payee_no_match",
+                                                                    message: "Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                                    env: env,
+                                                                    clientID: clientID,
+                                                                    orderID: orderID,
+                                                                    throwError: !1
+                                                                });
+                                                            } else triggerIntegrationError({
+                                                                error: "smart_button_validation_error_payee_no_match",
+                                                                message: 'Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/',
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID
                                                             });
-                                                            console.warn("Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/");
                                                         }
-                                                    })).then((function() {
-                                                        logger.flush();
-                                                    })).catch((function(err) {
-                                                        var _logger$warn$warn$tra;
-                                                        var isSandbox = "sandbox" === env;
-                                                        var isWhitelisted = isSandbox ? clientID && -1 !== SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) : clientID && -1 !== ORDER_VALIDATION_WHITELIST.indexOf(clientID);
-                                                        logger.warn((isSandbox ? "sandbox_" : "") + "order_validation_error" + (isWhitelisted ? "_whitelist" : ""), {
-                                                            err: stringifyError(err)
-                                                        }).warn((isSandbox ? "sandbox_" : "") + "order_validation_error" + (isWhitelisted ? "_whitelist" : "") + "_" + (clientID || "unknown"), {
-                                                            err: stringifyError(err)
-                                                        }).track((_logger$warn$warn$tra = {}, _logger$warn$warn$tra.transition_name = "process_order_validate", 
-                                                        _logger$warn$warn$tra.context_type = "EC-Token", _logger$warn$warn$tra.token = orderID, 
-                                                        _logger$warn$warn$tra.context_id = orderID, _logger$warn$warn$tra.integration_issue = stringifyErrorMessage(err), 
-                                                        _logger$warn$warn$tra.whitelist = isWhitelisted ? "true" : "false", _logger$warn$warn$tra)).flush();
-                                                        if (!isWhitelisted) {
-                                                            console.error(stringifyError(err));
-                                                            throw err;
-                                                        }
-                                                        console.warn(stringifyError(err));
                                                     }));
                                                 }(orderID, {
                                                     env: env,
@@ -5768,7 +5836,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.309", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.310", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
