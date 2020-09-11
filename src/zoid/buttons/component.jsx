@@ -9,8 +9,8 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize } from 'belter/src';
-import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
+import { uniqueID, memoize, noop } from 'belter/src';
+import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getSessionID } from '../../lib';
@@ -22,7 +22,9 @@ import { PrerenderedButtons } from './prerender';
 import { determineFlow } from './util';
 
 export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
+    const logoMonogramExperiment = createExperiment('paypal_logo_remove_monogram', 0);
     const walletExperiment = createExperiment('wallet_button_new_design', 0);
+
     const queriedEligibleFunding = [];
 
     return create({
@@ -198,8 +200,6 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 required: false,
                 value:    () => {
                     return () => {
-                        walletExperiment.logStart();
-
                         if (!window.popupBridge) {
                             return;
                         }
@@ -215,6 +215,20 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                                 });
                             }
                         };
+                    };
+                }
+            },
+
+            onInit: {
+                type:     'function',
+                required: false,
+                default:  () => noop,
+                decorate: ({ props, value = noop }) => {
+                    return (...args) => {
+                        logoMonogramExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        walletExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+
+                        return value(...args);
                     };
                 }
             },
@@ -331,7 +345,8 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 queryParam: true,
                 value:      () => {
                     return {
-                        oldWalletDesign: walletExperiment.isEnabled()
+                        oldWalletDesign:    walletExperiment.isEnabled(),
+                        removeLogoMonogram: logoMonogramExperiment.isEnabled()
                     };
                 }
             },
