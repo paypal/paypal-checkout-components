@@ -221,7 +221,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         return;
     }
 
-    if (experiment.oldWalletDesign || !instrument.type) {
+    if ((experiment && experiment.oldWalletDesign) || !instrument.type) {
         return WalletLabelOld(opts);
     }
 

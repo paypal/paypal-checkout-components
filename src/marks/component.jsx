@@ -21,8 +21,13 @@ type MarksType = {|
     render : (string | HTMLElement) => ZalgoPromise<void>
 |};
 
+type MarksProps = {|
+    fundingSource? : ?$Values<typeof FUNDING>,
+    onShippingChange? : OnShippingChange
+|};
+
 export const getMarksComponent = memoize(() => {
-    function Marks({ fundingSource, onShippingChange } : {| fundingSource? : ?$Values<typeof FUNDING>, onShippingChange? : OnShippingChange |} = {}) : MarksType {
+    function Marks({ fundingSource, onShippingChange } : MarksProps = {}) : MarksType {
 
         const height = DEFAULT_HEIGHT;
         const fundingEligibility = getFundingEligibility();
@@ -32,6 +37,7 @@ export const getMarksComponent = memoize(() => {
         const components = getComponents();
         const flow = BUTTON_FLOW.PURCHASE;
         const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout, flow });
+        const experiment = {};
 
         const isEligible = () => {
             if (!fundingSource) {
@@ -54,6 +60,7 @@ export const getMarksComponent = memoize(() => {
                                 fundingEligibility={ fundingEligibility }
                                 fundingSources={ fundingSources }
                                 height={ height }
+                                experiment={ experiment }
                             />
                         </div>
                     ).render(dom({ doc: document }))

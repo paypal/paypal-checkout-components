@@ -99,6 +99,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             onClick={ clickHandler }
             onKeyPress={ keypressHandler }
             nonce={ nonce }
+            experiment={ experiment }
         />
     );
 

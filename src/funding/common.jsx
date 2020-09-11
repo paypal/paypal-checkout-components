@@ -25,7 +25,8 @@ export type LogoOptions = {|
     fundingEligibility : FundingEligibilityType,
     onClick? : (event : MouseEvent, ...args: $ReadOnlyArray<mixed>) => void,
     onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
-    nonce? : ?string
+    nonce? : ?string,
+    experiment : Experiment
 |};
 
 export type LabelOptions = {|

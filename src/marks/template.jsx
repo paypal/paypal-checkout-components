@@ -6,10 +6,17 @@ import { node, type ChildNodeType, type ElementNode } from 'jsx-pragmatic/src';
 import { getLocale, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { toPx } from 'belter/src';
 
+import type { Experiment } from '../types';
 import { getFundingConfig } from '../funding';
 import { CLASS } from '../constants';
 
-function Mark({ fundingSource, fundingEligibility } : {| fundingSource : $Values<typeof FUNDING>, fundingEligibility : FundingEligibilityType |}) : ChildNodeType {
+type MarkOptions = {|
+    fundingSource : $Values<typeof FUNDING>,
+    fundingEligibility : FundingEligibilityType,
+    experiment : Experiment
+|};
+
+function Mark({ fundingSource, fundingEligibility, experiment } : MarkOptions) : ChildNodeType {
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -20,12 +27,23 @@ function Mark({ fundingSource, fundingEligibility } : {| fundingSource : $Values
 
     return (
         <div class='paypal-mark'>
-            <Logo fundingEligibility={ fundingEligibility } locale={ getLocale() } />
+            <Logo
+                fundingEligibility={ fundingEligibility }
+                locale={ getLocale() }
+                experiment={ experiment }
+            />
         </div>
     );
 }
 
-export function MarksElement({ fundingEligibility, fundingSources, height } : {| fundingEligibility : FundingEligibilityType, fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>, height : number |}) : ElementNode {
+type MarksElementOptions = {|
+    fundingEligibility : FundingEligibilityType,
+    fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    height : number,
+    experiment : Experiment
+|};
+
+export function MarksElement({ fundingEligibility, fundingSources, height, experiment } : MarksElementOptions) : ElementNode {
     return (
         <div class='paypal-marks'>
             <style>
@@ -71,7 +89,11 @@ export function MarksElement({ fundingEligibility, fundingSources, height } : {|
             </style>
             {
                 fundingSources.map(fundingSource => (
-                    <Mark fundingEligibility={ fundingEligibility } fundingSource={ fundingSource } />
+                    <Mark
+                        fundingEligibility={ fundingEligibility }
+                        fundingSource={ fundingSource }
+                        experiment={ experiment }
+                    />
                 ))
             }
         </div>
