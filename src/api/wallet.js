@@ -18,7 +18,9 @@ type GetSmartWalletOptions = {|
     vetted? : boolean
 |};
 
-export function getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken, vetted = true } : GetSmartWalletOptions) : ZalgoPromise<Wallet> {
+const DEFAULT_AMOUNT = '0.00';
+
+export function getSmartWallet({ clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true } : GetSmartWalletOptions) : ZalgoPromise<Wallet> {
     return callGraphQL({
         name:  'GetSmartWallet',
         query: `

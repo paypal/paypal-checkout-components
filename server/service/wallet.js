@@ -207,9 +207,11 @@ export type WalletOptions = {|
     userRefreshToken? : ?string
 |};
 
+const DEFAULT_AMOUNT = '0.00';
+
 // eslint-disable-next-line complexity
 export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatch, getWallet : GetWallet, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount, enableBNPL, userIDToken, userRefreshToken } : WalletOptions) : Promise<Wallet> {
+    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount = DEFAULT_AMOUNT, enableBNPL, userIDToken, userRefreshToken } : WalletOptions) : Promise<Wallet> {
 
     const wallet : Wallet = {
         paypal: {
