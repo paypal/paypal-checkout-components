@@ -365,7 +365,7 @@ export type ServiceData = {|
     content : ContentType,
     eligibility : {|
         cardFields : boolean,
-        nativeCheckout : {
+        nativeCheckout : ?{
             [ $Values<typeof FUNDING> ] : ?boolean
         }
     |},
@@ -385,7 +385,7 @@ type ServiceDataOptions = {|
     content : ContentType,
     eligibility : {|
         cardFields : boolean,
-        nativeCheckout : {
+        nativeCheckout : ?{
             [ $Values<typeof FUNDING> ] : ?boolean
         }
     |},

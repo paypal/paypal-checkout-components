@@ -172,7 +172,7 @@ function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentElig
         return true;
     }
 
-    if (eligibility.nativeCheckout[fundingSource]) {
+    if (eligibility.nativeCheckout && eligibility.nativeCheckout[fundingSource]) {
         return true;
     }
 
