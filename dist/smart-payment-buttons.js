@@ -1831,7 +1831,7 @@ window.spb = function(modules) {
         getLogger().info("rest_api_create_order_token");
         var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
         _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-        _headers10["x-app-version"] = "2.0.310", _headers10);
+        _headers10["x-app-version"] = "2.0.311", _headers10);
         var paymentSource = {
             token: {
                 id: paymentMethodID,
@@ -4090,7 +4090,7 @@ window.spb = function(modules) {
                         }).clientID,
                         merchantID: _ref.merchantID,
                         currency: _ref.currency,
-                        amount: _ref.amount,
+                        amount: void 0 === (_ref$amount = _ref.amount) ? "0.00" : _ref$amount,
                         userIDToken: _ref.userIDToken,
                         vetted: void 0 === (_ref$vetted = _ref.vetted) || _ref$vetted
                     },
@@ -4099,7 +4099,7 @@ window.spb = function(modules) {
                 }).then((function(_ref2) {
                     return _ref2.smartWallet;
                 }));
-                var _ref, _headers, _ref$vetted;
+                var _ref, _headers, _ref$amount, _ref$vetted;
             })).catch((function(err) {
                 getLogger().warn("load_smart_wallet_error", {
                     err: stringifyError(err)
@@ -4769,7 +4769,7 @@ window.spb = function(modules) {
             var eligibility = _ref4.serviceData.eligibility;
             return !(payment.win || !initialPageUrl || !NATIVE_CHECKOUT_URI[fundingSource] || !isNativeOptedIn({
                 props: _ref4.props
-            }) && !eligibility.nativeCheckout[fundingSource] && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility));
+            }) && (!eligibility.nativeCheckout || !eligibility.nativeCheckout[fundingSource]) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility));
         },
         init: function(_ref6) {
             var props = _ref6.props, components = _ref6.components, config = _ref6.config, payment = _ref6.payment, serviceData = _ref6.serviceData;
@@ -5836,7 +5836,7 @@ window.spb = function(modules) {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                 _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                _ref2.button_version = "2.0.310", _ref2.button_correlation_id = buttonCorrelationID, 
+                _ref2.button_version = "2.0.311", _ref2.button_correlation_id = buttonCorrelationID, 
                 _ref2;
             }));
             (function() {
