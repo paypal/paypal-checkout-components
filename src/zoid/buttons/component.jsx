@@ -22,7 +22,7 @@ import { PrerenderedButtons } from './prerender';
 import { determineFlow } from './util';
 
 export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
-    const logoMonogramExperiment = createExperiment('paypal_logo_remove_monogram', 0);
+    const logoMonogramExperiment = createExperiment('paypal_logo_remove_monogram', 50);
     const walletExperiment = createExperiment('wallet_button_new_design', 0);
 
     const queriedEligibleFunding = [];
