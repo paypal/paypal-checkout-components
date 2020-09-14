@@ -225,8 +225,14 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        logoMonogramExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
-                        walletExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        const fptiParams = {
+                            [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
+                            [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id',
+                            [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID
+                        };
+
+                        logoMonogramExperiment.logStart(fptiParams);
+                        walletExperiment.logStart(fptiParams);
 
                         return value(...args);
                     };
