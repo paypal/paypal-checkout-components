@@ -1,3 +1,9 @@
+## <small>5.0.115 (2020-09-14)</small>
+
+* Fix button experiment context type ([06d635e](https://github.com/paypal/paypal-checkout-components/commit/06d635e))
+
+
+
 ## <small>5.0.114 (2020-09-14)</small>
 
 * Add experiment to remove PP monogram from paypal button ([f61e9a0](https://github.com/paypal/paypal-checkout-components/commit/f61e9a0))
