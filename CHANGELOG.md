@@ -1,3 +1,11 @@
+## <small>5.0.114 (2020-09-14)</small>
+
+* Add experiment to remove PP monogram from paypal button ([f61e9a0](https://github.com/paypal/paypal-checkout-components/commit/f61e9a0))
+* Propagate experiment prop ([abd48a9](https://github.com/paypal/paypal-checkout-components/commit/abd48a9))
+* Ramp up PP Monagram experiment to 50% ([cab6264](https://github.com/paypal/paypal-checkout-components/commit/cab6264))
+
+
+
 ## <small>5.0.113 (2020-09-10)</small>
 
 * clean up (#1401) ([190d4ca](https://github.com/paypal/paypal-checkout-components/commit/190d4ca)), closes [#1401](https://github.com/paypal/paypal-checkout-components/issues/1401)
