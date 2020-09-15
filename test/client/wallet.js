@@ -124,8 +124,7 @@ describe('wallet cases', () => {
             createButtonHTML({ wallet });
             await mockSetupButton({
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickButton(FUNDING.PAYPAL);
@@ -252,8 +251,7 @@ describe('wallet cases', () => {
             createButtonHTML({ wallet });
             await mockSetupButton({
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickButton(FUNDING.PAYPAL);
@@ -386,8 +384,7 @@ describe('wallet cases', () => {
             createButtonHTML({ wallet });
             await mockSetupButton({
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickButton(FUNDING.PAYPAL);
@@ -525,8 +522,7 @@ describe('wallet cases', () => {
             createButtonHTML({ wallet });
             await mockSetupButton({
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickButton(FUNDING.PAYPAL);
@@ -668,8 +664,7 @@ describe('wallet cases', () => {
             createButtonHTML({ wallet });
             await mockSetupButton({
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickButton(FUNDING.PAYPAL);
@@ -806,8 +801,7 @@ describe('wallet cases', () => {
             createButtonHTML({ wallet });
             await mockSetupButton({
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickButton(FUNDING.PAYPAL);
@@ -938,8 +932,7 @@ describe('wallet cases', () => {
             createButtonHTML({ wallet });
             await mockSetupButton({
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickButton(FUNDING.PAYPAL);
@@ -1076,8 +1069,7 @@ describe('wallet cases', () => {
             await mockSetupButton({
                 content,
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickMenu(FUNDING.PAYPAL);
@@ -1218,8 +1210,7 @@ describe('wallet cases', () => {
             await mockSetupButton({
                 content,
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickMenu(FUNDING.PAYPAL);
@@ -1322,8 +1313,7 @@ describe('wallet cases', () => {
             await mockSetupButton({
                 content,
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickMenu(FUNDING.PAYPAL);
@@ -1429,8 +1419,7 @@ describe('wallet cases', () => {
             await mockSetupButton({
                 content,
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickMenu(FUNDING.PAYPAL);
@@ -1565,8 +1554,7 @@ describe('wallet cases', () => {
             await mockSetupButton({
                 content,
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickMenu(FUNDING.PAYPAL);
@@ -1717,8 +1705,7 @@ describe('wallet cases', () => {
             createButtonHTML({ wallet });
             await mockSetupButton({
                 merchantID:       [ uniqueID() ],
-                wallet,
-                buyerAccessToken: uniqueID()
+                wallet
             });
 
             await clickButton(FUNDING.PAYPAL);
