@@ -7,10 +7,11 @@ import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-util
 
 import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
-import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL, getFundingEligibility, updateButtonClientConfig  } from '../api';
+import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL, getFundingEligibility, updateButtonClientConfig, getSmartWallet  } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
+import { FUNDING_SKIP_LOGIN } from '../config';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from './types';
 
@@ -222,8 +223,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { Checkout } = components;
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
-        createBillingAgreement, createSubscription, onClick,
-        clientID, connect, clientMetadataID: cmid, onAuth,
+        createBillingAgreement, createSubscription, onClick, amount,
+        clientID, connect, clientMetadataID: cmid, onAuth, userIDToken, env,
         currency, intent, disableFunding, disableCard, enableFunding, standaloneFundingSource } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
         venmoPayloadID, buyerIntent } = payment;
@@ -246,10 +247,27 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
 
             createAuthCode: () => {
                 return ZalgoPromise.try(() => {
+                    const fundingSkipLogin = FUNDING_SKIP_LOGIN[fundingSource];
+
                     if (payment.createAccessToken) {
                         return payment.createAccessToken();
                     } else if (buyerAccessToken) {
                         return buyerAccessToken;
+                    } else if (clientID && userIDToken && fundingSkipLogin) {
+                        const clientMetadataID = cmid || sessionID;
+
+                        return getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken, env, cspNonce }).then(wallet => {
+                            // $FlowFixMe
+                            const walletInstruments = wallet[fundingSkipLogin] && wallet[fundingSkipLogin].instruments;
+
+                            if (walletInstruments) {
+                                for (const instrument of walletInstruments) {
+                                    if (instrument.accessToken) {
+                                        return instrument.accessToken;
+                                    }
+                                }
+                            }
+                        });
                     }
                 }).then(accessToken => {
                     if (accessToken && (buyerIntent === BUYER_INTENT.PAY || buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING)) {

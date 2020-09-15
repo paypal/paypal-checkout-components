@@ -5,7 +5,7 @@ import { stringifyError } from 'belter/src';
 import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
-import { getSupplementalOrderInfo, oneClickApproveOrder, loadFraudnet, getSmartWallet, updateButtonClientConfig } from '../api';
+import { getSupplementalOrderInfo, oneClickApproveOrder, getSmartWallet, updateButtonClientConfig } from '../api';
 import { BUYER_INTENT, FPTI_TRANSITION } from '../constants';
 import { getLogger } from '../lib';
 
@@ -38,9 +38,7 @@ function setupWalletCapture({ props, config, serviceData } : SetupOptions) {
     const clientMetadataID = cmid || sessionID;
 
     if (clientID && userIDToken) {
-        smartWalletPromise = loadFraudnet({ env, clientMetadataID, cspNonce }).then(() => {
-            return getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken });
-        }).catch(err => {
+        smartWalletPromise = getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken, env, cspNonce }).catch(err => {
             getLogger().warn('load_smart_wallet_error', { err: stringifyError(err) });
             smartWalletErrored = true;
             throw err;

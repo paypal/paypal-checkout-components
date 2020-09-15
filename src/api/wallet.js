@@ -1,29 +1,34 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { CURRENCY } from '@paypal/sdk-constants/src';
+import { CURRENCY, ENV } from '@paypal/sdk-constants/src';
+import { memoize, noop } from 'belter/src';
 
 import type { Wallet } from '../types';
 import { HEADERS } from '../constants';
 
 import { callGraphQL } from './api';
+import { loadFraudnet } from './fraudnet';
 
 type GetSmartWalletOptions = {|
+    env : $Values<typeof ENV>,
     clientID : string,
     merchantID : ?$ReadOnlyArray<string>,
     currency : $Values<typeof CURRENCY>,
     amount : ?string,
     clientMetadataID : string,
     userIDToken : string,
-    vetted? : boolean
+    vetted? : boolean,
+    cspNonce : ?string
 |};
 
 const DEFAULT_AMOUNT = '0.00';
 
-export function getSmartWallet({ clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true } : GetSmartWalletOptions) : ZalgoPromise<Wallet> {
-    return callGraphQL({
-        name:  'GetSmartWallet',
-        query: `
+export const getSmartWallet = memoize(({ env, clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true, cspNonce } : GetSmartWalletOptions) : ZalgoPromise<Wallet> => {
+    return loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop).then(() => {
+        return callGraphQL({
+            name:  'GetSmartWallet',
+            query: `
             query GetSmartWallet(
                 $clientID: String!
                 $merchantID: [String!]
@@ -78,11 +83,12 @@ export function getSmartWallet({ clientID, merchantID, currency, amount = DEFAUL
                 }
             }
         `,
-        variables: { clientID, merchantID, currency, amount, userIDToken, vetted },
-        headers:   {
-            [HEADERS.CLIENT_METADATA_ID]: clientMetadataID
-        }
-    }).then(({ smartWallet }) => {
-        return smartWallet;
+            variables: { clientID, merchantID, currency, amount, userIDToken, vetted },
+            headers:   {
+                [HEADERS.CLIENT_METADATA_ID]: clientMetadataID
+            }
+        }).then(({ smartWallet }) => {
+            return smartWallet;
+        });
     });
-}
+});

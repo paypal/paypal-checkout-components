@@ -2,6 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise';
 import { ENV } from '@paypal/sdk-constants/src';
+import { memoize } from 'belter/src';
 
 import { getBody } from '../lib';
 
@@ -30,7 +31,7 @@ type FraudnetConfig = {|
     sandbox? : boolean
 |};
 
-export function loadFraudnet({ env, clientMetadataID, cspNonce, timeout = 1000 } : FraudnetOptions) : ZalgoPromise<void> {
+export const loadFraudnet = memoize(({ env, clientMetadataID, cspNonce, timeout = 1000 } : FraudnetOptions) : ZalgoPromise<void> => {
     return new ZalgoPromise(resolve => {
         if (__TEST__) {
             return resolve();
@@ -65,4 +66,4 @@ export function loadFraudnet({ env, clientMetadataID, cspNonce, timeout = 1000 }
         body.appendChild(configScript);
         body.appendChild(fraudnetScript);
     });
-}
+});
