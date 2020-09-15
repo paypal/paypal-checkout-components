@@ -5,8 +5,8 @@ import { COUNTRY, LANG, SDK_QUERY_KEYS, CURRENCY } from '@paypal/sdk-constants';
 import { constHas, stringifyError } from 'belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL, javascriptResponse, emptyResponse } from '../../lib';
-import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveMerchantID, type GetWallet, resolveWallet, exchangeIDToken } from '../../service';
-import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig, RiskData } from '../../types';
+import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveMerchantID, resolveWallet } from '../../service';
+import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
 import type { ContentType } from '../../../src/types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
@@ -33,8 +33,6 @@ type ButtonMiddlewareOptions = {|
     getInlineGuestExperiment? : (req : ExpressRequest, params : InlineGuestElmoParams) => Promise<boolean>,
     cache : CacheType,
     firebaseConfig? : FirebaseConfig,
-    transportRiskData : (ExpressRequest, RiskData) => Promise<void>,
-    getWallet : GetWallet,
     content : {
         [$Values<typeof COUNTRY>] : {
             [$Values<typeof LANG>] : ContentType
@@ -43,7 +41,7 @@ type ButtonMiddlewareOptions = {|
     tracking : (ExpressRequest) => void
 |};
 
-export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, getWallet, transportRiskData, tracking } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, tracking } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     return sdkMiddleware({ logger, cache }, {
         app: async ({ req, res, params, meta, logBuffer, sdkMeta }) => {
             logger.info(req, EVENT.RENDER);
@@ -52,7 +50,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale,
-                clientMetadataID, riskData, pageSessionID, correlationID, enableBNPL, cookies, enableFunding } = getParams(params, req, res);
+                clientMetadataID, pageSessionID, correlationID, cookies, enableFunding } = getParams(params, req, res);
             
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
 
@@ -70,24 +68,15 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache });
 
             const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry }));
-            
-            const sendRiskDataPromise = (riskData && !enableBNPL) ? transportRiskData(req, riskData).catch(err => {
-                logger.warn(req, 'risk_data_transport_error', { err: err.stack || err.toString() });
-            }) : Promise.resolve();
-
-            const buyerAccessTokenPromise = (userIDToken && clientMetadataID && !enableBNPL) ? sendRiskDataPromise
-                .then(() => exchangeIDToken(req, gqlBatch, { logger, userIDToken, clientMetadataID, riskData })) : null;
-
-            const buyerAccessToken = await buyerAccessTokenPromise;
 
             const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
-                disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility, enableBNPL, enableFunding
+                disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility, enableFunding
             });
 
-            const walletPromise = resolveWallet(req, gqlBatch, getWallet, {
+            const walletPromise = resolveWallet(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault, amount,
-                disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, userIDToken, enableBNPL
+                disableFunding, disableCard, clientAccessToken, buyerCountry, userIDToken
             });
 
             gqlBatch.flush();
@@ -104,7 +93,6 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                 throw err;
             }
 
-            const serverRiskData = await sendRiskDataPromise;
             const render = await renderPromise;
             const client = await clientPromise;
             const fundingEligibility = await fundingEligibilityPromise;
@@ -136,8 +124,8 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const buttonHTML = render.button.Buttons(buttonProps).render(html());
 
             const setupParams = {
-                fundingEligibility, buyerCountry, cspNonce, merchantID, sdkMeta, wallet, buyerAccessToken, correlationID,
-                isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content, serverRiskData, cookies
+                fundingEligibility, buyerCountry, cspNonce, merchantID, sdkMeta, wallet, correlationID,
+                isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content, cookies
             };
 
             const pageHTML = `
@@ -152,7 +140,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
                     <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON(setupParams) })</script>
-                    ${ shouldRenderFraudnet({ wallet, enableBNPL }) ? renderFraudnetScript({ id: clientMetadataID || pageSessionID, cspNonce, env }) : '' }
+                    ${ shouldRenderFraudnet({ wallet }) ? renderFraudnetScript({ id: clientMetadataID || pageSessionID, cspNonce, env }) : '' }
                 </body>
             `;
 
@@ -207,8 +195,8 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const gqlBatch = graphQLBatch(req, graphQL);
 
-            resolveWallet(req, gqlBatch, getWallet, {
-                logger, clientID, merchantID, currency, amount, userIDToken, enableBNPL: true
+            resolveWallet(req, gqlBatch, {
+                logger, clientID, merchantID, currency, amount, userIDToken
             }).catch(err => {
                 logBuffer.warn('preflight_error', { err: stringifyError(err) });
             });

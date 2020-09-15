@@ -11,11 +11,38 @@ describe('wallet cases', () => {
 
     it('should pay with a wallet instrument with no shipping required', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-
             const payerID = uniqueID();
+            const accessToken = uniqueID();
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             const gqlMock = getGraphQLApiMock({
-                extraHandler: ({ data }) => {
+                extraHandler: ({ headers, data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+
                     if (data.query.includes('query GetCheckoutDetails')) {
                         return {
                             data: {
@@ -48,6 +75,10 @@ describe('wallet cases', () => {
                     }
 
                     if (data.query.includes('mutation OneClickApproveOrder')) {
+                        if (headers['x-paypal-internal-euat'] !== accessToken) {
+                            throw new Error(`Expected buyer access token to be present in request`);
+                        }
+
                         return {
                             data: {
                                 oneClickPayment: {
@@ -60,7 +91,6 @@ describe('wallet cases', () => {
             }).expectCalls();
 
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
 
             window.paypal.Menu = expect('Menu', mockMenu);
             window.paypal.Checkout = avoid('Checkout', window.paypal.Checkout);
@@ -108,10 +138,37 @@ describe('wallet cases', () => {
 
             const payerID = uniqueID();
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const accessToken = uniqueID();
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             const gqlMock = getGraphQLApiMock({
-                extraHandler: ({ data }) => {
+                extraHandler: ({ headers, data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                    
                     if (data.variables.orderID && data.variables.orderID !== orderID) {
                         throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
                     }
@@ -148,6 +205,10 @@ describe('wallet cases', () => {
                     }
 
                     if (data.query.includes('mutation OneClickApproveOrder')) {
+                        if (headers['x-paypal-internal-euat'] !== accessToken) {
+                            throw new Error(`Expected buyer access token to be present in request`);
+                        }
+                        
                         return {
                             data: {
                                 oneClickPayment: {
@@ -204,10 +265,38 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+            const accessToken = uniqueID();
+            const payerID = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             const gqlMock = getGraphQLApiMock({
-                extraHandler: ({ data }) => {
+                extraHandler: ({ headers, data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                    
                     if (data.variables.orderID && data.variables.orderID !== orderID) {
                         throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
                     }
@@ -235,6 +324,20 @@ describe('wallet cases', () => {
                                             }
                                         }
                                     ]
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('mutation OneClickApproveOrder')) {
+                        if (headers['x-paypal-internal-euat'] !== accessToken) {
+                            throw new Error(`Expected buyer access token to be present in request`);
+                        }
+                        
+                        return {
+                            data: {
+                                oneClickPayment: {
+                                    userId: payerID
                                 }
                             }
                         };
@@ -283,10 +386,39 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+            const accessToken = uniqueID();
+            const payerID = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
+
 
             const gqlMock = getGraphQLApiMock({
-                extraHandler: ({ data }) => {
+                extraHandler: ({ headers, data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                    
                     if (data.variables.orderID && data.variables.orderID !== orderID) {
                         throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
                     }
@@ -314,6 +446,20 @@ describe('wallet cases', () => {
                                             }
                                         }
                                     ]
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('mutation OneClickApproveOrder')) {
+                        if (headers['x-paypal-internal-euat'] !== accessToken) {
+                            throw new Error(`Expected buyer access token to be present in request`);
+                        }
+                        
+                        return {
+                            data: {
+                                oneClickPayment: {
+                                    userId: payerID
                                 }
                             }
                         };
@@ -362,10 +508,38 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+            const accessToken = uniqueID();
+            const payerID = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             const gqlMock = getGraphQLApiMock({
-                extraHandler: ({ data }) => {
+                extraHandler: ({ headers, data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                    
                     if (data.variables.orderID && data.variables.orderID !== orderID) {
                         throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
                     }
@@ -393,6 +567,20 @@ describe('wallet cases', () => {
                                             }
                                         }
                                     ]
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('mutation OneClickApproveOrder')) {
+                        if (headers['x-paypal-internal-euat'] !== accessToken) {
+                            throw new Error(`Expected buyer access token to be present in request`);
+                        }
+                        
+                        return {
+                            data: {
+                                oneClickPayment: {
+                                    userId: payerID
                                 }
                             }
                         };
@@ -444,13 +632,41 @@ describe('wallet cases', () => {
         });
     });
 
-    it('should pay with a wallet instrument, hit an error during approve, and fall back to checkout', async () => {
+    it('should pay with a wallet instrument with oneClick false, and fall back to checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
+            const accessToken = uniqueID();
+            const userIDToken = uniqueID();
+            const payerID = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             const gqlMock = getGraphQLApiMock({
-                extraHandler: ({ data }) => {
+                extraHandler: ({ headers, data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: false
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                    
                     if (data.variables.orderID && data.variables.orderID !== orderID) {
                         throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
                     }
@@ -484,6 +700,147 @@ describe('wallet cases', () => {
                     }
 
                     if (data.query.includes('mutation OneClickApproveOrder')) {
+                        if (headers['x-paypal-internal-euat'] !== accessToken) {
+                            throw new Error(`Expected buyer access token to be present in request`);
+                        }
+
+                        return {
+                            data: {
+                                oneClickPayment: {
+                                    userId: payerID
+                                }
+                            }
+                        };
+                    }
+                }
+            }).expectCalls();
+
+            window.paypal.Menu = expect('Menu', mockMenu);
+            
+            const Checkout = window.paypal.Checkout;
+            window.paypal.Checkout = expect('Checkout', (props) => {
+                if (!props.window) {
+                    throw new Error(`Expected window to be passed`);
+                }
+
+                if (!props.createAuthCode) {
+                    throw new Error(`Expected createAuthCode to be passed to checkout`);
+                }
+
+                props.createAuthCode().then(expect('createAuthCodeThen', authCode => {
+                    if (!authCode) {
+                        throw new Error(`Expected auth code`);
+                    }
+                }));
+
+                return Checkout(props);
+            });
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return orderID;
+            }));
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+            }));
+
+            const wallet = {
+                [FUNDING.PAYPAL]: {
+                    instruments: [
+                        {
+                            type:     WALLET_INSTRUMENT.CARD,
+                            instrumentID,
+                            oneClick: false
+                        }
+                    ]
+                }
+            };
+
+            createButtonHTML({ wallet });
+            await mockSetupButton({
+                merchantID:       [ uniqueID() ],
+                wallet,
+                buyerAccessToken: uniqueID()
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+            gqlMock.done();
+        });
+    });
+
+    it('should pay with a wallet instrument, hit an error during approve, and fall back to checkout', async () => {
+        return await wrapPromise(async ({ expect }) => {
+            const orderID = generateOrderID();
+            const instrumentID = uniqueID();
+            const accessToken = uniqueID();
+            const userIDToken = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: ({ headers, data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                    
+                    if (data.variables.orderID && data.variables.orderID !== orderID) {
+                        throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
+                    }
+
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: false
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:      {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('mutation OneClickApproveOrder')) {
+                        if (headers['x-paypal-internal-euat'] !== accessToken) {
+                            throw new Error(`Expected buyer access token to be present in request`);
+                        }
+
                         return {
                             errors: [
                                 {
@@ -536,7 +893,11 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+            const accessToken = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
@@ -559,6 +920,33 @@ describe('wallet cases', () => {
                     ]
                 }
             };
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                }
+            }).expectCalls();
             
             const win = {};
             
@@ -635,6 +1023,7 @@ describe('wallet cases', () => {
             });
 
             await clickMenu(FUNDING.PAYPAL);
+            gqlMock.done();
         });
     });
 
@@ -642,7 +1031,11 @@ describe('wallet cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+            const accessToken = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
@@ -665,6 +1058,33 @@ describe('wallet cases', () => {
                     ]
                 }
             };
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CREDIT,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                }
+            }).expectCalls();
             
             const win = {};
             
@@ -745,13 +1165,14 @@ describe('wallet cases', () => {
             });
 
             await clickMenu(FUNDING.PAYPAL);
+            gqlMock.done();
         });
     });
 
     it('should pay with a wallet instrument but pay with a different account through the menu', async () => {
         return await wrapPromise(async ({ expect }) => {
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
@@ -854,7 +1275,7 @@ describe('wallet cases', () => {
     it('should pay with a credit wallet instrument but pay with a different account through the menu', async () => {
         return await wrapPromise(async ({ expect }) => {
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
@@ -961,7 +1382,11 @@ describe('wallet cases', () => {
     it('should pay with a wallet instrument but change FI through the menu, when oneClick is false', async () => {
         return await wrapPromise(async ({ expect }) => {
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+            const accessToken = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
@@ -984,6 +1409,33 @@ describe('wallet cases', () => {
                     ]
                 }
             };
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                }
+            }).expectCalls();
 
             const win = {};
 
@@ -1060,6 +1512,7 @@ describe('wallet cases', () => {
             });
 
             await clickMenu(FUNDING.PAYPAL);
+            gqlMock.done();
         });
     });
 
@@ -1068,13 +1521,40 @@ describe('wallet cases', () => {
 
             const payerID = uniqueID();
             const orderID = generateOrderID();
-            const instrumentID = 'xyz123';
+            const accessToken = uniqueID();
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
 
             let oneClickPayCallInProgress = false;
             let updateClientConfigCallInProgress = false;
 
             const gqlMock = getGraphQLApiMock({
-                extraHandler: ({ data }) => {
+                extraHandler: ({ headers, data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        if (data.variables.userIDToken !== userIDToken) {
+                            throw new Error(`Expected correct userIdToken`);
+                        }
+
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+                    
                     if (data.variables.orderID && data.variables.orderID !== orderID) {
                         throw new Error(`Expected orderID passed to GQL to be ${ orderID }, got ${ data.variables.orderID }`);
                     }
@@ -1123,6 +1603,10 @@ describe('wallet cases', () => {
                     }
 
                     if (data.query.includes('mutation OneClickApproveOrder')) {
+                        if (headers['x-paypal-internal-euat'] !== accessToken) {
+                            throw new Error(`Expected buyer access token to be present in request`);
+                        }
+                        
                         if (updateClientConfigCallInProgress) {
                             throw new Error(`Expected client config call to not be in progress during one click call`);
                         }

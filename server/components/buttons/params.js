@@ -37,7 +37,6 @@ type ParamsType = {|
     amount? : string,
     clientMetadataID? : string,
     riskData? : string,
-    enableBNPL? : boolean,
     platform : ?$Values<typeof PLATFORM>
 |};
 
@@ -72,7 +71,6 @@ type RequestParams = {|
     pageSessionID : string,
     riskData : ?RiskData,
     correlationID : string,
-    enableBNPL : boolean,
     platform : $Values<typeof PLATFORM>,
     cookies : string
 |};
@@ -275,7 +273,6 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         userIDToken,
         debug = false,
         onShippingChange = false,
-        enableBNPL = false,
         platform = PLATFORM.DESKTOP
     } = params;
 
@@ -317,7 +314,6 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         pageSessionID,
         clientMetadataID,
         correlationID,
-        enableBNPL,
         platform,
         cookies
     };

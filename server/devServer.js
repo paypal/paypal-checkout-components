@@ -209,28 +209,6 @@ const graphQL : GraphQL = (req, payload) => {
     }));
 };
 
-const getWallet = () => {
-    return Promise.resolve({
-        'payer': {
-            'email_address': 'foo@bar.com'
-        },
-        'funding_options': [
-            {
-                'funding_sources': [
-                    {
-                        'credit': {
-                            'id': 'BC-YMBX4GJLEKMQW'
-                        }
-                    }
-                ],
-                'one_click_eligibility': {
-                    eligible: false
-                }
-            }
-        ]
-    });
-};
-
 /* eslint-disable-next-line no-empty-function */
 const tracking = () => {};
 
@@ -240,10 +218,6 @@ const getAccessToken = () => {
 
 const getMerchantID = () => {
     return Promise.resolve('XYZ12345');
-};
-
-const transportRiskData = () => {
-    return Promise.resolve();
 };
 
 const content = {
@@ -267,10 +241,8 @@ const buttonMiddleware = getButtonMiddleware({
     cache,
     logger,
     graphQL,
-    getWallet,
     getAccessToken,
     getMerchantID,
-    transportRiskData,
     content,
     tracking
 });

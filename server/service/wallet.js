@@ -202,7 +202,6 @@ export type WalletOptions = {|
     clientAccessToken? : ?string,
     buyerAccessToken? : ?string,
     amount? : ?string,
-    enableBNPL : boolean,
     userIDToken? : ?string,
     userRefreshToken? : ?string
 |};
@@ -210,8 +209,8 @@ export type WalletOptions = {|
 const DEFAULT_AMOUNT = '0.00';
 
 // eslint-disable-next-line complexity
-export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatch, getWallet : GetWallet, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount = DEFAULT_AMOUNT, enableBNPL, userIDToken, userRefreshToken } : WalletOptions) : Promise<Wallet> {
+export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
+    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount = DEFAULT_AMOUNT, userIDToken, userRefreshToken } : WalletOptions) : Promise<Wallet> {
 
     const wallet : Wallet = {
         paypal: {
@@ -226,7 +225,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
     };
 
 
-    if (enableBNPL && (userIDToken || userRefreshToken || buyerAccessToken)) {
+    if (userIDToken || userRefreshToken || buyerAccessToken) {
         try {
             const result = await gqlBatch({
                 query:     buildSmartWalletQuery(),
@@ -275,120 +274,16 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
         // $FlowFixMe
         disableCard = disableCard ? disableCard.map(source => source.toUpperCase()) : disableCard;
 
-        const [ fundingElig, smartWallet ] = await Promise.all([
-            (clientAccessToken)
-                ? gqlBatch({
+        const fundingElig =
+            clientAccessToken
+                ? await gqlBatch({
                     query:     buildVaultQuery(),
                     variables: {
                         clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
                         vault, disableFunding, disableCard, userAgent, buttonSessionID
                     },
                     accessToken: clientAccessToken
-                }) : null,
-
-            (buyerAccessToken && amount)
-                ? getWallet(req, { clientID, merchantID, buyerAccessToken, amount, currency }) : null
-        ]);
-
-        if (smartWallet) {
-            for (const fundingOption of smartWallet.funding_options) {
-                if (fundingOption.funding_sources.length !== 1) {
-                    continue;
-                }
-
-                const fundingSource = fundingOption.funding_sources[0];
-                const one_click_pay_allowed =
-                    fundingSource.one_click_pay_allowed ||
-                    (fundingOption.one_click_eligibility && fundingOption.one_click_eligibility.eligible) ||
-                    false;
-
-                const one_click_reason = fundingOption.one_click_eligibility &&
-                    fundingOption.one_click_eligibility.ineligible_reason;
-
-                const email = (smartWallet.payer && smartWallet.payer.email_address);
-
-                const { credit, card, bank_account, balance, logo_url } = fundingSource;
-                let instrument;
-
-                if (credit) {
-                    logger.info(req, 'resolve_wallet_credit', {
-                        oneClick: one_click_pay_allowed.toString(),
-                        one_click_reason });
-
-                    instrument = {
-                        type:         WALLET_INSTRUMENT.CREDIT,
-                        instrumentID: credit.id,
-                        label:        email,
-                        oneClick:     one_click_pay_allowed
-                    };
-
-                    wallet.paypal.instruments = [
-                        ...wallet.paypal.instruments,
-                        instrument
-                    ];
-
-                    wallet.credit.instruments = [
-                        ...wallet.credit.instruments,
-                        instrument
-                    ];
-
-                } else if (card) {
-                    logger.info(req, 'resolve_wallet_card', {
-                        oneClick: one_click_pay_allowed.toString(),
-                        one_click_reason
-                    });
-
-                    instrument = {
-                        type:         WALLET_INSTRUMENT.CARD,
-                        instrumentID: card.id,
-                        label:        `••••${ card.last_n_chars }`,
-                        logoUrl:      logo_url,
-                        oneClick:     one_click_pay_allowed
-                    };
-
-                    wallet.paypal.instruments = [
-                        ...wallet.paypal.instruments,
-                        instrument
-                    ];
-
-                } else if (bank_account) {
-                    logger.info(req, 'resolve_wallet_bank', {
-                        oneClick: one_click_pay_allowed.toString(),
-                        one_click_reason
-                    });
-
-                    instrument = {
-                        type:         WALLET_INSTRUMENT.BANK,
-                        instrumentID: bank_account.id,
-                        label:        `••••${ bank_account.last_n_chars }`,
-                        logoUrl:      logo_url,
-                        oneClick:     one_click_pay_allowed
-                    };
-
-                    wallet.paypal.instruments = [
-                        ...wallet.paypal.instruments,
-                        instrument
-                    ];
-                } else if (balance) {
-                    logger.info(req, 'resolve_wallet_balance', {
-                        oneClick: one_click_pay_allowed.toString(),
-                        one_click_reason
-                    });
-
-                    instrument = {
-                        type:         WALLET_INSTRUMENT.BALANCE,
-                        instrumentID: balance.id,
-                        label:        email,
-                        oneClick:     one_click_pay_allowed
-                    };
-
-                    wallet.paypal.instruments = [
-                        ...wallet.paypal.instruments,
-                        instrument
-                    ];
-                }
-            }
-        }
+                }) : null;
 
         const buyerVault = fundingElig && fundingElig.fundingEligibility;
         
@@ -413,6 +308,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                     const vendorVault = buyerVault.card.vendors[card];
 
                     if (vendorVault && vendorVault.vaultedInstruments) {
+                        // eslint-disable-next-line max-depth
                         for (const vaultedInstrument of vendorVault.vaultedInstruments) {
                             logger.info(req, 'resolve_vault_card', { oneClick: 'true' });
 

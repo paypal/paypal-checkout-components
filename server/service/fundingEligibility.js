@@ -7,13 +7,7 @@ import { strictMerge } from 'strict-merge';
 import { pruneQuery, buildQuery, graphqlTypes, copy, type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
 
-type FundingEligibilityQueryOptions = {|
-    queryProducts? : boolean
-|};
-
-function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibilityType, opts? : FundingEligibilityQueryOptions) : ?string {
-    const { queryProducts = false } = opts || {};
-
+function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibilityType) : ?string {
     const InputTypes = {
         $clientID:        'String',
         $buyerCountry:    'CountryCodes',
@@ -79,10 +73,6 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
     };
 
     const getPayLaterProductsQuery = () => {
-        if (!queryProducts) {
-            return;
-        }
-
         return {
             flex:   getPayLaterProductQuery(),
             payIn4: getPayLaterProductQuery()
@@ -159,12 +149,11 @@ export type FundingEligibilityOptions = {|
     merchantID : ?$ReadOnlyArray<string>,
     buttonSessionID : string,
     clientAccessToken : ?string,
-    basicFundingEligibility : FundingEligibilityType,
-    enableBNPL : boolean
+    basicFundingEligibility : FundingEligibilityType
 |};
 
 export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
-    currency, intent, commit, vault, enableFunding = [], disableFunding = [], disableCard = [], clientAccessToken, buyerCountry, basicFundingEligibility, enableBNPL } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
+    currency, intent, commit, vault, enableFunding = [], disableFunding = [], disableCard = [], clientAccessToken, buyerCountry, basicFundingEligibility } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
 
     try {
         const ip = req.ip;
@@ -177,7 +166,7 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
             delete basicFundingEligibility.card.branded;
         }
 
-        const fundingEligibilityQuery = buildFundingEligibilityQuery(basicFundingEligibility, { queryProducts: enableBNPL });
+        const fundingEligibilityQuery = buildFundingEligibilityQuery(basicFundingEligibility);
 
         if (!fundingEligibilityQuery) {
             logger.info(req, 'funding_eligibility_no_queryable_fields');

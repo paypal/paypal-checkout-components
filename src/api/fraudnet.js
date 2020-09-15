@@ -32,6 +32,10 @@ type FraudnetConfig = {|
 
 export function loadFraudnet({ env, clientMetadataID, cspNonce, timeout = 1000 } : FraudnetOptions) : ZalgoPromise<void> {
     return new ZalgoPromise(resolve => {
+        if (__TEST__) {
+            return resolve();
+        }
+
         const config : FraudnetConfig = {
             f:   clientMetadataID,
             s:   FRAUDNET_APP_NAME,

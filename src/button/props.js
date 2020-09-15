@@ -39,8 +39,6 @@ export type ButtonStyle = {|
     tagline : boolean | void
 |};
 
-export type ServerRiskData = {||};
-
 export type ButtonXProps = {|
     env : $Values<typeof ENV>,
     locale : LocaleType,
@@ -75,7 +73,6 @@ export type ButtonXProps = {|
     getParentDomain : () => string,
     getPageUrl : GetPageURL,
     getParent : () => CrossDomainWindowType,
-    persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
     clientMetadataID : ?string,
     fundingSource : ?$Values<typeof FUNDING>,
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
@@ -90,7 +87,6 @@ export type ButtonXProps = {|
 
     amount : ?string,
     userIDToken : ?string,
-    enableBNPL : ?boolean,
     
     onInit : XOnInit,
     onApprove : ?XOnApprove,
@@ -128,7 +124,6 @@ export type ButtonProps = {|
     merchantDomain : string,
     getPageUrl : GetPageURL,
     getParent : () => CrossDomainWindowType,
-    persistRiskData : ?(ServerRiskData) => ZalgoPromise<void>,
     fundingSource : ?$Values<typeof FUNDING>,
     standaloneFundingSource : ?$Values<typeof FUNDING>,
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
@@ -141,7 +136,6 @@ export type ButtonProps = {|
 
     amount : ?string,
     userIDToken : ?string,
-    enableBNPL : boolean,
 
     onInit : OnInit,
     onError : OnError,
@@ -194,11 +188,9 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         connect,
         intent,
         merchantID,
-        persistRiskData,
         upgradeLSAT = false,
         amount,
         userIDToken,
-        enableBNPL = false,
         enableFunding,
         disableFunding,
         disableCard,
@@ -292,7 +284,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         getPageUrl,
         rememberFunding,
         getParent,
-        persistRiskData,
         connect,
         fundingSource,
         enableFunding,
@@ -302,7 +293,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
 
         amount,
         userIDToken,
-        enableBNPL: enableBNPL || false,
 
         enableThreeDomainSecure,
         enableNativeCheckout,
@@ -369,7 +359,6 @@ export type ServiceData = {|
             [ $Values<typeof FUNDING> ] : ?boolean
         }
     |},
-    serverRiskData : ? ServerRiskData,
     cookies : string
 |};
 
@@ -389,11 +378,10 @@ type ServiceDataOptions = {|
             [ $Values<typeof FUNDING> ] : ?boolean
         }
     |},
-    serverRiskData : ?ServerRiskData,
     cookies : string
 |};
 
-export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta, content, buyerGeoCountry,
+export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyerGeoCountry,
     fundingEligibility, wallet, buyerAccessToken, serverMerchantID, eligibility, cookies } : ServiceDataOptions) : ServiceData {
 
     return {
@@ -406,7 +394,6 @@ export function getServiceData({ facilitatorAccessToken, serverRiskData, sdkMeta
         buyerAccessToken,
         facilitatorAccessToken,
         eligibility,
-        serverRiskData,
         cookies
     };
 }
