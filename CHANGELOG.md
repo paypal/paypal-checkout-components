@@ -1,3 +1,9 @@
+## <small>5.0.117 (2020-09-15)</small>
+
+* Use body for fields component autoresize ([25055a5](https://github.com/paypal/paypal-checkout-components/commit/25055a5))
+
+
+
 ## <small>5.0.116 (2020-09-15)</small>
 
 * Fix logo colors for paylater button ([5269e72](https://github.com/paypal/paypal-checkout-components/commit/5269e72))
