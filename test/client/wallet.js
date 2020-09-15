@@ -346,7 +346,20 @@ describe('wallet cases', () => {
             }).expectCalls();
 
             window.paypal.Menu = expect('Menu', mockMenu);
-            window.paypal.Checkout = expect('Checkout', window.paypal.Checkout);
+            const Checkout = window.paypal.Checkout;
+            window.paypal.Checkout = expect('Checkout', (props) => {
+                if (!props.createAuthCode) {
+                    throw new Error(`Expected createAuthCode to be passed to checkout`);
+                }
+
+                props.createAuthCode().then(expect('createAuthCodeThen', authCode => {
+                    if (!authCode) {
+                        throw new Error(`Expected auth code`);
+                    }
+                }));
+
+                return Checkout(props);
+            });
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
@@ -468,7 +481,24 @@ describe('wallet cases', () => {
             }).expectCalls();
 
             window.paypal.Menu = expect('Menu', mockMenu);
-            window.paypal.Checkout = expect('Checkout', window.paypal.Checkout);
+            const Checkout = window.paypal.Checkout;
+            window.paypal.Checkout = expect('Checkout', (props) => {
+                if (!props.window) {
+                    throw new Error(`Expected window to be passed`);
+                }
+
+                if (!props.createAuthCode) {
+                    throw new Error(`Expected createAuthCode to be passed to checkout`);
+                }
+
+                props.createAuthCode().then(expect('createAuthCodeThen', authCode => {
+                    if (!authCode) {
+                        throw new Error(`Expected auth code`);
+                    }
+                }));
+
+                return Checkout(props);
+            });
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
@@ -595,6 +625,21 @@ describe('wallet cases', () => {
                 if (props.fundingSource !== FUNDING.CREDIT) {
                     throw new Error(`Expected fundingSource to be ${ FUNDING.CREDIT }, got ${ props.fundingSource }`);
                 }
+
+                if (!props.window) {
+                    throw new Error(`Expected window to be passed`);
+                }
+
+                if (!props.createAuthCode) {
+                    throw new Error(`Expected createAuthCode to be passed to checkout`);
+                }
+
+                props.createAuthCode().then(expect('createAuthCodeThen', authCode => {
+                    if (!authCode) {
+                        throw new Error(`Expected auth code`);
+                    }
+                }));
+
                 return Checkout(props);
             });
 
@@ -853,7 +898,20 @@ describe('wallet cases', () => {
             }).expectCalls();
 
             window.paypal.Menu = expect('Menu', mockMenu);
-            window.paypal.Checkout = expect('Checkout', window.paypal.Checkout);
+            const Checkout = window.paypal.Checkout;
+            window.paypal.Checkout = expect('Checkout', (props) => {
+                if (!props.createAuthCode) {
+                    throw new Error(`Expected createAuthCode to be passed to checkout`);
+                }
+
+                props.createAuthCode().then(expect('createAuthCodeThen', authCode => {
+                    if (!authCode) {
+                        throw new Error(`Expected auth code`);
+                    }
+                }));
+
+                return Checkout(props);
+            });
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
