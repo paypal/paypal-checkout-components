@@ -1,3 +1,9 @@
+## <small>5.0.116 (2020-09-15)</small>
+
+* Fix logo colors for paylater button ([5269e72](https://github.com/paypal/paypal-checkout-components/commit/5269e72))
+
+
+
 ## <small>5.0.115 (2020-09-14)</small>
 
 * Fix button experiment context type ([06d635e](https://github.com/paypal/paypal-checkout-components/commit/06d635e))
