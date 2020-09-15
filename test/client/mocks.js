@@ -121,6 +121,7 @@ export function setupMocks() {
     };
 
     window.xprops = {
+        uid:             uniqueID(),
         clientID:        'xyz123',
         platform:        PLATFORM.DESKTOP,
         intent:          INTENT.CAPTURE,

@@ -43,6 +43,7 @@ export type ButtonXProps = {|
     env : $Values<typeof ENV>,
     locale : LocaleType,
     style : ButtonStyle,
+    uid : string,
 
     sessionID : string,
     buttonSessionID : string,
@@ -100,6 +101,7 @@ export type ButtonProps = {|
     env : $Values<typeof ENV>,
     locale : LocaleType,
     style : ButtonStyle,
+    uid : string,
 
     sessionID : string,
     buttonSessionID : string,
@@ -158,6 +160,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
     const xprops : ButtonXProps = window.xprops;
 
     const {
+        uid,
         env,
         vault,
         commit,
@@ -259,6 +262,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
     const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, isLSATExperiment: upgradeLSATExperiment.isEnabled(), upgradeLSAT });
 
     return {
+        uid,
         env,
         style,
 

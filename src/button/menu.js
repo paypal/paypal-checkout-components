@@ -19,18 +19,18 @@ type ButtonDropdownProps = {|
 let smartMenu;
 
 export function prerenderMenu({ props, components } : {| props : ButtonProps, components : Components |}) {
-    const { clientID } = props;
+    const { clientID, uid: containerUID } = props;
     const { Menu } = components;
 
     if (!clientID) {
         return;
     }
     
-    smartMenu = smartMenu || renderSmartMenu({ clientID, Menu });
+    smartMenu = smartMenu || renderSmartMenu({ containerUID, clientID, Menu });
 }
 
 export function renderMenu({ props, payment, components, choices } : ButtonDropdownProps) : ZalgoPromise<void> {
-    const { clientID } = props;
+    const { clientID, uid: containerUID } = props;
     const { button, menuToggle } = payment;
     const { Menu } = components;
 
@@ -38,7 +38,7 @@ export function renderMenu({ props, payment, components, choices } : ButtonDropd
         throw new Error(`Can not render menu without client id`);
     }
 
-    smartMenu = smartMenu || renderSmartMenu({ clientID, Menu });
+    smartMenu = smartMenu || renderSmartMenu({ containerUID, clientID, Menu });
 
     const verticalOffset = button.getBoundingClientRect().bottom;
     const loadingTimeout = setTimeout(() => enableLoadingSpinner(button), 50);

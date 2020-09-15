@@ -6,6 +6,7 @@ import { memoize } from 'belter/src';
 import type { MenuFlowType, MenuFlowProps } from '../types';
 
 type SmartMenuProps = {|
+    containerUID : string,
     clientID : string,
     Menu : MenuFlowType,
     onFocus? : () => void,
@@ -17,11 +18,11 @@ type SmartMenu = {|
     hide : () => ZalgoPromise<void>
 |};
 
-export function renderSmartMenu({ clientID, Menu } : SmartMenuProps) : SmartMenu {
+export function renderSmartMenu({ containerUID, clientID, Menu } : SmartMenuProps) : SmartMenu {
     const { renderTo, updateProps, show, hide } = Menu({ clientID });
 
     const render = memoize(() => {
-        return renderTo(window.xprops.getParent(), '#smart-menu');
+        return renderTo(window.xprops.getParent(), `#${ containerUID } #smart-menu`);
     });
 
     const display = ({ choices, verticalOffset, onFocus, onFocusFail }) => {
