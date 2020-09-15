@@ -22,7 +22,7 @@ export function getFieldsComponent() : ZoidComponent<FieldsProps> {
             autoResize: {
                 width:   false,
                 height:  true,
-                element: '#payment-fields'
+                element: 'body'
             },
 
             dimensions: {
