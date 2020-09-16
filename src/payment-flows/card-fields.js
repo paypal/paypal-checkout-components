@@ -72,6 +72,8 @@ const getElements = () : {| buttonsContainer : HTMLElement, cardButtonsContainer
     return { buttonsContainer, cardButtonsContainer, cardFieldsContainer };
 };
 
+let resizeListener;
+
 const slideUpButtons = () => {
     const { buttonsContainer, cardButtonsContainer, cardFieldsContainer } = getElements();
 
@@ -86,10 +88,11 @@ const slideUpButtons = () => {
         buttonsContainer.style.marginTop = `${ buttonsContainer.offsetTop - cardButtonsContainer.offsetTop }px`;
     };
 
-    window.addEventListener('resize', debounce(() => {
+    resizeListener = debounce(() => {
         buttonsContainer.style.transitionDuration = '0s';
         recalculateMargin();
-    }));
+    });
+    window.addEventListener('resize', resizeListener);
 
     recalculateMargin();
 };
@@ -98,7 +101,9 @@ const slideDownButtons = () => {
     const { buttonsContainer } = getElements();
 
     unhighlightCards();
-    buttonsContainer.style.marginTop = `0px`;
+    window.removeEventListener('resize', resizeListener);
+    buttonsContainer.style.removeProperty('transition-duration');
+    buttonsContainer.style.removeProperty('margin-top');
 };
 
 function initCardFields({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
@@ -152,7 +157,13 @@ function initCardFields({ props, components, payment, serviceData, config } : In
             });
         },
 
-        onCancel,
+        onCancel: () => {
+            // eslint-disable-next-line no-use-before-define
+            return close().then(() => {
+                return onCancel();
+            });
+        },
+
         onError,
         onClose,
         onCardTypeChange,
