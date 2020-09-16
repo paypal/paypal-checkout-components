@@ -15,7 +15,7 @@ import { getSelectedFunding, getButtons, getMenuButton } from './dom';
 import { setupButtonLogger } from './logger';
 import { setupRemember } from './remember';
 import { setupPaymentFlows, initiatePaymentFlow, initiateMenuFlow } from './pay';
-import { prerenderMenu, clearSmartMenu } from './menu';
+import { prerenderButtonSmartMenu, clearButtonSmartMenu } from './menu';
 import { validateProps } from './validation';
 
 type ButtonOpts = {|
@@ -150,7 +150,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         });
     }
 
-    clearSmartMenu();
+    clearButtonSmartMenu();
     
     getButtons().forEach(button => {
         const menuToggle = getMenuButton(button);
@@ -171,7 +171,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         });
 
         if (menuToggle) {
-            prerenderMenu({ props, components });
+            prerenderButtonSmartMenu({ props, components });
 
             onElementClick(menuToggle, (event) => {
                 event.preventDefault();

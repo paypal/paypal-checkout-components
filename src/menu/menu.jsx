@@ -49,23 +49,21 @@ export function Menu({ choices, onBlur, cspNonce, verticalOffset, onFocus, onFoc
                         width: 100%;
                         z-index: 5000;
                         background: white;
-                        border-radius: 3px;
+                        border-radius: 0 0 3px 3px;
                         font-family: Helvetica, sans-serif;
-                        font-size: 14px;
                         letter-spacing: 0.5px;
                         box-shadow: 0px 0px 3px 1px rgba(222,222,222,1);
                         outline-style: none;
                         user-select: none;
                         text-align: center;
                         margin-top: ${ verticalOffset }px;
+                        overflow: hidden;
                     }
                     
                     .menu-item {
                         border-top: 2px solid rgba(230, 230, 230, 0.5);;
-                        padding: 14px 18px;
                         color: #0070ba;
                         cursor: pointer;
-                        line-height: 18px;
                     }
                     
                     .menu-item:first-child {
@@ -75,6 +73,30 @@ export function Menu({ choices, onBlur, cspNonce, verticalOffset, onFocus, onFoc
                     .menu-item:hover {
                         background: #fcfcfc;
                         text-decoration: underline;
+                    }
+
+                    @media screen and (min-width: 0px) {
+                        .menu-item {
+                            font-size: 11px;
+                            line-height: 14px;
+                            padding: 8px;
+                        }
+                    }
+
+                    @media screen and (min-width: 300px) {
+                        .menu-item {
+                            font-size: 14px;
+                            line-height: 18px;
+                            padding: 14px;
+                        }
+                    }
+
+                    @media screen and (min-width: 500px) {
+                        .menu-item {
+                            font-size: 18px;
+                            line-height: 21px;
+                            padding: 17px;
+                        }
                     }
                 `}
             </style>

@@ -12,7 +12,7 @@ import { updateButtonClientConfig } from '../api';
 import { type ButtonProps, type Config, type ServiceData, type Components } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
 import { validateOrder } from './validation';
-import { renderMenu } from './menu';
+import { showButtonSmartMenu } from './menu';
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     vaultCapture,
@@ -170,6 +170,6 @@ export function initiateMenuFlow({ payment, serviceData, config, components, pro
             };
         });
 
-        return renderMenu({ props, payment, components, choices });
+        return showButtonSmartMenu({ props, payment, components, choices });
     });
 }

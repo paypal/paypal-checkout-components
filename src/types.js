@@ -108,12 +108,14 @@ export type MenuChoices = $ReadOnlyArray<MenuChoice>;
 export type MenuFlowProps = {|
     clientID : string,
     onFocus? : () => void,
+    onBlur? : () => void,
     onFocusFail? : () => void,
     verticalOffset? : number,
     choices? : MenuChoices
 |};
 
 export type MenuFlowType = ZoidComponent<MenuFlowProps>;
+export type MenuComponentInstance = ZoidComponentInstance<MenuFlowProps>;
 
 export type ContentType = {|
     instantlyPayWith : string,
