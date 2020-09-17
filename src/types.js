@@ -169,7 +169,8 @@ export type ConnectOptions = {|
 |};
 
 export type SmartFields = {|
+    name : string,
     fundingSource : $Values<typeof FUNDING>,
-    confirm : (orderId : string) => ZalgoPromise<string>,
+    confirm : (orderId : string) => ZalgoPromise<void | string>,
     isValid : () => boolean
 |};

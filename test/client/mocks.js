@@ -1658,3 +1658,40 @@ const ensureWindowOpenOnClick = () => {
 };
 
 ensureWindowOpenOnClick();
+
+
+type SmartFieldsMock = {|
+    done : () => void
+|};
+
+type MockFieldsOptions = {|
+    fundingSource : string,
+    isValid : () => boolean,
+    confirm : ?() => ZalgoPromise<void | string>
+|};
+
+export function renderSmartFieldsMock({
+    fundingSource,
+    isValid,
+    confirm
+} : MockFieldsOptions) : SmartFieldsMock {
+    window.frames = [
+        {
+            exports: {
+                name:    'smart-fields',
+                fundingSource,
+                isValid,
+                confirm
+            },
+            location: window.location
+        }
+    ];
+
+    const done = () => {
+        delete window.frames;
+    };
+
+    return {
+        done
+    };
+}

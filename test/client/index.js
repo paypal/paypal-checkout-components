@@ -19,6 +19,7 @@ import './card';
 import './native';
 import './payee';
 import './connect';
+import './smart-fields';
 
 beforeEach(() => {
     setupMocks();

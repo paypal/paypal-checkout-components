@@ -8,11 +8,13 @@ import { checkout, cardFields, native, honey, vaultCapture, walletCapture, popup
 import { getLogger, promiseNoop } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
 import { updateButtonClientConfig } from '../api';
+import type { SmartFields } from '../types';
 
 import { type ButtonProps, type Config, type ServiceData, type Components } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
 import { validateOrder } from './validation';
 import { showButtonSmartMenu } from './menu';
+
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     vaultCapture,
@@ -47,10 +49,11 @@ type InitiatePaymentOptions = {|
     props : ButtonProps,
     serviceData : ServiceData,
     config : Config,
-    components : Components
+    components : Components,
+    smartFields : ?SmartFields
 |};
 
-export function initiatePaymentFlow({ payment, serviceData, config, components, props } : InitiatePaymentOptions) : ZalgoPromise<void> {
+export function initiatePaymentFlow({ payment, serviceData, config, components, props, smartFields } : InitiatePaymentOptions) : ZalgoPromise<void> {
     const { button, fundingSource, instrumentType } = payment;
 
     return ZalgoPromise.try(() => {
@@ -111,10 +114,13 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 return validateOrder(orderID, { env, clientID, merchantID, expectedCurrency, expectedIntent, vault });
             });
 
+            const confirmOrderPromise = smartFields && smartFields.confirm && createOrder().then(smartFields.confirm);
+
             return ZalgoPromise.all([
                 clickPromise,
                 startPromise,
-                validateOrderPromise
+                validateOrderPromise,
+                confirmOrderPromise
             ]).catch(err => {
                 return ZalgoPromise.try(close).then(() => {
                     throw err;
