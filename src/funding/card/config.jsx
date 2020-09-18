@@ -142,7 +142,11 @@ export function getCardConfig() : FundingSourceConfig {
             );
         },
 
-        WalletLabel: ({ instrument } : WalletLabelOptions) => {
+        WalletLabel: ({ logoColor, instrument } : WalletLabelOptions) => {
+            if (!instrument) {
+                return <GlyphCard logoColor={ logoColor } />;
+            }
+
             if (!instrument.vendor) {
                 throw new Error(`Vendor required for card vault label`);
             }

@@ -10,6 +10,9 @@
 
 <body>
     <script>
+
+        const server = xprops.server || {};
+
         const props = {
             ...xprops,
             content: {
@@ -18,7 +21,8 @@
                 payWith: 'Pay with',
                 credit: 'Credit',
                 balance: 'Balance'
-            }
+            },
+            wallet: server.wallet
         }
 
         document.write(button.Buttons(props).render(jsx.html()));

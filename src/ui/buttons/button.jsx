@@ -27,7 +27,7 @@ type IndividualButtonProps = {|
     onShippingChange : ?OnShippingChange,
     i : number,
     nonce : string,
-    clientAccessToken : ?string,
+    userIDToken : ?string,
     personalization : ?Personalization,
     content : ?ContentType,
     tagline : ?boolean,
@@ -40,7 +40,7 @@ type IndividualButtonProps = {|
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    clientAccessToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
+    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
 
     const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -117,7 +117,6 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             fundingEligibility={ fundingEligibility }
             onClick={ clickHandler }
             onKeyPress={ keypressHandler }
-            clientAccessToken={ clientAccessToken }
             personalization={ personalization }
             tagline={ tagline }
             content={ content }
@@ -127,10 +126,9 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     let isWallet = false;
 
     if (
-        instrument &&
         WalletLabel &&
-        !__WEB__ &&
-        flow === BUTTON_FLOW.PURCHASE
+        flow === BUTTON_FLOW.PURCHASE &&
+        (instrument || (__WEB__ && userIDToken && fundingSource === FUNDING.PAYPAL))
     ) {
         labelNode = (
             <WalletLabel
@@ -142,6 +140,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 commit={ commit }
                 experiment={ experiment }
                 vault={ vault }
+                textColor={ textColor }
             />
         );
 

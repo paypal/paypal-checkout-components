@@ -1,0 +1,32 @@
+
+.placeholder {
+    display: inline-block;
+    color: transparent;
+    background: #fff;
+    opacity: 0.15;
+    border-radius: 2px;
+    animation: 1s loading-placeholder ease-in-out infinite;
+    position: relative;
+    top: 10%;
+    height: 80%;
+
+    &.color-black {
+        background: #000;
+    }
+
+    &.color-white {
+        background: #fff;
+    }
+}
+
+@keyframes loading-placeholder {
+    0% {
+        opacity: 0.15;
+    }
+    50% {
+        opacity: 0.3
+    }
+    100% {
+        opacity: 0.15;
+    }
+}

@@ -6,7 +6,7 @@ import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { noop } from 'belter/src';
 
 import type { Wallet, WalletInstrument } from '../../types';
-import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT } from '../../constants';
+import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constants';
 import { determineEligibleFunding, isWalletFundingEligible } from '../../funding';
 
 import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
@@ -95,7 +95,7 @@ export function validateButtonProps(props : ButtonPropsInputs) {
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick = noop } = props;
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
-        nonce, components, onShippingChange, personalization, clientAccessToken, content, flow, experiment } = normalizeButtonProps(props);
+        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
 
     const fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet });
@@ -107,9 +107,9 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
 
-    const isWallet = Boolean(
-        Object.keys(instruments).length &&
-        !__WEB__
+    const isWallet = (
+        flow === BUTTON_FLOW.PURCHASE,
+        ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
 
     return (
@@ -143,7 +143,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         wallet={ wallet }
                         onShippingChange={ onShippingChange }
                         onClick={ onClick }
-                        clientAccessToken={ clientAccessToken }
+                        userIDToken={ userIDToken }
                         personalization={ personalization }
                         tagline={ tagline }
                         commit={ commit }

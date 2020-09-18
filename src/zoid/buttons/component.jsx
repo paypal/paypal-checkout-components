@@ -445,7 +445,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
             userIDToken: {
                 type:       'string',
-                value:      getUserIDToken,
+                default:    getUserIDToken,
                 required:   false,
                 queryParam: true
             },

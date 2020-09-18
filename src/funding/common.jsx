@@ -42,7 +42,6 @@ export type LabelOptions = {|
     onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
     onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
     layout : $Values<typeof BUTTON_LAYOUT>,
-    clientAccessToken : ?string,
     personalization : ?Personalization,
     nonce : ?string,
     tagline : ?boolean,
@@ -52,12 +51,13 @@ export type LabelOptions = {|
 export type WalletLabelOptions = {|
     locale : LocaleType,
     logoColor : $Values<typeof LOGO_COLOR>,
-    instrument : WalletInstrument,
+    instrument : ?WalletInstrument,
     content : ?ContentType,
     commit : boolean,
     experiment : Experiment,
     vault : boolean,
-    nonce? : ?string
+    nonce? : ?string,
+    textColor : $Values<typeof TEXT_COLOR>
 |};
 
 export type TagOptions = {|

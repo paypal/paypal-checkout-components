@@ -8,7 +8,7 @@ import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
 import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
 import { componentContent } from '../content';
-import { Text, Space } from '../../ui/text';
+import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
 import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/labels';
 
@@ -173,6 +173,10 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
         return;
     }
 
+    if (!instrument) {
+        throw new Error(`Expected instrument`);
+    }
+
     let logo;
 
     if (instrument.logoUrl) {
@@ -221,48 +225,46 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
 }
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, experiment, vault } = opts;
+    const { logoColor, instrument, content, commit, experiment, vault, textColor } = opts;
 
-    if (__WEB__) {
-        return;
-    }
-
-    if ((experiment && experiment.oldWalletDesign) || !instrument.type) {
+    if ((experiment && experiment.oldWalletDesign) || (instrument && !instrument.type)) {
         return WalletLabelOld(opts);
     }
 
     let logo;
     let label;
 
-    if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
-        logo = instrument.logoUrl
-            ? <img class='card-art' src={ instrument.logoUrl } />
-            : <GlyphCard logoColor={ logoColor } />;
+    if (instrument) {
+        if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
+            logo = instrument.logoUrl
+                ? <img class='card-art' src={ instrument.logoUrl } />
+                : <GlyphCard logoColor={ logoColor } />;
 
-        label = instrument.label.replace('••••', '••');
+            label = instrument.label.replace('••••', '••');
 
-    } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
-        logo = instrument.logoUrl
-            ? <img class='card-art' src={ instrument.logoUrl } />
-            : <GlyphBank logoColor={ logoColor } />;
+        } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
+            logo = instrument.logoUrl
+                ? <img class='card-art' src={ instrument.logoUrl } />
+                : <GlyphBank logoColor={ logoColor } />;
 
-        label = instrument.label.replace('••••', '••');
+            label = instrument.label.replace('••••', '••');
 
-    } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-        logo = <CreditMark />;
+        } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
+            logo = <CreditMark />;
 
-        label = content && content.credit;
+            label = content && content.credit;
         
-    } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
-        logo = <PayPalMark />;
+        } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
+            logo = <PayPalMark />;
 
-        label = content && content.balance;
+            label = content && content.balance;
         
-    } else if (instrument.label) {
-        label = instrument.label;
+        } else if (instrument.label) {
+            label = instrument.label;
+        }
     }
 
-    const payNow = Boolean(instrument.oneClick && commit && !vault);
+    const payNow = Boolean((instrument && instrument.oneClick) && commit && !vault);
 
     const attrs = {};
     if (payNow) {
@@ -276,28 +278,30 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                     <PPLogo logoColor={ logoColor } />
                     <Space />
                 </div>
-                {
-                    content && (
-                        <div class='pay-label' optional={ 2 }>
-                            <Space />
-                            <Text>{ payNow ? content.payNow : content.payWith }</Text>
-                            <Space />
-                        </div>
-                    )
-                }
-                {
-                    logo &&
-                        <div class='logo' optional={ 1 }>
-                            { logo }
-                        </div>
-                }
-                {
-                    label &&
-                        <div class='label'>
-                            <Space />
-                            <Text>{ label }</Text>
-                        </div>
-                }
+                <div class='pay-label' optional={ 2 }>
+                    <Space />
+                    {
+                        (instrument && content)
+                            ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
+                            : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
+                    }
+                    <Space />
+                </div>
+                <div class='logo' optional={ 1 }>
+                    {
+                        (instrument && logo)
+                            ? logo
+                            : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
+                    }
+                </div>
+                <div class='label'>
+                    <Space />
+                    {
+                        (instrument && label)
+                            ? <Text>{ label }</Text>
+                            : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
+                    }
+                </div>
             </div>
         </Style>
     );
