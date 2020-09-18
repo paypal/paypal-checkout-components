@@ -107,6 +107,11 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
 
+    const isWallet = Boolean(
+        Object.keys(instruments).length &&
+        !__WEB__
+    );
+
     return (
         <div class={ [
             CLASS.CONTAINER,
@@ -114,7 +119,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             `${ CLASS.SHAPE }-${ shape }`,
             `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
             `${ CLASS.ENV }-${ env }`,
-            `${ Object.keys(instruments).length ? CLASS.WALLET : '' }`
+            `${ isWallet ? CLASS.WALLET : '' }`
         ].join(' ') }>
 
             <Style
