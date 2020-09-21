@@ -166,6 +166,10 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             const paymentProps = getProps({ facilitatorAccessToken });
             const payPromise = initiatePayment({ payment, props: paymentProps });
 
+            payPromise.catch(err => {
+                getLogger().info('click_initiate_payment_reject', { err: stringifyError(err) }).flush();
+            });
+
             // $FlowFixMe
             button.payPromise = payPromise;
         });
@@ -201,6 +205,10 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             const paymentProps = getProps({ facilitatorAccessToken });
             const payment = { win, button, fundingSource: paymentFundingSource, card, buyerIntent: BUYER_INTENT.PAY };
             const payPromise = initiatePayment({ payment, props: paymentProps });
+
+            payPromise.catch(err => {
+                getLogger().info('prerender_initiate_payment_reject', { err: stringifyError(err) }).flush();
+            });
 
             // $FlowFixMe
             button.payPromise = payPromise;
