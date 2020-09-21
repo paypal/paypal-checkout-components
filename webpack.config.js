@@ -35,6 +35,7 @@ export const WEBPACK_CONFIG_BUTTONS = getSmartWebpackConfig({
     entry:         'src/button',
     filename:      'smart-payment-buttons',
     minify:   false,
+    debug:    true,
     vars:     globals
 });
 
