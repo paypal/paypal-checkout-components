@@ -14,19 +14,9 @@ import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/l
 
 import css from './style.scoped.scss';
 
-export function Logo({ logoColor, experiment } : LogoOptions) : ChildType {
-    if (experiment && experiment.removeLogoMonogram) {
-        return (
-            <PayPalLogo logoColor={ logoColor } />
-        );
-    }
-
+export function Logo({ logoColor } : LogoOptions) : ChildType {
     return (
-        <Fragment>
-            <PPLogo logoColor={ logoColor } />
-            <Space />
-            <PayPalLogo logoColor={ logoColor } />
-        </Fragment>
+        <PayPalLogo logoColor={ logoColor } />
     );
 }
 
@@ -225,9 +215,9 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
 }
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, experiment, vault, textColor } = opts;
+    const { logoColor, instrument, content, commit, vault, textColor } = opts;
 
-    if ((experiment && experiment.oldWalletDesign) || (instrument && !instrument.type)) {
+    if (instrument && !instrument.type) {
         return WalletLabelOld(opts);
     }
 

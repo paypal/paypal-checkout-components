@@ -40,6 +40,5 @@ export type ContentType = {|
 |};
 
 export type Experiment = {|
-    oldWalletDesign? : boolean,
-    removeLogoMonogram? : boolean
+
 |};
