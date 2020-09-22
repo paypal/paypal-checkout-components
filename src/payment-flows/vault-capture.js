@@ -238,13 +238,15 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
         label:    content.deleteVaultedCard,
         spinner:  true,
         onSelect: () => {
+            // $FlowFixMe
+            const element : HTMLElement = button.parentElement || button;
 
             getLogger().info('click_unlink_account').track({
                 [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_UNLINK_ACCOUNT
             }).flush();
 
             return deleteVault({ paymentMethodID, clientAccessToken }).then(() => {
-                destroyElement(button);
+                destroyElement(element);
             });
         }
     };
