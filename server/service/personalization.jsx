@@ -5,7 +5,7 @@ import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT } from '@paypal/sdk-constants'
 import { node, type ComponentFunctionType } from 'jsx-pragmatic';
 import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos';
 
-import { placeholderToJSX, type GraphQLBatch } from '../lib';
+import { placeholderToJSX, type GraphQLBatchCall } from '../lib';
 import type { ExpressRequest, LocaleType, LoggerType } from '../types';
 
 type PersonalizationComponentProps = {|
@@ -125,7 +125,7 @@ function contentToJSX(content : string) : ComponentFunctionType<PersonalizationC
     };
 }
 
-export async function resolvePersonalization(req : ExpressRequest, gqlBatch : GraphQLBatch, personalizationOptions : PersonalizationOptions) : Promise<Personalization> {
+export async function resolvePersonalization(req : ExpressRequest, gqlBatch : GraphQLBatchCall, personalizationOptions : PersonalizationOptions) : Promise<Personalization> {
     let { logger, clientID, merchantID, locale, buyerCountry, buttonSessionID, currency,
         intent, commit, vault, label, period } = personalizationOptions;
 

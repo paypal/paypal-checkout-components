@@ -5,9 +5,10 @@ import { params, types, query } from 'typed-graphqlify';
 import { values } from 'belter';
 
 
-import type { Wallet } from '../../src/types';
-import { type GraphQLBatch } from '../lib';
 import type { ExpressRequest, LoggerType } from '../types';
+import type { Wallet } from '../../src/types';
+import { type GraphQLBatchCall } from '../lib';
+import { WALLET_TIMEOUT } from '../config';
 
 
 type SmartWallet = {|
@@ -209,7 +210,7 @@ export type WalletOptions = {|
 const DEFAULT_AMOUNT = '0.00';
 
 // eslint-disable-next-line complexity
-export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
+export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatchCall, { logger, clientID, merchantID, buttonSessionID,
     currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount = DEFAULT_AMOUNT, userIDToken, userRefreshToken } : WalletOptions) : Promise<Wallet> {
 
     const wallet : Wallet = {
@@ -234,7 +235,8 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                     userIDToken, userRefreshToken, buyerAccessToken,
                     vetted: false
                 },
-                accessToken: clientAccessToken
+                accessToken: clientAccessToken,
+                timeout:     WALLET_TIMEOUT
             });
 
             if (!result.smartWallet) {
@@ -282,7 +284,8 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                         clientID, merchantID, buyerCountry, cookies, ip, currency, intent, commit,
                         vault, disableFunding, disableCard, userAgent, buttonSessionID
                     },
-                    accessToken: clientAccessToken
+                    accessToken: clientAccessToken,
+                    timeout:     WALLET_TIMEOUT
                 }) : null;
 
         const buyerVault = fundingElig && fundingElig.fundingEligibility;

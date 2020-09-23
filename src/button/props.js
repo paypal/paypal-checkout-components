@@ -369,7 +369,6 @@ export type ServiceData = {|
 type ServiceDataOptions = {|
     facilitatorAccessToken : string,
     buyerGeoCountry : $Values<typeof COUNTRY>,
-    isCardFieldsExperimentEnabled : boolean,
     fundingEligibility : FundingEligibilityType,
     wallet : ?Wallet,
     buyerAccessToken : ?string,

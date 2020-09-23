@@ -2,10 +2,12 @@
 
 import { html } from 'jsx-pragmatic';
 import { COUNTRY, LANG, SDK_QUERY_KEYS, CURRENCY } from '@paypal/sdk-constants';
-import { constHas, stringifyError } from 'belter';
+import { constHas, stringifyError, noop } from 'belter';
 
-import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware, graphQLBatch, type GraphQL, javascriptResponse, emptyResponse } from '../../lib';
+import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
+    graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveMerchantID, resolveWallet } from '../../service';
+import { EXPERIMENT_TIMEOUT } from '../../config';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
 import type { ContentType } from '../../../src/types';
 
@@ -58,7 +60,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                 return clientErrorResponse(res, 'Please provide a clientID query parameter');
             }
 
-            const gqlBatch = graphQLBatch(req, graphQL);
+            const gqlBatch = graphQLBatch(req, graphQL, { env });
 
             const content = smartContent[locale.country][locale.lang] || {};
 
@@ -67,7 +69,11 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
             const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache });
 
-            const isCardFieldsExperimentEnabledPromise = merchantIDPromise.then(merchantID => getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry }));
+            const isCardFieldsExperimentEnabledPromise = promiseTimeout(
+                merchantIDPromise.then(merchantID =>
+                    getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry })),
+                EXPERIMENT_TIMEOUT
+            ).catch(() => false);
 
             const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
@@ -77,7 +83,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const walletPromise = resolveWallet(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault, amount,
                 disableFunding, disableCard, clientAccessToken, buyerCountry, userIDToken
-            });
+            }).catch(noop);
 
             gqlBatch.flush();
 
@@ -96,13 +102,12 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             const render = await renderPromise;
             const client = await clientPromise;
             const fundingEligibility = await fundingEligibilityPromise;
-            const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
             const merchantID = await merchantIDPromise;
-            const cardFieldsEligibility = await isCardFieldsExperimentEnabledPromise;
+            const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
             const wallet = await walletPromise;
 
             const eligibility = {
-                cardFields: cardFieldsEligibility
+                cardFields: isCardFieldsExperimentEnabled
             };
 
             logger.info(req, `button_render_version_${ render.version }`);
@@ -125,7 +130,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const setupParams = {
                 fundingEligibility, buyerCountry, cspNonce, merchantID, sdkMeta, wallet, correlationID,
-                isCardFieldsExperimentEnabled, firebaseConfig, facilitatorAccessToken, eligibility, content, cookies
+                firebaseConfig, facilitatorAccessToken, eligibility, content, cookies
             };
 
             const pageHTML = `

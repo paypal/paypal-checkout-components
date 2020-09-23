@@ -203,3 +203,23 @@ export function copy<T>(obj : T) : T {
     
     return JSON.parse(stringified);
 }
+
+export async function promiseTimeout<T>(promise : Promise<T>, time : number) : Promise<T> {
+    return await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error(`Timed out after ${ time }ms`));
+        }, time);
+
+        const res = (val) => {
+            clearTimeout(timer);
+            resolve(val);
+        };
+
+        const rej = (err) => {
+            clearTimeout(timer);
+            reject(err);
+        };
+
+        promise.then(res, rej);
+    });
+}

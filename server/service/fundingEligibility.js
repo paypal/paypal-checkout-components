@@ -4,7 +4,8 @@ import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal/sdk-constants';
 import { strictMerge } from 'strict-merge';
 
-import { pruneQuery, buildQuery, graphqlTypes, copy, type GraphQLBatch } from '../lib';
+import { pruneQuery, buildQuery, graphqlTypes, copy, type GraphQLBatchCall } from '../lib';
+import { FUNDING_ELIGIBILITY_TIMEOUT } from '../config';
 import type { ExpressRequest, LoggerType } from '../types';
 
 function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibilityType) : ?string {
@@ -152,7 +153,7 @@ export type FundingEligibilityOptions = {|
     basicFundingEligibility : FundingEligibilityType
 |};
 
-export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch : GraphQLBatch, { logger, clientID, merchantID, buttonSessionID,
+export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch : GraphQLBatchCall, { logger, clientID, merchantID, buttonSessionID,
     currency, intent, commit, vault, enableFunding = [], disableFunding = [], disableCard = [], clientAccessToken, buyerCountry, basicFundingEligibility } : FundingEligibilityOptions) : Promise<FundingEligibilityType> {
 
     try {
@@ -183,7 +184,8 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
                 disableCard:    disableCard.map(card => card.toUpperCase()),
                 enableFunding:  enableFunding.map(source => source.toUpperCase())
             },
-            accessToken: clientAccessToken
+            accessToken: clientAccessToken,
+            timeout:     FUNDING_ELIGIBILITY_TIMEOUT
         });
 
         return strictMerge(basicFundingEligibility, fundingEligibility, (first, second) => second);

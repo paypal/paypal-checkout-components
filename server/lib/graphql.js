@@ -1,29 +1,65 @@
 /* @flow */
 
 import { params as gqlParams, query as gqlQuery, types as gqlTypes } from 'typed-graphqlify';
+import { ENV } from '@paypal/sdk-constants';
 
 import type { ExpressRequest } from '../types';
 import { HTTP_HEADER } from '../config';
 
-import { isDefined, isEmpty } from './util';
+import { isDefined, isEmpty, promiseTimeout } from './util';
 
-export type GraphQL = (ExpressRequest, $ReadOnlyArray<{| query : string, variables : Object |}>, opts? : {| accessToken? : string, clientMetadataID? : string |}) => Promise<$ReadOnlyArray<{| result : Object |}>>;
+export type GraphQLBatchOptions = {|
+    env : $Values<typeof ENV>
+|};
+
+export type GraphQLPayload = $ReadOnlyArray<{|
+    query : string,
+    variables : Object
+|}>;
+
+export type GraphQLOptions = {|
+    accessToken? : string,
+    clientMetadataID? : string
+|};
+
+export type GraphQL = (
+    ExpressRequest,
+    GraphQLPayload,
+    opts? : GraphQLOptions
+) => Promise<$ReadOnlyArray<{|
+    result : Object
+|}>>;
+
+export type GraphQLBatchCallOptions<V> = {|
+    query : string,
+    variables : V,
+    accessToken? : ?string,
+    clientMetadataID? : string,
+    timeout? : number
+|};
 
 // eslint-disable-next-line flowtype/require-exact-type
-export type GraphQLBatch = {
+export type GraphQLBatchCall = {
     // eslint-disable-next-line no-undef
-    <V, R>({| query : string, variables : V, accessToken? : ?string, clientMetadataID? : string |}) : Promise<R>,
+    <V, R>(GraphQLBatchCallOptions<V>) : Promise<R>,
     flush : () => void
 };
 
-export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLBatch {
+export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL, opts? : GraphQLBatchOptions) : GraphQLBatchCall {
+    const { env } = opts || {};
+
     let batch = [];
     let accessToken;
     let clientMetadataID = req.get(HTTP_HEADER.CLIENT_METADATA_ID);
     let timer;
+    let maxTimeout = 0;
 
-    const batchedGraphQL = async ({ query, variables, accessToken: callerAccessToken, clientMetadataID: callerClientMetadataID }) => {
+    const batchedGraphQL = async ({ query, variables, accessToken: callerAccessToken, clientMetadataID: callerClientMetadataID, timeout }) => {
         return await new Promise((resolve, reject) => {
+            if (timeout && timeout > maxTimeout) {
+                maxTimeout = (env === ENV.PRODUCTION) ? timeout : timeout * 10;
+            }
+
             if (callerAccessToken) {
                 if (accessToken && callerAccessToken !== accessToken) {
                     throw new Error(`Access token for graphql call already set`);
@@ -65,8 +101,14 @@ export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL) : GraphQLB
         let response : $ReadOnlyArray<Object>;
         let gqlError;
 
+        let gqlPromise = graphQL(req, payload, { accessToken, clientMetadataID });
+
+        if (maxTimeout > 0) {
+            gqlPromise = promiseTimeout(gqlPromise, maxTimeout);
+        }
+
         try {
-            response = await graphQL(req, payload, { accessToken, clientMetadataID });
+            response = await gqlPromise;
         } catch (err) {
             gqlError = err;
         }
