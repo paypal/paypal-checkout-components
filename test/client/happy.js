@@ -425,7 +425,7 @@ describe('happy cases', () => {
 
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            triggerKeyPress(window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`), 13);
+            triggerKeyPress(window.document.querySelector(`[data-funding-source=${ FUNDING.PAYPAL }]`), 13);
         });
     });
     
