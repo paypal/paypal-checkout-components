@@ -1,3 +1,8 @@
+## <small>5.0.119 (2020-09-23)</small>
+
+
+
+
 ## <small>5.0.118 (2020-09-23)</small>
 
 * Add placeholder render for wallet button, when id token is passed ([4e62f46](https://github.com/paypal/paypal-checkout-components/commit/4e62f46))
