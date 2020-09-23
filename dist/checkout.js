@@ -1374,7 +1374,7 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.317";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.318";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1384,7 +1384,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.317.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.318.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1432,7 +1432,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.317"
+                ver: "4.0.318"
             };
         }));
         Object(client.a)((function() {
@@ -1843,7 +1843,7 @@
         locales: constants.A,
         scriptUrl: "//www.paypalobjects.com/api/checkout.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.317",
+        version: "4.0.318",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -5671,9 +5671,20 @@
         var userAgent;
     }
     __webpack_require__(11);
-    __webpack_require__(2);
+    var src = __webpack_require__(2);
     __webpack_require__(7);
     var cross_domain_safe_weakmap_src = __webpack_require__(17);
+    function getFunctionName(fn) {
+        return fn.name || fn.__name__ || fn.displayName || "anonymous";
+    }
+    function setFunctionName(fn, name) {
+        try {
+            delete fn.name;
+            fn.name = name;
+        } catch (err) {}
+        fn.__name__ = fn.displayName = name;
+        return fn;
+    }
     function base64encode(str) {
         if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
             return String.fromCharCode(parseInt(p1, 16));
@@ -5688,23 +5699,64 @@
         })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     }
     var objectIDs;
+    function serializeArgs(args) {
+        try {
+            return JSON.stringify([].slice.call(args), (function(subkey, val) {
+                return "function" == typeof val ? "memoize[" + function(obj) {
+                    objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a;
+                    if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                    var uid = objectIDs.get(obj);
+                    if (!uid) {
+                        uid = typeof obj + ":" + uniqueID();
+                        objectIDs.set(obj, uid);
+                    }
+                    return uid;
+                }(val) + "]" : val;
+            }));
+        } catch (err) {
+            throw new Error("Arguments not serializable -- can not be used to memoize");
+        }
+    }
+    var memoizedFunctions = [];
+    function memoize(method, options) {
+        var _this = this;
+        void 0 === options && (options = {});
+        var cacheMap = new cross_domain_safe_weakmap_src.a;
+        var memoizedFunction = function() {
+            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+            var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, (function() {
+                return {};
+            }));
+            var key = serializeArgs(args);
+            var cacheTime = options.time;
+            cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
+            if (cache[key]) return cache[key].value;
+            var time = Date.now();
+            var value = method.apply(this, arguments);
+            cache[key] = {
+                time: time,
+                value: value
+            };
+            return cache[key].value;
+        };
+        memoizedFunction.reset = function() {
+            cacheMap.delete(options.thisNamespace ? _this : method);
+        };
+        memoizedFunctions.push(memoizedFunction);
+        return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
+    }
+    memoize.clear = function() {
+        for (var _i2 = 0; _i2 < memoizedFunctions.length; _i2++) memoizedFunctions[_i2].reset();
+    };
     function noop() {}
     function once(method) {
         var called = !1;
-        return function(fn, name) {
-            try {
-                delete fn.name;
-                fn.name = name;
-            } catch (err) {}
-            fn.__name__ = fn.displayName = name;
-            return fn;
-        }((function() {
+        return setFunctionName((function() {
             if (!called) {
                 called = !0;
                 return method.apply(this, arguments);
             }
-        }), ((fn = method).name || fn.__name__ || fn.displayName || "anonymous") + "::once");
-        var fn;
+        }), getFunctionName(method) + "::once");
     }
     function values(obj) {
         var result = [];
@@ -5714,28 +5766,43 @@
     function identity(item) {
         return item;
     }
+    function safeInterval(method, time) {
+        var timeout;
+        !function loop() {
+            timeout = setTimeout((function() {
+                method();
+                loop();
+            }), time);
+        }();
+        return {
+            cancel: function() {
+                clearTimeout(timeout);
+            }
+        };
+    }
+    memoize(values);
+    function isDocumentReady() {
+        return Boolean(document.body) && "complete" === document.readyState;
+    }
+    function isDocumentInteractive() {
+        return Boolean(document.body) && "interactive" === document.readyState;
+    }
+    memoize((function() {
+        return new src.a((function(resolve) {
+            if (isDocumentReady() || isDocumentInteractive()) return resolve();
+            var interval = setInterval((function() {
+                if (isDocumentReady() || isDocumentInteractive()) {
+                    clearInterval(interval);
+                    return resolve();
+                }
+            }), 10);
+        }));
+    }));
     function isLocalStorageEnabled() {
         return function(method, logic, args) {
             void 0 === args && (args = []);
             var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
-            var key = function(args) {
-                try {
-                    return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                        return "function" == typeof val ? "memoize[" + function(obj) {
-                            objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a;
-                            if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
-                            var uid = objectIDs.get(obj);
-                            if (!uid) {
-                                uid = typeof obj + ":" + uniqueID();
-                                objectIDs.set(obj, uid);
-                            }
-                            return uid;
-                        }(val) + "]" : val;
-                    }));
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
-                }
-            }(args);
+            var key = serializeArgs(args);
             return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
                 try {
                     if ("undefined" == typeof window) return !1;
@@ -5777,23 +5844,24 @@
         };
         var observer;
         var timeout;
-        if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
+        win.addEventListener("resize", check);
+        if (void 0 !== win.ResizeObserver) {
+            (observer = new win.ResizeObserver(check)).observe(el);
+            timeout = safeInterval(check, 10 * interval);
+        } else if (void 0 !== win.MutationObserver) {
             (observer = new win.MutationObserver(check)).observe(el, {
                 attributes: !0,
                 childList: !0,
                 subtree: !0,
                 characterData: !1
             });
-            win.addEventListener("resize", check);
-        } else !function loop() {
-            check();
-            timeout = setTimeout(loop, interval);
-        }();
+            timeout = safeInterval(check, 10 * interval);
+        } else timeout = safeInterval(check, interval);
         return {
             cancel: function() {
                 observer.disconnect();
                 window.removeEventListener("resize", check);
-                clearTimeout(timeout);
+                timeout.cancel();
             }
         };
     }
@@ -11590,7 +11658,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.317";
+            payload.version = "4.0.318";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -11750,7 +11818,7 @@
         _constants__WEBPACK_IMPORTED_MODULE_1__.C.EC_TOKEN);
     }
     function determineUrl(env, fundingSource, payment) {
-        return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.C.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.CARD || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.ELV ? _config__WEBPACK_IMPORTED_MODULE_0__.a.guestUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.OXXO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
+        return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.C.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.OXXO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -15898,18 +15966,18 @@
     var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
     __webpack_require__(26);
-    if (window.paypal && "4.0.317" === window.paypal.version) {
+    if (window.paypal && "4.0.318" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.317"
+            version: "4.0.318"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.317) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.318) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.317" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.318" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.317"
+            version: "4.0.318"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.317");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.318");
     }
     try {
         var _interface = __webpack_require__(49);
@@ -24025,7 +24093,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.317", 
+        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.318", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -24073,7 +24141,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.317", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.318", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -25339,7 +25407,7 @@
     }
     var postRobot = post_robot_src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.317";
+    var interface_version = "4.0.318";
     var interface_checkout;
     var apps;
     var legacy = __webpack_require__(50);

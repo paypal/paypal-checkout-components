@@ -1963,7 +1963,7 @@
         descriptor.value.displayName = name + ":memoized";
     }
     var post_robot_src = __webpack_require__(11);
-    var client = __webpack_require__(4);
+    var client = __webpack_require__(3);
     function setLogLevel(logLevel) {
         if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
         client.e.logLevel = logLevel;
@@ -1996,6 +1996,543 @@
     }();
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
+        return getTransport;
+    }));
+    __webpack_require__.d(__webpack_exports__, "n", (function() {
+        return setTransport;
+    }));
+    __webpack_require__.d(__webpack_exports__, "j", (function() {
+        return immediateFlush;
+    }));
+    __webpack_require__.d(__webpack_exports__, "h", (function() {
+        return _flush;
+    }));
+    __webpack_require__.d(__webpack_exports__, "f", (function() {
+        return debug;
+    }));
+    __webpack_require__.d(__webpack_exports__, "k", (function() {
+        return info;
+    }));
+    __webpack_require__.d(__webpack_exports__, "p", (function() {
+        return warn;
+    }));
+    __webpack_require__.d(__webpack_exports__, "g", (function() {
+        return error;
+    }));
+    __webpack_require__.d(__webpack_exports__, "o", (function() {
+        return _track;
+    }));
+    __webpack_require__.d(__webpack_exports__, "l", (function() {
+        return init;
+    }));
+    __webpack_require__.d(__webpack_exports__, "c", (function() {
+        return addPayloadBuilder;
+    }));
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
+        return addMetaBuilder;
+    }));
+    __webpack_require__.d(__webpack_exports__, "d", (function() {
+        return addTrackingBuilder;
+    }));
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return addHeaderBuilder;
+    }));
+    __webpack_require__.d(__webpack_exports__, "e", (function() {
+        return config;
+    }));
+    __webpack_require__.d(__webpack_exports__, "m", (function() {
+        return logLevels;
+    }));
+    var interface_namespaceObject = {};
+    __webpack_require__.r(interface_namespaceObject);
+    __webpack_require__.d(interface_namespaceObject, "buffer", (function() {
+        return buffer;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "tracking", (function() {
+        return tracking;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "getTransport", (function() {
+        return getTransport;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "setTransport", (function() {
+        return setTransport;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "print", (function() {
+        return print;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "immediateFlush", (function() {
+        return immediateFlush;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "flush", (function() {
+        return _flush;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "log", (function() {
+        return log;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "prefix", (function() {
+        return prefix;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "debug", (function() {
+        return debug;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "info", (function() {
+        return info;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "warn", (function() {
+        return warn;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "error", (function() {
+        return error;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "track", (function() {
+        return _track;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "init", (function() {
+        return init;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "startTransition", (function() {
+        return startTransition;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "endTransition", (function() {
+        return endTransition;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "transition", (function() {
+        return transition;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "payloadBuilders", (function() {
+        return payloadBuilders;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "metaBuilders", (function() {
+        return metaBuilders;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "trackingBuilders", (function() {
+        return trackingBuilders;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "headerBuilders", (function() {
+        return headerBuilders;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "addPayloadBuilder", (function() {
+        return addPayloadBuilder;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "addMetaBuilder", (function() {
+        return addMetaBuilder;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "addTrackingBuilder", (function() {
+        return addTrackingBuilder;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "addHeaderBuilder", (function() {
+        return addHeaderBuilder;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "config", (function() {
+        return config;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "logLevels", (function() {
+        return logLevels;
+    }));
+    var src = __webpack_require__(1);
+    function extend(dest, src, over) {
+        void 0 === over && (over = !0);
+        dest = dest || {};
+        src = src || {};
+        for (var i in src) src.hasOwnProperty(i) && (!over && dest.hasOwnProperty(i) || (dest[i] = src[i]));
+        return dest;
+    }
+    function uniqueID() {
+        var chars = "0123456789abcdef";
+        return "xxxxxxxxxx".replace(/./g, (function() {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        }));
+    }
+    var payloadBuilders = [];
+    var metaBuilders = [];
+    var trackingBuilders = [];
+    var headerBuilders = [];
+    function addPayloadBuilder(builder) {
+        payloadBuilders.push(builder);
+    }
+    function addMetaBuilder(builder) {
+        metaBuilders.push(builder);
+    }
+    function addTrackingBuilder(builder) {
+        trackingBuilders.push(builder);
+    }
+    function addHeaderBuilder(builder) {
+        headerBuilders.push(builder);
+    }
+    var config = {
+        uri: "",
+        prefix: "",
+        initial_state_name: "init",
+        flushInterval: 6e5,
+        debounceInterval: 10,
+        sizeLimit: 300,
+        silent: !1,
+        heartbeat: !0,
+        heartbeatConsoleLog: !0,
+        heartbeatInterval: 5e3,
+        heartbeatTooBusy: !1,
+        heartbeatTooBusyThreshold: 1e4,
+        logLevel: "warn",
+        autoLog: [ "warn", "error" ],
+        logUnload: !0,
+        logPerformance: !0
+    };
+    var logLevels = [ "error", "warn", "info", "debug" ];
+    var buffer = [];
+    var tracking = [];
+    var logger_transport = function(headers, data, options) {
+        return function(method, url, headers, data, _temp) {
+            void 0 === headers && (headers = {});
+            void 0 === data && (data = {});
+            var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
+            return new src.a((function(resolve) {
+                var XRequest = window.XMLHttpRequest || window.ActiveXObject;
+                if (window.XDomainRequest && !function(url) {
+                    var match = url.match(/https?:\/\/[^/]+/);
+                    return !match || match[0] === window.location.protocol + "//" + window.location.host;
+                }(url)) {
+                    if (!function(url) {
+                        return window.location.protocol === url.split("/")[0];
+                    }(url)) return resolve();
+                    XRequest = window.XDomainRequest;
+                }
+                var req = new XRequest("MSXML2.XMLHTTP.3.0");
+                req.open("post".toUpperCase(), url, !0);
+                if ("function" == typeof req.setRequestHeader) {
+                    req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    req.setRequestHeader("Content-type", "application/json");
+                    for (var headerName in headers) headers.hasOwnProperty(headerName) && req.setRequestHeader(headerName, headers[headerName]);
+                }
+                fireAndForget ? resolve() : req.onreadystatechange = function() {
+                    req.readyState > 3 && resolve();
+                };
+                req.send(JSON.stringify(data).replace(/&/g, "%26"));
+            }));
+        }(0, config.uri, headers, data, options);
+    };
+    function getTransport() {
+        return logger_transport;
+    }
+    function setTransport(newTransport) {
+        logger_transport = newTransport;
+    }
+    var loaded = !1;
+    setTimeout((function() {
+        loaded = !0;
+    }), 1);
+    function print(level, event, payload) {
+        if ("undefined" != typeof window && window.console && window.console.log) {
+            if (!loaded) return setTimeout((function() {
+                return print(level, event, payload);
+            }), 1);
+            var logLevel = config.logLevel;
+            window.LOG_LEVEL && (logLevel = window.LOG_LEVEL);
+            if (!(logLevels.indexOf(level) > logLevels.indexOf(logLevel))) {
+                payload = payload || {};
+                var args = [ event ];
+                Boolean(window.document.documentMode) && (payload = JSON.stringify(payload));
+                args.push(payload);
+                (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
+                try {
+                    window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
+                } catch (err) {}
+            }
+        }
+    }
+    function immediateFlush(_temp) {
+        var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
+        if ("undefined" != typeof window && config.uri && (buffer.length || tracking.length)) {
+            var meta = {};
+            for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) {
+                var builder = metaBuilders[_i2];
+                try {
+                    extend(meta, builder(meta), !1);
+                } catch (err) {
+                    console.error("Error in custom meta builder:", err.stack || err.toString());
+                }
+            }
+            var headers = {};
+            for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) {
+                var _builder = headerBuilders[_i4];
+                try {
+                    extend(headers, _builder(headers), !1);
+                } catch (err) {
+                    console.error("Error in custom header builder:", err.stack || err.toString());
+                }
+            }
+            var req = logger_transport(headers, {
+                events: buffer,
+                meta: meta,
+                tracking: tracking
+            }, {
+                fireAndForget: fireAndForget
+            });
+            buffer = [];
+            tracking = [];
+            return req;
+        }
+    }
+    var _flush = (method = immediateFlush, interval = config.debounceInterval, debounce = {}, 
+    function() {
+        var args = arguments;
+        if (debounce.timeout) {
+            clearTimeout(debounce.timeout);
+            delete debounce.timeout;
+        }
+        debounce.timeout = setTimeout((function() {
+            var resolver = debounce.resolver;
+            var rejector = debounce.rejector;
+            delete debounce.promise;
+            delete debounce.resolver;
+            delete debounce.rejector;
+            delete debounce.timeout;
+            return src.a.resolve().then((function() {
+                return method.apply(null, args);
+            })).then(resolver, rejector);
+        }), interval);
+        debounce.promise = debounce.promise || new src.a((function(resolver, rejector) {
+            debounce.resolver = resolver;
+            debounce.rejector = rejector;
+        }));
+        return debounce.promise;
+    });
+    var method, interval, debounce;
+    function enqueue(level, event, payload) {
+        buffer.push({
+            level: level,
+            event: event,
+            payload: payload
+        });
+        config.autoLog.indexOf(level) > -1 && _flush();
+    }
+    function log(level, event, payload) {
+        if ("undefined" != typeof window) {
+            config.prefix && (event = config.prefix + "_" + event);
+            "string" == typeof (payload = payload || {}) ? payload = {
+                message: payload
+            } : payload instanceof Error && (payload = {
+                error: payload.stack || payload.toString()
+            });
+            try {
+                JSON.stringify(payload);
+            } catch (err) {
+                return;
+            }
+            payload.timestamp = Date.now();
+            for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) {
+                var builder = payloadBuilders[_i6];
+                try {
+                    extend(payload, builder(payload), !1);
+                } catch (err) {
+                    console.error("Error in custom payload builder:", err.stack || err.toString());
+                }
+            }
+            config.silent || print(level, event, payload);
+            buffer.length === config.sizeLimit ? enqueue("info", "logger_max_buffer_length") : buffer.length < config.sizeLimit && enqueue(level, event, payload);
+        }
+    }
+    function prefix(name) {
+        return {
+            debug: function(event, payload) {
+                return log("debug", name + "_" + event, payload);
+            },
+            info: function(event, payload) {
+                return log("info", name + "_" + event, payload);
+            },
+            warn: function(event, payload) {
+                return log("warn", name + "_" + event, payload);
+            },
+            error: function(event, payload) {
+                return log("error", name + "_" + event, payload);
+            },
+            track: function(payload) {
+                return _track(payload);
+            },
+            flush: function() {
+                return _flush();
+            }
+        };
+    }
+    function debug(event, payload) {
+        return log("debug", event, payload);
+    }
+    function info(event, payload) {
+        return log("info", event, payload);
+    }
+    function warn(event, payload) {
+        return log("warn", event, payload);
+    }
+    function error(event, payload) {
+        return log("error", event, payload);
+    }
+    function _track(payload) {
+        if ("undefined" != typeof window && payload) {
+            try {
+                JSON.stringify(payload);
+            } catch (err) {
+                return;
+            }
+            for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) {
+                var builder = trackingBuilders[_i8];
+                try {
+                    extend(payload, builder(payload), !1);
+                } catch (err) {
+                    console.error("Error in custom tracking builder:", err.stack || err.toString());
+                }
+            }
+            print("debug", "tracking", payload);
+            tracking.push(payload);
+        }
+    }
+    var enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0;
+    function now() {
+        return enablePerformance ? performance.now() : Date.now();
+    }
+    function timer(startTime) {
+        return {
+            startTime: startTime = void 0 !== startTime ? startTime : now(),
+            elapsed: function() {
+                return parseInt(now() - startTime, 10);
+            },
+            reset: function() {
+                startTime = now();
+            }
+        };
+    }
+    function reqStartElapsed() {
+        if (enablePerformance) {
+            var timing = window.performance.timing;
+            return parseInt(timing.connectEnd - timing.navigationStart, 10);
+        }
+    }
+    var clientTimer = timer();
+    var reqTimer = timer(reqStartElapsed());
+    var initiated = !1;
+    function init(conf) {
+        extend(config, conf || {});
+        if (!initiated) {
+            initiated = !0;
+            config.logPerformance && function() {
+                if (!enablePerformance) return info("no_performance_data");
+                addPayloadBuilder((function() {
+                    var payload = {};
+                    payload.client_elapsed = clientTimer.elapsed();
+                    enablePerformance && (payload.req_elapsed = reqTimer.elapsed());
+                    return payload;
+                }));
+                new src.a((function(resolve) {
+                    "undefined" != typeof document && "complete" === document.readyState && resolve();
+                    window.addEventListener("load", resolve);
+                })).then((function() {
+                    var timing = {};
+                    [ "connectEnd", "connectStart", "domComplete", "domContentLoadedEventEnd", "domContentLoadedEventStart", "domInteractive", "domLoading", "domainLookupEnd", "domainLookupStart", "fetchStart", "loadEventEnd", "loadEventStart", "navigationStart", "redirectEnd", "redirectStart", "requestStart", "responseEnd", "responseStart", "secureConnectionStart", "unloadEventEnd", "unloadEventStart" ].forEach((function(key) {
+                        timing[key] = parseInt(window.performance.timing[key], 10) || 0;
+                    }));
+                    var offset = timing.connectEnd - timing.navigationStart;
+                    timing.connectEnd && Object.keys(timing).forEach((function(name) {
+                        var time = timing[name];
+                        time && info("timing_" + name, {
+                            client_elapsed: parseInt(time - timing.connectEnd - (clientTimer.startTime - offset), 10),
+                            req_elapsed: parseInt(time - timing.connectEnd, 10)
+                        });
+                    }));
+                    info("timing", timing);
+                    info("memory", window.performance.memory);
+                    info("navigation", window.performance.navigation);
+                    window.performance.getEntries && window.performance.getEntries().forEach((function(resource) {
+                        [ "link", "script", "img", "css" ].indexOf(resource.initiatorType) > -1 && info(resource.initiatorType, resource);
+                    }));
+                }));
+            }();
+            config.heartbeat && (heartBeatTimer = timer(), heartbeatCount = 0, time = config.heartbeatInterval, 
+            function loop() {
+                setTimeout((function() {
+                    !function() {
+                        if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
+                            heartbeatCount += 1;
+                            var elapsed = heartBeatTimer.elapsed();
+                            var lag = elapsed - config.heartbeatInterval;
+                            var heartbeatPayload = {
+                                count: heartbeatCount,
+                                elapsed: elapsed
+                            };
+                            if (config.heartbeatTooBusy) {
+                                heartbeatPayload.lag = lag;
+                                lag >= config.heartbeatTooBusyThreshold && info("toobusy", heartbeatPayload);
+                            }
+                            info("heartbeat", heartbeatPayload);
+                        }
+                    }();
+                    loop();
+                }), time);
+            }());
+            if (config.logUnload) {
+                window.addEventListener("beforeunload", (function() {
+                    info("window_beforeunload");
+                    immediateFlush({
+                        fireAndForget: !0
+                    });
+                }));
+                window.addEventListener("unload", (function() {
+                    info("window_unload");
+                    immediateFlush({
+                        fireAndForget: !0
+                    });
+                }));
+            }
+            config.flushInterval && setInterval(_flush, config.flushInterval);
+            if (window.beaverLogQueue) {
+                window.beaverLogQueue.forEach((function(payload) {
+                    log(payload.level, payload.event, payload);
+                }));
+                delete window.beaverLogQueue;
+            }
+        }
+        var heartBeatTimer, heartbeatCount, time;
+    }
+    var windowID = uniqueID();
+    var pageID = uniqueID();
+    var currentState = config.initial_state_name;
+    var startTime;
+    function startTransition() {
+        startTime = now();
+    }
+    function endTransition(toState) {
+        startTime = startTime || reqStartElapsed();
+        var currentTime = now();
+        var elapsedTime;
+        void 0 !== startTime && (elapsedTime = parseInt(currentTime - startTime, 0));
+        var transitionName = "transition_" + currentState + "_to_" + toState;
+        info(transitionName, {
+            duration: elapsedTime
+        });
+        _track({
+            transition: transitionName,
+            transition_time: elapsedTime
+        });
+        immediateFlush();
+        startTime = currentTime;
+        currentState = toState;
+        pageID = uniqueID();
+    }
+    function transition(toState) {
+        startTransition();
+        endTransition(toState);
+    }
+    addPayloadBuilder((function() {
+        return {
+            windowID: windowID,
+            pageID: pageID
+        };
+    }));
+    addMetaBuilder((function() {
+        return {
+            state: "ui_" + currentState
+        };
+    }));
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return config;
     }));
@@ -2005,7 +2542,7 @@
         locales: constants.A,
         scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.317",
+        version: "4.0.318",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -2759,543 +3296,6 @@
             lang: constants.y.EN
         }
     };
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return getTransport;
-    }));
-    __webpack_require__.d(__webpack_exports__, "n", (function() {
-        return setTransport;
-    }));
-    __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return immediateFlush;
-    }));
-    __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return _flush;
-    }));
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return debug;
-    }));
-    __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return info;
-    }));
-    __webpack_require__.d(__webpack_exports__, "p", (function() {
-        return warn;
-    }));
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return error;
-    }));
-    __webpack_require__.d(__webpack_exports__, "o", (function() {
-        return _track;
-    }));
-    __webpack_require__.d(__webpack_exports__, "l", (function() {
-        return init;
-    }));
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return addPayloadBuilder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return addMetaBuilder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return addTrackingBuilder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return addHeaderBuilder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return config;
-    }));
-    __webpack_require__.d(__webpack_exports__, "m", (function() {
-        return logLevels;
-    }));
-    var interface_namespaceObject = {};
-    __webpack_require__.r(interface_namespaceObject);
-    __webpack_require__.d(interface_namespaceObject, "buffer", (function() {
-        return buffer;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "tracking", (function() {
-        return tracking;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "getTransport", (function() {
-        return getTransport;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "setTransport", (function() {
-        return setTransport;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "print", (function() {
-        return print;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "immediateFlush", (function() {
-        return immediateFlush;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "flush", (function() {
-        return _flush;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "log", (function() {
-        return log;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "prefix", (function() {
-        return prefix;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "debug", (function() {
-        return debug;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "info", (function() {
-        return info;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "warn", (function() {
-        return warn;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "error", (function() {
-        return error;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "track", (function() {
-        return _track;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "init", (function() {
-        return init;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "startTransition", (function() {
-        return startTransition;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "endTransition", (function() {
-        return endTransition;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "transition", (function() {
-        return transition;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "payloadBuilders", (function() {
-        return payloadBuilders;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "metaBuilders", (function() {
-        return metaBuilders;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "trackingBuilders", (function() {
-        return trackingBuilders;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "headerBuilders", (function() {
-        return headerBuilders;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "addPayloadBuilder", (function() {
-        return addPayloadBuilder;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "addMetaBuilder", (function() {
-        return addMetaBuilder;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "addTrackingBuilder", (function() {
-        return addTrackingBuilder;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "addHeaderBuilder", (function() {
-        return addHeaderBuilder;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "config", (function() {
-        return config;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "logLevels", (function() {
-        return logLevels;
-    }));
-    var src = __webpack_require__(1);
-    function extend(dest, src, over) {
-        void 0 === over && (over = !0);
-        dest = dest || {};
-        src = src || {};
-        for (var i in src) src.hasOwnProperty(i) && (!over && dest.hasOwnProperty(i) || (dest[i] = src[i]));
-        return dest;
-    }
-    function uniqueID() {
-        var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, (function() {
-            return chars.charAt(Math.floor(Math.random() * chars.length));
-        }));
-    }
-    var payloadBuilders = [];
-    var metaBuilders = [];
-    var trackingBuilders = [];
-    var headerBuilders = [];
-    function addPayloadBuilder(builder) {
-        payloadBuilders.push(builder);
-    }
-    function addMetaBuilder(builder) {
-        metaBuilders.push(builder);
-    }
-    function addTrackingBuilder(builder) {
-        trackingBuilders.push(builder);
-    }
-    function addHeaderBuilder(builder) {
-        headerBuilders.push(builder);
-    }
-    var config = {
-        uri: "",
-        prefix: "",
-        initial_state_name: "init",
-        flushInterval: 6e5,
-        debounceInterval: 10,
-        sizeLimit: 300,
-        silent: !1,
-        heartbeat: !0,
-        heartbeatConsoleLog: !0,
-        heartbeatInterval: 5e3,
-        heartbeatTooBusy: !1,
-        heartbeatTooBusyThreshold: 1e4,
-        logLevel: "warn",
-        autoLog: [ "warn", "error" ],
-        logUnload: !0,
-        logPerformance: !0
-    };
-    var logLevels = [ "error", "warn", "info", "debug" ];
-    var buffer = [];
-    var tracking = [];
-    var logger_transport = function(headers, data, options) {
-        return function(method, url, headers, data, _temp) {
-            void 0 === headers && (headers = {});
-            void 0 === data && (data = {});
-            var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
-            return new src.a((function(resolve) {
-                var XRequest = window.XMLHttpRequest || window.ActiveXObject;
-                if (window.XDomainRequest && !function(url) {
-                    var match = url.match(/https?:\/\/[^/]+/);
-                    return !match || match[0] === window.location.protocol + "//" + window.location.host;
-                }(url)) {
-                    if (!function(url) {
-                        return window.location.protocol === url.split("/")[0];
-                    }(url)) return resolve();
-                    XRequest = window.XDomainRequest;
-                }
-                var req = new XRequest("MSXML2.XMLHTTP.3.0");
-                req.open("post".toUpperCase(), url, !0);
-                if ("function" == typeof req.setRequestHeader) {
-                    req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    req.setRequestHeader("Content-type", "application/json");
-                    for (var headerName in headers) headers.hasOwnProperty(headerName) && req.setRequestHeader(headerName, headers[headerName]);
-                }
-                fireAndForget ? resolve() : req.onreadystatechange = function() {
-                    req.readyState > 3 && resolve();
-                };
-                req.send(JSON.stringify(data).replace(/&/g, "%26"));
-            }));
-        }(0, config.uri, headers, data, options);
-    };
-    function getTransport() {
-        return logger_transport;
-    }
-    function setTransport(newTransport) {
-        logger_transport = newTransport;
-    }
-    var loaded = !1;
-    setTimeout((function() {
-        loaded = !0;
-    }), 1);
-    function print(level, event, payload) {
-        if ("undefined" != typeof window && window.console && window.console.log) {
-            if (!loaded) return setTimeout((function() {
-                return print(level, event, payload);
-            }), 1);
-            var logLevel = config.logLevel;
-            window.LOG_LEVEL && (logLevel = window.LOG_LEVEL);
-            if (!(logLevels.indexOf(level) > logLevels.indexOf(logLevel))) {
-                payload = payload || {};
-                var args = [ event ];
-                Boolean(window.document.documentMode) && (payload = JSON.stringify(payload));
-                args.push(payload);
-                (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
-                try {
-                    window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
-                } catch (err) {}
-            }
-        }
-    }
-    function immediateFlush(_temp) {
-        var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
-        if ("undefined" != typeof window && config.uri && (buffer.length || tracking.length)) {
-            var meta = {};
-            for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) {
-                var builder = metaBuilders[_i2];
-                try {
-                    extend(meta, builder(meta), !1);
-                } catch (err) {
-                    console.error("Error in custom meta builder:", err.stack || err.toString());
-                }
-            }
-            var headers = {};
-            for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) {
-                var _builder = headerBuilders[_i4];
-                try {
-                    extend(headers, _builder(headers), !1);
-                } catch (err) {
-                    console.error("Error in custom header builder:", err.stack || err.toString());
-                }
-            }
-            var req = logger_transport(headers, {
-                events: buffer,
-                meta: meta,
-                tracking: tracking
-            }, {
-                fireAndForget: fireAndForget
-            });
-            buffer = [];
-            tracking = [];
-            return req;
-        }
-    }
-    var _flush = (method = immediateFlush, interval = config.debounceInterval, debounce = {}, 
-    function() {
-        var args = arguments;
-        if (debounce.timeout) {
-            clearTimeout(debounce.timeout);
-            delete debounce.timeout;
-        }
-        debounce.timeout = setTimeout((function() {
-            var resolver = debounce.resolver;
-            var rejector = debounce.rejector;
-            delete debounce.promise;
-            delete debounce.resolver;
-            delete debounce.rejector;
-            delete debounce.timeout;
-            return src.a.resolve().then((function() {
-                return method.apply(null, args);
-            })).then(resolver, rejector);
-        }), interval);
-        debounce.promise = debounce.promise || new src.a((function(resolver, rejector) {
-            debounce.resolver = resolver;
-            debounce.rejector = rejector;
-        }));
-        return debounce.promise;
-    });
-    var method, interval, debounce;
-    function enqueue(level, event, payload) {
-        buffer.push({
-            level: level,
-            event: event,
-            payload: payload
-        });
-        config.autoLog.indexOf(level) > -1 && _flush();
-    }
-    function log(level, event, payload) {
-        if ("undefined" != typeof window) {
-            config.prefix && (event = config.prefix + "_" + event);
-            "string" == typeof (payload = payload || {}) ? payload = {
-                message: payload
-            } : payload instanceof Error && (payload = {
-                error: payload.stack || payload.toString()
-            });
-            try {
-                JSON.stringify(payload);
-            } catch (err) {
-                return;
-            }
-            payload.timestamp = Date.now();
-            for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) {
-                var builder = payloadBuilders[_i6];
-                try {
-                    extend(payload, builder(payload), !1);
-                } catch (err) {
-                    console.error("Error in custom payload builder:", err.stack || err.toString());
-                }
-            }
-            config.silent || print(level, event, payload);
-            buffer.length === config.sizeLimit ? enqueue("info", "logger_max_buffer_length") : buffer.length < config.sizeLimit && enqueue(level, event, payload);
-        }
-    }
-    function prefix(name) {
-        return {
-            debug: function(event, payload) {
-                return log("debug", name + "_" + event, payload);
-            },
-            info: function(event, payload) {
-                return log("info", name + "_" + event, payload);
-            },
-            warn: function(event, payload) {
-                return log("warn", name + "_" + event, payload);
-            },
-            error: function(event, payload) {
-                return log("error", name + "_" + event, payload);
-            },
-            track: function(payload) {
-                return _track(payload);
-            },
-            flush: function() {
-                return _flush();
-            }
-        };
-    }
-    function debug(event, payload) {
-        return log("debug", event, payload);
-    }
-    function info(event, payload) {
-        return log("info", event, payload);
-    }
-    function warn(event, payload) {
-        return log("warn", event, payload);
-    }
-    function error(event, payload) {
-        return log("error", event, payload);
-    }
-    function _track(payload) {
-        if ("undefined" != typeof window && payload) {
-            try {
-                JSON.stringify(payload);
-            } catch (err) {
-                return;
-            }
-            for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) {
-                var builder = trackingBuilders[_i8];
-                try {
-                    extend(payload, builder(payload), !1);
-                } catch (err) {
-                    console.error("Error in custom tracking builder:", err.stack || err.toString());
-                }
-            }
-            print("debug", "tracking", payload);
-            tracking.push(payload);
-        }
-    }
-    var enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0;
-    function now() {
-        return enablePerformance ? performance.now() : Date.now();
-    }
-    function timer(startTime) {
-        return {
-            startTime: startTime = void 0 !== startTime ? startTime : now(),
-            elapsed: function() {
-                return parseInt(now() - startTime, 10);
-            },
-            reset: function() {
-                startTime = now();
-            }
-        };
-    }
-    function reqStartElapsed() {
-        if (enablePerformance) {
-            var timing = window.performance.timing;
-            return parseInt(timing.connectEnd - timing.navigationStart, 10);
-        }
-    }
-    var clientTimer = timer();
-    var reqTimer = timer(reqStartElapsed());
-    var initiated = !1;
-    function init(conf) {
-        extend(config, conf || {});
-        if (!initiated) {
-            initiated = !0;
-            config.logPerformance && function() {
-                if (!enablePerformance) return info("no_performance_data");
-                addPayloadBuilder((function() {
-                    var payload = {};
-                    payload.client_elapsed = clientTimer.elapsed();
-                    enablePerformance && (payload.req_elapsed = reqTimer.elapsed());
-                    return payload;
-                }));
-                new src.a((function(resolve) {
-                    "undefined" != typeof document && "complete" === document.readyState && resolve();
-                    window.addEventListener("load", resolve);
-                })).then((function() {
-                    var timing = {};
-                    [ "connectEnd", "connectStart", "domComplete", "domContentLoadedEventEnd", "domContentLoadedEventStart", "domInteractive", "domLoading", "domainLookupEnd", "domainLookupStart", "fetchStart", "loadEventEnd", "loadEventStart", "navigationStart", "redirectEnd", "redirectStart", "requestStart", "responseEnd", "responseStart", "secureConnectionStart", "unloadEventEnd", "unloadEventStart" ].forEach((function(key) {
-                        timing[key] = parseInt(window.performance.timing[key], 10) || 0;
-                    }));
-                    var offset = timing.connectEnd - timing.navigationStart;
-                    timing.connectEnd && Object.keys(timing).forEach((function(name) {
-                        var time = timing[name];
-                        time && info("timing_" + name, {
-                            client_elapsed: parseInt(time - timing.connectEnd - (clientTimer.startTime - offset), 10),
-                            req_elapsed: parseInt(time - timing.connectEnd, 10)
-                        });
-                    }));
-                    info("timing", timing);
-                    info("memory", window.performance.memory);
-                    info("navigation", window.performance.navigation);
-                    window.performance.getEntries && window.performance.getEntries().forEach((function(resource) {
-                        [ "link", "script", "img", "css" ].indexOf(resource.initiatorType) > -1 && info(resource.initiatorType, resource);
-                    }));
-                }));
-            }();
-            config.heartbeat && (heartBeatTimer = timer(), heartbeatCount = 0, time = config.heartbeatInterval, 
-            function loop() {
-                setTimeout((function() {
-                    !function() {
-                        if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
-                            heartbeatCount += 1;
-                            var elapsed = heartBeatTimer.elapsed();
-                            var lag = elapsed - config.heartbeatInterval;
-                            var heartbeatPayload = {
-                                count: heartbeatCount,
-                                elapsed: elapsed
-                            };
-                            if (config.heartbeatTooBusy) {
-                                heartbeatPayload.lag = lag;
-                                lag >= config.heartbeatTooBusyThreshold && info("toobusy", heartbeatPayload);
-                            }
-                            info("heartbeat", heartbeatPayload);
-                        }
-                    }();
-                    loop();
-                }), time);
-            }());
-            if (config.logUnload) {
-                window.addEventListener("beforeunload", (function() {
-                    info("window_beforeunload");
-                    immediateFlush({
-                        fireAndForget: !0
-                    });
-                }));
-                window.addEventListener("unload", (function() {
-                    info("window_unload");
-                    immediateFlush({
-                        fireAndForget: !0
-                    });
-                }));
-            }
-            config.flushInterval && setInterval(_flush, config.flushInterval);
-            if (window.beaverLogQueue) {
-                window.beaverLogQueue.forEach((function(payload) {
-                    log(payload.level, payload.event, payload);
-                }));
-                delete window.beaverLogQueue;
-            }
-        }
-        var heartBeatTimer, heartbeatCount, time;
-    }
-    var windowID = uniqueID();
-    var pageID = uniqueID();
-    var currentState = config.initial_state_name;
-    var startTime;
-    function startTransition() {
-        startTime = now();
-    }
-    function endTransition(toState) {
-        startTime = startTime || reqStartElapsed();
-        var currentTime = now();
-        var elapsedTime;
-        void 0 !== startTime && (elapsedTime = parseInt(currentTime - startTime, 0));
-        var transitionName = "transition_" + currentState + "_to_" + toState;
-        info(transitionName, {
-            duration: elapsedTime
-        });
-        _track({
-            transition: transitionName,
-            transition_time: elapsedTime
-        });
-        immediateFlush();
-        startTime = currentTime;
-        currentState = toState;
-        pageID = uniqueID();
-    }
-    function transition(toState) {
-        startTransition();
-        endTransition(toState);
-    }
-    addPayloadBuilder((function() {
-        return {
-            windowID: windowID,
-            pageID: pageID
-        };
-    }));
-    addMetaBuilder((function() {
-        return {
-            state: "ui_" + currentState
-        };
-    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "n", (function() {
@@ -4936,9 +4936,20 @@
         var userAgent;
     }
     __webpack_require__(9);
-    __webpack_require__(1);
+    var src = __webpack_require__(1);
     __webpack_require__(5);
     var cross_domain_safe_weakmap_src = __webpack_require__(14);
+    function getFunctionName(fn) {
+        return fn.name || fn.__name__ || fn.displayName || "anonymous";
+    }
+    function setFunctionName(fn, name) {
+        try {
+            delete fn.name;
+            fn.name = name;
+        } catch (err) {}
+        fn.__name__ = fn.displayName = name;
+        return fn;
+    }
     function base64encode(str) {
         if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
             return String.fromCharCode(parseInt(p1, 16));
@@ -4953,23 +4964,64 @@
         })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     }
     var objectIDs;
+    function serializeArgs(args) {
+        try {
+            return JSON.stringify([].slice.call(args), (function(subkey, val) {
+                return "function" == typeof val ? "memoize[" + function(obj) {
+                    objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a;
+                    if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                    var uid = objectIDs.get(obj);
+                    if (!uid) {
+                        uid = typeof obj + ":" + uniqueID();
+                        objectIDs.set(obj, uid);
+                    }
+                    return uid;
+                }(val) + "]" : val;
+            }));
+        } catch (err) {
+            throw new Error("Arguments not serializable -- can not be used to memoize");
+        }
+    }
+    var memoizedFunctions = [];
+    function memoize(method, options) {
+        var _this = this;
+        void 0 === options && (options = {});
+        var cacheMap = new cross_domain_safe_weakmap_src.a;
+        var memoizedFunction = function() {
+            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+            var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, (function() {
+                return {};
+            }));
+            var key = serializeArgs(args);
+            var cacheTime = options.time;
+            cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
+            if (cache[key]) return cache[key].value;
+            var time = Date.now();
+            var value = method.apply(this, arguments);
+            cache[key] = {
+                time: time,
+                value: value
+            };
+            return cache[key].value;
+        };
+        memoizedFunction.reset = function() {
+            cacheMap.delete(options.thisNamespace ? _this : method);
+        };
+        memoizedFunctions.push(memoizedFunction);
+        return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
+    }
+    memoize.clear = function() {
+        for (var _i2 = 0; _i2 < memoizedFunctions.length; _i2++) memoizedFunctions[_i2].reset();
+    };
     function noop() {}
     function once(method) {
         var called = !1;
-        return function(fn, name) {
-            try {
-                delete fn.name;
-                fn.name = name;
-            } catch (err) {}
-            fn.__name__ = fn.displayName = name;
-            return fn;
-        }((function() {
+        return setFunctionName((function() {
             if (!called) {
                 called = !0;
                 return method.apply(this, arguments);
             }
-        }), ((fn = method).name || fn.__name__ || fn.displayName || "anonymous") + "::once");
-        var fn;
+        }), getFunctionName(method) + "::once");
     }
     function values(obj) {
         var result = [];
@@ -4979,28 +5031,43 @@
     function identity(item) {
         return item;
     }
+    function safeInterval(method, time) {
+        var timeout;
+        !function loop() {
+            timeout = setTimeout((function() {
+                method();
+                loop();
+            }), time);
+        }();
+        return {
+            cancel: function() {
+                clearTimeout(timeout);
+            }
+        };
+    }
+    memoize(values);
+    function isDocumentReady() {
+        return Boolean(document.body) && "complete" === document.readyState;
+    }
+    function isDocumentInteractive() {
+        return Boolean(document.body) && "interactive" === document.readyState;
+    }
+    memoize((function() {
+        return new src.a((function(resolve) {
+            if (isDocumentReady() || isDocumentInteractive()) return resolve();
+            var interval = setInterval((function() {
+                if (isDocumentReady() || isDocumentInteractive()) {
+                    clearInterval(interval);
+                    return resolve();
+                }
+            }), 10);
+        }));
+    }));
     function isLocalStorageEnabled() {
         return function(method, logic, args) {
             void 0 === args && (args = []);
             var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
-            var key = function(args) {
-                try {
-                    return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                        return "function" == typeof val ? "memoize[" + function(obj) {
-                            objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a;
-                            if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
-                            var uid = objectIDs.get(obj);
-                            if (!uid) {
-                                uid = typeof obj + ":" + uniqueID();
-                                objectIDs.set(obj, uid);
-                            }
-                            return uid;
-                        }(val) + "]" : val;
-                    }));
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
-                }
-            }(args);
+            var key = serializeArgs(args);
             return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
                 try {
                     if ("undefined" == typeof window) return !1;
@@ -5042,23 +5109,24 @@
         };
         var observer;
         var timeout;
-        if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
+        win.addEventListener("resize", check);
+        if (void 0 !== win.ResizeObserver) {
+            (observer = new win.ResizeObserver(check)).observe(el);
+            timeout = safeInterval(check, 10 * interval);
+        } else if (void 0 !== win.MutationObserver) {
             (observer = new win.MutationObserver(check)).observe(el, {
                 attributes: !0,
                 childList: !0,
                 subtree: !0,
                 characterData: !1
             });
-            win.addEventListener("resize", check);
-        } else !function loop() {
-            check();
-            timeout = setTimeout(loop, interval);
-        }();
+            timeout = safeInterval(check, 10 * interval);
+        } else timeout = safeInterval(check, interval);
         return {
             cancel: function() {
                 observer.disconnect();
                 window.removeEventListener("resize", check);
-                clearTimeout(timeout);
+                timeout.cancel();
             }
         };
     }
@@ -5588,7 +5656,7 @@
     __webpack_require__.d(__webpack_exports__, "b", (function() {
         return getGlobalState;
     }));
-    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
     var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
     var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
     var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21);
@@ -6174,10 +6242,10 @@
     __webpack_require__.d(__webpack_exports__, "f", (function() {
         return getResourceLoadTime;
     }));
-    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
     var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
     var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-    var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
     var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
     __webpack_require__(16);
     function isDocumentReady() {
@@ -6374,7 +6442,7 @@
         return isPayPalDomain;
     }));
     var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
     var _device__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
     function allowIframe() {
         if (!Object(_device__WEBPACK_IMPORTED_MODULE_2__.g)()) return !0;
@@ -6425,7 +6493,7 @@
         return beacon;
     }));
     __webpack_require__(9);
-    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
     var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
     var _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15);
     var BEACON_URL = _config__WEBPACK_IMPORTED_MODULE_1__.a.loggerUrl;
@@ -6433,7 +6501,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.317";
+            payload.version = "4.0.318";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -7274,18 +7342,18 @@
     var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
     __webpack_require__(21);
-    if (window.paypal && "4.0.317" === window.paypal.version) {
+    if (window.paypal && "4.0.318" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.317"
+            version: "4.0.318"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.317) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.318) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.317" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.318" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.317"
+            version: "4.0.318"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.317");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.318");
     }
     try {
         var _interface = __webpack_require__(39);
@@ -7557,7 +7625,7 @@
     __webpack_require__.d(src_interface_namespaceObject, "ThreeDomainSecure", (function() {
         return interface_ThreeDomainSecure;
     }));
-    var beaver_logger_client = __webpack_require__(4);
+    var beaver_logger_client = __webpack_require__(3);
     var src = __webpack_require__(11);
     function _assertThisInitialized(self) {
         if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -9770,7 +9838,7 @@
     var CONSTANTS = constants;
     var device = __webpack_require__(16);
     var util = __webpack_require__(10);
-    var config = __webpack_require__(3);
+    var config = __webpack_require__(4);
     var src_constants = __webpack_require__(0);
     var lib_session = __webpack_require__(15);
     var dom = __webpack_require__(19);
@@ -9793,7 +9861,7 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.317";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.318";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -9803,7 +9871,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.317.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.318.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -10224,7 +10292,7 @@
         src_constants.C.EC_TOKEN);
     }
     function determineUrl(env, fundingSource, payment) {
-        return getPaymentType(payment) === src_constants.C.BA_TOKEN ? config.a.billingUrls[env] : fundingSource === src_constants.v.CARD || fundingSource === src_constants.v.ELV ? config.a.guestUrls[env] : fundingSource === src_constants.v.IDEAL || fundingSource === src_constants.v.BANCONTACT || fundingSource === src_constants.v.GIROPAY || fundingSource === src_constants.v.SOFORT || fundingSource === src_constants.v.EPS || fundingSource === src_constants.v.MYBANK || fundingSource === src_constants.v.P24 || fundingSource === src_constants.v.PAYU || fundingSource === src_constants.v.VERKKOPANKKI || fundingSource === src_constants.v.BLIK || fundingSource === src_constants.v.TRUSTLY || fundingSource === src_constants.v.MAXIMA || fundingSource === src_constants.v.BOLETO || fundingSource === src_constants.v.OXXO ? config.a.altpayUrls[env] : config.a.checkoutUrls[env];
+        return getPaymentType(payment) === src_constants.C.BA_TOKEN ? config.a.billingUrls[env] : fundingSource === src_constants.v.IDEAL || fundingSource === src_constants.v.BANCONTACT || fundingSource === src_constants.v.GIROPAY || fundingSource === src_constants.v.SOFORT || fundingSource === src_constants.v.EPS || fundingSource === src_constants.v.MYBANK || fundingSource === src_constants.v.P24 || fundingSource === src_constants.v.PAYU || fundingSource === src_constants.v.VERKKOPANKKI || fundingSource === src_constants.v.BLIK || fundingSource === src_constants.v.TRUSTLY || fundingSource === src_constants.v.MAXIMA || fundingSource === src_constants.v.BOLETO || fundingSource === src_constants.v.OXXO ? config.a.altpayUrls[env] : config.a.checkoutUrls[env];
     }
     var SUPPORTED_REST_FIELDS = {
         intent: 1,
@@ -23370,7 +23438,7 @@
                 logoColor: "blue"
             })));
         }(props_normalizeProps(props)) : null;
-        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.317", 
+        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.318", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -23418,7 +23486,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.317", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.318", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -24729,7 +24797,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.317"
+                    ver: "4.0.318"
                 };
             }));
             Object(beaver_logger_client.a)((function() {
@@ -24894,7 +24962,7 @@
     }
     var interface_postRobot = src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.317";
+    var interface_version = "4.0.318";
     var interface_Checkout;
     var interface_BillingPage;
     var PayPalCheckout;
