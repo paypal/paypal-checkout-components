@@ -9,10 +9,7 @@ import { giropayLogo }      from './giropay';
 import { epsLogo }          from './eps';
 import { mybankLogo }       from './mybank';
 import { bancontactLogo }   from './bancontact';
-import { payuLogo }         from './payu';
-import { verkkopankkiLogo } from './verkkopankki';
 import { blikLogo }         from './blik';
-import { trustlyLogo }      from './trustly';
 import { maximaLogo }       from './maxima';
 import { boletoLogo }       from './boleto';
 import { oxxoLogo }         from './oxxo';
@@ -66,13 +63,7 @@ export const fundingLogos = {
 
     [ BUTTON_LOGO.P24 ]: p24Logo,
 
-    [ BUTTON_LOGO.PAYU ]: payuLogo,
-
-    [ BUTTON_LOGO.VERKKOPANKKI ]: verkkopankkiLogo,
-
     [ BUTTON_LOGO.BLIK ]: blikLogo,
-
-    [ BUTTON_LOGO.TRUSTLY ]: trustlyLogo,
 
     [ BUTTON_LOGO.MAXIMA ]: maximaLogo,
 

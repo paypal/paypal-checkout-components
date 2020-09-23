@@ -15,10 +15,7 @@ export const FUNDING = {
     MYBANK:       'mybank',
     P24:          'p24',
     ZIMPLER:      'zimpler',
-    PAYU:         'payu',
-    VERKKOPANKKI: 'verkkopankki',
     BLIK:         'blik',
-    TRUSTLY:      'trustly',
     MAXIMA:       'maxima',
     BOLETO:       'boleto',
     OXXO:         'oxxo'

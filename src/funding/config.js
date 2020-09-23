@@ -18,9 +18,6 @@ export const FUNDING_PRIORITY = [
     FUNDING.MYBANK,
     FUNDING.BLIK,
     FUNDING.P24,
-    FUNDING.PAYU,
-    FUNDING.VERKKOPANKKI,
-    FUNDING.TRUSTLY,
     FUNDING.MAXIMA,
     FUNDING.BOLETO,
     FUNDING.OXXO
@@ -40,9 +37,6 @@ export const FUNDING_ORDER = [
     FUNDING.MYBANK,
     FUNDING.BLIK,
     FUNDING.P24,
-    FUNDING.PAYU,
-    FUNDING.VERKKOPANKKI,
-    FUNDING.TRUSTLY,
     FUNDING.MAXIMA,
     FUNDING.BOLETO,
     FUNDING.OXXO,
@@ -204,46 +198,9 @@ export const FUNDING_CONFIG = {
         allowVertical:       true,
         requireCommitAsTrue: true
     },
-    [ FUNDING.PAYU ]: {
-        allowedCountries: [
-            COUNTRY.CZ
-        ],
-
-        allowHorizontal:     false,
-        allowVertical:       true,
-        requireCommitAsTrue: true
-    },
-    [ FUNDING.VERKKOPANKKI ]: {
-        allowedCountries: [
-            COUNTRY.FI
-        ],
-
-        allowHorizontal:     false,
-        allowVertical:       true,
-        requireCommitAsTrue: true
-    },
     [ FUNDING.BLIK ]: {
         allowedCountries: [
             COUNTRY.PL
-        ],
-
-        allowHorizontal:     false,
-        allowVertical:       true,
-        requireCommitAsTrue: true
-    },
-    [ FUNDING.TRUSTLY ]: {
-        allowedCountries: [
-            COUNTRY.DE,
-            COUNTRY.DK,
-            COUNTRY.EE,
-            COUNTRY.ES,
-            COUNTRY.FI,
-            COUNTRY.GB,
-            COUNTRY.IT,
-            COUNTRY.MT,
-            COUNTRY.NL,
-            COUNTRY.NO,
-            COUNTRY.SE
         ],
 
         allowHorizontal:     false,

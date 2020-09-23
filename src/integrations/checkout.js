@@ -29,8 +29,7 @@ export function determineUrl(env : string, fundingSource : ?string, payment : st
 
     if (fundingSource === FUNDING.IDEAL || fundingSource === FUNDING.BANCONTACT || fundingSource === FUNDING.GIROPAY ||
         fundingSource === FUNDING.SOFORT || fundingSource === FUNDING.EPS || fundingSource === FUNDING.MYBANK ||
-        fundingSource === FUNDING.P24 || fundingSource === FUNDING.PAYU || fundingSource === FUNDING.VERKKOPANKKI ||
-        fundingSource === FUNDING.BLIK || fundingSource === FUNDING.TRUSTLY || fundingSource === FUNDING.MAXIMA ||
+        fundingSource === FUNDING.P24 || fundingSource === FUNDING.BLIK || fundingSource === FUNDING.MAXIMA ||
         fundingSource === FUNDING.BOLETO || fundingSource === FUNDING.OXXO) {
         return config.altpayUrls[env];
     }
