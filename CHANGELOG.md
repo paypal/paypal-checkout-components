@@ -1,3 +1,11 @@
+## <small>5.0.118 (2020-09-23)</small>
+
+* Add placeholder render for wallet button, when id token is passed ([4e62f46](https://github.com/paypal/paypal-checkout-components/commit/4e62f46))
+* Fully remove PP monogram from paypal button ([6c4c600](https://github.com/paypal/paypal-checkout-components/commit/6c4c600))
+* Remove wallet class in prerendered button ([be3611f](https://github.com/paypal/paypal-checkout-components/commit/be3611f))
+
+
+
 ## <small>5.0.117 (2020-09-15)</small>
 
 * Use body for fields component autoresize ([25055a5](https://github.com/paypal/paypal-checkout-components/commit/25055a5))
