@@ -81,7 +81,7 @@ export type PaymentFlow = {|
     isPaymentEligible : (IsPaymentEligibleOptions) => boolean,
     init : <T>(InitOptions, overrides? : T) => PaymentFlowInstance, // eslint-disable-line no-undef
     setupMenu? : (MenuOptions) => MenuChoices,
-    updateClientConfig? : (UpdateClientConfigOptions) => ZalgoPromise<void>,
+    updateFlowClientConfig? : (UpdateClientConfigOptions) => ZalgoPromise<void>,
     spinner? : boolean,
     inline? : boolean,
     popup? : boolean

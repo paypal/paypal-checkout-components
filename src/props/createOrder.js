@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, getQueryParam } from 'belter/src';
+import { memoize, getQueryParam, stringifyError } from 'belter/src';
 import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY } from '@paypal/sdk-constants/src';
 import { getDomain } from 'cross-domain-utils/src';
 
@@ -189,6 +189,10 @@ export function getCreateOrder({ createOrder, intent, currency, merchantID, part
                     ]
                 });
             }
+        }).catch(err => {
+            getLogger().error('create_order_error', { err: stringifyError(err) });
+            throw err;
+
         }).then(orderID => {
             if (!orderID || typeof orderID !== 'string') {
                 throw new Error(`Expected an order id to be passed`);

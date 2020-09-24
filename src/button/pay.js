@@ -60,7 +60,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
         const { merchantID } = serviceData;
         const { clientID, onClick, createOrder, env, vault } = props;
 
-        const { name, init, inline, spinner, updateClientConfig } = getPaymentFlow({ props, payment, config, components, serviceData });
+        const { name, init, inline, spinner, updateFlowClientConfig } = getPaymentFlow({ props, payment, config, components, serviceData });
         const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
 
         const clickPromise = ZalgoPromise.try(click);
@@ -91,13 +91,15 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
             const updateClientConfigPromise = createOrder()
                 .then(orderID => {
-                    if (updateClientConfig) {
-                        return updateClientConfig({ orderID, payment });
+                    if (updateFlowClientConfig) {
+                        return updateFlowClientConfig({ orderID, payment });
                     }
 
                     // Do not block by default
-                    updateButtonClientConfig({ orderID, fundingSource, inline });
-                }).catch(err => getLogger().error('update_client_config_error', { err: stringifyError(err) }));
+                    updateButtonClientConfig({ orderID, fundingSource, inline }).catch(err => {
+                        getLogger().error('update_client_config_error', { err: stringifyError(err) });
+                    });
+                }).catch(noop);
 
             const {
                 intent:   expectedIntent,

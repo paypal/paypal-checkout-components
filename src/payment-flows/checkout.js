@@ -431,10 +431,10 @@ function updateCheckoutClientConfig({ orderID, payment }) : ZalgoPromise<void> {
 }
 
 export const checkout : PaymentFlow = {
-    name:               'checkout',
-    setup:              setupCheckout,
-    isEligible:         isCheckoutEligible,
-    isPaymentEligible:  isCheckoutPaymentEligible,
-    init:               initCheckout,
-    updateClientConfig: updateCheckoutClientConfig
+    name:                   'checkout',
+    setup:                  setupCheckout,
+    isEligible:             isCheckoutEligible,
+    isPaymentEligible:      isCheckoutPaymentEligible,
+    init:                   initCheckout,
+    updateFlowClientConfig: updateCheckoutClientConfig
 };

@@ -240,7 +240,7 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
         throw new Error(`Can not render wallet menu without instrument`);
     }
 
-    const updateClientConfig = () => {
+    const updateMenuClientConfig = () => {
         return ZalgoPromise.try(() => {
             return createOrder();
         }).then(orderID => {
@@ -268,7 +268,7 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
             }).flush();
 
             return ZalgoPromise.try(() => {
-                return updateClientConfig();
+                return updateMenuClientConfig();
             }).then(() => {
                 return loadCheckout({
                     payment: {
@@ -328,13 +328,13 @@ function updateWalletClientConfig({ orderID, payment }) : ZalgoPromise<void> {
 }
 
 export const walletCapture : PaymentFlow = {
-    name:               'wallet_capture',
-    setup:              setupWalletCapture,
-    isEligible:         isWalletCaptureEligible,
-    isPaymentEligible:  isWalletCapturePaymentEligible,
-    init:               initWalletCapture,
-    setupMenu:          setupWalletMenu,
-    updateClientConfig: updateWalletClientConfig,
-    spinner:            true,
-    inline:             true
+    name:                   'wallet_capture',
+    setup:                  setupWalletCapture,
+    isEligible:             isWalletCaptureEligible,
+    isPaymentEligible:      isWalletCapturePaymentEligible,
+    init:                   initWalletCapture,
+    setupMenu:              setupWalletMenu,
+    updateFlowClientConfig: updateWalletClientConfig,
+    spinner:                true,
+    inline:                 true
 };

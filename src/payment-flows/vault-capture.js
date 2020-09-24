@@ -174,7 +174,7 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
         throw new Error(`Client access token and payment method id required`);
     }
 
-    const updateClientConfig = () => {
+    const updateMenuClientConfig = () => {
         return ZalgoPromise.try(() => {
             return createOrder();
         }).then(orderID => {
@@ -208,7 +208,7 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
             }).flush();
             
             return ZalgoPromise.try(() => {
-                return updateClientConfig();
+                return updateMenuClientConfig();
             }).then(() => {
                 return validate();
             }).then(() => {
@@ -227,7 +227,7 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
             }).flush();
 
             return ZalgoPromise.try(() => {
-                return updateClientConfig();
+                return updateMenuClientConfig();
             }).then(() => {
                 return loadCheckout({ payment: { ...payment, win, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_ACCOUNT } });
             });
@@ -273,15 +273,15 @@ function updateVaultClientConfig({ orderID, payment }) : ZalgoPromise<void> {
 }
 
 export const vaultCapture : PaymentFlow = {
-    name:               'vault_capture',
-    setup:              setupVaultCapture,
-    isEligible:         isVaultCaptureEligible,
-    isPaymentEligible:  isVaultCapturePaymentEligible,
-    init:               initVaultCapture,
-    setupMenu:          setupVaultMenu,
-    updateClientConfig: updateVaultClientConfig,
-    spinner:            true,
-    inline:             true
+    name:                   'vault_capture',
+    setup:                  setupVaultCapture,
+    isEligible:             isVaultCaptureEligible,
+    isPaymentEligible:      isVaultCapturePaymentEligible,
+    init:                   initVaultCapture,
+    setupMenu:              setupVaultMenu,
+    updateFlowClientConfig: updateVaultClientConfig,
+    spinner:                true,
+    inline:                 true
 };
 
 
