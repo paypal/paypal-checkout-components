@@ -149,7 +149,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
                 </body>
             `;
 
-            setRootTransaction(req, { userIDToken });
+            setRootTransaction(req, { userIDToken, clientAccessToken });
             allowFrame(res);
             return htmlResponse(res, pageHTML);
         },
