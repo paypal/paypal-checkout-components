@@ -1,10 +1,17 @@
 /* @flow */
 
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
+import { dedupeErrors, noop } from 'belter/src';
 
 export type XOnError = (mixed) => ZalgoPromise<void>;
-export type OnError = XOnError;
+export type OnError = (mixed) => ZalgoPromise<void>;
 
 export function getOnError({ onError } : {| onError : XOnError |}) : OnError {
-    return onError;
+    const onErrorHandler = onError ? dedupeErrors(onError) : noop;
+
+    return (err) => {
+        return ZalgoPromise.try(() => {
+            return onErrorHandler(err);
+        });
+    };
 }
