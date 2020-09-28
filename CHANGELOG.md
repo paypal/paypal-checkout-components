@@ -1,3 +1,9 @@
+## <small>5.0.120 (2020-09-28)</small>
+
+* Add logs for pre-render button click ([38efe91](https://github.com/paypal/paypal-checkout-components/commit/38efe91))
+
+
+
 ## <small>5.0.119 (2020-09-23)</small>
 
 
