@@ -75,13 +75,13 @@ export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : F
 
                     @media only screen and (min-width: 0px) {
                         #${ uid } {
-                            min-height: 100px;
+                            min-height: 150px;
                         }
                     }
 
                     @media only screen and (min-width: 600px) {
                         #${ uid } {
-                            min-height: 100px;
+                            min-height: 150px;
                         }
                     }
 
