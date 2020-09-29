@@ -35,7 +35,7 @@ export const Menu = {
 };
 
 export const Wallet = {
-        __get__: () => getWalletComponent()
+    __get__: () => getWalletComponent()
 };
 
 export const Modal = {

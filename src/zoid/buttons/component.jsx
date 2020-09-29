@@ -474,7 +474,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 type:       'boolean',
                 required:   false,
                 queryParam: true
-            },
+            }
         }
     });
 });

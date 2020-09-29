@@ -65,9 +65,5 @@ module.exports = {
         globals,
         fundingSources: SMART_FUNDING_SOURCES,
         cards:          SMART_CARDS
-    },
-    inlineWallet: {
-        entry: './src/interface/inline-wallet',
-        globals
     }
 };

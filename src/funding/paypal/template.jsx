@@ -236,7 +236,6 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         return;
     }
     
-    console.log('this is where it happened');
     if (experiment && experiment.newWalletDesign) {
         return WalletLabelNew(opts);
     }

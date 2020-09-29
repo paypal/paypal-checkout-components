@@ -73,7 +73,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         tagline={ tagline }
                         commit={ commit }
                         experiment={ experiment }
-                        enablePWB = { enablePWB }
+                        enablePWB={ enablePWB }
                     />
                 ))
             }

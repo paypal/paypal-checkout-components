@@ -112,7 +112,7 @@ export function getWalletComponent() {
                 },
                 
                 onApprove: {
-                    type: 'function',
+                    type:     'function',
                     required: false
                 },
                 
@@ -196,7 +196,7 @@ export function getWalletComponent() {
                     type:  'function',
                     value: () => {
                         return (fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>) =>
-                        rememberFunding(fundingSources, { cookie: false });
+                            rememberFunding(fundingSources, { cookie: false });
                     }
                 },
                 
