@@ -1885,7 +1885,7 @@ window.spb = function(modules) {
             getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.315", _headers10);
+            _headers10["x-app-version"] = "2.0.316", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -5186,7 +5186,7 @@ window.spb = function(modules) {
             var props = getProps({
                 facilitatorAccessToken: facilitatorAccessToken
             });
-            var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, onError = props.onError, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription;
+            var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription;
             var config = getConfig({
                 serverCSPNonce: serverCSPNonce,
                 firebaseConfig: firebaseConfig
@@ -5533,6 +5533,7 @@ window.spb = function(modules) {
                         payment: payment,
                         props: paymentProps
                     });
+                    var onError = paymentProps.onError;
                     payPromise.catch((function(err) {
                         getLogger().error("click_initiate_payment_reject", {
                             err: stringifyError(err)
@@ -5676,6 +5677,9 @@ window.spb = function(modules) {
                         var win = prerenderDetails.win, paymentFundingSource = prerenderDetails.fundingSource, card = prerenderDetails.card;
                         var button = document.querySelector("[data-funding-source=" + paymentFundingSource + "]");
                         if (!button) throw new Error("Can not find button element");
+                        var paymentProps = getProps({
+                            facilitatorAccessToken: facilitatorAccessToken
+                        });
                         var payPromise = initiatePayment({
                             payment: {
                                 win: win,
@@ -5684,10 +5688,9 @@ window.spb = function(modules) {
                                 card: card,
                                 buyerIntent: "pay"
                             },
-                            props: getProps({
-                                facilitatorAccessToken: facilitatorAccessToken
-                            })
+                            props: paymentProps
                         });
+                        var onError = paymentProps.onError;
                         payPromise.catch((function(err) {
                             getLogger().error("prerender_initiate_payment_reject", {
                                 err: stringifyError(err)
@@ -5763,7 +5766,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.315", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.316", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2;
                 }));
                 (function() {
