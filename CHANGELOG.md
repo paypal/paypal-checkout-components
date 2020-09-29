@@ -1,3 +1,9 @@
+## <small>5.0.121 (2020-09-29)</small>
+
+* update field initial height (#1441) ([9b5c0ae](https://github.com/paypal/paypal-checkout-components/commit/9b5c0ae)), closes [#1441](https://github.com/paypal/paypal-checkout-components/issues/1441)
+
+
+
 ## <small>5.0.120 (2020-09-28)</small>
 
 * Add logs for pre-render button click ([38efe91](https://github.com/paypal/paypal-checkout-components/commit/38efe91))
