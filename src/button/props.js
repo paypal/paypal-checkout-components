@@ -21,6 +21,7 @@ import { getOnClick } from '../props/onClick';
 import { getCreateBillingAgreement } from '../props/createBillingAgreement';
 import { getCreateSubscription } from '../props/createSubscription';
 import { getOnAuth } from '../props/onAuth';
+import { getOnError } from '../props/onError';
 
 // export something to force webpack to see this as an ES module
 export const TYPES = true;
@@ -181,7 +182,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         enableThreeDomainSecure,
         enableNativeCheckout = false,
         remember: rememberFunding,
-        onError,
         stageHost,
         apiStageHost,
         style,
@@ -256,6 +256,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
 
     const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken, createBillingAgreement, createSubscription });
 
+    const onError = getOnError({ onError: xprops.onError });
     const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, upgradeLSAT, clientAccessToken, vault, isLSATExperiment: upgradeLSATExperiment.isEnabled() }, { facilitatorAccessToken, createOrder });
     const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
     const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID }, { facilitatorAccessToken, createOrder });
