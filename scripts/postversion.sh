@@ -6,7 +6,7 @@ git push --tags;
 git push git@github.com:paypal/paypal-checkout.git v4;
 npm publish;
 
-# verify new version has been published and then publish to cdnx
+# publish to cdnx after verifying a successful publish to the public npm registry
 local_version=$(node --eval "
     const PACKAGE = './package.json';
     let pkg = require(PACKAGE);
