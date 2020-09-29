@@ -67,7 +67,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     const { merchantID } = serviceData;
 
     const props = getProps({ facilitatorAccessToken });
-    const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale, onError,
+    const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding, getQueriedEligibleFunding,
         style, fundingSource, intent, createBillingAgreement, createSubscription } = props;
         
@@ -164,6 +164,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
             const paymentProps = getProps({ facilitatorAccessToken });
             const payPromise = initiatePayment({ payment, props: paymentProps });
+            const { onError } = paymentProps;
 
             payPromise.catch(err => {
                 getLogger().error('click_initiate_payment_reject', { err: stringifyError(err) }).flush();
@@ -205,6 +206,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             const paymentProps = getProps({ facilitatorAccessToken });
             const payment = { win, button, fundingSource: paymentFundingSource, card, buyerIntent: BUYER_INTENT.PAY };
             const payPromise = initiatePayment({ payment, props: paymentProps });
+            const { onError } = paymentProps;
 
             payPromise.catch(err => {
                 getLogger().error('prerender_initiate_payment_reject', { err: stringifyError(err) }).flush();
