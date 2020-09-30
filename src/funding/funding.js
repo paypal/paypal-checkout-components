@@ -2,7 +2,7 @@
 
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
-import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
+import { values } from 'belter/src';
 
 import type { Wallet } from '../types';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
@@ -21,6 +21,14 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
     const fundingConfig = getFundingConfig()[source];
 
     if (!fundingConfig) {
+        return false;
+    }
+
+    if (!fundingConfig.enabled) {
+        return false;
+    }
+
+    if (!fundingConfig.automatic && source !== fundingSource) {
         return false;
     }
 
@@ -56,7 +64,7 @@ export function determineEligibleFunding({ fundingSource, layout, platform, fund
         return [ fundingSource ];
     }
 
-    let eligibleFunding = SUPPORTED_FUNDING_SOURCES.filter(source =>
+    let eligibleFunding = values(FUNDING).filter(source =>
         isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet }));
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {

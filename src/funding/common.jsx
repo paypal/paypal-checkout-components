@@ -66,6 +66,8 @@ export type TagOptions = {|
 |};
 
 export type FundingSourceConfig = {|
+    enabled : boolean,
+    automatic : boolean,
     shippingChange? : boolean,
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
@@ -119,6 +121,8 @@ export function BasicLabel({ logo, label, period, locale: { lang } } : LabelOpti
 }
 
 export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
+    enabled:   true,
+    automatic: true,
 
     layouts: [
         BUTTON_LAYOUT.VERTICAL

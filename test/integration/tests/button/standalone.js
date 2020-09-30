@@ -120,4 +120,43 @@ describe(`paypal standalone buttons`, () => {
             });
         });
     });
+
+    it(`should allow rendering a standalone verkkopankki button, but not render an automatic venkkopankki button`, () => {
+        return wrapPromise(({ expect }) => {
+            const fundingSource = FUNDING.VERKKOPANKKI;
+            const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
+
+            const button = window.paypal.Buttons({
+                fundingSource
+            });
+
+            if (!button.isEligible()) {
+                throw new Error(`Expected button to be eligible`);
+            }
+
+            return button.render('#testContainer').then(() => {
+
+                const buttons = window.paypal.Buttons({
+                    test: {
+                        onRender: expect('onRender', ({ fundingSources }) => {
+                            if (fundingSources.indexOf(FUNDING.VERKKOPANKKI) !== -1) {
+                                throw new Error(`Expected ${ FUNDING.VERKKOPANKKI } to not be rendered`);
+                            }
+                        })
+                    },
+                    style: {
+                        layout: 'vertical'
+                    }
+                });
+
+                if (!buttons.isEligible()) {
+                    throw new Error(`Expected button to be eligible`);
+                }
+
+                return buttons.render('#testContainer').then(() => {
+                    mockEligibility.cancel();
+                });
+            });
+        });
+    });
 });
