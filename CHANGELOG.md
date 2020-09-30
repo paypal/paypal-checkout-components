@@ -1,3 +1,9 @@
+## <small>5.0.122 (2020-09-30)</small>
+
+* Add full range of colors to paylater ([7bdc239](https://github.com/paypal/paypal-checkout-components/commit/7bdc239))
+
+
+
 ## <small>5.0.121 (2020-09-29)</small>
 
 * update field initial height (#1441) ([9b5c0ae](https://github.com/paypal/paypal-checkout-components/commit/9b5c0ae)), closes [#1441](https://github.com/paypal/paypal-checkout-components/issues/1441)
