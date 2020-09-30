@@ -50,7 +50,11 @@ export function getPaylaterConfig() : FundingSourceConfig {
         },
     
         colors: [
-            BUTTON_COLOR.WHITE
+            BUTTON_COLOR.WHITE,
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.GOLD,
+            BUTTON_COLOR.BLUE,
+            BUTTON_COLOR.SILVER
         ],
 
         secondaryColors: {
