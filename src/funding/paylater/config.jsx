@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { node, Style, Fragment } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -29,7 +29,7 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
             let text;
 
-            if (products.flex && products.flex.eligible) {
+            if (products.flex && products.flex.eligible && __ENV__ !== ENV.LOCAL && __ENV__ !== ENV.STAGE) {
                 text = (
                     <Fragment>
                         <Text optional>PayPal </Text>
