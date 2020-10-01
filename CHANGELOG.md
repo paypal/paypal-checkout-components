@@ -1,3 +1,10 @@
+## <small>5.0.123 (2020-10-01)</small>
+
+* Allow buttons to opt-out of automatic/smart mode ([147b8a8](https://github.com/paypal/paypal-checkout-components/commit/147b8a8))
+* Disable flex label on local and stage envs ([efe3818](https://github.com/paypal/paypal-checkout-components/commit/efe3818))
+
+
+
 ## <small>5.0.122 (2020-09-30)</small>
 
 * Add full range of colors to paylater ([7bdc239](https://github.com/paypal/paypal-checkout-components/commit/7bdc239))
