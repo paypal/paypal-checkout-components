@@ -981,6 +981,18 @@ window.spb = function(modules) {
         };
         return CrossDomainSafeWeakMap;
     }();
+    function uniqueID() {
+        var chars = "0123456789abcdef";
+        return "xxxxxxxxxx".replace(/./g, (function() {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        })) + "_" + function(str) {
+            if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+                return String.fromCharCode(parseInt(p1, 16));
+            })));
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            throw new Error("Can not find window.btoa or Buffer");
+        }((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+    }
     var objectIDs;
     function serializeArgs(args) {
         try {
@@ -990,18 +1002,9 @@ window.spb = function(modules) {
                     if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
                     var uid = objectIDs.get(obj);
                     if (!uid) {
-                        uid = typeof obj + ":" + (chars = "0123456789abcdef", "xxxxxxxxxx".replace(/./g, (function() {
-                            return chars.charAt(Math.floor(Math.random() * chars.length));
-                        })) + "_" + function(str) {
-                            if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
-                                return String.fromCharCode(parseInt(p1, 16));
-                            })));
-                            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-                            throw new Error("Can not find window.btoa or Buffer");
-                        }((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase());
+                        uid = typeof obj + ":" + uniqueID();
                         objectIDs.set(obj, uid);
                     }
-                    var chars;
                     return uid;
                 }(val) + "]" : val;
             }));
@@ -1078,6 +1081,37 @@ window.spb = function(modules) {
         this.message = message;
     }
     PopupOpenError.prototype = Object.create(Error.prototype);
+    var currentScript = "undefined" != typeof document ? document.currentScript : null;
+    var getCurrentScript = memoize((function() {
+        if (currentScript) return currentScript;
+        if (currentScript = function() {
+            try {
+                var stack = function() {
+                    try {
+                        throw new Error("_");
+                    } catch (err) {
+                        return err.stack || "";
+                    }
+                }();
+                var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
+                var scriptLocation = stackDetails && stackDetails[1];
+                if (!scriptLocation) return;
+                for (var _i20 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i20 < _Array$prototype$slic2.length; _i20++) {
+                    var script = _Array$prototype$slic2[_i20];
+                    if (script.src && script.src === scriptLocation) return script;
+                }
+            } catch (err) {}
+        }()) return currentScript;
+        throw new Error("Can not determine current script");
+    }));
+    memoize((function() {
+        var script = getCurrentScript();
+        var uid = script.getAttribute("data-uid");
+        if (uid && "string" == typeof uid) return uid;
+        uid = uniqueID();
+        script.setAttribute("data-uid", uid);
+        return uid;
+    }));
     var _NATIVE_CHECKOUT_URI, _NATIVE_CHECKOUT_POPU, _FUNDING_SKIP_LOGIN;
     (_NATIVE_CHECKOUT_URI = {}).paypal = "/smart/checkout/native", _NATIVE_CHECKOUT_URI.venmo = "/smart/checkout/venmo";
     (_NATIVE_CHECKOUT_POPU = {}).paypal = "/smart/checkout/native/popup", _NATIVE_CHECKOUT_POPU.venmo = "/smart/checkout/venmo/popup";

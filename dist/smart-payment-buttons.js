@@ -1272,33 +1272,6 @@ window.spb = function(modules) {
         function arrayFrom(item) {
             return [].slice.call(item);
         }
-        function cleanup(obj) {
-            var tasks = [];
-            var cleaned = !1;
-            return {
-                set: function(name, item) {
-                    if (!cleaned) {
-                        obj[name] = item;
-                        this.register((function() {
-                            delete obj[name];
-                        }));
-                    }
-                    return item;
-                },
-                register: function(method) {
-                    cleaned ? method() : tasks.push(once(method));
-                },
-                all: function() {
-                    var results = [];
-                    cleaned = !0;
-                    for (;tasks.length; ) {
-                        var task = tasks.shift();
-                        results.push(task());
-                    }
-                    return promise_ZalgoPromise.all(results).then(src_util_noop);
-                }
-            };
-        }
         memoize((function(obj) {
             var result = [];
             for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
@@ -1410,6 +1383,37 @@ window.spb = function(modules) {
             this.message = message;
         }
         PopupOpenError.prototype = Object.create(Error.prototype);
+        var currentScript = "undefined" != typeof document ? document.currentScript : null;
+        var getCurrentScript = memoize((function() {
+            if (currentScript) return currentScript;
+            if (currentScript = function() {
+                try {
+                    var stack = function() {
+                        try {
+                            throw new Error("_");
+                        } catch (err) {
+                            return err.stack || "";
+                        }
+                    }();
+                    var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
+                    var scriptLocation = stackDetails && stackDetails[1];
+                    if (!scriptLocation) return;
+                    for (var _i20 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i20 < _Array$prototype$slic2.length; _i20++) {
+                        var script = _Array$prototype$slic2[_i20];
+                        if (script.src && script.src === scriptLocation) return script;
+                    }
+                } catch (err) {}
+            }()) return currentScript;
+            throw new Error("Can not determine current script");
+        }));
+        memoize((function() {
+            var script = getCurrentScript();
+            var uid = script.getAttribute("data-uid");
+            if (uid && "string" == typeof uid) return uid;
+            uid = uniqueID();
+            script.setAttribute("data-uid", uid);
+            return uid;
+        }));
         function getStorage(_ref) {
             var name = _ref.name, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 12e5 : _ref$lifetime;
             return inlineMemoize(getStorage, (function() {
@@ -1885,7 +1889,7 @@ window.spb = function(modules) {
             getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.316", _headers10);
+            _headers10["x-app-version"] = "2.0.317", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4510,12 +4514,6 @@ window.spb = function(modules) {
                 targetApp: _ref9.targetApp
             }));
             var _ref9, sessionUID, config;
-            var closeNative = memoize((function() {
-                var clean = cleanup();
-                return nativeSocket.send("close").then((function() {
-                    return clean.all();
-                }));
-            }));
             nativeSocket.onError((function(err) {
                 var _getLogger$error$trac;
                 getLogger().error("native_socket_error", {
@@ -4523,7 +4521,6 @@ window.spb = function(modules) {
                 }).track((_getLogger$error$trac = {}, _getLogger$error$trac.state_name = "smart_button", 
                 _getLogger$error$trac.transition_name = "native_app_switch_ack", _getLogger$error$trac.int_error_desc = "[Native Socket Error] " + stringifyError(err), 
                 _getLogger$error$trac)).flush();
-                closeNative();
             }));
             return nativeSocket;
         }));
@@ -4699,7 +4696,30 @@ window.spb = function(modules) {
                 var fundingSource = payment.fundingSource;
                 var version = config.version, firebaseConfig = config.firebase;
                 if (!firebaseConfig) throw new Error("Can not run native flow without firebase config");
-                var clean = cleanup();
+                var clean = (tasks = [], cleaned = !1, {
+                    set: function(name, item) {
+                        if (!cleaned) {
+                            (void 0)[name] = item;
+                            this.register((function() {
+                                delete (void 0)[name];
+                            }));
+                        }
+                        return item;
+                    },
+                    register: function(method) {
+                        cleaned ? method() : tasks.push(once(method));
+                    },
+                    all: function() {
+                        var results = [];
+                        cleaned = !0;
+                        for (;tasks.length; ) {
+                            var task = tasks.shift();
+                            results.push(task());
+                        }
+                        return promise_ZalgoPromise.all(results).then(src_util_noop);
+                    }
+                });
+                var tasks, cleaned;
                 var approved = !1;
                 var cancelled = !1;
                 var didFallback = !1;
@@ -5160,10 +5180,10 @@ window.spb = function(modules) {
         }
         try {
             if (!window.paypal) {
-                var script = [].slice.call(document.querySelectorAll("script")).find((function(el) {
+                var button_script = [].slice.call(document.querySelectorAll("script")).find((function(el) {
                     return el.getAttribute("data-namespace");
                 }));
-                script && (window.paypal = window[script.getAttribute("data-namespace")]);
+                button_script && (window.paypal = window[button_script.getAttribute("data-namespace")]);
             }
         } catch (err) {}
         function setupButton(opts) {
@@ -5766,7 +5786,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.316", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.317", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2;
                 }));
                 (function() {
