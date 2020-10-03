@@ -21,7 +21,9 @@ import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { determineFlow } from './util';
 
-export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
+export type ButtonsComponent = ZoidComponent<ButtonProps>;
+
+export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
     const queriedEligibleFunding = [];
 
     return create({

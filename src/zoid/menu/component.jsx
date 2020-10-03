@@ -8,7 +8,9 @@ import { inlineMemoize } from 'belter/src';
 
 import { type MenuProps } from './props';
 
-export function getMenuComponent() : ZoidComponent<MenuProps> {
+export type MenuComponent = ZoidComponent<MenuProps>;
+
+export function getMenuComponent() : MenuComponent {
     return inlineMemoize(getMenuComponent, () => {
         return create({
             tag: 'paypal-menu',

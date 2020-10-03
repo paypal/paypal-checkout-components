@@ -206,7 +206,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onApprove() : void {
+                onApprove() : ZalgoPromise<void> {
                     return new ZalgoPromise((resolve, reject) => {
                         return reject(new Error('error'));
                     });
@@ -236,7 +236,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onApprove() : void {
+                onApprove() : ZalgoPromise<void> {
                     return new ZalgoPromise((resolve, reject) => {
                         return reject();
                     });

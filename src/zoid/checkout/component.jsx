@@ -18,7 +18,9 @@ import { containerContent } from './content';
 import { fixCreditRedirect } from './hacks';
 import { DEFAULT_POPUP_SIZE } from './config';
 
-export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
+export type CheckoutComponent = ZoidComponent<CheckoutPropsType>;
+
+export function getCheckoutComponent() : CheckoutComponent {
     return inlineMemoize(getCheckoutComponent, () => {
         const component = create({
             tag: 'paypal-checkout',

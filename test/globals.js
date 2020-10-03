@@ -111,7 +111,7 @@ export const testGlobals = {
         }
     },
 
-    __FUNDING_ELIGIBILITY__: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
+    __FUNDING_ELIGIBILITY__: () : string => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
 
     __PROTOCOL__:       'http',
     __PORT__:           8000,

@@ -17,7 +17,9 @@ import { type WalletProps } from './props';
 import { WalletPrerender } from './prerender';
 import { WalletContainer } from './container';
 
-export function getWalletComponent() : ZoidComponent<WalletProps> {
+export type WalletComponent = ZoidComponent<WalletProps>;
+
+export function getWalletComponent() : WalletComponent {
     return inlineMemoize(getWalletComponent, () => {
         return create({
             tag:    'paypal-wallet',

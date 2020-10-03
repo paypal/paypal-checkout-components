@@ -14,7 +14,9 @@ const CLASS = {
     INVISIBLE: 'invisible'
 };
 
-export function getModalComponent() : ZoidComponent<ModalProps> {
+export type ModalComponent = ZoidComponent<ModalProps>;
+
+export function getModalComponent() : ModalComponent {
     return inlineMemoize(getModalComponent, () => {
         return create({
             tag:    'paypal-modal',

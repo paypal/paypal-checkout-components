@@ -26,7 +26,9 @@ type CardProps = {|
     token : string
 |};
 
-export function getCardFieldsComponent() : ZoidComponent<CardProps> {
+export type CardFieldsComponent = ZoidComponent<CardProps>;
+
+export function getCardFieldsComponent() : CardFieldsComponent {
     return inlineMemoize(getCardFieldsComponent, () => {
         return create({
             tag:  'paypal-card-fields',

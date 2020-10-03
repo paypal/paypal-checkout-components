@@ -11,7 +11,9 @@ import { type FieldsProps } from './props';
 import { FieldsPrerender } from './prerender';
 import { FieldsContainer } from './container';
 
-export function getFieldsComponent() : ZoidComponent<FieldsProps> {
+export type FieldsComponent = ZoidComponent<FieldsProps>;
+
+export function getFieldsComponent() : FieldsComponent {
     return inlineMemoize(getFieldsComponent, () => {
         return create({
             tag: 'paypal-fields',

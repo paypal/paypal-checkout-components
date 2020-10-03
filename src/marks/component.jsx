@@ -16,7 +16,7 @@ import { MarksElement } from './template';
 
 const DEFAULT_HEIGHT = 20;
 
-type MarksType = {|
+type MarksInstance = {|
     isEligible : () => boolean,
     render : (string | HTMLElement) => ZalgoPromise<void>
 |};
@@ -26,8 +26,10 @@ type MarksProps = {|
     onShippingChange? : OnShippingChange
 |};
 
-export const getMarksComponent = memoize(() => {
-    function Marks({ fundingSource, onShippingChange } : MarksProps = {}) : MarksType {
+export type MarksComponent = (MarksProps) => MarksInstance;
+
+export const getMarksComponent : () => MarksComponent = memoize(() => {
+    function Marks({ fundingSource, onShippingChange } : MarksProps = {}) : MarksInstance {
 
         const height = DEFAULT_HEIGHT;
         const fundingEligibility = getFundingEligibility();
