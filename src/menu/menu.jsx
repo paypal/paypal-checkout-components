@@ -2,7 +2,7 @@
 /** @jsx h */
 
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
-import { h, Fragment, type Node } from 'preact';
+import { h, Fragment, Node } from 'preact';
 
 import { openPopup } from '../ui';
 
@@ -24,7 +24,7 @@ type MenuProps = {|
     onFocusFail : () => void
 |};
 
-export function Menu({ choices, onBlur, cspNonce, verticalOffset, onFocus, onFocusFail } : MenuProps) : Node {
+export function Menu({ choices, onBlur, cspNonce, verticalOffset, onFocus, onFocusFail } : MenuProps) : typeof Node {
 
     const autoFocus = useAutoFocus({ onFocus, onFocusFail });
 

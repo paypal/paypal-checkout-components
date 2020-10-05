@@ -9,7 +9,16 @@ import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, MODULE_POLL_INTERVAL, SDK_C
 let paypalSDKWatcher;
 let paypalSmartButtonsWatcher;
 
-export const getPayPalSDKWatcher = ({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) => {
+type Watcher = {|
+    get : () => Promise<{|
+        version : string
+    |}>,
+    // eslint-disable-next-line no-undef
+    importDependency : <T>(string, string) => Promise<T>,
+    read : (string) => Promise<string>
+|};
+
+export function getPayPalSDKWatcher({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) : Watcher {
     if (!cache || !logBuffer) {
         throw new Error(`Cache and logBuffer required`);
     }
@@ -26,9 +35,9 @@ export const getPayPalSDKWatcher = ({ logBuffer, cache } : {| logBuffer : ?Logge
     });
 
     return paypalSDKWatcher;
-};
+}
 
-export const getPayPalSmartPaymentButtonsWatcher = ({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) => {
+export function getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) : Watcher {
     if (!cache || !logBuffer) {
         throw new Error(`Cache and logBuffer required`);
     }
@@ -44,7 +53,7 @@ export const getPayPalSmartPaymentButtonsWatcher = ({ logBuffer, cache } : {| lo
     });
     
     return paypalSmartButtonsWatcher;
-};
+}
 
 export function startWatchers({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |} = {}) {
     getPayPalSDKWatcher({ logBuffer, cache });

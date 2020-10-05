@@ -1,12 +1,12 @@
 /* @flow */
-/* eslint max-lines: off */
+/* eslint max-lines: off, no-restricted-globals: off, promise/no-native: off */
 
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { mockWebSocket, patchWebSocket } from 'sync-browser-mocks/src/webSocket';
-import { ZalgoPromise } from 'zalgo-promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, destroyElement, noop, uniqueID, parseQuery } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
-import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY } from '@paypal/sdk-constants/src';
+import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { isWindowClosed, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { ZoidComponentInstance, MenuFlowProps } from '../../src/types';
@@ -21,8 +21,12 @@ export function mockAsyncProp(handler? : Function = noop, time? : number = 1) : 
     return (...args) => ZalgoPromise.delay(time).then(() => handler(...args));
 }
 
-export function cancelablePromise<T>(promise : ZalgoPromise<T>) : ZalgoPromise<T> {
+type CancelableZalgoPromise<T> = ZalgoPromise<T> & {| cancel : () => void |};
+
+export function cancelablePromise<T>(promise : ZalgoPromise<T>) : CancelableZalgoPromise<T> {
+    // $FlowFixMe
     promise.cancel = noop;
+    // $FlowFixMe
     return promise;
 }
 
@@ -190,7 +194,7 @@ export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({| args :
     };
 }
 
-export async function clickButton(fundingSource? : string = FUNDING.PAYPAL) : ZalgoPromise<void> {
+export async function clickButton(fundingSource? : string = FUNDING.PAYPAL) : Promise<void> {
     const button = window.document.querySelector(`[data-funding-source=${ fundingSource }]`);
 
     if (!button) {
@@ -201,7 +205,7 @@ export async function clickButton(fundingSource? : string = FUNDING.PAYPAL) : Za
     await button.payPromise;
 }
 
-export async function clickMenu(fundingSource? : string = FUNDING.PAYPAL) : ZalgoPromise<void> {
+export async function clickMenu(fundingSource? : string = FUNDING.PAYPAL) : Promise<void> {
     const menubutton = window.document.querySelector(`[data-funding-source=${ fundingSource }]`).parentElement.querySelector(`[data-menu]`);
 
     if (!menubutton) {
@@ -228,7 +232,7 @@ export function mockMenu() : ZoidComponentInstance<MenuFlowProps> {
     };
 }
 
-export const DEFAULT_FUNDING_ELIGIBILITY = {
+export const DEFAULT_FUNDING_ELIGIBILITY : FundingEligibilityType = {
     [ FUNDING.PAYPAL ]: {
         eligible: true
     }
@@ -634,7 +638,7 @@ getValidatePaymentMethodApiMock().listen();
 
 type NativeMockWebSocket = {|
     expect : () => {|
-        done : () => ZalgoPromise<void>
+        done : () => Promise<void>
     |},
     // getProps : () => void,
     onApprove : () => void,
@@ -864,7 +868,7 @@ document.createElement = function mockCreateElement(name : string) : HTMLElement
     return el;
 };
 
-export function mockFirebaseScripts() : {| done : () => void, await : ZalgoPromise<$ReadOnlyArray<HTMLElement>> |} {
+export function mockFirebaseScripts() : {| done : () => void, await : () => ZalgoPromise<$ReadOnlyArray<HTMLElement>> |} {
     loadFirebaseSDK.reset();
 
     const mockfirebaseApp = mockScript({
@@ -1313,7 +1317,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
 
 export const MOCK_SDK_META = 'abc123';
 
-export async function mockSetupButton(overrides? : Object = {}) : ZalgoPromise<void> {
+export async function mockSetupButton(overrides? : Object = {}) : Promise<void> {
     await setupButton({
         facilitatorAccessToken:        'QQQ123000',
         merchantID:                    [ 'XYZ12345' ],
@@ -1360,6 +1364,7 @@ export function getPostRobotMock() : PostRobotMock {
             const promise = new ZalgoPromise();
             const listener = { name, options, handler, promise, once: true };
             listeners.push(listener);
+            // $FlowFixMe
             promise.cancel = () => {
                 listeners.splice(listeners.indexOf(listener), 1);
             };
@@ -1415,6 +1420,7 @@ export function getPostRobotMock() : PostRobotMock {
     };
 
     return {
+        // $FlowFixMe
         receive,
         done
     };

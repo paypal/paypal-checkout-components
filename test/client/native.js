@@ -1608,7 +1608,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -1640,7 +1640,7 @@ describe('native ios cases', () => {
 
                         sessionUID = redirectQuery.sessionUID;
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
                             domain: 'https://history.paypal.com'
@@ -1768,7 +1768,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -1798,7 +1798,7 @@ describe('native ios cases', () => {
                             throw new Error(`Expected sdkMeta to be passed in url`);
                         }
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectWebSwitch',
                             domain: 'https://www.paypal.com'
@@ -1868,7 +1868,7 @@ describe('native ios cases', () => {
                 times:              2,
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -1900,7 +1900,7 @@ describe('native ios cases', () => {
 
                         sessionUID = redirectQuery.sessionUID;
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
                             domain: 'https://history.paypal.com'
@@ -2042,7 +2042,7 @@ describe('native ios cases', () => {
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 times:              2,
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2072,7 +2072,7 @@ describe('native ios cases', () => {
                             throw new Error(`Expected sdkMeta to be passed in url`);
                         }
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectWebSwitch',
                             domain: 'https://www.paypal.com'
@@ -2153,7 +2153,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2185,7 +2185,7 @@ describe('native ios cases', () => {
 
                         sessionUID = redirectQuery.sessionUID;
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
                             domain: 'https://history.paypal.com'
@@ -2292,7 +2292,7 @@ describe('native ios cases', () => {
                 onOpen:        ({ win }) => {
                     popupWin = win;
 
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2324,7 +2324,7 @@ describe('native ios cases', () => {
 
                         sessionUID = redirectQuery.sessionUID;
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
                             domain: 'https://history.paypal.com'
@@ -2428,7 +2428,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2460,7 +2460,7 @@ describe('native ios cases', () => {
 
                         sessionUID = redirectQuery.sessionUID;
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
                             domain: 'https://history.paypal.com'
@@ -2560,7 +2560,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2592,7 +2592,7 @@ describe('native ios cases', () => {
 
                         sessionUID = redirectQuery.sessionUID;
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
                             domain: 'https://history.paypal.com'
@@ -2677,7 +2677,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2729,7 +2729,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2814,7 +2814,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2844,7 +2844,7 @@ describe('native ios cases', () => {
                             throw new Error(`Expected sdkMeta to be passed in url`);
                         }
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectWebSwitch',
                             domain: 'https://www.paypal.com'
@@ -2903,7 +2903,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -2984,7 +2984,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/venmo/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -3016,7 +3016,7 @@ describe('native ios cases', () => {
 
                         sessionUID = redirectQuery.sessionUID;
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
                             domain: 'https://history.paypal.com'
@@ -3133,7 +3133,7 @@ describe('native ios cases', () => {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
-                    return postRobotMock.receive({
+                    postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
                         domain: 'https://history.paypal.com',
@@ -3165,7 +3165,7 @@ describe('native ios cases', () => {
 
                         sessionUID = redirectQuery.sessionUID;
 
-                        return postRobotMock.receive({
+                        postRobotMock.receive({
                             win,
                             name:   'detectAppSwitch',
                             domain: 'https://history.paypal.com'

@@ -24,7 +24,9 @@ type GetSmartWalletOptions = {|
 
 const DEFAULT_AMOUNT = '0.00';
 
-export const getSmartWallet = memoize(({ env, clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true, cspNonce } : GetSmartWalletOptions) : ZalgoPromise<Wallet> => {
+type GetSmartWallet = (GetSmartWalletOptions) => ZalgoPromise<Wallet>;
+
+export const getSmartWallet : GetSmartWallet = memoize(({ env, clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true, cspNonce }) => {
     return loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop).then(() => {
         return callGraphQL({
             name:  'GetSmartWallet',

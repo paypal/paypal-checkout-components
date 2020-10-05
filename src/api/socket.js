@@ -2,7 +2,7 @@
 /* eslint unicorn/prefer-add-event-listener: off, max-lines: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { uniqueID, noop, memoize, stringifyError } from 'belter/src';
+import { uniqueID, noop, memoize, stringifyError, type Memoized } from 'belter/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { FIREBASE_SCRIPTS } from '../config';
@@ -273,7 +273,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
             });
 
             instance.onMessage(rawMessage => {
-                return connectionPromise.then(socket => {
+                connectionPromise.then(socket => {
                     return onMessage(socket, rawMessage);
                 });
             });
@@ -343,7 +343,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
             retryDelay = 0;
             return init();
-        });
+        }).then(noop);
     };
 
     const close = () => {
@@ -462,8 +462,10 @@ type FirebaseSDK = {|
         |}
     |}
 |};
+
+type LoadFirebaseSDK = (FirebaseConfig) => ZalgoPromise<FirebaseSDK>;
             
-export const loadFirebaseSDK = memoize((config : FirebaseConfig) : ZalgoPromise<FirebaseSDK> => {
+export const loadFirebaseSDK : Memoized<LoadFirebaseSDK> = memoize(config => {
     return ZalgoPromise.try(() => {
         if (!window.firebase || !window.firebase.auth || !window.firebase.database) {
             return loadScript(FIREBASE_SCRIPTS.APP).then(() => {

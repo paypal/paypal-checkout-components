@@ -50,7 +50,7 @@ export function redirectTop(url : string) {
     }
 }
 
-export function loadScript(url : string) : ZalgoPromise<string> {
+export function loadScript(url : string) : ZalgoPromise<HTMLScriptElement> {
     return new ZalgoPromise((resolve, reject) => {
         const container = document.body || document.head;
 

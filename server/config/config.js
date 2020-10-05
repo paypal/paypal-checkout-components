@@ -11,7 +11,7 @@ export const FRAUDNET_ID = 'SMART_PAYMENT_BUTTONS';
 
 export const WEBPACK_CONFIG = 'webpack.config';
 
-export const MODULE_DIR = join(__dirname, '..');
+export const MODULE_DIR : string = join(__dirname, '..');
 
 export const BUTTON_RENDER_MODULE = '@paypal/sdk-release';
 export const BUTTON_RENDER_CHILD_MODULE = '@paypal/checkout-components';

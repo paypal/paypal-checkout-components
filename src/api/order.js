@@ -416,7 +416,9 @@ type SupplementalOrderInfo = {|
     |}
 |};
 
-export const getSupplementalOrderInfo = memoize((orderID : string) : ZalgoPromise<SupplementalOrderInfo> => {
+export type GetSupplementalOrderInfo = (string) => ZalgoPromise<SupplementalOrderInfo>;
+
+export const getSupplementalOrderInfo : GetSupplementalOrderInfo = memoize(orderID => {
     return callGraphQL({
         name:  'GetCheckoutDetails',
         query: `

@@ -1,6 +1,7 @@
 /* @flow */
 /* eslint import/no-nodejs-modules: off, import/no-default-export: off */
 
+import type { WebpackConfig } from 'grumbler-scripts/config/types';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
 import { globals } from './globals';
@@ -31,7 +32,7 @@ function getSmartWebpackConfig({ entry, env, filename, minify = true, debug = fa
     });
 }
 
-export const WEBPACK_CONFIG_BUTTONS = getSmartWebpackConfig({
+export const WEBPACK_CONFIG_BUTTONS : WebpackConfig = getSmartWebpackConfig({
     entry:         'src/button',
     filename:      'smart-payment-buttons',
     minify:   false,
@@ -39,14 +40,14 @@ export const WEBPACK_CONFIG_BUTTONS = getSmartWebpackConfig({
     vars:     globals
 });
 
-export const WEBPACK_CONFIG_BUTTONS_MIN = getSmartWebpackConfig({
+export const WEBPACK_CONFIG_BUTTONS_MIN : WebpackConfig = getSmartWebpackConfig({
     entry:    'src/button',
     filename: 'smart-payment-buttons',
     minify:   true,
     vars:     globals
 });
 
-export const WEBPACK_CONFIG_BUTTONS_DEBUG = getSmartWebpackConfig({
+export const WEBPACK_CONFIG_BUTTONS_DEBUG : WebpackConfig = getSmartWebpackConfig({
     entry:    'src/button',
     filename: 'smart-payment-buttons',
     debug:    true,
@@ -54,7 +55,7 @@ export const WEBPACK_CONFIG_BUTTONS_DEBUG = getSmartWebpackConfig({
     vars:     globals
 });
 
-export const WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG = getSmartWebpackConfig({
+export const WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG : WebpackConfig = getSmartWebpackConfig({
     env:           'local',
     entry:         'src/button',
     filename:      'smart-payment-buttons',
@@ -64,21 +65,21 @@ export const WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG = getSmartWebpackConfig({
     libraryTarget: 'umd'
 });
 
-export const WEBPACK_CONFIG_MENU = getSmartWebpackConfig({
+export const WEBPACK_CONFIG_MENU : WebpackConfig = getSmartWebpackConfig({
     entry:    'src/menu',
     filename: 'smart-menu',
     minify:   false,
     vars:     globals
 });
 
-export const WEBPACK_CONFIG_MENU_MIN = getSmartWebpackConfig({
+export const WEBPACK_CONFIG_MENU_MIN : WebpackConfig = getSmartWebpackConfig({
     entry:    'src/menu',
     filename: 'smart-menu',
     minify:   true,
     vars:     globals
 });
 
-export const WEBPACK_CONFIG_MENU_DEBUG = getSmartWebpackConfig({
+export const WEBPACK_CONFIG_MENU_DEBUG : WebpackConfig = getSmartWebpackConfig({
     entry:    'src/menu',
     filename: 'smart-menu',
     debug:    true,
@@ -86,7 +87,7 @@ export const WEBPACK_CONFIG_MENU_DEBUG = getSmartWebpackConfig({
     vars:     globals
 });
 
-export const WEBPACK_CONFIG_TEST = getWebpackConfig({
+export const WEBPACK_CONFIG_TEST : WebpackConfig = getWebpackConfig({
     modulename: MODULE_NAME,
     test:       true,
     options:    {
