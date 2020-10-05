@@ -1889,7 +1889,7 @@ window.spb = function(modules) {
             getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.317", _headers10);
+            _headers10["x-app-version"] = "2.0.318", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4577,6 +4577,7 @@ window.spb = function(modules) {
             }
             console.warn(message);
         }
+        var VALIDATE_INTENTS = [ "capture", "authorize", "order" ];
         var menu_menu;
         function renderButtonSmartMenu(_ref) {
             var containerUID = _ref.containerUID;
@@ -5292,7 +5293,7 @@ window.spb = function(modules) {
                                                         });
                                                     }));
                                                 })).catch(src_util_noop);
-                                                var expectedIntent = props.intent, expectedCurrency = props.currency;
+                                                var intent = props.intent, currency = props.currency;
                                                 var startPromise = promise_ZalgoPromise.try((function() {
                                                     return updateClientConfigPromise;
                                                 })).then((function() {
@@ -5300,31 +5301,31 @@ window.spb = function(modules) {
                                                 }));
                                                 var validateOrderPromise = createOrder().then((function(orderID) {
                                                     return function(orderID, _ref3) {
-                                                        var env = _ref3.env, clientID = _ref3.clientID, merchantID = _ref3.merchantID, expectedCurrency = _ref3.expectedCurrency, expectedIntent = _ref3.expectedIntent, vault = _ref3.vault;
+                                                        var env = _ref3.env, clientID = _ref3.clientID, merchantID = _ref3.merchantID, currency = _ref3.currency, intent = _ref3.intent, vault = _ref3.vault;
                                                         var logger = getLogger();
                                                         return getSupplementalOrderInfo(orderID).then((function(order) {
                                                             var cart = order.checkoutSession.cart;
-                                                            var intent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
-                                                            var currency = cart.amounts && cart.amounts.total.currencyCode;
-                                                            var amount = cart.amounts && cart.amounts.total.currencyValue;
-                                                            var billingType = cart.billingType;
-                                                            intent !== expectedIntent && triggerIntegrationError({
+                                                            var cartIntent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
+                                                            var cartCurrency = cart.amounts && cart.amounts.total.currencyCode;
+                                                            var cartAmount = cart.amounts && cart.amounts.total.currencyValue;
+                                                            var cartBillingType = cart.billingType;
+                                                            cartIntent !== intent && -1 !== VALIDATE_INTENTS.indexOf(intent) && triggerIntegrationError({
                                                                 error: "smart_button_validation_error_incorrect_intent",
-                                                                message: "Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing intent=" + intent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                                message: "Expected intent from order api call to be " + intent + ", got " + cartIntent + ". Please ensure you are passing intent=" + cartIntent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
                                                                 loggerPayload: {
-                                                                    intent: intent,
-                                                                    expectedIntent: expectedIntent
+                                                                    cartIntent: cartIntent,
+                                                                    intent: intent
                                                                 },
                                                                 env: env,
                                                                 clientID: clientID,
                                                                 orderID: orderID
                                                             });
-                                                            currency && currency !== expectedCurrency && triggerIntegrationError({
+                                                            cartCurrency && cartCurrency !== currency && triggerIntegrationError({
                                                                 error: "smart_button_validation_error_incorrect_currency",
-                                                                message: "Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing currency=" + currency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                                message: "Expected currency from order api call to be " + currency + ", got " + cartCurrency + ". Please ensure you are passing currency=" + cartCurrency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
                                                                 loggerPayload: {
-                                                                    currency: currency,
-                                                                    expectedCurrency: expectedCurrency
+                                                                    cartCurrency: cartCurrency,
+                                                                    currency: currency
                                                                 },
                                                                 env: env,
                                                                 clientID: clientID,
@@ -5337,19 +5338,19 @@ window.spb = function(modules) {
                                                                 clientID: clientID,
                                                                 orderID: orderID
                                                             });
-                                                            billingType && !vault && triggerIntegrationError({
-                                                                error: "smart_button_validation_error_billing_" + (amount ? "with" : "without") + "_purchase_no_vault",
+                                                            cartBillingType && !vault && triggerIntegrationError({
+                                                                error: "smart_button_validation_error_billing_" + (cartAmount ? "with" : "without") + "_purchase_no_vault",
                                                                 message: "Expected vault=" + VAULT.TRUE.toString() + " for a billing transaction",
                                                                 env: env,
                                                                 clientID: clientID,
                                                                 orderID: orderID,
                                                                 loggerPayload: {
-                                                                    billingType: billingType,
+                                                                    cartBillingType: cartBillingType,
                                                                     vault: vault
                                                                 },
                                                                 throwError: !1
                                                             });
-                                                            !vault || billingType || window.xprops.createBillingAgreement || window.xprops.createSubscription || window.xprops.clientAccessToken || window.xprops.userIDToken || triggerIntegrationError({
+                                                            !vault || cartBillingType || window.xprops.createBillingAgreement || window.xprops.createSubscription || window.xprops.clientAccessToken || window.xprops.userIDToken || triggerIntegrationError({
                                                                 error: "smart_button_validation_error_vault_passed_not_needed",
                                                                 message: "Expected vault=" + VAULT.FALSE.toString() + " for a non-billing, non-subscription transaction",
                                                                 env: env,
@@ -5357,7 +5358,7 @@ window.spb = function(modules) {
                                                                 orderID: orderID,
                                                                 loggerPayload: {
                                                                     vault: vault,
-                                                                    billingType: billingType
+                                                                    cartBillingType: cartBillingType
                                                                 },
                                                                 throwError: !1
                                                             });
@@ -5459,8 +5460,8 @@ window.spb = function(modules) {
                                                         env: env,
                                                         clientID: clientID,
                                                         merchantID: merchantID,
-                                                        expectedCurrency: expectedCurrency,
-                                                        expectedIntent: expectedIntent,
+                                                        intent: intent,
+                                                        currency: currency,
                                                         vault: vault
                                                     });
                                                 }));
@@ -5786,7 +5787,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.317", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.318", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2;
                 }));
                 (function() {
