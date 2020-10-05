@@ -101,10 +101,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                     });
                 }).catch(noop);
 
-            const {
-                intent:   expectedIntent,
-                currency: expectedCurrency
-            } = props;
+            const { intent, currency } = props;
 
             const startPromise = ZalgoPromise.try(() => {
                 return updateClientConfigPromise;
@@ -113,7 +110,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             });
 
             const validateOrderPromise = createOrder().then(orderID => {
-                return validateOrder(orderID, { env, clientID, merchantID, expectedCurrency, expectedIntent, vault });
+                return validateOrder(orderID, { env, clientID, merchantID, intent, currency, vault });
             });
 
             const confirmOrderPromise = smartFields && smartFields.confirm && createOrder().then(smartFields.confirm);

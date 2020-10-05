@@ -36,8 +36,8 @@ type OrderValidateOptions = {|
     env : $Values<typeof ENV>,
     clientID : ?string,
     merchantID : $ReadOnlyArray<string>,
-    expectedIntent : $Values<typeof INTENT>,
-    expectedCurrency : $Values<typeof CURRENCY>,
+    intent : $Values<typeof INTENT>,
+    currency : $Values<typeof CURRENCY>,
     vault : boolean
 |};
 
@@ -135,31 +135,37 @@ function triggerIntegrationError({ env, error, message = error, clientID, orderI
     }
 }
 
-export function validateOrder(orderID : string, { env, clientID, merchantID, expectedCurrency, expectedIntent, vault } : OrderValidateOptions) : ZalgoPromise<void> {
+const VALIDATE_INTENTS = [
+    INTENT.CAPTURE,
+    INTENT.AUTHORIZE,
+    INTENT.ORDER
+];
+
+export function validateOrder(orderID : string, { env, clientID, merchantID, currency, intent, vault } : OrderValidateOptions) : ZalgoPromise<void> {
     const logger = getLogger();
     
     // eslint-disable-next-line complexity
     return getSupplementalOrderInfo(orderID).then(order => {
         const cart = order.checkoutSession.cart;
-        const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
-        const currency = cart.amounts && cart.amounts.total.currencyCode;
-        const amount = cart.amounts && cart.amounts.total.currencyValue;
-        const billingType = cart.billingType;
+        const cartIntent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
+        const cartCurrency = cart.amounts && cart.amounts.total.currencyCode;
+        const cartAmount = cart.amounts && cart.amounts.total.currencyValue;
+        const cartBillingType = cart.billingType;
 
-        if (intent !== expectedIntent) {
+        if (cartIntent !== intent && VALIDATE_INTENTS.indexOf(intent) !== -1) {
             triggerIntegrationError({
                 error:         'smart_button_validation_error_incorrect_intent',
-                message:       `Expected intent from order api call to be ${ expectedIntent }, got ${ intent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ intent } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
-                loggerPayload: { intent, expectedIntent },
+                message:       `Expected intent from order api call to be ${ intent }, got ${ cartIntent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ cartIntent } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
+                loggerPayload: { cartIntent, intent },
                 env, clientID, orderID
             });
         }
 
-        if (currency && currency !== expectedCurrency) {
+        if (cartCurrency && cartCurrency !== currency) {
             triggerIntegrationError({
                 error:         'smart_button_validation_error_incorrect_currency',
-                message:       `Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }. Please ensure you are passing ${ SDK_QUERY_KEYS.CURRENCY }=${ currency } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
-                loggerPayload: { currency, expectedCurrency },
+                message:       `Expected currency from order api call to be ${ currency }, got ${ cartCurrency }. Please ensure you are passing ${ SDK_QUERY_KEYS.CURRENCY }=${ cartCurrency } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
+                loggerPayload: { cartCurrency, currency },
                 env, clientID, orderID
             });
         }
@@ -172,22 +178,22 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, exp
             });
         }
 
-        if (billingType && !vault) {
+        if (cartBillingType && !vault) {
             triggerIntegrationError({
-                error:         `smart_button_validation_error_billing_${ amount ? 'with' : 'without' }_purchase_no_vault`,
+                error:         `smart_button_validation_error_billing_${ cartAmount ? 'with' : 'without' }_purchase_no_vault`,
                 message:       `Expected ${ SDK_QUERY_KEYS.VAULT }=${ VAULT.TRUE.toString() } for a billing transaction`,
                 env, clientID, orderID,
-                loggerPayload: { billingType, vault },
+                loggerPayload: { cartBillingType, vault },
                 throwError:    false
             });
         }
 
-        if (vault && !billingType && !window.xprops.createBillingAgreement && !window.xprops.createSubscription && !window.xprops.clientAccessToken && !window.xprops.userIDToken) {
+        if (vault && !cartBillingType && !window.xprops.createBillingAgreement && !window.xprops.createSubscription && !window.xprops.clientAccessToken && !window.xprops.userIDToken) {
             triggerIntegrationError({
                 error:         `smart_button_validation_error_vault_passed_not_needed`,
                 message:       `Expected ${ SDK_QUERY_KEYS.VAULT }=${ VAULT.FALSE.toString() } for a non-billing, non-subscription transaction`,
                 env, clientID, orderID,
-                loggerPayload: { vault, billingType },
+                loggerPayload: { vault, cartBillingType },
                 throwError:    false
             });
         }
