@@ -146,6 +146,7 @@ function getComponentScript() : () => void {
 
         const setDomReady = once(debounce(() => {
             window.addEventListener('resize', toggleOptionals);
+            setTimeout(toggleOptionals);
             if (document.body) {
                 document.body.classList.add(CLASS.DOM_READY);
             }

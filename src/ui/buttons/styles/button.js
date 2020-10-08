@@ -71,7 +71,7 @@ export const buttonStyle = `
     }
 
     .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } * {
-        vertical-align: top;
+        vertical-align: middle;
         height: 100%;
         text-align: left;
     }

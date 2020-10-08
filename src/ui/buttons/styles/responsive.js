@@ -27,7 +27,10 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                 .${ CLASS.CONTAINER } {
                     min-width: ${ style.minWidth }px;
                     max-width: ${ style.maxWidth }px;
-                    font-size: ${ max(perc(buttonHeight, 32), 10) }px;
+                }
+
+                .${ CLASS.CONTAINER } .${ CLASS.TEXT }, .${ CLASS.CONTAINER } .${ CLASS.SPACE } {
+                    font-size: ${ max(perc(buttonHeight, 36), 10) }px;
                 }
 
                 .${ CLASS.BUTTON_ROW } {
