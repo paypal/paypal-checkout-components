@@ -10,6 +10,7 @@ declare var __PAYPAL_CHECKOUT__ : {|
         __CHECKOUT__ : string,
         __CARD_FIELDS__ : string,
         __MENU__ : string,
+        __INSTALLMENTS__ : string,
         __MODAL__ : string,
         __WALLET__ : string,
         __FIELDS__ : string

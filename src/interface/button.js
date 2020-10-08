@@ -9,6 +9,7 @@ import { getCheckoutComponent, type CheckoutComponent } from '../zoid/checkout';
 import { getButtonsComponent, type ButtonsComponent } from '../zoid/buttons';
 import { getCardFieldsComponent, type CardFieldsComponent } from '../zoid/card-fields';
 import { getMenuComponent, type MenuComponent } from '../zoid/menu';
+import { getInstallmentsComponent, type InstallmentsComponent } from '../zoid/installments';
 import { Buttons as _ButtonsTemplate } from '../ui/buttons';
 import { getModalComponent, type ModalComponent } from '../zoid/modal/component';
 
@@ -36,6 +37,10 @@ export const Menu : LazyProtectedExport<MenuComponent> = {
 
 export const Modal : LazyProtectedExport<ModalComponent> = {
     __get__: () => protectedExport(getModalComponent())
+};
+
+export const Installments : LazyProtectedExport<InstallmentsComponent> =  {
+    __get__: () => protectedExport(getInstallmentsComponent())
 };
 
 export const ButtonsTemplate : LazyProtectedExport<typeof _ButtonsTemplate> = {

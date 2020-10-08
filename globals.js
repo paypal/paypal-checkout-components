@@ -20,13 +20,14 @@ module.exports = {
     __PAYPAL_CHECKOUT__: {
         __REMEMBERED_FUNDING__: [],
         __URI__:                {
-            __CHECKOUT__:    '/checkoutnow',
-            __BUTTONS__:     '/smart/buttons',
-            __MENU__:        '/smart/menu',
-            __MODAL__:       '/smart/modal',
-            __CARD_FIELDS__: '/smart/card-fields',
-            __WALLET__:      '/smart/wallet',
-            __FIELDS__:      '/altpayfields'
+            __CHECKOUT__:     '/checkoutnow',
+            __BUTTONS__:      '/smart/buttons',
+            __MENU__:         '/smart/menu',
+            __INSTALLMENTS__: '/smart/installments',
+            __MODAL__:        '/smart/modal',
+            __CARD_FIELDS__:  '/smart/card-fields',
+            __WALLET__:       '/smart/wallet',
+            __FIELDS__:       '/altpayfields'
         }
     }
 };

@@ -11,15 +11,17 @@ import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/
 import { type ButtonProps } from '../../ui/buttons/props';
 
 const CLASS = {
-    VISIBLE:         'visible',
-    INVISIBLE:       'invisible',
-    COMPONENT_FRAME: 'component-frame',
-    PRERENDER_FRAME: 'prerender-frame',
-    SMART_MENU:      'smart-menu'
+    VISIBLE:            'visible',
+    INVISIBLE:          'invisible',
+    COMPONENT_FRAME:    'component-frame',
+    PRERENDER_FRAME:    'prerender-frame',
+    SMART_MENU:         'smart-menu',
+    INSTALLMENTS_MODAL: 'installments-modal'
 };
 
 const ID = {
-    SMART_MENU: 'smart-menu'
+    SMART_MENU:         'smart-menu',
+    INSTALLMENTS_MODAL: 'installments-modal'
 };
 
 export function containerTemplate({ uid, props, tag, context, frame, prerenderFrame, doc, container, event } : RenderOptionsType<ButtonProps>) : ?HTMLElement {
@@ -141,6 +143,8 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
             <node el={ prerenderFrame } />
 
             <div id={ ID.SMART_MENU } class={ CLASS.SMART_MENU } />
+
+            <div id={ ID.INSTALLMENTS_MODAL } class={ CLASS.INSTALLMENTS_MODAL } />
         </div>
     ).render(dom({ doc }));
 
