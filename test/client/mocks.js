@@ -1687,7 +1687,7 @@ export function renderSmartFieldsMock({
                 isValid,
                 confirm
             },
-            location: window.location
+            ...window
         }
     ];
 
