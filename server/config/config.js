@@ -4,6 +4,8 @@ import { join } from 'path';
 
 import pkg from '../../package.json';
 
+import { getEnv } from './env';
+
 export const MODULE_POLL_INTERVAL = 5 * 60;
 
 export const FNCLS = 'fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99';
@@ -33,3 +35,6 @@ export const SMART_BUTTONS_CDN_NAMESPACE = 'https://www.paypalobjects.com/smart-
 export const FUNDING_ELIGIBILITY_TIMEOUT = 100;
 export const WALLET_TIMEOUT = 2000;
 export const EXPERIMENT_TIMEOUT = 100;
+
+export const LATEST_TAG = 'latest';
+export const ACTIVE_TAG = `active-${ getEnv() }`;

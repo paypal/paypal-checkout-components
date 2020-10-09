@@ -5,7 +5,7 @@ import { join } from 'path';
 import { ENV } from '@paypal/sdk-constants';
 
 import type { CacheType } from '../../types';
-import { MENU_CLIENT_JS, MENU_CLIENT_MIN_JS, WEBPACK_CONFIG } from '../../config';
+import { MENU_CLIENT_JS, MENU_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG } from '../../config';
 import { isLocal, compileWebpack, babelRequire, type LoggerBufferType } from '../../lib';
 import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
@@ -22,7 +22,7 @@ export async function getSmartMenuClientScript({ logBuffer, cache, debug = false
     }
 
     const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
-    const { version } = await watcher.get();
+    const { version } = await watcher.get(ACTIVE_TAG);
     const script = await watcher.read(debug ? MENU_CLIENT_JS : MENU_CLIENT_MIN_JS);
 
     return { script, version };

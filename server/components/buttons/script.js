@@ -5,7 +5,7 @@ import { join } from 'path';
 import { ENV } from '@paypal/sdk-constants';
 
 import type { CacheType } from '../../types';
-import { BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_RENDER_CHILD_MODULE, BUTTON_CLIENT_MIN_JS, WEBPACK_CONFIG } from '../../config';
+import { BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_RENDER_CHILD_MODULE, BUTTON_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG } from '../../config';
 import { isLocal, compileWebpack, babelRequire, evalRequireScript, type LoggerBufferType } from '../../lib';
 import { getPayPalSDKWatcher, getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
@@ -22,7 +22,7 @@ export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cach
     }
     
     const watcher = getPayPalSDKWatcher({ logBuffer, cache });
-    const { version } = await watcher.get();
+    const { version } = await watcher.get(ACTIVE_TAG);
     const button = await watcher.importDependency(BUTTON_RENDER_CHILD_MODULE, BUTTON_RENDER_JS);
     return { button, version };
 }
@@ -41,7 +41,7 @@ export async function getSmartPaymentButtonsClientScript({ logBuffer, cache, deb
     }
 
     const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
-    const { version } = await watcher.get();
+    const { version } = await watcher.get(ACTIVE_TAG);
     const script = await watcher.read(debug ? BUTTON_CLIENT_JS : BUTTON_CLIENT_MIN_JS);
 
     return { script, version };
