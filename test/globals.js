@@ -118,6 +118,7 @@ export const testGlobals = {
     __STAGE_HOST__:     'msmaster.qa.paypal.com',
     __HOST__:           'test.paypal.com',
     __HOSTNAME__:       'test.paypal.com',
+    __SDK_HOST__:       'test.paypal.com',
     __PATH__:           '/sdk/js',
     __VERSION__:        '1.0.55',
     __NAMESPACE__:      'paypal',
