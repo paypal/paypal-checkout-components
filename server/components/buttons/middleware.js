@@ -5,7 +5,7 @@ import { COUNTRY, LANG, SDK_QUERY_KEYS, CURRENCY } from '@paypal/sdk-constants';
 import { constHas, stringifyError, noop } from 'belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
-    graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout } from '../../lib';
+    graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocal } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveMerchantID, resolveWallet } from '../../service';
 import { EXPERIMENT_TIMEOUT } from '../../config';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
@@ -40,10 +40,16 @@ type ButtonMiddlewareOptions = {|
             [$Values<typeof LANG>] : ContentType
         }
     },
-    tracking : (ExpressRequest) => void
+    tracking : (ExpressRequest) => void,
+    cdn? : boolean
 |};
 
-export function getButtonMiddleware({ logger = defaultLogger, content: smartContent, graphQL, getAccessToken, getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, tracking } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+export function getButtonMiddleware({
+    logger = defaultLogger, content: smartContent, graphQL, getAccessToken, cdn = !isLocal(),
+    getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, tracking
+} : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+    const useLocal = !cdn;
+
     return sdkMiddleware({ logger, cache }, {
         app: async ({ req, res, params, meta, logBuffer, sdkMeta }) => {
             logger.info(req, EVENT.RENDER);
@@ -66,8 +72,8 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
 
             const facilitatorAccessTokenPromise = getAccessToken(req, clientID);
             const merchantIDPromise = facilitatorAccessTokenPromise.then(facilitatorAccessToken => resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken }));
-            const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
-            const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache });
+            const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal });
+            const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache, useLocal });
 
             const isCardFieldsExperimentEnabledPromise = promiseTimeout(
                 merchantIDPromise.then(merchantID =>
@@ -158,7 +164,7 @@ export function getButtonMiddleware({ logger = defaultLogger, content: smartCont
             logger.info(req, EVENT.RENDER);
 
             const { debug } = getParams(params, req, res);
-            const { script } = await getSmartPaymentButtonsClientScript({ debug, logBuffer, cache });
+            const { script } = await getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal });
 
             return javascriptResponse(res, script);
         },

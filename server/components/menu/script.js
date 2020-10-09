@@ -9,15 +9,28 @@ import { MENU_CLIENT_JS, MENU_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG } from '
 import { isLocal, compileWebpack, babelRequire, type LoggerBufferType } from '../../lib';
 import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
-export async function compileLocalSmartMenuClientScript() : Promise<{| script : string, version : string |}> {
-    const root = join(__dirname, '../../..');
-    const { WEBPACK_CONFIG_MENU_DEBUG } = babelRequire(join(root, WEBPACK_CONFIG));
-    const script = await compileWebpack(WEBPACK_CONFIG_MENU_DEBUG, root);
+const ROOT = join(__dirname, '../../..');
+
+type SmartMenuClientScript = {|
+    script : string,
+    version : string
+|};
+
+export async function compileLocalSmartMenuClientScript() : Promise<SmartMenuClientScript> {
+    const { WEBPACK_CONFIG_MENU_DEBUG } = babelRequire(join(ROOT, WEBPACK_CONFIG));
+    const script = await compileWebpack(WEBPACK_CONFIG_MENU_DEBUG, ROOT);
     return { script, version: ENV.LOCAL };
 }
 
-export async function getSmartMenuClientScript({ logBuffer, cache, debug = false } : {| debug : boolean, logBuffer : ?LoggerBufferType, cache : ?CacheType |} = {}) : Promise<{| script : string, version : string |}> {
-    if (isLocal()) {
+type GetSmartMenuClientScriptOptions = {|
+    debug : boolean,
+    logBuffer : ?LoggerBufferType,
+    cache : ?CacheType,
+    useLocal? : boolean
+|};
+
+export async function getSmartMenuClientScript({ logBuffer, cache, debug = false, useLocal = isLocal() } : GetSmartMenuClientScriptOptions = {}) : Promise<SmartMenuClientScript> {
+    if (useLocal) {
         return await compileLocalSmartMenuClientScript();
     }
 

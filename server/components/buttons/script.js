@@ -9,15 +9,33 @@ import { BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_RENDER_CHILD_MODULE, BUTTON_
 import { isLocal, compileWebpack, babelRequire, evalRequireScript, type LoggerBufferType } from '../../lib';
 import { getPayPalSDKWatcher, getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
+const ROOT = join(__dirname, '../../..');
 
-export async function compileLocalSmartPaymentButtonRenderScript(dir : string) : Promise<{| button : Object, version : string |}> {
+export type SmartPaymentButtonsRenderScript = {|
+    button : {|
+        Buttons : ({||}) => {|
+            // eslint-disable-next-line no-undef
+            render : <T>(() => T) => T
+        |},
+        validateButtonProps : ({||}) => void
+    |},
+    version : string
+|};
+
+export async function compileLocalSmartPaymentButtonRenderScript(dir : string) : Promise<SmartPaymentButtonsRenderScript> {
     const { WEBPACK_CONFIG_BUTTON_RENDER } = babelRequire(join(dir, WEBPACK_CONFIG));
     const button = evalRequireScript(await compileWebpack(WEBPACK_CONFIG_BUTTON_RENDER, dir));
     return { button, version: ENV.LOCAL };
 }
 
-export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) : Promise<{| button : Object, version : string |}> {
-    if (isLocal() && process.env.BUTTON_RENDER_DIR) {
+type GetPayPalSmartPaymentButtonsRenderScriptOptions = {|
+    logBuffer : ?LoggerBufferType,
+    cache : ?CacheType,
+    useLocal? : boolean
+|};
+
+export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache, useLocal = isLocal() } : GetPayPalSmartPaymentButtonsRenderScriptOptions) : Promise<SmartPaymentButtonsRenderScript> {
+    if (useLocal && process.env.BUTTON_RENDER_DIR) {
         return await compileLocalSmartPaymentButtonRenderScript(process.env.BUTTON_RENDER_DIR);
     }
     
@@ -27,16 +45,26 @@ export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cach
     return { button, version };
 }
 
+export type SmartPaymentButtonsClientScript = {|
+    script : string,
+    version : string
+|};
 
-export async function compileLocalSmartButtonsClientScript() : Promise<{| script : string, version : string |}> {
-    const root = join(__dirname, '../../..');
-    const { WEBPACK_CONFIG_BUTTONS_DEBUG } = babelRequire(join(root, WEBPACK_CONFIG));
-    const script = await compileWebpack(WEBPACK_CONFIG_BUTTONS_DEBUG, root);
+export async function compileLocalSmartButtonsClientScript() : Promise<SmartPaymentButtonsClientScript> {
+    const { WEBPACK_CONFIG_BUTTONS_DEBUG } = babelRequire(join(ROOT, WEBPACK_CONFIG));
+    const script = await compileWebpack(WEBPACK_CONFIG_BUTTONS_DEBUG, ROOT);
     return { script, version: ENV.LOCAL };
 }
 
-export async function getSmartPaymentButtonsClientScript({ logBuffer, cache, debug = false } : {| debug : boolean, logBuffer : ?LoggerBufferType, cache : ?CacheType |} = {}) : Promise<{| script : string, version : string |}> {
-    if (isLocal()) {
+type GetSmartPaymentButtonsClientScriptOptions = {|
+    debug : boolean,
+    logBuffer : ?LoggerBufferType,
+    cache : ?CacheType,
+    useLocal? : boolean
+|};
+
+export async function getSmartPaymentButtonsClientScript({ logBuffer, cache, debug = false, useLocal = isLocal() } : GetSmartPaymentButtonsClientScriptOptions = {}) : Promise<SmartPaymentButtonsClientScript> {
+    if (useLocal) {
         return await compileLocalSmartButtonsClientScript();
     }
 
