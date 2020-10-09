@@ -6,6 +6,7 @@ export function getEnv() : $Values<typeof ENV> {
     let ppEnv;
 
     try {
+        // $FlowFixMe
         ppEnv = require('environment-paypal');
     } catch (err) {
         // pass

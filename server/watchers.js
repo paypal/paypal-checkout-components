@@ -11,7 +11,7 @@ let paypalSDKWatcher;
 let paypalSmartButtonsWatcher;
 
 type Watcher = {|
-    get : () => Promise<{|
+    get : (tag? : string) => Promise<{|
         version : string
     |}>,
     // eslint-disable-next-line no-undef
