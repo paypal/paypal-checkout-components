@@ -130,7 +130,8 @@ export const FTPI_CUSTOM_KEY = {
     HONEY_DEVICE_ID:       ('honey_device_id' : 'honey_device_id'),
     HONEY_SESSION_ID:      ('honey_session_id' : 'honey_session_id'),
     INTEGRATION_ISSUE:     ('integration_issue' : 'integration_issue'),
-    INTEGRATION_WHITELIST: ('whitelist' : 'whitelist')
+    INTEGRATION_WHITELIST: ('whitelist' : 'whitelist'),
+    INFO_MSG:              ('info_msg' : 'info_msg')
 };
 
 export const FPTI_BUTTON_KEY = {

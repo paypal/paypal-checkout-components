@@ -1635,7 +1635,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         sessionUID = redirectQuery.sessionUID;
@@ -1795,7 +1803,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         postRobotMock.receive({
@@ -1895,7 +1911,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         sessionUID = redirectQuery.sessionUID;
@@ -2069,7 +2093,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         postRobotMock.receive({
@@ -2180,7 +2212,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         sessionUID = redirectQuery.sessionUID;
@@ -2319,7 +2359,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         sessionUID = redirectQuery.sessionUID;
@@ -2587,7 +2635,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         sessionUID = redirectQuery.sessionUID;
@@ -2841,7 +2897,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         postRobotMock.receive({
@@ -3011,7 +3075,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         sessionUID = redirectQuery.sessionUID;
@@ -3160,7 +3232,15 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
                         }
 
                         sessionUID = redirectQuery.sessionUID;
