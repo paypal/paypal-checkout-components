@@ -23,6 +23,38 @@ npm start
 
 Then load http://localhost/smart/buttons?clientID=alc_client1 in your browser.
 
+## Release
+
+### Release a new version
+
+```bash
+npm run release
+```
+
+### Activate traffic on the new version
+
+```bash
+npm run activate
+```
+
+### Activate traffic on a specific version
+
+```bash
+npm run activate 2.0.123
+```
+
+### Activate traffic on a specific version to a specific environment
+
+```bash
+npm run activate 2.0.123 sandbox
+```
+
+### Activate traffic on a specific version to multiple specific environments
+
+```bash
+npm run activate 2.0.123 'local stage sandbox'
+```
+
 ## Using local paypal-checkout-components
 
 This repo uses the button renderer from [github.com/paypal/paypal-checkout-components](https://github.com/paypal/paypal-checkout-components). To pull in local changes from `paypal-checkout-components` to this module:
