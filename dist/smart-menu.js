@@ -67,7 +67,7 @@ window.spb = function(modules) {
         for (var u in l) n[u] = l[u];
         return n;
     }
-    function a(n) {
+    function preact_module_a(n) {
         var l = n.parentNode;
         l && l.removeChild(n);
     }
@@ -146,7 +146,7 @@ window.spb = function(modules) {
             w.ref && b.push(w.ref, null, k), b.push(d, k.__c || g, k)), null != g ? (null == m && (m = g), 
             s = x(n, k, w, A, r, g, s), h || "option" != u.type ? "function" == typeof u.type && (u.__d = s) : n.value = "") : s && w.__e == s && s.parentNode != n && (s = _(w));
         }
-        if (u.__e = m, null != r && "function" != typeof u.type) for (y = r.length; y--; ) null != r[y] && a(r[y]);
+        if (u.__e = m, null != r && "function" != typeof u.type) for (y = r.length; y--; ) null != r[y] && preact_module_a(r[y]);
         for (y = P; y--; ) null != A[y] && L(A[y], A[y]);
         if (b) for (y = 0; y < b.length; y++) I(b[y], b[++y], b[++y]);
     }
@@ -278,7 +278,7 @@ window.spb = function(modules) {
             t.base = t.__P = null;
         }
         if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && L(t[r], u, i);
-        null != o && a(o);
+        null != o && preact_module_a(o);
     }
     function M(n, l, u) {
         return this.constructor(n, u);
@@ -382,6 +382,11 @@ window.spb = function(modules) {
     }
     function hooks_module_k(n, t) {
         return "function" == typeof t ? t(n) : t;
+    }
+    function _inheritsLoose(subClass, superClass) {
+        subClass.prototype = Object.create(superClass.prototype);
+        subClass.prototype.constructor = subClass;
+        subClass.__proto__ = superClass;
     }
     function _extends() {
         return (_extends = Object.assign || function(target) {
@@ -981,6 +986,61 @@ window.spb = function(modules) {
         };
         return CrossDomainSafeWeakMap;
     }();
+    function _getPrototypeOf(o) {
+        return (_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function(o) {
+            return o.__proto__ || Object.getPrototypeOf(o);
+        })(o);
+    }
+    function _setPrototypeOf(o, p) {
+        return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
+            o.__proto__ = p;
+            return o;
+        })(o, p);
+    }
+    function _isNativeReflectConstruct() {
+        if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
+        if (Reflect.construct.sham) return !1;
+        if ("function" == typeof Proxy) return !0;
+        try {
+            Date.prototype.toString.call(Reflect.construct(Date, [], (function() {})));
+            return !0;
+        } catch (e) {
+            return !1;
+        }
+    }
+    function construct_construct(Parent, args, Class) {
+        return (construct_construct = _isNativeReflectConstruct() ? Reflect.construct : function(Parent, args, Class) {
+            var a = [ null ];
+            a.push.apply(a, args);
+            var instance = new (Function.bind.apply(Parent, a));
+            Class && _setPrototypeOf(instance, Class.prototype);
+            return instance;
+        }).apply(null, arguments);
+    }
+    function wrapNativeSuper_wrapNativeSuper(Class) {
+        var _cache = "function" == typeof Map ? new Map : void 0;
+        return (wrapNativeSuper_wrapNativeSuper = function(Class) {
+            if (null === Class || !(fn = Class, -1 !== Function.toString.call(fn).indexOf("[native code]"))) return Class;
+            var fn;
+            if ("function" != typeof Class) throw new TypeError("Super expression must either be null or a function");
+            if (void 0 !== _cache) {
+                if (_cache.has(Class)) return _cache.get(Class);
+                _cache.set(Class, Wrapper);
+            }
+            function Wrapper() {
+                return construct_construct(Class, arguments, _getPrototypeOf(this).constructor);
+            }
+            Wrapper.prototype = Object.create(Class.prototype, {
+                constructor: {
+                    value: Wrapper,
+                    enumerable: !1,
+                    writable: !0,
+                    configurable: !0
+                }
+            });
+            return _setPrototypeOf(Wrapper, Class);
+        })(Class);
+    }
     function uniqueID() {
         var chars = "0123456789abcdef";
         return "xxxxxxxxxx".replace(/./g, (function() {
@@ -1052,14 +1112,28 @@ window.spb = function(modules) {
         for (var _i2 = 0; _i2 < memoizedFunctions.length; _i2++) memoizedFunctions[_i2].reset();
     };
     function src_util_noop() {}
-    function arrayFrom(item) {
-        return [].slice.call(item);
-    }
     memoize((function(obj) {
+        if (Object.values) return Object.values(obj);
         var result = [];
         for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
         return result;
     }));
+    function arrayFrom(item) {
+        return [].slice.call(item);
+    }
+    var util_ExtendableError = function(_Error) {
+        _inheritsLoose(ExtendableError, _Error);
+        function ExtendableError(message) {
+            var _this7;
+            (_this7 = _Error.call(this, message) || this).name = _this7.constructor.name;
+            "function" == typeof Error.captureStackTrace ? Error.captureStackTrace(function(self) {
+                if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+                return self;
+            }(_this7), _this7.constructor) : _this7.stack = new Error(message).stack;
+            return _this7;
+        }
+        return ExtendableError;
+    }(wrapNativeSuper_wrapNativeSuper(Error));
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
     }
@@ -1077,10 +1151,13 @@ window.spb = function(modules) {
             }), 10);
         }));
     }));
-    function PopupOpenError(message) {
-        this.message = message;
-    }
-    PopupOpenError.prototype = Object.create(Error.prototype);
+    var dom_PopupOpenError = function(_ExtendableError) {
+        _inheritsLoose(PopupOpenError, _ExtendableError);
+        function PopupOpenError() {
+            return _ExtendableError.apply(this, arguments) || this;
+        }
+        return PopupOpenError;
+    }(util_ExtendableError);
     var currentScript = "undefined" != typeof document ? document.currentScript : null;
     var getCurrentScript = memoize((function() {
         if (currentScript) return currentScript;
@@ -1104,8 +1181,14 @@ window.spb = function(modules) {
         }()) return currentScript;
         throw new Error("Can not determine current script");
     }));
+    var currentUID = uniqueID();
     memoize((function() {
-        var script = getCurrentScript();
+        var script;
+        try {
+            script = getCurrentScript();
+        } catch (err) {
+            return currentUID;
+        }
         var uid = script.getAttribute("data-uid");
         if (uid && "string" == typeof uid) return uid;
         uid = uniqueID();
@@ -1388,11 +1471,11 @@ window.spb = function(modules) {
                                 try {
                                     win = window.open("", name, params, !0);
                                 } catch (err) {
-                                    throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+                                    throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
                                 }
                                 if (isWindowClosed(win)) {
                                     var err;
-                                    throw new PopupOpenError("Can not open popup window - blocked");
+                                    throw new dom_PopupOpenError("Can not open popup window - blocked");
                                 }
                                 window.addEventListener("unload", (function() {
                                     return win.close();

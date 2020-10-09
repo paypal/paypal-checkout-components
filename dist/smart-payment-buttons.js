@@ -57,344 +57,6 @@ window.spb = function(modules) {
     __webpack_require__.p = "";
     return __webpack_require__(__webpack_require__.s = "./src/button/index.js");
 }({
-    "./node_modules/zalgo-promise/dist/zalgo-promise.js": function(module, exports, __webpack_require__) {
-        "undefined" != typeof self && self, module.exports = function(modules) {
-            var installedModules = {};
-            function __webpack_require__(moduleId) {
-                if (installedModules[moduleId]) return installedModules[moduleId].exports;
-                var module = installedModules[moduleId] = {
-                    i: moduleId,
-                    l: !1,
-                    exports: {}
-                };
-                modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-                module.l = !0;
-                return module.exports;
-            }
-            __webpack_require__.m = modules;
-            __webpack_require__.c = installedModules;
-            __webpack_require__.d = function(exports, name, getter) {
-                __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
-                    configurable: !1,
-                    enumerable: !0,
-                    get: getter
-                });
-            };
-            __webpack_require__.n = function(module) {
-                var getter = module && module.__esModule ? function() {
-                    return module.default;
-                } : function() {
-                    return module;
-                };
-                __webpack_require__.d(getter, "a", getter);
-                return getter;
-            };
-            __webpack_require__.o = function(object, property) {
-                return {}.hasOwnProperty.call(object, property);
-            };
-            __webpack_require__.p = "";
-            return __webpack_require__(__webpack_require__.s = "./src/index.js");
-        }({
-            "./src/index.js": function(module, __webpack_exports__, __webpack_require__) {
-                "use strict";
-                Object.defineProperty(__webpack_exports__, "__esModule", {
-                    value: !0
-                });
-                function utils_isPromise(item) {
-                    try {
-                        if (!item) return !1;
-                        if ("undefined" != typeof Promise && item instanceof Promise) return !0;
-                        if ("undefined" != typeof window && "function" == typeof window.Window && item instanceof window.Window) return !1;
-                        if ("undefined" != typeof window && "function" == typeof window.constructor && item instanceof window.constructor) return !1;
-                        var _toString = {}.toString;
-                        if (_toString) {
-                            var name = _toString.call(item);
-                            if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
-                        }
-                        if ("function" == typeof item.then) return !0;
-                    } catch (err) {
-                        return !1;
-                    }
-                    return !1;
-                }
-                var dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [], activeCount = 0, flushPromise = void 0;
-                function flushActive() {
-                    if (!activeCount && flushPromise) {
-                        var promise = flushPromise;
-                        flushPromise = null;
-                        promise.resolve();
-                    }
-                }
-                function startActive() {
-                    activeCount += 1;
-                }
-                function endActive() {
-                    activeCount -= 1;
-                    flushActive();
-                }
-                var promise_ZalgoPromise = function() {
-                    function ZalgoPromise(handler) {
-                        var _this = this;
-                        !function(instance, Constructor) {
-                            if (!(instance instanceof ZalgoPromise)) throw new TypeError("Cannot call a class as a function");
-                        }(this);
-                        this.resolved = !1;
-                        this.rejected = !1;
-                        this.errorHandled = !1;
-                        this.handlers = [];
-                        if (handler) {
-                            var _result = void 0, _error = void 0, resolved = !1, rejected = !1, isAsync = !1;
-                            startActive();
-                            try {
-                                handler((function(res) {
-                                    if (isAsync) _this.resolve(res); else {
-                                        resolved = !0;
-                                        _result = res;
-                                    }
-                                }), (function(err) {
-                                    if (isAsync) _this.reject(err); else {
-                                        rejected = !0;
-                                        _error = err;
-                                    }
-                                }));
-                            } catch (err) {
-                                endActive();
-                                this.reject(err);
-                                return;
-                            }
-                            endActive();
-                            isAsync = !0;
-                            resolved ? this.resolve(_result) : rejected && this.reject(_error);
-                        }
-                    }
-                    ZalgoPromise.prototype.resolve = function(result) {
-                        if (this.resolved || this.rejected) return this;
-                        if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
-                        this.resolved = !0;
-                        this.value = result;
-                        this.dispatch();
-                        return this;
-                    };
-                    ZalgoPromise.prototype.reject = function(error) {
-                        var _this2 = this;
-                        if (this.resolved || this.rejected) return this;
-                        if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
-                        if (!error) {
-                            var _err = error && "function" == typeof error.toString ? error.toString() : {}.toString.call(error);
-                            error = new Error("Expected reject to be called with Error, got " + _err);
-                        }
-                        this.rejected = !0;
-                        this.error = error;
-                        this.errorHandled || setTimeout((function() {
-                            _this2.errorHandled || function(err, promise) {
-                                if (-1 === dispatchedErrors.indexOf(err)) {
-                                    dispatchedErrors.push(err);
-                                    setTimeout((function() {
-                                        throw err;
-                                    }), 1);
-                                    for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
-                                }
-                            }(error, _this2);
-                        }), 1);
-                        this.dispatch();
-                        return this;
-                    };
-                    ZalgoPromise.prototype.asyncReject = function(error) {
-                        this.errorHandled = !0;
-                        this.reject(error);
-                        return this;
-                    };
-                    ZalgoPromise.prototype.dispatch = function() {
-                        var resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
-                        if (!this.dispatching && (resolved || rejected)) {
-                            this.dispatching = !0;
-                            startActive();
-                            for (var chain = function(firstPromise, secondPromise) {
-                                return firstPromise.then((function(res) {
-                                    secondPromise.resolve(res);
-                                }), (function(err) {
-                                    secondPromise.reject(err);
-                                }));
-                            }, i = 0; i < handlers.length; i++) {
-                                var _handlers$i = handlers[i], _onSuccess = _handlers$i.onSuccess, _onError = _handlers$i.onError, _promise = _handlers$i.promise, _result2 = void 0;
-                                if (resolved) try {
-                                    _result2 = _onSuccess ? _onSuccess(this.value) : this.value;
-                                } catch (err) {
-                                    _promise.reject(err);
-                                    continue;
-                                } else if (rejected) {
-                                    if (!_onError) {
-                                        _promise.reject(this.error);
-                                        continue;
-                                    }
-                                    try {
-                                        _result2 = _onError(this.error);
-                                    } catch (err) {
-                                        _promise.reject(err);
-                                        continue;
-                                    }
-                                }
-                                if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
-                                    _result2.resolved ? _promise.resolve(_result2.value) : _promise.reject(_result2.error);
-                                    _result2.errorHandled = !0;
-                                } else utils_isPromise(_result2) ? _result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected) ? _result2.resolved ? _promise.resolve(_result2.value) : _promise.reject(_result2.error) : chain(_result2, _promise) : _promise.resolve(_result2);
-                            }
-                            handlers.length = 0;
-                            this.dispatching = !1;
-                            endActive();
-                        }
-                    };
-                    ZalgoPromise.prototype.then = function(onSuccess, onError) {
-                        if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
-                        if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
-                        var promise = new ZalgoPromise;
-                        this.handlers.push({
-                            promise: promise,
-                            onSuccess: onSuccess,
-                            onError: onError
-                        });
-                        this.errorHandled = !0;
-                        this.dispatch();
-                        return promise;
-                    };
-                    ZalgoPromise.prototype.catch = function(onError) {
-                        return this.then(void 0, onError);
-                    };
-                    ZalgoPromise.prototype.finally = function(onFinally) {
-                        if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
-                        return this.then((function(result) {
-                            return ZalgoPromise.try(onFinally).then((function() {
-                                return result;
-                            }));
-                        }), (function(err) {
-                            return ZalgoPromise.try(onFinally).then((function() {
-                                throw err;
-                            }));
-                        }));
-                    };
-                    ZalgoPromise.prototype.timeout = function(time, err) {
-                        var _this3 = this;
-                        if (this.resolved || this.rejected) return this;
-                        var timeout = setTimeout((function() {
-                            _this3.resolved || _this3.rejected || _this3.reject(err || new Error("Promise timed out after " + time + "ms"));
-                        }), time);
-                        return this.then((function(result) {
-                            clearTimeout(timeout);
-                            return result;
-                        }));
-                    };
-                    ZalgoPromise.prototype.toPromise = function() {
-                        if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
-                        return Promise.resolve(this);
-                    };
-                    ZalgoPromise.resolve = function(value) {
-                        return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
-                            return value.then(resolve, reject);
-                        })) : (new ZalgoPromise).resolve(value);
-                    };
-                    ZalgoPromise.reject = function(error) {
-                        return (new ZalgoPromise).reject(error);
-                    };
-                    ZalgoPromise.asyncReject = function(error) {
-                        return (new ZalgoPromise).asyncReject(error);
-                    };
-                    ZalgoPromise.all = function(promises) {
-                        var promise = new ZalgoPromise, count = promises.length, results = [];
-                        if (!count) {
-                            promise.resolve(results);
-                            return promise;
-                        }
-                        for (var chain = function(i, firstPromise, secondPromise) {
-                            return firstPromise.then((function(res) {
-                                results[i] = res;
-                                0 == (count -= 1) && promise.resolve(results);
-                            }), (function(err) {
-                                secondPromise.reject(err);
-                            }));
-                        }, i = 0; i < promises.length; i++) {
-                            var prom = promises[i];
-                            if (prom instanceof ZalgoPromise) {
-                                if (prom.resolved) {
-                                    results[i] = prom.value;
-                                    count -= 1;
-                                    continue;
-                                }
-                            } else if (!utils_isPromise(prom)) {
-                                results[i] = prom;
-                                count -= 1;
-                                continue;
-                            }
-                            chain(i, ZalgoPromise.resolve(prom), promise);
-                        }
-                        0 === count && promise.resolve(results);
-                        return promise;
-                    };
-                    ZalgoPromise.hash = function(promises) {
-                        var result = {}, awaitPromises = [], _loop = function(key) {
-                            if (promises.hasOwnProperty(key)) {
-                                var value = promises[key];
-                                utils_isPromise(value) ? awaitPromises.push(value.then((function(res) {
-                                    result[key] = res;
-                                }))) : result[key] = value;
-                            }
-                        };
-                        for (var key in promises) _loop(key);
-                        return ZalgoPromise.all(awaitPromises).then((function() {
-                            return result;
-                        }));
-                    };
-                    ZalgoPromise.map = function(items, method) {
-                        return ZalgoPromise.all(items.map(method));
-                    };
-                    ZalgoPromise.onPossiblyUnhandledException = function(handler) {
-                        return function(handler) {
-                            possiblyUnhandledPromiseHandlers.push(handler);
-                            return {
-                                cancel: function() {
-                                    possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
-                                }
-                            };
-                        }(handler);
-                    };
-                    ZalgoPromise.try = function(method, context, args) {
-                        if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
-                        var result = void 0;
-                        startActive();
-                        try {
-                            result = method.apply(context, args || []);
-                        } catch (err) {
-                            endActive();
-                            return ZalgoPromise.reject(err);
-                        }
-                        endActive();
-                        return ZalgoPromise.resolve(result);
-                    };
-                    ZalgoPromise.delay = function(_delay) {
-                        return new ZalgoPromise((function(resolve) {
-                            setTimeout(resolve, _delay);
-                        }));
-                    };
-                    ZalgoPromise.isPromise = function(value) {
-                        return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
-                    };
-                    ZalgoPromise.flush = function() {
-                        return function(Zalgo) {
-                            var promise = flushPromise = flushPromise || new ZalgoPromise;
-                            flushActive();
-                            return promise;
-                        }();
-                    };
-                    return ZalgoPromise;
-                }();
-                __webpack_require__.d(__webpack_exports__, "ZalgoPromise", (function() {
-                    return promise_ZalgoPromise;
-                }));
-            }
-        });
-    },
-    "./node_modules/zalgo-promise/index.js": function(module, exports, __webpack_require__) {
-        module.exports = __webpack_require__("./node_modules/zalgo-promise/dist/zalgo-promise.js");
-    },
     "./src/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.r(__webpack_exports__);
@@ -461,6 +123,11 @@ window.spb = function(modules) {
         function isChrome(ua) {
             void 0 === ua && (ua = getUserAgent());
             return /Chrome|Chromium|CriOS/.test(ua);
+        }
+        function _inheritsLoose(subClass, superClass) {
+            subClass.prototype = Object.create(superClass.prototype);
+            subClass.prototype.constructor = subClass;
+            subClass.__proto__ = superClass;
         }
         function _extends() {
             return (_extends = Object.assign || function(target) {
@@ -1145,6 +812,61 @@ window.spb = function(modules) {
             };
             return CrossDomainSafeWeakMap;
         }();
+        function _getPrototypeOf(o) {
+            return (_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function(o) {
+                return o.__proto__ || Object.getPrototypeOf(o);
+            })(o);
+        }
+        function _setPrototypeOf(o, p) {
+            return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
+                o.__proto__ = p;
+                return o;
+            })(o, p);
+        }
+        function _isNativeReflectConstruct() {
+            if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
+            if (Reflect.construct.sham) return !1;
+            if ("function" == typeof Proxy) return !0;
+            try {
+                Date.prototype.toString.call(Reflect.construct(Date, [], (function() {})));
+                return !0;
+            } catch (e) {
+                return !1;
+            }
+        }
+        function construct_construct(Parent, args, Class) {
+            return (construct_construct = _isNativeReflectConstruct() ? Reflect.construct : function(Parent, args, Class) {
+                var a = [ null ];
+                a.push.apply(a, args);
+                var instance = new (Function.bind.apply(Parent, a));
+                Class && _setPrototypeOf(instance, Class.prototype);
+                return instance;
+            }).apply(null, arguments);
+        }
+        function wrapNativeSuper_wrapNativeSuper(Class) {
+            var _cache = "function" == typeof Map ? new Map : void 0;
+            return (wrapNativeSuper_wrapNativeSuper = function(Class) {
+                if (null === Class || !(fn = Class, -1 !== Function.toString.call(fn).indexOf("[native code]"))) return Class;
+                var fn;
+                if ("function" != typeof Class) throw new TypeError("Super expression must either be null or a function");
+                if (void 0 !== _cache) {
+                    if (_cache.has(Class)) return _cache.get(Class);
+                    _cache.set(Class, Wrapper);
+                }
+                function Wrapper() {
+                    return construct_construct(Class, arguments, _getPrototypeOf(this).constructor);
+                }
+                Wrapper.prototype = Object.create(Class.prototype, {
+                    constructor: {
+                        value: Wrapper,
+                        enumerable: !1,
+                        writable: !0,
+                        configurable: !0
+                    }
+                });
+                return _setPrototypeOf(Wrapper, Class);
+            })(Class);
+        }
         function getFunctionName(fn) {
             return fn.name || fn.__name__ || fn.displayName || "anonymous";
         }
@@ -1263,6 +985,12 @@ window.spb = function(modules) {
             var defaultMessage = "<unknown error: " + {}.toString.call(err) + ">";
             return err ? err instanceof Error ? err.message || defaultMessage : "string" == typeof err.message && err.message || defaultMessage : defaultMessage;
         }
+        memoize((function(obj) {
+            if (Object.values) return Object.values(obj);
+            var result = [];
+            for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
+            return result;
+        }));
         function objFilter(obj, filter) {
             void 0 === filter && (filter = Boolean);
             var result = {};
@@ -1272,11 +1000,19 @@ window.spb = function(modules) {
         function arrayFrom(item) {
             return [].slice.call(item);
         }
-        memoize((function(obj) {
-            var result = [];
-            for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
-            return result;
-        }));
+        var util_ExtendableError = function(_Error) {
+            _inheritsLoose(ExtendableError, _Error);
+            function ExtendableError(message) {
+                var _this7;
+                (_this7 = _Error.call(this, message) || this).name = _this7.constructor.name;
+                "function" == typeof Error.captureStackTrace ? Error.captureStackTrace(function(self) {
+                    if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+                    return self;
+                }(_this7), _this7.constructor) : _this7.stack = new Error(message).stack;
+                return _this7;
+            }
+            return ExtendableError;
+        }(wrapNativeSuper_wrapNativeSuper(Error));
         function isDocumentReady() {
             return Boolean(document.body) && "complete" === document.readyState;
         }
@@ -1379,10 +1115,13 @@ window.spb = function(modules) {
                 return !1;
             }));
         }
-        function PopupOpenError(message) {
-            this.message = message;
-        }
-        PopupOpenError.prototype = Object.create(Error.prototype);
+        var dom_PopupOpenError = function(_ExtendableError) {
+            _inheritsLoose(PopupOpenError, _ExtendableError);
+            function PopupOpenError() {
+                return _ExtendableError.apply(this, arguments) || this;
+            }
+            return PopupOpenError;
+        }(util_ExtendableError);
         var currentScript = "undefined" != typeof document ? document.currentScript : null;
         var getCurrentScript = memoize((function() {
             if (currentScript) return currentScript;
@@ -1406,8 +1145,14 @@ window.spb = function(modules) {
             }()) return currentScript;
             throw new Error("Can not determine current script");
         }));
+        var currentUID = uniqueID();
         memoize((function() {
-            var script = getCurrentScript();
+            var script;
+            try {
+                script = getCurrentScript();
+            } catch (err) {
+                return currentUID;
+            }
             var uid = script.getAttribute("data-uid");
             if (uid && "string" == typeof uid) return uid;
             uid = uniqueID();
@@ -1889,7 +1634,7 @@ window.spb = function(modules) {
             getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.318", _headers10);
+            _headers10["x-app-version"] = "2.0.319", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2017,7 +1762,6 @@ window.spb = function(modules) {
                 return firebase;
             }));
         }));
-        var zalgo_promise = __webpack_require__("./node_modules/zalgo-promise/index.js");
         var _FRAUDNET_URL;
         var FRAUDNET_URL = ((_FRAUDNET_URL = {}).local = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
         _FRAUDNET_URL.stage = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
@@ -2025,7 +1769,7 @@ window.spb = function(modules) {
         _FRAUDNET_URL.test = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL);
         var loadFraudnet = memoize((function(_ref) {
             var env = _ref.env, clientMetadataID = _ref.clientMetadataID, cspNonce = _ref.cspNonce, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 1e3 : _ref$timeout;
-            return new zalgo_promise.ZalgoPromise((function(resolve) {
+            return new promise_ZalgoPromise((function(resolve) {
                 var config = {
                     f: clientMetadataID,
                     s: "SMART_PAYMENT_BUTTONS",
@@ -2041,7 +1785,9 @@ window.spb = function(modules) {
                 var fraudnetScript = document.createElement("script");
                 fraudnetScript.setAttribute("nonce", cspNonce || "");
                 fraudnetScript.setAttribute("src", FRAUDNET_URL[env]);
-                fraudnetScript.addEventListener("error", resolve);
+                fraudnetScript.addEventListener("error", (function() {
+                    return resolve();
+                }));
                 window.fnCallback = resolve;
                 setTimeout(resolve, timeout);
                 var body = function() {
@@ -3562,11 +3308,11 @@ window.spb = function(modules) {
                                 try {
                                     win = window.open("", name, params, !0);
                                 } catch (err) {
-                                    throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+                                    throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
                                 }
                                 if (isWindowClosed(win)) {
                                     var err;
-                                    throw new PopupOpenError("Can not open popup window - blocked");
+                                    throw new dom_PopupOpenError("Can not open popup window - blocked");
                                 }
                                 window.addEventListener("unload", (function() {
                                     return win.close();
@@ -4293,7 +4039,7 @@ window.spb = function(modules) {
                             }));
                         }));
                         instance.onMessage((function(rawMessage) {
-                            return connectionPromise.then((function(socket) {
+                            connectionPromise.then((function(socket) {
                                 return function(socket, rawData) {
                                     var parsedData;
                                     try {
@@ -4421,7 +4167,7 @@ window.spb = function(modules) {
                             }
                             retryDelay = 0;
                             return init();
-                        }));
+                        })).then(src_util_noop);
                     },
                     close: function() {
                         retry = !1;
@@ -4757,7 +4503,7 @@ window.spb = function(modules) {
                 var getNativePopupDomain = memoize((function() {
                     return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://history.paypal.com" : "sandbox" === env ? "https://www.sandbox.paypal.com" : "https://history.paypal.com";
                 }));
-                var getNativeUrl = memoize((function(_temp) {
+                var getNativeUrlForAndroid = memoize((function(_temp) {
                     var _ref7 = void 0 === _temp ? {} : _temp, _ref7$pageUrl = _ref7.pageUrl, pageUrl = void 0 === _ref7$pageUrl ? initialPageUrl : _ref7$pageUrl, sessionUID = _ref7.sessionUID;
                     return extendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
                         query: {
@@ -4768,8 +4514,28 @@ window.spb = function(modules) {
                         }
                     });
                 }));
-                var getNativePopupUrl = memoize((function(_ref8) {
-                    var sessionUID = _ref8.sessionUID;
+                var getNativeUrl = memoize((function(_ref8) {
+                    var sessionUID = _ref8.sessionUID, _ref8$pageUrl = _ref8.pageUrl, pageUrl = void 0 === _ref8$pageUrl ? initialPageUrl : _ref8$pageUrl, sdkProps = _ref8.sdkProps;
+                    return extendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
+                        query: {
+                            sdkMeta: sdkMeta,
+                            sessionUID: sessionUID,
+                            orderID: sdkProps ? sdkProps.orderID : "",
+                            facilitatorAccessToken: facilitatorAccessToken,
+                            pageUrl: pageUrl,
+                            commit: String(commit),
+                            webCheckoutUrl: sdkProps ? sdkProps.webCheckoutUrl : "",
+                            userAgent: sdkProps ? sdkProps.userAgent : "",
+                            buttonSessionID: buttonSessionID,
+                            env: env,
+                            stageHost: stageHost || "",
+                            apiStageHost: apiStageHost || "",
+                            forceEligible: String(sdkProps ? sdkProps.forceEligible : "false")
+                        }
+                    });
+                }));
+                var getNativePopupUrl = memoize((function(_ref9) {
+                    var sessionUID = _ref9.sessionUID;
                     var parentDomain = getDomain();
                     return extendUrl("" + getNativePopupDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
                         query: {
@@ -4780,8 +4546,8 @@ window.spb = function(modules) {
                         }
                     });
                 }));
-                var getWebCheckoutUrl = memoize((function(_ref9) {
-                    var orderID = _ref9.orderID;
+                var getWebCheckoutUrl = memoize((function(_ref10) {
+                    var orderID = _ref10.orderID;
                     return extendUrl(getNativeDomain() + "/checkoutnow", {
                         query: {
                             fundingSource: fundingSource,
@@ -4816,9 +4582,65 @@ window.spb = function(modules) {
                         };
                     }));
                 }));
-                var connectNative = memoize((function(_ref10) {
+                var onApproveCallback = function(_ref11) {
+                    var _getLogger$info$track2;
+                    var _ref11$data = _ref11.data, payerID = _ref11$data.payerID, paymentID = _ref11$data.paymentID, billingToken = _ref11$data.billingToken;
+                    approved = !0;
+                    getLogger().info("native_message_onapprove", {
+                        payerID: payerID,
+                        paymentID: paymentID,
+                        billingToken: billingToken
+                    }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "process_popup_closed", 
+                    _getLogger$info$track2)).flush();
+                    return promise_ZalgoPromise.all([ onApprove({
+                        payerID: payerID,
+                        paymentID: paymentID,
+                        billingToken: billingToken,
+                        forceRestAPI: !0
+                    }, {
+                        restart: function() {
+                            return fallbackToWebCheckout();
+                        }
+                    }), close() ]).then(src_util_noop);
+                };
+                var onCancelCallback = function() {
+                    cancelled = !0;
+                    getLogger().info("native_message_oncancel").flush();
+                    return promise_ZalgoPromise.all([ onCancel(), close() ]).then(src_util_noop);
+                };
+                var onErrorCallback = function(_ref12) {
+                    var message = _ref12.data.message;
+                    getLogger().info("native_message_onerror", {
+                        err: message
+                    }).flush();
+                    return promise_ZalgoPromise.all([ onError(new Error(message)), close() ]).then(src_util_noop);
+                };
+                var onShippingChangeCallback = function(_ref13) {
+                    var data = _ref13.data;
+                    getLogger().info("native_message_onshippingchange").flush();
+                    if (onShippingChange) {
+                        var resolved = !0;
+                        return onShippingChange(data, {
+                            resolve: function() {
+                                return promise_ZalgoPromise.try((function() {
+                                    resolved = !0;
+                                }));
+                            },
+                            reject: function() {
+                                return promise_ZalgoPromise.try((function() {
+                                    resolved = !1;
+                                }));
+                            }
+                        }).then((function() {
+                            return {
+                                resolved: resolved
+                            };
+                        }));
+                    }
+                };
+                var connectNative = memoize((function(_ref14) {
                     var socket = getNativeSocket({
-                        sessionUID: _ref10.sessionUID,
+                        sessionUID: _ref14.sessionUID,
                         firebaseConfig: firebaseConfig,
                         version: version
                     });
@@ -4835,15 +4657,15 @@ window.spb = function(modules) {
                             }(sdkProps);
                             return socket.send("setProps", sdkProps);
                         })).then((function() {
-                            var _getLogger$info$track2;
-                            getLogger().info("native_response_setprops").track((_getLogger$info$track2 = {}, 
-                            _getLogger$info$track2.state_name = "smart_button", _getLogger$info$track2.transition_name = "native_app_switch_ack", 
-                            _getLogger$info$track2)).flush();
-                        })).catch((function(err) {
                             var _getLogger$info$track3;
-                            getLogger().info("native_response_setprops_error").track((_getLogger$info$track3 = {}, 
-                            _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.int_error_desc = stringifyError(err), 
+                            getLogger().info("native_response_setprops").track((_getLogger$info$track3 = {}, 
+                            _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = "native_app_switch_ack", 
                             _getLogger$info$track3)).flush();
+                        })).catch((function(err) {
+                            var _getLogger$info$track4;
+                            getLogger().info("native_response_setprops_error").track((_getLogger$info$track4 = {}, 
+                            _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.int_error_desc = stringifyError(err), 
+                            _getLogger$info$track4)).flush();
                         }));
                     }));
                     var closeNative = memoize((function() {
@@ -4857,58 +4679,10 @@ window.spb = function(modules) {
                         getLogger().info("native_message_getprops").flush();
                         return getSDKProps();
                     }));
-                    var onShippingChangeListener = socket.on("onShippingChange", (function(_ref11) {
-                        var data = _ref11.data;
-                        getLogger().info("native_message_onshippingchange").flush();
-                        if (onShippingChange) {
-                            var resolved = !0;
-                            return onShippingChange(data, {
-                                resolve: function() {
-                                    return promise_ZalgoPromise.try((function() {
-                                        resolved = !0;
-                                    }));
-                                },
-                                reject: function() {
-                                    return promise_ZalgoPromise.try((function() {
-                                        resolved = !1;
-                                    }));
-                                }
-                            }).then((function() {
-                                return {
-                                    resolved: resolved
-                                };
-                            }));
-                        }
-                    }));
-                    var onApproveListener = socket.on("onApprove", (function(_ref12) {
-                        var _getLogger$info$track4;
-                        var _ref12$data = _ref12.data, payerID = _ref12$data.payerID, paymentID = _ref12$data.paymentID, billingToken = _ref12$data.billingToken;
-                        approved = !0;
-                        getLogger().info("native_message_onapprove").track((_getLogger$info$track4 = {}, 
-                        _getLogger$info$track4.transition_name = "process_popup_closed", _getLogger$info$track4)).flush();
-                        return promise_ZalgoPromise.all([ onApprove({
-                            payerID: payerID,
-                            paymentID: paymentID,
-                            billingToken: billingToken,
-                            forceRestAPI: !0
-                        }, {
-                            restart: function() {
-                                return fallbackToWebCheckout();
-                            }
-                        }), close() ]).then(src_util_noop);
-                    }));
-                    var onCancelListener = socket.on("onCancel", (function() {
-                        cancelled = !0;
-                        getLogger().info("native_message_oncancel").flush();
-                        return promise_ZalgoPromise.all([ onCancel(), close() ]).then(src_util_noop);
-                    }));
-                    var onErrorListener = socket.on("onError", (function(_ref13) {
-                        var message = _ref13.data.message;
-                        getLogger().info("native_message_onerror", {
-                            err: message
-                        }).flush();
-                        return promise_ZalgoPromise.all([ onError(new Error(message)), close() ]).then(src_util_noop);
-                    }));
+                    var onShippingChangeListener = socket.on("onShippingChange", onShippingChangeCallback);
+                    var onApproveListener = socket.on("onApprove", onApproveCallback);
+                    var onCancelListener = socket.on("onCancel", onCancelCallback);
+                    var onErrorListener = socket.on("onError", onErrorCallback);
                     clean.register(getPropsListener.cancel);
                     clean.register(onShippingChangeListener.cancel);
                     clean.register(onApproveListener.cancel);
@@ -4920,9 +4694,9 @@ window.spb = function(modules) {
                         close: closeNative
                     };
                 }));
-                var detectAppSwitch = once((function(_ref14) {
+                var detectAppSwitch = once((function(_ref15) {
                     var _getLogger$info$track5;
-                    var sessionUID = _ref14.sessionUID;
+                    var sessionUID = _ref15.sessionUID;
                     getLogger().info("native_detect_app_switch").track((_getLogger$info$track5 = {}, 
                     _getLogger$info$track5.transition_name = "native_detect_app_switch", _getLogger$info$track5)).flush();
                     return connectNative({
@@ -4953,10 +4727,10 @@ window.spb = function(modules) {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
                             var sessionUID = uniqueID();
-                            return isAndroidChrome() ? function(_ref15) {
+                            return isAndroidChrome() ? function(_ref16) {
                                 var _getLogger$info$info$, _getLogger$info$info$2;
-                                var sessionUID = _ref15.sessionUID;
-                                var nativeUrl = getNativeUrl({
+                                var sessionUID = _ref16.sessionUID;
+                                var nativeUrl = getNativeUrlForAndroid({
                                     sessionUID: sessionUID
                                 });
                                 var nativeWin = popup(nativeUrl);
@@ -4970,11 +4744,6 @@ window.spb = function(modules) {
                                 _getLogger$info$info$2)).flush();
                                 var validatePromise = validate();
                                 var delayPromise = promise_ZalgoPromise.delay(500);
-                                var detectWebSwitchListener = listen(nativeWin, getNativeDomain(), "detectWebSwitch", (function() {
-                                    getLogger().info("native_post_message_detect_web_switch").flush();
-                                    return detectWebSwitch(nativeWin).then(unresolvedPromise);
-                                }));
-                                clean.register(detectWebSwitchListener.cancel);
                                 return validatePromise.then((function(valid) {
                                     return valid ? createOrder().then((function() {
                                         if (didAppSwitch(nativeWin)) return detectAppSwitch({
@@ -5004,9 +4773,9 @@ window.spb = function(modules) {
                                 }));
                             }({
                                 sessionUID: sessionUID
-                            }) : function(_ref16) {
+                            }) : function(_ref17) {
                                 var _getLogger$info$track8;
-                                var sessionUID = _ref16.sessionUID;
+                                var sessionUID = _ref17.sessionUID;
                                 var popupWin = popup(getNativePopupUrl({
                                     sessionUID: sessionUID
                                 }));
@@ -5039,20 +4808,22 @@ window.spb = function(modules) {
                                     closeListener.cancel();
                                 }));
                                 var validatePromise = validate();
-                                var awaitRedirectListener = listen(popupWin, getNativePopupDomain(), "awaitRedirect", (function(_ref17) {
-                                    var pageUrl = _ref17.data.pageUrl;
+                                var awaitRedirectListener = listen(popupWin, getNativePopupDomain(), "awaitRedirect", (function(_ref18) {
+                                    var pageUrl = _ref18.data.pageUrl;
                                     getLogger().info("native_post_message_await_redirect").flush();
                                     return validatePromise.then((function(valid) {
-                                        return valid ? createOrder().then((function() {
+                                        return valid ? getSDKProps().then((function(sdkProps) {
                                             var _getLogger$info$track9;
                                             var nativeUrl = getNativeUrl({
                                                 sessionUID: sessionUID,
-                                                pageUrl: pageUrl
+                                                pageUrl: pageUrl,
+                                                sdkProps: sdkProps
                                             });
                                             getLogger().info("native_attempt_appswitch_url_popup", {
                                                 url: nativeUrl
                                             }).track((_getLogger$info$track9 = {}, _getLogger$info$track9.state_name = "smart_button", 
-                                            _getLogger$info$track9.transition_name = "app_switch_attempted", _getLogger$info$track9)).flush();
+                                            _getLogger$info$track9.transition_name = "app_switch_attempted", _getLogger$info$track9.info_msg = nativeUrl, 
+                                            _getLogger$info$track9)).flush();
                                             return {
                                                 redirectUrl: nativeUrl
                                             };
@@ -5077,8 +4848,20 @@ window.spb = function(modules) {
                                         sessionUID: sessionUID
                                     });
                                 }));
+                                var onApproveListener = listen(popupWin, getNativePopupDomain(), "onApprove", (function(data) {
+                                    onApproveCallback(data);
+                                    popupWin.close();
+                                }));
+                                var onCancelListener = listen(popupWin, getNativePopupDomain(), "onCancel", (function() {
+                                    onCancelCallback();
+                                    popupWin.close();
+                                }));
                                 var onCompleteListener = listen(popupWin, getNativePopupDomain(), "onComplete", (function() {
                                     getLogger().info("native_post_message_on_complete").flush();
+                                    popupWin.close();
+                                }));
+                                var onErrorListener = listen(popupWin, getNativePopupDomain(), "onError", (function(data) {
+                                    onErrorCallback(data);
                                     popupWin.close();
                                 }));
                                 var detectWebSwitchListener = listen(popupWin, getNativeDomain(), "detectWebSwitch", (function() {
@@ -5087,7 +4870,10 @@ window.spb = function(modules) {
                                 }));
                                 clean.register(awaitRedirectListener.cancel);
                                 clean.register(detectAppSwitchListener.cancel);
+                                clean.register(onApproveListener.cancel);
+                                clean.register(onCancelListener.cancel);
                                 clean.register(onCompleteListener.cancel);
+                                clean.register(onErrorListener.cancel);
                                 clean.register(detectWebSwitchListener.cancel);
                                 return awaitRedirectListener.then((function() {
                                     return promises = [ detectAppSwitchListener, detectWebSwitchListener ], new promise_ZalgoPromise((function(resolve, reject) {
@@ -5787,7 +5573,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.318", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.319", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2;
                 }));
                 (function() {
