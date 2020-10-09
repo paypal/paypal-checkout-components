@@ -8,10 +8,10 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import { noop } from 'belter';
 
 import { WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG } from '../webpack.config';
+import { getButtonMiddleware, getMenuMiddleware } from '../index';
 
 import type { GraphQL } from './lib/graphql';
 import type { ExpressRequest, ExpressResponse } from './types';
-import { getButtonMiddleware, getMenuMiddleware } from './components';
 
 const app = express();
 const PORT = process.env.PORT || 8003;

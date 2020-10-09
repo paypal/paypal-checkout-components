@@ -49,6 +49,9 @@
   "peerDependencies": {
     "express": "^4.16.3"
   },
+  "alias": {
+    "@paypal/checkout-components": "/Users/dbrain/sdk/paypal-checkout-components"
+  },
   "dependencies": {
     "@paypal/checkout-components": "^5.0.30",
     "@paypal/common-components": "^1.0.10",
@@ -73,6 +76,7 @@
     "flow-bin": "^0.135",
     "grabthar-release": "^1.0.8",
     "grumbler-scripts": "^3.0.18",
+    "module-alias": "^2.2.2",
     "post-robot": "^10.0.13",
     "sync-browser-mocks": "^2.0.8",
     "webpack-mem-compile": "^1.0.2"
