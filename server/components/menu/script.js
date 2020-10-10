@@ -5,8 +5,8 @@ import { join } from 'path';
 import { ENV } from '@paypal/sdk-constants';
 
 import type { CacheType } from '../../types';
-import { MENU_CLIENT_JS, MENU_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG } from '../../config';
-import { isLocal, compileWebpack, babelRequire, resolveScript, type LoggerBufferType } from '../../lib';
+import { MENU_CLIENT_JS, MENU_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG, MENU_CLIENT_MODULE } from '../../config';
+import { isLocal, compileWebpack, babelRequire, resolveScript, dynamicRequire, type LoggerBufferType } from '../../lib';
 import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
 const ROOT = join(__dirname, '../../..');
@@ -18,12 +18,19 @@ type SmartMenuClientScript = {|
 
 export async function compileLocalSmartMenuClientScript() : Promise<?SmartMenuClientScript> {
     const webpackScriptPath = resolveScript(join(ROOT, WEBPACK_CONFIG));
-    if (!webpackScriptPath) {
-        return;
+
+    if (webpackScriptPath && isLocal()) {
+        const { WEBPACK_CONFIG_MENU_DEBUG } = babelRequire(webpackScriptPath);
+        const script = await compileWebpack(WEBPACK_CONFIG_MENU_DEBUG, ROOT);
+        return { script, version: ENV.LOCAL };
     }
-    const { WEBPACK_CONFIG_MENU_DEBUG } = babelRequire(webpackScriptPath);
-    const script = await compileWebpack(WEBPACK_CONFIG_MENU_DEBUG, ROOT);
-    return { script, version: ENV.LOCAL };
+
+    const distScriptPath = resolveScript(join(MENU_CLIENT_MODULE, MENU_CLIENT_JS));
+
+    if (distScriptPath) {
+        const script = dynamicRequire(distScriptPath);
+        return { script, version: ENV.LOCAL };
+    }
 }
 
 type GetSmartMenuClientScriptOptions = {|

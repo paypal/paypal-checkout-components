@@ -86,11 +86,14 @@ export function resolveScript(path : string) : ?string {
     }
 }
 
-export function babelRequire<T>(path : string) : T {
-    babelRegister(dirname(path));
-    
+export function dynamicRequire<T>(path : string) : T {
     // $FlowFixMe
     return require(path); // eslint-disable-line security/detect-non-literal-require
+}
+
+export function babelRequire<T>(path : string) : T {
+    babelRegister(dirname(path));
+    return dynamicRequire(path);
 }
 
 export async function compileWebpack(config : Object, context : string) : Promise<string> {
