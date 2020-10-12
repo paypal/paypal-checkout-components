@@ -49,9 +49,7 @@
   "peerDependencies": {
     "express": "^4.16.3"
   },
-  "alias": {
-    "@paypal/checkout-components": "/Users/dbrain/sdk/paypal-checkout-components"
-  },
+  "alias": {},
   "dependencies": {
     "@paypal/checkout-components": "^5.0.30",
     "@paypal/common-components": "^1.0.10",
