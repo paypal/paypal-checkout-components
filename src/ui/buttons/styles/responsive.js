@@ -1,6 +1,6 @@
 /* @flow */
 
-import { max, perc } from 'belter/src';
+import { max, perc, roundUp } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from '../../../constants';
@@ -20,6 +20,8 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
         const buttonHeight = height || style.defaultHeight;
         const minDualWidth = Math.max(Math.round(buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)), MIN_SPLIT_BUTTON_WIDTH);
 
+        const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+
         return `
 
             @media only screen and (min-width: ${ style.minWidth }px) {
@@ -31,7 +33,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
                 .${ CLASS.CONTAINER } .${ CLASS.TEXT }, .${ CLASS.CONTAINER } .${ CLASS.SPACE } {
                     font-size: ${ max(perc(buttonHeight, 36), 10) }px;
-                    line-height: ${ perc(buttonHeight, 35) + 5 }px;
+                    line-height: ${ labelHeight }px;
                 }
 
                 .${ CLASS.BUTTON_ROW } {
@@ -62,7 +64,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
                 .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
                     margin: 0px 4vw;
-                    height: ${ perc(buttonHeight, 35) + 5 }px;
+                    height: ${ labelHeight }px;
                 }
 
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL },
