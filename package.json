@@ -65,6 +65,7 @@
     "cross-domain-utils": "^2.0.16",
     "grabthar": "^4",
     "jsx-pragmatic": "^2",
+    "module-alias": "^2.2.2",
     "preact": "^10",
     "preact-render-to-string": "^5.1.4",
     "strict-merge": "^1.0.1",
@@ -77,7 +78,6 @@
     "flow-bin": "^0.135",
     "grabthar-release": "^1.0.8",
     "grumbler-scripts": "^3.0.18",
-    "module-alias": "^2.2.2",
     "post-robot": "^10.0.13",
     "sync-browser-mocks": "^2.0.8",
     "webpack-mem-compile": "^1.0.2"
