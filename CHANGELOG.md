@@ -1,3 +1,18 @@
+## <small>5.0.124 (2020-10-12)</small>
+
+* Add __SDK_HOST__ to test globals ([d981061](https://github.com/paypal/paypal-checkout-components/commit/d981061))
+* Alignment fixes ([6721601](https://github.com/paypal/paypal-checkout-components/commit/6721601))
+* Fix label line-height to fix alignment issues ([bef1024](https://github.com/paypal/paypal-checkout-components/commit/bef1024))
+* Improve range of buttons rendered in dev demo ([cf8fe49](https://github.com/paypal/paypal-checkout-components/commit/cf8fe49))
+* Increase button label size and fix alignment issues ([9ae3e50](https://github.com/paypal/paypal-checkout-components/commit/9ae3e50))
+* Move flex to pay later in sandbox env ([17d068f](https://github.com/paypal/paypal-checkout-components/commit/17d068f))
+* Run dev server on port 9001 ([ca9b3bc](https://github.com/paypal/paypal-checkout-components/commit/ca9b3bc))
+* Update button screenshots ([a783902](https://github.com/paypal/paypal-checkout-components/commit/a783902))
+* Upgrade flow ([3edd7ad](https://github.com/paypal/paypal-checkout-components/commit/3edd7ad))
+* Vaulted installments middleware and component (#1434) ([fdfc4a3](https://github.com/paypal/paypal-checkout-components/commit/fdfc4a3)), closes [#1434](https://github.com/paypal/paypal-checkout-components/issues/1434)
+
+
+
 ## <small>5.0.123 (2020-10-01)</small>
 
 * Allow buttons to opt-out of automatic/smart mode ([147b8a8](https://github.com/paypal/paypal-checkout-components/commit/147b8a8))
