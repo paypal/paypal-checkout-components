@@ -422,6 +422,95 @@ describe('vault cases', () => {
         });
     });
 
+    it('should pay with an existing vaulted card with installments', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            window.xprops.clientAccessToken = 'abc-123';
+
+            const gqlMock = getGraphQLApiMock({
+                data: {
+                    data: {
+                        checkoutSession: {
+                            cart: {
+                                intent:  INTENT.CAPTURE,
+                                amounts: {
+                                    total: {
+                                        currencyCode: 'USD'
+                                    }
+                                },
+                                shippingAddress: {
+                                    isFullAddress: false
+                                }
+                            },
+                            flags: {
+                                isChangeShippingAddressAllowed: false
+                            },
+                            payees: [
+                                {
+                                    merchantId: 'XYZ12345',
+                                    email:       {
+                                        stringValue: 'xyz-us-b1@paypal.com'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }).expectCalls();
+
+            const orderID = generateOrderID();
+            const paymentMethodID = 'xyz123';
+
+            window.paypal.Menu = expect('Menu', mockMenu);
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return orderID;
+            }));
+
+            const vpmCall = getValidatePaymentMethodApiMock().expectCalls();
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                vpmCall.done();
+            }));
+
+            const fundingEligibility = {
+                [ FUNDING.PAYPAL ]: {
+                    eligible: true
+                },
+                [ FUNDING.CARD ]: {
+                    eligible:     true,
+                    installments: true,
+                    vendors:      {
+                        visa: {
+                            eligible:           true,
+                            vaultedInstruments: [
+                                {
+                                    id:    paymentMethodID,
+                                    label: {
+                                        description: 'Visa x-1234'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            };
+
+            window.paypal.Checkout = avoid('Checkout', window.paypal.Checkout);
+
+            createButtonHTML({ fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility, enableVaultInstallments: true });
+
+            await clickButton(FUNDING.CARD);
+            gqlMock.done();
+            vpmCall.done();
+        });
+    });
+
     it('should pay with an existing vaulted paypal account with shipping required but address passed', async () => {
         return await wrapPromise(async ({ expect }) => {
 
