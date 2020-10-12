@@ -19,11 +19,10 @@
 
     <script>
         const colors = ['gold', 'blue', 'silver', 'black', 'white'];
-        const widths = ['450px', '300px', '150px'];
+        const widths = ['450px', '300px', '220px', '150px'];
         const fis = ['venmo', 'credit'];
         const taglines = [true, false];
         const labels = ['checkout', 'pay', 'buynow'];
-        const products = ['flex'];
         const instruments = ['card', 'bank', 'balance', 'credit'];
         const shapes = ['rect', 'pill']
 
@@ -156,46 +155,6 @@
                     },
                     [fi]: {
                         eligible: true
-                    }
-                }
-            });
-        }
-
-        for (const product of products) {
-            buttonOpts.push({
-                fundingEligibility: {
-                    paypal: {
-                        eligible: true
-                    },
-                    paylater: {
-                        eligible: true,
-                        products: {
-                            [product]: {
-                                eligible: true
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        for (const product of products) {
-            buttonOpts.push({
-                style: {
-                    layout: 'horizontal',
-                    tagline: false
-                },
-                fundingEligibility: {
-                    paypal: {
-                        eligible: true
-                    },
-                    paylater: {
-                        eligible: true,
-                        products: {
-                            [product]: {
-                                eligible: true
-                            }
-                        }
                     }
                 }
             });
