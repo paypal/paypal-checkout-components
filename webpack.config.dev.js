@@ -12,7 +12,7 @@ const FILE_NAME = 'sdk';
 
 const PROTOCOL = 'https';
 const HOSTNAME = 'localhost.paypal.com';
-const PORT = 9000;
+const PORT = 9001;
 
 const WEBPACK_CONFIG_DEV : WebpackConfig = getWebpackConfig({
     entry:         './paypal.dev.js',
