@@ -31,6 +31,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
 
                 .${ CLASS.CONTAINER } .${ CLASS.TEXT }, .${ CLASS.CONTAINER } .${ CLASS.SPACE } {
                     font-size: ${ max(perc(buttonHeight, 36), 10) }px;
+                    line-height: ${ perc(buttonHeight, 35) + 5 }px;
                 }
 
                 .${ CLASS.BUTTON_ROW } {
@@ -62,15 +63,11 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                 .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
                     margin: 0px 4vw;
                     height: ${ perc(buttonHeight, 35) + 5 }px;
-                    max-height: ${ perc(buttonHeight, 60) }px;
-                    min-height: ${ perc(buttonHeight, 40) }px;
                 }
 
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL },
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ CLASS.BUTTON_LABEL } {
                     height: ${ perc(buttonHeight, 50) + 5 }px;
-                    max-height: ${ perc(buttonHeight, 70) }px;
-                    min-height: ${ perc(buttonHeight, 40) }px;
                 }
 
                 .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } {
