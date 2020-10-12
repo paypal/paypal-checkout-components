@@ -29,7 +29,7 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
             let text;
 
-            if (products.flex && products.flex.eligible && __ENV__ !== ENV.LOCAL && __ENV__ !== ENV.STAGE) {
+            if (products.flex && products.flex.eligible && __ENV__ !== ENV.LOCAL && __ENV__ !== ENV.STAGE && __ENV__ !== ENV.SANDBOX) {
                 text = (
                     <Fragment>
                         <Text optional>PayPal </Text>
