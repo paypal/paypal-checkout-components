@@ -53,6 +53,11 @@ export type IsPaymentEligibleOptions = {|
     config : Config
 |};
 
+export type IsInstallmentsEligibleOptions = {|
+    props : ButtonProps,
+    serviceData : ServiceData
+|};
+
 export type InitOptions = {|
     props : ButtonProps,
     serviceData : ServiceData,

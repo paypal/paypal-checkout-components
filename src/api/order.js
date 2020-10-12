@@ -157,7 +157,11 @@ export type ValidatePaymentMethodOptions = {|
     paymentMethodID : string,
     enableThreeDomainSecure : boolean,
     partnerAttributionID : ?string,
-    clientMetadataID : string
+    clientMetadataID : string,
+    installmentPlan? : {|
+        term : string,
+        interval_duration : string
+    |} | null
 |};
 
 const VALIDATE_CONTINGENCIES = {
@@ -173,12 +177,18 @@ export type ValidatePaymentMethodResponse = {|
 type PaymentSource = {|
     token : {|
         id : string,
-        type : 'NONCE'
+        type : 'NONCE',
+        attributes? : {|
+            installments? : {|
+                term : string,
+                interval_duration : string
+            |}
+        |}
     |},
     contingencies? : $ReadOnlyArray<$Values<typeof VALIDATE_CONTINGENCIES>>
 |};
 
-export function validatePaymentMethod({ accessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID } : ValidatePaymentMethodOptions) : ZalgoPromise<{| status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } |}> {
+export function validatePaymentMethod({ accessToken, orderID, paymentMethodID, enableThreeDomainSecure, partnerAttributionID, clientMetadataID, installmentPlan } : ValidatePaymentMethodOptions) : ZalgoPromise<{| status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } |}> {
     getLogger().info(`rest_api_create_order_token`);
 
     const headers : Object = {
@@ -198,6 +208,15 @@ export function validatePaymentMethod({ accessToken, orderID, paymentMethodID, e
 
     if (enableThreeDomainSecure) {
         paymentSource.contingencies = [ VALIDATE_CONTINGENCIES.THREE_DOMAIN_SECURE ];
+    }
+
+    if (installmentPlan) {
+        paymentSource.token.attributes = {
+            installments: {
+                term:              installmentPlan.term,
+                interval_duration: installmentPlan.interval_duration
+            }
+        };
     }
 
     const json = {
@@ -394,8 +413,9 @@ type SupplementalOrderInfo = {|
             intent : $Values<typeof INTENT>,
             paymentId? : ?string,
             billingToken? : ?string,
-            amounts? : {|
+            amounts : {|
                 total : {|
+                    currencyFormatSymbolISOCurrency : string,
                     currencyValue : string,
                     currencyCode : string
                 |}
@@ -433,6 +453,8 @@ export const getSupplementalOrderInfo : GetSupplementalOrderInfo = memoize(order
                             total {
                                 currencyValue
                                 currencyCode
+                                currencyFormatSymbolISOCurrency
+                                currencyValue
                             }
                         }
                     }

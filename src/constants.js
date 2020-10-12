@@ -95,6 +95,9 @@ export const FPTI_TRANSITION = {
     CLICK_CHOOSE_ACCOUNT:     ('process_click_pay_with_different_account' : 'process_click_pay_with_different_account'),
     CLICK_UNLINK_ACCOUNT:     ('process_click_unlink_account' : 'process_click_unlink_account'),
 
+    INSTALLMENTS_ELIGIBLE:    ('installments_eligible' : 'installments_eligible'),
+    INSTALLMENTS_INELIGIBLE:  ('installments_ineligible' : 'installments_ineligible'),
+
     CREATE_ORDER:             ('process_create_order' : 'process_create_order'),
     RECEIVE_ORDER:            ('process_receive_order' : 'process_receive_order'),
     CREATE_PAYMENT:           ('process_create_payment' : 'process_create_payment'),

@@ -88,9 +88,10 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
 
     const getCardQuery = () => {
         return {
-            eligible: graphqlTypes.boolean,
-            branded:  graphqlTypes.boolean,
-            vendors:  getCardVendorsQuery()
+            eligible:     graphqlTypes.boolean,
+            branded:      graphqlTypes.boolean,
+            installments: graphqlTypes.boolean,
+            vendors:      getCardVendorsQuery()
         };
     };
 

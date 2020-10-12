@@ -136,6 +136,10 @@ function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibilityTy
                     fundingSourceEligibility.branded = fundingSourceEligibilityInput.branded;
                 }
 
+                if (typeof fundingSourceEligibilityInput.installments === 'boolean') {
+                    fundingSourceEligibility.installments = fundingSourceEligibilityInput.installments;
+                }
+
                 if (typeof fundingSourceEligibilityInput.vaultable === 'boolean') {
                     fundingSourceEligibility.vaultable = fundingSourceEligibilityInput.vaultable;
                 }
