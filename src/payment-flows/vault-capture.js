@@ -4,15 +4,14 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { destroyElement } from 'belter/src';
-import { initiateInstallments } from '@paypal/installments/src/interface';
 
 import type { ThreeDomainSecureFlowType, MenuChoices } from '../types';
 import type { CreateOrder } from '../props';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault, updateButtonClientConfig } from '../api';
-import { TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
+import { TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION } from '../constants';
 import { getLogger } from '../lib';
 
-import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, IsInstallmentsEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
+import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
 import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
 const VAULT_MIN_WIDTH = 250;
@@ -47,17 +46,6 @@ function isVaultCapturePaymentEligible({ payment } : IsPaymentEligibleOptions) :
     }
 
     return true;
-}
-
-function isVaultCaptureInstallmentsEligible({ props, serviceData } : IsInstallmentsEligibleOptions) : boolean {
-    const { enableVaultInstallments } = props;
-    const { fundingEligibility } = serviceData;
-
-    if (enableVaultInstallments && (fundingEligibility.card && fundingEligibility.card.installments)) {
-        return true;
-    }
-
-    return false;
 }
 
 type ThreeDomainSecureProps = {|
@@ -103,10 +91,10 @@ function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, 
 
 function initVaultCapture({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, clientAccessToken, clientMetadataID: cmid,
-        enableThreeDomainSecure, sessionID, partnerAttributionID, getParent, userIDToken, clientID } = props;
-    const { ThreeDomainSecure, Installments } = components;
-    const { fundingSource, paymentMethodID, button } = payment;
-    const { facilitatorAccessToken, buyerCountry } = serviceData;
+        enableThreeDomainSecure, sessionID, partnerAttributionID, getParent, userIDToken } = props;
+    const { ThreeDomainSecure } = components;
+    const { fundingSource, paymentMethodID } = payment;
+    const { facilitatorAccessToken } = serviceData;
 
     const clientMetadataID = cmid || sessionID;
     const accessToken = userIDToken ? facilitatorAccessToken : clientAccessToken;
@@ -142,10 +130,14 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
         });
     };
 
-    const startPaymentFlow = (orderID, installmentPlan) => {
-        return ZalgoPromise.hash({
-            validate:        validatePaymentMethod({ accessToken, orderID, paymentMethodID, enableThreeDomainSecure, clientMetadataID, partnerAttributionID, installmentPlan }),
-            requireShipping: shippingRequired(orderID)
+    const start = () => {
+        return ZalgoPromise.try(() => {
+            return createOrder();
+        }).then(orderID => {
+            return ZalgoPromise.hash({
+                validate:        validatePaymentMethod({ accessToken, orderID, paymentMethodID, enableThreeDomainSecure, clientMetadataID, partnerAttributionID }),
+                requireShipping: shippingRequired(orderID)
+            });
         }).then(({ validate, requireShipping }) => {
             if (requireShipping) {
                 if (fundingSource !== FUNDING.PAYPAL) {
@@ -159,30 +151,6 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
             return handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, getParent }).then(() => {
                 return onApprove({}, { restart });
             });
-        });
-    };
-
-    const start = () => {
-        return createOrder().then(orderID => {
-            const installmentsEligible = isVaultCaptureInstallmentsEligible({ props, serviceData });
-            
-            getLogger()
-                .info(installmentsEligible ? 'vault_merchant_installments_eligible' : 'vault_merchant_installments_ineligible')
-                .track({
-                    [FPTI_KEY.TRANSITION]:   installmentsEligible ? FPTI_TRANSITION.INSTALLMENTS_ELIGIBLE : FPTI_TRANSITION.INSTALLMENTS_INELIGIBLE,
-                    [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
-                    [FPTI_KEY.TOKEN]:        orderID,
-                    [FPTI_KEY.CONTEXT_ID]:   orderID
-                }).flush();
-
-            if (clientID && installmentsEligible) {
-                return getSupplementalOrderInfo(orderID).then(order => {
-                    const cartAmount = order.checkoutSession.cart.amounts.total.currencyFormatSymbolISOCurrency;
-                    return initiateInstallments({ clientID, Installments, paymentMethodID, button, buyerCountry, orderID, accessToken, cartAmount, onPay: startPaymentFlow, getLogger });
-                });
-            } else {
-                return startPaymentFlow(orderID);
-            }
         });
     };
 

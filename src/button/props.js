@@ -3,7 +3,6 @@
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import type { InstallmentsFlowType } from '@paypal/installments/src/types';
 
 import {  UPGRADE_LSAT_RAMP } from '../constants';
 import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
@@ -73,7 +72,6 @@ export type ButtonXProps = {|
     remember : RememberFunding,
     enableThreeDomainSecure : boolean,
     enableNativeCheckout : boolean | void,
-    enableVaultInstallments : boolean,
     getParentDomain : () => string,
     getPageUrl : GetPageURL,
     getParent : () => CrossDomainWindowType,
@@ -126,7 +124,6 @@ export type ButtonProps = {|
     rememberFunding : RememberFunding,
     enableThreeDomainSecure : boolean,
     enableNativeCheckout : boolean,
-    enableVaultInstallments : boolean,
     merchantDomain : string,
     getPageUrl : GetPageURL,
     getParent : () => CrossDomainWindowType,
@@ -183,7 +180,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         getPrerenderDetails,
         getPageUrl,
         enableThreeDomainSecure,
-        enableVaultInstallments,
         enableNativeCheckout = false,
         remember: rememberFunding,
         stageHost,
@@ -305,7 +301,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
 
         enableThreeDomainSecure,
         enableNativeCheckout,
-        enableVaultInstallments,
 
         onClick,
         onInit,
@@ -329,13 +324,12 @@ export type Components = {|
     Checkout : CheckoutFlowType,
     CardFields : CardFieldsFlowType,
     ThreeDomainSecure : ThreeDomainSecureFlowType,
-    Menu : MenuFlowType,
-    Installments : InstallmentsFlowType
+    Menu : MenuFlowType
 |};
 
 export function getComponents() : Components {
-    const { Checkout, CardFields, ThreeDomainSecure, Menu, Installments } = paypal;
-    return { Checkout, CardFields, ThreeDomainSecure, Menu, Installments };
+    const { Checkout, CardFields, ThreeDomainSecure, Menu } = paypal;
+    return { Checkout, CardFields, ThreeDomainSecure, Menu };
 }
 
 export type Config = {|
