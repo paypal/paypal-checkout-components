@@ -50,7 +50,7 @@ export function Menu({ choices, onBlur, cspNonce, verticalOffset, onFocus, onFoc
                         z-index: 5000;
                         background: white;
                         border-radius: 0 0 3px 3px;
-                        font-family: Helvetica, sans-serif;
+                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                         letter-spacing: 0.5px;
                         box-shadow: 0px 0px 3px 1px rgba(222,222,222,1);
                         outline-style: none;

@@ -54,6 +54,7 @@ function Page({ cspNonce } : PageProps) : typeof Node {
                         padding: 0;
                         opacity: ${ opaque ? '1' : '0' };
                         transition: opacity ${ (FADE_TIME / 1000).toFixed(2) }s ease-in-out;
+                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                     }
 
                     body {
