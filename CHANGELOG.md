@@ -1,3 +1,9 @@
+## <small>5.0.125 (2020-10-13)</small>
+
+* Make fonts consistent ([0183a47](https://github.com/paypal/paypal-checkout-components/commit/0183a47))
+
+
+
 ## <small>5.0.124 (2020-10-12)</small>
 
 * Add __SDK_HOST__ to test globals ([d981061](https://github.com/paypal/paypal-checkout-components/commit/d981061))
