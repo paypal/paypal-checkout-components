@@ -4,6 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1"></script>
+    <script src="https://localhost.paypal.com:9001/sdk-constants.js"></script>
 </head>
 
 <body>
@@ -376,6 +377,17 @@
             });
         }
 
+        for (const fundingSource of Object.values(constants.FUNDING)) {
+            buttonOpts.push({
+                fundingSource,
+                fundingEligibility: {
+                    [fundingSource]: {
+                        eligible: true
+                    }
+                }
+            });
+        }
+
         for (opts of markOpts) {
             break;
             const p = document.createElement('p');
@@ -385,10 +397,15 @@
 
         for (opts of buttonOpts) {
             for (const width of widths) {
-                const p = document.createElement('p');
-                p.style.minWidth = width;
-                document.body.appendChild(p);
-                paypal.Buttons(opts).render(p);
+                const button = paypal.Buttons(opts);
+                if (button.isEligible()) {
+                    const p = document.createElement('p');
+                    p.style.minWidth = width;
+                    document.body.appendChild(p);
+                    button.render(p);
+                } else {
+                    console.warn(`Not eligible`, opts)
+                }
             }
         }
 

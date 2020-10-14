@@ -60,8 +60,19 @@ const WEBPACK_CONFIG_JSX_PRAGMATIC : WebpackConfig = getWebpackConfig({
     libraryTarget: 'global'
 });
 
+const WEBPACK_CONFIG_SDK_CONSTANTS : WebpackConfig = getWebpackConfig({
+    context:       __dirname,
+    entry:         '@paypal/sdk-constants',
+    filename:      'sdk-constants.js',
+    modulename:    'constants',
+    debug:         true,
+    minify:        false,
+    libraryTarget: 'global'
+});
+
 export default [
     WEBPACK_CONFIG_DEV,
     WEBPACK_CONFIG_BUTTON_RENDER,
-    WEBPACK_CONFIG_JSX_PRAGMATIC
+    WEBPACK_CONFIG_JSX_PRAGMATIC,
+    WEBPACK_CONFIG_SDK_CONSTANTS
 ];
