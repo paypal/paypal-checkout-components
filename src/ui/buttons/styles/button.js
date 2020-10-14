@@ -13,7 +13,7 @@ export const buttonStyle = `
         margin: 0;
         background: 0;
         border: 0;
-        font-family: Arial, sans-serif;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         text-transform: none;
         font-weight: 500;
         font-smoothing: antialiased;
