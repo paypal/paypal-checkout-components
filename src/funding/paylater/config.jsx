@@ -22,29 +22,12 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
         Label: ({ logo }) => logo,
 
-        Logo: ({ logoColor, nonce, fundingEligibility }) => {
-            const paylaterEligibility = fundingEligibility.paylater;
-
-            const products = (paylaterEligibility && paylaterEligibility.products && paylaterEligibility.products) || {};
-
-            let text;
-
-            if (products.flex && products.flex.eligible && __ENV__ !== ENV.LOCAL && __ENV__ !== ENV.STAGE && __ENV__ !== ENV.SANDBOX) {
-                text = (
-                    <Fragment>
-                        <Text optional>PayPal </Text>
-                        <Text>Flex</Text>
-                    </Fragment>
-                );
-            } else {
-                text = <Text>Pay Later</Text>;
-            }
-
+        Logo: ({ logoColor, nonce }) => {
             return (
                 <Style css={ css } nonce={ nonce }>
                     <PPLogo optional logoColor={ logoColor } />
                     <Space />
-                    { text }
+                    <Text>Pay Later</Text>
                 </Style>
             );
         },
