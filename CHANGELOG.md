@@ -1,3 +1,12 @@
+## <small>5.0.127 (2020-10-14)</small>
+
+* Enable card button in demo page ([fb7c220](https://github.com/paypal/paypal-checkout-components/commit/fb7c220))
+* Fix powered-by font size ([88e41f9](https://github.com/paypal/paypal-checkout-components/commit/88e41f9))
+* Render all standalone buttons on demo page ([8c085ee](https://github.com/paypal/paypal-checkout-components/commit/8c085ee))
+* Update screenshots ([3f78d42](https://github.com/paypal/paypal-checkout-components/commit/3f78d42))
+
+
+
 ## <small>5.0.126 (2020-10-14)</small>
 
 * Re-add Helvetica ([4c07382](https://github.com/paypal/paypal-checkout-components/commit/4c07382))
