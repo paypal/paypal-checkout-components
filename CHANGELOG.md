@@ -1,3 +1,9 @@
+## <small>5.0.126 (2020-10-14)</small>
+
+* Re-add Helvetica ([4c07382](https://github.com/paypal/paypal-checkout-components/commit/4c07382))
+
+
+
 ## <small>5.0.125 (2020-10-13)</small>
 
 * Make fonts consistent ([0183a47](https://github.com/paypal/paypal-checkout-components/commit/0183a47))
