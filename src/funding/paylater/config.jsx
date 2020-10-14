@@ -27,18 +27,12 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
             const products = (paylaterEligibility && paylaterEligibility.products && paylaterEligibility.products) || {};
 
-            let text;
-
-            if (products.flex && products.flex.eligible && __ENV__ !== ENV.LOCAL && __ENV__ !== ENV.STAGE && __ENV__ !== ENV.SANDBOX) {
-                text = (
-                    <Fragment>
-                        <Text optional>PayPal </Text>
-                        <Text>Flex</Text>
-                    </Fragment>
-                );
-            } else {
-                text = <Text>Pay Later</Text>;
-            }
+            let text = (
+                <Fragment>
+                    <Text optional>PayPal </Text>
+                    <Text>Flex</Text>
+                </Fragment>
+            );
 
             return (
                 <Style css={ css } nonce={ nonce }>
