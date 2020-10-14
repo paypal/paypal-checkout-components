@@ -33,6 +33,7 @@ const POWERED_BY_PAYPAL_STYLE = `
         vertical-align: middle;
         height: 16px;
         line-height: 16px;
+        font-size: 11px;
     }
 `;
 
