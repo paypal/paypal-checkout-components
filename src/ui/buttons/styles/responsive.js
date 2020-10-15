@@ -31,9 +31,14 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     max-width: ${ style.maxWidth }px;
                 }
 
-                .${ CLASS.CONTAINER } .${ CLASS.TEXT }, .${ CLASS.CONTAINER } .${ CLASS.SPACE } {
+                .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.TEXT }, .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.SPACE } {
                     font-size: ${ max(perc(buttonHeight, 36), 10) }px;
+                    margin-top: -${ perc(max(perc(buttonHeight, 36), 10), 10) }px;
                     line-height: ${ labelHeight }px;
+                }
+
+                .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.TEXT } * {
+                    margin-top: ${ perc(max(perc(buttonHeight, 36), 10), 10) }px;
                 }
 
                 .${ CLASS.BUTTON_ROW } {
@@ -70,6 +75,13 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL },
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ CLASS.BUTTON_LABEL } {
                     height: ${ perc(buttonHeight, 50) + 5 }px;
+                }
+
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL } .${ CLASS.TEXT },
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL } .${ CLASS.SPACE },
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ CLASS.BUTTON_LABEL } .${ CLASS.TEXT },
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ CLASS.BUTTON_LABEL } .${ CLASS.SPACE } {
+                    line-height: ${ perc(buttonHeight, 50) + 5 }px;
                 }
 
                 .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } {
