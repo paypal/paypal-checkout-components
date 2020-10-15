@@ -1,3 +1,13 @@
+## <small>5.0.128 (2020-10-15)</small>
+
+* Add more buttons to demo page ([f9d92fc](https://github.com/paypal/paypal-checkout-components/commit/f9d92fc))
+* Add wallet demo page ([f7f6181](https://github.com/paypal/paypal-checkout-components/commit/f7f6181))
+* Alignment fixes ([ccf4440](https://github.com/paypal/paypal-checkout-components/commit/ccf4440))
+* Do not fail validation for standalone horizontal button ([bd55e92](https://github.com/paypal/paypal-checkout-components/commit/bd55e92))
+* Update screenshots ([6f4e280](https://github.com/paypal/paypal-checkout-components/commit/6f4e280))
+
+
+
 ## <small>5.0.127 (2020-10-14)</small>
 
 * Enable card button in demo page ([fb7c220](https://github.com/paypal/paypal-checkout-components/commit/fb7c220))
