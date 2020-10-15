@@ -20,7 +20,7 @@
 
     <script>
         const colors = ['gold', 'blue', 'silver', 'black', 'white'];
-        const widths = ['450px', '300px', '220px', '150px'];
+        const widths = ['750px', '450px', '300px', '220px', '150px'];
         const fis = ['venmo', 'credit'];
         const taglines = [true, false];
         const labels = ['checkout', 'pay', 'buynow'];
@@ -388,6 +388,18 @@
 
         for (const fundingSource of Object.values(constants.FUNDING)) {
             buttonOpts.push({
+                fundingSource,
+                fundingEligibility: {
+                    [fundingSource]: {
+                        eligible: true
+                    }
+                }
+            });
+
+            buttonOpts.push({
+                style: {
+                    label: 'pay'
+                },
                 fundingSource,
                 fundingEligibility: {
                     [fundingSource]: {
