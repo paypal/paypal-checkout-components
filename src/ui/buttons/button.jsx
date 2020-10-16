@@ -51,7 +51,6 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     const colors = fundingConfig.colors;
     const secondaryColors = fundingConfig.secondaryColors || {};
 
-    style.color = style.color ? style.color : colors[0];
     let {
         color = colors[0],
         period,
