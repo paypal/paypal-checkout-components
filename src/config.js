@@ -33,7 +33,7 @@ export const NATIVE_CHECKOUT_POPUP_URI : { [$Values<typeof FUNDING> ] : string }
     [ FUNDING.VENMO ]:  '/smart/checkout/venmo/popup'
 };
 
-export const FUNDING_SKIP_LOGIN : {| [$Values<typeof FUNDING>] : $Values<typeof FUNDING> |} = {
+export const FUNDING_SKIP_LOGIN : { [$Values<typeof FUNDING>] : $Values<typeof FUNDING> } = {
     [ FUNDING.PAYLATER ]: FUNDING.PAYPAL,
     [ FUNDING.CREDIT ]:   FUNDING.PAYPAL
 };
