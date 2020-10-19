@@ -50,3 +50,58 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
     });
 }
+
+describe('paypal button color', () => {
+    beforeEach(() => {
+        createTestContainer();
+    });
+
+    afterEach(() => {
+        destroyTestContainer();
+    });
+
+    it('should render a button with gold background when no color is specified', () => {
+        window.paypal.Buttons({
+
+            test: {
+                onRender() {
+                    assert.ok(getElementRecursive('.paypal-button-color-gold'));
+                }
+            }
+
+        }).render('#testContainer');
+    });
+
+    it('should render a button with black background when passed "black"', () => {
+        window.paypal.Buttons({
+
+            test: {
+                style: {
+                    color: 'black'
+                },
+                onRender() {
+                    assert.ok(getElementRecursive('.paypal-button-color-black'));
+                }
+            }
+        }).render('#testContainer');
+    });
+
+    it('should render a button with gold background when passed empty string', (done) => {
+        done = once(done);
+        window.paypal.Buttons({
+
+            test: {
+                style: {
+                    color: ''
+                },
+                onRender() {
+                    assert.ok(getElementRecursive('.paypal-button-color-gold'));
+                    done();
+                }
+            },
+
+            onError: done
+
+        }).render('#testContainer');
+    });
+});
