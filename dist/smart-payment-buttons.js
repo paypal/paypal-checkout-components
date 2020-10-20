@@ -3679,10 +3679,10 @@ window.spb = function(modules) {
                                                 return body.data;
                                             }));
                                         }({
-                                            name: "getInstallmentsForOnboardingFlows",
-                                            query: "\n            query getInstallmentsForOnboardingFlows(\n                $paymentToken: String\n                $token: String!\n                $country: CountryCodes!\n            ) {\n                getInstallmentsForOnboardingFlows(\n                paymentToken: $paymentToken\n                token: $token\n                buyerCountry: $country\n                ) {\n                    discount {\n                        amount {\n                            currencyCode\n                            currencyFormatSymbolISOCurrency\n                            currencyValue\n                        }\n                        percentage\n                    }\n                    monthlyPayment {\n                        currencyCode\n                        currencyFormatSymbolISOCurrency\n                        currencyValue\n                    }\n                    totalCost {\n                        currencyCode\n                        currencyFormatSymbolISOCurrency\n                        currencyValue\n                    }\n                    term\n                    intervalDuration\n                }\n            }\n        ",
+                                            name: "getInstallments",
+                                            query: "\n            query getInstallments(\n                $vaultedToken: String\n                $token: String!\n                $country: CountryCodes!\n            ) {\n                getInstallments(\n                    vaultedToken: $vaultedToken\n                    token: $token\n                    buyerCountry: $country\n                ) {\n                    discount {\n                        amount {\n                            currencyCode\n                            currencyFormatSymbolISOCurrency\n                            currencyValue\n                        }\n                        percentage\n                    }\n                    monthlyPayment {\n                        currencyCode\n                        currencyFormatSymbolISOCurrency\n                        currencyValue\n                    }\n                    totalCost {\n                        currencyCode\n                        currencyFormatSymbolISOCurrency\n                        currencyValue\n                    }\n                    term\n                    intervalDuration\n                }\n            }\n        ",
                                             variables: {
-                                                paymentToken: _ref.paymentToken,
+                                                vaultedToken: _ref.vaultedToken,
                                                 token: _ref.token,
                                                 country: _ref.country
                                             },
@@ -3690,14 +3690,14 @@ window.spb = function(modules) {
                                             _headers)
                                         });
                                     }({
-                                        paymentToken: _ref.paymentMethodID,
+                                        vaultedToken: _ref.paymentMethodID,
                                         country: _ref.buyerCountry,
                                         token: orderID,
                                         buyerAccessToken: _ref.accessToken
                                     }).then((function(installmentsResponse) {
-                                        if (installmentsResponse && installmentsResponse.getInstallmentsForOnboardingFlows) {
+                                        if (installmentsResponse && installmentsResponse.getInstallments) {
                                             var _getLogger$info$track;
-                                            var installmentsData = installmentsResponse.getInstallmentsForOnboardingFlows;
+                                            var installmentsData = installmentsResponse.getInstallments;
                                             getLogger().info("installments_loaded").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "installments_load", 
                                             _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                                             _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();

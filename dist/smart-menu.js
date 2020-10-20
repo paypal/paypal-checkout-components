@@ -326,11 +326,11 @@ window.spb = function(modules) {
         !n.__s && hooks_module_j(i.__H, o) && (i.__ = r, i.__H = o, hooks_module_u.__H.__h.push(i));
     }
     function hooks_module_q() {
-        hooks_module_i.some((function(t) {
+        hooks_module_i.forEach((function(t) {
             if (t.__P) try {
                 t.__H.__h.forEach(hooks_module_b), t.__H.__h.forEach(hooks_module_g), t.__H.__h = [];
             } catch (u) {
-                return t.__H.__h = [], n.__e(u, t.__v), !0;
+                t.__H.__h = [], n.__e(u, t.__v);
             }
         })), hooks_module_i = [];
     }
@@ -370,10 +370,10 @@ window.spb = function(modules) {
     };
     var hooks_module_x = "function" == typeof requestAnimationFrame;
     function hooks_module_b(n) {
-        "function" == typeof n.u && n.u();
+        "function" == typeof n.__c && n.__c();
     }
     function hooks_module_g(n) {
-        n.u = n.__();
+        n.__c = n.__();
     }
     function hooks_module_j(n, t) {
         return !n || n.length !== t.length || t.some((function(t, u) {
