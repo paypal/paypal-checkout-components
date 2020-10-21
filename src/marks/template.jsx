@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { node, type ChildNodeType, type ElementNode } from 'jsx-pragmatic/src';
 import { getLocale, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { toPx } from 'belter/src';
@@ -13,10 +13,11 @@ import { CLASS } from '../constants';
 type MarkOptions = {|
     fundingSource : $Values<typeof FUNDING>,
     fundingEligibility : FundingEligibilityType,
-    experiment : Experiment
+    experiment : Experiment,
+    env : $Values<typeof ENV>
 |};
 
-function Mark({ fundingSource, fundingEligibility, experiment } : MarkOptions) : ChildNodeType {
+function Mark({ fundingSource, fundingEligibility, experiment, env } : MarkOptions) : ChildNodeType {
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -31,6 +32,7 @@ function Mark({ fundingSource, fundingEligibility, experiment } : MarkOptions) :
                 fundingEligibility={ fundingEligibility }
                 locale={ getLocale() }
                 experiment={ experiment }
+                env={ env }
             />
         </div>
     );
@@ -40,10 +42,11 @@ type MarksElementOptions = {|
     fundingEligibility : FundingEligibilityType,
     fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>,
     height : number,
-    experiment : Experiment
+    experiment : Experiment,
+    env : $Values<typeof ENV>
 |};
 
-export function MarksElement({ fundingEligibility, fundingSources, height, experiment } : MarksElementOptions) : ElementNode {
+export function MarksElement({ fundingEligibility, fundingSources, height, experiment, env } : MarksElementOptions) : ElementNode {
     return (
         <div class='paypal-marks'>
             <style>
@@ -93,6 +96,7 @@ export function MarksElement({ fundingEligibility, fundingSources, height, exper
                         fundingEligibility={ fundingEligibility }
                         fundingSource={ fundingSource }
                         experiment={ experiment }
+                        env={ env }
                     />
                 ))
             }
