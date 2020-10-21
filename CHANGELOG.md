@@ -1,3 +1,11 @@
+## <small>5.0.129 (2020-10-21)</small>
+
+* Re-generate screenshot failing on travis ([5824f29](https://github.com/paypal/paypal-checkout-components/commit/5824f29))
+* Set button color to gold when style.color is an empty string (#1461) ([1e373de](https://github.com/paypal/paypal-checkout-components/commit/1e373de)), closes [#1461](https://github.com/paypal/paypal-checkout-components/issues/1461)
+* Use env as parameter, not as global, to avoid second render issue ([38c4a83](https://github.com/paypal/paypal-checkout-components/commit/38c4a83))
+
+
+
 ## <small>5.0.128 (2020-10-15)</small>
 
 * Add more buttons to demo page ([f9d92fc](https://github.com/paypal/paypal-checkout-components/commit/f9d92fc))
