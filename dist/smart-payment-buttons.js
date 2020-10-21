@@ -1635,7 +1635,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.332", _headers10);
+            _headers10["x-app-version"] = "2.0.333", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3679,25 +3679,23 @@ window.spb = function(modules) {
                                                 return body.data;
                                             }));
                                         }({
-                                            name: "getInstallments",
-                                            query: "\n            query getInstallments(\n                $vaultedToken: String\n                $token: String!\n                $country: CountryCodes!\n            ) {\n                getInstallments(\n                    vaultedToken: $vaultedToken\n                    token: $token\n                    buyerCountry: $country\n                ) {\n                    discount {\n                        amount {\n                            currencyCode\n                            currencyFormatSymbolISOCurrency\n                            currencyValue\n                        }\n                        percentage\n                    }\n                    monthlyPayment {\n                        currencyCode\n                        currencyFormatSymbolISOCurrency\n                        currencyValue\n                    }\n                    totalCost {\n                        currencyCode\n                        currencyFormatSymbolISOCurrency\n                        currencyValue\n                    }\n                    term\n                    intervalDuration\n                }\n            }\n        ",
+                                            name: "getInstallmentsForVaultedToken",
+                                            query: "\n            query getInstallmentsForVaultedToken(\n                $vaultedToken: String!\n                $token: String!\n            ) {\n                getInstallmentsForVaultedToken(\n                    vaultedToken: $vaultedToken\n                    token: $token\n                ) {\n                    discount {\n                        amount {\n                            currencyCode\n                            currencyFormatSymbolISOCurrency\n                            currencyValue\n                        }\n                        percentage\n                    }\n                    monthlyPayment {\n                        currencyCode\n                        currencyFormatSymbolISOCurrency\n                        currencyValue\n                    }\n                    totalCost {\n                        currencyCode\n                        currencyFormatSymbolISOCurrency\n                        currencyValue\n                    }\n                    term\n                    intervalDuration\n                }\n            }\n        ",
                                             variables: {
                                                 vaultedToken: _ref.vaultedToken,
-                                                token: _ref.token,
-                                                country: _ref.country
+                                                token: _ref.token
                                             },
                                             headers: (_headers = {}, _headers["x-paypal-internal-euat"] = _ref.buyerAccessToken, 
                                             _headers)
                                         });
                                     }({
                                         vaultedToken: _ref.paymentMethodID,
-                                        country: _ref.buyerCountry,
                                         token: orderID,
                                         buyerAccessToken: _ref.accessToken
                                     }).then((function(installmentsResponse) {
-                                        if (installmentsResponse && installmentsResponse.getInstallments) {
+                                        if (installmentsResponse && installmentsResponse.getInstallmentsForVaultedToken) {
                                             var _getLogger$info$track;
-                                            var installmentsData = installmentsResponse.getInstallments;
+                                            var installmentsData = installmentsResponse.getInstallmentsForVaultedToken;
                                             getLogger().info("installments_loaded").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "installments_load", 
                                             _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                                             _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
@@ -5769,7 +5767,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.332", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.333", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2;
                 }));
                 (function() {
