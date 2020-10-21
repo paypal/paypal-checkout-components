@@ -22,14 +22,14 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
         Label: ({ logo }) => logo,
 
-        Logo: ({ logoColor, nonce, fundingEligibility }) => {
+        Logo: ({ logoColor, nonce, fundingEligibility, env }) => {
             const paylaterEligibility = fundingEligibility.paylater;
 
             const products = (paylaterEligibility && paylaterEligibility.products && paylaterEligibility.products) || {};
 
             let text;
 
-            if (products.flex && products.flex.eligible && __ENV__ !== ENV.LOCAL && __ENV__ !== ENV.STAGE && __ENV__ !== ENV.SANDBOX) {
+            if (products.flex && products.flex.eligible && env !== ENV.LOCAL && env !== ENV.STAGE && env !== ENV.SANDBOX) {
                 text = (
                     <Fragment>
                         <Text optional>PayPal </Text>

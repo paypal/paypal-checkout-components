@@ -4,7 +4,7 @@
 
 import { node, type ChildType } from 'jsx-pragmatic/src';
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
-import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
+import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import type { ContentType, WalletInstrument, Experiment, Wallet } from '../types';
@@ -26,7 +26,8 @@ export type LogoOptions = {|
     onClick? : (event : MouseEvent, ...args: $ReadOnlyArray<mixed>) => void,
     onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
     nonce? : ?string,
-    experiment : Experiment
+    experiment : Experiment,
+    env : $Values<typeof ENV>
 |};
 
 export type LabelOptions = {|
