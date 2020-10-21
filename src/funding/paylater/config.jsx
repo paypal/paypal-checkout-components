@@ -1,8 +1,8 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING, ENV } from '@paypal/sdk-constants/src';
-import { node, Style, Fragment } from 'jsx-pragmatic/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
+import { node, Style } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
