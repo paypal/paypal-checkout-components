@@ -1,8 +1,8 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING, ENV } from '@paypal/sdk-constants/src';
-import { node, Style, Fragment } from 'jsx-pragmatic/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
+import { node, Style } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
@@ -22,23 +22,23 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
         Label: ({ logo }) => logo,
 
-        Logo: ({ logoColor, nonce, fundingEligibility, env }) => {
-            const paylaterEligibility = fundingEligibility.paylater;
+        Logo: ({ logoColor, nonce /* , fundingEligibility */ }) => {
+            // const paylaterEligibility = fundingEligibility.paylater;
 
-            const products = (paylaterEligibility && paylaterEligibility.products && paylaterEligibility.products) || {};
+            // const products = (paylaterEligibility && paylaterEligibility.products && paylaterEligibility.products) || {};
 
-            let text;
+            const text = <Text>Pay Later</Text>;
 
-            if (products.flex && products.flex.eligible && env !== ENV.LOCAL && env !== ENV.STAGE && env !== ENV.SANDBOX) {
-                text = (
-                    <Fragment>
-                        <Text optional>PayPal </Text>
-                        <Text>Flex</Text>
-                    </Fragment>
-                );
-            } else {
-                text = <Text>Pay Later</Text>;
-            }
+            // if (products.flex && products.flex.eligible && env !== ENV.LOCAL && env !== ENV.STAGE && env !== ENV.SANDBOX) {
+            //     text = (
+            //         <Fragment>
+            //             <Text optional>PayPal </Text>
+            //             <Text>Flex</Text>
+            //         </Fragment>
+            //     );
+            // } else {
+            //     text = <Text>Pay Later</Text>;
+            // }
 
             return (
                 <Style css={ css } nonce={ nonce }>
