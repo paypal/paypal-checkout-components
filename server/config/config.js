@@ -33,7 +33,7 @@ export const BROWSER_CACHE_TIME = 6 * 60 * 60;
 export const SDK_CDN_NAMESPACE = 'https://www.paypalobjects.com/js-sdk-release';
 export const SMART_BUTTONS_CDN_NAMESPACE = 'https://www.paypalobjects.com/smart-payment-buttons';
 
-export const FUNDING_ELIGIBILITY_TIMEOUT = 100;
+export const FUNDING_ELIGIBILITY_TIMEOUT = 200;
 export const WALLET_TIMEOUT = 2000;
 export const EXPERIMENT_TIMEOUT = 100;
 
