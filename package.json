@@ -8,7 +8,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.paypal.com/Checkout/smart-buttons"
+    "url": "https://github.com/paypal/paypal-smart-payment-buttons"
   },
   "jest": {
     "coverageDirectory": "./server-coverage/"
