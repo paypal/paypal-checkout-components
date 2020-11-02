@@ -227,7 +227,6 @@ export type ButtonProps = {|
     clientAccessToken? : ?string,
     nonce : string,
     userIDToken : ?string,
-    enableBNPL : boolean,
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,

@@ -270,14 +270,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 queryParam: true
             },
-
-            enableBNPL: {
-                type:       'boolean',
-                required:   false,
-                queryParam: true,
-                default:    () => true
-            },
-
+            
             env: {
                 type:       'string',
                 queryParam: true,
