@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, noop, supportsPopups, stringifyError, extendUrl } from 'belter/src';
+import { memoize, noop, supportsPopups, stringifyError, extendUrl, PopupOpenError } from 'belter/src';
 import { FUNDING, FPTI_KEY, CURRENCY, COUNTRY, INTENT, CARD, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
@@ -231,7 +231,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { fundingEligibility, buyerCountry, sdkMeta, merchantID } = serviceData;
     const { cspNonce } = config;
 
-    const context = getContext({ win, isClick });
+    let context = getContext({ win, isClick });
     const connectEligible = isConnectEligible({ connect, createBillingAgreement, createSubscription, vault, fundingSource });
 
     let approved = false;
@@ -397,8 +397,18 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     });
 
     const click = () => {
-        if (supportsPopups()) {
-            win = win || openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+        if (!win && supportsPopups()) {
+            try {
+                win = openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+            } catch (err) {
+                getLogger().warn('popup_open_error_iframe_fallback', { err: stringifyError(err) });
+
+                if (err instanceof PopupOpenError) {
+                    context = CONTEXT.IFRAME;
+                } else {
+                    throw err;
+                }
+            }
         }
 
         if (!onClick) {

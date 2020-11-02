@@ -20,6 +20,7 @@ import './native';
 import './payee';
 import './connect';
 import './smart-fields';
+import './popup';
 
 beforeEach(() => {
     setupMocks();
