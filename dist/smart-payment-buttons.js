@@ -1635,7 +1635,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.334", _headers10);
+            _headers10["x-app-version"] = "2.0.335", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3287,68 +3287,76 @@ window.spb = function(modules) {
                 }));
                 return {
                     click: function() {
-                        supportsPopups() && (win = win || function(_ref) {
-                            var win = function(win) {
-                                if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
-                                return win;
-                            }(function(url, options) {
-                                var width = (options = options || {}).width, height = options.height;
-                                var top = 0;
-                                var left = 0;
-                                width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
-                                height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
-                                width && height && (options = _extends({
-                                    top: top,
-                                    left: left,
-                                    width: width,
-                                    height: height,
-                                    status: 1,
-                                    toolbar: 0,
-                                    menubar: 0,
-                                    resizable: 1,
-                                    scrollbars: 1
-                                }, options));
-                                var name = options.name || "";
-                                delete options.name;
-                                var params = Object.keys(options).map((function(key) {
-                                    if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
-                                    var item;
-                                })).filter(Boolean).join(",");
-                                var win;
-                                try {
-                                    win = window.open("", name, params, !0);
-                                } catch (err) {
-                                    throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
-                                }
-                                if (isWindowClosed(win)) {
-                                    var err;
-                                    throw new dom_PopupOpenError("Can not open popup window - blocked");
-                                }
-                                window.addEventListener("unload", (function() {
-                                    return win.close();
+                        if (!win && supportsPopups()) try {
+                            win = function(_ref) {
+                                var win = function(win) {
+                                    if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
+                                    return win;
+                                }(function(url, options) {
+                                    var width = (options = options || {}).width, height = options.height;
+                                    var top = 0;
+                                    var left = 0;
+                                    width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
+                                    height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
+                                    width && height && (options = _extends({
+                                        top: top,
+                                        left: left,
+                                        width: width,
+                                        height: height,
+                                        status: 1,
+                                        toolbar: 0,
+                                        menubar: 0,
+                                        resizable: 1,
+                                        scrollbars: 1
+                                    }, options));
+                                    var name = options.name || "";
+                                    delete options.name;
+                                    var params = Object.keys(options).map((function(key) {
+                                        if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
+                                        var item;
+                                    })).filter(Boolean).join(",");
+                                    var win;
+                                    try {
+                                        win = window.open("", name, params, !0);
+                                    } catch (err) {
+                                        throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+                                    }
+                                    if (isWindowClosed(win)) {
+                                        var err;
+                                        throw new dom_PopupOpenError("Can not open popup window - blocked");
+                                    }
+                                    window.addEventListener("unload", (function() {
+                                        return win.close();
+                                    }));
+                                    return win;
+                                }(0, {
+                                    width: _ref.width,
+                                    height: _ref.height
                                 }));
+                                var doc = win.document;
+                                !function(win, el) {
+                                    var tag = el.tagName.toLowerCase();
+                                    if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+                                    var documentElement = win.document.documentElement;
+                                    for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
+                                    for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
+                                }(win, node_node(SpinnerPage, {
+                                    nonce: getNonce()
+                                }).render(dom({
+                                    doc: doc
+                                })));
                                 return win;
-                            }(0, {
-                                width: _ref.width,
-                                height: _ref.height
-                            }));
-                            var doc = win.document;
-                            !function(win, el) {
-                                var tag = el.tagName.toLowerCase();
-                                if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
-                                var documentElement = win.document.documentElement;
-                                for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
-                                for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
-                            }(win, node_node(SpinnerPage, {
-                                nonce: getNonce()
-                            }).render(dom({
-                                doc: doc
-                            })));
-                            return win;
-                        }({
-                            width: 500,
-                            height: 590
-                        }));
+                            }({
+                                width: 500,
+                                height: 590
+                            });
+                        } catch (err) {
+                            logger_getLogger().warn("popup_open_error_iframe_fallback", {
+                                err: stringifyError(err)
+                            });
+                            if (!(err instanceof dom_PopupOpenError)) throw err;
+                            context = "iframe";
+                        }
                         if (onClick) return promise_ZalgoPromise.try((function() {
                             return !onClick || onClick({
                                 fundingSource: fundingSource
@@ -5767,7 +5775,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.334", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.335", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2;
                 }));
                 (function() {
