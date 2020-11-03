@@ -173,9 +173,9 @@ export function getButtonMiddleware({
             const {
                 [ SDK_QUERY_KEYS.CLIENT_ID ]: clientID,
                 [ SDK_QUERY_KEYS.MERCHANT_ID ]: merchantIDParam,
-                [ SDK_QUERY_KEYS.CURRENCY ]: currency,
+                [ SDK_QUERY_KEYS.CURRENCY ]: currency = CURRENCY.USD,
                 [ SPB_QUERY_KEYS.USER_ID_TOKEN ]: userIDToken,
-                [ SPB_QUERY_KEYS.AMOUNT ]: amount
+                [ SPB_QUERY_KEYS.AMOUNT ]: amount = '0.00'
             } = params;
 
             const merchantID = merchantIDParam
