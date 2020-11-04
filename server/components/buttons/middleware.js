@@ -200,7 +200,7 @@ export function getButtonMiddleware({
                 return clientErrorResponse(res, `Invalid ${ SDK_QUERY_KEYS.CURRENCY } query parameter`);
             }
 
-            if (amount && !amount.match(/^\d+\.\d{2}$/)) {
+            if (amount && !amount.toString().match(/^\d+\.\d{2}$/)) {
                 return clientErrorResponse(res, `Invalid ${ SPB_QUERY_KEYS.AMOUNT } query parameter`);
             }
 
