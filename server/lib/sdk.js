@@ -153,6 +153,11 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
             return await preflight({ req, res, params, logBuffer });
 
         } catch (err) {
+            if (isError(err, ERROR_CODE.VALIDATION_ERROR)) {
+                logger.warn(req, EVENT.VALIDATION, { err: err.stack ? err.stack : err.toString() });
+                return clientErrorResponse(res, err.message);
+            }
+
             console.error(err.stack ? err.stack : err); // eslint-disable-line no-console
             logger.error(req, EVENT.ERROR, { err: err.stack ? err.stack : err.toString() });
             return serverErrorResponse(res, err.stack ? err.stack : err.toString());

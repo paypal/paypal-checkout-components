@@ -1,8 +1,8 @@
 /* @flow */
 
 import { html } from 'jsx-pragmatic';
-import { COUNTRY, LANG, SDK_QUERY_KEYS, CURRENCY } from '@paypal/sdk-constants';
-import { constHas, stringifyError, noop } from 'belter';
+import { COUNTRY, LANG } from '@paypal/sdk-constants';
+import { stringifyError, noop } from 'belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocal } from '../../lib';
@@ -12,8 +12,8 @@ import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../.
 import type { ContentType } from '../../../src/types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
-import { EVENT, SPB_QUERY_KEYS } from './constants';
-import { getParams } from './params';
+import { EVENT } from './constants';
+import { getButtonParams, getButtonPreflightParams } from './params';
 import { buttonStyle } from './style';
 import { setRootTransaction } from './instrumentation';
 
@@ -58,7 +58,7 @@ export function getButtonMiddleware({
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale,
-                clientMetadataID, pageSessionID, correlationID, cookies, enableFunding } = getParams(params, req, res);
+                clientMetadataID, pageSessionID, correlationID, cookies, enableFunding } = getButtonParams(params, req, res);
             
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
 
@@ -163,46 +163,14 @@ export function getButtonMiddleware({
         script: async ({ req, res, params, logBuffer }) => {
             logger.info(req, EVENT.RENDER);
 
-            const { debug } = getParams(params, req, res);
+            const { debug } = getButtonParams(params, req, res);
             const { script } = await getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal });
 
             return javascriptResponse(res, script);
         },
 
         preflight: ({ req, res, params, logBuffer }) => {
-            const {
-                [ SDK_QUERY_KEYS.CLIENT_ID ]: clientID,
-                [ SDK_QUERY_KEYS.MERCHANT_ID ]: merchantIDParam,
-                [ SDK_QUERY_KEYS.CURRENCY ]: currency = CURRENCY.USD,
-                [ SPB_QUERY_KEYS.USER_ID_TOKEN ]: userIDToken,
-                [ SPB_QUERY_KEYS.AMOUNT ]: amount = '0.00'
-            } = params;
-
-            const merchantID = merchantIDParam
-                ? merchantIDParam.split(',')
-                : [];
-
-            if (!clientID) {
-                return clientErrorResponse(res, `Please provide a ${ SDK_QUERY_KEYS.CLIENT_ID } query parameter`);
-            }
-
-            if (!userIDToken) {
-                return clientErrorResponse(res, `Please provide a ${ SPB_QUERY_KEYS.USER_ID_TOKEN } query parameter`);
-            }
-
-            for (const merchant of merchantID) {
-                if (!merchant.match(/^[A-Z0-9]+$/)) {
-                    return clientErrorResponse(res, `Invalid ${ SDK_QUERY_KEYS.MERCHANT_ID } query parameter`);
-                }
-            }
-
-            if (currency && !constHas(CURRENCY, currency)) {
-                return clientErrorResponse(res, `Invalid ${ SDK_QUERY_KEYS.CURRENCY } query parameter`);
-            }
-
-            if (amount && !amount.toString().match(/^\d+\.\d{2}$/)) {
-                return clientErrorResponse(res, `Invalid ${ SPB_QUERY_KEYS.AMOUNT } query parameter`);
-            }
+            const { clientID, merchantID, currency, userIDToken, amount } = getButtonPreflightParams(params);
 
             const gqlBatch = graphQLBatch(req, graphQL);
 

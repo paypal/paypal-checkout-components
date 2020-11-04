@@ -2,19 +2,22 @@
 /* eslint max-depth: off */
 
 import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
-import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS, PLATFORM, FUNDING_PRODUCTS } from '@paypal/sdk-constants';
-import { values } from 'belter';
+import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY,
+    COUNTRY_LANGS, PLATFORM, FUNDING_PRODUCTS, SDK_QUERY_KEYS } from '@paypal/sdk-constants';
+import { values, constHas } from 'belter';
 
 import { HTTP_HEADER, ERROR_CODE } from '../../config';
 import type { ExpressRequest, ExpressResponse, LocaleType, RiskData } from '../../types';
 import { makeError } from '../../lib';
+
+import { SPB_QUERY_KEYS } from './constants';
 
 type StyleType = {|
     label? : string,
     period? : ?number
 |};
 
-type ParamsType = {|
+type ButtonInputParams = {|
     env : $Values<typeof ENV>,
     clientID : string,
     locale? : LocaleType,
@@ -34,7 +37,7 @@ type ParamsType = {|
     style : ?StyleType,
     onShippingChange? : boolean,
     userIDToken? : string,
-    amount? : string,
+    amount? : number | string,
     clientMetadataID? : string,
     riskData? : string,
     platform : ?$Values<typeof PLATFORM>
@@ -45,7 +48,7 @@ type Style = {|
     period : ?number
 |};
 
-type RequestParams = {|
+type ButtonParams = {|
     env : $Values<typeof ENV>,
     clientID : ?string,
     buyerCountry : $Values<typeof COUNTRY>,
@@ -209,11 +212,11 @@ function getRiskDataParam(req : ExpressRequest) : ?RiskData {
     }
 }
 
-function getBuyerCountry(req : ExpressRequest, params : ParamsType) : $Values<typeof COUNTRY> {
+function getBuyerCountry(req : ExpressRequest, params : ButtonInputParams) : $Values<typeof COUNTRY> {
     return params.buyerCountry || req.get(HTTP_HEADER.PP_GEO_LOC) || COUNTRY.US;
 }
 
-function getLocale(params : ParamsType) : LocaleType {
+function getLocale(params : ButtonInputParams) : LocaleType {
     let {
         locale: {
             country = DEFAULT_COUNTRY,
@@ -239,9 +242,9 @@ function getLocale(params : ParamsType) : LocaleType {
     };
 }
 
-function getAmount(params : ParamsType) : ?string {
-    if (params.amount) {
-        let amount = params.amount.toString();
+export function getAmount(amount : ?(string | number)) : ?string {
+    if (typeof amount === 'string' || typeof amount === 'number') {
+        amount = amount.toString();
         if (amount.match(/^\d+$/)) {
             amount = `${ amount }.00`;
         }
@@ -249,7 +252,7 @@ function getAmount(params : ParamsType) : ?string {
     }
 }
 
-function getStyle(params : ParamsType) : Style {
+function getStyle(params : ButtonInputParams) : Style {
     const {
         label = 'paypal',
         period
@@ -258,7 +261,7 @@ function getStyle(params : ParamsType) : Style {
     return { label, period };
 }
 
-export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
+export function getButtonParams(params : ButtonInputParams, req : ExpressRequest, res : ExpressResponse) : ButtonParams {
     const {
         env,
         clientID,
@@ -282,7 +285,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
 
     const locale = getLocale(params);
     const cspNonce = getCSPNonce(res);
-    const amount = getAmount(params);
+    const amount = getAmount(params.amount);
     const style = getStyle(params);
     const buyerCountry = getBuyerCountry(req, params);
 
@@ -320,5 +323,69 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         correlationID,
         platform,
         cookies
+    };
+}
+
+type ButtonPreflightInputParams = {|
+    'client-id' : string,
+    'merchant-id'? : string,
+    'user-id-token' : string,
+    'currency'? : $Values<typeof CURRENCY>,
+    'amount'? : string | number
+|};
+
+type ButtonPreflightParams = {|
+    clientID : string,
+    merchantID : $ReadOnlyArray<string>,
+    userIDToken : string,
+    currency : $Values<typeof CURRENCY>,
+    amount : string
+|};
+
+export function getButtonPreflightParams(params : ButtonPreflightInputParams) : ButtonPreflightParams {
+    let {
+        [ SDK_QUERY_KEYS.CLIENT_ID ]: clientID,
+        [ SDK_QUERY_KEYS.MERCHANT_ID ]: merchantID,
+        [ SDK_QUERY_KEYS.CURRENCY ]: currency = CURRENCY.USD,
+        [ SPB_QUERY_KEYS.USER_ID_TOKEN ]: userIDToken,
+        [ SPB_QUERY_KEYS.AMOUNT ]: amount = '0.00'
+    } = params;
+    
+    if (merchantID) {
+        merchantID = merchantID.split(',');
+    } else {
+        merchantID = [];
+    }
+
+    amount = getAmount(amount);
+
+    if (!clientID) {
+        throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Please provide a ${ SDK_QUERY_KEYS.CLIENT_ID } query parameter`);
+    }
+
+    if (!userIDToken) {
+        throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Please provide a ${ SPB_QUERY_KEYS.USER_ID_TOKEN } query parameter`);
+    }
+
+    for (const merchant of merchantID) {
+        if (!merchant.match(/^[A-Z0-9]+$/)) {
+            throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Invalid ${ SDK_QUERY_KEYS.MERCHANT_ID } query parameter`);
+        }
+    }
+
+    if (currency && !constHas(CURRENCY, currency)) {
+        throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Invalid ${ SDK_QUERY_KEYS.CURRENCY } query parameter`);
+    }
+
+    if (amount && !amount.match(/^\d+\.\d{2}$/)) {
+        throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Invalid ${ SPB_QUERY_KEYS.AMOUNT } query parameter`);
+    }
+
+    if (!amount) {
+        throw new Error(`Amount should be defined`);
+    }
+
+    return {
+        clientID, merchantID, currency, userIDToken, amount
     };
 }
