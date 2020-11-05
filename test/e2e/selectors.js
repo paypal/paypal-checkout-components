@@ -23,7 +23,7 @@ export const SELECTORS = {
         SHIPPING_ADDRESS:         '#shippingAddress',
         REVIEW_CONTINUE_BUTTON:   'input#confirmButtonTop',
         REVIEW_CHANGE_PAYMENT:    'a.changePayment',
-        SELECT_FUNDING:           (n : number) => `ul.allPlanList li.fundingsource:nth-child(${ n })`
+        SELECT_FUNDING:           (n : number) : string => `ul.allPlanList li.fundingsource:nth-child(${ n })`
     }
 };
 

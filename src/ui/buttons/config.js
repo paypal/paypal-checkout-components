@@ -3,12 +3,12 @@
 
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 
-export const MINIMUM_SIZE = {
+export const MINIMUM_SIZE : {| [$Values<typeof BUTTON_LAYOUT>] : $Values<typeof BUTTON_SIZE> |} = {
     [ BUTTON_LAYOUT.HORIZONTAL ]: BUTTON_SIZE.SMALL,
     [ BUTTON_LAYOUT.VERTICAL ]:   BUTTON_SIZE.MEDIUM
 };
 
-export const MAXIMUM_SIZE = {
+export const MAXIMUM_SIZE : {| [$Values<typeof BUTTON_LAYOUT>] : $Values<typeof BUTTON_SIZE> |} = {
     [ BUTTON_LAYOUT.HORIZONTAL ]: BUTTON_SIZE.HUGE,
     [ BUTTON_LAYOUT.VERTICAL ]:   BUTTON_SIZE.HUGE
 };

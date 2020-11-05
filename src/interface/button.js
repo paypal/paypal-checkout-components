@@ -3,13 +3,15 @@
 import { isPayPalDomain } from '@paypal/sdk-client/src';
 import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyComponents } from 'zoid/src';
 
+import type { LazyExport, LazyProtectedExport } from '../types';
 import { allowIframe as _allowIframe } from '../lib';
-import { getCheckoutComponent } from '../zoid/checkout';
-import { getButtonsComponent } from '../zoid/buttons';
-import { getCardFieldsComponent } from '../zoid/card-fields';
-import { getMenuComponent } from '../zoid/menu';
+import { getCheckoutComponent, type CheckoutComponent } from '../zoid/checkout';
+import { getButtonsComponent, type ButtonsComponent } from '../zoid/buttons';
+import { getCardFieldsComponent, type CardFieldsComponent } from '../zoid/card-fields';
+import { getMenuComponent, type MenuComponent } from '../zoid/menu';
+import { getInstallmentsComponent, type InstallmentsComponent } from '../zoid/installments';
 import { Buttons as _ButtonsTemplate } from '../ui/buttons';
-import { getModalComponent } from '../zoid/modal/component';
+import { getModalComponent, type ModalComponent } from '../zoid/modal/component';
 
 function protectedExport<T>(xport : T) : ?T {
     if (isPayPalDomain()) {
@@ -17,43 +19,47 @@ function protectedExport<T>(xport : T) : ?T {
     }
 }
 
-export const Buttons = {
+export const Buttons : LazyExport<ButtonsComponent> = {
     __get__: () => getButtonsComponent()
 };
 
-export const Checkout = {
+export const Checkout : LazyProtectedExport<CheckoutComponent> = {
     __get__: () => protectedExport(getCheckoutComponent())
 };
 
-export const CardFields = {
+export const CardFields : LazyProtectedExport<CardFieldsComponent> = {
     __get__: () => protectedExport(getCardFieldsComponent())
 };
 
-export const Menu = {
+export const Menu : LazyProtectedExport<MenuComponent> = {
     __get__: () => protectedExport(getMenuComponent())
 };
 
-export const Modal = {
+export const Modal : LazyProtectedExport<ModalComponent> = {
     __get__: () => protectedExport(getModalComponent())
 };
 
-export const ButtonsTemplate = {
+export const Installments : LazyProtectedExport<InstallmentsComponent> =  {
+    __get__: () => protectedExport(getInstallmentsComponent())
+};
+
+export const ButtonsTemplate : LazyProtectedExport<typeof _ButtonsTemplate> = {
     __get__: () => protectedExport(_ButtonsTemplate)
 };
 
-export const PopupOpenError = {
+export const PopupOpenError : LazyProtectedExport<typeof _PopupOpenError> = {
     __get__: () => protectedExport(_PopupOpenError)
 };
 
-export const allowIframe = {
+export const allowIframe : LazyProtectedExport<typeof _allowIframe> = {
     __get__: () => protectedExport(_allowIframe)
 };
 
-export const forceIframe = {
+export const forceIframe : LazyProtectedExport<typeof _allowIframe> = {
     __get__: () => protectedExport(_allowIframe)
 };
 
-export const destroyAll = {
+export const destroyAll : LazyProtectedExport<typeof destroyComponents> = {
     __get__: () => protectedExport(destroyComponents)
 };
 

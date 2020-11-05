@@ -30,6 +30,11 @@ export const labelStyle = `
         ${ HIDDEN }
     }
 
+    .${ CLASS.BUTTON } .${ CLASS.TEXT }.${ CLASS.IMMEDIATE }:not(.${ CLASS.PERSONALIZATION_TEXT }):not(.${ CLASS.HIDDEN }) {
+        ${ VISIBLE }
+        ${ EXPANDED }
+    }
+
     .${ CLASS.BUTTON } .${ CLASS.VAULT_LABEL } {
         max-width: 60%;
         text-overflow: ellipsis;
@@ -37,7 +42,7 @@ export const labelStyle = `
         white-space: nowrap;
     }
 
-    .${ CLASS.DOM_READY } .${ CLASS.BUTTON } .${ CLASS.TEXT }:not(.${ CLASS.PERSONALIZATION_TEXT }):not(.${ CLASS.HIDDEN }) {
+    .${ CLASS.DOM_READY } .${ CLASS.BUTTON } .${ CLASS.TEXT }:not(.${ CLASS.IMMEDIATE }):not(.${ CLASS.PERSONALIZATION_TEXT }):not(.${ CLASS.HIDDEN }) {
         ${ VISIBLE }
         ${ COMPRESSED }
         animation: show-text ${ __TEST__ ? '0' : '1' }s 0s forwards;

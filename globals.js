@@ -9,24 +9,28 @@ module.exports = {
         ...zoidGlobals.__ZOID__,
         __DEFAULT_CONTAINER__: true,
         __DEFAULT_PRERENDER__: true,
-        __FRAMEWORK_SUPPORT__: true
+        __FRAMEWORK_SUPPORT__: true,
+        __SCRIPT_NAMESPACE__:  false
+
     },
     
     __POST_ROBOT__: {
         ...postRobotGlobals.__POST_ROBOT__,
-        __IE_POPUP_SUPPORT__: false
+        __IE_POPUP_SUPPORT__: false,
+        __SCRIPT_NAMESPACE__: false
     },
 
     __PAYPAL_CHECKOUT__: {
         __REMEMBERED_FUNDING__: [],
         __URI__:                {
-            __CHECKOUT__:    '/checkoutnow',
-            __BUTTONS__:     '/smart/buttons',
-            __MENU__:        '/smart/menu',
-            __MODAL__:       '/smart/modal',
-            __CARD_FIELDS__: '/smart/card-fields',
-            __WALLET__:      '/smart/wallet',
-            __FIELDS__:      '/smart/fields'
+            __CHECKOUT__:     '/checkoutnow',
+            __BUTTONS__:      '/smart/buttons',
+            __MENU__:         '/smart/menu',
+            __INSTALLMENTS__: '/smart/installments',
+            __MODAL__:        '/smart/modal',
+            __CARD_FIELDS__:  '/smart/card-fields',
+            __WALLET__:       '/smart/wallet',
+            __FIELDS__:       '/altpayfields'
         }
     }
 };

@@ -5,7 +5,7 @@ import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, COUNTRY, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, BUTTON_FLOW } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig, type WalletLabelOptions } from '../common';
 import { Text, Space } from '../../ui/text';
 import { isRTLLanguage } from '../../lib';
@@ -41,16 +41,13 @@ export function getCardConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        eligible: ({ components, fundingSource, fundingEligibility }) => {
+        eligible: ({ components, fundingSource, fundingEligibility, wallet }) => {
             const cardEligibility = fundingEligibility.card;
-            const vendorEligibility = cardEligibility && cardEligibility.vendors;
 
             const hostedFieldsRequested = Boolean(components.indexOf(COMPONENTS.HOSTED_FIELDS) !== -1);
             const cardEligible = Boolean(cardEligibility && cardEligibility.eligible);
             const cardBranded = Boolean(cardEligibility && cardEligibility.branded);
-            const cardVaulted = Boolean(vendorEligibility && Object.keys(vendorEligibility).some(vendor => {
-                return Boolean(vendorEligibility[vendor] && vendorEligibility[vendor].vaultedInstruments && vendorEligibility[vendor].vaultedInstruments.length);
-            }));
+            const cardVaulted = Boolean(wallet && wallet.card && wallet.card.instruments && wallet.card.instruments.length);
 
             // If card is not eligible, never show card buttons
             if (!cardEligible) {
@@ -80,6 +77,12 @@ export function getCardConfig() : FundingSourceConfig {
             // Otherwise default to show card buttons
             return true;
         },
+
+        flows: [
+            BUTTON_FLOW.PURCHASE,
+            BUTTON_FLOW.BILLING_SETUP,
+            BUTTON_FLOW.SUBSCRIPTION_SETUP
+        ],
         
         layouts: [
             BUTTON_LAYOUT.VERTICAL
@@ -103,6 +106,13 @@ export function getCardConfig() : FundingSourceConfig {
             [ BUTTON_COLOR.WHITE  ]:  BUTTON_COLOR.BLACK,
             [ DEFAULT ]:              BUTTON_COLOR.WHITE
         },
+        
+        labelText: ({ content }) => {
+            if (!__WEB__ && content) {
+                return content.payWithDebitOrCreditCard;
+            }
+            return FUNDING.CARD;
+        },
 
         Logo: ({ logoColor }) => {
             return (
@@ -117,7 +127,7 @@ export function getCardConfig() : FundingSourceConfig {
                 <Fragment>
                     { (isRTL && !__WEB__ && content) ? (
                         <Fragment>
-                            <Text optional>{ content.payWithDebitOrCreditCard }</Text>
+                            <Text animate optional>{ content.payWithDebitOrCreditCard }</Text>
                             <Space />
                         </Fragment>
                     ) : null }
@@ -125,14 +135,18 @@ export function getCardConfig() : FundingSourceConfig {
                     {(!isRTL && !__WEB__ && content) ? (
                         <Fragment>
                             <Space />
-                            <Text optional>{ content.payWithDebitOrCreditCard }</Text>
+                            <Text animate optional>{ content.payWithDebitOrCreditCard }</Text>
                         </Fragment>
                     ) : null }
                 </Fragment>
             );
         },
 
-        WalletLabel: ({ instrument } : WalletLabelOptions) => {
+        WalletLabel: ({ logoColor, instrument } : WalletLabelOptions) => {
+            if (!instrument) {
+                return <GlyphCard logoColor={ logoColor } />;
+            }
+
             if (!instrument.vendor) {
                 throw new Error(`Vendor required for card vault label`);
             }
@@ -147,7 +161,7 @@ export function getCardConfig() : FundingSourceConfig {
 
             return (
                 <Fragment>
-                    <Label optional /> <Text className={ CLASS.VAULT_LABEL }>{ instrument.label }</Text>
+                    <Label optional /> <Text className={ [ CLASS.VAULT_LABEL ] }>{ instrument.label }</Text>
                 </Fragment>
             );
         }

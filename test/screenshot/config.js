@@ -8,6 +8,7 @@ const SUPPORTED_FUNDING_SOURCES : $ReadOnlyArray<$Values<typeof FUNDING>> = [
     FUNDING.VENMO,
     FUNDING.ITAU,
     FUNDING.CREDIT,
+    FUNDING.PAYLATER,
     FUNDING.IDEAL,
     FUNDING.SEPA,
     FUNDING.BANCONTACT,
@@ -32,12 +33,14 @@ const RESPONSIVE_WIDTHS = [ 144, 222, 465, 670 ];
 
 type ButtonConfig = {|
     only? : boolean,
+    diffThreshold? : number,
     filename? : string,
     userAgent? : string,
     container? : {|
         width : number
     |},
     fundingEligibility? : Object,
+    wallet? : Object,
     rememberedFunding? : $ReadOnlyArray<string>,
     button? : {|
         locale? : string,
@@ -51,7 +54,8 @@ type ButtonConfig = {|
             layout? : string,
             height? : number,
             tagline? : boolean
-        |}
+        |},
+        content? : {| [string] : string |}
     |}
 |};
 
@@ -77,7 +81,12 @@ for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
         },
         fundingEligibility: {
             [ fundingSource ]: {
-                eligible: true
+                eligible: true,
+                products: {
+                    payIn4: {
+                        eligible: true
+                    }
+                }
             }
         }
     });
@@ -101,6 +110,11 @@ for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
             },
             [ fundingSource ]: {
                 eligible: true,
+                products: {
+                    payIn4: {
+                        eligible: true
+                    }
+                },
                 vendors:  fundingSource === FUNDING.CARD
                     ? {
                         visa: {
@@ -183,6 +197,88 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal'
+        }
+    },
+    container: {
+        width: 300
+    },
+    userAgent:          IPHONE6_USER_AGENT,
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        venmo: {
+            eligible: true
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal'
+        }
+    },
+    container: {
+        width: 300
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        credit: {
+            eligible: true
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal'
+        }
+    },
+    container: {
+        width: 300
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        paylater: {
+            eligible: true,
+            products: {
+                payIn4: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal'
+        }
+    },
+    container: {
+        width: 300
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        itau: {
+            eligible: true
+        }
+    }
+});
+
+buttonConfigs.push({
     container: {
         width: 340
     },
@@ -205,48 +301,52 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     button: {
         fundingSource: 'paypal'
     },
-    fundingEligibility: {
+    wallet: {
         paypal: {
-            eligible:           true,
-            vaultedInstruments: [
+            instruments: [
                 {
-                    id:    'xyz',
-                    label: {
-                        description: 'foo@bar.com'
-                    }
+                    label:    'foo@bar.com',
+                    oneClick: true,
+                    tokenID:  '12345'
                 }
             ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
         },
         card: {
             eligible: true,
             vendors:  {
                 visa: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Visa x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 mastercard: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Mastercard x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 amex: {
                     eligible: true
@@ -257,48 +357,52 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
     },
     button: {
         fundingSource: 'card'
     },
-    fundingEligibility: {
+    wallet: {
         paypal: {
-            eligible:           true,
-            vaultedInstruments: [
+            instruments: [
                 {
-                    id:    'xyz',
-                    label: {
-                        description: 'foo@bar.com'
-                    }
+                    label:    'foo@bar.com',
+                    oneClick: true,
+                    tokenID:  '12345'
                 }
             ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
         },
         card: {
             eligible: true,
             vendors:  {
                 visa: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Visa x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 mastercard: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Mastercard x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 amex: {
                     eligible: true
@@ -309,50 +413,428 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    container: {
+    diffThreshold: 1000,
+    container:     {
         width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    label:    'foo@bar.com',
+                    oneClick: true,
+                    tokenID:  '12345'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
     },
     fundingEligibility: {
         paypal: {
-            eligible:           true,
-            vaultedInstruments: [
-                {
-                    id:    'xyz',
-                    label: {
-                        description: 'foo@bar.com'
-                    }
-                }
-            ]
+            eligible: true
         },
         card: {
             eligible: true,
             vendors:  {
                 visa: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Visa x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 mastercard: {
-                    eligible:           true,
-                    vaultedInstruments: [
-                        {
-                            id:    'abc',
-                            label: {
-                                description: 'Mastercard x-1234'
-                            }
-                        }
-                    ]
+                    eligible: true
                 },
                 amex: {
                     eligible: true
                 }
             }
+        }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    button: {
+        fundingSource: 'paypal'
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    type:         'card',
+                    label:        '••1234',
+                    oneClick:     true,
+                    instrumentID: 'abc12345'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible: true
+                },
+                mastercard: {
+                    eligible: true
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    button: {
+        fundingSource: 'card'
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    type:         'bank',
+                    label:        '••7331',
+                    oneClick:     false,
+                    instrumentID: 'xyz12345'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible: true
+                },
+                mastercard: {
+                    eligible: true
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    type:         'credit',
+                    label:        'foo@bar.com',
+                    oneClick:     false,
+                    instrumentID: 'abc12345'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible: true
+                },
+                mastercard: {
+                    eligible: true
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    type:         'balance',
+                    label:        'foo@bar.com',
+                    oneClick:     true,
+                    instrumentID: 'ttt4345'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible: true
+                },
+                mastercard: {
+                    eligible: true
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        credit: {
+            instruments: [
+                {
+                    type:         'credit',
+                    label:        'foo@bar.com',
+                    oneClick:     true,
+                    instrumentID: 'abc12345'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        credit: {
+            eligible: true
+        }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    type:         'card',
+                    label:        '••1234',
+                    oneClick:     true,
+                    instrumentID: 'abc12345'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible: true
+                },
+                mastercard: {
+                    eligible: true
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    },
+    button: {
+        style: {
+            layout:  'horizontal',
+            tagline: false
+        }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        credit: {
+            instruments: [
+                {
+                    type:         'credit',
+                    label:        'foo@bar.com',
+                    oneClick:     true,
+                    instrumentID: 'abc12345'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa'
+                },
+                {
+                    type:    'card',
+                    label:   'Mastercard x-1234',
+                    tokenID: 'xyz123',
+                    vendor:  'mastercard'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        credit: {
+            eligible: true
+        }
+    },
+    button: {
+        style: {
+            layout:  'horizontal',
+            tagline: false
         }
     }
 });

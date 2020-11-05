@@ -2,6 +2,7 @@
 
 export const CLASS = {
     CONTAINER:    ('paypal-button-container' : 'paypal-button-container'),
+    BUTTON_ROW:   ('paypal-button-row' : 'paypal-button-row'),
     BUTTON:       ('paypal-button' : 'paypal-button'),
     BUTTON_LABEL: ('paypal-button-label-container' : 'paypal-button-label-container'),
 
@@ -12,7 +13,7 @@ export const CLASS = {
     LAYOUT:     ('paypal-button-layout' : 'paypal-button-layout'),
     NUMBER:     ('paypal-button-number' : 'paypal-button-number'),
     ENV:        ('paypal-button-env' : 'paypal-button-env'),
-    VAULT:      ('paypal-button-vault' : 'paypal-button-vault'),
+    WALLET:     ('paypal-button-wallet' : 'paypal-button-wallet'),
 
     LOADING:    ('paypal-button-loading' : 'paypal-button-loading'),
     SPINNER:    ('paypal-button-spinner' : 'paypal-button-spinner'),
@@ -29,11 +30,11 @@ export const CLASS = {
     VAULT_LABEL:  ('paypal-vault-label' : 'paypal-vault-label'),
     VAULT_HEADER: ('paypal-vault-header' : 'paypal-vault-header'),
 
-    MENU_TOGGLE: ('menu-toggle' : 'menu-toggle'),
-
     SEPARATOR: ('paypal-separator' : 'paypal-separator'),
 
     DOM_READY: ('dom-ready' : 'dom-ready'),
 
-    HIDDEN:  ('hidden' : 'hidden')
+    HIDDEN:  ('hidden' : 'hidden'),
+
+    IMMEDIATE: ('immediate' : 'immediate')
 };

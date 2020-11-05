@@ -5,8 +5,8 @@ import { LANG } from '@paypal/sdk-constants/src';
 
 type ContentMap = {
     [ $Values<typeof LANG> ] : {|
-        windowMessage : string,
-        continueMessage : string
+        windowMessage? : string,
+        continueMessage? : string
     |}
 };
 

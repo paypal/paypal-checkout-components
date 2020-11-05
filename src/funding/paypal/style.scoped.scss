@@ -6,7 +6,7 @@
 
     * {
         display: inline-block;
-        vertical-align: top;
+        vertical-align: middle;
         height: 100%;
     }
 
@@ -33,22 +33,50 @@
        }
     }
 
-    @media only screen and (max-width: 349px) {
-        .divider {
-            margin: 0 3px;
-        }
-
-        .logo {
-            display: none;
-        }
-    }
-
     @media only screen and (max-width: 249px) {
         .paypal-mark, .paypal-wordmark {
             display: inline-block;
         }
 
-        .label, .divider, .card-art, .pay-now, .logo {
+        .label, .divider, .card-art, .pay-label, .logo {
+            display: none;
+        }
+    }
+}
+
+.wallet-label-new {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    text-align: left;
+
+    * {
+        display: inline-block;
+        vertical-align: top;
+        height: 100%;
+    }
+
+    .paypal-wordmark {
+        display: none;
+    }
+
+    .card-art {
+        border-radius: 3px;
+    }
+
+    .logo {
+        margin-left: auto;
+    }
+
+    @media only screen and (max-width: 150px) {
+        text-align: center;
+        display: inline-block;
+
+        .logo {
+            display: none;
+        }
+
+        .pay-label {
             display: none;
         }
     }

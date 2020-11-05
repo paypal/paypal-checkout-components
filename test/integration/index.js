@@ -51,7 +51,15 @@ afterEach(() => {
     delete window.navigator.mockUserAgent;
     delete window.document.documentMode;
 
-    return window.paypal.destroyAll();
+    return window.paypal.destroyAll().then(() => {
+        if (window.paypal.Buttons.instances.length) {
+            throw new Error(`Expected no remaining instances of paypal button; found ${ window.paypal.Buttons.instances.length }`);
+        }
+
+        if (window.paypal.Checkout.instances.length) {
+            throw new Error(`Expected no remaining instances of paypal button; found ${ window.paypal.Checkout.instances.length }`);
+        }
+    });
 });
 
 after(() => {

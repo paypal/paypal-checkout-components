@@ -1,11 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { destroyElement, toCSS } from 'belter/src';
+import { destroyElement, toCSS, type EventEmitterType } from 'belter/src';
 import { node, type ChildType } from 'jsx-pragmatic/src';
-import { EVENT, type RenderOptionsType } from 'zoid/src';
-
-import { type ButtonProps } from '../../ui/buttons/props';
+import { EVENT } from 'zoid/src';
 
 const CLASS = {
     VISIBLE:         'visible',
@@ -14,7 +12,15 @@ const CLASS = {
     PRERENDER_FRAME: 'prerender-frame'
 };
 
-export function FieldsContainer({ uid, frame, prerenderFrame, event, props } : RenderOptionsType<ButtonProps>) : ?ChildType {
+type FieldsContainerOptions = {|
+    uid : string,
+    frame : ?HTMLIFrameElement,
+    prerenderFrame : ?HTMLIFrameElement,
+    event : EventEmitterType,
+    nonce? : ?string
+|};
+
+export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : FieldsContainerOptions) : ?ChildType {
 
     if (!frame || !prerenderFrame) {
         throw new Error(`Expected frame and prerenderframe`);
@@ -52,7 +58,7 @@ export function FieldsContainer({ uid, frame, prerenderFrame, event, props } : R
 
     const element = (
         <div id={ uid } onRender={ setupAutoResize }>
-            <style nonce={ props.nonce }>
+            <style nonce={ nonce }>
                 {`
                     #${ uid } {
                         position: relative;
@@ -69,13 +75,13 @@ export function FieldsContainer({ uid, frame, prerenderFrame, event, props } : R
 
                     @media only screen and (min-width: 0px) {
                         #${ uid } {
-                            min-height: 50px;
+                            min-height: 150px;
                         }
                     }
 
                     @media only screen and (min-width: 600px) {
                         #${ uid } {
-                            min-height: 60px;
+                            min-height: 150px;
                         }
                     }
 

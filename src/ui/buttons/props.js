@@ -5,14 +5,14 @@ import { values, uniqueID } from 'belter/src';
 import { type OrderCreateRequest, type FundingEligibilityType,
     type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
-    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
-import type { ContentType, Wallet } from '../../types';
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../../constants';
+import type { ContentType, Wallet, Experiment } from '../../types';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig, isFundingEligible } from '../../funding';
 
 import { BUTTON_SIZE_STYLE } from './config';
@@ -122,7 +122,7 @@ export type OnClickActions = {|
 export type OnClick = (OnClickData, OnClickActions) => void;
 
 export type ButtonStyle = {|
-    label : ?$Values<typeof BUTTON_LABEL>,
+    label : $Values<typeof BUTTON_LABEL> | void,
     color : $Values<typeof BUTTON_COLOR>,
     shape : $Values<typeof BUTTON_SHAPE>,
     tagline : boolean,
@@ -132,13 +132,13 @@ export type ButtonStyle = {|
 |};
 
 export type ButtonStyleInputs = {|
-    label? : $PropertyType<ButtonStyle, 'label'> | void,
-    color? : $PropertyType<ButtonStyle, 'color'> | void,
-    shape? : $PropertyType<ButtonStyle, 'shape'> | void,
-    tagline? : $PropertyType<ButtonStyle, 'tagline'> | void,
-    layout? : $PropertyType<ButtonStyle, 'layout'> | void,
-    period? : $PropertyType<ButtonStyle, 'period'> | void,
-    height? : $PropertyType<ButtonStyle, 'height'> | void
+    label? : $Values<typeof BUTTON_LABEL> | void,
+    color? : $Values<typeof BUTTON_COLOR> | void,
+    shape? : $Values<typeof BUTTON_SHAPE> | void,
+    tagline? : boolean | void,
+    layout? : $Values<typeof BUTTON_LAYOUT> | void,
+    period? : number | void,
+    height? : number | void
 |};
 
 type PersonalizationComponentProps = {|
@@ -185,7 +185,11 @@ export type RenderButtonProps = {|
     onShippingChange : ?OnShippingChange,
     personalization : ?Personalization,
     clientAccessToken : ?string,
-    content? : ContentType
+    content? : ContentType,
+    flow : $Values<typeof BUTTON_FLOW>,
+    experiment : Experiment,
+    vault : boolean,
+    userIDToken : ?string
 |};
 
 export type PrerenderDetails = {|
@@ -197,7 +201,7 @@ export type PrerenderDetails = {|
 export type GetPrerenderDetails = () => PrerenderDetails | void;
 
 export type ButtonProps = {|
-    fundingSource : ?$Values<typeof FUNDING>,
+    fundingSource? : ?$Values<typeof FUNDING>,
     intent : $Values<typeof INTENT>,
     createOrder : CreateOrder,
     createBillingAgreement : CreateBillingAgreement,
@@ -220,14 +224,19 @@ export type ButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
-    clientAccessToken : ?string,
+    clientAccessToken? : ?string,
     nonce : string,
-    userIDToken : ?string
+    userIDToken : ?string,
+    flow : $Values<typeof BUTTON_FLOW>,
+    experiment : Experiment,
+    vault : boolean,
+    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>
 |};
 
-export type ButtonPropsInputs = {|
+// eslint-disable-next-line flowtype/require-exact-type
+export type ButtonPropsInputs = {
     clientID : string,
-    fundingSource? : $Values<typeof FUNDING>,
+    fundingSource? : ?$Values<typeof FUNDING>,
     style? : ButtonStyleInputs | void,
     locale? : $PropertyType<ButtonProps, 'locale'> | void,
     commit? : $PropertyType<ButtonProps, 'commit'> | void,
@@ -245,13 +254,17 @@ export type ButtonPropsInputs = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
     personalization? : Personalization,
-    clientAccessToken? : string,
+    clientAccessToken? : ?string,
     wallet? : ?Wallet,
     csp? : {|
         nonce? : string
     |},
-    content? : ContentType
-|};
+    content? : ContentType,
+    flow? : $Values<typeof BUTTON_FLOW>,
+    experiment : Experiment,
+    vault : boolean,
+    userIDToken : ?string
+};
 
 export const DEFAULT_STYLE = {
     LAYOUT: BUTTON_LAYOUT.VERTICAL,
@@ -271,13 +284,17 @@ export const DEFAULT_PROPS = {
     PLATFORM: PLATFORM.DESKTOP
 };
 
-// $FlowFixMe
+const getDefaultButtonPropsInput = () : ButtonPropsInputs => {
+    return {};
+};
+
 export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonStyleInputs) : ButtonStyle {
 
     if (!style) {
         throw new Error(`Expected props.style to be set`);
     }
 
+    props = props || getDefaultButtonPropsInput();
     const { fundingSource } = props;
 
     const FUNDING_CONFIG = getFundingConfig();
@@ -287,6 +304,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         throw new Error(`Expected ${ fundingSource || FUNDING.PAYPAL } to be eligible`);
     }
 
+    style.color = style.color ? style.color : fundingConfig.colors[0];
     const {
         label,
         layout = fundingSource ? BUTTON_LAYOUT.HORIZONTAL : fundingConfig.layouts[0],
@@ -306,11 +324,11 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
     }
 
     if (color && fundingConfig.colors.indexOf(color) === -1) {
-        throw new Error(`Unexpected style.color for ${ FUNDING.PAYPAL } button: ${ color }, expected ${ fundingConfig.colors.join(', ') }`);
+        throw new Error(`Unexpected style.color for ${ fundingSource || FUNDING.PAYPAL } button: ${ color }, expected ${ fundingConfig.colors.join(', ') }`);
     }
 
     if (shape && fundingConfig.shapes.indexOf(shape) === -1) {
-        throw new Error(`Unexpected style.shape for ${ FUNDING.PAYPAL } button: ${ shape }, expected ${ fundingConfig.shapes.join(', ') }`);
+        throw new Error(`Unexpected style.shape for ${ fundingSource || FUNDING.PAYPAL } button: ${ shape }, expected ${ fundingConfig.shapes.join(', ') }`);
     }
 
     if (height !== undefined) {
@@ -338,63 +356,16 @@ const COUNTRIES = values(COUNTRY);
 const FUNDING_SOURCES = values(FUNDING);
 const ENVS = values(ENV);
 const PLATFORMS = values(PLATFORM);
-const CARDS = values(CARD);
 
-function getDefaultWallet(fundingEligibility : FundingEligibilityType, wallet : ?Wallet) : Wallet {
-    
+const getDefaultStyle = () : ButtonStyleInputs => {
     // $FlowFixMe
-    wallet = wallet || {};
+    return {};
+};
 
-    wallet.paypal = wallet.paypal || { instruments: [] };
+const getDefaultExperiment = () : Experiment => {
     // $FlowFixMe
-    wallet.paypal.instruments = wallet.paypal.instruments || [];
-
-    wallet.card = wallet.card || { instruments: [] };
-    wallet.card.instruments = wallet.card.instruments || [];
-
-    wallet.credit = wallet.credit || { instruments: [] };
-    wallet.credit.instruments = wallet.credit.instruments || [];
-
-    if (fundingEligibility.paypal && fundingEligibility.paypal.vaultedInstruments && fundingEligibility.paypal.vaultedInstruments.length) {
-        for (const vaultedInstrument of fundingEligibility.paypal.vaultedInstruments) {
-            if (!wallet.paypal.instruments.find(instrument => instrument.tokenID === vaultedInstrument.id)) {
-                wallet.paypal.instruments = [
-                    ...wallet.paypal.instruments,
-                    {
-                        tokenID:  vaultedInstrument.id,
-                        label:    vaultedInstrument.label.description,
-                        oneClick: true
-                    }
-                ];
-            }
-        }
-    }
-
-    for (const vendor of CARDS) {
-        if (fundingEligibility.card && fundingEligibility.card.vendors && fundingEligibility.card.vendors[vendor]) {
-            const vendorEligibility = fundingEligibility.card.vendors[vendor];
-
-            if (vendorEligibility && vendorEligibility.vaultedInstruments && vendorEligibility.vaultedInstruments.length) {
-                for (const vaultedInstrument of vendorEligibility.vaultedInstruments) {
-                    if (!wallet.card.instruments.find(instrument => instrument.tokenID === vaultedInstrument.id)) {
-                        wallet.card.instruments = [
-                            ...wallet.card.instruments,
-                            {
-                                type:     WALLET_INSTRUMENT.CARD,
-                                tokenID:  vaultedInstrument.id,
-                                label:    vaultedInstrument.label.description,
-                                oneClick: true,
-                                vendor
-                            }
-                        ];
-                    }
-                }
-            }
-        }
-    }
-
-    return wallet;
-}
+    return {};
+};
 
 export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonProps {
 
@@ -405,8 +376,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     let {
         clientID,
         fundingSource,
-        // $FlowFixMe
-        style = {},
+        style = getDefaultStyle(),
         remembered = [],
         locale = DEFAULT_PROPS.LOCALE,
         env = DEFAULT_PROPS.ENV,
@@ -422,7 +392,11 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         personalization,
         clientAccessToken,
         content,
-        wallet
+        wallet,
+        flow = BUTTON_FLOW.PURCHASE,
+        experiment = getDefaultExperiment(),
+        vault,
+        userIDToken
     } = props;
 
     const { country, lang } = locale;
@@ -460,14 +434,14 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Invalid funding source: ${ fundingSource }`);
         }
 
-        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange })) {
+        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet })) {
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
 
     style = normalizeButtonStyle(props, style);
-    wallet = getDefaultWallet(fundingEligibility, wallet);
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet };
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
+        experiment, vault, userIDToken };
 }

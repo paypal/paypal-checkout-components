@@ -121,13 +121,13 @@ export function destroyTestContainer() {
 
 patchXmlHttpRequest();
 
-export const loggerApiMock = $mockEndpoint.register({
+export const loggerApiMock : typeof $mockEndpoint = $mockEndpoint.register({
     method: 'POST',
     uri:    getPayPalLoggerUrl(),
     data:   {}
 });
 
-export const authApiMock = $mockEndpoint.register({
+export const authApiMock : typeof $mockEndpoint = $mockEndpoint.register({
     method: 'POST',
     uri:    getAuthAPIUrl(),
     handler({ headers, data }) : {| access_token : string |} {
@@ -156,7 +156,7 @@ export const authApiMock = $mockEndpoint.register({
     }
 });
 
-export const orderApiMock = $mockEndpoint.register({
+export const orderApiMock : typeof $mockEndpoint = $mockEndpoint.register({
     method: 'POST',
     uri:    getOrderAPIUrl(),
     handler({ data, headers }) : {| id : string |} {

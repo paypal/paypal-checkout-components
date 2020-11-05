@@ -57,6 +57,7 @@ if (action === 'checkout') {
 
 
     if (type === 'noReject') {
+        // $FlowFixMe
         delete callbackActions.reject;
     }
 

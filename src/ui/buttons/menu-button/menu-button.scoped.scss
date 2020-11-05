@@ -1,0 +1,21 @@
+
+.menu-button {
+    position: relative;
+    display: inline-block;
+    margin-left: 2px;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(50, 50, 50, 0.9) inset;
+    }
+
+    img {
+        height: 30%;
+        width: 30%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+}

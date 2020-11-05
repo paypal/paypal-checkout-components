@@ -1,6 +1,7 @@
 /* @flow */
 /* eslint import/no-nodejs-modules: off, import/no-default-export: off */
 
+import type { WebpackConfig } from 'grumbler-scripts/config/types';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 import { ENV } from '@paypal/sdk-constants';
 
@@ -11,9 +12,9 @@ const FILE_NAME = 'sdk';
 
 const PROTOCOL = 'https';
 const HOSTNAME = 'localhost.paypal.com';
-const PORT = 9000;
+const PORT = 9001;
 
-const WEBPACK_CONFIG_DEV = getWebpackConfig({
+const WEBPACK_CONFIG_DEV : WebpackConfig = getWebpackConfig({
     entry:         './paypal.dev.js',
     filename:      `${ FILE_NAME }.js`,
     debug:         true,
@@ -38,7 +39,7 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
     }
 });
 
-const WEBPACK_CONFIG_BUTTON_RENDER = getWebpackConfig({
+const WEBPACK_CONFIG_BUTTON_RENDER : WebpackConfig = getWebpackConfig({
     context:       __dirname,
     entry:         './src/ui/buttons',
     filename:      'button.js',
@@ -49,7 +50,7 @@ const WEBPACK_CONFIG_BUTTON_RENDER = getWebpackConfig({
     libraryTarget: 'global'
 });
 
-const WEBPACK_CONFIG_JSX_PRAGMATIC = getWebpackConfig({
+const WEBPACK_CONFIG_JSX_PRAGMATIC : WebpackConfig = getWebpackConfig({
     context:       __dirname,
     entry:         'jsx-pragmatic',
     filename:      'jsx-pragmatic.js',
@@ -59,8 +60,19 @@ const WEBPACK_CONFIG_JSX_PRAGMATIC = getWebpackConfig({
     libraryTarget: 'global'
 });
 
+const WEBPACK_CONFIG_SDK_CONSTANTS : WebpackConfig = getWebpackConfig({
+    context:       __dirname,
+    entry:         '@paypal/sdk-constants',
+    filename:      'sdk-constants.js',
+    modulename:    'constants',
+    debug:         true,
+    minify:        false,
+    libraryTarget: 'global'
+});
+
 export default [
     WEBPACK_CONFIG_DEV,
     WEBPACK_CONFIG_BUTTON_RENDER,
-    WEBPACK_CONFIG_JSX_PRAGMATIC
+    WEBPACK_CONFIG_JSX_PRAGMATIC,
+    WEBPACK_CONFIG_SDK_CONSTANTS
 ];
