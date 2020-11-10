@@ -396,7 +396,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     });
                 }
             };
-            return onShippingChange(data, actions).then(() => {
+            return onShippingChange({ ...data, forceRestAPI: true }, actions).then(() => {
                 return {
                     resolved
                 };

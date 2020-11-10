@@ -28,7 +28,8 @@ export function buildXOnShippingChangeData(data : XOnShippingChangeDataType) : X
 }
 
 export type OnShippingChangeData = {|
-    buyerAccessToken : ?string
+    buyerAccessToken : ?string,
+    forceRestAPI? : boolean
 |};
 
 export type OnShippingChangeActionsType = {|
@@ -36,10 +37,10 @@ export type OnShippingChangeActionsType = {|
     reject : () => ZalgoPromise<void>
 |};
 
-export function buildXShippingChangeActions({ orderID, actions, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : {| orderID : string, actions : OnShippingChangeActionsType, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string |}) : XOnShippingChangeActionsType {
+export function buildXShippingChangeActions({ orderID, actions, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : {| orderID : string, actions : OnShippingChangeActionsType, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string, forceRestAPI : boolean |}) : XOnShippingChangeActionsType {
 
     const patch = (data = {}) => {
-        return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID }).catch(() => {
+        return patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI }).catch(() => {
             throw new Error('Order could not be patched');
         });
     };
@@ -60,12 +61,13 @@ export type OnShippingChange = (OnShippingChangeData, OnShippingChangeActionsTyp
 
 type OnShippingChangeXProps = {|
     onShippingChange : ?XOnShippingChange,
-    partnerAttributionID : ?string
+    partnerAttributionID : ?string,
+    upgradeLSAT : boolean
 |};
 
-export function getOnShippingChange({ onShippingChange, partnerAttributionID } : OnShippingChangeXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : ?OnShippingChange {
+export function getOnShippingChange({ onShippingChange, partnerAttributionID, upgradeLSAT = false } : OnShippingChangeXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : ?OnShippingChange {
     if (onShippingChange) {
-        return ({ buyerAccessToken, ...data }, actions) => {
+        return ({ buyerAccessToken, forceRestAPI = upgradeLSAT, ...data }, actions) => {
             return createOrder().then(orderID => {
                 getLogger()
                     .info('button_shipping_change')
@@ -76,7 +78,7 @@ export function getOnShippingChange({ onShippingChange, partnerAttributionID } :
                         [FPTI_KEY.CONTEXT_ID]:   orderID
                     }).flush();
 
-                return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, facilitatorAccessToken, buyerAccessToken, actions, partnerAttributionID }));
+                return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, facilitatorAccessToken, buyerAccessToken, actions, partnerAttributionID, forceRestAPI }));
             });
         };
     }

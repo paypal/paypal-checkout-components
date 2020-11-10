@@ -162,6 +162,7 @@ export type ButtonProps = {|
 export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ButtonProps {
 
     const xprops : ButtonXProps = window.xprops;
+    const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, UPGRADE_LSAT_RAMP.RAMP);
 
     const {
         uid,
@@ -195,7 +196,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         connect,
         intent,
         merchantID,
-        upgradeLSAT = false,
+        upgradeLSAT = upgradeLSATExperiment.isEnabled(),
         amount,
         userIDToken,
         enableFunding,
@@ -203,8 +204,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         disableCard,
         getQueriedEligibleFunding = () => ZalgoPromise.resolve([])
     } = xprops;
-
-    const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, UPGRADE_LSAT_RAMP.RAMP);
 
     const onInit = getOnInit({ onInit: xprops.onInit });
     const merchantDomain = (typeof getParentDomain === 'function') ? getParentDomain() : 'unknown';
@@ -261,10 +260,10 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
     const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken, createBillingAgreement, createSubscription });
 
     const onError = getOnError({ onError: xprops.onError });
-    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, upgradeLSAT, clientAccessToken, vault, isLSATExperiment: upgradeLSATExperiment.isEnabled() }, { facilitatorAccessToken, createOrder });
+    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, upgradeLSAT, clientAccessToken, vault }, { facilitatorAccessToken, createOrder });
     const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
-    const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID }, { facilitatorAccessToken, createOrder });
-    const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, isLSATExperiment: upgradeLSATExperiment.isEnabled(), upgradeLSAT });
+    const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID, upgradeLSAT }, { facilitatorAccessToken, createOrder });
+    const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT });
 
     return {
         uid,

@@ -239,16 +239,15 @@ type OnApproveXProps = {|
     onError : XOnError,
     upgradeLSAT : boolean,
     clientAccessToken : ?string,
-    vault : boolean,
-    isLSATExperiment : boolean
+    vault : boolean
 |};
 
-export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, clientAccessToken, vault, upgradeLSAT = false, isLSATExperiment = false } : OnApproveXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : OnApprove {
+export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, clientAccessToken, vault, upgradeLSAT = false } : OnApproveXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : OnApprove {
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }
 
-    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode, forceRestAPI = (upgradeLSAT || isLSATExperiment) } : OnApproveData, { restart } : OnApproveActions) => {
+    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
         return ZalgoPromise.try(() => {
             return createOrder();
         }).then(orderID => {
