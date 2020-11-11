@@ -168,6 +168,12 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
+                (fundingSources.indexOf(FUNDING.CARD) !== -1)
+                    ? <div id="card-fields-container" class="card-fields-container" />
+                    : null
+            }
+
+            {
                 (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
                     ? <PoweredByPayPal
                         locale={ locale }
