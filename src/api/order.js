@@ -128,14 +128,12 @@ type PatchData = {|
 |};
 
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    const patchData = Array.isArray(data) ? { patch: data } : data;
-
     return forceRestAPI
         ? callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `patch`,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
-            data:        patchData,
+            data,
             headers:     {
                 [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
             }
@@ -144,7 +142,7 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
             accessToken: buyerAccessToken,
             method:      'post',
             url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
-            json:        { data: patchData },
+            json:        { data: Array.isArray(data) ? { patch: data } : data },
             headers:     {
                 [HEADERS.CLIENT_CONTEXT]: orderID
             }
