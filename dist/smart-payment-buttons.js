@@ -916,36 +916,51 @@ window.spb = function(modules) {
                 throw new Error("Arguments not serializable -- can not be used to memoize");
             }
         }
-        var memoizedFunctions = [];
+        function getEmptyObject() {
+            return {};
+        }
+        var memoizeGlobalIndex = 0;
+        var memoizeGlobalIndexValidFrom = 0;
         function memoize(method, options) {
-            var _this = this;
             void 0 === options && (options = {});
-            var cacheMap = new weakmap_CrossDomainSafeWeakMap;
+            var _options$thisNamespac = options.thisNamespace, thisNamespace = void 0 !== _options$thisNamespac && _options$thisNamespac, cacheTime = options.time;
+            var simpleCache;
+            var thisCache;
+            var memoizeIndex = memoizeGlobalIndex;
+            memoizeGlobalIndex += 1;
             var memoizedFunction = function() {
                 for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, (function() {
-                    return {};
-                }));
-                var key = serializeArgs(args);
-                var cacheTime = options.time;
-                cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
-                if (cache[key]) return cache[key].value;
+                if (memoizeIndex < memoizeGlobalIndexValidFrom) {
+                    simpleCache = null;
+                    thisCache = null;
+                    memoizeIndex = memoizeGlobalIndex;
+                    memoizeGlobalIndex += 1;
+                }
+                var cache;
+                cache = thisNamespace ? (thisCache = thisCache || new weakmap_CrossDomainSafeWeakMap).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
+                var cacheKey = serializeArgs(args);
+                var cacheResult = cache[cacheKey];
+                if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
+                    delete cache[cacheKey];
+                    cacheResult = null;
+                }
+                if (cacheResult) return cacheResult.value;
                 var time = Date.now();
                 var value = method.apply(this, arguments);
-                cache[key] = {
+                cache[cacheKey] = {
                     time: time,
                     value: value
                 };
-                return cache[key].value;
+                return value;
             };
             memoizedFunction.reset = function() {
-                cacheMap.delete(options.thisNamespace ? _this : method);
+                simpleCache = null;
+                thisCache = null;
             };
-            memoizedFunctions.push(memoizedFunction);
             return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
         }
         memoize.clear = function() {
-            for (var _i2 = 0; _i2 < memoizedFunctions.length; _i2++) memoizedFunctions[_i2].reset();
+            memoizeGlobalIndexValidFrom = memoizeGlobalIndex;
         };
         function inlineMemoize(method, logic, args) {
             void 0 === args && (args = []);
@@ -1003,13 +1018,13 @@ window.spb = function(modules) {
         var util_ExtendableError = function(_Error) {
             _inheritsLoose(ExtendableError, _Error);
             function ExtendableError(message) {
-                var _this7;
-                (_this7 = _Error.call(this, message) || this).name = _this7.constructor.name;
+                var _this6;
+                (_this6 = _Error.call(this, message) || this).name = _this6.constructor.name;
                 "function" == typeof Error.captureStackTrace ? Error.captureStackTrace(function(self) {
                     if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                     return self;
-                }(_this7), _this7.constructor) : _this7.stack = new Error(message).stack;
-                return _this7;
+                }(_this6), _this6.constructor) : _this6.stack = new Error(message).stack;
+                return _this6;
             }
             return ExtendableError;
         }(wrapNativeSuper_wrapNativeSuper(Error));
@@ -1155,8 +1170,9 @@ window.spb = function(modules) {
             }
             var uid = script.getAttribute("data-uid");
             if (uid && "string" == typeof uid) return uid;
+            if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
             uid = uniqueID();
-            script.setAttribute("data-uid", uid);
+            script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
         function getStorage(_ref) {
@@ -1635,7 +1651,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.337", _headers10);
+            _headers10["x-app-version"] = "2.0.338", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -1978,11 +1994,11 @@ window.spb = function(modules) {
                     if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                     throw new Error("Unsupported intent for auto-capture: " + intent);
                 };
-            }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT, _ref4$isLSATExperimen = _ref4.isLSATExperiment, isLSATExperiment = void 0 !== _ref4$isLSATExperimen && _ref4$isLSATExperimen;
+            }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
             var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
             if (!onApprove) throw new Error("Expected onApprove");
             return memoize((function(_ref6, _ref7) {
-                var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT || isLSATExperiment : _ref6$forceRestAPI;
+                var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
                 var restart = _ref7.restart;
                 return promise_ZalgoPromise.try((function() {
                     return createOrder();
@@ -2271,17 +2287,17 @@ window.spb = function(modules) {
             }));
         }
         function getOnShippingChange(_ref2, _ref3) {
-            var onShippingChange = _ref2.onShippingChange, partnerAttributionID = _ref2.partnerAttributionID;
+            var onShippingChange = _ref2.onShippingChange, partnerAttributionID = _ref2.partnerAttributionID, _ref2$upgradeLSAT = _ref2.upgradeLSAT, upgradeLSAT = void 0 !== _ref2$upgradeLSAT && _ref2$upgradeLSAT;
             var facilitatorAccessToken = _ref3.facilitatorAccessToken, createOrder = _ref3.createOrder;
             if (onShippingChange) return function(_ref4, actions) {
-                var buyerAccessToken = _ref4.buyerAccessToken, data = function(source, excluded) {
+                var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI, forceRestAPI = void 0 === _ref4$forceRestAPI ? upgradeLSAT : _ref4$forceRestAPI, data = function(source, excluded) {
                     if (null == source) return {};
                     var target = {};
                     var sourceKeys = Object.keys(source);
                     var key, i;
                     for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
                     return target;
-                }(_ref4, [ "buyerAccessToken" ]);
+                }(_ref4, [ "buyerAccessToken", "forceRestAPI" ]);
                 return createOrder().then((function(orderID) {
                     var _getLogger$info$track;
                     logger_getLogger().info("button_shipping_change").track((_getLogger$info$track = {}, 
@@ -2289,7 +2305,7 @@ window.spb = function(modules) {
                     _getLogger$info$track.token = orderID, _getLogger$info$track.context_id = orderID, 
                     _getLogger$info$track)).flush();
                     return onShippingChange(data, function(_ref) {
-                        var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID;
+                        var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
                         return {
                             resolve: function() {
                                 return promise_ZalgoPromise.resolve();
@@ -2303,7 +2319,8 @@ window.spb = function(modules) {
                                     return patchOrder(orderID, data, {
                                         facilitatorAccessToken: facilitatorAccessToken,
                                         buyerAccessToken: buyerAccessToken,
-                                        partnerAttributionID: partnerAttributionID
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
                                     }).catch((function() {
                                         throw new Error("Order could not be patched");
                                     }));
@@ -2315,18 +2332,19 @@ window.spb = function(modules) {
                         facilitatorAccessToken: facilitatorAccessToken,
                         buyerAccessToken: buyerAccessToken,
                         actions: actions,
-                        partnerAttributionID: partnerAttributionID
+                        partnerAttributionID: partnerAttributionID,
+                        forceRestAPI: forceRestAPI
                     }));
                 }));
             };
         }
         function getOnAuth(_ref) {
-            var facilitatorAccessToken = _ref.facilitatorAccessToken, createOrder = _ref.createOrder, isLSATExperiment = _ref.isLSATExperiment, upgradeLSAT = _ref.upgradeLSAT;
+            var facilitatorAccessToken = _ref.facilitatorAccessToken, createOrder = _ref.createOrder, upgradeLSAT = _ref.upgradeLSAT;
             return function(_ref2) {
                 var accessToken = _ref2.accessToken;
                 logger_getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
                 return promise_ZalgoPromise.try((function() {
-                    if (accessToken) return isLSATExperiment || upgradeLSAT ? createOrder().then((function(orderID) {
+                    if (accessToken) return upgradeLSAT ? createOrder().then((function(orderID) {
                         return function(facilitatorAccessToken, _ref3) {
                             var _headers;
                             var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
@@ -2361,9 +2379,6 @@ window.spb = function(modules) {
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken;
             var xprops = window.xprops;
-            var uid = xprops.uid, env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
-                return promise_ZalgoPromise.resolve([]);
-            } : _xprops$getQueriedEli;
             var upgradeLSATExperiment = (name = "UPGRADE_LSAT_EXPERIMENT", logger = logger_getLogger(), 
             function(_ref) {
                 var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint;
@@ -2434,6 +2449,9 @@ window.spb = function(modules) {
                 }
             }));
             var name, logger;
+            var uid = xprops.uid, env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 === _xprops$upgradeLSAT ? upgradeLSATExperiment.isEnabled() : _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+                return promise_ZalgoPromise.resolve([]);
+            } : _xprops$getQueriedEli;
             var onInit = function(_ref) {
                 var onInit = _ref.onInit;
                 return function(data) {
@@ -2680,8 +2698,7 @@ window.spb = function(modules) {
                     partnerAttributionID: partnerAttributionID,
                     upgradeLSAT: upgradeLSAT,
                     clientAccessToken: clientAccessToken,
-                    vault: vault,
-                    isLSATExperiment: upgradeLSATExperiment.isEnabled()
+                    vault: vault
                 }, {
                     facilitatorAccessToken: facilitatorAccessToken,
                     createOrder: createOrder
@@ -2694,7 +2711,8 @@ window.spb = function(modules) {
                 }),
                 onShippingChange: getOnShippingChange({
                     onShippingChange: xprops.onShippingChange,
-                    partnerAttributionID: partnerAttributionID
+                    partnerAttributionID: partnerAttributionID,
+                    upgradeLSAT: upgradeLSAT
                 }, {
                     facilitatorAccessToken: facilitatorAccessToken,
                     createOrder: createOrder
@@ -2702,7 +2720,6 @@ window.spb = function(modules) {
                 onAuth: getOnAuth({
                     facilitatorAccessToken: facilitatorAccessToken,
                     createOrder: createOrder,
-                    isLSATExperiment: upgradeLSATExperiment.isEnabled(),
                     upgradeLSAT: upgradeLSAT
                 }),
                 standaloneFundingSource: fundingSource
@@ -3222,21 +3239,6 @@ window.spb = function(modules) {
                             approved = !0;
                             logger_getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
                             return close().then((function() {
-                                var restart = memoize((function() {
-                                    return initCheckout({
-                                        props: props,
-                                        components: components,
-                                        serviceData: serviceData,
-                                        config: config,
-                                        payment: {
-                                            button: button,
-                                            fundingSource: fundingSource,
-                                            card: card,
-                                            buyerIntent: buyerIntent,
-                                            isClick: !1
-                                        }
-                                    }).start().finally(unresolvedPromise);
-                                }));
                                 return _onApprove({
                                     payerID: payerID,
                                     paymentID: paymentID,
@@ -3284,6 +3286,21 @@ window.spb = function(modules) {
                         if (checkoutOpen) throw err;
                     }));
                     var top;
+                }));
+                var restart = memoize((function() {
+                    return initCheckout({
+                        props: props,
+                        components: components,
+                        serviceData: serviceData,
+                        config: config,
+                        payment: {
+                            button: button,
+                            fundingSource: fundingSource,
+                            card: card,
+                            buyerIntent: buyerIntent,
+                            isClick: !1
+                        }
+                    }).start().finally(unresolvedPromise);
                 }));
                 return {
                     click: function() {
@@ -3511,10 +3528,10 @@ window.spb = function(modules) {
                                 void 0 === time && (time = 100);
                                 var timeout;
                                 return setFunctionName((function() {
-                                    var _arguments3 = arguments, _this4 = this;
+                                    var _arguments3 = arguments, _this3 = this;
                                     clearTimeout(timeout);
                                     timeout = setTimeout((function() {
-                                        return method.apply(_this4, _arguments3);
+                                        return method.apply(_this3, _arguments3);
                                     }), time);
                                 }), getFunctionName(method) + "::debounced");
                             }((function() {
@@ -4822,7 +4839,7 @@ window.spb = function(modules) {
                     logger_getLogger().info("native_message_onshippingchange").flush();
                     if (onShippingChange) {
                         var resolved = !0;
-                        return onShippingChange(data, {
+                        var actions = {
                             resolve: function() {
                                 return promise_ZalgoPromise.try((function() {
                                     resolved = !0;
@@ -4833,7 +4850,10 @@ window.spb = function(modules) {
                                     resolved = !1;
                                 }));
                             }
-                        }).then((function() {
+                        };
+                        return onShippingChange(_extends({}, data, {
+                            forceRestAPI: !0
+                        }), actions).then((function() {
                             return {
                                 resolved: resolved
                             };
@@ -5775,7 +5795,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.337", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.338", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2;
                 }));
                 (function() {
