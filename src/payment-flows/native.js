@@ -496,6 +496,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const nativeUrl = getNativeUrlForAndroid({ sessionUID });
 
         const nativeWin = popup(nativeUrl);
+        window.addEventListener('unload', () => {
+            nativeWin.close();
+        });
+        
         getLogger()
             .info(`native_attempt_appswitch_popup_shown`, { url: nativeUrl })
             .info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
@@ -546,6 +550,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         const popupWin = popup(getNativePopupUrl({ sessionUID }));
+        window.addEventListener('unload', () => {
+            popupWin.close();
+        });
+
         getLogger().info(`native_attempt_appswitch_popup_shown`)
             .track({
                 [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
