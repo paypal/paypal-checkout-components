@@ -7,7 +7,7 @@ PayPal Checkout
 
 
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
-[zoid](https://github.com/krakenjs/zoid).
+[zoid](https://github.com/krakenjs/zoid).npm i @paypal/checkout-components
 
 ## Dev Docs
 
