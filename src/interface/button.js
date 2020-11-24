@@ -68,6 +68,6 @@ export function setup() {
     getCheckoutComponent();
 }
 
-export function destroy() {
-    zoidDestroy();
+export function destroy(err? : mixed) {
+    zoidDestroy(err);
 }

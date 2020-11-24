@@ -215,7 +215,7 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
 }
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, vault, textColor } = opts;
+    const { logoColor, instrument, content, commit, vault, textColor, fundingSource } = opts;
 
     if (instrument && !instrument.type) {
         return WalletLabelOld(opts);
@@ -223,6 +223,17 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
 
     let logo;
     let label;
+    let branded;
+
+    if (instrument && typeof instrument.branded === 'boolean') {
+        branded = instrument.branded;
+    } else if (fundingSource === FUNDING.PAYPAL || fundingSource === FUNDING.CREDIT) {
+        branded = true;
+    } else if (fundingSource === FUNDING.CARD) {
+        branded = false;
+    } else {
+        branded = true;
+    }
 
     if (instrument) {
         if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
@@ -264,10 +275,17 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
     return (
         <Style css={ css }>
             <div class='wallet-label-new' { ...attrs }>
-                <div class='paypal-mark'>
-                    <PPLogo logoColor={ logoColor } />
-                    <Space />
-                </div>
+                {
+                    branded
+                        ? (
+                            <div class='paypal-mark'>
+                                <PPLogo logoColor={ logoColor } />
+                                <Space />
+                            </div>
+                        )
+                        : null
+                }
+
                 <div class='pay-label' optional={ 2 }>
                     <Space />
                     {

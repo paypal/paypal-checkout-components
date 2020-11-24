@@ -112,7 +112,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     height: 100%;
                 }
 
-                .${ CLASS.BUTTON_ROW }.${ CLASS.WALLET } .${ CLASS.BUTTON } {
+                .${ CLASS.BUTTON_ROW }.${ CLASS.WALLET }.${ CLASS.WALLET_MENU } .${ CLASS.BUTTON } {
                     width: calc(100% - ${ buttonHeight + 2 }px);
                     border-top-right-radius: 0px;
                     border-bottom-right-radius: 0px;

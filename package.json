@@ -1,6 +1,6 @@
 {
     "name": "@paypal/checkout-components",
-    "version": "5.0.130",
+    "version": "5.0.132",
     "description": "PayPal Checkout components, for integrating checkout products.",
     "main": "index.js",
     "scripts": {
@@ -63,11 +63,13 @@
     "devDependencies": {
         "babel-core": "^7.0.0-bridge.0",
         "conventional-changelog-cli": "^2.0.34",
-        "flow-bin": "^0.135.0",
+        "flow-bin": "0.135.0",
         "fs-extra": "^9.0.1",
         "grumbler-scripts": "^3.0.70",
         "imagemagick": "^0.1.3",
         "imgur": "^0.3.1",
+        "karma": "^5.2.3",
+        "karma-coverage": "^2.0.3",
         "memory-fs": "^0.5.0",
         "mocha": "^4.1.0",
         "mocketeer": "^0.3.1",
