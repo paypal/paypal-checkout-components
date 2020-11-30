@@ -198,6 +198,16 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, cur
             });
         }
 
+        if (cartBillingType && !cartAmount && intent !== INTENT.TOKENIZE) {
+            triggerIntegrationError({
+                error:         `smart_button_validation_error_billing_without_purchase_intent_tokenize_not_passed`,
+                message:       `Expected ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.TOKENIZE } for a billing-without-purchase transaction`,
+                env, clientID, orderID,
+                loggerPayload: { vault, cartBillingType, cartAmount },
+                throwError:    false
+            });
+        }
+
         const payees = order.checkoutSession.payees;
 
         if (!payees) {
