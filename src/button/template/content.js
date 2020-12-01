@@ -681,8 +681,8 @@ export const componentContent = {
             'later_tag':          'Compre agora e pague depois.',
             'pay':                'Pague com {logo:paypal}',
             'buynow':             '{logo:pp} {logo:paypal} Comprar agora',
-            'installment':        '{logo:pp} {logo:paypal}  Pagamentos<br>  parcelados',
-            'installment_period': '{logo:pp} {logo:paypal}  Pague em at\u00e9<br>  [installmentperiod]x sem juros',
+            'installment':        '{logo:pp} {logo:paypal}  Pagamentos parcelados',
+            'installment_period': '{logo:pp} {logo:paypal}  Pague em at\u00e9 [installmentperiod]x sem juros',
             'poweredBy':          'Com tecnologia {logo:paypal}'
         },
         'en': {
@@ -691,8 +691,8 @@ export const componentContent = {
             'later_tag':          'Buy Now. Pay Over Time.',
             'pay':                'Pay with {logo:paypal}',
             'buynow':             '{logo:pp} {logo:paypal} Buy Now',
-            'installment':        '{logo:pp} {logo:paypal}  Interest free<br>  payments',
-            'installment_period': '{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest',
+            'installment':        '{logo:pp} {logo:paypal}  Interest free payments',
+            'installment_period': '{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x without interest',
             'poweredBy':          'Powered by {logo:paypal}'
         }
     },
@@ -3509,8 +3509,8 @@ export const componentContent = {
             'later_tag':          'Compre ahora y pague más adelante.',
             'pay':                'Pagar con {logo:paypal}',
             'buynow':             '{logo:pp} {logo:paypal} Comprar ahora',
-            'installment':        '{logo:pp} {logo:paypal}  Pagos en<br>  mensualidades',
-            'installment_period': '{logo:pp} {logo:paypal}  Pague hasta en<br>  [installmentperiod] mensualidades',
+            'installment':        '{logo:pp} {logo:paypal}  Pagos en mensualidades',
+            'installment_period': '{logo:pp} {logo:paypal}  Pague hasta en [installmentperiod]x mensualidades',
             'poweredBy':          'Desarrollado por {logo:paypal}'
         },
         'en': {
@@ -3519,8 +3519,8 @@ export const componentContent = {
             'later_tag':          'Buy Now. Pay Over Time.',
             'pay':                'Pay with {logo:paypal}',
             'buynow':             '{logo:pp} {logo:paypal} Buy Now',
-            'installment':        '{logo:pp} {logo:paypal}  Interest free<br>  payments',
-            'installment_period': '{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest',
+            'installment':        '{logo:pp} {logo:paypal}  Interest free payments',
+            'installment_period': '{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x without interest',
             'poweredBy':          'Powered by {logo:paypal}'
         }
     },
