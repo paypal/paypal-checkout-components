@@ -108,7 +108,6 @@ describe('native chrome cases', () => {
             });
 
             await clickButton(FUNDING.PAYPAL);
-
             await wait();
 
             await mockWebSocketServer.done();
@@ -222,17 +221,16 @@ describe('native chrome cases', () => {
             }).expectCalls();
 
             let sessionUID;
-
-            const mockWindow = getMockWindowOpen({
+            const mockWindowConfig = {
                 expectedUrl:   'https://www.paypal.com/smart/checkout/native',
                 appSwitch:     true,
-                times:         2,
+                times:         1,
                 expectedQuery: [ 'sessionUID', 'pageUrl' ],
                 onOpen:        ({ query }) => {
                     sessionUID = query.sessionUID;
                 }
-            });
-
+            };
+            let mockWindow = getMockWindowOpen(mockWindowConfig);
 
             const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
                 getSessionUID: () => {
@@ -285,6 +283,10 @@ describe('native chrome cases', () => {
             await clickButton(FUNDING.PAYPAL);
             await wait();
 
+            mockWindow.done();
+
+            mockWindow = getMockWindowOpen({ ...mockWindowConfig, expectClose: true });
+
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
@@ -323,11 +325,13 @@ describe('native chrome cases', () => {
 
             window.xprops.onCancel = avoid('onCancel');
 
-            const mockWindow = getMockWindowOpen({
+            const mockWindowConfig = {
                 expectedUrl:   'https://www.paypal.com/smart/checkout/native',
-                times:         2,
+                times:         1,
                 expectedQuery: [ 'sessionUID', 'pageUrl' ]
-            });
+            };
+
+            let mockWindow = getMockWindowOpen(mockWindowConfig);
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -371,13 +375,17 @@ describe('native chrome cases', () => {
             await clickButton(FUNDING.PAYPAL);
             await wait();
 
+            mockWindow.done();
+
+            mockWindow = getMockWindowOpen(mockWindowConfig);
+
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (innerData) => {
                 if (innerData.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ innerData.orderID }`);
                 }
 
                 if (innerData.payerID !== payerID) {
-                    throw new Error(`Expected payerID to  be ${ payerID }, g ot ${ innerData.payerID }`);
+                    throw new Error(`Expected payerID to  be ${ payerID }, got ${ innerData.payerID }`);
                 }
             }));
 
@@ -2061,10 +2069,10 @@ describe('native ios cases', () => {
                 }
             }));
 
-            const mockWindow = getMockWindowOpen({
+            const mockWindowConfig = {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
-                times:              2,
+                times:              1,
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2111,7 +2119,9 @@ describe('native ios cases', () => {
                         });
                     }));
                 }
-            });
+            };
+
+            let mockWindow = getMockWindowOpen(mockWindowConfig);
 
             createButtonHTML();
 
@@ -2124,6 +2134,10 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
             await wait();
+
+            mockWindow.done();
+
+            mockWindow = getMockWindowOpen(mockWindowConfig);
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (innerData) => {
                 if (innerData.orderID !== orderID) {

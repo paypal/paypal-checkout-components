@@ -1589,6 +1589,12 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
         if (!expectClose && win && win.closed) {
             throw new Error(`Expected window to not close`);
         }
+
+        // cleanup
+        if (win && !win.closed) {
+            expectClose = true;
+            win.close();
+        }
     };
 
     const getWindow = () => {
