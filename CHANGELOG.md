@@ -1,3 +1,13 @@
+## <small>5.0.131 (2020-12-03)</small>
+
+* Branded card wallet label ([87ca423](https://github.com/paypal/paypal-checkout-components/commit/87ca423))
+* Clean up old enableBNPL feature flag ([6ab4e82](https://github.com/paypal/paypal-checkout-components/commit/6ab4e82))
+* Explicitly set __SCRIPT_NAMESPACE__ to false for zoid and post-robot ([721c5e3](https://github.com/paypal/paypal-checkout-components/commit/721c5e3))
+* Reorder SPB and move PayPal branding below SCF (#1471) ([6861746](https://github.com/paypal/paypal-checkout-components/commit/6861746)), closes [#1471](https://github.com/paypal/paypal-checkout-components/issues/1471)
+* Use xvfb service over before_install script (#1482) ([1a31a8e](https://github.com/paypal/paypal-checkout-components/commit/1a31a8e)), closes [#1482](https://github.com/paypal/paypal-checkout-components/issues/1482)
+
+
+
 ## <small>5.0.130 (2020-10-26)</small>
 
 * Add __SDK_HOST__ to test globals ([d981061](https://github.com/paypal/paypal-checkout-components/commit/d981061))
