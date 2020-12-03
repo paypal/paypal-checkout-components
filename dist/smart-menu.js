@@ -1193,8 +1193,8 @@ window.spb = function(modules) {
                 var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
                 var scriptLocation = stackDetails && stackDetails[1];
                 if (!scriptLocation) return;
-                for (var _i20 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i20 < _Array$prototype$slic2.length; _i20++) {
-                    var script = _Array$prototype$slic2[_i20];
+                for (var _i22 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i22 < _Array$prototype$slic2.length; _i22++) {
+                    var script = _Array$prototype$slic2[_i22];
                     if (script.src && script.src === scriptLocation) return script;
                 }
             } catch (err) {}

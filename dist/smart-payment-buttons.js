@@ -1152,8 +1152,8 @@ window.spb = function(modules) {
                     var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
                     var scriptLocation = stackDetails && stackDetails[1];
                     if (!scriptLocation) return;
-                    for (var _i20 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i20 < _Array$prototype$slic2.length; _i20++) {
-                        var script = _Array$prototype$slic2[_i20];
+                    for (var _i22 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i22 < _Array$prototype$slic2.length; _i22++) {
+                        var script = _Array$prototype$slic2[_i22];
                         if (script.src && script.src === scriptLocation) return script;
                     }
                 } catch (err) {}
@@ -1624,23 +1624,22 @@ window.spb = function(modules) {
         }
         function patchOrder(orderID, data, _ref5) {
             var _headers8, _headers9;
-            var facilitatorAccessToken = _ref5.facilitatorAccessToken, buyerAccessToken = _ref5.buyerAccessToken, partnerAttributionID = _ref5.partnerAttributionID, _ref5$forceRestAPI = _ref5.forceRestAPI, forceRestAPI = void 0 !== _ref5$forceRestAPI && _ref5$forceRestAPI;
-            var patchData = Array.isArray(data) ? {
-                patch: data
-            } : data;
-            return forceRestAPI ? callRestAPI({
-                accessToken: facilitatorAccessToken,
+            var buyerAccessToken = _ref5.buyerAccessToken, _ref5$forceRestAPI = _ref5.forceRestAPI;
+            return void 0 !== _ref5$forceRestAPI && _ref5$forceRestAPI ? callRestAPI({
+                accessToken: _ref5.facilitatorAccessToken,
                 method: "patch",
                 url: ORDERS_API_URL + "/" + orderID,
-                data: patchData,
-                headers: (_headers8 = {}, _headers8["paypal-partner-attribution-id"] = partnerAttributionID || "", 
+                data: data,
+                headers: (_headers8 = {}, _headers8["paypal-partner-attribution-id"] = _ref5.partnerAttributionID || "", 
                 _headers8)
             }) : callSmartAPI({
                 accessToken: buyerAccessToken,
                 method: "post",
                 url: "/smart/api/order/" + orderID + "/patch",
                 json: {
-                    data: patchData
+                    data: Array.isArray(data) ? {
+                        patch: data
+                    } : data
                 },
                 headers: (_headers9 = {}, _headers9["paypal-client-context"] = orderID, _headers9)
             });
@@ -1651,7 +1650,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.338", _headers10);
+            _headers10["x-app-version"] = "2.0.339", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4191,6 +4190,7 @@ window.spb = function(modules) {
             spinner: !0,
             inline: !0
         };
+        var native_clean;
         var getNativeSocket = memoize((function(_ref) {
             var nativeSocket = (config = (_ref9 = {
                 sessionUID: _ref.sessionUID,
@@ -4526,10 +4526,10 @@ window.spb = function(modules) {
                 return merchantIds.indexOf(payee.merchantId) > -1 || merchantEmails.indexOf(payee.email && payee.email.stringValue && payee.email.stringValue.toLowerCase()) > -1;
             }));
         }
-        function triggerIntegrationError(_ref2) {
+        function triggerIntegrationError(_ref) {
             var _getLogger$warn$track;
-            var error = _ref2.error, _ref2$message = _ref2.message, message = void 0 === _ref2$message ? error : _ref2$message, clientID = _ref2.clientID, orderID = _ref2.orderID, _ref2$loggerPayload = _ref2.loggerPayload, loggerPayload = void 0 === _ref2$loggerPayload ? {} : _ref2$loggerPayload, _ref2$throwError = _ref2.throwError, throwError = void 0 === _ref2$throwError || _ref2$throwError;
-            var isWhitelisted = "sandbox" === _ref2.env ? clientID && -1 !== SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) : clientID && -1 !== ORDER_VALIDATION_WHITELIST.indexOf(clientID);
+            var error = _ref.error, _ref$message = _ref.message, message = void 0 === _ref$message ? error : _ref$message, clientID = _ref.clientID, orderID = _ref.orderID, _ref$loggerPayload = _ref.loggerPayload, loggerPayload = void 0 === _ref$loggerPayload ? {} : _ref$loggerPayload, _ref$throwError = _ref.throwError, throwError = void 0 === _ref$throwError || _ref$throwError;
+            var isWhitelisted = "sandbox" === _ref.env ? clientID && -1 !== SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) : clientID && -1 !== ORDER_VALIDATION_WHITELIST.indexOf(clientID);
             var shouldThrow = throwError && !isWhitelisted;
             logger_getLogger().warn(error, loggerPayload).track((_getLogger$warn$track = {}, 
             _getLogger$warn$track.transition_name = "process_order_validate", _getLogger$warn$track.context_type = "EC-Token", 
@@ -4662,7 +4662,8 @@ window.spb = function(modules) {
                 var fundingSource = payment.fundingSource;
                 var version = config.version, firebaseConfig = config.firebase;
                 if (!firebaseConfig) throw new Error("Can not run native flow without firebase config");
-                var clean = (tasks = [], cleaned = !1, {
+                native_clean && native_clean.all();
+                native_clean = (tasks = [], cleaned = !1, {
                     set: function(name, item) {
                         if (!cleaned) {
                             (void 0)[name] = item;
@@ -4690,7 +4691,7 @@ window.spb = function(modules) {
                 var cancelled = !1;
                 var didFallback = !1;
                 var close = memoize((function() {
-                    return clean.all();
+                    return native_clean.all();
                 }));
                 var listen = function(popupWin, domain, event, handler) {
                     return paypal.postRobot.once(event, {
@@ -4711,7 +4712,7 @@ window.spb = function(modules) {
                         config: config,
                         serviceData: serviceData
                     });
-                    clean.register((function() {
+                    native_clean.register((function() {
                         return instance.close();
                     }));
                     return instance.start();
@@ -4905,11 +4906,11 @@ window.spb = function(modules) {
                     var onApproveListener = socket.on("onApprove", onApproveCallback);
                     var onCancelListener = socket.on("onCancel", onCancelCallback);
                     var onErrorListener = socket.on("onError", onErrorCallback);
-                    clean.register(getPropsListener.cancel);
-                    clean.register(onShippingChangeListener.cancel);
-                    clean.register(onApproveListener.cancel);
-                    clean.register(onCancelListener.cancel);
-                    clean.register(onErrorListener.cancel);
+                    native_clean.register(getPropsListener.cancel);
+                    native_clean.register(onShippingChangeListener.cancel);
+                    native_clean.register(onApproveListener.cancel);
+                    native_clean.register(onCancelListener.cancel);
+                    native_clean.register(onErrorListener.cancel);
                     socket.reconnect();
                     return {
                         setProps: setNativeProps,
@@ -4940,7 +4941,7 @@ window.spb = function(modules) {
                 }));
                 var popup = memoize((function(url) {
                     var win = window.open(url);
-                    clean.register((function() {
+                    native_clean.register((function() {
                         win && !isWindowClosed(win) && win.close();
                     }));
                     return win;
@@ -4956,6 +4957,9 @@ window.spb = function(modules) {
                                     sessionUID: sessionUID
                                 });
                                 var nativeWin = popup(nativeUrl);
+                                window.addEventListener("pagehide", (function() {
+                                    nativeWin.close();
+                                }));
                                 logger_getLogger().info("native_attempt_appswitch_popup_shown", {
                                     url: nativeUrl
                                 }).info("native_attempt_appswitch_url_popup", {
@@ -5001,6 +5005,9 @@ window.spb = function(modules) {
                                 var popupWin = popup(getNativePopupUrl({
                                     sessionUID: sessionUID
                                 }));
+                                window.addEventListener("pagehide", (function() {
+                                    popupWin.close();
+                                }));
                                 logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track8 = {}, 
                                 _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.transition_name = "popup_shown", 
                                 _getLogger$info$track8)).flush();
@@ -5026,7 +5033,7 @@ window.spb = function(modules) {
                                         }
                                     };
                                 }(popupWin, 0, 500);
-                                clean.register((function() {
+                                native_clean.register((function() {
                                     closeListener.cancel();
                                 }));
                                 var validatePromise = validate();
@@ -5090,13 +5097,13 @@ window.spb = function(modules) {
                                     logger_getLogger().info("native_post_message_detect_web_switch").flush();
                                     return detectWebSwitch(popupWin);
                                 }));
-                                clean.register(awaitRedirectListener.cancel);
-                                clean.register(detectAppSwitchListener.cancel);
-                                clean.register(onApproveListener.cancel);
-                                clean.register(onCancelListener.cancel);
-                                clean.register(onCompleteListener.cancel);
-                                clean.register(onErrorListener.cancel);
-                                clean.register(detectWebSwitchListener.cancel);
+                                native_clean.register(awaitRedirectListener.cancel);
+                                native_clean.register(detectAppSwitchListener.cancel);
+                                native_clean.register(onApproveListener.cancel);
+                                native_clean.register(onCancelListener.cancel);
+                                native_clean.register(onCompleteListener.cancel);
+                                native_clean.register(onErrorListener.cancel);
+                                native_clean.register(detectWebSwitchListener.cancel);
                                 return awaitRedirectListener.then((function() {
                                     return promises = [ detectAppSwitchListener, detectWebSwitchListener ], new promise_ZalgoPromise((function(resolve, reject) {
                                         for (var _i2 = 0; _i2 < promises.length; _i2++) promises[_i2].then(resolve, reject);
@@ -5367,6 +5374,19 @@ window.spb = function(modules) {
                                                                 loggerPayload: {
                                                                     vault: vault,
                                                                     cartBillingType: cartBillingType
+                                                                },
+                                                                throwError: !1
+                                                            });
+                                                            cartBillingType && !cartAmount && "tokenize" !== intent && triggerIntegrationError({
+                                                                error: "smart_button_validation_error_billing_without_purchase_intent_tokenize_not_passed",
+                                                                message: "Expected intent=tokenize for a billing-without-purchase transaction",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID,
+                                                                loggerPayload: {
+                                                                    vault: vault,
+                                                                    cartBillingType: cartBillingType,
+                                                                    cartAmount: cartAmount
                                                                 },
                                                                 throwError: !1
                                                             });
@@ -5795,7 +5815,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.338", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.339", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2;
                 }));
                 (function() {
@@ -5893,23 +5913,33 @@ window.spb = function(modules) {
                 components: components
             });
             var validatePropsTask = setupButtonLogsTask.then((function() {
-                return function(_ref) {
-                    var intent = _ref.intent, createBillingAgreement = _ref.createBillingAgreement, createSubscription = _ref.createSubscription;
+                return function(_ref2) {
+                    var env = _ref2.env, clientID = _ref2.clientID, intent = _ref2.intent, createBillingAgreement = _ref2.createBillingAgreement, createSubscription = _ref2.createSubscription;
                     var logger = logger_getLogger();
-                    if (createBillingAgreement && "tokenize" !== intent) {
-                        logger.warn("smart_button_validation_error_expected_intent_tokenize", {
+                    createBillingAgreement && "tokenize" !== intent && triggerIntegrationError({
+                        error: "smart_button_validation_error_expected_intent_tokenize",
+                        message: "Expected intent=tokenize to be passed to SDK with createBillingAgreement, but got intent=" + intent,
+                        env: env,
+                        clientID: clientID,
+                        loggerPayload: {
                             intent: intent
-                        });
-                        console.warn("Expected intent=tokenize to be passed to SDK, but got intent=" + intent);
-                    }
-                    if (createSubscription && "subscription" !== intent) {
-                        logger.warn("smart_button_validation_error_expected_intent_subscription", {
+                        },
+                        throwError: !1
+                    });
+                    createSubscription && "subscription" !== intent && triggerIntegrationError({
+                        error: "smart_button_validation_error_expected_intent_subscription",
+                        message: "Expected intent=subscription to be passed to SDK with createSubscription, but got intent=" + intent,
+                        env: env,
+                        clientID: clientID,
+                        loggerPayload: {
                             intent: intent
-                        });
-                        console.warn("Expected intent=subscription to be passed to SDK, but got intent=" + intent);
-                    }
+                        },
+                        throwError: !1
+                    });
                     logger.flush();
                 }({
+                    env: env,
+                    clientID: clientID,
                     intent: intent,
                     createBillingAgreement: createBillingAgreement,
                     createSubscription: createSubscription
