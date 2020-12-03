@@ -10,28 +10,6 @@ import { getSupplementalOrderInfo } from '../api';
 import { getLogger, isEmailAddress } from '../lib';
 import { ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '../config';
 
-type ValidatePropsOptions = {|
-    intent : $Values<typeof INTENT>,
-    createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?CreateSubscription
-|};
-
-export function validateProps({ intent, createBillingAgreement, createSubscription } : ValidatePropsOptions) {
-    const logger = getLogger();
-
-    if (createBillingAgreement && intent !== INTENT.TOKENIZE) {
-        logger.warn('smart_button_validation_error_expected_intent_tokenize', { intent });
-        console.warn(`Expected intent=${ INTENT.TOKENIZE } to be passed to SDK, but got intent=${ intent }`);
-    }
-
-    if (createSubscription && intent !== INTENT.SUBSCRIPTION) {
-        logger.warn('smart_button_validation_error_expected_intent_subscription', { intent });
-        console.warn(`Expected intent=${ INTENT.SUBSCRIPTION } to be passed to SDK, but got intent=${ intent }`);
-    }
-
-    logger.flush();
-}
-
 type OrderValidateOptions = {|
     env : $Values<typeof ENV>,
     clientID : ?string,
@@ -97,7 +75,7 @@ type triggerIntegrationErrorOptions = {|
     error : string,
     message? : string,
     clientID : ?string,
-    orderID : string,
+    orderID? : string,
     env : $Values<typeof ENV>,
     loggerPayload? : {|
         [string] : ?(string | boolean)
@@ -133,6 +111,40 @@ function triggerIntegrationError({ env, error, message = error, clientID, orderI
     } else {
         console.warn(message);
     }
+}
+
+type ValidatePropsOptions = {|
+    env : $Values<typeof ENV>,
+    clientID : string,
+    intent : $Values<typeof INTENT>,
+    createBillingAgreement : ?CreateBillingAgreement,
+    createSubscription : ?CreateSubscription
+|};
+
+export function validateProps({ env, clientID, intent, createBillingAgreement, createSubscription } : ValidatePropsOptions) {
+    const logger = getLogger();
+
+    if (createBillingAgreement && intent !== INTENT.TOKENIZE) {
+        triggerIntegrationError({
+            error:         `smart_button_validation_error_expected_intent_tokenize`,
+            message:       `Expected intent=${ INTENT.TOKENIZE } to be passed to SDK with createBillingAgreement, but got intent=${ intent }`,
+            env, clientID,
+            loggerPayload: { intent },
+            throwError:    false
+        });
+    }
+
+    if (createSubscription && intent !== INTENT.SUBSCRIPTION) {
+        triggerIntegrationError({
+            error:         `smart_button_validation_error_expected_intent_subscription`,
+            message:       `Expected intent=${ INTENT.SUBSCRIPTION } to be passed to SDK with createSubscription, but got intent=${ intent }`,
+            env, clientID,
+            loggerPayload: { intent },
+            throwError:    false
+        });
+    }
+
+    logger.flush();
 }
 
 const VALIDATE_INTENTS = [
