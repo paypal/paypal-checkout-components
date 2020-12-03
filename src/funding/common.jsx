@@ -58,7 +58,8 @@ export type WalletLabelOptions = {|
     experiment : Experiment,
     vault : boolean,
     nonce? : ?string,
-    textColor : $Values<typeof TEXT_COLOR>
+    textColor : $Values<typeof TEXT_COLOR>,
+    fundingSource : $Values<typeof FUNDING>
 |};
 
 export type TagOptions = {|
@@ -88,7 +89,8 @@ export type FundingSourceConfig = {|
     secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
-    labelText? : string | (({| content : ?ContentType |}) => string)
+    labelText? : string | (({| content : ?ContentType |}) => string),
+    showWalletMenu : ({| instrument : WalletInstrument |}) => boolean
 |};
 
 export function BasicLabel({ logo, label, period, locale: { lang } } : LabelOptions) : ChildType {
@@ -176,5 +178,9 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
         throw new Error(`Not implemented`);
     },
 
-    Label: BasicLabel
+    Label: BasicLabel,
+
+    showWalletMenu: () => {
+        return true;
+    }
 };
