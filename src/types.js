@@ -151,7 +151,8 @@ export type WalletInstrument = {|
     tokenID? : string,
     vendor? : $Values<typeof CARD>,
     oneClick : boolean,
-    accessToken? : ?string
+    accessToken? : ?string,
+    branded : boolean
 |};
 
 export type WalletPaymentType = {|

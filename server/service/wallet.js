@@ -300,7 +300,8 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                         {
                             tokenID:  vaultedInstrument.id,
                             label:    vaultedInstrument.label.description,
-                            oneClick: true
+                            oneClick: true,
+                            branded:  true
                         }
                     ];
                 }
@@ -322,7 +323,8 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                                     vendor:   card,
                                     tokenID:  vaultedInstrument.id,
                                     label:    vaultedInstrument.label.description,
-                                    oneClick: true
+                                    oneClick: true,
+                                    branded:  false
                                 }
                             ];
                         }
