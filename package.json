@@ -35,6 +35,7 @@
     "build": "npm run test && npm run webpack",
     "build-commit": "npm run build && git add dist && (git commit -m 'Dist' || echo 'Nothing to commit') && git push",
     "release": "npm run build-commit && grabthar-release",
+    "prerelease": "npm run build-commit && grabthar-release prerelease",
     "deploy": "npm run cdnify",
     "activate": "CDN='https://www.paypalobjects.com' grabthar-activate",
     "clean": "rimraf dist coverage",
