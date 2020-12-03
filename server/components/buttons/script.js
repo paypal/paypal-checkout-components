@@ -1,6 +1,7 @@
 /* @flow */
 
 import { join, dirname } from 'path';
+import { readFileSync } from 'fs';
 
 import { ENV } from '@paypal/sdk-constants';
 
@@ -78,7 +79,7 @@ export async function compileLocalSmartButtonsClientScript() : Promise<?SmartPay
     const distScriptPath = resolveScript(join(BUTTON_CLIENT_MODULE, BUTTON_CLIENT_JS));
 
     if (distScriptPath) {
-        const script = dynamicRequire(distScriptPath);
+        const script = readFileSync(distScriptPath).toString();
         return { script, version: ENV.LOCAL };
     }
 }
