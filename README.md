@@ -31,6 +31,12 @@ Then load http://localhost/smart/buttons?clientID=alc_client1 in your browser.
 npm run release
 ```
 
+### Deploy the new version
+
+```bash
+npm run deploy
+```
+
 ### Activate traffic on the new version
 
 ```bash
