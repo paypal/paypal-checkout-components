@@ -21,7 +21,8 @@ export const FUNDING = {
     TRUSTLY:      'trustly',
     MAXIMA:       'maxima',
     BOLETO:       'boleto',
-    OXXO:         'oxxo'
+    OXXO:         'oxxo',
+    MERCADOPAGO:  'mercadopago'
 };
 
 export const FUNDING_BRAND_LABEL = {

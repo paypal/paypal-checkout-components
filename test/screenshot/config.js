@@ -296,7 +296,7 @@ for (const color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.CREDIT, FUNDING.BOLETO, FUNDING.CARD ]
+                allowed: [ FUNDING.CREDIT, FUNDING.BOLETO, FUNDING.MERCADOPAGO, FUNDING.CARD ]
             }
         }
     });
@@ -477,7 +477,7 @@ for (const color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.OXXO ]
+                allowed: [ FUNDING.OXXO, FUNDING.MERCADOPAGO ]
             }
         }
     });
