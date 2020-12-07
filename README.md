@@ -3,6 +3,7 @@ PayPal Checkout
 
 [![npm version](https://img.shields.io/npm/v/@paypal/checkout-components.svg?style=flat-square)](https://www.npmjs.com/package/@paypal/checkout-components)
 [![build status](https://img.shields.io/github/workflow/status/paypal/paypal-checkout-components/build?logo=github&style=flat-square)](https://github.com/paypal/paypal-checkout-components/actions?query=workflow%3Abuild)
+[![code coverage](https://img.shields.io/codecov/c/github/paypal/paypal-checkout-components.svg?style=flat-square)](https://codecov.io/github/paypal/paypal-checkout-components)
 
 [![dependencies Status](https://david-dm.org/paypal/paypal-checkout-components/status.svg)](https://david-dm.org/paypal/paypal-checkout-components) [![devDependencies Status](https://david-dm.org/paypal/paypal-checkout-components/dev-status.svg)](https://david-dm.org/paypal/paypal-checkout-components?type=dev)
 
