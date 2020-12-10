@@ -82,6 +82,5 @@
     "sync-browser-mocks": "^2.0.8",
     "webpack-mem-compile": "^1.0.2"
   },
-  "license": "PayPal",
-  "author": "DL-PP-Hermes-Integration@paypal.com"
+  "license": "Apache-2.0"
 }
