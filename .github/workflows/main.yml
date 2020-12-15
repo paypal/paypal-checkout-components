@@ -1,0 +1,35 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+      - v4
+  pull_request: {}
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [10.13, 12, 14]
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: ▶️ Run flow-typed script
+        run: npm run flow-typed
+
+      - name: ▶️ Run build script
+        run: npm run build
+
+      - name: ⬆️ Upload coverage report
+        uses: codecov/codecov-action@v1
