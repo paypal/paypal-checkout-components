@@ -68,7 +68,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "commitizen": "^3.0.4",
     "cz-conventional-changelog": "^2.1.0",
-    "flow-bin": "0.135.0",
+    "flow-bin": "0.70.0",
     "fs-extra": "^4.0.2",
     "grabthar-release": "^1.0.39",
     "grumbler-scripts": "^3",
