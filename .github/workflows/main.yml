@@ -1,10 +1,9 @@
 name: build
 on:
-  # run on push but only for the master branch
   push:
     branches:
       - master
-  # run for every pull request
+      - v4
   pull_request: {}
 jobs:
   main:
