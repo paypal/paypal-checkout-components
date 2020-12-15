@@ -816,7 +816,9 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimary: false,
 
         allowPrimaryVertical:   false,
-        allowPrimaryHorizontal: false
+        allowPrimaryHorizontal: false,
+
+        title: `${ FUNDING_BRAND_LABEL.CARD }`
     }
 };
 
