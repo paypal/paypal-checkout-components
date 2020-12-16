@@ -26,7 +26,8 @@ export const FUNDING = {
 
 export const FUNDING_BRAND_LABEL = {
     PAYPAL:         'PayPal',
-    CREDIT:         'PayPal Credit'
+    CREDIT:         'PayPal Credit',
+    CARD:           'Debit or Credit Card'
 };
 
 export const CARD = {
