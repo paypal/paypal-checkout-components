@@ -1,7 +1,7 @@
 PayPal Checkout
 ---------------
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/paypal/paypal-checkout) [![Build Status](https://travis-ci.org/paypal/paypal-checkout.svg?branch=master)](https://travis-ci.org/paypal/paypal-checkout) [![dependencies Status](https://david-dm.org/paypal/paypal-checkout/status.svg)](https://david-dm.org/paypal/paypal-checkout) [![devDependencies Status](https://david-dm.org/paypal/paypal-checkout/dev-status.svg)](https://david-dm.org/paypal/paypal-checkout?type=dev)
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/paypal/paypal-checkout) [![Build Status](https://img.shields.io/github/workflow/status/paypal/paypal-sdk-client/build/v4?logo=github&style=flat-square)](https://github.com/paypal/paypal-checkout-components/actions?query=workflow%3Abuild+branch%3Av4) [![dependencies Status](https://david-dm.org/paypal/paypal-checkout/status.svg)](https://david-dm.org/paypal/paypal-checkout) [![devDependencies Status](https://david-dm.org/paypal/paypal-checkout/dev-status.svg)](https://david-dm.org/paypal/paypal-checkout?type=dev)
 
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
 [zoid](https://github.com/krakenjs/zoid).
