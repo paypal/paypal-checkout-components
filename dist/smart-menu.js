@@ -1405,15 +1405,11 @@ window.spb = function(modules) {
             throw new TypeError("Unhandleable node");
         };
     }
-    function SpinnerPage(_ref, children) {
-        var nonce = _ref.nonce;
-        return node_node("html", null, node_node("head", null, node_node("title", null, "PayPal"), node_node("meta", {
-            name: "viewport",
-            content: "width=device-width, initial-scale=1"
-        })), node_node("body", null, node_node("div", {
+    function Spinner(_ref) {
+        return node_node("div", {
             class: "preloader spinner"
         }, node_node("style", {
-            nonce: nonce,
+            nonce: _ref.nonce,
             innerHTML: "\n\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10\n    }\n\n    .spinner .spinWrap {\n        width: 200px;\n        height: 100px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin-left: -100px;\n        margin-top: -50px\n    }\n\n    .spinner .loader,\n    .spinner .spinnerImage {\n        height: 100px;\n        width: 100px;\n        position: absolute;\n        top: 0;\n        left: 50%;\n        opacity: 1;\n        filter: alpha(opacity=100)\n    }\n\n    .spinner .spinnerImage {\n        margin: 28px 0 0 -25px;\n        background: url(https://www.paypalobjects.com/images/checkout/hermes/icon_ot_spin_lock_skinny.png) no-repeat\n    }\n\n    .spinner .loader {\n        margin: 0 0 0 -55px;\n        background-color: transparent;\n        animation: rotation .7s infinite linear;\n        border-left: 5px solid #cbcbca;\n        border-right: 5px solid #cbcbca;\n        border-bottom: 5px solid #cbcbca;\n        border-top: 5px solid #2380be;\n        border-radius: 100%\n    }\n\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n"
         }), node_node("div", {
             class: "spinWrap"
@@ -1421,7 +1417,16 @@ window.spb = function(modules) {
             class: "spinnerImage"
         }), node_node("p", {
             class: "loader"
-        }))), children));
+        })));
+    }
+    function SpinnerPage(_ref2, children) {
+        var nonce = _ref2.nonce;
+        return node_node("html", null, node_node("head", null, node_node("title", null, "PayPal"), node_node("meta", {
+            name: "viewport",
+            content: "width=device-width, initial-scale=1"
+        })), node_node("body", null, node_node(Spinner, {
+            nonce: nonce
+        }), children));
     }
     function Menu(_ref) {
         var choices = _ref.choices, onBlur = _ref.onBlur, cspNonce = _ref.cspNonce, verticalOffset = _ref.verticalOffset;
