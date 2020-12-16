@@ -255,7 +255,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
             return (
                 <img
                     class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ name } ${ CLASS.LOGO }-${ color }` }
-                    src={ `data:image/svg+xml;base64,${ base64encode(logo.toString()) }` } />
+                    src={ `data:image/svg+xml;base64,${ base64encode(logo.toString()) }` } alt="" aria-label={ name } />
             );
         },
 
