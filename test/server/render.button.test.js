@@ -28,9 +28,8 @@ const logger = {
     error: noop
 };
 
-const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking });
-
 test('should do a basic button render and succeed', async () => {
+    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking });
 
     const req = mockReq({
         query: {
@@ -137,6 +136,7 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
 });
 
 test('should give a 400 error with no clientID passed', async () => {
+    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking });
 
     const req = mockReq();
     const res = mockRes();

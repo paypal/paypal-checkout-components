@@ -45,6 +45,14 @@ export function isLocal() : boolean {
     return (!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 }
 
+export function isTest() : boolean {
+    return process.env.NODE_ENV === 'test';
+}
+
+export function isLocalOrTest() : boolean {
+    return isLocal() || isTest();
+}
+
 // eslint-disable-next-line no-unused-vars, flowtype/no-weak-types
 export function safeJSON(...args : $ReadOnlyArray<any>) : string {
     return JSON.stringify.apply(null, arguments).replace(/</g, '\\u003C').replace(/>/g, '\\u003E');
@@ -244,4 +252,14 @@ export async function promiseTimeout<T>(promise : Promise<T>, time : number) : P
 
         promise.then(res, rej);
     });
+}
+
+export function getCSPNonce(res : ExpressResponse) : string {
+    let nonce = res.locals && res.locals.nonce;
+
+    if (!nonce || typeof nonce !== 'string') {
+        nonce = '';
+    }
+
+    return nonce;
 }

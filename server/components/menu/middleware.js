@@ -1,7 +1,7 @@
 /* @flow */
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware,
-    isLocal, type ExpressMiddleware } from '../../lib';
+    isLocalOrTest, type ExpressMiddleware } from '../../lib';
 import type { LoggerType, CacheType } from '../../types';
 
 import { EVENT } from './constants';
@@ -14,7 +14,7 @@ type MenuMiddlewareOptions = {|
     cdn? : boolean
 |};
 
-export function getMenuMiddleware({ logger = defaultLogger, cache, cdn = !isLocal() } : MenuMiddlewareOptions = {}) : ExpressMiddleware {
+export function getMenuMiddleware({ logger = defaultLogger, cache, cdn = !isLocalOrTest() } : MenuMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;
 
     return sdkMiddleware({ logger, cache }, {

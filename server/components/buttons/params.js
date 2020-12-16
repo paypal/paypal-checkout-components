@@ -8,7 +8,7 @@ import { values, constHas } from 'belter';
 
 import { HTTP_HEADER, ERROR_CODE } from '../../config';
 import type { ExpressRequest, ExpressResponse, LocaleType, RiskData } from '../../types';
-import { makeError } from '../../lib';
+import { makeError, getCSPNonce } from '../../lib';
 
 import { SPB_QUERY_KEYS } from './constants';
 
@@ -77,16 +77,6 @@ type ButtonParams = {|
     platform : $Values<typeof PLATFORM>,
     cookies : string
 |};
-
-function getCSPNonce(res : ExpressResponse) : string {
-    let nonce = res.locals && res.locals.nonce;
-
-    if (!nonce || typeof nonce !== 'string') {
-        nonce = '';
-    }
-
-    return nonce;
-}
 
 function getCookieString(req : ExpressRequest) : string {
     try {

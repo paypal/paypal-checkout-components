@@ -5,7 +5,7 @@ import { COUNTRY, LANG } from '@paypal/sdk-constants';
 import { stringifyError, noop } from 'belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
-    graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocal } from '../../lib';
+    graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveMerchantID, resolveWallet } from '../../service';
 import { EXPERIMENT_TIMEOUT } from '../../config';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
@@ -45,7 +45,7 @@ type ButtonMiddlewareOptions = {|
 |};
 
 export function getButtonMiddleware({
-    logger = defaultLogger, content: smartContent, graphQL, getAccessToken, cdn = !isLocal(),
+    logger = defaultLogger, content: smartContent, graphQL, getAccessToken, cdn = !isLocalOrTest(),
     getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, tracking
 } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;

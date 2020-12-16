@@ -41,7 +41,7 @@
     "clean": "rimraf dist coverage",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
-    "jest": "jest test/server --collectCoverage --collectCoverageFrom='server/' --env=node --no-cache --silent",
+    "jest": "jest test/server --collectCoverage --collectCoverageFrom='server/' --env=node --no-cache --runInBand",
     "cover": "echo no-cover",
     "prepublishOnly": "npm run babel",
     "postpublish": "git clean -f && git checkout .",
@@ -54,7 +54,7 @@
   "alias": {},
   "dependencies": {
     "@paypal/checkout-components": "^5.0.30",
-    "@paypal/common-components": "^1.0.10",
+    "@paypal/common-components": "^1.0.16",
     "@paypal/installments": "^1.0.0",
     "@paypal/sdk-client": "^4.0.123",
     "@paypal/sdk-constants": "^1.0.57",

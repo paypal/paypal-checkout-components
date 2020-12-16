@@ -6,9 +6,10 @@ import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { noop } from 'belter';
+import { FUNDING } from '@paypal/sdk-constants';
 
 import { WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG } from '../webpack.config';
-import { getButtonMiddleware, getMenuMiddleware } from '../index';
+import { getButtonMiddleware, getMenuMiddleware, getNativePopupMiddleware, getNativeFallbackMiddleware } from '../index';
 
 import type { GraphQL } from './lib/graphql';
 import type { ExpressRequest, ExpressResponse } from './types';
@@ -237,6 +238,17 @@ const content = {
     }
 };
 
+const defaultMiddleware = (req : ExpressRequest, res : ExpressResponse, next) => {
+    const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
+
+    res.locals = res.locals || {};
+    res.locals.nonce = nonce;
+
+    res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
+    
+    next();
+};
+
 const buttonMiddleware = getButtonMiddleware({
     cache,
     logger,
@@ -252,29 +264,46 @@ const menuMiddleware = getMenuMiddleware({
     logger
 });
 
+const nativePopupMiddleware = getNativePopupMiddleware({
+    cache,
+    logger,
+    graphQL,
+    tracking,
+    fundingSource: FUNDING.PAYPAL
+});
+
+const nativeFallbackMiddleware = getNativeFallbackMiddleware({
+    cache,
+    logger,
+    graphQL,
+    tracking,
+    fundingSource: FUNDING.PAYPAL
+});
+
+const venmoPopupMiddleware = getNativePopupMiddleware({
+    cache,
+    logger,
+    graphQL,
+    tracking,
+    fundingSource: FUNDING.VENMO
+});
+
+const venmoFallbackMiddleware = getNativeFallbackMiddleware({
+    cache,
+    logger,
+    graphQL,
+    tracking,
+    fundingSource: FUNDING.VENMO
+});
+
 const buttonsScriptMiddleware = webpackDevMiddleware(webpack(WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG), { serverSideRender: true });
 
-app.use('/smart/buttons', (req : ExpressRequest, res : ExpressResponse, next) => {
-    const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
-
-    res.locals = res.locals || {};
-    res.locals.nonce = nonce;
-
-    res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
-    
-    next();
-}, buttonsScriptMiddleware, buttonMiddleware);
-
-app.use('/smart/menu', (req : ExpressRequest, res : ExpressResponse, next) => {
-    const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
-
-    res.locals = res.locals || {};
-    res.locals.nonce = nonce;
-
-    res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
-
-    next();
-}, menuMiddleware);
+app.use('/smart/buttons', defaultMiddleware, buttonsScriptMiddleware, buttonMiddleware);
+app.use('/smart/menu', defaultMiddleware, menuMiddleware);
+app.use('/smart/checkout/native/popup', defaultMiddleware, nativePopupMiddleware);
+app.use('/smart/checkout/venmo/popup', defaultMiddleware, venmoPopupMiddleware);
+app.use('/smart/checkout/native', defaultMiddleware, nativeFallbackMiddleware);
+app.use('/smart/checkout/venmo', defaultMiddleware, venmoFallbackMiddleware);
 
 app.listen(PORT, () => {
     // eslint-disable-next-line no-console

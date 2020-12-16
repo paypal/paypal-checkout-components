@@ -3,16 +3,7 @@
 import { ENV, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
 import type { ExpressRequest, ExpressResponse, LocaleType } from '../../types';
-
-function getNonce(res : ExpressResponse) : string {
-    let nonce = res.locals && res.locals.nonce;
-
-    if (!nonce || typeof nonce !== 'string') {
-        nonce = '';
-    }
-
-    return nonce;
-}
+import { getCSPNonce } from '../../lib';
 
 type ParamsType = {|
     env : $Values<typeof ENV>,
@@ -42,7 +33,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         lang = COUNTRY_LANGS[country][0]
     } = locale;
 
-    const cspNonce = getNonce(res);
+    const cspNonce = getCSPNonce(res);
 
     return {
         env,

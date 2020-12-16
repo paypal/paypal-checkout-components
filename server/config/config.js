@@ -17,8 +17,8 @@ export const MODULE_DIR : string = join(__dirname, '..');
 
 export const BUTTON_RENDER_MODULE = '@paypal/sdk-release';
 export const BUTTON_RENDER_CHILD_MODULE = '@paypal/checkout-components';
-export const BUTTON_CLIENT_MODULE = pkg.name;
-export const MENU_CLIENT_MODULE = pkg.name;
+
+export const CLIENT_MODULE = pkg.name;
 
 export const BUTTON_RENDER_JS = 'dist/button.js';
 
@@ -27,6 +27,12 @@ export const BUTTON_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
 
 export const MENU_CLIENT_JS = 'dist/smart-menu.js';
 export const MENU_CLIENT_MIN_JS = 'dist/smart-menu.min.js';
+
+export const NATIVE_POPUP_CLIENT_JS = 'dist/smart-payment-buttons.js';
+export const NATIVE_POPUP_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
+
+export const NATIVE_FALLBACK_CLIENT_JS = 'dist/smart-payment-buttons.js';
+export const NATIVE_FALLBACK_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
 
 export const BROWSER_CACHE_TIME = 6 * 60 * 60;
 

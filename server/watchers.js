@@ -4,7 +4,7 @@ import { poll } from 'grabthar';
 
 import type { CacheType } from './types';
 import type { LoggerBufferType } from './lib';
-import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, MODULE_POLL_INTERVAL, SDK_CDN_NAMESPACE, SMART_BUTTONS_CDN_NAMESPACE,
+import { BUTTON_RENDER_MODULE, CLIENT_MODULE, MODULE_POLL_INTERVAL, SDK_CDN_NAMESPACE, SMART_BUTTONS_CDN_NAMESPACE,
     BUTTON_RENDER_CHILD_MODULE, LATEST_TAG, ACTIVE_TAG } from './config';
 
 let paypalSDKWatcher;
@@ -46,7 +46,7 @@ export function getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache } : {| lo
 
     paypalSmartButtonsWatcher = paypalSmartButtonsWatcher || poll({
         cdnRegistry:  SMART_BUTTONS_CDN_NAMESPACE,
-        name:         BUTTON_CLIENT_MODULE,
+        name:         CLIENT_MODULE,
         tags:         [ LATEST_TAG, ACTIVE_TAG ],
         period:       MODULE_POLL_INTERVAL,
         flat:         true,
@@ -66,9 +66,11 @@ export function startWatchers({ logBuffer, cache } : {| logBuffer : ?LoggerBuffe
 export function cancelWatchers() {
     if (paypalSDKWatcher) {
         paypalSDKWatcher.cancel();
+        paypalSDKWatcher = null;
     }
 
     if (paypalSmartButtonsWatcher) {
         paypalSmartButtonsWatcher.cancel();
+        paypalSmartButtonsWatcher = null;
     }
 }

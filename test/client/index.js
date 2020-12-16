@@ -17,6 +17,8 @@ import './clientConfig';
 import './popupBridge';
 import './card';
 import './native';
+import './nativePopup';
+import './nativeFallback';
 import './payee';
 import './connect';
 import './smart-fields';
