@@ -40,12 +40,22 @@ const SOCKET_MESSAGE = {
     ON_ERROR:           'onError'
 };
 
-const NATIVE_DOMAIN = 'https://www.paypal.com';
-const NATIVE_DOMAIN_SANDBOX = 'https://www.paypal.com';
+const NATIVE_DOMAIN = {
+    [ ENV.TEST ]:       'https://www.paypal.com',
+    [ ENV.LOCAL ]:      getDomain(),
+    [ ENV.STAGE ]:      getDomain(),
+    [ ENV.SANDBOX ]:    'https://www.paypal.com',
+    [ ENV.PRODUCTION ]: 'https://www.paypal.com'
+};
 
 // Popup domain needs to be different than native domain for app switch to work on iOS
-const NATIVE_POPUP_DOMAIN = 'https://history.paypal.com';
-const NATIVE_POPUP_DOMAIN_SANDBOX = 'https://www.sandbox.paypal.com';
+const NATIVE_POPUP_DOMAIN = {
+    [ ENV.TEST ]:       'https://history.paypal.com',
+    [ ENV.LOCAL ]:      getDomain(),
+    [ ENV.STAGE ]:      getDomain(),
+    [ ENV.SANDBOX ]:    'https://www.sandbox.paypal.com',
+    [ ENV.PRODUCTION ]: 'https://history.paypal.com'
+};
 
 let clean;
 
@@ -280,9 +290,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             return 'https://www.sandbox.paypal.com';
         }
 
-        return (env === ENV.SANDBOX)
-            ? NATIVE_DOMAIN_SANDBOX
-            : NATIVE_DOMAIN;
+        return NATIVE_DOMAIN[env];
     });
 
     const getNativePopupDomain = memoize(() : string => {
@@ -290,9 +298,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             return 'https://history.paypal.com';
         }
 
-        return (env === ENV.SANDBOX)
-            ? NATIVE_POPUP_DOMAIN_SANDBOX
-            : NATIVE_POPUP_DOMAIN;
+        return NATIVE_POPUP_DOMAIN[env];
     });
 
     const getNativeUrlForAndroid = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
