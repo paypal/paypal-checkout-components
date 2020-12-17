@@ -301,6 +301,22 @@ for (const color of getButtonConfig('paypal', 'colors')) {
         }
     });
 
+
+    buttonConfigs.push({
+        button: {
+            locale: 'pt_BR',
+            commit: true,
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.BOLETO, FUNDING.MERCADOPAGO, FUNDING.CARD ]
+            }
+        }
+    });
+
     buttonConfigs.push({
         button: {
             locale: 'de_DE',
@@ -477,7 +493,7 @@ for (const color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.OXXO ]
+                allowed: [ FUNDING.OXXO, FUNDING.MERCADOPAGO ]
             }
         }
     });
