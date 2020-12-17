@@ -27,7 +27,8 @@ function getParentDomain(params : NativePopupInputParams) : string {
         throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Expected parentDomain param to be a string`);
     }
 
-    if (!parentDomain.match(/\.paypal\.com$/)) {
+    // eslint-disable-next-line security/detect-unsafe-regex
+    if (!parentDomain.match(/\.paypal\.com(:\d{1,4})?$/)) {
         throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Expected paypal parentDomain`);
     }
 
