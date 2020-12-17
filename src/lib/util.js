@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { noop, experiment, type Experiment } from 'belter/src';
+import { noop, experiment, isAndroid, isIos, isChrome, isSafari, type Experiment } from 'belter/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
@@ -114,4 +114,12 @@ export function createExperiment(name : string, sample : number) : Experiment {
             logger.flush();
         }
     });
+}
+
+export function isIOSSafari() : boolean {
+    return isIos() && isSafari();
+}
+
+export function isAndroidChrome() : boolean {
+    return isAndroid() && isChrome();
 }

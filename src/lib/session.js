@@ -20,6 +20,10 @@ export function getStorageID() : string {
     return getSDKStorage().getID();
 }
 
+export function isStorageStateFresh() : boolean {
+    return getSDKStorage().isStateFresh();
+}
+
 export function getSessionState<T>(handler : (state : Object) => T) : T {
     return getSDKStorage().getSessionState(handler);
 }

@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint max-lines: off */
 
-import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError, isIos, isAndroid,
-    isSafari, isChrome, stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError,
+    stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } from 'cross-domain-utils/src';
@@ -10,7 +10,7 @@ import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } 
 import type { ButtonProps } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
-import { getLogger, promiseOne, promiseNoop } from '../lib';
+import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 
@@ -89,14 +89,6 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
 
     return nativeSocket;
 });
-
-function isIOSSafari() : boolean {
-    return isIos() && isSafari();
-}
-
-function isAndroidChrome() : boolean {
-    return isAndroid() && isChrome();
-}
 
 function useDirectAppSwitch() : boolean {
     return isAndroidChrome();
