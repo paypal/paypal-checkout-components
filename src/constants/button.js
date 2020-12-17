@@ -22,7 +22,7 @@ export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
 
 type BUTTON_LABEL_ENUM =
     Enum<'paypal' | 'checkout' | 'pay' | 'credit' |
-    'card' | 'buynow' | 'installment' | 'venmo' | 'itau' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'blik' | 'maxima' | 'boleto' | 'oxxo'>;
+    'card' | 'buynow' | 'installment' | 'venmo' | 'itau' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'blik' | 'maxima' | 'boleto' | 'oxxo' | 'mercadopago'>;
 
 export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
     PAYPAL:       'paypal',
@@ -45,7 +45,8 @@ export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
     BLIK:         'blik',
     MAXIMA:       'maxima',
     BOLETO:       'boleto',
-    OXXO:         'oxxo'
+    OXXO:         'oxxo',
+    MERCADOPAGO:  'mercadopago'
 };
 
 type BUTTON_COLOR_ENUM =
@@ -124,7 +125,7 @@ export const BUTTON_NUMBER : BUTTON_NUMBER_ENUM = {
 };
 
 type BUTTON_LOGO_ENUM =
-    Enum<'pp' | 'paypal' | 'venmo' | 'itau' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'blik'  | 'maxima' | 'boleto' | 'oxxo'>;
+    Enum<'pp' | 'paypal' | 'venmo' | 'itau' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'blik' | 'maxima' | 'boleto' | 'oxxo' | 'mercadopago'>;
 
 export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
     PP:           'pp',
@@ -143,5 +144,6 @@ export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
     BLIK:         'blik',
     MAXIMA:       'maxima',
     BOLETO:       'boleto',
-    OXXO:         'oxxo'
+    OXXO:         'oxxo',
+    MERCADOPAGO:  'mercadopago'
 };

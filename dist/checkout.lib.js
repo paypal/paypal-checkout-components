@@ -59,7 +59,7 @@
             return {}.hasOwnProperty.call(object, property);
         };
         __webpack_require__.p = "";
-        return __webpack_require__(__webpack_require__.s = 42);
+        return __webpack_require__(__webpack_require__.s = 43);
     }([ function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "m", (function() {
@@ -198,7 +198,8 @@
             TRUSTLY: "trustly",
             MAXIMA: "maxima",
             BOLETO: "boleto",
-            OXXO: "oxxo"
+            OXXO: "oxxo",
+            MERCADOPAGO: "mercadopago"
         };
         var BUTTON_COLOR = {
             GOLD: "gold",
@@ -263,7 +264,8 @@
             TRUSTLY: "trustly",
             MAXIMA: "maxima",
             BOLETO: "boleto",
-            OXXO: "oxxo"
+            OXXO: "oxxo",
+            MERCADOPAGO: "mercadopago"
         };
         var CHECKOUT_OVERLAY_COLOR = {
             BLACK: "black",
@@ -290,11 +292,13 @@
             TRUSTLY: "trustly",
             MAXIMA: "maxima",
             BOLETO: "boleto",
-            OXXO: "oxxo"
+            OXXO: "oxxo",
+            MERCADOPAGO: "mercadopago"
         };
         var FUNDING_BRAND_LABEL = {
             PAYPAL: "PayPal",
-            CREDIT: "PayPal Credit"
+            CREDIT: "PayPal Credit",
+            CARD: "Debit or Credit Card"
         };
         var CARD = {
             VISA: "visa",
@@ -817,7 +821,7 @@
         __webpack_require__.d(__webpack_exports__, "b", (function() {
             return jsxRender;
         }));
-        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
+        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
         var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
         function htmlEncode(html) {
             void 0 === html && (html = "");
@@ -1692,7 +1696,7 @@
             });
         }));
         function getScriptVersion() {
-            return "4.0.318";
+            return "4.0.319";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1702,7 +1706,7 @@
                 0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.318.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.319.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1750,7 +1754,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.318"
+                    ver: "4.0.319"
                 };
             }));
             Object(client.a)((function() {
@@ -1820,8 +1824,8 @@
         function getBowser() {
             var userAgent = getUserAgent();
             if (bowserCache[userAgent]) return bowserCache[userAgent];
-            delete __webpack_require__.c[36];
-            var bowser = __webpack_require__(36);
+            delete __webpack_require__.c[37];
+            var bowser = __webpack_require__(37);
             bowserCache[userAgent] = bowser;
             return bowser;
         }
@@ -2070,7 +2074,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.318"
+                        version: "4.0.319"
                     }), metaFrameDomain).then((function() {
                         return metaListener;
                     })).then((function(_ref) {
@@ -2165,7 +2169,7 @@
             locales: constants.A,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.318",
+            version: "4.0.319",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -3618,7 +3622,7 @@
         var src = __webpack_require__(7);
         var zalgo_promise_src = __webpack_require__(2);
         var cross_domain_safe_weakmap_src = __webpack_require__(17);
-        var error = __webpack_require__(22);
+        var error = __webpack_require__(23);
         function urlEncode(str) {
             return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
         }
@@ -4685,8 +4689,7 @@
             } catch (err) {}
         }
         function findFrameByName(win, name) {
-            var frame;
-            return (frame = getFrameByName(win, name)) ? frame : function findChildFrameByName(win, name) {
+            return getFrameByName(win, name) || function findChildFrameByName(win, name) {
                 var frame = getFrameByName(win, name);
                 if (frame) return frame;
                 for (var _i11 = 0, _getFrames4 = getFrames(win); _i11 < _getFrames4.length; _i11++) {
@@ -5395,7 +5398,7 @@
         var SEND_MESSAGE_STRATEGIES = {};
         SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
             try {
-                __webpack_require__(37).emulateIERestrictions(window, win);
+                __webpack_require__(38).emulateIERestrictions(window, win);
             } catch (err) {
                 return;
             }
@@ -5616,7 +5619,7 @@
                 data: event.data
             };
             try {
-                __webpack_require__(37).emulateIERestrictions(messageEvent.source, window);
+                __webpack_require__(38).emulateIERestrictions(messageEvent.source, window);
             } catch (err) {
                 return;
             }
@@ -5899,7 +5902,7 @@
             global.a.methods.delete(win);
             global.a.readyPromises.delete(win);
         }
-        var bridge = __webpack_require__(39);
+        var bridge = __webpack_require__(40);
         function init() {
             if (!global.a.initialized) {
                 Object(lib.a)(window, "message", messageListener);
@@ -5992,10 +5995,12 @@
             /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
             var userAgent;
         }
+        __webpack_require__(19);
         __webpack_require__(11);
         var src = __webpack_require__(2);
         __webpack_require__(7);
         var cross_domain_safe_weakmap_src = __webpack_require__(17);
+        __webpack_require__(22);
         function getFunctionName(fn) {
             return fn.name || fn.__name__ || fn.displayName || "anonymous";
         }
@@ -6039,36 +6044,51 @@
                 throw new Error("Arguments not serializable -- can not be used to memoize");
             }
         }
-        var memoizedFunctions = [];
+        function getEmptyObject() {
+            return {};
+        }
+        var memoizeGlobalIndex = 0;
+        var memoizeGlobalIndexValidFrom = 0;
         function memoize(method, options) {
-            var _this = this;
             void 0 === options && (options = {});
-            var cacheMap = new cross_domain_safe_weakmap_src.a;
+            var _options$thisNamespac = options.thisNamespace, thisNamespace = void 0 !== _options$thisNamespac && _options$thisNamespac, cacheTime = options.time;
+            var simpleCache;
+            var thisCache;
+            var memoizeIndex = memoizeGlobalIndex;
+            memoizeGlobalIndex += 1;
             var memoizedFunction = function() {
                 for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, (function() {
-                    return {};
-                }));
-                var key = serializeArgs(args);
-                var cacheTime = options.time;
-                cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
-                if (cache[key]) return cache[key].value;
+                if (memoizeIndex < memoizeGlobalIndexValidFrom) {
+                    simpleCache = null;
+                    thisCache = null;
+                    memoizeIndex = memoizeGlobalIndex;
+                    memoizeGlobalIndex += 1;
+                }
+                var cache;
+                cache = thisNamespace ? (thisCache = thisCache || new cross_domain_safe_weakmap_src.a).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
+                var cacheKey = serializeArgs(args);
+                var cacheResult = cache[cacheKey];
+                if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
+                    delete cache[cacheKey];
+                    cacheResult = null;
+                }
+                if (cacheResult) return cacheResult.value;
                 var time = Date.now();
                 var value = method.apply(this, arguments);
-                cache[key] = {
+                cache[cacheKey] = {
                     time: time,
                     value: value
                 };
-                return cache[key].value;
+                return value;
             };
             memoizedFunction.reset = function() {
-                cacheMap.delete(options.thisNamespace ? _this : method);
+                simpleCache = null;
+                thisCache = null;
             };
-            memoizedFunctions.push(memoizedFunction);
             return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
         }
         memoize.clear = function() {
-            for (var _i2 = 0; _i2 < memoizedFunctions.length; _i2++) memoizedFunctions[_i2].reset();
+            memoizeGlobalIndexValidFrom = memoizeGlobalIndex;
         };
         function noop() {}
         function once(method) {
@@ -6080,11 +6100,13 @@
                 }
             }), getFunctionName(method) + "::once");
         }
-        function values(obj) {
+        var values = function(obj) {
+            if (Object.values) return Object.values(obj);
             var result = [];
             for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
             return result;
-        }
+        };
+        memoize(values);
         function identity(item) {
             return item;
         }
@@ -6102,7 +6124,7 @@
                 }
             };
         }
-        memoize(values);
+        Error;
         function isDocumentReady() {
             return Boolean(document.body) && "complete" === document.readyState;
         }
@@ -6145,24 +6167,28 @@
             return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
             var element;
         }
-        Object.create(Error.prototype);
         function onResize(el, handler, _temp) {
             var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
             var currentWidth = el.offsetWidth;
             var currentHeight = el.offsetHeight;
+            var canceled = !1;
             handler({
                 width: currentWidth,
                 height: currentHeight
             });
             var check = function() {
-                var newWidth = el.offsetWidth;
-                var newHeight = el.offsetHeight;
-                (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
-                    width: newWidth,
-                    height: newHeight
-                });
-                currentWidth = newWidth;
-                currentHeight = newHeight;
+                if (!canceled && function(el) {
+                    return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+                }(el)) {
+                    var newWidth = el.offsetWidth;
+                    var newHeight = el.offsetHeight;
+                    (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
+                        width: newWidth,
+                        height: newHeight
+                    });
+                    currentWidth = newWidth;
+                    currentHeight = newHeight;
+                }
             };
             var observer;
             var timeout;
@@ -6181,6 +6207,7 @@
             } else timeout = safeInterval(check, interval);
             return {
                 cancel: function() {
+                    canceled = !0;
                     observer.disconnect();
                     window.removeEventListener("resize", check);
                     timeout.cancel();
@@ -6210,6 +6237,44 @@
             shadowHost.appendChild(slotProvider);
             return slotProvider;
         }
+        var currentScript = "undefined" != typeof document ? document.currentScript : null;
+        var getCurrentScript = memoize((function() {
+            if (currentScript) return currentScript;
+            if (currentScript = function() {
+                try {
+                    var stack = function() {
+                        try {
+                            throw new Error("_");
+                        } catch (err) {
+                            return err.stack || "";
+                        }
+                    }();
+                    var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
+                    var scriptLocation = stackDetails && stackDetails[1];
+                    if (!scriptLocation) return;
+                    for (var _i22 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i22 < _Array$prototype$slic2.length; _i22++) {
+                        var script = _Array$prototype$slic2[_i22];
+                        if (script.src && script.src === scriptLocation) return script;
+                    }
+                } catch (err) {}
+            }()) return currentScript;
+            throw new Error("Can not determine current script");
+        }));
+        var currentUID = uniqueID();
+        memoize((function() {
+            var script;
+            try {
+                script = getCurrentScript();
+            } catch (err) {
+                return currentUID;
+            }
+            var uid = script.getAttribute("data-uid");
+            if (uid && "string" == typeof uid) return uid;
+            if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
+            uid = uniqueID();
+            script.setAttribute("data-uid-auto", uid);
+            return uid;
+        }));
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "p", (function() {
@@ -6560,7 +6625,7 @@
         var esm_extends = __webpack_require__(11);
         var src = __webpack_require__(2);
         var beaver_logger_client = __webpack_require__(5);
-        var zoid_src = __webpack_require__(19);
+        var zoid_src = __webpack_require__(20);
         var belter_src = __webpack_require__(14);
         var lib = __webpack_require__(3);
         var config = __webpack_require__(4);
@@ -6645,8 +6710,8 @@
             }), 100);
         };
         window.onLegacyFallback = window.watchForLegacyFallback;
-        var integrations = __webpack_require__(23);
-        var template = __webpack_require__(25);
+        var integrations = __webpack_require__(24);
+        var template = __webpack_require__(26);
         var Checkout = Object(zoid_src.c)({
             tag: "paypal-checkout",
             name: "ppcheckout",
@@ -7442,6 +7507,23 @@
             primary: "#EC1D24",
             secondary: "#EDA42D"
         }, _OXXO_LOGO_COLORS);
+        var _MERCADOPAGO_LOGO_COL;
+        var MERCADOPAGO_LOGO_COLORS = ((_MERCADOPAGO_LOGO_COL = {})[constants.i.WHITE] = {
+            primary: "#FFFFFF",
+            secondary: "#000000",
+            tertiary: "#FFFFFF",
+            quaternary: "#000000"
+        }, _MERCADOPAGO_LOGO_COL[constants.i.ANY] = {
+            primary: "#2D3277",
+            secondary: "#FFFFFF",
+            tertiary: "#009EE3",
+            quaternary: "#009EE3"
+        }, _MERCADOPAGO_LOGO_COL[constants.i.BLACK] = {
+            primary: "#2D3277",
+            secondary: "#FFFFFF",
+            tertiary: "#009EE3",
+            quaternary: "#009EE3"
+        }, _MERCADOPAGO_LOGO_COL);
         var _PAYPAL_LOGO_COLORS;
         var PAYPAL_LOGO_COLORS = ((_PAYPAL_LOGO_COLORS = {})[constants.i.BLUE] = {
             primary: "#003087",
@@ -8717,6 +8799,100 @@
                 id: "Fill-8",
                 fill: primary
             })))));
+        }, _fundingLogos[constants.h.MERCADOPAGO] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!MERCADOPAGO_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " mercadopago logo available");
+            var _MERCADOPAGO_LOGO_COL2 = MERCADOPAGO_LOGO_COLORS[logoColor], primary = _MERCADOPAGO_LOGO_COL2.primary, secondary = _MERCADOPAGO_LOGO_COL2.secondary, tertiary = _MERCADOPAGO_LOGO_COL2.tertiary, quaternary = _MERCADOPAGO_LOGO_COL2.quaternary;
+            return Object(jsx.c)("svg", {
+                width: "98px",
+                height: "26px",
+                viewBox: "0 0 98 26",
+                version: "1.1",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, Object(jsx.c)("title", null, "MercadoPago"), Object(jsx.c)("g", {
+                id: "Page-1",
+                stroke: "none",
+                "stroke-width": "1",
+                fill: "none",
+                "fill-rule": "evenodd"
+            }, Object(jsx.c)("g", {
+                id: "MERCADO-PAGO-SPEC",
+                transform: "translate(-1451.000000, -108.000000)"
+            }, Object(jsx.c)("g", {
+                id: "BTN_OXXO_SILVER",
+                transform: "translate(1340.000000, 97.000000)"
+            }, Object(jsx.c)("g", {
+                id: "LOGO_MERCADOPAGO_2_26",
+                transform: "translate(111.000000, 11.000000)"
+            }, Object(jsx.c)("path", {
+                d: "M35.6856062,11.9270732 C35.6856062,5.49784553 27.6975208,0.257102279 17.8434328,0.257102279 C7.98985878,0.257102279 0.00203049886,5.49784553 0.00203049886,11.9270732 C0.00203049886,12.0931114 -2.57025172e-05,12.5521584 -2.57025172e-05,12.6102461 C-2.57025172e-05,19.430666 6.98180606,24.954908 17.8411196,24.954908 C28.7677737,24.954908 35.6856062,19.4322082 35.6856062,12.6115312 L35.6856062,11.9270732 Z",
+                id: "background_border",
+                fill: primary
+            }), Object(jsx.c)("path", {
+                d: "M35.0023818,11.9212901 C35.0023818,17.9824577 27.3216986,22.8960079 17.8467227,22.8960079 C8.37200381,22.8960079 0.691577629,17.9824577 0.691577629,11.9212901 C0.691577629,5.85960846 8.37200381,0.946058252 17.8467227,0.946058252 C27.3216986,0.946058252 35.0023818,5.85960846 35.0023818,11.9212901",
+                id: "background",
+                fill: quaternary
+            }), Object(jsx.c)("path", {
+                d: "M12.1504795,8.4587241 C12.1414836,8.47594479 11.9703048,8.65303513 12.0810827,8.79542708 C12.3519872,9.14112593 13.1880901,9.33954936 14.0337029,9.14986479 C14.5372152,9.03677371 15.1826054,8.52349444 15.8076906,8.02743586 C16.485209,7.48922515 17.1573298,6.95024337 17.833049,6.73588438 C18.548607,6.50816007 19.0068829,6.60582964 19.3096586,6.6973306 C19.6419921,6.79654232 20.0326704,7.01527074 20.6559564,7.48279952 C21.8297904,8.36542396 26.5498006,12.4852804 27.3653415,13.1977542 C28.0222978,12.9008901 30.9413327,11.6442941 34.9082592,10.7698944 C34.5635885,8.65509133 33.2771775,6.72020584 31.3260994,5.13590268 C28.6070301,6.27812254 25.2839517,6.87390689 22.0343824,5.28677646 C22.0179328,5.2800938 20.2591096,4.4478463 18.5244467,4.4887133 C15.9462272,4.54834314 14.8291958,5.66434643 13.647137,6.84563412 L12.1504795,8.4587241 Z",
+                id: "righthand",
+                fill: secondary
+            }), Object(jsx.c)("path", {
+                d: "M27.1736521,13.645672 C27.1183917,13.5965802 21.6237076,8.78866731 20.3786777,7.85283866 C19.6584931,7.31257175 19.2577909,7.17480626 18.8370407,7.121088 C18.6180552,7.09281523 18.3155366,7.13342521 18.1040049,7.1915129 C17.5249272,7.34906933 16.7679881,7.85540892 16.0953532,8.3882221 C15.399329,8.94262539 14.7431438,9.46464351 14.1345082,9.60112388 C13.3562359,9.77538695 12.4062709,9.56976681 11.9726694,9.27650109 C11.7971212,9.15852654 11.6734921,9.02204617 11.6141193,8.88325258 C11.4539926,8.5118512 11.7493146,8.21498713 11.7978923,8.16538127 L13.3140838,6.52530365 C13.4904031,6.34924141 13.6680075,6.17343619 13.8494672,5.9999442 C13.3603483,6.06368644 12.907984,6.18860068 12.4676999,6.31120168 C11.9181801,6.46567381 11.3899934,6.61269221 10.855381,6.61243519 C10.6322832,6.61243519 9.43634504,6.41632498 9.20939182,6.35463894 C7.83739145,5.97912516 6.6329715,5.61337834 4.83405232,4.77342008 C2.67838221,6.37828525 1.23698504,8.38462374 0.820604265,10.5947832 C1.1303196,10.6765172 1.62920546,10.8250777 1.838938,10.8715993 C6.71701873,11.9562455 8.23629452,13.0735339 8.51208253,13.3069128 C8.81048875,12.9748363 9.24074889,12.7645897 9.72138596,12.7645897 C10.2611388,12.7653608 10.7474304,13.0365223 11.0430094,13.4557304 C11.3223958,13.2349458 11.7076765,13.0465463 12.2057913,13.0468033 C12.4319734,13.0468033 12.6666374,13.0886984 12.9033576,13.1691473 C13.4539055,13.3580608 13.7379183,13.7245787 13.8851937,14.0561412 C14.0699948,13.972608 14.296691,13.911179 14.5639972,13.9119501 C14.8266769,13.9119501 15.0998947,13.9720939 15.3754257,14.0908396 C16.2747568,14.4768914 16.4148355,15.3602869 16.3331015,16.0264961 C16.3971007,16.0187854 16.4616141,16.0159581 16.5271555,16.0159581 C17.5935529,16.0167292 18.4610129,16.8834181 18.4604988,17.9503296 C18.4604988,18.2803499 18.3759375,18.5908363 18.2291762,18.86354 C18.5193576,19.026751 19.259076,19.3955821 19.9083216,19.313334 C20.4272554,19.2480496 20.6243937,19.0704453 20.6948186,18.9709765 C20.7428823,18.9020938 20.7942874,18.8221589 20.7467377,18.7645853 L19.3703679,17.2355426 C19.3703679,17.2355426 19.1436717,17.0211836 19.2184661,16.9386785 C19.2963447,16.8536031 19.4361664,16.9754331 19.5351211,17.0581952 C20.2357717,17.6434415 21.0911515,18.5260659 21.0911515,18.5260659 C21.1055449,18.5355759 21.1620904,18.6476388 21.4784884,18.7044414 C21.750678,18.7530192 22.2323432,18.7247464 22.5662189,18.4505005 C22.6505232,18.3813608 22.7345704,18.2950003 22.8049953,18.2058126 C22.7993407,18.210182 22.7949713,18.2160936 22.7895738,18.2181498 C23.1414412,17.7678417 22.750763,17.3121361 22.750763,17.3121361 L21.1438416,15.5075623 C21.1438416,15.5075623 20.9140611,15.2952595 20.9919397,15.2096702 C21.0621076,15.1356469 21.2098971,15.2474529 21.3103939,15.3312431 C21.8193038,15.7566197 22.5382032,16.4780894 23.2272877,17.1530375 C23.3617118,17.2512211 23.9672631,17.6259638 24.7691817,17.0993192 C25.2554733,16.7800939 25.3533999,16.3881306 25.3395205,16.0922946 C25.3055932,15.7005882 25.0002473,15.4217159 25.0002473,15.4217159 L22.8049953,13.2148978 C22.8049953,13.2148978 22.5734156,13.0169884 22.6551496,12.9167486 C22.7222332,12.8324443 22.8728499,12.9540172 22.9712906,13.0365223 C23.6709131,13.6215116 25.5636465,15.3569456 25.5636465,15.3569456 C25.5906341,15.3759654 26.2447632,15.841695 27.0528503,15.3271307 C27.3417466,15.1423296 27.5265477,14.8637143 27.5424833,14.5403766 C27.569985,13.9790336 27.1736521,13.645672 27.1736521,13.645672",
+                id: "lefthand",
+                fill: secondary
+            }), Object(jsx.c)("path", {
+                d: "M16.5269242,16.4433139 C16.1866228,16.4392015 15.8144504,16.6414803 15.7656156,16.6119224 C15.738885,16.5941876 15.7864346,16.4574503 15.8183058,16.3785435 C15.850948,16.3001508 16.2991999,14.9515398 15.2065858,14.4832399 C14.370483,14.1239187 13.8595169,14.5282193 13.6837117,14.7107072 C13.6377042,14.7582568 13.6171422,14.7546585 13.6117447,14.6934865 C13.595038,14.4508547 13.4863164,13.7936414 12.7645897,13.5736278 C11.7334047,13.2577439 11.0702798,13.9776714 10.9019283,14.2375238 C10.8266199,13.6497073 10.3297902,13.1932306 9.72115464,13.1929727 C9.05957184,13.1922025 8.52316031,13.7281 8.52238914,14.3891687 C8.52213221,15.0502374 9.05828672,15.5863919 9.71961249,15.5863919 C10.041151,15.587163 10.3323605,15.4586504 10.5472335,15.2522592 C10.5541732,15.2586849 10.5567435,15.269994 10.5534021,15.2926122 C10.5030252,15.5887052 10.4102391,16.6646125 11.5370375,17.1025834 C11.9888877,17.2781316 12.3731404,17.1475628 12.6915945,16.924208 C12.7864368,16.8571244 12.8021154,16.8856542 12.788493,16.9745849 C12.7478831,17.251401 12.7992881,17.843844 13.6299934,18.180804 C14.2617613,18.4375722 14.63599,18.1746354 14.880935,17.9481962 C14.9876004,17.8510407 15.0166442,17.8667193 15.0222988,18.017079 C15.0523707,18.8177124 15.7175519,19.4535927 16.525125,19.4543644 C17.3573725,19.4551348 18.0318065,18.7822429 18.0320642,17.9502524 C18.0328346,17.1180049 17.3589146,16.4523097 16.5269242,16.4433139",
+                id: "fingers",
+                fill: secondary
+            }), Object(jsx.c)("path", {
+                d: "M16.5269242,19.3471586 C15.7725553,19.3463875 15.1595502,18.7603701 15.1317915,18.0134549 C15.1297353,17.9494557 15.1233097,17.779048 14.9793756,17.779048 C14.9200028,17.779048 14.8685977,17.8147745 14.8092249,17.8682357 C14.6437007,18.0219368 14.432426,18.1782081 14.1237388,18.1782081 C13.9839171,18.1782081 13.8322723,18.1455659 13.6721456,18.0800245 C12.8756246,17.7574579 12.8645725,17.2105083 12.8969577,16.9904948 C12.9056965,16.931893 12.9087808,16.870721 12.8684279,16.8234284 L12.8193361,16.7794771 L12.7697302,16.7794771 C12.7293772,16.7794771 12.6874821,16.7959267 12.6311936,16.8357656 C12.4006421,16.9974344 12.1798574,17.0760841 11.9552174,17.0760841 C11.8313313,17.0760841 11.7046179,17.0511527 11.5776475,17.0023179 C10.5289848,16.5941619 10.6117469,15.604358 10.6631519,15.3064658 C10.6706056,15.2463219 10.6556982,15.1992863 10.6174014,15.1681863 L10.5433782,15.1072713 L10.4739814,15.1735838 C10.2693893,15.3704651 10.0023402,15.4784157 9.72115464,15.4784157 C9.12074384,15.4776446 8.63188196,14.9898108 8.6323956,14.389143 C8.63291006,13.7882181 9.12202896,13.3006414 9.72269679,13.3014116 C10.2655339,13.3014116 10.7276652,13.7093114 10.796805,14.2516345 L10.8343307,14.5441292 L10.9949714,14.2966139 C11.0129631,14.2675701 11.4529902,13.6021319 12.2618485,13.602903 C12.4158065,13.602903 12.5746481,13.6278344 12.7345177,13.6771833 C13.3796509,13.8740645 13.4888866,14.4587968 13.5055933,14.7024567 C13.5171594,14.8443346 13.6181703,14.8512743 13.6379612,14.8512743 C13.6937357,14.8512743 13.7346027,14.8158048 13.7636465,14.7854758 C13.8854765,14.6585054 14.1504694,14.4472307 14.565308,14.4472307 C14.7549926,14.4477447 14.9572714,14.4927241 15.1657188,14.5824259 C16.1904782,15.022196 15.7257767,16.3245425 15.7201221,16.3381649 C15.6322195,16.554066 15.6286212,16.6494224 15.7113833,16.7044257 L15.7517362,16.7237026 L15.7818082,16.7237026 C15.8278157,16.7237026 15.8853893,16.7036547 15.9802316,16.6715265 C16.1197963,16.6232058 16.3302999,16.5507247 16.5271812,16.5512387 L16.5276952,16.5512387 C17.2992848,16.5594635 17.9266832,17.1876331 17.9264263,17.9502267 C17.9256551,18.7207882 17.2979997,19.3471586 16.5269242,19.3471586 M27.3862377,13.0700898 C25.6937269,11.5929662 21.7818038,8.19226611 20.722346,7.39703022 C20.1173088,6.94158162 19.7042693,6.70126308 19.3418638,6.59331251 C19.1791669,6.54396368 18.9537558,6.48818922 18.6635744,6.48793219 C18.3944691,6.48793219 18.1050587,6.53650995 17.8027971,6.63263736 C17.1180821,6.84930958 16.4359372,7.39137567 15.7761536,7.91570702 L15.7422263,7.94269466 C15.1276791,8.43104249 14.4925699,8.936611 14.0119329,9.04404752 C13.8019433,9.09134016 13.5862992,9.11550052 13.3711691,9.11550052 C12.8327014,9.11472945 12.34898,8.95948624 12.1677772,8.72842061 C12.1379623,8.69012386 12.1569822,8.6281808 12.2271501,8.53899306 L12.236403,8.5271699 L13.7253498,6.92256176 C14.891473,5.75643855 15.9930829,4.65534272 18.5286362,4.596998 C18.5702743,4.59571288 18.6131975,4.5949418 18.6550926,4.5949418 C20.2334842,4.5959699 21.8113617,5.3025321 21.988195,5.38452313 C23.4681459,6.10624981 24.9953895,6.47302473 26.5311149,6.47430986 C28.1313536,6.47482391 29.7824833,6.07874812 31.5184313,5.27939984 C31.3246344,5.11618885 31.1228696,4.95760432 30.9151933,4.80184707 C29.3902629,5.46291581 27.9372996,5.79704853 26.5352273,5.79653448 C25.1035971,5.79524935 23.672995,5.4516067 22.284031,4.77383132 C22.2107788,4.7388759 20.4686622,3.91742345 18.6558637,3.91665238 C18.608571,3.91665238 18.5602503,3.91742345 18.5129577,3.91819453 C16.3829901,3.96805741 15.1831966,4.72422546 14.3766516,5.38709338 C13.5919537,5.40611324 12.9149494,5.59528377 12.3127394,5.76337823 C11.7752998,5.91270986 11.3111123,6.04225054 10.858234,6.04199352 C10.6718907,6.04199352 10.3362159,6.02502986 10.3061439,6.02400176 C9.78541093,6.00832322 7.16272608,5.36498922 5.07645276,4.57489384 C4.86337889,4.72576762 4.65852983,4.88152487 4.4590783,5.0401094 C6.63839473,5.9335289 9.2908945,6.62492661 10.1280255,6.67890189 C10.3608903,6.69406638 10.6091766,6.72053997 10.8572059,6.72105402 C11.4110951,6.72105402 11.9636993,6.56555379 12.4985686,6.41596514 C12.8144526,6.32729146 13.1629787,6.23090702 13.5297536,6.16048212 C13.431827,6.25660954 13.3341575,6.35402208 13.2362309,6.45220569 L11.7233807,8.08868496 C11.6043781,8.20897274 11.3458107,8.52974016 11.5162184,8.92478784 C11.5840731,9.08414345 11.7215815,9.23655938 11.9140934,9.36635709 C12.2744427,9.60898885 12.9200899,9.77322794 13.5197296,9.77374199 C13.7469399,9.77399901 13.96207,9.75112377 14.1602364,9.70665842 C14.7943175,9.56426647 15.4594986,9.03453759 16.1642616,8.47422272 C16.7256046,8.02828405 17.5234107,7.46180057 18.1341026,7.29524826 C18.3047673,7.24898373 18.5142428,7.21993988 18.6828513,7.21993988 C18.7332282,7.22045393 18.7807779,7.22199608 18.8247292,7.22842171 C19.2285157,7.27956972 19.6184229,7.41682116 20.3149611,7.93961036 C21.5566497,8.87235471 27.0521049,13.6797535 27.1058232,13.7273032 C27.1096786,13.7301305 27.4600039,14.0323921 27.4355865,14.5348763 C27.4227352,14.8150337 27.266978,15.0640911 26.9965875,15.236555 C26.7621805,15.3853726 26.5200628,15.461195 26.2753749,15.461195 C25.9080859,15.4604239 25.6551731,15.2884741 25.6387235,15.2766509 C25.6184185,15.2602013 23.7357091,13.5337632 23.0432833,12.9539144 C22.9327625,12.8626705 22.825583,12.7801654 22.7171184,12.7801654 C22.6590307,12.7796514 22.6078827,12.8045828 22.5731843,12.8480201 C22.4642056,12.9821872 22.5862926,13.1682734 22.7302267,13.2908744 L24.929334,15.5012909 C24.9324183,15.5036041 25.2035799,15.757802 25.2331378,16.0968182 C25.2503585,16.4633361 25.0753243,16.7699672 24.7111197,17.0084865 C24.4515242,17.1794083 24.1888445,17.2662828 23.9315623,17.2662828 C23.5938312,17.2662828 23.356597,17.1125817 23.3041639,17.0760841 L22.988794,16.7650837 C22.4120295,16.1978291 21.8167592,15.6112977 21.3811015,15.2476071 C21.2749502,15.1591904 21.161088,15.0777134 21.0531374,15.0777134 C20.9996762,15.0777134 20.9516125,15.0975044 20.9146009,15.1363152 C20.864995,15.1915756 20.8302966,15.2910443 20.9541827,15.4555404 C21.0053307,15.5233951 21.0652176,15.5794266 21.0652176,15.5794266 L22.6700828,17.3819441 C22.6834481,17.3981367 23.0008742,17.7754496 22.7063233,18.1512204 L22.6495208,18.2231875 C22.6017141,18.2761347 22.549795,18.3247124 22.5004462,18.3671216 C22.2267144,18.5917616 21.8609675,18.6156649 21.7160053,18.6156649 C21.6388978,18.6156649 21.5641035,18.6089823 21.4993331,18.5971591 C21.3407486,18.5688863 21.2343402,18.524678 21.1829351,18.463763 L21.1636583,18.4434581 C21.0757556,18.3529852 20.2668974,17.5271633 19.5973469,16.9683906 C19.5094442,16.8943673 19.3994375,16.8013242 19.2853183,16.8013242 C19.2292868,16.8013242 19.1791669,16.8234284 19.1406131,16.8660946 C19.0079881,17.0110568 19.2069256,17.227986 19.2912299,17.3074068 L20.6601459,18.8169156 C20.6586038,18.8302809 20.6413831,18.861381 20.6082269,18.9091877 C20.559135,18.9770423 20.3930968,19.1430806 19.8965242,19.2052807 C19.8371513,19.2132484 19.7757223,19.2163327 19.7148074,19.2163327 C19.2028132,19.2163327 18.6566347,18.9677894 18.3751922,18.8184578 C18.5031907,18.5480673 18.5697602,18.2499181 18.5697602,17.9509978 C18.5702743,16.8244565 17.6555217,15.9079047 16.5289804,15.9071337 C16.50482,15.9071337 16.4791175,15.9079047 16.4552141,15.9086758 C16.4919687,15.3943684 16.4192306,14.420243 15.4194027,13.9915251 C15.1317915,13.8671249 14.8446944,13.8036397 14.5658221,13.8036397 C14.3476077,13.8036397 14.1376182,13.8409083 13.9402228,13.9167307 C13.7330605,13.5142293 13.3891609,13.2209636 12.9403949,13.0680336 C12.6926226,12.9821872 12.4458785,12.9387499 12.2073591,12.9387499 C11.7914924,12.9387499 11.4082679,13.061351 11.0664244,13.3044968 C10.7387173,12.8971119 10.2442009,12.6560223 9.72295381,12.6560223 C9.26724818,12.6560223 8.82876324,12.8385101 8.5036264,13.1603056 C8.07773569,12.8349118 6.38753816,11.7610606 1.86389514,10.733988 C1.64490969,10.6846392 1.14216846,10.540191 0.833995277,10.4502322 C0.783104293,10.6951772 0.744036467,10.9426925 0.71833395,11.1922639 C0.71833395,11.1922639 1.55263766,11.3922295 1.71687674,11.4289841 C6.3379323,12.4555426 7.86491885,13.5227111 8.12297212,13.7244759 C8.03558356,13.9342084 7.99009011,14.1609046 7.98957605,14.389143 C7.989062,15.3437345 8.76553505,16.1212356 9.72115464,16.1220067 C9.82807711,16.1220067 9.9342285,16.1127538 10.0385807,16.0934769 C10.1822578,16.7959267 10.6420758,17.3284829 11.3447826,17.6019576 C11.5501458,17.6808644 11.7578221,17.7214743 11.9616431,17.7214743 C12.093754,17.7217314 12.226379,17.7050247 12.3559197,17.6718685 C12.4854604,18.0016318 12.777698,18.412358 13.4302849,18.677608 C13.6592943,18.769623 13.8880467,18.8176867 14.1106305,18.8176867 C14.2923473,18.8176867 14.4699517,18.7858156 14.6393313,18.7236155 C14.9521309,19.4854381 15.6967329,19.9902375 16.5264101,19.9902375 C17.076444,19.9910066 17.6043737,19.7668807 17.9893974,19.3705478 C18.3194177,19.5538068 19.0151848,19.8853693 19.7181487,19.8863974 C19.8093926,19.8863974 19.894725,19.8797147 19.9800573,19.8696907 C20.6781377,19.7812741 21.0032745,19.5083133 21.1526062,19.2960105 C21.1795938,19.2589989 21.2037542,19.2196741 21.2243162,19.1788071 C21.3893264,19.2260997 21.5705291,19.2649105 21.7782054,19.2654245 C22.1596308,19.2654245 22.5256346,19.1353698 22.8954939,18.8657504 C23.2589275,18.6035847 23.5172377,18.2275569 23.5545064,17.9070465 C23.5552775,17.9029341 23.5560485,17.8980506 23.5565626,17.8934242 C23.6789066,17.9186126 23.8045919,17.9317209 23.9302772,17.9317209 C24.3227546,17.9317209 24.7090635,17.809377 25.0781516,17.5675163 C25.7898543,17.1007586 25.9137404,16.4913519 25.9019173,16.0921918 C26.0263175,16.1181513 26.1535449,16.1315166 26.2800013,16.1315166 C26.6488324,16.1315166 27.0104669,16.0207388 27.3556517,15.8007252 C27.7969639,15.5187686 28.0624709,15.0869663 28.1025668,14.5844821 C28.1303255,14.2428957 28.0455072,13.8982249 27.8653326,13.6018749 C29.0581864,13.0880816 31.7839383,12.0936512 34.9939257,11.3703824 C34.9743918,11.121325 34.9386653,10.8756089 34.8941999,10.6309209 C31.0102926,11.4927263 28.1120767,12.7470092 27.3862377,13.0700898",
+                id: "handoutline",
+                fill: primary
+            }), Object(jsx.c)("path", {
+                d: "M82.5260533,20.2673344 C82.2142818,20.68243 81.766544,20.8898493 81.1830968,20.8898493 C80.5993927,20.8898493 80.1495986,20.68243 79.8357709,20.2673344 C79.5196299,19.8535238 79.3628446,19.2636511 79.3628446,18.4995152 C79.3628446,17.7356364 79.5196299,17.1470488 79.8357709,16.7352945 C80.1495986,16.321998 80.5993927,16.1168919 81.1830968,16.1168919 C81.766544,16.1168919 82.2142818,16.321998 82.5260533,16.7352945 C82.839367,17.1470488 82.9948673,17.7356364 82.9948673,18.4995152 C82.9948673,19.2636511 82.839367,19.8535238 82.5260533,20.2673344 M84.1229507,15.6398532 C83.4778176,14.8322801 82.4998368,14.4295216 81.1882373,14.4295216 C79.8789511,14.4295216 78.9007133,14.8322801 78.2566082,15.6398532 C77.6119891,16.4461411 77.2901936,17.3989335 77.2901936,18.4995152 C77.2901936,19.6188599 77.6119891,20.5749935 78.2566082,21.3715145 C78.9007133,22.1646942 79.8789511,22.5630832 81.1882373,22.5630832 C82.4998368,22.5630832 83.4778176,22.1646942 84.1229507,21.3715145 C84.7665418,20.5749935 85.0873092,19.6188599 85.0873092,18.4995152 C85.0873092,17.3989335 84.7665418,16.4461411 84.1229507,15.6398532",
+                id: "pago_o",
+                fill: tertiary
+            }), Object(jsx.c)("path", {
+                d: "M71.2460667,18.5582712 C71.2460667,19.8971153 71.6331467,20.639147 72.4067924,20.7859084 C73.178896,20.9290714 73.750006,20.7496678 74.117552,20.2458985 C74.291815,20.0338527 74.4167293,19.6979208 74.4940938,19.2427292 C74.5709444,18.7870236 74.5768559,18.3354304 74.5090013,17.8892347 C74.4424318,17.4417538 74.281791,17.0438789 74.0301634,16.6945817 C73.7795639,16.3460555 73.4117608,16.1705074 72.9282965,16.1705074 C72.2705691,16.1705074 71.8269436,16.4141672 71.5943359,16.8973745 C71.360957,17.3836662 71.2460667,17.9365273 71.2460667,18.5582712 M74.5526956,21.905253 L74.5526956,21.4122787 C74.2049405,21.956658 73.7350985,22.293875 73.1457398,22.4308695 C72.555353,22.5658077 71.9708777,22.5174869 71.392057,22.2841081 C70.8114372,22.0522714 70.3128083,21.619955 69.8966846,20.9899863 C69.482103,20.3571904 69.2741696,19.5275131 69.2741696,18.4988984 C69.2741696,17.2970487 69.5497006,16.3206101 70.0999915,15.5736949 C70.6515675,14.8267798 71.5367622,14.4859644 72.7545475,14.4525511 C73.954855,14.420937 74.6526784,14.6926126 75.3358513,15.2100043 C76.0827664,15.7770018 76.5246005,16.646775 76.5246005,18.0043819 L76.5246005,22.1108731 C76.527677,23.4175891 75.6165228,25.8392803 72.7545475,25.6339171 C70.9815878,25.5054046 69.9976955,24.7780233 69.4484327,23.1299779 L71.565292,23.1299779 C71.7200212,23.4008825 71.9564843,23.6095869 72.2772517,23.754035 C72.5944208,23.9015675 72.9151882,23.9393502 73.2321002,23.8712385 C73.5508115,23.8033839 73.8415069,23.6134423 74.1039296,23.304241 C74.3635251,22.9934976 74.5131137,22.5269969 74.5526956,21.905253",
+                id: "pago_g",
+                fill: tertiary
+            }), Object(jsx.c)("path", {
+                d: "M66.540784,19.3679776 C66.5281898,20.0380422 66.335935,20.4981173 65.9678749,20.7515441 C65.6000719,21.0039428 65.1973135,21.1303992 64.7606277,21.1303992 C64.4840686,21.1303992 64.2501757,21.0540627 64.0579209,20.9024179 C63.865152,20.750516 63.7687676,20.5027437 63.7687676,20.1609002 C63.7687676,19.7779327 63.926324,19.494434 64.2416939,19.3114321 C64.4293223,19.2042526 64.7346682,19.1122375 65.161844,19.0392424 L65.6175496,18.9544241 C65.8455309,18.9112439 66.0241634,18.8657504 66.1531901,18.8161445 C66.2858151,18.7680808 66.4132996,18.7043386 66.540784,18.6236327 L66.540784,19.3679776 Z M67.5562905,15.0065175 C66.9026755,14.6762401 66.1552463,14.5089167 65.314774,14.5089167 C64.0206522,14.5089167 63.1089839,14.8461337 62.5774559,15.5192827 C62.2440942,15.9503139 62.0559518,16.5003478 62.0127716,17.1701554 L63.9453439,17.1701554 C63.9926365,16.8745764 64.0869647,16.6406835 64.2301277,16.4679626 C64.4293223,16.2340697 64.7683406,16.1168662 65.2461482,16.1168662 C65.6753803,16.1168662 65.9982039,16.175725 66.2189885,16.2960127 C66.4390021,16.4155294 66.5497799,16.6316876 66.5497799,16.9455154 C66.5497799,17.2030546 66.4063599,17.3924821 66.1179776,17.5145691 C65.9578509,17.584737 65.6918299,17.6430817 65.3178583,17.6901173 L64.6331432,17.7736505 C63.8556421,17.8720911 63.2647412,18.0368442 62.8655811,18.2661107 C62.1333164,18.6873749 61.7683406,19.3679776 61.7683406,20.3086897 C61.7683406,21.0337577 61.9942658,21.5951007 62.4499714,21.9904054 C62.9028498,22.3857101 63.4801283,22.5525195 64.1769235,22.5846476 C68.5442952,22.7797297 68.4954605,20.2822161 68.5352994,19.7630253 L68.5352994,16.8887128 C68.5352994,15.9667635 68.2093915,15.3398791 67.5562905,15.0065175 L67.5562905,15.0065175 Z",
+                id: "pago_a",
+                fill: tertiary
+            }), Object(jsx.c)("path", {
+                d: "M59.2065451,18.5572688 C59.2065451,17.7998156 59.0590126,17.2176536 58.7626626,16.8089836 C58.4675977,16.4026268 58.0445343,16.1967496 57.4932153,16.1967496 C56.9622013,16.1967496 56.5483907,16.4026268 56.2517837,16.8089836 C55.9772808,17.1785858 55.8400294,17.762804 55.8400294,18.5572688 C55.8400294,19.2977583 55.9873048,19.8488203 56.2828837,20.2184225 C56.5774346,20.6270925 57.0012691,20.8306564 57.5523311,20.8306564 C58.0635541,20.8306564 58.4675977,20.6270925 58.7626626,20.2184225 C59.0590126,19.8105235 59.2065451,19.2586905 59.2065451,18.5572688 L59.2065451,18.5572688 Z M55.8400294,23.9923231 C55.8400294,24.2642557 55.7413317,24.4976346 55.5434223,24.6914315 C55.3475691,24.8859996 55.111106,24.9831551 54.8350609,24.9831551 L53.8321487,24.9831551 L53.8321487,18.0031225 C53.8321487,16.6457726 54.2893965,15.7955333 55.0424803,15.2210821 C55.539824,14.8411989 56.2813416,14.4787934 57.6703056,14.4787934 C58.6081905,14.4787934 59.706459,14.842741 60.2999301,15.5660098 C60.9656253,16.3794945 61.2432125,17.2860223 61.2432125,18.4698802 C61.2432125,19.6946052 60.9478906,20.6826099 60.3577608,21.4421193 C59.767374,22.1810667 59.0086357,22.5488697 58.0836021,22.5488697 C57.5916559,22.5488697 57.1588255,22.4612241 56.7848539,22.2877321 C56.3898062,22.0929071 56.0764925,21.7921876 55.8400294,21.3837746 L55.8400294,23.9923231 Z",
+                id: "pago_p",
+                fill: tertiary
+            }), Object(jsx.c)("path", {
+                d: "M94.8863424,9.12010127 C94.5735428,9.5349399 94.1268331,9.74235921 93.5423578,9.74235921 C92.9591677,9.74235921 92.5098877,9.5349399 92.1950319,9.12010127 C91.879919,8.7057767 91.7226196,8.1156469 91.7226196,7.35099702 C91.7226196,6.58737523 91.879919,5.99878759 92.1950319,5.58651921 C92.5098877,5.17399381 92.9591677,4.96785962 93.5423578,4.96785962 C94.1268331,4.96785962 94.5735428,5.17399381 94.8863424,5.58651921 C95.198628,5.99878759 95.3551564,6.58737523 95.3551564,7.35099702 C95.3551564,8.1156469 95.198628,8.7057767 94.8863424,9.12010127 M96.4822117,4.49133496 C95.8381067,3.68427592 94.8606399,3.28100342 93.5485264,3.28100342 C92.2382121,3.28100342 91.2604883,3.68427592 90.6168973,4.49133496 C89.9722782,5.29787995 89.6499686,6.25118631 89.6499686,7.35099702 C89.6499686,8.47059866 89.9722782,9.42724635 90.6168973,10.2237674 C91.2604883,11.0174611 92.2382121,11.4158501 93.5485264,11.4158501 C94.8606399,11.4158501 95.8381067,11.0174611 96.4822117,10.2237674 C97.1268309,9.42724635 97.4481123,8.47059866 97.4481123,7.35099702 C97.4481123,6.25118631 97.1268309,5.29787995 96.4822117,4.49133496",
+                id: "mercado_o",
+                fill: primary
+            }), Object(jsx.c)("path", {
+                d: "M86.6429797,9.1366794 C86.349714,9.55717258 85.9191969,9.76690512 85.3552836,9.76690512 C84.7895712,9.76690512 84.368821,9.55511638 84.0917479,9.13308104 C83.8146747,8.71027464 83.6761382,8.09469935 83.6761382,7.39045038 C83.6761382,6.73683537 83.8115904,6.18962878 84.0848082,5.74857358 C84.3572549,5.30803244 84.7849448,5.08673377 85.368906,5.08673377 C85.7518735,5.08673377 86.0872913,5.20830667 86.3774727,5.45068141 C86.8488569,5.85241175 87.084292,6.57259628 87.084292,7.50534063 C87.084292,8.172835 86.9372736,8.71644324 86.6429797,9.1366794 L86.6429797,9.1366794 Z M89.0525907,0.930636741 C89.0525907,0.930636741 87.0290315,0.714478572 87.0290315,2.33990576 L87.0274894,4.49172049 C86.8036205,4.13214228 86.5124109,3.85095674 86.1530898,3.64842091 C85.7945396,3.44562805 85.3840704,3.34333203 84.9206541,3.34333203 C83.9172278,3.34333203 83.1173655,3.71730365 82.5169547,4.46344773 C81.9165439,5.21087692 81.6178806,6.28729834 81.6178806,7.58913084 C81.6178806,8.71849944 81.9221984,9.64481816 82.531091,10.3657738 C83.1399837,11.0859583 84.3343796,11.4020993 85.3951225,11.4020993 C89.0937147,11.4020993 89.0510486,8.23040864 89.0510486,8.23040864 L89.0525907,0.930636741 Z",
+                id: "mercado_d",
+                fill: primary
+            }), Object(jsx.c)("path", {
+                d: "M79.0090237,8.17810402 C78.9954014,8.84739757 78.8036606,9.30850072 78.4353435,9.56141349 C78.0667694,9.81432626 77.664268,9.94103967 77.2278393,9.94103967 C76.9512802,9.94103967 76.7173873,9.86444617 76.5246184,9.71254429 C76.3323636,9.56038539 76.2364932,9.31312718 76.2364932,8.9712837 C76.2364932,8.58780214 76.3935356,8.30481743 76.7083914,8.12181551 C76.8960198,8.01463601 77.2018797,7.92236397 77.6290556,7.8491118 L78.0852752,7.76455052 C78.3122285,7.72137029 78.490861,7.67536278 78.6214297,7.62601395 C78.7535407,7.57795024 78.8810252,7.51446503 79.0090237,7.43375912 L79.0090237,8.17810402 Z M80.0235021,3.81664388 C79.3704011,3.48533843 78.6229719,3.31827207 77.7817285,3.31827207 C76.4888919,3.31827207 75.5764525,3.65600315 75.0451815,4.32915207 C74.7107918,4.76069734 74.5236774,5.31047418 74.4799832,5.97976773 L76.4117843,5.97976773 C76.459334,5.6844458 76.5541763,5.4505529 76.6968253,5.27757496 C76.8960198,5.04368205 77.2345219,4.9267356 77.7133598,4.9267356 C78.1415638,4.9267356 78.4649014,4.98533734 78.6862001,5.10613917 C78.9062136,5.22514182 79.0169915,5.44181404 79.0169915,5.7548707 C79.0169915,6.01292397 78.8740855,6.20183747 78.5854462,6.32418146 C78.4248055,6.39460635 78.1585274,6.45295107 77.7850698,6.49972965 L77.1003548,6.5840339 C76.3223396,6.68196049 75.7319528,6.8464566 75.3317646,7.07623711 C74.600528,7.49775839 74.2350382,8.17810402 74.2350382,9.1193302 C74.2350382,9.84414118 74.4614773,10.4054842 74.9166689,10.8010459 C75.3700613,11.1966076 75.9473399,11.3626459 76.6441351,11.3950311 C81.0125349,11.5898561 80.9634431,9.0928566 81.003539,8.57340873 L81.003539,5.69883921 C81.003539,4.77740397 80.676089,4.14923445 80.0235021,3.81664388 L80.0235021,3.81664388 Z",
+                id: "mercado_a",
+                fill: primary
+            }), Object(jsx.c)("path", {
+                d: "M70.0623373,5.03054806 C70.5617372,5.03054806 70.9282551,5.18476317 71.1652323,5.49293635 C71.3279293,5.7211747 71.4291972,5.9784569 71.4690361,6.26349781 L73.6234211,6.26349781 C73.5054465,5.17628134 73.1250493,4.417286 72.4830004,3.98728289 C71.8383813,3.55907896 71.0130734,3.34343484 70.0039926,3.34343484 C68.8173074,3.34343484 67.8850771,3.70815356 67.2119282,4.43579182 C66.536723,5.16445818 66.199506,6.18253488 66.199506,7.49156408 C66.199506,8.65074761 66.5045949,9.59557214 67.1150297,10.3237244 C67.7259785,11.0513627 68.6787708,11.4158244 69.9728926,11.4158244 C71.2690705,11.4158244 72.2475653,10.9793957 72.9065779,10.1062812 C73.3203884,9.56550019 73.5522251,8.99104893 73.6010599,8.38395548 L71.4533575,8.38395548 C71.4096633,8.78517177 71.284235,9.11262184 71.0763016,9.36450651 C70.8691393,9.6156201 70.5200991,9.74233351 70.0260968,9.74233351 C69.3303296,9.74233351 68.8571463,9.42542147 68.6055186,8.7895412 C68.4680102,8.450525 68.3980993,8.00150202 68.3980993,7.4427293 C68.3980993,6.85645488 68.4680102,6.38661287 68.6055186,6.03166111 C68.8671703,5.36493781 69.3529478,5.03054806 70.0623373,5.03054806",
+                id: "mercado_c",
+                fill: primary
+            }), Object(jsx.c)("path", {
+                d: "M65.6216363,3.34333203 C61.1954058,3.34333203 61.4570575,7.26270887 61.4570575,7.26270887 L61.4570575,11.2437718 L63.4659662,11.2437718 L63.4659662,7.50971006 C63.4659662,6.89799015 63.5433308,6.44485477 63.6965178,6.15030393 C63.9720488,5.6282858 64.5102595,5.36612013 65.3139772,5.36612013 C65.3741211,5.36612013 65.4540559,5.36946146 65.5519825,5.37383088 C65.6496521,5.37871436 65.7606869,5.38745322 65.8886855,5.40236068 L65.8886855,3.35849651 C65.7992407,3.35232791 65.7416671,3.34975766 65.7164786,3.34744443 C65.6910331,3.34538823 65.659162,3.34333203 65.6216363,3.34333203",
+                id: "mercado_r",
+                fill: primary
+            }), Object(jsx.c)("path", {
+                d: "M55.542934,5.42361666 C55.8256617,5.13343524 56.2222515,4.98795899 56.7342456,4.98795899 C57.2051158,4.98795899 57.5991353,5.12443936 57.9178466,5.39919927 C58.2352726,5.6731881 58.412877,6.07568952 58.4486035,6.6043903 L55.01192,6.6043903 C55.08363,6.10756064 55.2612344,5.71456915 55.542934,5.42361666 L55.542934,5.42361666 Z M58.2432404,9.16384696 C58.1589362,9.28413474 58.0679493,9.38720183 57.9682235,9.46739368 C57.6844677,9.70128659 57.2989299,9.77222554 56.8450235,9.77222554 C56.4157915,9.77222554 56.0801166,9.70719817 55.7757988,9.51545739 C55.2748567,9.20754124 54.9926431,8.68603716 54.9625711,7.92087323 L60.5207405,7.92087323 C60.5281942,7.26211771 60.5071181,6.7575773 60.4539139,6.40648092 C60.3616419,5.80889739 60.158335,5.28199579 59.8465634,4.82886041 C59.4998365,4.31481007 59.0590383,3.93852522 58.5272532,3.69923478 C57.9957252,3.46225757 57.3978846,3.34274087 56.7342456,3.34274087 C55.614644,3.34274087 54.70606,3.69563643 54.0054094,4.40039945 C53.3045017,5.10670462 52.9526343,6.11912677 52.9526343,7.44100723 C52.9526343,8.85207542 53.3412563,9.87040915 54.1182434,10.4960084 C54.8939454,11.1218647 55.7909633,11.4354354 56.8059557,11.4354354 C58.0358211,11.4354354 58.9932399,11.0642911 59.6764128,10.3220024 C60.0449869,9.93132412 60.2757955,9.54475826 60.373208,9.16384696 L58.2432404,9.16384696 Z",
+                id: "mercado_e",
+                fill: primary
+            }), Object(jsx.c)("path", {
+                d: "M52.146372,11.2430778 L50.3114693,11.2430778 L50.3114693,6.6227933 C50.3114693,6.20075797 50.1719112,5.19681765 48.9615731,5.19681765 C48.1550281,5.19681765 47.5710669,5.77872264 47.5710669,6.6227933 L47.5710669,11.2430778 L45.7343651,11.2430778 L45.7343651,6.6227933 C45.7343651,6.20075797 45.6089368,5.19681765 44.3993763,5.19681765 C43.5784379,5.19681765 43.0078421,5.77872264 43.0078421,6.6227933 L43.0078421,11.2430778 L41.1719112,11.2430778 L41.1719112,6.6667446 C41.1719112,4.75910378 42.4375032,3.31667852 44.3993763,3.31667852 C45.3732447,3.31667852 46.1653963,3.72586259 46.6807318,4.38101975 C47.2227978,3.72586259 48.0293428,3.31667852 48.9615731,3.31667852 C50.9645703,3.31667852 52.146372,4.70075907 52.146372,6.6667446 L52.146372,11.2430778 Z",
+                id: "mercado_m",
+                fill: primary
+            }))))));
         }, _fundingLogos);
         var _cardLogos;
         var cardLogos = ((_cardLogos = {})[constants.o.VISA] = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M0 1.927C0 .863.892 0 1.992 0h36.016C39.108 0 40 .863 40 1.927v20.146C40 23.137 39.108 24 38.008 24H1.992C.892 24 0 23.137 0 22.073V1.927z" style="fill: rgb(33, 86, 154);"/>\n  <path d="M19.596 7.885l-2.11 9.478H14.93l2.11-9.478h2.554zm10.743 6.12l1.343-3.56.773 3.56H30.34zm2.85 3.358h2.36l-2.063-9.478H31.31c-.492 0-.905.274-1.088.695l-3.832 8.783h2.682l.532-1.415h3.276l.31 1.415zm-6.667-3.094c.01-2.502-3.6-2.64-3.577-3.76.008-.338.345-.7 1.083-.793.365-.045 1.373-.08 2.517.425l.448-2.01c-.615-.214-1.405-.42-2.39-.42-2.523 0-4.3 1.288-4.313 3.133-.016 1.364 1.268 2.125 2.234 2.58.996.464 1.33.762 1.325 1.177-.006.636-.793.918-1.526.928-1.285.02-2.03-.333-2.623-.6l-.462 2.08c.598.262 1.7.49 2.84.502 2.682 0 4.437-1.273 4.445-3.243zM15.948 7.884l-4.138 9.478h-2.7L7.076 9.8c-.123-.466-.23-.637-.606-.834-.615-.32-1.63-.62-2.52-.806l.06-.275h4.345c.554 0 1.052.354 1.178.966l1.076 5.486 2.655-6.45h2.683z" style="fill: rgb(255, 255, 255);"/>\n</svg>', 
@@ -8729,6 +8905,16 @@
         _cardLogos[constants.o.JCB] = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <defs>\n    <pattern id="pattern-0" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse" viewBox="0 0 100 100">\n      <path d="M 0 0 L 50 0 L 50 100 L 0 100 Z" style="fill: black;"/>\n    </pattern>\n  </defs>\n  <path d="M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z" style="fill: rgb(255, 255, 255); stroke: rgb(233, 234, 231);"/>\n  <g transform="matrix(0.100306, 0, 0, 0.100306, 4.733743, 10.105099)" id="g6321">\n    <g transform="matrix(1.8215159,0,0,1.8215159,-8.5437653,-109.83667)" id="g6323">\n      <path style="fill:#ffffff" id="path6325" d="m 174,108.3 c 0,14 -11.4,25.4 -25.4,25.4 l -138.2,0 0,-100.6 c 0,-14 11.4,-25.4 25.4,-25.4 l 138.2,0 0,100.6 z" class="st0"/>\n      <g id="g6327">\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="81.398598" x2="157.3299" y1="81.398598" x1="117.3856" gradientUnits="userSpaceOnUse" id="SVGID_1_">\n          <stop id="stop6330" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6332" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6334" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6336" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_1_)" id="path6338" d="m 129,82.5 10.5,0 c 0.3,0 1,-0.1 1.3,-0.1 2,-0.4 3.7,-2.2 3.7,-4.7 0,-2.4 -1.7,-4.2 -3.7,-4.7 -0.3,-0.1 -0.9,-0.1 -1.3,-0.1 l -10.5,0 0,9.6 z" class="st1"/>\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="157.3318" y1="75.171402" x1="117.3844" gradientUnits="userSpaceOnUse" id="SVGID_2_">\n          <stop id="stop6341" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6343" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6345" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6347" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_2_)" id="path6349" d="m 138.3,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,18.9 25.7,0 c 0.6,0 1.3,0 1.8,0.1 5.8,0.3 10.1,3.3 10.1,8.5 0,4.1 -2.9,7.6 -8.3,8.3 l 0,0.2 c 5.9,0.4 10.4,3.7 10.4,8.8 0,5.5 -5,9.1 -11.6,9.1 l -28.2,0 0,37 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-90.9 -26.6,0 z" class="st2"/>\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="68.399101" x2="157.33051" y1="68.399101" x1="117.3846" gradientUnits="userSpaceOnUse" id="SVGID_3_">\n          <stop id="stop6352" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6354" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6356" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6358" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_3_)" id="path6360" d="m 143.2,63.1 c 0,-2.4 -1.7,-4 -3.7,-4.3 -0.2,0 -0.7,-0.1 -1,-0.1 l -9.5,0 0,8.8 9.5,0 c 0.3,0 0.9,0 1,-0.1 2,-0.3 3.7,-1.9 3.7,-4.3 z" class="st3"/>\n      </g>\n      <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="68.522102" y1="75.171402" x1="27.9594" gradientUnits="userSpaceOnUse" id="SVGID_4_">\n        <stop id="stop6363" style="stop-color:#1F286F" offset="0"/>\n        <stop id="stop6365" style="stop-color:#004E94" offset="0.4751"/>\n        <stop id="stop6367" style="stop-color:#0066B1" offset="0.8261"/>\n        <stop id="stop6369" style="stop-color:#006FBC" offset="1"/>\n      </linearGradient>\n      <path style="fill:url(#SVGID_4_)" id="path6371" d="m 37.7,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,44.9 c 5.1,2.5 10.4,4.1 15.7,4.1 6.3,0 9.7,-3.8 9.7,-9 l 0,-21.2 15.6,0 0,21.1 c 0,8.2 -5.1,14.9 -22.4,14.9 -10.5,0 -18.7,-2.3 -18.7,-2.3 l 0,38.3 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-90.8 -26.6,0 z" class="st4"/>\n      <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="111.8553" y1="75.171402" x1="72.459503" gradientUnits="userSpaceOnUse" id="SVGID_5_">\n        <stop id="stop6374" style="stop-color:#6C2C2F" offset="0"/>\n        <stop id="stop6376" style="stop-color:#882730" offset="0.1735"/>\n        <stop id="stop6378" style="stop-color:#BE1833" offset="0.5731"/>\n        <stop id="stop6380" style="stop-color:#DC0436" offset="0.8585"/>\n        <stop id="stop6382" style="stop-color:#E60039" offset="1"/>\n      </linearGradient>\n      <path style="fill:url(#SVGID_5_)" id="path6384" d="m 88,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,23.8 c 4.6,-3.9 12.6,-6.4 25.5,-5.8 6.9,0.3 14.3,2.2 14.3,2.2 l 0,7.7 c -3.7,-1.9 -8.1,-3.6 -13.8,-4 -9.8,-0.7 -15.7,4.1 -15.7,12.5 0,8.5 5.9,13.3 15.7,12.5 5.7,-0.4 10.1,-2.2 13.8,-4 l 0,7.7 c 0,0 -7.3,1.9 -14.3,2.2 -12.9,0.6 -20.9,-1.9 -25.5,-5.8 l 0,42 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-91 -26.7,0 z" class="st5"/>\n    </g>\n    <g id="g6386"/>\n  </g>\n</svg>', 
         _cardLogos[constants.o.CUP] = '<?xml version="1.0" encoding="UTF-8"?>\n<svg width="40px" height="24px" viewBox="0 0 40 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n    \x3c!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch --\x3e\n    <title>unionpay</title>\n    <desc>Created with Sketch.</desc>\n    <defs></defs>\n    <g id="unionpay" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g>\n            <path d="M38,24 L2,24 C0.9,24 0,23.1 0,22 L0,2 C0,0.9 0.9,0 2,0 L38,0 C39.1,0 40,0.9 40,2 L40,22 C40,23.1 39.1,24 38,24" id="Fill-1" fill="#FFFFFF"></path>\n            <path d="M38,0 L2,0 C0.9,0 0,0.9 0,2 L0,22 C0,23.1 0.9,24 2,24 L38,24 C39.1,24 40,23.1 40,22 L40,2 C40,0.9 39.1,0 38,0 M38,1 C38.551,1 39,1.449 39,2 L39,22 C39,22.551 38.551,23 38,23 L2,23 C1.449,23 1,22.551 1,22 L1,2 C1,1.449 1.449,1 2,1 L38,1" id="Fill-3" fill="#C8C8C8"></path>\n            <path d="M11.6294,3.3945 L18.4974,3.3945 C19.4564,3.3945 20.0524,4.1755 19.8284,5.1375 L16.6294,18.8655 C16.4054,19.8245 15.4474,20.6055 14.4904,20.6055 L7.6204,20.6055 C6.6624,20.6055 6.0664,19.8245 6.2894,18.8655 L9.4894,5.1375 C9.7124,4.1755 10.6694,3.3945 11.6294,3.3945" id="Fill-5" fill="#D80029"></path>\n            <path d="M17.9287,3.3945 L24.7967,3.3945 C25.7537,3.3945 26.3547,4.1755 26.1257,5.1375 L22.9297,18.8655 C22.7037,19.8245 21.7437,20.6055 20.7837,20.6055 L13.9177,20.6055 C12.9587,20.6055 12.3627,19.8245 12.5877,18.8655 L15.7837,5.1375 C16.0077,4.1755 16.9697,3.3945 17.9287,3.3945" id="Fill-7" fill="#0E2E62"></path>\n            <path d="M25.5161,3.3945 L32.3771,3.3945 C33.3361,3.3945 33.9351,4.1755 33.7091,5.1375 L30.5121,18.8655 C30.2891,19.8245 29.3291,20.6055 28.3711,20.6055 L21.5001,20.6055 C20.5421,20.6055 19.9431,19.8245 20.1691,18.8655 L23.3661,5.1375 C23.5901,4.1755 24.5511,3.3945 25.5161,3.3945" id="Fill-9" fill="#0C606C"></path>\n            <path d="M24.4546,16.3071 L25.1006,16.3071 L25.2466,15.6821 L24.5976,15.6821 L24.4546,16.3071 Z M24.8526,14.5921 L24.6816,15.3221 C24.6816,15.3221 24.9176,15.1981 25.0506,15.1611 C25.1796,15.1271 25.3786,15.1051 25.3786,15.1051 L25.5006,14.5921 L24.8526,14.5921 Z M25.1026,13.5291 L24.9406,14.2371 C24.9406,14.2371 25.1706,14.1281 25.3006,14.0941 C25.4316,14.0581 25.6296,14.0401 25.6296,14.0401 L25.7516,13.5291 L25.1026,13.5291 Z M26.5356,13.5291 L25.8886,16.2961 L26.1126,16.2961 L25.9756,16.8721 L25.7516,16.8721 L25.7106,17.0491 L24.9126,17.0491 L24.9556,16.8721 L23.3366,16.8721 L23.4636,16.3421 L23.6286,16.3401 L24.2886,13.5291 L24.4186,12.9631 L25.2336,12.9631 L25.1686,13.2481 C25.1686,13.2481 25.3736,13.0911 25.5716,13.0391 C25.7756,12.9841 26.9526,12.9641 26.9526,12.9641 L26.8176,13.5291 L26.5356,13.5291 Z" id="Fill-11" fill="#FFFFFF"></path>\n            <path d="M26.9966,12.9678 L27.8616,12.9678 L27.8726,13.2878 C27.8666,13.3418 27.9146,13.3668 28.0136,13.3688 L28.1616,13.3688 L28.0306,13.9018 L27.5596,13.9018 C27.1566,13.9318 27.0016,13.7578 27.0136,13.5618 L26.9966,12.9678" id="Fill-13" fill="#FFFFFF"></path>\n            <path d="M27.1436,15.4956 L26.3166,15.4956 L26.4276,15.0226 L27.3706,15.0226 L27.4736,14.5886 L26.5416,14.5886 L26.6686,14.0536 L29.2616,14.0536 L29.1336,14.5886 L28.2656,14.5886 L28.1616,15.0226 L29.0326,15.0226 L28.9216,15.4956 L27.9786,15.4956 L27.8216,15.6976 L28.2056,15.6976 L28.3396,16.2966 C28.3516,16.3536 28.3596,16.3926 28.3786,16.4196 C28.3956,16.4386 28.5126,16.4486 28.5806,16.4486 L28.6976,16.4486 L28.5596,17.0356 L28.2656,17.0356 C28.2206,17.0356 28.1526,17.0346 28.0576,17.0246 C27.9706,17.0176 27.9036,16.9636 27.8406,16.9376 C27.7836,16.9106 27.6996,16.8476 27.6706,16.7326 L27.5386,16.1376 L27.1546,16.7246 C27.0266,16.9106 26.8526,17.0496 26.5396,17.0496 L25.9386,17.0496 L26.0596,16.5326 L26.2906,16.5326 C26.3556,16.5326 26.4156,16.5056 26.4546,16.4836 C26.4986,16.4646 26.5356,16.4426 26.5796,16.3806 L27.1436,15.4956" id="Fill-15" fill="#FFFFFF"></path>\n            <path d="M18.0044,14.1973 L20.1934,14.1973 L20.0684,14.7183 L19.1874,14.7183 L19.0834,15.1663 L19.9734,15.1663 L19.8434,15.7033 L18.9514,15.7033 L18.7794,16.4263 C18.7584,16.5053 18.9974,16.5203 19.0834,16.5203 L19.5254,16.4583 L19.3824,17.0503 L18.3764,17.0503 C18.2934,17.0503 18.2344,17.0433 18.1454,17.0223 C18.0594,17.0003 18.0184,16.9613 17.9734,16.9053 C17.9374,16.8493 17.8764,16.7963 17.9074,16.6723 L18.1364,15.7123 L17.6394,15.7123 L17.7704,15.1663 L18.2714,15.1663 L18.3764,14.7183 L17.8784,14.7183 L18.0044,14.1973" id="Fill-17" fill="#FFFFFF"></path>\n            <path d="M19.4194,13.2588 L20.3174,13.2588 L20.1894,13.8018 L18.9614,13.8018 L18.8354,13.9198 C18.7844,13.9738 18.7614,13.9518 18.6914,13.9888 C18.6234,14.0278 18.4814,14.0938 18.2914,14.0938 L17.9004,14.0938 L18.0264,13.5718 L18.1414,13.5718 C18.2444,13.5718 18.3104,13.5588 18.3434,13.5378 C18.3804,13.5158 18.4214,13.4598 18.4644,13.3688 L18.6664,12.9618 L19.5584,12.9618 L19.4194,13.2588" id="Fill-19" fill="#FFFFFF"></path>\n            <path d="M21.1973,14.1572 C21.1973,14.1572 21.4273,13.9322 21.8443,13.8582 C21.9383,13.8422 22.5393,13.8462 22.5393,13.8462 L22.6063,13.5452 L21.3453,13.5452 L21.1973,14.1572 Z M22.3963,14.3842 L21.1463,14.3842 L21.0853,14.6352 L22.1703,14.6352 C22.2953,14.6232 22.3233,14.6392 22.3313,14.6342 L22.3963,14.3842 Z M20.6843,12.9632 L21.4543,12.9632 L21.3633,13.3512 C21.3633,13.3512 21.5903,13.1552 21.7603,13.0912 C21.9223,13.0252 22.3023,12.9702 22.3023,12.9702 L23.5393,12.9632 L23.2033,14.3672 C23.1463,14.6112 23.0763,14.7642 23.0263,14.8342 C22.9833,14.9052 22.9343,14.9662 22.8283,15.0262 C22.7283,15.0832 22.6333,15.1142 22.5453,15.1222 C22.4663,15.1322 22.3403,15.1322 22.1653,15.1332 L20.9773,15.1332 L20.7093,16.2452 C20.6813,16.3562 20.6723,16.4072 20.6943,16.4382 C20.7123,16.4622 20.7553,16.4932 20.8113,16.4932 L21.3323,16.4422 L21.1933,17.0552 L20.6003,17.0552 C20.4153,17.0552 20.2773,17.0502 20.1853,17.0422 C20.0933,17.0352 19.9953,17.0422 19.9293,16.9922 C19.8733,16.9412 19.7873,16.8822 19.7843,16.8172 C19.7873,16.7572 19.8063,16.6562 19.8333,16.5212 L20.6843,12.9632 Z" id="Fill-21" fill="#FFFFFF"></path>\n            <path d="M23.0562,15.2319 L23.0082,15.5689 C22.9802,15.6729 22.9602,15.7539 22.8882,15.8259 C22.8062,15.8939 22.7132,15.9679 22.4822,15.9679 L22.0622,15.9839 L22.0792,16.3649 C22.0832,16.4769 22.1092,16.4639 22.1282,16.4819 C22.1512,16.5019 22.1652,16.5079 22.1862,16.5139 L22.3222,16.5079 L22.7222,16.4829 L22.5922,17.0439 L22.1282,17.0439 C21.8022,17.0439 21.5562,17.0339 21.4752,16.9709 C21.3932,16.9189 21.3802,16.8579 21.3752,16.7559 L21.3112,15.2649 L22.0562,15.2649 L22.0642,15.5689 L22.2422,15.5689 C22.3052,15.5689 22.3442,15.5649 22.3702,15.5479 C22.3892,15.5289 22.4032,15.5069 22.4162,15.4709 L22.4692,15.2319 L23.0562,15.2319" id="Fill-23" fill="#FFFFFF"></path>\n            <path d="M12.4448,7.7773 C12.4168,7.9033 11.9418,10.0983 11.9398,10.1003 C11.8368,10.5433 11.7588,10.8603 11.5118,11.0673 C11.3628,11.1853 11.1948,11.2413 11.0048,11.2413 C10.6918,11.2413 10.5078,11.0883 10.4738,10.7923 L10.4658,10.6903 C10.4658,10.6903 10.5628,10.0983 10.5628,10.0963 C10.5628,10.0963 11.0648,8.0893 11.1558,7.8233 C11.1578,7.8083 11.1608,7.7983 11.1638,7.7903 C10.1898,7.8023 10.0168,7.7953 10.0048,7.7773 C9.9988,7.7983 9.9738,7.9253 9.9738,7.9253 L9.4628,10.1823 L9.4148,10.3743 L9.3348,10.9983 C9.3348,11.1853 9.3698,11.3383 9.4428,11.4663 C9.6748,11.8713 10.3408,11.9313 10.7158,11.9313 C11.1998,11.9313 11.6508,11.8263 11.9588,11.6443 C12.4908,11.3253 12.6318,10.8333 12.7528,10.3993 L12.8108,10.1743 C12.8108,10.1743 13.3288,8.0923 13.4158,7.8233 C13.4178,7.8083 13.4218,7.7983 13.4238,7.7903 C12.7188,7.8013 12.5118,7.7953 12.4448,7.7773" id="Fill-25" fill="#FFFFFF"></path>\n            <path d="M15.2935,11.9106 C14.9485,11.9056 14.8275,11.9056 14.4245,11.9246 L14.4055,11.8966 C14.4425,11.7416 14.4815,11.5876 14.5165,11.4346 L14.5645,11.2266 C14.6395,10.8986 14.7155,10.5206 14.7195,10.4026 C14.7285,10.3336 14.7505,10.1606 14.5525,10.1606 C14.4695,10.1606 14.3815,10.1996 14.2925,10.2416 C14.2475,10.4136 14.1445,10.9026 14.0985,11.1246 C14.0005,11.5956 13.9905,11.6496 13.9475,11.8796 L13.9185,11.9106 C13.5605,11.9056 13.4395,11.9056 13.0315,11.9246 L13.0135,11.8926 C13.0795,11.6086 13.1485,11.3326 13.2115,11.0526 C13.3855,10.2976 13.4265,10.0106 13.4725,9.6276 L13.5045,9.6006 C13.9065,9.5466 14.0015,9.5326 14.4355,9.4436 L14.4695,9.4836 L14.4035,9.7266 C14.4785,9.6846 14.5505,9.6406 14.6255,9.6006 C14.8275,9.5026 15.0535,9.4706 15.1805,9.4706 C15.3675,9.4706 15.5725,9.5256 15.6605,9.7426 C15.7475,9.9376 15.6885,10.1786 15.5805,10.6526 L15.5275,10.8916 C15.4135,11.4216 15.3975,11.5196 15.3345,11.8796 L15.2935,11.9106" id="Fill-27" fill="#FFFFFF"></path>\n            <path d="M16.6963,11.9106 C16.4873,11.9056 16.3543,11.9056 16.2243,11.9106 C16.0943,11.9106 15.9663,11.9146 15.7733,11.9246 L15.7623,11.9056 L15.7513,11.8926 C15.8033,11.6936 15.8313,11.6216 15.8583,11.5526 C15.8843,11.4806 15.9093,11.4106 15.9553,11.2066 C16.0143,10.9436 16.0533,10.7546 16.0783,10.5966 C16.1083,10.4366 16.1223,10.3066 16.1423,10.1526 L16.1613,10.1396 L16.1743,10.1236 C16.3833,10.0986 16.5133,10.0776 16.6503,10.0546 C16.7823,10.0356 16.9213,10.0106 17.1363,9.9716 L17.1423,9.9866 L17.1523,10.0046 C17.1083,10.1696 17.0713,10.3336 17.0303,10.4996 C16.9913,10.6646 16.9533,10.8296 16.9173,10.9926 C16.8353,11.3386 16.8083,11.4716 16.7883,11.5626 C16.7723,11.6526 16.7673,11.6976 16.7363,11.8796 L16.7173,11.8966 L16.6963,11.9106" id="Fill-29" fill="#FFFFFF"></path>\n            <path d="M18.8965,10.6846 C18.8765,10.7706 18.7985,11.1066 18.6915,11.2486 C18.6185,11.3496 18.5295,11.4126 18.4375,11.4126 C18.4085,11.4126 18.2365,11.4126 18.2325,11.1616 C18.2325,11.0356 18.2545,10.9076 18.2875,10.7676 C18.3775,10.3706 18.4865,10.0316 18.7585,10.0316 C18.9745,10.0316 18.9875,10.2766 18.8965,10.6846 M19.7975,10.7226 C19.9195,10.1886 19.8285,9.9396 19.7085,9.7916 C19.5255,9.5596 19.2115,9.4836 18.8795,9.4836 C18.6825,9.4836 18.2135,9.5056 17.8445,9.8486 C17.5825,10.0906 17.4525,10.4256 17.3825,10.7426 C17.3075,11.0676 17.2205,11.6586 17.7575,11.8716 C17.9245,11.9426 18.1635,11.9656 18.3155,11.9656 C18.7125,11.9656 19.1165,11.8536 19.4175,11.5286 C19.6555,11.2726 19.7605,10.8806 19.7975,10.7226" id="Fill-31" fill="#FFFFFF"></path>\n            <path d="M28.7817,9.5107 C28.3477,9.5897 28.2337,9.6107 27.8217,9.6667 L27.7857,9.6907 C27.7837,9.7247 27.7777,9.7567 27.7717,9.7927 C27.7097,9.6877 27.6207,9.5947 27.4737,9.5377 C27.2867,9.4687 26.8547,9.5587 26.4857,9.9007 C26.2207,10.1417 26.0987,10.4697 26.0217,10.7907 C25.9497,11.1087 25.8627,11.6977 26.3987,11.9057 C26.5687,11.9777 26.7237,11.9987 26.8767,11.9907 C27.0457,11.9847 27.1937,11.8967 27.3367,11.7747 C27.3217,11.8257 27.3107,11.8767 27.2967,11.9287 L27.3217,11.9577 C27.7077,11.9427 27.8277,11.9427 28.2447,11.9477 L28.2827,11.9147 C28.3417,11.5587 28.4027,11.2087 28.5587,10.5227 C28.6347,10.1967 28.7127,9.8717 28.7937,9.5467 L28.7817,9.5107 M27.4107,11.2907 C27.3417,11.3917 27.1717,11.4537 27.0787,11.4537 C27.0507,11.4537 26.8807,11.4537 26.8767,11.2057 C26.8747,11.0787 26.8977,10.9507 26.9297,10.8127 C27.0187,10.4157 27.1277,10.0797 27.4047,10.0797 C27.5797,10.0797 27.6667,10.2537 27.6427,10.5387 C27.6267,10.6017 27.6187,10.6597 27.6017,10.7337 C27.5717,10.8587 27.5367,10.9807 27.5067,11.1027 C27.4797,11.1767 27.4487,11.2457 27.4107,11.2907" id="Fill-33" fill="#FFFFFF"></path>\n            <path d="M22.1577,11.9106 C21.8087,11.9056 21.6947,11.9056 21.2867,11.9246 L21.2717,11.8966 C21.3087,11.7416 21.3477,11.5876 21.3827,11.4346 L21.4317,11.2266 C21.5037,10.8986 21.5797,10.5206 21.5897,10.4026 C21.5927,10.3336 21.6147,10.1606 21.4167,10.1606 C21.3367,10.1606 21.2457,10.1996 21.1567,10.2416 C21.1117,10.4136 21.0117,10.9026 20.9637,11.1246 C20.8677,11.5956 20.8597,11.6496 20.8157,11.8796 L20.7837,11.9106 C20.4287,11.9056 20.3077,11.9056 19.8967,11.9246 L19.8777,11.8926 C19.9477,11.6086 20.0137,11.3326 20.0777,11.0526 C20.2507,10.2976 20.2907,10.0106 20.3407,9.6276 L20.3727,9.6006 C20.7727,9.5466 20.8677,9.5326 21.3027,9.4436 L21.3367,9.4836 L21.2717,9.7266 C21.3407,9.6846 21.4147,9.6406 21.4887,9.6006 C21.6927,9.5026 21.9187,9.4706 22.0427,9.4706 C22.2317,9.4706 22.4397,9.5256 22.5257,9.7426 C22.6087,9.9376 22.5547,10.1786 22.4457,10.6526 L22.3907,10.8916 C22.2787,11.4216 22.2607,11.5196 22.1987,11.8796 L22.1577,11.9106" id="Fill-35" fill="#FFFFFF"></path>\n            <path d="M25.1504,7.7729 L24.8644,7.7789 C24.1174,7.7889 23.8204,7.7859 23.6934,7.7679 C23.6834,7.8229 23.6634,7.9199 23.6634,7.9199 L23.3994,9.1629 C23.3994,9.1629 22.7584,11.7979 22.7284,11.9239 C23.3774,11.9119 23.6474,11.9119 23.7574,11.9259 C23.7834,11.8019 23.9354,11.0669 23.9374,11.0629 C23.9374,11.0629 24.0654,10.5229 24.0744,10.5089 C24.0744,10.5089 24.1104,10.4499 24.1544,10.4269 L24.2154,10.4269 C24.7754,10.4269 25.4114,10.4269 25.9104,10.0589 C26.2474,9.8139 26.4764,9.4389 26.5834,8.9909 C26.6084,8.8799 26.6294,8.7489 26.6294,8.6159 C26.6294,8.4449 26.5944,8.2749 26.4944,8.1349 C26.2434,7.7809 25.7364,7.7789 25.1504,7.7729 M25.5254,9.0659 C25.4634,9.3409 25.2884,9.5699 25.0564,9.6849 C24.8664,9.7799 24.6384,9.7869 24.3974,9.7869 L24.2404,9.7869 L24.2554,9.7249 C24.2554,9.7249 24.5394,8.4899 24.5394,8.4919 L24.5454,8.4289 L24.5514,8.3809 L24.6664,8.3889 C24.6664,8.3889 25.2534,8.4409 25.2664,8.4449 C25.4964,8.5349 25.5934,8.7639 25.5254,9.0659" id="Fill-37" fill="#FFFFFF"></path>\n            <path d="M17.0757,9.7915 C17.3027,9.6335 17.3337,9.4145 17.1407,9.2965 C16.9457,9.1865 16.6047,9.2195 16.3747,9.3795 C16.1427,9.5355 16.1177,9.7565 16.3117,9.8725 C16.5047,9.9865 16.8457,9.9485 17.0757,9.7915" id="Fill-39" fill="#FFFFFF"></path>\n            <path d="M31.6587,9.5098 L31.6217,9.4688 C31.1967,9.5568 31.1197,9.5698 30.7267,9.6218 L30.6967,9.6478 C30.6967,9.6548 30.6967,9.6628 30.6957,9.6688 L30.6927,9.6628 C30.3997,10.3378 30.4117,10.1908 30.1737,10.7218 C30.1707,10.6958 30.1707,10.6768 30.1707,10.6558 L30.1107,9.5098 L30.0747,9.4688 C29.6287,9.5568 29.6167,9.5698 29.2057,9.6218 L29.1727,9.6478 C29.1687,9.6668 29.1667,9.6788 29.1637,9.6958 L29.1687,9.7008 C29.2187,9.9658 29.2067,9.9058 29.2597,10.3208 C29.2817,10.5228 29.3147,10.7308 29.3377,10.9338 C29.3807,11.2698 29.4037,11.4368 29.4507,11.9478 C29.1727,12.4128 29.1077,12.5858 28.8417,12.9888 L28.6527,13.2908 C28.6307,13.3238 28.6117,13.3418 28.5827,13.3548 C28.5547,13.3668 28.5127,13.3738 28.4587,13.3738 L28.3167,13.3738 L28.1927,13.9118 L28.7297,13.9018 C29.0437,13.9018 29.2417,13.7458 29.3477,13.5498 L29.6807,12.9768 L31.6587,9.5098" id="Fill-41" fill="#FFFFFF"></path>\n        </g>\n    </g>\n</svg>', 
         _cardLogos);
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", (function() {
+            return _inheritsLoose;
+        }));
+        function _inheritsLoose(subClass, superClass) {
+            subClass.prototype = Object.create(superClass.prototype);
+            subClass.prototype.constructor = subClass;
+            subClass.__proto__ = superClass;
+        }
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "c", (function() {
@@ -8773,11 +8959,8 @@
             return CONSTANTS;
         }));
         var src = __webpack_require__(13);
-        function _assertThisInitialized(self) {
-            if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-            return self;
-        }
-        var inheritsLoose = __webpack_require__(20);
+        var assertThisInitialized = __webpack_require__(22);
+        var inheritsLoose = __webpack_require__(19);
         function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
             var desc = {};
             Object.keys(descriptor).forEach((function(key) {
@@ -8914,7 +9097,7 @@
         var esm_extends = __webpack_require__(11);
         var client = __webpack_require__(5);
         var belter_src = __webpack_require__(14);
-        var base32 = __webpack_require__(28);
+        var base32 = __webpack_require__(29);
         var base32_default = __webpack_require__.n(base32);
         var constants = __webpack_require__(8);
         function normalize(str) {
@@ -8968,7 +9151,7 @@
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
             return getWindowByRef(componentMeta.renderParent);
         }));
-        var src_error = __webpack_require__(22);
+        var src_error = __webpack_require__(23);
         function normalizeChildProp(component, props, key, value) {
             var prop = component.getProp(key);
             return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
@@ -8987,7 +9170,7 @@
                 _this.component = component;
                 if (!_this.hasValidParentDomain()) {
                     _this.error(new src_error.c("Can not be rendered by domain: " + _this.getParentDomain()));
-                    return _assertThisInitialized(_this);
+                    return Object(assertThisInitialized.a)(_this);
                 }
                 _this.component.log("construct_child");
                 _this.onPropHandlers = [];
@@ -9006,7 +9189,7 @@
                         });
                     };
                     for (var _i4 = 0, _ref4 = [ [ "xchild", function() {
-                        return _assertThisInitialized(_this);
+                        return Object(assertThisInitialized.a)(_this);
                     } ], [ "xprops", function() {
                         return _this.props;
                     } ] ]; _i4 < _ref4.length; _i4++) _loop2(_i4, _ref4);
@@ -9021,7 +9204,7 @@
                     _this.context = data.context;
                     _this.setProps(data.props, origin);
                     _this.watchForResize();
-                    return _assertThisInitialized(_this);
+                    return Object(assertThisInitialized.a)(_this);
                 })).catch((function(err) {
                     _this.error(err);
                     throw err;
@@ -10439,7 +10622,7 @@
                 _this.focus = function() {
                     return zalgo_promise_src.a.all([ _this.isWindowClosed().then((function(closed) {
                         closed || window.open("", _this.childWindowName);
-                    })), options.overrides.focus.call(_assertThisInitialized(_this)) ]).then(lib.F);
+                    })), options.overrides.focus.call(Object(assertThisInitialized.a)(_this)) ]).then(lib.F);
                 };
                 _this.clean.register("destroyFocusOverride", (function() {
                     _this.focus = lib.F;
@@ -10454,7 +10637,7 @@
                 }
                 _this.childWindowName = options.childWindowName;
                 _this.isWindowClosed = options.isWindowClosed;
-                parent_ParentComponent.prototype.registerActiveComponent.call(_assertThisInitialized(_this));
+                parent_ParentComponent.prototype.registerActiveComponent.call(Object(assertThisInitialized.a)(_this));
                 _this.watchForClose();
                 return _this;
             }
@@ -10490,7 +10673,7 @@
             } ]);
             return DelegateComponent;
         }(base_BaseComponent);
-        var drivers = __webpack_require__(24);
+        var drivers = __webpack_require__(25);
         function defaultContainerTemplate(_ref) {
             var id = _ref.id, CLASS = _ref.CLASS, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _ref$dimensions = _ref.dimensions;
             return jsxDom("div", {
@@ -10747,7 +10930,7 @@
                 _this.addProp(options, "prerenderTemplate", defaultPrerenderTemplate);
                 _this.addProp(options, "validate");
                 _this.addProp(options, "unsafeRenderTo", !1);
-                Component.components[_this.tag] = _assertThisInitialized(_this);
+                Component.components[_this.tag] = Object(assertThisInitialized.a)(_this);
                 _this.registerDrivers();
                 _this.registerChild();
                 _this.listenDelegate();
@@ -10983,16 +11166,6 @@
         }
         var postRobot = src;
         var CONSTANTS = constants;
-    }, function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__.d(__webpack_exports__, "a", (function() {
-            return _inheritsLoose;
-        }));
-        function _inheritsLoose(subClass, superClass) {
-            subClass.prototype = Object.create(superClass.prototype);
-            subClass.prototype.constructor = subClass;
-            subClass.__proto__ = superClass;
-        }
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.r(__webpack_exports__);
@@ -11380,6 +11553,15 @@
         }
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", (function() {
+            return _assertThisInitialized;
+        }));
+        function _assertThisInitialized(self) {
+            if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+            return self;
+        }
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
         __webpack_require__.d(__webpack_exports__, "b", (function() {
             return PopupOpenError;
         }));
@@ -11418,7 +11600,7 @@
         __webpack_require__.d(__webpack_exports__, "e", (function() {
             return mapPaymentToBraintree;
         }));
-        var checkout = __webpack_require__(26);
+        var checkout = __webpack_require__(27);
         var src = __webpack_require__(2);
         function awaitBraintreeClient(braintree, auth) {
             return src.a.resolve(auth).then((function(authorization) {
@@ -11500,34 +11682,34 @@
         }
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+        var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
         __webpack_require__.d(__webpack_exports__, "script", (function() {
             return _script__WEBPACK_IMPORTED_MODULE_0__.a;
         }));
-        var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+        var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(31);
         __webpack_require__.d(__webpack_exports__, "react", (function() {
             return _react__WEBPACK_IMPORTED_MODULE_1__.a;
         }));
-        var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(31);
+        var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(32);
         __webpack_require__.d(__webpack_exports__, "vue", (function() {
             return _vue__WEBPACK_IMPORTED_MODULE_2__.a;
         }));
-        var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(32);
+        var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(33);
         __webpack_require__.d(__webpack_exports__, "angular", (function() {
             return _angular__WEBPACK_IMPORTED_MODULE_3__.a;
         }));
-        var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(33);
+        var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(34);
         __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", (function() {
             return _ember__WEBPACK_IMPORTED_MODULE_4__.angular2;
         }));
         __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
             return _ember__WEBPACK_IMPORTED_MODULE_4__.glimmer;
         }));
-        var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(34);
+        var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(35);
         __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
             return _glimmer__WEBPACK_IMPORTED_MODULE_5__.a;
         }));
-        var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(35);
+        var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(36);
         __webpack_require__.d(__webpack_exports__, "angular2", (function() {
             return _angular2__WEBPACK_IMPORTED_MODULE_6__.a;
         }));
@@ -11565,7 +11747,7 @@
         var resources = __webpack_require__(18);
         var constants = __webpack_require__(0);
         var lib = __webpack_require__(3);
-        var containerContent = __webpack_require__(27);
+        var containerContent = __webpack_require__(28);
         function getContainerStyle(_ref) {
             var id = _ref.id, tag = _ref.tag, CONTEXT = _ref.CONTEXT, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION;
             return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: calc(95vh - 60px);\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
@@ -11678,7 +11860,7 @@
             _constants__WEBPACK_IMPORTED_MODULE_1__.C.EC_TOKEN);
         }
         function determineUrl(env, fundingSource, payment) {
-            return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.C.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.OXXO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
+            return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.C.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.OXXO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MERCADOPAGO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
         }
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -14924,7 +15106,7 @@
             var root = "object" == typeof window ? window : {};
             !root.HI_BASE32_NO_NODE_JS && "object" == typeof process && process.versions && process.versions.node && (root = window);
             var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" == typeof module && module.exports;
-            var AMD = __webpack_require__(40);
+            var AMD = __webpack_require__(41);
             var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
             var BASE32_DECODE_CHAR = {
                 A: 0,
@@ -15233,7 +15415,7 @@
         __webpack_require__.d(__webpack_exports__, "a", (function() {
             return react;
         }));
-        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
+        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
         var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
         var react = {
             global: function() {
@@ -15379,7 +15561,7 @@
             return glimmer;
         }));
         var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
-        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
+        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
         var glimmer = {
             global: function() {},
             register: function(component, GlimmerComponent) {
@@ -15448,7 +15630,7 @@
         };
     }, function(module, exports, __webpack_require__) {
         !function(e, t, n) {
-            module.exports ? module.exports = n() : __webpack_require__(41)("bowser", n);
+            module.exports ? module.exports = n() : __webpack_require__(42)("bowser", n);
         }(0, 0, (function() {
             function t(t) {
                 function n(e) {
@@ -16036,7 +16218,7 @@
             return interface_ThreeDomainSecure;
         }));
         var beaver_logger_client = __webpack_require__(5);
-        var src = __webpack_require__(19);
+        var src = __webpack_require__(20);
         var zalgo_promise_src = __webpack_require__(2);
         var post_robot_src = __webpack_require__(13);
         var lib = __webpack_require__(3);
@@ -16046,8 +16228,8 @@
         var constants = __webpack_require__(0);
         var config = __webpack_require__(4);
         var resources = __webpack_require__(18);
-        var containerContent = __webpack_require__(27);
-        var checkout_template = __webpack_require__(25);
+        var containerContent = __webpack_require__(28);
+        var checkout_template = __webpack_require__(26);
         var _LOGO_COLOR;
         var LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, 
         _LOGO_COLOR);
@@ -16654,8 +16836,8 @@
                 returnToken && logReturn(returnToken);
             }), 1);
         }
-        var integrations = __webpack_require__(23);
-        var integrations_checkout = __webpack_require__(26);
+        var integrations = __webpack_require__(24);
+        var integrations_checkout = __webpack_require__(27);
         function normalizeCheckoutProps(props) {
             return {
                 env: props.env = props.env || config.a.env,
@@ -16688,8 +16870,8 @@
             }));
         }
         var _FUNDING_CONFIG, _CARD_CONFIG;
-        var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.CARD, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO ];
-        var FUNDING_ORDER = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.CARD ];
+        var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.CARD, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.MERCADOPAGO ];
+        var FUNDING_ORDER = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.MERCADOPAGO, constants.v.CARD ];
         var FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
             enabled: !0,
             allowOptIn: !0,
@@ -16803,6 +16985,12 @@
             allowHorizontal: !1,
             allowVertical: !0,
             requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[constants.v.MERCADOPAGO] = {
+            allowedCountries: [ constants.r.MX, constants.r.BR ],
+            allowedEnvs: [ constants.t.LOCAL, constants.t.STAGE, constants.t.TEST ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.v.ZIMPLER] = {
             allowedCountries: [],
             allowHorizontal: !1,
@@ -16869,7 +17057,7 @@
                 })));
             }));
         }
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _logoColors19, _secondaryColors19, _logoColors20, _secondaryColors20, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _logoColors19, _secondaryColors19, _logoColors20, _secondaryColors20, _logoColors21, _secondaryColors21, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
         var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[constants.s] = {
             colors: [ constants.e.GOLD, constants.e.BLUE, constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
             sizes: [ constants.l.SMALL, constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ],
@@ -17229,20 +17417,36 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[constants.f.MERCADOPAGO] = {
+            label: "{ logo: " + constants.h.MERCADOPAGO + " }",
+            logoLabel: "{ logo: " + constants.h.MERCADOPAGO + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
+            logoColors: (_logoColors20 = {}, _logoColors20[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors20[constants.e.BLACK] = constants.i.WHITE, _logoColors20[constants.e.WHITE] = constants.i.BLACK, 
+            _logoColors20),
+            secondaryColors: (_secondaryColors20 = {}, _secondaryColors20[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors20[constants.e.BLUE] = constants.e.SILVER, _secondaryColors20[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors20[constants.e.BLACK] = constants.e.BLACK, _secondaryColors20[constants.e.DARKBLUE] = constants.e.SILVER, 
+            _secondaryColors20[constants.e.WHITE] = constants.e.WHITE, _secondaryColors20),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
         }, _BUTTON_CONFIG[constants.f.CARD] = {
             label: "{ cards }",
             logoLabel: "{ cards }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.TRANSPARENT ],
-            logoColors: (_logoColors20 = {}, _logoColors20[constants.e.TRANSPARENT] = constants.i.BLACK, 
-            _logoColors20),
-            secondaryColors: (_secondaryColors20 = {}, _secondaryColors20[constants.e.GOLD] = constants.e.TRANSPARENT, 
-            _secondaryColors20[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors20[constants.e.SILVER] = constants.e.TRANSPARENT, 
-            _secondaryColors20[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors20[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
-            _secondaryColors20[constants.e.WHITE] = constants.e.TRANSPARENT, _secondaryColors20),
+            logoColors: (_logoColors21 = {}, _logoColors21[constants.e.TRANSPARENT] = constants.i.BLACK, 
+            _logoColors21),
+            secondaryColors: (_secondaryColors21 = {}, _secondaryColors21[constants.e.GOLD] = constants.e.TRANSPARENT, 
+            _secondaryColors21[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors21[constants.e.SILVER] = constants.e.TRANSPARENT, 
+            _secondaryColors21[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors21[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
+            _secondaryColors21[constants.e.WHITE] = constants.e.TRANSPARENT, _secondaryColors21),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
+            allowPrimaryHorizontal: !1,
+            title: "" + constants.w.CARD
         }, _BUTTON_CONFIG);
         var FUNDING_TO_DEFAULT_LABEL = ((_FUNDING_TO_DEFAULT_L = {})[constants.v.PAYPAL] = constants.f.PAYPAL, 
         _FUNDING_TO_DEFAULT_L[constants.v.VENMO] = constants.f.VENMO, _FUNDING_TO_DEFAULT_L[constants.v.ITAU] = constants.f.ITAU, 
@@ -17254,7 +17458,8 @@
         _FUNDING_TO_DEFAULT_L[constants.v.PAYU] = constants.f.PAYU, _FUNDING_TO_DEFAULT_L[constants.v.VERKKOPANKKI] = constants.f.VERKKOPANKKI, 
         _FUNDING_TO_DEFAULT_L[constants.v.BLIK] = constants.f.BLIK, _FUNDING_TO_DEFAULT_L[constants.v.TRUSTLY] = constants.f.TRUSTLY, 
         _FUNDING_TO_DEFAULT_L[constants.v.MAXIMA] = constants.f.MAXIMA, _FUNDING_TO_DEFAULT_L[constants.v.BOLETO] = constants.f.BOLETO, 
-        _FUNDING_TO_DEFAULT_L[constants.v.OXXO] = constants.f.OXXO, _FUNDING_TO_DEFAULT_L);
+        _FUNDING_TO_DEFAULT_L[constants.v.OXXO] = constants.f.OXXO, _FUNDING_TO_DEFAULT_L[constants.v.MERCADOPAGO] = constants.f.MERCADOPAGO, 
+        _FUNDING_TO_DEFAULT_L);
         var LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.f.PAYPAL] = constants.v.PAYPAL, 
         _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.PAY] = constants.v.PAYPAL, 
         _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.v.PAYPAL, 
@@ -17267,7 +17472,7 @@
         _LABEL_TO_FUNDING[constants.f.VERKKOPANKKI] = constants.v.VERKKOPANKKI, _LABEL_TO_FUNDING[constants.f.BLIK] = constants.v.BLIK, 
         _LABEL_TO_FUNDING[constants.f.TRUSTLY] = constants.v.TRUSTLY, _LABEL_TO_FUNDING[constants.f.MAXIMA] = constants.v.MAXIMA, 
         _LABEL_TO_FUNDING[constants.f.BOLETO] = constants.v.BOLETO, _LABEL_TO_FUNDING[constants.f.OXXO] = constants.v.OXXO, 
-        _LABEL_TO_FUNDING);
+        _LABEL_TO_FUNDING[constants.f.MERCADOPAGO] = constants.v.MERCADOPAGO, _LABEL_TO_FUNDING);
         var BUTTON_STYLE = ((_BUTTON_STYLE = {})[constants.l.TINY] = {
             defaultWidth: 75,
             defaultHeight: 25,
@@ -18226,8 +18431,8 @@
                     later_tag: "Compre agora e pague depois.",
                     pay: "Pague com {logo:paypal}",
                     buynow: "{logo:pp} {logo:paypal} Comprar agora",
-                    installment: "{logo:pp} {logo:paypal}  Pagamentos<br>  parcelados",
-                    installment_period: "{logo:pp} {logo:paypal}  Pague em até<br>  [installmentperiod]x sem juros",
+                    installment: "{logo:pp} {logo:paypal}  Pagamentos parcelados",
+                    installment_period: "{logo:pp} {logo:paypal}  Pague em até [installmentperiod]x sem juros",
                     poweredBy: "Com tecnologia {logo:paypal}"
                 },
                 en: {
@@ -18236,8 +18441,8 @@
                     later_tag: "Buy Now. Pay Over Time.",
                     pay: "Pay with {logo:paypal}",
                     buynow: "{logo:pp} {logo:paypal} Buy Now",
-                    installment: "{logo:pp} {logo:paypal}  Interest free<br>  payments",
-                    installment_period: "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest",
+                    installment: "{logo:pp} {logo:paypal}  Interest free payments",
+                    installment_period: "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x without interest",
                     poweredBy: "Powered by {logo:paypal}"
                 }
             },
@@ -21054,8 +21259,8 @@
                     later_tag: "Compre ahora y pague más adelante.",
                     pay: "Pagar con {logo:paypal}",
                     buynow: "{logo:pp} {logo:paypal} Comprar ahora",
-                    installment: "{logo:pp} {logo:paypal}  Pagos en<br>  mensualidades",
-                    installment_period: "{logo:pp} {logo:paypal}  Pague hasta en<br>  [installmentperiod] mensualidades",
+                    installment: "{logo:pp} {logo:paypal}  Pagos en mensualidades",
+                    installment_period: "{logo:pp} {logo:paypal}  Pague hasta en [installmentperiod]x mensualidades",
                     poweredBy: "Desarrollado por {logo:paypal}"
                 },
                 en: {
@@ -21064,8 +21269,8 @@
                     later_tag: "Buy Now. Pay Over Time.",
                     pay: "Pay with {logo:paypal}",
                     buynow: "{logo:pp} {logo:paypal} Buy Now",
-                    installment: "{logo:pp} {logo:paypal}  Interest free<br>  payments",
-                    installment_period: "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest",
+                    installment: "{logo:pp} {logo:paypal}  Interest free payments",
+                    installment_period: "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x without interest",
                     poweredBy: "Powered by {logo:paypal}"
                 }
             },
@@ -23492,7 +23697,9 @@
                         }) : resources.b[name][logoColor] || resources.b[name][constants.i.ANY];
                         return Object(jsx.c)("img", {
                             class: class_CLASS.LOGO + " " + class_CLASS.LOGO + "-" + name + " " + class_CLASS.LOGO + "-" + color,
-                            src: "data:image/svg+xml;base64," + Object(belter_src.a)(logo.toString())
+                            src: "data:image/svg+xml;base64," + Object(belter_src.a)(logo.toString()),
+                            alt: "",
+                            "aria-label": name
                         });
                     }
                 },
@@ -23831,7 +24038,7 @@
                             var usedWidth = getElementsTotalWidth(_children$_i.allChildren) - getElementsTotalWidth(optionalChildren);
                             for (var _i8 = 0; _i8 < optionalChildren.length; _i8++) {
                                 var optionalChild = optionalChildren[_i8];
-                                (usedWidth += optionalChild.offsetWidth) > parentWidth ? optionalChild.classList.add("hidden") : optionalChild.classList.remove("hidden");
+                                (usedWidth += optionalChild.offsetWidth) + 4 >= parentWidth ? optionalChild.classList.add("hidden") : optionalChild.classList.remove("hidden");
                             }
                         }
                     }
@@ -23900,7 +24107,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.318", 
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.319", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -23948,7 +24155,7 @@
                 return jsxDom("div", Object(esm_extends.a)({
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.318", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.319", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             autoResize: {
                 height: !0,
@@ -25214,10 +25421,10 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.318";
+        var interface_version = "4.0.319";
         var interface_checkout;
         var apps;
-        var legacy = __webpack_require__(43);
+        var legacy = __webpack_require__(44);
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout;
@@ -25291,7 +25498,7 @@
         };
         var esm_extends = __webpack_require__(11);
         var src = __webpack_require__(2);
-        var form_serialize = __webpack_require__(38);
+        var form_serialize = __webpack_require__(39);
         var form_serialize_default = __webpack_require__.n(form_serialize);
         var checkout = __webpack_require__(16);
         var config = __webpack_require__(4);

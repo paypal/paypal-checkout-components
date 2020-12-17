@@ -18,12 +18,14 @@ export const FUNDING = {
     BLIK:         'blik',
     MAXIMA:       'maxima',
     BOLETO:       'boleto',
-    OXXO:         'oxxo'
+    OXXO:         'oxxo',
+    MERCADOPAGO:  'mercadopago'
 };
 
 export const FUNDING_BRAND_LABEL = {
     PAYPAL:         'PayPal',
-    CREDIT:         'PayPal Credit'
+    CREDIT:         'PayPal Credit',
+    CARD:           'Debit or Credit Card'
 };
 
 export const CARD = {

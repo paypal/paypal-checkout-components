@@ -1,0 +1,8 @@
+{
+  "PROJECT_TYPE": "front-tier",
+  "web": {
+    "projectName": "paypal-checkout",
+    "staticDirectory": "dist",
+    "staticNamespace": "api"
+  }
+}

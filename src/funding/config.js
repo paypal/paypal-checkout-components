@@ -20,7 +20,8 @@ export const FUNDING_PRIORITY = [
     FUNDING.P24,
     FUNDING.MAXIMA,
     FUNDING.BOLETO,
-    FUNDING.OXXO
+    FUNDING.OXXO,
+    FUNDING.MERCADOPAGO
 ];
 
 export const FUNDING_ORDER = [
@@ -40,6 +41,7 @@ export const FUNDING_ORDER = [
     FUNDING.MAXIMA,
     FUNDING.BOLETO,
     FUNDING.OXXO,
+    FUNDING.MERCADOPAGO,
     FUNDING.CARD
 ];
 
@@ -240,6 +242,22 @@ export const FUNDING_CONFIG = {
     [ FUNDING.OXXO ]: {
         allowedCountries: [
             COUNTRY.MX
+        ],
+
+        allowedEnvs: [
+            ENV.LOCAL,
+            ENV.STAGE,
+            ENV.TEST
+        ],
+
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
+    },
+    [ FUNDING.MERCADOPAGO ]: {
+        allowedCountries: [
+            COUNTRY.MX,
+            COUNTRY.BR
         ],
 
         allowedEnvs: [
