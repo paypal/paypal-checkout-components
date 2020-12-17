@@ -92,7 +92,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
 
         let native_device = 'non_native';
         if (isIOSSafari()) {
-            native_device = 'ios_safai';
+            native_device = 'ios_safari';
         } else if (isAndroidChrome()) {
             native_device = 'android_chrome';
         }
