@@ -1179,6 +1179,7 @@ window.spb = function(modules) {
             var name = _ref.name, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 12e5 : _ref$lifetime;
             return inlineMemoize(getStorage, (function() {
                 var STORAGE_KEY = "__" + name + "_storage__";
+                var newStateID = uniqueID();
                 var accessedStorage;
                 function getState(handler) {
                     var localStorageEnabled = isLocalStorageEnabled();
@@ -1190,14 +1191,19 @@ window.spb = function(modules) {
                     }
                     storage || (storage = getGlobal()[STORAGE_KEY]);
                     storage || (storage = {
-                        id: uniqueID()
+                        id: newStateID
                     });
-                    storage.id || (storage.id = uniqueID());
+                    storage.id || (storage.id = newStateID);
                     accessedStorage = storage;
                     var result = handler(storage);
                     localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : getGlobal()[STORAGE_KEY] = storage;
                     accessedStorage = null;
                     return result;
+                }
+                function getID() {
+                    return getState((function(storage) {
+                        return storage.id;
+                    }));
                 }
                 function getSession(handler) {
                     return getState((function(storage) {
@@ -1214,10 +1220,9 @@ window.spb = function(modules) {
                 }
                 return {
                     getState: getState,
-                    getID: function() {
-                        return getState((function(storage) {
-                            return storage.id;
-                        }));
+                    getID: getID,
+                    isStateFresh: function() {
+                        return getID() === newStateID;
                     },
                     getSessionState: function(handler) {
                         return getSession((function(session) {
@@ -1521,10 +1526,27 @@ window.spb = function(modules) {
         function isEmailAddress(str) {
             return Boolean(str.match(/^.+@.+\..+$/));
         }
+        function isIOSSafari() {
+            return isIos() && function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /Safari/.test(ua) && !isChrome(ua);
+            }();
+        }
+        function isAndroidChrome() {
+            return isAndroid() && isChrome();
+        }
         function getNonce() {
             var nonce = "";
             document.body && (nonce = document.body.getAttribute("data-nonce") || "");
             return nonce;
+        }
+        function getSDKStorage() {
+            return getStorage({
+                name: "smart_payment_buttons"
+            });
+        }
+        function isStorageStateFresh() {
+            return getSDKStorage().isStateFresh();
         }
         function callRestAPI(_ref) {
             var _extends2;
@@ -1650,7 +1672,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.341", _headers10);
+            _headers10["x-app-version"] = "2.0.342", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2450,7 +2472,7 @@ window.spb = function(modules) {
             var name, logger;
             var uid = xprops.uid, env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 === _xprops$upgradeLSAT ? upgradeLSATExperiment.isEnabled() : _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
-            } : _xprops$getQueriedEli;
+            } : _xprops$getQueriedEli, storageID = xprops.storageID;
             var onInit = function(_ref) {
                 var onInit = _ref.onInit;
                 return function(data) {
@@ -2525,6 +2547,7 @@ window.spb = function(modules) {
                 if (!xprops.createSubscription) throw new Error("Must pass createSubscription with intent=subscription");
                 if (xprops.createOrder || xprops.createBillingAgreement) throw new Error("Must not pass createOrder or createBillingAgreement with intent=tokenize");
             }
+            var stickinessID = storageID && isStorageStateFresh() ? storageID : getSDKStorage().getID();
             var createBillingAgreement = function(_ref) {
                 var createBillingAgreement = _ref.createBillingAgreement;
                 if (createBillingAgreement) return function() {
@@ -2721,7 +2744,8 @@ window.spb = function(modules) {
                     createOrder: createOrder,
                     upgradeLSAT: upgradeLSAT
                 }),
-                standaloneFundingSource: fundingSource
+                standaloneFundingSource: fundingSource,
+                stickinessID: stickinessID
             };
         }
         function getComponents() {
@@ -4195,6 +4219,14 @@ window.spb = function(modules) {
             spinner: !0,
             inline: !0
         };
+        var _NATIVE_DOMAIN, _NATIVE_POPUP_DOMAIN;
+        var NATIVE_DOMAIN = ((_NATIVE_DOMAIN = {}).test = "https://www.paypal.com", _NATIVE_DOMAIN.local = getDomain(), 
+        _NATIVE_DOMAIN.stage = getDomain(), _NATIVE_DOMAIN.sandbox = "https://www.paypal.com", 
+        _NATIVE_DOMAIN.production = "https://www.paypal.com", _NATIVE_DOMAIN);
+        var NATIVE_POPUP_DOMAIN = ((_NATIVE_POPUP_DOMAIN = {}).test = "https://history.paypal.com", 
+        _NATIVE_POPUP_DOMAIN.local = getDomain(), _NATIVE_POPUP_DOMAIN.stage = getDomain(), 
+        _NATIVE_POPUP_DOMAIN.sandbox = "https://www.sandbox.paypal.com", _NATIVE_POPUP_DOMAIN.production = "https://history.paypal.com", 
+        _NATIVE_POPUP_DOMAIN);
         var native_clean;
         var getNativeSocket = memoize((function(_ref) {
             var nativeSocket = (config = (_ref9 = {
@@ -4494,9 +4526,6 @@ window.spb = function(modules) {
             }));
             return nativeSocket;
         }));
-        function isAndroidChrome() {
-            return isAndroid() && isChrome();
-        }
         function didAppSwitch(popupWin) {
             return !popupWin || isWindowClosed(popupWin);
         }
@@ -4645,10 +4674,7 @@ window.spb = function(modules) {
                 var merchantID = _ref3.serviceData.merchantID;
                 return !("mobile" !== props.platform || props.onShippingChange && !isNativeOptedIn({
                     props: props
-                }) || createBillingAgreement || createSubscription || !supportsPopups() || !firebaseConfig || !(isIos() && function(ua) {
-                    void 0 === ua && (ua = getUserAgent());
-                    return /Safari/.test(ua) && !isChrome(ua);
-                }() || isAndroidChrome()) || !isNativeOptedIn({
+                }) || createBillingAgreement || createSubscription || !supportsPopups() || !firebaseConfig || !isIOSSafari() && !isAndroidChrome() || !isNativeOptedIn({
                     props: props
                 }) && ("local" === env || "stage" === env || merchantID.length > 1));
             },
@@ -4679,9 +4705,12 @@ window.spb = function(modules) {
                         return item;
                     },
                     register: function(method) {
-                        cleaned ? method() : tasks.push(once(method));
+                        cleaned ? method(cleanErr) : tasks.push(once((function() {
+                            return method(cleanErr);
+                        })));
                     },
-                    all: function() {
+                    all: function(err) {
+                        cleanErr = err;
                         var results = [];
                         cleaned = !0;
                         for (;tasks.length; ) {
@@ -4691,7 +4720,7 @@ window.spb = function(modules) {
                         return promise_ZalgoPromise.all(results).then(src_util_noop);
                     }
                 });
-                var tasks, cleaned;
+                var tasks, cleaned, cleanErr;
                 var approved = !1;
                 var cancelled = !1;
                 var didFallback = !1;
@@ -4723,10 +4752,10 @@ window.spb = function(modules) {
                     return instance.start();
                 };
                 var getNativeDomain = memoize((function() {
-                    return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://www.sandbox.paypal.com" : "https://www.paypal.com";
+                    return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://www.sandbox.paypal.com" : NATIVE_DOMAIN[env];
                 }));
                 var getNativePopupDomain = memoize((function() {
-                    return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://history.paypal.com" : "sandbox" === env ? "https://www.sandbox.paypal.com" : "https://history.paypal.com";
+                    return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://history.paypal.com" : NATIVE_POPUP_DOMAIN[env];
                 }));
                 var getNativeUrlForAndroid = memoize((function(_temp) {
                     var _ref7 = void 0 === _temp ? {} : _temp, _ref7$pageUrl = _ref7.pageUrl, pageUrl = void 0 === _ref7$pageUrl ? initialPageUrl : _ref7$pageUrl, sessionUID = _ref7.sessionUID;
@@ -5227,7 +5256,7 @@ window.spb = function(modules) {
             var props = getProps({
                 facilitatorAccessToken: facilitatorAccessToken
             });
-            var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription;
+            var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, stickinessID = props.stickinessID;
             var config = getConfig({
                 serverCSPNonce: serverCSPNonce,
                 firebaseConfig: firebaseConfig
@@ -5765,7 +5794,7 @@ window.spb = function(modules) {
                 fundingEligibility: fundingEligibility
             });
             var setupButtonLogsTask = function(_ref) {
-                var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version, style = _ref.style, fundingSource = _ref.fundingSource, getQueriedEligibleFunding = _ref.getQueriedEligibleFunding;
+                var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version, style = _ref.style, fundingSource = _ref.fundingSource, getQueriedEligibleFunding = _ref.getQueriedEligibleFunding, stickinessID = _ref.stickinessID;
                 var logger = logger_getLogger();
                 !function(_ref) {
                     var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, version = _ref.version;
@@ -5820,8 +5849,8 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.341", _ref2.button_correlation_id = buttonCorrelationID, 
-                    _ref2;
+                    _ref2.button_version = "2.0.342", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.stickiness_id = stickinessID, _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -5859,6 +5888,8 @@ window.spb = function(modules) {
                         return el.getAttribute("data-pay-now");
                     })).some(Boolean);
                     var layout = style.layout, color = style.color, shape = style.shape, label = style.label, _style$tagline = style.tagline, tagline = void 0 === _style$tagline || _style$tagline;
+                    var native_device = "non_native";
+                    isIOSSafari() ? native_device = "ios_safai" : isAndroidChrome() && (native_device = "android_chrome");
                     logger.info("button_render");
                     logger.info("button_render_template_version_" + (document.body && document.body.getAttribute("data-render-version") || "unknown").replace(/[^a-zA-Z0-9]+/g, "_"));
                     logger.info("button_render_client_version_" + (document.body && document.body.getAttribute("data-client-version") || "unknown").replace(/[^a-zA-Z0-9]+/g, "_"));
@@ -5869,6 +5900,7 @@ window.spb = function(modules) {
                     logger.info("button_render_tagline_" + tagline.toString());
                     logger.info("button_render_funding_count_" + fundingSources.length);
                     logger.info("button_render_wallet_instrument_count_" + walletInstruments.length);
+                    logger.info("button_render_" + native_device + "_storage_state_" + (isStorageStateFresh() ? "fresh" : "not_fresh"));
                     for (var _i2 = 0; _i2 < walletInstruments.length; _i2++) logger.info("button_render_wallet_instrument_" + walletInstruments[_i2]);
                     logger.track(((_logger$track = {}).transition_name = "process_button_load", _logger$track.eligible_payment_methods = fundingSources.join(":"), 
                     _logger$track.fi_list = walletInstruments.join(":"), _logger$track.merchant_selected_funding_source = fundingSource, 
@@ -5889,6 +5921,7 @@ window.spb = function(modules) {
                 partnerAttributionID: partnerAttributionID,
                 commit: commit,
                 sdkCorrelationID: sdkCorrelationID,
+                stickinessID: stickinessID,
                 buttonCorrelationID: buttonCorrelationID,
                 locale: locale,
                 merchantID: merchantID,

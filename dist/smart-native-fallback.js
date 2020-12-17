@@ -815,7 +815,7 @@ window.spbNativeFallback = function(modules) {
                 return item;
             },
             register: function(method) {
-                cleaned ? method() : tasks.push(function(method) {
+                cleaned ? method(cleanErr) : tasks.push(function(method) {
                     var called = !1;
                     return setFunctionName((function() {
                         if (!called) {
@@ -823,9 +823,12 @@ window.spbNativeFallback = function(modules) {
                             return method.apply(this, arguments);
                         }
                     }), getFunctionName(method) + "::once");
-                }(method));
+                }((function() {
+                    return method(cleanErr);
+                })));
             },
-            all: function() {
+            all: function(err) {
+                cleanErr = err;
                 var results = [];
                 cleaned = !0;
                 for (;tasks.length; ) {
@@ -835,7 +838,7 @@ window.spbNativeFallback = function(modules) {
                 return promise_ZalgoPromise.all(results).then(src_util_noop);
             }
         });
-        var tasks, cleaned;
+        var tasks, cleaned, cleanErr;
         var postRobot = function() {
             var paypal = function() {
                 if (!window.paypal) throw new Error("paypal not found");
