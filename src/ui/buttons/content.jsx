@@ -18,6 +18,9 @@ export const buttonContent : ButtonContentMap = {
     ar: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>مدعوم من </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
+    bg: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>С подкрепата на </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
     cs: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Využívá službu </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
@@ -35,6 +38,9 @@ export const buttonContent : ButtonContentMap = {
     },
     es: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Desarrollado por </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
+    et: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Powered by </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
     fi: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Palvelun tarjoaa </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
@@ -60,6 +66,15 @@ export const buttonContent : ButtonContentMap = {
     ko: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>제공: </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
+    lt: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Sukurta </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
+    lv: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Darbojas ar </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
+    ms: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Dikuasakan oleh </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
     nl: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Mogelijk gemaakt door </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
@@ -81,11 +96,17 @@ export const buttonContent : ButtonContentMap = {
     sk: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Používa technológiu </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
+    sl: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Powered by </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
     sv: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Tillhandahålls av </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
     th: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>ให้บริการโดย </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
+    tl: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Pinapagana ng </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
     tr: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Çalıştıran </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
