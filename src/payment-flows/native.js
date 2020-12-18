@@ -42,8 +42,8 @@ const SOCKET_MESSAGE = {
 
 const NATIVE_DOMAIN = {
     [ ENV.TEST ]:       'https://www.paypal.com',
-    [ ENV.LOCAL ]:      getDomain(),
-    [ ENV.STAGE ]:      getDomain(),
+    [ ENV.LOCAL ]:      'https://www.paypal.com',
+    [ ENV.STAGE ]:      'https://www.paypal.com',
     [ ENV.SANDBOX ]:    'https://www.paypal.com',
     [ ENV.PRODUCTION ]: 'https://www.paypal.com'
 };
@@ -51,8 +51,8 @@ const NATIVE_DOMAIN = {
 // Popup domain needs to be different than native domain for app switch to work on iOS
 const NATIVE_POPUP_DOMAIN = {
     [ ENV.TEST ]:       'https://history.paypal.com',
-    [ ENV.LOCAL ]:      getDomain(),
-    [ ENV.STAGE ]:      getDomain(),
+    [ ENV.LOCAL ]:      'https://history.paypal.com',
+    [ ENV.STAGE ]:      'https://history.paypal.com',
     [ ENV.SANDBOX ]:    'https://www.sandbox.paypal.com',
     [ ENV.PRODUCTION ]: 'https://history.paypal.com'
 };
