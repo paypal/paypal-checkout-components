@@ -28,11 +28,11 @@ export const BUTTON_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
 export const MENU_CLIENT_JS = 'dist/smart-menu.js';
 export const MENU_CLIENT_MIN_JS = 'dist/smart-menu.min.js';
 
-export const NATIVE_POPUP_CLIENT_JS = 'dist/smart-payment-buttons.js';
-export const NATIVE_POPUP_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
+export const NATIVE_POPUP_CLIENT_JS = 'dist/smart-native-popup.js';
+export const NATIVE_POPUP_CLIENT_MIN_JS = 'dist/smart-native-popup.min.js';
 
-export const NATIVE_FALLBACK_CLIENT_JS = 'dist/smart-payment-buttons.js';
-export const NATIVE_FALLBACK_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
+export const NATIVE_FALLBACK_CLIENT_JS = 'dist/smart-native-fallback.js';
+export const NATIVE_FALLBACK_CLIENT_MIN_JS = 'dist/smart-native-fallback.min.js';
 
 export const BROWSER_CACHE_TIME = 6 * 60 * 60;
 
