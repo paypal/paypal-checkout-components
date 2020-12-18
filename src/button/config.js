@@ -551,112 +551,10 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryHorizontal: false
     },
 
-    [ BUTTON_LABEL.PAYU ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.PAYU } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PAYU } }`,
-
-        defaultColor: BUTTON_COLOR.SILVER,
-
-        colors: [
-            BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK,
-            BUTTON_COLOR.WHITE
-        ],
-
-        logoColors:  {
-            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLACK
-        },
-
-        secondaryColors: {
-            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
-        },
-
-        allowPrimary: false,
-
-        allowPrimaryVertical:   false,
-        allowPrimaryHorizontal: false
-    },
-
-    [ BUTTON_LABEL.VERKKOPANKKI ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.VERKKOPANKKI } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.VERKKOPANKKI } }`,
-
-        defaultColor: BUTTON_COLOR.SILVER,
-
-        colors: [
-            BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK,
-            BUTTON_COLOR.WHITE
-        ],
-
-        logoColors:  {
-            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLACK
-        },
-
-        secondaryColors: {
-            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
-        },
-
-        allowPrimary: false,
-
-        allowPrimaryVertical:   false,
-        allowPrimaryHorizontal: false
-    },
-
     [ BUTTON_LABEL.BLIK ]: {
 
         label:     `{ logo: ${ BUTTON_LOGO.BLIK } }`,
         logoLabel: `{ logo: ${ BUTTON_LOGO.BLIK } }`,
-
-        defaultColor: BUTTON_COLOR.SILVER,
-
-        colors: [
-            BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK,
-            BUTTON_COLOR.WHITE
-        ],
-
-        logoColors:  {
-            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLACK
-        },
-
-        secondaryColors: {
-            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
-        },
-
-        allowPrimary: false,
-
-        allowPrimaryVertical:   false,
-        allowPrimaryHorizontal: false
-    },
-
-    [ BUTTON_LABEL.TRUSTLY ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.TRUSTLY } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.TRUSTLY } }`,
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -870,10 +768,7 @@ export const FUNDING_TO_DEFAULT_LABEL = {
     [ FUNDING.EPS ]:         BUTTON_LABEL.EPS,
     [ FUNDING.P24 ]:         BUTTON_LABEL.P24,
     [ FUNDING.MYBANK ]:      BUTTON_LABEL.MYBANK,
-    [ FUNDING.PAYU ]:        BUTTON_LABEL.PAYU,
-    [ FUNDING.VERKKOPANKKI]: BUTTON_LABEL.VERKKOPANKKI,
     [ FUNDING.BLIK ]:        BUTTON_LABEL.BLIK,
-    [ FUNDING.TRUSTLY ]:     BUTTON_LABEL.TRUSTLY,
     [ FUNDING.MAXIMA ]:      BUTTON_LABEL.MAXIMA,
     [ FUNDING.BOLETO ]:      BUTTON_LABEL.BOLETO,
     [ FUNDING.OXXO ]:        BUTTON_LABEL.OXXO,
@@ -897,10 +792,7 @@ export const LABEL_TO_FUNDING = {
     [ BUTTON_LABEL.SOFORT ]:        FUNDING.SOFORT,
     [ BUTTON_LABEL.P24 ]:           FUNDING.P24,
     [ BUTTON_LABEL.MYBANK ]:        FUNDING.MYBANK,
-    [ BUTTON_LABEL.PAYU ]:          FUNDING.PAYU,
-    [ BUTTON_LABEL.VERKKOPANKKI ]:  FUNDING.VERKKOPANKKI,
     [ BUTTON_LABEL.BLIK ]:          FUNDING.BLIK,
-    [ BUTTON_LABEL.TRUSTLY ]:       FUNDING.TRUSTLY,
     [ BUTTON_LABEL.MAXIMA ]:        FUNDING.MAXIMA,
     [ BUTTON_LABEL.BOLETO ]:        FUNDING.BOLETO,
     [ BUTTON_LABEL.OXXO ]:          FUNDING.OXXO,

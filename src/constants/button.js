@@ -22,7 +22,7 @@ export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
 
 type BUTTON_LABEL_ENUM =
     Enum<'paypal' | 'checkout' | 'pay' | 'credit' |
-    'card' | 'buynow' | 'installment' | 'venmo' | 'itau' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'payu' | 'verkkopankki' | 'blik' | 'trustly' | 'maxima' | 'boleto' | 'oxxo' | 'mercadopago'>;
+    'card' | 'buynow' | 'installment' | 'venmo' | 'itau' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'blik' | 'maxima' | 'boleto' | 'oxxo' | 'mercadopago'>;
 
 export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
     PAYPAL:       'paypal',
@@ -42,10 +42,7 @@ export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
     EPS:          'eps',
     MYBANK:       'mybank',
     P24:          'p24',
-    PAYU:         'payu',
-    VERKKOPANKKI: 'verkkopankki',
     BLIK:         'blik',
-    TRUSTLY:      'trustly',
     MAXIMA:       'maxima',
     BOLETO:       'boleto',
     OXXO:         'oxxo',
@@ -128,7 +125,7 @@ export const BUTTON_NUMBER : BUTTON_NUMBER_ENUM = {
 };
 
 type BUTTON_LOGO_ENUM =
-    Enum<'pp' | 'paypal' | 'venmo' | 'itau' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'payu' | 'verkkopankki' | 'blik' | 'trustly' | 'maxima' | 'boleto' | 'oxxo' | 'mercadopago'>;
+    Enum<'pp' | 'paypal' | 'venmo' | 'itau' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'blik' | 'maxima' | 'boleto' | 'oxxo' | 'mercadopago'>;
 
 export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
     PP:           'pp',
@@ -144,10 +141,7 @@ export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
     EPS:          'eps',
     MYBANK:       'mybank',
     P24:          'p24',
-    PAYU:         'payu',
-    VERKKOPANKKI: 'verkkopankki',
     BLIK:         'blik',
-    TRUSTLY:      'trustly',
     MAXIMA:       'maxima',
     BOLETO:       'boleto',
     OXXO:         'oxxo',
