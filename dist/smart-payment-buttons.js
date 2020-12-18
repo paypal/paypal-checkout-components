@@ -1672,7 +1672,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.342", _headers10);
+            _headers10["x-app-version"] = "2.0.343", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4220,11 +4220,11 @@ window.spb = function(modules) {
             inline: !0
         };
         var _NATIVE_DOMAIN, _NATIVE_POPUP_DOMAIN;
-        var NATIVE_DOMAIN = ((_NATIVE_DOMAIN = {}).test = "https://www.paypal.com", _NATIVE_DOMAIN.local = getDomain(), 
-        _NATIVE_DOMAIN.stage = getDomain(), _NATIVE_DOMAIN.sandbox = "https://www.paypal.com", 
+        var NATIVE_DOMAIN = ((_NATIVE_DOMAIN = {}).test = "https://www.paypal.com", _NATIVE_DOMAIN.local = "https://www.paypal.com", 
+        _NATIVE_DOMAIN.stage = "https://www.paypal.com", _NATIVE_DOMAIN.sandbox = "https://www.paypal.com", 
         _NATIVE_DOMAIN.production = "https://www.paypal.com", _NATIVE_DOMAIN);
         var NATIVE_POPUP_DOMAIN = ((_NATIVE_POPUP_DOMAIN = {}).test = "https://history.paypal.com", 
-        _NATIVE_POPUP_DOMAIN.local = getDomain(), _NATIVE_POPUP_DOMAIN.stage = getDomain(), 
+        _NATIVE_POPUP_DOMAIN.local = "https://history.paypal.com", _NATIVE_POPUP_DOMAIN.stage = "https://history.paypal.com", 
         _NATIVE_POPUP_DOMAIN.sandbox = "https://www.sandbox.paypal.com", _NATIVE_POPUP_DOMAIN.production = "https://history.paypal.com", 
         _NATIVE_POPUP_DOMAIN);
         var native_clean;
@@ -5849,7 +5849,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.342", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.343", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2;
                 }));
                 (function() {
@@ -5889,7 +5889,7 @@ window.spb = function(modules) {
                     })).some(Boolean);
                     var layout = style.layout, color = style.color, shape = style.shape, label = style.label, _style$tagline = style.tagline, tagline = void 0 === _style$tagline || _style$tagline;
                     var native_device = "non_native";
-                    isIOSSafari() ? native_device = "ios_safai" : isAndroidChrome() && (native_device = "android_chrome");
+                    isIOSSafari() ? native_device = "ios_safari" : isAndroidChrome() && (native_device = "android_chrome");
                     logger.info("button_render");
                     logger.info("button_render_template_version_" + (document.body && document.body.getAttribute("data-render-version") || "unknown").replace(/[^a-zA-Z0-9]+/g, "_"));
                     logger.info("button_render_client_version_" + (document.body && document.body.getAttribute("data-client-version") || "unknown").replace(/[^a-zA-Z0-9]+/g, "_"));
