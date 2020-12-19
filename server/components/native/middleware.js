@@ -1,7 +1,6 @@
 /* @flow */
 
 import { FUNDING } from '@paypal/sdk-constants';
-import { Spinner, VenmoSpinner } from '@paypal/common-components';
 import { html } from 'jsx-pragmatic';
 
 import { htmlResponse, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
@@ -10,7 +9,7 @@ import type { LoggerType, CacheType, ExpressRequest } from '../../types';
 
 import { EVENT } from './constants';
 import { getNativePopupParams, getNativeFallbackParams } from './params';
-import { getNativePopupClientScript, getNativeFallbackClientScript } from './script';
+import { getNativePopupClientScript, getNativeFallbackClientScript, getNativePopupRenderScript, getNativeFallbackRenderScript } from './script';
 
 type NativePopupMiddlewareOptions = {|
     logger : LoggerType,
@@ -34,16 +33,13 @@ export function getNativePopupMiddleware({
 
             const { cspNonce, debug, parentDomain } = getNativePopupParams(params, req, res);
 
+            const { NativePopup } = (await getNativePopupRenderScript({ logBuffer, cache, debug, useLocal })).popup;
             const client = await getNativePopupClientScript({ debug, logBuffer, cache, useLocal });
 
             const setupParams = {
                 parentDomain
             };
 
-            const spinner = (fundingSource === FUNDING.VENMO)
-                ? VenmoSpinner({ nonce: cspNonce })
-                : Spinner({ nonce: cspNonce });
-            
             const pageHTML = `
                 <!DOCTYPE html>
                 <head>
@@ -51,7 +47,7 @@ export function getNativePopupMiddleware({
                     <title>Native Popup</title>
                 </head>
                 <body data-nonce="${ cspNonce }" data-client-version="${ client.version }">
-                    ${ spinner.render(html()) }
+                    ${ NativePopup({ fundingSource, cspNonce }).render(html()) }
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
                     <script nonce="${ cspNonce }">spbNativePopup.setupNativePopup(${ safeJSON(setupParams) })</script>
@@ -85,15 +81,12 @@ export function getNativeFallbackMiddleware({
 
             const { cspNonce, debug } = getNativeFallbackParams(params, req, res);
 
+            const { NativeFallback } = (await getNativeFallbackRenderScript({ logBuffer, cache, debug, useLocal })).fallback;
             const client = await getNativeFallbackClientScript({ debug, logBuffer, cache, useLocal });
 
             const setupParams = {
                 
             };
-
-            const spinner = (fundingSource === FUNDING.VENMO)
-                ? VenmoSpinner({ nonce: cspNonce })
-                : Spinner({ nonce: cspNonce });
 
             const pageHTML = `
                 <!DOCTYPE html>
@@ -102,7 +95,7 @@ export function getNativeFallbackMiddleware({
                     <title>Native Fallback</title>
                 </head>
                 <body data-nonce="${ cspNonce }" data-client-version="${ client.version }">
-                    ${ spinner.render(html()) }
+                    ${ NativeFallback({ fundingSource, cspNonce }).render(html()) }
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
                     <script nonce="${ cspNonce }">spbNativeFallback.setupNativeFallback(${ safeJSON(setupParams) })</script>

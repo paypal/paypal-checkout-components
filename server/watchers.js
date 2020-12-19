@@ -4,8 +4,8 @@ import { poll } from 'grabthar';
 
 import type { CacheType } from './types';
 import type { LoggerBufferType } from './lib';
-import { BUTTON_RENDER_MODULE, CLIENT_MODULE, MODULE_POLL_INTERVAL, SDK_CDN_NAMESPACE, SMART_BUTTONS_CDN_NAMESPACE,
-    BUTTON_RENDER_CHILD_MODULE, LATEST_TAG, ACTIVE_TAG } from './config';
+import { SDK_RELEASE_MODULE, SMART_BUTTONS_MODULE, MODULE_POLL_INTERVAL, SDK_CDN_NAMESPACE, SMART_BUTTONS_CDN_NAMESPACE,
+    CHECKOUT_COMPONENTS_MODULE, LATEST_TAG, ACTIVE_TAG } from './config';
 
 let paypalSDKWatcher;
 let paypalSmartButtonsWatcher;
@@ -14,6 +14,8 @@ type Watcher = {|
     get : (tag? : string) => Promise<{|
         version : string
     |}>,
+    // eslint-disable-next-line no-undef
+    import : <T>(string) => Promise<T>,
     // eslint-disable-next-line no-undef
     importDependency : <T>(string, string) => Promise<T>,
     read : (string) => Promise<string>
@@ -26,10 +28,10 @@ export function getPayPalSDKWatcher({ logBuffer, cache } : {| logBuffer : ?Logge
 
     paypalSDKWatcher = paypalSDKWatcher || poll({
         cdnRegistry:  SDK_CDN_NAMESPACE,
-        name:         BUTTON_RENDER_MODULE,
+        name:         SDK_RELEASE_MODULE,
         tags:         [ LATEST_TAG, ACTIVE_TAG ],
         period:       MODULE_POLL_INTERVAL,
-        childModules: [ BUTTON_RENDER_CHILD_MODULE ],
+        childModules: [ CHECKOUT_COMPONENTS_MODULE ],
         flat:         true,
         dependencies: true,
         logger:       logBuffer,
@@ -46,7 +48,7 @@ export function getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache } : {| lo
 
     paypalSmartButtonsWatcher = paypalSmartButtonsWatcher || poll({
         cdnRegistry:  SMART_BUTTONS_CDN_NAMESPACE,
-        name:         CLIENT_MODULE,
+        name:         SMART_BUTTONS_MODULE,
         tags:         [ LATEST_TAG, ACTIVE_TAG ],
         period:       MODULE_POLL_INTERVAL,
         flat:         true,

@@ -15,10 +15,9 @@ export const WEBPACK_CONFIG = 'webpack.config';
 
 export const MODULE_DIR : string = join(__dirname, '..');
 
-export const BUTTON_RENDER_MODULE = '@paypal/sdk-release';
-export const BUTTON_RENDER_CHILD_MODULE = '@paypal/checkout-components';
-
-export const CLIENT_MODULE = pkg.name;
+export const SDK_RELEASE_MODULE = '@paypal/sdk-release';
+export const CHECKOUT_COMPONENTS_MODULE = '@paypal/checkout-components';
+export const SMART_BUTTONS_MODULE = pkg.name;
 
 export const BUTTON_RENDER_JS = 'dist/button.js';
 

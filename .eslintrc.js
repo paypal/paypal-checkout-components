@@ -7,7 +7,8 @@ module.exports = {
         'react/display-name': 'off',
         'prefer-regex-literals': 'off',
         'require-atomic-updates': 'off',
-        'react/require-default-props': 'off'
+        'react/require-default-props': 'off',
+        'react/prop-types': 'off'
     },
 
     'globals': {

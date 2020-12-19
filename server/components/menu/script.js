@@ -5,7 +5,7 @@ import { join } from 'path';
 import { ENV } from '@paypal/sdk-constants';
 
 import type { CacheType } from '../../types';
-import { MENU_CLIENT_JS, MENU_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG, CLIENT_MODULE } from '../../config';
+import { MENU_CLIENT_JS, MENU_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG, SMART_BUTTONS_MODULE } from '../../config';
 import { isLocalOrTest, compileWebpack, babelRequire, resolveScript, dynamicRequire, type LoggerBufferType } from '../../lib';
 import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
@@ -25,7 +25,7 @@ export async function compileLocalSmartMenuClientScript() : Promise<?SmartMenuCl
         return { script, version: ENV.LOCAL };
     }
 
-    const distScriptPath = resolveScript(join(CLIENT_MODULE, MENU_CLIENT_JS));
+    const distScriptPath = resolveScript(join(SMART_BUTTONS_MODULE, MENU_CLIENT_JS));
 
     if (distScriptPath) {
         const script = dynamicRequire(distScriptPath);

@@ -94,53 +94,59 @@ export const WEBPACK_CONFIG_MENU_DEBUG : WebpackConfig = getSmartWebpackConfig({
 });
 
 export const WEBPACK_CONFIG_NATIVE_POPUP : WebpackConfig = getSmartWebpackConfig({
-    modulename: 'spbNativePopup',
-    entry:      'src/native/popup',
-    filename:   'smart-native-popup',
-    minify:     false,
-    vars:       globals
+    modulename:    'spbNativePopup',
+    entry:         'src/native/popup',
+    filename:      'smart-native-popup',
+    minify:        false,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_NATIVE_POPUP_MIN : WebpackConfig = getSmartWebpackConfig({
-    modulename: 'spbNativePopup',
-    entry:      'src/native/popup',
-    filename:   'smart-native-popup',
-    minify:     true,
-    vars:       globals
+    modulename:    'spbNativePopup',
+    entry:         'src/native/popup',
+    filename:      'smart-native-popup',
+    minify:        true,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_NATIVE_POPUP_DEBUG : WebpackConfig = getSmartWebpackConfig({
-    modulename: 'spbNativePopup',
-    entry:      'src/native/popup',
-    filename:   'smart-native-popup',
-    debug:      true,
-    minify:     false,
-    vars:       globals
+    modulename:    'spbNativePopup',
+    entry:         'src/native/popup',
+    filename:      'smart-native-popup',
+    debug:         true,
+    minify:        false,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_NATIVE_FALLBACK : WebpackConfig = getSmartWebpackConfig({
-    modulename: 'spbNativeFallback',
-    entry:      'src/native/fallback',
-    filename:   'smart-native-fallback',
-    minify:     false,
-    vars:       globals
+    modulename:    'spbNativeFallback',
+    entry:         'src/native/fallback',
+    filename:      'smart-native-fallback',
+    minify:        false,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_NATIVE_FALLBACK_MIN : WebpackConfig = getSmartWebpackConfig({
-    modulename: 'spbNativeFallback',
-    entry:      'src/native/fallback',
-    filename:   'smart-native-fallback',
-    minify:     true,
-    vars:       globals
+    modulename:    'spbNativeFallback',
+    entry:         'src/native/fallback',
+    filename:      'smart-native-fallback',
+    minify:        true,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_NATIVE_FALLBACK_DEBUG : WebpackConfig = getSmartWebpackConfig({
-    modulename: 'spbNativeFallback',
-    entry:      'src/native/fallback',
-    filename:   'smart-native-fallback',
-    debug:      true,
-    minify:     false,
-    vars:       globals
+    modulename:    'spbNativeFallback',
+    entry:         'src/native/fallback',
+    filename:      'smart-native-fallback',
+    debug:         true,
+    minify:        false,
+    vars:          globals,
+    libraryTarget: 'umd'
 });
 
 export const WEBPACK_CONFIG_TEST : WebpackConfig = getWebpackConfig({
