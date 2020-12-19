@@ -6,6 +6,7 @@ import { html } from 'jsx-pragmatic';
 import { htmlResponse, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     type GraphQL, isLocalOrTest } from '../../lib';
 import type { LoggerType, CacheType, ExpressRequest } from '../../types';
+import type { NativePopupOptions } from '../../../src/native/popup';
 
 import { EVENT } from './constants';
 import { getNativePopupParams, getNativeFallbackParams } from './params';
@@ -31,13 +32,15 @@ export function getNativePopupMiddleware({
             logger.info(req, EVENT.RENDER);
             tracking(req);
 
-            const { cspNonce, debug, parentDomain } = getNativePopupParams(params, req, res);
+            const { cspNonce, debug, parentDomain, env, sessionID, buttonSessionID,
+                sdkCorrelationID, clientID, locale } = getNativePopupParams(params, req, res);
 
             const { NativePopup } = (await getNativePopupRenderScript({ logBuffer, cache, debug, useLocal })).popup;
             const client = await getNativePopupClientScript({ debug, logBuffer, cache, useLocal });
 
-            const setupParams = {
-                parentDomain
+            const setupParams : NativePopupOptions = {
+                parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID,
+                clientID, fundingSource, locale
             };
 
             const pageHTML = `

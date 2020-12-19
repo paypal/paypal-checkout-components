@@ -1,6 +1,7 @@
 /* @flow */
 /* eslint max-nested-callbacks: off, max-lines: off */
 
+import { ENV, FUNDING, COUNTRY, LANG } from '@paypal/sdk-constants/src';
 import { wrapPromise, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -12,6 +13,14 @@ describe('Native popup cases', () => {
         delete window.paypal;
         window.location.hash = '';
     });
+
+    const env = ENV.TEST;
+    const sessionID = uniqueID();
+    const buttonSessionID = uniqueID();
+    const sdkCorrelationID = uniqueID();
+    const clientID = uniqueID();
+    const fundingSource = FUNDING.VENMO;
+    const locale = { country: COUNTRY.US, lang: LANG.EN };
 
     it('should open the native popup and await a url to redirect to, then redirect and detect an app switch', () => {
         return wrapPromise(({ expect }) => {
@@ -86,7 +95,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
         });
     });
 
@@ -163,7 +172,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
         });
     });
 
@@ -280,7 +289,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
         });
     });
 
@@ -375,7 +384,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
         });
     });
 
@@ -481,7 +490,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
         });
     });
 
@@ -576,7 +585,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
         });
     });
 
@@ -676,7 +685,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
         });
     });
 });

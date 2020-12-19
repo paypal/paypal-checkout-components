@@ -2,24 +2,40 @@
 
 import { parseQuery, cleanup } from 'belter/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
+import { ENV, FUNDING } from '@paypal/sdk-constants/src';
 
-import { getPostRobot } from '../lib';
+import type { LocaleType } from '../../types';
+import { getPostRobot, setupNativeLogger, getSDKVersion } from '../lib';
 
 import { MESSAGE, HASH, EVENT } from './constants';
 
-type NativePopupOptions = {|
-    parentDomain : string
+export type NativePopupOptions = {|
+    parentDomain : string,
+    env : $Values<typeof ENV>,
+    sessionID : string,
+    buttonSessionID : string,
+    sdkCorrelationID : string,
+    clientID : string,
+    fundingSource : $Values<typeof FUNDING>,
+    locale : LocaleType
 |};
 
 type NativePopup = {|
     destroy : () => ZalgoPromise<void>
 |};
 
-export function setupNativePopup({ parentDomain } : NativePopupOptions) : NativePopup {
+export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID,
+    clientID, fundingSource, locale } : NativePopupOptions) : NativePopup {
+
     const opener = window.opener;
     if (!opener) {
         throw new Error(`Expected window to have opener`);
     }
+
+    const sdkVersion = getSDKVersion();
+
+    setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelationID,
+        clientID, fundingSource, sdkVersion, locale });
 
     const clean = cleanup();
     const postRobot = getPostRobot();

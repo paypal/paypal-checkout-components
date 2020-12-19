@@ -1614,7 +1614,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -1782,7 +1782,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -1890,7 +1890,7 @@ describe('native ios cases', () => {
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 times:              2,
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2071,7 +2071,7 @@ describe('native ios cases', () => {
 
             const mockWindowConfig = {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 times:              1,
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
@@ -2197,7 +2197,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2342,7 +2342,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:   'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery: [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery: [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:        ({ win }) => {
                     popupWin = win;
 
@@ -2488,7 +2488,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2620,7 +2620,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2745,7 +2745,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2797,7 +2797,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2882,7 +2882,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2979,7 +2979,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -3060,7 +3060,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/venmo/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -3217,7 +3217,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'sessionUID', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,

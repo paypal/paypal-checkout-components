@@ -1,7 +1,7 @@
 /* @flow */
 
 import { isIEIntranet, getPageRenderTime, querySelectorAll } from 'belter/src';
-import { FPTI_KEY, ENV, FUNDING } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, ENV, FUNDING, FPTI_USER_ACTION } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType } from '../types';
@@ -33,7 +33,7 @@ type ButtonLoggerOptions = {|
     buttonSessionID : string,
     merchantID : $ReadOnlyArray<string>,
     merchantDomain : string,
-    version : string,
+    sdkVersion : string,
     style : ButtonStyle,
     fundingSource : ?$Values<typeof FUNDING>,
     getQueriedEligibleFunding : GetQueriedEligibleFunding,
@@ -41,11 +41,11 @@ type ButtonLoggerOptions = {|
 |};
 
 export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, buttonCorrelationID, locale,
-    merchantID, merchantDomain, version, style, fundingSource, getQueriedEligibleFunding, stickinessID } : ButtonLoggerOptions) : ZalgoPromise<void> {
+    merchantID, merchantDomain, sdkVersion, style, fundingSource, getQueriedEligibleFunding, stickinessID } : ButtonLoggerOptions) : ZalgoPromise<void> {
 
     const logger = getLogger();
 
-    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, locale, merchantID, merchantDomain, version });
+    setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale, sdkVersion });
 
     logger.addPayloadBuilder(() => {
         return {
@@ -63,7 +63,11 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.BUTTON_SESSION_UID]:           buttonSessionID,
             [FPTI_KEY.BUTTON_VERSION]:               __SMART_BUTTONS__.__MINOR_VERSION__,
             [FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID]: buttonCorrelationID,
-            [FPTI_KEY.STICKINESS_ID]:                stickinessID
+            [FPTI_KEY.STICKINESS_ID]:                stickinessID,
+            [FPTI_KEY.PARTNER_ATTRIBUTION_ID]:       partnerAttributionID,
+            [FPTI_KEY.USER_ACTION]:                  commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE,
+            [FPTI_KEY.SELLER_ID]:                    merchantID[0],
+            [FPTI_KEY.MERCHANT_DOMAIN]:              merchantDomain
         };
     });
 

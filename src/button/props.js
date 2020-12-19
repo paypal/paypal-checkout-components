@@ -49,7 +49,7 @@ export type ButtonXProps = {|
 
     sessionID : string,
     buttonSessionID : string,
-    clientID : ?string,
+    clientID : string,
     partnerAttributionID : ?string,
     correlationID : string,
     sdkCorrelationID? : string,
@@ -109,7 +109,7 @@ export type ButtonProps = {|
 
     sessionID : string,
     buttonSessionID : string,
-    clientID : ?string,
+    clientID : string,
     partnerAttributionID : ?string,
     clientMetadataID : ?string,
     sdkCorrelationID : string,
@@ -346,17 +346,17 @@ export function getComponents() : Components {
 }
 
 export type Config = {|
-    version : string,
+    sdkVersion : string,
     cspNonce : ?string,
     firebase : ?FirebaseConfig
 |};
 
 export function getConfig({ serverCSPNonce, firebaseConfig } : {| serverCSPNonce : ?string, firebaseConfig : ?FirebaseConfig |}) : Config {
     const cspNonce = serverCSPNonce || getNonce();
-    const { version } = paypal;
+    const { version: sdkVersion } = paypal;
 
     return {
-        version,
+        sdkVersion,
         cspNonce,
         firebase: firebaseConfig
     };

@@ -13,6 +13,7 @@ import { getNativeEligibility, firebaseSocket, type MessageSocket, type Firebase
 import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
+import type { NativePopupInputParams } from '../../server/components/native/params';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
 import { checkout } from './checkout';
@@ -242,11 +243,11 @@ function instrumentNativeSDKProps(props : NativeSDKProps) {
 }
 
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
-    const { createOrder, onApprove, onCancel, onError, commit,
+    const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange } = props;
     const { facilitatorAccessToken, sdkMeta } = serviceData;
     const { fundingSource } = payment;
-    const { version, firebase: firebaseConfig } = config;
+    const { sdkVersion, firebase: firebaseConfig } = config;
 
     if (!firebaseConfig) {
         throw new Error(`Can not run native flow without firebase config`);
@@ -319,10 +320,17 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         });
     });
 
-    const getNativePopupUrl = memoize(({ sessionUID }) : string => {
+    const getNativePopupParams = () : NativePopupInputParams => {
         const parentDomain = getDomain();
+        return {
+            sdkMeta, buttonSessionID, parentDomain, env, clientID, sessionID, sdkCorrelationID
+        };
+    };
+
+    const getNativePopupUrl = memoize(() : string => {
         return extendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
-            query: { sdkMeta, sessionUID, buttonSessionID, parentDomain }
+            // $FlowFixMe
+            query: getNativePopupParams()
         });
     });
 
@@ -411,7 +419,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const connectNative = memoize(({ sessionUID } : {| sessionUID : string |}) : NativeConnection => {
         const socket = getNativeSocket({
-            sessionUID, firebaseConfig, version
+            sessionUID, firebaseConfig, version: sdkVersion
         });
 
         const setNativeProps = memoize(() => {
@@ -556,7 +564,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
-        const popupWin = popup(getNativePopupUrl({ sessionUID }));
+        const popupWin = popup(getNativePopupUrl());
         
         const closePopup = () => {
             popupWin.close();

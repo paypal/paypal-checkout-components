@@ -9,7 +9,8 @@ type PostRobot = {|
 |};
 
 type PayPal = {|
-    postRobot : PostRobot
+    postRobot : PostRobot,
+    version : string
 |};
 
 export function getPayPal() : PayPal {
@@ -28,4 +29,8 @@ export function getPostRobot() : PostRobot {
     }
 
     return paypal.postRobot;
+}
+
+export function getSDKVersion() : string {
+    return getPayPal().version;
 }
