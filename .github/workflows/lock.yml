@@ -11,8 +11,9 @@ jobs:
       - uses: dessant/lock-threads@v2
         with:
           github-token: ${{ github.token }}
+          issue-exclude-created-before: '2018-01-01T00:00:00Z'
           issue-lock-inactive-days: '365'
-          issue-exclude-labels: 'work-in-progress'
+          issue-exclude-labels: 'sdk-core, feature, work-in-progress, help-wanted'
           issue-lock-labels: 'outdated'
           issue-lock-comment: >
             This issue has been automatically locked since there
