@@ -33,6 +33,9 @@ export const fundingEligibility = {
         }
     },
     credit: {
+        eligible: true
+    },
+    paylater: {
         eligible: false
     },
     sepa: {
@@ -108,13 +111,14 @@ export const testGlobals = {
         }
     },
 
-    __FUNDING_ELIGIBILITY__: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
+    __FUNDING_ELIGIBILITY__: () : string => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
 
     __PROTOCOL__:       'http',
     __PORT__:           8000,
     __STAGE_HOST__:     'msmaster.qa.paypal.com',
     __HOST__:           'test.paypal.com',
     __HOSTNAME__:       'test.paypal.com',
+    __SDK_HOST__:       'test.paypal.com',
     __PATH__:           '/sdk/js',
     __VERSION__:        '1.0.55',
     __NAMESPACE__:      'paypal',

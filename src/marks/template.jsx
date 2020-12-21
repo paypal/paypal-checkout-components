@@ -1,14 +1,23 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { node, type ChildNodeType, type ElementNode } from 'jsx-pragmatic/src';
 import { getLocale, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { toPx } from 'belter/src';
 
+import type { Experiment } from '../types';
 import { getFundingConfig } from '../funding';
+import { CLASS } from '../constants';
 
-function Mark({ fundingSource, fundingEligibility } : {| fundingSource : $Values<typeof FUNDING>, fundingEligibility : FundingEligibilityType |}) : ChildNodeType {
+type MarkOptions = {|
+    fundingSource : $Values<typeof FUNDING>,
+    fundingEligibility : FundingEligibilityType,
+    experiment : Experiment,
+    env : $Values<typeof ENV>
+|};
+
+function Mark({ fundingSource, fundingEligibility, experiment, env } : MarkOptions) : ChildNodeType {
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -19,18 +28,33 @@ function Mark({ fundingSource, fundingEligibility } : {| fundingSource : $Values
 
     return (
         <div class='paypal-mark'>
-            <Logo fundingEligibility={ fundingEligibility } locale={ getLocale() } />
+            <Logo
+                fundingEligibility={ fundingEligibility }
+                locale={ getLocale() }
+                experiment={ experiment }
+                env={ env }
+            />
         </div>
     );
 }
 
-export function MarksElement({ fundingEligibility, fundingSources, height } : {| fundingEligibility : FundingEligibilityType, fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>, height : number |}) : ElementNode {
+type MarksElementOptions = {|
+    fundingEligibility : FundingEligibilityType,
+    fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    height : number,
+    experiment : Experiment,
+    env : $Values<typeof ENV>
+|};
+
+export function MarksElement({ fundingEligibility, fundingSources, height, experiment, env } : MarksElementOptions) : ElementNode {
     return (
         <div class='paypal-marks'>
             <style>
                 {`
-                    .paypal-marks {
-                        font-size: ${ height }px;
+                    .${ CLASS.TEXT } {
+                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                        font-size: 12px;
+                        vertical-align: middle;
                     }
 
                     .paypal-mark {
@@ -53,6 +77,7 @@ export function MarksElement({ fundingEligibility, fundingSources, height } : {|
                     .paypal-mark img {
                         height: ${ toPx(height) };
                         display: inline-block;
+                        vertical-align: middle;
                     }
 
                     .paypal-button-card {
@@ -67,7 +92,12 @@ export function MarksElement({ fundingEligibility, fundingSources, height } : {|
             </style>
             {
                 fundingSources.map(fundingSource => (
-                    <Mark fundingEligibility={ fundingEligibility } fundingSource={ fundingSource } />
+                    <Mark
+                        fundingEligibility={ fundingEligibility }
+                        fundingSource={ fundingSource }
+                        experiment={ experiment }
+                        env={ env }
+                    />
                 ))
             }
         </div>

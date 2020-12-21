@@ -24,6 +24,7 @@ export type OnCancelActions = {|
 
 export type CheckoutPropsType = {|
     createOrder : () => ZalgoPromise<string>,
+    createAuthCode : () => ZalgoPromise<string>,
     onApprove : (OnApproveData, OnApproveActions) => ?ZalgoPromise<void>,
     onCancel? : (OnCancelData, OnCancelActions) => ?ZalgoPromise<void>,
     fundingSource : $Values<typeof FUNDING>,

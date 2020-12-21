@@ -180,6 +180,7 @@ if (action === 'auth') {
 
 if (onRender) {
     onRender({
+        xprops:         window.xprops,
         // eslint-disable-next-line unicorn/prefer-spread
         fundingSources: Array.from(new Set(getElements('[data-funding-source]').map(el => el.getAttribute('data-funding-source')))),
         click() {

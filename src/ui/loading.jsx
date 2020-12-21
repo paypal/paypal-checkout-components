@@ -10,7 +10,6 @@ export function LoadingDots({ color = 'rgba(0, 0, 0, 0.5)', delay = 0.2 } : {| c
                 .loading-dots {
                     color: ${ color };
                     font-size: inherit;
-                    font-family: Arial, Helvetica, sans-serif;
                     display: inline-block;
                 }
 

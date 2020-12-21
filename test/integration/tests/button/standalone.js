@@ -18,6 +18,10 @@ describe(`paypal standalone buttons`, () => {
     });
 
     for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
+        if (!window.__TEST_FUNDING_ELIGIBILITY__[fundingSource]) {
+            continue;
+        }
+
         it(`should render a standalone ${ fundingSource } button and succeed when eligible`, () => {
             return wrapPromise(({ expect }) => {
                 if (fundingSource === FUNDING.VENMO) {
@@ -113,6 +117,45 @@ describe(`paypal standalone buttons`, () => {
 
             return button.render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
                 mockEligibility.cancel();
+            });
+        });
+    });
+
+    it(`should allow rendering a standalone verkkopankki button, but not render an automatic venkkopankki button`, () => {
+        return wrapPromise(({ expect }) => {
+            const fundingSource = FUNDING.VERKKOPANKKI;
+            const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
+
+            const button = window.paypal.Buttons({
+                fundingSource
+            });
+
+            if (!button.isEligible()) {
+                throw new Error(`Expected button to be eligible`);
+            }
+
+            return button.render('#testContainer').then(() => {
+
+                const buttons = window.paypal.Buttons({
+                    test: {
+                        onRender: expect('onRender', ({ fundingSources }) => {
+                            if (fundingSources.indexOf(FUNDING.VERKKOPANKKI) !== -1) {
+                                throw new Error(`Expected ${ FUNDING.VERKKOPANKKI } to not be rendered`);
+                            }
+                        })
+                    },
+                    style: {
+                        layout: 'vertical'
+                    }
+                });
+
+                if (!buttons.isEligible()) {
+                    throw new Error(`Expected button to be eligible`);
+                }
+
+                return buttons.render('#testContainer').then(() => {
+                    mockEligibility.cancel();
+                });
             });
         });
     });

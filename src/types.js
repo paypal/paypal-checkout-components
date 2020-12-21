@@ -9,7 +9,8 @@ export type WalletInstrument = {|
     instrumentID? : string,
     tokenID? : string,
     vendor? : $Values<typeof CARD>,
-    oneClick : boolean
+    oneClick : boolean,
+    branded : boolean
 |};
 
 export type WalletPaymentType = {|
@@ -32,5 +33,21 @@ export type ContentType = {|
     chooseCard : string,
     balance : string,
     payNow : string,
-    payWithDebitOrCreditCard : string
+    payWithDebitOrCreditCard : string,
+    credit : string,
+    payWith : string,
+    payLater : string,
+    flex : string
+|};
+
+export type Experiment = {|
+
+|};
+
+export type LazyExport<T> = {|
+    __get__ : () => T
+|};
+
+export type LazyProtectedExport<T> = {|
+    __get__ : () => ?T
 |};

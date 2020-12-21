@@ -1,6 +1,7 @@
 /* @flow */
 
 import './happy';
+import './props';
 import './validation';
 import './error';
 import './drivers';

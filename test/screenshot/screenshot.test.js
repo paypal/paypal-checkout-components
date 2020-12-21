@@ -6,6 +6,7 @@ import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
 import { testGlobals } from '../globals';
 import globals from '../../globals';
+import { testContent } from '../content';
 
 import { webpackCompile } from './lib/compile';
 import { openPage, takeScreenshot } from './lib/browser';
@@ -15,7 +16,7 @@ import { buttonConfigs } from './config';
 
 const IMAGE_DIR = `${ __dirname }/images`;
 
-const DIFF_THRESHOLD = 100;
+const DEFAULT_DIFF_THRESHOLD = 500;
 
 const HEADLESS = (process.env.HEADLESS !== '0');
 const DEVTOOLS = (process.env.DEVTOOLS === '1');
@@ -50,7 +51,7 @@ afterAll(async () => {
 });
 
 for (const config of buttonConfigs) {
-    const { only, ...buttonConfig } = config;
+    const { only, diffThreshold = DEFAULT_DIFF_THRESHOLD, ...buttonConfig } = config;
     const description = dotifyToString(buttonConfig) || 'base';
     const filename = sha256(JSON.stringify(buttonConfig));
 
@@ -59,6 +60,9 @@ for (const config of buttonConfigs) {
 
         const filepath = `${ IMAGE_DIR }/${ filename }.png`;
         const diffpath = `${ IMAGE_DIR }/${ filename }-old.png`;
+
+        buttonConfig.button = buttonConfig.button || {};
+        buttonConfig.button.content = testContent;
 
         const { x, y, width, height } = await page.evaluate(async (options) => {
 
@@ -70,6 +74,10 @@ for (const config of buttonConfigs) {
 
             if (options.fundingEligibility) {
                 window.__TEST_FUNDING_ELIGIBILITY__ = options.fundingEligibility;
+            }
+
+            if (options.wallet) {
+                window.__TEST_WALLET__ = options.wallet;
             }
 
             if (options.rememberedFunding) {
@@ -88,7 +96,7 @@ for (const config of buttonConfigs) {
 
             const renderPromise = window.paypal.Buttons(options.button || {}).render(container);
 
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 300));
 
             const frame = container.querySelector('iframe');
 
@@ -127,9 +135,17 @@ for (const config of buttonConfigs) {
         ]);
 
         if (existing) {
-            const delta = await diffPNG(screenshot, existing);
+            let delta;
 
-            if (delta > DIFF_THRESHOLD) {
+            try {
+                delta = await diffPNG(screenshot, existing);
+            } catch (err) {
+                await existing.write(diffpath);
+                await screenshot.write(filepath);
+                throw err;
+            }
+
+            if (delta > diffThreshold) {
                 await existing.write(diffpath);
                 await screenshot.write(filepath);
 

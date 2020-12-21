@@ -4,14 +4,14 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
-    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain, getUserIDToken, getClientMetadataID, getAmount } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, values, memoize, noop, identity } from 'belter/src';
-import { FUNDING, QUERY_BOOL, CARD } from '@paypal/sdk-constants/src';
+import { uniqueID, memoize } from 'belter/src';
+import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
-import { collectRiskData, persistRiskData } from '@paypal/risk-data-collector/src';
 
 import { getSessionID } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
@@ -19,9 +19,14 @@ import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
+import { determineFlow } from './util';
 
-export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
-    const Buttons = create({
+export type ButtonsComponent = ZoidComponent<ButtonProps>;
+
+export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
+    const queriedEligibleFunding = [];
+
+    return create({
         tag:  'paypal-buttons',
         url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
 
@@ -51,11 +56,62 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
         attributes: {
             iframe: {
                 allowpaymentrequest: 'allowpaymentrequest',
-                scrolling:           'no'
+                scrolling:           'no',
+                title:               FUNDING_BRAND_LABEL.PAYPAL
             }
         },
 
+        eligible: ({ props }) => {
+            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
+            const flow = determineFlow(props);
+
+            if (!fundingSource) {
+                return {
+                    eligible: true
+                };
+            }
+
+            if (queriedEligibleFunding.indexOf(fundingSource) === -1) {
+                queriedEligibleFunding.push(fundingSource);
+            }
+
+            const { layout } = style;
+
+            const platform           = getPlatform();
+            const components         = getComponents();
+
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
+                return {
+                    eligible: true
+                };
+            }
+
+            return {
+                eligible: false,
+                reason:   `${ fundingSource } is not eligible`
+            };
+        },
+
         props: {
+            fundingSource: {
+                type:       'string',
+                queryParam: true,
+                required:   false,
+
+                validate: ({ props }) => {
+                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
+                    const flow = determineFlow(props);
+                    const { layout } = style;
+        
+                    const platform           = getPlatform();
+                    const components         = getComponents();
+
+                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
+                        throw new Error(`${ fundingSource } is not eligible`);
+                    }
+                }
+            },
+
             style: {
                 type:       'object',
                 queryParam: true,
@@ -83,12 +139,6 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 type:       'object',
                 queryParam: true,
                 value:      getLocale
-            },
-
-            fundingSource: {
-                type:       'string',
-                queryParam: true,
-                required:   false
             },
 
             sdkMeta: {
@@ -166,6 +216,13 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 }
             },
 
+            getQueriedEligibleFunding: {
+                type:  'function',
+                value: () => {
+                    return () => queriedEligibleFunding;
+                }
+            },
+
             clientID: {
                 type:       'string',
                 value:      getClientID,
@@ -196,6 +253,12 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 value:      getCorrelationID
             },
 
+            storageID: {
+                type:       'string',
+                value:      getStorageID,
+                queryParam: true
+            },
+
             sessionID: {
                 type:       'string',
                 value:      getSessionID,
@@ -213,7 +276,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 required:   false,
                 queryParam: true
             },
-
+            
             env: {
                 type:       'string',
                 queryParam: true,
@@ -241,26 +304,8 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
             fundingEligibility: {
                 type:          'object',
-                value:         () => {
-                    const fundingEligibility = getRefinedFundingEligibility();
-
-                    try {
-                        if (fundingEligibility.paypal) {
-                            delete fundingEligibility.paypal.vaultable;
-                        }
-                        if (fundingEligibility.card && fundingEligibility.card.vendors) {
-                            for (const vendor of values(CARD)) {
-                                if (fundingEligibility.card.vendors[vendor]) {
-                                    delete fundingEligibility.card.vendors[vendor].vaultable;
-                                }
-                            }
-                        }
-                    } catch (err) {
-                        // pass
-                    }
-
-                    return fundingEligibility;
-                },
+                default:       getRefinedFundingEligibility,
+                value:         (__ENV__ === ENV.LOCAL) ? undefined : getRefinedFundingEligibility,
                 queryParam:    true,
                 serialization: 'base64'
             },
@@ -275,6 +320,20 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 type:       'array',
                 queryParam: true,
                 value:      getRememberedFunding
+            },
+
+            experiment: {
+                type:       'object',
+                queryParam: true,
+                value:      () => {
+                    return {};
+                }
+            },
+
+            flow: {
+                type:       'string',
+                queryParam: true,
+                value:      ({ props }) => determineFlow(props)
             },
 
             remember: {
@@ -315,6 +374,12 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 queryParam: true,
                 value:      getVault
             },
+
+            enableFunding: {
+                type:       'array',
+                queryParam: true,
+                value:      getEnableFunding
+            },
             
             disableFunding: {
                 type:       'array',
@@ -353,7 +418,7 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
 
             userIDToken: {
                 type:       'string',
-                value:      getUserIDToken,
+                default:    getUserIDToken,
                 required:   false,
                 queryParam: true
             },
@@ -363,32 +428,6 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                 required:   false,
                 value:      getClientMetadataID,
                 queryParam: true
-            },
-
-            riskData: {
-                type:  'object',
-                value: ({ props }) => {
-                    const clientMetadataID = getClientMetadataID();
-
-                    if (props.userIDToken && clientMetadataID) {
-                        try {
-                            return collectRiskData({
-                                clientMetadataID,
-                                appSourceID:      'SMART_PAYMENT_BUTTONS'
-                            });
-                        } catch (err) {
-                            // pass
-                        }
-                    }
-                },
-                queryParam:    true,
-                required:      false,
-                serialization: 'base64'
-            },
-
-            persistRiskData: {
-                type:  'function',
-                value: () => persistRiskData
             },
 
             debug: {
@@ -404,56 +443,13 @@ export const getButtonsComponent = memoize(() : ZoidComponent<ButtonProps> => {
                         action: 'checkout'
                     };
                 }
+            },
+
+            wallet: {
+                type:     'object',
+                required: false,
+                default:  () => window.__TEST_WALLET__
             }
         }
     });
-
-    const instances = [];
-
-    const ButtonsWrapper = (props = {}) => {
-        // eslint-disable-next-line prefer-const
-        let instance;
-
-        const onDestroy = props.onDestroy || noop;
-        props.onDestroy = (...args) => {
-            if (instance) {
-                instances.splice(instances.indexOf(instance), 1);
-            }
-            return onDestroy(...args);
-        };
-
-        instance = Buttons(props);
-        instances.push(instance);
-
-        // $FlowFixMe
-        instance.isEligible = () => {
-            const { fundingSource, onShippingChange, style = {} } = props;
-            const { layout } = style;
-
-            const platform           = getPlatform();
-            const fundingEligibility = getRefinedFundingEligibility();
-            const components         = getComponents();
-
-            if (fundingSource) {
-                return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange });
-            }
-
-            return true;
-        };
-
-        // $FlowFixMe
-        instance.clone = ({ decorate = identity } = {}) => {
-            return ButtonsWrapper(decorate(props));
-        };
-
-        return instance;
-    };
-
-    ButtonsWrapper.driver = Buttons.driver;
-    ButtonsWrapper.isChild = Buttons.isChild;
-    ButtonsWrapper.canRenderTo = Buttons.canRenderTo;
-    ButtonsWrapper.instances = instances;
-
-    // $FlowFixMe
-    return ButtonsWrapper;
 });

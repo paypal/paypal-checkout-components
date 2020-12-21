@@ -1,0 +1,34 @@
+{
+  "extends": [
+    "config:base",
+    ":preserveSemverRanges"
+  ],
+  "prCreation": "immediate",
+  "prHourlyLimit": 0,
+  "rangeStrategy": "status-success",
+  "separateMajorMinor": false,
+  "semanticCommits": true,
+  "timezone": "America/Los_Angeles",
+  "rebaseStalePrs": true,
+  "labels": [
+    ":christmas_tree: dependencies"
+  ],
+  "packageRules": [
+    {
+      "packagePatterns": "^babel",
+      "groupName": ["babel packages"]
+    },
+    {
+      "packagePatterns": "^eslint",
+      "groupName": ["eslint packages"]
+    },
+    {
+      "packagePatterns": "^jest",
+      "groupName": ["jest packages"]
+    },
+    {
+      "packagePatterns": "^rollup",
+      "groupName": ["rollup packages"]
+    }
+  ]
+}

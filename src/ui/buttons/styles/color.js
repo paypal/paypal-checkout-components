@@ -1,6 +1,8 @@
 /* @flow */
 
-import { BUTTON_COLOR, CLASS, TEXT_COLOR } from '../../../constants';
+import { FUNDING } from '@paypal/sdk-constants/src';
+
+import { BUTTON_COLOR, CLASS, TEXT_COLOR, ATTRIBUTE } from '../../../constants';
 
 export const buttonColorStyle = `
 
@@ -13,8 +15,18 @@ export const buttonColorStyle = `
         color: #fff;
     }
 
+    .${ CLASS.BUTTON }.${ CLASS.TEXT_COLOR }-${ TEXT_COLOR.BLACK } .${ CLASS.SPINNER } {
+        border: 3px solid rgba(100, 100, 100, .2);
+        border-top-color: rgba(33, 128, 192, 0.8);
+    }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } {
+    .${ CLASS.BUTTON }.${ CLASS.TEXT_COLOR }-${ TEXT_COLOR.WHITE } .${ CLASS.SPINNER } {
+        border: 3px solid rgba(200, 200, 200, 0.2);
+        border-top-color: rgba(255, 255, 255, .85);
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } .menu-button {
         background: #ffc439;
     }
 
@@ -35,10 +47,16 @@ export const buttonColorStyle = `
         border: 0.125rem solid #009cde;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
+        pointer-events: none;
     }
 
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } .menu-button {
+        background: #0070ba;
+    }
+
+    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.VENMO }].${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
         background: #009cde;
     }
 
@@ -59,9 +77,11 @@ export const buttonColorStyle = `
         border: 0.125rem solid #0000a6;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #009cde;
+        pointer-events: none;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } .menu-button {
         background: #eee;
     }
 
@@ -82,9 +102,11 @@ export const buttonColorStyle = `
         border: 0.125rem solid #009cde;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
+        pointer-events: none;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } .menu-button {
         background: #003087;
     }
 
@@ -105,11 +127,13 @@ export const buttonColorStyle = `
         border: 0.125rem solid #009cde;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
+        pointer-events: none;
     }
 
 
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } .menu-button {
         background: #2C2E2F;
     }
 
@@ -130,11 +154,13 @@ export const buttonColorStyle = `
         border: 0.125rem solid #009cde;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
+        pointer-events: none;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } {
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE },
+    .${ CLASS.BUTTON_ROW }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } .menu-button {
         background: #fff;
-        border: 1px solid #2C2E2F;
+        border: 1px solid #555;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE }:hover {
@@ -154,6 +180,7 @@ export const buttonColorStyle = `
         border: 0.125rem solid #009cde;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
+        pointer-events: none;
     }
 
 

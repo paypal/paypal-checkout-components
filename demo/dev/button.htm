@@ -3,21 +3,42 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://localhost.paypal.com:9000/sdk.js?client-id=alc_client1"></script>
-    <script src="https://localhost.paypal.com:9000/button.js"></script>
-    <script src="https://localhost.paypal.com:9000/jsx-pragmatic.js"></script>
+    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1"></script>
+    <script src="https://localhost.paypal.com:9001/button.js"></script>
+    <script src="https://localhost.paypal.com:9001/jsx-pragmatic.js"></script>
+
 </head>
 
 <body>
     <script>
-        document.write(button.Buttons({
+
+        const server = xprops.server || {};
+
+        const props = {
             ...xprops,
             content: {
-                payWithDebitOrCreditCard: 'Pay with Debit or Credit Card'
-            }
-        }).render(jsx.html()));
+                payWithDebitOrCreditCard: 'Debit or Credit Card',
+                payNow: 'Pay Now',
+                payWith: 'Pay with',
+                credit: 'Credit',
+                balance: 'Balance'
+            },
+            wallet: server.wallet
+        }
+
+        document.write(button.Buttons(props).render(jsx.html()));
 
         document.querySelectorAll('[data-funding-source]').forEach(button => {
+            if (button.parentElement.querySelector('[data-menu]')) {
+                button.parentElement.querySelector('[data-menu]').addEventListener('click', event => {
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                    alert('menu triggered');
+                });
+            }
+
+
             button.addEventListener('click', () => {
                 const instance = paypal.Checkout({
                     createOrder: () => {
@@ -32,7 +53,7 @@
                         instance.close();
                     }
                 });
-                
+
                 instance.renderTo(window.parent, 'body');
             });
         });

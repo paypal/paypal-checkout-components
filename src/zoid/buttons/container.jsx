@@ -4,21 +4,24 @@
 import { values, destroyElement, toCSS } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
+import { getVersion } from '@paypal/sdk-client/src';
 
-import { BUTTON_SIZE } from '../../constants';
+import { BUTTON_SIZE, ATTRIBUTE } from '../../constants';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/config';
 import { type ButtonProps } from '../../ui/buttons/props';
 
 const CLASS = {
-    VISIBLE:         'visible',
-    INVISIBLE:       'invisible',
-    COMPONENT_FRAME: 'component-frame',
-    PRERENDER_FRAME: 'prerender-frame',
-    SMART_MENU:      'smart-menu'
+    VISIBLE:            'visible',
+    INVISIBLE:          'invisible',
+    COMPONENT_FRAME:    'component-frame',
+    PRERENDER_FRAME:    'prerender-frame',
+    SMART_MENU:         'smart-menu',
+    INSTALLMENTS_MODAL: 'installments-modal'
 };
 
 const ID = {
-    SMART_MENU: 'smart-menu'
+    SMART_MENU:         'smart-menu',
+    INSTALLMENTS_MODAL: 'installments-modal'
 };
 
 export function containerTemplate({ uid, props, tag, context, frame, prerenderFrame, doc, container, event } : RenderOptionsType<ButtonProps>) : ?HTMLElement {
@@ -82,7 +85,12 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
     };
 
     const element = (
-        <div id={ uid } onRender={ setupAutoResize } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
+        <div
+            id={ uid }
+            class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }
+            { ...({ [ATTRIBUTE.VERSION]: `${ getVersion() }` }) }
+            onRender={ setupAutoResize } >
+            
             <style>
                 {`
                     #${ uid } {
@@ -135,6 +143,8 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
             <node el={ prerenderFrame } />
 
             <div id={ ID.SMART_MENU } class={ CLASS.SMART_MENU } />
+
+            <div id={ ID.INSTALLMENTS_MODAL } class={ CLASS.INSTALLMENTS_MODAL } />
         </div>
     ).render(dom({ doc }));
 

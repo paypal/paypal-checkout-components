@@ -70,8 +70,8 @@ export const buttonStyle = `
         transform: translateY(-50%);
     }
 
-    .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } > * {
-        vertical-align: top;
+    .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } * {
+        vertical-align: middle;
         height: 100%;
         text-align: left;
     }

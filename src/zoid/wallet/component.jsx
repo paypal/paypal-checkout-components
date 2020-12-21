@@ -6,19 +6,20 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken,
     getClientAccessToken, getUserIDToken, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID,
     getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault,
-    getMerchantID, getCSPNonce, getDebug, getClientMetadataID } from '@paypal/sdk-client/src';
+    getMerchantID, getCSPNonce, getDebug } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, memoize, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getRefinedFundingEligibility, rememberFunding } from '@paypal/funding-components/src';
-import { collectRiskData } from '@paypal/risk-data-collector/src';
 
 import { type WalletProps } from './props';
 import { WalletPrerender } from './prerender';
 import { WalletContainer } from './container';
 
-export function getWalletComponent() : ZoidComponent<WalletProps> {
+export type WalletComponent = ZoidComponent<WalletProps>;
+
+export function getWalletComponent() : WalletComponent {
     return inlineMemoize(getWalletComponent, () => {
         return create({
             tag:    'paypal-wallet',
@@ -39,7 +40,7 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
 
             containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
                 return (
-                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } props={ props } />
+                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ props.nonce } />
                 ).render(dom({ doc }));
             },
 
@@ -102,6 +103,7 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                 createOrder: {
                     type:       'function',
                     queryParam: 'orderID',
+                    // $FlowFixMe
                     queryValue: ({ value }) => ZalgoPromise.try(value),
                     decorate:   ({ value }) => memoize(value)
                 },
@@ -115,27 +117,6 @@ export function getWalletComponent() : ZoidComponent<WalletProps> {
                     value:      getUserIDToken,
                     required:   false,
                     queryParam: true
-                },
-
-                riskData: {
-                    type:  'object',
-                    value: ({ props }) => {
-                        const clientMetadataID = getClientMetadataID();
-
-                        if (props.userIDToken && clientMetadataID) {
-                            try {
-                                return collectRiskData({
-                                    clientMetadataID,
-                                    appSourceID:      'SMART_PAYMENT_BUTTONS'
-                                });
-                            } catch (err) {
-                                // pass
-                            }
-                        }
-                    },
-                    queryParam:    true,
-                    required:      false,
-                    serialization: 'base64'
                 },
 
                 locale: {

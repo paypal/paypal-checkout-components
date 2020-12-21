@@ -1,7 +1,19 @@
 PayPal Checkout
 ---------------
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/paypal/paypal-checkout) [![Build Status](https://travis-ci.org/paypal/paypal-checkout.svg?branch=master)](https://travis-ci.org/paypal/paypal-checkout-components) [![dependencies Status](https://david-dm.org/paypal/paypal-checkout/status.svg)](https://david-dm.org/paypal/paypal-checkout-components) [![devDependencies Status](https://david-dm.org/paypal/paypal-checkout/dev-status.svg)](https://david-dm.org/paypal/paypal-checkout-components?type=dev)
+[![build status][build-badge]][build]
+[![code coverage][coverage-badge]][coverage]
+[![npm version][version-badge]][package]
+[![apache license][license-badge]][license]
+
+[build-badge]: https://img.shields.io/github/workflow/status/paypal/paypal-checkout-components/build?logo=github&style=flat-square
+[build]: https://github.com/paypal/paypal-checkout-components/actions?query=workflow%3Abuild
+[coverage-badge]: https://img.shields.io/codecov/c/github/paypal/paypal-checkout-components.svg?style=flat-square
+[coverage]: https://codecov.io/github/paypal/paypal-checkout-components/
+[version-badge]: https://img.shields.io/npm/v/@paypal/checkout-components.svg?style=flat-square
+[package]: https://www.npmjs.com/package/@paypal/checkout-components
+[license-badge]: https://img.shields.io/npm/l/@paypal/checkout-components.svg?style=flat-square
+[license]: https://github.com/paypal/paypal-checkout-components/blob/master/LICENSE
 
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
 [zoid](https://github.com/krakenjs/zoid).

@@ -8,9 +8,10 @@ type ChevronProps = {|
     color? : string
 |};
 
-export function Chevron({ color = '#848484' } : ChevronProps = {}) : ComponentNode<{||}> {
+export function Chevron({ color = '#848484', ...props } : ChevronProps = {}) : ComponentNode<{||}> {
     return (
         <SVGLogo
+            { ...props }
             name='chevron'
             render={ () => (
                 <svg width="256" height="158.18601989746094" viewBox="-1.935 0.221 256 158.186" xmlns="http://www.w3.org/2000/svg">
