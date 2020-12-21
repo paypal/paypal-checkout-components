@@ -53,6 +53,14 @@ export function getFieldsComponent() : FieldsComponent {
             },
 
             props: {
+                
+                amount: {
+                    type:       'object',
+                    queryParam: true,
+                    required:   false,
+                    decorate:   ({ value }) => value,
+                    default:    () => ({})
+                },
 
                 fields: {
                     type:       'object',
