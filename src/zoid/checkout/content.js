@@ -15,6 +15,10 @@ export const containerContent : ContentMap = {
         windowMessage:   'لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك',
         continueMessage: 'متابعة'
     },
+    bg: {
+        windowMessage:   'Не виждате защитения браузър на PayPal? Ще ви помогнем да отворите отново прозореца, за да завършите покупката си',
+        continueMessage: 'Щракнете, за да продължите'
+    },
     cs: {
         windowMessage:   'Nezobrazuje se vám bezpečný prohlížeč PayPal? Pomůžeme vám okno znovu otevřít, abyste mohli nákup dokončit',
         continueMessage: 'Pokračovat'
@@ -38,6 +42,10 @@ export const containerContent : ContentMap = {
     es: {
         windowMessage:   '¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra',
         continueMessage: 'Continuar'
+    },
+    et: {
+        windowMessage:   'Kas te ei näe turvalist PayPali lehitsejat? Aitame teil ostu lõpuleviimiseks akna uuesti avada.',
+        continueMessage: 'Jätkamiseks klõpsake'
     },
     fi: {
         windowMessage:   'Eikö suojattua PayPal-selainta näy? Autamme avaamaan ikkunan uudelleen oston viimeistelyä varten',
@@ -71,6 +79,18 @@ export const containerContent : ContentMap = {
         windowMessage:   '보안 PayPal 브라우저가 보이지 않으신가요? 창을 다시 실행하여 결제를 완료할 수 있도록 도와드리겠습니다',
         continueMessage: '계속'
     },
+    lt: {
+        windowMessage:   'Nematote saugios „PayPal“ naršyklės? Padėsime iš naujo paleisti langą, kad užbaigtumėte pirkimą',
+        continueMessage: 'Paspauskite, jei norite tęsti'
+    },
+    lv: {
+        windowMessage:   'Vai neredzat drošo PayPal pārlūkprogrammu? Mēs palīdzēsim jums atkārtoti palaist logu, lai pabeigtu pirkumu.',
+        continueMessage: 'Noklikšķiniet, lai turpinātu'
+    },
+    ms: {
+        windowMessage:   'Tidak melihat pelayar PayPal yang selamat? Kami akan membantu anda melancarkan semula tetingkap untuk melengkapkan pembelian anda',
+        continueMessage: 'Klik untuk Meneruskan'
+    },
     no: {
         windowMessage:   'Ser du ikke den sikre PayPal-nettleseren? Vi hjelper deg med å starte vinduet på nytt så du kan fullføre kjøpet',
         continueMessage: 'Fortsett'
@@ -99,6 +119,10 @@ export const containerContent : ContentMap = {
         windowMessage:   'Nezobrazuje sa vám zabezpečený prehliadač PayPal? Pomôžeme vám znova otvoriť okno, aby ste mohli nákup dokončiť',
         continueMessage: 'Pokračovať'
     },
+    sl: {
+        windowMessage:   'Ne vidite PayPalovega varnega brskalnika? Pomagali vam bomo ponovno zagnati okno za dokončanje nakupa',
+        continueMessage: 'Kliknite za nadaljevanje'
+    },
     sv: {
         windowMessage:   'Ser du inte den säkra PayPal-webbläsaren? Vi hjälper dig att starta om fönstret för att slutföra ditt köp',
         continueMessage: 'Fortsätt'
@@ -106,6 +130,10 @@ export const containerContent : ContentMap = {
     th: {
         windowMessage:   'ถ้าคุณไม่เห็นเบราว์เซอร์ที่มีระบบความปลอดภัยของ PayPal เราจะช่วยคุณเปิดหน้าต่างอีกครั้งเพื่อชำระเงินให้เรียบร้อย',
         continueMessage: 'ดำเนินการต่อ'
+    },
+    tl: {
+        windowMessage:   'Hindi nakikita ang secure na PayPal browser? Tutulungan ka naming i-launch ulit ang window para makumpleto ang pagbili mo.',
+        continueMessage: 'I-click para Magpatuloy'
     },
     tr: {
         windowMessage:   'Güvenli PayPal tarayıcısını görmüyor musunuz? Alışverişinizi tamamlamak için pencereyi yeniden başlatmanıza yardımcı olacağız',
