@@ -146,7 +146,6 @@ export function getButtonMiddleware({
                     <style nonce="${ cspNonce }">${ buttonStyle }</style>
                     
                     <div id="buttons-container" class="buttons-container">${ buttonHTML }</div>
-                    <div id="card-fields-container" class="card-fields-container"></div>
 
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
