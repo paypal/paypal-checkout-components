@@ -98,11 +98,15 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
 
-    const fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet });
+    let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet });
     const multiple = fundingSources.length > 1;
 
     if (!fundingSources.length) {
         throw new Error(`No eligible funding fundingSources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
+    }
+
+    if (fundingSources.includes(FUNDING.CARD)) {
+        fundingSources = fundingSources.filter(src => src !== FUNDING.CARD).concat([ FUNDING.CARD ]);
     }
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
