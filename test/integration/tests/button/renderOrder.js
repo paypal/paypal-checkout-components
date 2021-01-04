@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint max-lines: 0 */
 
 import { FUNDING } from '@paypal/sdk-constants/src';
 
