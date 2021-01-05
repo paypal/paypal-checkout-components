@@ -53,12 +53,12 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
     });
 
     // $FlowFixMe
-    const { style } = props;
+    const { style, nonce } = props;
     const { label, layout, height: buttonHeight } = style;
 
     let minimumSize = MINIMUM_SIZE[layout];
     const maximumSize = MAXIMUM_SIZE[layout];
-    
+
     if (buttonHeight) {
         const possibleSizes = values(BUTTON_SIZE).filter(possibleSize => {
             return BUTTON_SIZE_STYLE[possibleSize] && buttonHeight &&
@@ -90,8 +90,8 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
             class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }
             { ...({ [ATTRIBUTE.VERSION]: `${ getVersion() }` }) }
             onRender={ setupAutoResize } >
-            
-            <style>
+
+            <style nonce={ nonce }>
                 {`
                     #${ uid } {
                         position: relative;
