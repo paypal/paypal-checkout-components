@@ -1,3 +1,25 @@
+## <small>5.0.133 (2021-01-06)</small>
+
+* Add code coverage badge ([35aa14a](https://github.com/paypal/paypal-checkout-components/commit/35aa14a))
+* Add github action workflow ([ce18651](https://github.com/paypal/paypal-checkout-components/commit/ce18651))
+* Added new languages for Q4 2020 (#1502) ([6082218](https://github.com/paypal/paypal-checkout-components/commit/6082218)), closes [#1502](https://github.com/paypal/paypal-checkout-components/issues/1502)
+* Collect code coverage with karma ([64d753c](https://github.com/paypal/paypal-checkout-components/commit/64d753c))
+* Enforce ordering of card button (#1473) ([9460b12](https://github.com/paypal/paypal-checkout-components/commit/9460b12)), closes [#1473](https://github.com/paypal/paypal-checkout-components/issues/1473)
+* GitHub Actions - Ignore issues from before 2018 ([1160de5](https://github.com/paypal/paypal-checkout-components/commit/1160de5))
+* Move renovate config into github folder ([db8f6d6](https://github.com/paypal/paypal-checkout-components/commit/db8f6d6))
+* Only lock old issues (#1492) ([705903c](https://github.com/paypal/paypal-checkout-components/commit/705903c)), closes [#1492](https://github.com/paypal/paypal-checkout-components/issues/1492)
+* Pass destroy error through to zoid ([d3281b4](https://github.com/paypal/paypal-checkout-components/commit/d3281b4))
+* Pass storageID down to buttons component ([bbe5497](https://github.com/paypal/paypal-checkout-components/commit/bbe5497))
+* Pin to exact version of flow-bin (0.135.0) ([903a719](https://github.com/paypal/paypal-checkout-components/commit/903a719))
+* Remove travis ci config ([759026a](https://github.com/paypal/paypal-checkout-components/commit/759026a))
+* Update badges and license (#1494) ([9daaf38](https://github.com/paypal/paypal-checkout-components/commit/9daaf38)), closes [#1494](https://github.com/paypal/paypal-checkout-components/issues/1494)
+* Update ci badge ([112c3e3](https://github.com/paypal/paypal-checkout-components/commit/112c3e3))
+* Use GitHub Actions to manage old Issues and PRs (#1491) ([7a94db2](https://github.com/paypal/paypal-checkout-components/commit/7a94db2)), closes [#1491](https://github.com/paypal/paypal-checkout-components/issues/1491)
+* chore(deps): update dependency pngjs to v6 (#1466) ([945e006](https://github.com/paypal/paypal-checkout-components/commit/945e006)), closes [#1466](https://github.com/paypal/paypal-checkout-components/issues/1466)
+* chore(release): 5.0.132 :tada: ([dc9cc9e](https://github.com/paypal/paypal-checkout-components/commit/dc9cc9e))
+
+
+
 ## <small>5.0.132 (2020-12-17)</small>
 
 * Add code coverage badge ([35aa14a](https://github.com/paypal/paypal-checkout-components/commit/35aa14a))
