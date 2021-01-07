@@ -6,7 +6,7 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
 import { getVersion } from '@paypal/sdk-client/src';
 
-import { BUTTON_SIZE, ATTRIBUTE } from '../../constants';
+import { BUTTON_SIZE, ATTRIBUTE, NoncedStyleElement } from '../../constants';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/config';
 import { type ButtonProps } from '../../ui/buttons/props';
 
@@ -91,8 +91,9 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
             { ...({ [ATTRIBUTE.VERSION]: `${ getVersion() }` }) }
             onRender={ setupAutoResize } >
 
-            <style nonce={ nonce }>
-                {`
+            <NoncedStyleElement 
+                nonce={ nonce } 
+                css={`
                     #${ uid } {
                         position: relative;
                         display: inline-block;
@@ -137,7 +138,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                         width: 100%;
                     }
                 `}
-            </style>
+            />
 
             <node el={ frame } />
             <node el={ prerenderFrame } />

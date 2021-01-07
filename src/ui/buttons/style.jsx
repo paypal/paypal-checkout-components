@@ -1,8 +1,8 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ElementNode } from 'jsx-pragmatic/src';
-
+import { node, type ElementNode, type ComponentNode } from 'jsx-pragmatic/src';
+import { NoncedStyleElement } from '../../constants';
 import { type ButtonStyle } from './props';
 import { componentStyle } from './styles';
 
@@ -11,12 +11,11 @@ type StyleProps = {|
     nonce : string
 |};
 
-export function Style({ style, nonce } : StyleProps) : ElementNode {
+export function Style({ style, nonce } : StyleProps) : ComponentNode<*> {
 
     const { height } = style;
     const css = componentStyle({ height });
 
-    return (
-        <style nonce={ nonce } innerHTML={ css } />
-    );
+    return (<NoncedStyleElement nonce={ nonce } css={ css } />)
+    
 }

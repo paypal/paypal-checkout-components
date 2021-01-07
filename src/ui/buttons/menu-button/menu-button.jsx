@@ -1,16 +1,16 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ChildType, Style } from 'jsx-pragmatic/src';
+import { node, type ChildType } from 'jsx-pragmatic/src';
 
-import { ATTRIBUTE, TEXT_COLOR } from '../../../constants';
+import { ATTRIBUTE, TEXT_COLOR, NoncedStyleElement } from '../../../constants';
 import { Chevron } from '../../chevron';
 
 import css from './menu-button.scoped.scss';
 
-export function MenuButton({ textColor = TEXT_COLOR.BLACK } : {| textColor? : $Values<typeof TEXT_COLOR> |} = { }) : ChildType {
+export function MenuButton({ textColor = TEXT_COLOR.BLACK, nonce} : {| textColor? : $Values<typeof TEXT_COLOR>, nonce : ?string |} = { }) : ChildType {
     return (
-        <Style css={ css }>
+        <NoncedStyleElement css={ css } nonce= { nonce }>
             <div
                 { ...{
                     [ATTRIBUTE.MENU]: true
@@ -19,6 +19,6 @@ export function MenuButton({ textColor = TEXT_COLOR.BLACK } : {| textColor? : $V
                 class='menu-button'>
                 <Chevron color={ textColor } />
             </div>
-        </Style>
+        </NoncedStyleElement>
     );
 }

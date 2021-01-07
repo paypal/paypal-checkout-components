@@ -1,9 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Style, type ChildType, type NullableChildrenType } from 'jsx-pragmatic/src';
+import { node, type ChildType, type NullableChildrenType } from 'jsx-pragmatic/src';
 
-import { CLASS, TEXT_COLOR } from '../../constants';
+import { CLASS, TEXT_COLOR, NoncedStyleElement } from '../../constants';
 
 import css from './style.scoped.scss';
 
@@ -25,13 +25,14 @@ export function Space() : ChildType {
 
 type PlaceHolderProps = {|
     chars : number,
-    color? : $Values<typeof TEXT_COLOR>
+    color? : $Values<typeof TEXT_COLOR>,
+    nonce : ?string
 |};
 
-export function PlaceHolder({ chars, color = TEXT_COLOR.WHITE } : PlaceHolderProps) : ChildType {
+export function PlaceHolder({ chars, color = TEXT_COLOR.WHITE, nonce } : PlaceHolderProps) : ChildType {
     return (
-        <Style css={ css }>
+        <NoncedStyleElement css={ css } nonce={ nonce }>
             <div class={ [ 'placeholder', `color-${ color }`  ].join(' ') }>{ new Array(chars).fill('x').join('') }</div>
-        </Style>
+        </NoncedStyleElement>
     );
 }

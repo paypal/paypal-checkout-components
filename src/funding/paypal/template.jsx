@@ -6,7 +6,7 @@ import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, Glyp
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
-import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
+import { CLASS, ATTRIBUTE, BUTTON_LAYOUT, NoncedStyleElement } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
@@ -53,7 +53,7 @@ function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
         return null;
     }
     
-    const { tagline } = opts;
+    const { tagline,nonce } = opts;
 
     const personalizationText = !tagline && getPersonalizationText(opts);
 
@@ -63,7 +63,7 @@ function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
     const PAYPAL_BUTTON = `.${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }]`;
 
     return (
-        <style innerHTML={ `
+        <NoncedStyleElement nonce={ nonce } css={`
             @media only screen and (max-width: ${ MIN_WIDTH }px) {
                 .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ CLASS.PERSONALIZATION_TEXT } {
                     ${ HIDDEN }
@@ -157,7 +157,7 @@ export function Label(opts : LabelOptions) : ChildType {
 }
 
 export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, locale, content, commit } = opts;
+    const { logoColor, instrument, locale, content, commit, nonce} = opts;
 
     if (__WEB__) {
         return;
@@ -180,7 +180,7 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
     }
 
     return (
-        <Style css={ css }>
+        <NoncedStyleElement css={ css } nonce={ nonce }>
             <div class='wallet-label'>
                 <div class='paypal-mark'>
                     <PPLogo logoColor={ logoColor } />
@@ -210,12 +210,12 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
                     </Text>
                 </div>
             </div>
-        </Style>
+        </NoncedStyleElement>
     );
 }
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, vault, textColor, fundingSource } = opts;
+    const { logoColor, instrument, content, commit, vault, textColor, fundingSource, nonce } = opts;
 
     if (instrument && !instrument.type) {
         return WalletLabelOld(opts);
@@ -273,7 +273,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
     }
 
     return (
-        <Style css={ css }>
+        <NoncedStyleElement css={ css } nonce={ nonce }>
             <div class='wallet-label-new' { ...attrs }>
                 {
                     branded
@@ -291,7 +291,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                     {
                         (instrument && content)
                             ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
-                            : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
+                            : <Text><PlaceHolder chars={ 7 } color={ textColor } nonce={ nonce } /></Text>
                     }
                     <Space />
                 </div>
@@ -299,7 +299,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                     {
                         (instrument && logo)
                             ? logo
-                            : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
+                            : <Text><PlaceHolder chars={ 4 } color={ textColor } nonce={ nonce } /></Text>
                     }
                 </div>
                 <div class='label'>
@@ -307,11 +307,11 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                     {
                         (instrument && label)
                             ? <Text>{ label }</Text>
-                            : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
+                            : <Text><PlaceHolder chars={ 6 } color={ textColor } nonce={ nonce } /></Text>
                     }
                 </div>
             </div>
-        </Style>
+        </NoncedStyleElement>
     );
 }
 

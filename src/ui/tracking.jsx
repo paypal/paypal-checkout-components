@@ -2,13 +2,14 @@
 /** @jsx node */
 
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
+import { NoncedStyleElement } from '../constants'
 
 export function TrackingBeacon({ url, nonce } : {| url : string, nonce : ?string |}) : ChildType {
     return (
         <Fragment>
-            <style
+            <NoncedStyleElement
                 nonce={ nonce }
-                innerHTML={ `
+                css={ `
                     .tracking-beacon {
                         visibility: hidden;
                         position: absolute;

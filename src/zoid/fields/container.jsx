@@ -4,6 +4,7 @@
 import { destroyElement, toCSS, type EventEmitterType } from 'belter/src';
 import { node, type ChildType } from 'jsx-pragmatic/src';
 import { EVENT } from 'zoid/src';
+import { NoncedStyleElement } from '../../constants';
 
 const CLASS = {
     VISIBLE:         'visible',
@@ -17,7 +18,7 @@ type FieldsContainerOptions = {|
     frame : ?HTMLIFrameElement,
     prerenderFrame : ?HTMLIFrameElement,
     event : EventEmitterType,
-    nonce? : ?string
+    nonce : ?string
 |};
 
 export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : FieldsContainerOptions) : ?ChildType {
@@ -58,8 +59,9 @@ export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : F
 
     const element = (
         <div id={ uid } onRender={ setupAutoResize }>
-            <style nonce={ nonce }>
-                {`
+            <NoncedStyleElement 
+                nonce={ nonce } 
+                css={`
                     #${ uid } {
                         position: relative;
                         display: inline-block;
@@ -111,7 +113,7 @@ export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : F
                         pointer-events: none;
                     }
                 `}
-            </style>
+            />
 
             <node el={ frame } />
             <node el={ prerenderFrame } />
