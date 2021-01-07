@@ -11,7 +11,7 @@ import type { ButtonProps } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome } from '../lib';
-import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
+import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 import type { NativePopupInputParams } from '../../server/components/native/params';
 
@@ -80,12 +80,23 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
         config:           firebaseConfig
     });
     nativeSocket.onError(err => {
-        getLogger().error('native_socket_error', { err: stringifyError(err) })
-            .track({
-                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK,
-                [FTPI_CUSTOM_KEY.ERR_DESC]: `[Native Socket Error] ${ stringifyError(err) }`
-            }).flush();
+        const stringifiedError = stringifyError(err);
+        if (stringifiedError.indexOf('permission_denied') !== -1) {
+            getLogger()
+                .info('firebase_connection_reinitialized', { sessionUID })
+                .track({
+                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK,
+                    [FPTI_CUSTOM_KEY.ERR_DESC]: `[Native Socket Info] ${ stringifiedError }`
+                }).flush();
+        } else {
+            getLogger().error('native_socket_error', { err: stringifiedError })
+                .track({
+                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK,
+                    [FPTI_CUSTOM_KEY.ERR_DESC]: `[Native Socket Error] ${ stringifiedError }`
+                }).flush();
+        }
     });
 
     return nativeSocket;
@@ -364,7 +375,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         approved = true;
         getLogger().info(`native_message_onapprove`, { payerID, paymentID, billingToken })
             .track({
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_CLOSED
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE,
+                [FPTI_CUSTOM_KEY.INFO_MSG]: `payerID: ${ payerID }, paymentID: ${ paymentID }, billingToken: ${ billingToken }`
             })
             .flush();
 
@@ -378,7 +390,11 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const onCancelCallback = () => {
         cancelled = true;
-        getLogger().info(`native_message_oncancel`).flush();
+        getLogger().info(`native_message_oncancel`)
+            .track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_CANCEL
+            })
+            .flush();
         return ZalgoPromise.all([
             onCancel(),
             close()
@@ -386,7 +402,11 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const onErrorCallback = ({ data : { message } } : {| data : {| message : string |} |}) => {
-        getLogger().info(`native_message_onerror`, { err: message }).flush();
+        getLogger().info(`native_message_onerror`, { err: message })
+            .track({
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_ERROR,
+                [FPTI_CUSTOM_KEY.INFO_MSG]: `Error message: ${ message }`
+            }).flush();
         return ZalgoPromise.all([
             onError(new Error(message)),
             close()
@@ -394,7 +414,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const onShippingChangeCallback = ({ data } : {| data : OnShippingChangeData |}) => {
-        getLogger().info(`native_message_onshippingchange`).flush();
+        getLogger().info(`native_message_onshippingchange`)
+            .track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_SHIPPING_CHANGE
+            }).flush();
         if (onShippingChange) {
             let resolved = true;
             const actions = {
@@ -422,7 +445,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             sessionUID, firebaseConfig, version: sdkVersion
         });
 
-        const setNativeProps = memoize(() => {
+        const setNativeProps = () => {
             return getSDKProps().then(sdkProps => {
                 getLogger().info(`native_message_setprops`).flush();
                 instrumentNativeSDKProps(sdkProps);
@@ -435,10 +458,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             }).catch(err => {
                 getLogger().info(`native_response_setprops_error`).track({
                     [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                    [FTPI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                    [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
                 }).flush();
             });
-        });
+        };
 
         const closeNative = memoize(() => {
             getLogger().info(`native_message_close`).flush();
@@ -532,6 +555,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
         return validatePromise.then(valid => {
             if (!valid) {
+                getLogger().info(`native_onclick_invalid`).track({
+                    [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
+                }).flush();
                 return delayPromise.then(() => {
                     if (didAppSwitch(nativeWin)) {
                         return connectNative({ sessionUID }).close();
@@ -554,7 +581,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     .track({
                         [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
                         [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
-                        [FTPI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                        [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
                     }).flush();
                 return connectNative({ sessionUID }).close().then(() => {
                     throw err;
@@ -598,6 +625,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             getLogger().info(`native_post_message_await_redirect`).flush();
             return validatePromise.then(valid => {
                 if (!valid) {
+                    getLogger().info(`native_onclick_invalid`).track({
+                        [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
+                    }).flush();
                     return close().then(() => {
                         throw new Error(`Validation failed`);
                     });
@@ -610,7 +641,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         .track({
                             [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
                             [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH,
-                            [FTPI_CUSTOM_KEY.INFO_MSG]: nativeUrl
+                            [FPTI_CUSTOM_KEY.INFO_MSG]: nativeUrl
                         }).flush();
 
                     return { redirectUrl: nativeUrl };
@@ -619,7 +650,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         .track({
                             [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
                             [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
-                            [FTPI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                            [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
                         }).flush();
 
                     return connectNative({ sessionUID }).close().then(() => {
@@ -645,7 +676,11 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         });
 
         const onCompleteListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_COMPLETE, () => {
-            getLogger().info(`native_post_message_on_complete`).flush();
+            getLogger().info(`native_post_message_on_complete`)
+                .track({
+                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_COMPLETE
+                }).flush();
             popupWin.close();
         });
 

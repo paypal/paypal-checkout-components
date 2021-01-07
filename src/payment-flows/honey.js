@@ -4,7 +4,7 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { stringifyError } from 'belter/src';
 
 import { getLogger } from '../lib';
-import { FPTI_TRANSITION, FTPI_CUSTOM_KEY } from '../constants';
+import { FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
 
 import type { PaymentFlow, PaymentFlowInstance } from './types';
 
@@ -53,8 +53,8 @@ function setupHoney() {
 
             getLogger().addTrackingBuilder(() => {
                 return {
-                    [ FTPI_CUSTOM_KEY.HONEY_DEVICE_ID ]:  device_id,
-                    [ FTPI_CUSTOM_KEY.HONEY_SESSION_ID ]: session_id
+                    [ FPTI_CUSTOM_KEY.HONEY_DEVICE_ID ]:  device_id,
+                    [ FPTI_CUSTOM_KEY.HONEY_SESSION_ID ]: session_id
                 };
             });
 

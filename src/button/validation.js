@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { INTENT, SDK_QUERY_KEYS, CURRENCY, ENV, FPTI_KEY, SDK_SETTINGS, VAULT } from '@paypal/sdk-constants/src';
 
 import type { CreateBillingAgreement, CreateSubscription } from '../props';
-import { FPTI_CONTEXT_TYPE, FTPI_CUSTOM_KEY } from '../constants';
+import { FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY } from '../constants';
 import { getSupplementalOrderInfo } from '../api';
 import { getLogger, isEmailAddress } from '../lib';
 import { ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '../config';
@@ -100,8 +100,8 @@ function triggerIntegrationError({ env, error, message = error, clientID, orderI
             [ FPTI_KEY.CONTEXT_TYPE ]:                 FPTI_CONTEXT_TYPE.ORDER_ID,
             [ FPTI_KEY.TOKEN ]:                        orderID,
             [ FPTI_KEY.CONTEXT_ID ]:                   orderID,
-            [ FTPI_CUSTOM_KEY.INTEGRATION_ISSUE ]:     error,
-            [ FTPI_CUSTOM_KEY.INTEGRATION_WHITELIST ]: shouldThrow ? 'false' : 'true',
+            [ FPTI_CUSTOM_KEY.INTEGRATION_ISSUE ]:     error,
+            [ FPTI_CUSTOM_KEY.INTEGRATION_WHITELIST ]: shouldThrow ? 'false' : 'true',
             [ FPTI_KEY.ERROR_DESC ]:                   message
         }).flush();
 

@@ -8,7 +8,7 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { FIREBASE_SCRIPTS } from '../config';
 import { loadScript } from '../lib/util';
 import { getLogger } from '../lib';
-import { FTPI_CUSTOM_KEY, FPTI_STATE, FPTI_TRANSITION } from '../constants';
+import { FPTI_CUSTOM_KEY, FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
 import { getFirebaseSessionToken } from './auth';
 
@@ -506,6 +506,17 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
             firebase:     loadFirebaseSDK(config),
             sessionToken: getFirebaseSessionToken(sessionUID)
         }).then(({ firebase, sessionToken }) => {
+            const valueCallback = (res) => {
+                const messages = res.val() || {};
+
+                for (const messageID of Object.keys(messages)) {
+                    const message = messages[messageID];
+                    for (const handler of onMessageHandlers) {
+                        handler(message);
+                    }
+                }
+            };
+
             return firebase.auth().signInWithCustomToken(sessionToken).then(() => {
                 const database = firebase.database();
                 firebase.database.INTERNAL.forceWebSockets();
@@ -520,16 +531,8 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
                 for (const handler of onOpenHandlers) {
                     handler();
                 }
-    
-                database.ref(`users/${ sessionUID }/messages`).on('value', (res) => {
-                    const messages = res.val() || {};
-                    for (const messageID of Object.keys(messages)) {
-                        const message = messages[messageID];
-                        for (const handler of onMessageHandlers) {
-                            handler(message);
-                        }
-                    }
-                }, err => {
+
+                database.ref(`users/${ sessionUID }/messages`).on('value', valueCallback, err => {
                     error(err);
                 });
 
@@ -542,7 +545,7 @@ export function firebaseSocket({ sessionUID, config, sourceApp, sourceAppVersion
             getLogger().info('firebase_connection_errored', { err: stringifyError(err) }).track({
                 [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.FIREBASE_CONNECTION_ERRORED,
-                [FTPI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
             }).flush();
         });
 

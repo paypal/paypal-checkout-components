@@ -1473,7 +1473,7 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
 
         const onLoad = () => {
             if (!win) {
-                throw new Error(`Expecred win to be set`);
+                throw new Error(`Expected win to be set`);
             }
 
             const [ stringUrl, stringQuery ] = currentUrl.split('?');

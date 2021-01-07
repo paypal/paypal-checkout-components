@@ -2,9 +2,10 @@
 
 import { parseQuery, cleanup } from 'belter/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { ENV, FUNDING } from '@paypal/sdk-constants/src';
+import { ENV, FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../../types';
+import { FPTI_CUSTOM_KEY, FPTI_TRANSITION } from '../../constants';
 import { getPostRobot, setupNativeLogger, getSDKVersion } from '../lib';
 
 import { MESSAGE, HASH, EVENT } from './constants';
@@ -34,7 +35,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
     const sdkVersion = getSDKVersion();
 
-    setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelationID,
+    const logger = setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelationID,
         clientID, fundingSource, sdkVersion, locale });
 
     const clean = cleanup();
@@ -56,6 +57,12 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
         const hashString = window.location.hash && window.location.hash.slice(1);
         const [ hash, queryString ] = hashString.split('?');
+
+        logger.info('native_popup_hashchange', { hash, queryString })
+            .track({
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_HASHCHANGE,
+                [FPTI_CUSTOM_KEY.INFO_MSG]: `${ window.location.href }`
+            }).flush();
 
         switch (hash) {
         case HASH.ON_APPROVE: {
