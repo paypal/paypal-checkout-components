@@ -51,7 +51,7 @@ export async function getSmartMenuClientScript({ logBuffer, cache, debug = false
 
     const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
     const { version } = await watcher.get(ACTIVE_TAG);
-    const script = await watcher.read(debug ? MENU_CLIENT_JS : MENU_CLIENT_MIN_JS);
+    const script = await watcher.read(debug ? MENU_CLIENT_JS : MENU_CLIENT_MIN_JS, ACTIVE_TAG);
 
     return { script, version };
 }

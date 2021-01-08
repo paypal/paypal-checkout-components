@@ -15,10 +15,10 @@ type Watcher = {|
         version : string
     |}>,
     // eslint-disable-next-line no-undef
-    import : <T>(string) => Promise<T>,
+    import : <T>(string, string) => Promise<T>,
     // eslint-disable-next-line no-undef
-    importDependency : <T>(string, string) => Promise<T>,
-    read : (string) => Promise<string>
+    importDependency : <T>(string, string, string) => Promise<T>,
+    read : (string, string) => Promise<string>
 |};
 
 export function getPayPalSDKWatcher({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) : Watcher {

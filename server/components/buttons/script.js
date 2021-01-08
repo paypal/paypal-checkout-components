@@ -58,7 +58,7 @@ export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cach
     
     const watcher = getPayPalSDKWatcher({ logBuffer, cache });
     const { version } = await watcher.get(ACTIVE_TAG);
-    const button = await watcher.importDependency(CHECKOUT_COMPONENTS_MODULE, BUTTON_RENDER_JS);
+    const button = await watcher.importDependency(CHECKOUT_COMPONENTS_MODULE, BUTTON_RENDER_JS, ACTIVE_TAG);
     return { button, version };
 }
 
@@ -101,7 +101,7 @@ export async function getSmartPaymentButtonsClientScript({ logBuffer, cache, deb
 
     const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
     const { version } = await watcher.get(ACTIVE_TAG);
-    const script = await watcher.read(debug ? BUTTON_CLIENT_JS : BUTTON_CLIENT_MIN_JS);
+    const script = await watcher.read(debug ? BUTTON_CLIENT_JS : BUTTON_CLIENT_MIN_JS, ACTIVE_TAG);
 
     return { script, version };
 }
