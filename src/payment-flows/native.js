@@ -103,6 +103,14 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
 });
 
 function useDirectAppSwitch() : boolean {
+    if (window.xprops.forceNativeDirectAppSwitch) {
+        return true;
+    }
+
+    if (window.xprops.forceNativePopupAppSwitch) {
+        return false;
+    }
+
     return isAndroidChrome();
 }
 
@@ -305,7 +313,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return NATIVE_POPUP_DOMAIN[env];
     });
 
-    const getNativeUrlForAndroid = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
+    const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
         return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: { sdkMeta, sessionUID, buttonSessionID, pageUrl }
         });
@@ -529,7 +537,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const initDirectAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
-        const nativeUrl = getNativeUrlForAndroid({ sessionUID });
+        const nativeUrl = getDirectNativeUrl({ sessionUID });
 
         const nativeWin = popup(nativeUrl);
 
