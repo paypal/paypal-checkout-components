@@ -1109,7 +1109,9 @@
             var parentDomain = _ref.parentDomain, env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, locale = _ref.locale;
             var opener = window.opener;
             if (!opener) throw new Error("Expected window to have opener");
-            var logger = function(_ref) {
+            var sdkVersion = getPayPal().version;
+            var logger;
+            env && sessionID && buttonSessionID && sdkCorrelationID && locale && (logger = function(_ref) {
                 var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, sdkVersion = _ref.sdkVersion, locale = _ref.locale;
                 var logger = getLogger();
                 !function(_ref) {
@@ -1161,7 +1163,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.345", _ref2;
+                    _ref2.button_version = "2.0.346", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1201,9 +1203,9 @@
                 sdkCorrelationID: sdkCorrelationID,
                 clientID: clientID,
                 fundingSource: fundingSource,
-                sdkVersion: getPayPal().version,
+                sdkVersion: sdkVersion,
                 locale: locale
-            });
+            }));
             var clean = (tasks = [], cleaned = !1, {
                 set: function(name, item) {
                     if (!cleaned) {
@@ -1253,14 +1255,16 @@
                 }));
             };
             var handleHash = function() {
-                var _logger$info$track;
                 if (window.location.hash && "#" !== window.location.hash) {
                     var _hashString$split = (window.location.hash && window.location.hash.slice(1)).split("?"), hash = _hashString$split[0], queryString = _hashString$split[1];
-                    logger.info("native_popup_hashchange", {
-                        hash: hash,
-                        queryString: queryString
-                    }).track((_logger$info$track = {}, _logger$info$track.transition_name = "popup_hashchange", 
-                    _logger$info$track.info_msg = "" + window.location.href, _logger$info$track)).flush();
+                    if (logger) {
+                        var _logger$info$track;
+                        logger.info("native_popup_hashchange", {
+                            hash: hash,
+                            queryString: queryString
+                        }).track((_logger$info$track = {}, _logger$info$track.transition_name = "popup_hashchange", 
+                        _logger$info$track.info_msg = "" + window.location.href, _logger$info$track)).flush();
+                    }
                     switch (hash) {
                       case "onApprove":
                         var _parseQuery = parseQuery(queryString);
