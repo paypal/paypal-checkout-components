@@ -12,13 +12,13 @@ import { MESSAGE, HASH, EVENT } from './constants';
 
 export type NativePopupOptions = {|
     parentDomain : string,
-    env : $Values<typeof ENV>,
-    sessionID : string,
-    buttonSessionID : string,
-    sdkCorrelationID : string,
-    clientID : string,
-    fundingSource : $Values<typeof FUNDING>,
-    locale : LocaleType
+    env? : $Values<typeof ENV>,
+    sessionID? : string,
+    buttonSessionID? : string,
+    sdkCorrelationID? : string,
+    clientID? : string,
+    fundingSource? : $Values<typeof FUNDING>,
+    locale? : LocaleType
 |};
 
 type NativePopup = {|
@@ -35,8 +35,12 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
     const sdkVersion = getSDKVersion();
 
-    const logger = setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelationID,
-        clientID, fundingSource, sdkVersion, locale });
+    let logger;
+
+    if (env && sessionID && buttonSessionID && sdkCorrelationID && locale) {
+        logger = setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelationID,
+            clientID, fundingSource, sdkVersion, locale });
+    }
 
     const clean = cleanup();
     const postRobot = getPostRobot();
@@ -58,11 +62,13 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         const hashString = window.location.hash && window.location.hash.slice(1);
         const [ hash, queryString ] = hashString.split('?');
 
-        logger.info('native_popup_hashchange', { hash, queryString })
-            .track({
-                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_HASHCHANGE,
-                [FPTI_CUSTOM_KEY.INFO_MSG]: `${ window.location.href }`
-            }).flush();
+        if (logger) {
+            logger.info('native_popup_hashchange', { hash, queryString })
+                .track({
+                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_HASHCHANGE,
+                    [FPTI_CUSTOM_KEY.INFO_MSG]: `${ window.location.href }`
+                }).flush();
+        }
 
         switch (hash) {
         case HASH.ON_APPROVE: {
