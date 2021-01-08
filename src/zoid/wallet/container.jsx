@@ -4,6 +4,7 @@
 import { destroyElement, toCSS, type EventEmitterType } from 'belter/src';
 import { node, type ChildType } from 'jsx-pragmatic/src';
 import { EVENT } from 'zoid/src';
+
 import { NoncedStyleElement } from '../../constants';
 
 const CLASS = {
@@ -59,9 +60,9 @@ export function WalletContainer({ uid, frame, prerenderFrame, event, nonce } : W
 
     const element = (
         <div id={ uid } onRender={ setupAutoResize }>
-            <NoncedStyleElement 
+            <NoncedStyleElement
                 nonce={ nonce }
-                css={`
+                css={ `
                     #${ uid } {
                         position: relative;
                         display: inline-block;
@@ -111,7 +112,7 @@ export function WalletContainer({ uid, frame, prerenderFrame, event, nonce } : W
                         opacity: 0;
                         pointer-events: none;
                     }
-                `}
+                ` }
             />
 
             <node el={ frame } />

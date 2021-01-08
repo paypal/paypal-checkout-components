@@ -6,6 +6,7 @@ import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@p
 import { create, EVENT, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, destroyElement, toCSS } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
+
 import { NoncedStyleElement } from '../../constants';
 
 import { type ModalProps } from './props';
@@ -95,7 +96,7 @@ export function getModalComponent() : ModalComponent {
                                 #${ uid } > iframe.${ CLASS.VISIBLE } {
                                     opacity: 1;
                                 }
-                            ` } 
+                            ` }
                         />
                         <node el={ frame } />
                         <node el={ prerenderFrame } />

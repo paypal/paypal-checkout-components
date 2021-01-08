@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Fragment, Style, type ChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
@@ -53,7 +53,7 @@ function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
         return null;
     }
     
-    const { tagline,nonce } = opts;
+    const { tagline, nonce } = opts;
 
     const personalizationText = !tagline && getPersonalizationText(opts);
 
@@ -63,7 +63,9 @@ function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
     const PAYPAL_BUTTON = `.${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }]`;
 
     return (
-        <NoncedStyleElement nonce={ nonce } css={`
+        <NoncedStyleElement
+            nonce={ nonce }
+            css={ `
             @media only screen and (max-width: ${ MIN_WIDTH }px) {
                 .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ CLASS.PERSONALIZATION_TEXT } {
                     ${ HIDDEN }
@@ -157,7 +159,7 @@ export function Label(opts : LabelOptions) : ChildType {
 }
 
 export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, locale, content, commit, nonce} = opts;
+    const { logoColor, instrument, locale, content, commit, nonce } = opts;
 
     if (__WEB__) {
         return;

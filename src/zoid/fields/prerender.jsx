@@ -2,6 +2,7 @@
 /** @jsx node */
 
 import { node, type ChildType } from 'jsx-pragmatic/src';
+
 import { NoncedStyleElement } from '../../constants';
 
 type PrerenderedFieldsProps = {|

@@ -2,6 +2,7 @@
 /** @jsx node */
 
 import { node, type ChildType } from 'jsx-pragmatic/src';
+
 import { NoncedStyleElement } from '../../constants';
 
 type PrerenderedWalletProps = {|
@@ -14,7 +15,7 @@ export function WalletPrerender({ nonce } : PrerenderedWalletProps) : ChildType 
             <body>
                 <NoncedStyleElement
                     nonce={ nonce }
-                    css={`
+                    css={ `
                         html, body {
                             padding: 0;
                             margin: 0;

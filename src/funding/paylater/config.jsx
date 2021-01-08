@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING, } from '@paypal/sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 import { node } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 

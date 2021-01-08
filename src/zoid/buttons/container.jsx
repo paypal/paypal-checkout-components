@@ -91,9 +91,9 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
             { ...({ [ATTRIBUTE.VERSION]: `${ getVersion() }` }) }
             onRender={ setupAutoResize } >
 
-            <NoncedStyleElement 
-                nonce={ nonce } 
-                css={`
+            <NoncedStyleElement
+                nonce={ nonce }
+                css={ `
                     #${ uid } {
                         position: relative;
                         display: inline-block;
@@ -137,7 +137,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                         left: 0;
                         width: 100%;
                     }
-                `}
+                ` }
             />
 
             <node el={ frame } />

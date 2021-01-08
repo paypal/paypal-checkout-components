@@ -8,9 +8,9 @@ import { Chevron } from '../../chevron';
 
 import css from './menu-button.scoped.scss';
 
-export function MenuButton({ textColor = TEXT_COLOR.BLACK, nonce} : {| textColor? : $Values<typeof TEXT_COLOR>, nonce : ?string |} = { }) : ChildType {
+export function MenuButton({ textColor = TEXT_COLOR.BLACK, nonce } : {| textColor? : $Values<typeof TEXT_COLOR>, nonce : ?string |} = { }) : ChildType {
     return (
-        <NoncedStyleElement css={ css } nonce= { nonce }>
+        <NoncedStyleElement css={ css } nonce={ nonce }>
             <div
                 { ...{
                     [ATTRIBUTE.MENU]: true
