@@ -1,4 +1,4 @@
-/*! For license information please see checkout.4.0.319.js.LICENSE.txt */
+/*! For license information please see checkout.4.0.320.js.LICENSE.txt */
 !function(modules) {
     var installedModules = {};
     function __webpack_require__(moduleId) {
@@ -189,10 +189,7 @@
         EPS: "eps",
         MYBANK: "mybank",
         P24: "p24",
-        PAYU: "payu",
-        VERKKOPANKKI: "verkkopankki",
         BLIK: "blik",
-        TRUSTLY: "trustly",
         MAXIMA: "maxima",
         BOLETO: "boleto",
         OXXO: "oxxo",
@@ -255,10 +252,7 @@
         EPS: "eps",
         MYBANK: "mybank",
         P24: "p24",
-        PAYU: "payu",
-        VERKKOPANKKI: "verkkopankki",
         BLIK: "blik",
-        TRUSTLY: "trustly",
         MAXIMA: "maxima",
         BOLETO: "boleto",
         OXXO: "oxxo",
@@ -283,10 +277,7 @@
         MYBANK: "mybank",
         P24: "p24",
         ZIMPLER: "zimpler",
-        PAYU: "payu",
-        VERKKOPANKKI: "verkkopankki",
         BLIK: "blik",
-        TRUSTLY: "trustly",
         MAXIMA: "maxima",
         BOLETO: "boleto",
         OXXO: "oxxo",
@@ -1196,34 +1187,34 @@
     }();
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "z", (function() {
+    __webpack_require__.d(__webpack_exports__, "A", (function() {
         return device.b;
     }));
-    __webpack_require__.d(__webpack_exports__, "F", (function() {
+    __webpack_require__.d(__webpack_exports__, "G", (function() {
         return device.f;
     }));
-    __webpack_require__.d(__webpack_exports__, "D", (function() {
+    __webpack_require__.d(__webpack_exports__, "E", (function() {
         return device.c;
     }));
-    __webpack_require__.d(__webpack_exports__, "E", (function() {
+    __webpack_require__.d(__webpack_exports__, "F", (function() {
         return device.e;
     }));
-    __webpack_require__.d(__webpack_exports__, "W", (function() {
+    __webpack_require__.d(__webpack_exports__, "X", (function() {
         return device.g;
     }));
-    __webpack_require__.d(__webpack_exports__, "J", (function() {
+    __webpack_require__.d(__webpack_exports__, "K", (function() {
         return util.j;
     }));
-    __webpack_require__.d(__webpack_exports__, "L", (function() {
+    __webpack_require__.d(__webpack_exports__, "M", (function() {
         return util.k;
     }));
-    __webpack_require__.d(__webpack_exports__, "X", (function() {
+    __webpack_require__.d(__webpack_exports__, "Y", (function() {
         return util.s;
     }));
-    __webpack_require__.d(__webpack_exports__, "I", (function() {
+    __webpack_require__.d(__webpack_exports__, "J", (function() {
         return util.i;
     }));
-    __webpack_require__.d(__webpack_exports__, "S", (function() {
+    __webpack_require__.d(__webpack_exports__, "T", (function() {
         return util.o;
     }));
     __webpack_require__.d(__webpack_exports__, "e", (function() {
@@ -1232,28 +1223,28 @@
     __webpack_require__.d(__webpack_exports__, "b", (function() {
         return util.a;
     }));
-    __webpack_require__.d(__webpack_exports__, "U", (function() {
+    __webpack_require__.d(__webpack_exports__, "V", (function() {
         return util.q;
     }));
-    __webpack_require__.d(__webpack_exports__, "V", (function() {
+    __webpack_require__.d(__webpack_exports__, "W", (function() {
         return util.r;
     }));
-    __webpack_require__.d(__webpack_exports__, "N", (function() {
+    __webpack_require__.d(__webpack_exports__, "O", (function() {
         return util.l;
     }));
     __webpack_require__.d(__webpack_exports__, "f", (function() {
         return util.d;
     }));
-    __webpack_require__.d(__webpack_exports__, "y", (function() {
+    __webpack_require__.d(__webpack_exports__, "z", (function() {
         return initLogger;
     }));
-    __webpack_require__.d(__webpack_exports__, "T", (function() {
+    __webpack_require__.d(__webpack_exports__, "U", (function() {
         return setLogLevel;
     }));
     __webpack_require__.d(__webpack_exports__, "h", (function() {
         return getBrowser;
     }));
-    __webpack_require__.d(__webpack_exports__, "B", (function() {
+    __webpack_require__.d(__webpack_exports__, "C", (function() {
         return isEligible;
     }));
     __webpack_require__.d(__webpack_exports__, "d", (function() {
@@ -1262,7 +1253,7 @@
     __webpack_require__.d(__webpack_exports__, "c", (function() {
         return checkForCommonErrors;
     }));
-    __webpack_require__.d(__webpack_exports__, "H", (function() {
+    __webpack_require__.d(__webpack_exports__, "I", (function() {
         return dom.i;
     }));
     __webpack_require__.d(__webpack_exports__, "n", (function() {
@@ -1271,25 +1262,25 @@
     __webpack_require__.d(__webpack_exports__, "o", (function() {
         return dom.d;
     }));
-    __webpack_require__.d(__webpack_exports__, "K", (function() {
+    __webpack_require__.d(__webpack_exports__, "L", (function() {
         return dom.j;
     }));
     __webpack_require__.d(__webpack_exports__, "q", (function() {
         return dom.f;
     }));
-    __webpack_require__.d(__webpack_exports__, "Y", (function() {
+    __webpack_require__.d(__webpack_exports__, "Z", (function() {
         return dom.l;
     }));
     __webpack_require__.d(__webpack_exports__, "g", (function() {
         return dom.a;
     }));
-    __webpack_require__.d(__webpack_exports__, "P", (function() {
+    __webpack_require__.d(__webpack_exports__, "Q", (function() {
         return dom.k;
     }));
     __webpack_require__.d(__webpack_exports__, "i", (function() {
         return dom.b;
     }));
-    __webpack_require__.d(__webpack_exports__, "A", (function() {
+    __webpack_require__.d(__webpack_exports__, "B", (function() {
         return dom.h;
     }));
     __webpack_require__.d(__webpack_exports__, "p", (function() {
@@ -1298,14 +1289,17 @@
     __webpack_require__.d(__webpack_exports__, "s", (function() {
         return dom.g;
     }));
-    __webpack_require__.d(__webpack_exports__, "R", (function() {
+    __webpack_require__.d(__webpack_exports__, "S", (function() {
         return request;
     }));
-    __webpack_require__.d(__webpack_exports__, "x", (function() {
+    __webpack_require__.d(__webpack_exports__, "y", (function() {
         return getThrottle;
     }));
     __webpack_require__.d(__webpack_exports__, "t", (function() {
         return getReturnToken;
+    }));
+    __webpack_require__.d(__webpack_exports__, "x", (function() {
+        return session.e;
     }));
     __webpack_require__.d(__webpack_exports__, "w", (function() {
         return session.d;
@@ -1316,19 +1310,19 @@
     __webpack_require__.d(__webpack_exports__, "j", (function() {
         return session.a;
     }));
-    __webpack_require__.d(__webpack_exports__, "M", (function() {
+    __webpack_require__.d(__webpack_exports__, "N", (function() {
         return openMetaFrame;
     }));
     __webpack_require__.d(__webpack_exports__, "r", (function() {
         return getRememberedFunding;
     }));
-    __webpack_require__.d(__webpack_exports__, "Q", (function() {
+    __webpack_require__.d(__webpack_exports__, "R", (function() {
         return rememberFunding;
     }));
-    __webpack_require__.d(__webpack_exports__, "C", (function() {
+    __webpack_require__.d(__webpack_exports__, "D", (function() {
         return isFundingRemembered;
     }));
-    __webpack_require__.d(__webpack_exports__, "O", (function() {
+    __webpack_require__.d(__webpack_exports__, "P", (function() {
         return precacheRememberedFunding;
     }));
     __webpack_require__.d(__webpack_exports__, "k", (function() {
@@ -1346,7 +1340,7 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return security.a;
     }));
-    __webpack_require__.d(__webpack_exports__, "G", (function() {
+    __webpack_require__.d(__webpack_exports__, "H", (function() {
         return security.b;
     }));
     var device = __webpack_require__(22);
@@ -1363,7 +1357,11 @@
         HOME: "home",
         PRODUCT: "product",
         CART: "cart",
-        CHECKOUT: "checkout"
+        CHECKOUT: "checkout",
+        PRODUCT_LISTING: "product-listing",
+        SEARCH_RESULTS: "search-results",
+        PRODUCT_DETAILS: "product-details",
+        MINI_CART: "mini-cart"
     };
     var belter_src = __webpack_require__(14);
     var getCurrentScript = Object(util.i)((function() {
@@ -1378,7 +1376,7 @@
         });
     }));
     function getScriptVersion() {
-        return "4.0.319";
+        return "4.0.320";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1388,7 +1386,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.319.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.320.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1436,7 +1434,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.319"
+                ver: "4.0.320"
             };
         }));
         Object(client.a)((function() {
@@ -1755,7 +1753,7 @@
                     domain: metaFrameDomain
                 });
                 return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.319"
+                    version: "4.0.320"
                 }), metaFrameDomain).then((function() {
                     return metaListener;
                 })).then((function(_ref) {
@@ -1845,9 +1843,9 @@
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls;
     var config = {
         locales: constants.A,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.319.js",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.320.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.319",
+        version: "4.0.320",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -6314,7 +6312,7 @@
         if (regmatch) return regmatch[1];
     }
     var onAuthorize;
-    Object(lib.G)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
+    Object(lib.H)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
         window: window.parent
     }, (function(_ref) {
         onAuthorize = _ref.data.method;
@@ -6322,14 +6320,14 @@
     function onLegacyPaymentAuthorize(method) {
         onAuthorize = method;
         return src.a.try((function() {
-            if (post_robot_src.bridge && !Object(lib.G)()) return post_robot_src.bridge.openBridge(Object(lib.g)(config.a.postBridgeUrl, {
+            if (post_robot_src.bridge && !Object(lib.H)()) return post_robot_src.bridge.openBridge(Object(lib.g)(config.a.postBridgeUrl, {
                 version: Object(lib.u)()
             }), config.a.postBridgeDomain).then((function(postBridge) {
                 return Object(post_robot_src.send)(postBridge, "onLegacyPaymentAuthorize", {
                     method: method
                 }, {
                     domain: config.a.paypalDomain
-                }).then(lib.J);
+                }).then(lib.K);
             }));
         }));
     }
@@ -6363,7 +6361,7 @@
                                 win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                     value: Math.random().toString()
                                 });
-                                win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.J);
+                                win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.K);
                             }
                         } catch (err) {
                             return;
@@ -6415,14 +6413,14 @@
             return config.a.paypalDomains;
         },
         contexts: {
-            iframe: !Object(lib.W)(),
+            iframe: !Object(lib.X)(),
             popup: !0
         },
         get version() {
             return Object(lib.u)();
         },
         validate: function() {
-            Object(lib.B)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
+            Object(lib.C)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
         },
         prerenderTemplate: template.a,
         containerTemplate: template.b,
@@ -6541,7 +6539,7 @@
                 },
                 childDecorate: function(payment) {
                     var token = Object(lib.q)("token");
-                    return token ? Object(lib.I)((function() {
+                    return token ? Object(lib.J)((function() {
                         return src.a.resolve(token);
                     })) : payment;
                 },
@@ -6610,13 +6608,13 @@
                             }));
                         };
                         var redirect = function(win, url) {
-                            return src.a.all([ Object(lib.P)(win || window.top, url || data.returnUrl), close() ]);
+                            return src.a.all([ Object(lib.Q)(win || window.top, url || data.returnUrl), close() ]);
                         };
                         return src.a.try((function() {
                             try {
                                 var isButton = -1 !== window.location.href.indexOf("/smart/button");
                                 var isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                if (isButton && isGuest) return Object(lib.R)({
+                                if (isButton && isGuest) return Object(lib.S)({
                                     win: _this.window,
                                     method: "get",
                                     url: "/webapps/xoonboarding/api/auth"
@@ -6675,7 +6673,7 @@
                             }));
                         };
                         var redirect = function(win, url) {
-                            return src.a.all([ Object(lib.P)(win || window.top, url || data.cancelUrl), close() ]);
+                            return src.a.all([ Object(lib.Q)(win || window.top, url || data.cancelUrl), close() ]);
                         };
                         return src.a.try((function() {
                             return original.call(_this2, data, Object(esm_extends.a)({}, actions, {
@@ -6784,7 +6782,7 @@
             }
         },
         get dimensions() {
-            return Object(lib.z)() ? {
+            return Object(lib.A)() ? {
                 width: "100%",
                 height: "590px"
             } : {
@@ -6794,9 +6792,9 @@
         }
     });
     if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
-        Checkout.xprops && Checkout.xprops.logLevel && Object(lib.T)(Checkout.xprops.logLevel);
+        Checkout.xprops && Checkout.xprops.logLevel && Object(lib.U)(Checkout.xprops.logLevel);
         Checkout.xchild.onProps((function(xprops) {
-            Object(lib.N)(xprops, "onAuthorize", (function(_ref) {
+            Object(lib.O)(xprops, "onAuthorize", (function(_ref) {
                 var callOriginal = _ref.callOriginal, data = _ref.args[0];
                 if (data && !data.intent) {
                     Object(beaver_logger_client.q)("hermes_authorize_no_intent", {
@@ -6817,21 +6815,21 @@
             }));
         }));
     }
-    Object(lib.N)(Checkout, "init", (function(_ref2) {
+    Object(lib.O)(Checkout, "init", (function(_ref2) {
         var _ref2$args = _ref2.args;
         return _ref2.original.call(_ref2.context, _ref2$args[0], _ref2$args[1], "body");
     }));
-    Object(lib.N)(Checkout, "render", (function(_ref3) {
+    Object(lib.O)(Checkout, "render", (function(_ref3) {
         return _ref3.original.call(_ref3.context, _ref3.args[0], "body");
     }));
-    Object(lib.N)(Checkout, "renderTo", (function(_ref4) {
+    Object(lib.O)(Checkout, "renderTo", (function(_ref4) {
         var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context;
         var payment = props.payment();
         props.payment = function() {
             return payment;
         };
         return original.call(context, win, props, "body").catch((function(err) {
-            if (err instanceof zoid_src.b && Object(lib.G)()) {
+            if (err instanceof zoid_src.b && Object(lib.H)()) {
                 Checkout.contexts.iframe = !0;
                 return original.call(context, win, props, "body");
             }
@@ -7078,46 +7076,6 @@
         primary: "#005498",
         secondary: "#FFD800"
     }, _BANCONTACT_LOGO_COLO);
-    var _PAYU_LOGO_COLORS;
-    var PAYU_LOGO_COLORS = ((_PAYU_LOGO_COLORS = {})[constants.i.DEFAULT] = {
-        primary: "#A6d71c",
-        secondary: "#3C932A",
-        tertiary: "#6CC62E",
-        quaternary: "#278D30"
-    }, _PAYU_LOGO_COLORS[constants.i.WHITE] = {
-        primary: "#FFFFFF",
-        secondary: "#FFFFFF",
-        tertiary: "#000000",
-        quaternary: "#FFFFFF"
-    }, _PAYU_LOGO_COLORS[constants.i.BLACK] = {
-        primary: "#A6d71c",
-        secondary: "#3C932A",
-        tertiary: "#6CC62E",
-        quaternary: "#278D30"
-    }, _PAYU_LOGO_COLORS);
-    var _VERKKOPANKKI_LOGO_CO;
-    var VERKKOPANKKI_LOGO_COLORS = ((_VERKKOPANKKI_LOGO_CO = {})[constants.i.WHITE] = {
-        primary: "#FFFFFF",
-        secondary: "#FFFFFF",
-        tertiary: "#000000",
-        quaternary: "#000000",
-        quinary: "#FFFFFF",
-        senary: "#FFFFFF"
-    }, _VERKKOPANKKI_LOGO_CO[constants.i.ANY] = {
-        primary: "#FFFFFF",
-        secondary: "#CACCC8",
-        tertiary: "#2D59A1",
-        quaternary: "#1F3364",
-        quinary: "#4E4E4E",
-        senary: "#1B4482"
-    }, _VERKKOPANKKI_LOGO_CO[constants.i.BLACK] = {
-        primary: "#FFFFFF",
-        secondary: "#CACCC8",
-        tertiary: "#2D59A1",
-        quaternary: "#1F3364",
-        quinary: "#4E4E4E",
-        senary: "#1B4482"
-    }, _VERKKOPANKKI_LOGO_CO);
     var _BLIK_LOGO_COLORS;
     var BLIK_LOGO_COLORS = ((_BLIK_LOGO_COLORS = {})[constants.i.WHITE] = {
         primary: "#FFFFFF",
@@ -7141,17 +7099,6 @@
         quinary: "#FF00FF",
         senary: "#FFFFFF"
     }, _BLIK_LOGO_COLORS);
-    var _TRUSTLY_LOGO_COLORS;
-    var TRUSTLY_LOGO_COLORS = ((_TRUSTLY_LOGO_COLORS = {})[constants.i.WHITE] = {
-        primary: "#FFFFFF",
-        secondary: "#FFFFFF"
-    }, _TRUSTLY_LOGO_COLORS[constants.i.ANY] = {
-        primary: "#020202",
-        secondary: "#64CC07"
-    }, _TRUSTLY_LOGO_COLORS[constants.i.BLACK] = {
-        primary: "#020202",
-        secondary: "#64CC07"
-    }, _TRUSTLY_LOGO_COLORS);
     var _MAXIMA_LOGO_COLORS;
     var MAXIMA_LOGO_COLORS = ((_MAXIMA_LOGO_COLORS = {})[constants.i.WHITE] = {
         primary: "#004A91",
@@ -7667,364 +7614,6 @@
             d: "M 4.7408782,5.7106164 1.839113,5.7061141 5.3711256,1.8647573 Z M 6.112171,5.7095319 7.0417209,0.01876197 5.3948175,0.01774319 0.26289873,5.6444944 0.02981113,7.0693723 4.5178982,7.0688465 4.1894639,9.0682502 l 1.376733,0.00181 0.3251187,-2.001047 1.2714396,0.00269 0.2297076,-1.3639812 z",
             fill: secondary
         })))));
-    }, _fundingLogos[constants.h.PAYU] = function(_ref) {
-        var logoColor = _ref.logoColor;
-        if (!PAYU_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " payu logo available");
-        var _PAYU_LOGO_COLORS$log = PAYU_LOGO_COLORS[logoColor], primary = _PAYU_LOGO_COLORS$log.primary, secondary = _PAYU_LOGO_COLORS$log.secondary, tertiary = _PAYU_LOGO_COLORS$log.tertiary, quaternary = _PAYU_LOGO_COLORS$log.quaternary;
-        return Object(jsx.c)("svg", {
-            version: "1.1",
-            id: "Layer_1",
-            xmlns: "http://www.w3.org/2000/svg",
-            x: "0px",
-            y: "0px",
-            viewBox: "0 0 385.6 192.4",
-            width: "70",
-            height: "32"
-        }, Object(jsx.c)("style", {
-            type: "text/css"
-        }), Object(jsx.c)("g", null, Object(jsx.c)("path", {
-            fill: primary,
-            d: "M382.2,40.3l-17.1,0c-1.9,0-3.4-1.5-3.4-3.4l0-17.3c0-1.9,1.5-3.4,3.4-3.4l17.1,0c1.9,0,3.4,1.5,3.4,3.4 l0,17.3C385.6,38.8,384.1,40.3,382.2,40.3"
-        }), Object(jsx.c)("path", {
-            fill: primary,
-            d: "M359.5,16.3l-11.6,0c-1.3,0-2.3-1-2.3-2.3l0-11.7c0-1.3,1-2.3,2.3-2.3l11.6,0c1.3,0,2.3,1,2.3,2.3l0,11.7 C361.8,15.3,360.8,16.3,359.5,16.3"
-        }), Object(jsx.c)("g", null, Object(jsx.c)("g", null, Object(jsx.c)("path", {
-            fill: primary,
-            d: "M178.3,192.4c-3.9,0-5.1-2.1-5.8-5.6l-0.3-1.5c-0.3-1.6-0.5-3.3,0.4-4.6c0.9-1.2,2.5-1.5,4.9-1.7 c12.1-1.2,16.2-6.8,20.2-19.5c-1.9,0.6-4.2,1-6.7,1c-13.3,0-16.8-9.2-19.8-20.4l-15.9-58.3c-0.5-2-0.9-4,0.2-5.3 c1-1.3,3-1.5,5.1-1.5h1.3c5,0,6.9,1.5,8.2,6.3l15.8,57.8c2,7.2,4.1,8.4,9.2,8.4c4.2,0,6.6-1.3,8.4-8.4l13.9-57.8 c1.1-4.8,3.1-6.3,8.1-6.3h1.5c2,0,4,0.2,5.1,1.5c1.1,1.3,0.8,3.3,0.3,5.3L213,158.9c-5.7,22.6-15.3,32.3-33.3,33.5 C179.2,192.4,178.7,192.4,178.3,192.4 M113.5,160.6c-21,0-32.6-9.3-32.6-26.2c0-17.4,11.2-25.5,35.3-25.5h18.7v-9 c0-10.1-6.1-14.2-20.9-14.2c-8.3,0-15.8,1.2-18.2,1.8c-1,0.2-1.8,0.4-2.6,0.4c-1.5,0-2.6-0.5-3.3-1.6c-0.6-0.9-0.9-2.2-0.9-4 v-1.3c0-4.7,1.7-5.8,5.9-6.7c2.3-0.5,8.5-1.7,18.3-1.7c24.4,0,36.3,9,36.3,27.4V133C149.6,152.1,138.5,160.6,113.5,160.6 M116.4,120.8c-14.9,0-20.7,3.8-20.7,13.5c0,8.9,5.8,13.2,17.7,13.2c18,0,21.6-5.5,21.6-15v-11.7H116.4 M294.3,160.5 L294.3,160.5h-0.2c-21.8,0-37.1-6.6-45.1-19.1c-4.1-6.4-6.2-14.4-6.2-23.8v-12.8V81.4V59.2c0-9.4,3.9-11.2,14.2-11.2h3.3 c10.4,0,14.2,1.7,14.2,11.2v22.1l0,0.1v4.8c0,0.2,0,0.3,0,0.5v30.9c0,3.8,0.7,6.8,2.2,9.1c2.8,4.4,8.4,6.3,17.4,6.3 c9,0,14.6-2,17.4-6.3c1.5-2.3,2.2-5.3,2.2-9.1V86.8c0-0.2,0-0.3,0-0.5v-4.8l0-0.1V59.2c0-9.4,3.9-11.2,14.2-11.2h1.7l0,20 c0,2.5,2,4.5,4.5,4.5l11.3,0v8.8v23.4v12.8c0,9.4-2.1,17.4-6.2,23.8C331.5,153.9,316.1,160.5,294.3,160.5 M8.4,159.1H6.8 c-5.1,0-6.8-1.6-6.8-6.8V67.2C0,53.9,5.9,48,19.2,48H44c25.5,0,37.4,11.3,37.4,35.6c0,24.3-11.9,35.6-37.4,35.6H15.2v33.1 C15.2,157.5,13.6,159.1,8.4,159.1 M22,62.4c-5,0-6.8,1.8-6.8,6.8V105H44c18.7,0,22.2-7.5,22.2-21.4c0-17.8-8.2-21.2-22.2-21.2 H22"
-        }), Object(jsx.c)("g", null, Object(jsx.c)("linearGradient", {
-            id: "SVGID_3_",
-            gradientUnits: "userSpaceOnUse",
-            x1: "-487.0462",
-            y1: "484.3289",
-            x2: "-486.0462",
-            y2: "484.3289",
-            gradientTransform: "matrix(0 146.8947 146.8947 0 -70972.5312 71622.9766)"
-        }, Object(jsx.c)("stop", {
-            offset: "0",
-            "stop-color": primary
-        }), Object(jsx.c)("stop", {
-            offset: "1",
-            "stop-color": secondary
-        })), Object(jsx.c)("path", {
-            style: "fill:url(#SVGID_3_)",
-            d: "M178.3,192.4c-3.9,0-5.1-2.1-5.8-5.6l-0.3-1.5c-0.3-1.6-0.5-3.3,0.4-4.6c0.9-1.2,2.5-1.5,4.9-1.7 c12.1-1.2,16.2-6.8,20.2-19.5c-1.9,0.6-4.2,1-6.7,1c-13.3,0-16.8-9.2-19.8-20.4l-15.9-58.3c-0.5-2-0.9-4,0.2-5.3 c1-1.3,3-1.5,5.1-1.5h1.3c5,0,6.9,1.5,8.2,6.3l15.8,57.8c2,7.2,4.1,8.4,9.2,8.4c4.2,0,6.6-1.3,8.4-8.4l13.9-57.8 c1.1-4.8,3.1-6.3,8.1-6.3h1.5c2,0,4,0.2,5.1,1.5c1.1,1.3,0.8,3.3,0.3,5.3L213,158.9c-5.7,22.6-15.3,32.3-33.3,33.5 C179.2,192.4,178.7,192.4,178.3,192.4 M113.5,160.6c-21,0-32.6-9.3-32.6-26.2c0-17.4,11.2-25.5,35.3-25.5h18.7v-9 c0-10.1-6.1-14.2-20.9-14.2c-8.3,0-15.8,1.2-18.2,1.8c-1,0.2-1.8,0.4-2.6,0.4c-1.5,0-2.6-0.5-3.3-1.6c-0.6-0.9-0.9-2.2-0.9-4 v-1.3c0-4.7,1.7-5.8,5.9-6.7c2.3-0.5,8.5-1.7,18.3-1.7c24.4,0,36.3,9,36.3,27.4V133C149.6,152.1,138.5,160.6,113.5,160.6 M116.4,120.8c-14.9,0-20.7,3.8-20.7,13.5c0,8.9,5.8,13.2,17.7,13.2c18,0,21.6-5.5,21.6-15v-11.7H116.4 M294.3,160.5 L294.3,160.5h-0.2c-21.8,0-37.1-6.6-45.1-19.1c-4.1-6.4-6.2-14.4-6.2-23.8v-12.8V81.4V59.2c0-9.4,3.9-11.2,14.2-11.2h3.3 c10.4,0,14.2,1.7,14.2,11.2v22.1l0,0.1v4.8c0,0.2,0,0.3,0,0.5v30.9c0,3.8,0.7,6.8,2.2,9.1c2.8,4.4,8.4,6.3,17.4,6.3 c9,0,14.6-2,17.4-6.3c1.5-2.3,2.2-5.3,2.2-9.1V86.8c0-0.2,0-0.3,0-0.5v-4.8l0-0.1V59.2c0-9.4,3.9-11.2,14.2-11.2h1.7l0,20 c0,2.5,2,4.5,4.5,4.5l11.3,0v8.8v23.4v12.8c0,9.4-2.1,17.4-6.2,23.8C331.5,153.9,316.1,160.5,294.3,160.5 M8.4,159.1H6.8 c-5.1,0-6.8-1.6-6.8-6.8V67.2C0,53.9,5.9,48,19.2,48H44c25.5,0,37.4,11.3,37.4,35.6c0,24.3-11.9,35.6-37.4,35.6H15.2v33.1 C15.2,157.5,13.6,159.1,8.4,159.1 M22,62.4c-5,0-6.8,1.8-6.8,6.8V105H44c18.7,0,22.2-7.5,22.2-21.4c0-17.8-8.2-21.2-22.2-21.2 H22"
-        })))), Object(jsx.c)("path", {
-            fill: primary,
-            d: "M357.3,72.6C357.3,72.6,357.3,72.6,357.3,72.6l-11.7,0V59.2c0-9.4-3.9-11.2-14.2-11.2h-1.6l0-3.2 c0-2.5,2-4.5,4.5-4.5l23,0c2.5,0,4.5,2,4.5,4.5l0,23.3C361.8,70.6,359.8,72.6,357.3,72.6"
-        }), Object(jsx.c)("g", null, Object(jsx.c)("linearGradient", {
-            id: "SVGID_4_",
-            gradientUnits: "userSpaceOnUse",
-            x1: "-487.0462",
-            y1: "485.4514",
-            x2: "-486.0462",
-            y2: "485.4514",
-            gradientTransform: "matrix(0 146.8947 146.8947 0 -70972.5312 71622.9766)"
-        }, Object(jsx.c)("stop", {
-            offset: "0",
-            "stop-color": tertiary
-        }), Object(jsx.c)("stop", {
-            offset: "1",
-            "stop-color": quaternary
-        })), Object(jsx.c)("path", {
-            style: "fill:url(#SVGID_4_)",
-            d: "M345.6,72.6l-11.3,0c-2.5,0-4.5-2-4.5-4.5l0-20h1.6c10.4,0,14.2,1.7,14.2,11.2V72.6"
-        }))));
-    }, _fundingLogos[constants.h.VERKKOPANKKI] = function(_ref) {
-        var logoColor = _ref.logoColor;
-        if (!VERKKOPANKKI_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " verkkopankki logo available");
-        var _VERKKOPANKKI_LOGO_CO2 = VERKKOPANKKI_LOGO_COLORS[logoColor], primary = _VERKKOPANKKI_LOGO_CO2.primary, secondary = _VERKKOPANKKI_LOGO_CO2.secondary, tertiary = _VERKKOPANKKI_LOGO_CO2.tertiary, quaternary = _VERKKOPANKKI_LOGO_CO2.quaternary, quinary = _VERKKOPANKKI_LOGO_CO2.quinary, senary = _VERKKOPANKKI_LOGO_CO2.senary;
-        return Object(jsx.c)("svg", {
-            width: "83px",
-            height: "32px",
-            viewBox: "0 0 83 32",
-            version: "1.1",
-            xmlns: "http://www.w3.org/2000/svg"
-        }, Object(jsx.c)("defs", null, Object(jsx.c)("path", {
-            d: "M6.75,0.0879407407 C3.0375,0.0879407407 0,2.96794074 0,6.48794074 L0,6.48794074 L0,24.5027556 C0,28.0227556 3.0375,30.9027556 6.75,30.9027556 L6.75,30.9027556 L25.75025,30.9027556 C29.4625,30.9027556 32.5,28.0227556 32.5,24.5027556 L32.5,24.5027556 L32.5,6.48794074 C32.5,2.96794074 29.4625,0.0879407407 25.75025,0.0879407407 L25.75025,0.0879407407 L6.75,0.0879407407 Z",
-            id: "path-1"
-        }), Object(jsx.c)("linearGradient", {
-            x1: "80.3415915%",
-            y1: "2.75555705%",
-            x2: "19.6584085%",
-            y2: "97.2445831%",
-            id: "linearGradient-3"
-        }, Object(jsx.c)("stop", {
-            "stop-color": primary,
-            offset: "0%"
-        }), Object(jsx.c)("stop", {
-            "stop-color": secondary,
-            offset: "100%"
-        })), Object(jsx.c)("path", {
-            d: "M6.6155,0.206459259 C3.04575,0.206459259 0.125,2.97576296 0.125,6.36041481 L0.125,6.36041481 L0.125,23.6821333 C0.125,27.0670222 3.04575,29.8360889 6.6155,29.8360889 L6.6155,29.8360889 L24.8845,29.8360889 C28.45425,29.8360889 31.375,27.0670222 31.375,23.6821333 L31.375,23.6821333 L31.375,6.36041481 C31.375,2.97576296 28.45425,0.206459259 24.8845,0.206459259 L24.8845,0.206459259 L6.6155,0.206459259 Z",
-            id: "path-4"
-        }), Object(jsx.c)("linearGradient", {
-            x1: "6.10096128%",
-            y1: "89.4646408%",
-            x2: "93.8990386%",
-            y2: "10.5354941%",
-            id: "linearGradient-6"
-        }, Object(jsx.c)("stop", {
-            "stop-color": primary,
-            offset: "0%"
-        }), Object(jsx.c)("stop", {
-            "stop-color": secondary,
-            offset: "100%"
-        })), Object(jsx.c)("polygon", {
-            id: "path-7",
-            points: "6.5 0.206459259 6.5 10.8330667 0.125 10.8330667 0.125 19.129363 6.5 19.129363 6.5 29.8360889 15.25 29.8360889 15.25 19.129363 31.375 19.129363 31.375 10.8330667 15.25 10.8330667 15.25 0.206459259"
-        }), Object(jsx.c)("linearGradient", {
-            x1: "6.26612168%",
-            y1: "82.243184%",
-            x2: "78.1338463%",
-            y2: "17.635184%",
-            id: "linearGradient-9"
-        }, Object(jsx.c)("stop", {
-            "stop-color": tertiary,
-            offset: "0%"
-        }), Object(jsx.c)("stop", {
-            "stop-color": quaternary,
-            offset: "100%"
-        })), Object(jsx.c)("polygon", {
-            id: "path-10",
-            points: "0.106675 0.228266667 3.17249309 0.228266667 3.17249309 6.24822519 0.106675 6.24822519"
-        }), Object(jsx.c)("polygon", {
-            id: "path-12",
-            points: "0.2434 0.228266667 3.30921809 0.228266667 3.30921809 6.24822519 0.2434 6.24822519"
-        }), Object(jsx.c)("polygon", {
-            id: "path-14",
-            points: "0.0454 0.228266667 3.11102683 0.228266667 3.11102683 6.24822519 0.0454 6.24822519"
-        }), Object(jsx.c)("polygon", {
-            id: "path-16",
-            points: "0.181875 0.228266667 3.24775183 0.228266667 3.24775183 6.24822519 0.181875 6.24822519"
-        }), Object(jsx.c)("polygon", {
-            id: "path-18",
-            points: "0.1455 0.211057778 0.90525 0.211057778 0.90525 1.20969481 0.1455 1.20969481"
-        }), Object(jsx.c)("polygon", {
-            id: "path-20",
-            points: "0 31.762963 82.90525 31.762963 82.90525 0.228266667 0 0.228266667"
-        })), Object(jsx.c)("g", {
-            stroke: "none",
-            "stroke-width": "1",
-            fill: "none",
-            "fill-rule": "evenodd"
-        }, Object(jsx.c)("g", {
-            transform: "translate(-219.000000, -536.000000)"
-        }, Object(jsx.c)("g", {
-            transform: "translate(219.000000, 536.000000)"
-        }, Object(jsx.c)("g", {
-            transform: "translate(0.000000, 0.482844)"
-        }, Object(jsx.c)("mask", {
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-1"
-        })), Object(jsx.c)("path", {
-            d: "M6.75,0.0879407407 C3.0375,0.0879407407 0,2.96794074 0,6.48794074 L0,6.48794074 L0,24.5027556 C0,28.0227556 3.0375,30.9027556 6.75,30.9027556 L6.75,30.9027556 L25.75025,30.9027556 C29.4625,30.9027556 32.5,28.0227556 32.5,24.5027556 L32.5,24.5027556 L32.5,6.48794074 C32.5,2.96794074 29.4625,0.0879407407 25.75025,0.0879407407 L25.75025,0.0879407407 L6.75,0.0879407407 Z",
-            fill: "url(#linearGradient-3)",
-            mask: "url(#mask-2)"
-        })), Object(jsx.c)("g", {
-            transform: "translate(0.500000, 0.956919)"
-        }, Object(jsx.c)("mask", {
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-4"
-        })), Object(jsx.c)("path", {
-            d: "M6.6155,0.206459259 C3.04575,0.206459259 0.125,2.97576296 0.125,6.36041481 L0.125,6.36041481 L0.125,23.6821333 C0.125,27.0670222 3.04575,29.8360889 6.6155,29.8360889 L6.6155,29.8360889 L24.8845,29.8360889 C28.45425,29.8360889 31.375,27.0670222 31.375,23.6821333 L31.375,23.6821333 L31.375,6.36041481 C31.375,2.97576296 28.45425,0.206459259 24.8845,0.206459259 L24.8845,0.206459259 L6.6155,0.206459259 Z",
-            fill: "url(#linearGradient-6)",
-            mask: "url(#mask-5)"
-        })), Object(jsx.c)("g", {
-            transform: "translate(0.500000, 0.956919)"
-        }, Object(jsx.c)("mask", {
-            id: "mask-8",
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-7"
-        })), Object(jsx.c)("polygon", {
-            id: "Fill-7",
-            fill: "url(#linearGradient-9)",
-            mask: "url(#mask-8)",
-            points: "6.5 0.206459259 6.5 10.8330667 0.125 10.8330667 0.125 19.129363 6.5 19.129363 6.5 29.8360889 15.25 29.8360889 15.25 19.129363 31.375 19.129363 31.375 10.8330667 15.25 10.8330667 15.25 0.206459259"
-        })), Object(jsx.c)("g", {
-            transform: "translate(0.000000, 0.008770)"
-        }, Object(jsx.c)("path", {
-            d: "M41.86625,0.448142222 L41.4055,0.448142222 C41.353,0.448142222 41.30625,0.480142222 41.2895,0.527312593 L39.593,5.31949037 L37.89675,0.527312593 C37.88,0.480142222 37.83325,0.448142222 37.7805,0.448142222 L37.312,0.448142222 C37.2725,0.448142222 37.2355,0.466157037 37.2125,0.496734815 C37.1895,0.527075556 37.1835,0.566186667 37.196,0.601505185 L39.18525,6.16926815 C39.202,6.21643852 39.24875,6.24820148 39.30125,6.24820148 L39.877,6.24820148 C39.9295,6.24820148 39.97625,6.21643852 39.993,6.16926815 L41.98225,0.601505185 C41.995,0.566186667 41.9887546,0.527075556 41.96575,0.496734815 C41.94275,0.466157037 41.90575,0.448142222 41.86625,0.448142222",
-            fill: quinary
-        }), Object(jsx.c)("path", {
-            d: "M42.770925,3.87662222 C42.776925,3.51656296 42.812175,3.23591111 42.875675,3.04106667 C42.940925,2.84148148 43.045425,2.7058963 43.194675,2.62648889 C43.352175,2.54305185 43.589175,2.50085926 43.899175,2.50085926 C44.163925,2.50085926 44.371675,2.52764444 44.515675,2.58026667 C44.645425,2.62767407 44.736675,2.70684444 44.795175,2.82228148 C44.858175,2.94625185 44.890175,3.12853333 44.890175,3.3632 C44.890175,3.5634963 44.845925,3.69884444 44.758675,3.76616296 C44.663925,3.83964444 44.498675,3.87662222 44.267925,3.87662222 L42.770925,3.87662222 Z M45.209425,4.16983704 C45.430425,3.99845926 45.542675,3.72681481 45.542675,3.3632 C45.542675,3.01238519 45.483675,2.72865185 45.366925,2.52005926 C45.245425,2.30364444 45.058675,2.14767407 44.811175,2.05641481 C44.578175,1.97084444 44.271425,1.92722963 43.899175,1.92722963 C43.455925,1.92722963 43.099425,1.99312593 42.840175,2.12278519 C42.569425,2.25742222 42.372675,2.48995556 42.255175,2.81374815 C42.143675,3.12047407 42.087175,3.55306667 42.087175,4.09896296 C42.087175,4.64035556 42.140925,5.07105185 42.246925,5.37896296 C42.358175,5.70417778 42.548675,5.94168889 42.813175,6.08462222 C43.068925,6.22305185 43.426425,6.29345185 43.876175,6.29345185 C44.339425,6.29345185 44.832675,6.26500741 45.341925,6.2093037 C45.403675,6.20266667 45.450425,6.15312593 45.450425,6.09386667 L45.450425,5.82838519 C45.450425,5.76438519 45.395425,5.71223704 45.327925,5.71223704 L43.975925,5.71223704 C43.640425,5.71223704 43.385175,5.66767407 43.217675,5.57925926 C43.057675,5.49463704 42.949425,5.36260741 42.886925,5.17511111 C42.826425,4.99377778 42.790425,4.74014815 42.780175,4.41991111 L44.298675,4.41991111 C44.689925,4.41991111 44.996175,4.33576296 45.209425,4.16983704 L45.209425,4.16983704 Z",
-            fill: quinary
-        }), Object(jsx.c)("path", {
-            d: "M48.8798,1.97755259 C48.7618,1.94413037 48.6158,1.92730074 48.4458,1.92730074 C48.1323,1.92730074 47.8433,2.00196741 47.58705,2.14893037 C47.40355,2.25441185 47.2248,2.39118222 47.0538,2.55734519 L46.97705,2.0716563 C46.96805,2.01476741 46.9163,1.97257481 46.8558,1.97257481 L46.52555,1.97257481 C46.4578,1.97257481 46.40305,2.02472296 46.40305,2.08896 L46.40305,6.1318637 C46.40305,6.19610074 46.4578,6.24824889 46.52555,6.24824889 L46.97105,6.24824889 C47.0388,6.24824889 47.09355,6.19610074 47.09355,6.1318637 L47.09355,3.20730074 C47.32605,2.99610074 47.5388,2.84178963 47.7263,2.74934519 C47.9178,2.65476741 48.1468,2.60712296 48.40705,2.60712296 C48.5178,2.60712296 48.65755,2.62181926 48.82255,2.65073778 C48.85805,2.65713778 48.8953,2.64789333 48.9233,2.62584889 C48.95105,2.60380444 48.96755,2.57109333 48.96755,2.53648593 L48.96755,2.08896 C48.96755,2.03752296 48.9318,1.99224889 48.8798,1.97755259",
-            fill: quinary
-        }), Object(jsx.c)("g", {
-            transform: "translate(49.500000, 0.000000)"
-        }, Object(jsx.c)("mask", {
-            id: "mask-11",
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-10"
-        })), Object(jsx.c)("path", {
-            d: "M1.301675,3.9731437 L3.039925,2.16715852 C3.072675,2.13302519 3.080925,2.08395852 3.061425,2.04200296 C3.041925,2.00004741 2.997925,1.97278815 2.949425,1.97278815 L2.373425,1.97278815 C2.338925,1.97278815 2.306425,1.98629926 2.283175,2.01047704 L0.797175,3.54979556 L0.797175,0.344343704 C0.797175,0.280343704 0.742425,0.228195556 0.674675,0.228195556 L0.229175,0.228195556 C0.161425,0.228195556 0.106675,0.280343704 0.106675,0.344343704 L0.106675,6.13184 C0.106675,6.19607704 0.161425,6.24822519 0.229175,6.24822519 L0.674675,6.24822519 C0.742425,6.24822519 0.797175,6.19607704 0.797175,6.13184 L0.797175,4.41948444 L2.370925,6.20650667 C2.394175,6.23281778 2.428675,6.24822519 2.464925,6.24822519 L3.049925,6.24822519 C3.097675,6.24822519 3.140675,6.22191407 3.160925,6.18090667 C3.181175,6.14037333 3.174425,6.09178074 3.143925,6.05741037 L1.301675,3.9731437 Z",
-            fill: quinary,
-            mask: "url(#mask-11)"
-        })), Object(jsx.c)("g", {
-            transform: "translate(53.250000, 0.000000)"
-        }, Object(jsx.c)("mask", {
-            id: "mask-13",
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-12"
-        })), Object(jsx.c)("path", {
-            d: "M1.4384,3.9731437 L3.1764,2.16715852 C3.20915,2.13302519 3.2174,2.08395852 3.1979,2.04200296 C3.1784,2.00004741 3.1344,1.97278815 3.0859,1.97278815 L2.51015,1.97278815 C2.47565,1.97278815 2.44315,1.98629926 2.4199,2.01047704 L0.9339,3.54979556 L0.9339,0.344343704 C0.9339,0.280343704 0.87915,0.228195556 0.8114,0.228195556 L0.3659,0.228195556 C0.29815,0.228195556 0.2434,0.280343704 0.2434,0.344343704 L0.2434,6.13184 C0.2434,6.19607704 0.29815,6.24822519 0.3659,6.24822519 L0.8114,6.24822519 C0.87915,6.24822519 0.9339,6.19607704 0.9339,6.13184 L0.9339,4.41948444 L2.5074,6.20650667 C2.53065,6.23281778 2.56515,6.24822519 2.6014,6.24822519 L3.18665,6.24822519 C3.2344,6.24822519 3.2774,6.22191407 3.29765,6.18090667 C3.3179,6.14037333 3.31115,6.09178074 3.28065,6.05741037 L1.4384,3.9731437 Z",
-            fill: quinary,
-            mask: "url(#mask-13)"
-        })), Object(jsx.c)("g", {
-            transform: "translate(74.500000, 0.000000)"
-        }, Object(jsx.c)("mask", {
-            id: "mask-15",
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-14"
-        })), Object(jsx.c)("path", {
-            d: "M1.2404,3.9731437 L2.9784,2.16715852 C3.01115,2.13302519 3.0194,2.08395852 2.9999,2.04200296 C2.9804,2.00004741 2.9364,1.97278815 2.8879,1.97278815 L2.3119,1.97278815 C2.2774,1.97278815 2.2449,1.98629926 2.22165,2.01047704 L0.7359,3.54955852 L0.7359,0.344343704 C0.7359,0.280343704 0.68115,0.228195556 0.6134,0.228195556 L0.1679,0.228195556 C0.10015,0.228195556 0.0454,0.280343704 0.0454,0.344343704 L0.0454,6.13184 C0.0454,6.19607704 0.10015,6.24822519 0.1679,6.24822519 L0.6134,6.24822519 C0.68115,6.24822519 0.7359,6.19607704 0.7359,6.13184 L0.7359,4.41995852 L2.3094,6.20650667 C2.33265,6.23281778 2.36715,6.24822519 2.4034,6.24822519 L2.9884,6.24822519 C3.03615,6.24822519 3.07915,6.22191407 3.09965,6.18090667 C3.11965,6.14037333 3.1129,6.09178074 3.0824,6.05741037 L1.2404,3.9731437 Z",
-            fill: quinary,
-            mask: "url(#mask-15)"
-        })), Object(jsx.c)("g", {
-            transform: "translate(78.250000, 0.000000)"
-        }, Object(jsx.c)("mask", {
-            id: "mask-17",
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-16"
-        })), Object(jsx.c)("path", {
-            d: "M1.377125,3.9731437 L3.115125,2.16715852 C3.147875,2.13302519 3.156125,2.08395852 3.136625,2.04200296 C3.117125,2.00004741 3.073125,1.97278815 3.024625,1.97278815 L2.448625,1.97278815 C2.414125,1.97278815 2.381625,1.98629926 2.358375,2.01047704 L0.872375,3.54979556 L0.872375,0.344343704 C0.872375,0.280343704 0.817625,0.228195556 0.749875,0.228195556 L0.304375,0.228195556 C0.236625,0.228195556 0.181875,0.280343704 0.181875,0.344343704 L0.181875,6.13184 C0.181875,6.19607704 0.236625,6.24822519 0.304375,6.24822519 L0.749875,6.24822519 C0.817625,6.24822519 0.872375,6.19607704 0.872375,6.13184 L0.872375,4.41948444 L2.446125,6.20650667 C2.469375,6.23281778 2.503875,6.24822519 2.540125,6.24822519 L3.125125,6.24822519 C3.172875,6.24822519 3.215875,6.22191407 3.236375,6.18090667 C3.256375,6.14037333 3.249625,6.09178074 3.219125,6.05741037 L1.377125,3.9731437 Z",
-            fill: quinary,
-            mask: "url(#mask-17)"
-        })), Object(jsx.c)("path", {
-            d: "M58.732575,5.68936296 C58.439825,5.68936296 58.209325,5.65238519 58.047825,5.57937778 C57.899325,5.51253333 57.782075,5.37078519 57.699325,5.15863704 C57.610075,4.9298963 57.564825,4.576 57.564825,4.10642963 C57.564825,3.63733333 57.610075,3.28201481 57.699325,3.05042963 C57.781825,2.83685926 57.898825,2.69534815 58.046575,2.63063704 C58.209075,2.55952593 58.439825,2.52373333 58.732575,2.52373333 C59.020325,2.52373333 59.250075,2.55952593 59.415075,2.63063704 C59.565825,2.69582222 59.685075,2.83757037 59.769575,3.05161481 C59.861575,3.28248889 59.907825,3.63733333 59.907825,4.10642963 C59.907825,4.57576296 59.861575,4.92942222 59.769825,5.15768889 C59.685075,5.37007407 59.565075,5.51205926 59.414325,5.57914074 C59.249825,5.65238519 59.020575,5.68936296 58.732575,5.68936296 M59.771825,2.10512593 C59.508075,1.98731852 59.158325,1.92734815 58.732575,1.92734815 C58.306325,1.92734815 57.958325,1.9858963 57.697825,2.1010963 C57.424575,2.22222222 57.215075,2.44835556 57.075325,2.77333333 C56.942075,3.08432593 56.874325,3.5328 56.874325,4.10642963 C56.874325,4.6701037 56.942075,5.11478519 57.075325,5.42814815 C57.214825,5.7554963 57.425075,5.98542222 57.700075,6.11128889 C57.964575,6.23217778 58.311575,6.29357037 58.732575,6.29357037 C59.158575,6.29357037 59.508575,6.23217778 59.772825,6.11128889 C60.048325,5.98518519 60.258325,5.75668148 60.397325,5.43217778 C60.530575,5.12118519 60.598575,4.67508148 60.598575,4.10642963 C60.598575,3.53848889 60.530575,3.09238519 60.397325,2.78068148 C60.258075,2.45617778 60.047825,2.22885926 59.771825,2.10512593",
-            fill: quinary
-        }), Object(jsx.c)("path", {
-            d: "M64.20645,4.09908148 C64.20645,5.1693037 63.87745,5.68936296 63.19995,5.68936296 C62.8272,5.68936296 62.43195,5.5808 62.0247,5.36651852 L62.0247,2.85771852 C62.2282,2.75958519 62.4192,2.67922963 62.59295,2.61902222 C62.7757,2.5554963 62.97995,2.52373333 63.19995,2.52373333 C63.4832,2.52373333 63.7147,2.64557037 63.90745,2.89682963 C64.10595,3.15591111 64.20645,3.56077037 64.20645,4.09908148 M63.2997,1.92734815 C63.0547,1.92734815 62.78745,1.98115556 62.5057,2.08734815 C62.30445,2.16296296 62.12945,2.24284444 61.9832,2.32533333 L61.92195,2.06364444 C61.9097,2.01031111 61.8597,1.97262222 61.80245,1.97262222 L61.4567,1.97262222 C61.38895,1.97262222 61.3342,2.02477037 61.3342,2.08900741 L61.3342,7.9296 C61.3342,7.99383704 61.38895,8.04574815 61.4567,8.04574815 L61.9022,8.04574815 C61.96995,8.04574815 62.0247,7.99383704 62.0247,7.9296 L62.0247,5.96077037 C62.19345,6.04562963 62.3712,6.11721481 62.55545,6.17386667 C62.8122,6.25327407 63.0627,6.29357037 63.2997,6.29357037 C64.35945,6.29357037 64.8972,5.5552 64.8972,4.09908148 C64.8972,3.49985185 64.77145,2.98808889 64.52345,2.57754074 C64.2632,2.14613333 63.85145,1.92734815 63.2997,1.92734815",
-            fill: quinary
-        }), Object(jsx.c)("path", {
-            d: "M67.38835,5.62915556 C66.91085,5.75265185 66.61485,5.74459259 66.3756,5.56325926 C66.2516,5.46915556 66.19135,5.31531852 66.19135,5.0925037 L66.19135,4.90311111 C66.19135,4.69973333 66.25035,4.54234074 66.37235,4.42216296 C66.4921,4.30364444 66.6886,4.23917037 66.95685,4.23016296 L68.2581,4.18204444 L68.2581,5.35348148 L67.9846,5.45042963 C67.8086,5.51253333 67.6081,5.5725037 67.38835,5.62915556 M67.4206,1.90435556 C66.95785,1.90435556 66.46885,1.93801481 65.96735,2.00414815 C65.90685,2.01220741 65.86185,2.06127407 65.86185,2.11911111 L65.86185,2.38459259 C65.86185,2.44882963 65.9166,2.50097778 65.98435,2.50097778 L67.26685,2.50097778 C67.6521,2.50097778 67.9166,2.56379259 68.05385,2.68847407 C68.18935,2.8114963 68.2581,3.00562963 68.2581,3.26447407 L68.2581,3.70962963 L66.8831,3.70962963 C66.4486,3.70962963 66.1066,3.81700741 65.86635,4.02915556 C65.62385,4.2432 65.50085,4.53475556 65.50085,4.89528889 L65.50085,5.16859259 C65.50085,5.51324444 65.61035,5.7901037 65.8256,5.99087407 C66.04035,6.19164444 66.3211,6.29357037 66.66035,6.29357037 C66.8921,6.29357037 67.14185,6.2546963 67.40285,6.17813333 C67.65735,6.10394074 67.88985,6.02168889 68.0931,5.93422222 C68.1851,5.89463704 68.2541,5.86405926 68.30635,5.83988148 L68.3676,6.15324444 C68.37835,6.208 68.42885,6.24805926 68.48785,6.24805926 L68.82585,6.24805926 C68.8936,6.24805926 68.94835,6.19614815 68.94835,6.13191111 L68.94835,3.24195556 C68.94835,2.79585185 68.8216,2.45712593 68.5716,2.23573333 C68.32385,2.016 67.93635,1.90435556 67.4206,1.90435556",
-            fill: quinary
-        }), Object(jsx.c)("path", {
-            d: "M72.05925,1.90440296 C71.77425,1.90440296 71.48575,1.95702519 71.20125,2.0601363 C70.9805,2.14049185 70.7715,2.2393363 70.5785,2.35477333 L70.50425,2.06179556 C70.49125,2.00941037 70.44175,1.97266963 70.38525,1.97266963 L70.055,1.97266963 C69.9875,1.97266963 69.9325,2.02481778 69.9325,2.08881778 L69.9325,6.13195852 C69.9325,6.19595852 69.9875,6.24810667 70.055,6.24810667 L70.5005,6.24810667 C70.568,6.24810667 70.623,6.19595852 70.623,6.13195852 L70.623,2.91536593 C70.86175,2.78926222 71.07525,2.69515852 71.2585,2.63471407 C71.4525,2.57118815 71.6805,2.53895111 71.9365,2.53895111 C72.18875,2.53895111 72.3835,2.61646222 72.53225,2.77646222 C72.68475,2.94049185 72.75875,3.14481778 72.75875,3.40105481 L72.75875,6.13195852 C72.75875,6.19595852 72.81375,6.24810667 72.88125,6.24810667 L73.3265,6.24810667 C73.39425,6.24810667 73.44925,6.19595852 73.44925,6.13195852 L73.44925,3.3555437 C73.44925,2.9561363 73.33025,2.61243259 73.096,2.33462519 C72.855,2.04923259 72.506,1.90440296 72.05925,1.90440296",
-            fill: quinary
-        }), Object(jsx.c)("path", {
-            d: "M82.751875,1.97269333 L82.306375,1.97269333 C82.238625,1.97269333 82.183875,2.02484148 82.183875,2.08884148 L82.183875,6.13198222 C82.183875,6.19598222 82.238625,6.24813037 82.306375,6.24813037 L82.751875,6.24813037 C82.819625,6.24813037 82.874375,6.19598222 82.874375,6.13198222 L82.874375,2.08884148 C82.874375,2.02484148 82.819625,1.97269333 82.751875,1.97269333",
-            fill: quinary
-        }), Object(jsx.c)("g", {
-            transform: "translate(82.000000, 0.237037)"
-        }, Object(jsx.c)("mask", {
-            id: "mask-19",
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-18"
-        })), Object(jsx.c)("path", {
-            d: "M0.68275,0.211057778 L0.38325,0.211057778 C0.239,0.211057778 0.1455,0.301368889 0.1455,0.441220741 L0.1455,0.979531852 C0.1455,1.0617837 0.1805,1.11393185 0.21,1.14308741 C0.2405,1.17342815 0.29525,1.20969481 0.38325,1.20969481 L0.68275,1.20969481 C0.78525,1.20969481 0.90525,1.14925037 0.90525,0.979531852 L0.90525,0.441220741 C0.90525,0.271502222 0.78525,0.211057778 0.68275,0.211057778 L0.68275,0.211057778 Z",
-            fill: quinary,
-            mask: "url(#mask-19)"
-        })), Object(jsx.c)("polygon", {
-            fill: senary,
-            points: "54.410575 25.6368119 53.503075 25.6368119 51.980825 27.2138193 51.980825 23.8924563 51.290325 23.8924563 51.290325 29.9122489 51.980825 29.9122489 51.980825 28.0835081 53.591325 29.9122489 54.496075 29.9122489 52.485575 27.6371674"
-        }), Object(jsx.c)("path", {
-            d: "M38.2935,12.7641126 L40.91225,12.7261867 L40.91225,12.171283 L38.2935,12.133357 L38.2935,10.654957 C38.2935,10.4489719 38.344,10.2948978 38.4435,10.1967644 C38.5435,10.098157 38.68275,10.0505126 38.86975,10.0505126 L41.235,10.0505126 L41.235,9.48233481 L41.1185,9.47688296 C40.2725,9.43658667 39.47975,9.41596444 38.76225,9.41596444 C38.44075,9.41596444 38.16525,9.51149037 37.9435,9.69969778 C37.7175,9.89146074 37.603,10.1948681 37.603,10.6016237 L37.603,15.2160237 L38.2935,15.2160237 L38.2935,12.7641126 Z",
-            fill: senary
-        }), Object(jsx.c)("path", {
-            d: "M42.21085,10.3483733 C42.24135,10.3787141 42.2961,10.4145067 42.3836,10.4145067 L42.68335,10.4145067 C42.78585,10.4145067 42.9056,10.3540622 42.9056,10.1845807 L42.9056,9.64603259 C42.9056,9.47631407 42.78585,9.41586963 42.68335,9.41586963 L42.3836,9.41586963 C42.23935,9.41586963 42.1461,9.50618074 42.1461,9.64603259 L42.1461,10.1845807 C42.1461,10.2665956 42.1811,10.3189807 42.2106,10.3481363 L42.21085,10.3483733 Z",
-            fill: senary
-        }), Object(jsx.c)("mask", {
-            id: "mask-21",
-            fill: primary
-        }, Object(jsx.c)("use", {
-            href: "#path-20"
-        })), Object(jsx.c)("polygon", {
-            fill: senary,
-            mask: "url(#mask-21)",
-            points: "42.1845 15.2158815 42.875 15.2158815 42.875 10.9404444 42.1845 10.9404444"
-        }), Object(jsx.c)("path", {
-            d: "M47.4611,15.2159763 L47.4611,12.3236504 C47.4611,11.9240059 47.3421,11.5805393 47.10785,11.3027319 C46.86635,11.0171022 46.5176,10.8722726 46.07085,10.8722726 C45.78635,10.8722726 45.4976,10.9246578 45.21335,11.0280059 C44.9921,11.1083615 44.7831,11.2072059 44.59035,11.322643 L44.49335,10.9405393 L43.94435,10.9405393 L43.94435,15.2159763 L44.6346,15.2159763 L44.6346,11.8829985 C44.8736,11.7568948 45.08735,11.6627911 45.2701,11.6028207 C45.46435,11.5388207 45.6926,11.5068207 45.9481,11.5068207 C46.20035,11.5068207 46.39535,11.5843319 46.5441,11.7443319 C46.6966,11.9083615 46.7706,12.1126874 46.7706,12.3689244 L46.7706,15.2159763 L47.4611,15.2159763 Z",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M51.33365,15.2159763 L52.02415,15.2159763 L52.02415,12.3236504 C52.02415,11.9240059 51.90515,11.5805393 51.67115,11.3027319 C51.42965,11.0171022 51.0809,10.8722726 50.63415,10.8722726 C50.34915,10.8722726 50.06065,10.9246578 49.7764,11.0280059 C49.5554,11.1083615 49.3464,11.2072059 49.1534,11.322643 L49.05665,10.9405393 L48.50715,10.9405393 L48.50715,15.2159763 L49.1979,15.2159763 L49.1979,11.8829985 C49.4369,11.7568948 49.65065,11.6627911 49.83365,11.6028207 C50.02715,11.5388207 50.2554,11.5068207 50.5114,11.5068207 C50.76365,11.5068207 50.9584,11.5843319 51.10715,11.7443319 C51.25965,11.9083615 51.33365,12.1126874 51.33365,12.3689244 L51.33365,15.2159763 Z",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("polygon", {
-            fill: senary,
-            mask: "url(#mask-21)",
-            points: "53.07025 15.2158815 53.761 15.2158815 53.761 10.9404444 53.07025 10.9404444"
-        }), Object(jsx.c)("path", {
-            d: "M53.2697,10.4145778 L53.5692,10.4145778 C53.6717,10.4145778 53.7917,10.3541333 53.7917,10.1844148 L53.7917,9.6461037 C53.7917,9.47638519 53.6717,9.41594074 53.5692,9.41594074 L53.2697,9.41594074 C53.12545,9.41594074 53.03195,9.50625185 53.03195,9.6461037 L53.03195,10.1844148 C53.03195,10.2666667 53.06695,10.3190519 53.0967,10.3482074 C53.1272,10.3785481 53.1817,10.4145778 53.2697,10.4145778",
-            id: "Fill-52",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M55.15935,13.1527822 C55.3896,13.3137304 55.7216,13.3952711 56.1461,13.3952711 L56.6991,13.3952711 C56.9451,13.3952711 57.12785,13.4412563 57.24285,13.5318044 C57.3526,13.6180859 57.40585,13.7439526 57.40585,13.9165156 L57.40585,14.1137304 C57.40585,14.3467378 57.34735,14.4984415 57.23135,14.5638637 C57.0951,14.6409007 56.87735,14.6800119 56.5836,14.6800119 L54.82535,14.6800119 L54.82535,15.1588267 L54.9261,15.1761304 C55.0501,15.1972267 55.28985,15.2164267 55.65985,15.2346785 C56.0211,15.2522193 56.3111,15.2614637 56.52235,15.2614637 C56.99485,15.2614637 57.36685,15.1813452 57.6286,15.0234785 C57.90835,14.8549452 58.05035,14.5565156 58.05035,14.1362489 L58.05035,13.8785896 C58.05035,13.5313304 57.93135,13.2580267 57.6966,13.0662637 C57.46735,12.8790044 57.15235,12.7837156 56.76035,12.7837156 L56.19985,12.7837156 C55.9266,12.7837156 55.7246,12.7474489 55.59885,12.6751526 C55.49285,12.6147081 55.43935,12.4812563 55.43935,12.2781156 L55.43935,12.1034193 C55.43935,11.8753896 55.4986,11.717997 55.6161,11.6357452 C55.74485,11.54496 55.95435,11.4989748 56.2381,11.4989748 L57.8966,11.4989748 L57.8966,11.0111526 L57.7936,10.9952711 C57.6266,10.9696711 57.3876,10.9473896 57.08285,10.9293748 C56.77935,10.9118341 56.5161,10.9028267 56.29985,10.9028267 C55.78935,10.9028267 55.42085,10.9971674 55.17335,11.1910637 C54.92235,11.3880415 54.79485,11.6950044 54.79485,12.1034193 L54.79485,12.3082193 C54.79485,12.6998044 54.9176,12.9840119 55.15935,13.1527822",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M61.668375,12.3615763 L61.668375,15.2159763 L62.358875,15.2159763 L62.358875,12.3236504 C62.358875,11.9138133 62.238125,11.5672652 62.000375,11.2939615 C61.756875,11.0140207 61.409875,10.8722726 60.968875,10.8722726 C60.683875,10.8722726 60.394125,10.9246578 60.107625,11.0277689 C59.902625,11.1017244 59.709875,11.1910874 59.532625,11.2944356 L59.532625,9.1961837 L58.841875,9.1961837 L58.841875,15.2159763 L59.532625,15.2159763 L59.532625,11.8829985 C59.771625,11.7571319 59.985125,11.6630281 60.167875,11.6028207 C60.361625,11.5388207 60.590125,11.5068207 60.846125,11.5068207 C61.098375,11.5068207 61.293125,11.5843319 61.441625,11.7440948 C61.594125,11.9085985 61.668375,12.1105541 61.668375,12.3615763",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M41.2896,19.6944356 C41.2896,20.3666726 41.2346,20.874643 41.1261,21.2031763 C41.0241,21.5127467 40.8696,21.7208652 40.66735,21.821843 C40.45385,21.9285096 40.13585,21.9825541 39.72235,21.9825541 C39.2936,21.9825541 38.96785,21.9285096 38.7541,21.821843 C38.5526,21.7211022 38.40235,21.515117 38.3076,21.2093393 C38.20635,20.8829393 38.1551,20.3730726 38.1551,19.6944356 C38.1551,19.0020504 38.2151,18.4784356 38.33335,18.1380504 C38.44535,17.815443 38.6046,17.6018726 38.80685,17.5032652 C39.0211,17.3982578 39.3291,17.3453985 39.72235,17.3453985 C40.13585,17.3453985 40.4541,17.3982578 40.6686,17.5032652 C40.86985,17.6013985 41.02385,17.8116504 41.12585,18.1280948 C41.23435,18.4646874 41.2896,18.9916207 41.2896,19.6944356 M41.01035,16.9474133 C40.6946,16.7957096 40.26135,16.7184356 39.72235,16.7184356 C39.19885,16.7184356 38.77185,16.7957096 38.45385,16.9471763 C38.1241,17.1045689 37.87285,17.4070281 37.70635,17.8460207 C37.5461,18.2684207 37.46485,18.8904059 37.46485,19.6944356 C37.46485,20.4982281 37.54485,21.1149985 37.7026,21.527917 C37.86685,21.9579022 38.11535,22.2501689 38.44085,22.3971319 C38.75285,22.5379319 39.18385,22.609517 39.72235,22.609517 C40.2606,22.609517 40.6916,22.5379319 41.00385,22.3971319 C41.3296,22.2499319 41.57785,21.9576652 41.7421,21.527917 C41.89985,21.1149985 41.97985,20.4982281 41.97985,19.6944356 C41.97985,18.8863763 41.90135,18.263443 41.74635,17.8429393 C41.5851,17.406317 41.3376,17.1048059 41.01035,16.9474133",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M45.212575,18.2203733 C44.927325,18.2203733 44.638825,18.2729956 44.354825,18.3761067 C44.133575,18.4564622 43.924825,18.5553067 43.731825,18.6705067 L43.634825,18.28864 L43.085575,18.28864 L43.085575,22.564077 L43.776325,22.564077 L43.776325,19.2313363 C44.015325,19.1049956 44.228825,19.0108919 44.411825,18.9509215 C44.605575,18.8871585 44.833825,18.8549215 45.089825,18.8549215 C45.342325,18.8549215 45.536825,18.9324326 45.685575,19.0924326 C45.838075,19.2566993 45.912325,19.4610252 45.912325,19.7170252 L45.912325,22.564077 L46.602825,22.564077 L46.602825,19.6717511 C46.602825,19.2723437 46.483825,18.928877 46.249075,18.6508326 C46.007825,18.365203 45.658825,18.2203733 45.212575,18.2203733",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M50.09245,16.7641126 L49.79295,16.7641126 C49.64845,16.7641126 49.55495,16.8544237 49.55495,16.9942756 L49.55495,17.5325867 C49.55495,17.6143644 49.5897,17.6665126 49.61895,17.6959052 L49.61995,17.6968533 C49.65045,17.726957 49.70545,17.7627496 49.79295,17.7627496 L50.09245,17.7627496 C50.19495,17.7627496 50.31495,17.7023052 50.31495,17.5325867 L50.31495,16.9942756 C50.31495,16.824557 50.19495,16.7641126 50.09245,16.7641126",
-            id: "Fill-57",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("polygon", {
-            fill: senary,
-            mask: "url(#mask-21)",
-            points: "49.59325 22.5640296 50.284 22.5640296 50.284 18.2885926 49.59325 18.2885926"
-        }), Object(jsx.c)("polygon", {
-            fill: senary,
-            mask: "url(#mask-21)",
-            points: "47.71725 22.5640296 48.408 22.5640296 48.408 16.544 47.71725 16.544"
-        }), Object(jsx.c)("path", {
-            d: "M53.753575,18.2203733 C53.468325,18.2203733 53.179825,18.2729956 52.895825,18.3761067 C52.674575,18.4564622 52.465825,18.5553067 52.272825,18.6705067 L52.175825,18.28864 L51.626575,18.28864 L51.626575,22.564077 L52.317325,22.564077 L52.317325,19.2313363 C52.556325,19.1052326 52.769575,19.0111289 52.952575,18.9509215 C53.146325,18.8871585 53.374575,18.8549215 53.630825,18.8549215 C53.883075,18.8549215 54.077575,18.9324326 54.226325,19.0924326 C54.378825,19.2566993 54.453075,19.4610252 54.453075,19.7170252 L54.453075,22.564077 L55.143575,22.564077 L55.143575,19.6717511 C55.143575,19.2723437 55.024575,18.928877 54.790075,18.6508326 C54.548825,18.365203 54.200075,18.2203733 53.753575,18.2203733",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M58.651775,19.6791704 C58.651775,19.8792296 58.607525,20.0148148 58.520275,20.0821333 C58.425525,20.1556148 58.260275,20.1925926 58.029275,20.1925926 L56.532025,20.1925926 C56.538275,19.8330074 56.573525,19.5523556 56.637025,19.357037 C56.702275,19.1572148 56.806525,19.0218667 56.956025,18.9426963 C57.114025,18.8590222 57.351025,18.8168296 57.660775,18.8168296 C57.925525,18.8168296 58.133025,18.8436148 58.276775,18.896237 C58.406775,18.9438815 58.498025,19.0230519 58.556275,19.1382519 C58.619775,19.2629333 58.651775,19.4452148 58.651775,19.6791704 M59.103275,22.5252741 L59.211525,22.5134222 L59.211525,22.0282074 L57.737525,22.0282074 C57.401775,22.0282074 57.146525,21.9836444 56.979025,21.8952296 C56.818775,21.8106074 56.710775,21.6785778 56.648275,21.4913185 C56.588025,21.3095111 56.552275,21.0558815 56.541775,20.7361185 L58.060275,20.7361185 C58.451025,20.7361185 58.757525,20.6519704 58.970775,20.4858074 C59.191775,20.3146667 59.303775,20.0430222 59.303775,19.6791704 C59.303775,19.3285926 59.244775,19.0446222 59.128275,18.8360296 C59.007025,18.6196148 58.820275,18.4636444 58.572775,18.3723852 C58.339025,18.2868148 58.032275,18.2432 57.660775,18.2432 C57.217775,18.2432 56.861275,18.3090963 56.601275,18.4387556 C56.330525,18.5741037 56.133775,18.8064 56.016775,19.1294815 C55.905275,19.4359704 55.848525,19.868563 55.848525,20.4149333 C55.848525,20.9563259 55.902275,21.3867852 56.008275,21.6949333 C56.119775,22.0203852 56.310525,22.2578963 56.574525,22.4008296 C56.830275,22.5392593 57.188025,22.6094222 57.637525,22.6094222 C58.101025,22.6094222 58.594025,22.5809778 59.103275,22.5252741",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M38.2935,26.6307793 L38.2935,24.7392237 L39.707,24.7392237 C40.294,24.7392237 40.5675,25.0253274 40.5675,25.6392533 C40.5675,25.94432 40.489,26.1901274 40.334,26.3700385 C40.183,26.545683 39.993,26.6307793 39.753,26.6307793 L38.2935,26.6307793 Z M38.2935,27.2195793 L39.7685,27.2195793 C40.061,27.2195793 40.29575,27.3034904 40.4865,27.4755793 C40.6755,27.646483 40.76725,27.87712 40.76725,28.1805274 C40.76725,28.6060089 40.68275,28.8994607 40.51625,29.0528237 C40.349,29.2071348 40.09725,29.285357 39.7685,29.285357 L38.2935,29.285357 L38.2935,27.2195793 Z M40.63425,26.8919941 C40.76925,26.8064237 40.88875,26.6893274 40.99175,26.5416533 C41.158,26.3034311 41.2425,26.0023941 41.2425,25.6470756 C41.2425,24.6429867 40.71425,24.1124978 39.71475,24.1124978 L37.603,24.1124978 L37.603,29.91232 L39.77625,29.91232 C40.313,29.91232 40.7285,29.7857422 41.0115,29.5361422 C41.29725,29.2844089 41.44225,28.8513422 41.44225,28.2487941 C41.44225,27.8166756 41.327,27.4762904 41.0995,27.2380681 C40.95575,27.0873126 40.80025,26.9714015 40.63425,26.8919941 L40.63425,26.8919941 Z",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M44.049475,29.2935111 C43.567225,29.4170074 43.274725,29.4084741 43.036725,29.2276148 C42.912725,29.1337481 42.852725,28.9801481 42.852725,28.7568593 L42.852725,28.5674667 C42.852725,28.3636148 42.911725,28.2064593 43.033475,28.0862815 C43.152975,27.968 43.349475,27.9035259 43.617975,27.8945185 L44.919225,27.8464 L44.919225,29.017837 L44.645225,29.1145481 C44.471975,29.1759407 44.271725,29.2361481 44.049475,29.2935111 M44.081725,25.5687111 C43.617225,25.5687111 43.128225,25.6023704 42.628475,25.6685037 L42.522975,25.6827259 L42.522975,26.1653333 L43.927975,26.1653333 C44.313225,26.1653333 44.577975,26.2281481 44.714975,26.3528296 C44.850475,26.4758519 44.919225,26.6699852 44.919225,26.9288296 L44.919225,27.3739852 L43.544225,27.3739852 C43.109475,27.3739852 42.767475,27.4816 42.527475,27.6935111 C42.284975,27.9073185 42.161975,28.1988741 42.161975,28.5596444 L42.161975,28.8329481 C42.161975,29.1771259 42.271225,29.4537481 42.486475,29.6549926 C42.701475,29.856 42.982475,29.9579259 43.321475,29.9579259 C43.552225,29.9579259 43.801975,29.9190519 44.063975,29.8424889 C44.318475,29.7682963 44.550975,29.6860444 44.754475,29.5985778 C44.846475,29.5589926 44.915225,29.5281778 44.967475,29.504237 L45.047225,29.9121778 L45.609475,29.9121778 L45.609475,26.9063111 C45.609475,26.4602074 45.482725,26.1214815 45.232725,25.8998519 C44.984975,25.6801185 44.597725,25.5687111 44.081725,25.5687111",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M48.907625,25.5687585 C48.622625,25.5687585 48.334125,25.6213807 48.049875,25.7244919 C47.828875,25.8046104 47.620125,25.9034548 47.426875,26.0191289 L47.329875,25.6370252 L46.780625,25.6370252 L46.780625,29.9122252 L47.471375,29.9122252 L47.471375,26.5797215 C47.709125,26.4538548 47.922875,26.3597511 48.107125,26.2990696 C48.300125,26.2355437 48.528125,26.2033067 48.784875,26.2033067 C49.037125,26.2033067 49.231875,26.2808178 49.380625,26.4408178 C49.533125,26.6046104 49.607125,26.8089363 49.607125,27.0654104 L49.607125,29.9122252 L50.297625,29.9122252 L50.297625,27.0198993 C50.297625,26.6204919 50.178625,26.2772622 49.944375,25.9989807 C49.703375,25.7135881 49.354375,25.5687585 48.907625,25.5687585",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("polygon", {
-            fill: senary,
-            mask: "url(#mask-21)",
-            points: "55.21725 29.9121778 55.908 29.9121778 55.908 25.6369778 55.21725 25.6369778"
-        }), Object(jsx.c)("path", {
-            d: "M55.716225,24.1124978 L55.416725,24.1124978 C55.272475,24.1124978 55.178975,24.2028089 55.178975,24.3424237 L55.178975,24.8809719 C55.178975,24.9632237 55.213975,25.0153719 55.243475,25.0445274 C55.273975,25.0751052 55.328475,25.1108978 55.416725,25.1108978 L55.716225,25.1108978 C55.818725,25.1108978 55.938725,25.0506904 55.938725,24.8809719 L55.938725,24.3424237 C55.938725,24.1727052 55.818725,24.1124978 55.716225,24.1124978",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M59.166675,25.5687585 C58.881425,25.5687585 58.592925,25.6213807 58.308925,25.7244919 C58.087675,25.8048474 57.878675,25.9036919 57.685675,26.0191289 L57.588675,25.6370252 L57.039675,25.6370252 L57.039675,29.9122252 L57.730425,29.9122252 L57.730425,26.5797215 C57.967675,26.4540919 58.181175,26.3599881 58.365675,26.2990696 C58.559175,26.2355437 58.787175,26.2033067 59.043925,26.2033067 C59.296175,26.2033067 59.490675,26.2808178 59.639425,26.4408178 C59.791925,26.6046104 59.865925,26.8089363 59.865925,27.0654104 L59.865925,29.9122252 L60.556425,29.9122252 L60.556425,27.0198993 C60.556425,26.6204919 60.437425,26.2767881 60.203175,25.9989807 C59.962175,25.7135881 59.613175,25.5687585 59.166675,25.5687585",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }), Object(jsx.c)("path", {
-            d: "M62.08805,30.3800889 C62.08805,30.1537185 62.16505,29.9894519 62.32305,29.8778074 C62.49205,29.7581037 62.6943,29.7000296 62.94105,29.7000296 L64.07005,29.7000296 C64.4113,29.7000296 64.65005,29.7550222 64.7798,29.8640593 C64.90705,29.9707259 64.9688,30.1274074 64.9688,30.342163 L64.9688,30.5166222 C64.9688,30.7420444 64.89005,30.9063111 64.7278,31.0179556 C64.55505,31.1367111 64.3028,31.1969185 63.97805,31.1969185 L62.98705,31.1969185 C62.6868,31.1969185 62.4558,31.1454815 62.30055,31.0433185 C62.1573,30.9489778 62.08805,30.7941926 62.08805,30.5697185 L62.08805,30.3800889 Z M64.54655,27.1184593 C64.54655,27.6655407 64.2463,27.9201185 63.60155,27.9201185 L63.13305,27.9201185 C62.5773,27.9201185 62.31855,27.6463407 62.31855,27.0577778 C62.31855,26.7550815 62.3953,26.5367704 62.5463,26.4087704 C62.7018,26.2772148 62.93555,26.2106074 63.24055,26.2106074 L63.6783,26.2106074 C64.27055,26.2106074 64.54655,26.4990815 64.54655,27.1184593 L64.54655,27.1184593 Z M65.62855,25.6293926 L63.3248,25.6293926 C61.9478,25.6293926 61.6588,26.3978667 61.6588,27.0426074 C61.6588,27.3180444 61.72155,27.5721481 61.8453,27.7980444 C61.9318,27.9552 62.05855,28.0865185 62.22355,28.1912889 C61.8153,28.3617185 61.72005,28.6679704 61.72005,28.9161481 C61.72005,29.0702222 61.76205,29.2079407 61.8443,29.3257481 C61.88505,29.3838222 61.9348,29.4359704 61.9928,29.4814815 C61.85355,29.561363 61.73455,29.6623407 61.6378,29.7825185 C61.4938,29.9614815 61.42055,30.1831111 61.42055,30.4407704 L61.42055,30.6379852 C61.42055,31.0037333 61.56005,31.2874667 61.8348,31.481837 C62.0983,31.6683852 62.45505,31.762963 62.89505,31.762963 L64.01605,31.762963 C64.52405,31.762963 64.92255,31.6532148 65.20005,31.4368 C65.4843,31.2146963 65.62855,30.8977778 65.62855,30.4938667 L65.62855,30.3118222 C65.62855,29.9185778 65.50005,29.6168296 65.24705,29.4153481 C64.99955,29.2183704 64.6218,29.1185778 64.1238,29.1185778 L62.6953,29.1185778 C62.59755,29.1185778 62.51655,29.0958222 62.4473,29.049363 C62.41205,29.0251852 62.36455,28.9796741 62.36455,28.8632889 C62.36455,28.6926222 62.4413,28.6312296 62.49905,28.5997037 C62.61005,28.5394963 62.78455,28.5089185 63.01805,28.5089185 L63.64755,28.5089185 C64.1883,28.5089185 64.58855,28.3761778 64.8368,28.1137778 C65.08205,27.8554074 65.2063,27.5358815 65.2063,27.1642074 C65.2063,26.918163 65.1723,26.7121778 65.1053,26.5521778 C65.03605,26.3872 64.95555,26.2665481 64.85905,26.1833481 C64.8503,26.1755259 64.8413,26.1677037 64.83205,26.1601185 L65.62855,26.1124741 L65.62855,25.6293926 Z",
-            fill: senary,
-            mask: "url(#mask-21)"
-        }))))));
     }, _fundingLogos[constants.h.BLIK] = function(_ref) {
         var logoColor = _ref.logoColor;
         if (!BLIK_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " blik logo available");
@@ -8114,97 +7703,6 @@
         }), Object(jsx.c)("path", {
             d: "M3.67238562,6.95664596 C5.60913072,6.95664596 7.17892157,5.41322981 7.17892157,3.50925466 C7.17892157,1.60546584 5.60913072,0.0620496894 3.67238562,0.0620496894 C1.73564052,0.0620496894 0.165849673,1.60546584 0.165849673,3.50925466 C0.165849673,5.41322981 1.73564052,6.95664596 3.67238562,6.95664596 Z",
             mask: "url(#mask-6)"
-        }))))));
-    }, _fundingLogos[constants.h.TRUSTLY] = function(_ref) {
-        var logoColor = _ref.logoColor;
-        if (!TRUSTLY_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " trustly logo available");
-        var _TRUSTLY_LOGO_COLORS$ = TRUSTLY_LOGO_COLORS[logoColor], primary = _TRUSTLY_LOGO_COLORS$.primary, secondary = _TRUSTLY_LOGO_COLORS$.secondary;
-        return Object(jsx.c)("svg", {
-            width: "70px",
-            height: "22px",
-            viewBox: "0 0 70 22",
-            version: "1.1",
-            xmlns: "http://www.w3.org/2000/svg"
-        }, Object(jsx.c)("defs", null, Object(jsx.c)("polygon", {
-            id: "path-1",
-            points: "0.0103141832 0.0376094598 8.42702073 0.0376094598 8.42702073 10.4348955 0.0103141832 10.4348955"
-        }), Object(jsx.c)("polygon", {
-            id: "path-3",
-            points: "0.0163296552 0.144733127 4.23050511 0.144733127 4.23050511 4.4 0.0163296552 4.4"
-        })), Object(jsx.c)("g", {
-            id: "Page-1",
-            stroke: "none",
-            "stroke-width": "1",
-            fill: "none",
-            "fill-rule": "evenodd"
-        }, Object(jsx.c)("g", {
-            id: "SPB_&_AltPay_NewAssets",
-            transform: "translate(-100.000000, -159.000000)"
-        }, Object(jsx.c)("g", {
-            id: "Group-23",
-            transform: "translate(100.000000, 159.000000)"
-        }, Object(jsx.c)("path", {
-            d: "M57.9530181,6.77372667 C58.0233808,6.75539333 58.0971891,6.75631 58.1704534,6.75539333 C58.8242098,6.75667667 59.4772409,6.75502667 60.1309974,6.75631 C60.2972927,6.75906 60.4775518,6.76016 60.6211788,6.85861 C60.7218264,6.93249333 60.7421373,7.06852667 60.7428627,7.18604333 C60.7428627,10.36266 60.7425,13.5390933 60.7428627,16.7153433 C60.7421373,16.84936 60.7318005,16.9985933 60.6360492,17.10181 C60.5343135,17.19916 60.3876036,17.2160267 60.2541321,17.2165767 C59.5459715,17.2160267 58.8374482,17.2176767 58.1294689,17.2158433 C58.0048834,17.2110767 57.863614,17.2141933 57.7655052,17.12491 C57.6782772,17.00666 57.6904275,16.84991 57.6857124,16.7105767 C57.6853497,13.5363433 57.6857124,10.3619267 57.6857124,7.18714333 C57.6715674,7.00857667 57.776386,6.82212667 57.9530181,6.77372667",
-            id: "Fill-1",
-            fill: primary
-        }), Object(jsx.c)("path", {
-            d: "M20.3658109,6.94398833 C20.6247746,6.89118833 20.8913549,6.905855 21.1544896,6.90383833 C21.7431425,6.914655 22.3307073,6.90154646 22.9199041,6.90347167 C23.3788938,6.91813833 23.8380648,6.893205 24.2974171,6.907505 C24.5192047,6.92858833 24.7413549,6.888805 24.9636865,6.91263833 C25.3952927,6.91703833 25.8263549,6.91098833 26.2577798,6.903105 C26.6892047,6.90897167 27.1206295,6.89393833 27.5516917,6.91263833 C27.9025984,6.905855 28.2565881,6.88202167 28.6051373,6.936105 C28.7476762,6.95792167 28.8847746,7.07342167 28.8791528,7.22888833 C28.8838679,7.83682167 28.8787902,8.44438833 28.8818731,9.05232167 C28.8773394,9.138855 28.8913031,9.241705 28.8265622,9.31027167 C28.7513031,9.38727167 28.6374171,9.399555 28.536044,9.401205 C27.8282461,9.403955 27.1202668,9.39918833 26.4128316,9.40322167 C26.2891528,9.39717167 26.1348264,9.45987167 26.1491528,9.60947167 C26.1438938,11.977405 26.1482461,14.3455217 26.146614,16.713455 C26.1408109,16.8502217 26.1272098,17.0097217 26.0086088,17.0982717 C25.8550078,17.2093717 25.6564326,17.2121217 25.4750855,17.216155 C24.7798005,17.2168883 24.0846969,17.216155 23.3894119,17.2165217 C23.2191269,17.2121217 23.0405,17.2223883 22.8812772,17.1510717 C22.7434534,17.0942383 22.7091788,16.9272217 22.7100855,16.792655 C22.7091788,14.411155 22.7120803,12.030205 22.7088161,9.648705 C22.7225984,9.51578833 22.6185052,9.401205 22.4853964,9.40762167 C21.793013,9.391305 21.0989974,9.411105 20.4062513,9.39808833 C20.2586347,9.40432167 20.1059404,9.29322167 20.1188161,9.13262167 C20.1122876,8.510205 20.1153705,7.88797167 20.117728,7.26573833 C20.1090233,7.11338833 20.2181943,6.97332167 20.3658109,6.94398833",
-            id: "Fill-3",
-            fill: primary
-        }), Object(jsx.c)("path", {
-            d: "M53.4974456,8.01104333 C53.9424715,7.94156 54.3849585,7.85392667 54.8314352,7.79471 C54.9973679,7.76427667 55.2260466,7.81377667 55.239285,8.02021 C55.2715648,8.56434333 55.2441813,9.11104333 55.2539741,9.65646 C55.5600881,9.65829333 55.8665648,9.65352667 56.1728601,9.65829333 C56.3115907,9.65719333 56.4323679,9.75637667 56.4913057,9.87866 C56.5622124,10.0280767 56.5790777,10.19766 56.5770829,10.3619267 C56.5758135,10.67946 56.5770829,10.99681 56.5767202,11.3143433 C56.5732746,11.4281933 56.5687409,11.55451 56.4954767,11.64801 C56.4245699,11.7273933 56.3119534,11.73931 56.2125751,11.7385767 C55.9264093,11.7385767 55.6396995,11.73821 55.3535337,11.73821 C55.3528083,12.7615767 55.3522642,13.7851267 55.3540777,14.8084933 C55.344285,14.9426933 55.4356839,15.0653433 55.5551917,15.1161267 C55.7249326,15.1914767 55.9142591,15.17406 56.0946995,15.1615933 C56.1779378,15.2336433 56.1977047,15.3509767 56.2290777,15.45181 C56.3237409,15.85056 56.3737927,16.2601267 56.3931969,16.67006 C56.3953731,16.81966 56.407342,16.9723767 56.3766943,17.1201433 C56.175399,17.2495767 55.922057,17.2609433 55.694285,17.3161267 C54.8791295,17.4462933 53.9821865,17.51211 53.2335855,17.0939267 C52.6318756,16.7661267 52.2800622,16.0811933 52.2671865,15.40176 C52.2548549,14.1668267 52.2622902,12.9318933 52.2671865,11.6967767 C52.0606321,11.6885267 51.8515389,11.7158433 51.6477047,11.67991 C51.4250104,11.6195933 51.3865648,11.3552267 51.3914611,11.15796 C51.394544,10.79496 51.385114,10.43141 51.3959948,10.0685933 C51.3959948,9.88581 51.5135078,9.70119333 51.700658,9.67186 C51.9385855,9.64014333 52.1803212,9.66397667 52.4198808,9.65682667 C52.4229637,9.32261 52.4182487,8.98857667 52.4216943,8.65436 C52.4191554,8.46296 52.5533523,8.30071 52.7118497,8.21179333 C52.9501399,8.07172667 53.2328601,8.06219333 53.4974456,8.01104333",
-            id: "Fill-5",
-            fill: primary
-        }), Object(jsx.c)("path", {
-            d: "M45.7866373,9.817885 C46.6879326,9.40446833 47.6974922,9.330585 48.6745907,9.361935 C49.1888912,9.39255167 49.7160674,9.398785 50.2082435,9.569835 C50.3063523,9.589635 50.3623886,9.67946833 50.3694611,9.77590167 C50.4120777,10.1838183 50.3366373,10.5965017 50.2216632,10.986635 C50.1594611,11.157685 50.1014301,11.3604517 49.9335026,11.4545017 C49.6157824,11.4495517 49.3027772,11.376585 48.9870518,11.3437683 C48.6163782,11.3052683 48.2333731,11.2449517 47.8672332,11.3401017 C47.7156269,11.369435 47.5712746,11.5599183 47.6838912,11.701635 C47.8246166,11.8499517 48.0166632,11.9330017 48.1952902,12.0257683 C48.788114,12.3007683 49.3921813,12.5801683 49.8887098,13.017235 C50.2086062,13.2981017 50.4829845,13.6433183 50.6349534,14.0470183 C50.7404974,14.3112017 50.7829326,14.5959183 50.7970777,14.8791683 C50.800886,15.4038683 50.6969741,15.9511183 50.3821554,16.379935 C49.9855492,16.9328683 49.3201865,17.203835 48.6754974,17.320435 C47.7910674,17.4720517 46.8861451,17.4192517 45.9989948,17.3189683 C45.4518705,17.2403183 44.8960415,17.164235 44.3777513,16.9605517 C44.2990466,16.742385 44.2887098,16.508635 44.2691244,16.2796517 C44.2542539,15.958085 44.2518964,15.633585 44.3106528,15.3164183 C44.3374922,15.1994517 44.3665078,15.064885 44.4716891,14.9930183 C44.5485803,14.974685 44.6252902,15.0100683 44.7009119,15.0251017 C45.2641762,15.1811183 45.8502902,15.2407017 46.4335026,15.2377683 C46.7347202,15.2328183 47.0557047,15.2594017 47.3337098,15.1195183 C47.4880363,15.0482017 47.5480622,14.811335 47.4015337,14.7009683 C47.1779326,14.5084683 46.8885026,14.422485 46.6259119,14.298185 C46.1973886,14.1137517 45.7677772,13.919235 45.3909378,13.6391017 C45.0093834,13.356035 44.6867668,12.9730517 44.5391503,12.512885 C44.3610674,11.952985 44.3661451,11.308385 44.6601088,10.7884517 C44.9089171,10.3429517 45.3341762,10.0281683 45.7866373,9.817885",
-            id: "Fill-7",
-            fill: primary
-        }), Object(jsx.c)("path", {
-            d: "M31.1743912,9.64921833 C31.8377591,9.622635 32.5023964,9.642435 33.1664896,9.63216833 C33.6505052,9.63601833 34.1348834,9.62336833 34.618899,9.63051833 C34.7394948,9.62226833 34.8662565,9.71155167 34.863899,9.84171833 C34.8673446,10.4005183 34.8655311,10.9598683 34.8646244,11.519035 C34.868614,11.6611183 34.7688731,11.8079683 34.6212565,11.817135 C34.1843912,11.838585 33.7371891,11.8222683 33.3121114,11.9438183 C33.0451684,12.0369517 32.772785,12.1731683 32.6070337,12.4131517 C32.4721114,12.613535 32.4383808,12.8628683 32.4391062,13.1001017 C32.4387435,14.276735 32.4391062,15.4533683 32.4387435,16.6300017 C32.4367487,16.783635 32.4218782,16.9510183 32.3232254,17.0760517 C32.2318264,17.1827517 32.085842,17.218135 31.9512824,17.2161183 C31.3094948,17.216485 30.6671632,17.2174017 30.025013,17.2157517 C29.8433031,17.2141017 29.6474482,17.1633183 29.5241321,17.020135 C29.4060751,16.8811683 29.3805052,16.6886683 29.3825,16.5117517 C29.3835881,14.765685 29.381956,13.019985 29.3832254,11.2739183 C29.3828627,10.8616017 29.4829663,10.4183017 29.7907124,10.1266183 C30.1619301,9.779385 30.6860233,9.679835 31.1743912,9.64921833",
-            id: "Fill-9",
-            fill: primary
-        }), Object(jsx.c)("path", {
-            d: "M36.1322047,9.67501333 C36.237386,9.63174667 36.3527228,9.63614667 36.464614,9.63688 C37.0811943,9.63963 37.6985,9.63486333 38.315443,9.63926333 C38.6204689,9.64879667 38.9517902,9.87576333 38.9604948,10.20723 C38.9619456,11.4357467 38.9601321,12.6648133 38.9612202,13.89333 C38.9623083,14.1120467 39.0081891,14.3621133 39.190443,14.50218 C39.4341736,14.6680967 39.8213497,14.61438 39.9794845,14.3522133 C40.0556503,14.2275467 40.0853912,14.0783133 40.0877487,13.9331133 C40.0877487,12.71523 40.0870233,11.4971633 40.0881114,10.27928 C40.0924637,10.11043 40.0908316,9.91939667 40.2056244,9.78299667 C40.2966606,9.66988 40.4486295,9.63926333 40.5864534,9.63724667 C41.2146399,9.63724667 41.8431891,9.63761333 42.4717383,9.63724667 C42.6494585,9.64091333 42.8409611,9.67703 42.9747953,9.80481333 C43.1102617,9.93773 43.1445363,10.13848 43.1452617,10.3214467 C43.1445363,11.8828967 43.144899,13.4441633 43.1452617,15.0057967 C43.1345622,15.4831967 43.0651062,15.9752633 42.8293549,16.3967467 C42.6278782,16.76103 42.2856762,17.04593 41.8867124,17.1594133 C41.5798731,17.2578633 41.2547176,17.2332967 40.9380855,17.23568 L38.5832927,17.23568 C37.9979041,17.22523 37.3807798,17.2974633 36.8331114,17.0402467 C36.3991477,16.8514133 36.0756244,16.4565133 35.9309093,16.0066133 C35.7408575,15.46853 35.7863756,14.89103 35.7820233,14.3307633 C35.7827487,12.9953633 35.7809352,11.6595967 35.7831114,10.3241967 C35.7938109,10.07468 35.8817642,9.77694667 36.1322047,9.67501333",
-            id: "Fill-11",
-            fill: primary
-        }), Object(jsx.c)("g", {
-            id: "Group-15",
-            transform: "translate(61.476684, 9.598600)"
-        }, Object(jsx.c)("mask", {
-            id: "mask-2",
-            fill: "white"
-        }, Object(jsx.c)("use", {
-            href: "#path-1"
-        })), Object(jsx.c)("g", {
-            id: "Clip-14"
-        }), Object(jsx.c)("path", {
-            d: "M0.065738342,0.1661 C0.16511658,0.0570166667 0.323795337,0.0462 0.461619171,0.03905 C1.15599741,0.0383166667 1.85037565,0.0396 2.54475389,0.0386833333 C2.6867487,0.04015 2.83708549,0.0227333333 2.9701943,0.0878166667 C3.18490933,0.192316667 3.34703368,0.393066667 3.42591969,0.618933333 C3.75959845,1.56841667 4.08656736,2.52083333 4.4240544,3.4694 C4.73832902,2.6697 5.05895078,1.8733 5.37485751,1.07451667 C5.46516839,0.8646 5.53081606,0.643133333 5.64306995,0.44385 C5.77055699,0.23595 5.9771114,0.0399666667 6.23335492,0.03905 C6.82182642,0.03905 7.41066062,0.03795 7.99949482,0.0396 C8.13840674,0.0515166667 8.31159326,0.0553666667 8.40299223,0.181133333 C8.44923575,0.281966667 8.42130829,0.4015 8.38286269,0.50105 C7.08876943,3.5761 5.79340674,6.65041667 4.49949482,9.72546667 C4.38252591,10.0419 4.16037565,10.39775 3.79641192,10.4327667 C3.22534974,10.4338667 2.65410622,10.4379 2.08340674,10.43075 C1.94050518,10.42195 1.74156736,10.3906 1.70910622,10.2202833 C1.69641192,10.1097333 1.74555699,10.0059667 1.78472798,9.90641667 C2.11840674,9.10965 2.44900259,8.3116 2.78286269,7.5152 C2.80226684,7.46991667 2.81876943,7.42023333 2.79229275,7.37421667 C1.88428756,5.104 0.976463731,2.8336 0.0682772021,0.563383333 C0.0205829016,0.44 -0.0327331606,0.27885 0.065738342,0.1661",
-            id: "Fill-13",
-            fill: primary,
-            mask: "url(#mask-2)"
-        })), Object(jsx.c)("path", {
-            d: "M5.64392228,6.89753167 C5.66314508,6.26649833 5.63920725,5.636015 5.6616943,5.00534833 C5.70195337,4.226365 6.02275648,3.467915 6.54358549,2.89389833 C7.05679793,2.32043167 7.7651399,1.92864833 8.52117617,1.80764833 C9.37931088,1.662815 10.2893109,1.86649833 11.0049067,2.367915 C11.8978601,2.976765 12.4681969,4.03423167 12.4906839,5.12323167 C12.4926788,5.71539833 12.4906839,6.30738167 12.4914093,6.89954833 C10.2087927,6.898265 7.92653886,6.90303167 5.64392228,6.89753167 M11.3588964,10.277465 C11.3668756,10.3702317 11.2665907,10.410015 11.1904249,10.410015 C10.7760466,10.4222983 10.3607617,10.4002983 9.94656477,10.421565 C9.93042487,10.4928817 9.9159171,10.565115 9.91646114,10.6389983 C9.91827461,11.7628317 9.9159171,12.8870317 9.91754922,14.010865 C9.91428497,14.1353483 9.92843005,14.2629483 9.90177202,14.385965 C9.85788601,14.5005483 9.72278238,14.5175983 9.61723834,14.5199817 C9.30205699,14.5260317 8.98723834,14.5199817 8.67205699,14.522365 C8.49488083,14.5199817 8.30881865,14.541065 8.1436114,14.4620483 C8.12674611,14.3663483 8.11187565,14.269915 8.11187565,14.1727483 C8.11387047,13.0476317 8.11133161,11.9223317 8.11296373,10.797215 C8.11133161,10.685015 8.12166839,10.570615 8.10172021,10.459515 C8.0128601,10.378115 7.87666839,10.4250483 7.7678601,10.4118483 C7.43581347,10.3980983 7.09705699,10.4499817 6.77008808,10.3749983 C6.74143523,10.013465 6.75956995,9.64918167 6.75757513,9.286915 C6.74107254,9.13933167 6.91135751,9.099915 7.02415544,9.104315 C8.3728342,9.103215 9.7216943,9.104315 11.0703731,9.10394833 C11.1779119,9.10229833 11.3400363,9.11788167 11.3565389,9.25354833 C11.3668756,9.594365 11.3625233,9.936465 11.3588964,10.277465 M17.8946477,7.30544833 C17.5986891,7.006615 17.1638187,6.912565 16.7590518,6.90028167 C15.9665648,6.89863167 15.173715,6.90064833 14.3806839,6.89954833 C14.3830415,6.40069833 14.3748808,5.90148167 14.3873938,5.40263167 C14.4019016,4.26138167 14.0348549,3.12123167 13.3660466,2.20218167 C12.6558912,1.21823167 11.607342,0.488565 10.4407358,0.180198333 C9.59565803,-0.0475016667 8.69599482,-0.0590516667 7.84456995,0.144081667 C6.71078756,0.411565 5.67420725,1.07229833 4.9428342,1.98694833 C4.18716062,2.919565 3.76371503,4.11618167 3.75428497,5.32049833 L3.75428497,6.899915 C2.9601658,6.90064833 2.16604663,6.898265 1.37192746,6.90064833 C0.942860104,6.915315 0.468637306,7.025315 0.186823834,7.37969833 C-0.00866839378,7.61693167 -0.0289792746,7.947665 0.0274196891,8.239165 C0.60519171,10.850015 1.18115026,13.4615983 1.75892228,16.0724483 C1.83907772,16.445165 2.04780829,16.802665 2.37640933,17.0013983 C2.64879275,17.1740983 2.97775648,17.2252483 3.29456995,17.2144317 C7.18120207,17.2133317 11.0676528,17.214065 14.9541036,17.2138817 C15.3244145,17.2180983 15.7106839,17.1038817 15.9783523,16.835665 C16.1994145,16.6259317 16.3305285,16.337915 16.3927306,16.0418317 C16.9674197,13.4359317 17.5446477,10.8305817 18.1200622,8.22449833 C18.1929637,7.90549833 18.1302176,7.54249833 17.8946477,7.30544833",
-            id: "Fill-16",
-            fill: secondary
-        }), Object(jsx.c)("path", {
-            d: "M5.15798446,17.6518833 C5.64272539,17.57085 6.15466839,17.66545 6.57666321,17.9208333 C7.1854456,18.2827333 7.59692228,18.9696833 7.60472021,19.68725 C7.62466839,20.1604333 7.47668912,20.6363667 7.19723316,21.0164167 C6.87806218,21.4575167 6.3831658,21.7647833 5.84927979,21.8515 C5.30233679,21.9486667 4.72021244,21.8087833 4.2704715,21.48025 C3.83197409,21.16125 3.51951295,20.6686333 3.4273886,20.12945 C3.32601554,19.5726667 3.45712953,18.97665 3.78482383,18.5174 C4.10472021,18.0594333 4.61031606,17.7408 5.15798446,17.6518833",
-            id: "Fill-18",
-            fill: secondary
-        }), Object(jsx.c)("g", {
-            id: "Group-22",
-            transform: "translate(10.518135, 17.481933)"
-        }, Object(jsx.c)("mask", {
-            id: "mask-4",
-            fill: "white"
-        }, Object(jsx.c)("use", {
-            href: "#path-3"
-        })), Object(jsx.c)("g", {
-            id: "Clip-21"
-        }), Object(jsx.c)("path", {
-            d: "M1.78171762,0.16951 C2.21695078,0.106443333 2.6739456,0.160893333 3.06728756,0.366043333 C3.5901114,0.629126667 3.99632902,1.12027667 4.15228756,1.69007667 C4.31513731,2.27436 4.22210622,2.92904333 3.88806477,3.43559333 C3.57959326,3.91647667 3.07037047,4.26096 2.51182124,4.36271 C1.96342746,4.47124333 1.37495596,4.33961 0.917779793,4.01602667 C0.465862694,3.69702667 0.142520725,3.19542667 0.0494896373,2.64487667 C-0.0529715026,2.07929333 0.0848523316,1.47447667 0.423608808,1.01247667 C0.7455,0.56716 1.24275389,0.25696 1.78171762,0.16951",
-            id: "Fill-20",
-            fill: secondary,
-            mask: "url(#mask-4)"
         }))))));
     }, _fundingLogos[constants.h.MAXIMA] = function(_ref) {
         var logoColor = _ref.logoColor;
@@ -11840,7 +11338,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.319";
+            payload.version = "4.0.320";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -11906,7 +11404,7 @@
         function focus(event) {
             event.preventDefault();
             event.stopPropagation();
-            Object(lib.F)() && Object(src.j)() ? window.alert("Please switch tabs to reactivate the PayPal window") : zalgo_promise_src.a.try(actions.focus).catch(actions.close);
+            Object(lib.G)() && Object(src.j)() ? window.alert("Please switch tabs to reactivate the PayPal window") : zalgo_promise_src.a.try(actions.focus).catch(actions.close);
         }
         var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK;
         var logoColor = LOGO_COLOR[overlayColor];
@@ -12000,7 +11498,7 @@
         _constants__WEBPACK_IMPORTED_MODULE_1__.C.EC_TOKEN);
     }
     function determineUrl(env, fundingSource, payment) {
-        return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.C.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.OXXO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MERCADOPAGO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
+        return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.C.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.OXXO || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MERCADOPAGO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -16149,18 +15647,18 @@
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
     var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.319" === window.paypal.version) {
+    if (window.paypal && "4.0.320" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.319"
+            version: "4.0.320"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.319) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.320) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.319" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.320" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.319"
+            version: "4.0.320"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.319");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.320");
     }
     try {
         var _interface = __webpack_require__(50);
@@ -16257,13 +15755,13 @@
         return constants.o;
     }));
     __webpack_require__.d(__webpack_exports__, "request", (function() {
-        return lib.R;
+        return lib.S;
     }));
     __webpack_require__.d(__webpack_exports__, "isEligible", (function() {
-        return lib.B;
+        return lib.C;
     }));
     __webpack_require__.d(__webpack_exports__, "isFundingRemembered", (function() {
-        return lib.C;
+        return lib.D;
     }));
     __webpack_require__.d(__webpack_exports__, "forceIframe", (function() {
         return lib.a;
@@ -16355,13 +15853,13 @@
         return constants.o;
     }));
     __webpack_require__.d(interface_namespaceObject, "request", (function() {
-        return lib.R;
+        return lib.S;
     }));
     __webpack_require__.d(interface_namespaceObject, "isEligible", (function() {
-        return lib.B;
+        return lib.C;
     }));
     __webpack_require__.d(interface_namespaceObject, "isFundingRemembered", (function() {
-        return lib.C;
+        return lib.D;
     }));
     __webpack_require__.d(interface_namespaceObject, "forceIframe", (function() {
         return lib.a;
@@ -16441,7 +15939,7 @@
         function focus(event) {
             event.preventDefault();
             event.stopPropagation();
-            Object(lib.F)() && Object(belter_src.j)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+            Object(lib.G)() && Object(belter_src.j)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
         }
         var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK;
         var logoColor = LOGO_COLOR[overlayColor];
@@ -16725,7 +16223,7 @@
             };
             clientId ? params.client_id = clientId : delete params.client_id;
             var fullUrl = Object(lib.g)(config.a.pptmUrl, params);
-            Object(lib.H)(fullUrl, 0, {
+            Object(lib.I)(fullUrl, 0, {
                 async: !0,
                 id: constants.E
             }).then((function() {
@@ -16735,13 +16233,13 @@
                 _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
             })).catch((function(err) {
                 Object(beaver_logger_client.k)("pptm_script_error", {
-                    error: Object(lib.U)(err)
+                    error: Object(lib.V)(err)
                 });
             }));
         },
         shouldCreateInitialPptmScript: function() {
             if (!window.location.hostname) return !1;
-            if (Object(lib.G)()) return !1;
+            if (Object(lib.H)()) return !1;
             var existingScript = Object(lib.n)(constants.E);
             if (Boolean(existingScript)) {
                 Object(beaver_logger_client.k)("pptm_tried_loading_twice");
@@ -16750,7 +16248,7 @@
             return !0;
         },
         shouldReloadPptmScript: function(clientId) {
-            return !1 !== noContentFoundInContainer && !Object(lib.G)() && !config.a.merchantID && !!clientId;
+            return !1 !== noContentFoundInContainer && !Object(lib.H)() && !config.a.merchantID && !!clientId;
         },
         removePptm: function() {
             var script = Object(lib.n)(constants.E);
@@ -16759,13 +16257,13 @@
     });
     var noContentFoundInContainer, callback, listener, obj;
     var proxyRest = {};
-    var createAccessToken = Object(lib.I)((function(env, client) {
+    var createAccessToken = Object(lib.J)((function(env, client) {
         Object(beaver_logger_client.k)("rest_api_create_access_token");
         var clientID = client[env = env || config.a.env];
         if (!clientID) throw new Error("Client ID not found for env: " + env);
         if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
         var basicAuth = Object(belter_src.a)(clientID + ":");
-        return Object(lib.R)({
+        return Object(lib.S)({
             method: "post",
             url: config.a.authApiUrls[env],
             headers: {
@@ -16782,7 +16280,7 @@
     }), {
         time: 6e5
     });
-    var createExperienceProfile = Object(lib.I)((function(env, client, experienceDetails) {
+    var createExperienceProfile = Object(lib.J)((function(env, client, experienceDetails) {
         void 0 === experienceDetails && (experienceDetails = {});
         Object(beaver_logger_client.k)("rest_api_create_experience_profile");
         if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
@@ -16790,7 +16288,7 @@
         experienceDetails.temporary = !0;
         experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
         return createAccessToken(env, client).then((function(accessToken) {
-            return Object(lib.R)({
+            return Object(lib.S)({
                 method: "post",
                 url: config.a.experienceApiUrls[env],
                 headers: {
@@ -16846,12 +16344,12 @@
                 return zalgo_promise_src.a.try((function() {
                     if (tracking) return zalgo_promise_src.a.resolve(function(env, client, merchantID, trackingData) {
                         if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
-                        var trackingID = Object(lib.X)();
+                        var trackingID = Object(lib.Y)();
                         return createAccessToken(env, client).then((function(accessToken) {
                             var headers = {
                                 Authorization: "Bearer " + accessToken
                             };
-                            return Object(lib.R)({
+                            return Object(lib.S)({
                                 method: "put",
                                 url: config.a.trackingApiUrls[env] + "/" + merchantID + "/" + trackingID,
                                 headers: headers,
@@ -16871,7 +16369,7 @@
                     };
                     trackingID && (headers["Paypal-Client-Metadata-Id"] = trackingID);
                     meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                    return Object(lib.R)({
+                    return Object(lib.S)({
                         method: "post",
                         url: config.a.paymentApiUrls[env],
                         headers: headers,
@@ -16908,7 +16406,7 @@
                 Authorization: "Bearer " + accessToken
             };
             meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-            return Object(lib.R)({
+            return Object(lib.S)({
                 method: "post",
                 url: config.a.orderApiUrls[env],
                 headers: headers,
@@ -16935,7 +16433,7 @@
                 if (experienceDetails) return zalgo_promise_src.a.resolve(createExperienceProfile(env, client, experienceDetails));
             })).then((function(experienceID) {
                 experienceID && (billingDetails.experience_profile_id = experienceID);
-                return Object(lib.R)({
+                return Object(lib.S)({
                     method: "post",
                     url: config.a.billingApiUrls[env],
                     headers: {
@@ -16969,7 +16467,7 @@
     }, (function(_ref) {
         proxyRest = _ref.data;
     }));
-    parentWin && Object(lib.G)() && !Object(cross_domain_utils_src.v)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
+    parentWin && Object(lib.H)() && !Object(cross_domain_utils_src.v)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
         createAccessToken: createAccessToken,
         createExperienceProfile: createExperienceProfile,
         createPayment: createPayment,
@@ -17064,8 +16562,8 @@
         }));
     }
     var _FUNDING_CONFIG, _CARD_CONFIG;
-    var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.CARD, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.MERCADOPAGO ];
-    var FUNDING_ORDER = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.MERCADOPAGO, constants.v.CARD ];
+    var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.CARD, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.MERCADOPAGO ];
+    var FUNDING_ORDER = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.MERCADOPAGO, constants.v.CARD ];
     var FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
         enabled: !0,
         allowOptIn: !0,
@@ -17141,23 +16639,8 @@
         allowHorizontal: !1,
         allowVertical: !0,
         requireCommitAsTrue: !0
-    }, _FUNDING_CONFIG[constants.v.PAYU] = {
-        allowedCountries: [ constants.r.CZ ],
-        allowHorizontal: !1,
-        allowVertical: !0,
-        requireCommitAsTrue: !0
-    }, _FUNDING_CONFIG[constants.v.VERKKOPANKKI] = {
-        allowedCountries: [ constants.r.FI ],
-        allowHorizontal: !1,
-        allowVertical: !0,
-        requireCommitAsTrue: !0
     }, _FUNDING_CONFIG[constants.v.BLIK] = {
         allowedCountries: [ constants.r.PL ],
-        allowHorizontal: !1,
-        allowVertical: !0,
-        requireCommitAsTrue: !0
-    }, _FUNDING_CONFIG[constants.v.TRUSTLY] = {
-        allowedCountries: [ constants.r.DE, constants.r.DK, constants.r.EE, constants.r.ES, constants.r.FI, constants.r.GB, constants.r.IT, constants.r.MT, constants.r.NL, constants.r.NO, constants.r.SE ],
         allowHorizontal: !1,
         allowVertical: !0,
         requireCommitAsTrue: !0
@@ -17251,7 +16734,7 @@
             })));
         }));
     }
-    var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _logoColors19, _secondaryColors19, _logoColors20, _secondaryColors20, _logoColors21, _secondaryColors21, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
+    var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
     var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[constants.s] = {
         colors: [ constants.e.GOLD, constants.e.BLUE, constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
         sizes: [ constants.l.SMALL, constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ],
@@ -17506,9 +16989,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.PAYU] = {
-        label: "{ logo: " + constants.h.PAYU + " }",
-        logoLabel: "{ logo: " + constants.h.PAYU + " }",
+    }, _BUTTON_CONFIG[constants.f.BLIK] = {
+        label: "{ logo: " + constants.h.BLIK + " }",
+        logoLabel: "{ logo: " + constants.h.BLIK + " }",
         defaultColor: constants.e.SILVER,
         colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
         logoColors: (_logoColors13 = {}, _logoColors13[constants.e.SILVER] = constants.i.BLACK, 
@@ -17521,9 +17004,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.VERKKOPANKKI] = {
-        label: "{ logo: " + constants.h.VERKKOPANKKI + " }",
-        logoLabel: "{ logo: " + constants.h.VERKKOPANKKI + " }",
+    }, _BUTTON_CONFIG[constants.f.MAXIMA] = {
+        label: "{ logo: " + constants.h.MAXIMA + " }",
+        logoLabel: "{ logo: " + constants.h.MAXIMA + " }",
         defaultColor: constants.e.SILVER,
         colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
         logoColors: (_logoColors14 = {}, _logoColors14[constants.e.SILVER] = constants.i.BLACK, 
@@ -17536,9 +17019,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.BLIK] = {
-        label: "{ logo: " + constants.h.BLIK + " }",
-        logoLabel: "{ logo: " + constants.h.BLIK + " }",
+    }, _BUTTON_CONFIG[constants.f.BOLETO] = {
+        label: "{ logo: " + constants.h.BOLETO + " }",
+        logoLabel: "{ logo: " + constants.h.BOLETO + " }",
         defaultColor: constants.e.SILVER,
         colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
         logoColors: (_logoColors15 = {}, _logoColors15[constants.e.SILVER] = constants.i.BLACK, 
@@ -17551,9 +17034,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.TRUSTLY] = {
-        label: "{ logo: " + constants.h.TRUSTLY + " }",
-        logoLabel: "{ logo: " + constants.h.TRUSTLY + " }",
+    }, _BUTTON_CONFIG[constants.f.OXXO] = {
+        label: "{ logo: " + constants.h.OXXO + " }",
+        logoLabel: "{ logo: " + constants.h.OXXO + " }",
         defaultColor: constants.e.SILVER,
         colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
         logoColors: (_logoColors16 = {}, _logoColors16[constants.e.SILVER] = constants.i.BLACK, 
@@ -17566,9 +17049,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.MAXIMA] = {
-        label: "{ logo: " + constants.h.MAXIMA + " }",
-        logoLabel: "{ logo: " + constants.h.MAXIMA + " }",
+    }, _BUTTON_CONFIG[constants.f.MERCADOPAGO] = {
+        label: "{ logo: " + constants.h.MERCADOPAGO + " }",
+        logoLabel: "{ logo: " + constants.h.MERCADOPAGO + " }",
         defaultColor: constants.e.SILVER,
         colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
         logoColors: (_logoColors17 = {}, _logoColors17[constants.e.SILVER] = constants.i.BLACK, 
@@ -17581,62 +17064,17 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.BOLETO] = {
-        label: "{ logo: " + constants.h.BOLETO + " }",
-        logoLabel: "{ logo: " + constants.h.BOLETO + " }",
-        defaultColor: constants.e.SILVER,
-        colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-        logoColors: (_logoColors18 = {}, _logoColors18[constants.e.SILVER] = constants.i.BLACK, 
-        _logoColors18[constants.e.BLACK] = constants.i.WHITE, _logoColors18[constants.e.WHITE] = constants.i.BLACK, 
-        _logoColors18),
-        secondaryColors: (_secondaryColors18 = {}, _secondaryColors18[constants.e.GOLD] = constants.e.SILVER, 
-        _secondaryColors18[constants.e.BLUE] = constants.e.SILVER, _secondaryColors18[constants.e.SILVER] = constants.e.SILVER, 
-        _secondaryColors18[constants.e.BLACK] = constants.e.BLACK, _secondaryColors18[constants.e.DARKBLUE] = constants.e.SILVER, 
-        _secondaryColors18[constants.e.WHITE] = constants.e.WHITE, _secondaryColors18),
-        allowPrimary: !1,
-        allowPrimaryVertical: !1,
-        allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.OXXO] = {
-        label: "{ logo: " + constants.h.OXXO + " }",
-        logoLabel: "{ logo: " + constants.h.OXXO + " }",
-        defaultColor: constants.e.SILVER,
-        colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-        logoColors: (_logoColors19 = {}, _logoColors19[constants.e.SILVER] = constants.i.BLACK, 
-        _logoColors19[constants.e.BLACK] = constants.i.WHITE, _logoColors19[constants.e.WHITE] = constants.i.BLACK, 
-        _logoColors19),
-        secondaryColors: (_secondaryColors19 = {}, _secondaryColors19[constants.e.GOLD] = constants.e.SILVER, 
-        _secondaryColors19[constants.e.BLUE] = constants.e.SILVER, _secondaryColors19[constants.e.SILVER] = constants.e.SILVER, 
-        _secondaryColors19[constants.e.BLACK] = constants.e.BLACK, _secondaryColors19[constants.e.DARKBLUE] = constants.e.SILVER, 
-        _secondaryColors19[constants.e.WHITE] = constants.e.WHITE, _secondaryColors19),
-        allowPrimary: !1,
-        allowPrimaryVertical: !1,
-        allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.MERCADOPAGO] = {
-        label: "{ logo: " + constants.h.MERCADOPAGO + " }",
-        logoLabel: "{ logo: " + constants.h.MERCADOPAGO + " }",
-        defaultColor: constants.e.SILVER,
-        colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-        logoColors: (_logoColors20 = {}, _logoColors20[constants.e.SILVER] = constants.i.BLACK, 
-        _logoColors20[constants.e.BLACK] = constants.i.WHITE, _logoColors20[constants.e.WHITE] = constants.i.BLACK, 
-        _logoColors20),
-        secondaryColors: (_secondaryColors20 = {}, _secondaryColors20[constants.e.GOLD] = constants.e.SILVER, 
-        _secondaryColors20[constants.e.BLUE] = constants.e.SILVER, _secondaryColors20[constants.e.SILVER] = constants.e.SILVER, 
-        _secondaryColors20[constants.e.BLACK] = constants.e.BLACK, _secondaryColors20[constants.e.DARKBLUE] = constants.e.SILVER, 
-        _secondaryColors20[constants.e.WHITE] = constants.e.WHITE, _secondaryColors20),
-        allowPrimary: !1,
-        allowPrimaryVertical: !1,
-        allowPrimaryHorizontal: !1
     }, _BUTTON_CONFIG[constants.f.CARD] = {
         label: "{ cards }",
         logoLabel: "{ cards }",
         defaultColor: constants.e.SILVER,
         colors: [ constants.e.TRANSPARENT ],
-        logoColors: (_logoColors21 = {}, _logoColors21[constants.e.TRANSPARENT] = constants.i.BLACK, 
-        _logoColors21),
-        secondaryColors: (_secondaryColors21 = {}, _secondaryColors21[constants.e.GOLD] = constants.e.TRANSPARENT, 
-        _secondaryColors21[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors21[constants.e.SILVER] = constants.e.TRANSPARENT, 
-        _secondaryColors21[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors21[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
-        _secondaryColors21[constants.e.WHITE] = constants.e.TRANSPARENT, _secondaryColors21),
+        logoColors: (_logoColors18 = {}, _logoColors18[constants.e.TRANSPARENT] = constants.i.BLACK, 
+        _logoColors18),
+        secondaryColors: (_secondaryColors18 = {}, _secondaryColors18[constants.e.GOLD] = constants.e.TRANSPARENT, 
+        _secondaryColors18[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors18[constants.e.SILVER] = constants.e.TRANSPARENT, 
+        _secondaryColors18[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors18[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
+        _secondaryColors18[constants.e.WHITE] = constants.e.TRANSPARENT, _secondaryColors18),
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1,
@@ -17649,11 +17087,9 @@
     _FUNDING_TO_DEFAULT_L[constants.v.BANCONTACT] = constants.f.BANCONTACT, _FUNDING_TO_DEFAULT_L[constants.v.GIROPAY] = constants.f.GIROPAY, 
     _FUNDING_TO_DEFAULT_L[constants.v.SOFORT] = constants.f.SOFORT, _FUNDING_TO_DEFAULT_L[constants.v.EPS] = constants.f.EPS, 
     _FUNDING_TO_DEFAULT_L[constants.v.P24] = constants.f.P24, _FUNDING_TO_DEFAULT_L[constants.v.MYBANK] = constants.f.MYBANK, 
-    _FUNDING_TO_DEFAULT_L[constants.v.PAYU] = constants.f.PAYU, _FUNDING_TO_DEFAULT_L[constants.v.VERKKOPANKKI] = constants.f.VERKKOPANKKI, 
-    _FUNDING_TO_DEFAULT_L[constants.v.BLIK] = constants.f.BLIK, _FUNDING_TO_DEFAULT_L[constants.v.TRUSTLY] = constants.f.TRUSTLY, 
-    _FUNDING_TO_DEFAULT_L[constants.v.MAXIMA] = constants.f.MAXIMA, _FUNDING_TO_DEFAULT_L[constants.v.BOLETO] = constants.f.BOLETO, 
-    _FUNDING_TO_DEFAULT_L[constants.v.OXXO] = constants.f.OXXO, _FUNDING_TO_DEFAULT_L[constants.v.MERCADOPAGO] = constants.f.MERCADOPAGO, 
-    _FUNDING_TO_DEFAULT_L);
+    _FUNDING_TO_DEFAULT_L[constants.v.BLIK] = constants.f.BLIK, _FUNDING_TO_DEFAULT_L[constants.v.MAXIMA] = constants.f.MAXIMA, 
+    _FUNDING_TO_DEFAULT_L[constants.v.BOLETO] = constants.f.BOLETO, _FUNDING_TO_DEFAULT_L[constants.v.OXXO] = constants.f.OXXO, 
+    _FUNDING_TO_DEFAULT_L[constants.v.MERCADOPAGO] = constants.f.MERCADOPAGO, _FUNDING_TO_DEFAULT_L);
     var LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.f.PAYPAL] = constants.v.PAYPAL, 
     _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.PAY] = constants.v.PAYPAL, 
     _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.v.PAYPAL, 
@@ -17662,11 +17098,10 @@
     _LABEL_TO_FUNDING[constants.f.IDEAL] = constants.v.IDEAL, _LABEL_TO_FUNDING[constants.f.BANCONTACT] = constants.v.BANCONTACT, 
     _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.GIROPAY, _LABEL_TO_FUNDING[constants.f.EPS] = constants.v.EPS, 
     _LABEL_TO_FUNDING[constants.f.SOFORT] = constants.v.SOFORT, _LABEL_TO_FUNDING[constants.f.P24] = constants.v.P24, 
-    _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.v.MYBANK, _LABEL_TO_FUNDING[constants.f.PAYU] = constants.v.PAYU, 
-    _LABEL_TO_FUNDING[constants.f.VERKKOPANKKI] = constants.v.VERKKOPANKKI, _LABEL_TO_FUNDING[constants.f.BLIK] = constants.v.BLIK, 
-    _LABEL_TO_FUNDING[constants.f.TRUSTLY] = constants.v.TRUSTLY, _LABEL_TO_FUNDING[constants.f.MAXIMA] = constants.v.MAXIMA, 
-    _LABEL_TO_FUNDING[constants.f.BOLETO] = constants.v.BOLETO, _LABEL_TO_FUNDING[constants.f.OXXO] = constants.v.OXXO, 
-    _LABEL_TO_FUNDING[constants.f.MERCADOPAGO] = constants.v.MERCADOPAGO, _LABEL_TO_FUNDING);
+    _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.v.MYBANK, _LABEL_TO_FUNDING[constants.f.BLIK] = constants.v.BLIK, 
+    _LABEL_TO_FUNDING[constants.f.MAXIMA] = constants.v.MAXIMA, _LABEL_TO_FUNDING[constants.f.BOLETO] = constants.v.BOLETO, 
+    _LABEL_TO_FUNDING[constants.f.OXXO] = constants.v.OXXO, _LABEL_TO_FUNDING[constants.f.MERCADOPAGO] = constants.v.MERCADOPAGO, 
+    _LABEL_TO_FUNDING);
     var BUTTON_STYLE = ((_BUTTON_STYLE = {})[constants.l.TINY] = {
         defaultWidth: 75,
         defaultHeight: 25,
@@ -24301,7 +23736,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.319", 
+        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.320", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -24349,7 +23784,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.319", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.320", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -24365,7 +23800,7 @@
             });
             template.addEventListener("click", (function() {
                 Object(beaver_logger_client.q)("button_pre_template_click");
-                if (Object(lib.E)()) {
+                if (Object(lib.F)()) {
                     Object(beaver_logger_client.q)("button_pre_template_click_intranet_mode");
                     Object(beaver_logger_client.h)();
                     alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
@@ -24394,7 +23829,7 @@
             }
         },
         validate: function() {
-            Object(lib.B)() || Object(beaver_logger_client.q)("button_render_ineligible");
+            Object(lib.C)() || Object(beaver_logger_client.q)("button_render_ineligible");
         },
         props: {
             domain: {
@@ -24417,7 +23852,15 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.X)();
+                    return Object(lib.Y)();
+                },
+                queryParam: !0
+            },
+            storageID: {
+                type: "string",
+                required: !1,
+                def: function() {
+                    return Object(lib.x)();
                 },
                 queryParam: !0
             },
@@ -24541,7 +23984,7 @@
                         var _this2 = this;
                         void 0 === data && (data = {});
                         var actions = {
-                            request: lib.R,
+                            request: lib.S,
                             payment: {
                                 create: function(options) {
                                     return _this2.props.braintree ? _this2.props.braintree.then((function(client) {
@@ -24667,11 +24110,11 @@
                         if (-1 !== sources.indexOf(constants.v.CREDIT)) return !1;
                         var domain = Object(cross_domain_utils_src.h)().replace(/^https?:\/\//, "").replace(/^www\./, "");
                         return -1 !== config.a.creditTestDomains.indexOf(domain);
-                    })(props) && (creditThrottle = Object(lib.x)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
+                    })(props) && (creditThrottle = Object(lib.y)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
                     var remembered = Object(lib.r)((function(sources) {
                         return sources;
                     }));
-                    if (!Object(lib.z)() || Object(lib.m)("disable_venmo")) {
+                    if (!Object(lib.A)() || Object(lib.m)("disable_venmo")) {
                         remembered && -1 !== remembered.indexOf(constants.v.VENMO) && (remembered = remembered.filter((function(source) {
                             return source !== constants.v.VENMO;
                         })));
@@ -24682,7 +24125,7 @@
                         disallowed: disallowed,
                         remembered: remembered,
                         remember: function(sources) {
-                            Object(lib.Q)(sources);
+                            Object(lib.R)(sources);
                         }
                     };
                 }
@@ -24704,7 +24147,7 @@
                     return function() {
                         var _track2;
                         var _getBrowser = Object(lib.h)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
-                        Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + (Object(lib.z)() ? "mobile" : "desktop") + "_" + version);
+                        Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + (Object(lib.A)() ? "mobile" : "desktop") + "_" + version);
                         var style = this.props.style || {};
                         Object(beaver_logger_client.k)("button_render");
                         Object(beaver_logger_client.k)("button_render_color_" + (style.color || "default"));
@@ -24720,7 +24163,7 @@
                         _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, _track2[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
                         _track2[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.u.KEY.BUTTON_SOURCE] = this.props.source, 
                         _track2));
-                        Object(lib.E)() && Object(beaver_logger_client.q)("button_render_intranet_mode");
+                        Object(lib.F)() && Object(beaver_logger_client.q)("button_render_intranet_mode");
                         if (creditThrottle) {
                             var _creditThrottle$logSt;
                             creditThrottle.logStart(((_creditThrottle$logSt = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -24746,8 +24189,8 @@
                         Object(beaver_logger_client.p)(((_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                         _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_APPROVE, _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                         _track3[constants.u.KEY.BUTTON_VERSION] = data && data.button_version, _track3));
-                        Object(lib.E)() && Object(beaver_logger_client.q)("button_authorize_intranet_mode");
-                        Object(lib.B)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
+                        Object(lib.F)() && Object(beaver_logger_client.q)("button_authorize_intranet_mode");
+                        Object(lib.C)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
                         Object(lib.d)("authorize");
                         Object(beaver_logger_client.h)();
                         var restart = actions.restart;
@@ -24760,10 +24203,10 @@
                             return zalgo_promise_src.a.try((function() {
                                 if (actions.close) return actions.close();
                             })).then((function() {
-                                return Object(lib.P)(win || window.top, url || data.returnUrl);
+                                return Object(lib.Q)(win || window.top, url || data.returnUrl);
                             }));
                         };
-                        actions.payment.tokenize = Object(lib.I)((function() {
+                        actions.payment.tokenize = Object(lib.J)((function() {
                             if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
                             return _this3.props.braintree.then((function(client) {
                                 return client.tokenizePayment(data);
@@ -24789,7 +24232,7 @@
                                 return result;
                             }));
                         };
-                        actions.request = lib.R;
+                        actions.request = lib.S;
                         onAuthorizeListener.trigger({
                             paymentToken: data.paymentToken
                         });
@@ -24862,7 +24305,7 @@
                 once: !0,
                 def: function() {
                     return function(err) {
-                        if (Object(lib.E)()) {
+                        if (Object(lib.F)()) {
                             Object(beaver_logger_client.q)("button_error_intranet_mode");
                             Object(beaver_logger_client.h)();
                             alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
@@ -24887,7 +24330,7 @@
                         Object(beaver_logger_client.h)();
                         return original.call(this, data, Object(esm_extends.a)({}, actions, {
                             redirect: function(win, url) {
-                                return zalgo_promise_src.a.all([ Object(lib.P)(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                return zalgo_promise_src.a.all([ Object(lib.Q)(win || window.top, url || data.cancelUrl), actions.close() ]);
                             }
                         }));
                     };
@@ -24907,7 +24350,7 @@
                         _track6[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track6[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                         _track6[constants.u.KEY.PAYMENT_FLOW] = data && data.flow, _track6[constants.u.KEY.BUTTON_VERSION] = data && data.button_version, 
                         _track6));
-                        Object(lib.E)() && Object(beaver_logger_client.q)("button_click_intranet_mode");
+                        Object(lib.F)() && Object(beaver_logger_client.q)("button_click_intranet_mode");
                         if (creditThrottle) {
                             var _creditThrottle$log;
                             creditThrottle.log("click", ((_creditThrottle$log = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
@@ -25141,11 +24584,11 @@
                             "payment" === opType ? actions.redirect = function(win, redirectUrl) {
                                 void 0 === win && (win = window);
                                 void 0 === redirectUrl && (redirectUrl = return_uri);
-                                return Object(lib.P)(win, redirectUrl);
+                                return Object(lib.Q)(win, redirectUrl);
                             } : "cancel" === opType && (actions.redirect = function(win, redirectUrl) {
                                 void 0 === win && (win = window);
                                 void 0 === redirectUrl && (redirectUrl = cancel_uri);
-                                return Object(lib.P)(win, redirectUrl);
+                                return Object(lib.Q)(win, redirectUrl);
                             });
                             return actions;
                         }(payload.queryItems);
@@ -25158,7 +24601,7 @@
                     }));
                 }(props, popupBridge).catch((function(err) {
                     Object(beaver_logger_client.g)("popup_bridge_error", {
-                        err: Object(lib.U)(err)
+                        err: Object(lib.V)(err)
                     });
                     return original();
                 })) : original();
@@ -25207,18 +24650,18 @@
             }
         }));
         var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
-        xprops && xprops.logLevel && Object(lib.T)(xprops.logLevel);
+        xprops && xprops.logLevel && Object(lib.U)(xprops.logLevel);
         xprops.payment && !xprops.createOrder && (xprops.createOrder = xprops.payment);
         xprops.onAuthorize && !xprops.onApprove && (xprops.onApprove = xprops.onAuthorize);
         try {
             xprops && xprops.onShippingChange && window.pre && window.pre.inlineGuest && window.pre.inlineGuest.res && window.pre.inlineGuest.res.data && window.pre.inlineGuest.res.data.treatments && (window.pre.inlineGuest.res.data.treatments = []);
         } catch (err) {}
     }(component_Button);
-    Object(lib.D)() && Object(lib.m)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
+    Object(lib.E)() && Object(lib.m)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
         Object(beaver_logger_client.k)("force_ie_full_page");
         Object(beaver_logger_client.h)();
         var checkout = src_checkout.a.init({
-            onAuthorize: lib.J
+            onAuthorize: lib.K
         });
         checkout.delegate(win);
         checkout.openContainer().then((function() {
@@ -25241,17 +24684,17 @@
             src_checkout.a.canRenderTo(hacks_top).then((function(result) {
                 canRenderTop = result;
             }));
-            Object(lib.N)(src_checkout.a, "renderTo", (function(_ref) {
+            Object(lib.O)(src_checkout.a, "renderTo", (function(_ref) {
                 var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
                 canRenderTop || (win = Object(cross_domain_utils_src.n)(window));
                 return original.call(context, win, props, el);
             }));
         }
     }
-    Object(lib.N)(src_checkout.a, "renderTo", (function(_ref2) {
+    Object(lib.O)(src_checkout.a, "renderTo", (function(_ref2) {
         var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
         if (Object(lib.m)("allow_full_page_fallback")) {
-            var handleError = Object(lib.L)((function(err) {
+            var handleError = Object(lib.M)((function(err) {
                 try {
                     console.error(err && err.stack);
                 } catch (err2) {}
@@ -25267,11 +24710,11 @@
         return callOriginal();
     }));
     var debounce = !1;
-    Object(lib.N)(src_checkout.a, "renderTo", (function(_ref3) {
+    Object(lib.O)(src_checkout.a, "renderTo", (function(_ref3) {
         var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
         if (debounce) {
             Object(beaver_logger_client.q)("button_mutliple_click_debounce");
-            return new zalgo_promise_src.a(lib.J);
+            return new zalgo_promise_src.a(lib.K);
         }
         debounce = !0;
         var _loop = function(_i2, _ref5) {
@@ -25285,7 +24728,7 @@
         for (var _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ]; _i2 < _ref5.length; _i2++) _loop(_i2, _ref5);
         return callOriginal();
     }));
-    Object(lib.N)(rest.payment, "create", (function(_ref6) {
+    Object(lib.O)(rest.payment, "create", (function(_ref6) {
         var _ref6$args = _ref6.args, options = _ref6$args[2];
         options.payment || (options = {
             payment: options,
@@ -25293,7 +24736,7 @@
         });
         return _ref6.original.call(_ref6.context, _ref6$args[0], _ref6$args[1], options);
     }));
-    Object(lib.N)(component_Button.props.style, "validate", (function(_ref7) {
+    Object(lib.O)(component_Button.props.style, "validate", (function(_ref7) {
         var callOriginal = _ref7.callOriginal, style = _ref7.args[0];
         if (!style) return callOriginal();
         style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE);
@@ -25304,7 +24747,7 @@
         }
         return callOriginal();
     }));
-    Object(lib.N)(component_Button, "render", (function(_ref8) {
+    Object(lib.O)(component_Button, "render", (function(_ref8) {
         var callOriginal = _ref8.callOriginal, props = _ref8.args[0];
         if (props.billingAgreement) {
             props.payment = props.billingAgreement;
@@ -25312,12 +24755,12 @@
         }
         return callOriginal();
     }));
-    Object(lib.N)(component_Button.props.payment, "decorate", (function(_ref9) {
+    Object(lib.O)(component_Button.props.payment, "decorate", (function(_ref9) {
         var originalPayment = _ref9.args[0];
         return _ref9.original.call(_ref9.context, (function(data, actions) {
             var _this = this;
             return new zalgo_promise_src.a((function(resolve, reject) {
-                Object(lib.N)(actions.payment, "create", (function(_ref10) {
+                Object(lib.O)(actions.payment, "create", (function(_ref10) {
                     var _ref10$args = _ref10.args, options = _ref10$args[0];
                     options.payment || (options = {
                         payment: options,
@@ -25492,14 +24935,14 @@
     zalgo_promise_src.a.onPossiblyUnhandledException((function(err) {
         var _track;
         Object(beaver_logger_client.g)("unhandled_error", {
-            stack: Object(lib.U)(err),
+            stack: Object(lib.V)(err),
             errtype: {}.toString.call(err)
         });
         Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-        _track[constants.u.KEY.ERROR_DESC] = Object(lib.V)(err), _track));
+        _track[constants.u.KEY.ERROR_DESC] = Object(lib.W)(err), _track));
         return Object(beaver_logger_client.h)().catch((function(err2) {
             if (window.console) try {
-                window.console.error ? window.console.error("Error flushing:", Object(lib.U)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.U)(err2));
+                window.console.error ? window.console.error("Error flushing:", Object(lib.V)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.V)(err2));
             } catch (err3) {
                 setTimeout((function() {
                     throw err3;
@@ -25509,14 +24952,14 @@
     }));
     var currentScript = Object(lib.k)();
     var currentProtocol = window.location.protocol.split(":")[0];
-    var init = Object(lib.L)((function(_ref2) {
+    var init = Object(lib.M)((function(_ref2) {
         var precacheRemembered = _ref2.precacheRemembered;
-        Object(lib.B)() || Object(beaver_logger_client.q)("ineligible");
+        Object(lib.C)() || Object(beaver_logger_client.q)("ineligible");
         Object(lib.c)();
-        Object(lib.y)();
+        Object(lib.z)();
         pptm.shouldCreateInitialPptmScript() && pptm.createPptmScript();
-        precacheRemembered && Object(lib.O)();
-        Object(lib.m)("force_bridge") && !Object(lib.G)() && Object(lib.M)(config.a.env);
+        precacheRemembered && Object(lib.P)();
+        Object(lib.m)("force_bridge") && !Object(lib.H)() && Object(lib.N)(config.a.env);
         Object(beaver_logger_client.k)("setup_" + config.a.env);
         Object(beaver_logger_client.f)("current_protocol_" + currentProtocol);
     }));
@@ -25570,7 +25013,7 @@
                 config.a.state = state;
             }
             merchantID && (config.a.merchantID = merchantID);
-            logLevel ? Object(lib.T)(logLevel) : Object(lib.T)(config.a.logLevel);
+            logLevel ? Object(lib.U)(logLevel) : Object(lib.U)(config.a.logLevel);
         }(options);
         init(options);
     }
@@ -25579,15 +25022,15 @@
         stage: currentScript.getAttribute("data-stage"),
         apiStage: currentScript.getAttribute("data-api-stage"),
         stageUrl: currentScript.getAttribute("data-stage-url"),
-        localhostUrl: Object(lib.G)() ? currentScript.getAttribute("data-localhost-url") : void 0,
-        checkoutUri: Object(lib.G)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
+        localhostUrl: Object(lib.H)() ? currentScript.getAttribute("data-localhost-url") : void 0,
+        checkoutUri: Object(lib.H)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
         state: currentScript.getAttribute("data-state"),
         logLevel: currentScript.getAttribute("data-log-level"),
         merchantID: currentScript.getAttribute("data-merchant-id"),
         authCode: currentScript.getAttribute("data-auth-code"),
         precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding")
     }) : setup();
-    if (!Object(lib.G)()) if (currentScript) {
+    if (!Object(lib.H)()) if (currentScript) {
         var setup_track2;
         var scriptProtocol = currentScript.src.split(":")[0];
         var loadTime = Object(lib.s)(currentScript.src);
@@ -25615,7 +25058,7 @@
     }
     var postRobot = post_robot_src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.319";
+    var interface_version = "4.0.320";
     var interface_checkout;
     var apps;
     var legacy = __webpack_require__(51);
@@ -25628,7 +25071,7 @@
     var enableCheckoutIframe;
     var logger;
     var interface_ThreeDomainSecure;
-    if (Object(lib.G)()) {
+    if (Object(lib.H)()) {
         interface_Checkout = src_checkout.a;
         interface_BillingPage = BillingPage;
         interface_ThreeDomainSecure = ThreeDomainSecure;
@@ -25698,7 +25141,7 @@
     var config = __webpack_require__(4);
     var post_robot_src = __webpack_require__(13);
     function isLegacyEligible() {
-        return !!Object(lib.B)() && !!Object(lib.W)() && !Object(lib.z)();
+        return !!Object(lib.C)() && !!Object(lib.X)() && !Object(lib.A)();
     }
     var warn = Object(client.n)(LOG_PREFIX).warn;
     var DEFAULT_COUNTRY = constants.r.US;
@@ -25728,19 +25171,19 @@
         };
     }
     var button_prefix = Object(client.n)(LOG_PREFIX), info = button_prefix.info, debug = button_prefix.debug, error = button_prefix.error;
-    var loadButtonJS = Object(lib.I)((function() {
+    var loadButtonJS = Object(lib.J)((function() {
         debug("buttonjs_load");
-        return Object(lib.H)(config.a.buttonJSUrl).catch((function(err) {
+        return Object(lib.I)(config.a.buttonJSUrl).catch((function(err) {
             info("buttonjs_load_error_retry", {
-                error: Object(lib.U)(err)
+                error: Object(lib.V)(err)
             });
-            return Object(lib.H)(config.a.buttonJSUrl);
+            return Object(lib.I)(config.a.buttonJSUrl);
         })).then((function(result) {
             debug("buttonjs_load_success");
             return result;
         })).catch((function(err) {
             error("buttonjs_load_error", {
-                error: Object(lib.U)(err)
+                error: Object(lib.V)(err)
             });
             throw err;
         }));
@@ -25775,7 +25218,7 @@
                         }).el;
                         container.appendChild(el);
                         try {
-                            info("in_page_button_" + (Object(lib.A)(el) ? "visible" : "not_visible"));
+                            info("in_page_button_" + (Object(lib.B)(el) ? "visible" : "not_visible"));
                         } catch (err) {}
                         return el.childNodes[0];
                     }));
@@ -25828,15 +25271,15 @@
     var redirected = !1;
     function logRedirect(location) {
         redirected && util_warn("multiple_redirects");
-        Object(lib.Y)(location) && (redirected = !0);
+        Object(lib.Z)(location) && (redirected = !0);
         Object(client.h)();
     }
     function redirect(url) {
         return src.a.try((function() {
             if (!url) throw new Error("Redirect url undefined");
-            if (config.a.env === constants.t.TEST && Object(lib.Y)(url)) return Object(lib.P)(window, "#fullpageRedirect?url=" + url);
+            if (config.a.env === constants.t.TEST && Object(lib.Z)(url)) return Object(lib.Q)(window, "#fullpageRedirect?url=" + url);
             logRedirect(url);
-            return Object(lib.P)(window, url);
+            return Object(lib.Q)(window, url);
         }));
     }
     var options_prefix = Object(client.n)(LOG_PREFIX), options_info = options_prefix.info, options_warn = options_prefix.warn;
@@ -25938,7 +25381,7 @@
                 }
                 if (method && _url) {
                     event.preventDefault();
-                    Object(lib.R)({
+                    Object(lib.S)({
                         method: method,
                         url: _url,
                         body: body,
@@ -25965,7 +25408,7 @@
             interface_checkout.initXO = function() {
                 interface_warn("gettoken_initxo");
             };
-            interface_checkout.startFlow = Object(lib.L)((function(item) {
+            interface_checkout.startFlow = Object(lib.M)((function(item) {
                 interface_debug("gettoken_startflow", {
                     item: item
                 });
@@ -26037,9 +25480,9 @@
                 resolve(data.paymentToken);
             };
         }));
-        var errorHandler = Object(lib.L)((function(err) {
+        var errorHandler = Object(lib.M)((function(err) {
             interface_error("component_error", {
-                error: Object(lib.U)(err)
+                error: Object(lib.V)(err)
             });
             if (hijackTarget) {
                 interface_warn("render_error_hijack_revert_target");
@@ -26084,7 +25527,7 @@
         interface_info("setup", {
             id: id = id || "merchant",
             env: options.environment,
-            options: Object(lib.S)(options)
+            options: Object(lib.T)(options)
         });
         setupCalled && interface_debug("setup_called_multiple_times");
         setupCalled = !0;
@@ -26211,7 +25654,7 @@
             Object(client.f)("setup_post_bridge", {
                 env: env
             });
-            return Object(lib.M)(env).then(lib.J);
+            return Object(lib.N)(env).then(lib.K);
         }));
         var env;
         return src.a.try((function() {
@@ -26227,7 +25670,7 @@
                         element.addEventListener("click", (function(event) {
                             tracker();
                             var eligible = isLegacyEligible();
-                            if (Object(lib.W)()) {
+                            if (Object(lib.X)()) {
                                 interface_debug("click_popups_supported");
                                 eligible || interface_debug("click_popups_supported_but_ineligible");
                             } else {
@@ -26246,7 +25689,7 @@
                                     clickHandler(event);
                                 } catch (err) {
                                     interface_error("click_handler_error", {
-                                        error: Object(lib.U)(err)
+                                        error: Object(lib.V)(err)
                                     });
                                 }
                             }(clickHandler, event) : function(event, element) {
@@ -26351,7 +25794,7 @@
                 }
             };
             !function(method) {
-                Object(lib.K)((function() {
+                Object(lib.L)((function() {
                     ready_debug("paypal_checkout_ready");
                     setTimeout((function() {
                         window.paypal || ready_error("paypal_checkout_ready_no_window_paypal");
@@ -26362,7 +25805,7 @@
             return oneTimeReady;
         }
     }));
-    Object(lib.K)((function() {
+    Object(lib.L)((function() {
         var buttons = [].slice.call(document.querySelectorAll("[" + ATTRIBUTES.BUTTON + "]"));
         if (buttons && buttons.length) {
             ready_debug("data_paypal_button", {
