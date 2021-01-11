@@ -6,7 +6,8 @@ import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, Glyp
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
-import { CLASS, ATTRIBUTE, BUTTON_LAYOUT, NoncedStyleElement } from '../../constants';
+import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
+import { NoncedStyleElement } from '../../lib';
 import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';

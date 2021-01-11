@@ -3,7 +3,8 @@
 
 import { node, type ChildType, type NullableChildrenType } from 'jsx-pragmatic/src';
 
-import { CLASS, TEXT_COLOR, NoncedStyleElement } from '../../constants';
+import { CLASS, TEXT_COLOR } from '../../constants';
+import { NoncedStyleElement } from '../../lib';
 
 import css from './style.scoped.scss';
 

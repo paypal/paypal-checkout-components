@@ -3,10 +3,9 @@
 
 import { Fragment, node, type ChildType, type NullableChildrenType } from 'jsx-pragmatic/src/node';
 
-
 type StyleProps = {|
     css : string | {| _getCss : () => string |},
-    nonce? : ?string,
+    nonce : ?string,
     children? : ?NullableChildrenType
 |};
 

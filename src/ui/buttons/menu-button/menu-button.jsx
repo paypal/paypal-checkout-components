@@ -3,7 +3,8 @@
 
 import { node, type ChildType } from 'jsx-pragmatic/src';
 
-import { ATTRIBUTE, TEXT_COLOR, NoncedStyleElement } from '../../../constants';
+import { ATTRIBUTE, TEXT_COLOR } from '../../../constants';
+import { NoncedStyleElement } from '../../../lib';
 import { Chevron } from '../../chevron';
 
 import css from './menu-button.scoped.scss';

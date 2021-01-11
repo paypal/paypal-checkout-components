@@ -5,7 +5,7 @@ import { destroyElement, toCSS, type EventEmitterType } from 'belter/src';
 import { node, type ChildType } from 'jsx-pragmatic/src';
 import { EVENT } from 'zoid/src';
 
-import { NoncedStyleElement } from '../../constants';
+import { NoncedStyleElement } from '../../lib';
 
 const CLASS = {
     VISIBLE:         'visible',

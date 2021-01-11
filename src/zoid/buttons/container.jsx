@@ -6,7 +6,8 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
 import { getVersion } from '@paypal/sdk-client/src';
 
-import { BUTTON_SIZE, ATTRIBUTE, NoncedStyleElement } from '../../constants';
+import { BUTTON_SIZE, ATTRIBUTE } from '../../constants';
+import { NoncedStyleElement } from '../../lib';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/config';
 import { type ButtonProps } from '../../ui/buttons/props';
 

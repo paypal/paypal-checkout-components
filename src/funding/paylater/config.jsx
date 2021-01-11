@@ -5,7 +5,8 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import { node } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT, NoncedStyleElement } from '../../constants';
+import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
+import { NoncedStyleElement } from '../../lib';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { Text, Space } from '../../ui/text';
 

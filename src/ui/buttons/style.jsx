@@ -3,7 +3,7 @@
 
 import { node, type ComponentNode } from 'jsx-pragmatic/src';
 
-import { NoncedStyleElement } from '../../constants';
+import { NoncedStyleElement } from '../../lib';
 
 import { type ButtonStyle } from './props';
 import { componentStyle } from './styles';

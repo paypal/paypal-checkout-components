@@ -7,7 +7,7 @@ import { create, EVENT, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, destroyElement, toCSS } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
-import { NoncedStyleElement } from '../../constants';
+import { NoncedStyleElement } from '../../lib';
 
 import { type ModalProps } from './props';
 

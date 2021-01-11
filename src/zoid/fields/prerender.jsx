@@ -3,7 +3,7 @@
 
 import { node, type ChildType } from 'jsx-pragmatic/src';
 
-import { NoncedStyleElement } from '../../constants';
+import { NoncedStyleElement } from '../../lib';
 
 type PrerenderedFieldsProps = {|
     nonce : ?string
