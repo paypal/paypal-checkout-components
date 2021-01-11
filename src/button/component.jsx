@@ -15,7 +15,7 @@ import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY, FUNDING_BRAND_LABEL } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request, getScriptVersion,
+    getBrowserLocale, getSessionID, getStorageID, request, getScriptVersion,
     isIEIntranet, isEligible, getCurrentScriptUrl,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
@@ -217,6 +217,15 @@ export const Button : Component<ButtonOptions> = create({
             required: false,
             def() : ?string {
                 return uniqueID();
+            },
+            queryParam: true
+        },
+
+        storageID: {
+            type:     'string',
+            required: false,
+            def() : string {
+                return getStorageID();
             },
             queryParam: true
         },
