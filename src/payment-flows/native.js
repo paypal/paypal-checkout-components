@@ -10,7 +10,7 @@ import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } 
 import type { ButtonProps } from '../button/props';
 import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
-import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome } from '../lib';
+import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 import type { NativePopupInputParams } from '../../server/components/native/params';
@@ -282,6 +282,11 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     let cancelled = false;
     let didFallback = false;
 
+    getLogger()
+        .info(`native_start_${ isIOSSafari() ? 'ios' : 'android' }_window_width_${ window.outerWidth }`)
+        .info(`native_start_${ isIOSSafari() ? 'ios' : 'android' }_window_height_${ window.outerHeight }`)
+        .flush();
+
     const close = memoize(() => {
         return clean.all();
     });
@@ -386,6 +391,11 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE,
                 [FPTI_CUSTOM_KEY.INFO_MSG]: `payerID: ${ payerID }, paymentID: ${ paymentID }, billingToken: ${ billingToken }`
             })
+            .flush();
+
+        getLogger()
+            .info(`native_approve_${ isIOSSafari() ? 'ios' : 'android' }_window_width_${ window.outerWidth }`)
+            .info(`native_approve_${ isIOSSafari() ? 'ios' : 'android' }_window_height_${ window.outerHeight }`)
             .flush();
 
         const data = { payerID, paymentID, billingToken, forceRestAPI: true };
@@ -504,6 +514,33 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const detectAppSwitch = once(({ sessionUID } : {| sessionUID : string |}) => {
+        getStorageState(state => {
+            const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
+
+            if (lastAppSwitchTime > lastWebSwitchTime) {
+                getLogger().info('app_switch_detect_with_previous_app_switch', {
+                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                });
+            }
+
+            if (lastWebSwitchTime > lastAppSwitchTime) {
+                getLogger().info('app_switch_detect_with_previous_web_switch', {
+                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                });
+            }
+
+            if (!lastAppSwitchTime && !lastWebSwitchTime) {
+                getLogger().info('app_switch_detect_with_no_previous_switch', {
+                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                });
+            }
+
+            state.lastAppSwitchTime = Date.now();
+        });
+
         getLogger().info(`native_detect_app_switch`).track({
             [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
         }).flush();
@@ -512,6 +549,33 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const detectWebSwitch = once((fallbackWin : ?CrossDomainWindowType) => {
+        getStorageState(state => {
+            const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
+
+            if (lastAppSwitchTime > lastWebSwitchTime) {
+                getLogger().info('web_switch_detect_with_previous_app_switch', {
+                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                });
+            }
+
+            if (lastWebSwitchTime > lastAppSwitchTime) {
+                getLogger().info('web_switch_detect_with_previous_web_switch', {
+                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                });
+            }
+
+            if (!lastAppSwitchTime && !lastWebSwitchTime) {
+                getLogger().info('web_switch_detect_with_no_previous_switch', {
+                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                });
+            }
+
+            state.lastWebSwitchTime = Date.now();
+        });
+
         getLogger().info(`native_detect_web_switch`).track({
             [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH
         }).flush();
