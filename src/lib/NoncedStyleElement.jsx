@@ -1,7 +1,8 @@
 /* @flow */
 /** @jsx node */
 
-import { Fragment, node, type ChildType, type NullableChildrenType } from 'jsx-pragmatic/src/node';
+import { node, type ChildType, type NullableChildrenType } from 'jsx-pragmatic/src/node';
+import { Style } from 'jsx-pragmatic/src/component';
 
 type StyleProps = {|
     css : string | {| _getCss : () => string |},
@@ -11,9 +12,8 @@ type StyleProps = {|
 
 export function NoncedStyleElement({ css, nonce, children } : StyleProps) : ChildType {
     return (
-        <Fragment>
-            <style innerHTML={ typeof css === 'string' ? css : css._getCss() } nonce={ nonce } />
+        <Style css={ css } nonce={ nonce }>
             { children }
-        </Fragment>
+        </Style>
     );
 }
