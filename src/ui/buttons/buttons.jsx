@@ -105,7 +105,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         throw new Error(`No eligible funding fundingSources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
     }
 
-    if (fundingSources.includes(FUNDING.CARD)) {
+    if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
         fundingSources = fundingSources.filter(src => src !== FUNDING.CARD).concat([ FUNDING.CARD ]);
     }
 
