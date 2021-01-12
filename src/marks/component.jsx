@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { getElement, isDevice, memoize } from 'belter/src';
 import { PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 import { getRememberedFunding } from '@paypal/funding-components/src';
-import { getComponents, getFundingEligibility, getEnv } from '@paypal/sdk-client/src';
+import { getComponents, getFundingEligibility, getEnv, getCSPNonce } from '@paypal/sdk-client/src';
 
 import type { OnShippingChange } from '../ui/buttons/props';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
@@ -41,6 +41,7 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
         const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout, flow });
         const experiment = {};
         const env = getEnv();
+        const nonce = getCSPNonce() || '';
 
         const isEligible = () => {
             if (!fundingSource) {
@@ -65,6 +66,7 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
                                 height={ height }
                                 experiment={ experiment }
                                 env={ env }
+                                nonce={ nonce }
                             />
                         </div>
                     ).render(dom({ doc: document }))

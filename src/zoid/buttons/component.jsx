@@ -42,6 +42,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         logger: getLogger(),
 
         prerenderTemplate: ({ state, props, doc }) => {
+            
             return (
                 <PrerenderedButtons
                     nonce={ props.nonce }
@@ -401,10 +402,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
             csp: {
                 type:     'object',
-                required: false,
+                required: true,
                 value:    () => {
                     return {
-                        nonce: getCSPNonce()
+                        nonce: getCSPNonce() || ''
                     };
                 }
             },

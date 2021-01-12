@@ -226,6 +226,9 @@ export type ButtonProps = {|
     onShippingChange : ?OnShippingChange,
     clientAccessToken? : ?string,
     nonce : string,
+    csp? : {|
+        nonce? : string
+    |},
     userIDToken : ?string,
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
@@ -250,7 +253,7 @@ export type ButtonPropsInputs = {
     remember? : $PropertyType<ButtonProps, 'remember'> | void,
     sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
     buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
-    nonce? : string,
+    nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
     personalization? : Personalization,
@@ -425,7 +428,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         throw new Error(`Expected valid platform, got ${ platform || 'undefined' }`);
     }
 
-    if (csp && csp.nonce) {
+    if (!nonce && csp && csp.nonce) {
         nonce = csp.nonce;
     }
 

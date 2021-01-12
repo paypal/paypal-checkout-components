@@ -11,6 +11,7 @@ import { NoncedStyleElement } from '../../lib';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/config';
 import { type ButtonProps } from '../../ui/buttons/props';
 
+
 const CLASS = {
     VISIBLE:            'visible',
     INVISIBLE:          'invisible',
@@ -53,8 +54,8 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
         }, 1000);
     });
 
-    // $FlowFixMe
-    const { style, nonce } = props;
+    const nonce = props.csp ? props.csp.nonce : '';
+    const style = props.style;
     const { label, layout, height: buttonHeight } = style;
 
     let minimumSize = MINIMUM_SIZE[layout];
@@ -85,10 +86,14 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
         });
     };
 
+    let classNames = `${ tag } ${ tag }-context-${ context }`;
+    classNames += label ? `${ tag }-label-${ label }` : '';
+    classNames += layout ? `${ tag }-layout-${ layout }` : '';
+
     const element = (
         <div
             id={ uid }
-            class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }
+            class={ classNames }
             { ...({ [ATTRIBUTE.VERSION]: `${ getVersion() }` }) }
             onRender={ setupAutoResize } >
 

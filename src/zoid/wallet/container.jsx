@@ -19,7 +19,7 @@ type WalletContainerOptions = {|
     frame : ?HTMLIFrameElement,
     prerenderFrame : ?HTMLIFrameElement,
     event : EventEmitterType,
-    nonce? : ?string
+    nonce : string
 |};
 
 export function WalletContainer({ uid, frame, prerenderFrame, event, nonce } : WalletContainerOptions) : ?ChildType {

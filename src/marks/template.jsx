@@ -9,6 +9,7 @@ import { toPx } from 'belter/src';
 import type { Experiment } from '../types';
 import { getFundingConfig } from '../funding';
 import { CLASS } from '../constants';
+import { NoncedStyleElement } from '../lib';
 
 type MarkOptions = {|
     fundingSource : $Values<typeof FUNDING>,
@@ -43,14 +44,16 @@ type MarksElementOptions = {|
     fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>,
     height : number,
     experiment : Experiment,
-    env : $Values<typeof ENV>
+    env : $Values<typeof ENV>,
+    nonce : string
 |};
 
-export function MarksElement({ fundingEligibility, fundingSources, height, experiment, env } : MarksElementOptions) : ElementNode {
+export function MarksElement({ fundingEligibility, fundingSources, height, experiment, env, nonce } : MarksElementOptions) : ElementNode {
     return (
         <div class='paypal-marks'>
-            <style>
-                {`
+            <NoncedStyleElement
+                nonce={ nonce }
+                css={ `
                     .${ CLASS.TEXT } {
                         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                         font-size: 12px;
@@ -88,18 +91,19 @@ export function MarksElement({ fundingEligibility, fundingSources, height, exper
                     .paypal-button-card:last-child {
                         margin-right: 0px;
                     }
-                `}
-            </style>
-            {
-                fundingSources.map(fundingSource => (
-                    <Mark
-                        fundingEligibility={ fundingEligibility }
-                        fundingSource={ fundingSource }
-                        experiment={ experiment }
-                        env={ env }
-                    />
-                ))
-            }
+                ` }
+            >
+                {
+                    fundingSources.map(fundingSource => (
+                        <Mark
+                            fundingEligibility={ fundingEligibility }
+                            fundingSource={ fundingSource }
+                            experiment={ experiment }
+                            env={ env }
+                        />
+                    ))
+                }
+            </NoncedStyleElement>
         </div>
     );
 }

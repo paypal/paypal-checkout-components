@@ -21,6 +21,7 @@ export type WalletComponent = ZoidComponent<WalletProps>;
 
 export function getWalletComponent() : WalletComponent {
     return inlineMemoize(getWalletComponent, () => {
+        const nonce = getCSPNonce() || '';
         return create({
             tag:    'paypal-wallet',
             url:    () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__WALLET__ }`,
@@ -38,15 +39,15 @@ export function getWalletComponent() : WalletComponent {
 
             logger: getLogger(),
 
-            containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
+            containerTemplate: ({ doc, uid, frame, prerenderFrame, event }) => {
                 return (
-                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ props.nonce } />
+                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ nonce } />
                 ).render(dom({ doc }));
             },
 
-            prerenderTemplate: ({ props, doc }) => {
+            prerenderTemplate: ({ doc }) => {
                 return (
-                    <WalletPrerender nonce={ props.nonce } />
+                    <WalletPrerender nonce={ nonce } />
                 ).render(dom({ doc }));
             },
 
@@ -227,7 +228,7 @@ export function getWalletComponent() : WalletComponent {
 
                 csp: {
                     type:     'object',
-                    required: false,
+                    required: true,
                     value:    () => {
                         return {
                             nonce: getCSPNonce()

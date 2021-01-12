@@ -5,6 +5,7 @@ import { node, type ChildType } from 'jsx-pragmatic/src';
 import { type LocaleType } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 
+import { NoncedStyleElement } from '../../lib';
 import { CLASS } from '../../constants';
 import { Text } from '../text';
 
@@ -38,15 +39,16 @@ const POWERED_BY_PAYPAL_STYLE = `
 `;
 
 type PoweredByPayPalProps = {|
-    locale : LocaleType
+    locale : LocaleType,
+    nonce : string
 |};
 
-export function PoweredByPayPal({ locale: { lang } } : PoweredByPayPalProps) : ChildType {
+export function PoweredByPayPal({ locale: { lang }, nonce } : PoweredByPayPalProps) : ChildType {
     const { PoweredBy } = buttonContent[lang];
 
     return (
         <div class={ CLASS.POWERED_BY }>
-            <style innerHTML={ POWERED_BY_PAYPAL_STYLE } />
+            <NoncedStyleElement css={ POWERED_BY_PAYPAL_STYLE } nonce={ nonce } />
             { __WEB__
                 ? <Text />
                 : <PoweredBy logoColor={ LOGO_COLOR.BLUE } />}

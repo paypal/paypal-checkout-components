@@ -6,7 +6,7 @@ import { node, type ChildType } from 'jsx-pragmatic/src';
 import { NoncedStyleElement } from '../../lib';
 
 type PrerenderedWalletProps = {|
-    nonce : ?string
+    nonce : string
 |};
 
 export function WalletPrerender({ nonce } : PrerenderedWalletProps) : ChildType {
