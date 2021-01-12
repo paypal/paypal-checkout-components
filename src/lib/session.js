@@ -1,6 +1,7 @@
 /* @flow */
 
-import { getStorage, type Storage } from 'belter/src';
+import { hashStr, getStorage, type Storage } from 'belter/src';
+import getBrowserFingerprint from 'get-browser-fingerprint';
 
 function getSDKStorage() : Storage {
     return getStorage({
@@ -26,4 +27,8 @@ export function isStorageStateFresh() : boolean {
 
 export function getSessionState<T>(handler : (state : Object) => T) : T {
     return getSDKStorage().getSessionState(handler);
+}
+
+export function getStickinessID() : string {
+    return (hashStr(getBrowserFingerprint().toString()) % 100).toString();
 }

@@ -63,6 +63,7 @@
     "beaver-logger": "^4.0.12",
     "belter": "^1.0.19",
     "cross-domain-utils": "^2.0.16",
+    "get-browser-fingerprint": "^1.1.0",
     "grabthar": "^4",
     "jsx-pragmatic": "^2",
     "module-alias": "^2.2.2",
