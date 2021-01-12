@@ -133,6 +133,7 @@ export const buttonStyle = `
 
     .${ CLASS.TAGLINE } {
         max-width: 100%;
+        font-size: initial;
         font-weight: normal;
         display: block;
         text-align: center;
