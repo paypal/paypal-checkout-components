@@ -1,5 +1,5 @@
 /* @flow */
 
 export type FieldsProps = {|
-    nonce : ?string
+    nonce : string
 |};

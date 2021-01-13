@@ -19,7 +19,7 @@ type FieldsContainerOptions = {|
     frame : ?HTMLIFrameElement,
     prerenderFrame : ?HTMLIFrameElement,
     event : EventEmitterType,
-    nonce : ?string
+    nonce : string
 |};
 
 export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : FieldsContainerOptions) : ?ChildType {

@@ -4,6 +4,7 @@
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { node } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { getCSPNonce } from '@paypal/sdk-client/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { NoncedStyleElement } from '../../lib';
@@ -23,12 +24,13 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
         Label: ({ logo }) => logo,
 
-        Logo: ({ logoColor, nonce /* , fundingEligibility */ }) => {
+        Logo: ({ logoColor /* , fundingEligibility */ }) => {
             // const paylaterEligibility = fundingEligibility.paylater;
 
             // const products = (paylaterEligibility && paylaterEligibility.products && paylaterEligibility.products) || {};
 
             const text = <Text>Pay Later</Text>;
+            const nonce = getCSPNonce() || '';
 
             // if (products.flex && products.flex.eligible && env !== ENV.LOCAL && env !== ENV.STAGE && env !== ENV.SANDBOX) {
             //     text = (

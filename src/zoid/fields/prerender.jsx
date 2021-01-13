@@ -6,7 +6,7 @@ import { node, type ChildType } from 'jsx-pragmatic/src';
 import { NoncedStyleElement } from '../../lib';
 
 type PrerenderedFieldsProps = {|
-    nonce : ?string
+    nonce : string
 |};
 
 export function FieldsPrerender({ nonce } : PrerenderedFieldsProps) : ChildType {

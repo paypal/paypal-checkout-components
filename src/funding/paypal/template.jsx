@@ -3,6 +3,7 @@
 
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
+import { getCSPNonce } from '@paypal/sdk-client/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
@@ -54,7 +55,8 @@ function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
         return null;
     }
     
-    const { tagline, nonce } = opts;
+    const { tagline } = opts;
+    const nonce = opts.nonce || getCSPNonce() || '';
 
     const personalizationText = !tagline && getPersonalizationText(opts);
 
@@ -121,7 +123,8 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
         return;
     }
 
-    const { nonce, tagline, label } = opts;
+    const { tagline, label } = opts;
+    const nonce = opts.nonce || getCSPNonce() || '';
     
     if (tagline || !label) {
         return;
@@ -160,7 +163,8 @@ export function Label(opts : LabelOptions) : ChildType {
 }
 
 export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, locale, content, commit, nonce } = opts;
+    const { logoColor, instrument, locale, content, commit } = opts;
+    const nonce = opts.nonce || getCSPNonce() || '';
 
     if (__WEB__) {
         return;
@@ -218,7 +222,8 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
 }
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, vault, textColor, fundingSource, nonce } = opts;
+    const { logoColor, instrument, content, commit, vault, textColor, fundingSource } = opts;
+    const nonce = opts.nonce || getCSPNonce() || '';
 
     if (instrument && !instrument.type) {
         return WalletLabelOld(opts);

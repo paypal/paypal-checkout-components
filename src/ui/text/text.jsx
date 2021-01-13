@@ -27,10 +27,10 @@ export function Space() : ChildType {
 type PlaceHolderProps = {|
     chars : number,
     color? : $Values<typeof TEXT_COLOR>,
-    nonce : ?string
+    nonce : string
 |};
 
-export function PlaceHolder({ chars, color = TEXT_COLOR.WHITE, nonce } : PlaceHolderProps) : ChildType {
+export function PlaceHolder({ chars, color = TEXT_COLOR.WHITE, nonce = '' } : PlaceHolderProps) : ChildType {
     return (
         <NoncedStyleElement css={ css } nonce={ nonce }>
             <div class={ [ 'placeholder', `color-${ color }`  ].join(' ') }>{ new Array(chars).fill('x').join('') }</div>

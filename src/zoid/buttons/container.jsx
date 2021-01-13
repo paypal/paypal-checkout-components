@@ -54,7 +54,8 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
         }, 1000);
     });
 
-    const nonce = props.csp ? props.csp.nonce : '';
+    // const nonce = props.csp ? props.csp.nonce : '';
+    const nonce = (props.csp && props.csp.nonce) || '';
     const style = props.style;
     const { label, layout, height: buttonHeight } = style;
 

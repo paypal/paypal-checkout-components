@@ -5,7 +5,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
 import { NoncedStyleElement } from '../lib';
 
-export function TrackingBeacon({ url, nonce } : {| url : string, nonce : ?string |}) : ChildType {
+export function TrackingBeacon({ url, nonce } : {| url : string, nonce : string |}) : ChildType {
     return (
         <Fragment>
             <NoncedStyleElement
