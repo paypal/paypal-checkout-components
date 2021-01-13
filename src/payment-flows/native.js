@@ -718,6 +718,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 return false;
             }
 
+            if (isNativeOptedIn({ props })) {
+                return true;
+            }
+
             return createOrder().then(orderID => {
                 return getNativeEligibility({ vault, platform, shippingCallbackEnabled, merchantID: merchantID[0],
                     clientID, buyerCountry, currency, buttonSessionID, cookies, orderID
