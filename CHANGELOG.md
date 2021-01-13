@@ -1,3 +1,9 @@
+## <small>5.0.135 (2021-01-13)</small>
+
+* Fix tagline (#1517) ([ae36f55](https://github.com/paypal/paypal-checkout-components/commit/ae36f55)), closes [#1517](https://github.com/paypal/paypal-checkout-components/issues/1517)
+
+
+
 ## <small>5.0.134 (2021-01-12)</small>
 
 * Add code coverage badge ([35aa14a](https://github.com/paypal/paypal-checkout-components/commit/35aa14a))
