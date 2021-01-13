@@ -1679,7 +1679,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.347", _headers10);
+            _headers10["x-app-version"] = "2.0.348", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -5239,7 +5239,9 @@ window.spb = function(modules) {
                                     return valid;
                                 }));
                                 var eligibilityPromise = validatePromise.then((function(valid) {
-                                    return !!valid && createOrder().then((function(orderID) {
+                                    return !!valid && (!!isNativeOptedIn({
+                                        props: props
+                                    }) || createOrder().then((function(orderID) {
                                         return getNativeEligibility({
                                             vault: vault,
                                             platform: platform,
@@ -5258,11 +5260,11 @@ window.spb = function(modules) {
                                                     orderID: orderID
                                                 }).track((_getLogger$info$track15 = {}, _getLogger$info$track15.state_name = "smart_button", 
                                                 _getLogger$info$track15.transition_name = "app_switch_ineligible", _getLogger$info$track15)).flush();
-                                                return !1;
+                                                return !0;
                                             }
                                             return !0;
                                         }));
-                                    }));
+                                    })));
                                 }));
                                 var awaitRedirectListener = listen(popupWin, getNativePopupDomain(), "awaitRedirect", (function(_ref17) {
                                     var pageUrl = _ref17.data.pageUrl;
@@ -6055,7 +6057,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.347", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.348", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2;
                 }));
