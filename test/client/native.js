@@ -3020,7 +3020,7 @@ describe('native ios cases', () => {
         });
     });
 
-    it('should render a button with eligibility rejecting, click the button, and render checkout via popup to web path in iOS', async () => {
+    it.skip('should render a button with eligibility rejecting, click the button, and render checkout via popup to web path in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid, wait }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;

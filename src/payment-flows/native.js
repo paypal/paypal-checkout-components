@@ -733,7 +733,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                                 [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
                             }).flush();
 
-                        return false;
+                        return true;
                     }
 
                     return true;
