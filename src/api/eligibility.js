@@ -82,7 +82,8 @@ type NativeEligibilityOptions = {|
     buttonSessionID : string,
     shippingCallbackEnabled : boolean,
     platform : $Values<typeof PLATFORM>,
-    cookies : string
+    cookies : string,
+    orderID? : ?string
 |};
 
 type NativeEligibility = {|
@@ -91,7 +92,7 @@ type NativeEligibility = {|
     |}
 |};
 
-export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantID, clientID, buyerCountry, currency, buttonSessionID, cookies } : NativeEligibilityOptions) : ZalgoPromise<NativeEligibility> {
+export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantID, clientID, buyerCountry, currency, buttonSessionID, cookies, orderID } : NativeEligibilityOptions) : ZalgoPromise<NativeEligibility> {
     const userAgent = getUserAgent();
     
     return callGraphQL({
@@ -106,7 +107,8 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
                 $currency : String,
                 $userAgent : String,
                 $buttonSessionID : String,
-                $cookies : String
+                $cookies : String,
+                $orderID : String
             ) {
                 mobileSDKEligibility(
                     vault: $vault,
@@ -117,7 +119,8 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
                     currency: $currency,
                     userAgent: $userAgent,
                     buttonSessionID: $buttonSessionID,
-                    cookies: $cookies
+                    cookies: $cookies,
+                    token: $orderID
                 ) {
                     paypal {
                         eligibility
@@ -132,7 +135,7 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
         `,
         variables: {
             vault, shippingCallbackEnabled, merchantID, clientID,
-            buyerCountry, currency, userAgent, buttonSessionID, cookies
+            buyerCountry, currency, userAgent, buttonSessionID, cookies, orderID
         }
     }).then((gqlResult) => {
         if (!gqlResult || !gqlResult.mobileSDKEligibility) {

@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint max-lines: off */
+/* eslint max-lines: off, max-nested-callbacks: off */
 
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError,
     stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
@@ -263,10 +263,13 @@ function instrumentNativeSDKProps(props : NativeSDKProps) {
 
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
-        buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange } = props;
-    const { facilitatorAccessToken, sdkMeta } = serviceData;
+        buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange, vault, platform,
+        currency } = props;
+    const { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
     const { fundingSource } = payment;
     const { sdkVersion, firebase: firebaseConfig } = config;
+
+    const shippingCallbackEnabled = Boolean(onShippingChange);
 
     if (!firebaseConfig) {
         throw new Error(`Can not run native flow without firebase config`);
@@ -319,28 +322,45 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return NATIVE_POPUP_DOMAIN[env];
     });
 
-    const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
-        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
-            query: { sdkMeta, sessionUID, buttonSessionID, pageUrl }
+    const getWebCheckoutUrl = memoize(({ orderID }) : string => {
+        return extendUrl(`${ getNativeDomain() }${ WEB_CHECKOUT_URI }`, {
+            query: {
+                fundingSource,
+                facilitatorAccessToken,
+                token:         orderID,
+                useraction:    commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
+                native_xo:     '1'
+            }
         });
     });
 
-    const getNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, sdkProps } : {| sessionUID : string, pageUrl : string, sdkProps : NativeSDKProps |}) : string => {
+    const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
+        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
+            query: { sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl }
+        });
+    });
+
+    const getDelayedNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) : string => {
+        const webCheckoutUrl = getWebCheckoutUrl({ orderID });
+        const userAgent = getUserAgent();
+        const forceEligible = isNativeOptedIn({ props });
+        
         return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: {
                 sdkMeta,
                 sessionUID,
-                orderID:        sdkProps ? sdkProps.orderID : '',
+                orderID,
                 facilitatorAccessToken,
                 pageUrl,
                 commit:         String(commit),
-                webCheckoutUrl: sdkProps ? sdkProps.webCheckoutUrl : '',
-                userAgent:      sdkProps ? sdkProps.userAgent : '',
+                webCheckoutUrl,
+                userAgent,
                 buttonSessionID,
                 env,
                 stageHost:      stageHost || '',
                 apiStageHost:   apiStageHost || '',
-                forceEligible:  String(sdkProps ? sdkProps.forceEligible : 'false')
+                forceEligible,
+                fundingSource
             }
         });
     });
@@ -356,18 +376,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return extendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
             // $FlowFixMe
             query: getNativePopupParams()
-        });
-    });
-
-    const getWebCheckoutUrl = memoize(({ orderID }) : string => {
-        return extendUrl(`${ getNativeDomain() }${ WEB_CHECKOUT_URI }`, {
-            query: {
-                fundingSource,
-                facilitatorAccessToken,
-                token:         orderID,
-                useraction:    commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
-                native_xo:     '1'
-            }
         });
     });
 
@@ -402,7 +410,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const data = { payerID, paymentID, billingToken, forceRestAPI: true };
         const actions = { restart: () => fallbackToWebCheckout() };
         return ZalgoPromise.all([
-            onApprove(data, actions),
+            onApprove(data, actions)
+                .catch(err => onError(err)),
             close()
         ]).then(noop);
     };
@@ -664,6 +673,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
+        let redirected = false;
         const popupWin = popup(getNativePopupUrl());
         
         const closePopup = () => {
@@ -692,23 +702,62 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             closeListener.cancel();
         });
 
-        const validatePromise = validate();
+        const validatePromise = validate().then(valid => {
+            if (!valid) {
+                getLogger().info(`native_onclick_invalid`).track({
+                    [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
+                }).flush();
+            }
+
+            return valid;
+        });
+
+        const eligibilityPromise = validatePromise.then(valid => {
+            if (!valid) {
+                return false;
+            }
+
+            return createOrder().then(orderID => {
+                return getNativeEligibility({ vault, platform, shippingCallbackEnabled, merchantID: merchantID[0],
+                    clientID, buyerCountry, currency, buttonSessionID, cookies, orderID
+                }).then(eligibility => {
+                    if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
+                        getLogger().info(`native_appswitch_ineligible`, { orderID })
+                            .track({
+                                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
+                            }).flush();
+
+                        return false;
+                    }
+
+                    return true;
+                });
+            });
+        });
 
         const awaitRedirectListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
             getLogger().info(`native_post_message_await_redirect`).flush();
-            return validatePromise.then(valid => {
+
+            return ZalgoPromise.hash({
+                valid:    validatePromise,
+                eligible: eligibilityPromise
+            }).then(({ valid, eligible }) => {
+
                 if (!valid) {
-                    getLogger().info(`native_onclick_invalid`).track({
-                        [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                        [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
-                    }).flush();
                     return close().then(() => {
-                        throw new Error(`Validation failed`);
+                        return { redirect: false };
                     });
                 }
 
-                return getSDKProps().then(sdkProps => {
-                    const nativeUrl = getNativeUrl({ sessionUID, pageUrl, sdkProps });
+                if (!eligible) {
+                    fallbackToWebCheckout(popupWin);
+                    return { redirect: false };
+                }
+
+                return createOrder().then(orderID => {
+                    const nativeUrl = getDelayedNativeUrl({ sessionUID, pageUrl, orderID });
 
                     getLogger().info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
                         .track({
@@ -717,19 +766,20 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                             [FPTI_CUSTOM_KEY.INFO_MSG]: nativeUrl
                         }).flush();
 
-                    return { redirectUrl: nativeUrl };
-                }).catch(err => {
-                    getLogger().info(`native_attempt_appswitch_url_popup_errored`)
-                        .track({
-                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
-                            [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
-                        }).flush();
-
-                    return connectNative({ sessionUID }).close().then(() => {
-                        throw err;
-                    });
+                    redirected = true;
+                    return { redirect: true, redirectUrl: nativeUrl };
                 });
+
+            }).catch(err => {
+                getLogger().info(`native_attempt_appswitch_url_popup_errored`)
+                    .track({
+                        [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
+                        [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                    }).flush();
+
+                fallbackToWebCheckout(popupWin);
+                return { redirect: false };
             });
         });
 
@@ -776,10 +826,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         clean.register(detectWebSwitchListener.cancel);
 
         return awaitRedirectListener.then(() => {
-            return promiseOne([
-                detectAppSwitchListener,
-                detectWebSwitchListener
-            ]);
+            if (redirected) {
+                return promiseOne([
+                    detectAppSwitchListener,
+                    detectWebSwitchListener
+                ]);
+            }
         });
     };
 

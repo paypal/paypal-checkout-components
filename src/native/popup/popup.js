@@ -107,7 +107,11 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
     const pageUrl = `${ window.location.href  }#${  HASH.CLOSE }`;
 
-    sendToParent(MESSAGE.AWAIT_REDIRECT, { pageUrl }).then(({ redirectUrl }) => {
+    sendToParent(MESSAGE.AWAIT_REDIRECT, { pageUrl }).then(({ redirect = true, redirectUrl }) => {
+        if (!redirect) {
+            return;
+        }
+
         window.location = redirectUrl;
 
         let didRedirect = false;

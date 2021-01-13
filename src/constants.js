@@ -116,6 +116,7 @@ export const FPTI_TRANSITION = {
     NATIVE_APP_SWITCH_ACK:              ('native_app_switch_ack' : 'native_app_switch_ack'),
     NATIVE_ERROR:                       ('native_app_switch_ack' : 'native_app_switch_ack'),
     NATIVE_SET_PROPS_ATTEMPT:           ('process_set_props_attempt' : 'process_set_props_attempt'),
+    NATIVE_APP_SWITCH_INELIGIBLE:       ('app_switch_ineligible' : 'app_switch_ineligible'),
     NATIVE_ATTEMPT_APP_SWITCH:          ('app_switch_attempted' : 'app_switch_attempted'),
     NATIVE_ATTEMPT_APP_SWITCH_ERRORED:  ('app_switch_attempted_errored' : 'app_switch_attempted_errored'),
     NATIVE_POPUP_HASHCHANGE:            ('popup_hashchange' : 'popup_hashchange'),
