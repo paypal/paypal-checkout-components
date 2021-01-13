@@ -506,6 +506,8 @@ window.spb = function(modules) {
                     if (-1 === dispatchedErrors.indexOf(err)) {
                         dispatchedErrors.push(err);
                         setTimeout((function() {
+                            console.warn("!!!!!!!!", !1);
+                            console.warn(promise.stack);
                             throw err;
                         }), 1);
                         for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);

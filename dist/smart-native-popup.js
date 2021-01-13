@@ -180,6 +180,8 @@
                         if (-1 === dispatchedErrors.indexOf(err)) {
                             dispatchedErrors.push(err);
                             setTimeout((function() {
+                                console.warn("!!!!!!!!", !1);
+                                console.warn(promise.stack);
                                 throw err;
                             }), 1);
                             for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
@@ -1163,7 +1165,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.346", _ref2;
+                    _ref2.button_version = "2.0.347", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1309,25 +1311,28 @@
             sendToParent("awaitRedirect", {
                 pageUrl: pageUrl
             }).then((function(_ref3) {
-                window.location = _ref3.redirectUrl;
-                var didRedirect = !1;
-                var markRedirect = function() {
-                    didRedirect = !0;
-                };
-                window.addEventListener("beforeunload", markRedirect);
-                clean.register((function() {
-                    return window.removeEventListener("beforeunload", markRedirect);
-                }));
-                window.addEventListener("unload", markRedirect);
-                clean.register((function() {
-                    return window.removeEventListener("unload", markRedirect);
-                }));
-                var timer = setTimeout((function() {
-                    didRedirect || sendToParent("detectAppSwitch");
-                }), 500);
-                clean.register((function() {
-                    return clearTimeout(timer);
-                }));
+                var _ref3$redirect = _ref3.redirect;
+                if (void 0 === _ref3$redirect || _ref3$redirect) {
+                    window.location = _ref3.redirectUrl;
+                    var didRedirect = !1;
+                    var markRedirect = function() {
+                        didRedirect = !0;
+                    };
+                    window.addEventListener("beforeunload", markRedirect);
+                    clean.register((function() {
+                        return window.removeEventListener("beforeunload", markRedirect);
+                    }));
+                    window.addEventListener("unload", markRedirect);
+                    clean.register((function() {
+                        return window.removeEventListener("unload", markRedirect);
+                    }));
+                    var timer = setTimeout((function() {
+                        didRedirect || sendToParent("detectAppSwitch");
+                    }), 500);
+                    clean.register((function() {
+                        return clearTimeout(timer);
+                    }));
+                }
             }));
             return {
                 destroy: function() {
