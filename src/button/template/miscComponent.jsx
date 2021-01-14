@@ -94,7 +94,7 @@ export function Tagline(tagColor : string, impression : ?string, text : string |
         ` } />);
     nodes[1] = (
         <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
-            <span optional>{ text }</span>
+            { text }
             {
                 impression  && <img class='tracking-beacon' src={ impression } />
             }
