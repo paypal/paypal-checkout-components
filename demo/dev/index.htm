@@ -3,7 +3,8 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="/checkout.js" data-paypal-checkout></script>
+    <script src="../../dist/checkout.js" data-paypal-checkout></script>
+    <script src="../../dist/checkout.button.render.js" data-paypal-checkout></script>
 </head>
 
 <body>
@@ -19,6 +20,11 @@
 
             client: {
                 demo: 'abc123'
+            },
+
+            style: {
+                size: 'large',
+                tagline: true
             },
 
             payment: function () {
