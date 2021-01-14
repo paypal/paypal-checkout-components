@@ -302,6 +302,8 @@ app.use('/smart/buttons', defaultMiddleware, buttonsScriptMiddleware, buttonMidd
 app.use('/smart/menu', defaultMiddleware, menuMiddleware);
 app.use('/smart/checkout/native/popup', defaultMiddleware, nativePopupMiddleware);
 app.use('/smart/checkout/venmo/popup', defaultMiddleware, venmoPopupMiddleware);
+app.use('/smart/checkout/native/fallback', defaultMiddleware, nativeFallbackMiddleware);
+app.use('/smart/checkout/venmo/fallback', defaultMiddleware, venmoFallbackMiddleware);
 app.use('/smart/checkout/native', defaultMiddleware, nativeFallbackMiddleware);
 app.use('/smart/checkout/venmo', defaultMiddleware, venmoFallbackMiddleware);
 

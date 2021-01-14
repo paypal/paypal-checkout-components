@@ -3020,7 +3020,7 @@ describe('native ios cases', () => {
         });
     });
 
-    it.skip('should render a button with eligibility rejecting, click the button, and render checkout via popup to web path in iOS', async () => {
+    it('should render a button with eligibility rejecting, click the button, and render checkout via popup to web path in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid, wait }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
@@ -3086,9 +3086,45 @@ describe('native ios cases', () => {
                             pageUrl:  `${ window.location.href }#close`
                         }
                     }).then(expect('awaitRedirectResponse', res => {
-                        if (res.redirect !== false) {
-                            throw new Error(`Expected redirect to be false`);
+                        if (res.redirect !== true) {
+                            throw new Error(`Expected redirect to be true`);
                         }
+
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
+                        }
+
+                        postRobotMock.receive({
+                            win,
+                            name:   'detectWebSwitch',
+                            domain: 'https://www.paypal.com'
+                        });
                     }));
                 }
             });

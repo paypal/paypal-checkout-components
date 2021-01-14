@@ -4,11 +4,11 @@
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError,
     stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { PLATFORM, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { PLATFORM, ENV, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } from 'cross-domain-utils/src';
 
 import type { ButtonProps } from '../button/props';
-import { NATIVE_CHECKOUT_URI, WEB_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI } from '../config';
+import { WEB_CHECKOUT_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
 import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, getStickinessID } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
@@ -56,6 +56,21 @@ const NATIVE_POPUP_DOMAIN = {
     [ ENV.STAGE ]:      'https://history.paypal.com',
     [ ENV.SANDBOX ]:    'https://www.sandbox.paypal.com',
     [ ENV.PRODUCTION ]: 'https://history.paypal.com'
+};
+
+const NATIVE_CHECKOUT_URI : { [ $Values<typeof FUNDING> ] : string } = {
+    [ FUNDING.PAYPAL ]: '/smart/checkout/native',
+    [ FUNDING.VENMO ]:  '/smart/checkout/venmo'
+};
+
+const NATIVE_CHECKOUT_POPUP_URI : { [$Values<typeof FUNDING> ] : string } = {
+    [ FUNDING.PAYPAL ]: '/smart/checkout/native/popup',
+    [ FUNDING.VENMO ]:  '/smart/checkout/venmo/popup'
+};
+
+const NATIVE_CHECKOUT_FALLBACK_URI : { [$Values<typeof FUNDING> ] : string } = {
+    [ FUNDING.PAYPAL ]: '/smart/checkout/native/fallback',
+    [ FUNDING.VENMO ]:  '/smart/checkout/venmo/fallback'
 };
 
 let clean;
@@ -340,28 +355,38 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         });
     });
 
-    const getDelayedNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) : string => {
+    const getDelayedNativeUrlQueryParams = ({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) => {
         const webCheckoutUrl = getWebCheckoutUrl({ orderID });
         const userAgent = getUserAgent();
         const forceEligible = isNativeOptedIn({ props });
         
+        return {
+            sdkMeta,
+            sessionUID,
+            orderID,
+            facilitatorAccessToken,
+            pageUrl,
+            commit:         String(commit),
+            webCheckoutUrl,
+            userAgent,
+            buttonSessionID,
+            env,
+            stageHost:      stageHost || '',
+            apiStageHost:   apiStageHost || '',
+            forceEligible,
+            fundingSource
+        };
+    };
+
+    const getDelayedNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) : string => {
         return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
-            query: {
-                sdkMeta,
-                sessionUID,
-                orderID,
-                facilitatorAccessToken,
-                pageUrl,
-                commit:         String(commit),
-                webCheckoutUrl,
-                userAgent,
-                buttonSessionID,
-                env,
-                stageHost:      stageHost || '',
-                apiStageHost:   apiStageHost || '',
-                forceEligible,
-                fundingSource
-            }
+            query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID })
+        });
+    });
+
+    const getDelayedNativeFallbackUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) : string => {
+        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_FALLBACK_URI[fundingSource] }`, {
+            query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID })
         });
     });
 
@@ -756,8 +781,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 }
 
                 if (!eligible) {
-                    fallbackToWebCheckout(popupWin);
-                    return { redirect: false };
+                    return createOrder().then(orderID => {
+                        const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID });
+                        return { redirect: true, redirectUrl: fallbackUrl };
+                    });
                 }
 
                 return createOrder().then(orderID => {
@@ -782,8 +809,14 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
                     }).flush();
 
-                fallbackToWebCheckout(popupWin);
-                return { redirect: false };
+                return createOrder().then(orderID => {
+                    const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID });
+                    return { redirect: true, redirectUrl: fallbackUrl };
+                });
+            }).catch(err => {
+                return close().then(() => {
+                    return onError(err);
+                });
             });
         });
 

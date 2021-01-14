@@ -23,16 +23,6 @@ export const GRAPHQL_URI = '/graphql';
 
 export const WEB_CHECKOUT_URI = '/checkoutnow';
 
-export const NATIVE_CHECKOUT_URI : { [ $Values<typeof FUNDING> ] : string } = {
-    [ FUNDING.PAYPAL ]: '/smart/checkout/native',
-    [ FUNDING.VENMO ]:  '/smart/checkout/venmo'
-};
-
-export const NATIVE_CHECKOUT_POPUP_URI : { [$Values<typeof FUNDING> ] : string } = {
-    [ FUNDING.PAYPAL ]: '/smart/checkout/native/popup',
-    [ FUNDING.VENMO ]:  '/smart/checkout/venmo/popup'
-};
-
 export const FUNDING_SKIP_LOGIN : { [$Values<typeof FUNDING>] : $Values<typeof FUNDING> } = {
     [ FUNDING.PAYLATER ]: FUNDING.PAYPAL,
     [ FUNDING.CREDIT ]:   FUNDING.PAYPAL
