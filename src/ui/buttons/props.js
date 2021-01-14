@@ -225,7 +225,7 @@ export type ButtonProps = {|
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
     clientAccessToken? : ?string,
-    nonce : string,
+    nonce? : string,
     csp? : {|
         nonce? : string
     |},
@@ -253,7 +253,7 @@ export type ButtonPropsInputs = {
     remember? : $PropertyType<ButtonProps, 'remember'> | void,
     sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
     buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
-    nonce : string,
+    nonce? : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
     personalization? : Personalization,

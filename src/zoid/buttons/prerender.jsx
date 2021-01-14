@@ -13,7 +13,6 @@ import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
 
 type PrerenderedButtonsProps = {|
-    nonce : ?string,
     props : ButtonProps,
     onRenderCheckout : ({|
         win? : CrossDomainWindowType,
@@ -22,7 +21,7 @@ type PrerenderedButtonsProps = {|
     |}) => void
 |};
 
-export function PrerenderedButtons({ nonce, onRenderCheckout, props } : PrerenderedButtonsProps) : ChildType {
+export function PrerenderedButtons({ onRenderCheckout, props } : PrerenderedButtonsProps) : ChildType {
 
     const handleClick = (event, { fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
         getLogger().info('button_prerender_click').track({
@@ -41,7 +40,7 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             const doc = window.document;
 
             const spinner = (
-                <SpinnerPage nonce={ nonce } />
+                <SpinnerPage nonce={ props.nonce } />
             ).render(dom({ doc }));
 
             writeElementToWindow(win, spinner);

@@ -45,7 +45,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             
             return (
                 <PrerenderedButtons
-                    nonce={ props.nonce }
                     props={ props }
                     onRenderCheckout={ ({ win, fundingSource, card }) => {
                         state.prerenderDetails = { win, fundingSource, card };
@@ -402,7 +401,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
             csp: {
                 type:     'object',
-                required: true,
+                required: false,
                 value:    () => {
                     return {
                         nonce: getCSPNonce() || ''

@@ -25,7 +25,7 @@ export type LogoOptions = {|
     fundingEligibility : FundingEligibilityType,
     onClick? : (event : MouseEvent, ...args: $ReadOnlyArray<mixed>) => void,
     onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
-    nonce? : ?string,
+    nonce? : string,
     experiment : Experiment,
     env : $Values<typeof ENV>
 |};
@@ -44,7 +44,7 @@ export type LabelOptions = {|
     onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
     layout : $Values<typeof BUTTON_LAYOUT>,
     personalization : ?Personalization,
-    nonce : ?string,
+    nonce? : string,
     tagline : ?boolean,
     content : ?ContentType
 |};
@@ -57,7 +57,7 @@ export type WalletLabelOptions = {|
     commit : boolean,
     experiment : Experiment,
     vault : boolean,
-    nonce? : ?string,
+    nonce? : string,
     textColor : $Values<typeof TEXT_COLOR>,
     fundingSource : $Values<typeof FUNDING>
 |};

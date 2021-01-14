@@ -1,22 +1,59 @@
 /* @flow */
-/* eslint no-restricted-globals: 0, promise/no-native: 0 */
+/* eslint no-restricted-globals: 0, promise/no-native: 0,  no-process-env: 0, no-unused-vars: 0*/
 
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 import { html, ElementNode } from 'jsx-pragmatic';
 
-import { webpackCompileToString } from '../screenshot/lib/compile';
-import { fundingEligibility } from '../globals';
+import { openPage } from '../screenshot/lib/browser';
+import { webpackCompile, webpackCompileToString } from '../screenshot/lib/compile';
+import { fundingEligibility, testGlobals } from '../globals';
+// import baseConfig from '../../webpack.config.dev';
+import globals from '../../globals';
 
+const HEADLESS = (process.env.HEADLESS !== '0');
+const DEVTOOLS = (process.env.DEVTOOLS === '1');
 jest.setTimeout(120000);
 
 const cache = {};
 
+// const setupBrowserPage = (async () => {
+//     const { browser, page, open } = await openPage(await webpackCompile(getWebpackConfig({
+//         entry:         './test/paypal.js',
+//         libraryTarget: 'window',
+//         test:          true,
+//         web:           false,
+//         vars:          { ...globals, ...testGlobals }
+//     })), { headless: HEADLESS, devtools: DEVTOOLS });
+
+//     // for (const filename of await fs.readdir(IMAGE_DIR)) {
+//     //     if (filename.endsWith('-old.png')) {
+//     //         await fs.unlink(`${ IMAGE_DIR }/${ filename }`);
+//     //     }
+//     // }
+
+//     return { browser, page, open };
+// })();
+
+// beforeAll(async () => {
+//     await setupBrowserPage;
+// });
+
+// afterAll(async () => {
+//     const { browser } = await setupBrowserPage;
+//     await browser.close();
+// });
+
 async function getButtonScript() : Promise<{| Buttons : (Object) => typeof ElementNode, DEFAULT_PROPS : Object |}> {
+    // const {
+    //     __SDK_HOST__,
+    //     __PATH__
+    // } = testGlobals;
 
     const config = {
         entry:         './src/ui/buttons',
         libraryTarget: 'commonjs',
-        web:           false
+        web:           false,
+        vars:          { ...globals, ...testGlobals }
     };
 
     const cacheKey = JSON.stringify(config);
@@ -41,6 +78,7 @@ async function getButtonScript() : Promise<{| Buttons : (Object) => typeof Eleme
 }
 
 test(`Button should render with ssr, with minimal options`, async () => {
+    // const { page } = await setupBrowserPage;
 
     const { Buttons } = await getButtonScript();
 
@@ -51,6 +89,7 @@ test(`Button should render with ssr, with minimal options`, async () => {
         buttonSessionID: 'abc',
         fundingEligibility
     }).render(html());
+
 
     if (!buttonHTML || typeof buttonHTML !== 'string') {
         throw new Error(`Expected html to be a non-empty string`);

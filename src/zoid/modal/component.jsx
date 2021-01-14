@@ -2,7 +2,7 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getCSPNonce } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@paypal/sdk-client/src';
 import { create, EVENT, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, destroyElement, toCSS } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
@@ -39,7 +39,9 @@ export function getModalComponent() : ModalComponent {
                 }
 
                 const { cspNonce } = props;
-                const nonce = cspNonce || getCSPNonce() || '';
+                // const nonce = cspNonce || getCSPNonce() || '';
+                const nonce = cspNonce || '';
+
 
                 prerenderFrame.classList.add(CLASS.VISIBLE);
                 frame.classList.add(CLASS.INVISIBLE);

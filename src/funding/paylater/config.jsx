@@ -2,16 +2,12 @@
 /** @jsx node */
 
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { node } from 'jsx-pragmatic/src';
+import { node, Fragment } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
-import { getCSPNonce } from '@paypal/sdk-client/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
-import { NoncedStyleElement } from '../../lib';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { Text, Space } from '../../ui/text';
-
-import css from './style.scoped.scss';
 
 export function getPaylaterConfig() : FundingSourceConfig {
     return {
@@ -30,7 +26,6 @@ export function getPaylaterConfig() : FundingSourceConfig {
             // const products = (paylaterEligibility && paylaterEligibility.products && paylaterEligibility.products) || {};
 
             const text = <Text>Pay Later</Text>;
-            const nonce = getCSPNonce() || '';
 
             // if (products.flex && products.flex.eligible && env !== ENV.LOCAL && env !== ENV.STAGE && env !== ENV.SANDBOX) {
             //     text = (
@@ -44,11 +39,11 @@ export function getPaylaterConfig() : FundingSourceConfig {
             // }
 
             return (
-                <NoncedStyleElement css={ css } nonce={ nonce }>
+                <Fragment>
                     <PPLogo optional logoColor={ logoColor } />
                     <Space />
                     { text }
-                </NoncedStyleElement>
+                </Fragment>
             );
         },
     
