@@ -86,7 +86,7 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
         [ BUTTON_STYLE_OPTIONS.SHAPE ]:        shape        = getButtonConfig(label, 'defaultShape'),
         [ BUTTON_STYLE_OPTIONS.BRANDING ]:     branding     = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalBranding' : 'defaultBranding'),
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons = getButtonConfig(label, 'defaultFundingIcons'),
-        [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline      = getButtonConfig(label, 'defaultTagline'),
+        [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline      = style[BUTTON_STYLE_OPTIONS.TAGLINE] ? getButtonConfig(label, 'defaultTagline') : false,
         [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max,
         [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height,
         [ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD ]:  installmentperiod
