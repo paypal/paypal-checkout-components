@@ -3023,7 +3023,7 @@ describe('native ios cases', () => {
     it('should render a button with eligibility rejecting, click the button, and render checkout via popup to web path in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid, wait }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
-            window.xprops.enableNativeCheckout = true;
+            window.xprops.enableNativeCheckout = false;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
 
@@ -3031,25 +3031,6 @@ describe('native ios cases', () => {
 
             const orderID = generateOrderID();
             const payerID = 'AAABBBCCC';
-
-            const gqlMock = getGraphQLApiMock({
-                extraHandler: expect('firebaseGQLCall', ({ data }) => {
-                    if (data.query.includes('query GetNativeEligibility')) {
-                        return {
-                            data: {
-                                mobileSDKEligibility: {
-                                    paypal: {
-                                        eligibility: false
-                                    },
-                                    venmo: {
-                                        eligibility: false
-                                    }
-                                }
-                            }
-                        };
-                    }
-                })
-            }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -3092,6 +3073,10 @@ describe('native ios cases', () => {
 
                         if (!res.redirectUrl) {
                             throw new Error(`Expected native redirect url`);
+                        }
+
+                        if (res.redirectUrl.indexOf('/smart/checkout/native/fallback') === -1) {
+                            throw new Error(`Expected native popup to redirect to fallback url, got ${ res.redirectUrl }`);
                         }
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
@@ -3157,6 +3142,25 @@ describe('native ios cases', () => {
                     native:     true
                 }
             });
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (data.query.includes('query GetNativeEligibility')) {
+                        return {
+                            data: {
+                                mobileSDKEligibility: {
+                                    paypal: {
+                                        eligibility: false
+                                    },
+                                    venmo: {
+                                        eligibility: false
+                                    }
+                                }
+                            }
+                        };
+                    }
+                })
+            }).expectCalls();
 
             await clickButton(FUNDING.PAYPAL);
             await wait();
