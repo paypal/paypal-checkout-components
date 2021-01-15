@@ -367,7 +367,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             facilitatorAccessToken,
             pageUrl,
             commit:         String(commit),
-            webCheckoutUrl,
+            webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : '',
             userAgent,
             buttonSessionID,
             env,
