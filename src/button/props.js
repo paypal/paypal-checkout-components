@@ -169,7 +169,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
     const {
         uid,
         env,
-        vault,
+        vault = false,
         commit,
         locale,
         platform,

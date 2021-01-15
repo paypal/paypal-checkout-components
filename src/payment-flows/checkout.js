@@ -182,13 +182,18 @@ type EnableVaultSetupOptions = {|
     intent : $Values<typeof INTENT>,
     commit : boolean,
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
-    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>
+    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
+    userIDToken : ?string
 |};
 
 function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource,
-    clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard } : EnableVaultSetupOptions) : ZalgoPromise<void> {
+    clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard, userIDToken } : EnableVaultSetupOptions) : ZalgoPromise<void> {
 
     return ZalgoPromise.try(() => {
+        getLogger()
+            .info(`vault_auto_setup_vault_${ vault.toString() }_id_token_${ userIDToken ? 'present' : 'not_present' }`)
+            .flush();
+
         return isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource,
             clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard });
 
@@ -311,7 +316,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     return ZalgoPromise.try(() => {
                         if (clientID && buyerIntent === BUYER_INTENT.PAY) {
                             return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription,
-                                clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard });
+                                clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard, userIDToken });
                         }
                     }).then(() => {
                         return orderID;
