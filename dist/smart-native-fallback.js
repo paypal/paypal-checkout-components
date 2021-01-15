@@ -809,9 +809,7 @@
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
-        var _NATIVE_CHECKOUT_URI, _NATIVE_CHECKOUT_POPU, _FUNDING_SKIP_LOGIN;
-        (_NATIVE_CHECKOUT_URI = {}).paypal = "/smart/checkout/native", _NATIVE_CHECKOUT_URI.venmo = "/smart/checkout/venmo";
-        (_NATIVE_CHECKOUT_POPU = {}).paypal = "/smart/checkout/native/popup", _NATIVE_CHECKOUT_POPU.venmo = "/smart/checkout/venmo/popup";
+        var _FUNDING_SKIP_LOGIN;
         (_FUNDING_SKIP_LOGIN = {}).paylater = "paypal", _FUNDING_SKIP_LOGIN.credit = "paypal";
         function setupNativeFallback(_ref) {
             var _ref$parentDomain = _ref.parentDomain, parentDomain = void 0 === _ref$parentDomain ? window.location.origin : _ref$parentDomain;

@@ -952,9 +952,7 @@
         function extendIfDefined(target, source) {
             for (var key in source) source.hasOwnProperty(key) && source[key] && !target[key] && (target[key] = source[key]);
         }
-        var _NATIVE_CHECKOUT_URI, _NATIVE_CHECKOUT_POPU, _FUNDING_SKIP_LOGIN;
-        (_NATIVE_CHECKOUT_URI = {}).paypal = "/smart/checkout/native", _NATIVE_CHECKOUT_URI.venmo = "/smart/checkout/venmo";
-        (_NATIVE_CHECKOUT_POPU = {}).paypal = "/smart/checkout/native/popup", _NATIVE_CHECKOUT_POPU.venmo = "/smart/checkout/venmo/popup";
+        var _FUNDING_SKIP_LOGIN;
         (_FUNDING_SKIP_LOGIN = {}).paylater = "paypal", _FUNDING_SKIP_LOGIN.credit = "paypal";
         function getLogger() {
             return inlineMemoize(getLogger, (function() {
@@ -1165,7 +1163,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.348", _ref2;
+                    _ref2.button_version = "2.0.349", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
