@@ -1654,7 +1654,7 @@ window.spb = function(modules) {
                 url: ORDERS_API_URL + "/" + orderID,
                 data: data,
                 headers: (_headers8 = {}, _headers8["paypal-partner-attribution-id"] = _ref5.partnerAttributionID || "", 
-                _headers8)
+                _headers8.prefer = "return=representation", _headers8)
             }) : callSmartAPI({
                 accessToken: buyerAccessToken,
                 method: "post",
@@ -1673,7 +1673,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.352", _headers10);
+            _headers10["x-app-version"] = "2.0.353", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -1935,7 +1935,7 @@ window.spb = function(modules) {
                                     url: "" + ORDERS_API_URL,
                                     data: order,
                                     headers: (_headers = {}, _headers["paypal-partner-attribution-id"] = partnerAttributionID || "", 
-                                    _headers)
+                                    _headers.prefer = "return=representation", _headers)
                                 }).then((function(body) {
                                     var _getLogger$track;
                                     var orderID = body && body.id;
@@ -2084,7 +2084,7 @@ window.spb = function(modules) {
                                             accessToken: _ref2.facilitatorAccessToken,
                                             url: ORDERS_API_URL + "/" + orderID,
                                             headers: (_headers2 = {}, _headers2["paypal-partner-attribution-id"] = _ref2.partnerAttributionID || "", 
-                                            _headers2)
+                                            _headers2.prefer = "return=representation", _headers2)
                                         }) : callSmartAPI({
                                             accessToken: buyerAccessToken,
                                             url: "/smart/api/order/" + orderID,
@@ -2107,7 +2107,7 @@ window.spb = function(modules) {
                                             method: "post",
                                             url: ORDERS_API_URL + "/" + orderID + "/capture",
                                             headers: (_headers4 = {}, _headers4["paypal-partner-attribution-id"] = _ref3.partnerAttributionID || "", 
-                                            _headers4)
+                                            _headers4.prefer = "return=representation", _headers4)
                                         }) : callSmartAPI({
                                             accessToken: buyerAccessToken,
                                             method: "post",
@@ -2131,7 +2131,7 @@ window.spb = function(modules) {
                                             method: "post",
                                             url: ORDERS_API_URL + "/" + orderID + "/authorize",
                                             headers: (_headers6 = {}, _headers6["paypal-partner-attribution-id"] = _ref4.partnerAttributionID || "", 
-                                            _headers6)
+                                            _headers6.prefer = "return=representation", _headers6)
                                         }) : callSmartAPI({
                                             accessToken: buyerAccessToken,
                                             method: "post",
@@ -6091,7 +6091,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.352", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.353", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
