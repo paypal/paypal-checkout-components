@@ -1,7 +1,6 @@
 /* @flow */
 /** @jsx node */
 
-// import { getCSPNonce } from '@paypal/sdk-client/src';
 import { node, type ChildType, type NullableChildrenType } from 'jsx-pragmatic/src/node';
 import { Style } from 'jsx-pragmatic/src/component';
 

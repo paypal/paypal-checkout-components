@@ -56,7 +56,6 @@ function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
     }
     
     const { tagline } = opts;
-    // const nonce = opts.nonce || getCSPNonce() || '';
     const nonce = opts.nonce || '';
 
     const personalizationText = !tagline && getPersonalizationText(opts);
@@ -125,7 +124,6 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
     }
 
     const { tagline, label } = opts;
-    //    const nonce = opts.nonce || getCSPNonce() || '';
     const nonce = opts.nonce || '';
 
     
@@ -167,7 +165,6 @@ export function Label(opts : LabelOptions) : ChildType {
 
 export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
     const { logoColor, instrument, locale, content, commit } = opts;
-    // const nonce = opts.nonce || getCSPNonce() || '';
     const nonce = opts.nonce || '';
 
     if (__WEB__) {
@@ -227,7 +224,6 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
     const { logoColor, instrument, content, commit, vault, textColor, fundingSource } = opts;
-    //    const nonce = opts.nonce || getCSPNonce() || '';
     const nonce = opts.nonce || '';
 
 

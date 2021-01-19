@@ -7,7 +7,6 @@ import { html, ElementNode } from 'jsx-pragmatic';
 import { openPage } from '../screenshot/lib/browser';
 import { webpackCompile, webpackCompileToString } from '../screenshot/lib/compile';
 import { fundingEligibility, testGlobals } from '../globals';
-// import baseConfig from '../../webpack.config.dev';
 import globals from '../../globals';
 
 const HEADLESS = (process.env.HEADLESS !== '0');
@@ -16,38 +15,7 @@ jest.setTimeout(120000);
 
 const cache = {};
 
-// const setupBrowserPage = (async () => {
-//     const { browser, page, open } = await openPage(await webpackCompile(getWebpackConfig({
-//         entry:         './test/paypal.js',
-//         libraryTarget: 'window',
-//         test:          true,
-//         web:           false,
-//         vars:          { ...globals, ...testGlobals }
-//     })), { headless: HEADLESS, devtools: DEVTOOLS });
-
-//     // for (const filename of await fs.readdir(IMAGE_DIR)) {
-//     //     if (filename.endsWith('-old.png')) {
-//     //         await fs.unlink(`${ IMAGE_DIR }/${ filename }`);
-//     //     }
-//     // }
-
-//     return { browser, page, open };
-// })();
-
-// beforeAll(async () => {
-//     await setupBrowserPage;
-// });
-
-// afterAll(async () => {
-//     const { browser } = await setupBrowserPage;
-//     await browser.close();
-// });
-
 async function getButtonScript() : Promise<{| Buttons : (Object) => typeof ElementNode, DEFAULT_PROPS : Object |}> {
-    // const {
-    //     __SDK_HOST__,
-    //     __PATH__
-    // } = testGlobals;
 
     const config = {
         entry:         './src/ui/buttons',
