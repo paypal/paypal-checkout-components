@@ -16,7 +16,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a tiny button', (done) => {
 
         const expectedWidth = 150;
-        const expectedHeight = 25;
+        const expectedHeight = 38;
 
         window.paypal.Button.render({
 
@@ -58,7 +58,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a small button', (done) => {
 
         const expectedWidth = 150;
-        const expectedHeight = 25;
+        const expectedHeight = 38;
 
         window.paypal.Button.render({
 
@@ -100,7 +100,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a medium button', (done) => {
 
         const expectedWidth = 250;
-        const expectedHeight = 35;
+        const expectedHeight = 53;
 
         window.paypal.Button.render({
 
@@ -142,7 +142,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a large button', (done) => {
 
         const expectedWidth = 350;
-        const expectedHeight = 45;
+        const expectedHeight = 68;
 
         window.paypal.Button.render({
 
@@ -192,7 +192,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 162;
-        const expectedHeight = 25;
+        const expectedHeight = 38;
 
         window.paypal.Button.render({
 
@@ -242,7 +242,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 250;
-        const expectedHeight = 35;
+        const expectedHeight = 53;
 
         window.paypal.Button.render({
 
@@ -292,7 +292,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 350;
-        const expectedHeight = 45;
+        const expectedHeight = 68;
 
         window.paypal.Button.render({
 
@@ -392,7 +392,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 750;
-        const expectedHeight = 55;
+        const expectedHeight = 83;
 
         window.paypal.Button.render({
 
@@ -434,7 +434,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a tiny button into an element below the minimum height', (done) => {
 
         const expectedWidth = 150;
-        const expectedHeight = 25;
+        const expectedHeight = 38;
 
         const container = createElement({
             style: {
@@ -484,7 +484,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a small button into an element below the minimum height', (done) => {
 
         const expectedWidth = 150;
-        const expectedHeight = 25;
+        const expectedHeight = 38;
 
         const container = createElement({
             style: {
@@ -534,7 +534,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a medium button into an element below the minimum height', (done) => {
 
         const expectedWidth = 250;
-        const expectedHeight = 35;
+        const expectedHeight = 53;
 
         const container = createElement({
             style: {
@@ -584,7 +584,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a large button into an element below the minimum height', (done) => {
 
         const expectedWidth = 350;
-        const expectedHeight = 45;
+        const expectedHeight = 68;
 
         const container = createElement({
             style: {
@@ -692,7 +692,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 155;
-        const expectedHeight = 25;
+        const expectedHeight = 38;
 
         window.paypal.Button.render({
 
@@ -742,7 +742,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 235;
-        const expectedHeight = 35;
+        const expectedHeight = 53;
 
         window.paypal.Button.render({
 
@@ -792,7 +792,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 370;
-        const expectedHeight = 45;
+        const expectedHeight = 68;
 
         window.paypal.Button.render({
 
@@ -944,7 +944,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 255;
-        const expectedHeight = 53;
+        const expectedHeight = 66;
 
         window.paypal.Button.render({
 
@@ -1007,7 +1007,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 172;
-        const expectedHeight = 25;
+        const expectedHeight = 38;
 
         window.paypal.Button.render({
 
@@ -1290,7 +1290,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a small button with a custom height', (done) => {
 
         const expectedWidth = 150;
-        const expectedHeight = 44;
+        const expectedHeight = 66;
 
         window.paypal.Button.render({
 
@@ -1333,7 +1333,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a medium button with a custom height', (done) => {
 
         const expectedWidth = 250;
-        const expectedHeight = 41;
+        const expectedHeight = 62;
 
         window.paypal.Button.render({
 
@@ -1376,7 +1376,7 @@ describe(`paypal button component sizes`, () => {
     it('should render a large button with a custom height', (done) => {
 
         const expectedWidth = 350;
-        const expectedHeight = 40;
+        const expectedHeight = 60;
 
         window.paypal.Button.render({
 
@@ -1427,7 +1427,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         const expectedWidth = 162;
-        const expectedHeight = 36;
+        const expectedHeight = 54;
 
         window.paypal.Button.render({
 
