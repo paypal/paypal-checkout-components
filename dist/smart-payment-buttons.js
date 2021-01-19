@@ -246,8 +246,6 @@ window.spb = function(modules) {
                         if (-1 === dispatchedErrors.indexOf(err)) {
                             dispatchedErrors.push(err);
                             setTimeout((function() {
-                                console.warn("!!!!!!!!", !0);
-                                console.warn(promise.stack);
                                 throw new Error((err.stack || err.toString()) + "\n\nFrom promise:\n\n" + promise.stack);
                             }), 1);
                             for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
@@ -1675,7 +1673,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.349", _headers10);
+            _headers10["x-app-version"] = "2.0.350", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4902,7 +4900,7 @@ window.spb = function(modules) {
                         facilitatorAccessToken: facilitatorAccessToken,
                         pageUrl: pageUrl,
                         commit: String(commit),
-                        webCheckoutUrl: webCheckoutUrl,
+                        webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : "",
                         userAgent: userAgent,
                         buttonSessionID: buttonSessionID,
                         env: env,
@@ -5179,6 +5177,9 @@ window.spb = function(modules) {
                                 _getLogger$info$info$2)).flush();
                                 var validatePromise = validate();
                                 var delayPromise = promise_ZalgoPromise.delay(500);
+                                connectNative({
+                                    sessionUID: sessionUID
+                                });
                                 return validatePromise.then((function(valid) {
                                     if (!valid) {
                                         var _getLogger$info$track11;
@@ -6090,7 +6091,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.349", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.350", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2;
                 }));

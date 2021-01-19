@@ -149,8 +149,8 @@ window.spb = function(modules) {
         }
         if (u.__e = m, null != r && "function" != typeof u.type) for (y = r.length; y--; ) null != r[y] && preact_module_a(r[y]);
         for (y = C; y--; ) null != P[y] && ("function" == typeof u.type && null != P[y].__e && P[y].__e == u.__d && (u.__d = _(i, y + 1)), 
-        L(P[y], P[y]));
-        if (x) for (y = 0; y < x.length; y++) I(x[y], x[++y], x[++y]);
+        I(P[y], P[y]));
+        if (x) for (y = 0; y < x.length; y++) H(x[y], x[++y], x[++y]);
     }
     function b(n, l, u) {
         var i, t;
@@ -176,7 +176,7 @@ window.spb = function(modules) {
             if (u) for (l in u) i && u[l] === i[l] || C(n.style, l, u[l]);
         } else "o" === l[0] && "n" === l[1] ? (o = l !== (l = l.replace(/Capture$/, "")), 
         (r = l.toLowerCase()) in n && (l = r), l = l.slice(2), n.l || (n.l = {}), n.l[l + o] = u, 
-        f = o ? T : N, u ? i || n.addEventListener(l, f, o) : n.removeEventListener(l, f, o)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && "download" !== l && "href" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
+        f = o ? T : N, u ? i || n.addEventListener(l, f, o) : n.removeEventListener(l, f, o)) : "list" !== l && "tagName" !== l && "form" !== l && "type" !== l && "size" !== l && "download" !== l && "href" !== l && "contentEditable" !== l && !t && l in n ? n[l] = null == u ? "" : u : "function" != typeof u && "dangerouslySetInnerHTML" !== l && (l !== (l = l.replace(/xlink:?/, "")) ? null == u || !1 === u ? n.removeAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase()) : n.setAttributeNS("http://www.w3.org/1999/xlink", l.toLowerCase(), u) : null == u || !1 === u && !/^ar/.test(l) ? n.removeAttribute(l) : n.setAttribute(l, u));
     }
     function N(l) {
         this.l[l.type + !1](n.event ? n.event(l) : l);
@@ -192,7 +192,7 @@ window.spb = function(modules) {
             n: if ("function" == typeof P) {
                 if (g = u.props, b = (a = P.contextType) && t[a.__c], x = a ? b ? b.props.value : a.__ : t, 
                 i.__c ? k = (v = u.__c = i.__c).__ = v.__E : ("prototype" in P && P.prototype.render ? u.__c = v = new P(g, x) : (u.__c = v = new d(g, x), 
-                v.constructor = P, v.render = M), b && b.sub(v), v.props = g, v.state || (v.state = {}), 
+                v.constructor = P, v.render = L), b && b.sub(v), v.props = g, v.state || (v.state = {}), 
                 v.context = x, v.__n = t, h = v.__d = !0, v.__h = []), null == v.__s && (v.__s = v.state), 
                 null != P.getDerivedStateFromProps && (v.__s == v.state && (v.__s = s({}, v.__s)), 
                 s(v.__s, P.getDerivedStateFromProps(g, v.__s))), y = v.props, _ = v.state, h) null == P.getDerivedStateFromProps && null != v.componentWillMount && v.componentWillMount(), 
@@ -213,7 +213,7 @@ window.spb = function(modules) {
                 A = null != a && a.type === p && null == a.key ? a.props.children : a, m(l, Array.isArray(A) ? A : [ A ], u, i, t, o, r, f, e, c), 
                 v.base = u.__e, u.__h = null, v.__h.length && f.push(v), k && (v.__E = v.__ = null), 
                 v.__e = !1;
-            } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = H(i.__e, u, i, t, o, r, f, c);
+            } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = E(i.__e, u, i, t, o, r, f, c);
             (a = n.diffed) && a(u);
         } catch (l) {
             u.__v = null, (c || null != r) && (u.__e = e, u.__h = !!c, r[r.indexOf(e)] = null), 
@@ -231,7 +231,7 @@ window.spb = function(modules) {
             }
         }));
     }
-    function H(n, l, u, i, t, o, r, c) {
+    function E(n, l, u, i, t, o, r, c) {
         var s, a, v, h, y, p = u.props, d = l.props;
         if (t = "svg" === l.type || t, null != o) for (s = 0; s < o.length; s++) if (null != (a = o[s]) && ((null === l.type ? 3 === a.nodeType : a.localName === l.type) || n == a)) {
             n = a, o[s] = null;
@@ -259,16 +259,16 @@ window.spb = function(modules) {
         }
         return n;
     }
-    function I(l, u, i) {
+    function H(l, u, i) {
         try {
             "function" == typeof l ? l(u) : l.current = u;
         } catch (l) {
             n.__e(l, i);
         }
     }
-    function L(l, u, i) {
+    function I(l, u, i) {
         var t, o, r;
-        if (n.unmount && n.unmount(l), (t = l.ref) && (t.current && t.current !== l.__e || I(t, null, u)), 
+        if (n.unmount && n.unmount(l), (t = l.ref) && (t.current && t.current !== l.__e || H(t, null, u)), 
         i || "function" == typeof l.type || (i = null != (o = l.__e)), l.__e = l.__d = void 0, 
         null != (t = l.__c)) {
             if (t.componentWillUnmount) try {
@@ -278,10 +278,10 @@ window.spb = function(modules) {
             }
             t.base = t.__P = null;
         }
-        if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && L(t[r], u, i);
+        if (t = l.__k) for (r = 0; r < t.length; r++) t[r] && I(t[r], u, i);
         null != o && preact_module_a(o);
     }
-    function M(n, l, u) {
+    function L(n, l, u) {
         return this.constructor(n, u);
     }
     n = {
@@ -506,8 +506,6 @@ window.spb = function(modules) {
                     if (-1 === dispatchedErrors.indexOf(err)) {
                         dispatchedErrors.push(err);
                         setTimeout((function() {
-                            console.warn("!!!!!!!!", !1);
-                            console.warn(promise.stack);
                             throw err;
                         }), 1);
                         for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
