@@ -637,7 +637,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const initDirectAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         const nativeUrl = getDirectNativeUrl({ sessionUID });
-
         const nativeWin = popup(nativeUrl);
 
         const closePopup = () => {
@@ -659,6 +658,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
         const validatePromise = validate();
         const delayPromise = ZalgoPromise.delay(500);
+
+        connectNative({ sessionUID });
 
         return validatePromise.then(valid => {
             if (!valid) {
