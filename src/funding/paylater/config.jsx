@@ -2,12 +2,15 @@
 /** @jsx node */
 
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { node, Fragment } from 'jsx-pragmatic/src';
+import { node } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
+import { NoncedStyleElement } from '../../lib';
 import { Text, Space } from '../../ui/text';
+
+import css from './style.scoped.scss';
 
 export function getPaylaterConfig() : FundingSourceConfig {
     return {
@@ -39,11 +42,11 @@ export function getPaylaterConfig() : FundingSourceConfig {
             // }
 
             return (
-                <Fragment>
+                <NoncedStyleElement css={ css } nonce={ '' }>
                     <PPLogo optional logoColor={ logoColor } />
                     <Space />
                     { text }
-                </Fragment>
+                </NoncedStyleElement>
             );
         },
     
