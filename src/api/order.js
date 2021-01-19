@@ -6,7 +6,8 @@ import { request, noop, memoize } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
-import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS, INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
+import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS,
+    INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER } from '../constants';
 
 import { callSmartAPI, callGraphQL, callRestAPI } from './api';
 
@@ -44,7 +45,8 @@ export function createOrderID(order : OrderCreateRequest, { facilitatorAccessTok
         url:         `${ ORDERS_API_URL }`,
         data:        order,
         headers:     {
-            [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+            [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
+            [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
         }
     }).then((body) : string => {
 
@@ -71,7 +73,8 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
             accessToken: facilitatorAccessToken,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
             headers:     {
-                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
+                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
+                [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         })
         : callSmartAPI({
@@ -90,7 +93,8 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
             method:      `post`,
             url:         `${ ORDERS_API_URL }/${ orderID }/capture`,
             headers:     {
-                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
+                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
+                [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         })
         : callSmartAPI({
@@ -110,7 +114,8 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
             method:      `post`,
             url:         `${ ORDERS_API_URL }/${ orderID }/authorize`,
             headers:     {
-                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
+                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
+                [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         })
         : callSmartAPI({
@@ -135,7 +140,8 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
             url:         `${ ORDERS_API_URL }/${ orderID }`,
             data,
             headers:     {
-                [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
+                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
+                [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         })
         : callSmartAPI({

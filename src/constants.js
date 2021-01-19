@@ -11,6 +11,7 @@ export const BUYER_INTENT = {
 export const HEADERS = {
     AUTHORIZATION: 'authorization',
     CONTENT_TYPE:  'content-type',
+    PREFER:        'prefer',
 
     ACCESS_TOKEN:   'x-paypal-internal-euat',
     CSRF_TOKEN:     'x-csrf-jwt',
@@ -41,6 +42,10 @@ export const DATA_ATTRIBUTES = {
 export const CLASS = {
     LOADING: 'paypal-button-loading',
     CLICKED: 'paypal-button-clicked'
+};
+
+export const PREFER = {
+    REPRESENTATION: 'return=representation'
 };
 
 export const ORDER_API_ERROR = {
