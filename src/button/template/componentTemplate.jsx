@@ -120,47 +120,47 @@ function getButtonTextAnimationStyle({ personalizedButtonText, branding, allowed
     if (__TEST__) {
         return null;
     }
-    
+
     if (!branding) {
         return;
     }
-    
+
     if (!allowedAnimation) {
         return;
     }
-    
+
     const MIN_WIDTH = 300;
     const LABEL_DURATION = 1;
     const PERSONALIZATION_DURATION = 5;
     const DELAY = 0;
-    
+
     const COMPRESSED = `
         max-width: 0%;
         opacity: 0;
     `;
-    
+
     const EXPANDED = `
         max-width: 100%;
         opacity: 1;
     `;
-    
+
     const HIDDEN = `
         position: absolute;
         visibility: hidden;
     `;
-    
+
     const VISIBLE = `
         position: static;
         visibility: visible;
     `;
-    
+
     const DOM_READY = '.dom-ready';
     const PAYPAL_BUTTON = `.${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }]`;
-    
+
     const PAYPAL_LOGO = `${ PAYPAL_BUTTON } .${ CLASS.LOGO }.${ CLASS.LOGO }-${ FUNDING.PAYPAL }`;
     const BUTTON_TEXT = `${ PAYPAL_BUTTON } .${ CLASS.TEXT }:not(.personalization-text)`;
     const PERSONALIZATION_TEXT = `${ PAYPAL_BUTTON } .personalization-text`;
-    
+
     return (
         <style innerHTML={ `
 
@@ -247,11 +247,11 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
             if (!logoColor) {
                 throw new Error(`Can not determine logo without logo color`);
             }
-            
+
             const logo = (typeof fundingLogos[name] === 'function')
                 ? fundingLogos[name]({ label, locale, color, branding, logoColor, funding, env, cards })
                 : fundingLogos[name][logoColor] || fundingLogos[name][BUTTON_LOGO_COLOR.ANY];
-                
+
             return (
                 <img
                     class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ name } ${ CLASS.LOGO }-${ color }` }
@@ -306,7 +306,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
 function renderButtonTextDiv({ contentText, personalizedButtonText, impression, branding, allowedAnimation }) : JsxHTMLNode {
     return (
         <div class={ `${ CLASS.BUTTON_LABEL }` }>
-    
+
             { getButtonTextAnimationStyle({ personalizedButtonText, branding, allowedAnimation }) }
             { contentText }
             { personalizedButtonText }
@@ -320,7 +320,7 @@ function renderButtonTextDiv({ contentText, personalizedButtonText, impression, 
 export function determineButtonTitle({ locale, label, branding } : { label : $Values<typeof BUTTON_LABEL>, locale : Object, branding : boolean }) : string {
     const localeContent = getLocaleContent(locale);
     const labelContent = localeContent && localeContent[label];
-    
+
     if (labelContent) {
         const regex = /({logo:(pp|paypal)})+(\s)*({logo:(pp|paypal)})*/;
         let str = labelContent.replace(regex, FUNDING_BRAND_LABEL.PAYPAL);
@@ -330,9 +330,9 @@ export function determineButtonTitle({ locale, label, branding } : { label : $Va
         }
         return str;
     }
-    
+
     return label;
-    
+
 }
 
 function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, tagline, i, env, cards, installmentperiod, checkoutCustomization } :
@@ -341,7 +341,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     const logoColor = getButtonConfig(label, 'logoColors')[color];
 
     const buttonLabel = determineLabel({ label, source, multiple, layout });
-    
+
     // If the determined button label matches up with the label passed by the merchant, use
     // the label template, otherwise use the logo template.
     let contentText;
@@ -352,7 +352,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     if (allowedPersonalizationLabels.indexOf(label) !== -1) {
         allowedAnimation = true;
     }
-    
+
     if (buttonLabel === label && label === BUTTON_LABEL.BUYNOW && !branding) {
         contentText = getButtonConfig(label, 'label');
     } else if (buttonLabel === label && !__WEB__) {
@@ -370,15 +370,15 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
         installmentperiod,
         locale
     };
-    
+
     contentText = (typeof contentText === 'function') ? contentText(dynamicContent) : contentText;
     contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
-    
-    
+
+
     // button title used to set aria-label for the button div -- a11y
     const title = BUTTON_CONFIG[label].title;
     const buttonTitle = (typeof  title === 'string') ? title : determineButtonTitle({ locale, label, branding });
-    
+
     // Define a list of funding options that will not need a tabindex
     const hasTabIndex = [
         FUNDING.CARD
@@ -402,20 +402,20 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
     if (!tagline) {
         return;
     }
-  
-    
-    if (__WEB__ && layout !== BUTTON_LAYOUT.VERTICAL) {
+
+
+    if (__WEB__ || layout === BUTTON_LAYOUT.VERTICAL) {
         return;
         // return LoadingDots(delay);
     }
-    
-    
+
+
     const tag = multiple
         ? (getButtonConfig(label, 'dualTag') || getButtonConfig(label, 'tag'))
         : getButtonConfig(label, 'tag');
     const text = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.text ? checkoutCustomization.tagline.text : renderContent(tag, { locale, color, env, cards });
     const impression = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.tracking && checkoutCustomization.tagline.tracking.impression;
-    
+
     if (!text) {
         return;
     }
