@@ -403,8 +403,8 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
         return;
     }
   
-    
-    if (__WEB__ && layout !== BUTTON_LAYOUT.VERTICAL) {
+    // tagline is only supported in horizontal layout
+    if (__WEB__ || layout === BUTTON_LAYOUT.VERTICAL) {
         return;
         // return LoadingDots(delay);
     }
