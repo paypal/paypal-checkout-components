@@ -351,7 +351,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
         return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
-            query: { sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl }
+            query: {
+                sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl,
+                stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : ''
+            }
         });
     });
 
