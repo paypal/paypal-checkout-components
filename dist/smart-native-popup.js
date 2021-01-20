@@ -1099,16 +1099,15 @@
                     };
                     return logger;
                 }({
-                    url: "/xoplatform/logger/api/logger"
+                    url: "/xoplatform/logger/api/logger",
+                    enableSendBeacon: !0
                 });
             }));
         }
         function setupNativePopup(_ref) {
             var parentDomain = _ref.parentDomain, env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, locale = _ref.locale;
-            var opener = window.opener;
-            if (!opener) throw new Error("Expected window to have opener");
-            var sdkVersion = getPayPal().version;
             var logger;
+            var sdkVersion = getPayPal().version;
             env && sessionID && buttonSessionID && sdkCorrelationID && locale && (logger = function(_ref) {
                 var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, sdkVersion = _ref.sdkVersion, locale = _ref.locale;
                 var logger = getLogger();
@@ -1161,7 +1160,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.354", _ref2;
+                    _ref2.button_version = "2.0.355", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1204,6 +1203,15 @@
                 sdkVersion: sdkVersion,
                 locale: locale
             }));
+            var opener = window.opener;
+            if (!opener) {
+                if (logger) {
+                    var _logger$info$track;
+                    logger.info("native_popup_no_opener").track((_logger$info$track = {}, _logger$info$track.transition_name = "popup_no_opener", 
+                    _logger$info$track.info_msg = "location: " + window.location.href, _logger$info$track)).flush();
+                }
+                throw new Error("Expected window to have opener");
+            }
             var clean = (tasks = [], cleaned = !1, {
                 set: function(name, item) {
                     if (!cleaned) {
@@ -1256,12 +1264,12 @@
                 if (window.location.hash && "#" !== window.location.hash) {
                     var _hashString$split = (window.location.hash && window.location.hash.slice(1)).split("?"), hash = _hashString$split[0], queryString = _hashString$split[1];
                     if (logger) {
-                        var _logger$info$track;
+                        var _logger$info$track2;
                         logger.info("native_popup_hashchange", {
                             hash: hash,
                             queryString: queryString
-                        }).track((_logger$info$track = {}, _logger$info$track.transition_name = "popup_hashchange", 
-                        _logger$info$track.info_msg = "" + window.location.href, _logger$info$track)).flush();
+                        }).track((_logger$info$track2 = {}, _logger$info$track2.transition_name = "popup_hashchange", 
+                        _logger$info$track2.info_msg = "" + window.location.href, _logger$info$track2)).flush();
                     }
                     switch (hash) {
                       case "onApprove":

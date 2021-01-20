@@ -1496,7 +1496,8 @@ window.spb = function(modules) {
         function logger_getLogger() {
             return inlineMemoize(logger_getLogger, (function() {
                 return Logger({
-                    url: "/xoplatform/logger/api/logger"
+                    url: "/xoplatform/logger/api/logger",
+                    enableSendBeacon: !0
                 });
             }));
         }
@@ -1673,7 +1674,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.354", _headers10);
+            _headers10["x-app-version"] = "2.0.355", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4880,7 +4881,8 @@ window.spb = function(modules) {
                             fundingSource: fundingSource,
                             sessionUID: sessionUID,
                             buttonSessionID: buttonSessionID,
-                            pageUrl: pageUrl
+                            pageUrl: pageUrl,
+                            stickinessID: "production" !== env ? stickinessID : ""
                         }
                     });
                 }));
@@ -5166,6 +5168,10 @@ window.spb = function(modules) {
                                 });
                                 var nativeWin = popup(nativeUrl);
                                 window.addEventListener("pagehide", (function() {
+                                    var _getLogger$info$track11;
+                                    logger_getLogger().info("native_closing_popup").track((_getLogger$info$track11 = {}, 
+                                    _getLogger$info$track11.state_name = "smart_button", _getLogger$info$track11.transition_name = "native_closing_popup", 
+                                    _getLogger$info$track11)).flush();
                                     nativeWin.close();
                                 }));
                                 logger_getLogger().info("native_attempt_appswitch_popup_shown", {
@@ -5183,10 +5189,10 @@ window.spb = function(modules) {
                                 });
                                 return validatePromise.then((function(valid) {
                                     if (!valid) {
-                                        var _getLogger$info$track11;
-                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track11 = {}, 
-                                        _getLogger$info$track11.state_name = "smart_button", _getLogger$info$track11.transition_name = "native_onclick_invalid", 
-                                        _getLogger$info$track11)).flush();
+                                        var _getLogger$info$track12;
+                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track12 = {}, 
+                                        _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = "native_onclick_invalid", 
+                                        _getLogger$info$track12)).flush();
                                         return delayPromise.then((function() {
                                             if (didAppSwitch(nativeWin)) return connectNative({
                                                 sessionUID: sessionUID
@@ -5202,12 +5208,12 @@ window.spb = function(modules) {
                                         if (nativeWin) return detectWebSwitch(nativeWin);
                                         throw new Error("No window found");
                                     })).catch((function(err) {
-                                        var _getLogger$info$track12;
+                                        var _getLogger$info$track13;
                                         logger_getLogger().info("native_attempt_appswitch_url_popup_errored", {
                                             url: nativeUrl
-                                        }).track((_getLogger$info$track12 = {}, _getLogger$info$track12.state_name = "smart_button", 
-                                        _getLogger$info$track12.transition_name = "app_switch_attempted_errored", _getLogger$info$track12.int_error_desc = stringifyError(err), 
-                                        _getLogger$info$track12)).flush();
+                                        }).track((_getLogger$info$track13 = {}, _getLogger$info$track13.state_name = "smart_button", 
+                                        _getLogger$info$track13.transition_name = "app_switch_attempted_errored", _getLogger$info$track13.int_error_desc = stringifyError(err), 
+                                        _getLogger$info$track13)).flush();
                                         return connectNative({
                                             sessionUID: sessionUID
                                         }).close().then((function() {
@@ -5218,16 +5224,20 @@ window.spb = function(modules) {
                             }({
                                 sessionUID: sessionUID
                             }) : function(_ref18) {
-                                var _getLogger$info$track13;
+                                var _getLogger$info$track15;
                                 var sessionUID = _ref18.sessionUID;
                                 var redirected = !1;
                                 var popupWin = popup(getNativePopupUrl());
                                 window.addEventListener("pagehide", (function() {
+                                    var _getLogger$info$track14;
+                                    logger_getLogger().info("native_closing_popup").track((_getLogger$info$track14 = {}, 
+                                    _getLogger$info$track14.state_name = "smart_button", _getLogger$info$track14.transition_name = "native_closing_popup", 
+                                    _getLogger$info$track14)).flush();
                                     popupWin.close();
                                 }));
-                                logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track13 = {}, 
-                                _getLogger$info$track13.state_name = "smart_button", _getLogger$info$track13.transition_name = "popup_shown", 
-                                _getLogger$info$track13)).flush();
+                                logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track15 = {}, 
+                                _getLogger$info$track15.state_name = "smart_button", _getLogger$info$track15.transition_name = "popup_shown", 
+                                _getLogger$info$track15)).flush();
                                 var closeListener = function(win, callback, delay, maxtime) {
                                     void 0 === delay && (delay = 1e3);
                                     void 0 === maxtime && (maxtime = 1 / 0);
@@ -5235,9 +5245,15 @@ window.spb = function(modules) {
                                     !function check() {
                                         if (isWindowClosed(win)) {
                                             timeout && clearTimeout(timeout);
-                                            return promise_ZalgoPromise.delay(1e3).then((function() {
-                                                if (!approved && !cancelled && !didFallback) return promise_ZalgoPromise.all([ onCancel(), close() ]);
-                                            })).then(src_util_noop);
+                                            return function() {
+                                                var _getLogger$info$track16;
+                                                logger_getLogger().info("native_popup_closed").track((_getLogger$info$track16 = {}, 
+                                                _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_closed", 
+                                                _getLogger$info$track16)).flush();
+                                                return promise_ZalgoPromise.delay(1e3).then((function() {
+                                                    if (!approved && !cancelled && !didFallback) return promise_ZalgoPromise.all([ onCancel(), close() ]);
+                                                })).then(src_util_noop);
+                                            }();
                                         }
                                         if (maxtime <= 0) clearTimeout(timeout); else {
                                             maxtime -= delay;
@@ -5255,10 +5271,10 @@ window.spb = function(modules) {
                                 }));
                                 var validatePromise = validate().then((function(valid) {
                                     if (!valid) {
-                                        var _getLogger$info$track14;
-                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track14 = {}, 
-                                        _getLogger$info$track14.state_name = "smart_button", _getLogger$info$track14.transition_name = "native_onclick_invalid", 
-                                        _getLogger$info$track14)).flush();
+                                        var _getLogger$info$track17;
+                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track17 = {}, 
+                                        _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = "native_onclick_invalid", 
+                                        _getLogger$info$track17)).flush();
                                     }
                                     return valid;
                                 }));
@@ -5279,11 +5295,11 @@ window.spb = function(modules) {
                                             orderID: orderID
                                         }).then((function(eligibility) {
                                             if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
-                                                var _getLogger$info$track15;
+                                                var _getLogger$info$track18;
                                                 logger_getLogger().info("native_appswitch_ineligible", {
                                                     orderID: orderID
-                                                }).track((_getLogger$info$track15 = {}, _getLogger$info$track15.state_name = "smart_button", 
-                                                _getLogger$info$track15.transition_name = "app_switch_ineligible", _getLogger$info$track15)).flush();
+                                                }).track((_getLogger$info$track18 = {}, _getLogger$info$track18.state_name = "smart_button", 
+                                                _getLogger$info$track18.transition_name = "app_switch_ineligible", _getLogger$info$track18)).flush();
                                                 return !1;
                                             }
                                             return !0;
@@ -5298,7 +5314,7 @@ window.spb = function(modules) {
                                         eligible: eligibilityPromise
                                     }).then((function(_ref20) {
                                         return _ref20.valid ? _ref20.eligible ? createOrder().then((function(orderID) {
-                                            var _getLogger$info$track16;
+                                            var _getLogger$info$track19;
                                             var nativeUrl = getDelayedNativeUrl({
                                                 sessionUID: sessionUID,
                                                 pageUrl: pageUrl,
@@ -5306,9 +5322,9 @@ window.spb = function(modules) {
                                             });
                                             logger_getLogger().info("native_attempt_appswitch_url_popup", {
                                                 url: nativeUrl
-                                            }).track((_getLogger$info$track16 = {}, _getLogger$info$track16.state_name = "smart_button", 
-                                            _getLogger$info$track16.transition_name = "app_switch_attempted", _getLogger$info$track16.info_msg = nativeUrl, 
-                                            _getLogger$info$track16)).flush();
+                                            }).track((_getLogger$info$track19 = {}, _getLogger$info$track19.state_name = "smart_button", 
+                                            _getLogger$info$track19.transition_name = "app_switch_attempted", _getLogger$info$track19.info_msg = nativeUrl, 
+                                            _getLogger$info$track19)).flush();
                                             redirected = !0;
                                             return {
                                                 redirect: !0,
@@ -5329,10 +5345,10 @@ window.spb = function(modules) {
                                             };
                                         }));
                                     })).catch((function(err) {
-                                        var _getLogger$info$track17;
-                                        logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track17 = {}, 
-                                        _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = "app_switch_attempted_errored", 
-                                        _getLogger$info$track17.int_error_desc = stringifyError(err), _getLogger$info$track17)).flush();
+                                        var _getLogger$info$track20;
+                                        logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track20 = {}, 
+                                        _getLogger$info$track20.state_name = "smart_button", _getLogger$info$track20.transition_name = "app_switch_attempted_errored", 
+                                        _getLogger$info$track20.int_error_desc = stringifyError(err), _getLogger$info$track20)).flush();
                                         return createOrder().then((function(orderID) {
                                             return {
                                                 redirect: !0,
@@ -5364,10 +5380,10 @@ window.spb = function(modules) {
                                     popupWin.close();
                                 }));
                                 var onCompleteListener = listen(popupWin, getNativePopupDomain(), "onComplete", (function() {
-                                    var _getLogger$info$track18;
-                                    logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track18 = {}, 
-                                    _getLogger$info$track18.state_name = "smart_button", _getLogger$info$track18.transition_name = "native_oncomplete", 
-                                    _getLogger$info$track18)).flush();
+                                    var _getLogger$info$track21;
+                                    logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track21 = {}, 
+                                    _getLogger$info$track21.state_name = "smart_button", _getLogger$info$track21.transition_name = "native_oncomplete", 
+                                    _getLogger$info$track21)).flush();
                                     popupWin.close();
                                 }));
                                 var onErrorListener = listen(popupWin, getNativePopupDomain(), "onError", (function(data) {
@@ -6092,7 +6108,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.354", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.355", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
