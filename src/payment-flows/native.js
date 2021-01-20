@@ -279,7 +279,7 @@ function instrumentNativeSDKProps(props : NativeSDKProps) {
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange, vault, platform,
-        currency } = props;
+        currency, stickinessID } = props;
     const { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
     const { fundingSource } = payment;
     const { sdkVersion, firebase: firebaseConfig } = config;
@@ -368,6 +368,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             pageUrl,
             commit:         String(commit),
             webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : '',
+            stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : '',
             userAgent,
             buttonSessionID,
             env,
