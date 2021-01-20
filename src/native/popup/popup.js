@@ -28,18 +28,24 @@ type NativePopup = {|
 export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID,
     clientID, fundingSource, locale } : NativePopupOptions) : NativePopup {
 
-    const opener = window.opener;
-    if (!opener) {
-        throw new Error(`Expected window to have opener`);
-    }
-
-    const sdkVersion = getSDKVersion();
-
     let logger;
 
+    const sdkVersion = getSDKVersion();
     if (env && sessionID && buttonSessionID && sdkCorrelationID && locale) {
         logger = setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelationID,
             clientID, fundingSource, sdkVersion, locale });
+    }
+
+    const opener = window.opener;
+    if (!opener) {
+        if (logger) {
+            logger.info('native_popup_no_opener')
+                .track({
+                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER,
+                    [FPTI_CUSTOM_KEY.INFO_MSG]: `location: ${ window.location.href }`
+                }).flush();
+        }
+        throw new Error(`Expected window to have opener`);
     }
 
     const clean = cleanup();

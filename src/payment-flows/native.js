@@ -644,6 +644,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const nativeWin = popup(nativeUrl);
 
         const closePopup = () => {
+            getLogger().info(`native_closing_popup`).track({
+                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_CLOSING_POPUP
+            }).flush();
             nativeWin.close();
         };
         window.addEventListener('pagehide', closePopup);
@@ -707,6 +711,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const popupWin = popup(getNativePopupUrl());
         
         const closePopup = () => {
+            getLogger().info(`native_closing_popup`).track({
+                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_CLOSING_POPUP
+            }).flush();
             popupWin.close();
         };
         window.addEventListener('pagehide', closePopup);
@@ -718,6 +726,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             }).flush();
 
         const closeListener = onCloseWindow(popupWin, () => {
+            getLogger().info(`native_popup_closed`).track({
+                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_POPUP_CLOSED
+            }).flush();
             return ZalgoPromise.delay(1000).then(() => {
                 if (!approved && !cancelled && !didFallback) {
                     return ZalgoPromise.all([

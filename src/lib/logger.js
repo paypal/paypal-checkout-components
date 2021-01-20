@@ -11,7 +11,8 @@ import { LOGGER_URL } from '../config';
 export function getLogger() : LoggerType {
     return inlineMemoize(getLogger, () =>
         Logger({
-            url: LOGGER_URL
+            url:              LOGGER_URL,
+            enableSendBeacon: true
         }));
 }
 
