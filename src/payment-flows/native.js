@@ -232,14 +232,14 @@ function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentElig
 
 function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        const { getPageUrl, clientID, onShippingChange, currency, platform, vault, buttonSessionID } = props;
+        const { getPageUrl, clientID, onShippingChange, currency, platform, vault, buttonSessionID, enableFunding } = props;
         const { merchantID, buyerCountry, cookies } = serviceData;
 
         const shippingCallbackEnabled = Boolean(onShippingChange);
 
         return ZalgoPromise.all([
             getNativeEligibility({ vault, platform, shippingCallbackEnabled, merchantID: merchantID[0],
-                clientID, buyerCountry, currency, buttonSessionID, cookies
+                clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding
             }).then(result => {
                 nativeEligibility = result;
             }),
@@ -279,7 +279,7 @@ function instrumentNativeSDKProps(props : NativeSDKProps) {
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange, vault, platform,
-        currency, stickinessID } = props;
+        currency, stickinessID, enableFunding } = props;
     const { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
     const { fundingSource } = payment;
     const { sdkVersion, firebase: firebaseConfig } = config;
@@ -362,7 +362,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const webCheckoutUrl = getWebCheckoutUrl({ orderID });
         const userAgent = getUserAgent();
         const forceEligible = isNativeOptedIn({ props });
-        
+
         return {
             sdkMeta,
             sessionUID,
@@ -651,7 +651,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             nativeWin.close();
         };
         window.addEventListener('pagehide', closePopup);
-        
+
         getLogger()
             .info(`native_attempt_appswitch_popup_shown`, { url: nativeUrl })
             .info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
@@ -709,7 +709,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         let redirected = false;
         const popupWin = popup(getNativePopupUrl());
-        
+
         const closePopup = () => {
             getLogger().info(`native_closing_popup`).track({
                 [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
@@ -766,7 +766,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
             return createOrder().then(orderID => {
                 return getNativeEligibility({ vault, platform, shippingCallbackEnabled, merchantID: merchantID[0],
-                    clientID, buyerCountry, currency, buttonSessionID, cookies, orderID
+                    clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding
                 }).then(eligibility => {
                     if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
                         getLogger().info(`native_appswitch_ineligible`, { orderID })
