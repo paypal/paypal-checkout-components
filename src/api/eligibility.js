@@ -110,7 +110,7 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
                 $buttonSessionID : String,
                 $cookies : String,
                 $orderID : String,
-                $enableFunding : String
+                $enableFunding : [String]
             ) {
                 mobileSDKEligibility(
                     vault: $vault,
