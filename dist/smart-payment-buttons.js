@@ -1331,7 +1331,16 @@ window.spb = function(modules) {
                 var blob = new Blob([ JSON.stringify(json) ], {
                     type: "application/json"
                 });
-                resolve(window.navigator.sendBeacon(url, blob));
+                try {
+                    resolve(window.navigator.sendBeacon(url, blob));
+                } catch (e) {
+                    return request({
+                        url: url,
+                        method: method,
+                        headers: headers,
+                        json: json
+                    }).then(src_util_noop);
+                }
             })) : request({
                 url: url,
                 method: method,
@@ -1674,7 +1683,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.357", _headers10);
+            _headers10["x-app-version"] = "2.0.358", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2508,6 +2517,8 @@ window.spb = function(modules) {
                 onInit: xprops.onInit
             });
             var merchantDomain = "function" == typeof getParentDomain ? getParentDomain() : "unknown";
+            enableFunding = enableFunding || [];
+            disableFunding = disableFunding || [];
             var onClick = function(_ref2) {
                 var onClick = _ref2.onClick;
                 if (onClick) return memoize((function(_ref3) {
@@ -4884,7 +4895,8 @@ window.spb = function(modules) {
                             sessionUID: sessionUID,
                             buttonSessionID: buttonSessionID,
                             pageUrl: pageUrl,
-                            stickinessID: "production" !== env ? stickinessID : ""
+                            stickinessID: "production" !== env ? stickinessID : "",
+                            enableFunding: enableFunding.join(",")
                         }
                     });
                 }));
@@ -4912,7 +4924,8 @@ window.spb = function(modules) {
                         stageHost: stageHost || "",
                         apiStageHost: apiStageHost || "",
                         forceEligible: forceEligible,
-                        fundingSource: fundingSource
+                        fundingSource: fundingSource,
+                        enableFunding: enableFunding.join(",")
                     };
                 };
                 var getDelayedNativeUrl = memoize((function(_ref10) {
@@ -6111,7 +6124,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.357", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.358", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;

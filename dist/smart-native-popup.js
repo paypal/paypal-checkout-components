@@ -868,6 +868,65 @@
             return uid;
         }));
         var http_headerBuilders = [];
+        function request(_ref) {
+            var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+            return new promise_ZalgoPromise((function(resolve, reject) {
+                if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+                var normalizedHeaders = {};
+                for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
+                    var _key2 = _Object$keys2[_i4];
+                    normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+                }
+                json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
+                normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
+                for (var _i6 = 0; _i6 < http_headerBuilders.length; _i6++) {
+                    var builtHeaders = (0, http_headerBuilders[_i6])();
+                    for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
+                        var _key3 = _Object$keys4[_i8];
+                        normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+                    }
+                }
+                var xhr = new win.XMLHttpRequest;
+                xhr.addEventListener("load", (function() {
+                    var responseHeaders = function(rawHeaders) {
+                        void 0 === rawHeaders && (rawHeaders = "");
+                        var result = {};
+                        for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
+                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                            result[_key.toLowerCase()] = values.join(":").trim();
+                        }
+                        return result;
+                    }(this.getAllResponseHeaders());
+                    if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
+                    var contentType = responseHeaders["content-type"];
+                    var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
+                    var responseBody = this.responseText;
+                    try {
+                        responseBody = JSON.parse(responseBody);
+                    } catch (err) {
+                        if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
+                    }
+                    return resolve({
+                        status: this.status,
+                        headers: responseHeaders,
+                        body: responseBody
+                    });
+                }), !1);
+                xhr.addEventListener("error", (function(evt) {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
+                }), !1);
+                xhr.open(method, url, !0);
+                for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+                json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
+                    return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+                })).join("&"));
+                xhr.timeout = timeout;
+                xhr.ontimeout = function() {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+                };
+                xhr.send(body);
+            }));
+        }
         function getPayPal() {
             if (!window.paypal) throw new Error("paypal not found");
             return window.paypal;
@@ -881,66 +940,17 @@
                 var blob = new Blob([ JSON.stringify(json) ], {
                     type: "application/json"
                 });
-                resolve(window.navigator.sendBeacon(url, blob));
-            })) : function(_ref) {
-                var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
-                return new promise_ZalgoPromise((function(resolve, reject) {
-                    if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
-                    var normalizedHeaders = {};
-                    for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
-                        var _key2 = _Object$keys2[_i4];
-                        normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
-                    }
-                    json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
-                    normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
-                    for (var _i6 = 0; _i6 < http_headerBuilders.length; _i6++) {
-                        var builtHeaders = (0, http_headerBuilders[_i6])();
-                        for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
-                            var _key3 = _Object$keys4[_i8];
-                            normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
-                        }
-                    }
-                    var xhr = new win.XMLHttpRequest;
-                    xhr.addEventListener("load", (function() {
-                        var responseHeaders = function(rawHeaders) {
-                            void 0 === rawHeaders && (rawHeaders = "");
-                            var result = {};
-                            for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
-                                var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
-                                result[_key.toLowerCase()] = values.join(":").trim();
-                            }
-                            return result;
-                        }(this.getAllResponseHeaders());
-                        if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
-                        var contentType = responseHeaders["content-type"];
-                        var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
-                        var responseBody = this.responseText;
-                        try {
-                            responseBody = JSON.parse(responseBody);
-                        } catch (err) {
-                            if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
-                        }
-                        return resolve({
-                            status: this.status,
-                            headers: responseHeaders,
-                            body: responseBody
-                        });
-                    }), !1);
-                    xhr.addEventListener("error", (function(evt) {
-                        reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
-                    }), !1);
-                    xhr.open(method, url, !0);
-                    for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
-                    json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
-                        return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
-                    })).join("&"));
-                    xhr.timeout = timeout;
-                    xhr.ontimeout = function() {
-                        reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
-                    };
-                    xhr.send(body);
-                }));
-            }({
+                try {
+                    resolve(window.navigator.sendBeacon(url, blob));
+                } catch (e) {
+                    return request({
+                        url: url,
+                        method: method,
+                        headers: headers,
+                        json: json
+                    }).then(src_util_noop);
+                }
+            })) : request({
                 url: url,
                 method: method,
                 headers: headers,
@@ -1160,7 +1170,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.357", _ref2;
+                    _ref2.button_version = "2.0.358", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
