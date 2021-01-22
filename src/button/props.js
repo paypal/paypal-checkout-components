@@ -133,8 +133,8 @@ export type ButtonProps = {|
     getParent : () => CrossDomainWindowType,
     fundingSource : ?$Values<typeof FUNDING>,
     standaloneFundingSource : ?$Values<typeof FUNDING>,
-    disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
-    enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
+    disableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    enableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
     getQueriedEligibleFunding : GetQueriedEligibleFunding,
 
@@ -161,12 +161,13 @@ export type ButtonProps = {|
     onAuth : OnAuth
 |};
 
+// eslint-disable-next-line complexity
 export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ButtonProps {
 
     const xprops : ButtonXProps = window.xprops;
     const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, UPGRADE_LSAT_RAMP.RAMP);
 
-    const {
+    let {
         uid,
         env,
         vault = false,
@@ -210,6 +211,9 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
 
     const onInit = getOnInit({ onInit: xprops.onInit });
     const merchantDomain = (typeof getParentDomain === 'function') ? getParentDomain() : 'unknown';
+
+    enableFunding = enableFunding || [];
+    disableFunding = disableFunding || [];
 
     const onClick = getOnClick({ onClick: xprops.onClick });
 

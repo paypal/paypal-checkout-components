@@ -232,7 +232,8 @@ function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentElig
 
 function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        const { getPageUrl, clientID, onShippingChange, currency, platform, vault, buttonSessionID, enableFunding } = props;
+        const { getPageUrl, clientID, onShippingChange, currency, platform,
+            vault, buttonSessionID, enableFunding } = props;
         const { merchantID, buyerCountry, cookies } = serviceData;
 
         const shippingCallbackEnabled = Boolean(onShippingChange);
@@ -353,7 +354,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: {
                 sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl,
-                stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : ''
+                stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : '',
+                enableFunding: enableFunding.join(',')
             }
         });
     });
@@ -378,7 +380,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             stageHost:      stageHost || '',
             apiStageHost:   apiStageHost || '',
             forceEligible,
-            fundingSource
+            fundingSource,
+            enableFunding:  enableFunding.join(',')
         };
     };
 
