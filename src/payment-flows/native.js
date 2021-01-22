@@ -734,7 +734,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_POPUP_CLOSED
             }).flush();
             return ZalgoPromise.delay(1000).then(() => {
-                if (!approved && !cancelled && !didFallback) {
+                if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
                     return ZalgoPromise.all([
                         onCancel(),
                         close()
