@@ -13,7 +13,7 @@ import { uniqueID, memoize } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
-import { getSessionID } from '../../lib';
+import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
 
@@ -127,6 +127,16 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 },
 
                 default: () => ({})
+            },
+
+            storageState: {
+                type:  'object',
+                value: () => storageState
+            },
+
+            sessionState: {
+                type:  'object',
+                value: () => sessionState
             },
 
             components: {
