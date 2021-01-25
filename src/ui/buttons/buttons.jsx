@@ -170,19 +170,15 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         personalization={ personalization }
                     /> : null
             }
-
-            {
-                (fundingSources.indexOf(FUNDING.CARD) !== -1)
-                    ? <div id="card-fields-container" class="card-fields-container" />
-                    : null
-            }
-
-            {
-                (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
-                    ? <PoweredByPayPal
-                        locale={ locale }
-                    /> : null
-            }
+            
+            {fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
+                <div class="card-fields-with-logo">
+                    <div id="card-fields-container" class="card-fields-container" />
+                    {layout === BUTTON_LAYOUT.VERTICAL ? (
+                        <PoweredByPayPal locale={ locale } />
+                    ) : null}
+                </div>
+            ) : null}
 
             <Script
                 nonce={ nonce }

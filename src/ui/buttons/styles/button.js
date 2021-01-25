@@ -123,4 +123,9 @@ export const buttonStyle = `
     .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
         margin-top: 10px;
     }
+    
+    .card-fields-with-logo {
+        background-color: white;
+        padding: 1px 0;
+    }
 `;

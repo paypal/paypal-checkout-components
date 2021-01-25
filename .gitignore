@@ -32,3 +32,6 @@ flow-typed
 
 .DS_Store
 package-lock.json
+
+# Vscode
+.vscode
