@@ -1,15 +1,15 @@
 {
     "_id": "@paypal/smart-payment-buttons",
-    "_rev": "494-620d256b5d7b83e2536a1f422c24ddb8",
+    "_rev": "499-9d1e7363717f3535235baf27c0866766",
     "name": "@paypal/smart-payment-buttons",
     "dist-tags": {
         "latest": "2.0.360",
         "noop": "2.0.290",
-        "active-test": "2.0.359",
-        "active-local": "2.0.359",
-        "active-stage": "2.0.359",
-        "active-sandbox": "2.0.359",
-        "active-production": "2.0.359"
+        "active-test": "2.0.360",
+        "active-local": "2.0.360",
+        "active-stage": "2.0.360",
+        "active-sandbox": "2.0.360",
+        "active-production": "2.0.360"
     },
     "versions": {
         "2.0.35": {
@@ -49468,7 +49468,7 @@
     "time": {
         "created": "2018-12-12T01:25:35.138Z",
         "2.0.35": "2018-12-12T01:25:35.467Z",
-        "modified": "2021-01-26T21:23:32.326Z",
+        "modified": "2021-01-26T21:40:40.190Z",
         "2.0.36": "2018-12-12T01:51:00.125Z",
         "2.0.37": "2018-12-12T23:37:39.357Z",
         "2.0.38": "2018-12-13T21:50:46.463Z",
