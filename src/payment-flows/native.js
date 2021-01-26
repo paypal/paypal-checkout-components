@@ -281,11 +281,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange, vault, platform,
         currency, stickinessID, enableFunding } = props;
-    const { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
+    let { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
     const { fundingSource } = payment;
     const { sdkVersion, firebase: firebaseConfig } = config;
 
     const shippingCallbackEnabled = Boolean(onShippingChange);
+    sdkMeta = sdkMeta.replace(/[=]+$/, '');
 
     if (!firebaseConfig) {
         throw new Error(`Can not run native flow without firebase config`);
