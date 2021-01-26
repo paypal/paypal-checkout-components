@@ -124,7 +124,7 @@ export const buttonStyle = `
         margin-top: 10px;
     }
     
-    .card-fields-with-logo {
+    .${ CLASS.CARD_FIELDS_WITH_LOGO } {
         background-color: white;
         padding: 1px 0;
     }

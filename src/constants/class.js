@@ -37,5 +37,8 @@ export const CLASS = {
 
     HIDDEN:  ('hidden' : 'hidden'),
 
-    IMMEDIATE: ('immediate' : 'immediate')
+    IMMEDIATE: ('immediate' : 'immediate'),
+
+    CARD_FIELDS_CONTAINER: ('card-fields-container' : 'card-fields-container'),
+    CARD_FIELDS_WITH_LOGO: ('card-fields-with-logo' : 'card-fields-with-logo')
 };

@@ -172,8 +172,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
             
             {fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
-                <div class="card-fields-with-logo">
-                    <div id="card-fields-container" class="card-fields-container" />
+                <div class={ CLASS.CARD_FIELDS_WITH_LOGO }>
+                    <div id="card-fields-container" class={ CLASS.CARD_FIELDS_CONTAINER } />
                     {layout === BUTTON_LAYOUT.VERTICAL ? (
                         <PoweredByPayPal locale={ locale } />
                     ) : null}
