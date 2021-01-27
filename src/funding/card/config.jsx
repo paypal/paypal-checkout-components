@@ -5,10 +5,11 @@ import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, COUNTRY, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, BUTTON_FLOW } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig, type WalletLabelOptions } from '../common';
+import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, BUTTON_FLOW } from '../../constants';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
 import { Text, Space } from '../../ui/text';
 import { isRTLLanguage } from '../../lib';
+import { WalletLabel } from '../paypal/template';
 
 import { getVisaConfig } from './visa';
 import { getMastercardConfig } from './mastercard';
@@ -142,28 +143,14 @@ export function getCardConfig() : FundingSourceConfig {
             );
         },
 
-        WalletLabel: ({ logoColor, instrument } : WalletLabelOptions) => {
-            if (!instrument) {
-                return <GlyphCard logoColor={ logoColor } />;
+        WalletLabel,
+
+        showWalletMenu: ({ instrument }) => {
+            if (instrument.branded) {
+                return false;
+            } else {
+                return true;
             }
-
-            if (!instrument.vendor) {
-                throw new Error(`Vendor required for card vault label`);
-            }
-
-            const vendorConfig = vendors[instrument.vendor];
-
-            if (!vendorConfig) {
-                throw new Error(`Could not find vendor config for ${ instrument.vendor }`);
-            }
-
-            const { Label } = vendorConfig;
-
-            return (
-                <Fragment>
-                    <Label optional /> <Text className={ [ CLASS.VAULT_LABEL ] }>{ instrument.label }</Text>
-                </Fragment>
-            );
         }
     };
 }

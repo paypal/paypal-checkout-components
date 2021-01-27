@@ -16,7 +16,7 @@ const POWERED_BY_PAYPAL_STYLE = `
         text-align: center;
         margin: 10px auto;
         height: 14px;
-        font-family: PayPal-Sans, HelveticaNeue, sans-serif;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 11px;
         font-weight: normal;
         font-style: italic;
@@ -33,6 +33,7 @@ const POWERED_BY_PAYPAL_STYLE = `
         vertical-align: middle;
         height: 16px;
         line-height: 16px;
+        font-size: 11px;
     }
 `;
 

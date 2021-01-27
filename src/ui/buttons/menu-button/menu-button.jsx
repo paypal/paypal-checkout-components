@@ -8,7 +8,7 @@ import { Chevron } from '../../chevron';
 
 import css from './menu-button.scoped.scss';
 
-export function MenuButton({ color = TEXT_COLOR.BLACK } : {| color? : $Values<typeof TEXT_COLOR> |} = { }) : ChildType {
+export function MenuButton({ textColor = TEXT_COLOR.BLACK } : {| textColor? : $Values<typeof TEXT_COLOR> |} = { }) : ChildType {
     return (
         <Style css={ css }>
             <div
@@ -17,7 +17,7 @@ export function MenuButton({ color = TEXT_COLOR.BLACK } : {| color? : $Values<ty
                 } }
                 tabindex='0'
                 class='menu-button'>
-                <Chevron color={ color } />
+                <Chevron color={ textColor } />
             </div>
         </Style>
     );

@@ -79,8 +79,7 @@ export function getCheckoutComponent() : CheckoutComponent {
                 branded: {
                     type:       'boolean',
                     queryParam: true,
-                    required:   false,
-                    default:    true
+                    required:   false
                 },
 
                 buttonSessionID: {
@@ -167,7 +166,7 @@ export function getCheckoutComponent() : CheckoutComponent {
                 paymentMethodNonce: {
                     type:       'string',
                     queryParam: true,
-                    required : false
+                    required:   false
                 },
 
                 standaloneFundingSource: {

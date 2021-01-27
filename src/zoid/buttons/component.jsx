@@ -5,7 +5,7 @@
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding } from '@paypal/sdk-client/src';
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
@@ -13,7 +13,7 @@ import { uniqueID, memoize } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
-import { getSessionID } from '../../lib';
+import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
 
@@ -62,7 +62,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         },
 
         eligible: ({ props }) => {
-            const { fundingSource, onShippingChange, style = {} } = props;
+            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
             const flow = determineFlow(props);
 
             if (!fundingSource) {
@@ -78,7 +78,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const { layout } = style;
 
             const platform           = getPlatform();
-            const fundingEligibility = getRefinedFundingEligibility();
             const components         = getComponents();
 
             if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
@@ -100,12 +99,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
 
                 validate: ({ props }) => {
-                    const { fundingSource, onShippingChange, style = {} } = props;
+                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
                     const flow = determineFlow(props);
                     const { layout } = style;
         
                     const platform           = getPlatform();
-                    const fundingEligibility = getRefinedFundingEligibility();
                     const components         = getComponents();
 
                     if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
@@ -129,6 +127,16 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 },
 
                 default: () => ({})
+            },
+
+            storageState: {
+                type:  'object',
+                value: () => storageState
+            },
+
+            sessionState: {
+                type:  'object',
+                value: () => sessionState
             },
 
             components: {
@@ -255,6 +263,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value:      getCorrelationID
             },
 
+            storageID: {
+                type:       'string',
+                value:      getStorageID,
+                queryParam: true
+            },
+
             sessionID: {
                 type:       'string',
                 value:      getSessionID,
@@ -272,14 +286,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 queryParam: true
             },
-
-            enableBNPL: {
-                type:       'boolean',
-                required:   false,
-                queryParam: true,
-                default:    () => true
-            },
-
+            
             env: {
                 type:       'string',
                 queryParam: true,

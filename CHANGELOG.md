@@ -1,3 +1,164 @@
+## <small>5.0.135 (2021-01-13)</small>
+
+* Fix tagline (#1517) ([ae36f55](https://github.com/paypal/paypal-checkout-components/commit/ae36f55)), closes [#1517](https://github.com/paypal/paypal-checkout-components/issues/1517)
+
+
+
+## <small>5.0.134 (2021-01-12)</small>
+
+* Add code coverage badge ([35aa14a](https://github.com/paypal/paypal-checkout-components/commit/35aa14a))
+* Add github action workflow ([ce18651](https://github.com/paypal/paypal-checkout-components/commit/ce18651))
+* Added new languages for Q4 2020 (#1502) ([6082218](https://github.com/paypal/paypal-checkout-components/commit/6082218)), closes [#1502](https://github.com/paypal/paypal-checkout-components/issues/1502)
+* Collect code coverage with karma ([64d753c](https://github.com/paypal/paypal-checkout-components/commit/64d753c))
+* Enforce ordering of card button (#1473) ([9460b12](https://github.com/paypal/paypal-checkout-components/commit/9460b12)), closes [#1473](https://github.com/paypal/paypal-checkout-components/issues/1473)
+* GitHub Actions - Ignore issues from before 2018 ([1160de5](https://github.com/paypal/paypal-checkout-components/commit/1160de5))
+* Move renovate config into github folder ([db8f6d6](https://github.com/paypal/paypal-checkout-components/commit/db8f6d6))
+* Only lock old issues (#1492) ([705903c](https://github.com/paypal/paypal-checkout-components/commit/705903c)), closes [#1492](https://github.com/paypal/paypal-checkout-components/issues/1492)
+* Pass destroy error through to zoid ([d3281b4](https://github.com/paypal/paypal-checkout-components/commit/d3281b4))
+* Pass storageID down to buttons component ([bbe5497](https://github.com/paypal/paypal-checkout-components/commit/bbe5497))
+* Pin to exact version of flow-bin (0.135.0) ([903a719](https://github.com/paypal/paypal-checkout-components/commit/903a719))
+* Remove travis ci config ([759026a](https://github.com/paypal/paypal-checkout-components/commit/759026a))
+* Remove usage of Array.prototype.includes to fix IE11 (#1516) ([51a2704](https://github.com/paypal/paypal-checkout-components/commit/51a2704)), closes [#1516](https://github.com/paypal/paypal-checkout-components/issues/1516)
+* Update badges and license (#1494) ([9daaf38](https://github.com/paypal/paypal-checkout-components/commit/9daaf38)), closes [#1494](https://github.com/paypal/paypal-checkout-components/issues/1494)
+* Update ci badge ([112c3e3](https://github.com/paypal/paypal-checkout-components/commit/112c3e3))
+* Use GitHub Actions to manage old Issues and PRs (#1491) ([7a94db2](https://github.com/paypal/paypal-checkout-components/commit/7a94db2)), closes [#1491](https://github.com/paypal/paypal-checkout-components/issues/1491)
+* chore(deps): update dependency pngjs to v6 (#1466) ([945e006](https://github.com/paypal/paypal-checkout-components/commit/945e006)), closes [#1466](https://github.com/paypal/paypal-checkout-components/issues/1466)
+* chore(release): 5.0.132 :tada: ([dc9cc9e](https://github.com/paypal/paypal-checkout-components/commit/dc9cc9e))
+* chore(release): 5.0.133 :tada: ([b8de931](https://github.com/paypal/paypal-checkout-components/commit/b8de931))
+
+
+
+## <small>5.0.133 (2021-01-06)</small>
+
+* Add code coverage badge ([35aa14a](https://github.com/paypal/paypal-checkout-components/commit/35aa14a))
+* Add github action workflow ([ce18651](https://github.com/paypal/paypal-checkout-components/commit/ce18651))
+* Added new languages for Q4 2020 (#1502) ([6082218](https://github.com/paypal/paypal-checkout-components/commit/6082218)), closes [#1502](https://github.com/paypal/paypal-checkout-components/issues/1502)
+* Collect code coverage with karma ([64d753c](https://github.com/paypal/paypal-checkout-components/commit/64d753c))
+* Enforce ordering of card button (#1473) ([9460b12](https://github.com/paypal/paypal-checkout-components/commit/9460b12)), closes [#1473](https://github.com/paypal/paypal-checkout-components/issues/1473)
+* GitHub Actions - Ignore issues from before 2018 ([1160de5](https://github.com/paypal/paypal-checkout-components/commit/1160de5))
+* Move renovate config into github folder ([db8f6d6](https://github.com/paypal/paypal-checkout-components/commit/db8f6d6))
+* Only lock old issues (#1492) ([705903c](https://github.com/paypal/paypal-checkout-components/commit/705903c)), closes [#1492](https://github.com/paypal/paypal-checkout-components/issues/1492)
+* Pass destroy error through to zoid ([d3281b4](https://github.com/paypal/paypal-checkout-components/commit/d3281b4))
+* Pass storageID down to buttons component ([bbe5497](https://github.com/paypal/paypal-checkout-components/commit/bbe5497))
+* Pin to exact version of flow-bin (0.135.0) ([903a719](https://github.com/paypal/paypal-checkout-components/commit/903a719))
+* Remove travis ci config ([759026a](https://github.com/paypal/paypal-checkout-components/commit/759026a))
+* Update badges and license (#1494) ([9daaf38](https://github.com/paypal/paypal-checkout-components/commit/9daaf38)), closes [#1494](https://github.com/paypal/paypal-checkout-components/issues/1494)
+* Update ci badge ([112c3e3](https://github.com/paypal/paypal-checkout-components/commit/112c3e3))
+* Use GitHub Actions to manage old Issues and PRs (#1491) ([7a94db2](https://github.com/paypal/paypal-checkout-components/commit/7a94db2)), closes [#1491](https://github.com/paypal/paypal-checkout-components/issues/1491)
+* chore(deps): update dependency pngjs to v6 (#1466) ([945e006](https://github.com/paypal/paypal-checkout-components/commit/945e006)), closes [#1466](https://github.com/paypal/paypal-checkout-components/issues/1466)
+* chore(release): 5.0.132 :tada: ([dc9cc9e](https://github.com/paypal/paypal-checkout-components/commit/dc9cc9e))
+
+
+
+## <small>5.0.132 (2020-12-17)</small>
+
+* Add code coverage badge ([35aa14a](https://github.com/paypal/paypal-checkout-components/commit/35aa14a))
+* Add github action workflow ([ce18651](https://github.com/paypal/paypal-checkout-components/commit/ce18651))
+* Collect code coverage with karma ([64d753c](https://github.com/paypal/paypal-checkout-components/commit/64d753c))
+* Move renovate config into github folder ([db8f6d6](https://github.com/paypal/paypal-checkout-components/commit/db8f6d6))
+* Only lock old issues (#1492) ([705903c](https://github.com/paypal/paypal-checkout-components/commit/705903c)), closes [#1492](https://github.com/paypal/paypal-checkout-components/issues/1492)
+* Pass destroy error through to zoid ([d3281b4](https://github.com/paypal/paypal-checkout-components/commit/d3281b4))
+* Pass storageID down to buttons component ([bbe5497](https://github.com/paypal/paypal-checkout-components/commit/bbe5497))
+* Pin to exact version of flow-bin (0.135.0) ([903a719](https://github.com/paypal/paypal-checkout-components/commit/903a719))
+* Remove travis ci config ([759026a](https://github.com/paypal/paypal-checkout-components/commit/759026a))
+* Update badges and license (#1494) ([9daaf38](https://github.com/paypal/paypal-checkout-components/commit/9daaf38)), closes [#1494](https://github.com/paypal/paypal-checkout-components/issues/1494)
+* Update ci badge ([112c3e3](https://github.com/paypal/paypal-checkout-components/commit/112c3e3))
+* Use GitHub Actions to manage old Issues and PRs (#1491) ([7a94db2](https://github.com/paypal/paypal-checkout-components/commit/7a94db2)), closes [#1491](https://github.com/paypal/paypal-checkout-components/issues/1491)
+
+
+
+## <small>5.0.131 (2020-12-03)</small>
+
+* Branded card wallet label ([87ca423](https://github.com/paypal/paypal-checkout-components/commit/87ca423))
+* Clean up old enableBNPL feature flag ([6ab4e82](https://github.com/paypal/paypal-checkout-components/commit/6ab4e82))
+* Explicitly set __SCRIPT_NAMESPACE__ to false for zoid and post-robot ([721c5e3](https://github.com/paypal/paypal-checkout-components/commit/721c5e3))
+* Reorder SPB and move PayPal branding below SCF (#1471) ([6861746](https://github.com/paypal/paypal-checkout-components/commit/6861746)), closes [#1471](https://github.com/paypal/paypal-checkout-components/issues/1471)
+* Use xvfb service over before_install script (#1482) ([1a31a8e](https://github.com/paypal/paypal-checkout-components/commit/1a31a8e)), closes [#1482](https://github.com/paypal/paypal-checkout-components/issues/1482)
+
+
+
+## <small>5.0.130 (2020-10-26)</small>
+
+* Add __SDK_HOST__ to test globals ([d981061](https://github.com/paypal/paypal-checkout-components/commit/d981061))
+* Add full range of colors to paylater ([7bdc239](https://github.com/paypal/paypal-checkout-components/commit/7bdc239))
+* Add more buttons to demo page ([f9d92fc](https://github.com/paypal/paypal-checkout-components/commit/f9d92fc))
+* Add wallet demo page ([f7f6181](https://github.com/paypal/paypal-checkout-components/commit/f7f6181))
+* Alignment fixes ([ccf4440](https://github.com/paypal/paypal-checkout-components/commit/ccf4440))
+* Alignment fixes ([6721601](https://github.com/paypal/paypal-checkout-components/commit/6721601))
+* Allow buttons to opt-out of automatic/smart mode ([147b8a8](https://github.com/paypal/paypal-checkout-components/commit/147b8a8))
+* Always show paylater text on button ([f59fc31](https://github.com/paypal/paypal-checkout-components/commit/f59fc31))
+* Disable flex label on local and stage envs ([efe3818](https://github.com/paypal/paypal-checkout-components/commit/efe3818))
+* Do not fail validation for standalone horizontal button ([bd55e92](https://github.com/paypal/paypal-checkout-components/commit/bd55e92))
+* Enable card button in demo page ([fb7c220](https://github.com/paypal/paypal-checkout-components/commit/fb7c220))
+* Fix label line-height to fix alignment issues ([bef1024](https://github.com/paypal/paypal-checkout-components/commit/bef1024))
+* Fix powered-by font size ([88e41f9](https://github.com/paypal/paypal-checkout-components/commit/88e41f9))
+* Improve range of buttons rendered in dev demo ([cf8fe49](https://github.com/paypal/paypal-checkout-components/commit/cf8fe49))
+* Increase button label size and fix alignment issues ([9ae3e50](https://github.com/paypal/paypal-checkout-components/commit/9ae3e50))
+* Make fonts consistent ([0183a47](https://github.com/paypal/paypal-checkout-components/commit/0183a47))
+* Move flex to pay later in sandbox env ([17d068f](https://github.com/paypal/paypal-checkout-components/commit/17d068f))
+* Re-add Helvetica ([4c07382](https://github.com/paypal/paypal-checkout-components/commit/4c07382))
+* Re-generate screenshot failing on travis ([5824f29](https://github.com/paypal/paypal-checkout-components/commit/5824f29))
+* Render all standalone buttons on demo page ([8c085ee](https://github.com/paypal/paypal-checkout-components/commit/8c085ee))
+* Run dev server on port 9001 ([ca9b3bc](https://github.com/paypal/paypal-checkout-components/commit/ca9b3bc))
+* Set button color to gold when style.color is an empty string (#1461) ([1e373de](https://github.com/paypal/paypal-checkout-components/commit/1e373de)), closes [#1461](https://github.com/paypal/paypal-checkout-components/issues/1461)
+* Update button screenshots ([a783902](https://github.com/paypal/paypal-checkout-components/commit/a783902))
+* update field initial height (#1441) ([9b5c0ae](https://github.com/paypal/paypal-checkout-components/commit/9b5c0ae)), closes [#1441](https://github.com/paypal/paypal-checkout-components/issues/1441)
+* Update screenshots ([6f4e280](https://github.com/paypal/paypal-checkout-components/commit/6f4e280))
+* Update screenshots ([3f78d42](https://github.com/paypal/paypal-checkout-components/commit/3f78d42))
+* Upgrade flow ([3edd7ad](https://github.com/paypal/paypal-checkout-components/commit/3edd7ad))
+* Use env as parameter, not as global, to avoid second render issue ([38c4a83](https://github.com/paypal/paypal-checkout-components/commit/38c4a83))
+* Vaulted installments middleware and component (#1434) ([fdfc4a3](https://github.com/paypal/paypal-checkout-components/commit/fdfc4a3)), closes [#1434](https://github.com/paypal/paypal-checkout-components/issues/1434)
+* chore(release): 5.0.121 :tada: ([2db74c4](https://github.com/paypal/paypal-checkout-components/commit/2db74c4))
+* chore(release): 5.0.122 :tada: ([1185301](https://github.com/paypal/paypal-checkout-components/commit/1185301))
+* chore(release): 5.0.123 :tada: ([ce06fc3](https://github.com/paypal/paypal-checkout-components/commit/ce06fc3))
+* chore(release): 5.0.124 :tada: ([e59a0c0](https://github.com/paypal/paypal-checkout-components/commit/e59a0c0))
+* chore(release): 5.0.125 :tada: ([96e1ca5](https://github.com/paypal/paypal-checkout-components/commit/96e1ca5))
+* chore(release): 5.0.126 :tada: ([6c6c282](https://github.com/paypal/paypal-checkout-components/commit/6c6c282))
+* chore(release): 5.0.127 :tada: ([bd5f0dc](https://github.com/paypal/paypal-checkout-components/commit/bd5f0dc))
+* chore(release): 5.0.128 :tada: ([30faed5](https://github.com/paypal/paypal-checkout-components/commit/30faed5))
+* chore(release): 5.0.129 :tada: ([4c5beeb](https://github.com/paypal/paypal-checkout-components/commit/4c5beeb))
+
+
+
+## <small>5.0.129 (2020-10-21)</small>
+
+* Re-generate screenshot failing on travis ([5824f29](https://github.com/paypal/paypal-checkout-components/commit/5824f29))
+* Set button color to gold when style.color is an empty string (#1461) ([1e373de](https://github.com/paypal/paypal-checkout-components/commit/1e373de)), closes [#1461](https://github.com/paypal/paypal-checkout-components/issues/1461)
+* Use env as parameter, not as global, to avoid second render issue ([38c4a83](https://github.com/paypal/paypal-checkout-components/commit/38c4a83))
+
+
+
+## <small>5.0.128 (2020-10-15)</small>
+
+* Add more buttons to demo page ([f9d92fc](https://github.com/paypal/paypal-checkout-components/commit/f9d92fc))
+* Add wallet demo page ([f7f6181](https://github.com/paypal/paypal-checkout-components/commit/f7f6181))
+* Alignment fixes ([ccf4440](https://github.com/paypal/paypal-checkout-components/commit/ccf4440))
+* Do not fail validation for standalone horizontal button ([bd55e92](https://github.com/paypal/paypal-checkout-components/commit/bd55e92))
+* Update screenshots ([6f4e280](https://github.com/paypal/paypal-checkout-components/commit/6f4e280))
+
+
+
+## <small>5.0.127 (2020-10-14)</small>
+
+* Enable card button in demo page ([fb7c220](https://github.com/paypal/paypal-checkout-components/commit/fb7c220))
+* Fix powered-by font size ([88e41f9](https://github.com/paypal/paypal-checkout-components/commit/88e41f9))
+* Render all standalone buttons on demo page ([8c085ee](https://github.com/paypal/paypal-checkout-components/commit/8c085ee))
+* Update screenshots ([3f78d42](https://github.com/paypal/paypal-checkout-components/commit/3f78d42))
+
+
+
+## <small>5.0.126 (2020-10-14)</small>
+
+* Re-add Helvetica ([4c07382](https://github.com/paypal/paypal-checkout-components/commit/4c07382))
+
+
+
+## <small>5.0.125 (2020-10-13)</small>
+
+* Make fonts consistent ([0183a47](https://github.com/paypal/paypal-checkout-components/commit/0183a47))
+
+
+
 ## <small>5.0.124 (2020-10-12)</small>
 
 * Add __SDK_HOST__ to test globals ([d981061](https://github.com/paypal/paypal-checkout-components/commit/d981061))

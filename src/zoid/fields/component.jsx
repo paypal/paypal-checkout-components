@@ -3,9 +3,12 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from 'jsx-pragmatic/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID,
+    getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, uniqueID } from 'belter/src';
+
+import { storageState, sessionState } from '../../lib';
 
 import { type FieldsProps } from './props';
 import { FieldsPrerender } from './prerender';
@@ -126,10 +129,21 @@ export function getFieldsComponent() : FieldsComponent {
                     queryParam:    'locale.x',
                     allowDelegate: true,
                     queryValue({ value }) : string {
+                        // $FlowFixMe
                         const { lang, country } = value;
                         return `${ lang }_${ country }`;
                     },
                     value: getLocale
+                },
+
+                storageState: {
+                    type:  'object',
+                    value: () => storageState
+                },
+
+                sessionState: {
+                    type:  'object',
+                    value: () => sessionState
                 }
             }
         });

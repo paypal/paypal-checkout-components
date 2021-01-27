@@ -4,7 +4,7 @@
 
 import { node, type ChildType } from 'jsx-pragmatic/src';
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
-import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
+import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import type { ContentType, WalletInstrument, Experiment, Wallet } from '../types';
@@ -26,7 +26,8 @@ export type LogoOptions = {|
     onClick? : (event : MouseEvent, ...args: $ReadOnlyArray<mixed>) => void,
     onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
     nonce? : ?string,
-    experiment : Experiment
+    experiment : Experiment,
+    env : $Values<typeof ENV>
 |};
 
 export type LabelOptions = {|
@@ -57,7 +58,8 @@ export type WalletLabelOptions = {|
     experiment : Experiment,
     vault : boolean,
     nonce? : ?string,
-    textColor : $Values<typeof TEXT_COLOR>
+    textColor : $Values<typeof TEXT_COLOR>,
+    fundingSource : $Values<typeof FUNDING>
 |};
 
 export type TagOptions = {|
@@ -87,7 +89,8 @@ export type FundingSourceConfig = {|
     secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
-    labelText? : string | (({| content : ?ContentType |}) => string)
+    labelText? : string | (({| content : ?ContentType |}) => string),
+    showWalletMenu : ({| instrument : WalletInstrument |}) => boolean
 |};
 
 export function BasicLabel({ logo, label, period, locale: { lang } } : LabelOptions) : ChildType {
@@ -175,5 +178,9 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
         throw new Error(`Not implemented`);
     },
 
-    Label: BasicLabel
+    Label: BasicLabel,
+
+    showWalletMenu: () => {
+        return true;
+    }
 };

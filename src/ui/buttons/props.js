@@ -227,7 +227,6 @@ export type ButtonProps = {|
     clientAccessToken? : ?string,
     nonce : string,
     userIDToken : ?string,
-    enableBNPL : boolean,
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,
@@ -305,6 +304,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         throw new Error(`Expected ${ fundingSource || FUNDING.PAYPAL } to be eligible`);
     }
 
+    style.color = style.color ? style.color : fundingConfig.colors[0];
     const {
         label,
         layout = fundingSource ? BUTTON_LAYOUT.HORIZONTAL : fundingConfig.layouts[0],

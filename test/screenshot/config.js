@@ -838,3 +838,32 @@ buttonConfigs.push({
         }
     }
 });
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa',
+                    branded: true
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        card: {
+            eligible: true
+        }
+    },
+    button: {
+        fundingSource: 'card'
+    }
+});
+

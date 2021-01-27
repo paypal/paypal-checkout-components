@@ -66,7 +66,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     const logoColor = logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
     const textColor = textColors[color] || textColors[TEXT_COLOR.DEFAULT] || TEXT_COLOR.DEFAULT;
 
-    const { Label, WalletLabel, Logo } = fundingConfig;
+    const { Label, WalletLabel, Logo, showWalletMenu } = fundingConfig;
 
     const clickHandler = (event, opts) => {
         event.preventDefault();
@@ -100,6 +100,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             onKeyPress={ keypressHandler }
             nonce={ nonce }
             experiment={ experiment }
+            env={ env }
         />
     );
 
@@ -141,11 +142,14 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 experiment={ experiment }
                 vault={ vault }
                 textColor={ textColor }
+                fundingSource={ fundingSource }
             />
         );
 
         isWallet = true;
     }
+
+    const shouldShowWalletMenu = isWallet && instrument && showWalletMenu({ instrument });
 
     return (
         <div
@@ -159,7 +163,8 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 `${ CLASS.COLOR }-${ color }`,
                 `${ CLASS.TEXT_COLOR }-${ textColor }`,
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
-                `${ isWallet ? CLASS.WALLET : '' }`
+                `${ isWallet ? CLASS.WALLET : '' }`,
+                `${ shouldShowWalletMenu ? CLASS.WALLET_MENU : '' }`
             ].join(' ') }
         >
             <div
@@ -196,7 +201,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 <Spinner />
             </div>
 
-            { isWallet ? <MenuButton color={ textColor } /> : null }
+            { shouldShowWalletMenu ? <MenuButton textColor={ textColor } /> : null }
         </div>
     );
 }
