@@ -1,3 +1,10 @@
+## <small>5.0.136 (2021-01-27)</small>
+
+* Adding nonce and branded params (#1530) ([282b863](https://github.com/paypal/paypal-checkout-components/commit/282b863)), closes [#1530](https://github.com/paypal/paypal-checkout-components/issues/1530)
+* Pass state down to buttons and fields components ([049ac3b](https://github.com/paypal/paypal-checkout-components/commit/049ac3b))
+
+
+
 ## <small>5.0.135 (2021-01-13)</small>
 
 * Fix tagline (#1517) ([ae36f55](https://github.com/paypal/paypal-checkout-components/commit/ae36f55)), closes [#1517](https://github.com/paypal/paypal-checkout-components/issues/1517)
