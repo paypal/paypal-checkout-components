@@ -1,4 +1,4 @@
-/*! For license information please see checkout.4.0.322.js.LICENSE.txt */
+/*! For license information please see checkout.4.0.323.js.LICENSE.txt */
 !function(modules) {
     var installedModules = {};
     function __webpack_require__(moduleId) {
@@ -1377,7 +1377,7 @@
         });
     }));
     function getScriptVersion() {
-        return "4.0.322";
+        return "4.0.323";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1387,7 +1387,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.322.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.323.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1435,7 +1435,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.322"
+                ver: "4.0.323"
             };
         }));
         Object(client.a)((function() {
@@ -1755,7 +1755,7 @@
                     domain: metaFrameDomain
                 });
                 return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.322"
+                    version: "4.0.323"
                 }), metaFrameDomain).then((function() {
                     return metaListener;
                 })).then((function(_ref) {
@@ -1845,9 +1845,9 @@
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls;
     var config = {
         locales: constants.A,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.322.js",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.323.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.322",
+        version: "4.0.323",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -11340,7 +11340,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.322";
+            payload.version = "4.0.323";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -15649,18 +15649,18 @@
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
     var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.322" === window.paypal.version) {
+    if (window.paypal && "4.0.323" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.322"
+            version: "4.0.323"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.322) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.323) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.322" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.323" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.322"
+            version: "4.0.323"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.322");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.323");
     }
     try {
         var _interface = __webpack_require__(50);
@@ -23700,7 +23700,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.322", 
+        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.323", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -23748,7 +23748,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.322", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.323", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -25022,7 +25022,7 @@
     }
     var postRobot = post_robot_src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.322";
+    var interface_version = "4.0.323";
     var interface_checkout;
     var apps;
     var legacy = __webpack_require__(51);
