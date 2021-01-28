@@ -1683,7 +1683,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.360", _headers10);
+            _headers10["x-app-version"] = "2.0.361", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4250,6 +4250,7 @@ window.spb = function(modules) {
         _NATIVE_CHECKOUT_POPU.venmo = "/smart/checkout/venmo/popup", _NATIVE_CHECKOUT_POPU);
         var NATIVE_CHECKOUT_FALLBACK_URI = ((_NATIVE_CHECKOUT_FALL = {}).paypal = "/smart/checkout/native/fallback", 
         _NATIVE_CHECKOUT_FALL.venmo = "/smart/checkout/venmo/fallback", _NATIVE_CHECKOUT_FALL);
+        var PARTIAL_ENCODING_CLIENT = [ "AeG7a0wQ2s97hNLb6yWzDqYTsuD-4AaxDHjz4I2EWMKN6vktKYqKJhtGqmH2cNj_JyjHR4Xj9Jt6ORHs" ];
         var native_clean;
         var getNativeSocket = memoize((function(_ref) {
             var sessionUID = _ref.sessionUID;
@@ -4575,6 +4576,49 @@ window.spb = function(modules) {
         }
         var initialPageUrl;
         var nativeEligibility;
+        function urlEncodeWithPartialEncoding(str) {
+            return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B").replace(/[=]/g, "%3D");
+        }
+        function parseQueryWithPartialEncoding(queryString) {
+            return inlineMemoize(parseQueryWithPartialEncoding, (function() {
+                var params = {};
+                if (!queryString) return params;
+                if (-1 === queryString.indexOf("=")) return params;
+                for (var _i2 = 0, _queryString$split2 = queryString.split("&"); _i2 < _queryString$split2.length; _i2++) {
+                    var pair = _queryString$split2[_i2];
+                    (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
+                }
+                return params;
+            }), [ queryString ]);
+        }
+        function extendQueryWithPartialEncoding(originalQuery, props) {
+            void 0 === props && (props = {});
+            return props && Object.keys(props).length ? function(obj) {
+                void 0 === obj && (obj = {});
+                return Object.keys(obj).filter((function(key) {
+                    return "string" == typeof obj[key] || "boolean" == typeof obj[key];
+                })).map((function(key) {
+                    var val = obj[key];
+                    if ("string" != typeof val && "boolean" != typeof val) throw new TypeError("Invalid type for query");
+                    return urlEncodeWithPartialEncoding(key) + "=" + urlEncodeWithPartialEncoding(val.toString());
+                })).join("&");
+            }(_extends({}, parseQueryWithPartialEncoding(originalQuery), props)) : originalQuery;
+        }
+        function extendUrlWithPartialEncoding(url, options) {
+            var query = options.query || {};
+            var hash = options.hash || {};
+            var originalUrl;
+            var originalHash;
+            var _url$split = url.split("#");
+            originalHash = _url$split[1];
+            var _originalUrl$split = (originalUrl = _url$split[0]).split("?");
+            originalUrl = _originalUrl$split[0];
+            var queryString = extendQueryWithPartialEncoding(_originalUrl$split[1], query);
+            var hashString = extendQueryWithPartialEncoding(originalHash, hash);
+            queryString && (originalUrl = originalUrl + "?" + queryString);
+            hashString && (originalUrl = originalUrl + "#" + hashString);
+            return originalUrl;
+        }
         var parentPopupBridge;
         function isValidMerchantIDs(merchantIDs, payees) {
             if (merchantIDs.length !== payees.length) return !1;
@@ -4842,6 +4886,9 @@ window.spb = function(modules) {
                     }))).toString()) % 100).toString();
                     var _window$navigator, userAgent, language, languages, platform, hardwareConcurrency, deviceMemory, plugins, _window$screen, colorDepth, availWidth, availHeight, timezoneOffset, timezone, touchSupport, canvas;
                 }()).flush();
+                var conditionalExtendUrl = function() {
+                    return isIOSSafari() && "venmo" === fundingSource && -1 !== PARTIAL_ENCODING_CLIENT.indexOf(clientID) ? extendUrlWithPartialEncoding.apply(void 0, arguments) : extendUrl.apply(void 0, arguments);
+                };
                 var close = memoize((function() {
                     return native_clean.all();
                 }));
@@ -4877,7 +4924,7 @@ window.spb = function(modules) {
                 }));
                 var getWebCheckoutUrl = memoize((function(_ref7) {
                     var orderID = _ref7.orderID;
-                    return extendUrl(getNativeDomain() + "/checkoutnow", {
+                    return conditionalExtendUrl(getNativeDomain() + "/checkoutnow", {
                         query: {
                             fundingSource: fundingSource,
                             facilitatorAccessToken: facilitatorAccessToken,
@@ -4889,7 +4936,7 @@ window.spb = function(modules) {
                 }));
                 var getDirectNativeUrl = memoize((function(_temp) {
                     var _ref8 = void 0 === _temp ? {} : _temp, _ref8$pageUrl = _ref8.pageUrl, pageUrl = void 0 === _ref8$pageUrl ? initialPageUrl : _ref8$pageUrl, sessionUID = _ref8.sessionUID;
-                    return extendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
+                    return conditionalExtendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
                         query: {
                             sdkMeta: sdkMeta,
                             fundingSource: fundingSource,
@@ -4931,7 +4978,7 @@ window.spb = function(modules) {
                 };
                 var getDelayedNativeUrl = memoize((function(_ref10) {
                     var sessionUID = _ref10.sessionUID, _ref10$pageUrl = _ref10.pageUrl, pageUrl = void 0 === _ref10$pageUrl ? initialPageUrl : _ref10$pageUrl, orderID = _ref10.orderID;
-                    return extendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
+                    return conditionalExtendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
                         query: getDelayedNativeUrlQueryParams({
                             sessionUID: sessionUID,
                             pageUrl: pageUrl,
@@ -4941,7 +4988,7 @@ window.spb = function(modules) {
                 }));
                 var getDelayedNativeFallbackUrl = memoize((function(_ref11) {
                     var sessionUID = _ref11.sessionUID, _ref11$pageUrl = _ref11.pageUrl, pageUrl = void 0 === _ref11$pageUrl ? initialPageUrl : _ref11$pageUrl, orderID = _ref11.orderID;
-                    return extendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_FALLBACK_URI[fundingSource], {
+                    return conditionalExtendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_FALLBACK_URI[fundingSource], {
                         query: getDelayedNativeUrlQueryParams({
                             sessionUID: sessionUID,
                             pageUrl: pageUrl,
@@ -4950,7 +4997,7 @@ window.spb = function(modules) {
                     });
                 }));
                 var getNativePopupUrl = memoize((function() {
-                    return extendUrl("" + getNativePopupDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
+                    return conditionalExtendUrl("" + getNativePopupDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
                         query: (parentDomain = getDomain(), {
                             sdkMeta: sdkMeta,
                             buttonSessionID: buttonSessionID,
@@ -6125,7 +6172,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.360", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.361", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
