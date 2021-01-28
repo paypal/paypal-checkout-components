@@ -403,7 +403,8 @@
                 RESPONSE_DURATION: "response_duration",
                 PAYMENT_FLOW: "payment_flow",
                 BUTTON_VERSION: "button_version",
-                PAGE_TYPE: "pp_placement"
+                PAGE_TYPE: "pp_placement",
+                TIMESTAMP: "t"
             },
             BUTTON_TYPE: {
                 IFRAME: "iframe",
@@ -1699,7 +1700,7 @@
             });
         }));
         function getScriptVersion() {
-            return "4.0.320";
+            return "4.0.321";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1709,7 +1710,7 @@
                 0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.320.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.321.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1757,7 +1758,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.320"
+                    ver: "4.0.321"
                 };
             }));
             Object(client.a)((function() {
@@ -1806,7 +1807,8 @@
                         return pageType;
                     }
                     return "";
-                }(), _ref[constants.u.KEY.REFERER] = getRefererDomain(), _ref;
+                }(), _ref[constants.u.KEY.REFERER] = getRefererDomain(), _ref[constants.u.KEY.TIMESTAMP] = Date.now().toString(), 
+                _ref;
             }));
             window.location.protocol !== cross_domain_utils_src.a.FILE && Object(client.l)({
                 uri: config.a.loggerUrl,
@@ -2075,7 +2077,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.320"
+                        version: "4.0.321"
                     }), metaFrameDomain).then((function() {
                         return metaListener;
                     })).then((function(_ref) {
@@ -2170,7 +2172,7 @@
             locales: constants.A,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.320",
+            version: "4.0.321",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -23200,7 +23202,7 @@
                 validateButtonLocale(props.locale);
                 validateButtonStyle(style, props);
             }(props);
-            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, checkoutCustomization = _normalizeProps.checkoutCustomization;
+            var _normalizeProps = normalizeProps(props), locale = _normalizeProps.locale, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, checkoutCustomization = _normalizeProps.checkoutCustomization;
             var buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, multiple = _ref4.multiple, layout = _ref4.layout;
                 return _ref4.sources.map((function(source, i) {
@@ -23217,8 +23219,8 @@
                     };
                 }));
             }({
-                label: label,
-                color: color,
+                label: _normalizeProps.label,
+                color: _normalizeProps.color,
                 sources: _normalizeProps.sources,
                 multiple: multiple,
                 layout: layout
@@ -23350,44 +23352,6 @@
                     checkoutCustomization: checkoutCustomization
                 });
             }));
-            var taglineNode = function(_ref18) {
-                var label = _ref18.label, color = _ref18.color, locale = _ref18.locale, env = _ref18.env, cards = _ref18.cards, checkoutCustomization = _ref18.checkoutCustomization;
-                if (_ref18.tagline && _ref18.layout === constants.g.VERTICAL) {
-                    var tag = _ref18.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag");
-                    var text = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.text ? checkoutCustomization.tagline.text : renderContent(tag, {
-                        locale: locale,
-                        color: color,
-                        env: env,
-                        cards: cards
-                    });
-                    var impression = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.tracking && checkoutCustomization.tagline.tracking.impression;
-                    if (text) return function(tagColor, impression, text) {
-                        var nodes = [];
-                        nodes[0] = Object(jsx.c)("style", {
-                            innerHTML: "\n            .tracking-beacon {\n                visibility: hidden;\n                position: absolute;\n                height: 1px;\n                width: 1px;\n            }\n        "
-                        });
-                        nodes[1] = Object(jsx.c)("div", {
-                            class: class_CLASS.TAGLINE + " " + class_CLASS.TAGLINE_COLOR + "-" + tagColor
-                        }, Object(jsx.c)("span", {
-                            optional: !0
-                        }, text), impression && Object(jsx.c)("img", {
-                            class: "tracking-beacon",
-                            src: impression
-                        }));
-                        return new jsx.a(nodes);
-                    }(getButtonConfig(label, "tagLineColors")[color], impression, text);
-                }
-            }({
-                label: label,
-                tagline: tagline,
-                color: color,
-                locale: locale,
-                multiple: multiple,
-                env: env,
-                cards: cards,
-                checkoutCustomization: checkoutCustomization,
-                layout: layout
-            });
             var fundingiconNode = function(_ref9) {
                 var cards = _ref9.cards, size = _ref9.size, layout = _ref9.layout;
                 if (_ref9.fundingicons) return Object(jsx.c)("div", {
@@ -23545,7 +23509,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.320", 
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.321", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -23554,7 +23518,7 @@
                     multiple: multiple,
                     env: env
                 })
-            }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
+            }), styleNode, buttonNodes, fundingiconNode, labelPowerByPayPal, scriptNode).toString();
         }
         pptm.listenForLoadWithNoContent();
         var creditThrottle;
@@ -23593,7 +23557,7 @@
                 return jsxDom("div", Object(esm_extends.a)({
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.320", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.321", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             autoResize: {
                 height: !0,
@@ -24867,7 +24831,7 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.320";
+        var interface_version = "4.0.321";
         var interface_checkout;
         var apps;
         var legacy = __webpack_require__(44);

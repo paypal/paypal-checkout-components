@@ -9077,7 +9077,7 @@
         }));
         var taglineNode = function(_ref18) {
             var label = _ref18.label, color = _ref18.color, locale = _ref18.locale, env = _ref18.env, cards = _ref18.cards, checkoutCustomization = _ref18.checkoutCustomization;
-            if (_ref18.tagline) {
+            if (_ref18.tagline && "vertical" !== _ref18.layout) {
                 var tag = _ref18.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag");
                 var text = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.text ? checkoutCustomization.tagline.text : renderContent(tag, {
                     locale: locale,
@@ -9093,9 +9093,7 @@
                     });
                     nodes[1] = jsxToHTML("div", {
                         class: CLASS.TAGLINE + " " + CLASS.TAGLINE_COLOR + "-" + tagColor
-                    }, jsxToHTML("span", {
-                        optional: !0
-                    }, text), impression && jsxToHTML("img", {
+                    }, text, impression && jsxToHTML("img", {
                         class: "tracking-beacon",
                         src: impression
                     }));
@@ -9263,7 +9261,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.320", 
+        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.321", 
         _ref21), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
