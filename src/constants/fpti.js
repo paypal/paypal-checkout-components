@@ -41,7 +41,8 @@ export const FPTI = {
         RESPONSE_DURATION:      'response_duration',
         PAYMENT_FLOW:           'payment_flow',
         BUTTON_VERSION:         'button_version',
-        PAGE_TYPE:              'pp_placement'
+        PAGE_TYPE:              'pp_placement',
+        TIMESTAMP:              't'
     },
 
     BUTTON_TYPE: {

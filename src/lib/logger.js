@@ -99,7 +99,8 @@ export function initLogger() {
             [ FPTI.KEY.VERSION ]:            config.version,
             [ FPTI.KEY.TOKEN ]:              paymentToken,
             [ FPTI.KEY.PAGE_TYPE]:           getPageType(),
-            [ FPTI.KEY.REFERER ]:            getRefererDomain()
+            [ FPTI.KEY.REFERER ]:            getRefererDomain(),
+            [ FPTI.KEY.TIMESTAMP]:           Date.now().toString()
         };
     });
 
