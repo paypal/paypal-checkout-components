@@ -459,6 +459,18 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:     'object',
                 required: false,
                 default:  () => window.__TEST_WALLET__
+            },
+
+            paymentMethodNonce: {
+                type:       'string',
+                queryParam: true,
+                required:   false
+            },
+
+            branded: {
+                type:       'boolean',
+                queryParam: true,
+                required:   false
             }
         }
     });

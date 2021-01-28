@@ -76,12 +76,6 @@ export function getCheckoutComponent() : CheckoutComponent {
                     queryParam: true
                 },
 
-                branded: {
-                    type:       'boolean',
-                    queryParam: true,
-                    required:   false
-                },
-
                 buttonSessionID: {
                     type:       'string',
                     queryParam: true,
@@ -161,12 +155,6 @@ export function getCheckoutComponent() : CheckoutComponent {
                     type:       'string',
                     queryParam: true,
                     default:    () => FUNDING.PAYPAL
-                },
-
-                paymentMethodNonce: {
-                    type:       'string',
-                    queryParam: true,
-                    required:   false
                 },
 
                 standaloneFundingSource: {
