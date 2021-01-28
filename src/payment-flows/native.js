@@ -2,7 +2,7 @@
 /* eslint max-lines: off, max-nested-callbacks: off */
 
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError,
-    stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
+    stringifyErrorMessage, cleanup, once, noop, inlineMemoize } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, ENV, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } from 'cross-domain-utils/src';
@@ -72,6 +72,10 @@ const NATIVE_CHECKOUT_FALLBACK_URI : { [$Values<typeof FUNDING> ] : string } = {
     [ FUNDING.PAYPAL ]: '/smart/checkout/native/fallback',
     [ FUNDING.VENMO ]:  '/smart/checkout/venmo/fallback'
 };
+
+const PARTIAL_ENCODING_CLIENT = [
+    'AeG7a0wQ2s97hNLb6yWzDqYTsuD-4AaxDHjz4I2EWMKN6vktKYqKJhtGqmH2cNj_JyjHR4Xj9Jt6ORHs'
+];
 
 let clean;
 
@@ -277,6 +281,92 @@ function instrumentNativeSDKProps(props : NativeSDKProps) {
     }).flush();
 }
 
+type Query = {
+    [ string ] : boolean | string
+};
+
+export function urlEncodeWithPartialEncoding(str : string) : string {
+    return str.replace(/\?/g, '%3F').replace(/&/g, '%26').replace(/#/g, '%23').replace(/\+/g, '%2B').replace(/[=]/g, '%3D');
+}
+
+export function formatQueryWithPartialEncoding(obj : Query = {}) : string {
+
+    return Object.keys(obj).filter(key => {
+        return typeof obj[key] === 'string' || typeof obj[key] === 'boolean';
+    }).map(key => {
+        const val = obj[key];
+
+        if (typeof val !== 'string' && typeof val !== 'boolean') {
+            throw new TypeError(`Invalid type for query`);
+        }
+
+        return `${ urlEncodeWithPartialEncoding(key) }=${ urlEncodeWithPartialEncoding(val.toString()) }`;
+    }).join('&');
+}
+
+
+export function parseQueryWithPartialEncoding(queryString : string) : Object {
+    return inlineMemoize(parseQueryWithPartialEncoding, () : Object => {
+        const params = {};
+
+        if (!queryString) {
+            return params;
+        }
+
+        if (queryString.indexOf('=') === -1) {
+            return params;
+        }
+
+        for (let pair of queryString.split('&')) {
+            pair = pair.split('=');
+
+            if (pair[0] && pair[1]) {
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+            }
+        }
+
+        return params;
+    }, [ queryString ]);
+}
+
+export function extendQueryWithPartialEncoding(originalQuery : string, props : Query = {}) : string {
+
+    if (!props || !Object.keys(props).length) {
+        return originalQuery;
+    }
+
+    return formatQueryWithPartialEncoding({
+        ...parseQueryWithPartialEncoding(originalQuery),
+        ...props
+    });
+}
+
+export function extendUrlWithPartialEncoding(url : string, options : {| query? : Query, hash? : Query |}) : string {
+
+    const query = options.query || {};
+    const hash = options.hash || {};
+
+    let originalUrl;
+    let originalQuery;
+    let originalHash;
+
+    [ originalUrl, originalHash ] = url.split('#');
+    [ originalUrl, originalQuery ] = originalUrl.split('?');
+
+    const queryString = extendQueryWithPartialEncoding(originalQuery, query);
+    const hashString = extendQueryWithPartialEncoding(originalHash, hash);
+
+    if (queryString) {
+        originalUrl = `${ originalUrl }?${ queryString }`;
+    }
+
+    if (hashString) {
+        originalUrl = `${ originalUrl }#${ hashString }`;
+    }
+
+    return originalUrl;
+}
+
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange, vault, platform,
@@ -307,6 +397,13 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         .info(`native_start_${ isIOSSafari() ? 'ios' : 'android' }_window_height_${ window.outerHeight }`)
         .info(`native_stickiness_id_${ isIOSSafari() ? 'ios' : 'android' }_${ getStickinessID() }`)
         .flush();
+
+    const conditionalExtendUrl = (...args) => {
+        if (isIOSSafari() && fundingSource === FUNDING.VENMO && PARTIAL_ENCODING_CLIENT.indexOf(clientID) !== -1) {
+            return extendUrlWithPartialEncoding(...args);
+        }
+        return extendUrl(...args);
+    };
 
     const close = memoize(() => {
         return clean.all();
@@ -340,7 +437,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const getWebCheckoutUrl = memoize(({ orderID }) : string => {
-        return extendUrl(`${ getNativeDomain() }${ WEB_CHECKOUT_URI }`, {
+        return conditionalExtendUrl(`${ getNativeDomain() }${ WEB_CHECKOUT_URI }`, {
             query: {
                 fundingSource,
                 facilitatorAccessToken,
@@ -352,7 +449,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
-        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
+        return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: {
                 sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl,
                 stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : '',
@@ -387,13 +484,13 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const getDelayedNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) : string => {
-        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
+        return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID })
         });
     });
 
     const getDelayedNativeFallbackUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) : string => {
-        return extendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_FALLBACK_URI[fundingSource] }`, {
+        return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_FALLBACK_URI[fundingSource] }`, {
             query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID })
         });
     });
@@ -406,7 +503,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const getNativePopupUrl = memoize(() : string => {
-        return extendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
+        return conditionalExtendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
             // $FlowFixMe
             query: getNativePopupParams()
         });
