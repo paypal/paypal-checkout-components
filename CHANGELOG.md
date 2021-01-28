@@ -1,3 +1,9 @@
+## <small>5.0.137 (2021-01-28)</small>
+
+* add paymentMethodNonce and branded to button component (#1533) ([6498775](https://github.com/paypal/paypal-checkout-components/commit/6498775)), closes [#1533](https://github.com/paypal/paypal-checkout-components/issues/1533)
+
+
+
 ## <small>5.0.136 (2021-01-27)</small>
 
 * Adding nonce and branded params (#1530) ([282b863](https://github.com/paypal/paypal-checkout-components/commit/282b863)), closes [#1530](https://github.com/paypal/paypal-checkout-components/issues/1530)
