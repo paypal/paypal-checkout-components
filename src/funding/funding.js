@@ -2,7 +2,7 @@
 
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
-import { values } from 'belter/src';
+import { values, supportsPopups } from 'belter/src';
 
 import type { Wallet } from '../types';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
@@ -59,6 +59,10 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
     }
 
     if (fundingConfig.shippingChange === false && onShippingChange) {
+        return false;
+    }
+
+    if (fundingConfig.requiresPopupSupport === true && supportsPopups() === false) {
         return false;
     }
 
