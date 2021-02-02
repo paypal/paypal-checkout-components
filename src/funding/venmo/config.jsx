@@ -13,7 +13,7 @@ export function getVenmoConfig() : FundingSourceConfig {
 
         requiresPopupSupport:             true,
         shippingChange:                   false,
-        supportsThirdPartyMobileBrowsers: false,
+        requiresSupportedNativeBrowser: false,
 
         platforms: [
             PLATFORM.MOBILE

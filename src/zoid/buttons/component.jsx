@@ -62,7 +62,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         },
 
         eligible: ({ props }) => {
-            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), supportsPopups, thirdPartyMobileBrowser } = props;
+            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), supportsPopups, supportedNativeBrowser } = props;
             const flow = determineFlow(props);
 
             if (!fundingSource) {
@@ -80,7 +80,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const platform           = getPlatform();
             const components         = getComponents();
 
-            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, thirdPartyMobileBrowser })) {
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, supportedNativeBrowser })) {
                 return {
                     eligible: true
                 };
@@ -480,14 +480,14 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 queryParam: true
             },
 
-            thirdPartyMobileBrowser: {
+            supportedNativeBrowser: {
                 type:       'boolean',
                 value:      () => {
-                    if (isIos() && !isSafari()) {
+                    if (isIos() && isSafari()) {
                         return true;
                     }
 
-                    if (isAndroid() && !isChrome()) {
+                    if (isAndroid() && isChrome()) {
                         return true;
                     }
 

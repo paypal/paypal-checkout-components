@@ -190,8 +190,8 @@ export type RenderButtonProps = {|
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    supportsPopups : ?boolean,
-    thirdPartyMobileBrowser : ?boolean
+    supportsPopups : boolean,
+    supportedNativeBrowser : boolean
 |};
 
 export type PrerenderDetails = {|
@@ -234,7 +234,7 @@ export type ButtonProps = {|
     vault : boolean,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     supportsPopups : boolean,
-    thirdPartyMobileBrowser : boolean
+    supportedNativeBrowser : boolean
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -268,8 +268,8 @@ export type ButtonPropsInputs = {
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    supportsPopups? : boolean,
-    thirdPartyMobileBrowser? : boolean
+    supportsPopups : boolean,
+    supportedNativeBrowser : boolean
 };
 
 export const DEFAULT_STYLE = {
@@ -403,8 +403,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         experiment = getDefaultExperiment(),
         vault,
         userIDToken,
-        supportsPopups,
-        thirdPartyMobileBrowser
+        supportsPopups = false,
+        supportedNativeBrowser = false
     } = props;
 
     const { country, lang } = locale;
@@ -442,7 +442,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Invalid funding source: ${ fundingSource }`);
         }
 
-        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet })) {
+        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser })) {
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
@@ -451,5 +451,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
-        experiment, vault, userIDToken, supportsPopups, thirdPartyMobileBrowser };
+        experiment, vault, userIDToken, supportsPopups, supportedNativeBrowser };
 }
