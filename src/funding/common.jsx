@@ -72,7 +72,7 @@ export type FundingSourceConfig = {|
     automatic : boolean,
     shippingChange? : boolean,
     requiresPopupSupport? : boolean,
-    supports3rdPartyMobileBrowsers? : boolean,
+    supportsThirdPartyMobileBrowsers? : boolean,
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
     flows : $ReadOnlyArray<$Values<typeof BUTTON_FLOW>>,

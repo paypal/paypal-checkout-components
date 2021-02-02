@@ -189,7 +189,9 @@ export type RenderButtonProps = {|
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,
-    userIDToken : ?string
+    userIDToken : ?string,
+    supportsPopups : ?boolean,
+    thirdPartyMobileBrowser : ?boolean
 |};
 
 export type PrerenderDetails = {|
@@ -231,7 +233,8 @@ export type ButtonProps = {|
     experiment : Experiment,
     vault : boolean,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    userAgent : string
+    supportsPopups : boolean,
+    thirdPartyMobileBrowser : boolean
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -264,7 +267,9 @@ export type ButtonPropsInputs = {
     flow? : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,
-    userIDToken : ?string
+    userIDToken : ?string,
+    supportsPopups? : boolean,
+    thirdPartyMobileBrowser? : boolean
 };
 
 export const DEFAULT_STYLE = {
@@ -397,7 +402,9 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         flow = BUTTON_FLOW.PURCHASE,
         experiment = getDefaultExperiment(),
         vault,
-        userIDToken
+        userIDToken,
+        supportsPopups,
+        thirdPartyMobileBrowser
     } = props;
 
     const { country, lang } = locale;
@@ -444,5 +451,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
-        experiment, vault, userIDToken };
+        experiment, vault, userIDToken, supportsPopups, thirdPartyMobileBrowser };
 }

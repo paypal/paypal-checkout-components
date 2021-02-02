@@ -9,7 +9,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize, getUserAgent } from 'belter/src';
+import { uniqueID, memoize, supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
@@ -62,7 +62,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         },
 
         eligible: ({ props }) => {
-            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), userAgent } = props;
+            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), supportsPopups, thirdPartyMobileBrowser } = props;
             const flow = determineFlow(props);
 
             if (!fundingSource) {
@@ -80,7 +80,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const platform           = getPlatform();
             const components         = getComponents();
 
-            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, userAgent })) {
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, thirdPartyMobileBrowser })) {
                 return {
                     eligible: true
                 };
@@ -100,6 +100,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
                 validate: ({ props }) => {
                     const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
+
                     const flow = determineFlow(props);
                     const { layout } = style;
 
@@ -473,9 +474,25 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false
             },
 
-            userAgent: {
-                type:       'string',
-                value:      getUserAgent,
+            supportsPopups: {
+                type:       'boolean',
+                value:      () => userAgentSupportsPopups(),
+                queryParam: true
+            },
+
+            thirdPartyMobileBrowser: {
+                type:       'boolean',
+                value:      () => {
+                    if (isIos() && !isSafari()) {
+                        return true;
+                    }
+
+                    if (isAndroid() && !isChrome()) {
+                        return true;
+                    }
+
+                    return false;
+                },
                 queryParam: true
             }
         }

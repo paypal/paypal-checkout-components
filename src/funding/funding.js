@@ -2,7 +2,7 @@
 
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
-import { values, supportsPopups, isAndroid, isChrome, isIos, isSafari } from 'belter/src';
+import { values } from 'belter/src';
 
 import type { Wallet } from '../types';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
@@ -19,11 +19,12 @@ type IsFundingEligibleOptions = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
     wallet? : ?Wallet,
-    userAgent? : string
+    supportsPopups? : ?boolean,
+    thirdPartyMobileBrowser? : ?boolean
 |};
 
 export function isFundingEligible(source : $Values<typeof FUNDING>,
-    { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, userAgent } : IsFundingEligibleOptions) : boolean {
+    { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, thirdPartyMobileBrowser } : IsFundingEligibleOptions) : boolean {
 
     if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
         return false;
@@ -63,18 +64,12 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
-    if (fundingConfig.requiresPopupSupport === true && supportsPopups(userAgent) === false) {
+    if (fundingConfig.requiresPopupSupport === true && supportsPopups === false) {
         return false;
     }
 
-    if (fundingConfig.supports3rdPartyMobileBrowsers === false) {
-        if (isIos(userAgent) && !isSafari(userAgent)) {
-            return false;
-        }
-
-        if (isAndroid(userAgent) && !isChrome(userAgent)) {
-            return false;
-        }
+    if (fundingConfig.supportsThirdPartyMobileBrowsers === false && thirdPartyMobileBrowser === true) {
+        return false;
     }
 
     if (fundingConfig.flows && flow && fundingConfig.flows.indexOf(flow) === -1) {
@@ -84,17 +79,17 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
     return true;
 }
 
-export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet } :
+export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, thirdPartyMobileBrowser } :
     {| fundingSource : ?$Values<typeof FUNDING>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>,
     platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
+    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, supportsPopups? : ?boolean, thirdPartyMobileBrowser? : ?boolean |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
 
     if (fundingSource) {
         return [ fundingSource ];
     }
 
     let eligibleFunding = values(FUNDING).filter(source =>
-        isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet }));
+        isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, thirdPartyMobileBrowser }));
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {
         eligibleFunding = eligibleFunding.slice(0, 2);
