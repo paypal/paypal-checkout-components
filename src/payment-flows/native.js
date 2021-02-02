@@ -452,7 +452,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: {
                 sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl,
-                stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : '',
+                stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : buttonSessionID,
                 enableFunding: enableFunding.join(',')
             }
         });
@@ -471,7 +471,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             pageUrl,
             commit:         String(commit),
             webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : '',
-            stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : '',
+            stickinessID:   (env !== ENV.PRODUCTION) ? stickinessID : buttonSessionID,
             userAgent,
             buttonSessionID,
             env,
