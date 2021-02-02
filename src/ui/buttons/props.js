@@ -230,7 +230,8 @@ export type ButtonProps = {|
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,
-    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>
+    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
+    supportsPopups : boolean
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -335,7 +336,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         if (typeof height !== 'number') {
             throw new TypeError(`Expected style.height to be a number, got: ${ height }`);
         }
-        
+
         const [ minHeight, maxHeight ] = [ BUTTON_SIZE_STYLE[BUTTON_SIZE.SMALL].minHeight, BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight ];
 
         if (height < minHeight || height > maxHeight) {

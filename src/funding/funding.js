@@ -2,7 +2,7 @@
 
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
-import { values, supportsPopups } from 'belter/src';
+import { values } from 'belter/src';
 
 import type { Wallet } from '../types';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
@@ -18,11 +18,12 @@ type IsFundingEligibleOptions = {|
     fundingEligibility : FundingEligibilityType,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
-    wallet? : ?Wallet
+    wallet? : ?Wallet,
+    supportsPopups? : boolean
 |};
 
 export function isFundingEligible(source : $Values<typeof FUNDING>,
-    { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet } : IsFundingEligibleOptions) : boolean {
+    { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups } : IsFundingEligibleOptions) : boolean {
 
     if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
         return false;
@@ -62,7 +63,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
-    if (fundingConfig.requiresPopupSupport === true && supportsPopups() === false) {
+    if (fundingConfig.requiresPopupSupport === true && supportsPopups === false) {
         return false;
     }
 
