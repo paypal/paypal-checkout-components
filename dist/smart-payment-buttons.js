@@ -1683,7 +1683,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.362", _headers10);
+            _headers10["x-app-version"] = "2.0.363", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4943,7 +4943,7 @@ window.spb = function(modules) {
                             sessionUID: sessionUID,
                             buttonSessionID: buttonSessionID,
                             pageUrl: pageUrl,
-                            stickinessID: "production" !== env ? stickinessID : "",
+                            stickinessID: "production" !== env ? stickinessID : buttonSessionID,
                             enableFunding: enableFunding.join(",")
                         }
                     });
@@ -4965,7 +4965,7 @@ window.spb = function(modules) {
                         pageUrl: pageUrl,
                         commit: String(commit),
                         webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : "",
-                        stickinessID: "production" !== env ? stickinessID : "",
+                        stickinessID: "production" !== env ? stickinessID : buttonSessionID,
                         userAgent: userAgent,
                         buttonSessionID: buttonSessionID,
                         env: env,
@@ -6172,7 +6172,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.362", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.363", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
