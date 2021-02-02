@@ -11,8 +11,9 @@ export function getVenmoConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        shippingChange:       false,
-        requiresPopupSupport: true,
+        requiresPopupSupport:           true,
+        shippingChange:                 false,
+        supports3rdPartyMobileBrowsers: false,
 
         platforms: [
             PLATFORM.MOBILE

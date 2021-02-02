@@ -231,7 +231,7 @@ export type ButtonProps = {|
     experiment : Experiment,
     vault : boolean,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    supportsPopups : boolean
+    userAgent : string
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
