@@ -67,7 +67,7 @@ describe(`paypal button component remembered funding`, () => {
         });
     });
 
-    it('isFundingRemembered should return true for venmo when funding is remembered', () => {
+    it.skip('isFundingRemembered should return true for venmo when funding is remembered', () => {
 
         const source = window.paypal.FUNDING.VENMO;
         const expected = true;
@@ -151,7 +151,7 @@ describe(`paypal button component remembered funding`, () => {
         });
     });
 
-    it('isFundingRemembered should return true for venmo when multiple funding sources are remembered', () => {
+    it.skip('isFundingRemembered should return true for venmo when multiple funding sources are remembered', () => {
 
         const source = window.paypal.FUNDING.VENMO;
         const expected = true;
@@ -219,7 +219,7 @@ describe(`paypal button component remembered funding`, () => {
         return promise1;
     });
 
-    it('should render a button then get an immediate result for isFundingRemembered', (done) => {
+    it.skip('should render a button then get an immediate result for isFundingRemembered', (done) => {
 
         const source = window.paypal.FUNDING.VENMO;
 
@@ -272,7 +272,7 @@ describe(`paypal button component remembered funding`, () => {
         }, '#testContainer');
     });
 
-    it('should only show venmo button in vertical layout after venmo has been remembered', (done) => {
+    it.skip('should only show venmo button in vertical layout after venmo has been remembered', (done) => {
 
         window.paypal.Button.render({
 
