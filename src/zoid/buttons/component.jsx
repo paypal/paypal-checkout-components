@@ -483,6 +483,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             supportedNativeBrowser: {
                 type:       'boolean',
                 value:      () => {
+                    if (!userAgentSupportsPopups()) {
+                        return false;
+                    }
+
                     if (isIos() && isSafari()) {
                         return true;
                     }
