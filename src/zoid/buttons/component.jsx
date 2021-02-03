@@ -9,7 +9,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize } from 'belter/src';
+import { uniqueID, memoize, supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
@@ -31,7 +31,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
 
         domain: getPayPalDomainRegex(),
-        
+
         autoResize: {
             width:  false,
             height: true
@@ -62,7 +62,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         },
 
         eligible: ({ props }) => {
-            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
+            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), supportsPopups, supportedNativeBrowser } = props;
             const flow = determineFlow(props);
 
             if (!fundingSource) {
@@ -80,7 +80,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const platform           = getPlatform();
             const components         = getComponents();
 
-            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, supportedNativeBrowser })) {
                 return {
                     eligible: true
                 };
@@ -100,9 +100,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
                 validate: ({ props }) => {
                     const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
+
                     const flow = determineFlow(props);
                     const { layout } = style;
-        
+
                     const platform           = getPlatform();
                     const components         = getComponents();
 
@@ -286,7 +287,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 queryParam: true
             },
-            
+
             env: {
                 type:       'string',
                 queryParam: true,
@@ -390,19 +391,19 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 queryParam: true,
                 value:      getEnableFunding
             },
-            
+
             disableFunding: {
                 type:       'array',
                 queryParam: true,
                 value:      getDisableFunding
             },
-            
+
             disableCard: {
                 type:       'array',
                 queryParam: true,
                 value:      getDisableCard
             },
-            
+
             merchantID: {
                 type:       'array',
                 queryParam: true,
@@ -418,7 +419,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     };
                 }
             },
-            
+
             getPageUrl: {
                 type:  'function',
                 value: () => {
@@ -471,6 +472,32 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'boolean',
                 queryParam: true,
                 required:   false
+            },
+
+            supportsPopups: {
+                type:       'boolean',
+                value:      () => userAgentSupportsPopups(),
+                queryParam: true
+            },
+
+            supportedNativeBrowser: {
+                type:       'boolean',
+                value:      () => {
+                    if (!userAgentSupportsPopups()) {
+                        return false;
+                    }
+
+                    if (isIos() && isSafari()) {
+                        return true;
+                    }
+
+                    if (isAndroid() && isChrome()) {
+                        return true;
+                    }
+
+                    return false;
+                },
+                queryParam: true
             }
         }
     });

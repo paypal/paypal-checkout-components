@@ -10,7 +10,11 @@ import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 export function getVenmoConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
-    
+
+        requiresPopupSupport:             true,
+        requiresSupportedNativeBrowser:   true,
+        shippingChange:                   false,
+
         platforms: [
             PLATFORM.MOBILE
         ],
@@ -21,43 +25,27 @@ export function getVenmoConfig() : FundingSourceConfig {
         ],
 
         Logo: ({ logoColor, optional }) => VenmoLogo({ logoColor, optional }),
-    
+
         colors: [
             BUTTON_COLOR.BLUE,
             BUTTON_COLOR.SILVER,
             BUTTON_COLOR.BLACK,
             BUTTON_COLOR.WHITE
         ],
-    
+
         logoColors:  {
             [ BUTTON_COLOR.BLUE ]:   LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.SILVER ]: LOGO_COLOR.BLUE,
             [ BUTTON_COLOR.BLACK ]:  LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.WHITE ]:  LOGO_COLOR.BLUE
         },
-    
+
         secondaryColors: {
             ...DEFAULT_FUNDING_CONFIG.secondaryColors,
 
             [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.BLUE
-        },
-
-        eligible: ({ fundingEligibility, layout }) => {
-            if (layout === BUTTON_LAYOUT.VERTICAL) {
-                return true;
-            }
-
-            if (fundingEligibility.venmo && fundingEligibility.venmo.recommended) {
-                return true;
-            }
-
-            if (fundingEligibility.credit && fundingEligibility.credit.eligible) {
-                return false;
-            }
-
-            return true;
         }
     };
 }
