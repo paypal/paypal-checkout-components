@@ -1,3 +1,14 @@
+## <small>5.0.138 (2021-02-03)</small>
+
+* add paymentMethodNonce and branded to button component (#1533) ([6498775](https://github.com/paypal/paypal-checkout-components/commit/6498775)), closes [#1533](https://github.com/paypal/paypal-checkout-components/issues/1533)
+* Adding nonce and branded params (#1530) ([282b863](https://github.com/paypal/paypal-checkout-components/commit/282b863)), closes [#1530](https://github.com/paypal/paypal-checkout-components/issues/1530)
+* Pass state down to buttons and fields components ([049ac3b](https://github.com/paypal/paypal-checkout-components/commit/049ac3b))
+* Update venmo eligibility (#1535) ([2b0b2db](https://github.com/paypal/paypal-checkout-components/commit/2b0b2db)), closes [#1535](https://github.com/paypal/paypal-checkout-components/issues/1535)
+* chore(release): 5.0.136 :tada: ([8eb0ca3](https://github.com/paypal/paypal-checkout-components/commit/8eb0ca3))
+* chore(release): 5.0.137 :tada: ([3760c94](https://github.com/paypal/paypal-checkout-components/commit/3760c94))
+
+
+
 ## <small>5.0.137 (2021-01-28)</small>
 
 * add paymentMethodNonce and branded to button component (#1533) ([6498775](https://github.com/paypal/paypal-checkout-components/commit/6498775)), closes [#1533](https://github.com/paypal/paypal-checkout-components/issues/1533)
