@@ -509,11 +509,11 @@ export const Button : Component<ButtonOptions> = create({
 
                 let remembered = getRememberedFunding(sources => sources);
 
-                if (!isDevice() || getDomainSetting('disable_venmo')) {
-                    if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
-                        remembered = remembered.filter(source => (source !== FUNDING.VENMO));
-                    }
+                if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
+                    remembered = remembered.filter(source => (source !== FUNDING.VENMO));
+                }
 
+                if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
                         disallowed = [ ...disallowed, FUNDING.VENMO ];
                     }
