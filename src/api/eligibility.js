@@ -87,9 +87,10 @@ type NativeEligibilityOptions = {|
     enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>
 |};
 
-type NativeEligibility = {|
+export type NativeEligibility = {|
     [ $Values<typeof FUNDING> ] : ?{|
-        eligibility : boolean
+        eligibility : boolean,
+        ineligibilityReason : string
     |}
 |};
 

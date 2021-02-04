@@ -9,8 +9,8 @@ import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } 
 
 import type { ButtonProps } from '../button/props';
 import { WEB_CHECKOUT_URI } from '../config';
-import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig } from '../api';
-import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, getStickinessID } from '../lib';
+import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
+import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, getStickinessID, createExperiment } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 import type { NativePopupInputParams } from '../../server/components/native/params';
@@ -78,6 +78,8 @@ const PARTIAL_ENCODING_CLIENT = [
 ];
 
 let clean;
+let initialPageUrl;
+let nativeEligibility : NativeEligibility;
 
 type NativeSocketOptions = {|
     sessionUID : string,
@@ -121,12 +123,28 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     return nativeSocket;
 });
 
-function useDirectAppSwitch() : boolean {
+const nativeFakeoutExperiment = createExperiment('native_popup_fakeout', 0);
+
+function isControlGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
+    const fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
+
+    if (fundingEligibility && !fundingEligibility.eligibility && fundingEligibility.ineligibilityReason === 'experimentation_ineligibility') {
+        return true;
+    }
+
+    return false;
+}
+
+function useDirectAppSwitch(fundingSource : $Values<typeof FUNDING>) : boolean {
     if (window.xprops.forceNativeDirectAppSwitch) {
         return true;
     }
 
     if (window.xprops.forceNativePopupAppSwitch) {
+        return false;
+    }
+
+    if (isControlGroup(fundingSource)) {
         return false;
     }
 
@@ -154,9 +172,6 @@ function isNativeOptedIn({ props } : {| props : ButtonProps |}) : boolean {
 
     return false;
 }
-
-let initialPageUrl;
-let nativeEligibility;
 
 function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
 
@@ -228,6 +243,10 @@ function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentElig
     }
 
     if (nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) {
+        return true;
+    }
+
+    if (isControlGroup(fundingSource) && (window.xprops.popupFakeout || nativeFakeoutExperiment.isEnabled())) {
         return true;
     }
 
@@ -392,6 +411,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     let cancelled = false;
     let didFallback = false;
 
+    nativeFakeoutExperiment.logStart();
+
     getLogger()
         .info(`native_start_${ isIOSSafari() ? 'ios' : 'android' }_window_width_${ window.outerWidth }`)
         .info(`native_start_${ isIOSSafari() ? 'ios' : 'android' }_window_height_${ window.outerHeight }`)
@@ -525,6 +546,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const onApproveCallback = ({ data: { payerID, paymentID, billingToken } }) => {
         approved = true;
+
+        nativeFakeoutExperiment.logComplete();
         getLogger().info(`native_message_onapprove`, { payerID, paymentID, billingToken })
             .track({
                 [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE,
@@ -993,7 +1016,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const click = () => {
         return ZalgoPromise.try(() => {
             const sessionUID = uniqueID();
-            return useDirectAppSwitch() ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
+            return useDirectAppSwitch(fundingSource) ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
         }).catch(err => {
             return close().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({
