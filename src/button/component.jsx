@@ -494,10 +494,7 @@ export const Button : Component<ButtonOptions> = create({
 
                 allowed = Array.isArray(allowed) ? allowed : [];
                 disallowed = Array.isArray(disallowed) ? disallowed : [];
-
-                if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1) {
-                    allowed = allowed.filter(source => (source !== FUNDING.VENMO));
-                }
+                
                 if (allowed && allowed.indexOf(FUNDING.ITAU) !== -1) {
                     allowed = allowed.filter(source => (source !== FUNDING.ITAU));
                 }
