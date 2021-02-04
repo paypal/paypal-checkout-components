@@ -636,6 +636,9 @@ getGraphQLApiMock().listen();
 getLoggerApiMock().listen();
 getValidatePaymentMethodApiMock().listen();
 
+// eslint-disable-next-line compat/compat
+navigator.sendBeacon = () => true;
+
 type NativeMockWebSocket = {|
     expect : () => {|
         done : () => Promise<void>
