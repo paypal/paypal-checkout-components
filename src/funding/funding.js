@@ -19,8 +19,8 @@ type IsFundingEligibleOptions = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
     wallet? : ?Wallet,
-    supportsPopups? : boolean,
-    supportedNativeBrowser? : boolean
+    supportsPopups : boolean,
+    supportedNativeBrowser : boolean
 |};
 
 export function isFundingEligible(source : $Values<typeof FUNDING>,
@@ -82,7 +82,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
 export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser } :
     {| fundingSource : ?$Values<typeof FUNDING>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>,
     platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, supportsPopups? : boolean, supportedNativeBrowser? : boolean |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
+    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, supportsPopups : boolean, supportedNativeBrowser : boolean |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
 
     if (fundingSource) {
         return [ fundingSource ];
