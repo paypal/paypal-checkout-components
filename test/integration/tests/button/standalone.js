@@ -5,7 +5,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import { wrapPromise } from 'belter/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 
-import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, mockProp } from '../common';
+import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, WEBVIEW_USER_AGENT, mockProp } from '../common';
 
 describe(`paypal standalone buttons`, () => {
 
@@ -101,12 +101,10 @@ describe(`paypal standalone buttons`, () => {
         });
     });
 
-    it(`should render a standalone venmo button and error out when using an unsupported native browser`, () => {
+    it(`should render a standalone venmo button and error out for webviews`, () => {
         return wrapPromise(({ expect }) => {
             const fundingSource = FUNDING.VENMO;
-
-            // ineligible user agent - chrome on ios
-            window.navigator.mockUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/78.0.3904.84 Mobile/15E148 Safari/604.1';
+            window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
 
             const button = window.paypal.Buttons({
                 test: {},
