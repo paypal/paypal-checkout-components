@@ -1,3 +1,9 @@
+## <small>5.0.139 (2021-02-05)</small>
+
+* Fix eligibility call for standalone venmo button (#1537) ([daba12f](https://github.com/paypal/paypal-checkout-components/commit/daba12f)), closes [#1537](https://github.com/paypal/paypal-checkout-components/issues/1537)
+
+
+
 ## <small>5.0.138 (2021-02-03)</small>
 
 * add paymentMethodNonce and branded to button component (#1533) ([6498775](https://github.com/paypal/paypal-checkout-components/commit/6498775)), closes [#1533](https://github.com/paypal/paypal-checkout-components/issues/1533)
