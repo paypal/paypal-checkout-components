@@ -124,6 +124,14 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     return nativeSocket;
 });
 
+function isPopupFakeout() : boolean {
+    if (window.xprops.popupFakeout || nativeFakeoutExperiment.isEnabled()) {
+        return true;
+    }
+
+    return false;
+}
+
 function isControlGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
     const fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
 
@@ -134,7 +142,7 @@ function isControlGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
     return false;
 }
 
-function useDirectAppSwitch(fundingSource : $Values<typeof FUNDING>) : boolean {
+function useDirectAppSwitch() : boolean {
     if (window.xprops.forceNativeDirectAppSwitch) {
         return true;
     }
@@ -143,7 +151,7 @@ function useDirectAppSwitch(fundingSource : $Values<typeof FUNDING>) : boolean {
         return false;
     }
 
-    if (isControlGroup(fundingSource)) {
+    if (isPopupFakeout()) {
         return false;
     }
 
@@ -245,7 +253,7 @@ function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentElig
         return true;
     }
 
-    if (isControlGroup(fundingSource) && (window.xprops.popupFakeout || nativeFakeoutExperiment.isEnabled())) {
+    if (isControlGroup(fundingSource) && isPopupFakeout()) {
         return true;
     }
 
@@ -1022,7 +1030,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const click = () => {
         return ZalgoPromise.try(() => {
             const sessionUID = uniqueID();
-            return useDirectAppSwitch(fundingSource) ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
+            return useDirectAppSwitch() ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
         }).catch(err => {
             return close().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({
