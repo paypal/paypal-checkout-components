@@ -636,6 +636,26 @@ window.spb = function(modules) {
             }
             return !1;
         }
+        function onCloseWindow(win, callback, delay, maxtime) {
+            void 0 === delay && (delay = 1e3);
+            void 0 === maxtime && (maxtime = 1 / 0);
+            var timeout;
+            !function check() {
+                if (isWindowClosed(win)) {
+                    timeout && clearTimeout(timeout);
+                    return callback();
+                }
+                if (maxtime <= 0) clearTimeout(timeout); else {
+                    maxtime -= delay;
+                    timeout = setTimeout(check, delay);
+                }
+            }();
+            return {
+                cancel: function() {
+                    timeout && clearTimeout(timeout);
+                }
+            };
+        }
         function isWindow(obj) {
             try {
                 if (obj === window) return !0;
@@ -1534,6 +1554,77 @@ window.spb = function(modules) {
         function isEmailAddress(str) {
             return Boolean(str.match(/^.+@.+\..+$/));
         }
+        function createExperiment(name, sample) {
+            var logger = logger_getLogger();
+            return function(_ref) {
+                var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint;
+                var throttle = function(name) {
+                    return getBelterExperimentStorage().getState((function(state) {
+                        state.throttlePercentiles = state.throttlePercentiles || {};
+                        state.throttlePercentiles[name] = state.throttlePercentiles[name] || Math.floor(100 * Math.random());
+                        return state.throttlePercentiles[name];
+                    }));
+                }(name);
+                var group;
+                var treatment = name + "_" + (group = throttle < sample ? "test" : sample >= 50 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle");
+                var started = !1;
+                var forced = !1;
+                try {
+                    window.localStorage && window.localStorage.getItem(name) && (forced = !0);
+                } catch (err) {}
+                return {
+                    isEnabled: function() {
+                        return "test" === group || forced;
+                    },
+                    isDisabled: function() {
+                        return "test" !== group && !forced;
+                    },
+                    getTreatment: function() {
+                        return treatment;
+                    },
+                    log: function(checkpoint, payload) {
+                        void 0 === payload && (payload = {});
+                        if (!started) return this;
+                        isEventUnique(name + "_" + treatment + "_" + JSON.stringify(payload)) && logTreatment({
+                            name: name,
+                            treatment: treatment,
+                            payload: payload
+                        });
+                        isEventUnique(name + "_" + treatment + "_" + checkpoint + "_" + JSON.stringify(payload)) && logCheckpoint({
+                            name: name,
+                            treatment: treatment,
+                            checkpoint: checkpoint,
+                            payload: payload
+                        });
+                        return this;
+                    },
+                    logStart: function(payload) {
+                        void 0 === payload && (payload = {});
+                        started = !0;
+                        return this.log("start", payload);
+                    },
+                    logComplete: function(payload) {
+                        void 0 === payload && (payload = {});
+                        return this.log("complete", payload);
+                    }
+                };
+            }({
+                name: name,
+                sample: sample,
+                logTreatment: function(_ref) {
+                    var _extends2;
+                    var treatment = _ref.treatment, payload = _ref.payload;
+                    var fullPayload = _extends(((_extends2 = {}).state_name = "PXP_CHECK", _extends2.transition_name = "process_pxp_check", 
+                    _extends2.pxp_exp_id = name, _extends2.pxp_trtmnt_id = treatment, _extends2), payload);
+                    logger.track(fullPayload);
+                    logger.flush();
+                },
+                logCheckpoint: function(_ref2) {
+                    logger.info(name + "_" + _ref2.treatment + "_" + _ref2.checkpoint, _ref2.payload);
+                    logger.flush();
+                }
+            });
+        }
         function isIOSSafari() {
             return isIos() && function(ua) {
                 void 0 === ua && (ua = getUserAgent());
@@ -1683,7 +1774,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.363", _headers10);
+            _headers10["x-app-version"] = "2.0.364", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2413,76 +2504,7 @@ window.spb = function(modules) {
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken;
             var xprops = window.xprops;
-            var upgradeLSATExperiment = (name = "UPGRADE_LSAT_EXPERIMENT", logger = logger_getLogger(), 
-            function(_ref) {
-                var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint;
-                var throttle = function(name) {
-                    return getBelterExperimentStorage().getState((function(state) {
-                        state.throttlePercentiles = state.throttlePercentiles || {};
-                        state.throttlePercentiles[name] = state.throttlePercentiles[name] || Math.floor(100 * Math.random());
-                        return state.throttlePercentiles[name];
-                    }));
-                }(name);
-                var group;
-                var treatment = name + "_" + (group = throttle < sample ? "test" : sample >= 50 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle");
-                var started = !1;
-                var forced = !1;
-                try {
-                    window.localStorage && window.localStorage.getItem(name) && (forced = !0);
-                } catch (err) {}
-                return {
-                    isEnabled: function() {
-                        return "test" === group || forced;
-                    },
-                    isDisabled: function() {
-                        return "test" !== group && !forced;
-                    },
-                    getTreatment: function() {
-                        return treatment;
-                    },
-                    log: function(checkpoint, payload) {
-                        void 0 === payload && (payload = {});
-                        if (!started) return this;
-                        isEventUnique(name + "_" + treatment + "_" + JSON.stringify(payload)) && logTreatment({
-                            name: name,
-                            treatment: treatment,
-                            payload: payload
-                        });
-                        isEventUnique(name + "_" + treatment + "_" + checkpoint + "_" + JSON.stringify(payload)) && logCheckpoint({
-                            name: name,
-                            treatment: treatment,
-                            checkpoint: checkpoint,
-                            payload: payload
-                        });
-                        return this;
-                    },
-                    logStart: function(payload) {
-                        void 0 === payload && (payload = {});
-                        started = !0;
-                        return this.log("start", payload);
-                    },
-                    logComplete: function(payload) {
-                        void 0 === payload && (payload = {});
-                        return this.log("complete", payload);
-                    }
-                };
-            }({
-                name: name,
-                sample: 1,
-                logTreatment: function(_ref) {
-                    var _extends2;
-                    var treatment = _ref.treatment, payload = _ref.payload;
-                    var fullPayload = _extends(((_extends2 = {}).state_name = "PXP_CHECK", _extends2.transition_name = "process_pxp_check", 
-                    _extends2.pxp_exp_id = name, _extends2.pxp_trtmnt_id = treatment, _extends2), payload);
-                    logger.track(fullPayload);
-                    logger.flush();
-                },
-                logCheckpoint: function(_ref2) {
-                    logger.info(name + "_" + _ref2.treatment + "_" + _ref2.checkpoint, _ref2.payload);
-                    logger.flush();
-                }
-            }));
-            var name, logger;
+            var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", 1);
             var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 === _xprops$upgradeLSAT ? upgradeLSATExperiment.isEnabled() : _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
             } : _xprops$getQueriedEli, storageID = xprops.storageID;
@@ -3005,6 +3027,7 @@ window.spb = function(modules) {
                 nonce: nonce
             }), children));
         }
+        var nativeFakeoutExperiment = createExperiment("native_popup_fakeout", 0);
         var checkoutOpen = !1;
         var canRenderTop = !1;
         var checkout = {
@@ -3282,6 +3305,7 @@ window.spb = function(modules) {
                         onApprove: function(_ref10) {
                             var payerID = _ref10.payerID, paymentID = _ref10.paymentID, billingToken = _ref10.billingToken, subscriptionID = _ref10.subscriptionID, authCode = _ref10.authCode;
                             approved = !0;
+                            nativeFakeoutExperiment.logComplete();
                             logger_getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
                             return close().then((function() {
                                 return _onApprove({
@@ -4252,6 +4276,8 @@ window.spb = function(modules) {
         _NATIVE_CHECKOUT_FALL.venmo = "/smart/checkout/venmo/fallback", _NATIVE_CHECKOUT_FALL);
         var PARTIAL_ENCODING_CLIENT = [ "AeG7a0wQ2s97hNLb6yWzDqYTsuD-4AaxDHjz4I2EWMKN6vktKYqKJhtGqmH2cNj_JyjHR4Xj9Jt6ORHs" ];
         var native_clean;
+        var initialPageUrl;
+        var nativeEligibility;
         var getNativeSocket = memoize((function(_ref) {
             var sessionUID = _ref.sessionUID;
             var nativeSocket = function(_ref9) {
@@ -4564,6 +4590,10 @@ window.spb = function(modules) {
             }));
             return nativeSocket;
         }));
+        function isControlGroup(fundingSource) {
+            var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
+            return !(!fundingEligibility || fundingEligibility.eligibility || "experimentation_ineligibility" !== fundingEligibility.ineligibilityReason);
+        }
         function didAppSwitch(popupWin) {
             return !popupWin || isWindowClosed(popupWin);
         }
@@ -4574,8 +4604,6 @@ window.spb = function(modules) {
             } catch (err) {}
             return !1;
         }
-        var initialPageUrl;
-        var nativeEligibility;
         function urlEncodeWithPartialEncoding(str) {
             return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B").replace(/[=]/g, "%3D");
         }
@@ -4766,7 +4794,7 @@ window.spb = function(modules) {
                 var eligibility = _ref4.serviceData.eligibility;
                 return !(payment.win || !initialPageUrl || !NATIVE_CHECKOUT_URI[fundingSource] || !isNativeOptedIn({
                     props: _ref4.props
-                }) && (!eligibility.nativeCheckout || !eligibility.nativeCheckout[fundingSource]) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility));
+                }) && (!eligibility.nativeCheckout || !eligibility.nativeCheckout[fundingSource]) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) && (!isControlGroup(fundingSource) || !window.xprops.popupFakeout && !nativeFakeoutExperiment.isEnabled()));
             },
             init: function(_ref6) {
                 var props = _ref6.props, components = _ref6.components, config = _ref6.config, payment = _ref6.payment, serviceData = _ref6.serviceData;
@@ -4808,6 +4836,7 @@ window.spb = function(modules) {
                 var approved = !1;
                 var cancelled = !1;
                 var didFallback = !1;
+                nativeFakeoutExperiment.logStart();
                 logger_getLogger().info("native_start_" + (isIOSSafari() ? "ios" : "android") + "_window_width_" + window.outerWidth).info("native_start_" + (isIOSSafari() ? "ios" : "android") + "_window_height_" + window.outerHeight).info("native_stickiness_id_" + (isIOSSafari() ? "ios" : "android") + "_" + function() {
                     return (function(str) {
                         var hash = 0;
@@ -5223,7 +5252,9 @@ window.spb = function(modules) {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
                             var sessionUID = uniqueID();
-                            return window.xprops.forceNativeDirectAppSwitch || !window.xprops.forceNativePopupAppSwitch && isAndroidChrome() ? function(_ref17) {
+                            return function(fundingSource) {
+                                return !!window.xprops.forceNativeDirectAppSwitch || !window.xprops.forceNativePopupAppSwitch && !isControlGroup(fundingSource) && isAndroidChrome();
+                            }(fundingSource) ? function(_ref17) {
                                 var _getLogger$info$info$, _getLogger$info$info$2;
                                 var sessionUID = _ref17.sessionUID;
                                 var nativeUrl = getDirectNativeUrl({
@@ -5301,34 +5332,15 @@ window.spb = function(modules) {
                                 logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track15 = {}, 
                                 _getLogger$info$track15.state_name = "smart_button", _getLogger$info$track15.transition_name = "popup_shown", 
                                 _getLogger$info$track15)).flush();
-                                var closeListener = function(win, callback, delay, maxtime) {
-                                    void 0 === delay && (delay = 1e3);
-                                    void 0 === maxtime && (maxtime = 1 / 0);
-                                    var timeout;
-                                    !function check() {
-                                        if (isWindowClosed(win)) {
-                                            timeout && clearTimeout(timeout);
-                                            return function() {
-                                                var _getLogger$info$track16;
-                                                logger_getLogger().info("native_popup_closed").track((_getLogger$info$track16 = {}, 
-                                                _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_closed", 
-                                                _getLogger$info$track16)).flush();
-                                                return promise_ZalgoPromise.delay(1e3).then((function() {
-                                                    if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.all([ onCancel(), close() ]);
-                                                })).then(src_util_noop);
-                                            }();
-                                        }
-                                        if (maxtime <= 0) clearTimeout(timeout); else {
-                                            maxtime -= delay;
-                                            timeout = setTimeout(check, delay);
-                                        }
-                                    }();
-                                    return {
-                                        cancel: function() {
-                                            timeout && clearTimeout(timeout);
-                                        }
-                                    };
-                                }(popupWin, 0, 500);
+                                var closeListener = onCloseWindow(popupWin, (function() {
+                                    var _getLogger$info$track16;
+                                    logger_getLogger().info("native_popup_closed").track((_getLogger$info$track16 = {}, 
+                                    _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_closed", 
+                                    _getLogger$info$track16)).flush();
+                                    return promise_ZalgoPromise.delay(1e3).then((function() {
+                                        if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.all([ onCancel(), close() ]);
+                                    })).then(src_util_noop);
+                                }), 500);
                                 native_clean.register((function() {
                                     closeListener.cancel();
                                 }));
@@ -5390,6 +5402,14 @@ window.spb = function(modules) {
                                             _getLogger$info$track19.transition_name = "app_switch_attempted", _getLogger$info$track19.info_msg = nativeUrl, 
                                             _getLogger$info$track19)).flush();
                                             redirected = !0;
+                                            if (isAndroidChrome()) {
+                                                var appSwitchCloseListener = onCloseWindow(popupWin, (function() {
+                                                    detectAppSwitch({
+                                                        sessionUID: sessionUID
+                                                    });
+                                                }));
+                                                setTimeout(appSwitchCloseListener.cancel, 1e3);
+                                            }
                                             return {
                                                 redirect: !0,
                                                 redirectUrl: nativeUrl
@@ -6172,7 +6192,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.363", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.364", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
