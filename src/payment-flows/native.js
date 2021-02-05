@@ -939,6 +939,14 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         }).flush();
 
                     redirected = true;
+
+                    if (isAndroidChrome()) {
+                        const appSwitchCloseListener = onCloseWindow(popupWin, () => {
+                            detectAppSwitch({ sessionUID });
+                        });
+                        setTimeout(appSwitchCloseListener.cancel, 1000);
+                    }
+
                     return { redirect: true, redirectUrl: nativeUrl };
                 });
 
