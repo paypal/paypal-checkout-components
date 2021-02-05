@@ -123,7 +123,6 @@ describe(`paypal standalone buttons`, () => {
         });
     });
 
-
     it(`should render a standalone ideal button and error out when onShippingChange is passed, even when ideal is eligible`, () => {
         return wrapPromise(({ expect }) => {
             const fundingSource = FUNDING.IDEAL;

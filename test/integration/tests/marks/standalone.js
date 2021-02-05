@@ -21,7 +21,7 @@ describe(`paypal standalone marks`, () => {
         if (!window.__TEST_FUNDING_ELIGIBILITY__[fundingSource]) {
             continue;
         }
-        
+
         it(`should render a standalone ${ fundingSource } mark and succeed when eligible`, () => {
             return wrapPromise(() => {
                 if (fundingSource === FUNDING.VENMO) {
@@ -35,11 +35,11 @@ describe(`paypal standalone marks`, () => {
                     fundingSource
 
                 });
-                
+
                 if (!mark.isEligible()) {
                     throw new Error(`Expected mark to be eligible`);
                 }
-                
+
                 return mark.render('#testContainer').then(() => {
                     mockEligibility.cancel();
                 });
@@ -62,7 +62,7 @@ describe(`paypal standalone marks`, () => {
                 if (mark.isEligible()) {
                     throw new Error(`Expected mark to not be eligible`);
                 }
-                
+
                 return mark.render('#testContainer').catch(expect('markRenderCatch')).then(() => {
                     mockEligibility.cancel();
                 });
@@ -86,6 +86,28 @@ describe(`paypal standalone marks`, () => {
 
             return mark.render('#testContainer').catch(expect('markRenderCatch')).then(() => {
                 mockEligibility.cancel();
+            });
+        });
+    });
+
+    it(`should render a standalone venmo mark and error out when using an unsupported native browser`, () => {
+        return wrapPromise(({ expect }) => {
+            const fundingSource = FUNDING.VENMO;
+
+            // ineligible user agent - chrome on ios
+            window.navigator.mockUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/78.0.3904.84 Mobile/15E148 Safari/604.1';
+
+            const mark = window.paypal.Marks({
+                test: {},
+                fundingSource
+            });
+
+            if (mark.isEligible()) {
+                throw new Error(`Expected mark to not be eligible`);
+            }
+
+            return mark.render('#testContainer').catch(expect('markRenderCatch')).then(() => {
+                window.navigator.mockUserAgent = '';
             });
         });
     });
