@@ -1774,7 +1774,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.364", _headers10);
+            _headers10["x-app-version"] = "2.0.365", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4590,9 +4590,8 @@ window.spb = function(modules) {
             }));
             return nativeSocket;
         }));
-        function isControlGroup(fundingSource) {
-            var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
-            return !(!fundingEligibility || fundingEligibility.eligibility || "experimentation_ineligibility" !== fundingEligibility.ineligibilityReason);
+        function isPopupFakeout() {
+            return !(!window.xprops.popupFakeout && !nativeFakeoutExperiment.isEnabled());
         }
         function didAppSwitch(popupWin) {
             return !popupWin || isWindowClosed(popupWin);
@@ -4794,7 +4793,10 @@ window.spb = function(modules) {
                 var eligibility = _ref4.serviceData.eligibility;
                 return !(payment.win || !initialPageUrl || !NATIVE_CHECKOUT_URI[fundingSource] || !isNativeOptedIn({
                     props: _ref4.props
-                }) && (!eligibility.nativeCheckout || !eligibility.nativeCheckout[fundingSource]) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) && (!isControlGroup(fundingSource) || !window.xprops.popupFakeout && !nativeFakeoutExperiment.isEnabled()));
+                }) && (!eligibility.nativeCheckout || !eligibility.nativeCheckout[fundingSource]) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) && (!function(fundingSource) {
+                    var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
+                    return !(!fundingEligibility || fundingEligibility.eligibility || "experimentation_ineligibility" !== fundingEligibility.ineligibilityReason);
+                }(fundingSource) || !isPopupFakeout()));
             },
             init: function(_ref6) {
                 var props = _ref6.props, components = _ref6.components, config = _ref6.config, payment = _ref6.payment, serviceData = _ref6.serviceData;
@@ -5252,9 +5254,7 @@ window.spb = function(modules) {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
                             var sessionUID = uniqueID();
-                            return function(fundingSource) {
-                                return !!window.xprops.forceNativeDirectAppSwitch || !window.xprops.forceNativePopupAppSwitch && !isControlGroup(fundingSource) && isAndroidChrome();
-                            }(fundingSource) ? function(_ref17) {
+                            return window.xprops.forceNativeDirectAppSwitch || !window.xprops.forceNativePopupAppSwitch && !isPopupFakeout() && isAndroidChrome() ? function(_ref17) {
                                 var _getLogger$info$info$, _getLogger$info$info$2;
                                 var sessionUID = _ref17.sessionUID;
                                 var nativeUrl = getDirectNativeUrl({
@@ -6192,7 +6192,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.364", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.365", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
