@@ -10,8 +10,9 @@ import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } 
 import type { ButtonProps } from '../button/props';
 import { WEB_CHECKOUT_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
-import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, getStickinessID, createExperiment } from '../lib';
+import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, getStickinessID } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
+import { nativeFakeoutExperiment } from '../experiments';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 import type { NativePopupInputParams } from '../../server/components/native/params';
 
@@ -122,8 +123,6 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
 
     return nativeSocket;
 });
-
-const nativeFakeoutExperiment = createExperiment('native_popup_fakeout', 0);
 
 function isControlGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
     const fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
@@ -547,7 +546,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const onApproveCallback = ({ data: { payerID, paymentID, billingToken } }) => {
         approved = true;
 
-        nativeFakeoutExperiment.logComplete();
         getLogger().info(`native_message_onapprove`, { payerID, paymentID, billingToken })
             .track({
                 [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE,
