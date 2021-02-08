@@ -490,7 +490,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
             supportedNativeBrowser: {
                 type:       'boolean',
-                value:      isSupportedNativeBrowser
+                value:      isSupportedNativeBrowser,
+                queryParam: true
             }
         }
     });
