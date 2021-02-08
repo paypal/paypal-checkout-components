@@ -1,3 +1,9 @@
+## <small>5.0.140 (2021-02-08)</small>
+
+* Add 'supportedNativeBrowser' as a valid query param (#1538) ([c235ead](https://github.com/paypal/paypal-checkout-components/commit/c235ead)), closes [#1538](https://github.com/paypal/paypal-checkout-components/issues/1538)
+
+
+
 ## <small>5.0.139 (2021-02-05)</small>
 
 * Fix eligibility call for standalone venmo button (#1537) ([daba12f](https://github.com/paypal/paypal-checkout-components/commit/daba12f)), closes [#1537](https://github.com/paypal/paypal-checkout-components/issues/1537)
