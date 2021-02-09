@@ -1278,6 +1278,9 @@ window.spb = function(modules) {
                 return !1;
             }));
         }
+        function getRandomInteger(range) {
+            return Math.floor(Math.random() * range);
+        }
         var http_headerBuilders = [];
         function request(_ref) {
             var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
@@ -1554,17 +1557,18 @@ window.spb = function(modules) {
         function isEmailAddress(str) {
             return Boolean(str.match(/^.+@.+\..+$/));
         }
-        function createExperiment(name, sample) {
+        function createExperiment(name, _ref) {
+            var sample = _ref.sample, _ref$sticky = _ref.sticky, sticky = void 0 === _ref$sticky || _ref$sticky;
             var logger = logger_getLogger();
             return function(_ref) {
-                var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint;
-                var throttle = function(name) {
+                var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint, _ref$sticky = _ref.sticky;
+                var throttle = void 0 === _ref$sticky || _ref$sticky ? function(name) {
                     return getBelterExperimentStorage().getState((function(state) {
                         state.throttlePercentiles = state.throttlePercentiles || {};
-                        state.throttlePercentiles[name] = state.throttlePercentiles[name] || Math.floor(100 * Math.random());
+                        state.throttlePercentiles[name] = state.throttlePercentiles[name] || getRandomInteger(100);
                         return state.throttlePercentiles[name];
                     }));
-                }(name);
+                }(name) : getRandomInteger(100);
                 var group;
                 var treatment = name + "_" + (group = throttle < sample ? "test" : sample >= 50 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle");
                 var started = !1;
@@ -1585,16 +1589,18 @@ window.spb = function(modules) {
                     log: function(checkpoint, payload) {
                         void 0 === payload && (payload = {});
                         if (!started) return this;
-                        isEventUnique(name + "_" + treatment + "_" + JSON.stringify(payload)) && logTreatment({
+                        isEventUnique(treatment + "_" + JSON.stringify(payload)) && logTreatment({
                             name: name,
                             treatment: treatment,
-                            payload: payload
+                            payload: payload,
+                            throttle: throttle
                         });
-                        isEventUnique(name + "_" + treatment + "_" + checkpoint + "_" + JSON.stringify(payload)) && logCheckpoint({
+                        isEventUnique(treatment + "_" + checkpoint + "_" + JSON.stringify(payload)) && logCheckpoint({
                             name: name,
                             treatment: treatment,
                             checkpoint: checkpoint,
-                            payload: payload
+                            payload: payload,
+                            throttle: throttle
                         });
                         return this;
                     },
@@ -1611,18 +1617,19 @@ window.spb = function(modules) {
             }({
                 name: name,
                 sample: sample,
-                logTreatment: function(_ref) {
+                logTreatment: function(_ref2) {
                     var _extends2;
-                    var treatment = _ref.treatment, payload = _ref.payload;
+                    var treatment = _ref2.treatment, payload = _ref2.payload;
                     var fullPayload = _extends(((_extends2 = {}).state_name = "PXP_CHECK", _extends2.transition_name = "process_pxp_check", 
                     _extends2.pxp_exp_id = name, _extends2.pxp_trtmnt_id = treatment, _extends2), payload);
                     logger.track(fullPayload);
                     logger.flush();
                 },
-                logCheckpoint: function(_ref2) {
-                    logger.info(name + "_" + _ref2.treatment + "_" + _ref2.checkpoint, _ref2.payload);
+                logCheckpoint: function(_ref3) {
+                    logger.info(_ref3.treatment + "_" + _ref3.checkpoint, _ref3.payload);
                     logger.flush();
-                }
+                },
+                sticky: sticky
             });
         }
         function isIOSSafari() {
@@ -1774,7 +1781,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.366", _headers10);
+            _headers10["x-app-version"] = "2.0.367", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2504,7 +2511,9 @@ window.spb = function(modules) {
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken;
             var xprops = window.xprops;
-            var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", 1);
+            var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", {
+                sample: 1
+            });
             var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 === _xprops$upgradeLSAT ? upgradeLSATExperiment.isEnabled() : _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
             } : _xprops$getQueriedEli, storageID = xprops.storageID;
@@ -3027,7 +3036,10 @@ window.spb = function(modules) {
                 nonce: nonce
             }), children));
         }
-        var nativeFakeoutExperiment = createExperiment("native_popup_fakeout", 10);
+        var nativeFakeoutExperiment = createExperiment("native_popup_fakeout_" + (isIOSSafari() ? "ios_safari" : isAndroidChrome() ? "android_chrome" : "unsupported_platform"), {
+            sample: 10,
+            sticky: !1
+        });
         var checkoutOpen = !1;
         var canRenderTop = !1;
         var checkout = {
@@ -6192,7 +6204,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.366", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.367", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
