@@ -165,7 +165,7 @@ export type ButtonProps = {|
 export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ButtonProps {
 
     const xprops : ButtonXProps = window.xprops;
-    const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, UPGRADE_LSAT_RAMP.RAMP);
+    const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, { sample: UPGRADE_LSAT_RAMP.RAMP });
 
     let {
         uid,

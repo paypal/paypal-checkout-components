@@ -2,6 +2,16 @@
 
 import { type Experiment } from 'belter/src';
 
-import { createExperiment } from './lib';
+import { createExperiment, isIOSSafari, isAndroidChrome } from './lib';
 
-export const nativeFakeoutExperiment : Experiment = createExperiment('native_popup_fakeout', 10);
+let platform;
+
+if (isIOSSafari()) {
+    platform = 'ios_safari';
+} else if (isAndroidChrome()) {
+    platform = 'android_chrome';
+} else {
+    platform = 'unsupported_platform';
+}
+
+export const nativeFakeoutExperiment : Experiment = createExperiment(`native_popup_fakeout_${ platform }`, { sample: 10, sticky: false });
