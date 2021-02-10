@@ -1626,7 +1626,9 @@ window.spb = function(modules) {
                     logger.flush();
                 },
                 logCheckpoint: function(_ref3) {
-                    logger.info(_ref3.treatment + "_" + _ref3.checkpoint, _ref3.payload);
+                    logger.info(_ref3.treatment + "_" + _ref3.checkpoint, _extends({}, _ref3.payload, {
+                        throttle: _ref3.throttle.toString()
+                    }));
                     logger.flush();
                 },
                 sticky: sticky
@@ -1781,7 +1783,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.367", _headers10);
+            _headers10["x-app-version"] = "2.0.368", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3036,7 +3038,7 @@ window.spb = function(modules) {
                 nonce: nonce
             }), children));
         }
-        var nativeFakeoutExperiment = createExperiment("native_popup_fakeout_" + (isIOSSafari() ? "ios_safari" : isAndroidChrome() ? "android_chrome" : "unsupported_platform"), {
+        var nativeFakeoutExperiment = createExperiment("native_popup_fakeout_v2_" + (isIOSSafari() ? "ios_safari" : isAndroidChrome() ? "android_chrome" : "unsupported_platform"), {
             sample: 10,
             sticky: !1
         });
@@ -4850,7 +4852,6 @@ window.spb = function(modules) {
                 var approved = !1;
                 var cancelled = !1;
                 var didFallback = !1;
-                nativeFakeoutExperiment.logStart();
                 logger_getLogger().info("native_start_" + (isIOSSafari() ? "ios" : "android") + "_window_width_" + window.outerWidth).info("native_start_" + (isIOSSafari() ? "ios" : "android") + "_window_height_" + window.outerHeight).info("native_stickiness_id_" + (isIOSSafari() ? "ios" : "android") + "_" + function() {
                     return (function(str) {
                         var hash = 0;
@@ -5706,6 +5707,7 @@ window.spb = function(modules) {
                                                 var startPromise = promise_ZalgoPromise.try((function() {
                                                     return updateClientConfigPromise;
                                                 })).then((function() {
+                                                    nativeFakeoutExperiment.logStart();
                                                     return start();
                                                 }));
                                                 var validateOrderPromise = createOrder().then((function(orderID) {
@@ -6204,7 +6206,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.367", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.368", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
