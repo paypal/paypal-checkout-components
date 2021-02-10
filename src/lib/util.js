@@ -114,8 +114,8 @@ export function createExperiment(name : string, { sample, sticky = true } : Crea
             logger.flush();
         },
 
-        logCheckpoint({ treatment, checkpoint, payload }) {
-            logger.info(`${ treatment }_${ checkpoint }`, payload);
+        logCheckpoint({ treatment, checkpoint, payload, throttle }) {
+            logger.info(`${ treatment }_${ checkpoint }`, { ...payload, throttle: throttle.toString() });
             logger.flush();
         },
 
