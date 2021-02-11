@@ -445,7 +445,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             clientMetadataID: {
                 type:       'string',
                 required:   false,
-                value:      getClientMetadataID,
+                default:    getClientMetadataID,
                 queryParam: true
             },
 
