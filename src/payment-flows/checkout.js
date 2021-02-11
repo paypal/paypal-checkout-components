@@ -244,6 +244,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     let forceClosed = false;
 
     const init = () => {
+        nativeFakeoutExperiment.log('web_checkout_start');
+        
         return Checkout({
             window: win,
             sessionID,
@@ -339,6 +341,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             },
 
             onAuth: ({ accessToken }) => {
+                nativeFakeoutExperiment.log('web_checkout_auth');
 
                 const access_token = accessToken ? accessToken : buyerAccessToken;
 
@@ -348,6 +351,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             },
 
             onCancel: () => {
+                nativeFakeoutExperiment.log('web_checkout_cancel');
+                
                 // eslint-disable-next-line no-use-before-define
                 return close().then(() => {
                     return onCancel();
