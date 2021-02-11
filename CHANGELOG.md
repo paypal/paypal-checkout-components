@@ -1,3 +1,9 @@
+## <small>5.0.141 (2021-02-11)</small>
+
+* Allow clientMetadataID to be passed into button render ([01d90b4](https://github.com/paypal/paypal-checkout-components/commit/01d90b4))
+
+
+
 ## <small>5.0.140 (2021-02-08)</small>
 
 * Add 'supportedNativeBrowser' as a valid query param (#1538) ([c235ead](https://github.com/paypal/paypal-checkout-components/commit/c235ead)), closes [#1538](https://github.com/paypal/paypal-checkout-components/issues/1538)
