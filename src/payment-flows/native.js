@@ -39,7 +39,8 @@ const SOCKET_MESSAGE = {
     ON_SHIPPING_CHANGE: 'onShippingChange',
     ON_APPROVE:         'onApprove',
     ON_CANCEL:          'onCancel',
-    ON_ERROR:           'onError'
+    ON_ERROR:           'onError',
+    ON_FALLBACK:        'onFallback'
 };
 
 const NATIVE_DOMAIN = {
@@ -625,6 +626,15 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         }
     };
 
+    const onFallbackCallback = () => {
+        getLogger().info(`native_message_onfallback`)
+            .track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_FALLBACK
+            }).flush();
+        fallbackToWebCheckout();
+    };
+
+    // This is where we initialize and configure the Firebase connection
     const connectNative = memoize(({ sessionUID } : {| sessionUID : string |}) : NativeConnection => {
         const socket = getNativeSocket({
             sessionUID, firebaseConfig, version: sdkVersion
@@ -665,12 +675,14 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const onApproveListener = socket.on(SOCKET_MESSAGE.ON_APPROVE, onApproveCallback);
         const onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, onCancelCallback);
         const onErrorListener = socket.on(SOCKET_MESSAGE.ON_ERROR, onErrorCallback);
+        const onFallbackListener = socket.on(SOCKET_MESSAGE.ON_FALLBACK, onFallbackCallback);
 
         clean.register(getPropsListener.cancel);
         clean.register(onShippingChangeListener.cancel);
         clean.register(onApproveListener.cancel);
         clean.register(onCancelListener.cancel);
         clean.register(onErrorListener.cancel);
+        clean.register(onFallbackListener.cancel);
 
         socket.reconnect();
 
@@ -776,6 +788,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_CLOSING_POPUP
             }).flush();
+
             nativeWin.close();
         };
         window.addEventListener('pagehide', closePopup);
@@ -803,6 +816,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
                     [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
                 }).flush();
+
                 return delayPromise.then(() => {
                     if (didAppSwitch(nativeWin)) {
                         return connectNative({ sessionUID }).close();
