@@ -62,7 +62,7 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "setupMenu", (function() {
         return setupMenu;
     }));
-    var n, preact_module_u, preact_module_i, preact_module_t, preact_module_o = {}, f = [], preact_module_e = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
+    var n, preact_module_u, preact_module_i, preact_module_t, preact_module_o = {}, f = [], e = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
     function c(n, l) {
         for (var u in l) n[u] = l[u];
         return n;
@@ -166,7 +166,7 @@ window.spb = function(modules) {
         return void 0 !== o ? o : t.nextSibling;
     }
     function P(n, l, u) {
-        "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || preact_module_e.test(l) ? u : u + "px";
+        "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || e.test(l) ? u : u + "px";
     }
     function C(n, l, u, i, t) {
         var r;
@@ -237,30 +237,30 @@ window.spb = function(modules) {
         }));
     }
     function z(n, l, u, i, t, r, e, c) {
-        var a, v, h, y, p, d = u.props, _ = l.props, k = l.type;
-        if ("svg" === k && (t = !0), null != r) for (a = 0; a < r.length; a++) if (null != (v = r[a]) && (n == v || v.localName == k)) {
-            n = v, r[a] = null;
+        var a, v, h, y, p = u.props, d = l.props, _ = l.type, k = 0;
+        if ("svg" === _ && (t = !0), null != r) for (;k < r.length; k++) if ((a = r[k]) && (a === n || (_ ? a.localName == _ : 3 == a.nodeType))) {
+            n = a, r[k] = null;
             break;
         }
         if (null == n) {
-            if (null === k) return document.createTextNode(_);
-            n = t ? document.createElementNS("http://www.w3.org/2000/svg", k) : document.createElement(k, _.is && _), 
+            if (null === _) return document.createTextNode(d);
+            n = t ? document.createElementNS("http://www.w3.org/2000/svg", _) : document.createElement(_, d.is && d), 
             r = null, c = !1;
         }
-        if (null === k) d === _ || c && n.data === _ || (n.data = _); else {
-            if (null != r && (r = f.slice.call(n.childNodes)), h = (d = u.props || preact_module_o).dangerouslySetInnerHTML, 
-            y = _.dangerouslySetInnerHTML, !c) {
-                if (null != r) for (d = {}, p = 0; p < n.attributes.length; p++) d[n.attributes[p].name] = n.attributes[p].value;
-                (y || h) && (y && (h && y.__html == h.__html || y.__html === n.innerHTML) || (n.innerHTML = y && y.__html || ""));
+        if (null === _) p === d || c && n.data === d || (n.data = d); else {
+            if (r = r && f.slice.call(n.childNodes), v = (p = u.props || preact_module_o).dangerouslySetInnerHTML, 
+            h = d.dangerouslySetInnerHTML, !c) {
+                if (null != r) for (p = {}, y = 0; y < n.attributes.length; y++) p[n.attributes[y].name] = n.attributes[y].value;
+                (h || v) && (h && (v && h.__html == v.__html || h.__html === n.innerHTML) || (n.innerHTML = h && h.__html || ""));
             }
             if (function(n, l, u, i, t) {
                 var r;
                 for (r in u) "children" === r || "key" === r || r in l || C(n, r, null, u[r], i);
                 for (r in l) t && "function" != typeof l[r] || "children" === r || "key" === r || "value" === r || "checked" === r || u[r] === l[r] || C(n, r, l[r], u[r], i);
-            }(n, _, d, t, c), y) l.__k = []; else if (a = l.props.children, b(n, Array.isArray(a) ? a : [ a ], l, u, i, t && "foreignObject" !== k, r, e, n.firstChild, c), 
-            null != r) for (a = r.length; a--; ) null != r[a] && s(r[a]);
-            c || ("value" in _ && void 0 !== (a = _.value) && (a !== n.value || "progress" === k && !a) && C(n, "value", a, d.value, !1), 
-            "checked" in _ && void 0 !== (a = _.checked) && a !== n.checked && C(n, "checked", a, d.checked, !1));
+            }(n, d, p, t, c), h) l.__k = []; else if (k = l.props.children, b(n, Array.isArray(k) ? k : [ k ], l, u, i, t && "foreignObject" !== _, r, e, n.firstChild, c), 
+            null != r) for (k = r.length; k--; ) null != r[k] && s(r[k]);
+            c || ("value" in d && void 0 !== (k = d.value) && (k !== n.value || "progress" === _ && !k) && C(n, "value", k, p.value, !1), 
+            "checked" in d && void 0 !== (k = d.checked) && k !== n.checked && C(n, "checked", k, p.checked, !1));
         }
         return n;
     }
@@ -394,10 +394,16 @@ window.spb = function(modules) {
     function hooks_module_w(n, t) {
         return "function" == typeof t ? t(n) : t;
     }
+    function _setPrototypeOf(o, p) {
+        return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
+            o.__proto__ = p;
+            return o;
+        })(o, p);
+    }
     function _inheritsLoose(subClass, superClass) {
         subClass.prototype = Object.create(superClass.prototype);
         subClass.prototype.constructor = subClass;
-        subClass.__proto__ = superClass;
+        _setPrototypeOf(subClass, superClass);
     }
     function _extends() {
         return (_extends = Object.assign || function(target) {
@@ -1002,12 +1008,6 @@ window.spb = function(modules) {
             return o.__proto__ || Object.getPrototypeOf(o);
         })(o);
     }
-    function _setPrototypeOf(o, p) {
-        return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
-            o.__proto__ = p;
-            return o;
-        })(o, p);
-    }
     function _isNativeReflectConstruct() {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -1584,14 +1584,16 @@ window.spb = function(modules) {
         }) : null);
     }
     function setupMenu(_ref3) {
-        l = preact_module_a(Page, {
+        !function(l, u, i) {
+            var r, e;
+            n.__ && n.__(l, u), r = !1 ? null : u.__k, e = [], T(u, l = u.__k = preact_module_a(y, null, [ l ]), r || preact_module_o, preact_module_o, void 0 !== u.ownerSVGElement, r ? null : u.firstChild ? f.slice.call(u.childNodes) : null, e, r ? r.__e : u.firstChild, !1), 
+            j(e, l);
+        }(preact_module_a(Page, {
             cspNonce: _ref3.cspNonce
-        }), u = function() {
+        }), function() {
             var body = document.body;
             if (!body) throw new Error("Document body not found");
             return body;
-        }(), n.__ && n.__(l, u), r = !1 ? null : u.__k, e = [], T(u, l = u.__k = preact_module_a(y, null, [ l ]), r || preact_module_o, preact_module_o, void 0 !== u.ownerSVGElement, r ? null : u.firstChild ? f.slice.call(u.childNodes) : null, e, r ? r.__e : u.firstChild, !1), 
-        j(e, l);
-        var l, u, r, e;
+        }());
     }
 } ]);

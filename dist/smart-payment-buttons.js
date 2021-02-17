@@ -124,10 +124,16 @@ window.spb = function(modules) {
             void 0 === ua && (ua = getUserAgent());
             return /Chrome|Chromium|CriOS/.test(ua);
         }
+        function _setPrototypeOf(o, p) {
+            return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
+                o.__proto__ = p;
+                return o;
+            })(o, p);
+        }
         function _inheritsLoose(subClass, superClass) {
             subClass.prototype = Object.create(superClass.prototype);
             subClass.prototype.constructor = subClass;
-            subClass.__proto__ = superClass;
+            _setPrototypeOf(subClass, superClass);
         }
         function _extends() {
             return (_extends = Object.assign || function(target) {
@@ -837,12 +843,6 @@ window.spb = function(modules) {
                 return o.__proto__ || Object.getPrototypeOf(o);
             })(o);
         }
-        function _setPrototypeOf(o, p) {
-            return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
-                o.__proto__ = p;
-                return o;
-            })(o, p);
-        }
         function _isNativeReflectConstruct() {
             if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
             if (Reflect.construct.sham) return !1;
@@ -1349,27 +1349,21 @@ window.spb = function(modules) {
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
         function httpTransport(_ref) {
             var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
-            var hasHeaders = headers && Object.keys(headers).length;
-            return window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob ? new promise_ZalgoPromise((function(resolve) {
-                var blob = new Blob([ JSON.stringify(json) ], {
-                    type: "application/json"
+            return promise_ZalgoPromise.try((function() {
+                var hasHeaders = headers && Object.keys(headers).length;
+                if (window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob) try {
+                    var blob = new Blob([ JSON.stringify(json) ], {
+                        type: "application/json"
+                    });
+                    return window.navigator.sendBeacon(url, blob);
+                } catch (e) {}
+                return request({
+                    url: url,
+                    method: method,
+                    headers: headers,
+                    json: json
                 });
-                try {
-                    resolve(window.navigator.sendBeacon(url, blob));
-                } catch (e) {
-                    return request({
-                        url: url,
-                        method: method,
-                        headers: headers,
-                        json: json
-                    }).then(src_util_noop);
-                }
-            })) : request({
-                url: url,
-                method: method,
-                headers: headers,
-                json: json
-            }).then(src_util_noop);
+            })).then(src_util_noop);
         }
         function extendIfDefined(target, source) {
             for (var key in source) source.hasOwnProperty(key) && source[key] && !target[key] && (target[key] = source[key]);
@@ -1783,7 +1777,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.369", _headers10);
+            _headers10["x-app-version"] = "2.0.370", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4282,11 +4276,11 @@ window.spb = function(modules) {
         };
         var _NATIVE_DOMAIN, _NATIVE_POPUP_DOMAIN, _NATIVE_CHECKOUT_URI, _NATIVE_CHECKOUT_POPU, _NATIVE_CHECKOUT_FALL;
         var NATIVE_DOMAIN = ((_NATIVE_DOMAIN = {}).test = "https://www.paypal.com", _NATIVE_DOMAIN.local = "https://www.paypal.com", 
-        _NATIVE_DOMAIN.stage = "https://www.paypal.com", _NATIVE_DOMAIN.sandbox = "https://www.paypal.com", 
+        _NATIVE_DOMAIN.stage = "https://www.paypal.com", _NATIVE_DOMAIN.sandbox = "https://www.sandbox.paypal.com", 
         _NATIVE_DOMAIN.production = "https://www.paypal.com", _NATIVE_DOMAIN);
         var NATIVE_POPUP_DOMAIN = ((_NATIVE_POPUP_DOMAIN = {}).test = "https://history.paypal.com", 
-        _NATIVE_POPUP_DOMAIN.local = "https://history.paypal.com", _NATIVE_POPUP_DOMAIN.stage = "https://history.paypal.com", 
-        _NATIVE_POPUP_DOMAIN.sandbox = "https://www.sandbox.paypal.com", _NATIVE_POPUP_DOMAIN.production = "https://history.paypal.com", 
+        _NATIVE_POPUP_DOMAIN.local = getDomain(), _NATIVE_POPUP_DOMAIN.stage = "https://history.paypal.com", 
+        _NATIVE_POPUP_DOMAIN.sandbox = "https://history.paypal.com", _NATIVE_POPUP_DOMAIN.production = "https://history.paypal.com", 
         _NATIVE_POPUP_DOMAIN);
         var NATIVE_CHECKOUT_URI = ((_NATIVE_CHECKOUT_URI = {}).paypal = "/smart/checkout/native", 
         _NATIVE_CHECKOUT_URI.venmo = "/smart/checkout/venmo", _NATIVE_CHECKOUT_URI);
@@ -4299,307 +4293,297 @@ window.spb = function(modules) {
         var initialPageUrl;
         var nativeEligibility;
         var getNativeSocket = memoize((function(_ref) {
-            var sessionUID = _ref.sessionUID;
-            var nativeSocket = function(_ref9) {
-                var sessionUID = _ref9.sessionUID, config = _ref9.config;
-                return function(_ref) {
-                    var sessionUID = _ref.sessionUID, driver = _ref.driver, sourceApp = _ref.sourceApp, sourceAppVersion = _ref.sourceAppVersion, targetApp = _ref.targetApp, _ref$retry = _ref.retry, retry = void 0 === _ref$retry || _ref$retry;
-                    var receivedMessages = {};
-                    var responseListeners = {};
-                    var activeRequests = [];
-                    var requestListeners = {};
-                    var errorListeners = [];
-                    var sendMessage = function(socket, data) {
-                        var messageUID = uniqueID();
-                        receivedMessages[messageUID] = !0;
-                        var message = _extends({
-                            session_uid: sessionUID,
-                            message_uid: messageUID,
-                            source_app: sourceApp,
-                            source_app_version: sourceAppVersion,
-                            target_app: targetApp
-                        }, data);
-                        socket.send(JSON.stringify(message));
-                    };
-                    var sendResponse = function(socket, _ref2) {
-                        var messageName = _ref2.messageName, responseStatus = _ref2.responseStatus, responseData = _ref2.responseData, requestUID = _ref2.requestUID;
-                        if (socket.isOpen()) return sendMessage(socket, {
-                            request_uid: requestUID,
-                            message_name: messageName,
-                            message_status: responseStatus,
-                            message_type: "response",
-                            message_data: responseData
-                        });
-                    };
-                    var closed = !1;
-                    var retryDelay;
-                    var socketPromise;
-                    var retryPromise;
-                    var init = function init() {
-                        (socketPromise = promise_ZalgoPromise.try((function() {
-                            if (retryDelay) return retryPromise = promise_ZalgoPromise.delay(retryDelay);
-                        })).then((function() {
-                            retryPromise = null;
-                            var instance = driver();
-                            var connectionPromise = new promise_ZalgoPromise((function(resolve, reject) {
-                                instance.onOpen((function() {
-                                    closed = !1;
-                                    retryDelay = 0;
-                                    resolve(instance);
-                                }));
-                                instance.onClose((function(err) {
-                                    closed = !0;
-                                    reject(err || new Error("socket closed"));
-                                    if (retry) {
-                                        retry && (retryDelay = retryDelay ? 2 * retryDelay : 1);
-                                        init();
-                                    }
-                                }));
-                                instance.onError((function(err) {
-                                    reject(err);
-                                    for (var _i2 = 0, _errorListeners2 = errorListeners; _i2 < _errorListeners2.length; _i2++) (0, 
-                                    _errorListeners2[_i2])(err);
-                                }));
-                            }));
-                            instance.onMessage((function(rawMessage) {
-                                connectionPromise.then((function(socket) {
-                                    return function(socket, rawData) {
-                                        var parsedData;
-                                        try {
-                                            parsedData = JSON.parse(rawData);
-                                        } catch (err) {
-                                            throw new Error("Could not parse socket message: " + rawData);
-                                        }
-                                        if (!parsedData) throw new Error("No data passed from socket message");
-                                        var messageSessionUID = parsedData.session_uid, requestUID = parsedData.request_uid, messageUID = parsedData.message_uid, messageName = parsedData.message_name, messageType = parsedData.message_type, messageData = parsedData.message_data, responseStatus = parsedData.message_status;
-                                        requestUID = requestUID || parsedData.request_id;
-                                        if (!messageUID || !receivedMessages[messageUID]) {
-                                            if (!(messageUID && requestUID && messageName && messageType && parsedData.target_app)) throw new Error("Incomplete message: " + rawData);
-                                            receivedMessages[messageUID] = !0;
-                                            if ("request" === messageType) return function(socket, _ref3) {
-                                                var messageSessionUID = _ref3.messageSessionUID, requestUID = _ref3.requestUID, messageName = _ref3.messageName, messageData = _ref3.messageData;
-                                                var activeRequest = new promise_ZalgoPromise;
-                                                activeRequests.push(activeRequest);
-                                                return promise_ZalgoPromise.try((function() {
-                                                    var requestListener = requestListeners[messageName];
-                                                    if (!requestListener) throw new Error("No listener found for name: " + messageName);
-                                                    var handler = requestListener.handler;
-                                                    if (requestListener.requireSessionUID && messageSessionUID !== sessionUID) throw new Error("Incorrect sessionUID: " + (messageSessionUID || "undefined"));
-                                                    return handler({
-                                                        data: messageData
-                                                    });
-                                                })).then((function(res) {
-                                                    sendResponse(socket, {
-                                                        responseStatus: "success",
-                                                        responseData: res,
-                                                        messageName: messageName,
-                                                        requestUID: requestUID
-                                                    });
-                                                }), (function(err) {
-                                                    sendResponse(socket, {
-                                                        responseStatus: "error",
-                                                        responseData: {
-                                                            message: err && err.message ? err.message : "Unknown error"
-                                                        },
-                                                        messageName: messageName,
-                                                        messageSessionUID: messageSessionUID,
-                                                        requestUID: requestUID
-                                                    });
-                                                })).finally((function() {
-                                                    activeRequest.resolve();
-                                                    activeRequests.splice(activeRequests.indexOf(activeRequest), 1);
-                                                }));
-                                            }(socket, {
-                                                messageSessionUID: messageSessionUID,
-                                                requestUID: requestUID,
-                                                messageName: messageName,
-                                                messageData: messageData
-                                            });
-                                            if ("response" === messageType) return function(_ref4) {
-                                                var requestUID = _ref4.requestUID, messageSessionUID = _ref4.messageSessionUID, responseStatus = _ref4.responseStatus, messageData = _ref4.messageData;
-                                                var _ref5 = responseListeners[requestUID] || {}, listenerPromise = _ref5.listenerPromise, requireSessionUID = _ref5.requireSessionUID;
-                                                if (!listenerPromise) throw new Error("Could not find response listener for " + _ref4.messageName + " with id: " + requestUID);
-                                                if (requireSessionUID && messageSessionUID !== sessionUID) throw new Error("Incorrect sessionUID: " + (messageSessionUID || "undefined"));
-                                                delete responseListeners[requestUID];
-                                                if ("success" === responseStatus) listenerPromise.resolve({
-                                                    data: messageData
-                                                }); else {
-                                                    if ("error" !== responseStatus) throw new Error("Can not handle response status: " + (status || "undefined"));
-                                                    listenerPromise.reject(new Error(messageData.message));
-                                                }
-                                            }({
-                                                messageName: messageName,
-                                                requestUID: requestUID,
-                                                messageSessionUID: messageSessionUID,
-                                                responseStatus: responseStatus,
-                                                messageData: messageData
-                                            });
-                                            throw new Error("Unhandleable message type: " + messageType);
-                                        }
-                                    }(socket, rawMessage);
-                                }));
-                            }));
-                            return connectionPromise;
-                        }))).catch(src_util_noop);
-                    };
-                    init();
-                    return {
-                        on: function(name, handler, _temp) {
-                            var _ref6$requireSessionU = (void 0 === _temp ? {} : _temp).requireSessionUID, requireSessionUID = void 0 === _ref6$requireSessionU || _ref6$requireSessionU;
-                            if (requestListeners[name]) throw new Error("Listener already registered for name: " + name);
-                            requestListeners[name] = {
-                                handler: handler,
-                                requireSessionUID: requireSessionUID
-                            };
-                            return {
-                                cancel: function() {
-                                    delete requestListeners[name];
-                                }
-                            };
-                        },
-                        send: function(messageName, messageData, _temp2) {
-                            var _ref7 = void 0 === _temp2 ? {} : _temp2, _ref7$requireSessionU = _ref7.requireSessionUID, requireSessionUID = void 0 === _ref7$requireSessionU || _ref7$requireSessionU, _ref7$timeout = _ref7.timeout, timeout = void 0 === _ref7$timeout ? 0 : _ref7$timeout;
-                            return socketPromise.then((function(socket) {
-                                var requestUID = uniqueID();
-                                var listenerPromise = new promise_ZalgoPromise;
-                                responseListeners[requestUID] = {
-                                    listenerPromise: listenerPromise,
-                                    requireSessionUID: requireSessionUID
-                                };
-                                sendMessage(socket, {
-                                    request_uid: requestUID,
-                                    message_name: messageName,
-                                    message_type: "request",
-                                    message_data: messageData
-                                });
-                                timeout && setTimeout((function() {
-                                    listenerPromise.reject(new Error("Timeoued out waiting for " + messageName + " response after " + timeout + "ms"));
-                                }), timeout);
-                                return listenerPromise;
-                            }));
-                        },
-                        onError: function(handler) {
-                            errorListeners.push(handler);
-                        },
-                        reconnect: function() {
-                            return promise_ZalgoPromise.try((function() {
-                                if (!closed) return socketPromise;
-                                if (retryPromise) {
-                                    retryPromise.resolve();
-                                    return socketPromise;
-                                }
-                                retryDelay = 0;
-                                return init();
-                            })).then(src_util_noop);
-                        },
-                        close: function() {
-                            retry = !1;
-                            requestListeners = {};
-                            errorListeners = [];
-                            for (var _i4 = 0, _Object$keys2 = Object.keys(responseListeners); _i4 < _Object$keys2.length; _i4++) responseListeners[_Object$keys2[_i4]].listenerPromise.asyncReject(new Error("Socket closed"));
-                            promise_ZalgoPromise.all(activeRequests).then((function() {
-                                return socketPromise.then((function(socket) {
-                                    return socket.close();
-                                }), src_util_noop);
-                            }));
-                        }
-                    };
-                }({
-                    sessionUID: sessionUID,
-                    driver: function() {
-                        var open = !1;
-                        var onMessageHandlers = [];
-                        var onErrorHandlers = [];
-                        var onCloseHandlers = [];
-                        var onOpenHandlers = [];
-                        var error = function(err) {
-                            for (var _i6 = 0; _i6 < onErrorHandlers.length; _i6++) (0, onErrorHandlers[_i6])(err);
-                        };
-                        var databasePromise = promise_ZalgoPromise.hash({
-                            firebase: loadFirebaseSDK(config),
-                            sessionToken: getFirebaseSessionToken(sessionUID)
-                        }).then((function(_ref10) {
-                            var firebase = _ref10.firebase, sessionToken = _ref10.sessionToken;
-                            var valueCallback = function(res) {
-                                var messages = res.val() || {};
-                                for (var _i8 = 0, _Object$keys4 = Object.keys(messages); _i8 < _Object$keys4.length; _i8++) {
-                                    var message = messages[_Object$keys4[_i8]];
-                                    for (var _i10 = 0; _i10 < onMessageHandlers.length; _i10++) (0, onMessageHandlers[_i10])(message);
-                                }
-                            };
-                            return firebase.auth().signInWithCustomToken(sessionToken).then((function() {
-                                var _getLogger$info$track;
-                                var database = firebase.database();
-                                firebase.database.INTERNAL.forceWebSockets();
-                                open = !0;
-                                logger_getLogger().info("firebase_connection_opened").track((_getLogger$info$track = {}, 
-                                _getLogger$info$track.state_name = "smart_button", _getLogger$info$track.transition_name = "firebase_connection_opened", 
-                                _getLogger$info$track)).flush();
-                                for (var _i12 = 0; _i12 < onOpenHandlers.length; _i12++) (0, onOpenHandlers[_i12])();
-                                database.ref("users/" + sessionUID + "/messages").on("value", valueCallback, (function(err) {
-                                    error(err);
-                                }));
-                                database.goOnline();
-                                return database;
-                            }));
-                        }));
-                        databasePromise.catch((function(err) {
-                            var _getLogger$info$track2;
-                            logger_getLogger().info("firebase_connection_errored", {
-                                err: stringifyError(err)
-                            }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.state_name = "smart_button", 
-                            _getLogger$info$track2.transition_name = "firebase_connection_errored", _getLogger$info$track2.int_error_desc = stringifyError(err), 
-                            _getLogger$info$track2)).flush();
-                        }));
-                        return {
-                            send: function(data) {
-                                databasePromise.then((function(database) {
-                                    return database.ref("users/" + sessionUID + "/messages/" + uniqueID()).set(data);
-                                })).catch(error);
-                            },
-                            close: function() {
-                                databasePromise.then((function(database) {
-                                    database.goOffline();
-                                }));
-                            },
-                            onMessage: function(handler) {
-                                onMessageHandlers.push(handler);
-                            },
-                            onError: function(handler) {
-                                onErrorHandlers.push(handler);
-                            },
-                            onOpen: function(handler) {
-                                open ? handler() : onOpenHandlers.push(handler);
-                            },
-                            onClose: function(handler) {
-                                onCloseHandlers.push(handler);
-                            },
-                            isOpen: function() {
-                                return open;
-                            }
-                        };
-                    },
-                    sourceApp: _ref9.sourceApp,
-                    sourceAppVersion: _ref9.sourceAppVersion,
-                    targetApp: _ref9.targetApp
-                });
-            }({
-                sessionUID: sessionUID,
+            var nativeSocket = (config = (_ref9 = {
+                sessionUID: _ref.sessionUID,
                 sourceApp: "paypal_smart_payment_buttons",
                 sourceAppVersion: _ref.version,
                 targetApp: "paypal_native_checkout",
                 config: _ref.firebaseConfig
-            });
+            }).config, function(_ref) {
+                var sessionUID = _ref.sessionUID, driver = _ref.driver, sourceApp = _ref.sourceApp, sourceAppVersion = _ref.sourceAppVersion, targetApp = _ref.targetApp, _ref$retry = _ref.retry, retry = void 0 === _ref$retry || _ref$retry;
+                var receivedMessages = {};
+                var responseListeners = {};
+                var activeRequests = [];
+                var requestListeners = {};
+                var errorListeners = [];
+                var sendMessage = function(socket, data) {
+                    var messageUID = uniqueID();
+                    receivedMessages[messageUID] = !0;
+                    var message = _extends({
+                        session_uid: sessionUID,
+                        message_uid: messageUID,
+                        source_app: sourceApp,
+                        source_app_version: sourceAppVersion,
+                        target_app: targetApp
+                    }, data);
+                    socket.send(JSON.stringify(message));
+                };
+                var sendResponse = function(socket, _ref2) {
+                    var messageName = _ref2.messageName, responseStatus = _ref2.responseStatus, responseData = _ref2.responseData, requestUID = _ref2.requestUID;
+                    if (socket.isOpen()) return sendMessage(socket, {
+                        request_uid: requestUID,
+                        message_name: messageName,
+                        message_status: responseStatus,
+                        message_type: "response",
+                        message_data: responseData
+                    });
+                };
+                var closed = !1;
+                var retryDelay;
+                var socketPromise;
+                var retryPromise;
+                var init = function init() {
+                    (socketPromise = promise_ZalgoPromise.try((function() {
+                        if (retryDelay) return retryPromise = promise_ZalgoPromise.delay(retryDelay);
+                    })).then((function() {
+                        retryPromise = null;
+                        var instance = driver();
+                        var connectionPromise = new promise_ZalgoPromise((function(resolve, reject) {
+                            instance.onOpen((function() {
+                                closed = !1;
+                                retryDelay = 0;
+                                resolve(instance);
+                            }));
+                            instance.onClose((function(err) {
+                                closed = !0;
+                                reject(err || new Error("socket closed"));
+                                if (retry) {
+                                    retry && (retryDelay = retryDelay ? 2 * retryDelay : 1);
+                                    init();
+                                }
+                            }));
+                            instance.onError((function(err) {
+                                reject(err);
+                                for (var _i2 = 0, _errorListeners2 = errorListeners; _i2 < _errorListeners2.length; _i2++) (0, 
+                                _errorListeners2[_i2])(err);
+                            }));
+                        }));
+                        instance.onMessage((function(rawMessage) {
+                            connectionPromise.then((function(socket) {
+                                return function(socket, rawData) {
+                                    var parsedData;
+                                    try {
+                                        parsedData = JSON.parse(rawData);
+                                    } catch (err) {
+                                        throw new Error("Could not parse socket message: " + rawData);
+                                    }
+                                    if (!parsedData) throw new Error("No data passed from socket message");
+                                    var messageSessionUID = parsedData.session_uid, requestUID = parsedData.request_uid, messageUID = parsedData.message_uid, messageName = parsedData.message_name, messageType = parsedData.message_type, messageData = parsedData.message_data, responseStatus = parsedData.message_status;
+                                    requestUID = requestUID || parsedData.request_id;
+                                    if (!messageUID || !receivedMessages[messageUID]) {
+                                        if (!(messageUID && requestUID && messageName && messageType && parsedData.target_app)) throw new Error("Incomplete message: " + rawData);
+                                        receivedMessages[messageUID] = !0;
+                                        if ("request" === messageType) return function(socket, _ref3) {
+                                            var messageSessionUID = _ref3.messageSessionUID, requestUID = _ref3.requestUID, messageName = _ref3.messageName, messageData = _ref3.messageData;
+                                            var activeRequest = new promise_ZalgoPromise;
+                                            activeRequests.push(activeRequest);
+                                            return promise_ZalgoPromise.try((function() {
+                                                var requestListener = requestListeners[messageName];
+                                                if (!requestListener) throw new Error("No listener found for name: " + messageName);
+                                                var handler = requestListener.handler;
+                                                if (requestListener.requireSessionUID && messageSessionUID !== sessionUID) throw new Error("Incorrect sessionUID: " + (messageSessionUID || "undefined"));
+                                                return handler({
+                                                    data: messageData
+                                                });
+                                            })).then((function(res) {
+                                                sendResponse(socket, {
+                                                    responseStatus: "success",
+                                                    responseData: res,
+                                                    messageName: messageName,
+                                                    requestUID: requestUID
+                                                });
+                                            }), (function(err) {
+                                                sendResponse(socket, {
+                                                    responseStatus: "error",
+                                                    responseData: {
+                                                        message: err && err.message ? err.message : "Unknown error"
+                                                    },
+                                                    messageName: messageName,
+                                                    messageSessionUID: messageSessionUID,
+                                                    requestUID: requestUID
+                                                });
+                                            })).finally((function() {
+                                                activeRequest.resolve();
+                                                activeRequests.splice(activeRequests.indexOf(activeRequest), 1);
+                                            }));
+                                        }(socket, {
+                                            messageSessionUID: messageSessionUID,
+                                            requestUID: requestUID,
+                                            messageName: messageName,
+                                            messageData: messageData
+                                        });
+                                        if ("response" === messageType) return function(_ref4) {
+                                            var requestUID = _ref4.requestUID, messageSessionUID = _ref4.messageSessionUID, responseStatus = _ref4.responseStatus, messageData = _ref4.messageData;
+                                            var _ref5 = responseListeners[requestUID] || {}, listenerPromise = _ref5.listenerPromise, requireSessionUID = _ref5.requireSessionUID;
+                                            if (!listenerPromise) throw new Error("Could not find response listener for " + _ref4.messageName + " with id: " + requestUID);
+                                            if (requireSessionUID && messageSessionUID !== sessionUID) throw new Error("Incorrect sessionUID: " + (messageSessionUID || "undefined"));
+                                            delete responseListeners[requestUID];
+                                            if ("success" === responseStatus) listenerPromise.resolve({
+                                                data: messageData
+                                            }); else {
+                                                if ("error" !== responseStatus) throw new Error("Can not handle response status: " + (status || "undefined"));
+                                                listenerPromise.reject(new Error(messageData.message));
+                                            }
+                                        }({
+                                            messageName: messageName,
+                                            requestUID: requestUID,
+                                            messageSessionUID: messageSessionUID,
+                                            responseStatus: responseStatus,
+                                            messageData: messageData
+                                        });
+                                        throw new Error("Unhandleable message type: " + messageType);
+                                    }
+                                }(socket, rawMessage);
+                            }));
+                        }));
+                        return connectionPromise;
+                    }))).catch(src_util_noop);
+                };
+                init();
+                return {
+                    on: function(name, handler, _temp) {
+                        var _ref6$requireSessionU = (void 0 === _temp ? {} : _temp).requireSessionUID, requireSessionUID = void 0 === _ref6$requireSessionU || _ref6$requireSessionU;
+                        if (requestListeners[name]) throw new Error("Listener already registered for name: " + name);
+                        requestListeners[name] = {
+                            handler: handler,
+                            requireSessionUID: requireSessionUID
+                        };
+                        return {
+                            cancel: function() {
+                                delete requestListeners[name];
+                            }
+                        };
+                    },
+                    send: function(messageName, messageData, _temp2) {
+                        var _ref7 = void 0 === _temp2 ? {} : _temp2, _ref7$requireSessionU = _ref7.requireSessionUID, requireSessionUID = void 0 === _ref7$requireSessionU || _ref7$requireSessionU, _ref7$timeout = _ref7.timeout, timeout = void 0 === _ref7$timeout ? 0 : _ref7$timeout;
+                        return socketPromise.then((function(socket) {
+                            var requestUID = uniqueID();
+                            var listenerPromise = new promise_ZalgoPromise;
+                            responseListeners[requestUID] = {
+                                listenerPromise: listenerPromise,
+                                requireSessionUID: requireSessionUID
+                            };
+                            sendMessage(socket, {
+                                request_uid: requestUID,
+                                message_name: messageName,
+                                message_type: "request",
+                                message_data: messageData
+                            });
+                            timeout && setTimeout((function() {
+                                listenerPromise.reject(new Error("Timeoued out waiting for " + messageName + " response after " + timeout + "ms"));
+                            }), timeout);
+                            return listenerPromise;
+                        }));
+                    },
+                    onError: function(handler) {
+                        errorListeners.push(handler);
+                    },
+                    reconnect: function() {
+                        return promise_ZalgoPromise.try((function() {
+                            if (!closed) return socketPromise;
+                            if (retryPromise) {
+                                retryPromise.resolve();
+                                return socketPromise;
+                            }
+                            retryDelay = 0;
+                            return init();
+                        })).then(src_util_noop);
+                    },
+                    close: function() {
+                        retry = !1;
+                        requestListeners = {};
+                        errorListeners = [];
+                        for (var _i4 = 0, _Object$keys2 = Object.keys(responseListeners); _i4 < _Object$keys2.length; _i4++) responseListeners[_Object$keys2[_i4]].listenerPromise.asyncReject(new Error("Socket closed"));
+                        promise_ZalgoPromise.all(activeRequests).then((function() {
+                            return socketPromise.then((function(socket) {
+                                return socket.close();
+                            }), src_util_noop);
+                        }));
+                    }
+                };
+            }({
+                sessionUID: sessionUID = _ref9.sessionUID,
+                driver: function() {
+                    var open = !1;
+                    var onMessageHandlers = [];
+                    var onErrorHandlers = [];
+                    var onCloseHandlers = [];
+                    var onOpenHandlers = [];
+                    var error = function(err) {
+                        for (var _i6 = 0; _i6 < onErrorHandlers.length; _i6++) (0, onErrorHandlers[_i6])(err);
+                    };
+                    var databasePromise = promise_ZalgoPromise.hash({
+                        firebase: loadFirebaseSDK(config),
+                        sessionToken: getFirebaseSessionToken(sessionUID)
+                    }).then((function(_ref10) {
+                        var firebase = _ref10.firebase, sessionToken = _ref10.sessionToken;
+                        var valueCallback = function(res) {
+                            var messages = res.val() || {};
+                            for (var _i8 = 0, _Object$keys4 = Object.keys(messages); _i8 < _Object$keys4.length; _i8++) {
+                                var message = messages[_Object$keys4[_i8]];
+                                for (var _i10 = 0; _i10 < onMessageHandlers.length; _i10++) (0, onMessageHandlers[_i10])(message);
+                            }
+                        };
+                        return firebase.auth().signInWithCustomToken(sessionToken).then((function() {
+                            var _getLogger$info$track;
+                            var database = firebase.database();
+                            firebase.database.INTERNAL.forceWebSockets();
+                            open = !0;
+                            logger_getLogger().info("firebase_connection_opened").track((_getLogger$info$track = {}, 
+                            _getLogger$info$track.state_name = "smart_button", _getLogger$info$track.transition_name = "firebase_connection_opened", 
+                            _getLogger$info$track)).flush();
+                            for (var _i12 = 0; _i12 < onOpenHandlers.length; _i12++) (0, onOpenHandlers[_i12])();
+                            database.ref("users/" + sessionUID + "/messages").on("value", valueCallback, (function(err) {
+                                error(err);
+                            }));
+                            database.goOnline();
+                            return database;
+                        }));
+                    }));
+                    databasePromise.catch((function(err) {
+                        var _getLogger$info$track2;
+                        logger_getLogger().info("firebase_connection_errored", {
+                            err: stringifyError(err)
+                        }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.state_name = "smart_button", 
+                        _getLogger$info$track2.transition_name = "firebase_connection_errored", _getLogger$info$track2.int_error_desc = stringifyError(err), 
+                        _getLogger$info$track2)).flush();
+                    }));
+                    return {
+                        send: function(data) {
+                            databasePromise.then((function(database) {
+                                return database.ref("users/" + sessionUID + "/messages/" + uniqueID()).set(data);
+                            })).catch(error);
+                        },
+                        close: function() {
+                            databasePromise.then((function(database) {
+                                database.goOffline();
+                            }));
+                        },
+                        onMessage: function(handler) {
+                            onMessageHandlers.push(handler);
+                        },
+                        onError: function(handler) {
+                            onErrorHandlers.push(handler);
+                        },
+                        onOpen: function(handler) {
+                            open ? handler() : onOpenHandlers.push(handler);
+                        },
+                        onClose: function(handler) {
+                            onCloseHandlers.push(handler);
+                        },
+                        isOpen: function() {
+                            return open;
+                        }
+                    };
+                },
+                sourceApp: _ref9.sourceApp,
+                sourceAppVersion: _ref9.sourceAppVersion,
+                targetApp: _ref9.targetApp
+            }));
+            var _ref9, sessionUID, config;
             nativeSocket.onError((function(err) {
                 var stringifiedError = stringifyError(err);
-                if (-1 !== stringifiedError.indexOf("permission_denied")) {
-                    var _getLogger$info$track;
-                    logger_getLogger().info("firebase_connection_reinitialized", {
-                        sessionUID: sessionUID
-                    }).track((_getLogger$info$track = {}, _getLogger$info$track.state_name = "smart_button", 
-                    _getLogger$info$track.transition_name = "native_app_switch_ack", _getLogger$info$track.int_error_desc = "[Native Socket Info] " + stringifiedError, 
-                    _getLogger$info$track)).flush();
-                } else {
+                if (-1 === stringifiedError.indexOf("permission_denied")) {
                     var _getLogger$error$trac;
                     logger_getLogger().error("native_socket_error", {
                         err: stringifiedError
@@ -4967,10 +4951,14 @@ window.spb = function(modules) {
                     return instance.start();
                 };
                 var getNativeDomain = memoize((function() {
-                    return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://www.sandbox.paypal.com" : NATIVE_DOMAIN[env];
+                    return "sandbox" !== env || !isNativeOptedIn({
+                        props: props
+                    }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain ? NATIVE_DOMAIN[env] : "https://www.paypal.com";
                 }));
                 var getNativePopupDomain = memoize((function() {
-                    return "sandbox" === env && window.xprops && window.xprops.useCorrectNativeSandboxDomain ? "https://history.paypal.com" : NATIVE_POPUP_DOMAIN[env];
+                    return "sandbox" !== env || !isNativeOptedIn({
+                        props: props
+                    }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain ? NATIVE_POPUP_DOMAIN[env] : "https://www.sandbox.paypal.com";
                 }));
                 var getWebCheckoutUrl = memoize((function(_ref7) {
                     var orderID = _ref7.orderID;
@@ -5085,16 +5073,16 @@ window.spb = function(modules) {
                     }));
                 }));
                 var onApproveCallback = function(_ref12) {
-                    var _getLogger$info$track3;
+                    var _getLogger$info$track2;
                     var _ref12$data = _ref12.data, payerID = _ref12$data.payerID, paymentID = _ref12$data.paymentID, billingToken = _ref12$data.billingToken;
                     approved = !0;
                     logger_getLogger().info("native_message_onapprove", {
                         payerID: payerID,
                         paymentID: paymentID,
                         billingToken: billingToken
-                    }).track((_getLogger$info$track3 = {}, _getLogger$info$track3.transition_name = "native_onapprove", 
-                    _getLogger$info$track3.info_msg = "payerID: " + payerID + ", paymentID: " + paymentID + ", billingToken: " + billingToken, 
-                    _getLogger$info$track3)).flush();
+                    }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "native_onapprove", 
+                    _getLogger$info$track2.info_msg = "payerID: " + payerID + ", paymentID: " + paymentID + ", billingToken: " + billingToken, 
+                    _getLogger$info$track2)).flush();
                     logger_getLogger().info("native_approve_" + (isIOSSafari() ? "ios" : "android") + "_window_width_" + window.outerWidth).info("native_approve_" + (isIOSSafari() ? "ios" : "android") + "_window_height_" + window.outerHeight).flush();
                     return promise_ZalgoPromise.all([ onApprove({
                         payerID: payerID,
@@ -5106,7 +5094,14 @@ window.spb = function(modules) {
                             return fallbackToWebCheckout();
                         }
                     }).catch((function(err) {
-                        return onError(err);
+                        var _getLogger$info$track3;
+                        logger_getLogger().info("native_message_onapprove", {
+                            payerID: payerID,
+                            paymentID: paymentID,
+                            billingToken: billingToken
+                        }).track((_getLogger$info$track3 = {}, _getLogger$info$track3.transition_name = "native_onapprove_error", 
+                        _getLogger$info$track3.info_msg = "Error: " + stringifyError(err), _getLogger$info$track3)).flush();
+                        onError(err);
                     })), close() ]).then(src_util_noop);
                 };
                 var onCancelCallback = function() {
@@ -5153,6 +5148,12 @@ window.spb = function(modules) {
                         }));
                     }
                 };
+                var onFallbackCallback = function() {
+                    var _getLogger$info$track7;
+                    logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track7 = {}, 
+                    _getLogger$info$track7.transition_name = "native_onfallback", _getLogger$info$track7)).flush();
+                    fallbackToWebCheckout();
+                };
                 var connectNative = memoize((function(_ref15) {
                     var socket = getNativeSocket({
                         sessionUID: _ref15.sessionUID,
@@ -5174,42 +5175,44 @@ window.spb = function(modules) {
                     var onApproveListener = socket.on("onApprove", onApproveCallback);
                     var onCancelListener = socket.on("onCancel", onCancelCallback);
                     var onErrorListener = socket.on("onError", onErrorCallback);
+                    var onFallbackListener = socket.on("onFallback", onFallbackCallback);
                     native_clean.register(getPropsListener.cancel);
                     native_clean.register(onShippingChangeListener.cancel);
                     native_clean.register(onApproveListener.cancel);
                     native_clean.register(onCancelListener.cancel);
                     native_clean.register(onErrorListener.cancel);
+                    native_clean.register(onFallbackListener.cancel);
                     socket.reconnect();
                     return {
                         setProps: function() {
                             return getSDKProps().then((function(sdkProps) {
                                 logger_getLogger().info("native_message_setprops").flush();
                                 !function(props) {
-                                    var _getLogger$info$track2;
+                                    var _getLogger$info$track;
                                     var sanitizedProps = _extends({}, props, {
                                         facilitatorAccessToken: props.facilitatorAccessToken ? "********************" : ""
                                     });
-                                    logger_getLogger().info("native_setprops_request", sanitizedProps).track((_getLogger$info$track2 = {}, 
-                                    _getLogger$info$track2.transition_name = "process_set_props_attempt", _getLogger$info$track2)).flush();
+                                    logger_getLogger().info("native_setprops_request", sanitizedProps).track((_getLogger$info$track = {}, 
+                                    _getLogger$info$track.transition_name = "process_set_props_attempt", _getLogger$info$track)).flush();
                                 }(sdkProps);
                                 return socket.send("setProps", sdkProps);
                             })).then((function() {
-                                var _getLogger$info$track7;
-                                logger_getLogger().info("native_response_setprops").track((_getLogger$info$track7 = {}, 
-                                _getLogger$info$track7.state_name = "smart_button", _getLogger$info$track7.transition_name = "native_app_switch_ack", 
-                                _getLogger$info$track7)).flush();
-                            })).catch((function(err) {
                                 var _getLogger$info$track8;
-                                logger_getLogger().info("native_response_setprops_error").track((_getLogger$info$track8 = {}, 
-                                _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.int_error_desc = stringifyError(err), 
+                                logger_getLogger().info("native_response_setprops").track((_getLogger$info$track8 = {}, 
+                                _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.transition_name = "native_app_switch_ack", 
                                 _getLogger$info$track8)).flush();
+                            })).catch((function(err) {
+                                var _getLogger$info$track9;
+                                logger_getLogger().info("native_response_setprops_error").track((_getLogger$info$track9 = {}, 
+                                _getLogger$info$track9.state_name = "smart_button", _getLogger$info$track9.int_error_desc = stringifyError(err), 
+                                _getLogger$info$track9)).flush();
                             }));
                         },
                         close: closeNative
                     };
                 }));
                 var detectAppSwitch = once((function(_ref16) {
-                    var _getLogger$info$track9;
+                    var _getLogger$info$track10;
                     var sessionUID = _ref16.sessionUID;
                     getStorageState((function(state) {
                         var _state$lastAppSwitchT = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT ? 0 : _state$lastAppSwitchT, _state$lastWebSwitchT = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT ? 0 : _state$lastWebSwitchT;
@@ -5227,14 +5230,14 @@ window.spb = function(modules) {
                         });
                         state.lastAppSwitchTime = Date.now();
                     }));
-                    logger_getLogger().info("native_detect_app_switch").track((_getLogger$info$track9 = {}, 
-                    _getLogger$info$track9.transition_name = "native_detect_app_switch", _getLogger$info$track9)).flush();
+                    logger_getLogger().info("native_detect_app_switch").track((_getLogger$info$track10 = {}, 
+                    _getLogger$info$track10.transition_name = "native_detect_app_switch", _getLogger$info$track10)).flush();
                     return connectNative({
                         sessionUID: sessionUID
                     }).setProps();
                 }));
                 var detectWebSwitch = once((function(fallbackWin) {
-                    var _getLogger$info$track10;
+                    var _getLogger$info$track11;
                     getStorageState((function(state) {
                         var _state$lastAppSwitchT2 = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT2 ? 0 : _state$lastAppSwitchT2, _state$lastWebSwitchT2 = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT2 ? 0 : _state$lastWebSwitchT2;
                         lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_app_switch", {
@@ -5251,8 +5254,8 @@ window.spb = function(modules) {
                         });
                         state.lastWebSwitchTime = Date.now();
                     }));
-                    logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track10 = {}, 
-                    _getLogger$info$track10.transition_name = "native_detect_web_switch", _getLogger$info$track10)).flush();
+                    logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track11 = {}, 
+                    _getLogger$info$track11.transition_name = "native_detect_web_switch", _getLogger$info$track11)).flush();
                     return fallbackToWebCheckout(fallbackWin);
                 }));
                 var validate = memoize((function() {
@@ -5281,10 +5284,10 @@ window.spb = function(modules) {
                                 });
                                 var nativeWin = popup(nativeUrl);
                                 window.addEventListener("pagehide", (function() {
-                                    var _getLogger$info$track11;
-                                    logger_getLogger().info("native_closing_popup").track((_getLogger$info$track11 = {}, 
-                                    _getLogger$info$track11.state_name = "smart_button", _getLogger$info$track11.transition_name = "native_closing_popup", 
-                                    _getLogger$info$track11)).flush();
+                                    var _getLogger$info$track12;
+                                    logger_getLogger().info("native_closing_popup").track((_getLogger$info$track12 = {}, 
+                                    _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = "native_closing_popup", 
+                                    _getLogger$info$track12)).flush();
                                     nativeWin.close();
                                 }));
                                 logger_getLogger().info("native_attempt_appswitch_popup_shown", {
@@ -5302,10 +5305,10 @@ window.spb = function(modules) {
                                 });
                                 return validatePromise.then((function(valid) {
                                     if (!valid) {
-                                        var _getLogger$info$track12;
-                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track12 = {}, 
-                                        _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = "native_onclick_invalid", 
-                                        _getLogger$info$track12)).flush();
+                                        var _getLogger$info$track13;
+                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track13 = {}, 
+                                        _getLogger$info$track13.state_name = "smart_button", _getLogger$info$track13.transition_name = "native_onclick_invalid", 
+                                        _getLogger$info$track13)).flush();
                                         return delayPromise.then((function() {
                                             if (didAppSwitch(nativeWin)) return connectNative({
                                                 sessionUID: sessionUID
@@ -5321,12 +5324,12 @@ window.spb = function(modules) {
                                         if (nativeWin) return detectWebSwitch(nativeWin);
                                         throw new Error("No window found");
                                     })).catch((function(err) {
-                                        var _getLogger$info$track13;
+                                        var _getLogger$info$track14;
                                         logger_getLogger().info("native_attempt_appswitch_url_popup_errored", {
                                             url: nativeUrl
-                                        }).track((_getLogger$info$track13 = {}, _getLogger$info$track13.state_name = "smart_button", 
-                                        _getLogger$info$track13.transition_name = "app_switch_attempted_errored", _getLogger$info$track13.int_error_desc = stringifyError(err), 
-                                        _getLogger$info$track13)).flush();
+                                        }).track((_getLogger$info$track14 = {}, _getLogger$info$track14.state_name = "smart_button", 
+                                        _getLogger$info$track14.transition_name = "app_switch_attempted_errored", _getLogger$info$track14.int_error_desc = stringifyError(err), 
+                                        _getLogger$info$track14)).flush();
                                         return connectNative({
                                             sessionUID: sessionUID
                                         }).close().then((function() {
@@ -5337,25 +5340,25 @@ window.spb = function(modules) {
                             }({
                                 sessionUID: sessionUID
                             }) : function(_ref18) {
-                                var _getLogger$info$track15;
+                                var _getLogger$info$track16;
                                 var sessionUID = _ref18.sessionUID;
                                 var redirected = !1;
                                 var popupWin = popup(getNativePopupUrl());
                                 window.addEventListener("pagehide", (function() {
-                                    var _getLogger$info$track14;
-                                    logger_getLogger().info("native_closing_popup").track((_getLogger$info$track14 = {}, 
-                                    _getLogger$info$track14.state_name = "smart_button", _getLogger$info$track14.transition_name = "native_closing_popup", 
-                                    _getLogger$info$track14)).flush();
+                                    var _getLogger$info$track15;
+                                    logger_getLogger().info("native_closing_popup").track((_getLogger$info$track15 = {}, 
+                                    _getLogger$info$track15.state_name = "smart_button", _getLogger$info$track15.transition_name = "native_closing_popup", 
+                                    _getLogger$info$track15)).flush();
                                     popupWin.close();
                                 }));
-                                logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track15 = {}, 
-                                _getLogger$info$track15.state_name = "smart_button", _getLogger$info$track15.transition_name = "popup_shown", 
-                                _getLogger$info$track15)).flush();
+                                logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track16 = {}, 
+                                _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_shown", 
+                                _getLogger$info$track16)).flush();
                                 var closeListener = onCloseWindow(popupWin, (function() {
-                                    var _getLogger$info$track16;
-                                    logger_getLogger().info("native_popup_closed").track((_getLogger$info$track16 = {}, 
-                                    _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_closed", 
-                                    _getLogger$info$track16)).flush();
+                                    var _getLogger$info$track17;
+                                    logger_getLogger().info("native_popup_closed").track((_getLogger$info$track17 = {}, 
+                                    _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = "popup_closed", 
+                                    _getLogger$info$track17)).flush();
                                     return promise_ZalgoPromise.delay(1e3).then((function() {
                                         if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.all([ onCancel(), close() ]);
                                     })).then(src_util_noop);
@@ -5365,10 +5368,10 @@ window.spb = function(modules) {
                                 }));
                                 var validatePromise = validate().then((function(valid) {
                                     if (!valid) {
-                                        var _getLogger$info$track17;
-                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track17 = {}, 
-                                        _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = "native_onclick_invalid", 
-                                        _getLogger$info$track17)).flush();
+                                        var _getLogger$info$track18;
+                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track18 = {}, 
+                                        _getLogger$info$track18.state_name = "smart_button", _getLogger$info$track18.transition_name = "native_onclick_invalid", 
+                                        _getLogger$info$track18)).flush();
                                     }
                                     return valid;
                                 }));
@@ -5390,11 +5393,11 @@ window.spb = function(modules) {
                                             enableFunding: enableFunding
                                         }).then((function(eligibility) {
                                             if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
-                                                var _getLogger$info$track18;
+                                                var _getLogger$info$track19;
                                                 logger_getLogger().info("native_appswitch_ineligible", {
                                                     orderID: orderID
-                                                }).track((_getLogger$info$track18 = {}, _getLogger$info$track18.state_name = "smart_button", 
-                                                _getLogger$info$track18.transition_name = "app_switch_ineligible", _getLogger$info$track18)).flush();
+                                                }).track((_getLogger$info$track19 = {}, _getLogger$info$track19.state_name = "smart_button", 
+                                                _getLogger$info$track19.transition_name = "app_switch_ineligible", _getLogger$info$track19)).flush();
                                                 return !1;
                                             }
                                             return !0;
@@ -5402,14 +5405,32 @@ window.spb = function(modules) {
                                     })));
                                 }));
                                 var awaitRedirectListener = listen(popupWin, getNativePopupDomain(), "awaitRedirect", (function(_ref19) {
-                                    var pageUrl = _ref19.data.pageUrl;
+                                    var _ref19$data = _ref19.data, app = _ref19$data.app, pageUrl = _ref19$data.pageUrl;
                                     logger_getLogger().info("native_post_message_await_redirect").flush();
                                     return promise_ZalgoPromise.hash({
                                         valid: validatePromise,
                                         eligible: eligibilityPromise
                                     }).then((function(_ref20) {
-                                        return _ref20.valid ? _ref20.eligible ? createOrder().then((function(orderID) {
-                                            var _getLogger$info$track19;
+                                        var valid = _ref20.valid, eligible = _ref20.eligible;
+                                        app && Object.keys(app).forEach((function(key) {
+                                            var _getLogger$info, _getLogger$info$track20;
+                                            logger_getLogger().info("native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key, (_getLogger$info = {}, 
+                                            _getLogger$info[key] = app[key], _getLogger$info)).track((_getLogger$info$track20 = {}, 
+                                            _getLogger$info$track20.state_name = "smart_button", _getLogger$info$track20.transition_name = "native_app_installed", 
+                                            _getLogger$info$track20.info_msg = "native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key + ": " + app[key], 
+                                            _getLogger$info$track20)).flush();
+                                        }));
+                                        return valid ? !eligible || app && !app.installed ? createOrder().then((function(orderID) {
+                                            return {
+                                                redirect: !0,
+                                                redirectUrl: getDelayedNativeFallbackUrl({
+                                                    sessionUID: sessionUID,
+                                                    pageUrl: pageUrl,
+                                                    orderID: orderID
+                                                })
+                                            };
+                                        })) : createOrder().then((function(orderID) {
+                                            var _getLogger$info$track21;
                                             var nativeUrl = getDelayedNativeUrl({
                                                 sessionUID: sessionUID,
                                                 pageUrl: pageUrl,
@@ -5417,9 +5438,9 @@ window.spb = function(modules) {
                                             });
                                             logger_getLogger().info("native_attempt_appswitch_url_popup", {
                                                 url: nativeUrl
-                                            }).track((_getLogger$info$track19 = {}, _getLogger$info$track19.state_name = "smart_button", 
-                                            _getLogger$info$track19.transition_name = "app_switch_attempted", _getLogger$info$track19.info_msg = nativeUrl, 
-                                            _getLogger$info$track19)).flush();
+                                            }).track((_getLogger$info$track21 = {}, _getLogger$info$track21.state_name = "smart_button", 
+                                            _getLogger$info$track21.transition_name = "app_switch_attempted", _getLogger$info$track21.info_msg = nativeUrl, 
+                                            _getLogger$info$track21)).flush();
                                             redirected = !0;
                                             if (isAndroidChrome()) {
                                                 var appSwitchCloseListener = onCloseWindow(popupWin, (function() {
@@ -5433,25 +5454,16 @@ window.spb = function(modules) {
                                                 redirect: !0,
                                                 redirectUrl: nativeUrl
                                             };
-                                        })) : createOrder().then((function(orderID) {
-                                            return {
-                                                redirect: !0,
-                                                redirectUrl: getDelayedNativeFallbackUrl({
-                                                    sessionUID: sessionUID,
-                                                    pageUrl: pageUrl,
-                                                    orderID: orderID
-                                                })
-                                            };
                                         })) : close().then((function() {
                                             return {
                                                 redirect: !1
                                             };
                                         }));
                                     })).catch((function(err) {
-                                        var _getLogger$info$track20;
-                                        logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track20 = {}, 
-                                        _getLogger$info$track20.state_name = "smart_button", _getLogger$info$track20.transition_name = "app_switch_attempted_errored", 
-                                        _getLogger$info$track20.int_error_desc = stringifyError(err), _getLogger$info$track20)).flush();
+                                        var _getLogger$info$track22;
+                                        logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track22 = {}, 
+                                        _getLogger$info$track22.state_name = "smart_button", _getLogger$info$track22.transition_name = "app_switch_attempted_errored", 
+                                        _getLogger$info$track22.int_error_desc = stringifyError(err), _getLogger$info$track22)).flush();
                                         return createOrder().then((function(orderID) {
                                             return {
                                                 redirect: !0,
@@ -5483,10 +5495,10 @@ window.spb = function(modules) {
                                     popupWin.close();
                                 }));
                                 var onCompleteListener = listen(popupWin, getNativePopupDomain(), "onComplete", (function() {
-                                    var _getLogger$info$track21;
-                                    logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track21 = {}, 
-                                    _getLogger$info$track21.state_name = "smart_button", _getLogger$info$track21.transition_name = "native_oncomplete", 
-                                    _getLogger$info$track21)).flush();
+                                    var _getLogger$info$track23;
+                                    logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track23 = {}, 
+                                    _getLogger$info$track23.state_name = "smart_button", _getLogger$info$track23.transition_name = "native_oncomplete", 
+                                    _getLogger$info$track23)).flush();
                                     popupWin.close();
                                 }));
                                 var onErrorListener = listen(popupWin, getNativePopupDomain(), "onError", (function(data) {
@@ -6212,7 +6224,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.369", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.370", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
