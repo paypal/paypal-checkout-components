@@ -47,7 +47,7 @@ const NATIVE_DOMAIN = {
     [ ENV.TEST ]:       'https://www.paypal.com',
     [ ENV.LOCAL ]:      'https://www.paypal.com',
     [ ENV.STAGE ]:      'https://www.paypal.com',
-    [ ENV.SANDBOX ]:    'https://www.paypal.com',
+    [ ENV.SANDBOX ]:    'https://www.sandbox.paypal.com',
     [ ENV.PRODUCTION ]: 'https://www.paypal.com'
 };
 
@@ -56,7 +56,7 @@ const NATIVE_POPUP_DOMAIN = {
     [ ENV.TEST ]:       'https://history.paypal.com',
     [ ENV.LOCAL ]:      'https://history.paypal.com',
     [ ENV.STAGE ]:      'https://history.paypal.com',
-    [ ENV.SANDBOX ]:    'https://www.sandbox.paypal.com',
+    [ ENV.SANDBOX ]:    'https://history.paypal.com',
     [ ENV.PRODUCTION ]: 'https://history.paypal.com'
 };
 
@@ -448,16 +448,16 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const getNativeDomain = memoize(() : string => {
-        if (env === ENV.SANDBOX && window.xprops && window.xprops.useCorrectNativeSandboxDomain) {
-            return 'https://www.sandbox.paypal.com';
+        if (env === ENV.SANDBOX && isNativeOptedIn({ props }) && !(window.xprops && window.xprops.useCorrectNativeSandboxDomain)) {
+            return 'https://www.paypal.com';
         }
 
         return NATIVE_DOMAIN[env];
     });
 
     const getNativePopupDomain = memoize(() : string => {
-        if (env === ENV.SANDBOX && window.xprops && window.xprops.useCorrectNativeSandboxDomain) {
-            return 'https://history.paypal.com';
+        if (env === ENV.SANDBOX && isNativeOptedIn({ props }) && !(window.xprops && window.xprops.useCorrectNativeSandboxDomain)) {
+            return 'https://www.sandbox.paypal.com';
         }
 
         return NATIVE_POPUP_DOMAIN[env];
