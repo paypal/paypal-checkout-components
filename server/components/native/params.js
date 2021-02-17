@@ -42,7 +42,7 @@ function getParentDomain(params : NativePopupInputParams) : string {
     }
 
     // eslint-disable-next-line security/detect-unsafe-regex
-    if (!parentDomain.match(/\.paypal\.com(:\d{1,4})?$/)) {
+    if (process.env.NODE_ENV !== 'development' && !parentDomain.match(/\.paypal\.com(:\d{1,4})?$/)) {
         throw new makeError(ERROR_CODE.VALIDATION_ERROR, `Expected paypal parentDomain`);
     }
 

@@ -54,7 +54,7 @@ const NATIVE_DOMAIN = {
 // Popup domain needs to be different than native domain for app switch to work on iOS
 const NATIVE_POPUP_DOMAIN = {
     [ ENV.TEST ]:       'https://history.paypal.com',
-    [ ENV.LOCAL ]:      'https://history.paypal.com',
+    [ ENV.LOCAL ]:      getDomain(),
     [ ENV.STAGE ]:      'https://history.paypal.com',
     [ ENV.SANDBOX ]:    'https://history.paypal.com',
     [ ENV.PRODUCTION ]: 'https://history.paypal.com'
@@ -104,15 +104,7 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     });
     nativeSocket.onError(err => {
         const stringifiedError = stringifyError(err);
-        if (stringifiedError.indexOf('permission_denied') !== -1) {
-            getLogger()
-                .info('firebase_connection_reinitialized', { sessionUID })
-                .track({
-                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_ACK,
-                    [FPTI_CUSTOM_KEY.ERR_DESC]: `[Native Socket Info] ${ stringifiedError }`
-                }).flush();
-        } else {
+        if (stringifiedError.indexOf('permission_denied') === -1) {
             getLogger().error('native_socket_error', { err: stringifiedError })
                 .track({
                     [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
@@ -569,7 +561,15 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const actions = { restart: () => fallbackToWebCheckout() };
         return ZalgoPromise.all([
             onApprove(data, actions)
-                .catch(err => onError(err)),
+                .catch(err => {
+                    getLogger().info(`native_message_onapprove`, { payerID, paymentID, billingToken })
+                        .track({
+                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE_ERROR,
+                            [FPTI_CUSTOM_KEY.INFO_MSG]: `Error: ${ stringifyError(err) }`
+                        })
+                        .flush();
+                    onError(err);
+                }),
             close()
         ]).then(noop);
     };
@@ -925,13 +925,24 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             });
         });
 
-        const awaitRedirectListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.AWAIT_REDIRECT, ({ data: { pageUrl } }) => {
+        const awaitRedirectListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app, pageUrl } }) => {
             getLogger().info(`native_post_message_await_redirect`).flush();
 
             return ZalgoPromise.hash({
-                valid:    validatePromise,
-                eligible: eligibilityPromise
+                valid:      validatePromise,
+                eligible:   eligibilityPromise
             }).then(({ valid, eligible }) => {
+                if (app) {
+                    Object.keys(app).forEach(key => {
+                        getLogger().info(`native_app_${ app.installed ? 'installed' : 'not_installed' }_${ key }`, { [key]: app[key] })
+                            .track({
+                                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_INSTALLED,
+                                [FPTI_CUSTOM_KEY.INFO_MSG]: `native_app_${ app.installed ? 'installed' : 'not_installed' }_${ key }: ${ app[key] }`
+                            })
+                            .flush();
+                    });
+                }
 
                 if (!valid) {
                     return close().then(() => {
@@ -939,7 +950,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     });
                 }
 
-                if (!eligible) {
+                if (!eligible || (app && !app.installed)) {
                     return createOrder().then(orderID => {
                         const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID });
                         return { redirect: true, redirectUrl: fallbackUrl };

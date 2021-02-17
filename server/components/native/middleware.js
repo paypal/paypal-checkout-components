@@ -47,6 +47,7 @@ export function getNativePopupMiddleware({
                 <!DOCTYPE html>
                 <head>
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    <link rel="manifest" href="/.well-known/manifest.webmanifest">
                     <title>Native Popup</title>
                 </head>
                 <body data-nonce="${ cspNonce }" data-client-version="${ client.version }">
