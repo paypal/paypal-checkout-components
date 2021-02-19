@@ -235,6 +235,13 @@ export const componentContent : ContentMap = {
         Pay:       ({ logo }) => <Fragment><Text animate optional>Оплатить через </Text>{ logo }</Fragment>,
         BuyNow:    ({ logo }) => <Fragment>{ logo }<Text animate optional> Купить сейчас</Text></Fragment>
     },
+    si: {
+        Checkout:    ({ logo }) => <Fragment>{ logo }<Text animate optional> ගෙවා පිටවීම</Text></Fragment>,
+        Subscribe:   ({ logo }) => <Fragment>{ logo }<Text animate optional> දායක වන්න</Text></Fragment>,
+        SaferTag:    () => <Text animate optional>ගෙවීමට වඩා ආරක්ෂිත, පහසු ක්‍රමය</Text>,
+        Pay:         ({ logo }) => <Fragment>{ logo }<Text animate optional> සමග ගෙවන්න</Text></Fragment>,
+        BuyNow:             ({ logo }) => <Fragment>{ logo }<Text animate optional> දැන් මිලදී ගන්න</Text></Fragment>
+    },
     sk: {
         Checkout:  ({ logo }) => <Fragment><Text animate optional>Zaplatiť cez </Text>{ logo }</Fragment>,
         Subscribe: ({ logo }) => <Fragment>{ logo }<Text animate optional> Predplatiť</Text></Fragment>,
@@ -248,6 +255,13 @@ export const componentContent : ContentMap = {
         SaferTag:    () => <Text animate optional>Varnejši, lažji način plačil</Text>,
         Pay:         ({ logo }) => <Fragment><Text animate optional>Plačaj z </Text>{ logo }</Fragment>,
         BuyNow:      ({ logo }) => <Fragment>{ logo }<Text animate optional> Kupi zdaj</Text></Fragment>
+    },
+    sq: {
+        Checkout:    ({ logo }) => <Fragment><Text animate optional>Arka e </Text>{ logo }</Fragment>,
+        Subscribe:   ({ logo }) => <Fragment><Text animate optional>Abonohu në </Text>{ logo }</Fragment>,
+        SaferTag:    () => <Text animate optional>Mënyra më e sigurt dhe më e lehtë për të paguar</Text>,
+        Pay:         ({ logo }) => <Fragment><Text animate optional>Paguaj me </Text>{ logo }</Fragment>,
+        BuyNow:             ({ logo }) => <Fragment><Text animate optional>Bli tani me </Text>{ logo }</Fragment>
     },
     sv: {
         Checkout:  ({ logo }) => <Fragment>{ logo }<Text animate optional> Betala</Text></Fragment>,

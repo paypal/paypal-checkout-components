@@ -115,6 +115,10 @@ export const containerContent : ContentMap = {
         windowMessage:   'Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку',
         continueMessage: 'Продолжить'
     },
+    si: {
+        windowMessage:   'ආරක්ෂිත PayPal බ්‍රව්සරය නොපෙනේ ද? ඔබේ මිල දී ගැනීම සම්පූර්ණ කිරීම සඳහා අපි ඔබට කවුළුව නැවත දියත් කිරීමට උපකාර කරන්නෙමු',
+        continueMessage: 'ඉදිරියට යාමට ක්ලික් කරන්න'
+    },
     sk: {
         windowMessage:   'Nezobrazuje sa vám zabezpečený prehliadač PayPal? Pomôžeme vám znova otvoriť okno, aby ste mohli nákup dokončiť',
         continueMessage: 'Pokračovať'
@@ -122,6 +126,10 @@ export const containerContent : ContentMap = {
     sl: {
         windowMessage:   'Ne vidite PayPalovega varnega brskalnika? Pomagali vam bomo ponovno zagnati okno za dokončanje nakupa',
         continueMessage: 'Kliknite za nadaljevanje'
+    },
+    sq: {
+        windowMessage:   'Nuk e shikon shfletuesin e sigurt të PayPal? Do të të ndihmojmë të rihapësh dritaren për të përfunduar blerjen',
+        continueMessage: 'Kliko për të vazhduar'
     },
     sv: {
         windowMessage:   'Ser du inte den säkra PayPal-webbläsaren? Vi hjälper dig att starta om fönstret för att slutföra ditt köp',
