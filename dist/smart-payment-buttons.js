@@ -1777,7 +1777,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.371", _headers10);
+            _headers10["x-app-version"] = "2.0.372", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4797,10 +4797,9 @@ window.spb = function(modules) {
             isPaymentEligible: function(_ref4) {
                 var payment = _ref4.payment;
                 var fundingSource = payment.fundingSource;
-                var eligibility = _ref4.serviceData.eligibility;
                 return !(payment.win || !initialPageUrl || !NATIVE_CHECKOUT_URI[fundingSource] || !isNativeOptedIn({
                     props: _ref4.props
-                }) && (!eligibility.nativeCheckout || !eligibility.nativeCheckout[fundingSource]) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) && (!function(fundingSource) {
+                }) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) && (!function(fundingSource) {
                     var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
                     return !(!fundingEligibility || fundingEligibility.eligibility || "experimentation_ineligibility" !== fundingEligibility.ineligibilityReason);
                 }(fundingSource) || !isPopupFakeout()));
@@ -5039,6 +5038,7 @@ window.spb = function(modules) {
                     });
                 }));
                 var getNativePopupUrl = memoize((function() {
+                    var parentDomain;
                     return conditionalExtendUrl("" + getNativePopupDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
                         query: (parentDomain = getDomain(), {
                             sdkMeta: sdkMeta,
@@ -5049,8 +5049,7 @@ window.spb = function(modules) {
                             sessionID: sessionID,
                             sdkCorrelationID: sdkCorrelationID
                         })
-                    });
-                    var parentDomain;
+                    }) + "#init";
                 }));
                 var getSDKProps = memoize((function() {
                     return createOrder().then((function(orderID) {
@@ -5344,29 +5343,32 @@ window.spb = function(modules) {
                             }({
                                 sessionUID: sessionUID
                             }) : function(_ref18) {
-                                var _getLogger$info$track16;
+                                var _getLogger$info$track15;
                                 var sessionUID = _ref18.sessionUID;
                                 var redirected = !1;
                                 var popupWin = popup(getNativePopupUrl());
-                                window.addEventListener("pagehide", (function() {
-                                    var _getLogger$info$track15;
-                                    logger_getLogger().info("native_closing_popup").track((_getLogger$info$track15 = {}, 
-                                    _getLogger$info$track15.state_name = "smart_button", _getLogger$info$track15.transition_name = "native_closing_popup", 
-                                    _getLogger$info$track15)).flush();
-                                    popupWin.close();
-                                }));
-                                logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track16 = {}, 
-                                _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_shown", 
-                                _getLogger$info$track16)).flush();
+                                logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track15 = {}, 
+                                _getLogger$info$track15.state_name = "smart_button", _getLogger$info$track15.transition_name = "popup_shown", 
+                                _getLogger$info$track15)).flush();
                                 var closeListener = onCloseWindow(popupWin, (function() {
-                                    var _getLogger$info$track17;
-                                    logger_getLogger().info("native_popup_closed").track((_getLogger$info$track17 = {}, 
-                                    _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = "popup_closed", 
-                                    _getLogger$info$track17)).flush();
+                                    var _getLogger$info$track16;
+                                    logger_getLogger().info("native_popup_closed").track((_getLogger$info$track16 = {}, 
+                                    _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_closed", 
+                                    _getLogger$info$track16)).flush();
                                     return promise_ZalgoPromise.delay(1e3).then((function() {
                                         if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.all([ onCancel(), close() ]);
                                     })).then(src_util_noop);
                                 }), 500);
+                                var closePopup = function() {
+                                    var _getLogger$info$track17;
+                                    logger_getLogger().info("native_closing_popup").track((_getLogger$info$track17 = {}, 
+                                    _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = "native_closing_popup", 
+                                    _getLogger$info$track17)).flush();
+                                    closeListener.cancel();
+                                    popupWin.close();
+                                };
+                                window.addEventListener("pagehide", closePopup);
+                                window.addEventListener("unload", closePopup);
                                 native_clean.register((function() {
                                     closeListener.cancel();
                                 }));
@@ -5428,6 +5430,7 @@ window.spb = function(modules) {
                                         return valid ? !eligible || app && !app.installed ? createOrder().then((function(orderID) {
                                             return {
                                                 redirect: !0,
+                                                appSwitch: !1,
                                                 redirectUrl: getDelayedNativeFallbackUrl({
                                                     sessionUID: sessionUID,
                                                     pageUrl: pageUrl,
@@ -5457,6 +5460,7 @@ window.spb = function(modules) {
                                             }
                                             return {
                                                 redirect: !0,
+                                                appSwitch: !0,
                                                 redirectUrl: nativeUrl
                                             };
                                         })) : close().then((function() {
@@ -5472,6 +5476,7 @@ window.spb = function(modules) {
                                         return createOrder().then((function(orderID) {
                                             return {
                                                 redirect: !0,
+                                                appSwitch: !1,
                                                 redirectUrl: getDelayedNativeFallbackUrl({
                                                     sessionUID: sessionUID,
                                                     pageUrl: pageUrl,
@@ -5493,22 +5498,22 @@ window.spb = function(modules) {
                                 }));
                                 var onApproveListener = listen(popupWin, getNativePopupDomain(), "onApprove", (function(data) {
                                     onApproveCallback(data);
-                                    popupWin.close();
+                                    closePopup();
                                 }));
                                 var onCancelListener = listen(popupWin, getNativePopupDomain(), "onCancel", (function() {
                                     onCancelCallback();
-                                    popupWin.close();
+                                    closePopup();
                                 }));
                                 var onCompleteListener = listen(popupWin, getNativePopupDomain(), "onComplete", (function() {
                                     var _getLogger$info$track23;
                                     logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track23 = {}, 
                                     _getLogger$info$track23.state_name = "smart_button", _getLogger$info$track23.transition_name = "native_oncomplete", 
                                     _getLogger$info$track23)).flush();
-                                    popupWin.close();
+                                    closePopup();
                                 }));
                                 var onErrorListener = listen(popupWin, getNativePopupDomain(), "onError", (function(data) {
                                     onErrorCallback(data);
-                                    popupWin.close();
+                                    closePopup();
                                 }));
                                 var detectWebSwitchListener = listen(popupWin, getNativeDomain(), "detectWebSwitch", (function() {
                                     logger_getLogger().info("native_post_message_detect_web_switch").flush();
@@ -6229,7 +6234,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.371", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.372", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
