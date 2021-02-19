@@ -679,17 +679,18 @@
             fn.__name__ = fn.displayName = name;
             return fn;
         }
+        function base64encode(str) {
+            if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+                return String.fromCharCode(parseInt(p1, 16));
+            })));
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            throw new Error("Can not find window.btoa or Buffer");
+        }
         function uniqueID() {
             var chars = "0123456789abcdef";
             return "xxxxxxxxxx".replace(/./g, (function() {
                 return chars.charAt(Math.floor(Math.random() * chars.length));
-            })) + "_" + function(str) {
-                if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
-                    return String.fromCharCode(parseInt(p1, 16));
-                })));
-                if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-                throw new Error("Can not find window.btoa or Buffer");
-            }((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
         }
         var objectIDs;
         function serializeArgs(args) {
@@ -1192,7 +1193,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.370", _ref2;
+                    _ref2.button_version = "2.0.371", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1235,6 +1236,10 @@
                 sdkVersion: sdkVersion,
                 locale: locale
             }));
+            logger && logger.info("native_popup_init", {
+                buttonSessionID: buttonSessionID,
+                href: base64encode(window.location.href)
+            }).flush();
             (function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /Android/.test(ua);
@@ -1270,7 +1275,10 @@
             if (!opener) {
                 if (logger) {
                     var _logger$info$track3;
-                    logger.info("native_popup_no_opener").track((_logger$info$track3 = {}, _logger$info$track3.transition_name = "popup_no_opener", 
+                    logger.info("native_popup_no_opener", {
+                        buttonSessionID: buttonSessionID,
+                        href: base64encode(window.location.href)
+                    }).track((_logger$info$track3 = {}, _logger$info$track3.transition_name = "popup_no_opener", 
                     _logger$info$track3.info_msg = "location: " + window.location.href, _logger$info$track3)).flush();
                 }
                 throw new Error("Expected window to have opener");
