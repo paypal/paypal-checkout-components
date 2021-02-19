@@ -189,7 +189,10 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         case HASH.INIT: {
             break;
         }
-        case HASH.REDIRECT: {
+        case HASH.APPSWITCH: {
+            break;
+        }
+        case HASH.WEBSWITCH: {
             break;
         }
         case HASH.ON_APPROVE: {
@@ -239,12 +242,12 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     const pageUrl = `${ window.location.href  }#${  HASH.CLOSE }`;
 
     appInstalledPromise.then(app => {
-        sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl }).then(({ redirect = true, redirectUrl }) => {
+        sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl }).then(({ redirect = true, redirectUrl, appSwitch = true }) => {
             if (!redirect) {
                 return;
             }
 
-            window.location.hash = HASH.REDIRECT;
+            window.location.hash = appSwitch ? HASH.APPSWITCH : HASH.WEBSWITCH;
             window.location.replace(redirectUrl);
 
             let didRedirect = false;

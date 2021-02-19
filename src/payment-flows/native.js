@@ -958,7 +958,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 if (!eligible || (app && !app.installed)) {
                     return createOrder().then(orderID => {
                         const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID });
-                        return { redirect: true, redirectUrl: fallbackUrl };
+                        return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
                     });
                 }
 
@@ -981,7 +981,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         setTimeout(appSwitchCloseListener.cancel, 1000);
                     }
 
-                    return { redirect: true, redirectUrl: nativeUrl };
+                    return { redirect: true, appSwitch: true, redirectUrl: nativeUrl };
                 });
 
             }).catch(err => {
@@ -994,7 +994,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
                 return createOrder().then(orderID => {
                     const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID });
-                    return { redirect: true, redirectUrl: fallbackUrl };
+                    return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
                 });
             }).catch(err => {
                 return close().then(() => {
