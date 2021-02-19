@@ -1,7 +1,7 @@
 /* @flow */
 
 import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError, preventClickFocus } from 'belter/src';
-import { COUNTRY, FPTI_KEY, FUNDING, type FundingEligibilityType } from '@paypal/sdk-constants/src';
+import { COUNTRY, FPTI_KEY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { ContentType, Wallet } from '../types';
@@ -30,10 +30,7 @@ type ButtonOpts = {|
     wallet : ?Wallet,
     buyerAccessToken : ?string,
     eligibility : {|
-        cardFields : boolean,
-        nativeCheckout : ?{
-            [$Values<typeof FUNDING> ] : ?boolean
-        }
+        cardFields : boolean
     |},
     correlationID? : string,
     cookies : string

@@ -219,9 +219,8 @@ function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : 
     return true;
 }
 
-function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentEligibleOptions) : boolean {
+function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) : boolean {
     const { win, fundingSource } = payment;
-    const { eligibility } = serviceData;
 
     if (win) {
         return false;
@@ -236,10 +235,6 @@ function isNativePaymentEligible({ payment, props, serviceData } : IsPaymentElig
     }
 
     if (isNativeOptedIn({ props })) {
-        return true;
-    }
-
-    if (eligibility.nativeCheckout && eligibility.nativeCheckout[fundingSource]) {
         return true;
     }
 
