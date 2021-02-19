@@ -1,6 +1,6 @@
 /* @flow */
 
-import { parseQuery, cleanup, stringifyErrorMessage } from 'belter/src';
+import { parseQuery, cleanup, stringifyErrorMessage, base64encode } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 
@@ -82,6 +82,13 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
             clientID, fundingSource, sdkVersion, locale });
     }
 
+    if (logger) {
+        logger.info('native_popup_init', {
+            buttonSessionID,
+            href: base64encode(window.location.href)
+        }).flush();
+    }
+
     if (isAndroidChrome()) {
         if (fundingSource === FUNDING.PAYPAL) {
             appInstalledPromise = isAndroidPayPalAppInstalled().catch(err => {
@@ -113,11 +120,13 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     const opener = window.opener;
     if (!opener) {
         if (logger) {
-            logger.info('native_popup_no_opener')
-                .track({
-                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER,
-                    [FPTI_CUSTOM_KEY.INFO_MSG]: `location: ${ window.location.href }`
-                }).flush();
+            logger.info('native_popup_no_opener', {
+                buttonSessionID,
+                href: base64encode(window.location.href)
+            }).track({
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER,
+                [FPTI_CUSTOM_KEY.INFO_MSG]: `location: ${ window.location.href }`
+            }).flush();
         }
         throw new Error(`Expected window to have opener`);
     }
