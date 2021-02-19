@@ -1,3 +1,9 @@
+## <small>5.0.142 (2021-02-19)</small>
+
+* Add button labels for sq_AL, si_LK (#1545) ([6bc7a3d](https://github.com/paypal/paypal-checkout-components/commit/6bc7a3d)), closes [#1545](https://github.com/paypal/paypal-checkout-components/issues/1545)
+
+
+
 ## <small>5.0.141 (2021-02-11)</small>
 
 * Allow clientMetadataID to be passed into button render ([01d90b4](https://github.com/paypal/paypal-checkout-components/commit/01d90b4))
