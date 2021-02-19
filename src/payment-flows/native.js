@@ -13,6 +13,7 @@ import { getNativeEligibility, firebaseSocket, type MessageSocket, type Firebase
 import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, getStickinessID } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
 import { nativeFakeoutExperiment } from '../experiments';
+import { HASH } from '../native/popup/constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 import type { NativePopupInputParams } from '../../server/components/native/params';
 
@@ -526,10 +527,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const getNativePopupUrl = memoize(() : string => {
-        return conditionalExtendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
+        const baseURL = conditionalExtendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
             // $FlowFixMe
             query: getNativePopupParams()
         });
+
+        return `${ baseURL }#${ HASH.INIT }`;
     });
 
     const getSDKProps = memoize(() : ZalgoPromise<NativeSDKProps> => {
@@ -856,15 +859,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         let redirected = false;
         const popupWin = popup(getNativePopupUrl());
 
-        const closePopup = () => {
-            getLogger().info(`native_closing_popup`).track({
-                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_CLOSING_POPUP
-            }).flush();
-            popupWin.close();
-        };
-        window.addEventListener('pagehide', closePopup);
-
         getLogger().info(`native_attempt_appswitch_popup_shown`)
             .track({
                 [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
@@ -885,6 +879,18 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 }
             }).then(noop);
         }, 500);
+
+        const closePopup = () => {
+            getLogger().info(`native_closing_popup`).track({
+                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_CLOSING_POPUP
+            }).flush();
+            closeListener.cancel();
+            popupWin.close();
+        };
+        
+        window.addEventListener('pagehide', closePopup);
+        window.addEventListener('unload', closePopup);
 
         clean.register(() => {
             closeListener.cancel();
@@ -1009,12 +1015,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
         const onApproveListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_APPROVE, (data) => {
             onApproveCallback(data);
-            popupWin.close();
+            closePopup();
         });
 
         const onCancelListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_CANCEL, () => {
             onCancelCallback();
-            popupWin.close();
+            closePopup();
         });
 
         const onCompleteListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_COMPLETE, () => {
@@ -1023,12 +1029,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
                     [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_COMPLETE
                 }).flush();
-            popupWin.close();
+            closePopup();
         });
 
         const onErrorListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_ERROR, (data) => {
             onErrorCallback(data);
-            popupWin.close();
+            closePopup();
         });
 
         const detectWebSwitchListener = listen(popupWin, getNativeDomain(), POST_MESSAGE.DETECT_WEB_SWITCH, () => {

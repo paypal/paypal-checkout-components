@@ -141,6 +141,11 @@ export const FPTI_TRANSITION = {
     NATIVE_ON_ERROR:                        ('native_onerror' : 'native_onerror'),
     NATIVE_ON_SHIPPING_CHANGE:              ('native_onshippingchange' : 'native_onshippingchange'),
     NATIVE_ON_FALLBACK:                     ('native_onfallback' : 'native_onfallback'),
+    NATIVE_POPUP_INIT:                      ('native_popup_init' : 'native_popup_init'),
+    NATIVE_POPUP_UNLOAD:                    ('native_popup_unload' : 'native_popup_unload'),
+    NATIVE_POPUP_BEFORE_UNLOAD:             ('native_popup_beforeunload' : 'native_popup_beforeunload'),
+    NATIVE_POPUP_PAGEHIDE:                  ('native_popup_pagehide' : 'native_popup_pagehide'),
+    NATIVE_POPUP_OPENER_DETECT_CLOSE:       ('native_popup_opener_detect_close', 'native_popup_opener_detect_close'),
     
     HONEY_IDENTIFY:                         ('honey_identify')
 };
