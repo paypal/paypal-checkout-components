@@ -194,20 +194,28 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         }
         case HASH.ON_APPROVE: {
             const { payerID, paymentID, billingToken } = parseQuery(queryString);
-            sendToParent(MESSAGE.ON_APPROVE, { payerID, paymentID, billingToken });
+            sendToParent(MESSAGE.ON_APPROVE, { payerID, paymentID, billingToken }).finally(() => {
+                window.close();
+            });
             break;
         }
         case HASH.ON_CANCEL: {
-            sendToParent(MESSAGE.ON_CANCEL);
+            sendToParent(MESSAGE.ON_CANCEL).finally(() => {
+                window.close();
+            });
             break;
         }
         case HASH.ON_ERROR: {
             const { message } = parseQuery(queryString);
-            sendToParent(MESSAGE.ON_ERROR, { message });
+            sendToParent(MESSAGE.ON_ERROR, { message }).finally(() => {
+                window.close();
+            });
             break;
         }
         case HASH.CLOSE: {
-            sendToParent(MESSAGE.ON_COMPLETE);
+            sendToParent(MESSAGE.ON_COMPLETE).finally(() => {
+                window.close();
+            });
             break;
         }
         case HASH.TEST: {
@@ -216,6 +224,8 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         default: {
             sendToParent(MESSAGE.ON_ERROR, {
                 message: `Invalid event sent from native, ${ hash }, from URL, ${ window.location.href }`
+            }).finally(() => {
+                window.close();
             });
         }
         }
