@@ -189,6 +189,9 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         case HASH.INIT: {
             break;
         }
+        case HASH.REDIRECT: {
+            break;
+        }
         case HASH.ON_APPROVE: {
             const { payerID, paymentID, billingToken } = parseQuery(queryString);
             sendToParent(MESSAGE.ON_APPROVE, { payerID, paymentID, billingToken });
@@ -231,6 +234,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
                 return;
             }
 
+            window.location.hash = HASH.REDIRECT;
             window.location.replace(redirectUrl);
 
             let didRedirect = false;

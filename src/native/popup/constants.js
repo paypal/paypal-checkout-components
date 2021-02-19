@@ -15,6 +15,7 @@ export const EVENT = {
 
 export const HASH = {
     INIT:               'init',
+    REDIRECT:           'redirect',
     CLOSE:              'close',
     FALLBACK:           'fallback',
     ON_APPROVE:         'onApprove',
