@@ -239,7 +239,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
     handleHash();
 
-    const pageUrl = `${ window.location.href  }#${  HASH.CLOSE }`;
+    const pageUrl = `${ window.location.href.split('#')[0] }#${  HASH.CLOSE }`;
 
     appInstalledPromise.then(app => {
         sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl }).then(({ redirect = true, redirectUrl, appSwitch = true }) => {
