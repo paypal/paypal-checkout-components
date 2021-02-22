@@ -260,12 +260,14 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
             window.addEventListener('pagehide', markRedirect);
             clean.register(() => window.removeEventListener('pagehide', markRedirect));
 
-            const timer = setTimeout(() => {
-                if (!didRedirect) {
-                    sendToParent(MESSAGE.DETECT_APP_SWITCH);
-                }
-            }, 500);
-            clean.register(() => clearTimeout(timer));
+            if (appSwitch) {
+                const timer = setTimeout(() => {
+                    if (!didRedirect) {
+                        sendToParent(MESSAGE.DETECT_APP_SWITCH);
+                    }
+                }, 500);
+                clean.register(() => clearTimeout(timer));
+            }
         });
     });
 
