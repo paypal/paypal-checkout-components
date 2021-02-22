@@ -1192,7 +1192,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.374", _ref2;
+                    _ref2.button_version = "2.0.375", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1426,9 +1426,9 @@
                     app: app,
                     pageUrl: pageUrl
                 }).then((function(_ref3) {
-                    var _ref3$redirect = _ref3.redirect, redirectUrl = _ref3.redirectUrl, _ref3$appSwitch = _ref3.appSwitch;
+                    var _ref3$redirect = _ref3.redirect, redirectUrl = _ref3.redirectUrl, _ref3$appSwitch = _ref3.appSwitch, appSwitch = void 0 === _ref3$appSwitch || _ref3$appSwitch;
                     if (void 0 === _ref3$redirect || _ref3$redirect) {
-                        window.location.hash = void 0 === _ref3$appSwitch || _ref3$appSwitch ? "appswitch" : "webswitch";
+                        window.location.hash = appSwitch ? "appswitch" : "webswitch";
                         window.location.replace(redirectUrl);
                         var didRedirect = !1;
                         var markRedirect = function() {
@@ -1446,12 +1446,14 @@
                         clean.register((function() {
                             return window.removeEventListener("pagehide", markRedirect);
                         }));
-                        var timer = setTimeout((function() {
-                            didRedirect || sendToParent("detectAppSwitch");
-                        }), 500);
-                        clean.register((function() {
-                            return clearTimeout(timer);
-                        }));
+                        if (appSwitch) {
+                            var timer = setTimeout((function() {
+                                didRedirect || sendToParent("detectAppSwitch");
+                            }), 500);
+                            clean.register((function() {
+                                return clearTimeout(timer);
+                            }));
+                        }
                     }
                 }));
             }));

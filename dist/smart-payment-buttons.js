@@ -1777,7 +1777,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.374", _headers10);
+            _headers10["x-app-version"] = "2.0.375", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -1975,10 +1975,10 @@ window.spb = function(modules) {
             }));
         }));
         function getNativeEligibility(_ref2) {
-            var buttonSessionID = _ref2.buttonSessionID, cookies = _ref2.cookies, orderID = _ref2.orderID, enableFunding = _ref2.enableFunding, stickinessID = _ref2.stickinessID;
+            var buttonSessionID = _ref2.buttonSessionID, cookies = _ref2.cookies, orderID = _ref2.orderID, enableFunding = _ref2.enableFunding, stickinessID = _ref2.stickinessID, domain = _ref2.domain;
             return callGraphQL({
                 name: "GetNativeEligibility",
-                query: "\n            query GetNativeEligibility(\n                $vault : Boolean,\n                $shippingCallbackEnabled : Boolean,\n                $merchantID : String,\n                $clientID : String,\n                $buyerCountry : String,\n                $currency : String,\n                $userAgent : String,\n                $buttonSessionID : String,\n                $cookies : String,\n                $orderID : String,\n                $enableFunding : [String],\n                $stickinessID : String\n            ) {\n                mobileSDKEligibility(\n                    vault: $vault,\n                    shippingCallbackEnabled: $shippingCallbackEnabled,\n                    merchantID: $merchantID,\n                    facilitatorClientID: $clientID,\n                    buyerCountry: $buyerCountry,\n                    currency: $currency,\n                    userAgent: $userAgent,\n                    buttonSessionID: $buttonSessionID,\n                    cookies: $cookies,\n                    token: $orderID,\n                    enableFunding: $enableFunding,\n                    stickinessID: $stickinessID\n                ) {\n                    paypal {\n                        eligibility\n                        ineligibilityReason\n                    }\n                    venmo {\n                        eligibility\n                        ineligibilityReason\n                    }\n                }\n            }\n        ",
+                query: "\n            query GetNativeEligibility(\n                $vault : Boolean,\n                $shippingCallbackEnabled : Boolean,\n                $merchantID : String,\n                $clientID : String,\n                $buyerCountry : String,\n                $currency : String,\n                $userAgent : String,\n                $buttonSessionID : String,\n                $cookies : String,\n                $orderID : String,\n                $enableFunding : [String],\n                $stickinessID : String,\n                $domain : String\n            ) {\n                mobileSDKEligibility(\n                    vault: $vault,\n                    shippingCallbackEnabled: $shippingCallbackEnabled,\n                    merchantID: $merchantID,\n                    facilitatorClientID: $clientID,\n                    buyerCountry: $buyerCountry,\n                    currency: $currency,\n                    userAgent: $userAgent,\n                    buttonSessionID: $buttonSessionID,\n                    cookies: $cookies,\n                    token: $orderID,\n                    enableFunding: $enableFunding,\n                    stickinessID: $stickinessID,\n                    domain: $domain\n                ) {\n                    paypal {\n                        eligibility\n                        ineligibilityReason\n                    }\n                    venmo {\n                        eligibility\n                        ineligibilityReason\n                    }\n                }\n            }\n        ",
                 variables: {
                     vault: _ref2.vault,
                     shippingCallbackEnabled: _ref2.shippingCallbackEnabled,
@@ -1991,7 +1991,8 @@ window.spb = function(modules) {
                     cookies: cookies,
                     orderID: orderID,
                     enableFunding: enableFunding,
-                    stickinessID: stickinessID
+                    stickinessID: stickinessID,
+                    domain: domain
                 }
             }).then((function(gqlResult) {
                 if (!gqlResult || !gqlResult.mobileSDKEligibility) throw new Error("GraphQL GetNativeEligibility returned no mobileSDKEligibility object");
@@ -4760,7 +4761,7 @@ window.spb = function(modules) {
             setup: function(_ref5) {
                 var props = _ref5.props, serviceData = _ref5.serviceData;
                 return promise_ZalgoPromise.try((function() {
-                    var getPageUrl = props.getPageUrl, clientID = props.clientID, currency = props.currency, platform = props.platform, vault = props.vault, buttonSessionID = props.buttonSessionID, enableFunding = props.enableFunding;
+                    var getPageUrl = props.getPageUrl, clientID = props.clientID, currency = props.currency, platform = props.platform, vault = props.vault, buttonSessionID = props.buttonSessionID, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
                     var merchantID = serviceData.merchantID, buyerCountry = serviceData.buyerCountry, cookies = serviceData.cookies;
                     var finalStickinessID = "production" !== props.env ? props.stickinessID : buttonSessionID;
                     var shippingCallbackEnabled = Boolean(props.onShippingChange);
@@ -4768,14 +4769,15 @@ window.spb = function(modules) {
                         vault: vault,
                         platform: platform,
                         shippingCallbackEnabled: shippingCallbackEnabled,
-                        merchantID: merchantID[0],
                         clientID: clientID,
                         buyerCountry: buyerCountry,
                         currency: currency,
                         buttonSessionID: buttonSessionID,
                         cookies: cookies,
                         enableFunding: enableFunding,
-                        stickinessID: finalStickinessID
+                        merchantID: merchantID[0],
+                        stickinessID: finalStickinessID,
+                        domain: merchantDomain
                     }).then((function(result) {
                         nativeEligibility = result;
                     })), getPageUrl().then((function(pageUrl) {
@@ -4806,7 +4808,7 @@ window.spb = function(modules) {
             },
             init: function(_ref6) {
                 var props = _ref6.props, components = _ref6.components, config = _ref6.config, payment = _ref6.payment, serviceData = _ref6.serviceData;
-                var createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, commit = props.commit, clientID = props.clientID, sessionID = props.sessionID, sdkCorrelationID = props.sdkCorrelationID, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost, onClick = props.onClick, onShippingChange = props.onShippingChange, vault = props.vault, platform = props.platform, currency = props.currency, stickinessID = props.stickinessID, enableFunding = props.enableFunding;
+                var createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, commit = props.commit, clientID = props.clientID, sessionID = props.sessionID, sdkCorrelationID = props.sdkCorrelationID, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost, onClick = props.onClick, onShippingChange = props.onShippingChange, vault = props.vault, platform = props.platform, currency = props.currency, stickinessID = props.stickinessID, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
                 var facilitatorAccessToken = serviceData.facilitatorAccessToken, sdkMeta = serviceData.sdkMeta, buyerCountry = serviceData.buyerCountry, merchantID = serviceData.merchantID, cookies = serviceData.cookies;
                 var fundingSource = payment.fundingSource;
                 var sdkVersion = config.sdkVersion, firebaseConfig = config.firebase;
@@ -4984,8 +4986,10 @@ window.spb = function(modules) {
                             sessionUID: sessionUID,
                             buttonSessionID: buttonSessionID,
                             pageUrl: pageUrl,
+                            clientID: clientID,
                             stickinessID: finalStickinessID,
-                            enableFunding: enableFunding.join(",")
+                            enableFunding: enableFunding.join(","),
+                            domain: merchantDomain
                         }
                     });
                 }));
@@ -5004,6 +5008,7 @@ window.spb = function(modules) {
                         orderID: orderID,
                         facilitatorAccessToken: facilitatorAccessToken,
                         pageUrl: pageUrl,
+                        clientID: clientID,
                         commit: String(commit),
                         webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : "",
                         stickinessID: finalStickinessID,
@@ -5014,7 +5019,8 @@ window.spb = function(modules) {
                         apiStageHost: apiStageHost || "",
                         forceEligible: forceEligible,
                         fundingSource: fundingSource,
-                        enableFunding: enableFunding.join(",")
+                        enableFunding: enableFunding.join(","),
+                        domain: merchantDomain
                     };
                 };
                 var getDelayedNativeUrl = memoize((function(_ref10) {
@@ -5389,7 +5395,6 @@ window.spb = function(modules) {
                                             vault: vault,
                                             platform: platform,
                                             shippingCallbackEnabled: shippingCallbackEnabled,
-                                            merchantID: merchantID[0],
                                             clientID: clientID,
                                             buyerCountry: buyerCountry,
                                             currency: currency,
@@ -5397,7 +5402,9 @@ window.spb = function(modules) {
                                             cookies: cookies,
                                             orderID: orderID,
                                             enableFunding: enableFunding,
-                                            stickinessID: finalStickinessID
+                                            merchantID: merchantID[0],
+                                            stickinessID: finalStickinessID,
+                                            domain: merchantDomain
                                         }).then((function(eligibility) {
                                             if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
                                                 var _getLogger$info$track19;
@@ -6234,7 +6241,7 @@ window.spb = function(modules) {
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.374", _ref2.button_correlation_id = buttonCorrelationID, 
+                    _ref2.button_version = "2.0.375", _ref2.button_correlation_id = buttonCorrelationID, 
                     _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
                     _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
                     _ref2;
