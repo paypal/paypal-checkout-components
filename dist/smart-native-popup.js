@@ -1192,7 +1192,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.373", _ref2;
+                    _ref2.button_version = "2.0.374", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1239,7 +1239,7 @@
                 buttonSessionID: buttonSessionID,
                 href: base64encode(window.location.href)
             }).track((_logger$info$track = {}, _logger$info$track.transition_name = "native_popup_init", 
-            _logger$info$track)).flush();
+            _logger$info$track.info_msg = base64encode(window.location.href), _logger$info$track)).flush();
             window.addEventListener("beforeunload", (function() {
                 var _logger$info$track2;
                 logger.info("native_popup_beforeunload").track((_logger$info$track2 = {}, _logger$info$track2.transition_name = "native_popup_beforeunload", 
@@ -1282,6 +1282,10 @@
                     installed: !0
                 };
             }))));
+            var closeWindow = function() {
+                window.close();
+                window.location.hash = "closed";
+            };
             var opener = window.opener;
             if (!opener) {
                 var _logger$info$info$tra;
@@ -1289,10 +1293,8 @@
                     buttonSessionID: buttonSessionID,
                     href: base64encode(window.location.href)
                 }).info("native_popup_no_opener_hash_" + (window.location.href.split("#")[1] || "none")).track((_logger$info$info$tra = {}, 
-                _logger$info$info$tra.transition_name = "popup_no_opener", _logger$info$info$tra.info_msg = "location: " + window.location.href, 
-                _logger$info$info$tra)).flush().then((function() {
-                    window.close();
-                }));
+                _logger$info$info$tra.transition_name = "popup_no_opener", _logger$info$info$tra.info_msg = "location: " + base64encode(window.location.href), 
+                _logger$info$info$tra)).flush().then(closeWindow);
                 throw new Error("Expected window to have opener");
             }
             !function(win, callback, delay, maxtime) {
@@ -1303,9 +1305,7 @@
                     if (isWindowClosed(win)) {
                         timeout && clearTimeout(timeout);
                         logger.info("native_popup_opener_detect_close").track((_logger$info$track7 = {}, 
-                        _logger$info$track7.transition_name = "native_popup_opener_detect_close", _logger$info$track7)).flush().then((function() {
-                            window.close();
-                        }));
+                        _logger$info$track7.transition_name = "native_popup_opener_detect_close", _logger$info$track7)).flush().then(closeWindow);
                     } else {
                         var _logger$info$track7;
                         if (maxtime <= 0) clearTimeout(timeout); else {
@@ -1378,6 +1378,7 @@
                       case "init":
                       case "appswitch":
                       case "webswitch":
+                      case "closed":
                         break;
 
                       case "onApprove":
@@ -1386,30 +1387,22 @@
                             payerID: _parseQuery2.payerID,
                             paymentID: _parseQuery2.paymentID,
                             billingToken: _parseQuery2.billingToken
-                        }).finally((function() {
-                            window.close();
-                        }));
+                        }).finally(closeWindow);
                         break;
 
                       case "onCancel":
-                        sendToParent("onCancel").finally((function() {
-                            window.close();
-                        }));
+                        sendToParent("onCancel").finally(closeWindow);
                         break;
 
                       case "onError":
                         var _parseQuery3 = parseQuery(queryString);
                         sendToParent("onError", {
                             message: _parseQuery3.message
-                        }).finally((function() {
-                            window.close();
-                        }));
+                        }).finally(closeWindow);
                         break;
 
                       case "close":
-                        sendToParent("onComplete").finally((function() {
-                            window.close();
-                        }));
+                        sendToParent("onComplete").finally(closeWindow);
                         break;
 
                       case "test":
@@ -1418,9 +1411,7 @@
                       default:
                         sendToParent("onError", {
                             message: "Invalid event sent from native, " + hash + ", from URL, " + window.location.href
-                        }).finally((function() {
-                            window.close();
-                        }));
+                        }).finally(closeWindow);
                     }
                 }
             };
@@ -1450,6 +1441,10 @@
                         window.addEventListener("unload", markRedirect);
                         clean.register((function() {
                             return window.removeEventListener("unload", markRedirect);
+                        }));
+                        window.addEventListener("pagehide", markRedirect);
+                        clean.register((function() {
+                            return window.removeEventListener("pagehide", markRedirect);
                         }));
                         var timer = setTimeout((function() {
                             didRedirect || sendToParent("detectAppSwitch");
