@@ -84,7 +84,8 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         buttonSessionID,
         href: base64encode(window.location.href)
     }).track({
-        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_INIT
+        [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_INIT,
+        [FPTI_CUSTOM_KEY.INFO_MSG]: base64encode(window.location.href)
     }).flush();
 
     window.addEventListener('beforeunload', () => {
@@ -139,7 +140,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
             href: base64encode(window.location.href)
         }).info(`native_popup_no_opener_hash_${ window.location.href.split('#')[1] || 'none' }`).track({
             [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER,
-            [FPTI_CUSTOM_KEY.INFO_MSG]: `location: ${ window.location.href }`
+            [FPTI_CUSTOM_KEY.INFO_MSG]: `location: ${ base64encode(window.location.href) }`
         }).flush().then(() => {
             window.close();
         });
@@ -261,6 +262,9 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
             window.addEventListener('unload', markRedirect);
             clean.register(() => window.removeEventListener('unload', markRedirect));
+
+            window.addEventListener('pagehide', markRedirect);
+            clean.register(() => window.removeEventListener('pagehide', markRedirect));
 
             const timer = setTimeout(() => {
                 if (!didRedirect) {
