@@ -133,6 +133,11 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         }
     }
 
+    const closeWindow = () => {
+        window.close();
+        window.location.hash = HASH.CLOSED;
+    };
+
     const opener = window.opener;
     if (!opener) {
         logger.info('native_popup_no_opener', {
@@ -141,18 +146,14 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         }).info(`native_popup_no_opener_hash_${ window.location.href.split('#')[1] || 'none' }`).track({
             [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER,
             [FPTI_CUSTOM_KEY.INFO_MSG]: `location: ${ base64encode(window.location.href) }`
-        }).flush().then(() => {
-            window.close();
-        });
+        }).flush().then(closeWindow);
 
         throw new Error(`Expected window to have opener`);
     } else {
         onCloseWindow(window.opener, () => {
             logger.info(`native_popup_opener_detect_close`).track({
                 [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_POPUP_OPENER_DETECT_CLOSE
-            }).flush().then(() => {
-                window.close();
-            });
+            }).flush().then(closeWindow);
         }, 500);
     }
 
@@ -196,30 +197,25 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         case HASH.WEBSWITCH: {
             break;
         }
+        case HASH.CLOSED: {
+            break;
+        }
         case HASH.ON_APPROVE: {
             const { payerID, paymentID, billingToken } = parseQuery(queryString);
-            sendToParent(MESSAGE.ON_APPROVE, { payerID, paymentID, billingToken }).finally(() => {
-                window.close();
-            });
+            sendToParent(MESSAGE.ON_APPROVE, { payerID, paymentID, billingToken }).finally(closeWindow);
             break;
         }
         case HASH.ON_CANCEL: {
-            sendToParent(MESSAGE.ON_CANCEL).finally(() => {
-                window.close();
-            });
+            sendToParent(MESSAGE.ON_CANCEL).finally(closeWindow);
             break;
         }
         case HASH.ON_ERROR: {
             const { message } = parseQuery(queryString);
-            sendToParent(MESSAGE.ON_ERROR, { message }).finally(() => {
-                window.close();
-            });
+            sendToParent(MESSAGE.ON_ERROR, { message }).finally(closeWindow);
             break;
         }
         case HASH.CLOSE: {
-            sendToParent(MESSAGE.ON_COMPLETE).finally(() => {
-                window.close();
-            });
+            sendToParent(MESSAGE.ON_COMPLETE).finally(closeWindow);
             break;
         }
         case HASH.TEST: {
@@ -228,9 +224,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         default: {
             sendToParent(MESSAGE.ON_ERROR, {
                 message: `Invalid event sent from native, ${ hash }, from URL, ${ window.location.href }`
-            }).finally(() => {
-                window.close();
-            });
+            }).finally(closeWindow);
         }
         }
     };
