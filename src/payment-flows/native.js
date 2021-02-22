@@ -570,7 +570,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return ZalgoPromise.all([
             onApprove(data, actions)
                 .catch(err => {
-                    getLogger().info(`native_message_onapprove`, { payerID, paymentID, billingToken })
+                    getLogger().info(`native_message_onapprove_error`, { payerID, paymentID, billingToken })
                         .track({
                             [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE_ERROR,
                             [FPTI_CUSTOM_KEY.INFO_MSG]: `Error: ${ stringifyError(err) }`
