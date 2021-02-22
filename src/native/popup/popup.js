@@ -138,12 +138,16 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         window.location.hash = HASH.CLOSED;
     };
 
+    const getRawHash = () => {
+        return (window.location.hash || 'none').replace(/^#/, '').replace(/\?.+/, '');
+    };
+
     const opener = window.opener;
     if (!opener) {
         logger.info('native_popup_no_opener', {
             buttonSessionID,
             href: base64encode(window.location.href)
-        }).info(`native_popup_no_opener_hash_${ window.location.href.split('#')[1] || 'none' }`).track({
+        }).info(`native_popup_no_opener_hash_${ getRawHash() }`).track({
             [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER,
             [FPTI_CUSTOM_KEY.INFO_MSG]: `location: ${ base64encode(window.location.href) }`
         }).flush().then(closeWindow);
