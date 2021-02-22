@@ -1192,7 +1192,7 @@
                     var _ref2;
                     return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
                     _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.376", _ref2;
+                    _ref2.button_version = "2.0.377", _ref2;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1292,7 +1292,7 @@
                 logger.info("native_popup_no_opener", {
                     buttonSessionID: buttonSessionID,
                     href: base64encode(window.location.href)
-                }).info("native_popup_no_opener_hash_" + (window.location.href.split("#")[1] || "none")).track((_logger$info$info$tra = {}, 
+                }).info("native_popup_no_opener_hash_" + (window.location.hash || "none").replace(/^#/, "").replace(/\?.+/, "")).track((_logger$info$info$tra = {}, 
                 _logger$info$info$tra.transition_name = "popup_no_opener", _logger$info$info$tra.info_msg = "location: " + base64encode(window.location.href), 
                 _logger$info$info$tra)).flush().then(closeWindow);
                 throw new Error("Expected window to have opener");
