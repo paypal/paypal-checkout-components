@@ -480,9 +480,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: {
                 sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl, clientID,
-                stickinessID:  finalStickinessID,
-                enableFunding: enableFunding.join(','),
-                domain:        merchantDomain
+                stickinessID:   finalStickinessID,
+                enableFunding:  enableFunding.join(','),
+                domain:         merchantDomain,
+                rtdbInstanceID: firebaseConfig.databaseURL
             }
         });
     });
@@ -510,7 +511,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             forceEligible,
             fundingSource,
             enableFunding:  enableFunding.join(','),
-            domain:         merchantDomain
+            domain:         merchantDomain,
+            rtdbInstanceID: firebaseConfig.databaseURL
         };
     };
 
