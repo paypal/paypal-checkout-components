@@ -259,6 +259,12 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
 
         const shippingCallbackEnabled = Boolean(onShippingChange);
 
+        getLogger().addTrackingBuilder(() => {
+            return {
+                amplitude: true
+            };
+        });
+
         return ZalgoPromise.all([
             getNativeEligibility({
                 vault, platform, shippingCallbackEnabled, clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding,
