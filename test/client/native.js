@@ -3176,7 +3176,7 @@ describe('native ios cases', () => {
                             throw new Error(`Expected native redirect url`);
                         }
 
-                        if (res.redirectUrl.indexOf('/smart/checkout/native/fallback') === -1) {
+                        if (res.redirectUrl.indexOf('/smart/checkout/fallback') === -1) {
                             throw new Error(`Expected native popup to redirect to fallback url, got ${ res.redirectUrl }`);
                         }
 

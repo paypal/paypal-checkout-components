@@ -14,4 +14,4 @@ if (isIOSSafari()) {
     platform = 'unsupported_platform';
 }
 
-export const nativeFakeoutExperiment : Experiment = createExperiment(`native_popup_fakeout_v2_${ platform }`, { sample: isIOSSafari() ? 50 : 0, sticky: false });
+export const nativeFakeoutExperiment : Experiment = createExperiment(`native_popup_fakeout_v2_${ platform }`, { sample: isIOSSafari() ? 50 : 10, sticky: false });

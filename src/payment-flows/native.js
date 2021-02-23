@@ -72,8 +72,8 @@ const NATIVE_CHECKOUT_POPUP_URI : { [$Values<typeof FUNDING> ] : string } = {
 };
 
 const NATIVE_CHECKOUT_FALLBACK_URI : { [$Values<typeof FUNDING> ] : string } = {
-    [ FUNDING.PAYPAL ]: '/smart/checkout/native/fallback',
-    [ FUNDING.VENMO ]:  '/smart/checkout/venmo/fallback'
+    [ FUNDING.PAYPAL ]: '/smart/checkout/fallback',
+    [ FUNDING.VENMO ]:  '/smart/checkout/fallback'
 };
 
 const PARTIAL_ENCODING_CLIENT = [
