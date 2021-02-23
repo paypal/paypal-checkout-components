@@ -259,7 +259,7 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
 
         const shippingCallbackEnabled = Boolean(onShippingChange);
 
-        getLogger().addTrackingBuilder(() => {
+        getLogger().addMetaBuilder(() => {
             return {
                 amplitude: true
             };
