@@ -193,3 +193,7 @@ export const UPGRADE_LSAT_RAMP = {
 export const FRAME_NAME = {
     SMART_FIELDS: 'smart-fields'
 };
+
+export const AMPLITUDE_KEY = {
+    USER_ID: 'user_id'
+};

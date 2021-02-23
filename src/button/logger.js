@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType } from '../types';
 import { getLogger, setupLogger, isStorageStateFresh, isIOSSafari, isAndroidChrome } from '../lib';
-import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_BUTTON_KEY, FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
+import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_BUTTON_KEY, FPTI_STATE, FPTI_CONTEXT_TYPE, AMPLITUDE_KEY } from '../constants';
 import type { GetQueriedEligibleFunding } from '../props';
 
 import type { ButtonStyle } from './props';
@@ -50,7 +50,8 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
     logger.addPayloadBuilder(() => {
         return {
             buttonSessionID,
-            buttonCorrelationID
+            buttonCorrelationID,
+            [AMPLITUDE_KEY.USER_ID]: buttonSessionID
         };
     });
 
@@ -68,7 +69,8 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.USER_ACTION]:                  commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE,
             [FPTI_KEY.SELLER_ID]:                    merchantID[0],
             [FPTI_KEY.MERCHANT_DOMAIN]:              merchantDomain,
-            [FPTI_KEY.TIMESTAMP]:                    Date.now().toString()
+            [FPTI_KEY.TIMESTAMP]:                    Date.now().toString(),
+            [AMPLITUDE_KEY.USER_ID]:                 buttonSessionID
         };
     });
 
