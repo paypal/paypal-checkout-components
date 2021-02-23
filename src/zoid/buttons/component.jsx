@@ -492,6 +492,13 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'boolean',
                 value:      isSupportedNativeBrowser,
                 queryParam: true
+            },
+
+            useNewVenmoPath: {
+                type:       'boolean',
+                required:   false,
+                value:      ({ props }) => props && props.fundingSource && props.fundingSource === FUNDING.VENMO,
+                queryParam: true
             }
         }
     });
