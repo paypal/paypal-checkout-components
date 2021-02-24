@@ -25,6 +25,12 @@ export function setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelat
 
     setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale, sdkVersion });
 
+    logger.addMetaBuilder(() => {
+        return {
+            amplitude: true
+        };
+    });
+
     logger.addPayloadBuilder(() => {
         return {
             buttonSessionID,
