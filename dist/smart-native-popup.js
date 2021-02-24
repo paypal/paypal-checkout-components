@@ -1184,15 +1184,16 @@
                     sdkVersion: sdkVersion
                 });
                 logger.addPayloadBuilder((function() {
-                    return {
+                    var _ref2;
+                    return (_ref2 = {
                         buttonSessionID: buttonSessionID
-                    };
+                    }).user_id = buttonSessionID, _ref2;
                 }));
                 logger.addTrackingBuilder((function() {
-                    var _ref2;
-                    return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
-                    _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.377", _ref2;
+                    var _ref3;
+                    return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
+                    _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
+                    _ref3.button_version = "2.0.378", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1216,9 +1217,9 @@
                             return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
                         }
                     }))
-                }).then((function(_ref3) {
+                }).then((function(_ref4) {
                     var _logger$track;
-                    var pageRenderTime = _ref3.pageRenderTime;
+                    var pageRenderTime = _ref4.pageRenderTime;
                     logger.track(((_logger$track = {}).transition_name = "process_button_load", _logger$track.merchant_selected_funding_source = fundingSource, 
                     _logger$track.page_load_time = pageRenderTime ? pageRenderTime.toString() : "", 
                     _logger$track));

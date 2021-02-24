@@ -1777,7 +1777,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.377", _headers10);
+            _headers10["x-app-version"] = "2.0.378", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3035,7 +3035,7 @@ window.spb = function(modules) {
             }), children));
         }
         var nativeFakeoutExperiment = createExperiment("native_popup_fakeout_v2_" + (isIOSSafari() ? "ios_safari" : isAndroidChrome() ? "android_chrome" : "unsupported_platform"), {
-            sample: isIOSSafari() ? 50 : 0,
+            sample: isIOSSafari() ? 50 : 10,
             sticky: !1
         });
         var checkoutOpen = !1;
@@ -4288,8 +4288,8 @@ window.spb = function(modules) {
         _NATIVE_CHECKOUT_URI.venmo = "/smart/checkout/venmo", _NATIVE_CHECKOUT_URI);
         var NATIVE_CHECKOUT_POPUP_URI = ((_NATIVE_CHECKOUT_POPU = {}).paypal = "/smart/checkout/native/popup", 
         _NATIVE_CHECKOUT_POPU.venmo = "/smart/checkout/venmo/popup", _NATIVE_CHECKOUT_POPU);
-        var NATIVE_CHECKOUT_FALLBACK_URI = ((_NATIVE_CHECKOUT_FALL = {}).paypal = "/smart/checkout/native/fallback", 
-        _NATIVE_CHECKOUT_FALL.venmo = "/smart/checkout/venmo/fallback", _NATIVE_CHECKOUT_FALL);
+        var NATIVE_CHECKOUT_FALLBACK_URI = ((_NATIVE_CHECKOUT_FALL = {}).paypal = "/smart/checkout/fallback", 
+        _NATIVE_CHECKOUT_FALL.venmo = "/smart/checkout/fallback", _NATIVE_CHECKOUT_FALL);
         var PARTIAL_ENCODING_CLIENT = [ "AeG7a0wQ2s97hNLb6yWzDqYTsuD-4AaxDHjz4I2EWMKN6vktKYqKJhtGqmH2cNj_JyjHR4Xj9Jt6ORHs" ];
         var native_clean;
         var initialPageUrl;
@@ -4765,6 +4765,11 @@ window.spb = function(modules) {
                     var merchantID = serviceData.merchantID, buyerCountry = serviceData.buyerCountry, cookies = serviceData.cookies;
                     var finalStickinessID = "production" !== props.env ? props.stickinessID : buttonSessionID;
                     var shippingCallbackEnabled = Boolean(props.onShippingChange);
+                    logger_getLogger().addMetaBuilder((function() {
+                        return {
+                            amplitude: !0
+                        };
+                    }));
                     return promise_ZalgoPromise.all([ getNativeEligibility({
                         vault: vault,
                         platform: platform,
@@ -4989,7 +4994,8 @@ window.spb = function(modules) {
                             clientID: clientID,
                             stickinessID: finalStickinessID,
                             enableFunding: enableFunding.join(","),
-                            domain: merchantDomain
+                            domain: merchantDomain,
+                            rtdbInstanceID: firebaseConfig.databaseURL
                         }
                     });
                 }));
@@ -5020,7 +5026,8 @@ window.spb = function(modules) {
                         forceEligible: forceEligible,
                         fundingSource: fundingSource,
                         enableFunding: enableFunding.join(","),
-                        domain: merchantDomain
+                        domain: merchantDomain,
+                        rtdbInstanceID: firebaseConfig.databaseURL
                     };
                 };
                 var getDelayedNativeUrl = memoize((function(_ref10) {
@@ -6232,19 +6239,20 @@ window.spb = function(modules) {
                     sdkVersion: sdkVersion
                 });
                 logger.addPayloadBuilder((function() {
-                    return {
+                    var _ref2;
+                    return (_ref2 = {
                         buttonSessionID: buttonSessionID,
                         buttonCorrelationID: buttonCorrelationID
-                    };
+                    }).user_id = buttonSessionID, _ref2;
                 }));
                 logger.addTrackingBuilder((function() {
-                    var _ref2;
-                    return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "button_session_id", 
-                    _ref2.context_id = buttonSessionID, _ref2.state_name = "smart_button", _ref2.button_session_id = buttonSessionID, 
-                    _ref2.button_version = "2.0.377", _ref2.button_correlation_id = buttonCorrelationID, 
-                    _ref2.stickiness_id = stickinessID, _ref2.bn_code = partnerAttributionID, _ref2.user_action = commit ? "commit" : "continue", 
-                    _ref2.seller_id = merchantID[0], _ref2.merchant_domain = merchantDomain, _ref2.t = Date.now().toString(), 
-                    _ref2;
+                    var _ref3;
+                    return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
+                    _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
+                    _ref3.button_version = "2.0.378", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
+                    _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
+                    _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -6269,9 +6277,9 @@ window.spb = function(modules) {
                         }
                     })),
                     queriedEligibleFunding: getQueriedEligibleFunding()
-                }).then((function(_ref3) {
+                }).then((function(_ref4) {
                     var _logger$track;
-                    var pageRenderTime = _ref3.pageRenderTime, queriedEligibleFunding = _ref3.queriedEligibleFunding;
+                    var pageRenderTime = _ref4.pageRenderTime, queriedEligibleFunding = _ref4.queriedEligibleFunding;
                     var fundingSources = querySelectorAll("[data-funding-source]").map((function(el) {
                         return el.getAttribute("data-funding-source");
                     })).filter(Boolean);
