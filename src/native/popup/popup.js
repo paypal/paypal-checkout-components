@@ -195,6 +195,9 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         case HASH.INIT: {
             break;
         }
+        case HASH.LOADED: {
+            break;
+        }
         case HASH.APPSWITCH: {
             break;
         }
@@ -236,6 +239,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     window.addEventListener(EVENT.HASHCHANGE, handleHash);
     clean.register(() => window.removeEventListener(EVENT.HASHCHANGE, handleHash));
 
+    window.location.hash = HASH.LOADED;
     handleHash();
 
     const pageUrl = `${ window.location.href.split('#')[0] }#${  HASH.CLOSE }`;

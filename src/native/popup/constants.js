@@ -15,6 +15,7 @@ export const EVENT = {
 
 export const HASH = {
     INIT:               'init',
+    LOADED:             'loaded',
     APPSWITCH:          'appswitch',
     WEBSWITCH:          'webswitch',
     CLOSE:              'close',

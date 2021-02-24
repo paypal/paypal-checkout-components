@@ -56,7 +56,7 @@ describe('Native popup cases', () => {
 
                             ZalgoPromise.delay(50).then(expect('postRedirect', () => {
                                 if (window.location.hash !== nativeRedirectUrl) {
-                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }`);
+                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }, got ${ window.location.hash }`);
                                 }
 
                                 if (!nativePopup) {
@@ -133,7 +133,7 @@ describe('Native popup cases', () => {
 
                             ZalgoPromise.delay(50).then(expect('postRedirect', () => {
                                 if (window.location.hash !== nativeRedirectUrl) {
-                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }`);
+                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }, got ${ window.location.hash }`);
                                 }
 
                                 if (!nativePopup) {
@@ -216,7 +216,7 @@ describe('Native popup cases', () => {
 
                             ZalgoPromise.delay(50).then(expect('postRedirect', () => {
                                 if (window.location.hash !== nativeRedirectUrl) {
-                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }`);
+                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }, got ${ window.location.hash }`);
                                 }
 
                                 if (!nativePopup) {
@@ -328,7 +328,7 @@ describe('Native popup cases', () => {
 
                             ZalgoPromise.delay(50).then(expect('postRedirect', () => {
                                 if (window.location.hash !== nativeRedirectUrl) {
-                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }`);
+                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }, got ${ window.location.hash }`);
                                 }
 
                                 if (!nativePopup) {
@@ -424,7 +424,7 @@ describe('Native popup cases', () => {
 
                             ZalgoPromise.delay(50).then(expect('postRedirect', () => {
                                 if (window.location.hash !== nativeRedirectUrl) {
-                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }`);
+                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }, got ${ window.location.hash }`);
                                 }
 
                                 if (!nativePopup) {
@@ -529,7 +529,7 @@ describe('Native popup cases', () => {
 
                             ZalgoPromise.delay(50).then(expect('postRedirect', () => {
                                 if (window.location.hash !== nativeRedirectUrl) {
-                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }`);
+                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }, got ${ window.location.hash }`);
                                 }
 
                                 if (!nativePopup) {
@@ -625,7 +625,7 @@ describe('Native popup cases', () => {
 
                             ZalgoPromise.delay(50).then(expect('postRedirect', () => {
                                 if (window.location.hash !== nativeRedirectUrl) {
-                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }`);
+                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }, got ${ window.location.hash }`);
                                 }
 
                                 if (!nativePopup) {
