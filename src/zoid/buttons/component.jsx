@@ -5,7 +5,7 @@
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID } from '@paypal/sdk-client/src';
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, createExperiment } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
@@ -19,11 +19,13 @@ import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
-import { determineFlow, isSupportedNativeBrowser } from './util';
+import { determineFlow, isSupportedNativeBrowser, getVenmoExperiment } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
+    const enableVenmoExperiment = createExperiment('enable_venmo', 0);
+
     const queriedEligibleFunding = [];
 
     return create({
@@ -344,9 +346,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      () => {
-                    return {};
-                }
+                value:      () => getVenmoExperiment(enableVenmoExperiment)
             },
 
             flow: {

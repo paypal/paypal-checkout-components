@@ -98,7 +98,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, supportsPopups, supportedNativeBrowser } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
 
-    let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser });
+    let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
 
     if (!fundingSources.length) {

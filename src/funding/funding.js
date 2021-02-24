@@ -24,7 +24,7 @@ type IsFundingEligibleOptions = {|
 |};
 
 export function isFundingEligible(source : $Values<typeof FUNDING>,
-    { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser } : IsFundingEligibleOptions) : boolean {
+    { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser, experiment } : IsFundingEligibleOptions) : boolean {
 
     if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
         return false;
@@ -76,10 +76,14 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
+    if (source === FUNDING.VENMO && experiment.enableVenmo === false) {
+        return false;
+    }
+
     return true;
 }
 
-export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser } :
+export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser, experiment } :
     {| fundingSource : ?$Values<typeof FUNDING>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>,
     platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, supportsPopups : boolean, supportedNativeBrowser : boolean |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
@@ -89,7 +93,7 @@ export function determineEligibleFunding({ fundingSource, layout, platform, fund
     }
 
     let eligibleFunding = values(FUNDING).filter(source =>
-        isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser }));
+        isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser, experiment }));
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {
         eligibleFunding = eligibleFunding.slice(0, 2);
