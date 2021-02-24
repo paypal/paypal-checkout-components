@@ -1,8 +1,9 @@
 /* @flow */
-import { supportsPopups, isAndroid, isChrome, isIos, isSafari } from 'belter/src';
+import { supportsPopups, isAndroid, isChrome, isIos, isSafari, type Experiment } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding } from '@paypal/sdk-client/src';
 
+import { Experiment as VenmoExperiment } from '../../types';
 import { BUTTON_FLOW } from '../../constants';
 import type { ButtonProps } from '../../ui/buttons/props';
 
@@ -37,7 +38,7 @@ export function isSupportedNativeBrowser() : boolean {
     return false;
 }
 
-export function getVenmoExperiment(experiment) {
+export function getVenmoExperiment(experiment : Experiment) : VenmoExperiment {
     const enableFunding = getEnableFunding();
     const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
     const isExperimentEnabled = experiment && experiment.isEnabled();

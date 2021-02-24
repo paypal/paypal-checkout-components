@@ -4,7 +4,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
 import { values } from 'belter/src';
 
-import type { Wallet } from '../types';
+import type { Wallet, Experiment as VenmoExperiment } from '../types';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
 import type { OnShippingChange } from '../ui/buttons/props';
 
@@ -20,7 +20,8 @@ type IsFundingEligibleOptions = {|
     onShippingChange : ?Function,
     wallet? : ?Wallet,
     supportsPopups : boolean,
-    supportedNativeBrowser : boolean
+    supportedNativeBrowser : boolean,
+    experiment? : VenmoExperiment
 |};
 
 export function isFundingEligible(source : $Values<typeof FUNDING>,
@@ -76,7 +77,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
-    if (source === FUNDING.VENMO && experiment.enableVenmo === false) {
+    if (source === FUNDING.VENMO && experiment && experiment.enableVenmo === false) {
         return false;
     }
 
@@ -86,7 +87,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
 export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser, experiment } :
     {| fundingSource : ?$Values<typeof FUNDING>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>,
     platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, supportsPopups : boolean, supportedNativeBrowser : boolean |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
+    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, supportsPopups : boolean, supportedNativeBrowser : boolean, experiment : VenmoExperiment |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
 
     if (fundingSource) {
         return [ fundingSource ];

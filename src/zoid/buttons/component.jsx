@@ -9,8 +9,8 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize, supportsPopups as userAgentSupportsPopups } from 'belter/src';
-import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
+import { uniqueID, memoize, supportsPopups as userAgentSupportsPopups, noop } from 'belter/src';
+import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getSessionID, storageState, sessionState } from '../../lib';
@@ -70,7 +70,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 style = {},
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
-                supportedNativeBrowser = isSupportedNativeBrowser()
+                supportedNativeBrowser = isSupportedNativeBrowser(),
+                experiment = getVenmoExperiment(enableVenmoExperiment)
             } = props;
 
             const flow = determineFlow(props);
@@ -90,7 +91,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const platform           = getPlatform();
             const components         = getComponents();
 
-            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, supportedNativeBrowser })) {
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, supportedNativeBrowser, experiment })) {
                 return {
                     eligible: true
                 };
@@ -233,6 +234,19 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                                 });
                             }
                         };
+                    };
+                }
+            },
+
+            onInit: {
+                type:     'function',
+                required: false,
+                default:  () => noop,
+                decorate: ({ props, value = noop }) => {
+                    return (...args) => {
+                        enableVenmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+
+                        return value(...args);
                     };
                 }
             },
