@@ -1193,7 +1193,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "2.0.378", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "2.0.379", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1377,6 +1377,7 @@
                     _logger$info$track8.info_msg = "" + window.location.href, _logger$info$track8)).flush();
                     switch (hash) {
                       case "init":
+                      case "loaded":
                       case "appswitch":
                       case "webswitch":
                       case "closed":
@@ -1420,6 +1421,7 @@
             clean.register((function() {
                 return window.removeEventListener("hashchange", handleHash);
             }));
+            window.location.hash = "loaded";
             handleHash();
             var pageUrl = window.location.href.split("#")[0] + "#close";
             appInstalledPromise.then((function(app) {
