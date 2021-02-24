@@ -497,7 +497,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             useNewVenmoPath: {
                 type:       'boolean',
                 required:   false,
-                value:      ({ props }) => props && props.fundingSource && props.fundingSource === FUNDING.VENMO,
+                // value:      ({ props }) => props && props.fundingSource && props.fundingSource === FUNDING.VENMO,
                 queryParam: true
             }
         }
