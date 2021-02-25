@@ -261,12 +261,6 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
 
         const shippingCallbackEnabled = Boolean(onShippingChange);
 
-        getLogger().addMetaBuilder(() => {
-            return {
-                amplitude: true
-            };
-        });
-
         return ZalgoPromise.all([
             getNativeEligibility({
                 vault, platform, shippingCallbackEnabled, clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding, stickinessID,
@@ -274,6 +268,14 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
                 domain:       merchantDomain
             }).then(result => {
                 nativeEligibility = result;
+
+                if (nativeEligibility && ((nativeEligibility.paypal && nativeEligibility.paypal.eligibility) || (nativeEligibility.paypal && nativeEligibility.paypal.eligibility))) {
+                    getLogger().addMetaBuilder(() => {
+                        return {
+                            amplitude: true
+                        };
+                    });
+                }
             }),
 
             getPageUrl().then(pageUrl => {
