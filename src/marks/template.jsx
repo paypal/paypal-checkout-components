@@ -6,12 +6,9 @@ import { node, type ChildNodeType, type ElementNode } from 'jsx-pragmatic/src';
 import { getLocale, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { toPx } from 'belter/src';
 
+import type { Experiment } from '../types';
 import { getFundingConfig } from '../funding';
 import { CLASS } from '../constants';
-
-// temp code while the venmo experiment is running
-// import type { Experiment } from '../types';
-type Experiment = {| |};
 
 type MarkOptions = {|
     fundingSource : $Values<typeof FUNDING>,
