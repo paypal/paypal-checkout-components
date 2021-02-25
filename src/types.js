@@ -41,7 +41,7 @@ export type ContentType = {|
 |};
 
 export type Experiment = {|
-
+    enableVenmo : boolean
 |};
 
 export type LazyExport<T> = {|

@@ -71,7 +71,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 if (source === FUNDING.VENMO) {
                     rememberFunding([ FUNDING.VENMO ], { cookie: false });
                 }
-                
+
                 window.paypal.Buttons({
 
                     test: { flow, action: 'checkout', selector: `[data-funding-source="${ source }"]` },

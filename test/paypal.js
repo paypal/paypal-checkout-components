@@ -6,7 +6,8 @@ import * as paypalCheckout from '../src/interface/button'; // eslint-disable-lin
 import * as paypalWallet from '../src/interface/wallet'; // eslint-disable-line import/no-namespace
 import * as paypalMarks from '../src/interface/marks'; // eslint-disable-line import/no-namespace
 
-insertMockSDKScript();
+// the enable-funding=venmo flag is temporarily needed for the venmo experiment
+insertMockSDKScript({ query: { 'client-id': 'test', 'enable-funding': 'venmo' } });
 
 window.mockDomain = 'mock://www.paypal.com';
 

@@ -11,7 +11,7 @@ import { getComponents, getFundingEligibility, getEnv } from '@paypal/sdk-client
 import type { OnShippingChange } from '../ui/buttons/props';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
 import { determineEligibleFunding, isFundingEligible } from '../funding';
-import { isSupportedNativeBrowser } from '../zoid/buttons/util';
+import { isSupportedNativeBrowser, createVenmoExperiment, getVenmoExperiment } from '../zoid/buttons/util';
 
 import { MarksElement } from './template';
 
@@ -41,8 +41,9 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
         const flow = BUTTON_FLOW.PURCHASE;
         const supportsPopups = userAgentSupportsPopups();
         const supportedNativeBrowser = isSupportedNativeBrowser();
-        const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout, flow, supportsPopups, supportedNativeBrowser });
-        const experiment = {};
+        const enableVenmoExperiment = createVenmoExperiment();
+        const experiment = getVenmoExperiment(enableVenmoExperiment);
+        const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout, flow, supportsPopups, supportedNativeBrowser, experiment });
         const env = getEnv();
 
         const isEligible = () => {
@@ -50,7 +51,7 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
                 return true;
             }
 
-            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, supportedNativeBrowser });
+            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, supportedNativeBrowser, experiment });
         };
 
         const render = (container) => {
