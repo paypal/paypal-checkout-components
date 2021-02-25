@@ -12,7 +12,7 @@ import { WEB_CHECKOUT_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
 import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, getStickinessID } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
-import { nativeFakeoutExperiment } from '../experiments';
+import { nativeFakeoutExperiment, androidPopupExperiment } from '../experiments';
 import { HASH } from '../native/popup/constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 import type { NativePopupInputParams } from '../../server/components/native/params';
@@ -136,7 +136,7 @@ function isControlGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
     return false;
 }
 
-function useDirectAppSwitch() : boolean {
+function useDirectAppSwitch(fundingSource : $Values<typeof FUNDING>) : boolean {
     if (window.xprops.forceNativeDirectAppSwitch) {
         return true;
     }
@@ -146,6 +146,10 @@ function useDirectAppSwitch() : boolean {
     }
 
     if (isPopupFakeout()) {
+        return false;
+    }
+
+    if (isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.isEnabled()) {
         return false;
     }
 
@@ -554,6 +558,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const onApproveCallback = ({ data: { payerID, paymentID, billingToken } }) => {
         approved = true;
+
+        if (isAndroidChrome() && !isControlGroup(fundingSource)) {
+            androidPopupExperiment.logComplete();
+        }
 
         getLogger().info(`native_message_onapprove`, { payerID, paymentID, billingToken })
             .track({
@@ -1068,7 +1076,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const click = () => {
         return ZalgoPromise.try(() => {
             const sessionUID = uniqueID();
-            return useDirectAppSwitch() ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
+
+            if (isAndroidChrome() && !isControlGroup(fundingSource)) {
+                androidPopupExperiment.logStart();
+            }
+
+            return useDirectAppSwitch(fundingSource) ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
         }).catch(err => {
             return close().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({
