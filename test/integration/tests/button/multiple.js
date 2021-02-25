@@ -70,8 +70,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 if (source === FUNDING.VENMO) {
                     rememberFunding([ FUNDING.VENMO ], { cookie: false });
+                    // mock venmo experiment to always render button when eligible
+                    window.localStorage.setItem('enable_venmo', true);
                 }
-                
+
                 window.paypal.Buttons({
 
                     test: { flow, action: 'checkout', selector: `[data-funding-source="${ source }"]` },
