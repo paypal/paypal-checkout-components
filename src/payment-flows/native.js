@@ -252,10 +252,8 @@ function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) 
 function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { getPageUrl, clientID, onShippingChange, currency, platform,
-            vault, buttonSessionID, enableFunding, env, stickinessID, merchantDomain } = props;
+            vault, buttonSessionID, enableFunding, stickinessID, merchantDomain } = props;
         const { merchantID, buyerCountry, cookies } = serviceData;
-
-        const finalStickinessID = (env !== ENV.PRODUCTION) ? stickinessID : buttonSessionID;
 
         const shippingCallbackEnabled = Boolean(onShippingChange);
 
@@ -267,9 +265,8 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
 
         return ZalgoPromise.all([
             getNativeEligibility({
-                vault, platform, shippingCallbackEnabled, clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding,
+                vault, platform, shippingCallbackEnabled, clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding, stickinessID,
                 merchantID:   merchantID[0],
-                stickinessID: finalStickinessID,
                 domain:       merchantDomain
             }).then(result => {
                 nativeEligibility = result;
@@ -404,8 +401,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const shippingCallbackEnabled = Boolean(onShippingChange);
     sdkMeta = sdkMeta.replace(/[=]+$/, '');
 
-    const finalStickinessID = (env !== ENV.PRODUCTION) ? stickinessID : buttonSessionID;
-
     if (!firebaseConfig) {
         throw new Error(`Can not run native flow without firebase config`);
     }
@@ -479,8 +474,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: {
-                sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl, clientID,
-                stickinessID:   finalStickinessID,
+                sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl, clientID, stickinessID,
                 enableFunding:  enableFunding.join(','),
                 domain:         merchantDomain,
                 rtdbInstanceID: firebaseConfig.databaseURL
@@ -502,7 +496,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             clientID,
             commit:         String(commit),
             webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : '',
-            stickinessID:   finalStickinessID,
+            stickinessID,
             userAgent,
             buttonSessionID,
             env,
@@ -927,9 +921,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
             return createOrder().then(orderID => {
                 return getNativeEligibility({ vault, platform, shippingCallbackEnabled,
-                    clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding,
+                    clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding, stickinessID,
                     merchantID:   merchantID[0],
-                    stickinessID: finalStickinessID,
                     domain:       merchantDomain
                 }).then(eligibility => {
                     if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
