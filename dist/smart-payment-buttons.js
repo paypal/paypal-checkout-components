@@ -1777,7 +1777,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.381", _headers10);
+            _headers10["x-app-version"] = "2.0.382", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2117,6 +2117,17 @@ window.spb = function(modules) {
                 }));
             }));
         }
+        var nativeFakeoutExperiment = createExperiment("native_popup_fakeout_v2_" + (isIOSSafari() ? "ios_safari" : isAndroidChrome() ? "android_chrome" : "unsupported_platform"), {
+            sample: isIOSSafari() ? 100 : 50,
+            sticky: !1
+        });
+        var androidPopupExperiment = createExperiment("native_android_popup", {
+            sample: 10,
+            sticky: !1
+        });
+        var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", {
+            sample: 1
+        });
         function getOnApprove(_ref4, _ref5) {
             var intent = _ref4.intent, _ref4$onApprove = _ref4.onApprove, onApprove = void 0 === _ref4$onApprove ? function(intent) {
                 return function(data, actions) {
@@ -2127,6 +2138,7 @@ window.spb = function(modules) {
             }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
             var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
             if (!onApprove) throw new Error("Expected onApprove");
+            upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
             return memoize((function(_ref6, _ref7) {
                 var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
                 var restart = _ref7.restart;
@@ -2419,6 +2431,7 @@ window.spb = function(modules) {
         function getOnShippingChange(_ref2, _ref3) {
             var onShippingChange = _ref2.onShippingChange, partnerAttributionID = _ref2.partnerAttributionID, _ref2$upgradeLSAT = _ref2.upgradeLSAT, upgradeLSAT = void 0 !== _ref2$upgradeLSAT && _ref2$upgradeLSAT;
             var facilitatorAccessToken = _ref3.facilitatorAccessToken, createOrder = _ref3.createOrder;
+            upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
             if (onShippingChange) return function(_ref4, actions) {
                 var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI, forceRestAPI = void 0 === _ref4$forceRestAPI ? upgradeLSAT : _ref4$forceRestAPI, data = function(source, excluded) {
                     if (null == source) return {};
@@ -2470,38 +2483,45 @@ window.spb = function(modules) {
         }
         function getOnAuth(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken, createOrder = _ref.createOrder, upgradeLSAT = _ref.upgradeLSAT;
+            upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
             return function(_ref2) {
                 var accessToken = _ref2.accessToken;
                 logger_getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
                 return promise_ZalgoPromise.try((function() {
-                    if (accessToken) return upgradeLSAT ? createOrder().then((function(orderID) {
-                        return function(facilitatorAccessToken, _ref3) {
-                            var _headers;
-                            var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
-                            return callGraphQL({
-                                name: "UpgradeFacilitatorAccessToken",
-                                headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
-                                _headers["paypal-client-context"] = orderID, _headers),
-                                query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
-                                variables: {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
+                    if (accessToken) {
+                        if (upgradeLSAT) {
+                            upgradeLSATExperiment.logStart();
+                            return createOrder().then((function(orderID) {
+                                return function(facilitatorAccessToken, _ref3) {
+                                    var _headers;
+                                    var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
+                                    return callGraphQL({
+                                        name: "UpgradeFacilitatorAccessToken",
+                                        headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
+                                        _headers["paypal-client-context"] = orderID, _headers),
+                                        query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
+                                        variables: {
+                                            facilitatorAccessToken: facilitatorAccessToken,
+                                            buyerAccessToken: buyerAccessToken,
+                                            orderID: orderID
+                                        }
+                                    }).then(src_util_noop);
+                                }(facilitatorAccessToken, {
+                                    buyerAccessToken: accessToken,
                                     orderID: orderID
-                                }
-                            }).then(src_util_noop);
-                        }(facilitatorAccessToken, {
-                            buyerAccessToken: accessToken,
-                            orderID: orderID
-                        });
-                    })).then((function() {
-                        logger_getLogger().info("upgrade_lsat_success");
+                                });
+                            })).then((function() {
+                                logger_getLogger().info("upgrade_lsat_success");
+                                return accessToken;
+                            })).catch((function(err) {
+                                logger_getLogger().warn("upgrade_lsat_failure", {
+                                    error: stringifyError(err)
+                                });
+                                return accessToken;
+                            }));
+                        }
                         return accessToken;
-                    })).catch((function(err) {
-                        logger_getLogger().warn("upgrade_lsat_failure", {
-                            error: stringifyError(err)
-                        });
-                        return accessToken;
-                    })) : accessToken;
+                    }
                 }));
             };
         }
@@ -2509,10 +2529,7 @@ window.spb = function(modules) {
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken;
             var xprops = window.xprops;
-            var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", {
-                sample: 1
-            });
-            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 === _xprops$upgradeLSAT ? upgradeLSATExperiment.isEnabled() : _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
             } : _xprops$getQueriedEli, storageID = xprops.storageID;
             var onInit = function(_ref) {
@@ -3034,10 +3051,6 @@ window.spb = function(modules) {
                 nonce: nonce
             }), children));
         }
-        var nativeFakeoutExperiment = createExperiment("native_popup_fakeout_v2_" + (isIOSSafari() ? "ios_safari" : isAndroidChrome() ? "android_chrome" : "unsupported_platform"), {
-            sample: isIOSSafari() ? 100 : 10,
-            sticky: !1
-        });
         var checkoutOpen = !1;
         var canRenderTop = !1;
         var checkout = {
@@ -4599,6 +4612,10 @@ window.spb = function(modules) {
         function isPopupFakeout() {
             return !(!window.xprops.popupFakeout && !nativeFakeoutExperiment.isEnabled());
         }
+        function isControlGroup(fundingSource) {
+            var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
+            return !(!fundingEligibility || fundingEligibility.eligibility || "experimentation_ineligibility" !== fundingEligibility.ineligibilityReason);
+        }
         function didAppSwitch(popupWin) {
             return !popupWin || isWindowClosed(popupWin);
         }
@@ -4761,15 +4778,9 @@ window.spb = function(modules) {
             setup: function(_ref5) {
                 var props = _ref5.props, serviceData = _ref5.serviceData;
                 return promise_ZalgoPromise.try((function() {
-                    var getPageUrl = props.getPageUrl, clientID = props.clientID, currency = props.currency, platform = props.platform, vault = props.vault, buttonSessionID = props.buttonSessionID, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
+                    var getPageUrl = props.getPageUrl, clientID = props.clientID, currency = props.currency, platform = props.platform, vault = props.vault, buttonSessionID = props.buttonSessionID, enableFunding = props.enableFunding, stickinessID = props.stickinessID, merchantDomain = props.merchantDomain;
                     var merchantID = serviceData.merchantID, buyerCountry = serviceData.buyerCountry, cookies = serviceData.cookies;
-                    var finalStickinessID = "production" !== props.env ? props.stickinessID : buttonSessionID;
                     var shippingCallbackEnabled = Boolean(props.onShippingChange);
-                    logger_getLogger().addMetaBuilder((function() {
-                        return {
-                            amplitude: !0
-                        };
-                    }));
                     return promise_ZalgoPromise.all([ getNativeEligibility({
                         vault: vault,
                         platform: platform,
@@ -4780,11 +4791,15 @@ window.spb = function(modules) {
                         buttonSessionID: buttonSessionID,
                         cookies: cookies,
                         enableFunding: enableFunding,
+                        stickinessID: stickinessID,
                         merchantID: merchantID[0],
-                        stickinessID: finalStickinessID,
                         domain: merchantDomain
                     }).then((function(result) {
-                        nativeEligibility = result;
+                        (nativeEligibility = result) && (nativeEligibility.paypal && nativeEligibility.paypal.eligibility || nativeEligibility.paypal && nativeEligibility.paypal.eligibility) && logger_getLogger().addMetaBuilder((function() {
+                            return {
+                                amplitude: !0
+                            };
+                        }));
                     })), getPageUrl().then((function(pageUrl) {
                         initialPageUrl = pageUrl;
                     })) ]);
@@ -4806,10 +4821,7 @@ window.spb = function(modules) {
                 var fundingSource = payment.fundingSource;
                 return !(payment.win || !initialPageUrl || !NATIVE_CHECKOUT_URI[fundingSource] || !isNativeOptedIn({
                     props: _ref4.props
-                }) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) && (!function(fundingSource) {
-                    var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
-                    return !(!fundingEligibility || fundingEligibility.eligibility || "experimentation_ineligibility" !== fundingEligibility.ineligibilityReason);
-                }(fundingSource) || !isPopupFakeout()));
+                }) && !(nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) && (!isControlGroup(fundingSource) || !isPopupFakeout()));
             },
             init: function(_ref6) {
                 var props = _ref6.props, components = _ref6.components, config = _ref6.config, payment = _ref6.payment, serviceData = _ref6.serviceData;
@@ -4819,7 +4831,6 @@ window.spb = function(modules) {
                 var sdkVersion = config.sdkVersion, firebaseConfig = config.firebase;
                 var shippingCallbackEnabled = Boolean(onShippingChange);
                 sdkMeta = sdkMeta.replace(/[=]+$/, "");
-                var finalStickinessID = "production" !== env ? stickinessID : buttonSessionID;
                 if (!firebaseConfig) throw new Error("Can not run native flow without firebase config");
                 native_clean && native_clean.all();
                 native_clean = (tasks = [], cleaned = !1, {
@@ -4852,84 +4863,6 @@ window.spb = function(modules) {
                 var approved = !1;
                 var cancelled = !1;
                 var didFallback = !1;
-                logger_getLogger().info("native_start_" + (isIOSSafari() ? "ios" : "android") + "_window_width_" + window.outerWidth).info("native_start_" + (isIOSSafari() ? "ios" : "android") + "_window_height_" + window.outerHeight).info("native_stickiness_id_" + (isIOSSafari() ? "ios" : "android") + "_" + function() {
-                    return (function(str) {
-                        var hash = 0;
-                        for (var i = 0; i < str.length; i++) hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
-                        return Math.floor(Math.pow(Math.sqrt(hash), 5));
-                    }((_window$navigator = window.navigator, userAgent = _window$navigator.userAgent, 
-                    language = _window$navigator.language, languages = _window$navigator.languages, 
-                    platform = _window$navigator.platform, hardwareConcurrency = _window$navigator.hardwareConcurrency, 
-                    deviceMemory = _window$navigator.deviceMemory, plugins = Object.entries(window.navigator.plugins).map((function(_ref) {
-                        return _ref[1].name;
-                    })), _window$screen = window.screen, colorDepth = _window$screen.colorDepth, availWidth = _window$screen.availWidth, 
-                    availHeight = _window$screen.availHeight, timezoneOffset = (new Date).getTimezoneOffset(), 
-                    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone, touchSupport = "ontouchstart" in window, 
-                    canvas = function() {
-                        try {
-                            var _canvas = document.createElement("canvas");
-                            var ctx = _canvas.getContext("2d");
-                            ctx.textBaseline = "top";
-                            ctx.font = "14px 'Arial'";
-                            ctx.textBaseline = "alphabetic";
-                            ctx.fillStyle = "#f60";
-                            ctx.fillRect(125, 1, 62, 20);
-                            ctx.fillStyle = "#069";
-                            ctx.fillText("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~1!2@3#4$5%6^7&8*9(0)-_=+[{]}|;:',<.>/?", 2, 15);
-                            ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
-                            ctx.fillText("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~1!2@3#4$5%6^7&8*9(0)-_=+[{]}|;:',<.>/?", 4, 17);
-                            return _canvas.toDataURL();
-                        } catch (error) {
-                            return error;
-                        }
-                    }(), function(key) {
-                        var remainder = 3 & key.length;
-                        var bytes = key.length - remainder;
-                        var c1 = 3432918353;
-                        var c2 = 461845907;
-                        var h1, h1b, k1;
-                        for (var _i = 0; _i < bytes; _i++) {
-                            k1 = 255 & key.charCodeAt(_i) | (255 & key.charCodeAt(++_i)) << 8 | (255 & key.charCodeAt(++_i)) << 16 | (255 & key.charCodeAt(++_i)) << 24;
-                            ++_i;
-                            h1 = 27492 + (65535 & (h1b = 5 * (65535 & (h1 = (h1 ^= k1 = (65535 & (k1 = (k1 = (65535 & k1) * c1 + (((k1 >>> 16) * c1 & 65535) << 16) & 4294967295) << 15 | k1 >>> 17)) * c2 + (((k1 >>> 16) * c2 & 65535) << 16) & 4294967295) << 13 | h1 >>> 19)) + ((5 * (h1 >>> 16) & 65535) << 16) & 4294967295)) + ((58964 + (h1b >>> 16) & 65535) << 16);
-                        }
-                        var i = bytes - 1;
-                        k1 = 0;
-                        switch (remainder) {
-                          case 3:
-                            k1 ^= (255 & key.charCodeAt(i + 2)) << 16;
-                            break;
-
-                          case 2:
-                            k1 ^= (255 & key.charCodeAt(i + 1)) << 8;
-                            break;
-
-                          case 1:
-                            k1 ^= 255 & key.charCodeAt(i);
-                        }
-                        h1 ^= k1 = (65535 & (k1 = (k1 = (65535 & k1) * c1 + (((k1 >>> 16) * c1 & 65535) << 16) & 4294967295) << 15 | k1 >>> 17)) * c2 + (((k1 >>> 16) * c2 & 65535) << 16) & 4294967295;
-                        h1 ^= key.length;
-                        h1 = 2246822507 * (65535 & (h1 ^= h1 >>> 16)) + ((2246822507 * (h1 >>> 16) & 65535) << 16) & 4294967295;
-                        h1 = 3266489909 * (65535 & (h1 ^= h1 >>> 13)) + ((3266489909 * (h1 >>> 16) & 65535) << 16) & 4294967295;
-                        return (h1 ^= h1 >>> 16) >>> 0;
-                    }(JSON.stringify({
-                        userAgent: userAgent,
-                        language: language,
-                        languages: languages,
-                        platform: platform,
-                        hardwareConcurrency: hardwareConcurrency,
-                        deviceMemory: deviceMemory,
-                        plugins: plugins,
-                        colorDepth: colorDepth,
-                        availWidth: availWidth,
-                        availHeight: availHeight,
-                        timezoneOffset: timezoneOffset,
-                        timezone: timezone,
-                        touchSupport: touchSupport,
-                        canvas: canvas
-                    }))).toString()) % 100).toString();
-                    var _window$navigator, userAgent, language, languages, platform, hardwareConcurrency, deviceMemory, plugins, _window$screen, colorDepth, availWidth, availHeight, timezoneOffset, timezone, touchSupport, canvas;
-                }()).flush();
                 var conditionalExtendUrl = function() {
                     return isIOSSafari() && "venmo" === fundingSource && -1 !== PARTIAL_ENCODING_CLIENT.indexOf(clientID) ? extendUrlWithPartialEncoding.apply(void 0, arguments) : extendUrl.apply(void 0, arguments);
                 };
@@ -4992,7 +4925,7 @@ window.spb = function(modules) {
                             buttonSessionID: buttonSessionID,
                             pageUrl: pageUrl,
                             clientID: clientID,
-                            stickinessID: finalStickinessID,
+                            stickinessID: stickinessID,
                             enableFunding: enableFunding.join(","),
                             domain: merchantDomain,
                             rtdbInstanceID: firebaseConfig.databaseURL
@@ -5017,7 +4950,7 @@ window.spb = function(modules) {
                         clientID: clientID,
                         commit: String(commit),
                         webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : "",
-                        stickinessID: finalStickinessID,
+                        stickinessID: stickinessID,
                         userAgent: userAgent,
                         buttonSessionID: buttonSessionID,
                         env: env,
@@ -5092,6 +5025,7 @@ window.spb = function(modules) {
                     var _getLogger$info$track2;
                     var _ref12$data = _ref12.data, payerID = _ref12$data.payerID, paymentID = _ref12$data.paymentID, billingToken = _ref12$data.billingToken;
                     approved = !0;
+                    isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.logComplete();
                     logger_getLogger().info("native_message_onapprove", {
                         payerID: payerID,
                         paymentID: paymentID,
@@ -5292,7 +5226,10 @@ window.spb = function(modules) {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
                             var sessionUID = uniqueID();
-                            return window.xprops.forceNativeDirectAppSwitch || !window.xprops.forceNativePopupAppSwitch && !isPopupFakeout() && isAndroidChrome() ? function(_ref17) {
+                            isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.logStart();
+                            return function(fundingSource) {
+                                return !!window.xprops.forceNativeDirectAppSwitch || !window.xprops.forceNativePopupAppSwitch && !isPopupFakeout() && !(isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.isEnabled()) && isAndroidChrome();
+                            }(fundingSource) ? function(_ref17) {
                                 var _getLogger$info$info$, _getLogger$info$info$2;
                                 var sessionUID = _ref17.sessionUID;
                                 var nativeUrl = getDirectNativeUrl({
@@ -5409,8 +5346,8 @@ window.spb = function(modules) {
                                             cookies: cookies,
                                             orderID: orderID,
                                             enableFunding: enableFunding,
+                                            stickinessID: stickinessID,
                                             merchantID: merchantID[0],
-                                            stickinessID: finalStickinessID,
                                             domain: merchantDomain
                                         }).then((function(eligibility) {
                                             if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
@@ -6249,7 +6186,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "2.0.381", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "2.0.382", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
