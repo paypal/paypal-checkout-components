@@ -15,6 +15,6 @@ if (isIOSSafari()) {
     platform = 'unsupported_platform';
 }
 
-export const nativeFakeoutExperiment : Experiment = createExperiment(`native_popup_fakeout_v2_${ platform }`, { sample: isIOSSafari() ? 100 : 10, sticky: false });
+export const nativeFakeoutExperiment : Experiment = createExperiment(`native_popup_fakeout_v2_${ platform }`, { sample: isIOSSafari() ? 100 : 50, sticky: false });
 export const androidPopupExperiment : Experiment = createExperiment(`native_android_popup`, { sample: 10, sticky: false });
 export const upgradeLSATExperiment : Experiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, { sample: UPGRADE_LSAT_RAMP.RAMP });
