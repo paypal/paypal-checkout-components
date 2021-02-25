@@ -1,3 +1,13 @@
+## <small>5.0.143 (2021-02-25)</small>
+
+* Add button labels for sq_AL, si_LK (#1545) ([6bc7a3d](https://github.com/paypal/paypal-checkout-components/commit/6bc7a3d)), closes [#1545](https://github.com/paypal/paypal-checkout-components/issues/1545)
+* Add client-side experiment for venmo (#1549) ([550ea82](https://github.com/paypal/paypal-checkout-components/commit/550ea82)), closes [#1549](https://github.com/paypal/paypal-checkout-components/issues/1549)
+* Allow clientMetadataID to be passed into button render ([01d90b4](https://github.com/paypal/paypal-checkout-components/commit/01d90b4))
+* chore(release): 5.0.141 :tada: ([e884748](https://github.com/paypal/paypal-checkout-components/commit/e884748))
+* chore(release): 5.0.142 :tada: ([b9ceed5](https://github.com/paypal/paypal-checkout-components/commit/b9ceed5))
+
+
+
 ## <small>5.0.142 (2021-02-19)</small>
 
 * Add button labels for sq_AL, si_LK (#1545) ([6bc7a3d](https://github.com/paypal/paypal-checkout-components/commit/6bc7a3d)), closes [#1545](https://github.com/paypal/paypal-checkout-components/issues/1545)
