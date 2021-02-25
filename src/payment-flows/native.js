@@ -10,7 +10,7 @@ import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } 
 import type { ButtonProps } from '../button/props';
 import { WEB_CHECKOUT_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
-import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, getStickinessID } from '../lib';
+import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
 import { nativeFakeoutExperiment, androidPopupExperiment } from '../experiments';
 import { HASH } from '../native/popup/constants';
@@ -420,12 +420,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     let approved = false;
     let cancelled = false;
     let didFallback = false;
-
-    getLogger()
-        .info(`native_start_${ isIOSSafari() ? 'ios' : 'android' }_window_width_${ window.outerWidth }`)
-        .info(`native_start_${ isIOSSafari() ? 'ios' : 'android' }_window_height_${ window.outerHeight }`)
-        .info(`native_stickiness_id_${ isIOSSafari() ? 'ios' : 'android' }_${ getStickinessID() }`)
-        .flush();
 
     const conditionalExtendUrl = (...args) => {
         if (isIOSSafari() && fundingSource === FUNDING.VENMO && PARTIAL_ENCODING_CLIENT.indexOf(clientID) !== -1) {
