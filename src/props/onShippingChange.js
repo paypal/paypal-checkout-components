@@ -6,11 +6,12 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { patchOrder, type OrderResponse } from '../api';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { getLogger } from '../lib';
+import { upgradeLSATExperiment } from '../experiments';
 
 import type { CreateOrder } from './createOrder';
 
 export type XOnShippingChangeDataType = {|
-    
+
 |};
 
 export type XOnShippingChangeActionsType = {|
@@ -66,6 +67,8 @@ type OnShippingChangeXProps = {|
 |};
 
 export function getOnShippingChange({ onShippingChange, partnerAttributionID, upgradeLSAT = false } : OnShippingChangeXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : ?OnShippingChange {
+    upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
+
     if (onShippingChange) {
         return ({ buyerAccessToken, forceRestAPI = upgradeLSAT, ...data }, actions) => {
             return createOrder().then(orderID => {

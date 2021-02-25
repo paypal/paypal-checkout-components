@@ -5,6 +5,7 @@ import { stringifyError } from 'belter/src';
 
 import { upgradeFacilitatorAccessToken } from '../api';
 import { getLogger } from '../lib';
+import { upgradeLSATExperiment } from '../experiments';
 
 import type { CreateOrder } from './createOrder';
 
@@ -15,6 +16,7 @@ export type XOnAuthDataType = {|
 export type OnAuth = (params : XOnAuthDataType) => ZalgoPromise<string | void>;
 
 export function getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT } : {| facilitatorAccessToken : string, createOrder : CreateOrder, upgradeLSAT : boolean |}) : OnAuth {
+    upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
 
     return ({ accessToken } : XOnAuthDataType) => {
         getLogger().info(`spb_onauth_access_token_${ accessToken ? 'present' : 'not_present' }`);
@@ -22,6 +24,7 @@ export function getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT } :
         return ZalgoPromise.try(() => {
             if (accessToken) {
                 if (upgradeLSAT) {
+                    upgradeLSATExperiment.logStart();
                     return createOrder()
                         .then(orderID => upgradeFacilitatorAccessToken(facilitatorAccessToken, { buyerAccessToken: accessToken, orderID }))
                         .then(() => {

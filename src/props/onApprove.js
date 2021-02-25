@@ -9,6 +9,7 @@ import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, autho
 import { ORDER_API_ERROR, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { ENABLE_PAYMENT_API } from '../config';
+import { upgradeLSATExperiment } from '../experiments';
 
 import type { CreateOrder } from './createOrder';
 import type { XOnError } from './onError';
@@ -246,6 +247,7 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }
+    upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
 
     return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
         return ZalgoPromise.try(() => {

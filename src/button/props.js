@@ -5,14 +5,13 @@ import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY, type FundingEl
 import { ZalgoPromise } from 'zalgo-promise/src';
 import type { InstallmentsFlowType } from '@paypal/installments/src/types';
 
-import {  UPGRADE_LSAT_RAMP } from '../constants';
 import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
     ThreeDomainSecureFlowType, MenuFlowType, ConnectOptions } from '../types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit, XOnInit,
     OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError, OnError,
     XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding } from '../props';
 import { type FirebaseConfig } from '../api';
-import { getNonce, createExperiment, getStorageID, isStorageStateFresh } from '../lib';
+import { getNonce, getStorageID, isStorageStateFresh } from '../lib';
 import { getOnInit } from '../props/onInit';
 import { getCreateOrder } from '../props/createOrder';
 import { getOnApprove } from '../props/onApprove';
@@ -165,7 +164,6 @@ export type ButtonProps = {|
 export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ButtonProps {
 
     const xprops : ButtonXProps = window.xprops;
-    const upgradeLSATExperiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, { sample: UPGRADE_LSAT_RAMP.RAMP });
 
     let {
         uid,
@@ -199,7 +197,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         connect,
         intent,
         merchantID,
-        upgradeLSAT = upgradeLSATExperiment.isEnabled(),
+        upgradeLSAT = false,
         amount,
         userIDToken,
         enableFunding,
