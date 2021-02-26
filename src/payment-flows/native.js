@@ -138,6 +138,16 @@ function deferABSplitToPopup() : boolean {
     return false;
 }
 
+function isTestGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
+    const fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
+
+    if (fundingEligibility && fundingEligibility.eligibility) {
+        return true;
+    }
+
+    return false;
+}
+
 function isControlGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
     const fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
 
@@ -283,7 +293,7 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
             }).then(result => {
                 nativeEligibility = result;
 
-                if (nativeEligibility && ((nativeEligibility.paypal && nativeEligibility.paypal.eligibility) || (nativeEligibility.paypal && nativeEligibility.paypal.eligibility))) {
+                if (isTestGroup(FUNDING.PAYPAL) || isControlGroup(FUNDING.PAYPAL) || isTestGroup(FUNDING.VENMO) || isControlGroup(FUNDING.VENMO)) {
                     getLogger().addMetaBuilder(() => {
                         return {
                             amplitude: true
