@@ -461,7 +461,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
     const fallbackToWebCheckout = (fallbackWin? : ?CrossDomainWindowType) => {
         didFallback = true;
-        const checkoutPayment = { ...payment, win: fallbackWin, isClick: false };
+        const checkoutPayment = { ...payment, win: fallbackWin, isClick: false, isNativeFallback: true };
         const instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData });
         clean.register(() => instance.close());
         return instance.start();

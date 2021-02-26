@@ -233,7 +233,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
         clientID, connect, clientMetadataID: cmid, onAuth, userIDToken, env,
         currency, intent, disableFunding, disableCard, enableFunding, standaloneFundingSource } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
-        venmoPayloadID, buyerIntent } = payment;
+        venmoPayloadID, buyerIntent, isNativeFallback = false } = payment;
     const { fundingEligibility, buyerCountry, sdkMeta, merchantID } = serviceData;
     const { cspNonce } = config;
 
@@ -242,6 +242,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
 
     let approved = false;
     let forceClosed = false;
+
+    const amplitude = isNativeFallback ? true : false;
 
     const init = () => {
         nativeFakeoutExperiment.log('web_checkout_start');
@@ -381,7 +383,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             cspNonce,
             clientMetadataID: cmid,
             enableFunding,
-            standaloneFundingSource
+            standaloneFundingSource,
+            amplitude
         });
     };
 

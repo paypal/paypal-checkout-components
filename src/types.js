@@ -57,7 +57,8 @@ export type CheckoutProps = {|
     venmoPayloadID? : ?string,
     clientMetadataID : ?string,
     enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
-    standaloneFundingSource : ?$Values<typeof FUNDING>
+    standaloneFundingSource : ?$Values<typeof FUNDING>,
+    amplitude? : boolean
 |};
 
 export type CheckoutFlowType = ZoidComponent<CheckoutProps>;
