@@ -8,7 +8,7 @@ import { ENV, FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 import type { LocaleType } from '../../types';
 import { FPTI_CUSTOM_KEY, FPTI_TRANSITION } from '../../constants';
 import { getPostRobot, setupNativeLogger, getSDKVersion } from '../lib';
-import { isAndroidChrome } from '../../lib';
+import { isAndroidChrome, getStorageID } from '../../lib';
 
 import { MESSAGE, HASH, EVENT } from './constants';
 
@@ -242,10 +242,11 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     window.location.hash = HASH.LOADED;
     handleHash();
 
+    const stickinessID = getStorageID();
     const pageUrl = `${ window.location.href.split('#')[0] }#${  HASH.CLOSE }`;
 
     appInstalledPromise.then(app => {
-        sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl }).then(({ redirect = true, redirectUrl, appSwitch = true }) => {
+        sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl, stickinessID }).then(({ redirect = true, redirectUrl, appSwitch = true }) => {
             if (!redirect) {
                 return;
             }

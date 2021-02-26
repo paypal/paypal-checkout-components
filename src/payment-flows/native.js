@@ -10,7 +10,7 @@ import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } 
 import type { ButtonProps } from '../button/props';
 import { WEB_CHECKOUT_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
-import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState } from '../lib';
+import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, unresolvedPromise } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
 import { nativeFakeoutExperiment, androidPopupExperiment } from '../experiments';
 import { HASH } from '../native/popup/constants';
@@ -121,6 +121,18 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
 function isPopupFakeout() : boolean {
     if (window.xprops.popupFakeout || nativeFakeoutExperiment.isEnabled()) {
         return true;
+    }
+
+    return false;
+}
+
+function deferABSplitToPopup() : boolean {
+    if (isAndroidChrome()) {
+        return false;
+    }
+
+    if (isIOSSafari()) {
+        return false;
     }
 
     return false;
@@ -256,14 +268,16 @@ function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) 
 function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { getPageUrl, clientID, onShippingChange, currency, platform,
-            vault, buttonSessionID, enableFunding, stickinessID, merchantDomain } = props;
+            vault, buttonSessionID, enableFunding, stickinessID: defaultStickinessID, merchantDomain } = props;
         const { merchantID, buyerCountry, cookies } = serviceData;
 
         const shippingCallbackEnabled = Boolean(onShippingChange);
 
         return ZalgoPromise.all([
             getNativeEligibility({
-                vault, platform, shippingCallbackEnabled, clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding, stickinessID,
+                vault, platform, shippingCallbackEnabled, clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding,
+                stickinessID: deferABSplitToPopup() ? null : defaultStickinessID,
+                skipElmo:     deferABSplitToPopup(),
                 merchantID:   merchantID[0],
                 domain:       merchantDomain
             }).then(result => {
@@ -399,7 +413,7 @@ export function extendUrlWithPartialEncoding(url : string, options : {| query? :
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange, vault, platform,
-        currency, stickinessID, enableFunding, merchantDomain } = props;
+        currency, stickinessID: defaultStickinessID, enableFunding, merchantDomain } = props;
     let { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
     const { fundingSource } = payment;
     const { sdkVersion, firebase: firebaseConfig } = config;
@@ -474,7 +488,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: {
-                sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl, clientID, stickinessID,
+                sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl, clientID, stickinessID:   defaultStickinessID,
                 enableFunding:  enableFunding.join(','),
                 domain:         merchantDomain,
                 rtdbInstanceID: firebaseConfig.databaseURL
@@ -482,7 +496,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         });
     });
 
-    const getDelayedNativeUrlQueryParams = ({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) => {
+    const getDelayedNativeUrlQueryParams = ({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) => {
         const webCheckoutUrl = getWebCheckoutUrl({ orderID });
         const userAgent = getUserAgent();
         const forceEligible = isNativeOptedIn({ props });
@@ -496,7 +510,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             clientID,
             commit:         String(commit),
             webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : '',
-            stickinessID,
+            stickinessID:   stickinessID || defaultStickinessID,
             userAgent,
             buttonSessionID,
             env,
@@ -510,15 +524,15 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         };
     };
 
-    const getDelayedNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) : string => {
+    const getDelayedNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) : string => {
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
-            query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID })
+            query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID, stickinessID })
         });
     });
 
-    const getDelayedNativeFallbackUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID } : {| sessionUID : string, pageUrl : string, orderID : string |}) : string => {
+    const getDelayedNativeFallbackUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) : string => {
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_FALLBACK_URI[fundingSource] }`, {
-            query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID })
+            query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID, stickinessID })
         });
     });
 
@@ -913,39 +927,51 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
             return valid;
         });
-
-        const eligibilityPromise = validatePromise.then(valid => {
-            if (!valid) {
-                return false;
+        
+        const orderPromise = validatePromise.then(valid => {
+            if (valid) {
+                return createOrder();
             }
 
-            if (isNativeOptedIn({ props })) {
-                return true;
-            }
-
-            return createOrder().then(orderID => {
-                return getNativeEligibility({ vault, platform, shippingCallbackEnabled,
-                    clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding, stickinessID,
-                    merchantID:   merchantID[0],
-                    domain:       merchantDomain
-                }).then(eligibility => {
-                    if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
-                        getLogger().info(`native_appswitch_ineligible`, { orderID })
-                            .track({
-                                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
-                            }).flush();
-
-                        return false;
-                    }
-
-                    return true;
-                });
-            });
+            return unresolvedPromise();
         });
 
-        const awaitRedirectListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app, pageUrl } }) => {
+        const awaitRedirectListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app, pageUrl, stickinessID: popupStickinessID } }) => {
             getLogger().info(`native_post_message_await_redirect`).flush();
+
+            const stickinessID = deferABSplitToPopup()
+                ? popupStickinessID
+                : defaultStickinessID;
+
+            const eligibilityPromise = validatePromise.then(valid => {
+                if (!valid) {
+                    return false;
+                }
+
+                if (isNativeOptedIn({ props })) {
+                    return true;
+                }
+
+                return orderPromise.then(orderID => {
+                    return getNativeEligibility({ vault, platform, shippingCallbackEnabled,
+                        clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding, stickinessID,
+                        merchantID:   merchantID[0],
+                        domain:       merchantDomain
+                    }).then(eligibility => {
+                        if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
+                            getLogger().info(`native_appswitch_ineligible`, { orderID })
+                                .track({
+                                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
+                                }).flush();
+
+                            return false;
+                        }
+
+                        return true;
+                    });
+                });
+            });
 
             return ZalgoPromise.hash({
                 valid:      validatePromise,
@@ -970,14 +996,14 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 }
 
                 if (!eligible || (app && !app.installed)) {
-                    return createOrder().then(orderID => {
-                        const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID });
+                    return orderPromise.then(orderID => {
+                        const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID, stickinessID });
                         return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
                     });
                 }
 
-                return createOrder().then(orderID => {
-                    const nativeUrl = getDelayedNativeUrl({ sessionUID, pageUrl, orderID });
+                return orderPromise.then(orderID => {
+                    const nativeUrl = getDelayedNativeUrl({ sessionUID, pageUrl, orderID, stickinessID });
 
                     getLogger().info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
                         .track({
@@ -1006,8 +1032,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
                     }).flush();
 
-                return createOrder().then(orderID => {
-                    const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID });
+                return orderPromise.then(orderID => {
+                    const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID, stickinessID });
                     return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
                 });
             }).catch(err => {
