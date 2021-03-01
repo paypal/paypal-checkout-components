@@ -692,6 +692,12 @@
                 return chars.charAt(Math.floor(Math.random() * chars.length));
             })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
         }
+        function getGlobal() {
+            if ("undefined" != typeof window) return window;
+            if ("undefined" != typeof window) return window;
+            if ("undefined" != typeof global) return global;
+            throw new Error("No global found");
+        }
         var objectIDs;
         function serializeArgs(args) {
             try {
@@ -837,6 +843,21 @@
         function dom_isBrowser() {
             return "undefined" != typeof window && void 0 !== window.location;
         }
+        function isLocalStorageEnabled() {
+            return inlineMemoize(isLocalStorageEnabled, (function() {
+                try {
+                    if ("undefined" == typeof window) return !1;
+                    if (window.localStorage) {
+                        var value = Math.random().toString();
+                        window.localStorage.setItem("__test__localStorage__", value);
+                        var result = window.localStorage.getItem("__test__localStorage__");
+                        window.localStorage.removeItem("__test__localStorage__");
+                        if (value === result) return !0;
+                    }
+                } catch (err) {}
+                return !1;
+            }));
+        }
         var currentScript = "undefined" != typeof document ? document.currentScript : null;
         var getCurrentScript = memoize((function() {
             if (currentScript) return currentScript;
@@ -875,6 +896,72 @@
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
+        function getStorage(_ref) {
+            var name = _ref.name, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 12e5 : _ref$lifetime;
+            return inlineMemoize(getStorage, (function() {
+                var STORAGE_KEY = "__" + name + "_storage__";
+                var newStateID = uniqueID();
+                var accessedStorage;
+                function getState(handler) {
+                    var localStorageEnabled = isLocalStorageEnabled();
+                    var storage;
+                    accessedStorage && (storage = accessedStorage);
+                    if (!storage && localStorageEnabled) {
+                        var rawStorage = window.localStorage.getItem(STORAGE_KEY);
+                        rawStorage && (storage = JSON.parse(rawStorage));
+                    }
+                    storage || (storage = getGlobal()[STORAGE_KEY]);
+                    storage || (storage = {
+                        id: newStateID
+                    });
+                    storage.id || (storage.id = newStateID);
+                    accessedStorage = storage;
+                    var result = handler(storage);
+                    localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : getGlobal()[STORAGE_KEY] = storage;
+                    accessedStorage = null;
+                    return result;
+                }
+                function getID() {
+                    return getState((function(storage) {
+                        return storage.id;
+                    }));
+                }
+                function getSession(handler) {
+                    return getState((function(storage) {
+                        var session = storage.__session__;
+                        var now = Date.now();
+                        session && now - session.created > lifetime && (session = null);
+                        session || (session = {
+                            guid: uniqueID(),
+                            created: now
+                        });
+                        storage.__session__ = session;
+                        return handler(session);
+                    }));
+                }
+                return {
+                    getState: getState,
+                    getID: getID,
+                    isStateFresh: function() {
+                        return getID() === newStateID;
+                    },
+                    getSessionState: function(handler) {
+                        return getSession((function(session) {
+                            session.state = session.state || {};
+                            return handler(session.state);
+                        }));
+                    },
+                    getSessionID: function() {
+                        return getSession((function(session) {
+                            return session.guid;
+                        }));
+                    }
+                };
+            }), [ {
+                name: name,
+                lifetime: lifetime
+            } ]);
+        }
         var http_headerBuilders = [];
         function getPayPal() {
             if (!window.paypal) throw new Error("paypal not found");
@@ -1198,7 +1285,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "2.0.382", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "2.0.383", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1292,14 +1379,18 @@
                 window.close();
                 window.location.hash = "closed";
             };
+            var getRawHash = function() {
+                return (window.location.hash || "none").replace(/^#/, "").replace(/\?.+/, "");
+            };
             var opener = window.opener;
             if (!opener) {
                 var _logger$info$info$tra;
                 logger.info("native_popup_no_opener", {
                     buttonSessionID: buttonSessionID,
                     href: base64encode(window.location.href)
-                }).info("native_popup_no_opener_hash_" + (window.location.hash || "none").replace(/^#/, "").replace(/\?.+/, "")).track((_logger$info$info$tra = {}, 
-                _logger$info$info$tra.transition_name = "popup_no_opener", _logger$info$info$tra.info_msg = "location: " + base64encode(window.location.href), 
+                }).info("native_popup_no_opener_hash_" + getRawHash()).track((_logger$info$info$tra = {}, 
+                _logger$info$info$tra.transition_name = "popup_no_opener_hash_" + getRawHash(), 
+                _logger$info$info$tra.info_msg = "location: " + base64encode(window.location.href), 
                 _logger$info$info$tra)).flush().then(closeWindow);
                 throw new Error("Expected window to have opener");
             }
@@ -1428,11 +1519,15 @@
             }));
             window.location.hash = "loaded";
             handleHash();
+            var stickinessID = getStorage({
+                name: "smart_payment_buttons"
+            }).getID();
             var pageUrl = window.location.href.split("#")[0] + "#close";
             appInstalledPromise.then((function(app) {
                 sendToParent("awaitRedirect", {
                     app: app,
-                    pageUrl: pageUrl
+                    pageUrl: pageUrl,
+                    stickinessID: stickinessID
                 }).then((function(_ref3) {
                     var _ref3$redirect = _ref3.redirect, redirectUrl = _ref3.redirectUrl, _ref3$appSwitch = _ref3.appSwitch, appSwitch = void 0 === _ref3$appSwitch || _ref3$appSwitch;
                     if (void 0 === _ref3$redirect || _ref3$redirect) {
