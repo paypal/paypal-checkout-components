@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { CURRENCY, COUNTRY, INTENT, LANG, FUNDING, CARD, PLATFORM, type FundingEligibilityType } from '@paypal/sdk-constants/src';
+import { CURRENCY, COUNTRY, INTENT, FUNDING, CARD, PLATFORM, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { getUserAgent } from 'belter/src';
 
 import { HEADERS } from '../constants';
@@ -76,7 +76,6 @@ export function getFundingEligibility(query : string, { accessToken, clientID, m
 type NativeEligibilityOptions = {|
     clientID : ?string,
     buyerCountry : ?$Values<typeof COUNTRY>,
-    buyerLanguage : $Values<typeof LANG>,
     currency : $Values<typeof CURRENCY>,
     vault : boolean,
     merchantID : string,
@@ -98,7 +97,7 @@ export type NativeEligibility = {|
     |}
 |};
 
-export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantID, clientID, buyerCountry, buyerLanguage, currency, buttonSessionID, cookies, orderID, enableFunding, stickinessID, domain, skipElmo = false } : NativeEligibilityOptions) : ZalgoPromise<NativeEligibility> {
+export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantID, clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding, stickinessID, domain, skipElmo = false } : NativeEligibilityOptions) : ZalgoPromise<NativeEligibility> {
     const userAgent = getUserAgent();
 
     return callGraphQL({
@@ -110,7 +109,6 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
                 $merchantID : String,
                 $clientID : String,
                 $buyerCountry : String,
-                $buyerLanguage : String,
                 $currency : String,
                 $userAgent : String,
                 $buttonSessionID : String,
@@ -127,7 +125,6 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
                     merchantID: $merchantID,
                     facilitatorClientID: $clientID,
                     buyerCountry: $buyerCountry,
-                    buyerLanguage: $buyerLanguage,
                     currency: $currency,
                     userAgent: $userAgent,
                     buttonSessionID: $buttonSessionID,
@@ -151,7 +148,7 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
         `,
         variables: {
             vault, shippingCallbackEnabled, merchantID, clientID,
-            buyerCountry, buyerLanguage, currency, userAgent, buttonSessionID,
+            buyerCountry, currency, userAgent, buttonSessionID,
             cookies, orderID, enableFunding, stickinessID, domain, skipElmo
         }
     }).then((gqlResult) => {
