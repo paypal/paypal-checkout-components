@@ -821,10 +821,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const nativeUrl = getDirectNativeUrl({ sessionUID });
         const nativeWin = popup(nativeUrl);
 
-        const closePopup = () => {
-            getLogger().info(`native_closing_popup`).track({
+        const closePopup = (event) => {
+            getLogger().info(`native_closing_popup_${ event }`).track({
                 [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_CLOSING_POPUP
+                [FPTI_KEY.TRANSITION]:  event ? ` ${ FPTI_TRANSITION.NATIVE_CLOSING_POPUP }_${ event }` : FPTI_TRANSITION.NATIVE_CLOSING_POPUP
             }).flush();
 
             nativeWin.close();
@@ -911,10 +911,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             }).then(noop);
         }, 500);
 
-        const closePopup = () => {
-            getLogger().info(`native_closing_popup`).track({
+        const closePopup = (event) => {
+            getLogger().info(`native_closing_popup_${ event }`).track({
                 [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_CLOSING_POPUP
+                [FPTI_KEY.TRANSITION]:  event ? `${ FPTI_TRANSITION.NATIVE_CLOSING_POPUP }_${ event }` : FPTI_TRANSITION.NATIVE_CLOSING_POPUP
             }).flush();
             closeListener.cancel();
             popupWin.close();
@@ -1060,12 +1060,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
         const onApproveListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_APPROVE, (data) => {
             onApproveCallback(data);
-            closePopup();
+            closePopup('onApprove');
         });
 
         const onCancelListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_CANCEL, () => {
             onCancelCallback();
-            closePopup();
+            closePopup('onCancel');
         });
 
         const onCompleteListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_COMPLETE, () => {
@@ -1074,12 +1074,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
                     [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_COMPLETE
                 }).flush();
-            closePopup();
+            closePopup('onComplete');
         });
 
         const onErrorListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_ERROR, (data) => {
             onErrorCallback(data);
-            closePopup();
+            closePopup('onError');
         });
 
         const detectWebSwitchListener = listen(popupWin, getNativeDomain(), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
