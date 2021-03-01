@@ -277,15 +277,16 @@ function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) 
 
 function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        const { getPageUrl, clientID, onShippingChange, currency, platform,
+        const { getPageUrl, clientID, onShippingChange, currency, platform, locale,
             vault, buttonSessionID, enableFunding, stickinessID: defaultStickinessID, merchantDomain } = props;
         const { merchantID, buyerCountry, cookies } = serviceData;
 
+        const buyerLanguage = locale && locale.lang;
         const shippingCallbackEnabled = Boolean(onShippingChange);
 
         return ZalgoPromise.all([
             getNativeEligibility({
-                vault, platform, shippingCallbackEnabled, clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding,
+                vault, platform, shippingCallbackEnabled, clientID, buyerCountry, buyerLanguage, currency, buttonSessionID, cookies, enableFunding,
                 stickinessID: deferABSplitToPopup() ? null : defaultStickinessID,
                 skipElmo:     deferABSplitToPopup(),
                 merchantID:   merchantID[0],
@@ -311,6 +312,7 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
 
 type NativeSDKProps = {|
     orderID : string,
+    buyerLanguage : string,
     facilitatorAccessToken : string,
     pageUrl : string,
     commit : boolean,
@@ -423,12 +425,15 @@ export function extendUrlWithPartialEncoding(url : string, options : {| query? :
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange, vault, platform,
-        currency, stickinessID: defaultStickinessID, enableFunding, merchantDomain } = props;
+        currency, stickinessID: defaultStickinessID, enableFunding, merchantDomain, locale } = props;
+
     let { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
     const { fundingSource } = payment;
     const { sdkVersion, firebase: firebaseConfig } = config;
 
     const shippingCallbackEnabled = Boolean(onShippingChange);
+    const buyerLanguage = locale && locale.lang;
+    
     sdkMeta = sdkMeta.replace(/[=]+$/, '');
 
     if (!firebaseConfig) {
@@ -498,6 +503,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
             query: {
+                buyerLanguage,
                 sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl, clientID, stickinessID:   defaultStickinessID,
                 enableFunding:  enableFunding.join(','),
                 domain:         merchantDomain,
@@ -512,6 +518,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const forceEligible = isNativeOptedIn({ props });
 
         return {
+            buyerLanguage,
             sdkMeta,
             sessionUID,
             orderID,
@@ -570,7 +577,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             const pageUrl = '';
 
             return {
-                orderID, facilitatorAccessToken, pageUrl, commit, webCheckoutUrl,
+                buyerLanguage, orderID, facilitatorAccessToken, pageUrl, commit, webCheckoutUrl,
                 userAgent, buttonSessionID, env, stageHost, apiStageHost, forceEligible
             };
         });
@@ -963,7 +970,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 }
 
                 return orderPromise.then(orderID => {
-                    return getNativeEligibility({ vault, platform, shippingCallbackEnabled,
+                    return getNativeEligibility({ vault, platform, shippingCallbackEnabled, buyerLanguage,
                         clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding, stickinessID,
                         merchantID:   merchantID[0],
                         domain:       merchantDomain
