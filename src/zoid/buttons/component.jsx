@@ -244,7 +244,9 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        enableVenmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        if (enableVenmoExperiment) {
+                            enableVenmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        }
 
                         return value(...args);
                     };
