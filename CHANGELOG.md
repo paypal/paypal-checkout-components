@@ -1,3 +1,9 @@
+## <small>5.0.144 (2021-03-02)</small>
+
+* Create separate venmo experiments based on mobile platform (#1558) ([e52523a](https://github.com/paypal/paypal-checkout-components/commit/e52523a)), closes [#1558](https://github.com/paypal/paypal-checkout-components/issues/1558)
+
+
+
 ## <small>5.0.143 (2021-02-25)</small>
 
 * Add button labels for sq_AL, si_LK (#1545) ([6bc7a3d](https://github.com/paypal/paypal-checkout-components/commit/6bc7a3d)), closes [#1545](https://github.com/paypal/paypal-checkout-components/issues/1545)
