@@ -105,7 +105,7 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     });
     nativeSocket.onError(err => {
         const stringifiedError = stringifyError(err);
-        if (stringifiedError.indexOf('permission_denied') === -1) {
+        if (stringifiedError && stringifiedError.toLowerCase().indexOf('permission_denied') === -1) {
             getLogger().error('native_socket_error', { err: stringifiedError })
                 .track({
                     [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,

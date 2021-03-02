@@ -63,7 +63,7 @@ describe('Native popup cases', () => {
                                     throw new Error(`Expected native popup to be available`);
                                 }
 
-                                return ZalgoPromise.delay(500).then(expect('appSwitchDetector', () => {
+                                return ZalgoPromise.delay(1500).then(expect('appSwitchDetector', () => {
                                     if (!detectedAppSwitch) {
                                         throw new Error(`Expected app switch to be detected`);
                                     }
@@ -223,7 +223,7 @@ describe('Native popup cases', () => {
                                     throw new Error(`Expected native popup to be available`);
                                 }
 
-                                return ZalgoPromise.delay(500).then(expect('appSwitchDetector', () => {
+                                return ZalgoPromise.delay(1500).then(expect('appSwitchDetector', () => {
                                     if (!detectedAppSwitch) {
                                         throw new Error(`Expected app switch to be detected`);
                                     }
@@ -335,7 +335,7 @@ describe('Native popup cases', () => {
                                     throw new Error(`Expected native popup to be available`);
                                 }
 
-                                return ZalgoPromise.delay(500).then(expect('appSwitchDetector', () => {
+                                return ZalgoPromise.delay(1500).then(expect('appSwitchDetector', () => {
                                     if (!detectedAppSwitch) {
                                         throw new Error(`Expected app switch to be detected`);
                                     }
@@ -431,7 +431,7 @@ describe('Native popup cases', () => {
                                     throw new Error(`Expected native popup to be available`);
                                 }
 
-                                return ZalgoPromise.delay(500).then(expect('appSwitchDetector', () => {
+                                return ZalgoPromise.delay(1500).then(expect('appSwitchDetector', () => {
                                     if (!detectedAppSwitch) {
                                         throw new Error(`Expected app switch to be detected`);
                                     }
@@ -536,7 +536,7 @@ describe('Native popup cases', () => {
                                     throw new Error(`Expected native popup to be available`);
                                 }
 
-                                return ZalgoPromise.delay(500).then(expect('appSwitchDetector', () => {
+                                return ZalgoPromise.delay(1500).then(expect('appSwitchDetector', () => {
                                     if (!detectedAppSwitch) {
                                         throw new Error(`Expected app switch to be detected`);
                                     }
@@ -632,7 +632,7 @@ describe('Native popup cases', () => {
                                     throw new Error(`Expected native popup to be available`);
                                 }
 
-                                return ZalgoPromise.delay(500).then(expect('appSwitchDetector', () => {
+                                return ZalgoPromise.delay(1500).then(expect('appSwitchDetector', () => {
                                     if (!detectedAppSwitch) {
                                         throw new Error(`Expected app switch to be detected`);
                                     }
