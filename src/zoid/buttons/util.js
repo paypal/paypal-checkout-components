@@ -38,11 +38,17 @@ export function isSupportedNativeBrowser() : boolean {
     return false;
 }
 
-export function createVenmoExperiment() : Experiment {
-    return createExperiment('enable_venmo', 0);
+export function createVenmoExperiment() : Experiment | void {
+    if (isIos() && isSafari()) {
+        return createExperiment('enable_venmo_ios', 0);
+    }
+
+    if (isAndroid() && isChrome()) {
+        return createExperiment('enable_venmo_android', 0);
+    }
 }
 
-export function getVenmoExperiment(experiment : Experiment) : VenmoExperiment {
+export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     const enableFunding = getEnableFunding();
     const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
     const isExperimentEnabled = experiment && experiment.isEnabled();
