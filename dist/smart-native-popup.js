@@ -1285,7 +1285,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "2.0.383", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "2.0.384", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1552,7 +1552,7 @@
                         if (appSwitch) {
                             var timer = setTimeout((function() {
                                 didRedirect || sendToParent("detectAppSwitch");
-                            }), 500);
+                            }), 1500);
                             clean.register((function() {
                                 return clearTimeout(timer);
                             }));
