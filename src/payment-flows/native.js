@@ -293,7 +293,7 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
             }).then(result => {
                 nativeEligibility = result;
 
-                if (isTestGroup(FUNDING.PAYPAL) || isControlGroup(FUNDING.PAYPAL) || isTestGroup(FUNDING.VENMO) || isControlGroup(FUNDING.VENMO)) {
+                if (isTestGroup(FUNDING.PAYPAL) || isTestGroup(FUNDING.VENMO)) {
                     getLogger().addMetaBuilder(() => {
                         return {
                             amplitude: true
