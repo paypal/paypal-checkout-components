@@ -1777,7 +1777,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.384", _headers10);
+            _headers10["x-app-version"] = "2.0.385", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3077,7 +3077,7 @@ window.spb = function(modules) {
                 if (checkoutOpen) throw new Error("Checkout already rendered");
                 var Checkout = components.Checkout;
                 var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, intent = props.intent, disableFunding = props.disableFunding, disableCard = props.disableCard, enableFunding = props.enableFunding, standaloneFundingSource = props.standaloneFundingSource;
-                var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent, _payment$isNativeFall = payment.isNativeFallback, isNativeFallback = void 0 !== _payment$isNativeFall && _payment$isNativeFall;
+                var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent;
                 var fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta, merchantID = serviceData.merchantID;
                 var cspNonce = config.cspNonce;
                 var context = (_ref7 = {
@@ -3097,7 +3097,6 @@ window.spb = function(modules) {
                 });
                 var approved = !1;
                 var forceClosed = !1;
-                var amplitude = !!isNativeFallback;
                 var instance;
                 var close = function() {
                     checkoutOpen = !1;
@@ -3380,8 +3379,7 @@ window.spb = function(modules) {
                             cspNonce: cspNonce,
                             clientMetadataID: cmid,
                             enableFunding: enableFunding,
-                            standaloneFundingSource: standaloneFundingSource,
-                            amplitude: amplitude
+                            standaloneFundingSource: standaloneFundingSource
                         });
                     }()).renderTo((top = getTop(window), canRenderTop && top ? top : utils_getParent() ? utils_getParent() : window), "body", context).catch((function(err) {
                         if (checkoutOpen) throw err;
@@ -4807,7 +4805,7 @@ window.spb = function(modules) {
                         domain: merchantDomain
                     }).then((function(result) {
                         nativeEligibility = result;
-                        (isTestGroup("paypal") || isControlGroup("paypal") || isTestGroup("venmo") || isControlGroup("venmo")) && logger_getLogger().addMetaBuilder((function() {
+                        (isTestGroup("paypal") || isTestGroup("venmo")) && logger_getLogger().addMetaBuilder((function() {
                             return {
                                 amplitude: !0
                             };
@@ -6208,7 +6206,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "2.0.384", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "2.0.385", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
