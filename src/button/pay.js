@@ -4,7 +4,7 @@ import { noop, stringifyError } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { checkout, cardFields, native, honey, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
+import { checkout, cardFields, native, nonce, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
 import { getLogger, promiseNoop, sendBeacon } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
 import { updateButtonClientConfig } from '../api';
@@ -18,13 +18,13 @@ import { showButtonSmartMenu } from './menu';
 
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
+    nonce,
     vaultCapture,
     walletCapture,
     cardFields,
     popupBridge,
     native,
-    checkout,
-    honey
+    checkout
 ];
 
 export function setupPaymentFlows({ props, config, serviceData, components } : {| props : ButtonProps, config : Config, serviceData : ServiceData, components : Components |}) : ZalgoPromise<void> {
@@ -125,6 +125,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             const validateOrderPromise = createOrder().then(orderID => {
                 return validateOrder(orderID, { env, clientID, merchantID, intent, currency, vault });
             });
+
 
             const confirmOrderPromise = smartFields && smartFields.confirm && createOrder().then(smartFields.confirm);
 

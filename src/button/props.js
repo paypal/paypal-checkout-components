@@ -59,6 +59,7 @@ export type ButtonXProps = {|
     commit : boolean,
     intent : $Values<typeof INTENT>,
     currency : $Values<typeof CURRENCY>,
+    wallet : Wallet,
 
     clientAccessToken : ?string,
     buyerCountry : $Values<typeof COUNTRY>,
@@ -83,7 +84,6 @@ export type ButtonXProps = {|
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
     getQueriedEligibleFunding? : GetQueriedEligibleFunding,
     storageID? : string,
-
     stageHost : ?string,
     apiStageHost : ?string,
     upgradeLSAT? : boolean,
@@ -97,7 +97,10 @@ export type ButtonXProps = {|
     onCancel : XOnCancel,
     onClick : XOnClick,
     onError : XOnError,
-    onShippingChange : ?XOnShippingChange
+    onShippingChange : ?XOnShippingChange,
+
+    paymentMethodNonce : string,
+    branded : boolean
 |};
 
 export type ButtonProps = {|
@@ -118,6 +121,7 @@ export type ButtonProps = {|
     commit : boolean,
     currency : $Values<typeof CURRENCY>,
     intent : $Values<typeof INTENT>,
+    wallet : Wallet,
 
     clientAccessToken : ?string,
 
@@ -157,7 +161,10 @@ export type ButtonProps = {|
 
     onCancel : OnCancel,
     onShippingChange : ?OnShippingChange,
-    onAuth : OnAuth
+    onAuth : OnAuth,
+
+    paymentMethodNonce : string,
+    branded : boolean
 |};
 
 // eslint-disable-next-line complexity
@@ -203,6 +210,9 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         enableFunding,
         disableFunding,
         disableCard,
+        wallet,
+        paymentMethodNonce,
+        branded,
         getQueriedEligibleFunding = () => ZalgoPromise.resolve([]),
         storageID
     } = xprops;
@@ -295,6 +305,7 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         platform,
         currency,
         intent,
+        wallet,
 
         getPopupBridge,
         getPrerenderDetails,
@@ -330,6 +341,8 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
 
         onAuth,
         standaloneFundingSource: fundingSource,
+        paymentMethodNonce,
+        branded,
         stickinessID
     };
 }
@@ -413,3 +426,4 @@ export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyer
         personalization
     };
 }
+

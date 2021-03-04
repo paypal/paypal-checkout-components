@@ -8,6 +8,7 @@ export function getSmartFieldsByFundingSource(fundingSource : string) : ?SmartFi
 
     try {
         for (const win of getAllFramesInWindow(window)) {
+
             if (
                 isSameDomain(win) &&
                 // $FlowFixMe

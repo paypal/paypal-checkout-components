@@ -177,6 +177,13 @@ export type SmartFields = {|
     isValid : () => boolean
 |};
 
+export type ExportCallbacks = {|
+    createOrder : () => ZalgoPromise<string>,
+    onApprove : () => ZalgoPromise<void> | void,
+    onCancel : () => ZalgoPromise<void> | void,
+    onError : (mixed) => ZalgoPromise<void> | void
+|};
+
 export type PersonalizationType = {|
     buttonText? : {|
         text : string,

@@ -7,6 +7,7 @@ module.exports = {
         'react/display-name': 'off',
         'prefer-regex-literals': 'off',
         'require-atomic-updates': 'off',
+        'max-lines': [ 'error', 600 ],
         'react/require-default-props': 'off',
         'react/prop-types': 'off'
     },

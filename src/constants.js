@@ -160,7 +160,8 @@ export const FPTI_CUSTOM_KEY = {
     HONEY_SESSION_ID:      ('honey_session_id' : 'honey_session_id'),
     INTEGRATION_ISSUE:     ('integration_issue' : 'integration_issue'),
     INTEGRATION_WHITELIST: ('whitelist' : 'whitelist'),
-    INFO_MSG:              ('info_msg' : 'info_msg')
+    INFO_MSG:              ('info_msg' : 'info_msg'),
+    PMT_TOKEN:             ('pmt_token' : 'pmt_token')
 };
 
 export const FPTI_BUTTON_KEY = {

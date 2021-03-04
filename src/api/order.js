@@ -7,7 +7,7 @@ import { request, noop, memoize } from 'belter/src';
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS,
-    INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER } from '../constants';
+    INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER, FPTI_CUSTOM_KEY } from '../constants';
 
 import { callSmartAPI, callGraphQL, callRestAPI } from './api';
 
@@ -38,7 +38,6 @@ type OrderAPIOptions = {|
 
 export function createOrderID(order : OrderCreateRequest, { facilitatorAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<string> {
     getLogger().info(`rest_api_create_order_id`);
-
     return callRestAPI({
         accessToken: facilitatorAccessToken,
         method:      `post`,
@@ -87,6 +86,16 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
 }
 
 export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
+    getLogger()
+        .info('order_capture')
+        .track({
+            [FPTI_KEY.TRANSITION]:       'process_checkout_capture',
+            [FPTI_KEY.CONTEXT_TYPE]:     FPTI_CONTEXT_TYPE.ORDER_ID,
+            [FPTI_KEY.TOKEN]:            orderID,
+            [FPTI_KEY.CONTEXT_ID]:       orderID,
+            [FPTI_CUSTOM_KEY.PMT_TOKEN]: partnerAttributionID
+        }).flush();
+    
     return forceRestAPI
         ? callRestAPI({
             accessToken: facilitatorAccessToken,
@@ -108,6 +117,16 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
 }
 
 export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
+    getLogger()
+        .info('order_authorize')
+        .track({
+            [FPTI_KEY.TRANSITION]:       'process_checkout_authorize',
+            [FPTI_KEY.CONTEXT_TYPE]:     FPTI_CONTEXT_TYPE.ORDER_ID,
+            [FPTI_KEY.TOKEN]:            orderID,
+            [FPTI_KEY.CONTEXT_ID]:       orderID,
+            [FPTI_CUSTOM_KEY.PMT_TOKEN]: partnerAttributionID
+        }).flush();
+
     return forceRestAPI
         ? callRestAPI({
             accessToken: facilitatorAccessToken,
@@ -133,6 +152,16 @@ type PatchData = {|
 |};
 
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
+    getLogger()
+        .info('order_patch')
+        .track({
+            [FPTI_KEY.TRANSITION]:       'process_checkout_patch',
+            [FPTI_KEY.CONTEXT_TYPE]:     FPTI_CONTEXT_TYPE.ORDER_ID,
+            [FPTI_KEY.TOKEN]:            orderID,
+            [FPTI_KEY.CONTEXT_ID]:       orderID,
+            [FPTI_CUSTOM_KEY.PMT_TOKEN]: partnerAttributionID
+        }).flush();
+    
     return forceRestAPI
         ? callRestAPI({
             accessToken: facilitatorAccessToken,
@@ -488,5 +517,56 @@ export function updateButtonClientConfig({ orderID, fundingSource, inline = fals
         integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
         userExperienceFlow:  inline ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT,
         productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
+    });
+}
+
+type PayWithNonceOptions = {|
+    orderID : string,
+    paymentMethodNonce : string,
+    clientID : string,
+    branded : boolean,
+    buttonSessionID : string
+|};
+
+export function payWithNonce({ orderID, paymentMethodNonce, clientID, branded = true, buttonSessionID } : PayWithNonceOptions) : ZalgoPromise<ApproveData> {
+    getLogger().info(`pay_with_nonce_input_params`, { orderID, paymentMethodNonce, clientID, branded, buttonSessionID });
+    return callGraphQL({
+        name:  'approvePaymentWithNonce',
+        query: `
+            mutation ApprovePaymentWithNonce(
+                $orderID : String!
+                $clientID : String!
+                $paymentMethodNonce: String!
+                $branded: Boolean!
+                $buttonSessionID: String
+            ) {
+                approvePaymentWithNonce(
+                    token: $orderID
+                    clientID: $clientID
+                    paymentMethodNonce: $paymentMethodNonce
+                    branded: $branded
+                    buttonSessionID: $buttonSessionID
+                ) {
+                    buyer {
+                        userId
+                    }
+                }
+            }
+        `,
+        variables: {
+            orderID,
+            clientID,
+            paymentMethodNonce,
+            branded,
+            buttonSessionID
+        },
+        headers: {
+            [ HEADERS.CLIENT_CONTEXT ]: orderID
+        }
+    }).then(({ approvePaymentWithNonce }) => {
+        getLogger().info('pay_with_paymentMethodNonce', JSON.stringify(approvePaymentWithNonce));
+        return {
+            payerID: approvePaymentWithNonce.buyer.userId
+        };
     });
 }

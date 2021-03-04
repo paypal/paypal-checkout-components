@@ -32,7 +32,6 @@ export function cancelablePromise<T>(promise : ZalgoPromise<T>) : CancelableZalg
 
 export function setupMocks() {
     delete window.navigator.mockUserAgent;
-
     const body = document.body;
 
     if (!body) {
@@ -1730,13 +1729,13 @@ export function renderSmartFieldsMock({
 } : MockFieldsOptions) : SmartFieldsMock {
     window.frames = [
         {
+            ...window,
             exports: {
                 name:    'smart-fields',
                 fundingSource,
                 isValid,
                 confirm
-            },
-            ...window
+            }
         }
     ];
 
