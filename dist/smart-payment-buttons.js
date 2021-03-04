@@ -1533,6 +1533,13 @@ window.spb = function(modules) {
         function promiseNoop() {
             return promise_ZalgoPromise.resolve();
         }
+        function sendBeacon(url) {
+            var img = document.createElement("img");
+            img.src = url;
+            img.style.visibility = "hidden";
+            img.style.position = "absolute";
+            document.body && document.body.appendChild(img);
+        }
         function loadScript(url) {
             return new promise_ZalgoPromise((function(resolve, reject) {
                 var container = document.body || document.head;
@@ -1777,7 +1784,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "2.0.385", _headers10);
+            _headers10["x-app-version"] = "5.0.1", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2127,7 +2134,7 @@ window.spb = function(modules) {
             sticky: !1
         });
         var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", {
-            sample: 1
+            sample: 10
         });
         function getOnApprove(_ref4, _ref5) {
             var intent = _ref4.intent, _ref4$onApprove = _ref4.onApprove, onApprove = void 0 === _ref4$onApprove ? function(intent) {
@@ -2840,7 +2847,8 @@ window.spb = function(modules) {
                 buyerAccessToken: _ref3.buyerAccessToken,
                 facilitatorAccessToken: _ref3.facilitatorAccessToken,
                 eligibility: _ref3.eligibility,
-                cookies: _ref3.cookies
+                cookies: _ref3.cookies,
+                personalization: _ref3.personalization
             };
         }
         function enableLoadingSpinner(button) {
@@ -5610,7 +5618,8 @@ window.spb = function(modules) {
                 sdkMeta: opts.sdkMeta,
                 buyerAccessToken: opts.buyerAccessToken,
                 wallet: opts.wallet,
-                content: opts.content
+                content: opts.content,
+                personalization: opts.personalization
             });
             var merchantID = serviceData.merchantID;
             var props = getProps({
@@ -5660,6 +5669,10 @@ window.spb = function(modules) {
                                         var _getLogger$info$info$;
                                         var merchantID = serviceData.merchantID;
                                         var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault;
+                                        !function(personalization) {
+                                            personalization && personalization.tagline && personalization.tagline.tracking && sendBeacon(personalization.tagline.tracking.click);
+                                            personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
+                                        }(serviceData.personalization);
                                         var _getPaymentFlow = getPaymentFlow({
                                             props: props,
                                             payment: payment,
@@ -6206,7 +6219,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "2.0.385", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.1", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
