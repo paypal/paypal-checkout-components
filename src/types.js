@@ -132,7 +132,7 @@ export type ContentType = {|
 |};
 
 export type PostRobot = {|
-    
+
 |};
 
 export type PayPal = {|
@@ -175,4 +175,21 @@ export type SmartFields = {|
     fundingSource : $Values<typeof FUNDING>,
     confirm : (orderId : string) => ZalgoPromise<void | string>,
     isValid : () => boolean
+|};
+
+export type PersonalizationType = {|
+    buttonText? : {|
+        text : string,
+        tracking : {|
+            impression : string,
+            click : string
+        |}
+    |},
+    tagline? : {|
+        text : string,
+        tracking : {|
+            impression : string,
+            click : string
+        |}
+    |}
 |};

@@ -6,7 +6,7 @@ import { stringifyError, noop } from 'belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest } from '../../lib';
-import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveMerchantID, resolveWallet } from '../../service';
+import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveMerchantID, resolveWallet, resolvePersonalization } from '../../service';
 import { EXPERIMENT_TIMEOUT } from '../../config';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
 import type { ContentType } from '../../../src/types';
@@ -41,12 +41,14 @@ type ButtonMiddlewareOptions = {|
         }
     },
     tracking : (ExpressRequest) => void,
+    getPersonalizationEnabled : (ExpressRequest) => boolean,
     cdn? : boolean
 |};
 
 export function getButtonMiddleware({
     logger = defaultLogger, content: smartContent, graphQL, getAccessToken, cdn = !isLocalOrTest(),
-    getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, tracking
+    getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, tracking,
+    getPersonalizationEnabled = () => false
 } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;
 
@@ -58,8 +60,8 @@ export function getButtonMiddleware({
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale,
-                clientMetadataID, pageSessionID, correlationID, cookies, enableFunding } = getButtonParams(params, req, res);
-            
+                clientMetadataID, pageSessionID, correlationID, cookies, enableFunding, style } = getButtonParams(params, req, res);
+            const { label, period, tagline } = style;
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
 
             if (!clientID) {
@@ -91,6 +93,12 @@ export function getButtonMiddleware({
                 disableFunding, disableCard, clientAccessToken, buyerCountry, userIDToken
             }).catch(noop);
 
+            const personalizationEnabled = getPersonalizationEnabled(req);
+            const personalizationPromise = resolvePersonalization(req, gqlBatch, {
+                logger, clientID, merchantID: sdkMerchantID, buyerCountry, locale, buttonSessionID,
+                currency, intent, commit, vault, label, period, tagline, personalizationEnabled
+            });
+
             gqlBatch.flush();
 
             let facilitatorAccessToken;
@@ -111,6 +119,7 @@ export function getButtonMiddleware({
             const merchantID = await merchantIDPromise;
             const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
             const wallet = await walletPromise;
+            const personalization = await personalizationPromise;
 
             const eligibility = {
                 cardFields: isCardFieldsExperimentEnabled
@@ -121,7 +130,7 @@ export function getButtonMiddleware({
 
             const buttonProps = {
                 ...params, nonce: cspNonce, csp: { nonce: cspNonce },
-                fundingEligibility, content, wallet
+                fundingEligibility, content, wallet, personalization
             };
 
             try {
@@ -136,7 +145,7 @@ export function getButtonMiddleware({
 
             const setupParams = {
                 fundingEligibility, buyerCountry, cspNonce, merchantID, sdkMeta, wallet, correlationID,
-                firebaseConfig, facilitatorAccessToken, eligibility, content, cookies
+                firebaseConfig, facilitatorAccessToken, eligibility, content, cookies, personalization
             };
 
             const pageHTML = `

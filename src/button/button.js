@@ -4,7 +4,7 @@ import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError,
 import { COUNTRY, FPTI_KEY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import type { ContentType, Wallet } from '../types';
+import type { ContentType, Wallet, PersonalizationType } from '../types';
 import { getLogger, getSmartFieldsByFundingSource } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
@@ -33,7 +33,8 @@ type ButtonOpts = {|
         cardFields : boolean
     |},
     correlationID? : string,
-    cookies : string
+    cookies : string,
+    personalization : PersonalizationType
 |};
 
 try {
@@ -54,13 +55,13 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     }
 
     const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, sdkMeta, buyerAccessToken, wallet, cookies,
-        cspNonce: serverCSPNonce, merchantID: serverMerchantID, firebaseConfig, content, correlationID: buttonCorrelationID = '' } = opts;
+        cspNonce: serverCSPNonce, merchantID: serverMerchantID, firebaseConfig, content, personalization, correlationID: buttonCorrelationID = '' } = opts;
 
     const clientID = window.xprops.clientID;
 
     const serviceData = getServiceData({
         eligibility, facilitatorAccessToken, buyerGeoCountry, serverMerchantID, fundingEligibility, cookies,
-        sdkMeta, buyerAccessToken, wallet, content });
+        sdkMeta, buyerAccessToken, wallet, content, personalization });
     const { merchantID } = serviceData;
 
     const props = getProps({ facilitatorAccessToken });

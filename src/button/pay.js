@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { checkout, cardFields, native, honey, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
-import { getLogger, promiseNoop } from '../lib';
+import { getLogger, promiseNoop, sendBeacon } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
 import { updateButtonClientConfig } from '../api';
 import { nativeFakeoutExperiment } from '../experiments';
@@ -45,6 +45,15 @@ export function getPaymentFlow({ props, payment, config, serviceData } : {| prop
     throw new Error(`Could not find eligible payment flow`);
 }
 
+const sendPersonalizationBeacons = (personalization) => {
+    if (personalization && personalization.tagline && personalization.tagline.tracking) {
+        sendBeacon(personalization.tagline.tracking.click);
+    }
+    if (personalization && personalization.buttonText && personalization.buttonText.tracking) {
+        sendBeacon(personalization.buttonText.tracking.click);
+    }
+};
+
 type InitiatePaymentOptions = {|
     payment : Payment,
     props : ButtonProps,
@@ -58,9 +67,11 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
     const { button, fundingSource, instrumentType } = payment;
 
     return ZalgoPromise.try(() => {
-        const { merchantID } = serviceData;
+        const { merchantID, personalization } = serviceData;
         const { clientID, onClick, createOrder, env, vault } = props;
-
+        
+        sendPersonalizationBeacons(personalization);
+        
         const { name, init, inline, spinner, updateFlowClientConfig } = getPaymentFlow({ props, payment, config, components, serviceData });
         const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
 

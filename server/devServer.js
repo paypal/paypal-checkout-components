@@ -221,6 +221,8 @@ const getMerchantID = () => {
     return Promise.resolve('XYZ12345');
 };
 
+const getPersonalizationEnabled = () => true;
+
 const content = {
     US: {
         en: {
@@ -256,7 +258,8 @@ const buttonMiddleware = getButtonMiddleware({
     getAccessToken,
     getMerchantID,
     content,
-    tracking
+    tracking,
+    getPersonalizationEnabled
 });
 
 const menuMiddleware = getMenuMiddleware({

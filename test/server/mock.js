@@ -91,6 +91,23 @@ export async function getWallet() : Promise<Object> {
 
 export async function graphQL(req : ExpressRequest, payload : $ReadOnlyArray<{| query : string, variables : Object |}>) : Promise<Object> {
     return await Promise.resolve(payload.map(request => {
+        if (request.query.match(/checkoutCustomization/)) {
+            if (req.query.simulatePersonalizationError) {
+                return { error: 'Internal Error' };
+            }
+            return {
+                result: {
+                    checkoutCustomization: {
+                        buttonText: {
+                            text: 'foobar'
+                        },
+                        tagline: {
+                            text: 'foobar'
+                        }
+                    }
+                }
+            };
+        }
         if (request.query.match(/FundingEligibility/)) {
             return {
                 fundingEligibility: {
@@ -189,19 +206,6 @@ export async function graphQL(req : ExpressRequest, payload : $ReadOnlyArray<{| 
             };
         }
 
-        if (request.query.match(/CheckoutCustomization/)) {
-            return {
-                checkoutCustomization: {
-                    buttonText: {
-                        text: 'foobar'
-                    },
-                    tagline: {
-                        text: 'foobar'
-                    }
-                }
-            };
-        }
-
         if (request.query.match(/NativeEligibility/)) {
             return {
                 mobileSDKEligibility: {
@@ -224,6 +228,10 @@ export function getMerchantID() : Promise<string> {
 
 export function transportRiskData() : Promise<void> {
     return Promise.resolve();
+}
+
+export function getPersonalizationEnabled() : boolean {
+    return true;
 }
 
 export const mockContent = {

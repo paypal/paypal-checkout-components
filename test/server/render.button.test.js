@@ -5,10 +5,15 @@ import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
 
-import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID, mockContent, tracking } from './mock';
+import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID, mockContent, tracking, getPersonalizationEnabled } from './mock';
 
 function getRenderedFundingSources(template) : $ReadOnlyArray<string> {
     return regexMap(template, / data-funding-source="([^"]+)"/g, (result, group1) => group1);
+}
+
+function getSetupButtonParams(template) : Object {
+    const setupButtonParamsString = template && template.match(/<script nonce="">spb.setupButton\((.*?)\)<\/script>/);
+    return  setupButtonParamsString && JSON.parse(setupButtonParamsString[1]);
 }
 
 jest.setTimeout(300000);
@@ -29,7 +34,7 @@ const logger = {
 };
 
 test('should do a basic button render and succeed', async () => {
-    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking });
+    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled });
 
     const req = mockReq({
         query: {
@@ -64,6 +69,12 @@ test('should do a basic button render and succeed', async () => {
     const fundingSources = getRenderedFundingSources(html);
     if (fundingSources.indexOf(FUNDING.PAYPAL) === -1) {
         throw new Error(`Expected paypal button to be rendered, got: ${ fundingSources.join(', ') }`);
+    }
+    
+    const setupButtonParams = getSetupButtonParams(html);
+    
+    if (!setupButtonParams.personalization.buttonText || !setupButtonParams.personalization.tagline) {
+        throw new Error(`Expected personalization to be rendered, got: ${ JSON.stringify(setupButtonParams.personalization) }`);
     }
 });
 
@@ -100,7 +111,8 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
         content: mockContent,
         cache,
         logger,
-        tracking
+        tracking,
+        getPersonalizationEnabled
     });
     // $FlowFixMe
     await errButtonMiddleware(req, res);
@@ -136,7 +148,7 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
 });
 
 test('should give a 400 error with no clientID passed', async () => {
-    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking });
+    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled });
 
     const req = mockReq();
     const res = mockRes();
@@ -148,5 +160,57 @@ test('should give a 400 error with no clientID passed', async () => {
 
     if (status !== 400) {
         throw new Error(`Expected status code to be 400, got ${ status }`);
+    }
+});
+
+test('should render empty personalization when API errors', async () => {
+    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled });
+
+    const req = mockReq({
+        query: {
+            clientID:                     'xyz',
+            simulatePersonalizationError: true
+        }
+    });
+    const res = mockRes();
+    
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+    const html = res.getBody();
+
+    const setupButtonParams = getSetupButtonParams(html);
+    
+    if (Object.keys(setupButtonParams.personalization).length > 0) {
+        throw new Error(`Expected personalization to be empty, got: ${ JSON.stringify(setupButtonParams.personalization) }`);
+    }
+});
+
+test('should render empty personalization when config is disabled', async () => {
+    const buttonMiddleware = getButtonMiddleware({
+        graphQL,
+        getAccessToken,
+        getMerchantID,
+        content:                   mockContent,
+        cache,
+        logger,
+        tracking,
+        getPersonalizationEnabled: () => false
+    });
+
+    const req = mockReq({
+        query: {
+            clientID:                     'xyz'
+        }
+    });
+    const res = mockRes();
+    
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+    const html = res.getBody();
+
+    const setupButtonParams = getSetupButtonParams(html);
+    
+    if (Object.keys(setupButtonParams.personalization).length > 0) {
+        throw new Error(`Expected personalization to be empty, got: ${ JSON.stringify(setupButtonParams.personalization) }`);
     }
 });

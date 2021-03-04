@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import type { InstallmentsFlowType } from '@paypal/installments/src/types';
 
 import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
-    ThreeDomainSecureFlowType, MenuFlowType, ConnectOptions } from '../types';
+    ThreeDomainSecureFlowType, MenuFlowType, ConnectOptions, PersonalizationType } from '../types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit, XOnInit,
     OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError, OnError,
     XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding } from '../props';
@@ -91,7 +91,7 @@ export type ButtonXProps = {|
 
     amount : ?string,
     userIDToken : ?string,
-    
+
     onInit : XOnInit,
     onApprove : ?XOnApprove,
     onCancel : XOnCancel,
@@ -376,7 +376,8 @@ export type ServiceData = {|
     eligibility : {|
         cardFields : boolean
     |},
-    cookies : string
+    cookies : string,
+    personalization : PersonalizationType
 |};
 
 type ServiceDataOptions = {|
@@ -391,11 +392,12 @@ type ServiceDataOptions = {|
     eligibility : {|
         cardFields : boolean
     |},
-    cookies : string
+    cookies : string,
+    personalization : PersonalizationType
 |};
 
 export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyerGeoCountry,
-    fundingEligibility, wallet, buyerAccessToken, serverMerchantID, eligibility, cookies } : ServiceDataOptions) : ServiceData {
+    fundingEligibility, wallet, buyerAccessToken, serverMerchantID, eligibility, cookies, personalization } : ServiceDataOptions) : ServiceData {
 
     return {
         merchantID:   serverMerchantID,
@@ -407,6 +409,7 @@ export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyer
         buyerAccessToken,
         facilitatorAccessToken,
         eligibility,
-        cookies
+        cookies,
+        personalization
     };
 }

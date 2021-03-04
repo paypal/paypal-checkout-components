@@ -41,6 +41,7 @@ export const SMART_BUTTONS_CDN_NAMESPACE = 'https://www.paypalobjects.com/smart-
 export const FUNDING_ELIGIBILITY_TIMEOUT = 200;
 export const WALLET_TIMEOUT = 2000;
 export const EXPERIMENT_TIMEOUT = 100;
+export const PERSONALIZATION_TIMEOUT = 100;
 
 export const LATEST_TAG = 'latest';
 export const ACTIVE_TAG = `active-${ getEnv() }`;
