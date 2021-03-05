@@ -1,6 +1,6 @@
 /* @flow */
 
-import { parseQuery, cleanup, stringifyErrorMessage, base64encode, isSFVC } from 'belter/src';
+import { parseQuery, cleanup, stringifyErrorMessage, base64encode, isSFVC, isSFVCorSafari } from 'belter/src';
 import { onCloseWindow } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
@@ -90,10 +90,18 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
     const sfvc = isSFVC();
     const sfvcLog = sfvc ? 'sfvc' : 'browser';
+    const sfvcOrSafari = !sfvc ? isSFVCorSafari() : false;
+    const sfvcOrSafariLog = sfvcOrSafari ? 'sfvcOrSafari' : 'browser';
+
     if (isIOSSafari()) {
-        logger.info(`native_popup_init_${ sfvcLog }`)
+        logger
+            .info(`native_popup_init_sfvc_${ sfvcLog }`)
+            .info(`native_popup_init_sfvcOrSafari_${ sfvcOrSafariLog }`)
             .track({
-                [FPTI_KEY.TRANSITION]: `${ FPTI_TRANSITION.NATIVE_POPUP_INIT }_${ sfvcLog }`
+                [FPTI_KEY.TRANSITION]: `${ FPTI_TRANSITION.NATIVE_POPUP_INIT }_sfvc_${ sfvcLog }`
+            })
+            .track({
+                [FPTI_KEY.TRANSITION]: `${ FPTI_TRANSITION.NATIVE_POPUP_INIT }_sfvcOrSafari_${ sfvcOrSafariLog }`
             }).flush();
     }
 
@@ -162,9 +170,15 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         }).flush().then(closeWindow);
         
         if (isIOSSafari()) {
-            logger.info(`${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_${ sfvcLog }`).track({
-                [FPTI_KEY.TRANSITION]:      `${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_${ sfvcLog }`
-            }).flush().then(closeWindow);
+            logger
+                .info(`${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_sfvc_hash_${ getRawHash() }_${ sfvcLog }`)
+                .info(`${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_sfvcOrSafari_hash_${ getRawHash() }_${ sfvcOrSafariLog }`)
+                .track({
+                    [FPTI_KEY.TRANSITION]:   `${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_sfvc_hash_${ getRawHash() }_${ sfvcLog }`
+                })
+                .track({
+                    [FPTI_KEY.TRANSITION]:   `${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_sfvcOrSafari_hash_${ getRawHash() }_${ sfvcOrSafariLog }`
+                }).flush().then(closeWindow);
         }
 
         throw new Error(`Expected window to have opener`);
