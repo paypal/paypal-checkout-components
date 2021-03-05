@@ -1788,7 +1788,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "5.0.3", _headers10);
+            _headers10["x-app-version"] = "5.0.4", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -5488,9 +5488,13 @@ window.spb = function(modules) {
                                 var orderPromise = validatePromise.then((function(valid) {
                                     return valid ? createOrder() : unresolvedPromise();
                                 }));
+                                var redirectListenerTimeout = setTimeout((function() {
+                                    logger_getLogger().info("native_popup_load_timeout").flush();
+                                }), 5e3);
                                 var awaitRedirectListener = listen(popupWin, getNativePopupDomain(), "awaitRedirect", (function(_ref19) {
                                     var _ref19$data = _ref19.data, app = _ref19$data.app, pageUrl = _ref19$data.pageUrl, popupStickinessID = _ref19$data.stickinessID;
                                     logger_getLogger().info("native_post_message_await_redirect").flush();
+                                    clearTimeout(redirectListenerTimeout);
                                     var stickinessID = deferABSplitToPopup() ? popupStickinessID : defaultStickinessID;
                                     var eligibilityPromise = validatePromise.then((function(valid) {
                                         return !!valid && (!!isNativeOptedIn({
@@ -6306,7 +6310,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.3", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.4", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;

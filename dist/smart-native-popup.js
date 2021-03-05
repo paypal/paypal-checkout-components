@@ -77,8 +77,127 @@
                 return target;
             }).apply(this, arguments);
         }
+        var iPhoneScreenHeightMatrix = {
+            926: {
+                device: "iPhone 12 Pro Max",
+                textSizeHeights: [ 752, 748, 744, 738 ],
+                zoomHeight: {
+                    1.15: [ 752, 747, 744, 738 ],
+                    1.25: [ 753, 748, 744, 738 ],
+                    1.5: [ 752, 749, 744, 738 ],
+                    1.75: [ 753, 747, 744, 739 ],
+                    2: [ 752, 748, 744 ],
+                    2.5: [ 753, 748 ],
+                    3: [ 753, 744 ]
+                },
+                maybeSafari: {
+                    2: [ 738 ],
+                    2.5: [ 745, 738 ],
+                    3: [ 747, 738 ]
+                }
+            },
+            896: {
+                device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
+                textSizeHeights: [ 721, 717, 713, 707 ],
+                zoomHeight: {
+                    1.15: [ 721, 716, 713, 707 ],
+                    1.25: [ 721, 718, 713, 708 ],
+                    1.5: [ 722, 717, 713 ],
+                    1.75: [ 721, 718, 712, 707 ],
+                    2: [ 722, 718, 714, 708 ],
+                    2.5: [ 720, 718, 713, 708 ],
+                    3: [ 720, 717, 708 ]
+                },
+                maybeSafari: {
+                    1.5: [ 707 ],
+                    3: [ 714 ]
+                }
+            },
+            844: {
+                device: "iPhone 12, iPhone 12 Pro",
+                textSizeHeights: [ 670, 666, 662, 656 ],
+                zoomHeight: {
+                    1.15: [ 670, 666, 662 ],
+                    1.25: [ 670, 666, 663, 656 ],
+                    1.5: [ 671, 666, 662 ],
+                    1.75: [ 670, 667, 662, 656 ],
+                    2: [ 670, 666, 662 ],
+                    2.5: [ 670, 663 ],
+                    3: [ 669, 666, 663, 657 ]
+                },
+                maybeSafari: {
+                    1.15: [ 656 ],
+                    1.5: [ 656 ],
+                    2: [ 656 ],
+                    2.5: [ 665, 655 ],
+                    3: [ 663 ]
+                }
+            },
+            812: {
+                device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12 Mini",
+                textSizeHeights: [ 641, 637, 633, 627 ],
+                zoomHeight: {
+                    1.15: [ 641, 637, 633, 627 ],
+                    1.25: [ 641, 638, 633, 628 ],
+                    1.5: [ 641, 638, 633, 627 ],
+                    1.75: [ 641, 637, 634 ],
+                    2: [ 642, 638, 634, 628 ],
+                    2.5: [ 640, 638, 633, 628 ],
+                    3: [ 642, 633 ]
+                },
+                maybeSafari: {
+                    1.75: [ 627 ],
+                    3: [ 636, 627 ]
+                }
+            },
+            736: {
+                device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
+                textSizeHeights: [ 628, 624, 620, 614 ],
+                zoomHeight: {
+                    1.15: [ 628, 624, 620, 614 ],
+                    1.25: [ 628, 624, 620, 614 ],
+                    1.5: [ 629, 624, 620 ],
+                    1.75: [ 628, 625, 620, 614 ],
+                    2: [ 628, 624, 620 ],
+                    2.5: [ 628, 625, 620, 615 ],
+                    3: [ 627, 624, 615 ]
+                },
+                maybeSafari: {
+                    1.5: [ 614 ],
+                    2: [ 614 ],
+                    3: [ 621 ]
+                }
+            },
+            667: {
+                device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
+                textSizeHeights: [ 559, 555, 551, 545 ],
+                zoomHeight: {
+                    1.15: [ 559, 555, 551, 545 ],
+                    1.25: [ 559, 555, 551, 545 ],
+                    1.5: [ 560, 555, 551 ],
+                    1.75: [ 558, 555, 551 ],
+                    2: [ 560, 556, 552, 546 ],
+                    2.5: [ 560, 555, 550 ],
+                    3: [ 558, 555, 546 ]
+                },
+                maybeSafari: {
+                    1.5: [ 545 ],
+                    1.75: [ 544 ],
+                    2.5: [ 545 ],
+                    3: [ 552 ]
+                }
+            }
+        };
         function getUserAgent() {
             return window.navigator.mockUserAgent || window.navigator.userAgent;
+        }
+        function isIos(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /iPhone|iPod|iPad/.test(ua);
+        }
+        function isChrome(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /Chrome|Chromium|CriOS/.test(ua);
         }
         function utils_isPromise(item) {
             try {
@@ -1202,6 +1321,12 @@
                 });
             }));
         }
+        function isIOSSafari() {
+            return isIos() && function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /Safari/.test(ua) && !isChrome(ua);
+            }();
+        }
         function isAndroidAppInstalled(appId) {
             return window.navigator && window.navigator.getInstalledRelatedApps ? window.navigator.getInstalledRelatedApps().then((function(result) {
                 if (result && result.length) {
@@ -1285,7 +1410,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.3", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.4", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1333,44 +1458,58 @@
                 href: base64encode(window.location.href)
             }).track((_logger$info$track = {}, _logger$info$track.transition_name = "native_popup_init", 
             _logger$info$track.info_msg = base64encode(window.location.href), _logger$info$track)).flush();
-            window.addEventListener("beforeunload", (function() {
+            var sfvcLog = function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                if (isIos(ua)) {
+                    var device = iPhoneScreenHeightMatrix[window.outerHeight];
+                    if (!device) return !1;
+                    var height = window.innerHeight;
+                    var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
+                    var computedHeight = Math.round(height * scale);
+                    return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                }
+                return !1;
+            }() ? "sfvc" : "browser";
+            if (isIOSSafari()) {
                 var _logger$info$track2;
-                logger.info("native_popup_beforeunload").track((_logger$info$track2 = {}, _logger$info$track2.transition_name = "native_popup_beforeunload", 
+                logger.info("native_popup_init_" + sfvcLog).track((_logger$info$track2 = {}, _logger$info$track2.transition_name = "native_popup_init_" + sfvcLog, 
                 _logger$info$track2)).flush();
-            }));
-            window.addEventListener("unload", (function() {
+            }
+            window.addEventListener("beforeunload", (function() {
                 var _logger$info$track3;
-                logger.info("native_popup_unload").track((_logger$info$track3 = {}, _logger$info$track3.transition_name = "native_popup_unload", 
+                logger.info("native_popup_beforeunload").track((_logger$info$track3 = {}, _logger$info$track3.transition_name = "native_popup_beforeunload", 
                 _logger$info$track3)).flush();
             }));
-            window.addEventListener("pagehide", (function() {
+            window.addEventListener("unload", (function() {
                 var _logger$info$track4;
-                logger.info("native_popup_pagehide").track((_logger$info$track4 = {}, _logger$info$track4.transition_name = "native_popup_pagehide", 
+                logger.info("native_popup_unload").track((_logger$info$track4 = {}, _logger$info$track4.transition_name = "native_popup_unload", 
                 _logger$info$track4)).flush();
+            }));
+            window.addEventListener("pagehide", (function() {
+                var _logger$info$track5;
+                logger.info("native_popup_pagehide").track((_logger$info$track5 = {}, _logger$info$track5.transition_name = "native_popup_pagehide", 
+                _logger$info$track5)).flush();
             }));
             (function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /Android/.test(ua);
-            })() && function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /Chrome|Chromium|CriOS/.test(ua);
-            }() && ("paypal" === fundingSource ? appInstalledPromise = isAndroidAppInstalled("com.paypal.android.p2pmobile").then((function(app) {
+            })() && isChrome() && ("paypal" === fundingSource ? appInstalledPromise = isAndroidAppInstalled("com.paypal.android.p2pmobile").then((function(app) {
                 return _extends({}, app);
             })).catch((function(err) {
-                var _logger$info$track5;
-                logger.info("native_popup_android_paypal_app_installed_error").track((_logger$info$track5 = {}, 
-                _logger$info$track5.transition_name = "native_popup_android_paypal_app_installed_error", 
-                _logger$info$track5.int_error_desc = "Error: " + stringifyErrorMessage(err), _logger$info$track5)).flush();
+                var _logger$info$track6;
+                logger.info("native_popup_android_paypal_app_installed_error").track((_logger$info$track6 = {}, 
+                _logger$info$track6.transition_name = "native_popup_android_paypal_app_installed_error", 
+                _logger$info$track6.int_error_desc = "Error: " + stringifyErrorMessage(err), _logger$info$track6)).flush();
                 return {
                     installed: !0
                 };
             })) : "venmo" === fundingSource && (appInstalledPromise = isAndroidAppInstalled("com.venmo").then((function(app) {
                 return _extends({}, app);
             })).catch((function(err) {
-                var _logger$info$track6;
-                logger.info("native_popup_android_venmo_app_installed_error").track((_logger$info$track6 = {}, 
-                _logger$info$track6.transition_name = "native_popup_android_venmo_app_installed_error", 
-                _logger$info$track6.int_error_desc = "Error: " + stringifyErrorMessage(err), _logger$info$track6)).flush();
+                var _logger$info$track7;
+                logger.info("native_popup_android_venmo_app_installed_error").track((_logger$info$track7 = {}, 
+                _logger$info$track7.transition_name = "native_popup_android_venmo_app_installed_error", 
+                _logger$info$track7.int_error_desc = "Error: " + stringifyErrorMessage(err), _logger$info$track7)).flush();
                 return {
                     installed: !0
                 };
@@ -1392,6 +1531,11 @@
                 _logger$info$info$tra.transition_name = "popup_no_opener_hash_" + getRawHash(), 
                 _logger$info$info$tra.info_msg = "location: " + base64encode(window.location.href), 
                 _logger$info$info$tra)).flush().then(closeWindow);
+                if (isIOSSafari()) {
+                    var _logger$info$track8;
+                    logger.info("popup_no_opener_" + sfvcLog).track((_logger$info$track8 = {}, _logger$info$track8.transition_name = "popup_no_opener_" + sfvcLog, 
+                    _logger$info$track8)).flush().then(closeWindow);
+                }
                 throw new Error("Expected window to have opener");
             }
             !function(win, callback, delay, maxtime) {
@@ -1401,10 +1545,10 @@
                 !function check() {
                     if (isWindowClosed(win)) {
                         timeout && clearTimeout(timeout);
-                        logger.info("native_popup_opener_detect_close").track((_logger$info$track7 = {}, 
-                        _logger$info$track7.transition_name = "native_popup_opener_detect_close", _logger$info$track7)).flush().then(closeWindow);
+                        logger.info("native_popup_opener_detect_close").track((_logger$info$track9 = {}, 
+                        _logger$info$track9.transition_name = "native_popup_opener_detect_close", _logger$info$track9)).flush().then(closeWindow);
                     } else {
-                        var _logger$info$track7;
+                        var _logger$info$track9;
                         if (maxtime <= 0) clearTimeout(timeout); else {
                             maxtime -= delay;
                             timeout = setTimeout(check, delay);
@@ -1461,16 +1605,16 @@
                 }));
             };
             var handleHash = function() {
-                var _logger$info$track8;
+                var _logger$info$track10;
                 if (window.location.hash && "#" !== window.location.hash) {
                     var _hashString$split = (window.location.hash && window.location.hash.slice(1)).split("?"), hash = _hashString$split[0], queryString = _hashString$split[1];
                     var _parseQuery = parseQuery(queryString), appVersion = _parseQuery.appVersion, bundleIdentifier = _parseQuery.bundleIdentifier;
                     logger.info("native_popup_hashchange", {
                         hash: hash,
                         queryString: queryString
-                    }).track((_logger$info$track8 = {}, _logger$info$track8.transition_name = "popup_hashchange", 
-                    _logger$info$track8.mobile_app_version = appVersion, _logger$info$track8.mapv = bundleIdentifier, 
-                    _logger$info$track8.info_msg = "" + window.location.href, _logger$info$track8)).flush();
+                    }).track((_logger$info$track10 = {}, _logger$info$track10.transition_name = "popup_hashchange", 
+                    _logger$info$track10.mobile_app_version = appVersion, _logger$info$track10.mapv = bundleIdentifier, 
+                    _logger$info$track10.info_msg = "" + window.location.href, _logger$info$track10)).flush();
                     switch (hash) {
                       case "init":
                       case "loaded":
