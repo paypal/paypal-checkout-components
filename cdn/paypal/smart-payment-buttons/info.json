@@ -1,15 +1,15 @@
 {
     "_id": "@paypal/smart-payment-buttons",
-    "_rev": "632-d6ed9560c9bff4a02f25ce8fa973e561",
+    "_rev": "637-1f605f048438c07cc11d484ab01aa9a8",
     "name": "@paypal/smart-payment-buttons",
     "dist-tags": {
         "latest": "5.0.4",
         "noop": "2.0.290",
-        "active-test": "5.0.3",
-        "active-local": "5.0.3",
-        "active-stage": "5.0.3",
-        "active-sandbox": "5.0.3",
-        "active-production": "5.0.3"
+        "active-test": "5.0.4",
+        "active-local": "5.0.4",
+        "active-stage": "5.0.4",
+        "active-sandbox": "5.0.4",
+        "active-production": "5.0.4"
     },
     "versions": {
         "2.0.290": {
@@ -190,232 +190,6 @@
             "_npmOperationalInternal": {
                 "host": "s3://npm-registry-packages",
                 "tmp": "tmp/smart-payment-buttons_2.0.290_1595799511298_0.46851434575424"
-            },
-            "_hasShrinkwrap": false
-        },
-        "5.0.3": {
-            "name": "@paypal/smart-payment-buttons",
-            "version": "5.0.3",
-            "publishConfig": {
-                "registry": "https://registry.npmjs.org"
-            },
-            "description": "Serverside rendered ButtonJS",
-            "main": "index.js",
-            "repository": {
-                "type": "git",
-                "url": "git+https://github.com/paypal/paypal-smart-payment-buttons.git"
-            },
-            "jest": {
-                "coverageDirectory": "./server-coverage/"
-            },
-            "scripts": {
-                "start": "babel-node ./server/devServer",
-                "setup": "npm install && npm run flow-typed",
-                "lint": "eslint --ext .js --ext .jsx src/ server/ test/ *.js",
-                "flow-typed": "rm -rf ./flow-typed && flow-typed install --ignoreDeps peer && flow-typed install jest@22 mocha@4 && flow-typed install express@4.16 && sed -i -e 's/http$IncomingMessage,/http$IncomingMessage<>,/g' ./flow-typed/npm/express_v4.16.x.js",
-                "flow": "flow",
-                "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
-                "babel": "babel server --ignore=node_modules --out-dir server && babel webpack.config.js globals.js --out-dir .",
-                "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress",
-                "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow check && npm run karma && npm run jest; fi;",
-                "build": "npm run test && npm run webpack",
-                "build-commit": "npm run build && git add dist && (git commit -m 'Dist' || echo 'Nothing to commit') && git push",
-                "release": "npm run build-commit && grabthar-release",
-                "release:pre": "npm run build-commit && grabthar-release prerelease",
-                "deploy": "npm run cdnify",
-                "activate": "CDN='https://www.paypalobjects.com' grabthar-activate",
-                "clean": "rimraf dist coverage",
-                "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
-                "debug": "cross-env NODE_ENV=debug",
-                "jest": "jest test/server --collectCoverage --collectCoverageFrom='server/' --env=node --no-cache --runInBand",
-                "cover": "echo no-cover",
-                "prepublishOnly": "npm run babel",
-                "postpublish": "git clean -f && git checkout .",
-                "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com",
-                "postinstall": "npm_config_registry=https://npm.paypal.com npm install @paypalcorp/web --no-save --proxy='null' --https-proxy='null' || echo 'Unable to install cdnx cli tools'"
-            },
-            "peerDependencies": {
-                "express": "^4.16.3"
-            },
-            "alias": {},
-            "dependencies": {
-                "@paypal/checkout-components": "^5.0.30",
-                "@paypal/common-components": "^1.0.16",
-                "@paypal/installments": "^1.0.0",
-                "@paypal/sdk-client": "^4.0.123",
-                "@paypal/sdk-constants": "^1.0.87",
-                "@paypal/sdk-logos": "^1.0.26",
-                "@paypal/sdk-release": "^5.0.138",
-                "beaver-logger": "^4.0.12",
-                "belter": "^1.0.19",
-                "cross-domain-utils": "^2.0.16",
-                "get-browser-fingerprint": "^1.1.0",
-                "grabthar": "^4",
-                "jsx-pragmatic": "^2",
-                "module-alias": "^2.2.2",
-                "preact": "^10",
-                "preact-render-to-string": "^5.1.4",
-                "strict-merge": "^1.0.1",
-                "typed-graphqlify": "^2.2.3",
-                "zalgo-promise": "^1.0.28"
-            },
-            "devDependencies": {
-                "babel-core": "^7.0.0-bridge.0",
-                "express": "^4.16.3",
-                "flow-bin": "0.135.0",
-                "grabthar-release": "^1.0.8",
-                "grumbler-scripts": "^3.0.83",
-                "post-robot": "^10.0.13",
-                "sync-browser-mocks": "^2.0.8",
-                "webpack-mem-compile": "^1.0.2"
-            },
-            "license": "Apache-2.0",
-            "gitHead": "b14199f593fb67b95c195a1df087fa1b9d47ef64",
-            "bugs": {
-                "url": "https://github.com/paypal/paypal-smart-payment-buttons/issues"
-            },
-            "homepage": "https://github.com/paypal/paypal-smart-payment-buttons#readme",
-            "_id": "@paypal/smart-payment-buttons@5.0.3",
-            "_nodeVersion": "12.18.2",
-            "_npmVersion": "6.14.11",
-            "dist": {
-                "integrity": "sha512-PElhsQYenZnl/Zh7ZZCF2XFTe3v/eY0tiARcfrnYhZ8GfktlKBhwRwardcKKccFPhdTLgKK0btqcnUThuxbQHw==",
-                "shasum": "e041f9ad7a90553665cec16c2d7d0ef8b799ee30",
-                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/paypal/smart-payment-buttons/tarballs/5.0.3.tgz",
-                "fileCount": 132,
-                "unpackedSize": 2929945,
-                "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJgQTy5CRA9TVsSAnZWagAACR8P/RjpsafTyyeynOmCV8xu\nSRneQON/Eze/P3SRsoy4RkRquVLdb2QwS8YjMYkc3CA4CRBGuV182Rz8SiF9\ncZT3wFTkokDQbXw4DZxqObg0wnmdy4TWzf2HnVR8DbBeVmP47xUAQ5AQPQwS\nEMYd1g3hbw08iKlxFttgP5wnLfytHy9xkNSbBy+miGHTOyZwqbPVtKV8CFLj\n6gudTHPlWdJduPa0f8EygSfkaetWPnXkmpnK3dkkBvph51EQyxCgm6sGPGGf\nCbKbq3M5rFOJFyDYPid/DGd+lA/TE1Gc7rYcpB3qVrBSH0pCIGc8LYYQnv9P\nxwD66v8DbUJYkz69s+t3v0awY510l6HZUtX+wv6hn8/4rNemGKp+TK0Gkf06\nHLd5bCzBmUe124YFERs99ZTyKKcyJ02jkQVQCZYdfzfRqpXOuRNbFNl2RDQJ\nLkZMlYwaJVswO8Kf9NHludbDPG3WLP0wcibuk+vcSqHCJy/HQrGPbP9T1sYi\nd039yElQNt5C101iWF05+KiS+yQPgTnPO7MyanarEjcpMvdzujW5dBzy+2TV\n4tBi1eoGYagStFE75Jjzz3Ck2jT8rVy3n0wQ56hmL662Lf827zjHIUCFoT1B\nC/IxgB5qjRLdicEnxZiDkDYLX/HaKFYR8vV6MAbB1vE1zuN46e5C8TxiVonv\nxOjw\r\n=PCNN\r\n-----END PGP SIGNATURE-----\r\n"
-            },
-            "_npmUser": {
-                "name": "bluepnume",
-                "email": "daniel@bluesuncorp.co.uk"
-            },
-            "directories": {},
-            "maintainers": [
-                {
-                    "name": "remotevision",
-                    "email": "ryank@remotevisioninc.com"
-                },
-                {
-                    "name": "shrutikapoor08",
-                    "email": "shruti.kapoor08@gmail.com"
-                },
-                {
-                    "name": "paypal-user",
-                    "email": "DL-PP-NODEJS-SDK@paypal.com"
-                },
-                {
-                    "name": "bluepnume",
-                    "email": "daniel@bluesuncorp.co.uk"
-                },
-                {
-                    "name": "bladebarringer",
-                    "email": "blade@crookedneighbor.com"
-                },
-                {
-                    "name": "braintree",
-                    "email": "team-sdk@getbraintree.com"
-                },
-                {
-                    "name": "rajarampadmanathan",
-                    "email": "prajarameee@gmail.com"
-                },
-                {
-                    "name": "joshbeam",
-                    "email": "joshua.a.beam@gmail.com"
-                },
-                {
-                    "name": "bryanjenningz",
-                    "email": "bryanjenningz@gmail.com"
-                },
-                {
-                    "name": "zhillb",
-                    "email": "zach@zacharyhill.xyz"
-                },
-                {
-                    "name": "weihou",
-                    "email": "weihou@paypal.com"
-                },
-                {
-                    "name": "seavenly",
-                    "email": "nschott@paypal.com"
-                },
-                {
-                    "name": "tifzhou",
-                    "email": "tifzhou@paypal.com"
-                },
-                {
-                    "name": "rygilbert_paypal",
-                    "email": "rygilbert@paypal.com"
-                },
-                {
-                    "name": "rpalanikumar",
-                    "email": "rpalanikumar@paypal.com"
-                },
-                {
-                    "name": "songz",
-                    "email": "song@zheng.club"
-                },
-                {
-                    "name": "merlinpatt",
-                    "email": "merlinpatt@gmail.com"
-                },
-                {
-                    "name": "jfurman",
-                    "email": "mpscqw@gmail.com"
-                },
-                {
-                    "name": "ravishekhar00",
-                    "email": "ravi_shekhar00@yahoo.com"
-                },
-                {
-                    "name": "visheei94",
-                    "email": "vishakha94@outlook.com"
-                },
-                {
-                    "name": "gregjopa",
-                    "email": "grjopa@gmail.com"
-                },
-                {
-                    "name": "mstuart",
-                    "email": "stuartmark@gmail.com"
-                },
-                {
-                    "name": "antre",
-                    "email": "antre@paypal.com"
-                },
-                {
-                    "name": "mnicpt",
-                    "email": "mnicpt@gmail.com"
-                },
-                {
-                    "name": "elizabethmv",
-                    "email": "lizzyadeline@gmail.com"
-                },
-                {
-                    "name": "nbierdeman",
-                    "email": "nbierdeman@paypal.com"
-                },
-                {
-                    "name": "briceshatzer",
-                    "email": "brice.shatzer@gmail.com"
-                },
-                {
-                    "name": "shrkapoor",
-                    "email": "shrkapoor@paypal.com"
-                },
-                {
-                    "name": "amyegan",
-                    "email": "amyegan@paypal.com"
-                },
-                {
-                    "name": "chetanjk",
-                    "email": "chetan.jk@gmail.com"
-                }
-            ],
-            "_npmOperationalInternal": {
-                "host": "s3://npm-registry-packages",
-                "tmp": "tmp/smart-payment-buttons_5.0.3_1614888120725_0.16077156798624603"
             },
             "_hasShrinkwrap": false
         },
@@ -649,7 +423,7 @@
     "time": {
         "created": "2018-12-12T01:25:35.138Z",
         "2.0.35": "2018-12-12T01:25:35.467Z",
-        "modified": "2021-03-05T16:03:45.464Z",
+        "modified": "2021-03-05T16:15:27.283Z",
         "2.0.36": "2018-12-12T01:51:00.125Z",
         "2.0.37": "2018-12-12T23:37:39.357Z",
         "2.0.38": "2018-12-13T21:50:46.463Z",
