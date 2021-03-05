@@ -195,6 +195,18 @@
             void 0 === ua && (ua = getUserAgent());
             return /iPhone|iPod|iPad/.test(ua);
         }
+        function isSFVC(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            if (isIos(ua)) {
+                var device = iPhoneScreenHeightMatrix[window.outerHeight];
+                if (!device) return !1;
+                var height = window.innerHeight;
+                var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
+                var computedHeight = Math.round(height * scale);
+                return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+            }
+            return !1;
+        }
         function isChrome(ua) {
             void 0 === ua && (ua = getUserAgent());
             return /Chrome|Chromium|CriOS/.test(ua);
@@ -1410,7 +1422,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.4", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.5", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1458,37 +1470,45 @@
                 href: base64encode(window.location.href)
             }).track((_logger$info$track = {}, _logger$info$track.transition_name = "native_popup_init", 
             _logger$info$track.info_msg = base64encode(window.location.href), _logger$info$track)).flush();
-            var sfvcLog = function(ua) {
+            var sfvc = isSFVC();
+            var sfvcLog = sfvc ? "sfvc" : "browser";
+            var sfvcOrSafariLog = !sfvc && function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
+                    var sfvc = isSFVC(ua);
                     var device = iPhoneScreenHeightMatrix[window.outerHeight];
                     if (!device) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
                     var computedHeight = Math.round(height * scale);
-                    return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                    var possibleSafariSizes = device.maybeSafari;
+                    var maybeSafari = !1;
+                    scale > 1 && possibleSafariSizes[scale] && -1 !== possibleSafariSizes[scale].indexOf(computedHeight) && (maybeSafari = !0);
+                    return sfvc || maybeSafari;
                 }
                 return !1;
-            }() ? "sfvc" : "browser";
+            }() ? "sfvcOrSafari" : "browser";
             if (isIOSSafari()) {
-                var _logger$info$track2;
-                logger.info("native_popup_init_" + sfvcLog).track((_logger$info$track2 = {}, _logger$info$track2.transition_name = "native_popup_init_" + sfvcLog, 
-                _logger$info$track2)).flush();
+                var _logger$info$info$tra, _logger$info$info$tra2;
+                logger.info("native_popup_init_sfvc_" + sfvcLog).info("native_popup_init_sfvcOrSafari_" + sfvcOrSafariLog).track((_logger$info$info$tra = {}, 
+                _logger$info$info$tra.transition_name = "native_popup_init_sfvc_" + sfvcLog, _logger$info$info$tra)).track((_logger$info$info$tra2 = {}, 
+                _logger$info$info$tra2.transition_name = "native_popup_init_sfvcOrSafari_" + sfvcOrSafariLog, 
+                _logger$info$info$tra2)).flush();
             }
             window.addEventListener("beforeunload", (function() {
-                var _logger$info$track3;
-                logger.info("native_popup_beforeunload").track((_logger$info$track3 = {}, _logger$info$track3.transition_name = "native_popup_beforeunload", 
-                _logger$info$track3)).flush();
+                var _logger$info$track2;
+                logger.info("native_popup_beforeunload").track((_logger$info$track2 = {}, _logger$info$track2.transition_name = "native_popup_beforeunload", 
+                _logger$info$track2)).flush();
             }));
             window.addEventListener("unload", (function() {
-                var _logger$info$track4;
-                logger.info("native_popup_unload").track((_logger$info$track4 = {}, _logger$info$track4.transition_name = "native_popup_unload", 
-                _logger$info$track4)).flush();
+                var _logger$info$track3;
+                logger.info("native_popup_unload").track((_logger$info$track3 = {}, _logger$info$track3.transition_name = "native_popup_unload", 
+                _logger$info$track3)).flush();
             }));
             window.addEventListener("pagehide", (function() {
-                var _logger$info$track5;
-                logger.info("native_popup_pagehide").track((_logger$info$track5 = {}, _logger$info$track5.transition_name = "native_popup_pagehide", 
-                _logger$info$track5)).flush();
+                var _logger$info$track4;
+                logger.info("native_popup_pagehide").track((_logger$info$track4 = {}, _logger$info$track4.transition_name = "native_popup_pagehide", 
+                _logger$info$track4)).flush();
             }));
             (function(ua) {
                 void 0 === ua && (ua = getUserAgent());
@@ -1496,20 +1516,20 @@
             })() && isChrome() && ("paypal" === fundingSource ? appInstalledPromise = isAndroidAppInstalled("com.paypal.android.p2pmobile").then((function(app) {
                 return _extends({}, app);
             })).catch((function(err) {
-                var _logger$info$track6;
-                logger.info("native_popup_android_paypal_app_installed_error").track((_logger$info$track6 = {}, 
-                _logger$info$track6.transition_name = "native_popup_android_paypal_app_installed_error", 
-                _logger$info$track6.int_error_desc = "Error: " + stringifyErrorMessage(err), _logger$info$track6)).flush();
+                var _logger$info$track5;
+                logger.info("native_popup_android_paypal_app_installed_error").track((_logger$info$track5 = {}, 
+                _logger$info$track5.transition_name = "native_popup_android_paypal_app_installed_error", 
+                _logger$info$track5.int_error_desc = "Error: " + stringifyErrorMessage(err), _logger$info$track5)).flush();
                 return {
                     installed: !0
                 };
             })) : "venmo" === fundingSource && (appInstalledPromise = isAndroidAppInstalled("com.venmo").then((function(app) {
                 return _extends({}, app);
             })).catch((function(err) {
-                var _logger$info$track7;
-                logger.info("native_popup_android_venmo_app_installed_error").track((_logger$info$track7 = {}, 
-                _logger$info$track7.transition_name = "native_popup_android_venmo_app_installed_error", 
-                _logger$info$track7.int_error_desc = "Error: " + stringifyErrorMessage(err), _logger$info$track7)).flush();
+                var _logger$info$track6;
+                logger.info("native_popup_android_venmo_app_installed_error").track((_logger$info$track6 = {}, 
+                _logger$info$track6.transition_name = "native_popup_android_venmo_app_installed_error", 
+                _logger$info$track6.int_error_desc = "Error: " + stringifyErrorMessage(err), _logger$info$track6)).flush();
                 return {
                     installed: !0
                 };
@@ -1523,18 +1543,20 @@
             };
             var opener = window.opener;
             if (!opener) {
-                var _logger$info$info$tra;
+                var _logger$info$info$tra3;
                 logger.info("native_popup_no_opener", {
                     buttonSessionID: buttonSessionID,
                     href: base64encode(window.location.href)
-                }).info("native_popup_no_opener_hash_" + getRawHash()).track((_logger$info$info$tra = {}, 
-                _logger$info$info$tra.transition_name = "popup_no_opener_hash_" + getRawHash(), 
-                _logger$info$info$tra.info_msg = "location: " + base64encode(window.location.href), 
-                _logger$info$info$tra)).flush().then(closeWindow);
+                }).info("native_popup_no_opener_hash_" + getRawHash()).track((_logger$info$info$tra3 = {}, 
+                _logger$info$info$tra3.transition_name = "popup_no_opener_hash_" + getRawHash(), 
+                _logger$info$info$tra3.info_msg = "location: " + base64encode(window.location.href), 
+                _logger$info$info$tra3)).flush().then(closeWindow);
                 if (isIOSSafari()) {
-                    var _logger$info$track8;
-                    logger.info("popup_no_opener_" + sfvcLog).track((_logger$info$track8 = {}, _logger$info$track8.transition_name = "popup_no_opener_" + sfvcLog, 
-                    _logger$info$track8)).flush().then(closeWindow);
+                    var _logger$info$info$tra4, _logger$info$info$tra5;
+                    logger.info("popup_no_opener_sfvc_hash_" + getRawHash() + "_" + sfvcLog).info("popup_no_opener_sfvcOrSafari_hash_" + getRawHash() + "_" + sfvcOrSafariLog).track((_logger$info$info$tra4 = {}, 
+                    _logger$info$info$tra4.transition_name = "popup_no_opener_sfvc_hash_" + getRawHash() + "_" + sfvcLog, 
+                    _logger$info$info$tra4)).track((_logger$info$info$tra5 = {}, _logger$info$info$tra5.transition_name = "popup_no_opener_sfvcOrSafari_hash_" + getRawHash() + "_" + sfvcOrSafariLog, 
+                    _logger$info$info$tra5)).flush().then(closeWindow);
                 }
                 throw new Error("Expected window to have opener");
             }
@@ -1545,10 +1567,10 @@
                 !function check() {
                     if (isWindowClosed(win)) {
                         timeout && clearTimeout(timeout);
-                        logger.info("native_popup_opener_detect_close").track((_logger$info$track9 = {}, 
-                        _logger$info$track9.transition_name = "native_popup_opener_detect_close", _logger$info$track9)).flush().then(closeWindow);
+                        logger.info("native_popup_opener_detect_close").track((_logger$info$track7 = {}, 
+                        _logger$info$track7.transition_name = "native_popup_opener_detect_close", _logger$info$track7)).flush().then(closeWindow);
                     } else {
-                        var _logger$info$track9;
+                        var _logger$info$track7;
                         if (maxtime <= 0) clearTimeout(timeout); else {
                             maxtime -= delay;
                             timeout = setTimeout(check, delay);
@@ -1605,16 +1627,16 @@
                 }));
             };
             var handleHash = function() {
-                var _logger$info$track10;
+                var _logger$info$track8;
                 if (window.location.hash && "#" !== window.location.hash) {
                     var _hashString$split = (window.location.hash && window.location.hash.slice(1)).split("?"), hash = _hashString$split[0], queryString = _hashString$split[1];
                     var _parseQuery = parseQuery(queryString), appVersion = _parseQuery.appVersion, bundleIdentifier = _parseQuery.bundleIdentifier;
                     logger.info("native_popup_hashchange", {
                         hash: hash,
                         queryString: queryString
-                    }).track((_logger$info$track10 = {}, _logger$info$track10.transition_name = "popup_hashchange", 
-                    _logger$info$track10.mobile_app_version = appVersion, _logger$info$track10.mapv = bundleIdentifier, 
-                    _logger$info$track10.info_msg = "" + window.location.href, _logger$info$track10)).flush();
+                    }).track((_logger$info$track8 = {}, _logger$info$track8.transition_name = "popup_hashchange", 
+                    _logger$info$track8.mobile_app_version = appVersion, _logger$info$track8.mapv = bundleIdentifier, 
+                    _logger$info$track8.info_msg = "" + window.location.href, _logger$info$track8)).flush();
                     switch (hash) {
                       case "init":
                       case "loaded":
