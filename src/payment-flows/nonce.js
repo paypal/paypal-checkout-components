@@ -17,7 +17,7 @@ function isNonceEligible({ props, serviceData }) : boolean {
     const { paymentMethodNonce } = props;
     const { wallet } = serviceData;
 
-    const instrument  = wallet?.card?.instruments.find(({ tokenID })  => (tokenID === paymentMethodNonce));
+    const instrument  = wallet?.card?.instruments.filter(({ tokenID })  => (tokenID === paymentMethodNonce))[0];
 
     if (!paymentMethodNonce) {
         return false;
@@ -47,7 +47,7 @@ function isNoncePaymentEligible({ props, payment, serviceData }) : boolean {
 
     const { fundingSource, paymentMethodID } = payment;
 
-    const instrument  = wallet?.card.instruments.find(({ tokenID })  => (tokenID === paymentMethodID));
+    const instrument  = wallet?.card?.instruments.filter(({ tokenID })  => (tokenID === paymentMethodID))[0];
 
     if (!instrument) {
         return false;
@@ -85,7 +85,7 @@ function initNonce({ props, components, payment, serviceData, config }) : Paymen
     const { wallet } = serviceData;
     const { paymentMethodID } = payment;
 
-    const instrument  = wallet?.card.instruments.find(({ tokenID })  => (tokenID === paymentMethodID));
+    const instrument  = wallet?.card?.instruments.filter(({ tokenID })  => (tokenID === paymentMethodID))[0];
     const paymentMethodNonce = instrument?.tokenID;
 
     if (!paymentMethodNonce) {
