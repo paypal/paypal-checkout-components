@@ -1,3 +1,11 @@
+## <small>5.0.145 (2021-03-08)</small>
+
+* Clean up commented code ([7b060df](https://github.com/paypal/paypal-checkout-components/commit/7b060df))
+* update size (#1564) ([54ea975](https://github.com/paypal/paypal-checkout-components/commit/54ea975)), closes [#1564](https://github.com/paypal/paypal-checkout-components/issues/1564)
+* Update Venmo ramp to 5% (#1563) ([9b81ca8](https://github.com/paypal/paypal-checkout-components/commit/9b81ca8)), closes [#1563](https://github.com/paypal/paypal-checkout-components/issues/1563)
+
+
+
 ## <small>5.0.144 (2021-03-02)</small>
 
 * Create separate venmo experiments based on mobile platform (#1558) ([e52523a](https://github.com/paypal/paypal-checkout-components/commit/e52523a)), closes [#1558](https://github.com/paypal/paypal-checkout-components/issues/1558)
