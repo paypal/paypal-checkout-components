@@ -218,7 +218,7 @@ window.spb = function(modules) {
         }
         function supportsPopups(ua) {
             void 0 === ua && (ua = getUserAgent());
-            return !(function(ua) {
+            return !(isSFVC(ua) || function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return !!isIos(ua) && (!!function(ua) {
                     void 0 === ua && (ua = getUserAgent());
@@ -1911,7 +1911,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "5.0.6", _headers10);
+            _headers10["x-app-version"] = "5.0.7", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4899,31 +4899,33 @@ window.spb = function(modules) {
                 var _wallet$card;
                 var paymentMethodNonce = _ref.props.paymentMethodNonce;
                 var wallet = _ref.serviceData.wallet;
-                var instrument = null == wallet || null == (_wallet$card = wallet.card) ? void 0 : _wallet$card.instruments.find((function(_ref2) {
+                var instrument = null == wallet || null == (_wallet$card = wallet.card) ? void 0 : _wallet$card.instruments.filter((function(_ref2) {
                     return _ref2.tokenID === paymentMethodNonce;
-                }));
+                }))[0];
                 return !!(paymentMethodNonce && wallet && instrument && 0 !== wallet.card.instruments.length && wallet.card.instruments.some((function(item) {
                     return item.tokenID && item.branded;
                 })));
             },
             isPaymentEligible: function(_ref3) {
+                var _wallet$card2;
                 var payment = _ref3.payment;
                 var branded = _ref3.props.branded;
                 var wallet = _ref3.serviceData.wallet;
                 var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID;
-                var instrument = null == wallet ? void 0 : wallet.card.instruments.find((function(_ref4) {
+                var instrument = null == wallet || null == (_wallet$card2 = wallet.card) ? void 0 : _wallet$card2.instruments.filter((function(_ref4) {
                     return _ref4.tokenID === paymentMethodID;
-                }));
+                }))[0];
                 return !!instrument && "card" === fundingSource && !(!branded || !instrument.branded) && !(null == instrument || !instrument.tokenID);
             },
             init: function(_ref6) {
+                var _wallet$card3;
                 var props = _ref6.props, components = _ref6.components, payment = _ref6.payment, serviceData = _ref6.serviceData, config = _ref6.config;
                 var createOrder = props.createOrder, onApprove = props.onApprove, clientID = props.clientID, branded = props.branded, buttonSessionID = props.buttonSessionID;
                 var wallet = serviceData.wallet;
                 var paymentMethodID = payment.paymentMethodID;
-                var instrument = null == wallet ? void 0 : wallet.card.instruments.find((function(_ref7) {
+                var instrument = null == wallet || null == (_wallet$card3 = wallet.card) ? void 0 : _wallet$card3.instruments.filter((function(_ref7) {
                     return _ref7.tokenID === paymentMethodID;
-                }));
+                }))[0];
                 var paymentMethodNonce = null == instrument ? void 0 : instrument.tokenID;
                 if (!paymentMethodNonce) {
                     logger_getLogger().info("nonce_payment_failed");
@@ -6460,7 +6462,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.6", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.7", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
