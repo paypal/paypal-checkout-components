@@ -44,7 +44,7 @@ export function createVenmoExperiment() : Experiment | void {
     }
 
     if (isAndroid() && isChrome()) {
-        return createExperiment('enable_venmo_android', 0);
+        return createExperiment('enable_venmo_android', 5);
     }
 }
 
