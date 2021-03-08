@@ -40,7 +40,7 @@ export function isSupportedNativeBrowser() : boolean {
 
 export function createVenmoExperiment() : Experiment | void {
     if (isIos() && isSafari()) {
-        return createExperiment('enable_venmo_ios', 5);
+        return createExperiment('enable_venmo_ios', 0);
     }
 
     if (isAndroid() && isChrome()) {
