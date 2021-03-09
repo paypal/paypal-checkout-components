@@ -78,117 +78,6 @@ window.spb = function(modules) {
         __webpack_require__.d(__webpack_exports__, "getServiceData", (function() {
             return getServiceData;
         }));
-        var iPhoneScreenHeightMatrix = {
-            926: {
-                device: "iPhone 12 Pro Max",
-                textSizeHeights: [ 752, 748, 744, 738 ],
-                zoomHeight: {
-                    1.15: [ 752, 747, 744, 738 ],
-                    1.25: [ 753, 748, 744, 738 ],
-                    1.5: [ 752, 749, 744, 738 ],
-                    1.75: [ 753, 747, 744, 739 ],
-                    2: [ 752, 748, 744 ],
-                    2.5: [ 753, 748 ],
-                    3: [ 753, 744 ]
-                },
-                maybeSafari: {
-                    2: [ 738 ],
-                    2.5: [ 745, 738 ],
-                    3: [ 747, 738 ]
-                }
-            },
-            896: {
-                device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
-                textSizeHeights: [ 721, 717, 713, 707 ],
-                zoomHeight: {
-                    1.15: [ 721, 716, 713, 707 ],
-                    1.25: [ 721, 718, 713, 708 ],
-                    1.5: [ 722, 717, 713 ],
-                    1.75: [ 721, 718, 712, 707 ],
-                    2: [ 722, 718, 714, 708 ],
-                    2.5: [ 720, 718, 713, 708 ],
-                    3: [ 720, 717, 708 ]
-                },
-                maybeSafari: {
-                    1.5: [ 707 ],
-                    3: [ 714 ]
-                }
-            },
-            844: {
-                device: "iPhone 12, iPhone 12 Pro",
-                textSizeHeights: [ 670, 666, 662, 656 ],
-                zoomHeight: {
-                    1.15: [ 670, 666, 662 ],
-                    1.25: [ 670, 666, 663, 656 ],
-                    1.5: [ 671, 666, 662 ],
-                    1.75: [ 670, 667, 662, 656 ],
-                    2: [ 670, 666, 662 ],
-                    2.5: [ 670, 663 ],
-                    3: [ 669, 666, 663, 657 ]
-                },
-                maybeSafari: {
-                    1.15: [ 656 ],
-                    1.5: [ 656 ],
-                    2: [ 656 ],
-                    2.5: [ 665, 655 ],
-                    3: [ 663 ]
-                }
-            },
-            812: {
-                device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12 Mini",
-                textSizeHeights: [ 641, 637, 633, 627 ],
-                zoomHeight: {
-                    1.15: [ 641, 637, 633, 627 ],
-                    1.25: [ 641, 638, 633, 628 ],
-                    1.5: [ 641, 638, 633, 627 ],
-                    1.75: [ 641, 637, 634 ],
-                    2: [ 642, 638, 634, 628 ],
-                    2.5: [ 640, 638, 633, 628 ],
-                    3: [ 642, 633 ]
-                },
-                maybeSafari: {
-                    1.75: [ 627 ],
-                    3: [ 636, 627 ]
-                }
-            },
-            736: {
-                device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
-                textSizeHeights: [ 628, 624, 620, 614 ],
-                zoomHeight: {
-                    1.15: [ 628, 624, 620, 614 ],
-                    1.25: [ 628, 624, 620, 614 ],
-                    1.5: [ 629, 624, 620 ],
-                    1.75: [ 628, 625, 620, 614 ],
-                    2: [ 628, 624, 620 ],
-                    2.5: [ 628, 625, 620, 615 ],
-                    3: [ 627, 624, 615 ]
-                },
-                maybeSafari: {
-                    1.5: [ 614 ],
-                    2: [ 614 ],
-                    3: [ 621 ]
-                }
-            },
-            667: {
-                device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
-                textSizeHeights: [ 559, 555, 551, 545 ],
-                zoomHeight: {
-                    1.15: [ 559, 555, 551, 545 ],
-                    1.25: [ 559, 555, 551, 545 ],
-                    1.5: [ 560, 555, 551 ],
-                    1.75: [ 558, 555, 551 ],
-                    2: [ 560, 556, 552, 546 ],
-                    2.5: [ 560, 555, 550 ],
-                    3: [ 558, 555, 546 ]
-                },
-                maybeSafari: {
-                    1.5: [ 545 ],
-                    1.75: [ 544 ],
-                    2.5: [ 545 ],
-                    3: [ 552 ]
-                }
-            }
-        };
         function getUserAgent() {
             return window.navigator.mockUserAgent || window.navigator.userAgent;
         }
@@ -204,21 +93,9 @@ window.spb = function(modules) {
             void 0 === ua && (ua = getUserAgent());
             return /iPhone|iPod|iPad/.test(ua);
         }
-        function isSFVC(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            if (isIos(ua)) {
-                var device = iPhoneScreenHeightMatrix[window.outerHeight];
-                if (!device) return !1;
-                var height = window.innerHeight;
-                var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
-                var computedHeight = Math.round(height * scale);
-                return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
-            }
-            return !1;
-        }
         function supportsPopups(ua) {
             void 0 === ua && (ua = getUserAgent());
-            return !(isSFVC(ua) || function(ua) {
+            return !(function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return !!isIos(ua) && (!!function(ua) {
                     void 0 === ua && (ua = getUserAgent());
@@ -1911,7 +1788,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers10 = {}).authorization = "Bearer " + accessToken, _headers10["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers10["paypal-client-metadata-id"] = clientMetadataID, _headers10["x-app-name"] = "smart-payment-buttons", 
-            _headers10["x-app-version"] = "5.0.8", _headers10);
+            _headers10["x-app-version"] = "5.0.9", _headers10);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4456,24 +4333,6 @@ window.spb = function(modules) {
         var native_clean;
         var initialPageUrl;
         var nativeEligibility;
-        var native_sfvc = isSFVC();
-        var sfvcLog = native_sfvc ? "sfvc" : "browser";
-        var sfvcOrSafariLog = !native_sfvc && function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            if (isIos(ua)) {
-                var sfvc = isSFVC(ua);
-                var device = iPhoneScreenHeightMatrix[window.outerHeight];
-                if (!device) return !1;
-                var height = window.innerHeight;
-                var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
-                var computedHeight = Math.round(height * scale);
-                var possibleSafariSizes = device.maybeSafari;
-                var maybeSafari = !1;
-                scale > 1 && possibleSafariSizes[scale] && -1 !== possibleSafariSizes[scale].indexOf(computedHeight) && (maybeSafari = !0);
-                return sfvc || maybeSafari;
-            }
-            return !1;
-        }() ? "sfvcOrSafari" : "browser";
         var getNativeSocket = memoize((function(_ref) {
             var nativeSocket = (config = (_ref9 = {
                 sessionUID: _ref.sessionUID,
@@ -5319,7 +5178,7 @@ window.spb = function(modules) {
                     }));
                 }));
                 var onApproveCallback = function(_ref12) {
-                    var _getLogger$info$track2, _getLogger$info$info$, _getLogger$info$info$2;
+                    var _getLogger$info$track2;
                     var _ref12$data = _ref12.data, payerID = _ref12$data.payerID, paymentID = _ref12$data.paymentID, billingToken = _ref12$data.billingToken;
                     approved = !0;
                     isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.logComplete();
@@ -5331,10 +5190,6 @@ window.spb = function(modules) {
                     _getLogger$info$track2.info_msg = "payerID: " + payerID + ", paymentID: " + paymentID + ", billingToken: " + billingToken, 
                     _getLogger$info$track2)).flush();
                     logger_getLogger().info("native_approve_" + (isIOSSafari() ? "ios" : "android") + "_window_width_" + window.outerWidth).info("native_approve_" + (isIOSSafari() ? "ios" : "android") + "_window_height_" + window.outerHeight).flush();
-                    logger_getLogger().info("native_onapprove_sfvc_" + sfvcLog).info("native_onapprove_sfvcOrSafari_" + sfvcOrSafariLog).track((_getLogger$info$info$ = {}, 
-                    _getLogger$info$info$.transition_name = "native_onapprove_sfvc_" + sfvcLog, _getLogger$info$info$)).track((_getLogger$info$info$2 = {}, 
-                    _getLogger$info$info$2.transition_name = "native_onapprove_sfvcOrSafari_" + sfvcOrSafariLog, 
-                    _getLogger$info$info$2)).flush();
                     return promise_ZalgoPromise.all([ onApprove({
                         payerID: payerID,
                         paymentID: paymentID,
@@ -5413,7 +5268,9 @@ window.spb = function(modules) {
                     });
                     var closeNative = memoize((function() {
                         logger_getLogger().info("native_message_close").flush();
-                        return socket.send("close").then((function() {
+                        return socket.send("close", {
+                            buttonSessionID: buttonSessionID
+                        }).then((function() {
                             logger_getLogger().info("native_response_close").flush();
                             return close();
                         }));
@@ -5525,38 +5382,36 @@ window.spb = function(modules) {
                 }));
                 return {
                     click: function() {
-                        var _getLogger$info$info$5, _getLogger$info$info$6;
-                        logger_getLogger().info("process_button_click_sfvc_" + sfvcLog).info("process_button_click_sfvcOrSafari_" + sfvcOrSafariLog).track((_getLogger$info$info$5 = {}, 
-                        _getLogger$info$info$5.transition_name = "process_button_click_sfvc_" + sfvcLog, 
-                        _getLogger$info$info$5)).track((_getLogger$info$info$6 = {}, _getLogger$info$info$6.transition_name = "process_button_click_sfvcOrSafari_" + sfvcOrSafariLog, 
-                        _getLogger$info$info$6)).flush();
                         return promise_ZalgoPromise.try((function() {
                             var sessionUID = uniqueID();
                             isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.logStart();
                             return function(fundingSource) {
                                 return !!window.xprops.forceNativeDirectAppSwitch || !window.xprops.forceNativePopupAppSwitch && !isPopupFakeout() && !(isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.isEnabled()) && isAndroidChrome();
                             }(fundingSource) ? function(_ref17) {
-                                var _getLogger$info$info$3, _getLogger$info$info$4;
+                                var _getLogger$info$info$, _getLogger$info$info$2;
                                 var sessionUID = _ref17.sessionUID;
                                 var nativeUrl = getDirectNativeUrl({
                                     sessionUID: sessionUID
                                 });
                                 var nativeWin = popup(nativeUrl);
-                                window.addEventListener("pagehide", (function(event) {
+                                var closePopup = function(event) {
                                     var _getLogger$info$track12;
-                                    logger_getLogger().info("native_closing_popup_" + event).track((_getLogger$info$track12 = {}, 
-                                    _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = event ? " native_closing_popup_" + event : "native_closing_popup", 
+                                    var eventType = event && event.type ? String(event.type) : event;
+                                    logger_getLogger().info("native_closing_popup_" + eventType).track((_getLogger$info$track12 = {}, 
+                                    _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = event ? " native_closing_popup_" + eventType : "native_closing_popup", 
                                     _getLogger$info$track12)).flush();
                                     nativeWin.close();
-                                }));
+                                };
+                                window.addEventListener("pagehide", closePopup);
+                                window.addEventListener("unload", closePopup);
                                 logger_getLogger().info("native_attempt_appswitch_popup_shown", {
                                     url: nativeUrl
                                 }).info("native_attempt_appswitch_url_popup", {
                                     url: nativeUrl
-                                }).track((_getLogger$info$info$3 = {}, _getLogger$info$info$3.state_name = "smart_button", 
-                                _getLogger$info$info$3.transition_name = "popup_shown", _getLogger$info$info$3)).track((_getLogger$info$info$4 = {}, 
-                                _getLogger$info$info$4.state_name = "smart_button", _getLogger$info$info$4.transition_name = "app_switch_attempted", 
-                                _getLogger$info$info$4)).flush();
+                                }).track((_getLogger$info$info$ = {}, _getLogger$info$info$.state_name = "smart_button", 
+                                _getLogger$info$info$.transition_name = "popup_shown", _getLogger$info$info$)).track((_getLogger$info$info$2 = {}, 
+                                _getLogger$info$info$2.state_name = "smart_button", _getLogger$info$info$2.transition_name = "app_switch_attempted", 
+                                _getLogger$info$info$2)).flush();
                                 var validatePromise = validate();
                                 var delayPromise = promise_ZalgoPromise.delay(500);
                                 connectNative({
@@ -5617,8 +5472,9 @@ window.spb = function(modules) {
                                 }), 500);
                                 var closePopup = function(event) {
                                     var _getLogger$info$track17;
-                                    logger_getLogger().info("native_closing_popup_" + event).track((_getLogger$info$track17 = {}, 
-                                    _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = event ? "native_closing_popup_" + event : "native_closing_popup", 
+                                    var eventType = event && event.type ? String(event.type) : event;
+                                    logger_getLogger().info("native_closing_popup_" + eventType).track((_getLogger$info$track17 = {}, 
+                                    _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = event ? "native_closing_popup_" + eventType : "native_closing_popup", 
                                     _getLogger$info$track17)).flush();
                                     closeListener.cancel();
                                     popupWin.close();
@@ -5644,14 +5500,14 @@ window.spb = function(modules) {
                                     logger_getLogger().info("native_popup_load_timeout").flush();
                                 }), 5e3);
                                 var awaitRedirectListener = listen(popupWin, getNativePopupDomain(), "awaitRedirect", (function(_ref19) {
-                                    var _ref19$data = _ref19.data, app = _ref19$data.app, pageUrl = _ref19$data.pageUrl, popupStickinessID = _ref19$data.stickinessID;
+                                    var _ref19$data = _ref19.data, app = _ref19$data.app, pageUrl = _ref19$data.pageUrl, sfvc = _ref19$data.sfvc, popupStickinessID = _ref19$data.stickinessID;
                                     logger_getLogger().info("native_post_message_await_redirect").flush();
                                     clearTimeout(redirectListenerTimeout);
                                     var stickinessID = deferABSplitToPopup() ? popupStickinessID : defaultStickinessID;
                                     var eligibilityPromise = validatePromise.then((function(valid) {
                                         return !!valid && (!!isNativeOptedIn({
                                             props: props
-                                        }) || orderPromise.then((function(orderID) {
+                                        }) || !sfvc && orderPromise.then((function(orderID) {
                                             return getNativeEligibility({
                                                 vault: vault,
                                                 platform: platform,
@@ -5772,11 +5628,17 @@ window.spb = function(modules) {
                                     onCancelCallback();
                                     closePopup("onCancel");
                                 }));
-                                var onCompleteListener = listen(popupWin, getNativePopupDomain(), "onComplete", (function() {
+                                var onFallbackListener = listen(popupWin, getNativePopupDomain(), "onFallback", (function() {
                                     var _getLogger$info$track23;
-                                    logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track23 = {}, 
-                                    _getLogger$info$track23.state_name = "smart_button", _getLogger$info$track23.transition_name = "native_oncomplete", 
-                                    _getLogger$info$track23)).flush();
+                                    logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track23 = {}, 
+                                    _getLogger$info$track23.transition_name = "native_onfallback", _getLogger$info$track23)).flush();
+                                    fallbackToWebCheckout(popupWin);
+                                }));
+                                var onCompleteListener = listen(popupWin, getNativePopupDomain(), "onComplete", (function() {
+                                    var _getLogger$info$track24;
+                                    logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track24 = {}, 
+                                    _getLogger$info$track24.state_name = "smart_button", _getLogger$info$track24.transition_name = "native_oncomplete", 
+                                    _getLogger$info$track24)).flush();
                                     closePopup("onComplete");
                                 }));
                                 var onErrorListener = listen(popupWin, getNativePopupDomain(), "onError", (function(data) {
@@ -5791,6 +5653,7 @@ window.spb = function(modules) {
                                 native_clean.register(detectAppSwitchListener.cancel);
                                 native_clean.register(onApproveListener.cancel);
                                 native_clean.register(onCancelListener.cancel);
+                                native_clean.register(onFallbackListener.cancel);
                                 native_clean.register(onCompleteListener.cancel);
                                 native_clean.register(onErrorListener.cancel);
                                 native_clean.register(detectWebSwitchListener.cancel);
@@ -6462,7 +6325,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.8", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.9", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
