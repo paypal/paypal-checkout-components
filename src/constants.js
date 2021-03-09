@@ -104,6 +104,7 @@ export const FPTI_TRANSITION = {
     INSTALLMENTS_INELIGIBLE:  ('installments_ineligible' : 'installments_ineligible'),
 
     CREATE_ORDER:             ('process_create_order' : 'process_create_order'),
+    CONFIRM_ORDER:             ('process_confirm_order' : 'process_confirm_order'),
     RECEIVE_ORDER:            ('process_receive_order' : 'process_receive_order'),
     CREATE_PAYMENT:           ('process_create_payment' : 'process_create_payment'),
 

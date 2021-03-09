@@ -3,26 +3,24 @@
 /* eslint  max-lines: off */
 import { wrapPromise } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
-import { ZalgoPromise } from 'zalgo-promise';
 
 import type { SmartFields } from '../../src/types';
 import { getSmartFieldsByFundingSource } from '../../src/lib/comms';
 
-import { renderSmartFieldsMock, createButtonHTML, mockSetupButton, clickButton } from './mocks';
+import { renderSmartFieldsMock, createButtonHTML, mockSetupButton, clickButton  } from './mocks';
 
 
 describe('smart-fields', () => {
 
     describe('ideal', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.IDEAL;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -41,8 +39,6 @@ describe('smart-fields', () => {
                     if (smartFields.isValid()) {
                         throw new Error('inValid incorrect');
                     }
-    
-                    await smartFields.confirm('');
                 }
                 
     
@@ -58,8 +54,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -67,7 +62,8 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+   
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -82,15 +78,14 @@ describe('smart-fields', () => {
             });
         });
 
-        it('should NOT call confirm for ideal if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+        it('should not call confirm for ideal if invalid', async () => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.IDEAL;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {
@@ -98,7 +93,8 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+       
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -117,14 +113,13 @@ describe('smart-fields', () => {
 
     describe('p24', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.P24;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -143,8 +138,6 @@ describe('smart-fields', () => {
                     if (smartFields.isValid()) {
                         throw new Error('inValid incorrect');
                     }
-    
-                    await smartFields.confirm('');
                 }
                 
     
@@ -160,8 +153,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -169,7 +161,8 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -184,15 +177,14 @@ describe('smart-fields', () => {
             });
         });
 
-        it('should NOT call confirm for p24 if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+        it('should not call confirm for p24 if invalid', async () => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.P24;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {
@@ -200,7 +192,8 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -218,14 +211,13 @@ describe('smart-fields', () => {
 
     describe('blik', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.BLIK;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -244,8 +236,6 @@ describe('smart-fields', () => {
                     if (smartFields.isValid()) {
                         throw new Error('inValid incorrect');
                     }
-    
-                    await smartFields.confirm('');
                 }
                 
     
@@ -261,8 +251,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -271,6 +260,7 @@ describe('smart-fields', () => {
                     }
                 };
     
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -286,14 +276,13 @@ describe('smart-fields', () => {
         });
 
         it('should NOT call confirm if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.BLIK;
 
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {
@@ -301,7 +290,8 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -319,14 +309,13 @@ describe('smart-fields', () => {
 
     describe('eps', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.EPS;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -346,7 +335,6 @@ describe('smart-fields', () => {
                         throw new Error('inValid incorrect');
                     }
     
-                    await smartFields.confirm('');
                 }
                 
     
@@ -362,8 +350,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -372,6 +359,7 @@ describe('smart-fields', () => {
                     }
                 };
     
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -386,15 +374,14 @@ describe('smart-fields', () => {
             });
         });
 
-        it('should NOT call confirm if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+        it('should not call confirm if invalid', async () => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.EPS;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {
@@ -403,6 +390,7 @@ describe('smart-fields', () => {
                     }
                 };
     
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -420,14 +408,13 @@ describe('smart-fields', () => {
 
     describe('giropay', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.GIROPAY;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -447,7 +434,6 @@ describe('smart-fields', () => {
                         throw new Error('inValid incorrect');
                     }
     
-                    await smartFields.confirm('');
                 }
                 
     
@@ -463,8 +449,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -487,15 +472,14 @@ describe('smart-fields', () => {
             });
         });
 
-        it('should NOT call confirm if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+        it('should not call confirm if invalid', async () => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.GIROPAY;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {
@@ -503,7 +487,7 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -521,14 +505,13 @@ describe('smart-fields', () => {
 
     describe('mybank', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.MYBANK;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -548,7 +531,6 @@ describe('smart-fields', () => {
                         throw new Error('inValid incorrect');
                     }
     
-                    await smartFields.confirm('');
                 }
                 
     
@@ -564,8 +546,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -573,7 +554,8 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -588,15 +570,14 @@ describe('smart-fields', () => {
             });
         });
 
-        it('should NOT call confirm if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+        it('should not call confirm if invalid', async () => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.MYBANK;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {
@@ -604,7 +585,7 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -622,14 +603,13 @@ describe('smart-fields', () => {
 
     describe('sofort', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.SOFORT;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -648,8 +628,6 @@ describe('smart-fields', () => {
                     if (smartFields.isValid()) {
                         throw new Error('inValid incorrect');
                     }
-    
-                    await smartFields.confirm('');
                 }
                 
     
@@ -665,8 +643,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -674,7 +651,8 @@ describe('smart-fields', () => {
                         eligible: true
                     }
                 };
-    
+            
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -689,15 +667,14 @@ describe('smart-fields', () => {
             });
         });
 
-        it('should NOT call confirm if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+        it('should not call confirm if invalid', async () => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.SOFORT;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {
@@ -724,14 +701,13 @@ describe('smart-fields', () => {
 
     describe('trustly', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.TRUSTLY;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -750,8 +726,7 @@ describe('smart-fields', () => {
                     if (smartFields.isValid()) {
                         throw new Error('inValid incorrect');
                     }
-    
-                    await smartFields.confirm('');
+
                 }
                 
     
@@ -767,8 +742,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -777,6 +751,7 @@ describe('smart-fields', () => {
                     }
                 };
     
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -791,15 +766,14 @@ describe('smart-fields', () => {
             });
         });
 
-        it('should NOT call confirm if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+        it('should not call confirm if invalid', async () => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.TRUSTLY;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {
@@ -808,6 +782,7 @@ describe('smart-fields', () => {
                     }
                 };
     
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -825,14 +800,13 @@ describe('smart-fields', () => {
 
     describe('verkkopankki', () => {
         it('should get the smartfields correctly via getSmartFieldsByFundingSource', async () => {
-            return await wrapPromise(async ({ expect }) => {
+            return await wrapPromise(({ expect }) => {
     
                 const fundingSource = FUNDING.VERKKOPANKKI;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const smartFields : ?SmartFields = getSmartFieldsByFundingSource(fundingSource);
@@ -851,8 +825,6 @@ describe('smart-fields', () => {
                     if (smartFields.isValid()) {
                         throw new Error('inValid incorrect');
                     }
-    
-                    await smartFields.confirm('');
                 }
                 
     
@@ -868,8 +840,7 @@ describe('smart-fields', () => {
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => true),
-                    confirm: expect('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => true)
                 });
     
                 const fundingEligibility = {
@@ -878,6 +849,7 @@ describe('smart-fields', () => {
                     }
                 };
     
+
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
@@ -892,15 +864,14 @@ describe('smart-fields', () => {
             });
         });
 
-        it('should NOT call confirm if invalid', async () => {
-            return await wrapPromise(async ({ expect, avoid }) => {
+        it('should not call confirm if invalid', async () => {
+            return await wrapPromise(async ({ expect }) => {
     
                 const fundingSource = FUNDING.VERKKOPANKKI;
     
                 const smartFieldsIfrm = renderSmartFieldsMock({
                     fundingSource,
-                    isValid:       expect('isValid', () => false),
-                    confirm: avoid('confirm', () => ZalgoPromise.try(() => ''))
+                    isValid:       expect('isValid', () => false)
                 });
     
                 const fundingEligibility = {

@@ -148,7 +148,6 @@ describe('auth cases', () => {
                 captureOrderApiMock.done();
             }));
 
-
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
                 props.onAuth({ accessToken });
                 return CheckoutOriginal(props);

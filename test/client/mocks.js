@@ -154,7 +154,17 @@ export function setupMocks() {
         getPopupBridge:           mockAsyncProp(noop),
         getParent:                () => window,
         getParentDomain:          () => 'https://www.merchant.com',
-        enableNativeCheckout:     false
+        enableNativeCheckout:     false,
+        sessionState:         {
+            get(key : string) : ZalgoPromise<?string> {
+                const data = sessionStorage.getItem(key);
+                return ZalgoPromise.resolve(data);
+            },
+            set(key : string, value : string) : ZalgoPromise<void> {
+                sessionStorage.setItem(key, value);
+                return ZalgoPromise.resolve();
+            }
+        }
     };
 
     // eslint-disable-next-line compat/compat
@@ -1718,14 +1728,12 @@ type SmartFieldsMock = {|
 
 type MockFieldsOptions = {|
     fundingSource : string,
-    isValid : () => boolean,
-    confirm : ?() => ZalgoPromise<void | string>
+    isValid : () => boolean
 |};
 
 export function renderSmartFieldsMock({
     fundingSource,
-    isValid,
-    confirm
+    isValid
 } : MockFieldsOptions) : SmartFieldsMock {
     window.frames = [
         {

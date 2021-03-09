@@ -9,7 +9,6 @@ import { getLogger, promiseNoop, sendBeacon } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
 import { updateButtonClientConfig } from '../api';
 import { nativeFakeoutExperiment } from '../experiments';
-import type { SmartFields } from '../types';
 
 import { type ButtonProps, type Config, type ServiceData, type Components } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
@@ -59,19 +58,18 @@ type InitiatePaymentOptions = {|
     props : ButtonProps,
     serviceData : ServiceData,
     config : Config,
-    components : Components,
-    smartFields : ?SmartFields
+    components : Components
 |};
 
-export function initiatePaymentFlow({ payment, serviceData, config, components, props, smartFields } : InitiatePaymentOptions) : ZalgoPromise<void> {
+export function initiatePaymentFlow({ payment, serviceData, config, components, props } : InitiatePaymentOptions) : ZalgoPromise<void> {
     const { button, fundingSource, instrumentType } = payment;
 
     return ZalgoPromise.try(() => {
         const { merchantID, personalization } = serviceData;
-        const { clientID, onClick, createOrder, env, vault } = props;
+        const { clientID, onClick, createOrder, confirmOrder, env, vault } = props;
         
         sendPersonalizationBeacons(personalization);
-        
+
         const { name, init, inline, spinner, updateFlowClientConfig } = getPaymentFlow({ props, payment, config, components, serviceData });
         const { click = promiseNoop, start, close } = init({ props, config, serviceData, components, payment });
 
@@ -125,9 +123,22 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             const validateOrderPromise = createOrder().then(orderID => {
                 return validateOrder(orderID, { env, clientID, merchantID, intent, currency, vault });
             });
+            
+            const confirmOrderPromise = createOrder()
+                .then((orderID) => {
+                    return window.xprops.sessionState.get(
+                        `__confirm_${ fundingSource }_payload__`
+                    )
+                        .then(confirmOrderPayload => {
+                            if (!confirmOrderPayload) {
+                                // skip the confirm call when there is no confirm payload (regular flow).
+                                return;
+                            }
 
+                            return confirmOrder({ orderID, payload: confirmOrderPayload });
+                        });
+                });
 
-            const confirmOrderPromise = smartFields && smartFields.confirm && createOrder().then(smartFields.confirm);
 
             return ZalgoPromise.all([
                 clickPromise,

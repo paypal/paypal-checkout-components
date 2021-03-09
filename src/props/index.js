@@ -1,6 +1,7 @@
 /* @flow */
 
 export * from './createOrder';
+export * from './confirmOrder';
 export * from './createBillingAgreement';
 export * from './createSubscription';
 export * from './onApprove';

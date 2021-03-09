@@ -1,5 +1,6 @@
-/* @flow */
+/* eslint max-lines: 0 */
 
+/* @flow */
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY, FUNDING, WALLET_INSTRUMENT, INTENT } from '@paypal/sdk-constants/src';
 import { request, noop, memoize } from 'belter/src';
@@ -26,6 +27,7 @@ export type OrderCreateRequest = {|
 
 export type OrderResponse = {||};
 export type OrderCaptureResponse = {||};
+export type OrderConfirmResponse = {||};
 export type OrderGetResponse = {||};
 export type OrderAuthorizeResponse = {||};
 
@@ -182,6 +184,31 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
                 [HEADERS.CLIENT_CONTEXT]: orderID
             }
         });
+}
+
+export type ConfirmData = {|
+    payment_source : {
+        [$Values<typeof FUNDING>] : {|
+            country_code? : string | null,
+            name? : string | null,
+            email? : string | null,
+            bic? : string | null,
+            bank_id? : string | null
+        |}
+      }
+|};
+
+export function confirmOrderAPI(orderID : string, data : ConfirmData, { facilitatorAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<OrderConfirmResponse> {
+    return callRestAPI({
+        accessToken: facilitatorAccessToken,
+        method:      `post`,
+        url:         `${ ORDERS_API_URL }/${ orderID }/confirm-payment-source`,
+        data,
+        headers:     {
+            [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || '',
+            [HEADERS.PREFER]:                 PREFER.REPRESENTATION
+        }
+    });
 }
 
 export type ValidatePaymentMethodOptions = {|
