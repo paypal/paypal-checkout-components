@@ -714,7 +714,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
         const closeNative = memoize(() => {
             getLogger().info(`native_message_close`).flush();
-            return socket.send(SOCKET_MESSAGE.CLOSE).then(() => {
+            return socket.send(SOCKET_MESSAGE.CLOSE, { buttonSessionID }).then(() => {
                 getLogger().info(`native_response_close`).flush();
                 return close();
             });
