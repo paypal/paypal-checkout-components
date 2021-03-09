@@ -89,19 +89,16 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     }).flush();
 
     const sfvc = isSFVC();
-    const sfvcLog = sfvc ? 'sfvc' : 'browser';
     const sfvcOrSafari = !sfvc ? isSFVCorSafari() : false;
     const sfvcOrSafariLog = sfvcOrSafari ? 'sfvcOrSafari' : 'browser';
+    const logMessage = sfvc ? 'sfvc' : sfvcOrSafariLog;
 
     if (isIOSSafari()) {
+        const log = `${ FPTI_TRANSITION.NATIVE_POPUP_INIT }_${ logMessage }`;
         logger
-            .info(`native_popup_init_sfvc_${ sfvcLog }`)
-            .info(`native_popup_init_sfvcOrSafari_${ sfvcOrSafariLog }`)
+            .info(log)
             .track({
-                [FPTI_KEY.TRANSITION]: `${ FPTI_TRANSITION.NATIVE_POPUP_INIT }_sfvc_${ sfvcLog }`
-            })
-            .track({
-                [FPTI_KEY.TRANSITION]: `${ FPTI_TRANSITION.NATIVE_POPUP_INIT }_sfvcOrSafari_${ sfvcOrSafariLog }`
+                [FPTI_KEY.TRANSITION]: log
             }).flush();
     }
 
@@ -161,6 +158,20 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
     const opener = window.opener;
     if (!opener) {
+        if (isIOSSafari()) {
+            const height = window.innerHeight;
+            const scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
+            const computedHeight = Math.round(height * scale);
+
+            const log = `${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_hash_${ getRawHash() }_${ logMessage }`;
+            logger
+                .info(log)
+                .track({
+                    [FPTI_KEY.TRANSITION]:      log,
+                    [FPTI_CUSTOM_KEY.INFO_MSG]: `height: ${ computedHeight }`
+                }).flush();
+        }
+
         logger.info('native_popup_no_opener', {
             buttonSessionID,
             href: base64encode(window.location.href)
@@ -169,17 +180,6 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
             [FPTI_CUSTOM_KEY.INFO_MSG]: `location: ${ base64encode(window.location.href) }`
         }).flush().then(closeWindow);
         
-        if (isIOSSafari()) {
-            logger
-                .info(`${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_sfvc_hash_${ getRawHash() }_${ sfvcLog }`)
-                .info(`${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_sfvcOrSafari_hash_${ getRawHash() }_${ sfvcOrSafariLog }`)
-                .track({
-                    [FPTI_KEY.TRANSITION]:   `${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_sfvc_hash_${ getRawHash() }_${ sfvcLog }`
-                })
-                .track({
-                    [FPTI_KEY.TRANSITION]:   `${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_sfvcOrSafari_hash_${ getRawHash() }_${ sfvcOrSafariLog }`
-                }).flush().then(closeWindow);
-        }
 
         throw new Error(`Expected window to have opener`);
     } else {
@@ -279,7 +279,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     const pageUrl = `${ window.location.href.split('#')[0] }#${  HASH.CLOSE }`;
 
     appInstalledPromise.then(app => {
-        sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl, stickinessID }).then(({ redirect = true, redirectUrl, appSwitch = true }) => {
+        sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl, sfvc, stickinessID }).then(({ redirect = true, redirectUrl, appSwitch = true }) => {
             if (!redirect) {
                 return;
             }
