@@ -388,6 +388,101 @@ describe('Native popup cases', () => {
         });
     });
 
+    it('should open the native popup and await a url to redirect to, then redirect and detect an app switch, then return with fallback', () => {
+        return wrapPromise(({ expect }) => {
+            const opener = {};
+            const parentDomain = 'foo.paypal.com';
+            const nativeRedirectUrl = '#test';
+            let detectedAppSwitch = false;
+            let fallbackCalled = false;
+
+            window.opener = opener;
+
+            // eslint-disable-next-line prefer-const
+            let nativePopup;
+
+            window.paypal = {
+                postRobot: {
+                    send: expect('postRobotSend', (win, event, payload, opts) => {
+                        if (win !== opener) {
+                            throw new Error(`Expected message to be sent to parent`);
+                        }
+
+                        if (!opts || opts.domain !== parentDomain) {
+                            throw new Error(`Expected message to be sent to ${ parentDomain }, got ${ opts ? opts.domain : 'undefined' }`);
+                        }
+
+                        if (!event) {
+                            throw new Error(`Expected event to be passed`);
+                        }
+
+                        if (event === 'awaitRedirect') {
+                            if (!payload || !payload.pageUrl || !payload.pageUrl === `${ window.location.href }#close`) {
+                                throw new Error(`Expected payload.pageUrl to be ${ window.location.href }#close, got ${ payload ? payload.pageUrl : 'undefined' }`);
+                            }
+
+                            ZalgoPromise.delay(50).then(expect('postRedirect', () => {
+                                if (window.location.hash !== nativeRedirectUrl) {
+                                    throw new Error(`Expected page to have redirected to ${ nativeRedirectUrl }, got ${ window.location.hash }`);
+                                }
+
+                                if (!nativePopup) {
+                                    throw new Error(`Expected native popup to be available`);
+                                }
+
+                                window.location.hash = 'fallback';
+
+                                return ZalgoPromise.delay(1500).then(expect('appSwitchDetector', () => {
+                                    if (!detectedAppSwitch) {
+                                        throw new Error(`Expected app switch to be detected`);
+                                    }
+
+                                    return ZalgoPromise.delay(50).then(expect('detectOnApprove', () => {
+                                        if (!fallbackCalled) {
+                                            throw new Error(`Expected fallback to be called`);
+                                        }
+
+                                        return nativePopup.destroy();
+                                    }));
+                                }));
+                            }));
+
+                            return ZalgoPromise.resolve({
+                                source: window,
+                                origin: window.location.origin,
+                                data:   {
+                                    redirectUrl: nativeRedirectUrl
+                                }
+                            });
+                        }
+
+                        if (event === 'detectAppSwitch') {
+                            detectedAppSwitch = true;
+                            return ZalgoPromise.resolve({
+                                source: window,
+                                origin: window.location.origin,
+                                data:   null
+                            });
+                        }
+
+                        if (event === 'onFallback') {
+                            fallbackCalled = true;
+                            return ZalgoPromise.resolve({
+                                source: window,
+                                origin: window.location.origin,
+                                data:   null
+                            });
+                        }
+
+                        throw new Error(`Unrecognized event: ${ event }`);
+                    })
+                }
+            };
+
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+        });
+    });
+
     it('should open the native popup and await a url to redirect to, then redirect and detect an app switch, then return with onError', () => {
         return wrapPromise(({ expect }) => {
             const opener = {};

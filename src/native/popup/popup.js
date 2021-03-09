@@ -245,6 +245,10 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
             sendToParent(MESSAGE.ON_CANCEL).finally(closeWindow);
             break;
         }
+        case HASH.ON_FALLBACK: {
+            sendToParent(MESSAGE.ON_FALLBACK);
+            break;
+        }
         case HASH.ON_ERROR: {
             const { message } = parseQuery(queryString);
             sendToParent(MESSAGE.ON_ERROR, { message }).finally(closeWindow);

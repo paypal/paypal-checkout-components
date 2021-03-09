@@ -29,6 +29,7 @@ const POST_MESSAGE = {
     DETECT_WEB_SWITCH:  'detectWebSwitch',
     ON_APPROVE:         'onApprove',
     ON_CANCEL:          'onCancel',
+    ON_FALLBACK:        'onFallback',
     ON_COMPLETE:        'onComplete',
     ON_ERROR:           'onError'
 };
@@ -1088,6 +1089,14 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             closePopup('onCancel');
         });
 
+        const onFallbackListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_FALLBACK, () => {
+            getLogger().info(`native_message_onfallback`)
+                .track({
+                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_FALLBACK
+                }).flush();
+            fallbackToWebCheckout(popupWin);
+        });
+
         const onCompleteListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.ON_COMPLETE, () => {
             getLogger().info(`native_post_message_on_complete`)
                 .track({
@@ -1111,6 +1120,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         clean.register(detectAppSwitchListener.cancel);
         clean.register(onApproveListener.cancel);
         clean.register(onCancelListener.cancel);
+        clean.register(onFallbackListener.cancel);
         clean.register(onCompleteListener.cancel);
         clean.register(onErrorListener.cancel);
         clean.register(detectWebSwitchListener.cancel);

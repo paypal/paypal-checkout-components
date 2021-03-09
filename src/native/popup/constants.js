@@ -5,6 +5,7 @@ export const MESSAGE = {
     DETECT_APP_SWITCH:  'detectAppSwitch',
     ON_APPROVE:         'onApprove',
     ON_CANCEL:          'onCancel',
+    ON_FALLBACK:        'onFallback',
     ON_COMPLETE:        'onComplete',
     ON_ERROR:           'onError'
 };
@@ -23,6 +24,7 @@ export const HASH = {
     FALLBACK:           'fallback',
     ON_APPROVE:         'onApprove',
     ON_CANCEL:          'onCancel',
+    ON_FALLBACK:        'fallback',
     ON_ERROR:           'onError',
     TEST:               'test'
 };
