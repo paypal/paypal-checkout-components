@@ -5345,8 +5345,9 @@ window.spb = function(modules) {
                                 return socket.send("setProps", sdkProps);
                             })).then((function() {
                                 var _getLogger$info$track8;
-                                logger_getLogger().info("native_setprops").track((_getLogger$info$track8 = {}, _getLogger$info$track8.state_name = "smart_button", 
-                                _getLogger$info$track8.transition_name = "native_app_switch_ack", _getLogger$info$track8)).flush();
+                                logger_getLogger().info("native_response_setprops").track((_getLogger$info$track8 = {}, 
+                                _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.transition_name = "native_app_switch_ack", 
+                                _getLogger$info$track8)).flush();
                             })).catch((function(err) {
                                 var _getLogger$info$track9;
                                 logger_getLogger().info("native_response_setprops_error").track((_getLogger$info$track9 = {}, 
