@@ -94,11 +94,16 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     const logMessage = sfvc ? 'sfvc' : sfvcOrSafariLog;
 
     if (isIOSSafari()) {
+        const height = window.innerHeight;
+        const scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
+        const computedHeight = Math.round(height * scale);
+
         const log = `${ FPTI_TRANSITION.NATIVE_POPUP_INIT }_${ logMessage }`;
         logger
             .info(log)
             .track({
-                [FPTI_KEY.TRANSITION]: log
+                [FPTI_KEY.TRANSITION]:      log,
+                [FPTI_CUSTOM_KEY.INFO_MSG]: `computed height: ${ computedHeight }, height: ${ window.outerHeight }, width: ${ window.outerWidth }, innerHeight: ${ height }, scale: ${ scale }`
             }).flush();
     }
 
@@ -159,16 +164,11 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     const opener = window.opener;
     if (!opener) {
         if (isIOSSafari()) {
-            const height = window.innerHeight;
-            const scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
-            const computedHeight = Math.round(height * scale);
-
             const log = `${ FPTI_TRANSITION.NATIVE_POPUP_NO_OPENER }_hash_${ getRawHash() }_${ logMessage }`;
             logger
                 .info(log)
                 .track({
-                    [FPTI_KEY.TRANSITION]:      log,
-                    [FPTI_CUSTOM_KEY.INFO_MSG]: `computed height: ${ computedHeight }, height: ${ window.outerHeight }, width: ${ window.outerWidth }, innerHeight: ${ height }, scale: ${ scale }`
+                    [FPTI_KEY.TRANSITION]: log
                 }).flush();
         }
 
