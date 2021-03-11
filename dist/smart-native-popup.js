@@ -1422,7 +1422,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.11", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.12", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1490,8 +1490,12 @@
             var logMessage = sfvc ? "sfvc" : sfvcOrSafari ? "sfvcOrSafari" : "browser";
             if (isIOSSafari()) {
                 var _logger$info$track2;
+                var height = window.innerHeight;
+                var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
+                var computedHeight = Math.round(height * scale);
                 var log = "native_popup_init_" + logMessage;
                 logger.info(log).track((_logger$info$track2 = {}, _logger$info$track2.transition_name = log, 
+                _logger$info$track2.info_msg = "computed height: " + computedHeight + ", height: " + window.outerHeight + ", width: " + window.outerWidth + ", innerHeight: " + height + ", scale: " + scale, 
                 _logger$info$track2)).flush();
             }
             window.addEventListener("beforeunload", (function() {
@@ -1545,12 +1549,8 @@
                 var _logger$info$info$tra;
                 if (isIOSSafari()) {
                     var _logger$info$track8;
-                    var height = window.innerHeight;
-                    var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
-                    var computedHeight = Math.round(height * scale);
                     var _log = "popup_no_opener_hash_" + getRawHash() + "_" + logMessage;
                     logger.info(_log).track((_logger$info$track8 = {}, _logger$info$track8.transition_name = _log, 
-                    _logger$info$track8.info_msg = "computed height: " + computedHeight + ", height: " + window.outerHeight + ", width: " + window.outerWidth + ", innerHeight: " + height + ", scale: " + scale, 
                     _logger$info$track8)).flush();
                 }
                 logger.info("native_popup_no_opener", {
