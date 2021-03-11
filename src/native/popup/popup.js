@@ -168,7 +168,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
                 .info(log)
                 .track({
                     [FPTI_KEY.TRANSITION]:      log,
-                    [FPTI_CUSTOM_KEY.INFO_MSG]: `height: ${ computedHeight }`
+                    [FPTI_CUSTOM_KEY.INFO_MSG]: `computed height: ${ computedHeight }, height: ${ window.outerHeight }, width: ${ window.outerWidth }, innerHeight: ${ height }, scale: ${ scale }`
                 }).flush();
         }
 
