@@ -1422,7 +1422,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.10", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.11", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1550,7 +1550,8 @@
                     var computedHeight = Math.round(height * scale);
                     var _log = "popup_no_opener_hash_" + getRawHash() + "_" + logMessage;
                     logger.info(_log).track((_logger$info$track8 = {}, _logger$info$track8.transition_name = _log, 
-                    _logger$info$track8.info_msg = "height: " + computedHeight, _logger$info$track8)).flush();
+                    _logger$info$track8.info_msg = "computed height: " + computedHeight + ", height: " + window.outerHeight + ", width: " + window.outerWidth + ", innerHeight: " + height + ", scale: " + scale, 
+                    _logger$info$track8)).flush();
                 }
                 logger.info("native_popup_no_opener", {
                     buttonSessionID: buttonSessionID,
