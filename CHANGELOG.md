@@ -1,3 +1,13 @@
+## <small>5.0.146 (2021-03-15)</small>
+
+* Clean up commented code ([7b060df](https://github.com/paypal/paypal-checkout-components/commit/7b060df))
+* Restrict who is eligible for venmo experiment (#1569) ([b293aec](https://github.com/paypal/paypal-checkout-components/commit/b293aec)), closes [#1569](https://github.com/paypal/paypal-checkout-components/issues/1569)
+* update size (#1564) ([54ea975](https://github.com/paypal/paypal-checkout-components/commit/54ea975)), closes [#1564](https://github.com/paypal/paypal-checkout-components/issues/1564)
+* Update Venmo ramp to 5% (#1563) ([9b81ca8](https://github.com/paypal/paypal-checkout-components/commit/9b81ca8)), closes [#1563](https://github.com/paypal/paypal-checkout-components/issues/1563)
+* chore(release): 5.0.145 :tada: ([8141607](https://github.com/paypal/paypal-checkout-components/commit/8141607))
+
+
+
 ## <small>5.0.145 (2021-03-08)</small>
 
 * Clean up commented code ([7b060df](https://github.com/paypal/paypal-checkout-components/commit/7b060df))
