@@ -27,7 +27,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
     const enableVenmoExperiment = createVenmoExperiment();
 
     const queriedEligibleFunding = [];
-    console.log(' in local buttons component');
     return create({
         tag:  'paypal-buttons',
         url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
