@@ -571,6 +571,10 @@ export const config = {
 
         'ruelala.com': {
             disable_venmo: true
+        },
+
+        'shopdisney.com': {
+            disable_venmo: true
         }
     },
 
