@@ -46,7 +46,6 @@ export function createVenmoExperiment() : Experiment | void {
     const fundingEligibility = getRefinedFundingEligibility();
     const isEligibleForVenmo = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
 
-
     // exclude buyers who are not eligible
     // exclude integrations using enable-funding=venmo
     if (!isEligibleForVenmo || isEnableFundingVenmo) {
@@ -54,7 +53,7 @@ export function createVenmoExperiment() : Experiment | void {
     }
 
     if (isIos() && isSafari()) {
-        return createExperiment('enable_venmo_ios', 0);
+        return createExperiment('enable_venmo_ios', 5);
     }
 
     if (isAndroid() && isChrome()) {
