@@ -76,6 +76,12 @@
             return target;
         }).apply(this, arguments);
     }
+    function _setPrototypeOf(o, p) {
+        return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
+            o.__proto__ = p;
+            return o;
+        })(o, p);
+    }
     function utils_isPromise(item) {
         try {
             if (!item) return !1;
@@ -1702,7 +1708,7 @@
         !function(subClass, superClass) {
             subClass.prototype = Object.create(superClass.prototype);
             subClass.prototype.constructor = subClass;
-            subClass.__proto__ = superClass;
+            _setPrototypeOf(subClass, superClass);
         }(JsxHTMLNodeContainer, _JsxHTMLNode);
         function JsxHTMLNodeContainer(children) {
             return _JsxHTMLNode.call(this, "", {}, children) || this;
@@ -9261,7 +9267,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.325", 
+        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.326", 
         _ref21), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,

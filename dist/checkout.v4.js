@@ -56,7 +56,7 @@
         return {}.hasOwnProperty.call(object, property);
     };
     __webpack_require__.p = "";
-    __webpack_require__(__webpack_require__.s = 36);
+    __webpack_require__(__webpack_require__.s = 37);
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "m", (function() {
@@ -2538,7 +2538,7 @@
         locales: constants.A,
         scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.325",
+        version: "4.0.326",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -2937,6 +2937,18 @@
                 disable_venmo: !0
             },
             "ruelala.com": {
+                disable_venmo: !0
+            },
+            "shopdisney.com": {
+                disable_venmo: !0
+            },
+            "disneyland.disney.go.com": {
+                disable_venmo: !0
+            },
+            "disneyworld.disney.go.com": {
+                disable_venmo: !0
+            },
+            "disneyaulani.com": {
                 disable_venmo: !0
             }
         },
@@ -4333,7 +4345,7 @@
     var SEND_MESSAGE_STRATEGIES = {};
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
         try {
-            __webpack_require__(35).emulateIERestrictions(window, win);
+            __webpack_require__(36).emulateIERestrictions(window, win);
         } catch (err) {
             return;
         }
@@ -4554,7 +4566,7 @@
             data: event.data
         };
         try {
-            __webpack_require__(35).emulateIERestrictions(messageEvent.source, window);
+            __webpack_require__(36).emulateIERestrictions(messageEvent.source, window);
         } catch (err) {
             return;
         }
@@ -4837,7 +4849,7 @@
         global.a.methods.delete(win);
         global.a.readyPromises.delete(win);
     }
-    var bridge = __webpack_require__(37);
+    var bridge = __webpack_require__(38);
     function init() {
         if (!global.a.initialized) {
             Object(lib.a)(window, "message", messageListener);
@@ -4907,7 +4919,7 @@
             }(ua) && (!!function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /\bGSA\b/.test(ua);
-            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+            }(ua) || /.+AppleWebKit(?!.*Safari)|.*WKWebView/.test(ua));
         }(ua) || function(ua) {
             void 0 === ua && (ua = getUserAgent());
             return !!function(ua) {
@@ -4936,6 +4948,7 @@
     __webpack_require__(5);
     var cross_domain_safe_weakmap_src = __webpack_require__(14);
     __webpack_require__(19);
+    __webpack_require__(25);
     function getFunctionName(fn) {
         return fn.name || fn.__name__ || fn.displayName || "anonymous";
     }
@@ -5783,10 +5796,11 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return _inheritsLoose;
     }));
+    var _babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
     function _inheritsLoose(subClass, superClass) {
         subClass.prototype = Object.create(superClass.prototype);
         subClass.prototype.constructor = subClass;
-        subClass.__proto__ = superClass;
+        Object(_babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__.a)(subClass, superClass);
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -6522,34 +6536,34 @@
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+    var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
     __webpack_require__.d(__webpack_exports__, "script", (function() {
         return _script__WEBPACK_IMPORTED_MODULE_0__.a;
     }));
-    var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
+    var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
     __webpack_require__.d(__webpack_exports__, "react", (function() {
         return _react__WEBPACK_IMPORTED_MODULE_1__.a;
     }));
-    var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29);
+    var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
     __webpack_require__.d(__webpack_exports__, "vue", (function() {
         return _vue__WEBPACK_IMPORTED_MODULE_2__.a;
     }));
-    var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
+    var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(31);
     __webpack_require__.d(__webpack_exports__, "angular", (function() {
         return _angular__WEBPACK_IMPORTED_MODULE_3__.a;
     }));
-    var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(31);
+    var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(32);
     __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.angular2;
     }));
     __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.glimmer;
     }));
-    var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(32);
+    var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(33);
     __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _glimmer__WEBPACK_IMPORTED_MODULE_5__.a;
     }));
-    var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(33);
+    var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(34);
     __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _angular2__WEBPACK_IMPORTED_MODULE_6__.a;
     }));
@@ -6567,7 +6581,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.325";
+            payload.version = "4.0.326";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -6579,6 +6593,17 @@
                 _config__WEBPACK_IMPORTED_MODULE_1__.a.logLevel === _constants__WEBPACK_IMPORTED_MODULE_2__.B.DEBUG && window.console && window.console.log && window.console.log("*", event, payload);
             }), 1);
         } catch (err) {}
+    }
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return _setPrototypeOf;
+    }));
+    function _setPrototypeOf(o, p) {
+        return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
+            o.__proto__ = p;
+            return o;
+        })(o, p);
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -6610,7 +6635,7 @@
         var root = "object" == typeof window ? window : {};
         !root.HI_BASE32_NO_NODE_JS && "object" == typeof process && process.versions && process.versions.node && (root = window);
         var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" == typeof module && module.exports;
-        var AMD = __webpack_require__(38);
+        var AMD = __webpack_require__(39);
         var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
         var BASE32_DECODE_CHAR = {
             A: 0,
@@ -7134,7 +7159,7 @@
     };
 }, function(module, exports, __webpack_require__) {
     !function(e, t, n) {
-        module.exports ? module.exports = n() : __webpack_require__(39)("bowser", n);
+        module.exports ? module.exports = n() : __webpack_require__(40)("bowser", n);
     }(0, 0, (function() {
         function t(t) {
             function n(e) {
@@ -7405,24 +7430,24 @@
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
-    var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
+    var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
     __webpack_require__(22);
-    if (window.paypal && "4.0.325" === window.paypal.version) {
+    if (window.paypal && "4.0.326" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.325"
+            version: "4.0.326"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.325) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.326) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.325" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.326" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.325"
+            version: "4.0.326"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.325");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.326");
     }
     try {
-        var _interface = __webpack_require__(40);
+        var _interface = __webpack_require__(41);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
     } catch (err) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_error", {
@@ -7830,7 +7855,7 @@
     }();
     var esm_extends = __webpack_require__(9);
     var belter_src = __webpack_require__(12);
-    var base32 = __webpack_require__(26);
+    var base32 = __webpack_require__(27);
     var base32_default = __webpack_require__.n(base32);
     var constants = __webpack_require__(6);
     function normalize(str) {
@@ -9928,7 +9953,7 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.325";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.326";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -9938,7 +9963,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.325.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.326.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -9986,8 +10011,8 @@
     function getBowser() {
         var userAgent = Object(device.a)();
         if (bowserCache[userAgent]) return bowserCache[userAgent];
-        delete __webpack_require__.c[34];
-        var bowser = __webpack_require__(34);
+        delete __webpack_require__.c[35];
+        var bowser = __webpack_require__(35);
         bowserCache[userAgent] = bowser;
         return bowser;
     }
@@ -10127,7 +10152,7 @@
         headerBuilders.push(method);
     };
     __webpack_require__(24);
-    __webpack_require__(25);
+    __webpack_require__(26);
     var openMetaFrame = Object(util.i)((function(env) {
         void 0 === env && (env = config.a.env);
         return zalgo_promise_src.a.try((function() {
@@ -23040,7 +23065,7 @@
                 logoColor: "blue"
             })));
         }(props_normalizeProps(props)) : null;
-        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.325", 
+        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.326", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -23088,7 +23113,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.325", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.326", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -24402,7 +24427,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.325"
+                    ver: "4.0.326"
                 };
             }));
             Object(beaver_logger_client.a)((function() {
@@ -24568,7 +24593,7 @@
     }
     var interface_postRobot = src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.325";
+    var interface_version = "4.0.326";
     var interface_Checkout;
     var interface_BillingPage;
     var PayPalCheckout;
