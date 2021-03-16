@@ -7,7 +7,7 @@ import type { InstallmentsFlowType } from '@paypal/installments/src/types';
 
 import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
     ThreeDomainSecureFlowType, MenuFlowType, ConnectOptions, PersonalizationType } from '../types';
-import type { CreateOrder, XCreateOrder, ConfirmOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit,
+import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit,
     XOnInit, OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError,
     OnError, XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding
 } from '../props';
@@ -15,7 +15,6 @@ import { type FirebaseConfig } from '../api';
 import { getNonce, getStorageID, isStorageStateFresh } from '../lib';
 import { getOnInit } from '../props/onInit';
 import { getCreateOrder } from '../props/createOrder';
-import { getConfirmOrder } from '../props/confirmOrder';
 import { getOnApprove } from '../props/onApprove';
 import { getOnCancel } from '../props/onCancel';
 import { getOnShippingChange } from '../props/onShippingChange';
@@ -156,7 +155,7 @@ export type ButtonProps = {|
     connect : ?ConnectOptions,
 
     createOrder : CreateOrder,
-    confirmOrder : ConfirmOrder,
+
     createBillingAgreement : ?CreateBillingAgreement,
     createSubscription : ?XCreateSubscription,
 
@@ -280,7 +279,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
     const createSubscription = getCreateSubscription({ createSubscription: xprops.createSubscription, partnerAttributionID, merchantID, clientID }, { facilitatorAccessToken });
 
     const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken, createBillingAgreement, createSubscription });
-    const confirmOrder = ({ orderID, payload }) => getConfirmOrder({ orderID, payload, partnerAttributionID }, { facilitatorAccessToken });
 
     const onError = getOnError({ onError: xprops.onError });
     const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, upgradeLSAT, clientAccessToken, vault }, { facilitatorAccessToken, createOrder });
@@ -337,7 +335,6 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         apiStageHost,
 
         createOrder,
-        confirmOrder,
         createBillingAgreement,
         createSubscription,
         onApprove,

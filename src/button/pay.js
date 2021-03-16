@@ -9,12 +9,12 @@ import { getLogger, promiseNoop, sendBeacon } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
 import { updateButtonClientConfig } from '../api';
 import { nativeFakeoutExperiment } from '../experiments';
+import { getConfirmOrder } from '../props/confirmOrder';
 
 import { type ButtonProps, type Config, type ServiceData, type Components } from './props';
 import { enableLoadingSpinner, disableLoadingSpinner } from './dom';
 import { validateOrder } from './validation';
 import { showButtonSmartMenu } from './menu';
-
 
 const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     nonce,
@@ -66,7 +66,8 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
     return ZalgoPromise.try(() => {
         const { merchantID, personalization } = serviceData;
-        const { clientID, onClick, createOrder, confirmOrder, env, vault } = props;
+
+        const { clientID, onClick, createOrder, env, vault, partnerAttributionID } = props;
         
         sendPersonalizationBeacons(personalization);
 
@@ -123,6 +124,9 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             const validateOrderPromise = createOrder().then(orderID => {
                 return validateOrder(orderID, { env, clientID, merchantID, intent, currency, vault });
             });
+            
+            const confirmOrder = ({ orderID, payload }) => getConfirmOrder({ orderID, payload, partnerAttributionID }, { facilitatorAccessToken: serviceData.facilitatorAccessToken });
+
             
             const confirmOrderPromise = createOrder()
                 .then((orderID) => {
