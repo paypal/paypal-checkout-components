@@ -571,6 +571,22 @@ export const config = {
 
         'ruelala.com': {
             disable_venmo: true
+        },
+
+        'shopdisney.com': {
+            disable_venmo: true
+        },
+
+        'disneyland.disney.go.com': {
+            disable_venmo: true
+        },
+
+        'disneyworld.disney.go.com': {
+            disable_venmo: true
+        },
+
+        'disneyaulani.com': {
+            disable_venmo: true
         }
     },
 
