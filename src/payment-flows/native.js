@@ -277,8 +277,14 @@ function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) 
         return true;
     }
 
-    if (isControlGroup(fundingSource) && isPopupFakeout()) {
-        return true;
+    if (isControlGroup(fundingSource)) {
+        nativeFakeoutExperiment.logStart();
+
+        if (isPopupFakeout()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     return false;

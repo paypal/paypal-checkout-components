@@ -8,7 +8,6 @@ import { checkout, cardFields, native, nonce, vaultCapture, walletCapture, popup
 import { getLogger, promiseNoop, sendBeacon } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
 import { updateButtonClientConfig } from '../api';
-import { nativeFakeoutExperiment } from '../experiments';
 import { getConfirmOrder } from '../props/confirmOrder';
 
 import { type ButtonProps, type Config, type ServiceData, type Components } from './props';
@@ -117,7 +116,6 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             const startPromise = ZalgoPromise.try(() => {
                 return updateClientConfigPromise;
             }).then(() => {
-                nativeFakeoutExperiment.logStart();
                 return start();
             });
 
