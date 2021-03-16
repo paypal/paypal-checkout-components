@@ -1,3 +1,9 @@
+## <small>5.0.147 (2021-03-16)</small>
+
+* Ramp venmo ios experiment to 5% (#1571) ([a77041b](https://github.com/paypal/paypal-checkout-components/commit/a77041b)), closes [#1571](https://github.com/paypal/paypal-checkout-components/issues/1571)
+
+
+
 ## <small>5.0.146 (2021-03-15)</small>
 
 * Clean up commented code ([7b060df](https://github.com/paypal/paypal-checkout-components/commit/7b060df))
