@@ -163,6 +163,12 @@ export function getCheckoutComponent() : CheckoutComponent {
                     required:   false
                 },
 
+                apmBrandedStandaloneButton: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false
+                },
+
                 enableFunding: {
                     type:       'array',
                     queryParam: true,
