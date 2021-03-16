@@ -88,7 +88,7 @@ describe('paypal button color', () => {
 
     it('should set style.color to undefined when given an empty string', (done) => {
         const style = {
-            color: ' '
+            color: ''
         };
         const expected = JSON.stringify({
             color: undefined
