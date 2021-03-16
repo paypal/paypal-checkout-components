@@ -86,16 +86,43 @@ describe('paypal button color', () => {
         }).render('#testContainer');
     });
 
-    it('should render a button with gold background when passed empty string', (done) => {
+    it('should set style.color to undefined when given an empty string', (done) => {
+        const style = {
+            color: ' '
+        };
+        const expected = JSON.stringify({
+            color: undefined
+        });
         done = once(done);
         window.paypal.Buttons({
-
+            style,
             test: {
-                style: {
-                    color: ''
-                },
                 onRender() {
-                    assert.ok(getElementRecursive('.paypal-button-color-gold'));
+                    if (JSON.stringify(style) !== expected) {
+                        done(new Error(`Expected style object ${ JSON.stringify(style) } to be ${ expected }`));
+                    }
+                    done();
+                }
+            },
+
+            onError: done
+
+        }).render('#testContainer');
+    });
+
+    it('should not mutate the style object', (done) => {
+        const style = {
+            shape: 'pill'
+        };
+        const expected = JSON.stringify(style);
+        done = once(done);
+        window.paypal.Buttons({
+            style,
+            test: {
+                onRender() {
+                    if (JSON.stringify(style) !== expected) {
+                        done(new Error(`Expected style object ${ JSON.stringify(style) } to remain unmodified as ${ expected }`));
+                    }
                     done();
                 }
             },
