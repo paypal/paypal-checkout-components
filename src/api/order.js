@@ -8,7 +8,7 @@ import { request, noop, memoize } from 'belter/src';
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS,
-    INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER, FPTI_CUSTOM_KEY } from '../constants';
+    INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER } from '../constants';
 
 import { callSmartAPI, callGraphQL, callRestAPI } from './api';
 
@@ -88,16 +88,6 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
 }
 
 export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    getLogger()
-        .info('order_capture')
-        .track({
-            [FPTI_KEY.TRANSITION]:       'process_checkout_capture',
-            [FPTI_KEY.CONTEXT_TYPE]:     FPTI_CONTEXT_TYPE.ORDER_ID,
-            [FPTI_KEY.TOKEN]:            orderID,
-            [FPTI_KEY.CONTEXT_ID]:       orderID,
-            [FPTI_CUSTOM_KEY.PMT_TOKEN]: partnerAttributionID
-        }).flush();
-    
     return forceRestAPI
         ? callRestAPI({
             accessToken: facilitatorAccessToken,
@@ -119,16 +109,6 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
 }
 
 export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    getLogger()
-        .info('order_authorize')
-        .track({
-            [FPTI_KEY.TRANSITION]:       'process_checkout_authorize',
-            [FPTI_KEY.CONTEXT_TYPE]:     FPTI_CONTEXT_TYPE.ORDER_ID,
-            [FPTI_KEY.TOKEN]:            orderID,
-            [FPTI_KEY.CONTEXT_ID]:       orderID,
-            [FPTI_CUSTOM_KEY.PMT_TOKEN]: partnerAttributionID
-        }).flush();
-
     return forceRestAPI
         ? callRestAPI({
             accessToken: facilitatorAccessToken,
@@ -154,16 +134,6 @@ type PatchData = {|
 |};
 
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    getLogger()
-        .info('order_patch')
-        .track({
-            [FPTI_KEY.TRANSITION]:       'process_checkout_patch',
-            [FPTI_KEY.CONTEXT_TYPE]:     FPTI_CONTEXT_TYPE.ORDER_ID,
-            [FPTI_KEY.TOKEN]:            orderID,
-            [FPTI_KEY.CONTEXT_ID]:       orderID,
-            [FPTI_CUSTOM_KEY.PMT_TOKEN]: partnerAttributionID
-        }).flush();
-    
     return forceRestAPI
         ? callRestAPI({
             accessToken: facilitatorAccessToken,
