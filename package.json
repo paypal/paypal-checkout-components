@@ -82,7 +82,7 @@
     "dependencies": {
         "@paypal/common-components": "^1.0.10",
         "@paypal/funding-components": "^1.0.17",
-        "@paypal/sdk-client": "^4.0.123",
+        "@paypal/sdk-client": "^4.0.148",
         "@paypal/sdk-constants": "^1.0.57",
         "@paypal/sdk-logos": "^1.0.26",
         "belter": "^1.0.2",
