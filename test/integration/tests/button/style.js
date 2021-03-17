@@ -61,53 +61,33 @@ describe('paypal button color', () => {
     });
 
     it('should render a button with gold background when no color is specified', () => {
-        window.paypal.Buttons({
-
-            test: {
-                onRender() {
-                    assert.ok(getElementRecursive('.paypal-button-color-gold'));
-                }
+        return window.paypal.Buttons({
+            style: {
+                color: ''
             }
-
-        }).render('#testContainer');
+        }).render('#testContainer').then(() => {
+            assert.ok(getElementRecursive('.paypal-button-color-gold'));
+        });
     });
 
     it('should render a button with black background when passed "black"', () => {
-        window.paypal.Buttons({
-
-            test: {
-                style: {
-                    color: 'black'
-                },
-                onRender() {
-                    assert.ok(getElementRecursive('.paypal-button-color-black'));
-                }
+        return window.paypal.Buttons({
+            style: {
+                color: 'black'
             }
-        }).render('#testContainer');
+        }).render('#testContainer').then(() => {
+            assert.ok(getElementRecursive('.paypal-button-color-black'));
+        });
     });
 
-    it('should set style.color to undefined when given an empty string', (done) => {
-        const style = {
-            color: ''
-        };
-        const expected = JSON.stringify({
-            color: undefined
+    it('should render a button with gold background when passed ""', () => {
+        return window.paypal.Buttons({
+            style: {
+                color: ''
+            }
+        }).render('#testContainer').then(() => {
+            assert.ok(getElementRecursive('.paypal-button-color-gold'));
         });
-        done = once(done);
-        window.paypal.Buttons({
-            style,
-            test: {
-                onRender() {
-                    if (JSON.stringify(style) !== expected) {
-                        done(new Error(`Expected style object ${ JSON.stringify(style) } to be ${ expected }`));
-                    }
-                    done();
-                }
-            },
-
-            onError: done
-
-        }).render('#testContainer');
     });
 
     it('should not mutate the style object', (done) => {
