@@ -101,7 +101,9 @@ export type ButtonXProps = {|
     onShippingChange : ?XOnShippingChange,
 
     paymentMethodNonce : string,
-    branded : boolean
+    branded : boolean,
+    userExperienceFlow : string
+
 |};
 
 export type ButtonProps = {|
@@ -166,7 +168,8 @@ export type ButtonProps = {|
     onAuth : OnAuth,
 
     paymentMethodNonce : string,
-    branded : boolean
+    branded : boolean,
+    userExperienceFlow : string
 |};
 
 // eslint-disable-next-line complexity
@@ -216,7 +219,8 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         paymentMethodNonce,
         branded,
         getQueriedEligibleFunding = () => ZalgoPromise.resolve([]),
-        storageID
+        storageID,
+        userExperienceFlow
     } = xprops;
 
     const onInit = getOnInit({ onInit: xprops.onInit });
@@ -345,7 +349,8 @@ export function getProps({ facilitatorAccessToken } : {| facilitatorAccessToken 
         standaloneFundingSource: fundingSource,
         paymentMethodNonce,
         branded,
-        stickinessID
+        stickinessID,
+        userExperienceFlow
     };
 }
 
