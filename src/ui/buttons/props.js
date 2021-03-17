@@ -310,16 +310,17 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         throw new Error(`Expected ${ fundingSource || FUNDING.PAYPAL } to be eligible`);
     }
 
-    style.color = style.color ? style.color : fundingConfig.colors[0];
     const {
         label,
         layout = fundingSource ? BUTTON_LAYOUT.HORIZONTAL : fundingConfig.layouts[0],
-        color = fundingConfig.colors[0],
         shape = fundingConfig.shapes[0],
         tagline = (layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource),
         height,
         period
     } = style;
+
+    // if color is a falsy value, set it to the default color from the funding config
+    const color = style.color ? style.color : fundingConfig.colors[0];
 
     if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
         throw new Error(`Invalid layout: ${ layout }`);
