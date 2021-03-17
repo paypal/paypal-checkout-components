@@ -1,3 +1,10 @@
+## <small>5.0.148 (2021-03-17)</small>
+
+* Add data-user-experience-flow (#1570) ([1e22e33](https://github.com/paypal/paypal-checkout-components/commit/1e22e33)), closes [#1570](https://github.com/paypal/paypal-checkout-components/issues/1570)
+* Update style tests (#1573) ([e6b06e2](https://github.com/paypal/paypal-checkout-components/commit/e6b06e2)), closes [#1573](https://github.com/paypal/paypal-checkout-components/issues/1573)
+
+
+
 ## <small>5.0.147 (2021-03-16)</small>
 
 * Ramp venmo ios experiment to 5% (#1571) ([a77041b](https://github.com/paypal/paypal-checkout-components/commit/a77041b)), closes [#1571](https://github.com/paypal/paypal-checkout-components/issues/1571)
