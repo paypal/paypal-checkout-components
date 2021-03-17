@@ -319,7 +319,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         period
     } = style;
 
-    // if color is a empty or whitespace, reset it to undefined
+    // if color is a falsy value, set it to the default color from the funding config
     const color = style.color ? style.color : fundingConfig.colors[0];
 
     if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
