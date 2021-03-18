@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: off */
 
-import { FUNDING, ENV } from '@paypal/sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 export const LOGGER_URL = '/xoplatform/logger/api/logger';
 export const AUTH_API_URL = '/v1/oauth2/token';
@@ -29,14 +29,6 @@ export const FUNDING_SKIP_LOGIN : { [$Values<typeof FUNDING>] : $Values<typeof F
 };
 
 export const NATIVE_DETECTION_URL = 'http://127.0.0.1:8765/hello';
-
-export const AMPLITUDE_API_KEY : {| [ $Values<typeof ENV> ] : string |} = {
-    [ ENV.TEST ]:       'a23fb4dfae56daf7c3212303b53a8527',
-    [ ENV.LOCAL ]:      'a23fb4dfae56daf7c3212303b53a8527',
-    [ ENV.STAGE ]:      'a23fb4dfae56daf7c3212303b53a8527',
-    [ ENV.SANDBOX ]:    'a23fb4dfae56daf7c3212303b53a8527',
-    [ ENV.PRODUCTION ]: 'ce423f79daba95faeb0694186170605c'
-};
 
 export const ORDER_VALIDATION_WHITELIST = [
     'AWU8hQWR5S8ynvUCz0T-tt2uRPzt7-wcIp_clASLr3KrXNdKcr_iPzgNsk4s3sOG2EzgOyqpeuL9Lt2Q',

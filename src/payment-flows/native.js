@@ -8,7 +8,7 @@ import { PLATFORM, ENV, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } from 'cross-domain-utils/src';
 
 import type { ButtonProps } from '../button/props';
-import { WEB_CHECKOUT_URI, AMPLITUDE_API_KEY } from '../config';
+import { WEB_CHECKOUT_URI } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
 import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, unresolvedPromise } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
@@ -292,7 +292,7 @@ function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) 
 
 function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        const { getPageUrl, clientID, onShippingChange, currency, platform, env,
+        const { getPageUrl, clientID, onShippingChange, currency, platform,
             vault, buttonSessionID, enableFunding, stickinessID: defaultStickinessID, merchantDomain } = props;
         const { merchantID, buyerCountry, cookies } = serviceData;
 
@@ -308,9 +308,11 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
             }).then(result => {
                 nativeEligibility = result;
 
-                if (isTestGroup(FUNDING.PAYPAL) || isTestGroup(FUNDING.VENMO) || isNativeOptedIn({ props })) {
-                    getLogger().configure({
-                        amplitudeApiKey: AMPLITUDE_API_KEY[env]
+                if (isTestGroup(FUNDING.PAYPAL) || isTestGroup(FUNDING.VENMO)) {
+                    getLogger().addMetaBuilder(() => {
+                        return {
+                            amplitude: true
+                        };
                     });
                 }
             }),
