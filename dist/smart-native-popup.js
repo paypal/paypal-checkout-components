@@ -1179,8 +1179,11 @@
         function extendIfDefined(target, source) {
             for (var key in source) source.hasOwnProperty(key) && source[key] && !target[key] && (target[key] = source[key]);
         }
-        var _FUNDING_SKIP_LOGIN;
+        var _FUNDING_SKIP_LOGIN, _AMPLITUDE_API_KEY;
         (_FUNDING_SKIP_LOGIN = {}).paylater = "paypal", _FUNDING_SKIP_LOGIN.credit = "paypal";
+        (_AMPLITUDE_API_KEY = {}).test = "a23fb4dfae56daf7c3212303b53a8527", _AMPLITUDE_API_KEY.local = "a23fb4dfae56daf7c3212303b53a8527", 
+        _AMPLITUDE_API_KEY.stage = "a23fb4dfae56daf7c3212303b53a8527", _AMPLITUDE_API_KEY.sandbox = "a23fb4dfae56daf7c3212303b53a8527", 
+        _AMPLITUDE_API_KEY.production = "ce423f79daba95faeb0694186170605c";
         function getLogger() {
             return inlineMemoize(getLogger, (function() {
                 return function(_ref2) {
@@ -1449,7 +1452,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.14", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.15", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
