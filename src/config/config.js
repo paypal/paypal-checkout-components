@@ -587,6 +587,94 @@ export const config = {
 
         'disneyaulani.com': {
             disable_venmo: true
+        },
+
+        '6abc.com': {
+            disable_venmo: true
+        },
+        
+        'abc30.com': {
+            disable_venmo: true
+        },
+        
+        'abc7.com': {
+            disable_venmo: true
+        },
+        
+        'abc7chicago.com': {
+            disable_venmo: true
+        },
+        
+        'abcnewsvideosource.com': {
+            disable_venmo: true
+        },
+        
+        'aetndigital.com': {
+            disable_venmo: true
+        },
+        
+        'araca.com.au': {
+            disable_venmo: true
+        },
+        
+        'disney.com': {
+            disable_venmo: true
+        },
+        
+        'espncustomercare.com': {
+            disable_venmo: true
+        },
+        
+        'makerstudios.com': {
+            disable_venmo: true
+        },
+        
+        'abc.org': {
+            disable_venmo: true
+        },
+        
+        'dclnews.com': {
+            disable_venmo: true
+        },
+        
+        'disneyanimation.com': {
+            disable_venmo: true
+        },
+        
+        'espncricinfo.com': {
+            disable_venmo: true
+        },
+        
+        'fort-pierce.net': {
+            disable_venmo: true
+        },
+        
+        'nationalgeographic.com': {
+            disable_venmo: true
+        },
+        
+        'nhl.tv': {
+            disable_venmo: true
+        },
+        
+        'pixar.com': {
+            disable_venmo: true
+        },
+        
+        'xgames.com': {
+            disable_venmo: true
+        },
+        
+        'espnwsummit.com': {
+            disable_venmo: true
+        },
+
+        'plus.espn.com': {
+            disable_venmo: true
+        },
+
+        'disneyplus.com': {
+            disable_venmo: true
         }
     },
 
