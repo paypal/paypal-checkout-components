@@ -1224,11 +1224,8 @@ window.spb = function(modules) {
         script.setAttribute("data-uid-auto", uid);
         return uid;
     }));
-    var _FUNDING_SKIP_LOGIN, _AMPLITUDE_API_KEY;
+    var _FUNDING_SKIP_LOGIN;
     (_FUNDING_SKIP_LOGIN = {}).paylater = "paypal", _FUNDING_SKIP_LOGIN.credit = "paypal";
-    (_AMPLITUDE_API_KEY = {}).test = "a23fb4dfae56daf7c3212303b53a8527", _AMPLITUDE_API_KEY.local = "a23fb4dfae56daf7c3212303b53a8527", 
-    _AMPLITUDE_API_KEY.stage = "a23fb4dfae56daf7c3212303b53a8527", _AMPLITUDE_API_KEY.sandbox = "a23fb4dfae56daf7c3212303b53a8527", 
-    _AMPLITUDE_API_KEY.production = "ce423f79daba95faeb0694186170605c";
     function getNonce() {
         var nonce = "";
         document.body && (nonce = document.body.getAttribute("data-nonce") || "");
