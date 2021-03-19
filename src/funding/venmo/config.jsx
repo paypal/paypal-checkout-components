@@ -2,7 +2,6 @@
 /** @jsx node */
 
 import { PLATFORM } from '@paypal/sdk-constants/src';
-import { isSFVC } from 'belter';
 import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
