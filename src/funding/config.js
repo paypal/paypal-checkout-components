@@ -6,6 +6,7 @@ import { inlineMemoize } from 'belter/src';
 import { type FundingSourceConfig } from './common';
 import { getPayPalConfig } from './paypal';
 import { getVenmoConfig } from './venmo';
+import { getApplePayConfig } from './applepay';
 import { getItauConfig } from './itau';
 import { getCreditConfig } from './credit';
 import { getPaylaterConfig } from './paylater';
@@ -34,6 +35,7 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
         return {
             [ FUNDING.PAYPAL ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.paypal !== 'undefined'         && __FUNDING_ELIGIBILITY__.paypal.eligible)) ? getPayPalConfig() : null,
             [ FUNDING.VENMO ]:          (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.venmo !== 'undefined'          && __FUNDING_ELIGIBILITY__.venmo.eligible)) ? getVenmoConfig() : null,
+            [ FUNDING.APPLEPAY ]:       (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.applepay !== 'undefined'       && __FUNDING_ELIGIBILITY__.applepay.eligible)) ? getApplePayConfig() : null,
             [ FUNDING.ITAU ]:           (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.itau !== 'undefined'           && __FUNDING_ELIGIBILITY__.itau.eligible)) ? getItauConfig() : null,
             [ FUNDING.CREDIT ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.credit !== 'undefined'         && __FUNDING_ELIGIBILITY__.credit.eligible)) ? getCreditConfig() : null,
             [ FUNDING.PAYLATER ]:       (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.paylater !== 'undefined'       && __FUNDING_ELIGIBILITY__.paylater.eligible)) ? getPaylaterConfig() : null,
