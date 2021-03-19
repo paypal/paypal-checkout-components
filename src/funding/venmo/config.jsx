@@ -2,6 +2,7 @@
 /** @jsx node */
 
 import { PLATFORM } from '@paypal/sdk-constants/src';
+import { isSFVC } from 'belter';
 import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
@@ -46,6 +47,10 @@ export function getVenmoConfig() : FundingSourceConfig {
             [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.BLUE
+        },
+
+        eligible: () => {
+            return !isSFVC();
         }
     };
 }
