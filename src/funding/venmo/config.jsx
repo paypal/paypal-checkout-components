@@ -47,10 +47,6 @@ export function getVenmoConfig() : FundingSourceConfig {
             [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.BLUE
-        },
-
-        eligible: () => {
-            return !isSFVC();
         }
     };
 }
