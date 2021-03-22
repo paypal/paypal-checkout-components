@@ -1,5 +1,5 @@
 /* @flow */
-import { supportsPopups, isAndroid, isChrome, isIos, isSafari, type Experiment } from 'belter/src';
+import { supportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding, createExperiment } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
@@ -25,6 +25,10 @@ export function isSupportedNativeBrowser() : boolean {
     }
 
     if (!supportsPopups()) {
+        return false;
+    }
+
+    if (isSFVC()) {
         return false;
     }
 
