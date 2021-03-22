@@ -38,10 +38,7 @@ export function getApplePayConfig() : FundingSourceConfig {
         },
 
         eligible: ({ fundingEligibility }) => {
-            const eligibility = fundingEligibility.card;
-            const branded = Boolean(eligibility && eligibility.branded);
-
-            if (!branded && window.ApplePaySession && window.ApplePaySession.canMakePayments()) {
+            if (window.ApplePaySession && window.ApplePaySession.canMakePayments()) {
                 return true;
             }
 
