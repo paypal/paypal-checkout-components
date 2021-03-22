@@ -38,14 +38,6 @@ export function getApplePayConfig() : FundingSourceConfig {
             [ BUTTON_COLOR.WHITE ]:  LOGO_COLOR.BLACK
         },
 
-        secondaryColors: {
-            ...DEFAULT_FUNDING_CONFIG.secondaryColors,
-
-            [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.BLUE,
-            [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.BLUE
-        },
-
         eligible: ({ fundingEligibility }) => {
             const eligibility = fundingEligibility.card;
             const branded = Boolean(eligibility && eligibility.branded);
