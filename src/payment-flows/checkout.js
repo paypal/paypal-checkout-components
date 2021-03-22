@@ -12,7 +12,7 @@ import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TY
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
 import { FUNDING_SKIP_LOGIN } from '../config';
-import { nativeFakeoutExperiment, nativeRepeatClickExperiment } from '../experiments';
+import { nativeFakeoutExperiment } from '../experiments';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from './types';
 
@@ -331,7 +331,6 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                 approved = true;
 
                 nativeFakeoutExperiment.logComplete();
-                nativeRepeatClickExperiment.logComplete();
                 getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
 
                 // eslint-disable-next-line no-use-before-define

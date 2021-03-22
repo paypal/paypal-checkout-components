@@ -18,4 +18,3 @@ if (isIOSSafari()) {
 export const nativeFakeoutExperiment : Experiment = createExperiment(`native_popup_fakeout_v2_${ platform }`, { sample: isIOSSafari() ? 100 : 50, sticky: false });
 export const androidPopupExperiment : Experiment = createExperiment(`native_android_popup`, { sample: 10, sticky: false });
 export const upgradeLSATExperiment : Experiment = createExperiment(UPGRADE_LSAT_RAMP.EXP_NAME, { sample: UPGRADE_LSAT_RAMP.RAMP });
-export const nativeRepeatClickExperiment : Experiment = createExperiment(`native_repeat_click_fallback_${ platform }`, { sample: 20, sticky: false });

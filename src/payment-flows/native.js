@@ -12,7 +12,7 @@ import { WEB_CHECKOUT_URI, AMPLITUDE_API_KEY } from '../config';
 import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
 import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, unresolvedPromise } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
-import { nativeFakeoutExperiment, androidPopupExperiment, nativeRepeatClickExperiment } from '../experiments';
+import { nativeFakeoutExperiment, androidPopupExperiment } from '../experiments';
 import { HASH } from '../native/popup/constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 import type { NativePopupInputParams } from '../../server/components/native/params';
@@ -84,7 +84,6 @@ const PARTIAL_ENCODING_CLIENT = [
 let clean;
 let initialPageUrl;
 let nativeEligibility : NativeEligibility;
-let firstClick = true;
 
 type NativeSocketOptions = {|
     sessionUID : string,
@@ -267,13 +266,6 @@ function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) 
     }
 
     if (nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) {
-        if (!firstClick) {
-            nativeRepeatClickExperiment.logStart();
-            if (nativeRepeatClickExperiment.isEnabled()) {
-                return false;
-            }
-        }
-
         return true;
     }
 
@@ -458,8 +450,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     let cancelled = false;
     let didFallback = false;
 
-    firstClick = false;
-
     const conditionalExtendUrl = (...args) => {
         if (isIOSSafari() && fundingSource === FUNDING.VENMO && PARTIAL_ENCODING_CLIENT.indexOf(clientID) !== -1) {
             return extendUrlWithPartialEncoding(...args);
@@ -595,7 +585,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         approved = true;
 
         if (isAndroidChrome() && !isControlGroup(fundingSource)) {
-            nativeRepeatClickExperiment.logComplete();
             androidPopupExperiment.logComplete();
         }
 
