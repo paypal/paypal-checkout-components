@@ -27,37 +27,8 @@
         const instruments = ['card', 'bank', 'balance', 'credit'];
         const shapes = ['rect', 'pill']
 
-        const markOpts = [
-            {
-                fundingEligibility: {
-                    applepay: {
-                        eligible: true
-                    },
-                    paypal: {
-                        eligible: true
-                    },
-                    venmo: {
-                        eligible: true
-                    },
-                    paylater: {
-                        eligible: true,
-                        products: {
-                            payIn4: {
-                                eligible: true
-                            }
-                        }
-                    }
-                }
-            }
-        ];
-
-        const buttonOpts = [];
-
-        // for (const color of colors) {
-        //     buttonOpts.push({
-        //         style: {
-        //             color
-        //         },
+        // const markOpts = [
+        //     {
         //         fundingEligibility: {
         //             applepay: {
         //                 eligible: true
@@ -75,13 +46,42 @@
         //                         eligible: true
         //                     }
         //                 }
-        //             },
-        //             card: {
-        //                 eligible: true
         //             }
         //         }
-        //     });
-        // }
+        //     }
+        // ];
+
+        const buttonOpts = [];
+
+        for (const color of colors) {
+            buttonOpts.push({
+                style: {
+                    color
+                },
+                fundingEligibility: {
+                    applepay: {
+                        eligible: true
+                    },
+                    paypal: {
+                        eligible: true
+                    },
+                    venmo: {
+                        eligible: true
+                    },
+                    paylater: {
+                        eligible: true,
+                        products: {
+                            payIn4: {
+                                eligible: true
+                            }
+                        }
+                    },
+                    card: {
+                        eligible: true
+                    }
+                }
+            });
+        }
 
         // for (const label of labels) {
         //     buttonOpts.push({
@@ -159,22 +159,22 @@
         //     });
         // }
 
-        for (const fi of fis) {
-            buttonOpts.push({
-                style: {
-                    layout: 'horizontal',
-                    tagline: false
-                },
-                fundingEligibility: {
-                    paypal: {
-                        eligible: true
-                    },
-                    [fi]: {
-                        eligible: true
-                    }
-                }
-            });
-        }
+        // for (const fi of fis) {
+        //     buttonOpts.push({
+        //         style: {
+        //             layout: 'horizontal',
+        //             tagline: false
+        //         },
+        //         fundingEligibility: {
+        //             paypal: {
+        //                 eligible: true
+        //             },
+        //             [fi]: {
+        //                 eligible: true
+        //             }
+        //         }
+        //     });
+        // }
 
         // for (const tagline of taglines) {
         //     buttonOpts.push({
