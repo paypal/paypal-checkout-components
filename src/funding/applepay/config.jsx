@@ -32,6 +32,12 @@ export function getApplePayConfig() : FundingSourceConfig {
             BUTTON_COLOR.WHITE
         ],
 
+        secondaryColors: {
+            ...DEFAULT_FUNDING_CONFIG.secondaryColors,
+
+            [ BUTTON_COLOR.DEFAULT ]:   BUTTON_COLOR.BLACK
+        },
+
         logoColors:  {
             [ BUTTON_COLOR.BLACK ]:  LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.WHITE ]:  LOGO_COLOR.BLACK
