@@ -42,14 +42,7 @@ export function getApplePayConfig() : FundingSourceConfig {
             const eligibility = fundingEligibility.card;
             const branded = Boolean(eligibility && eligibility.branded);
 
-            const ua = getUserAgent();
-            const isIosSafari = isIOS() && isSafari();
-            const isMacOS = ua ? Boolean(ua.match(/Macintosh.*AppleWebKit/i)) : false;
-            const isMacSafari = isMacOS && isSafari();
-            const isValidMobileVersion = ua ? Boolean(ua.match(/.*iPhone.*1[0-9]_[0-9]/i)) : false; // iOS 10+
-            const isValidMacVersion = ua ? Boolean(ua.match(/.*Macintosh.*OS.*?(1[0-9]_1[2-9])|.*?(1[1-9]_[0-9])/i)) : false; // macOS 10.12+
-
-            if (!branded && ((isIosSafari && isValidMobileVersion) || (isMacSafari && isValidMacVersion)) && window.ApplePaySession && window.ApplePaySession.canMakePayments()) {
+            if (!branded && window.ApplePaySession && window.ApplePaySession.canMakePayments()) {
                 return true;
             }
 
