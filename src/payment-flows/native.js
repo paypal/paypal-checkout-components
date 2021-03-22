@@ -300,7 +300,7 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
             }).then(result => {
                 nativeEligibility = result;
 
-                if (isTestGroup(FUNDING.PAYPAL) || isTestGroup(FUNDING.VENMO) || isNativeOptedIn({ props })) {
+                if (isTestGroup(FUNDING.PAYPAL) || isTestGroup(FUNDING.VENMO) || isControlGroup(FUNDING.PAYPAL) || isControlGroup(FUNDING.VENMO) || isNativeOptedIn({ props })) {
                     getLogger().configure({
                         amplitudeApiKey: AMPLITUDE_API_KEY[env]
                     });
