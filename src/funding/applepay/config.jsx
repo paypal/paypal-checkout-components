@@ -37,7 +37,7 @@ export function getApplePayConfig() : FundingSourceConfig {
             [ BUTTON_COLOR.WHITE ]:  LOGO_COLOR.BLACK
         },
 
-        eligible: ({ fundingEligibility }) => {
+        eligible: () => {
             if (window.ApplePaySession && window.ApplePaySession.canMakePayments()) {
                 return true;
             }
