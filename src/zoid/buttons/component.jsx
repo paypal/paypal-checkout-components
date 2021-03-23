@@ -286,6 +286,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             correlationID: {
                 type:       'string',
                 required:   false,
+                value:      getCorrelationID
+            },
+
+            sdkCorrelationID: {
+                type:       'string',
+                required:   false,
                 value:      getCorrelationID,
                 queryParam: true
             },
