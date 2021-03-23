@@ -11,10 +11,6 @@ export function getApplePayConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        requiresPopupSupport:             false,
-        requiresSupportedNativeBrowser:   false,
-        shippingChange:                   true,
-
         platforms: [
             PLATFORM.DESKTOP,
             PLATFORM.MOBILE
