@@ -449,6 +449,9 @@ type SupplementalOrderInfo = {|
                     currencyValue : string,
                     currencyCode : string
                 |}
+            |},
+            supplementary? : {|
+                initiationIntent? : string
             |}
         |},
         buyer? : {|
@@ -487,6 +490,9 @@ export const getSupplementalOrderInfo : GetSupplementalOrderInfo = memoize(order
                                 currencyValue
                             }
                         }
+                    }
+                    supplementary {
+                        initiationIntent
                     }
                     flags {
                         isChangeShippingAddressAllowed
