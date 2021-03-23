@@ -1,3 +1,13 @@
+## <small>5.0.149 (2021-03-23)</small>
+
+* added button rendering controls to dev/index.htm (#1581) ([d118cf1](https://github.com/paypal/paypal-checkout-components/commit/d118cf1)), closes [#1581](https://github.com/paypal/paypal-checkout-components/issues/1581)
+* Block SFVC context for Venmo (#1580) ([115f207](https://github.com/paypal/paypal-checkout-components/commit/115f207)), closes [#1580](https://github.com/paypal/paypal-checkout-components/issues/1580)
+* Persist correlationID in the query string (#1584) ([e643d84](https://github.com/paypal/paypal-checkout-components/commit/e643d84)), closes [#1584](https://github.com/paypal/paypal-checkout-components/issues/1584)
+* Rename prop to sdkCorrelationID (#1585) ([f622778](https://github.com/paypal/paypal-checkout-components/commit/f622778)), closes [#1585](https://github.com/paypal/paypal-checkout-components/issues/1585)
+* Update paylater label (#1578) ([a1f0ed9](https://github.com/paypal/paypal-checkout-components/commit/a1f0ed9)), closes [#1578](https://github.com/paypal/paypal-checkout-components/issues/1578)
+
+
+
 ## <small>5.0.148 (2021-03-17)</small>
 
 * Add data-user-experience-flow (#1570) ([1e22e33](https://github.com/paypal/paypal-checkout-components/commit/1e22e33)), closes [#1570](https://github.com/paypal/paypal-checkout-components/issues/1570)
