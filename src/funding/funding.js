@@ -45,7 +45,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
-    if (fundingConfig.fundingEligible && !fundingConfig.fundingEligible({ components, fundingSource, fundingEligibility, layout, wallet })) {
+    if (fundingConfig.eligible && !fundingConfig.eligible({ components, fundingSource, fundingEligibility, layout, wallet })) {
         return false;
     }
 
