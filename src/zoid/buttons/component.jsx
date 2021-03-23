@@ -286,7 +286,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             correlationID: {
                 type:       'string',
                 required:   false,
-                value:      getCorrelationID
+                value:      getCorrelationID,
+                queryParam: true
             },
 
             storageID: {
@@ -508,7 +509,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value:      isSupportedNativeBrowser,
                 queryParam: true
             },
-            
+
             userExperienceFlow: {
                 type:       'string',
                 required:   false,
