@@ -32,7 +32,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             },
 
             {
-                source:    FUNDING.VENMO,
+                source:    FUNDING.APPLEPAY,
                 fragment:  'checkouturl=true',
                 userAgent: IPHONE6_USER_AGENT
             },

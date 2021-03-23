@@ -42,7 +42,7 @@ export function getCardConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        fundingEligible: ({ components, fundingSource, fundingEligibility, wallet }) => {
+        eligible: ({ components, fundingSource, fundingEligibility, wallet }) => {
             const cardEligibility = fundingEligibility.card;
 
             const hostedFieldsRequested = Boolean(components.indexOf(COMPONENTS.HOSTED_FIELDS) !== -1);
