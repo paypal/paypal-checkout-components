@@ -58,7 +58,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     } = style;
 
     if (multiple && i > 0) {
-        if (secondaryColors[color]) {
+        if (secondaryColors[color] && colors.indexOf(secondaryColors[color] !== -1)) {
             color = secondaryColors[color];
         } else if (colors.indexOf(secondaryColors[BUTTON_COLOR.DEFAULT]) !== -1) {
             color = secondaryColors[BUTTON_COLOR.DEFAULT];
