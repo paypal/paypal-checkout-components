@@ -21,7 +21,7 @@
     <script>
         const colors = ['gold', 'blue', 'silver', 'black', 'white'];
         const widths = ['750px', '450px', '300px', '220px', '150px'];
-        const fis = ['applepay', 'venmo', 'credit'];
+        const fis = ['venmo', 'credit'];
         const taglines = [true, false];
         const labels = ['checkout', 'pay', 'buynow'];
         const instruments = ['card', 'bank', 'balance', 'credit'];
@@ -30,9 +30,6 @@
         const markOpts = [
             {
                 fundingEligibility: {
-                    applepay: {
-                        eligible: true
-                    },
                     paypal: {
                         eligible: true
                     },
@@ -59,9 +56,6 @@
                     color
                 },
                 fundingEligibility: {
-                    applepay: {
-                        eligible: true
-                    },
                     paypal: {
                         eligible: true
                     },
