@@ -58,7 +58,13 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     } = style;
 
     if (multiple && i > 0) {
-        color = secondaryColors[color] || secondaryColors[BUTTON_COLOR.DEFAULT] || colors[0];
+        if (secondaryColors[color] && colors.indexOf(secondaryColors[color] !== -1)) {
+            color = secondaryColors[color];
+        } else if (colors.indexOf(secondaryColors[BUTTON_COLOR.DEFAULT]) !== -1) {
+            color = secondaryColors[BUTTON_COLOR.DEFAULT];
+        } else {
+            color = colors[0];
+        }
     }
 
     const { logoColors, textColors } = fundingConfig;

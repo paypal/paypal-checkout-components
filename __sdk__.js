@@ -8,6 +8,7 @@ const globals = require('./globals');
 const SMART_FUNDING_SOURCES = [
     FUNDING.PAYPAL,
     FUNDING.VENMO,
+    FUNDING.APPLEPAY,
     FUNDING.ITAU,
     FUNDING.CREDIT,
     FUNDING.PAYLATER,

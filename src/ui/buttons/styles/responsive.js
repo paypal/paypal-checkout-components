@@ -72,6 +72,10 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     height: ${ labelHeight }px;
                 }
 
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.APPLEPAY }] .${ CLASS.BUTTON_LABEL } {
+                    height: ${ perc(buttonHeight, 80) + 5 }px;
+                }
+
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL },
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ CLASS.BUTTON_LABEL } {
                     height: ${ perc(buttonHeight, 50) + 5 }px;

@@ -24,7 +24,7 @@ describe(`paypal standalone buttons`, () => {
 
         it(`should render a standalone ${ fundingSource } button and succeed when eligible`, () => {
             return wrapPromise(({ expect }) => {
-                if (fundingSource === FUNDING.VENMO) {
+                if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
                     window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
                 }
 
