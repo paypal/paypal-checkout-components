@@ -81,7 +81,7 @@ export type FundingSourceConfig = {|
     eligible? : ({| components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType,
     fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT>, wallet : ?Wallet |}) => boolean,
     Logo : (LogoOptions) => ChildType,
-    Marks? : (Object) => ChildType,
+    Marks? : () => ChildType,
     Label : (LabelOptions) => ChildType,
     WalletLabel? : (WalletLabelOptions) => ?ChildType,
     Tag? : (TagOptions) => ?ChildType,

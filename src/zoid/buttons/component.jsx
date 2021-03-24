@@ -67,7 +67,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingSource,
                 onShippingChange,
                 style = {},
-                applePaySupport = isApplePaySupported(),
+                applePaySupport = true, //(),
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
@@ -503,6 +503,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'boolean',
                 queryParam: true,
                 required:   false
+            },
+
+            applePaySupport: {
+                type:       'boolean',
+                value:      isApplePaySupported,
+                queryParam: true
             },
 
             supportsPopups: {

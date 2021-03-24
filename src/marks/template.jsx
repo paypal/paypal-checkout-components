@@ -25,16 +25,12 @@ function Mark({ fundingSource, fundingEligibility, experiment, env } : MarkOptio
     }
 
     const { Logo, Marks } = fundingConfig;
+    const marksDefined = typeof Marks !== 'undefined' && Marks !== undefined;
 
     return (
         <div class='paypal-mark'>
-            { typeof Marks !== 'undefined'
-                ? <Marks
-                    fundingEligibility={ fundingEligibility }
-                    locale={ getLocale() }
-                    experiment={ experiment }
-                    env={ env }
-                />
+            { marksDefined
+                ? <Marks />
                 : <Logo
                     fundingEligibility={ fundingEligibility }
                     locale={ getLocale() }
