@@ -67,7 +67,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingSource,
                 onShippingChange,
                 style = {},
-                applePaySupport = true, //(),
+                applePaySupport = isApplePaySupported(),
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
