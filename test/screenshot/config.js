@@ -81,12 +81,7 @@ for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
         },
         fundingEligibility: {
             [ fundingSource ]: {
-                eligible: true,
-                products: {
-                    payIn4: {
-                        eligible: true
-                    }
-                }
+                eligible: true
             }
         }
     });
@@ -110,11 +105,6 @@ for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
             },
             [ fundingSource ]: {
                 eligible: true,
-                products: {
-                    payIn4: {
-                        eligible: true
-                    }
-                },
                 vendors:  fundingSource === FUNDING.CARD
                     ? {
                         visa: {
@@ -249,12 +239,7 @@ buttonConfigs.push({
             eligible: true
         },
         paylater: {
-            eligible: true,
-            products: {
-                payIn4: {
-                    eligible: true
-                }
-            }
+            eligible: true
         }
     }
 });
