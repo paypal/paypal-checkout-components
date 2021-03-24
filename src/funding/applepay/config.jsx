@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { PLATFORM } from '@paypal/sdk-constants/src';
-import { ApplePayLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { ApplePayLogo, ApplePayMark, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
@@ -25,7 +25,8 @@ export function getApplePayConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => ApplePayLogo({ logoColor, optional }),
+        Logo:  ({ logoColor, optional }) => ApplePayLogo({ logoColor, optional }),
+        Marks: (...props) => ApplePayMark(...props),
 
         colors: [
             BUTTON_COLOR.BLACK,
