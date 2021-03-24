@@ -29,7 +29,7 @@ function Mark({ fundingSource, fundingEligibility, experiment, env } : MarkOptio
 
     return (
         <div class='paypal-mark'>
-            { marksDefined
+            { marksDefined && Marks
                 ? <Marks />
                 : <Logo
                     fundingEligibility={ fundingEligibility }
