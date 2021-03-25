@@ -28,6 +28,11 @@ describe(`paypal button component props`, () => {
         return ZalgoPromise.all(fundingSources.map(fundingSource => {
             return wrapPromise(({ expect, avoid }) => {
                 let onRender = ({ xprops }) => {
+                    if (fundingSource === FUNDING.APPLEPAY) {
+                        const applePay = xprops.applePay();
+                        const session = applePay(3, {});
+                        session.begin();
+                    }
                     return xprops.getQueriedEligibleFunding().then(queriedFundingSources => {
                         if (JSON.stringify(queriedFundingSources) !== JSON.stringify(fundingSources)) {
                             throw new Error(`Expected ${ fundingSources.join(',') } to be queried, got ${ queriedFundingSources.join(',') }`);
