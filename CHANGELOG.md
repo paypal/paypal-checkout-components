@@ -1,3 +1,10 @@
+## <small>5.0.150 (2021-03-25)</small>
+
+* Apple Pay (#1582) ([0cc60be](https://github.com/paypal/paypal-checkout-components/commit/0cc60be)), closes [#1582](https://github.com/paypal/paypal-checkout-components/issues/1582)
+* Ramp venmo experiments to 50% (#1588) ([da16912](https://github.com/paypal/paypal-checkout-components/commit/da16912)), closes [#1588](https://github.com/paypal/paypal-checkout-components/issues/1588)
+
+
+
 ## <small>5.0.149 (2021-03-23)</small>
 
 * added button rendering controls to dev/index.htm (#1581) ([d118cf1](https://github.com/paypal/paypal-checkout-components/commit/d118cf1)), closes [#1581](https://github.com/paypal/paypal-checkout-components/issues/1581)
