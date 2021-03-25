@@ -83,7 +83,7 @@ window.spb = function(modules) {
         }
         function isOperaMini(ua) {
             void 0 === ua && (ua = getUserAgent());
-            return ua.indexOf("Opera Mini") > -1;
+            return /Opera Mini/i.test(ua);
         }
         function isAndroid(ua) {
             void 0 === ua && (ua = getUserAgent());
@@ -112,7 +112,7 @@ window.spb = function(modules) {
                 return /EdgiOS/i.test(ua);
             }(ua) || function(ua) {
                 void 0 === ua && (ua = getUserAgent());
-                return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+                return /FBAN/.test(ua) || /FBAV/.test(ua);
             }(ua) || function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /QQBrowser/.test(ua);
@@ -1695,16 +1695,18 @@ window.spb = function(modules) {
             var _extends2;
             var accessToken = _ref.accessToken, method = _ref.method, url = _ref.url, data = _ref.data, headers = _ref.headers;
             if (!accessToken) throw new Error("No access token passed to " + url);
-            var requestHeaders = _extends(((_extends2 = {}).authorization = "Bearer " + accessToken, 
-            _extends2["content-type"] = "application/json", _extends2), headers);
             return request({
                 method: method,
                 url: url,
-                headers: requestHeaders,
+                headers: _extends(((_extends2 = {}).authorization = "Bearer " + accessToken, _extends2["content-type"] = "application/json", 
+                _extends2), headers),
                 json: data
             }).then((function(_ref2) {
-                var status = _ref2.status, body = _ref2.body;
-                if (status >= 300) throw new Error(url + " returned status: " + status + " (Corr ID: " + _ref2.headers["paypal-debug-id"] + ")");
+                var body = _ref2.body;
+                if (_ref2.status >= 300) {
+                    var hasDetails = body.details && body.details.length;
+                    throw new Error((hasDetails && body.details[0].issue ? body.details[0].issue : "Generic Error") + ": " + (hasDetails && body.details[0].description ? body.details[0].description : "no description") + " (Corr ID: " + _ref2.headers["paypal-debug-id"]);
+                }
                 return body;
             }));
         }
@@ -1815,7 +1817,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers11 = {}).authorization = "Bearer " + accessToken, _headers11["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers11["paypal-client-metadata-id"] = clientMetadataID, _headers11["x-app-name"] = "smart-payment-buttons", 
-            _headers11["x-app-version"] = "5.0.17", _headers11);
+            _headers11["x-app-version"] = "5.0.18", _headers11);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -6411,7 +6413,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.17", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.18", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
@@ -6516,13 +6518,14 @@ window.spb = function(modules) {
             });
             var setupExportsTask = function(_ref) {
                 var props = _ref.props, isEnabled = _ref.isEnabled;
-                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel;
+                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, commit = props.commit;
                 var onClick = props.onClick, fundingSource = props.fundingSource;
                 var fundingSources = querySelectorAll("[data-funding-source]").map((function(el) {
                     return el.getAttribute("data-funding-source");
                 })).filter(Boolean);
                 window.exports = {
                     name: "smart-payment-buttons",
+                    commit: commit,
                     paymentSession: function() {
                         return {
                             getAvailableFundingSources: function() {
