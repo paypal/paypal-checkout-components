@@ -155,16 +155,18 @@ const VALIDATE_INTENTS = [
 
 export function validateOrder(orderID : string, { env, clientID, merchantID, currency, intent, vault } : OrderValidateOptions) : ZalgoPromise<void> {
     const logger = getLogger();
-    
+
     // eslint-disable-next-line complexity
     return getSupplementalOrderInfo(orderID).then(order => {
         const cart = order.checkoutSession.cart;
         const cartIntent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
+        const initiationIntent = cart.supplementary && cart.supplementary.initiationIntent;
         const cartCurrency = cart.amounts && cart.amounts.total.currencyCode;
         const cartAmount = cart.amounts && cart.amounts.total.currencyValue;
         const cartBillingType = cart.billingType;
+        const intentMatch = cartIntent === intent || initiationIntent === intent;
 
-        if (cartIntent !== intent && VALIDATE_INTENTS.indexOf(intent) !== -1) {
+        if (!intentMatch && VALIDATE_INTENTS.indexOf(intent) !== -1) {
             triggerIntegrationError({
                 error:         'smart_button_validation_error_incorrect_intent',
                 message:       `Expected intent from order api call to be ${ intent }, got ${ cartIntent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ cartIntent } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
@@ -287,7 +289,7 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, cur
         const xpropMerchantID = window.xprops.merchantID;
 
         if (xpropMerchantID && xpropMerchantID.length) {
-            
+
             // Validate merchant-id value(s) passed explicitly to SDK
             if (!isValidMerchantIDs(xpropMerchantID, uniquePayees)) {
                 if (uniquePayees.length === 1) {
