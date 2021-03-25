@@ -97,6 +97,10 @@ export function MarksElement({ fundingEligibility, fundingSources, height, exper
                     .paypal-button-card:last-child {
                         margin-right: 0px;
                     }
+
+                    .paypal-mark .paypal-logo-applepay {
+                        height: 30px;
+                    }
                 `}
             </style>
             {

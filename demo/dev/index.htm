@@ -555,6 +555,7 @@
             for (opts of markOpts) {
                 const p = document.createElement('p');
                 document.body.appendChild(p);
+                // need to be able to override fundingEligibility when testing
                 ['applepay', 'paypal', 'card', 'credit'].forEach(fundingSource => {
                     let mark = paypal.Marks({
                         fundingEligibility: {
@@ -564,7 +565,7 @@
                         },
                         fundingSource,
                         ...opts
-                        });
+                    });
 
                     if (mark.isEligible()) {
                         mark.render(p);
