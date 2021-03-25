@@ -24,7 +24,7 @@ describe(`paypal standalone marks`, () => {
 
         it(`should render a standalone ${ fundingSource } mark and succeed when eligible`, () => {
             return wrapPromise(() => {
-                if (fundingSource === FUNDING.VENMO) {
+                if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
                     window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
                 }
 
@@ -48,7 +48,7 @@ describe(`paypal standalone marks`, () => {
 
         it(`should render a standalone ${ fundingSource } mark and error out when not eligible`, () => {
             return wrapPromise(({ expect }) => {
-                if (fundingSource === FUNDING.VENMO) {
+                if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
                     window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
                 }
 

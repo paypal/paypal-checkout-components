@@ -21,7 +21,8 @@ describe(`paypal button component props`, () => {
         const fundingSources = [
             FUNDING.PAYPAL,
             FUNDING.CREDIT,
-            FUNDING.VENMO
+            FUNDING.VENMO,
+            FUNDING.APPLEPAY
         ];
 
         return ZalgoPromise.all(fundingSources.map(fundingSource => {
