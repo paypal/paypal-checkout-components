@@ -26,6 +26,9 @@ describe(`paypal standalone marks`, () => {
             return wrapPromise(() => {
                 if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
                     window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+                    window.ApplePaySession = {
+                        canMakePayments: () => true
+                    };
                 }
 
                 const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
@@ -46,7 +49,7 @@ describe(`paypal standalone marks`, () => {
             });
         });
 
-        it(`should render a standalone ${ fundingSource } mark and error out when not eligible`, () => {
+        it(`should not render a standalone ${ fundingSource } mark and error out when not eligible`, () => {
             return wrapPromise(({ expect }) => {
                 if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
                     window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
