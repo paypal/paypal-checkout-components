@@ -163,7 +163,7 @@ export function getCheckoutComponent() : CheckoutComponent {
                     required:   false
                 },
 
-                apmBrandedStandaloneButton: {
+                branded: {
                     type:       'boolean',
                     queryParam: true,
                     required:   false
