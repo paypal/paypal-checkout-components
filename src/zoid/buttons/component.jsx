@@ -527,6 +527,37 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'string',
                 required:   false,
                 value:      getUserExperienceFlow
+            },
+
+            applePay: {
+                type:       'function',
+                value:      () => {
+                    if (!window.ApplePaySession) {
+                        return undefined;
+                    }
+
+                    return (version, request) => {
+                        const session = new window.ApplePaySession(version, request);
+                        return {
+                            begin: session.begin(),
+                            on:    (name, handler) => {
+                                const validNames = [
+                                    'validateMerchant',
+                                    'paymentmethodselected',
+                                    'shippingmethodselected',
+                                    'shippingcontactselected',
+                                    'paymentauthorized',
+                                    'cancel'
+                                ];
+                                if (validNames.indexOf(name) === -1) {
+                                    // eslint-disable-next-line no-console
+                                    console.error(`Invalid ApplePaySession event ${ name }`);
+                                }
+                                session[`on${ name }`] = handler;
+                            }
+                        };
+                    };
+                }
             }
         }
     });
