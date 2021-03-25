@@ -30,7 +30,12 @@ function Mark({ fundingSource, fundingEligibility, experiment, env } : MarkOptio
     return (
         <div class='paypal-mark'>
             { marksDefined && Marks
-                ? <Marks />
+                ? <Marks
+                    fundingEligibility={ fundingEligibility }
+                    locale={ getLocale() }
+                    experiment={ experiment }
+                    env={ env }
+                />
                 : <Logo
                     fundingEligibility={ fundingEligibility }
                     locale={ getLocale() }

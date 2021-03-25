@@ -553,10 +553,25 @@
             }
 
             for (opts of markOpts) {
-                break;
                 const p = document.createElement('p');
                 document.body.appendChild(p);
-                paypal.Marks(opts).render(p);
+                ['applepay', 'paypal', 'card', 'credit'].forEach(fundingSource => {
+                    let mark = paypal.Marks({
+                        fundingEligibility: {
+                            [fundingSource]: {
+                                eligible: true
+                            }
+                        },
+                        fundingSource,
+                        ...opts
+                        });
+
+                    if (mark.isEligible()) {
+                        mark.render(p);
+                    } else {
+                        console.warn(`${ fundingSource } was not marks eligible.`);
+                    }
+                });
             }
 
             for (opts of buttonOpts) {
