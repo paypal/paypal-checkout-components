@@ -190,6 +190,7 @@ export type RenderButtonProps = {|
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
+    applePay : Object,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
@@ -236,7 +237,8 @@ export type ButtonProps = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
-    applePaySupport : boolean
+    applePaySupport : boolean,
+    applePay : Object
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -270,6 +272,7 @@ export type ButtonPropsInputs = {
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
+    applePay : Object,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
@@ -407,6 +410,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         experiment = getDefaultExperiment(),
         vault,
         userIDToken,
+        applePay,
         applePaySupport = false,
         supportsPopups = false,
         supportedNativeBrowser = false
@@ -456,5 +460,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
-        experiment, vault, userIDToken, applePaySupport, supportsPopups, supportedNativeBrowser };
+        experiment, vault, userIDToken, applePay, applePaySupport, supportsPopups, supportedNativeBrowser };
 }
