@@ -57,11 +57,11 @@ export function createVenmoExperiment() : Experiment | void {
     }
 
     if (isIos() && isSafari()) {
-        return createExperiment('enable_venmo_ios', 50);
+        return createExperiment('enable_venmo_ios', 25);
     }
 
     if (isAndroid() && isChrome()) {
-        return createExperiment('enable_venmo_android', 50);
+        return createExperiment('enable_venmo_android', 25);
     }
 }
 
