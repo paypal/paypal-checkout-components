@@ -1,3 +1,9 @@
+## <small>5.0.151 (2021-03-26)</small>
+
+* Ramp venmo experiments to 25% (#1590) ([1e41dad](https://github.com/paypal/paypal-checkout-components/commit/1e41dad)), closes [#1590](https://github.com/paypal/paypal-checkout-components/issues/1590)
+
+
+
 ## <small>5.0.150 (2021-03-25)</small>
 
 * Apple Pay (#1582) ([0cc60be](https://github.com/paypal/paypal-checkout-components/commit/0cc60be)), closes [#1582](https://github.com/paypal/paypal-checkout-components/issues/1582)
