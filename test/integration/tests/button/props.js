@@ -31,8 +31,8 @@ describe(`paypal button component props`, () => {
                     if (fundingSource === FUNDING.APPLEPAY) {
                         const applePay = xprops.applePay();
                         const request = {
-                            'countryCode': 'US',
-                            'currencyCode': 'USD',
+                            'countryCode':          'US',
+                            'currencyCode':         'USD',
                             'merchantCapabilities': [
                                 'supports3DS'
                             ],
