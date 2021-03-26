@@ -30,8 +30,28 @@ describe(`paypal button component props`, () => {
                 let onRender = ({ xprops }) => {
                     if (fundingSource === FUNDING.APPLEPAY) {
                         const applePay = xprops.applePay();
-                        const session = applePay(3, {});
-                        session.begin();
+                        const request = {
+                            'countryCode': 'US',
+                            'currencyCode': 'USD',
+                            'merchantCapabilities': [
+                                'supports3DS'
+                            ],
+                            'supportedNetworks': [
+                                'visa',
+                                'masterCard',
+                                'amex',
+                                'discover'
+                            ],
+                            'total': {
+                                'label':    'Demo (Card is not charged)',
+                                'type':     'final',
+                                'amount':   '1.99'
+                            }
+                        };
+                        const session = applePay ? applePay(3, request) : undefined;
+                        if (session) {
+                            session.begin();
+                        }
                     }
                     return xprops.getQueriedEligibleFunding().then(queriedFundingSources => {
                         if (JSON.stringify(queriedFundingSources) !== JSON.stringify(fundingSources)) {
