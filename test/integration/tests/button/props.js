@@ -29,6 +29,9 @@ describe(`paypal button component props`, () => {
             return wrapPromise(({ expect, avoid }) => {
                 let onRender = ({ xprops }) => {
                     if (fundingSource === FUNDING.APPLEPAY) {
+                        window.ApplePaySession = {
+                            canMakePayments: () => true
+                        };
                         const applePay = xprops.applePay();
                         const request = {
                             'countryCode':          'US',
