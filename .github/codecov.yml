@@ -1,0 +1,7 @@
+coverage:
+  status:
+    # Disable patch since it is noisy and incorrect
+    patch:
+      default:
+        enabled: no
+        if_not_found: success
