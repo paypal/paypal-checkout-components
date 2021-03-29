@@ -1,6 +1,6 @@
 /* @flow */
 
-import { __POST_ROBOT__, __ZOID__ } from "../globals";
+import { __POST_ROBOT__, __ZOID__ } from '../globals';
 
 export const fundingEligibility = {
     bancontact: {
@@ -139,6 +139,6 @@ export const testGlobals = {
     __POST_ROBOT__: {
         ...__POST_ROBOT__,
         __SCRIPT_NAMESPACE__: false
-    },
+    }
 
 };
