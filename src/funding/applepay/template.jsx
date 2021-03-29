@@ -9,7 +9,7 @@ import css from './style.scoped.scss';
 export function Mark({ ...props } : {||}) : ChildType {
     return (
         <Style css={ css }>
-            <ApplePayMark { ...props } />;
+            <ApplePayMark { ...props } />
         </Style>
     );
 }

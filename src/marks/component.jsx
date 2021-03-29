@@ -48,6 +48,9 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
         const env = getEnv();
 
         const isEligible = () => {
+            if (fundingSource === FUNDING.APPLEPAY) {
+                return true;
+            }
             if (!fundingSource) {
                 return true;
             }
