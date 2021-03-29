@@ -1,3 +1,10 @@
+## <small>5.0.152 (2021-03-29)</small>
+
+* Enable script namespace feature (#1594) ([a07ab20](https://github.com/paypal/paypal-checkout-components/commit/a07ab20)), closes [#1594](https://github.com/paypal/paypal-checkout-components/issues/1594)
+* Update GitHub actions coverage (#1591) ([92170c6](https://github.com/paypal/paypal-checkout-components/commit/92170c6)), closes [#1591](https://github.com/paypal/paypal-checkout-components/issues/1591)
+
+
+
 ## <small>5.0.151 (2021-03-26)</small>
 
 * Ramp venmo experiments to 25% (#1590) ([1e41dad](https://github.com/paypal/paypal-checkout-components/commit/1e41dad)), closes [#1590](https://github.com/paypal/paypal-checkout-components/issues/1590)
