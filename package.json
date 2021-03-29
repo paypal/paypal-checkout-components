@@ -51,6 +51,7 @@
     },
     "homepage": "https://developer.paypal.com/",
     "keywords": [
+        "paypal-checkout",
         "cross-domain",
         "cross domain",
         "components",
