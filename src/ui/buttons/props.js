@@ -166,7 +166,7 @@ export type Personalization = {|
 |};
 
 export type ApplePaySessionConfig = {|
-    begin : Function,
+    begin : () => void,
     on : (string, Function) => void
 |};
 
