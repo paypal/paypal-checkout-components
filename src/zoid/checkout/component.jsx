@@ -163,6 +163,12 @@ export function getCheckoutComponent() : CheckoutComponent {
                     required:   false
                 },
 
+                branded: {
+                    type:       'boolean',
+                    queryParam: true,
+                    required:   false
+                },
+
                 enableFunding: {
                     type:       'array',
                     queryParam: true,
