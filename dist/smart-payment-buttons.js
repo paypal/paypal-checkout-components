@@ -1817,7 +1817,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers11 = {}).authorization = "Bearer " + accessToken, _headers11["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers11["paypal-client-metadata-id"] = clientMetadataID, _headers11["x-app-name"] = "smart-payment-buttons", 
-            _headers11["x-app-version"] = "5.0.18", _headers11);
+            _headers11["x-app-version"] = "5.0.19", _headers11);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -1880,7 +1880,7 @@ window.spb = function(modules) {
             var _headers17;
             return callGraphQL({
                 name: "GetCheckoutDetails",
-                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                                currencyValue\n                            }\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
+                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                                currencyValue\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID
                 },
@@ -5879,7 +5879,7 @@ window.spb = function(modules) {
                                                             var cartCurrency = cart.amounts && cart.amounts.total.currencyCode;
                                                             var cartAmount = cart.amounts && cart.amounts.total.currencyValue;
                                                             var cartBillingType = cart.billingType;
-                                                            cartIntent !== intent && -1 !== VALIDATE_INTENTS.indexOf(intent) && triggerIntegrationError({
+                                                            cartIntent === intent || (cart.supplementary && cart.supplementary.initiationIntent) === intent || -1 === VALIDATE_INTENTS.indexOf(intent) || triggerIntegrationError({
                                                                 error: "smart_button_validation_error_incorrect_intent",
                                                                 message: "Expected intent from order api call to be " + intent + ", got " + cartIntent + ". Please ensure you are passing intent=" + cartIntent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
                                                                 loggerPayload: {
@@ -6413,7 +6413,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.18", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.19", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
@@ -6518,14 +6518,17 @@ window.spb = function(modules) {
             });
             var setupExportsTask = function(_ref) {
                 var props = _ref.props, isEnabled = _ref.isEnabled;
-                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, commit = props.commit;
+                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, commit = props.commit, intent = props.intent;
                 var onClick = props.onClick, fundingSource = props.fundingSource;
                 var fundingSources = querySelectorAll("[data-funding-source]").map((function(el) {
                     return el.getAttribute("data-funding-source");
                 })).filter(Boolean);
                 window.exports = {
                     name: "smart-payment-buttons",
-                    commit: commit,
+                    commit: {
+                        commit: commit,
+                        intent: intent
+                    },
                     paymentSession: function() {
                         return {
                             getAvailableFundingSources: function() {
