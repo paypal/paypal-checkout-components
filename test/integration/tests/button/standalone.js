@@ -27,7 +27,8 @@ describe(`paypal standalone buttons`, () => {
                 if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
                     window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
                     window.ApplePaySession = {
-                        canMakePayments: () => true
+                        canMakePayments: () => true,
+                        supportsVersion: () => true
                     };
                 }
 
