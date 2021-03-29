@@ -6,7 +6,7 @@ import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import type { Experiment as VenmoExperiment } from '../../types';
 import { BUTTON_FLOW } from '../../constants';
-import type { ButtonProps } from '../../ui/buttons/props';
+import type { ApplePaySessionConfigRequest, ButtonProps } from '../../ui/buttons/props';
 
 export function determineFlow(props : ButtonProps) : $Values<typeof BUTTON_FLOW> {
 
@@ -75,7 +75,7 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     };
 }
 
-export function applePaySession() : Function {
+export function applePaySession() : ?ApplePaySessionConfigRequest {
     try {
         if (!window.ApplePaySession) {
             return undefined;

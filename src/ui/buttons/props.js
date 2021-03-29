@@ -170,6 +170,8 @@ export type ApplePaySessionConfig = {|
     on : (string, Function) => void
 |};
 
+export type ApplePaySessionConfigRequest = (version : number, request : Object) => ApplePaySessionConfig;
+
 export type RenderButtonProps = {|
     style : ButtonStyle,
     locale : LocaleType,
