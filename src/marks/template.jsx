@@ -24,13 +24,14 @@ function Mark({ fundingSource, fundingEligibility, experiment, env } : MarkOptio
         throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
 
-    const { Logo, Marks } = fundingConfig;
-    const marksDefined = typeof Marks !== 'undefined';
+    const { Logo } = fundingConfig;
+    const MarkLogo = fundingConfig.Mark;
+    const marksDefined = typeof MarkLogo !== 'undefined';
 
     return (
         <div class='paypal-mark'>
-            { marksDefined && Marks
-                ? <Marks
+            { marksDefined && MarkLogo
+                ? <MarkLogo
                     fundingEligibility={ fundingEligibility }
                     locale={ getLocale() }
                     experiment={ experiment }

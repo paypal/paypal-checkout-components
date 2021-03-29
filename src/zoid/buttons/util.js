@@ -84,7 +84,7 @@ export function applePaySession() : Function {
         return (version, request) => {
             const session = new window.ApplePaySession(version, request);
             return {
-                begin: session.begin(),
+                begin: () => session.begin(),
                 on:    (name, handler) => {
                     const validNames = [
                         'validateMerchant',

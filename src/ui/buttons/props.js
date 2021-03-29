@@ -165,6 +165,11 @@ export type Personalization = {|
     |}
 |};
 
+export type ApplePaySessionConfig = {|
+    begin : Function,
+    on : (string, Function) => void
+|};
+
 export type RenderButtonProps = {|
     style : ButtonStyle,
     locale : LocaleType,
@@ -190,7 +195,7 @@ export type RenderButtonProps = {|
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    applePay : Object,
+    applePay : ApplePaySessionConfig,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
@@ -238,7 +243,7 @@ export type ButtonProps = {|
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
     applePaySupport : boolean,
-    applePay : Object
+    applePay : ApplePaySessionConfig
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -272,7 +277,7 @@ export type ButtonPropsInputs = {
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    applePay : Object,
+    applePay : ApplePaySessionConfig,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
