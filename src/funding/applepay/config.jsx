@@ -26,7 +26,7 @@ export function getApplePayConfig() : FundingSourceConfig {
         ],
 
         Logo:  ({ logoColor, optional }) => ApplePayLogo({ logoColor, optional }),
-        Marks: ({ ...props }) => ApplePayMark({ ...props }),
+        Mark: ({ ...props }) => ApplePayMark({ ...props }),
 
         colors: [
             BUTTON_COLOR.BLACK,
