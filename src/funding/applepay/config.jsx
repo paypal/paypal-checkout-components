@@ -23,8 +23,7 @@ export function getApplePayConfig() : FundingSourceConfig {
         ],
 
         layouts: [
-            BUTTON_LAYOUT.HORIZONTAL,
-            BUTTON_LAYOUT.VERTICAL
+            BUTTON_LAYOUT.HORIZONTAL
         ],
 
         Logo:     ({ logoColor, optional }) => ApplePayLogo({ logoColor, optional }),
