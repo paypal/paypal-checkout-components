@@ -83,7 +83,7 @@ window.spb = function(modules) {
         }
         function isOperaMini(ua) {
             void 0 === ua && (ua = getUserAgent());
-            return /Opera Mini/i.test(ua);
+            return ua.indexOf("Opera Mini") > -1;
         }
         function isAndroid(ua) {
             void 0 === ua && (ua = getUserAgent());
@@ -112,7 +112,7 @@ window.spb = function(modules) {
                 return /EdgiOS/i.test(ua);
             }(ua) || function(ua) {
                 void 0 === ua && (ua = getUserAgent());
-                return /FBAN/.test(ua) || /FBAV/.test(ua);
+                return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
             }(ua) || function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /QQBrowser/.test(ua);
@@ -1817,7 +1817,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers11 = {}).authorization = "Bearer " + accessToken, _headers11["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers11["paypal-client-metadata-id"] = clientMetadataID, _headers11["x-app-name"] = "smart-payment-buttons", 
-            _headers11["x-app-version"] = "5.0.19", _headers11);
+            _headers11["x-app-version"] = "5.0.20", _headers11);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2165,7 +2165,7 @@ window.spb = function(modules) {
             sticky: !1
         });
         var androidPopupExperiment = createExperiment("native_android_popup", {
-            sample: 10,
+            sample: 50,
             sticky: !1
         });
         var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", {
@@ -2572,7 +2572,7 @@ window.spb = function(modules) {
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken;
             var xprops = window.xprops;
-            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, _xprops$sdkCorrelatio = xprops.sdkCorrelationID, sdkCorrelationID = void 0 === _xprops$sdkCorrelatio ? xprops.correlationID : _xprops$sdkCorrelatio, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, wallet = xprops.wallet, paymentMethodNonce = xprops.paymentMethodNonce, branded = xprops.branded, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, wallet = xprops.wallet, paymentMethodNonce = xprops.paymentMethodNonce, branded = xprops.branded, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
             } : _xprops$getQueriedEli, storageID = xprops.storageID, userExperienceFlow = xprops.userExperienceFlow;
             var onInit = function(_ref) {
@@ -4659,7 +4659,7 @@ window.spb = function(modules) {
             return !(!window.xprops.popupFakeout && !nativeFakeoutExperiment.isEnabled());
         }
         function deferABSplitToPopup() {
-            return isAndroidChrome() || isIOSSafari(), !1;
+            return !isAndroidChrome() && !!isIOSSafari();
         }
         function isTestGroup(fundingSource) {
             var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
@@ -6413,7 +6413,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.19", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.20", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
