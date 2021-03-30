@@ -77,7 +77,8 @@ export type MenuOptions = {|
 
 export type UpdateClientConfigOptions = {|
     orderID : string,
-    payment : Payment
+    payment : Payment,
+    userExperienceFlow? : string
 |};
 
 export type PaymentFlow = {|

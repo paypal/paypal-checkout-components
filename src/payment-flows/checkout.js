@@ -443,10 +443,10 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     return { click, start, close };
 }
 
-function updateCheckoutClientConfig({ orderID, payment }) : ZalgoPromise<void> {
+function updateCheckoutClientConfig({ orderID, payment, userExperienceFlow }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { buyerIntent, fundingSource } = payment;
-        const updateClientConfigPromise = updateButtonClientConfig({ fundingSource, orderID, inline: false });
+        const updateClientConfigPromise = updateButtonClientConfig({ fundingSource, orderID, inline: false, userExperienceFlow });
 
         // Block
         if (buyerIntent === BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING) {

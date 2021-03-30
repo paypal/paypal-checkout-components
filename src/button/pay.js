@@ -101,7 +101,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             const updateClientConfigPromise = createOrder()
                 .then(orderID => {
                     if (updateFlowClientConfig) {
-                        return updateFlowClientConfig({ orderID, payment });
+                        return updateFlowClientConfig({ orderID, payment, userExperienceFlow });
                     }
 
                     // Do not block by default
