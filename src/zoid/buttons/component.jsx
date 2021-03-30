@@ -284,12 +284,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value: getEnableThreeDomainSecure
             },
 
-            correlationID: {
-                type:       'string',
-                required:   false,
-                value:      getCorrelationID
-            },
-
             sdkCorrelationID: {
                 type:       'string',
                 required:   false,
