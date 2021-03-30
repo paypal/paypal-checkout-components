@@ -974,6 +974,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 ? popupStickinessID
                 : defaultStickinessID;
 
+            getLogger().addTrackingBuilder(() => {
+                return {
+                    [FPTI_KEY.STICKINESS_ID]: stickinessID
+                };
+            });
+
             const eligibilityPromise = validatePromise.then(valid => {
                 if (!valid) {
                     return false;

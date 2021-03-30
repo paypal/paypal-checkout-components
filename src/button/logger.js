@@ -64,7 +64,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.BUTTON_SESSION_UID]:           buttonSessionID,
             [FPTI_KEY.BUTTON_VERSION]:               __SMART_BUTTONS__.__MINOR_VERSION__,
             [FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID]: buttonCorrelationID,
-            [FPTI_KEY.STICKINESS_ID]:                stickinessID,
+            [FPTI_KEY.STICKINESS_ID]:                isAndroidChrome() ? stickinessID : null,
             [FPTI_KEY.PARTNER_ATTRIBUTION_ID]:       partnerAttributionID,
             [FPTI_KEY.USER_ACTION]:                  commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE,
             [FPTI_KEY.SELLER_ID]:                    merchantID[0],
