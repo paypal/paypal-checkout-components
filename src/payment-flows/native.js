@@ -133,7 +133,7 @@ function deferABSplitToPopup() : boolean {
     }
 
     if (isIOSSafari()) {
-        return false;
+        return true;
     }
 
     return false;
