@@ -78,14 +78,14 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
 export function applePaySession() : ?ApplePaySessionConfigRequest {
     try {
         if (!window.ApplePaySession) {
-            return undefined;
+            return;
         }
 
         return (version, request) => {
             const session = new window.ApplePaySession(version, request);
             return {
-                begin: () => session.begin(),
-                on:    (name, handler) => {
+                begin:            () => session.begin(),
+                addEventListener: (name, handler) => {
                     const validNames = [
                         'validateMerchant',
                         'paymentmethodselected',
@@ -98,7 +98,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                         // eslint-disable-next-line no-console
                         console.error(`Invalid ApplePaySession event ${ name }`);
                     }
-                    session[`on${ name }`] = handler;
+                    session[name] = handler;
                 }
             };
         };

@@ -167,7 +167,7 @@ export type Personalization = {|
 
 export type ApplePaySessionConfig = {|
     begin : () => void,
-    on : (string, Function) => void
+    addEventListener : (string, Function) => void
 |};
 
 export type ApplePaySessionConfigRequest = (version : number, request : Object) => ApplePaySessionConfig;
