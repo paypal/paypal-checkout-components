@@ -83,7 +83,7 @@ window.spb = function(modules) {
         }
         function isOperaMini(ua) {
             void 0 === ua && (ua = getUserAgent());
-            return ua.indexOf("Opera Mini") > -1;
+            return /Opera Mini/i.test(ua);
         }
         function isAndroid(ua) {
             void 0 === ua && (ua = getUserAgent());
@@ -112,7 +112,7 @@ window.spb = function(modules) {
                 return /EdgiOS/i.test(ua);
             }(ua) || function(ua) {
                 void 0 === ua && (ua = getUserAgent());
-                return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+                return /FBAN/.test(ua) || /FBAV/.test(ua);
             }(ua) || function(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /QQBrowser/.test(ua);
@@ -1817,7 +1817,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers11 = {}).authorization = "Bearer " + accessToken, _headers11["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers11["paypal-client-metadata-id"] = clientMetadataID, _headers11["x-app-name"] = "smart-payment-buttons", 
-            _headers11["x-app-version"] = "5.0.20", _headers11);
+            _headers11["x-app-version"] = "5.0.21", _headers11);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3534,13 +3534,14 @@ window.spb = function(modules) {
                 };
             },
             updateFlowClientConfig: function(_ref12) {
-                var orderID = _ref12.orderID, payment = _ref12.payment;
+                var orderID = _ref12.orderID, payment = _ref12.payment, userExperienceFlow = _ref12.userExperienceFlow;
                 return promise_ZalgoPromise.try((function() {
                     var buyerIntent = payment.buyerIntent;
                     var updateClientConfigPromise = updateButtonClientConfig({
                         fundingSource: payment.fundingSource,
                         orderID: orderID,
-                        inline: !1
+                        inline: !1,
+                        userExperienceFlow: userExperienceFlow
                     });
                     if ("pay_with_different_funding_shipping" === buyerIntent) return updateClientConfigPromise;
                 }));
@@ -5850,7 +5851,8 @@ window.spb = function(modules) {
                                                 var updateClientConfigPromise = createOrder().then((function(orderID) {
                                                     if (updateFlowClientConfig) return updateFlowClientConfig({
                                                         orderID: orderID,
-                                                        payment: payment
+                                                        payment: payment,
+                                                        userExperienceFlow: userExperienceFlow
                                                     });
                                                     updateButtonClientConfig({
                                                         orderID: orderID,
@@ -6413,7 +6415,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.20", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.21", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
                     _ref3.user_id = buttonSessionID, _ref3;
@@ -6518,8 +6520,7 @@ window.spb = function(modules) {
             });
             var setupExportsTask = function(_ref) {
                 var props = _ref.props, isEnabled = _ref.isEnabled;
-                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, commit = props.commit, intent = props.intent;
-                var onClick = props.onClick, fundingSource = props.fundingSource;
+                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, onClick = props.onClick, fundingSource = props.fundingSource, commit = props.commit, intent = props.intent, currency = props.currency;
                 var fundingSources = querySelectorAll("[data-funding-source]").map((function(el) {
                     return el.getAttribute("data-funding-source");
                 })).filter(Boolean);
@@ -6527,6 +6528,7 @@ window.spb = function(modules) {
                     name: "smart-payment-buttons",
                     commit: {
                         commit: commit,
+                        currency: currency,
                         intent: intent
                     },
                     paymentSession: function() {
