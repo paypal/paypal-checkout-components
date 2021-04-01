@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { stringifyError } from 'belter/src';
+import { stringifyError, noop } from 'belter/src';
 import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
@@ -201,7 +201,7 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
                 }
 
                 const { payerID } = orderApproval;
-                return onApprove({ payerID }, { restart });
+                return onApprove({ payerID, buyerAccessToken }, { restart }).catch(noop);
                 
             });
         }).catch(err => {
