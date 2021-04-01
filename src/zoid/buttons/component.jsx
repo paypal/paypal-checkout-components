@@ -532,6 +532,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             applePay: {
                 type:       'function',
                 required:   false,
+                queryParam: true,
                 value:      applePaySession
             }
         }
