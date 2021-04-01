@@ -86,19 +86,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
             return {
                 begin:            () => session.begin(),
                 addEventListener: (name, handler) => {
-                    const validNames = [
-                        'onvalidateMerchant',
-                        'onpaymentmethodselected',
-                        'onshippingmethodselected',
-                        'onshippingcontactselected',
-                        'onpaymentauthorized',
-                        'oncancel'
-                    ];
-                    if (validNames.indexOf(name) === -1) {
-                        // eslint-disable-next-line no-console
-                        console.error(`Invalid ApplePaySession event ${ name }`);
-                    }
-                    session[name] = handler;
+                    session.addEventListener(name, handler);
                 }
             };
         };
