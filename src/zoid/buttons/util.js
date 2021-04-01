@@ -87,12 +87,12 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                 begin:            () => session.begin(),
                 addEventListener: (name, handler) => {
                     const validNames = [
-                        'validateMerchant',
-                        'paymentmethodselected',
-                        'shippingmethodselected',
-                        'shippingcontactselected',
-                        'paymentauthorized',
-                        'cancel'
+                        'onvalidateMerchant',
+                        'onpaymentmethodselected',
+                        'onshippingmethodselected',
+                        'onshippingcontactselected',
+                        'onpaymentauthorized',
+                        'oncancel'
                     ];
                     if (validNames.indexOf(name) === -1) {
                         // eslint-disable-next-line no-console
