@@ -33,14 +33,14 @@ export function getNativePopupMiddleware({
             tracking(req);
 
             const { cspNonce, debug, parentDomain, env, sessionID, buttonSessionID,
-                sdkCorrelationID, clientID, locale } = getNativePopupParams(params, req, res);
+                sdkCorrelationID, clientID, locale, buyerCountry } = getNativePopupParams(params, req, res);
 
             const { NativePopup } = (await getNativePopupRenderScript({ logBuffer, cache, debug, useLocal })).popup;
             const client = await getNativePopupClientScript({ debug, logBuffer, cache, useLocal });
 
             const setupParams : NativePopupOptions = {
                 parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID,
-                clientID, fundingSource, locale
+                clientID, fundingSource, locale, buyerCountry
             };
 
             const pageHTML = `

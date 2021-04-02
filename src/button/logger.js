@@ -1,7 +1,7 @@
 /* @flow */
 
 import { isIEIntranet, getPageRenderTime, querySelectorAll } from 'belter/src';
-import { FPTI_KEY, ENV, FUNDING, FPTI_USER_ACTION } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, ENV, FUNDING, FPTI_USER_ACTION, COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType } from '../types';
@@ -37,15 +37,16 @@ type ButtonLoggerOptions = {|
     style : ButtonStyle,
     fundingSource : ?$Values<typeof FUNDING>,
     getQueriedEligibleFunding : GetQueriedEligibleFunding,
-    stickinessID : string
+    stickinessID : string,
+    buyerCountry : $Values<typeof COUNTRY>
 |};
 
 export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, buttonCorrelationID, locale,
-    merchantID, merchantDomain, sdkVersion, style, fundingSource, getQueriedEligibleFunding, stickinessID } : ButtonLoggerOptions) : ZalgoPromise<void> {
+    merchantID, merchantDomain, sdkVersion, style, fundingSource, getQueriedEligibleFunding, stickinessID, buyerCountry } : ButtonLoggerOptions) : ZalgoPromise<void> {
 
     const logger = getLogger();
 
-    setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale, sdkVersion });
+    setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale, sdkVersion, buyerCountry });
 
     logger.addPayloadBuilder(() => {
         return {

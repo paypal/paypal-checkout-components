@@ -3,7 +3,7 @@
 import { Logger, type LoggerType } from 'beaver-logger/src';
 import { noop, stringifyError, stringifyErrorMessage, inlineMemoize } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, ENV } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, ENV, COUNTRY } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../types';
 import { LOGGER_URL } from '../config';
@@ -22,10 +22,11 @@ type LoggerOptions = {|
     clientID : ?string,
     sdkCorrelationID : string,
     locale : LocaleType,
+    buyerCountry : $Values<typeof COUNTRY>,
     sdkVersion : string
 |};
 
-export function setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale, sdkVersion } : LoggerOptions) {
+export function setupLogger({ env, sessionID, clientID, sdkCorrelationID, buyerCountry, locale, sdkVersion } : LoggerOptions) {
     const logger = getLogger();
 
     logger.addPayloadBuilder(() => {
@@ -46,6 +47,7 @@ export function setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale
             [FPTI_KEY.CLIENT_ID]:              clientID,
             [FPTI_KEY.SESSION_UID]:            sessionID,
             [FPTI_KEY.REFERER]:                window.location.host,
+            [FPTI_KEY.BUYER_COUNTRY]:          buyerCountry,
             [FPTI_KEY.LOCALE]:                 `${ lang }_${ country }`,
             [FPTI_KEY.INTEGRATION_IDENTIFIER]: clientID,
             [FPTI_KEY.SDK_NAME]:               FPTI_SDK_NAME.PAYMENTS_SDK,

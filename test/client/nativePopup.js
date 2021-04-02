@@ -27,6 +27,7 @@ describe('Native popup cases', () => {
             const opener = {};
             const parentDomain = 'foo.paypal.com';
             const nativeRedirectUrl = '#test';
+            const buyerCountry = COUNTRY.US;
             let detectedAppSwitch = false;
 
             window.opener = opener;
@@ -95,7 +96,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale, buyerCountry });
         });
     });
 
@@ -104,6 +105,7 @@ describe('Native popup cases', () => {
             const opener = {};
             const parentDomain = 'foo.paypal.com';
             const nativeRedirectUrl = '#test';
+            const buyerCountry = COUNTRY.US;
             let detectedAppSwitch = false;
 
             window.opener = opener;
@@ -172,7 +174,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale, buyerCountry });
         });
     });
 
@@ -181,6 +183,7 @@ describe('Native popup cases', () => {
             const opener = {};
             const parentDomain = 'foo.paypal.com';
             const nativeRedirectUrl = '#test';
+            const buyerCountry = COUNTRY.US;
             let detectedAppSwitch = false;
             let onApproveCalled = false;
             let onApprovePayload;
@@ -289,7 +292,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale, buyerCountry });
         });
     });
 
@@ -298,6 +301,7 @@ describe('Native popup cases', () => {
             const opener = {};
             const parentDomain = 'foo.paypal.com';
             const nativeRedirectUrl = '#test';
+            const buyerCountry = COUNTRY.US;
             let detectedAppSwitch = false;
             let onCancelCalled = false;
 
@@ -384,7 +388,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale, buyerCountry });
         });
     });
 
@@ -393,6 +397,7 @@ describe('Native popup cases', () => {
             const opener = {};
             const parentDomain = 'foo.paypal.com';
             const nativeRedirectUrl = '#test';
+            const buyerCountry = COUNTRY.US;
             let detectedAppSwitch = false;
             let fallbackCalled = false;
 
@@ -479,7 +484,7 @@ describe('Native popup cases', () => {
                 }
             };
 
-            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale, buyerCountry });
         });
     });
 
@@ -488,6 +493,7 @@ describe('Native popup cases', () => {
             const opener = {};
             const parentDomain = 'foo.paypal.com';
             const nativeRedirectUrl = '#test';
+            const buyerCountry = COUNTRY.US;
             let detectedAppSwitch = false;
             let onErrorCalled = false;
             let onErrorPayload;
@@ -585,7 +591,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale, buyerCountry });
         });
     });
 
@@ -594,6 +600,7 @@ describe('Native popup cases', () => {
             const opener = {};
             const parentDomain = 'foo.paypal.com';
             const nativeRedirectUrl = '#test';
+            const buyerCountry = COUNTRY.US;
             let detectedAppSwitch = false;
             let onCompleteCalled = false;
 
@@ -680,7 +687,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale, buyerCountry });
         });
     });
 
@@ -689,6 +696,7 @@ describe('Native popup cases', () => {
             const opener = {};
             const parentDomain = 'foo.paypal.com';
             const nativeRedirectUrl = '#test';
+            const buyerCountry = COUNTRY.US;
             let detectedAppSwitch = false;
             let onErrorCalled = false;
             let onErrorPayload;
@@ -780,7 +788,7 @@ describe('Native popup cases', () => {
                 }
             };
             
-            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale });
+            nativePopup = setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, locale, buyerCountry });
         });
     });
 });

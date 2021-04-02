@@ -554,7 +554,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const getNativePopupParams = () : NativePopupInputParams => {
         const parentDomain = getDomain();
         return {
-            sdkMeta, buttonSessionID, parentDomain, env, clientID, sessionID, sdkCorrelationID
+            sdkMeta, buttonSessionID, parentDomain, env, clientID, sessionID, sdkCorrelationID, buyerCountry
         };
     };
 

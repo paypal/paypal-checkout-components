@@ -1,11 +1,11 @@
 /* @flow */
 /* eslint max-depth: off */
 
-import { ENV, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
+import { ENV, DEFAULT_COUNTRY, COUNTRY_LANGS, COUNTRY } from '@paypal/sdk-constants';
 
 import type { ExpressRequest, ExpressResponse, LocaleType } from '../../types';
 import { getCSPNonce, makeError } from '../../lib';
-import { ERROR_CODE } from '../../config';
+import { ERROR_CODE, HTTP_HEADER } from '../../config';
 
 export type NativePopupInputParams = {|
     debug? : boolean,
@@ -15,7 +15,8 @@ export type NativePopupInputParams = {|
     buttonSessionID : string,
     sdkCorrelationID : string,
     env : $Values<typeof ENV>,
-    sdkMeta : string
+    sdkMeta : string,
+    buyerCountry : $Values<typeof COUNTRY>
 |};
 
 type NativePopupParams = {|
@@ -27,7 +28,8 @@ type NativePopupParams = {|
     sdkCorrelationID : string,
     clientID : string,
     locale : LocaleType,
-    env : $Values<typeof ENV>
+    env : $Values<typeof ENV>,
+    buyerCountry : $Values<typeof COUNTRY>
 |};
 
 function getParentDomain(params : NativePopupInputParams) : string {
@@ -75,6 +77,10 @@ function getLocale(params : NativePopupInputParams) : LocaleType {
     };
 }
 
+function getBuyerCountry(req : ExpressRequest, params : NativePopupInputParams) : $Values<typeof COUNTRY> {
+    return params.buyerCountry || req.get(HTTP_HEADER.PP_GEO_LOC) || COUNTRY.US;
+}
+
 export function getNativePopupParams(params : NativePopupInputParams, req : ExpressRequest, res : ExpressResponse) : NativePopupParams {
     const {
         debug = false,
@@ -88,6 +94,7 @@ export function getNativePopupParams(params : NativePopupInputParams, req : Expr
     const cspNonce = getCSPNonce(res);
     const parentDomain = getParentDomain(params);
     const locale = getLocale(params);
+    const buyerCountry = getBuyerCountry(req, params);
 
     return {
         cspNonce,
@@ -98,7 +105,8 @@ export function getNativePopupParams(params : NativePopupInputParams, req : Expr
         sessionID,
         clientID,
         sdkCorrelationID,
-        env
+        env,
+        buyerCountry
     };
 }
 

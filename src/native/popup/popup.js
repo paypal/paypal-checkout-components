@@ -3,7 +3,7 @@
 import { parseQuery, cleanup, stringifyErrorMessage, base64encode, isSFVC, isSFVCorSafari } from 'belter/src';
 import { onCloseWindow } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { ENV, FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { ENV, FUNDING, FPTI_KEY, COUNTRY } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../../types';
 import { FPTI_CUSTOM_KEY, FPTI_TRANSITION } from '../../constants';
@@ -23,7 +23,8 @@ export type NativePopupOptions = {|
     sdkCorrelationID : string,
     clientID? : string,
     fundingSource : $Values<typeof FUNDING>,
-    locale : LocaleType
+    locale : LocaleType,
+    buyerCountry : $Values<typeof COUNTRY>
 |};
 
 type NativePopup = {|
@@ -72,13 +73,13 @@ function isAndroidVenmoAppInstalled() : ZalgoPromise<AndroidApp> {
 }
 
 export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID,
-    clientID, fundingSource, locale } : NativePopupOptions) : NativePopup {
+    clientID, fundingSource, locale, buyerCountry } : NativePopupOptions) : NativePopup {
 
     let appInstalledPromise = ZalgoPromise.resolve({ installed: true });
 
     const sdkVersion = getSDKVersion();
     const logger = setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelationID,
-        clientID, fundingSource, sdkVersion, locale });
+        clientID, fundingSource, sdkVersion, locale, buyerCountry });
 
     logger.info('native_popup_init', {
         buttonSessionID,
