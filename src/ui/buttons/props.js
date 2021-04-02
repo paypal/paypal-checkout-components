@@ -1,3 +1,4 @@
+/* eslint-disable max-lines, eslint-comments/disable-enable-pair  */
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
