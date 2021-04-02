@@ -165,9 +165,60 @@ export type Personalization = {|
     |}
 |};
 
+export type ApplePayErrorCode = 'shippingContactInvalid' | 'billingContactInvalid' | 'addressUnserviceable' | 'unknown';
+export type ApplePayContactField = 'phoneNumber' | 'emailAddress' | 'givenName' | 'familyName' | 'phoneticGivenName' | 'phoneticFamilyName' | 'addressLines' | 'subLocality' | 'locality' | 'postalCode' | 'subAdministrativeArea' | 'administrativeArea' | 'country' | 'countryCode';
+
+export type ApplePayError = {|
+    code : ApplePayErrorCode,
+    contactField : ApplePayContactField,
+    message : string
+|};
+
+export type ApplePayLineItemType = 'final' | 'pending';
+export type ApplePayLineItem = {|
+    type : ApplePayLineItemType,
+    label : string,
+    amount : string
+|};
+
+export type ApplePayShippingMethod = {|
+    label : string,
+    detail : string,
+    amount : string,
+    identifier : string
+|};
+
+export type ApplePayShippingContactUpdate = {|
+    errors? : $ReadOnlyArray<ApplePayErrorCode>,
+    newShippingMethods? : $ReadOnlyArray<ApplePayShippingMethod>,
+    newTotal : ApplePayLineItem,
+    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
+|};
+
+export type ApplePayPaymentMethodUpdate = {|
+    newTotal : ApplePayLineItem,
+    newLineItems : $ReadOnlyArray<ApplePayLineItem>
+|};
+
+export type ApplePayShippingMethodUpdate = {|
+    newTotal : ApplePayLineItem,
+    newLineItems : $ReadOnlyArray<ApplePayLineItem>
+|};
+
+export type ApplePayPaymentAuthorizationResult = {|
+    status : number,
+    errors? : $ReadOnlyArray<ApplePayError>
+|};
+
 export type ApplePaySessionConfig = {|
     begin : () => void,
-    addEventListener : (string, Function) => void
+    addEventListener : (string, Function) => void,
+    // eslint-disable-next-line flowtype/no-weak-types
+    completeMerchantValidation : (validatedSession : any) => void,
+    completeShippingMethodSelection : (update : ApplePayShippingMethodUpdate | {||}) => void,
+    completeShippingContactSelection : (update : ApplePayShippingContactUpdate | {||}) => void,
+    completePaymentMethodSelection : (update : ApplePayPaymentMethodUpdate | {||}) => void,
+    completePayment : (result : ApplePayPaymentAuthorizationResult) => void
 |};
 
 export type ApplePaySessionConfigRequest = (version : number, request : Object) => ApplePaySessionConfig;
