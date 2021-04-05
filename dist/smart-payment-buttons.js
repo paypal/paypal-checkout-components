@@ -1817,7 +1817,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers11 = {}).authorization = "Bearer " + accessToken, _headers11["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers11["paypal-client-metadata-id"] = clientMetadataID, _headers11["x-app-name"] = "smart-payment-buttons", 
-            _headers11["x-app-version"] = "5.0.21", _headers11);
+            _headers11["x-app-version"] = "5.0.22", _headers11);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4233,10 +4233,11 @@ window.spb = function(modules) {
                             }).then((function(_ref6) {
                                 var orderApproval = _ref6.orderApproval;
                                 return _ref6.requireShipping ? fallbackToWebCheckout() : onApprove({
-                                    payerID: orderApproval.payerID
+                                    payerID: orderApproval.payerID,
+                                    buyerAccessToken: buyerAccessToken
                                 }, {
                                     restart: restart
-                                });
+                                }).catch(src_util_noop);
                             }));
                         })).catch((function(err) {
                             logger_getLogger().warn("approve_order_error", {
@@ -5049,7 +5050,7 @@ window.spb = function(modules) {
                 var conditionalExtendUrl = function() {
                     return isIOSSafari() && "venmo" === fundingSource && -1 !== PARTIAL_ENCODING_CLIENT.indexOf(clientID) ? extendUrlWithPartialEncoding.apply(void 0, arguments) : extendUrl.apply(void 0, arguments);
                 };
-                var close = memoize((function() {
+                var destroy = memoize((function() {
                     return native_clean.all();
                 }));
                 var listen = function(popupWin, domain, event, handler) {
@@ -5179,7 +5180,8 @@ window.spb = function(modules) {
                             env: env,
                             clientID: clientID,
                             sessionID: sessionID,
-                            sdkCorrelationID: sdkCorrelationID
+                            sdkCorrelationID: sdkCorrelationID,
+                            buyerCountry: buyerCountry
                         })
                     }) + "#init";
                 }));
@@ -5238,7 +5240,7 @@ window.spb = function(modules) {
                         }).track((_getLogger$info$track3 = {}, _getLogger$info$track3.transition_name = "native_onapprove_error", 
                         _getLogger$info$track3.info_msg = "Error: " + stringifyError(err), _getLogger$info$track3)).flush();
                         onError(err);
-                    })), close() ]).then((function() {
+                    })), destroy() ]).then((function() {
                         return {
                             buttonSessionID: buttonSessionID
                         };
@@ -5249,7 +5251,7 @@ window.spb = function(modules) {
                     cancelled = !0;
                     logger_getLogger().info("native_message_oncancel").track((_getLogger$info$track4 = {}, 
                     _getLogger$info$track4.transition_name = "native_oncancel", _getLogger$info$track4)).flush();
-                    return promise_ZalgoPromise.all([ onCancel(), close() ]).then((function() {
+                    return promise_ZalgoPromise.all([ onCancel(), destroy() ]).then((function() {
                         return {
                             buttonSessionID: buttonSessionID
                         };
@@ -5262,7 +5264,7 @@ window.spb = function(modules) {
                         err: message
                     }).track((_getLogger$info$track5 = {}, _getLogger$info$track5.transition_name = "native_onerror", 
                     _getLogger$info$track5.info_msg = "Error message: " + message, _getLogger$info$track5)).flush();
-                    return promise_ZalgoPromise.all([ onError(new Error(message)), close() ]).then((function() {
+                    return promise_ZalgoPromise.all([ onError(new Error(message)), destroy() ]).then((function() {
                         return {
                             buttonSessionID: buttonSessionID
                         };
@@ -5314,7 +5316,7 @@ window.spb = function(modules) {
                             buttonSessionID: buttonSessionID
                         }).then((function() {
                             logger_getLogger().info("native_response_close").flush();
-                            return close();
+                            return destroy();
                         }));
                     }));
                     var getPropsListener = socket.on("getProps", (function() {
@@ -5416,11 +5418,7 @@ window.spb = function(modules) {
                     }));
                 }));
                 var popup = memoize((function(url) {
-                    var win = window.open(url);
-                    native_clean.register((function() {
-                        win && !isWindowClosed(win) && win.close();
-                    }));
-                    return win;
+                    return window.open(url);
                 }));
                 return {
                     click: function() {
@@ -5470,7 +5468,8 @@ window.spb = function(modules) {
                                                 sessionUID: sessionUID
                                             }).close();
                                         })).then((function() {
-                                            return close();
+                                            nativeWin.close();
+                                            return destroy();
                                         }));
                                     }
                                     return createOrder().then((function() {
@@ -5486,6 +5485,7 @@ window.spb = function(modules) {
                                         }).track((_getLogger$info$track14 = {}, _getLogger$info$track14.state_name = "smart_button", 
                                         _getLogger$info$track14.transition_name = "app_switch_attempted_errored", _getLogger$info$track14.int_error_desc = stringifyError(err), 
                                         _getLogger$info$track14)).flush();
+                                        nativeWin.close();
                                         return connectNative({
                                             sessionUID: sessionUID
                                         }).close().then((function() {
@@ -5509,7 +5509,7 @@ window.spb = function(modules) {
                                     _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_closed", 
                                     _getLogger$info$track16)).flush();
                                     return promise_ZalgoPromise.delay(1e3).then((function() {
-                                        if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.all([ onCancel(), close() ]);
+                                        if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.all([ onCancel(), destroy() ]);
                                     })).then(src_util_noop);
                                 }), 500);
                                 var closePopup = function(event) {
@@ -5546,6 +5546,10 @@ window.spb = function(modules) {
                                     logger_getLogger().info("native_post_message_await_redirect").flush();
                                     clearTimeout(redirectListenerTimeout);
                                     var stickinessID = deferABSplitToPopup() ? popupStickinessID : defaultStickinessID;
+                                    logger_getLogger().addTrackingBuilder((function() {
+                                        var _ref20;
+                                        return (_ref20 = {}).stickiness_id = stickinessID, _ref20;
+                                    }));
                                     var eligibilityPromise = validatePromise.then((function(valid) {
                                         return !!valid && (!!isNativeOptedIn({
                                             props: props
@@ -5580,8 +5584,8 @@ window.spb = function(modules) {
                                     return promise_ZalgoPromise.hash({
                                         valid: validatePromise,
                                         eligible: eligibilityPromise
-                                    }).then((function(_ref20) {
-                                        var valid = _ref20.valid, eligible = _ref20.eligible;
+                                    }).then((function(_ref21) {
+                                        var valid = _ref21.valid, eligible = _ref21.eligible;
                                         app && Object.keys(app).forEach((function(key) {
                                             var _getLogger$info, _getLogger$info$track20;
                                             logger_getLogger().info("native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key, (_getLogger$info = {}, 
@@ -5590,7 +5594,11 @@ window.spb = function(modules) {
                                             _getLogger$info$track20.info_msg = "native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key + ": " + app[key], 
                                             _getLogger$info$track20)).flush();
                                         }));
-                                        return valid ? orderPromise.then(!eligible || app && !app.installed ? function(orderID) {
+                                        if (!valid) {
+                                            popupWin.close();
+                                            return destroy();
+                                        }
+                                        return orderPromise.then(!eligible || app && !app.installed ? function(orderID) {
                                             return {
                                                 redirect: !0,
                                                 appSwitch: !1,
@@ -5628,11 +5636,7 @@ window.spb = function(modules) {
                                                 appSwitch: !0,
                                                 redirectUrl: nativeUrl
                                             };
-                                        }) : close().then((function() {
-                                            return {
-                                                redirect: !1
-                                            };
-                                        }));
+                                        });
                                     })).catch((function(err) {
                                         var _getLogger$info$track22;
                                         logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track22 = {}, 
@@ -5651,7 +5655,8 @@ window.spb = function(modules) {
                                             };
                                         }));
                                     })).catch((function(err) {
-                                        return close().then((function() {
+                                        popupWin.close();
+                                        return destroy().then((function() {
                                             return onError(err);
                                         }));
                                     }));
@@ -5710,7 +5715,7 @@ window.spb = function(modules) {
                                 sessionUID: sessionUID
                             });
                         })).catch((function(err) {
-                            return close().then((function() {
+                            return destroy().then((function() {
                                 var _getLogger$error$trac2;
                                 logger_getLogger().error("native_error", {
                                     err: stringifyError(err)
@@ -5722,7 +5727,7 @@ window.spb = function(modules) {
                         }));
                     },
                     start: promiseNoop,
-                    close: close
+                    close: destroy
                 };
             },
             spinner: !0
@@ -5769,7 +5774,7 @@ window.spb = function(modules) {
                 content: opts.content,
                 personalization: opts.personalization
             });
-            var merchantID = serviceData.merchantID;
+            var merchantID = serviceData.merchantID, buyerCountry = serviceData.buyerCountry;
             var props = getProps({
                 facilitatorAccessToken: facilitatorAccessToken
             });
@@ -6364,10 +6369,10 @@ window.spb = function(modules) {
                 fundingEligibility: fundingEligibility
             });
             var setupButtonLogsTask = function(_ref) {
-                var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, sdkVersion = _ref.sdkVersion, style = _ref.style, fundingSource = _ref.fundingSource, getQueriedEligibleFunding = _ref.getQueriedEligibleFunding, stickinessID = _ref.stickinessID;
+                var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, sdkVersion = _ref.sdkVersion, style = _ref.style, fundingSource = _ref.fundingSource, getQueriedEligibleFunding = _ref.getQueriedEligibleFunding, stickinessID = _ref.stickinessID, buyerCountry = _ref.buyerCountry;
                 var logger = logger_getLogger();
                 !function(_ref) {
-                    var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, sdkCorrelationID = _ref.sdkCorrelationID, locale = _ref.locale, sdkVersion = _ref.sdkVersion;
+                    var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, sdkCorrelationID = _ref.sdkCorrelationID, buyerCountry = _ref.buyerCountry, locale = _ref.locale, sdkVersion = _ref.sdkVersion;
                     var logger = logger_getLogger();
                     logger.addPayloadBuilder((function() {
                         return {
@@ -6382,8 +6387,8 @@ window.spb = function(modules) {
                         var lang = locale.lang, country = locale.country;
                         return (_ref2 = {}).feed_name = "payments_sdk", _ref2.serverside_data_source = "checkout", 
                         _ref2.client_id = clientID, _ref2.page_session_id = sessionID, _ref2.referer_url = window.location.host, 
-                        _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, _ref2.sdk_name = "payments_sdk", 
-                        _ref2.sdk_version = sdkVersion, _ref2.user_agent = window.navigator && window.navigator.userAgent, 
+                        _ref2.buyer_cntry = buyerCountry, _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, 
+                        _ref2.sdk_name = "payments_sdk", _ref2.sdk_version = sdkVersion, _ref2.user_agent = window.navigator && window.navigator.userAgent, 
                         _ref2.context_correlation_id = sdkCorrelationID, _ref2.t = Date.now().toString(), 
                         _ref2;
                     }));
@@ -6402,7 +6407,8 @@ window.spb = function(modules) {
                     clientID: clientID,
                     sdkCorrelationID: sdkCorrelationID,
                     locale: locale,
-                    sdkVersion: sdkVersion
+                    sdkVersion: sdkVersion,
+                    buyerCountry: buyerCountry
                 });
                 logger.addPayloadBuilder((function() {
                     var _ref2;
@@ -6415,10 +6421,11 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.21", _ref3.button_correlation_id = buttonCorrelationID, 
-                    _ref3.stickiness_id = stickinessID, _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
-                    _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
-                    _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.22", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
+                    _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
+                    _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
+                    _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -6496,7 +6503,8 @@ window.spb = function(modules) {
                 buttonSessionID: buttonSessionID,
                 merchantDomain: merchantDomain,
                 fundingSource: fundingSource,
-                getQueriedEligibleFunding: getQueriedEligibleFunding
+                getQueriedEligibleFunding: getQueriedEligibleFunding,
+                buyerCountry: buyerCountry
             });
             var setupPaymentFlowsTask = function(_ref) {
                 var props = _ref.props, config = _ref.config, serviceData = _ref.serviceData, components = _ref.components;

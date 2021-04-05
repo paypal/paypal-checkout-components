@@ -1392,15 +1392,15 @@
         }
         function setupNativePopup(_ref) {
             var _logger$info$track;
-            var parentDomain = _ref.parentDomain, env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, locale = _ref.locale;
+            var parentDomain = _ref.parentDomain, env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, locale = _ref.locale, buyerCountry = _ref.buyerCountry;
             var appInstalledPromise = promise_ZalgoPromise.resolve({
                 installed: !0
             });
             var logger = function(_ref) {
-                var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, sdkVersion = _ref.sdkVersion, locale = _ref.locale;
+                var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, sdkVersion = _ref.sdkVersion, locale = _ref.locale, buyerCountry = _ref.buyerCountry;
                 var logger = getLogger();
                 !function(_ref) {
-                    var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, sdkCorrelationID = _ref.sdkCorrelationID, locale = _ref.locale, sdkVersion = _ref.sdkVersion;
+                    var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, sdkCorrelationID = _ref.sdkCorrelationID, buyerCountry = _ref.buyerCountry, locale = _ref.locale, sdkVersion = _ref.sdkVersion;
                     var logger = getLogger();
                     logger.addPayloadBuilder((function() {
                         return {
@@ -1415,8 +1415,8 @@
                         var lang = locale.lang, country = locale.country;
                         return (_ref2 = {}).feed_name = "payments_sdk", _ref2.serverside_data_source = "checkout", 
                         _ref2.client_id = clientID, _ref2.page_session_id = sessionID, _ref2.referer_url = window.location.host, 
-                        _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, _ref2.sdk_name = "payments_sdk", 
-                        _ref2.sdk_version = sdkVersion, _ref2.user_agent = window.navigator && window.navigator.userAgent, 
+                        _ref2.buyer_cntry = buyerCountry, _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, 
+                        _ref2.sdk_name = "payments_sdk", _ref2.sdk_version = sdkVersion, _ref2.user_agent = window.navigator && window.navigator.userAgent, 
                         _ref2.context_correlation_id = sdkCorrelationID, _ref2.t = Date.now().toString(), 
                         _ref2;
                     }));
@@ -1435,7 +1435,8 @@
                     clientID: clientID,
                     sdkCorrelationID: sdkCorrelationID,
                     locale: locale,
-                    sdkVersion: sdkVersion
+                    sdkVersion: sdkVersion,
+                    buyerCountry: buyerCountry
                 });
                 logger.addMetaBuilder((function() {
                     return {
@@ -1452,7 +1453,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.21", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.22", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1493,7 +1494,8 @@
                 clientID: clientID,
                 fundingSource: fundingSource,
                 sdkVersion: getPayPal().version,
-                locale: locale
+                locale: locale,
+                buyerCountry: buyerCountry
             });
             logger.info("native_popup_init", {
                 buttonSessionID: buttonSessionID,
