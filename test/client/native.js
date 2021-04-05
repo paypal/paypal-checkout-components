@@ -1712,11 +1712,12 @@ describe('native ios cases', () => {
             let sessionUID;
 
             const postRobotMock = getPostRobotMock();
-
+            let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
+                    popupWin = win;
                     postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
@@ -1783,6 +1784,11 @@ describe('native ios cases', () => {
                     if (message_name === 'setProps' && message_type === 'request') {
                         mockWindow.expectClose();
                         ZalgoPromise.delay(50).then(onApprove);
+                        postRobotMock.receive({
+                            win:    popupWin,
+                            name:   'onComplete',
+                            domain: 'https://history.paypal.com'
+                        });
                     }
                 })
             });
@@ -1823,9 +1829,9 @@ describe('native ios cases', () => {
             await wait();
 
             await mockWebSocketServer.done();
-            mockWindow.done();
             postRobotMock.done();
             gqlMock.done();
+            mockWindow.done();
 
         });
     });
@@ -1998,11 +2004,13 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
+            let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 times:              2,
                 expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
+                    popupWin = win;
                     postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
@@ -2069,6 +2077,11 @@ describe('native ios cases', () => {
                     if (message_name === 'setProps' && message_type === 'request') {
                         mockWindow.expectClose();
                         ZalgoPromise.delay(50).then(onApprove);
+                        postRobotMock.receive({
+                            win:    popupWin,
+                            name:   'onComplete',
+                            domain: 'https://history.paypal.com'
+                        });
                     }
                 })
             });
@@ -2316,10 +2329,12 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
+            let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
+                    popupWin = win;
                     postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
@@ -2386,6 +2401,11 @@ describe('native ios cases', () => {
                     if (message_name === 'setProps' && message_type === 'request') {
                         mockWindow.expectClose();
                         ZalgoPromise.delay(50).then(onCancel);
+                        postRobotMock.receive({
+                            win:    popupWin,
+                            name:   'onComplete',
+                            domain: 'https://history.paypal.com'
+                        });
                     }
                 })
             });
@@ -2617,10 +2637,12 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
+            let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
+                    popupWin = win;
                     postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
@@ -2679,6 +2701,11 @@ describe('native ios cases', () => {
                     if (message_name === 'setProps' && message_type === 'request') {
                         mockWindow.expectClose();
                         ZalgoPromise.delay(50).then(onError);
+                        postRobotMock.receive({
+                            win:    popupWin,
+                            name:   'onComplete',
+                            domain: 'https://history.paypal.com'
+                        });
                     }
                 })
             });
@@ -2710,8 +2737,8 @@ describe('native ios cases', () => {
             await wait();
 
             await mockWebSocketServer.done();
-            mockWindow.done();
             postRobotMock.done();
+            mockWindow.done();
             gqlMock.done();
 
         });
@@ -2754,10 +2781,12 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
+            let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
+                    popupWin = win;
                     postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
@@ -2812,6 +2841,9 @@ describe('native ios cases', () => {
                 }
             });
 
+            const orderID = generateOrderID();
+            const payerID = 'XXYYZZ123456';
+
             const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
                 getSessionUID: () => {
                     if (!sessionUID) {
@@ -2824,14 +2856,16 @@ describe('native ios cases', () => {
                     if (message_name === 'setProps' && message_type === 'request') {
                         mockWindow.expectClose();
                         ZalgoPromise.delay(50).then(onApprove);
+                        postRobotMock.receive({
+                            win:    popupWin,
+                            name:   'onComplete',
+                            domain: 'https://history.paypal.com'
+                        });
                     }
                 })
             });
 
             const mockWebSocketServer = expectSocket();
-
-            const orderID = generateOrderID();
-            const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -3367,10 +3401,12 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
+            let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/venmo/popup',
                 expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
+                    popupWin = win;
                     postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
@@ -3425,6 +3461,9 @@ describe('native ios cases', () => {
                 }
             });
 
+            const orderID = generateOrderID();
+            const payerID = 'XXYYZZ123456';
+
             const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
                 getSessionUID: () => {
                     if (!sessionUID) {
@@ -3437,14 +3476,16 @@ describe('native ios cases', () => {
                     if (message_name === 'setProps' && message_type === 'request') {
                         mockWindow.expectClose();
                         ZalgoPromise.delay(50).then(onApprove);
+                        postRobotMock.receive({
+                            win:    popupWin,
+                            name:   'onComplete',
+                            domain: 'https://history.paypal.com'
+                        });
                     }
                 })
             });
 
             const mockWebSocketServer = expectSocket();
-
-            const orderID = generateOrderID();
-            const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -3529,10 +3570,12 @@ describe('native ios cases', () => {
 
             const postRobotMock = getPostRobotMock();
 
+            let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
+                    popupWin = win;
                     postRobotMock.receive({
                         win,
                         name:   'awaitRedirect',
@@ -3600,9 +3643,15 @@ describe('native ios cases', () => {
                 extraHandler: expect('firebaseExtraHandler', ({ message_name, message_type }) => {
                     if (message_name === 'setProps' && message_type === 'request') {
                         mockWindow.expectClose();
-                        ZalgoPromise.delay(50)
-                            .then(onApprove)
-                            .then(() => ZalgoPromise.delay(200))
+                        ZalgoPromise.delay(50).then(onApprove);
+
+                        postRobotMock.receive({
+                            win:    popupWin,
+                            name:   'onComplete',
+                            domain: 'https://history.paypal.com'
+                        });
+
+                        ZalgoPromise.delay(200)
                             .then(expect('onApproveDone', () => {
                                 if (!gotOnApproveResponse) {
                                     throw new Error(`Expected child window to get onApprove response`);

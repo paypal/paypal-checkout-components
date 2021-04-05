@@ -818,14 +818,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const popup = memoize((url : string) => {
-        const win = window.open(url);
-        clean.register(() => {
-            if (win && !isWindowClosed(win)) {
-                win.close();
-            }
-        });
-
-        return win;
+        return window.open(url);
     });
 
     const initDirectAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
@@ -874,6 +867,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         return connectNative({ sessionUID }).close();
                     }
                 }).then(() => {
+                    nativeWin.close();
                     return destroy();
                 });
             }
@@ -893,6 +887,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
                         [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
                     }).flush();
+                
+                nativeWin.close();
                 return connectNative({ sessionUID }).close().then(() => {
                     throw err;
                 });
@@ -1030,9 +1026,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 }
 
                 if (!valid) {
-                    return destroy().then(() => {
-                        return { redirect: false };
-                    });
+                    popupWin.close();
+                    return destroy();
                 }
 
                 if (!eligible || (app && !app.installed)) {
@@ -1077,6 +1072,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
                 });
             }).catch(err => {
+                popupWin.close();
+
                 return destroy().then(() => {
                     return onError(err);
                 });
