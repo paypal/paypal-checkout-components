@@ -1,7 +1,7 @@
 /* @flow */
 
 import { html } from 'jsx-pragmatic';
-import { COUNTRY, LANG } from '@paypal/sdk-constants';
+import { COUNTRY, LANG, FUNDING } from '@paypal/sdk-constants';
 import { stringifyError, noop } from 'belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
@@ -9,7 +9,7 @@ import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON,
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolveMerchantID, resolveWallet, resolvePersonalization } from '../../service';
 import { EXPERIMENT_TIMEOUT } from '../../config';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../../types';
-import type { ContentType } from '../../../src/types';
+import type { ContentType, Wallet } from '../../../src/types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { EVENT } from './constants';
@@ -29,7 +29,8 @@ type InlineGuestElmoParams = {|
 
 type BrandedFundingSourceElmoParam = {|
     clientID : string,
-    fundingSource : string
+    fundingSource : ?$Values<typeof FUNDING>,
+    wallet : Wallet
 |};
 
 type ButtonMiddlewareOptions = {|
@@ -127,7 +128,7 @@ export function getButtonMiddleware({
             const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
             const wallet = await walletPromise;
             const personalization = await personalizationPromise;
-            const brandedDefault = fundingSource ? await isFundingSourceBranded(req, { clientID, fundingSource }) : true;
+            const brandedDefault = await isFundingSourceBranded(req, { clientID, fundingSource, wallet });
             
             const eligibility = {
                 cardFields: isCardFieldsExperimentEnabled

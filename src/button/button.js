@@ -36,7 +36,7 @@ type ButtonOpts = {|
     correlationID? : string,
     cookies : string,
     personalization : PersonalizationType,
-    brandedDefault? : boolean
+    brandedDefault? : boolean | null
 |};
 
 try {
@@ -58,7 +58,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
     const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, sdkMeta, buyerAccessToken, wallet, cookies,
         cspNonce: serverCSPNonce, merchantID: serverMerchantID, firebaseConfig, content, personalization, correlationID: buttonCorrelationID = '',
-        brandedDefault } = opts;
+        brandedDefault = null } = opts;
 
     const clientID = window.xprops.clientID;
 
@@ -209,7 +209,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
                 throw new Error(`Can not find button element`);
             }
 
-            const paymentProps = getProps({ facilitatorAccessToken });
+            const paymentProps = getProps({ facilitatorAccessToken, brandedDefault });
             const payment = { win, button, fundingSource: paymentFundingSource, card, buyerIntent: BUYER_INTENT.PAY };
             const payPromise = initiatePayment({ payment, props: paymentProps });
             const { onError } = paymentProps;

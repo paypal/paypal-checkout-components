@@ -100,7 +100,7 @@ export type ButtonXProps = {|
     onShippingChange : ?XOnShippingChange,
 
     paymentMethodNonce : string,
-    branded : boolean,
+    branded? : boolean,
     userExperienceFlow : string
 
 |};
@@ -167,12 +167,12 @@ export type ButtonProps = {|
     onAuth : OnAuth,
 
     paymentMethodNonce : string,
-    branded : boolean,
+    branded : boolean | null,
     userExperienceFlow : string
 |};
 
 // eslint-disable-next-line complexity
-export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilitatorAccessToken : string, brandedDefault? : boolean |}) : ButtonProps {
+export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilitatorAccessToken : string, brandedDefault : boolean | null |}) : ButtonProps {
 
     const xprops : ButtonXProps = window.xprops;
 

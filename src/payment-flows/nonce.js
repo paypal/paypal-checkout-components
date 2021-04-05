@@ -14,7 +14,7 @@ function setupNonce() {
 }
 
 function isNonceEligible({ props, serviceData }) : boolean {
-    const { paymentMethodNonce } = props;
+    const { paymentMethodNonce, branded } = props;
     const { wallet } = serviceData;
 
     const instrument  = wallet?.card?.instruments.filter(({ tokenID })  => (tokenID === paymentMethodNonce))[0];
@@ -28,6 +28,10 @@ function isNonceEligible({ props, serviceData }) : boolean {
     }
 
     if (!instrument) {
+        return false;
+    }
+
+    if (!branded) {
         return false;
     }
 
@@ -70,6 +74,10 @@ function isNoncePaymentEligible({ props, payment, serviceData }) : boolean {
 
 function startPaymentWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID }) : ZalgoPromise<{| payerID : string |}> {
     getLogger().info('nonce_payment_initiated');
+
+    if (!branded) {
+        throw new Error(`Expected payment to be branded`);
+    }
 
     return payWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID })
         .catch((error) => {
