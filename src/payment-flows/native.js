@@ -457,7 +457,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return extendUrl(...args);
     };
 
-    const close = memoize(() => {
+    const destroy = memoize(() => {
         return clean.all();
     });
 
@@ -613,7 +613,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         .flush();
                     onError(err);
                 }),
-            close()
+            destroy()
         ]).then(() => {
             return { buttonSessionID };
         });
@@ -628,7 +628,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             .flush();
         return ZalgoPromise.all([
             onCancel(),
-            close()
+            destroy()
         ]).then(() => {
             return { buttonSessionID };
         });
@@ -642,7 +642,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             }).flush();
         return ZalgoPromise.all([
             onError(new Error(message)),
-            close()
+            destroy()
         ]).then(() => {
             return { buttonSessionID };
         });
@@ -711,7 +711,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             getLogger().info(`native_message_close`).flush();
             return socket.send(SOCKET_MESSAGE.CLOSE, { buttonSessionID }).then(() => {
                 getLogger().info(`native_response_close`).flush();
-                return close();
+                return destroy();
             });
         });
 
@@ -874,7 +874,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                         return connectNative({ sessionUID }).close();
                     }
                 }).then(() => {
-                    return close();
+                    return destroy();
                 });
             }
 
@@ -919,7 +919,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
                     return ZalgoPromise.all([
                         onCancel(),
-                        close()
+                        destroy()
                     ]);
                 }
             }).then(noop);
@@ -1030,7 +1030,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                 }
 
                 if (!valid) {
-                    return close().then(() => {
+                    return destroy().then(() => {
                         return { redirect: false };
                     });
                 }
@@ -1077,7 +1077,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
                 });
             }).catch(err => {
-                return close().then(() => {
+                return destroy().then(() => {
                     return onError(err);
                 });
             });
@@ -1154,7 +1154,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
             return useDirectAppSwitch(fundingSource) ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
         }).catch(err => {
-            return close().then(() => {
+            return destroy().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({
                     [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ERROR,
                     [FPTI_KEY.ERROR_CODE]: 'native_error',
@@ -1171,7 +1171,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     return {
         click,
         start,
-        close
+        close: destroy
     };
 }
 
