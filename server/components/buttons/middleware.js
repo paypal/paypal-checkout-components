@@ -12,7 +12,6 @@ import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig } from '../.
 import type { ContentType, Wallet } from '../../../src/types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
-import { EVENT } from './constants';
 import { getButtonParams, getButtonPreflightParams } from './params';
 import { buttonStyle } from './style';
 import { setRootTransaction } from './instrumentation';
@@ -61,7 +60,11 @@ export function getButtonMiddleware({
 
     return sdkMiddleware({ logger, cache }, {
         app: async ({ req, res, params, meta, logBuffer, sdkMeta }) => {
-            logger.info(req, EVENT.RENDER);
+            logger.info(req, 'smart_buttons_render');
+
+            for (const name of Object.keys(req.cookies || {})) {
+                logger.info(req, `smart_buttons_cookie_${ name || 'unknown' }`);
+            }
             
             tracking(req);
 
@@ -179,7 +182,7 @@ export function getButtonMiddleware({
         },
 
         script: async ({ req, res, params, logBuffer }) => {
-            logger.info(req, EVENT.RENDER);
+            logger.info(req, 'smart_buttons_script_render');
 
             const { debug } = getButtonParams(params, req, res);
             const { script } = await getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal });
