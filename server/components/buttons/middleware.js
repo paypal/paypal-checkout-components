@@ -27,6 +27,11 @@ type InlineGuestElmoParams = {|
     buyerCountry : $Values<typeof COUNTRY>
 |};
 
+type BrandedFundingSourceElmoParam = {|
+    clientID : string,
+    fundingSource : string
+|};
+
 type ButtonMiddlewareOptions = {|
     logger : LoggerType,
     graphQL : GraphQL,
@@ -42,13 +47,14 @@ type ButtonMiddlewareOptions = {|
     },
     tracking : (ExpressRequest) => void,
     getPersonalizationEnabled : (ExpressRequest) => boolean,
-    cdn? : boolean
+    cdn? : boolean,
+    isFundingSourceBranded : (req : ExpressRequest, params : BrandedFundingSourceElmoParam) => Promise<boolean>
 |};
 
 export function getButtonMiddleware({
     logger = defaultLogger, content: smartContent, graphQL, getAccessToken, cdn = !isLocalOrTest(),
     getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, tracking,
-    getPersonalizationEnabled = () => false
+    getPersonalizationEnabled = () => false, isFundingSourceBranded
 } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;
 
@@ -60,7 +66,7 @@ export function getButtonMiddleware({
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale,
-                clientMetadataID, pageSessionID, correlationID, cookies, enableFunding, style, paymentMethodNonce, branded } = getButtonParams(params, req, res);
+                clientMetadataID, pageSessionID, correlationID, cookies, enableFunding, style, paymentMethodNonce, branded, fundingSource } = getButtonParams(params, req, res);
             
             const { label, period, tagline } = style;
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
@@ -121,7 +127,8 @@ export function getButtonMiddleware({
             const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
             const wallet = await walletPromise;
             const personalization = await personalizationPromise;
-
+            const brandedDefault = fundingSource ? await isFundingSourceBranded(req, { clientID, fundingSource }) : true;
+            
             const eligibility = {
                 cardFields: isCardFieldsExperimentEnabled
             };
@@ -146,7 +153,8 @@ export function getButtonMiddleware({
 
             const setupParams = {
                 fundingEligibility, buyerCountry, cspNonce, merchantID, sdkMeta, wallet, correlationID,
-                firebaseConfig, facilitatorAccessToken, eligibility, content, cookies, personalization
+                firebaseConfig, facilitatorAccessToken, eligibility, content, cookies, personalization,
+                brandedDefault
             };
 
             const pageHTML = `

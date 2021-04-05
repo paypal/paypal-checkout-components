@@ -222,6 +222,7 @@ const getMerchantID = () => {
 };
 
 const getPersonalizationEnabled = () => true;
+const isFundingSourceBranded = () => Promise.resolve(true);
 
 const content = {
     US: {
@@ -259,7 +260,8 @@ const buttonMiddleware = getButtonMiddleware({
     getMerchantID,
     content,
     tracking,
-    getPersonalizationEnabled
+    getPersonalizationEnabled,
+    isFundingSourceBranded
 });
 
 const menuMiddleware = getMenuMiddleware({

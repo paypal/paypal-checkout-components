@@ -35,7 +35,8 @@ type ButtonOpts = {|
     |},
     correlationID? : string,
     cookies : string,
-    personalization : PersonalizationType
+    personalization : PersonalizationType,
+    brandedDefault? : boolean
 |};
 
 try {
@@ -56,7 +57,8 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     }
 
     const { facilitatorAccessToken, eligibility, fundingEligibility, buyerCountry: buyerGeoCountry, sdkMeta, buyerAccessToken, wallet, cookies,
-        cspNonce: serverCSPNonce, merchantID: serverMerchantID, firebaseConfig, content, personalization, correlationID: buttonCorrelationID = '' } = opts;
+        cspNonce: serverCSPNonce, merchantID: serverMerchantID, firebaseConfig, content, personalization, correlationID: buttonCorrelationID = '',
+        brandedDefault } = opts;
 
     const clientID = window.xprops.clientID;
 
@@ -65,10 +67,10 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         sdkMeta, buyerAccessToken, wallet, content, personalization });
     const { merchantID, buyerCountry } = serviceData;
 
-    const props = getProps({ facilitatorAccessToken });
+    const props = getProps({ facilitatorAccessToken, brandedDefault });
     const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding, getQueriedEligibleFunding,
-        style, fundingSource, intent, createBillingAgreement, createSubscription, stickinessID } = props;
+        style, fundingSource, intent, createBillingAgreement, createSubscription, stickinessID, branded } = props;
         
     const config = getConfig({ serverCSPNonce, firebaseConfig });
     const { sdkVersion } = config;
@@ -96,6 +98,11 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
                         win.close();
                     }
                     return;
+                }
+            } else {
+                if (branded === false) {
+                    getLogger().error('integration_error', { err: 'hosted components not found' });
+                    throw new Error(`Hosted components not found`);
                 }
             }
 
@@ -161,7 +168,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             event.preventDefault();
             event.stopPropagation();
 
-            const paymentProps = getProps({ facilitatorAccessToken });
+            const paymentProps = getProps({ facilitatorAccessToken, brandedDefault });
             const payPromise = initiatePayment({ payment, props: paymentProps });
             const { onError } = paymentProps;
 

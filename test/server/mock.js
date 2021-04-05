@@ -234,6 +234,10 @@ export function getPersonalizationEnabled() : boolean {
     return true;
 }
 
+export function isFundingSourceBranded() : Promise<boolean> {
+    return Promise.resolve(true);
+}
+
 export const mockContent = {
     US: {
         en: {

@@ -231,7 +231,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick, amount,
         clientID, connect, clientMetadataID: cmid, onAuth, userIDToken, env,
-        currency, intent, disableFunding, disableCard, enableFunding, standaloneFundingSource } = props;
+        currency, intent, disableFunding, disableCard, enableFunding,
+        standaloneFundingSource, branded } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
         venmoPayloadID, buyerIntent } = payment;
     const { fundingEligibility, buyerCountry, sdkMeta, merchantID } = serviceData;
@@ -381,7 +382,8 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             cspNonce,
             clientMetadataID: cmid,
             enableFunding,
-            standaloneFundingSource
+            standaloneFundingSource,
+            branded
         });
     };
 
