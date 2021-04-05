@@ -55,6 +55,8 @@
     <div class="options">
         <form id="fis"> 
         <strong>fis</strong><br/>
+        <input type="checkbox" id="fis-applepay" name="width" value="applepay" />
+        <label for="fis-applepay">Apple Pay</label>
         <input type="checkbox" id="fis-venmo" name="width" value="venmo" />
         <label for="fis-venmo">Venmo</label>
         <input type="checkbox" id="fis-credit" name="width" value="credit" />
@@ -118,6 +120,12 @@
     </section>
 
     <script>
+        // allow testing on Chromium test server
+        window.ApplePaySession = {
+            canMakePayments: () => true,
+            supportsVersion: (version) => true
+        };
+
         let colors = [];
         let widths = [];
         let fis = [];
@@ -154,6 +162,9 @@
             const markOpts = [
                 {
                     fundingEligibility: {
+                        applepay: {
+                            eligible: true
+                        },
                         paypal: {
                             eligible: true
                         },
@@ -180,6 +191,9 @@
                         color
                     },
                     fundingEligibility: {
+                        applepay: {
+                            eligible: true
+                        },
                         paypal: {
                             eligible: true
                         },
@@ -207,6 +221,9 @@
                         label
                     },
                     fundingEligibility: {
+                        applepay: {
+                            eligible: true
+                        },
                         paypal: {
                             eligible: true
                         },
@@ -262,6 +279,9 @@
                         tagline: false
                     },
                     fundingEligibility: {
+                        applepay: {
+                            eligible: true
+                        },
                         paypal: {
                             eligible: true
                         },
@@ -534,10 +554,26 @@
             }
 
             for (opts of markOpts) {
-                break;
                 const p = document.createElement('p');
                 document.body.appendChild(p);
-                paypal.Marks(opts).render(p);
+                // need to be able to override fundingEligibility when testing
+                ['applepay', 'paypal', 'card', 'credit'].forEach(fundingSource => {
+                    let mark = paypal.Marks({
+                        fundingEligibility: {
+                            [fundingSource]: {
+                                eligible: true
+                            }
+                        },
+                        fundingSource,
+                        ...opts
+                    });
+
+                    if (mark.isEligible()) {
+                        mark.render(p);
+                    } else {
+                        console.warn(`${ fundingSource } was not marks eligible.`);
+                    }
+                });
             }
 
             for (opts of buttonOpts) {

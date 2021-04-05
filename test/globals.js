@@ -65,7 +65,7 @@ export const fundingEligibility = {
         eligible: false
     },
     applepay: {
-        eligible: false
+        eligible: true
     },
     venmo: {
         eligible: false
