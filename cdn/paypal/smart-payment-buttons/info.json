@@ -3,11 +3,11 @@
     "dist-tags": {
         "latest": "5.0.23",
         "noop": "2.0.290",
-        "active-test": "5.0.21",
-        "active-local": "5.0.21",
-        "active-stage": "5.0.21",
-        "active-sandbox": "5.0.21",
-        "active-production": "5.0.21"
+        "active-test": "5.0.23",
+        "active-local": "5.0.23",
+        "active-stage": "5.0.23",
+        "active-sandbox": "5.0.23",
+        "active-production": "5.0.23"
     },
     "versions": {
         "2.0.290": {
@@ -31,32 +31,6 @@
             },
             "dist": {
                 "tarball": "https://www.paypalobjects.com/smart-payment-buttons/paypal/smart-payment-buttons/tarballs/2.0.290.tgz"
-            }
-        },
-        "5.0.21": {
-            "dependencies": {
-                "@paypal/checkout-components": "^5.0.30",
-                "@paypal/common-components": "^1.0.16",
-                "@paypal/installments": "^1.0.0",
-                "@paypal/sdk-client": "^4.0.123",
-                "@paypal/sdk-constants": "^1.0.87",
-                "@paypal/sdk-logos": "^1.0.26",
-                "@paypal/sdk-release": "^5.0.138",
-                "beaver-logger": "^4.0.12",
-                "belter": "^1.0.19",
-                "cross-domain-utils": "^2.0.16",
-                "get-browser-fingerprint": "^1.1.0",
-                "grabthar": "^4",
-                "jsx-pragmatic": "^2",
-                "module-alias": "^2.2.2",
-                "preact": "^10",
-                "preact-render-to-string": "^5.1.4",
-                "strict-merge": "^1.0.1",
-                "typed-graphqlify": "^2.2.3",
-                "zalgo-promise": "^1.0.28"
-            },
-            "dist": {
-                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/paypal/smart-payment-buttons/tarballs/5.0.21.tgz"
             }
         },
         "5.0.23": {
