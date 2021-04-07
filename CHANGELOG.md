@@ -1,3 +1,13 @@
+## <small>5.0.153 (2021-04-07)</small>
+
+* Added branded standalone button query param (#1575) ([accd923](https://github.com/paypal/paypal-checkout-components/commit/accd923)), closes [#1575](https://github.com/paypal/paypal-checkout-components/issues/1575)
+* Apple Pay Marks (#1586) ([05a0d94](https://github.com/paypal/paypal-checkout-components/commit/05a0d94)), closes [#1586](https://github.com/paypal/paypal-checkout-components/issues/1586)
+* Remove correlationID from buttons (#1597) ([50ec529](https://github.com/paypal/paypal-checkout-components/commit/50ec529)), closes [#1597](https://github.com/paypal/paypal-checkout-components/issues/1597)
+* Update workflow with new logic for "awaiting response" label (#1510) ([08114ec](https://github.com/paypal/paypal-checkout-components/commit/08114ec)), closes [#1510](https://github.com/paypal/paypal-checkout-components/issues/1510)
+* Use basic eligibility for venmo experiment (#1601) ([54e88ae](https://github.com/paypal/paypal-checkout-components/commit/54e88ae)), closes [#1601](https://github.com/paypal/paypal-checkout-components/issues/1601)
+
+
+
 ## <small>5.0.152 (2021-03-29)</small>
 
 * Enable script namespace feature (#1594) ([a07ab20](https://github.com/paypal/paypal-checkout-components/commit/a07ab20)), closes [#1594](https://github.com/paypal/paypal-checkout-components/issues/1594)
