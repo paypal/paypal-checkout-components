@@ -1,7 +1,7 @@
 {
     "name": "@paypal/smart-payment-buttons",
     "dist-tags": {
-        "latest": "5.0.22",
+        "latest": "5.0.23",
         "noop": "2.0.290",
         "active-test": "5.0.21",
         "active-local": "5.0.21",
@@ -59,7 +59,7 @@
                 "tarball": "https://www.paypalobjects.com/smart-payment-buttons/paypal/smart-payment-buttons/tarballs/5.0.21.tgz"
             }
         },
-        "5.0.22": {
+        "5.0.23": {
             "dependencies": {
                 "@paypal/checkout-components": "^5.0.30",
                 "@paypal/common-components": "^1.0.16",
@@ -82,7 +82,7 @@
                 "zalgo-promise": "^1.0.28"
             },
             "dist": {
-                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/paypal/smart-payment-buttons/tarballs/5.0.22.tgz"
+                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/paypal/smart-payment-buttons/tarballs/5.0.23.tgz"
             }
         }
     }
