@@ -55,11 +55,11 @@ export const config = {
     stageDomain: 'qa.paypal.com',
 
     get stageUrl() : string {
-        return `${ config.stage }.${ config.stageDomain }`;
+        return `www.${ config.stage }.${ config.stageDomain }`;
     },
 
     get apiStageUrl() : string {
-        return `${ config.apiStage }.${ config.stageDomain }`;
+        return `www.${ config.apiStage }.${ config.stageDomain }`;
     },
 
     get localhostUrl() : string {
@@ -718,7 +718,7 @@ export const config = {
     get paypalUrls() : Object {
         return {
             [ ENV.LOCAL ]:      config.localhostUrl,
-            [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
+            [ ENV.STAGE ]:      `https://${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`,
@@ -729,7 +729,7 @@ export const config = {
     get paypalDomains() : Object {
         return {
             [ ENV.LOCAL ]:      'http://localhost.paypal.com:8000',
-            [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
+            [ ENV.STAGE ]:      `https://${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `mock://www.paypal.com`,
@@ -739,8 +739,8 @@ export const config = {
 
     get wwwApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `https://www.${ config.stageUrl }`,
-            [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
+            [ ENV.LOCAL ]:      `https://${ config.stageUrl }`,
+            [ ENV.STAGE ]:      `https://${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`
