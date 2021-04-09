@@ -1,5 +1,6 @@
 [ignore]
 .*/node_modules/@babel/core
+.*/node_modules/@babel/helper-define-polyfill-provider
 .*/node_modules/babel-plugin-flow-runtime
 .*/node_modules/flow-runtime
 .*/node_modules/npm
