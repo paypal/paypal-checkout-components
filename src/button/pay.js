@@ -84,7 +84,8 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.BUTTON_CLICK,
                 [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
                 [FPTI_KEY.CHOSEN_FI_TYPE]: instrumentType,
-                [FPTI_KEY.PAYMENT_FLOW]:   name
+                [FPTI_KEY.PAYMENT_FLOW]:   name,
+                [FPTI_KEY.IS_VAULT]:       instrumentType ? '1' : '0'
             }).flush();
 
         return ZalgoPromise.hash({

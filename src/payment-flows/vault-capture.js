@@ -9,7 +9,7 @@ import { initiateInstallments } from '@paypal/installments/src/interface';
 import type { ThreeDomainSecureFlowType, MenuChoices } from '../types';
 import type { CreateOrder } from '../props';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault, updateButtonClientConfig } from '../api';
-import { TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
+import { TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, FPTI_MENU_OPTION } from '../constants';
 import { getLogger } from '../lib';
 
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, IsInstallmentsEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
@@ -236,7 +236,8 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
         onSelect: ({ win }) => {
 
             getLogger().info('click_choose_funding').track({
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_CHOOSE_FUNDING
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.CLICK_CHOOSE_FUNDING,
+                [FPTI_KEY.OPTION_SELECTED]: FPTI_MENU_OPTION.CHOOSE_FUNDING
             }).flush();
             
             return ZalgoPromise.try(() => {
@@ -255,7 +256,8 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
         onSelect: ({ win }) => {
 
             getLogger().info('click_choose_account').track({
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_CHOOSE_ACCOUNT
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.CLICK_CHOOSE_ACCOUNT,
+                [FPTI_KEY.OPTION_SELECTED]: FPTI_MENU_OPTION.CHOOSE_ACCOUNT
             }).flush();
 
             return ZalgoPromise.try(() => {
@@ -274,7 +276,8 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
             const element : HTMLElement = button.parentElement || button;
 
             getLogger().info('click_unlink_account').track({
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_UNLINK_ACCOUNT
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.CLICK_UNLINK_ACCOUNT,
+                [FPTI_KEY.OPTION_SELECTED]: FPTI_MENU_OPTION.UNLINK_ACCOUNT
             }).flush();
 
             return deleteVault({ paymentMethodID, clientAccessToken }).then(() => {

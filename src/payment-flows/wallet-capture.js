@@ -6,7 +6,7 @@ import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src'
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
 import { getSupplementalOrderInfo, oneClickApproveOrder, getSmartWallet, updateButtonClientConfig } from '../api';
-import { BUYER_INTENT, FPTI_TRANSITION } from '../constants';
+import { BUYER_INTENT, FPTI_TRANSITION, FPTI_MENU_OPTION } from '../constants';
 import { getLogger } from '../lib';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
@@ -264,7 +264,8 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
         onSelect: ({ win }) => {
 
             getLogger().info('click_choose_funding').track({
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_CHOOSE_FUNDING
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.CLICK_CHOOSE_FUNDING,
+                [FPTI_KEY.OPTION_SELECTED]: FPTI_MENU_OPTION.CHOOSE_FUNDING
             }).flush();
 
             return ZalgoPromise.try(() => {
@@ -303,7 +304,8 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
         onSelect: ({ win }) => {
 
             getLogger().info('click_choose_account').track({
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.CLICK_CHOOSE_ACCOUNT
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.CLICK_CHOOSE_ACCOUNT,
+                [FPTI_KEY.OPTION_SELECTED]: FPTI_MENU_OPTION.CHOOSE_ACCOUNT
             }).flush();
 
             return loadCheckout({

@@ -151,6 +151,12 @@ export const FPTI_TRANSITION = {
     HONEY_IDENTIFY:                         ('honey_identify')
 };
 
+export const FPTI_MENU_OPTION = {
+    CHOOSE_FUNDING:     ('pay_with_different_payment_method' : 'pay_with_different_payment_method'),
+    CHOOSE_ACCOUNT:     ('pay_with_different_account' : 'pay_with_different_account'),
+    UNLINK_ACCOUNT:     ('unlink_account' : 'unlink_account')
+};
+
 export const FPTI_BUTTON_TYPE = {
     IFRAME: ('iframe' : 'iframe')
 };
