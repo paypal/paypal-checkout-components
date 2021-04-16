@@ -64,6 +64,12 @@ export function getCheckoutComponent() : CheckoutComponent {
             },
         
             props: {
+                capbundle: {
+                    type:       'string',
+                    value:      () => 'relative',
+                    queryParam: true
+                },
+                
                 clientID: {
                     type:       'string',
                     value:      () => getClientID(),
