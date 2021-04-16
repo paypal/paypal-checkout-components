@@ -1028,13 +1028,6 @@ export const Button : Component<ButtonOptions> = create({
             def() : Object {
                 return { action: 'checkout' };
             }
-        },
-
-        // its unclear if this prop is actually needed for second render
-        supportedNativeBrowser: {
-            type:       'boolean',
-            value:      isSupportedNativeBrowser,
-            queryParam: true
         }
     }
 });
