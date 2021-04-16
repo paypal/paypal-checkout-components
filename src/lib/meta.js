@@ -2,10 +2,10 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { once, bridge } from 'post-robot/src';
+import { isIEIntranet } from 'belter/src';
 
 import { config } from '../config';
 
-import { isIEIntranet  } from './device';
 import { memoize } from './util';
 import { getScriptVersion } from './script';
 import { extendUrl } from './dom';

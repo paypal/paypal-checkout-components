@@ -6,10 +6,10 @@ import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-lo
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
-import { base64encode } from 'belter/src';
+import { base64encode, isDevice, supportsPopups } from 'belter/src';
 
-import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
-    setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
+import { request, getQueryParam, redirect as redir, patchMethod,
+    setLogLevel, getSessionID, getBrowserLocale, memoize,
     getDomainSetting, getScriptVersion, getButtonSessionID, isPayPalDomain,
     isEligible, getCurrentScriptUrl } from '../lib';
 import { config } from '../config';
@@ -329,7 +329,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
             type:     'function',
             required: true,
             once:     true,
-            
+
             decorate(original) : Function | void {
                 if (original) {
                     return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
@@ -546,7 +546,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
                 return config.logLevel;
             }
         },
-        
+
         test: {
             type:     'object',
             required: false,
@@ -629,4 +629,3 @@ patchMethod(Checkout, 'renderTo', ({ args: [ win, props ], original, context }) 
         throw err;
     });
 });
-

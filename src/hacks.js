@@ -4,9 +4,10 @@ import { info, warn, flush as flushLogs } from 'beaver-logger/client';
 import { CONSTANTS } from 'zoid/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { isIE, noop } from 'belter/src';
 
 import { config } from './config';
-import { noop, isIE, getDomainSetting, extendUrl, patchMethod, once, extend } from './lib';
+import { getDomainSetting, extendUrl, patchMethod, once, extend } from './lib';
 import { Button } from './button';
 import { Checkout } from './checkout';
 import { BUTTON_LABEL, BUTTON_SIZE, BUTTON_COLOR } from './constants';

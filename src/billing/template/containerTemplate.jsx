@@ -2,11 +2,10 @@
 /** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { base64encode, supportsPopups } from 'belter/src';
+import { base64encode, supportsPopups, isIos } from 'belter/src';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
-import { isIos } from '../../lib';
 import { containerContent } from '../../checkout/template/containerContent';
 import { getSandboxStyle, getContainerStyle } from '../../checkout/template';
 
@@ -163,4 +162,3 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         </div>
     );
 }
-
