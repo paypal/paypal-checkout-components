@@ -1700,7 +1700,7 @@
             });
         }));
         function getScriptVersion() {
-            return "4.0.328";
+            return "4.0.329";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1710,7 +1710,7 @@
                 0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.328.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.329.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1758,7 +1758,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.328"
+                    ver: "4.0.329"
                 };
             }));
             Object(client.a)((function() {
@@ -2077,7 +2077,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.328"
+                        version: "4.0.329"
                     }), metaFrameDomain).then((function() {
                         return metaListener;
                     })).then((function(_ref) {
@@ -2172,7 +2172,7 @@
             locales: constants.A,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.328",
+            version: "4.0.329",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -2183,10 +2183,10 @@
             stage: "msmaster",
             stageDomain: "qa.paypal.com",
             get stageUrl() {
-                return config.stage + "." + config.stageDomain;
+                return "www." + config.stage + "." + config.stageDomain;
             },
             get apiStageUrl() {
-                return config.apiStage + "." + config.stageDomain;
+                return "www." + config.apiStage + "." + config.stageDomain;
             },
             get localhostUrl() {
                 return "http://localhost.paypal.com:" + config.ports.default;
@@ -2683,7 +2683,7 @@
             },
             get paypalUrls() {
                 var _ref;
-                return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://www." + config.stageUrl, 
+                return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://" + config.stageUrl, 
                 _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref[constants.t.PRODUCTION] = "https://www.paypal.com", 
                 _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
@@ -2691,14 +2691,14 @@
             },
             get paypalDomains() {
                 var _ref2;
-                return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:8000", _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, 
+                return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:8000", _ref2[constants.t.STAGE] = "https://" + config.stageUrl, 
                 _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", 
                 _ref2[constants.t.TEST] = "mock://www.paypal.com", _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref2;
             },
             get wwwApiUrls() {
                 var _ref3;
-                return (_ref3 = {})[constants.t.LOCAL] = "https://www." + config.stageUrl, _ref3[constants.t.STAGE] = "https://www." + config.stageUrl, 
+                return (_ref3 = {})[constants.t.LOCAL] = "https://" + config.stageUrl, _ref3[constants.t.STAGE] = "https://" + config.stageUrl, 
                 _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", 
                 _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref3;
@@ -23603,7 +23603,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.328", 
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.329", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -23651,7 +23651,7 @@
                 return jsxDom("div", Object(esm_extends.a)({
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.328", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.329", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             autoResize: {
                 height: !0,
@@ -24920,7 +24920,7 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.328";
+        var interface_version = "4.0.329";
         var interface_checkout;
         var apps;
         var legacy = __webpack_require__(45);
