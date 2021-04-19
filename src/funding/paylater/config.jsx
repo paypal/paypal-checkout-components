@@ -1,8 +1,8 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING } from '@paypal/sdk-constants/src';
-import { node } from 'jsx-pragmatic/src';
+import { COUNTRY, FUNDING } from '@paypal/sdk-constants/src';
+import { node, Style } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
@@ -23,29 +23,26 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
         Label: ({ logo }) => logo,
 
-        Logo: ({ logoColor /* , fundingEligibility */ }) => {
-            // const paylaterEligibility = fundingEligibility.paylater;
+        Logo: ({ logoColor, nonce, locale }) => {
+            let label = <Text>Pay Later</Text>;
 
-            // const products = (paylaterEligibility && paylaterEligibility.products && paylaterEligibility.products) || {};
+            if (locale.country === COUNTRY.DE) {
+                label = <Text>Später Bezahlen</Text>;
+            }
 
-            const text = <Text>Pay Later</Text>;
+            if (locale.country === COUNTRY.FR) {
+                label = <Text>4x PayPal</Text>;
+            }
 
-            // if (products.flex && products.flex.eligible && env !== ENV.LOCAL && env !== ENV.STAGE && env !== ENV.SANDBOX) {
-            //     text = (
-            //         <Fragment>
-            //             <Text optional>PayPal </Text>
-            //             <Text>Flex</Text>
-            //         </Fragment>
-            //     );
-            // } else {
-            //     text = <Text>Pay Later</Text>;
-            // }
+            if (locale.country === COUNTRY.AU) {
+                label = <Text>Pay in 4</Text>;
+            }
 
             return (
                 <NoncedStyleElement css={ css } nonce={ '' }>
                     <PPLogo optional logoColor={ logoColor } />
                     <Space />
-                    { text }
+                    { label }
                 </NoncedStyleElement>
             );
         },

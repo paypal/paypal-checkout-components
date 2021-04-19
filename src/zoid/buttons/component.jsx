@@ -5,33 +5,34 @@
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID } from '@paypal/sdk-client/src';
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize } from 'belter/src';
-import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV } from '@paypal/sdk-constants/src';
+import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop } from 'belter/src';
+import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
-import { getSessionID } from '../../lib';
+import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
-import { determineFlow } from './util';
+import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment, getVenmoExperiment } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
-    const queriedEligibleFunding = [];
+    const enableVenmoExperiment = createVenmoExperiment();
 
+    const queriedEligibleFunding = [];
     return create({
         tag:  'paypal-buttons',
         url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
 
         domain: getPayPalDomainRegex(),
-        
+
         autoResize: {
             width:  false,
             height: true
@@ -62,7 +63,17 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         },
 
         eligible: ({ props }) => {
-            const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
+            const {
+                fundingSource,
+                onShippingChange,
+                style = {},
+                applePaySupport = isApplePaySupported(),
+                fundingEligibility = getRefinedFundingEligibility(),
+                supportsPopups = userAgentSupportsPopups(),
+                supportedNativeBrowser = isSupportedNativeBrowser(),
+                experiment = getVenmoExperiment(enableVenmoExperiment)
+            } = props;
+
             const flow = determineFlow(props);
 
             if (!fundingSource) {
@@ -80,7 +91,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const platform           = getPlatform();
             const components         = getComponents();
 
-            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment })) {
                 return {
                     eligible: true
                 };
@@ -99,14 +110,15 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
 
                 validate: ({ props }) => {
-                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility() } = props;
+                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), applePaySupport, supportsPopups, supportedNativeBrowser } = props;
+
                     const flow = determineFlow(props);
                     const { layout } = style;
-        
+
                     const platform           = getPlatform();
                     const components         = getComponents();
 
-                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow })) {
+                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser })) {
                         throw new Error(`${ fundingSource } is not eligible`);
                     }
                 }
@@ -127,6 +139,16 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 },
 
                 default: () => ({})
+            },
+
+            storageState: {
+                type:  'object',
+                value: () => storageState
+            },
+
+            sessionState: {
+                type:  'object',
+                value: () => sessionState
             },
 
             components: {
@@ -216,6 +238,21 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 }
             },
 
+            onInit: {
+                type:     'function',
+                required: false,
+                default:  () => noop,
+                decorate: ({ props, value = noop }) => {
+                    return (...args) => {
+                        if (enableVenmoExperiment) {
+                            enableVenmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        }
+
+                        return value(...args);
+                    };
+                }
+            },
+
             getQueriedEligibleFunding: {
                 type:  'function',
                 value: () => {
@@ -247,10 +284,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value: getEnableThreeDomainSecure
             },
 
-            correlationID: {
+            sdkCorrelationID: {
                 type:       'string',
                 required:   false,
-                value:      getCorrelationID
+                value:      getCorrelationID,
+                queryParam: true
             },
 
             storageID: {
@@ -276,7 +314,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 queryParam: true
             },
-            
+
             env: {
                 type:       'string',
                 queryParam: true,
@@ -325,9 +363,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      () => {
-                    return {};
-                }
+                value:      () => getVenmoExperiment(enableVenmoExperiment)
             },
 
             flow: {
@@ -380,19 +416,19 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 queryParam: true,
                 value:      getEnableFunding
             },
-            
+
             disableFunding: {
                 type:       'array',
                 queryParam: true,
                 value:      getDisableFunding
             },
-            
+
             disableCard: {
                 type:       'array',
                 queryParam: true,
                 value:      getDisableCard
             },
-            
+
             merchantID: {
                 type:       'array',
                 queryParam: true,
@@ -408,7 +444,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     };
                 }
             },
-            
+
             getPageUrl: {
                 type:  'function',
                 value: () => {
@@ -426,7 +462,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             clientMetadataID: {
                 type:       'string',
                 required:   false,
-                value:      getClientMetadataID,
+                default:    getClientMetadataID,
                 queryParam: true
             },
 
@@ -449,6 +485,48 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:     'object',
                 required: false,
                 default:  () => window.__TEST_WALLET__
+            },
+
+            paymentMethodNonce: {
+                type:       'string',
+                queryParam: true,
+                required:   false
+            },
+
+            branded: {
+                type:       'boolean',
+                queryParam: true,
+                required:   false
+            },
+
+            applePaySupport: {
+                type:       'boolean',
+                value:      isApplePaySupported,
+                queryParam: true
+            },
+
+            supportsPopups: {
+                type:       'boolean',
+                value:      () => userAgentSupportsPopups(),
+                queryParam: true
+            },
+
+            supportedNativeBrowser: {
+                type:       'boolean',
+                value:      isSupportedNativeBrowser,
+                queryParam: true
+            },
+
+            userExperienceFlow: {
+                type:       'string',
+                required:   false,
+                value:      getUserExperienceFlow
+            },
+
+            applePay: {
+                type:       'function',
+                required:   false,
+                value:      applePaySession
             }
         }
     });

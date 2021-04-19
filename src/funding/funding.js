@@ -4,7 +4,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
 import { values } from 'belter/src';
 
-import type { Wallet } from '../types';
+import type { Wallet, Experiment as VenmoExperiment } from '../types';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
 import type { OnShippingChange } from '../ui/buttons/props';
 
@@ -18,11 +18,15 @@ type IsFundingEligibleOptions = {|
     fundingEligibility : FundingEligibilityType,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
-    wallet? : ?Wallet
+    wallet? : ?Wallet,
+    applePaySupport : boolean,
+    supportsPopups : boolean,
+    supportedNativeBrowser : boolean,
+    experiment? : VenmoExperiment
 |};
 
 export function isFundingEligible(source : $Values<typeof FUNDING>,
-    { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet } : IsFundingEligibleOptions) : boolean {
+    { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment } : IsFundingEligibleOptions) : boolean {
 
     if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
         return false;
@@ -58,6 +62,20 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
+    if (fundingConfig.requires) {
+        if (fundingConfig.requires.popup === true && supportsPopups === false) {
+            return false;
+        }
+
+        if (fundingConfig.requires.applepay === true && applePaySupport === false) {
+            return false;
+        }
+
+        if (fundingConfig.requires.native === true && supportedNativeBrowser === false) {
+            return false;
+        }
+    }
+
     if (fundingConfig.shippingChange === false && onShippingChange) {
         return false;
     }
@@ -66,20 +84,24 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
+    if (source === FUNDING.VENMO && experiment && experiment.enableVenmo === false) {
+        return false;
+    }
+
     return true;
 }
 
-export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet } :
+export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment } :
     {| fundingSource : ?$Values<typeof FUNDING>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>,
     platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
+    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, applePaySupport : boolean, supportsPopups : boolean, supportedNativeBrowser : boolean, experiment : VenmoExperiment |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
 
     if (fundingSource) {
         return [ fundingSource ];
     }
 
     let eligibleFunding = values(FUNDING).filter(source =>
-        isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet }));
+        isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment }));
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {
         eligibleFunding = eligibleFunding.slice(0, 2);

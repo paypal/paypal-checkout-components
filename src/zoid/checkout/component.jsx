@@ -75,7 +75,7 @@ export function getCheckoutComponent() : CheckoutComponent {
                     value:      getSessionID,
                     queryParam: true
                 },
-        
+
                 buttonSessionID: {
                     type:       'string',
                     queryParam: true,
@@ -159,6 +159,12 @@ export function getCheckoutComponent() : CheckoutComponent {
 
                 standaloneFundingSource: {
                     type:       'string',
+                    queryParam: true,
+                    required:   false
+                },
+
+                branded: {
+                    type:       'boolean',
                     queryParam: true,
                     required:   false
                 },

@@ -5,7 +5,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import { wrapPromise } from 'belter/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 
-import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, mockProp } from '../common';
+import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, WEBVIEW_USER_AGENT, mockProp } from '../common';
 
 describe(`paypal standalone buttons`, () => {
 
@@ -24,8 +24,12 @@ describe(`paypal standalone buttons`, () => {
 
         it(`should render a standalone ${ fundingSource } button and succeed when eligible`, () => {
             return wrapPromise(({ expect }) => {
-                if (fundingSource === FUNDING.VENMO) {
+                if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
                     window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+                    window.ApplePaySession = {
+                        canMakePayments: () => true,
+                        supportsVersion: () => true
+                    };
                 }
 
                 const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
@@ -48,18 +52,18 @@ describe(`paypal standalone buttons`, () => {
                     fundingSource
 
                 });
-                
+
                 if (!button.isEligible()) {
                     throw new Error(`Expected button to be eligible`);
                 }
-                
+
                 return button.render('#testContainer');
             });
         });
 
-        it(`should render a standalone ${ fundingSource } button and error out when not eligible`, () => {
+        it(`should not render a standalone ${ fundingSource } button and error out when not eligible`, () => {
             return wrapPromise(({ expect }) => {
-                if (fundingSource === FUNDING.VENMO) {
+                if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
                     window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
                 }
 
@@ -73,7 +77,7 @@ describe(`paypal standalone buttons`, () => {
                 if (button.isEligible()) {
                     throw new Error(`Expected button to not be eligible`);
                 }
-                
+
                 return button.render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
                     mockEligibility.cancel();
                 });
@@ -97,6 +101,26 @@ describe(`paypal standalone buttons`, () => {
 
             return button.render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
                 mockEligibility.cancel();
+            });
+        });
+    });
+
+    it(`should render a standalone venmo button and error out for webviews`, () => {
+        return wrapPromise(({ expect }) => {
+            const fundingSource = FUNDING.VENMO;
+            window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+
+            const button = window.paypal.Buttons({
+                test: {},
+                fundingSource
+            });
+
+            if (button.isEligible()) {
+                throw new Error(`Expected button to not be eligible`);
+            }
+
+            return button.render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
+                window.navigator.mockUserAgent = '';
             });
         });
     });

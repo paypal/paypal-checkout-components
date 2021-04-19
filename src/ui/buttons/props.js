@@ -1,3 +1,4 @@
+/* eslint-disable max-lines, eslint-comments/disable-enable-pair  */
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -165,6 +166,64 @@ export type Personalization = {|
     |}
 |};
 
+export type ApplePayErrorCode = 'shippingContactInvalid' | 'billingContactInvalid' | 'addressUnserviceable' | 'unknown';
+export type ApplePayContactField = 'phoneNumber' | 'emailAddress' | 'givenName' | 'familyName' | 'phoneticGivenName' | 'phoneticFamilyName' | 'addressLines' | 'subLocality' | 'locality' | 'postalCode' | 'subAdministrativeArea' | 'administrativeArea' | 'country' | 'countryCode';
+
+export type ApplePayError = {|
+    code : ApplePayErrorCode,
+    contactField : ApplePayContactField,
+    message : string
+|};
+
+export type ApplePayLineItemType = 'final' | 'pending';
+export type ApplePayLineItem = {|
+    type : ApplePayLineItemType,
+    label : string,
+    amount : string
+|};
+
+export type ApplePayShippingMethod = {|
+    label : string,
+    detail : string,
+    amount : string,
+    identifier : string
+|};
+
+export type ApplePayShippingContactUpdate = {|
+    errors? : $ReadOnlyArray<ApplePayErrorCode>,
+    newShippingMethods? : $ReadOnlyArray<ApplePayShippingMethod>,
+    newTotal : ApplePayLineItem,
+    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
+|};
+
+export type ApplePayPaymentMethodUpdate = {|
+    newTotal : ApplePayLineItem,
+    newLineItems : $ReadOnlyArray<ApplePayLineItem>
+|};
+
+export type ApplePayShippingMethodUpdate = {|
+    newTotal : ApplePayLineItem,
+    newLineItems : $ReadOnlyArray<ApplePayLineItem>
+|};
+
+export type ApplePayPaymentAuthorizationResult = {|
+    status : number,
+    errors? : $ReadOnlyArray<ApplePayError>
+|};
+
+export type ApplePaySessionConfig = {|
+    begin : () => void,
+    addEventListener : (string, Function) => void,
+    // eslint-disable-next-line flowtype/no-weak-types
+    completeMerchantValidation : (validatedSession : any) => void,
+    completeShippingMethodSelection : (update : ApplePayShippingMethodUpdate | {||}) => void,
+    completeShippingContactSelection : (update : ApplePayShippingContactUpdate | {||}) => void,
+    completePaymentMethodSelection : (update : ApplePayPaymentMethodUpdate | {||}) => void,
+    completePayment : (result : ApplePayPaymentAuthorizationResult) => void
+|};
+
+export type ApplePaySessionConfigRequest = (version : number, request : Object) => ApplePaySessionConfig;
+
 export type RenderButtonProps = {|
     style : ButtonStyle,
     locale : LocaleType,
@@ -189,7 +248,11 @@ export type RenderButtonProps = {|
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,
-    userIDToken : ?string
+    userIDToken : ?string,
+    applePay : ApplePaySessionConfig,
+    applePaySupport : boolean,
+    supportsPopups : boolean,
+    supportedNativeBrowser : boolean
 |};
 
 export type PrerenderDetails = {|
@@ -233,7 +296,11 @@ export type ButtonProps = {|
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,
-    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>
+    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
+    supportsPopups : boolean,
+    supportedNativeBrowser : boolean,
+    applePaySupport : boolean,
+    applePay : ApplePaySessionConfig
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -266,7 +333,11 @@ export type ButtonPropsInputs = {
     flow? : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,
-    userIDToken : ?string
+    userIDToken : ?string,
+    applePay : ApplePaySessionConfig,
+    applePaySupport : boolean,
+    supportsPopups : boolean,
+    supportedNativeBrowser : boolean
 };
 
 export const DEFAULT_STYLE = {
@@ -307,16 +378,17 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         throw new Error(`Expected ${ fundingSource || FUNDING.PAYPAL } to be eligible`);
     }
 
-    style.color = style.color ? style.color : fundingConfig.colors[0];
     const {
         label,
         layout = fundingSource ? BUTTON_LAYOUT.HORIZONTAL : fundingConfig.layouts[0],
-        color = fundingConfig.colors[0],
         shape = fundingConfig.shapes[0],
         tagline = (layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource),
         height,
         period
     } = style;
+
+    // if color is a falsy value, set it to the default color from the funding config
+    const color = style.color ? style.color : fundingConfig.colors[0];
 
     if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
         throw new Error(`Invalid layout: ${ layout }`);
@@ -338,7 +410,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         if (typeof height !== 'number') {
             throw new TypeError(`Expected style.height to be a number, got: ${ height }`);
         }
-        
+
         const [ minHeight, maxHeight ] = [ BUTTON_SIZE_STYLE[BUTTON_SIZE.SMALL].minHeight, BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight ];
 
         if (height < minHeight || height > maxHeight) {
@@ -399,7 +471,11 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         flow = BUTTON_FLOW.PURCHASE,
         experiment = getDefaultExperiment(),
         vault,
-        userIDToken
+        userIDToken,
+        applePay,
+        applePaySupport = false,
+        supportsPopups = false,
+        supportedNativeBrowser = false
     } = props;
 
     const { country, lang } = locale;
@@ -437,7 +513,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Invalid funding source: ${ fundingSource }`);
         }
 
-        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet })) {
+        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser })) {
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
@@ -446,5 +522,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
-        experiment, vault, userIDToken };
+        experiment, vault, userIDToken, applePay, applePaySupport, supportsPopups, supportedNativeBrowser };
 }

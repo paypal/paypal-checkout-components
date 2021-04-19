@@ -3,7 +3,7 @@
 
 import { node, dom } from 'jsx-pragmatic/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { getElement, isDevice, memoize } from 'belter/src';
+import { getElement, isDevice, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups } from 'belter/src';
 import { PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 import { getRememberedFunding } from '@paypal/funding-components/src';
 import { getComponents, getFundingEligibility, getEnv, getCSPNonce } from '@paypal/sdk-client/src';
@@ -11,6 +11,7 @@ import { getComponents, getFundingEligibility, getEnv, getCSPNonce } from '@payp
 import type { OnShippingChange } from '../ui/buttons/props';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
 import { determineEligibleFunding, isFundingEligible } from '../funding';
+import { isSupportedNativeBrowser, createVenmoExperiment, getVenmoExperiment } from '../zoid/buttons/util';
 
 import { MarksElement } from './template';
 
@@ -38,8 +39,12 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
         const layout = BUTTON_LAYOUT.VERTICAL;
         const components = getComponents();
         const flow = BUTTON_FLOW.PURCHASE;
-        const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout, flow });
-        const experiment = {};
+        const applePaySupport = isApplePaySupported();
+        const supportsPopups = userAgentSupportsPopups();
+        const supportedNativeBrowser = isSupportedNativeBrowser();
+        const enableVenmoExperiment = createVenmoExperiment();
+        const experiment = getVenmoExperiment(enableVenmoExperiment);
+        const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
         const env = getEnv();
         const nonce = getCSPNonce() || '';
 
@@ -48,7 +53,7 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
                 return true;
             }
 
-            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow });
+            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
         };
 
         const render = (container) => {

@@ -41,7 +41,13 @@ export type ContentType = {|
 |};
 
 export type Experiment = {|
+    enableVenmo : boolean
+|};
 
+export type Requires = {|
+    applepay? : boolean,
+    popup? : boolean,
+    native? : boolean
 |};
 
 export type LazyExport<T> = {|

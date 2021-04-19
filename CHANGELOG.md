@@ -1,3 +1,138 @@
+## <small>5.0.153 (2021-04-07)</small>
+
+* Added branded standalone button query param (#1575) ([accd923](https://github.com/paypal/paypal-checkout-components/commit/accd923)), closes [#1575](https://github.com/paypal/paypal-checkout-components/issues/1575)
+* Apple Pay Marks (#1586) ([05a0d94](https://github.com/paypal/paypal-checkout-components/commit/05a0d94)), closes [#1586](https://github.com/paypal/paypal-checkout-components/issues/1586)
+* Remove correlationID from buttons (#1597) ([50ec529](https://github.com/paypal/paypal-checkout-components/commit/50ec529)), closes [#1597](https://github.com/paypal/paypal-checkout-components/issues/1597)
+* Update workflow with new logic for "awaiting response" label (#1510) ([08114ec](https://github.com/paypal/paypal-checkout-components/commit/08114ec)), closes [#1510](https://github.com/paypal/paypal-checkout-components/issues/1510)
+* Use basic eligibility for venmo experiment (#1601) ([54e88ae](https://github.com/paypal/paypal-checkout-components/commit/54e88ae)), closes [#1601](https://github.com/paypal/paypal-checkout-components/issues/1601)
+
+
+
+## <small>5.0.152 (2021-03-29)</small>
+
+* Enable script namespace feature (#1594) ([a07ab20](https://github.com/paypal/paypal-checkout-components/commit/a07ab20)), closes [#1594](https://github.com/paypal/paypal-checkout-components/issues/1594)
+* Update GitHub actions coverage (#1591) ([92170c6](https://github.com/paypal/paypal-checkout-components/commit/92170c6)), closes [#1591](https://github.com/paypal/paypal-checkout-components/issues/1591)
+
+
+
+## <small>5.0.151 (2021-03-26)</small>
+
+* Ramp venmo experiments to 25% (#1590) ([1e41dad](https://github.com/paypal/paypal-checkout-components/commit/1e41dad)), closes [#1590](https://github.com/paypal/paypal-checkout-components/issues/1590)
+
+
+
+## <small>5.0.150 (2021-03-25)</small>
+
+* Apple Pay (#1582) ([0cc60be](https://github.com/paypal/paypal-checkout-components/commit/0cc60be)), closes [#1582](https://github.com/paypal/paypal-checkout-components/issues/1582)
+* Ramp venmo experiments to 50% (#1588) ([da16912](https://github.com/paypal/paypal-checkout-components/commit/da16912)), closes [#1588](https://github.com/paypal/paypal-checkout-components/issues/1588)
+
+
+
+## <small>5.0.149 (2021-03-23)</small>
+
+* added button rendering controls to dev/index.htm (#1581) ([d118cf1](https://github.com/paypal/paypal-checkout-components/commit/d118cf1)), closes [#1581](https://github.com/paypal/paypal-checkout-components/issues/1581)
+* Block SFVC context for Venmo (#1580) ([115f207](https://github.com/paypal/paypal-checkout-components/commit/115f207)), closes [#1580](https://github.com/paypal/paypal-checkout-components/issues/1580)
+* Persist correlationID in the query string (#1584) ([e643d84](https://github.com/paypal/paypal-checkout-components/commit/e643d84)), closes [#1584](https://github.com/paypal/paypal-checkout-components/issues/1584)
+* Rename prop to sdkCorrelationID (#1585) ([f622778](https://github.com/paypal/paypal-checkout-components/commit/f622778)), closes [#1585](https://github.com/paypal/paypal-checkout-components/issues/1585)
+* Update paylater label (#1578) ([a1f0ed9](https://github.com/paypal/paypal-checkout-components/commit/a1f0ed9)), closes [#1578](https://github.com/paypal/paypal-checkout-components/issues/1578)
+
+
+
+## <small>5.0.148 (2021-03-17)</small>
+
+* Add data-user-experience-flow (#1570) ([1e22e33](https://github.com/paypal/paypal-checkout-components/commit/1e22e33)), closes [#1570](https://github.com/paypal/paypal-checkout-components/issues/1570)
+* Update style tests (#1573) ([e6b06e2](https://github.com/paypal/paypal-checkout-components/commit/e6b06e2)), closes [#1573](https://github.com/paypal/paypal-checkout-components/issues/1573)
+
+
+
+## <small>5.0.147 (2021-03-16)</small>
+
+* Ramp venmo ios experiment to 5% (#1571) ([a77041b](https://github.com/paypal/paypal-checkout-components/commit/a77041b)), closes [#1571](https://github.com/paypal/paypal-checkout-components/issues/1571)
+
+
+
+## <small>5.0.146 (2021-03-15)</small>
+
+* Clean up commented code ([7b060df](https://github.com/paypal/paypal-checkout-components/commit/7b060df))
+* Restrict who is eligible for venmo experiment (#1569) ([b293aec](https://github.com/paypal/paypal-checkout-components/commit/b293aec)), closes [#1569](https://github.com/paypal/paypal-checkout-components/issues/1569)
+* update size (#1564) ([54ea975](https://github.com/paypal/paypal-checkout-components/commit/54ea975)), closes [#1564](https://github.com/paypal/paypal-checkout-components/issues/1564)
+* Update Venmo ramp to 5% (#1563) ([9b81ca8](https://github.com/paypal/paypal-checkout-components/commit/9b81ca8)), closes [#1563](https://github.com/paypal/paypal-checkout-components/issues/1563)
+* chore(release): 5.0.145 :tada: ([8141607](https://github.com/paypal/paypal-checkout-components/commit/8141607))
+
+
+
+## <small>5.0.145 (2021-03-08)</small>
+
+* Clean up commented code ([7b060df](https://github.com/paypal/paypal-checkout-components/commit/7b060df))
+* update size (#1564) ([54ea975](https://github.com/paypal/paypal-checkout-components/commit/54ea975)), closes [#1564](https://github.com/paypal/paypal-checkout-components/issues/1564)
+* Update Venmo ramp to 5% (#1563) ([9b81ca8](https://github.com/paypal/paypal-checkout-components/commit/9b81ca8)), closes [#1563](https://github.com/paypal/paypal-checkout-components/issues/1563)
+
+
+
+## <small>5.0.144 (2021-03-02)</small>
+
+* Create separate venmo experiments based on mobile platform (#1558) ([e52523a](https://github.com/paypal/paypal-checkout-components/commit/e52523a)), closes [#1558](https://github.com/paypal/paypal-checkout-components/issues/1558)
+
+
+
+## <small>5.0.143 (2021-02-25)</small>
+
+* Add button labels for sq_AL, si_LK (#1545) ([6bc7a3d](https://github.com/paypal/paypal-checkout-components/commit/6bc7a3d)), closes [#1545](https://github.com/paypal/paypal-checkout-components/issues/1545)
+* Add client-side experiment for venmo (#1549) ([550ea82](https://github.com/paypal/paypal-checkout-components/commit/550ea82)), closes [#1549](https://github.com/paypal/paypal-checkout-components/issues/1549)
+* Allow clientMetadataID to be passed into button render ([01d90b4](https://github.com/paypal/paypal-checkout-components/commit/01d90b4))
+* chore(release): 5.0.141 :tada: ([e884748](https://github.com/paypal/paypal-checkout-components/commit/e884748))
+* chore(release): 5.0.142 :tada: ([b9ceed5](https://github.com/paypal/paypal-checkout-components/commit/b9ceed5))
+
+
+
+## <small>5.0.142 (2021-02-19)</small>
+
+* Add button labels for sq_AL, si_LK (#1545) ([6bc7a3d](https://github.com/paypal/paypal-checkout-components/commit/6bc7a3d)), closes [#1545](https://github.com/paypal/paypal-checkout-components/issues/1545)
+
+
+
+## <small>5.0.141 (2021-02-11)</small>
+
+* Allow clientMetadataID to be passed into button render ([01d90b4](https://github.com/paypal/paypal-checkout-components/commit/01d90b4))
+
+
+
+## <small>5.0.140 (2021-02-08)</small>
+
+* Add 'supportedNativeBrowser' as a valid query param (#1538) ([c235ead](https://github.com/paypal/paypal-checkout-components/commit/c235ead)), closes [#1538](https://github.com/paypal/paypal-checkout-components/issues/1538)
+
+
+
+## <small>5.0.139 (2021-02-05)</small>
+
+* Fix eligibility call for standalone venmo button (#1537) ([daba12f](https://github.com/paypal/paypal-checkout-components/commit/daba12f)), closes [#1537](https://github.com/paypal/paypal-checkout-components/issues/1537)
+
+
+
+## <small>5.0.138 (2021-02-03)</small>
+
+* add paymentMethodNonce and branded to button component (#1533) ([6498775](https://github.com/paypal/paypal-checkout-components/commit/6498775)), closes [#1533](https://github.com/paypal/paypal-checkout-components/issues/1533)
+* Adding nonce and branded params (#1530) ([282b863](https://github.com/paypal/paypal-checkout-components/commit/282b863)), closes [#1530](https://github.com/paypal/paypal-checkout-components/issues/1530)
+* Pass state down to buttons and fields components ([049ac3b](https://github.com/paypal/paypal-checkout-components/commit/049ac3b))
+* Update venmo eligibility (#1535) ([2b0b2db](https://github.com/paypal/paypal-checkout-components/commit/2b0b2db)), closes [#1535](https://github.com/paypal/paypal-checkout-components/issues/1535)
+* chore(release): 5.0.136 :tada: ([8eb0ca3](https://github.com/paypal/paypal-checkout-components/commit/8eb0ca3))
+* chore(release): 5.0.137 :tada: ([3760c94](https://github.com/paypal/paypal-checkout-components/commit/3760c94))
+
+
+
+## <small>5.0.137 (2021-01-28)</small>
+
+* add paymentMethodNonce and branded to button component (#1533) ([6498775](https://github.com/paypal/paypal-checkout-components/commit/6498775)), closes [#1533](https://github.com/paypal/paypal-checkout-components/issues/1533)
+
+
+
+## <small>5.0.136 (2021-01-27)</small>
+
+* Adding nonce and branded params (#1530) ([282b863](https://github.com/paypal/paypal-checkout-components/commit/282b863)), closes [#1530](https://github.com/paypal/paypal-checkout-components/issues/1530)
+* Pass state down to buttons and fields components ([049ac3b](https://github.com/paypal/paypal-checkout-components/commit/049ac3b))
+
+
+
 ## <small>5.0.135 (2021-01-13)</small>
 
 * Fix tagline (#1517) ([ae36f55](https://github.com/paypal/paypal-checkout-components/commit/ae36f55)), closes [#1517](https://github.com/paypal/paypal-checkout-components/issues/1517)

@@ -1,5 +1,7 @@
 /* @flow */
 
+import { __POST_ROBOT__, __ZOID__ } from '../globals';
+
 export const fundingEligibility = {
     bancontact: {
         eligible: false
@@ -62,6 +64,9 @@ export const fundingEligibility = {
     sofort: {
         eligible: false
     },
+    applepay: {
+        eligible: true
+    },
     venmo: {
         eligible: false
     },
@@ -123,5 +128,17 @@ export const testGlobals = {
     __VERSION__:        '1.0.55',
     __NAMESPACE__:      'paypal',
     __COMPONENTS__:     [ 'buttons' ],
-    __CORRELATION_ID__: 'abc123'
+    __CORRELATION_ID__: 'abc123',
+
+    __ZOID__: {
+        ...__ZOID__,
+        __SCRIPT_NAMESPACE__: false
+
+    },
+
+    __POST_ROBOT__: {
+        ...__POST_ROBOT__,
+        __SCRIPT_NAMESPACE__: false
+    }
+
 };

@@ -7,7 +7,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import type { ContentType, WalletInstrument, Experiment, Wallet } from '../types';
+import type { ContentType, WalletInstrument, Experiment, Requires, Wallet } from '../types';
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW, TEXT_COLOR } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
 
@@ -71,6 +71,7 @@ export type FundingSourceConfig = {|
     enabled : boolean,
     automatic : boolean,
     shippingChange? : boolean,
+    requires? : Requires,
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
     flows : $ReadOnlyArray<$Values<typeof BUTTON_FLOW>>,
@@ -80,6 +81,7 @@ export type FundingSourceConfig = {|
     eligible? : ({| components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType,
     fundingSource : ?$Values<typeof FUNDING>, layout : ?$Values<typeof BUTTON_LAYOUT>, wallet : ?Wallet |}) => boolean,
     Logo : (LogoOptions) => ChildType,
+    Mark? : () => ChildType,
     Label : (LabelOptions) => ChildType,
     WalletLabel? : (WalletLabelOptions) => ?ChildType,
     Tag? : (TagOptions) => ?ChildType,

@@ -93,11 +93,17 @@ export const buttonContent : ButtonContentMap = {
     ru: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Обработано </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
+    si: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>බලගන්වන්නේ </Text><PayPalLogo logoColor={ logoColor } /><Text> විසිනි</Text></Fragment>
+    },
     sk: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Používa technológiu </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
     sl: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Powered by </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
+    },
+    sq: {
+        PoweredBy: ({ logoColor }) => <Fragment><Text>Mundësuar nga </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
     },
     sv: {
         PoweredBy: ({ logoColor }) => <Fragment><Text>Tillhandahålls av </Text><PayPalLogo logoColor={ logoColor } /></Fragment>
