@@ -69,7 +69,6 @@ export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : F
                         font-size: 0;
                         height: 150px;
                         min-height: 150px;
-                        background-color: white;
                         transition: all 0.5s ease-in-out;
                     }
 
