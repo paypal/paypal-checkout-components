@@ -15,6 +15,7 @@ import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 import type { ContentType, Wallet, Experiment } from '../../types';
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig, isFundingEligible } from '../../funding';
+import { normalizeCSPNonce } from '../../lib';
 
 import { BUTTON_SIZE_STYLE } from './config';
 
@@ -501,9 +502,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         throw new Error(`Expected valid platform, got ${ platform || 'undefined' }`);
     }
 
-    if (csp && csp.nonce) {
-        nonce = csp.nonce;
-    }
+    nonce = normalizeCSPNonce({ csp, nonce });
 
     if (fundingSource) {
         if (SUPPORTED_FUNDING_SOURCES.indexOf(fundingSource) === -1) {

@@ -6,6 +6,7 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
 import { getVersion } from '@paypal/sdk-client/src';
 
+import { normalizeCSPNonce } from '../../lib';
 import { BUTTON_SIZE, ATTRIBUTE } from '../../constants';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/config';
 import { type ButtonProps } from '../../ui/buttons/props';
@@ -53,12 +54,13 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
     });
 
     // $FlowFixMe
-    const { style } = props;
+    const { style, csp, nonce: nonceProp } = props;
     const { label, layout, height: buttonHeight } = style;
+    const nonce = normalizeCSPNonce({ csp, nonce: nonceProp });
 
     let minimumSize = MINIMUM_SIZE[layout];
     const maximumSize = MAXIMUM_SIZE[layout];
-    
+
     if (buttonHeight) {
         const possibleSizes = values(BUTTON_SIZE).filter(possibleSize => {
             return BUTTON_SIZE_STYLE[possibleSize] && buttonHeight &&
@@ -90,8 +92,8 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
             class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }
             { ...({ [ATTRIBUTE.VERSION]: `${ getVersion() }` }) }
             onRender={ setupAutoResize } >
-            
-            <style>
+
+            <style nonce={ nonce }>
                 {`
                     #${ uid } {
                         position: relative;
