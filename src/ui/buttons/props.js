@@ -317,14 +317,14 @@ export type ButtonPropsInputs = {
     remember? : $PropertyType<ButtonProps, 'remember'> | void,
     sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
     buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
-    nonce? : string,
+    nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
     personalization? : Personalization,
     clientAccessToken? : ?string,
     wallet? : ?Wallet,
-    csp? : {|
-        nonce? : string
+    csp : {|
+        nonce : string
     |},
     content? : ContentType,
     flow? : $Values<typeof BUTTON_FLOW>,
@@ -458,7 +458,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         sessionID = uniqueID(),
         buttonSessionID = uniqueID(),
         components = [ COMPONENTS.BUTTONS ],
-        nonce = '',
+        nonce,
         onShippingChange,
         personalization,
         clientAccessToken,
