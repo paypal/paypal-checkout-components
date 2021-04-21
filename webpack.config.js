@@ -19,6 +19,7 @@ type SmartWebpackConfig = {|
 
 function getSmartWebpackConfig({ entry, env, filename, minify = true, debug = false, libraryTarget = 'window', modulename } : SmartWebpackConfig) : Object {
     return getWebpackConfig({
+        web:           false,
         env,
         entry:         `${ __dirname }/${ entry }`,
         modulename,
