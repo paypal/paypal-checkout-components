@@ -23,8 +23,9 @@ export function getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT } :
 
         return ZalgoPromise.try(() => {
             if (accessToken) {
+                upgradeLSATExperiment.logStart();
+
                 if (upgradeLSAT) {
-                    upgradeLSATExperiment.logStart();
                     return createOrder()
                         .then(orderID => upgradeFacilitatorAccessToken(facilitatorAccessToken, { buyerAccessToken: accessToken, orderID }))
                         .then(() => {
