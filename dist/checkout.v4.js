@@ -2538,7 +2538,7 @@
         locales: constants.A,
         scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.329",
+        version: "4.0.328",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -2549,10 +2549,10 @@
         stage: "msmaster",
         stageDomain: "qa.paypal.com",
         get stageUrl() {
-            return "www." + config.stage + "." + config.stageDomain;
+            return config.stage + "." + config.stageDomain;
         },
         get apiStageUrl() {
-            return "www." + config.apiStage + "." + config.stageDomain;
+            return config.apiStage + "." + config.stageDomain;
         },
         get localhostUrl() {
             return "http://localhost.paypal.com:" + config.ports.default;
@@ -3049,7 +3049,7 @@
         },
         get paypalUrls() {
             var _ref;
-            return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://" + config.stageUrl, 
+            return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://www." + config.stageUrl, 
             _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref[constants.t.PRODUCTION] = "https://www.paypal.com", 
             _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
             _ref[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
@@ -3057,14 +3057,14 @@
         },
         get paypalDomains() {
             var _ref2;
-            return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:8000", _ref2[constants.t.STAGE] = "https://" + config.stageUrl, 
+            return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:8000", _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, 
             _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", 
             _ref2[constants.t.TEST] = "mock://www.paypal.com", _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
             _ref2;
         },
         get wwwApiUrls() {
             var _ref3;
-            return (_ref3 = {})[constants.t.LOCAL] = "https://" + config.stageUrl, _ref3[constants.t.STAGE] = "https://" + config.stageUrl, 
+            return (_ref3 = {})[constants.t.LOCAL] = "https://www." + config.stageUrl, _ref3[constants.t.STAGE] = "https://www." + config.stageUrl, 
             _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", 
             _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
             _ref3;
@@ -6647,7 +6647,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.329";
+            payload.version = "4.0.328";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -7502,18 +7502,18 @@
     var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
     __webpack_require__(22);
-    if (window.paypal && "4.0.329" === window.paypal.version) {
+    if (window.paypal && "4.0.328" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.329"
+            version: "4.0.328"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.329) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.328) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.329" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.328" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.329"
+            version: "4.0.328"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.329");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.328");
     }
     try {
         var _interface = __webpack_require__(41);
@@ -10022,7 +10022,7 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.329";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.328";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -10032,7 +10032,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.329.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.328.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -23134,7 +23134,7 @@
                 logoColor: "blue"
             })));
         }(props_normalizeProps(props)) : null;
-        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.329", 
+        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.328", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -23182,7 +23182,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.329", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.328", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -24496,7 +24496,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.329"
+                    ver: "4.0.328"
                 };
             }));
             Object(beaver_logger_client.a)((function() {
@@ -24662,7 +24662,7 @@
     }
     var interface_postRobot = src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.329";
+    var interface_version = "4.0.328";
     var interface_Checkout;
     var interface_BillingPage;
     var PayPalCheckout;
