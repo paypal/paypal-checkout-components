@@ -100,7 +100,10 @@ export function determineEligibleFunding({ fundingSource, layout, platform, fund
         return [ fundingSource ];
     }
 
-    let eligibleFunding = values(FUNDING).filter(source =>
+    const { PAYPAL, PAYLATER, VENMO, APPLEPAY, CARD, ...others } = FUNDING;
+    const orderedFunding = { PAYPAL, PAYLATER, VENMO, APPLEPAY, CARD, ...others };
+
+    let eligibleFunding = values(orderedFunding).filter(source =>
         isFundingEligible(source, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment }));
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {
