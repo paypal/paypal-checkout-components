@@ -167,7 +167,7 @@ export function getButtonMiddleware({
                 <body data-nonce="${ cspNonce }" data-client-version="${ client.version }" data-render-version="${ render.version }">
                     <style nonce="${ cspNonce }">${ buttonStyle }</style>
                     
-                    <div id="buttons-container" class="buttons-container">${ buttonHTML }</div>
+                    <div id="buttons-container" class="buttons-container" role="main" aria-label="PayPal">${ buttonHTML }</div>
 
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
