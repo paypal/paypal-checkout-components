@@ -177,9 +177,9 @@ export type ApplePayError = {|
 
 export type ApplePayLineItemType = 'final' | 'pending';
 export type ApplePayLineItem = {|
-    type : ApplePayLineItemType,
-    label : string,
-    amount : string
+    type? : ApplePayLineItemType,
+    label? : string,
+    amount? : string
 |};
 
 export type ApplePayShippingMethod = {|
@@ -198,12 +198,12 @@ export type ApplePayShippingContactUpdate = {|
 
 export type ApplePayPaymentMethodUpdate = {|
     newTotal : ApplePayLineItem,
-    newLineItems : $ReadOnlyArray<ApplePayLineItem>
+    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
 |};
 
 export type ApplePayShippingMethodUpdate = {|
     newTotal : ApplePayLineItem,
-    newLineItems : $ReadOnlyArray<ApplePayLineItem>
+    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
 |};
 
 export type ApplePayPaymentAuthorizationResult = {|
@@ -249,7 +249,7 @@ export type RenderButtonProps = {|
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    applePay : ApplePaySessionConfig,
+    applePay : ApplePaySessionConfigRequest,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
@@ -297,7 +297,7 @@ export type ButtonProps = {|
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
     applePaySupport : boolean,
-    applePay : ApplePaySessionConfig
+    applePay : ApplePaySessionConfigRequest
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -331,7 +331,7 @@ export type ButtonPropsInputs = {
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    applePay : ApplePaySessionConfig,
+    applePay : ApplePaySessionConfigRequest,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
