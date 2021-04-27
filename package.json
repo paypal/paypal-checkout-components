@@ -87,7 +87,7 @@
     "@paypal/sdk-constants": "^1.0.64",
     "Base64": "^1.0.0",
     "beaver-logger": "^3.0.6",
-    "belter": "^1.0.96",
+    "belter": "^1.0.164",
     "bowser": "^1.7.1",
     "cross-domain-utils": "^2.0.1",
     "form-serialize": "^0.7.2",

@@ -1,6 +1,8 @@
 /* @flow */
 
-import { isDevice, isEligible, supportsPopups } from '../lib';
+import { isDevice, supportsPopups } from 'belter/src';
+
+import { isEligible } from '../lib';
 
 export function isLegacyEligible() : boolean {
 

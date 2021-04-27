@@ -4,11 +4,12 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { prefix, flush as flushLogs } from 'beaver-logger/client';
 import formSerialize from 'form-serialize';
+import { supportsPopups } from 'belter/src';
 
 import { Checkout } from '../checkout';
 import { config } from '../config';
 import { ENV, FPTI } from '../constants';
-import { supportsPopups, once, safeJSON, extendUrl, stringifyError, request } from '../lib';
+import { once, safeJSON, extendUrl, stringifyError, request } from '../lib';
 
 import { setupPostBridge } from './postBridge';
 import { isLegacyEligible } from './eligibility';
@@ -138,7 +139,7 @@ function awaitPaymentTokenAndUrl(event? : ?Event, targetElement? : ?HTMLElement)
 
             info('gettoken_targetelement_start');
             flushLogs();
-    
+
             if (targetElement.tagName.toLowerCase() === 'a') {
                 method = 'get';
                 url = targetElement.getAttribute('href');
@@ -148,7 +149,7 @@ function awaitPaymentTokenAndUrl(event? : ?Event, targetElement? : ?HTMLElement)
                 body = formSerialize(targetElement);
                 contentType = targetElement.getAttribute('enctype') || 'application/x-www-form-urlencoded';
             }
-    
+
             if (method && url) {
                 event.preventDefault();
 
@@ -173,7 +174,7 @@ function awaitPaymentTokenAndUrl(event? : ?Event, targetElement? : ?HTMLElement)
                     });
                     flushLogs();
                 });
-                
+
             } else {
                 warn('gettoken_targetelement_no_method_or_url');
                 flushLogs();
@@ -361,7 +362,7 @@ function handleClickHijack(event, element) : void {
     const { url, paymentToken } = awaitPaymentTokenAndUrl(event, targetElement);
 
     let token;
-    
+
     paymentToken.then(result => {
         token = result;
     });

@@ -7,7 +7,7 @@ import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { info, warn, track, error, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
-import { base64encode, identity, noop } from 'belter/src';
+import { base64encode, identity, noop, isDevice, isIEIntranet } from 'belter/src';
 import { debounce, once } from 'zoid/src/lib';
 
 import { pptm } from '../external';
@@ -16,9 +16,9 @@ import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY, FUNDING_BRAND_LABEL } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, getStorageID, request, getScriptVersion,
-    isIEIntranet, isEligible, getCurrentScriptUrl,
-    getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
+    isEligible, getCurrentScriptUrl,
+    getDomainSetting, extendUrl, rememberFunding,
+    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser, isSupportedNativeBrowser } from '../lib';
 import { rest } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -494,7 +494,7 @@ export const Button : Component<ButtonOptions> = create({
 
                 allowed = Array.isArray(allowed) ? allowed : [];
                 disallowed = Array.isArray(disallowed) ? disallowed : [];
-                
+
                 if (allowed && allowed.indexOf(FUNDING.ITAU) !== -1) {
                     allowed = allowed.filter(source => (source !== FUNDING.ITAU));
                 }
@@ -513,7 +513,7 @@ export const Button : Component<ButtonOptions> = create({
                     remembered = remembered.filter(source => (source !== FUNDING.VENMO));
                 }
 
-                if (!isDevice() || getDomainSetting('disable_venmo')) {
+                if (!isSupportedNativeBrowser() || getDomainSetting('disable_venmo')) {
                     if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
                         disallowed = [ ...disallowed, FUNDING.VENMO ];
                     }
@@ -955,7 +955,7 @@ export const Button : Component<ButtonOptions> = create({
                     layout:       BUTTON_LAYOUT.HORIZONTAL
                 };
             },
-            
+
             decorate(style : Object) : Object {
                 const { label, layout = BUTTON_LAYOUT.HORIZONTAL } = style;
                 if (!label && layout === BUTTON_LAYOUT.HORIZONTAL) {

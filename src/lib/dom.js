@@ -3,13 +3,13 @@
 import { info } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+import { isDevice } from 'belter/src';
 
 import { LANG_TO_DEFAULT_COUNTRY, LOCALE } from '../constants';
 import type { LocaleType } from '../types';
 import { config } from '../config';
 
 import { memoize } from './util';
-import { isDevice } from './device';
 
 function isDocumentReady() : boolean {
     return Boolean(document.body) && document.readyState === 'complete';

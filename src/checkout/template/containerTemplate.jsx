@@ -2,12 +2,11 @@
 /** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { base64encode, supportsPopups } from 'belter/src';
+import { base64encode, supportsPopups, isIos, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
-import { isIos, noop } from '../../lib';
 
 import { containerContent } from './containerContent';
 import { getContainerStyle } from './containerStyle';
