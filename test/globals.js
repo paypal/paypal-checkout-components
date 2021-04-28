@@ -112,7 +112,8 @@ export const testGlobals = {
             __BUTTONS__:     `/base/test/integration/windows/button/index.htm`,
             __MENU__:        `/base/test/integration/windows/menu/index.htm`,
             __CARD_FIELDS__: `/base/test/integration/windows/card-fields/index.htm`,
-            __WALLET__:      `/base/test/integration/windows/wallet/index.htm`
+            __WALLET__:      `/base/test/integration/windows/wallet/index.htm`,
+            __FIELDS__:      `/base/test/integration/windows/fields/index.htm`
         }
     },
 

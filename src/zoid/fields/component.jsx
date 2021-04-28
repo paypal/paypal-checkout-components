@@ -117,6 +117,11 @@ export function getFieldsComponent() : FieldsComponent {
                     value:      getEnv
                 },
 
+                onInit: {
+                    type:     'function',
+                    required: false
+                },
+
                 buyerCountry: {
                     type:       'string',
                     queryParam: true,
