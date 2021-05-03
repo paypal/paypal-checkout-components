@@ -56,7 +56,7 @@
         return {}.hasOwnProperty.call(object, property);
     };
     __webpack_require__.p = "";
-    __webpack_require__(__webpack_require__.s = 37);
+    __webpack_require__(__webpack_require__.s = 36);
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "m", (function() {
@@ -1265,11 +1265,11 @@
     __webpack_require__.d(__webpack_exports__, "v", (function() {
         return global;
     }));
-    var esm_extends = __webpack_require__(9);
+    var esm_extends = __webpack_require__(10);
     var src = __webpack_require__(5);
     var zalgo_promise_src = __webpack_require__(1);
     var cross_domain_safe_weakmap_src = __webpack_require__(14);
-    var error = __webpack_require__(21);
+    var error = __webpack_require__(20);
     function urlEncode(str) {
         return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
     }
@@ -1958,7 +1958,7 @@
         };
         descriptor.value.displayName = name + ":memoized";
     }
-    var post_robot_src = __webpack_require__(11);
+    var post_robot_src = __webpack_require__(12);
     var client = __webpack_require__(3);
     function setLogLevel(logLevel) {
         if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
@@ -2538,7 +2538,7 @@
         locales: constants.A,
         scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.328",
+        version: "4.0.330",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -2549,10 +2549,10 @@
         stage: "msmaster",
         stageDomain: "qa.paypal.com",
         get stageUrl() {
-            return config.stage + "." + config.stageDomain;
+            return "www." + config.stage + "." + config.stageDomain;
         },
         get apiStageUrl() {
-            return config.apiStage + "." + config.stageDomain;
+            return "www." + config.apiStage + "." + config.stageDomain;
         },
         get localhostUrl() {
             return "http://localhost.paypal.com:" + config.ports.default;
@@ -3049,7 +3049,7 @@
         },
         get paypalUrls() {
             var _ref;
-            return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://www." + config.stageUrl, 
+            return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://" + config.stageUrl, 
             _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref[constants.t.PRODUCTION] = "https://www.paypal.com", 
             _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
             _ref[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
@@ -3057,14 +3057,14 @@
         },
         get paypalDomains() {
             var _ref2;
-            return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:8000", _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, 
+            return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:8000", _ref2[constants.t.STAGE] = "https://" + config.stageUrl, 
             _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", 
             _ref2[constants.t.TEST] = "mock://www.paypal.com", _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
             _ref2;
         },
         get wwwApiUrls() {
             var _ref3;
-            return (_ref3 = {})[constants.t.LOCAL] = "https://www." + config.stageUrl, _ref3[constants.t.STAGE] = "https://www." + config.stageUrl, 
+            return (_ref3 = {})[constants.t.LOCAL] = "https://" + config.stageUrl, _ref3[constants.t.STAGE] = "https://" + config.stageUrl, 
             _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", 
             _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
             _ref3;
@@ -4084,6 +4084,554 @@
     0 === window.location.href.indexOf(CONSTANTS.FILE_PROTOCOL) && (CONFIG.ALLOW_POSTMESSAGE_POPUP = !0);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
+    __webpack_require__.d(__webpack_exports__, "c", (function() {
+        return getUserAgent;
+    }));
+    __webpack_require__.d(__webpack_exports__, "h", (function() {
+        return isDevice;
+    }));
+    __webpack_require__.d(__webpack_exports__, "f", (function() {
+        return isAndroid;
+    }));
+    __webpack_require__.d(__webpack_exports__, "l", (function() {
+        return isIos;
+    }));
+    __webpack_require__.d(__webpack_exports__, "n", (function() {
+        return isSFVC;
+    }));
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
+        return device_isIE;
+    }));
+    __webpack_require__.d(__webpack_exports__, "j", (function() {
+        return isIECompHeader;
+    }));
+    __webpack_require__.d(__webpack_exports__, "k", (function() {
+        return isIEIntranet;
+    }));
+    __webpack_require__.d(__webpack_exports__, "t", (function() {
+        return supportsPopups;
+    }));
+    __webpack_require__.d(__webpack_exports__, "g", (function() {
+        return isChrome;
+    }));
+    __webpack_require__.d(__webpack_exports__, "o", (function() {
+        return isSafari;
+    }));
+    __webpack_require__.d(__webpack_exports__, "m", (function() {
+        return isLocalStorageEnabled;
+    }));
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
+        return getElementSafe;
+    }));
+    __webpack_require__.d(__webpack_exports__, "r", (function() {
+        return onResize;
+    }));
+    __webpack_require__.d(__webpack_exports__, "p", (function() {
+        return isShadowElement;
+    }));
+    __webpack_require__.d(__webpack_exports__, "e", (function() {
+        return insertShadowSlot;
+    }));
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return base64encode;
+    }));
+    __webpack_require__.d(__webpack_exports__, "u", (function() {
+        return uniqueID;
+    }));
+    __webpack_require__.d(__webpack_exports__, "q", (function() {
+        return noop;
+    }));
+    __webpack_require__.d(__webpack_exports__, "s", (function() {
+        return once;
+    }));
+    __webpack_require__.d(__webpack_exports__, "v", (function() {
+        return values;
+    }));
+    __webpack_require__.d(__webpack_exports__, "d", (function() {
+        return identity;
+    }));
+    var iPhoneScreenHeightMatrix = {
+        926: {
+            device: "iPhone 12 Pro Max",
+            textSizeHeights: [ 752, 748, 744, 738 ],
+            zoomHeight: {
+                1.15: [ 752, 747, 744, 738 ],
+                1.25: [ 753, 748, 744, 738 ],
+                1.5: [ 752, 749, 744, 738 ],
+                1.75: [ 753, 747, 744, 739 ],
+                2: [ 752, 748, 744 ],
+                2.5: [ 753, 748 ],
+                3: [ 753, 744 ]
+            },
+            maybeSafari: {
+                2: [ 738 ],
+                2.5: [ 745, 738 ],
+                3: [ 747, 738 ]
+            }
+        },
+        896: {
+            device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
+            textSizeHeights: [ 721, 717, 713, 707 ],
+            zoomHeight: {
+                1.15: [ 721, 716, 713, 707 ],
+                1.25: [ 721, 718, 713, 708 ],
+                1.5: [ 722, 717, 713 ],
+                1.75: [ 721, 718, 712, 707 ],
+                2: [ 722, 718, 714, 708 ],
+                2.5: [ 720, 718, 713, 708 ],
+                3: [ 720, 717, 708 ]
+            },
+            maybeSafari: {
+                1.5: [ 707 ],
+                3: [ 714 ]
+            }
+        },
+        844: {
+            device: "iPhone 12, iPhone 12 Pro",
+            textSizeHeights: [ 670, 666, 662, 656 ],
+            zoomHeight: {
+                1.15: [ 670, 666, 662 ],
+                1.25: [ 670, 666, 663, 656 ],
+                1.5: [ 671, 666, 662 ],
+                1.75: [ 670, 667, 662, 656 ],
+                2: [ 670, 666, 662 ],
+                2.5: [ 670, 663 ],
+                3: [ 669, 666, 663, 657 ]
+            },
+            maybeSafari: {
+                1.15: [ 656 ],
+                1.5: [ 656 ],
+                2: [ 656 ],
+                2.5: [ 665, 655 ],
+                3: [ 663 ]
+            }
+        },
+        812: {
+            device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12 Mini",
+            textSizeHeights: [ 641, 637, 633, 627 ],
+            zoomHeight: {
+                1.15: [ 641, 637, 633, 627 ],
+                1.25: [ 641, 638, 633, 628 ],
+                1.5: [ 641, 638, 633, 627 ],
+                1.75: [ 641, 637, 634 ],
+                2: [ 642, 638, 634, 628 ],
+                2.5: [ 640, 638, 633, 628 ],
+                3: [ 642, 633 ]
+            },
+            maybeSafari: {
+                1.75: [ 627 ],
+                3: [ 636, 627 ]
+            }
+        },
+        736: {
+            device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
+            textSizeHeights: [ 628, 624, 620, 614 ],
+            zoomHeight: {
+                1.15: [ 628, 624, 620, 614 ],
+                1.25: [ 628, 624, 620, 614 ],
+                1.5: [ 629, 624, 620 ],
+                1.75: [ 628, 625, 620, 614 ],
+                2: [ 628, 624, 620 ],
+                2.5: [ 628, 625, 620, 615 ],
+                3: [ 627, 624, 615 ]
+            },
+            maybeSafari: {
+                1.5: [ 614 ],
+                2: [ 614 ],
+                3: [ 621 ]
+            }
+        },
+        667: {
+            device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
+            textSizeHeights: [ 559, 555, 551, 545 ],
+            zoomHeight: {
+                1.15: [ 559, 555, 551, 545 ],
+                1.25: [ 559, 555, 551, 545 ],
+                1.5: [ 560, 555, 551 ],
+                1.75: [ 558, 555, 551 ],
+                2: [ 560, 556, 552, 546 ],
+                2.5: [ 560, 555, 550 ],
+                3: [ 558, 555, 546 ]
+            },
+            maybeSafari: {
+                1.5: [ 545 ],
+                1.75: [ 544 ],
+                2.5: [ 545 ],
+                3: [ 552 ]
+            }
+        }
+    };
+    function getUserAgent() {
+        return window.navigator.mockUserAgent || window.navigator.userAgent;
+    }
+    function isDevice(userAgent) {
+        void 0 === userAgent && (userAgent = getUserAgent());
+        return !!userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
+    }
+    function isOperaMini(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return /Opera Mini/i.test(ua);
+    }
+    function isAndroid(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return /Android/.test(ua);
+    }
+    function isIos(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return /iPhone|iPod|iPad/.test(ua);
+    }
+    function isSFVC(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        if (isIos(ua)) {
+            var device = iPhoneScreenHeightMatrix[window.outerHeight];
+            if (!device) return !1;
+            var height = window.innerHeight;
+            var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
+            var computedHeight = Math.round(height * scale);
+            return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+        }
+        return !1;
+    }
+    function device_isIE() {
+        return !!window.document.documentMode || Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE|rv:11/i.test(window.navigator.userAgent));
+    }
+    function isIECompHeader() {
+        var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]');
+        var mContent = window.document.querySelector('meta[content="IE=edge"]');
+        return !(!mHttp || !mContent);
+    }
+    function isIEIntranet() {
+        if (window.document.documentMode) try {
+            var status = window.status;
+            window.status = "testIntranetMode";
+            if ("testIntranetMode" === window.status) {
+                window.status = status;
+                return !0;
+            }
+            return !1;
+        } catch (err) {
+            return !1;
+        }
+        return !1;
+    }
+    function supportsPopups(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return !(function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return !!isIos(ua) && (!!function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /\bGSA\b/.test(ua);
+            }(ua) || /.+AppleWebKit(?!.*Safari)|.*WKWebView/.test(ua));
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return !!isAndroid(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
+        }(ua) || isOperaMini(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /FxiOS/i.test(ua);
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /EdgiOS/i.test(ua);
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /FBAN/.test(ua) || /FBAV/.test(ua);
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /QQBrowser/.test(ua);
+        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
+        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
+        var userAgent;
+    }
+    function isChrome(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return /Chrome|Chromium|CriOS/.test(ua);
+    }
+    function isSafari(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return /Safari/.test(ua) && !isChrome(ua);
+    }
+    __webpack_require__(16);
+    __webpack_require__(10);
+    var src = __webpack_require__(1);
+    __webpack_require__(5);
+    var cross_domain_safe_weakmap_src = __webpack_require__(14);
+    __webpack_require__(18);
+    __webpack_require__(24);
+    function getFunctionName(fn) {
+        return fn.name || fn.__name__ || fn.displayName || "anonymous";
+    }
+    function setFunctionName(fn, name) {
+        try {
+            delete fn.name;
+            fn.name = name;
+        } catch (err) {}
+        fn.__name__ = fn.displayName = name;
+        return fn;
+    }
+    function base64encode(str) {
+        if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+            return String.fromCharCode(parseInt(p1, 16));
+        }))).replace(/[=]/g, "");
+        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64").replace(/[=]/g, "");
+        throw new Error("Can not find window.btoa or Buffer");
+    }
+    function uniqueID() {
+        var chars = "0123456789abcdef";
+        return "xxxxxxxxxx".replace(/./g, (function() {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+    }
+    var objectIDs;
+    function serializeArgs(args) {
+        try {
+            return JSON.stringify([].slice.call(args), (function(subkey, val) {
+                return "function" == typeof val ? "memoize[" + function(obj) {
+                    objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a;
+                    if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                    var uid = objectIDs.get(obj);
+                    if (!uid) {
+                        uid = typeof obj + ":" + uniqueID();
+                        objectIDs.set(obj, uid);
+                    }
+                    return uid;
+                }(val) + "]" : val;
+            }));
+        } catch (err) {
+            throw new Error("Arguments not serializable -- can not be used to memoize");
+        }
+    }
+    function getEmptyObject() {
+        return {};
+    }
+    var memoizeGlobalIndex = 0;
+    var memoizeGlobalIndexValidFrom = 0;
+    function memoize(method, options) {
+        void 0 === options && (options = {});
+        var _options$thisNamespac = options.thisNamespace, thisNamespace = void 0 !== _options$thisNamespac && _options$thisNamespac, cacheTime = options.time;
+        var simpleCache;
+        var thisCache;
+        var memoizeIndex = memoizeGlobalIndex;
+        memoizeGlobalIndex += 1;
+        var memoizedFunction = function() {
+            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+            if (memoizeIndex < memoizeGlobalIndexValidFrom) {
+                simpleCache = null;
+                thisCache = null;
+                memoizeIndex = memoizeGlobalIndex;
+                memoizeGlobalIndex += 1;
+            }
+            var cache;
+            cache = thisNamespace ? (thisCache = thisCache || new cross_domain_safe_weakmap_src.a).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
+            var cacheKey = serializeArgs(args);
+            var cacheResult = cache[cacheKey];
+            if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
+                delete cache[cacheKey];
+                cacheResult = null;
+            }
+            if (cacheResult) return cacheResult.value;
+            var time = Date.now();
+            var value = method.apply(this, arguments);
+            cache[cacheKey] = {
+                time: time,
+                value: value
+            };
+            return value;
+        };
+        memoizedFunction.reset = function() {
+            simpleCache = null;
+            thisCache = null;
+        };
+        return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
+    }
+    memoize.clear = function() {
+        memoizeGlobalIndexValidFrom = memoizeGlobalIndex;
+    };
+    function noop() {}
+    function once(method) {
+        var called = !1;
+        return setFunctionName((function() {
+            if (!called) {
+                called = !0;
+                return method.apply(this, arguments);
+            }
+        }), getFunctionName(method) + "::once");
+    }
+    var values = function(obj) {
+        if (Object.values) return Object.values(obj);
+        var result = [];
+        for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
+        return result;
+    };
+    memoize(values);
+    function identity(item) {
+        return item;
+    }
+    function safeInterval(method, time) {
+        var timeout;
+        !function loop() {
+            timeout = setTimeout((function() {
+                method();
+                loop();
+            }), time);
+        }();
+        return {
+            cancel: function() {
+                clearTimeout(timeout);
+            }
+        };
+    }
+    Error;
+    function isDocumentReady() {
+        return Boolean(document.body) && "complete" === document.readyState;
+    }
+    function isDocumentInteractive() {
+        return Boolean(document.body) && "interactive" === document.readyState;
+    }
+    memoize((function() {
+        return new src.a((function(resolve) {
+            if (isDocumentReady() || isDocumentInteractive()) return resolve();
+            var interval = setInterval((function() {
+                if (isDocumentReady() || isDocumentInteractive()) {
+                    clearInterval(interval);
+                    return resolve();
+                }
+            }), 10);
+        }));
+    }));
+    function isLocalStorageEnabled() {
+        return function(method, logic, args) {
+            void 0 === args && (args = []);
+            var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
+            var key = serializeArgs(args);
+            return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
+                try {
+                    if ("undefined" == typeof window) return !1;
+                    if (window.localStorage) {
+                        var value = Math.random().toString();
+                        window.localStorage.setItem("__test__localStorage__", value);
+                        var result = window.localStorage.getItem("__test__localStorage__");
+                        window.localStorage.removeItem("__test__localStorage__");
+                        if (value === result) return !0;
+                    }
+                } catch (err) {}
+                return !1;
+            }.apply(void 0, args);
+        }(isLocalStorageEnabled);
+    }
+    function getElementSafe(id, doc) {
+        void 0 === doc && (doc = document);
+        return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
+        var element;
+    }
+    function onResize(el, handler, _temp) {
+        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
+        var currentWidth = el.offsetWidth;
+        var currentHeight = el.offsetHeight;
+        var canceled = !1;
+        handler({
+            width: currentWidth,
+            height: currentHeight
+        });
+        var check = function() {
+            if (!canceled && function(el) {
+                return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+            }(el)) {
+                var newWidth = el.offsetWidth;
+                var newHeight = el.offsetHeight;
+                (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
+                    width: newWidth,
+                    height: newHeight
+                });
+                currentWidth = newWidth;
+                currentHeight = newHeight;
+            }
+        };
+        var observer;
+        var timeout;
+        win.addEventListener("resize", check);
+        if (void 0 !== win.ResizeObserver) {
+            (observer = new win.ResizeObserver(check)).observe(el);
+            timeout = safeInterval(check, 10 * interval);
+        } else if (void 0 !== win.MutationObserver) {
+            (observer = new win.MutationObserver(check)).observe(el, {
+                attributes: !0,
+                childList: !0,
+                subtree: !0,
+                characterData: !1
+            });
+            timeout = safeInterval(check, 10 * interval);
+        } else timeout = safeInterval(check, interval);
+        return {
+            cancel: function() {
+                canceled = !0;
+                observer.disconnect();
+                window.removeEventListener("resize", check);
+                timeout.cancel();
+            }
+        };
+    }
+    function isShadowElement(element) {
+        for (;element.parentNode; ) element = element.parentNode;
+        return "[object ShadowRoot]" === element.toString();
+    }
+    function insertShadowSlot(element) {
+        var shadowHost = function(element) {
+            var shadowRoot = function(element) {
+                for (;element.parentNode; ) element = element.parentNode;
+                if (isShadowElement(element)) return element;
+            }(element);
+            if (shadowRoot.host) return shadowRoot.host;
+        }(element);
+        if (!shadowHost) throw new Error("Element is not in shadow dom");
+        if (isShadowElement(shadowHost)) throw new Error("Host element is also in shadow dom");
+        var slotName = "shadow-slot-" + uniqueID();
+        var slot = document.createElement("slot");
+        slot.setAttribute("name", slotName);
+        element.appendChild(slot);
+        var slotProvider = document.createElement("div");
+        slotProvider.setAttribute("slot", slotName);
+        shadowHost.appendChild(slotProvider);
+        return slotProvider;
+    }
+    var currentScript = "undefined" != typeof document ? document.currentScript : null;
+    var getCurrentScript = memoize((function() {
+        if (currentScript) return currentScript;
+        if (currentScript = function() {
+            try {
+                var stack = function() {
+                    try {
+                        throw new Error("_");
+                    } catch (err) {
+                        return err.stack || "";
+                    }
+                }();
+                var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
+                var scriptLocation = stackDetails && stackDetails[1];
+                if (!scriptLocation) return;
+                for (var _i22 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i22 < _Array$prototype$slic2.length; _i22++) {
+                    var script = _Array$prototype$slic2[_i22];
+                    if (script.src && script.src === scriptLocation) return script;
+                }
+            } catch (err) {}
+        }()) return currentScript;
+        throw new Error("Can not determine current script");
+    }));
+    var currentUID = uniqueID();
+    memoize((function() {
+        var script;
+        try {
+            script = getCurrentScript();
+        } catch (err) {
+            return currentUID;
+        }
+        var uid = script.getAttribute("data-uid");
+        if (uid && "string" == typeof uid) return uid;
+        if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
+        uid = uniqueID();
+        script.setAttribute("data-uid-auto", uid);
+        return uid;
+    }));
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return _extends;
     }));
@@ -4144,18 +4692,18 @@
         return regexMap;
     }));
     var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-    var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+    var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
     __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return belter_src__WEBPACK_IMPORTED_MODULE_1__.g;
+        return belter_src__WEBPACK_IMPORTED_MODULE_1__.q;
     }));
     __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return belter_src__WEBPACK_IMPORTED_MODULE_1__.i;
+        return belter_src__WEBPACK_IMPORTED_MODULE_1__.s;
     }));
     __webpack_require__.d(__webpack_exports__, "r", (function() {
-        return belter_src__WEBPACK_IMPORTED_MODULE_1__.k;
+        return belter_src__WEBPACK_IMPORTED_MODULE_1__.u;
     }));
     __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return belter_src__WEBPACK_IMPORTED_MODULE_1__.e;
+        return belter_src__WEBPACK_IMPORTED_MODULE_1__.m;
     }));
     var moduleGlobal = {};
     function getGlobal() {
@@ -4406,12 +4954,12 @@
     var src = __webpack_require__(5);
     var conf = __webpack_require__(8);
     var global = __webpack_require__(7);
-    var esm_extends = __webpack_require__(9);
+    var esm_extends = __webpack_require__(10);
     var zalgo_promise_src = __webpack_require__(1);
     var SEND_MESSAGE_STRATEGIES = {};
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
         try {
-            __webpack_require__(36).emulateIERestrictions(window, win);
+            __webpack_require__(35).emulateIERestrictions(window, win);
         } catch (err) {
             return;
         }
@@ -4426,7 +4974,7 @@
             return win.postMessage(serializedMessage, dom);
         }));
     };
-    var _require = __webpack_require__(18), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
+    var _require = __webpack_require__(17), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
         if (needsBridgeForBrowser() || isBridge()) {
             if (Object(src.v)(win)) throw new Error("Post message through bridge disabled between same domain windows");
@@ -4632,7 +5180,7 @@
             data: event.data
         };
         try {
-            __webpack_require__(36).emulateIERestrictions(messageEvent.source, window);
+            __webpack_require__(35).emulateIERestrictions(messageEvent.source, window);
         } catch (err) {
             return;
         }
@@ -4915,11 +5463,11 @@
         global.a.methods.delete(win);
         global.a.readyPromises.delete(win);
     }
-    var bridge = __webpack_require__(38);
+    var bridge = __webpack_require__(37);
     function init() {
         if (!global.a.initialized) {
             Object(lib.a)(window, "message", messageListener);
-            __webpack_require__(18).openTunnelToOpener();
+            __webpack_require__(17).openTunnelToOpener();
             Object(lib.d)();
             Object(lib.h)({
                 on: _on,
@@ -4930,365 +5478,6 @@
     }
     init();
     __webpack_exports__.default = interface_namespaceObject;
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return supportsPopups;
-    }));
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return isLocalStorageEnabled;
-    }));
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return getElementSafe;
-    }));
-    __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return onResize;
-    }));
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return isShadowElement;
-    }));
-    __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return insertShadowSlot;
-    }));
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return base64encode;
-    }));
-    __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return uniqueID;
-    }));
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return noop;
-    }));
-    __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return once;
-    }));
-    __webpack_require__.d(__webpack_exports__, "l", (function() {
-        return values;
-    }));
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return identity;
-    }));
-    function getUserAgent() {
-        return window.navigator.mockUserAgent || window.navigator.userAgent;
-    }
-    function isOperaMini(ua) {
-        void 0 === ua && (ua = getUserAgent());
-        return /Opera Mini/i.test(ua);
-    }
-    function supportsPopups(ua) {
-        void 0 === ua && (ua = getUserAgent());
-        return !(function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return !!function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /iPhone|iPod|iPad/.test(ua);
-            }(ua) && (!!function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /\bGSA\b/.test(ua);
-            }(ua) || /.+AppleWebKit(?!.*Safari)|.*WKWebView/.test(ua));
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return !!function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /Android/.test(ua);
-            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
-        }(ua) || isOperaMini(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /FxiOS/i.test(ua);
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /EdgiOS/i.test(ua);
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /FBAN/.test(ua) || /FBAV/.test(ua);
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /QQBrowser/.test(ua);
-        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
-        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
-        var userAgent;
-    }
-    __webpack_require__(16);
-    __webpack_require__(9);
-    var src = __webpack_require__(1);
-    __webpack_require__(5);
-    var cross_domain_safe_weakmap_src = __webpack_require__(14);
-    __webpack_require__(19);
-    __webpack_require__(25);
-    function getFunctionName(fn) {
-        return fn.name || fn.__name__ || fn.displayName || "anonymous";
-    }
-    function setFunctionName(fn, name) {
-        try {
-            delete fn.name;
-            fn.name = name;
-        } catch (err) {}
-        fn.__name__ = fn.displayName = name;
-        return fn;
-    }
-    function base64encode(str) {
-        if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
-            return String.fromCharCode(parseInt(p1, 16));
-        })));
-        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-        throw new Error("Can not find window.btoa or Buffer");
-    }
-    function uniqueID() {
-        var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, (function() {
-            return chars.charAt(Math.floor(Math.random() * chars.length));
-        })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-    }
-    var objectIDs;
-    function serializeArgs(args) {
-        try {
-            return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                return "function" == typeof val ? "memoize[" + function(obj) {
-                    objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a;
-                    if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
-                    var uid = objectIDs.get(obj);
-                    if (!uid) {
-                        uid = typeof obj + ":" + uniqueID();
-                        objectIDs.set(obj, uid);
-                    }
-                    return uid;
-                }(val) + "]" : val;
-            }));
-        } catch (err) {
-            throw new Error("Arguments not serializable -- can not be used to memoize");
-        }
-    }
-    function getEmptyObject() {
-        return {};
-    }
-    var memoizeGlobalIndex = 0;
-    var memoizeGlobalIndexValidFrom = 0;
-    function memoize(method, options) {
-        void 0 === options && (options = {});
-        var _options$thisNamespac = options.thisNamespace, thisNamespace = void 0 !== _options$thisNamespac && _options$thisNamespac, cacheTime = options.time;
-        var simpleCache;
-        var thisCache;
-        var memoizeIndex = memoizeGlobalIndex;
-        memoizeGlobalIndex += 1;
-        var memoizedFunction = function() {
-            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-            if (memoizeIndex < memoizeGlobalIndexValidFrom) {
-                simpleCache = null;
-                thisCache = null;
-                memoizeIndex = memoizeGlobalIndex;
-                memoizeGlobalIndex += 1;
-            }
-            var cache;
-            cache = thisNamespace ? (thisCache = thisCache || new cross_domain_safe_weakmap_src.a).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
-            var cacheKey = serializeArgs(args);
-            var cacheResult = cache[cacheKey];
-            if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
-                delete cache[cacheKey];
-                cacheResult = null;
-            }
-            if (cacheResult) return cacheResult.value;
-            var time = Date.now();
-            var value = method.apply(this, arguments);
-            cache[cacheKey] = {
-                time: time,
-                value: value
-            };
-            return value;
-        };
-        memoizedFunction.reset = function() {
-            simpleCache = null;
-            thisCache = null;
-        };
-        return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
-    }
-    memoize.clear = function() {
-        memoizeGlobalIndexValidFrom = memoizeGlobalIndex;
-    };
-    function noop() {}
-    function once(method) {
-        var called = !1;
-        return setFunctionName((function() {
-            if (!called) {
-                called = !0;
-                return method.apply(this, arguments);
-            }
-        }), getFunctionName(method) + "::once");
-    }
-    var values = function(obj) {
-        if (Object.values) return Object.values(obj);
-        var result = [];
-        for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
-        return result;
-    };
-    memoize(values);
-    function identity(item) {
-        return item;
-    }
-    function safeInterval(method, time) {
-        var timeout;
-        !function loop() {
-            timeout = setTimeout((function() {
-                method();
-                loop();
-            }), time);
-        }();
-        return {
-            cancel: function() {
-                clearTimeout(timeout);
-            }
-        };
-    }
-    Error;
-    function isDocumentReady() {
-        return Boolean(document.body) && "complete" === document.readyState;
-    }
-    function isDocumentInteractive() {
-        return Boolean(document.body) && "interactive" === document.readyState;
-    }
-    memoize((function() {
-        return new src.a((function(resolve) {
-            if (isDocumentReady() || isDocumentInteractive()) return resolve();
-            var interval = setInterval((function() {
-                if (isDocumentReady() || isDocumentInteractive()) {
-                    clearInterval(interval);
-                    return resolve();
-                }
-            }), 10);
-        }));
-    }));
-    function isLocalStorageEnabled() {
-        return function(method, logic, args) {
-            void 0 === args && (args = []);
-            var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
-            var key = serializeArgs(args);
-            return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
-                try {
-                    if ("undefined" == typeof window) return !1;
-                    if (window.localStorage) {
-                        var value = Math.random().toString();
-                        window.localStorage.setItem("__test__localStorage__", value);
-                        var result = window.localStorage.getItem("__test__localStorage__");
-                        window.localStorage.removeItem("__test__localStorage__");
-                        if (value === result) return !0;
-                    }
-                } catch (err) {}
-                return !1;
-            }.apply(void 0, args);
-        }(isLocalStorageEnabled);
-    }
-    function getElementSafe(id, doc) {
-        void 0 === doc && (doc = document);
-        return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
-        var element;
-    }
-    function onResize(el, handler, _temp) {
-        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
-        var currentWidth = el.offsetWidth;
-        var currentHeight = el.offsetHeight;
-        var canceled = !1;
-        handler({
-            width: currentWidth,
-            height: currentHeight
-        });
-        var check = function() {
-            if (!canceled && function(el) {
-                return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-            }(el)) {
-                var newWidth = el.offsetWidth;
-                var newHeight = el.offsetHeight;
-                (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
-                    width: newWidth,
-                    height: newHeight
-                });
-                currentWidth = newWidth;
-                currentHeight = newHeight;
-            }
-        };
-        var observer;
-        var timeout;
-        win.addEventListener("resize", check);
-        if (void 0 !== win.ResizeObserver) {
-            (observer = new win.ResizeObserver(check)).observe(el);
-            timeout = safeInterval(check, 10 * interval);
-        } else if (void 0 !== win.MutationObserver) {
-            (observer = new win.MutationObserver(check)).observe(el, {
-                attributes: !0,
-                childList: !0,
-                subtree: !0,
-                characterData: !1
-            });
-            timeout = safeInterval(check, 10 * interval);
-        } else timeout = safeInterval(check, interval);
-        return {
-            cancel: function() {
-                canceled = !0;
-                observer.disconnect();
-                window.removeEventListener("resize", check);
-                timeout.cancel();
-            }
-        };
-    }
-    function isShadowElement(element) {
-        for (;element.parentNode; ) element = element.parentNode;
-        return "[object ShadowRoot]" === element.toString();
-    }
-    function insertShadowSlot(element) {
-        var shadowHost = function(element) {
-            var shadowRoot = function(element) {
-                for (;element.parentNode; ) element = element.parentNode;
-                if (isShadowElement(element)) return element;
-            }(element);
-            if (shadowRoot.host) return shadowRoot.host;
-        }(element);
-        if (!shadowHost) throw new Error("Element is not in shadow dom");
-        if (isShadowElement(shadowHost)) throw new Error("Host element is also in shadow dom");
-        var slotName = "shadow-slot-" + uniqueID();
-        var slot = document.createElement("slot");
-        slot.setAttribute("name", slotName);
-        element.appendChild(slot);
-        var slotProvider = document.createElement("div");
-        slotProvider.setAttribute("slot", slotName);
-        shadowHost.appendChild(slotProvider);
-        return slotProvider;
-    }
-    var currentScript = "undefined" != typeof document ? document.currentScript : null;
-    var getCurrentScript = memoize((function() {
-        if (currentScript) return currentScript;
-        if (currentScript = function() {
-            try {
-                var stack = function() {
-                    try {
-                        throw new Error("_");
-                    } catch (err) {
-                        return err.stack || "";
-                    }
-                }();
-                var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
-                var scriptLocation = stackDetails && stackDetails[1];
-                if (!scriptLocation) return;
-                for (var _i22 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i22 < _Array$prototype$slic2.length; _i22++) {
-                    var script = _Array$prototype$slic2[_i22];
-                    if (script.src && script.src === scriptLocation) return script;
-                }
-            } catch (err) {}
-        }()) return currentScript;
-        throw new Error("Can not determine current script");
-    }));
-    var currentUID = uniqueID();
-    memoize((function() {
-        var script;
-        try {
-            script = getCurrentScript();
-        } catch (err) {
-            return currentUID;
-        }
-        var uid = script.getAttribute("data-uid");
-        if (uid && "string" == typeof uid) return uid;
-        if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
-        uid = uniqueID();
-        script.setAttribute("data-uid-auto", uid);
-        return uid;
-    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "p", (function() {
@@ -5793,9 +5982,9 @@
         return getGlobalState;
     }));
     var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-    var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
-    var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(20);
-    var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(22);
+    var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
+    var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
+    var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21);
     var accessedStorage;
     function getStorageState(handler) {
         var localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__.f)();
@@ -5862,111 +6051,11 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return _inheritsLoose;
     }));
-    var _babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
+    var _babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
     function _inheritsLoose(subClass, superClass) {
         subClass.prototype = Object.create(superClass.prototype);
         subClass.prototype.constructor = subClass;
         Object(_babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__.a)(subClass, superClass);
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return getUserAgent;
-    }));
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return isDevice;
-    }));
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return isIos;
-    }));
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return isIE;
-    }));
-    __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return isIECompHeader;
-    }));
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return isIEIntranet;
-    }));
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return supportsPopups;
-    }));
-    var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-    function getUserAgent() {
-        return window.navigator.mockUserAgent || window.navigator.userAgent;
-    }
-    function isDevice() {
-        return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
-    }
-    function isOperaMini(ua) {
-        void 0 === ua && (ua = getUserAgent());
-        return ua.indexOf("Opera Mini") > -1;
-    }
-    function isIos(ua) {
-        void 0 === ua && (ua = getUserAgent());
-        return /iPhone|iPod|iPad/.test(ua);
-    }
-    function isIE() {
-        return !!window.document.documentMode || !(!window.navigator || "string" != typeof window.navigator.userAgent || !/Edge|MSIE/i.test(window.navigator.userAgent));
-    }
-    function isIECompHeader() {
-        var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]');
-        var mContent = window.document.querySelector('meta[content="IE=edge"]');
-        return !(!mHttp || !mContent);
-    }
-    function isIEIntranet() {
-        if (!function() {
-            if (!isIE()) return !1;
-            if (window.navigator && "string" == typeof window.navigator.userAgent) {
-                if (/MSIE 11\.0/i.test(window.navigator.userAgent)) return !0;
-                if (/Trident/i.test(window.navigator.userAgent) && /rv:11\.0/i.test(window.navigator.userAgent)) return !0;
-            }
-            return !1;
-        }()) return !1;
-        if (window.document.documentMode) try {
-            var status = window.status;
-            window.status = "testIntranetMode";
-            if ("testIntranetMode" === window.status) {
-                window.status = status;
-                return !0;
-            }
-            return !1;
-        } catch (err) {
-            return !1;
-        }
-        return !1;
-    }
-    function supportsPopups(ua) {
-        void 0 === ua && (ua = getUserAgent());
-        return !(function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return !!isIos(ua) && (!!function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /\bGSA\b/.test(ua);
-            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return !!function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /Android/.test(ua);
-            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
-        }(ua) || isOperaMini(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /FxiOS/i.test(ua);
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /EdgiOS/i.test(ua);
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-        }(ua) || function(ua) {
-            void 0 === ua && (ua = getUserAgent());
-            return /QQBrowser/.test(ua);
-        }(ua) || (userAgent = getUserAgent(), /\belectron\b/i.test(userAgent)) || function() {
-            var userAgent = getUserAgent();
-            return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
-        }() || !Boolean(Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.m)(Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.o)(window) || window)) && (!0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches));
-        var userAgent;
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -6390,10 +6479,10 @@
     }));
     var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
     var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-    var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-    var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
-    var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
-    __webpack_require__(17);
+    __webpack_require__(9);
+    var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
+    var _config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
+    var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(11);
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
     }
@@ -6448,7 +6537,7 @@
             }
         }
     }
-    var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)((function(queryString) {
+    var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_5__.i)((function(queryString) {
         var params = {};
         if (!queryString) return params;
         if (-1 === queryString.indexOf("=")) return params;
@@ -6502,19 +6591,19 @@
     function normalizeLocale(locale) {
         if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
             var _locale$split = locale.split(/[-_]/), lang = _locale$split[0], country = _locale$split[1];
-            if (_constants__WEBPACK_IMPORTED_MODULE_2__.A[country] && -1 !== _constants__WEBPACK_IMPORTED_MODULE_2__.A[country].indexOf(lang)) return {
+            if (_constants__WEBPACK_IMPORTED_MODULE_3__.A[country] && -1 !== _constants__WEBPACK_IMPORTED_MODULE_3__.A[country].indexOf(lang)) return {
                 country: country,
                 lang: lang
             };
         }
     }
     function normalizeLang(lang) {
-        if (lang && lang.match(/^[a-z]{2}$/) && _constants__WEBPACK_IMPORTED_MODULE_2__.z[lang]) return {
-            country: _constants__WEBPACK_IMPORTED_MODULE_2__.z[lang],
+        if (lang && lang.match(/^[a-z]{2}$/) && _constants__WEBPACK_IMPORTED_MODULE_3__.z[lang]) return {
+            country: _constants__WEBPACK_IMPORTED_MODULE_3__.z[lang],
             lang: lang
         };
     }
-    var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)((function() {
+    var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_5__.i)((function() {
         var locales = function() {
             var nav = window.navigator;
             var locales = nav.languages ? [].slice.apply(nav.languages) : [];
@@ -6534,9 +6623,9 @@
                 return loc;
             }
         }
-        return _config__WEBPACK_IMPORTED_MODULE_3__.a.defaultLocale;
+        return _config__WEBPACK_IMPORTED_MODULE_4__.a.defaultLocale;
     }));
-    var enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)((function() {
+    var enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_5__.i)((function() {
         return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
     }));
     function getPageRenderTime() {
@@ -6588,48 +6677,48 @@
         return isPayPalDomain;
     }));
     var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
-    var _device__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
+    var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+    var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
     function allowIframe() {
-        if (!Object(_device__WEBPACK_IMPORTED_MODULE_2__.g)()) return !0;
+        if (!Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.t)()) return !0;
         var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.n)(window);
         if (parentWindow && Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.v)(parentWindow)) return !0;
         var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
         return !(!parentComponentWindow || !Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.v)(parentComponentWindow));
     }
     function isPayPalDomain() {
-        return Boolean((window.location.protocol + "//" + window.location.host).match(_config__WEBPACK_IMPORTED_MODULE_1__.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+        return Boolean((window.location.protocol + "//" + window.location.host).match(_config__WEBPACK_IMPORTED_MODULE_2__.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
+    var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
     __webpack_require__.d(__webpack_exports__, "script", (function() {
         return _script__WEBPACK_IMPORTED_MODULE_0__.a;
     }));
-    var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
+    var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
     __webpack_require__.d(__webpack_exports__, "react", (function() {
         return _react__WEBPACK_IMPORTED_MODULE_1__.a;
     }));
-    var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
+    var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29);
     __webpack_require__.d(__webpack_exports__, "vue", (function() {
         return _vue__WEBPACK_IMPORTED_MODULE_2__.a;
     }));
-    var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(31);
+    var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
     __webpack_require__.d(__webpack_exports__, "angular", (function() {
         return _angular__WEBPACK_IMPORTED_MODULE_3__.a;
     }));
-    var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(32);
+    var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(31);
     __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.angular2;
     }));
     __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.glimmer;
     }));
-    var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(33);
+    var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(32);
     __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _glimmer__WEBPACK_IMPORTED_MODULE_5__.a;
     }));
-    var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(34);
+    var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(33);
     __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _angular2__WEBPACK_IMPORTED_MODULE_6__.a;
     }));
@@ -6638,7 +6727,7 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return beacon;
     }));
-    __webpack_require__(9);
+    __webpack_require__(10);
     var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
     var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
     var _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15);
@@ -6647,7 +6736,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.328";
+            payload.version = "4.0.330";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -6676,7 +6765,7 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return extendNamespace;
     }));
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
     function extendNamespace(xports, namespaces, childnamespaces) {
         void 0 === namespaces && (namespaces = []);
         void 0 === childnamespaces && (childnamespaces = []);
@@ -6701,7 +6790,7 @@
         var root = "object" == typeof window ? window : {};
         !root.HI_BASE32_NO_NODE_JS && "object" == typeof process && process.versions && process.versions.node && (root = window);
         var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" == typeof module && module.exports;
-        var AMD = __webpack_require__(39);
+        var AMD = __webpack_require__(38);
         var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
         var BASE32_DECODE_CHAR = {
             A: 0,
@@ -7158,7 +7247,7 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return glimmer;
     }));
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
     var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
     var glimmer = {
         global: function() {},
@@ -7180,7 +7269,7 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return angular2;
     }));
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
     var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
     var angular2 = {
         global: function() {},
@@ -7228,7 +7317,7 @@
     };
 }, function(module, exports, __webpack_require__) {
     !function(e, t, n) {
-        module.exports ? module.exports = n() : __webpack_require__(40)("bowser", n);
+        module.exports ? module.exports = n() : __webpack_require__(39)("bowser", n);
     }(0, 0, (function() {
         function t(t) {
             function n(e) {
@@ -7498,25 +7587,25 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
-    var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
-    var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
-    __webpack_require__(22);
-    if (window.paypal && "4.0.328" === window.paypal.version) {
+    var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+    var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
+    var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
+    __webpack_require__(21);
+    if (window.paypal && "4.0.330" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.328"
+            version: "4.0.330"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.328) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.330) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.328" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.330" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.328"
+            version: "4.0.330"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.328");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.330");
     }
     try {
-        var _interface = __webpack_require__(41);
+        var _interface = __webpack_require__(40);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
     } catch (err) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_error", {
@@ -7528,7 +7617,7 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
+    var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17);
     __webpack_require__.d(__webpack_exports__, "openBridge", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.openBridge;
     }));
@@ -7786,8 +7875,8 @@
         return interface_ThreeDomainSecure;
     }));
     var beaver_logger_client = __webpack_require__(3);
-    var src = __webpack_require__(11);
-    var assertThisInitialized = __webpack_require__(19);
+    var src = __webpack_require__(12);
+    var assertThisInitialized = __webpack_require__(18);
     var inheritsLoose = __webpack_require__(16);
     function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
         var desc = {};
@@ -7922,9 +8011,9 @@
         };
         return BaseComponent;
     }();
-    var esm_extends = __webpack_require__(9);
-    var belter_src = __webpack_require__(12);
-    var base32 = __webpack_require__(27);
+    var esm_extends = __webpack_require__(10);
+    var belter_src = __webpack_require__(9);
+    var base32 = __webpack_require__(26);
     var base32_default = __webpack_require__.n(base32);
     var constants = __webpack_require__(6);
     function normalize(str) {
@@ -7978,7 +8067,7 @@
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.renderParent);
     }));
-    var src_error = __webpack_require__(21);
+    var src_error = __webpack_require__(20);
     function normalizeChildProp(component, props, key, value) {
         var prop = component.getProp(key);
         return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
@@ -8161,7 +8250,7 @@
             var _this$getAutoResize = this.getAutoResize(), width = _this$getAutoResize.width, height = _this$getAutoResize.height, element = _this$getAutoResize.element;
             if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                 this.watchingForResize = !0;
-                Object(belter_src.h)(element, (function(_ref8) {
+                Object(belter_src.r)(element, (function(_ref8) {
                     _this4.resize(width ? _ref8.width : void 0, height ? _ref8.height : void 0);
                 }), {
                     width: width,
@@ -9279,7 +9368,7 @@
                         console.error(err.stack ? err.stack : err);
                     }
                     var _ref10 = "object" == typeof _this31.component.autoResize && null !== _this31.component.autoResize ? _this31.component.autoResize : {}, _ref10$width = _ref10.width, width = void 0 !== _ref10$width && _ref10$width, _ref10$height = _ref10.height, height = void 0 !== _ref10$height && _ref10$height, _ref10$element = _ref10.element, element = void 0 === _ref10$element ? "body" : _ref10$element;
-                    (element = Object(belter_src.b)(element, doc)) && (width || height) && Object(belter_src.h)(element, (function(_ref11) {
+                    (element = Object(belter_src.b)(element, doc)) && (width || height) && Object(belter_src.r)(element, (function(_ref11) {
                         _this31.resize(width ? _ref11.width : void 0, height ? _ref11.height : void 0);
                     }), {
                         width: width,
@@ -9327,7 +9416,7 @@
             return zalgo_promise_src.a.try((function() {
                 var el;
                 if (!(el = element ? Object(lib.u)(element) : document.body)) throw new Error("Could not find element to open container into");
-                Object(belter_src.f)(el) && (el = Object(belter_src.d)(el));
+                Object(belter_src.p)(el) && (el = Object(belter_src.e)(el));
                 if (_this33.component.containerTemplate) {
                     var container = _this33.renderTemplate(_this33.component.containerTemplate, {
                         container: el
@@ -9500,7 +9589,7 @@
         } ]);
         return DelegateComponent;
     }(base_BaseComponent);
-    var drivers = __webpack_require__(23);
+    var drivers = __webpack_require__(22);
     function defaultContainerTemplate(_ref) {
         var id = _ref.id, CLASS = _ref.CLASS, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _ref$dimensions = _ref.dimensions;
         return jsxDom("div", {
@@ -9993,13 +10082,12 @@
     }
     var postRobot = src;
     var CONSTANTS = constants;
-    var device = __webpack_require__(17);
-    var util = __webpack_require__(10);
+    var util = __webpack_require__(11);
     var config = __webpack_require__(4);
     var src_constants = __webpack_require__(0);
     var lib_session = __webpack_require__(15);
-    var dom = __webpack_require__(20);
-    var security = __webpack_require__(22);
+    var dom = __webpack_require__(19);
+    var security = __webpack_require__(21);
     var PAGE_TYPES = {
         HOME: "home",
         PRODUCT: "product",
@@ -10022,7 +10110,7 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.328";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.330";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -10032,7 +10120,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.328.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.330.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -10078,10 +10166,10 @@
     }
     var bowserCache = {};
     function getBowser() {
-        var userAgent = Object(device.a)();
+        var userAgent = Object(belter_src.c)();
         if (bowserCache[userAgent]) return bowserCache[userAgent];
-        delete __webpack_require__.c[35];
-        var bowser = __webpack_require__(35);
+        delete __webpack_require__.c[34];
+        var bowser = __webpack_require__(34);
         bowserCache[userAgent] = bowser;
         return bowser;
     }
@@ -10098,11 +10186,11 @@
     }
     var eligibilityResults = {};
     function isEligible() {
-        if (Object(device.e)()) return !1;
+        if (Object(belter_src.k)()) return !1;
         var userAgent = window.navigator.userAgent;
         if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
         var result = function() {
-            if (Object(device.e)()) return !1;
+            if (Object(belter_src.k)()) return !1;
             var bowser = getBowser();
             var _getBrowser = getBrowser(), browser = _getBrowser.browser, version = _getBrowser.version;
             return !browser || !version || -1 !== bowser.compareVersions([ version, config.a.SUPPORTED_BROWSERS[browser] ]);
@@ -10220,12 +10308,12 @@
     request.addHeaderBuilder = function(method) {
         headerBuilders.push(method);
     };
-    __webpack_require__(24);
-    __webpack_require__(26);
+    __webpack_require__(23);
+    __webpack_require__(25);
     var openMetaFrame = Object(util.i)((function(env) {
         void 0 === env && (env = config.a.env);
         return zalgo_promise_src.a.try((function() {
-            if (Object(device.e)()) return {
+            if (Object(belter_src.k)()) return {
                 iframeEligible: !1,
                 iframeEligibleReason: "ie_intranet",
                 rememberedFunding: []
@@ -14844,7 +14932,7 @@
             return config.a.paypalDomains;
         },
         contexts: {
-            iframe: !Object(device.g)(),
+            iframe: !Object(belter_src.t)(),
             popup: !0
         },
         get version() {
@@ -14875,7 +14963,7 @@
             function focus(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                Object(device.f)() && Object(belter_src.j)() ? window.alert("Please switch tabs to reactivate the PayPal window") : zalgo_promise_src.a.try(actions.focus).catch(util.j);
+                Object(belter_src.l)() && Object(belter_src.t)() ? window.alert("Please switch tabs to reactivate the PayPal window") : zalgo_promise_src.a.try(actions.focus).catch(belter_src.q);
             }
             var overlayColor = (props.style || {}).overlayColor || src_constants.q.BLACK;
             var logoColor = LOGO_COLOR[overlayColor];
@@ -15307,7 +15395,7 @@
             }
         },
         get dimensions() {
-            return Object(device.b)() ? {
+            return Object(belter_src.h)() ? {
                 width: "100%",
                 height: "590px"
             } : {
@@ -15378,7 +15466,7 @@
         function focus(event) {
             event.preventDefault();
             event.stopPropagation();
-            Object(device.f)() && Object(belter_src.j)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+            Object(belter_src.l)() && Object(belter_src.t)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
         }
         var overlayColor = (props.style || {}).overlayColor || src_constants.q.BLACK;
         var logoColor = template_containerTemplate_LOGO_COLOR[overlayColor];
@@ -23134,7 +23222,7 @@
                 logoColor: "blue"
             })));
         }(props_normalizeProps(props)) : null;
-        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.328", 
+        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.330", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -23182,7 +23270,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.328", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.330", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -23198,7 +23286,7 @@
             });
             template.addEventListener("click", (function() {
                 Object(beaver_logger_client.p)("button_pre_template_click");
-                if (Object(device.e)()) {
+                if (Object(belter_src.k)()) {
                     Object(beaver_logger_client.p)("button_pre_template_click_intranet_mode");
                     Object(beaver_logger_client.h)();
                     alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
@@ -23612,7 +23700,8 @@
                     remembered && -1 !== remembered.indexOf(src_constants.v.VENMO) && (remembered = remembered.filter((function(source) {
                         return source !== src_constants.v.VENMO;
                     })));
-                    Object(device.b)() && !getDomainSetting("disable_venmo") || disallowed && -1 === disallowed.indexOf(src_constants.v.VENMO) && (disallowed = [].concat(disallowed, [ src_constants.v.VENMO ]));
+                    (userAgent = Object(belter_src.c)(), Object(belter_src.t)(userAgent) && !Object(belter_src.n)() && (Object(belter_src.l)() && Object(belter_src.o)() || Object(belter_src.f)() && Object(belter_src.g)())) && !getDomainSetting("disable_venmo") || disallowed && -1 === disallowed.indexOf(src_constants.v.VENMO) && (disallowed = [].concat(disallowed, [ src_constants.v.VENMO ]));
+                    var userAgent;
                     return {
                         allowed: allowed,
                         disallowed: disallowed,
@@ -23640,7 +23729,7 @@
                     return function() {
                         var _track2;
                         var _getBrowser = getBrowser(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
-                        Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + (Object(device.b)() ? "mobile" : "desktop") + "_" + version);
+                        Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + (Object(belter_src.h)() ? "mobile" : "desktop") + "_" + version);
                         var style = this.props.style || {};
                         Object(beaver_logger_client.k)("button_render");
                         Object(beaver_logger_client.k)("button_render_color_" + (style.color || "default"));
@@ -23656,7 +23745,7 @@
                         _track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_RENDER, 
                         _track2[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track2[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                         _track2[src_constants.u.KEY.BUTTON_SOURCE] = this.props.source, _track2));
-                        Object(device.e)() && Object(beaver_logger_client.p)("button_render_intranet_mode");
+                        Object(belter_src.k)() && Object(beaver_logger_client.p)("button_render_intranet_mode");
                         if (creditThrottle) {
                             var _creditThrottle$logSt;
                             creditThrottle.logStart(((_creditThrottle$logSt = {})[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -23683,7 +23772,7 @@
                         _track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_APPROVE, 
                         _track3[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3[src_constants.u.KEY.BUTTON_VERSION] = data && data.button_version, 
                         _track3));
-                        Object(device.e)() && Object(beaver_logger_client.p)("button_authorize_intranet_mode");
+                        Object(belter_src.k)() && Object(beaver_logger_client.p)("button_authorize_intranet_mode");
                         isEligible() || Object(beaver_logger_client.k)("button_authorize_ineligible");
                         checkRecognizedBrowser("authorize");
                         Object(beaver_logger_client.h)();
@@ -23799,7 +23888,7 @@
                 once: !0,
                 def: function() {
                     return function(err) {
-                        if (Object(device.e)()) {
+                        if (Object(belter_src.k)()) {
                             Object(beaver_logger_client.p)("button_error_intranet_mode");
                             Object(beaver_logger_client.h)();
                             alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
@@ -23846,7 +23935,7 @@
                         _track6[src_constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                         _track6[src_constants.u.KEY.PAYMENT_FLOW] = data && data.flow, _track6[src_constants.u.KEY.BUTTON_VERSION] = data && data.button_version, 
                         _track6));
-                        Object(device.e)() && Object(beaver_logger_client.p)("button_click_intranet_mode");
+                        Object(belter_src.k)() && Object(beaver_logger_client.p)("button_click_intranet_mode");
                         if (creditThrottle) {
                             var _creditThrottle$log;
                             creditThrottle.log("click", ((_creditThrottle$log = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
@@ -24007,7 +24096,7 @@
         for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) args[_key - 1] = arguments[_key];
         var instance = {
             clone: function(_temp3) {
-                var _ref6$decorate = (void 0 === _temp3 ? {} : _temp3).decorate, decorate = void 0 === _ref6$decorate ? belter_src.c : _ref6$decorate;
+                var _ref6$decorate = (void 0 === _temp3 ? {} : _temp3).decorate, decorate = void 0 === _ref6$decorate ? belter_src.d : _ref6$decorate;
                 return {
                     render: function(container) {
                         var decoratedProps = decorate(props);
@@ -24017,7 +24106,7 @@
             }
         };
         instances.push(instance);
-        var _props = props, _props$onDestroy = _props.onDestroy, onDestroy = void 0 === _props$onDestroy ? belter_src.g : _props$onDestroy;
+        var _props = props, _props$onDestroy = _props.onDestroy, onDestroy = void 0 === _props$onDestroy ? belter_src.q : _props$onDestroy;
         var newProps = Object(esm_extends.a)({}, props, {
             onDestroy: function() {
                 var index = instances.indexOf(instance);
@@ -24154,11 +24243,11 @@
             xprops && xprops.onShippingChange && window.pre && window.pre.inlineGuest && window.pre.inlineGuest.res && window.pre.inlineGuest.res.data && window.pre.inlineGuest.res.data.treatments && (window.pre.inlineGuest.res.data.treatments = []);
         } catch (err) {}
     }(component_Button);
-    Object(device.c)() && getDomainSetting("ie_full_page") && (component_Checkout.renderTo = function(win) {
+    Object(belter_src.i)() && getDomainSetting("ie_full_page") && (component_Checkout.renderTo = function(win) {
         Object(beaver_logger_client.k)("force_ie_full_page");
         Object(beaver_logger_client.h)();
         var checkout = component_Checkout.init({
-            onAuthorize: util.j
+            onAuthorize: belter_src.q
         });
         checkout.delegate(win);
         checkout.openContainer().then((function() {
@@ -24211,7 +24300,7 @@
         var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
         if (debounce) {
             Object(beaver_logger_client.p)("button_mutliple_click_debounce");
-            return new zalgo_promise_src.a(util.j);
+            return new zalgo_promise_src.a(belter_src.q);
         }
         debounce = !0;
         var _loop = function(_i2, _ref5) {
@@ -24461,8 +24550,8 @@
                 logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
                 Object(beaver_logger_client.p)("json_stringify_object_broken");
             }
-            Object(device.e)() && Object(beaver_logger_client.p)("ie_intranet_mode");
-            Object(device.c)() && !Object(device.d)() && Object(beaver_logger_client.p)("ie_meta_compatibility_header_missing", {
+            Object(belter_src.k)() && Object(beaver_logger_client.p)("ie_intranet_mode");
+            Object(belter_src.i)() && !Object(belter_src.j)() && Object(beaver_logger_client.p)("ie_meta_compatibility_header_missing", {
                 message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
             });
             3 !== function(bar, baz, zomg) {}.bind({
@@ -24496,7 +24585,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.328"
+                    ver: "4.0.330"
                 };
             }));
             Object(beaver_logger_client.a)((function() {
@@ -24542,7 +24631,7 @@
                     var script = getCurrentScript();
                     if (script && script.hasAttribute("data-page-type")) {
                         var pageType = script.getAttribute("data-page-type").toLowerCase();
-                        if (-1 === Object(belter_src.l)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
+                        if (-1 === Object(belter_src.v)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
                         return pageType;
                     }
                     return "";
@@ -24662,7 +24751,7 @@
     }
     var interface_postRobot = src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.328";
+    var interface_version = "4.0.330";
     var interface_Checkout;
     var interface_BillingPage;
     var PayPalCheckout;
