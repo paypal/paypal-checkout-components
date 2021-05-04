@@ -1,3 +1,13 @@
+## <small>5.0.154 (2021-05-04)</small>
+
+* add onmount event to fields (#1616) ([a180c6f](https://github.com/paypal/paypal-checkout-components/commit/a180c6f)), closes [#1616](https://github.com/paypal/paypal-checkout-components/issues/1616)
+* Fix github action for stale issues (#1615) ([9be0f7c](https://github.com/paypal/paypal-checkout-components/commit/9be0f7c)), closes [#1615](https://github.com/paypal/paypal-checkout-components/issues/1615)
+* Fix github action for stale issues for real ([92feb6d](https://github.com/paypal/paypal-checkout-components/commit/92feb6d))
+* Update buttons container to use nonce (#1613) ([60e3860](https://github.com/paypal/paypal-checkout-components/commit/60e3860)), closes [#1613](https://github.com/paypal/paypal-checkout-components/issues/1613)
+* Update types (#1621) ([9c2de4f](https://github.com/paypal/paypal-checkout-components/commit/9c2de4f)), closes [#1621](https://github.com/paypal/paypal-checkout-components/issues/1621)
+
+
+
 ## <small>5.0.153 (2021-04-07)</small>
 
 * Added branded standalone button query param (#1575) ([accd923](https://github.com/paypal/paypal-checkout-components/commit/accd923)), closes [#1575](https://github.com/paypal/paypal-checkout-components/issues/1575)
