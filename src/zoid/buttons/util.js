@@ -74,7 +74,7 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     };
 }
 
-export function applePaySession() : Function {
+export function applePaySession() : ?Function {
     try {
         if (!window.ApplePaySession) {
             return;
