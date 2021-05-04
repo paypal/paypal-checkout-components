@@ -813,8 +813,8 @@
         function base64encode(str) {
             if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
                 return String.fromCharCode(parseInt(p1, 16));
-            })));
-            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            }))).replace(/[=]/g, "");
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64").replace(/[=]/g, "");
             throw new Error("Can not find window.btoa or Buffer");
         }
         function uniqueID() {
@@ -1453,7 +1453,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.23", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.24", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {

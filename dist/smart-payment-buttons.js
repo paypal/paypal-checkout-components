@@ -901,8 +901,8 @@ window.spb = function(modules) {
         function base64encode(str) {
             if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
                 return String.fromCharCode(parseInt(p1, 16));
-            })));
-            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            }))).replace(/[=]/g, "");
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64").replace(/[=]/g, "");
             throw new Error("Can not find window.btoa or Buffer");
         }
         function uniqueID() {
@@ -1817,7 +1817,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers11 = {}).authorization = "Bearer " + accessToken, _headers11["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers11["paypal-client-metadata-id"] = clientMetadataID, _headers11["x-app-name"] = "smart-payment-buttons", 
-            _headers11["x-app-version"] = "5.0.23", _headers11);
+            _headers11["x-app-version"] = "5.0.24", _headers11);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2165,7 +2165,7 @@ window.spb = function(modules) {
             sticky: !1
         });
         var androidPopupExperiment = createExperiment("native_android_popup", {
-            sample: 50,
+            sample: 100,
             sticky: !1
         });
         var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", {
@@ -2532,38 +2532,35 @@ window.spb = function(modules) {
                 logger_getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
                 return promise_ZalgoPromise.try((function() {
                     if (accessToken) {
-                        if (upgradeLSAT) {
-                            upgradeLSATExperiment.logStart();
-                            return createOrder().then((function(orderID) {
-                                return function(facilitatorAccessToken, _ref3) {
-                                    var _headers;
-                                    var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
-                                    return callGraphQL({
-                                        name: "UpgradeFacilitatorAccessToken",
-                                        headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
-                                        _headers["paypal-client-context"] = orderID, _headers),
-                                        query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
-                                        variables: {
-                                            facilitatorAccessToken: facilitatorAccessToken,
-                                            buyerAccessToken: buyerAccessToken,
-                                            orderID: orderID
-                                        }
-                                    }).then(src_util_noop);
-                                }(facilitatorAccessToken, {
-                                    buyerAccessToken: accessToken,
-                                    orderID: orderID
-                                });
-                            })).then((function() {
-                                logger_getLogger().info("upgrade_lsat_success");
-                                return accessToken;
-                            })).catch((function(err) {
-                                logger_getLogger().warn("upgrade_lsat_failure", {
-                                    error: stringifyError(err)
-                                });
-                                return accessToken;
-                            }));
-                        }
-                        return accessToken;
+                        upgradeLSATExperiment.logStart();
+                        return upgradeLSAT ? createOrder().then((function(orderID) {
+                            return function(facilitatorAccessToken, _ref3) {
+                                var _headers;
+                                var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
+                                return callGraphQL({
+                                    name: "UpgradeFacilitatorAccessToken",
+                                    headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
+                                    _headers["paypal-client-context"] = orderID, _headers),
+                                    query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
+                                    variables: {
+                                        facilitatorAccessToken: facilitatorAccessToken,
+                                        buyerAccessToken: buyerAccessToken,
+                                        orderID: orderID
+                                    }
+                                }).then(src_util_noop);
+                            }(facilitatorAccessToken, {
+                                buyerAccessToken: accessToken,
+                                orderID: orderID
+                            });
+                        })).then((function() {
+                            logger_getLogger().info("upgrade_lsat_success");
+                            return accessToken;
+                        })).catch((function(err) {
+                            logger_getLogger().warn("upgrade_lsat_failure", {
+                                error: stringifyError(err)
+                            });
+                            return accessToken;
+                        })) : accessToken;
                     }
                 }));
             };
@@ -4027,7 +4024,7 @@ window.spb = function(modules) {
                         var win = _ref10.win;
                         logger_getLogger().info("click_choose_funding").track((_getLogger$info$track2 = {}, 
                         _getLogger$info$track2.transition_name = "process_click_pay_with_different_payment_method", 
-                        _getLogger$info$track2)).flush();
+                        _getLogger$info$track2.optsel = "pay_with_different_payment_method", _getLogger$info$track2)).flush();
                         return promise_ZalgoPromise.try((function() {
                             return updateMenuClientConfig();
                         })).then((function() {
@@ -4061,7 +4058,7 @@ window.spb = function(modules) {
                         var win = _ref11.win;
                         logger_getLogger().info("click_choose_account").track((_getLogger$info$track3 = {}, 
                         _getLogger$info$track3.transition_name = "process_click_pay_with_different_account", 
-                        _getLogger$info$track3)).flush();
+                        _getLogger$info$track3.optsel = "pay_with_different_account", _getLogger$info$track3)).flush();
                         return promise_ZalgoPromise.try((function() {
                             return updateMenuClientConfig();
                         })).then((function() {
@@ -4081,7 +4078,8 @@ window.spb = function(modules) {
                         var _getLogger$info$track4;
                         var element = button.parentElement || button;
                         logger_getLogger().info("click_unlink_account").track((_getLogger$info$track4 = {}, 
-                        _getLogger$info$track4.transition_name = "process_click_unlink_account", _getLogger$info$track4)).flush();
+                        _getLogger$info$track4.transition_name = "process_click_unlink_account", _getLogger$info$track4.optsel = "unlink_account", 
+                        _getLogger$info$track4)).flush();
                         return (_ref9 = {
                             paymentMethodID: paymentMethodID,
                             clientAccessToken: clientAccessToken
@@ -4282,7 +4280,7 @@ window.spb = function(modules) {
                         var win = _ref9.win;
                         logger_getLogger().info("click_choose_funding").track((_getLogger$info$track = {}, 
                         _getLogger$info$track.transition_name = "process_click_pay_with_different_payment_method", 
-                        _getLogger$info$track)).flush();
+                        _getLogger$info$track.optsel = "pay_with_different_payment_method", _getLogger$info$track)).flush();
                         return promise_ZalgoPromise.try((function() {
                             return promise_ZalgoPromise.try((function() {
                                 return createOrder();
@@ -4319,7 +4317,7 @@ window.spb = function(modules) {
                         var win = _ref10.win;
                         logger_getLogger().info("click_choose_account").track((_getLogger$info$track2 = {}, 
                         _getLogger$info$track2.transition_name = "process_click_pay_with_different_account", 
-                        _getLogger$info$track2)).flush();
+                        _getLogger$info$track2.optsel = "pay_with_different_account", _getLogger$info$track2)).flush();
                         return loadCheckout({
                             payment: _extends({}, payment, {
                                 win: win,
@@ -5862,7 +5860,7 @@ window.spb = function(modules) {
                                     logger_getLogger().info("button_click").info("button_click_pay_flow_" + name).info("button_click_fundingsource_" + fundingSource).info("button_click_instrument_" + (instrumentType || "default")).track((_getLogger$info$info$ = {}, 
                                     _getLogger$info$info$.transition_name = "process_button_click", _getLogger$info$info$.selected_payment_method = fundingSource, 
                                     _getLogger$info$info$.chosen_fi_type = instrumentType, _getLogger$info$info$.payment_flow = name, 
-                                    _getLogger$info$info$)).flush();
+                                    _getLogger$info$info$.is_vault = instrumentType ? "1" : "0", _getLogger$info$info$)).flush();
                                     return promise_ZalgoPromise.hash({
                                         valid: !onClick || onClick({
                                             fundingSource: fundingSource
@@ -6439,7 +6437,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.23", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.24", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
