@@ -1,12 +1,11 @@
 /* @flow */
 import { supportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
 import { getEnableFunding, createExperiment, getFundingEligibility } from '@paypal/sdk-client/src';
 
 import type { Experiment as VenmoExperiment } from '../../types';
 import { BUTTON_FLOW } from '../../constants';
-import type { ApplePaySessionConfigRequest, ButtonProps } from '../../ui/buttons/props';
+import type { ButtonProps } from '../../ui/buttons/props';
 
 export function determineFlow(props : ButtonProps) : $Values<typeof BUTTON_FLOW> {
 
@@ -75,7 +74,7 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     };
 }
 
-export function applePaySession() : ?ApplePaySessionConfigRequest {
+export function applePaySession() : Function {
     try {
         if (!window.ApplePaySession) {
             return;
@@ -83,7 +82,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
 
         return (version, request) => {
             const session = new window.ApplePaySession(version, request);
-            return ZalgoPromise.resolve({
+            return {
                 addEventListener: (name, handler) => {
                     session.addEventListener(name, handler);
                 },
@@ -103,7 +102,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                     session.completePayment(result);
                 },
                 begin: () => session.begin()
-            });
+            };
         };
     } catch (e) {
         return undefined;

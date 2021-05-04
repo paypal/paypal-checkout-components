@@ -1,4 +1,3 @@
-/* eslint-disable max-lines, eslint-comments/disable-enable-pair  */
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -166,64 +165,6 @@ export type Personalization = {|
     |}
 |};
 
-export type ApplePayErrorCode = 'shippingContactInvalid' | 'billingContactInvalid' | 'addressUnserviceable' | 'unknown';
-export type ApplePayContactField = 'phoneNumber' | 'emailAddress' | 'givenName' | 'familyName' | 'phoneticGivenName' | 'phoneticFamilyName' | 'addressLines' | 'subLocality' | 'locality' | 'postalCode' | 'subAdministrativeArea' | 'administrativeArea' | 'country' | 'countryCode';
-
-export type ApplePayError = {|
-    code : ApplePayErrorCode,
-    contactField : ApplePayContactField,
-    message : string
-|};
-
-export type ApplePayLineItemType = 'final' | 'pending';
-export type ApplePayLineItem = {|
-    type? : ApplePayLineItemType,
-    label? : string,
-    amount? : string
-|};
-
-export type ApplePayShippingMethod = {|
-    label : string,
-    detail : string,
-    amount : string,
-    identifier : string
-|};
-
-export type ApplePayShippingContactUpdate = {|
-    errors? : $ReadOnlyArray<ApplePayErrorCode>,
-    newShippingMethods? : $ReadOnlyArray<ApplePayShippingMethod>,
-    newTotal : ApplePayLineItem,
-    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
-|};
-
-export type ApplePayPaymentMethodUpdate = {|
-    newTotal : ApplePayLineItem,
-    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
-|};
-
-export type ApplePayShippingMethodUpdate = {|
-    newTotal : ApplePayLineItem,
-    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
-|};
-
-export type ApplePayPaymentAuthorizationResult = {|
-    status : number,
-    errors? : $ReadOnlyArray<ApplePayError>
-|};
-
-export type ApplePaySessionConfig = {|
-    begin : () => void,
-    addEventListener : (string, Function) => void,
-    // eslint-disable-next-line flowtype/no-weak-types
-    completeMerchantValidation : (validatedSession : any) => void,
-    completeShippingMethodSelection : (update : ApplePayShippingMethodUpdate | {||}) => void,
-    completeShippingContactSelection : (update : ApplePayShippingContactUpdate | {||}) => void,
-    completePaymentMethodSelection : (update : ApplePayPaymentMethodUpdate | {||}) => void,
-    completePayment : (result : ApplePayPaymentAuthorizationResult) => void
-|};
-
-export type ApplePaySessionConfigRequest = (version : number, request : Object) => ZalgoPromise<ApplePaySessionConfig>;
-
 export type RenderButtonProps = {|
     style : ButtonStyle,
     locale : LocaleType,
@@ -249,7 +190,7 @@ export type RenderButtonProps = {|
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    applePay : ApplePaySessionConfigRequest,
+    applePay : Function,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
@@ -297,7 +238,7 @@ export type ButtonProps = {|
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
     applePaySupport : boolean,
-    applePay : ApplePaySessionConfigRequest
+    applePay : Function
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -331,7 +272,7 @@ export type ButtonPropsInputs = {
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    applePay : ApplePaySessionConfigRequest,
+    applePay : Function,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
