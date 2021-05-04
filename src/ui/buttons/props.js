@@ -222,7 +222,7 @@ export type ApplePaySessionConfig = {|
     completePayment : (result : ApplePayPaymentAuthorizationResult) => void
 |};
 
-export type ApplePaySessionConfigRequest = (version : number, request : Object) => ApplePaySessionConfig;
+export type ApplePaySessionConfigRequest = (version : number, request : Object) => ZalgoPromise<ApplePaySessionConfig>;
 
 export type RenderButtonProps = {|
     style : ButtonStyle,
