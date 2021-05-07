@@ -94,19 +94,19 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
 
             session.onshippingmethodselected = () => {
                 listeners.shippingmethodselected();
-            }
+            };
 
             session.onshippingcontactselected = () => {
                 listeners.shippingcontactselected();
-            }
+            };
 
             session.onpaymentauthorized = (e) => {
                 listeners.paymentauthorized(e.payment);
-            }
+            };
 
             session.oncancel = () => {
                 listeners.cancel();
-            }
+            };
                             
             return {
                 addListener: (name, handler) => {
