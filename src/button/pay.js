@@ -65,7 +65,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
     return ZalgoPromise.try(() => {
         const { merchantID, personalization } = serviceData;
-        const { clientID, onClick, createOrder, env, vault, partnerAttributionID, userExperienceFlow } = props;
+        const { clientID, onClick, createOrder, env, vault, partnerAttributionID, userExperienceFlow, buttonSessionID } = props;
         
         sendPersonalizationBeacons(personalization);
 
@@ -102,7 +102,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             const updateClientConfigPromise = createOrder()
                 .then(orderID => {
                     if (updateFlowClientConfig) {
-                        return updateFlowClientConfig({ orderID, payment, userExperienceFlow });
+                        return updateFlowClientConfig({ orderID, payment, userExperienceFlow, buttonSessionID });
                     }
 
                     // Do not block by default

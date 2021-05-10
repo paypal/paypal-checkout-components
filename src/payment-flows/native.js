@@ -9,7 +9,7 @@ import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } 
 
 import type { ButtonProps } from '../button/props';
 import { WEB_CHECKOUT_URI, AMPLITUDE_API_KEY } from '../config';
-import { getNativeEligibility, firebaseSocket, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
+import { getNativeEligibility, firebaseSocket, updateButtonClientConfig, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
 import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, unresolvedPromise } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
 import { nativeFakeoutExperiment, androidPopupExperiment } from '../experiments';
@@ -1172,11 +1172,19 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 }
 
+function updateNativeClientConfig({ orderID, payment, userExperienceFlow, buttonSessionID }) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
+        const { fundingSource } = payment;
+        return updateButtonClientConfig({ fundingSource, orderID, inline: false, userExperienceFlow, buttonSessionID });
+    });
+}
+
 export const native : PaymentFlow = {
-    name:              'native',
-    setup:             setupNative,
-    isEligible:        isNativeEligible,
-    isPaymentEligible: isNativePaymentEligible,
-    init:              initNative,
-    spinner:           true
+    name:                   'native',
+    setup:                  setupNative,
+    isEligible:             isNativeEligible,
+    isPaymentEligible:      isNativePaymentEligible,
+    init:                   initNative,
+    updateFlowClientConfig: updateNativeClientConfig,
+    spinner:                true
 };

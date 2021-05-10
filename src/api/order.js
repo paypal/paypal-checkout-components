@@ -327,10 +327,11 @@ type ClientConfig = {|
     fundingSource : $Values<typeof FUNDING>,
     integrationArtifact : string,
     userExperienceFlow : string,
-    productFlow : string
+    productFlow : string,
+    buttonSessionID : ?string
 |};
 
-export function updateClientConfig({ orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow } : ClientConfig) : ZalgoPromise<void> {
+export function updateClientConfig({ orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow, buttonSessionID } : ClientConfig) : ZalgoPromise<void> {
     return callGraphQL({
         name:  'UpdateClientConfig',
         query: `
@@ -339,18 +340,20 @@ export function updateClientConfig({ orderID, fundingSource, integrationArtifact
                 $fundingSource : ButtonFundingSourceType!,
                 $integrationArtifact : IntegrationArtifactType!,
                 $userExperienceFlow : UserExperienceFlowType!,
-                $productFlow : ProductFlowType!
+                $productFlow : ProductFlowType!,
+                $buttonSessionID : String
             ) {
                 updateClientConfig(
                     token: $orderID,
                     fundingSource: $fundingSource,
                     integrationArtifact: $integrationArtifact,
                     userExperienceFlow: $userExperienceFlow,
-                    productFlow: $productFlow
+                    productFlow: $productFlow,
+                    buttonSessionID: $buttonSessionID
                 )
             }
         `,
-        variables: { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow },
+        variables: { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow, buttonSessionID },
         headers:   {
             [HEADERS.CLIENT_CONTEXT]: orderID
         }
@@ -513,14 +516,23 @@ export const getSupplementalOrderInfo : GetSupplementalOrderInfo = memoize(order
     });
 });
 
-export function updateButtonClientConfig({ orderID, fundingSource, inline = false, userExperienceFlow } : {| orderID : string, fundingSource : $Values<typeof FUNDING>, inline : boolean | void, userExperienceFlow? : string |}) : ZalgoPromise<void> {
+type UpdateButtonClientConfigOptions = {|
+    orderID : string,
+    fundingSource : $Values<typeof FUNDING>,
+    inline : boolean | void,
+    userExperienceFlow? : string,
+    buttonSessionID? : ?string
+|};
+
+export function updateButtonClientConfig({ orderID, fundingSource, inline = false, userExperienceFlow, buttonSessionID } : UpdateButtonClientConfigOptions) : ZalgoPromise<void> {
     const experienceFlow = inline ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT;
     return updateClientConfig({
         orderID,
         fundingSource,
         integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
         userExperienceFlow:  userExperienceFlow ? userExperienceFlow : experienceFlow,
-        productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
+        productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS,
+        buttonSessionID
     });
 }
 
