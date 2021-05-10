@@ -90,6 +90,7 @@ describe(`paypal button component props`, () => {
 
     it('should render a button and get any queried FIs', () => {
         const fundingSources = [
+            FUNDING.APPLEPAY,
             FUNDING.PAYPAL,
             FUNDING.CREDIT,
             FUNDING.VENMO
