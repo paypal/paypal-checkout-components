@@ -15,8 +15,15 @@ export type XOnAuthDataType = {|
 
 export type OnAuth = (params : XOnAuthDataType) => ZalgoPromise<string | void>;
 
-export function getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT } : {| facilitatorAccessToken : string, createOrder : CreateOrder, upgradeLSAT : boolean |}) : OnAuth {
-    upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
+type GetOnAuthOptions = {|
+    facilitatorAccessToken : string,
+    createOrder : CreateOrder,
+    upgradeLSAT : boolean,
+    userIDToken : ?string
+|};
+
+export function getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT, userIDToken } : GetOnAuthOptions) : OnAuth {
+    upgradeLSAT = upgradeLSAT || Boolean(userIDToken) || upgradeLSATExperiment.isEnabled();
 
     return ({ accessToken } : XOnAuthDataType) => {
         getLogger().info(`spb_onauth_access_token_${ accessToken ? 'present' : 'not_present' }`);

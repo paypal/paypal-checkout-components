@@ -18,6 +18,8 @@ describe('wallet cases', () => {
 
             window.xprops.userIDToken = userIDToken;
 
+            let isUpgradeLSATCalled = false;
+
             const gqlMock = getGraphQLApiMock({
                 extraHandler: ({ headers, data }) => {
                     if (data.query.includes('query GetSmartWallet')) {
@@ -87,6 +89,27 @@ describe('wallet cases', () => {
                             }
                         };
                     }
+
+                    if (data.query.includes('mutation UpgradeFacilitatorAccessToken')) {
+                        isUpgradeLSATCalled = true;
+                        if (!data.variables.facilitatorAccessToken) {
+                            throw new Error(`We haven't received the facilitatorAccessToken`);
+                        }
+
+                        if (!data.variables.buyerAccessToken) {
+                            throw new Error(`We haven't received the buyer's access token`);
+                        }
+
+                        if (!data.variables.orderID) {
+                            throw new Error(`We haven't received the orderID`);
+                        }
+
+                        return {
+                            data: {
+                                upgradeLowScopeAccessToken: true
+                            }
+                        };
+                    }
                 }
             }).expectCalls();
 
@@ -106,6 +129,10 @@ describe('wallet cases', () => {
 
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+
+                if (!isUpgradeLSATCalled) {
+                    throw new Error(`Expected LSAT upgrade to be called`);
                 }
             }));
 

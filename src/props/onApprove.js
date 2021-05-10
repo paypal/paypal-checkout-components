@@ -233,21 +233,22 @@ function getDefaultOnApprove(intent : $Values<typeof INTENT>) : XOnApprove {
     };
 }
 
-type OnApproveXProps = {|
+type GetOnApproveOptions = {|
     intent : $Values<typeof INTENT>,
     onApprove : ?XOnApprove,
     partnerAttributionID : ?string,
     onError : XOnError,
     upgradeLSAT : boolean,
     clientAccessToken : ?string,
-    vault : boolean
+    vault : boolean,
+    userIDToken : ?string
 |};
 
-export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, clientAccessToken, vault, upgradeLSAT = false } : OnApproveXProps, { facilitatorAccessToken, branded, createOrder } : {| facilitatorAccessToken : string, branded : boolean | null, createOrder : CreateOrder |}) : OnApprove {
+export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, clientAccessToken, vault, userIDToken, upgradeLSAT = false } : GetOnApproveOptions, { facilitatorAccessToken, branded, createOrder } : {| facilitatorAccessToken : string, branded : boolean | null, createOrder : CreateOrder |}) : OnApprove {
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }
-    upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
+    upgradeLSAT = upgradeLSAT || Boolean(userIDToken) || upgradeLSATExperiment.isEnabled();
 
     return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
         return ZalgoPromise.try(() => {
