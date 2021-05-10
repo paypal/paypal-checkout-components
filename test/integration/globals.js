@@ -97,5 +97,8 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     },
     itau: {
         eligible: false
+    },
+    applepay: {
+        eligible: true
     }
 };
