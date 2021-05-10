@@ -65,6 +65,18 @@ describe(`paypal button component props`, () => {
                         expect(completePaymentMethodSelection);
                         expect(completeShippingMethodSelection);
                         expect(completePayment);
+                        
+                        const callback = () => true;
+                        ZalgoPromise.all([
+                            addListener('validatemerchant', callback),
+                            addListener('paymentmethodselected', callback),
+                            addListener('shippingmethodselected', callback),
+                            addListener('shippingcontactselected', callback),
+                            addListener('paymentauthorized', callback),
+                            addListener('cancel', callback)
+                        ]).then(() => {
+                            begin();
+                        });
                     });
                 };
 
