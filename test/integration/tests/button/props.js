@@ -99,7 +99,6 @@ describe(`paypal button component props`, () => {
                         onRender: (...args) => onRender(...args)
                     },
                     fundingSource,
-                    onApprove: avoid('onApprove'),
                     onCancel:  avoid('onCancel')
 
                 });
