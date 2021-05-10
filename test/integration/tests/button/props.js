@@ -60,22 +60,9 @@ describe(`paypal button component props`, () => {
                     return await applePay(3, request).then(response => {
                         const {
                             begin,
-                            addEventListener,
-                            completeMerchantValidation,
-                            completeShippingContactSelection,
-                            completePaymentMethodSelection,
-                            completeShippingMethodSelection,
-                            completePayment
+                            addEventListener
                         } = response;
 
-                        expect(begin);
-                        expect(addEventListener);
-                        expect(completeMerchantValidation);
-                        expect(completeShippingContactSelection);
-                        expect(completePaymentMethodSelection);
-                        expect(completeShippingMethodSelection);
-                        expect(completePayment);
-                            
                         const callback = () => true;
                         return ZalgoPromise.all([
                             addEventListener('validatemerchant', callback),
