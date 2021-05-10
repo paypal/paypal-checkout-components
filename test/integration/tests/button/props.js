@@ -24,7 +24,8 @@ describe(`paypal button component props`, () => {
         function ApplePaySession(version, request) : Object {
             return {
                 version,
-                request
+                request,
+                begin: () => true
             };
         }
 
