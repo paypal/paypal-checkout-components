@@ -1,3 +1,9 @@
+## <small>5.0.155 (2021-05-10)</small>
+
+* Update ApplePaySession (#1628) ([cfe4c92](https://github.com/paypal/paypal-checkout-components/commit/cfe4c92)), closes [#1628](https://github.com/paypal/paypal-checkout-components/issues/1628)
+
+
+
 ## <small>5.0.154 (2021-05-04)</small>
 
 * add onmount event to fields (#1616) ([a180c6f](https://github.com/paypal/paypal-checkout-components/commit/a180c6f)), closes [#1616](https://github.com/paypal/paypal-checkout-components/issues/1616)
