@@ -85,7 +85,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
             const listeners = {};
 
             session.onvalidatemerchant = (e) => {
-                listeners.validatemerchant(e.validationURL);
+                listeners.validatemerchant({ validationURL: e.validationURL });
             };
 
             session.onpaymentmethodselected = () => {
@@ -109,7 +109,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
             };
                             
             return {
-                addListener: (name, handler) => {
+                addEventListener: (name, handler) => {
                     listeners[name] = handler;
                 },
                 completeMerchantValidation: (validatedSession) => {

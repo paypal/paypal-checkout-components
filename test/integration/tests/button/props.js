@@ -20,15 +20,23 @@ describe(`paypal button component props`, () => {
     it('should render an Apple Pay button if applePaySupport is true', () => {
         // setup applePaySupport
         window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
-        window.ApplePaySession = {
-            canMakePayments: () => true,
-            supportsVersion: () => true
-        };
+
+        function ApplePaySession(version, request) : Object {
+            return {
+                version,
+                request
+            };
+        }
+
+        window.ApplePaySession = ApplePaySession;
+        window.ApplePaySession.canMakePayments = () => true;
+        window.ApplePaySession.supportsVersion = () => true;
 
         return ZalgoPromise.try(() => {
             return wrapPromise(({ expect, avoid }) => {
-                let onRender = ({ xprops }) => {
+                let onRender = async ({ xprops }) => {
                     const applePay = xprops.applePay;
+
                     const request = {
                         'countryCode':          'US',
                         'currencyCode':         'USD',
@@ -47,10 +55,11 @@ describe(`paypal button component props`, () => {
                             'amount':   '1.99'
                         }
                     };
-                    applePay(3, request).then(response => {
+                  
+                    return await applePay(3, request).then(response => {
                         const {
                             begin,
-                            addListener,
+                            addEventListener,
                             completeMerchantValidation,
                             completeShippingContactSelection,
                             completePaymentMethodSelection,
@@ -59,24 +68,26 @@ describe(`paypal button component props`, () => {
                         } = response;
 
                         expect(begin);
-                        expect(addListener);
+                        expect(addEventListener);
                         expect(completeMerchantValidation);
                         expect(completeShippingContactSelection);
                         expect(completePaymentMethodSelection);
                         expect(completeShippingMethodSelection);
                         expect(completePayment);
-                        
+                            
                         const callback = () => true;
-                        ZalgoPromise.all([
-                            addListener('validatemerchant', callback),
-                            addListener('paymentmethodselected', callback),
-                            addListener('shippingmethodselected', callback),
-                            addListener('shippingcontactselected', callback),
-                            addListener('paymentauthorized', callback),
-                            addListener('cancel', callback)
+                        return ZalgoPromise.all([
+                            addEventListener('validatemerchant', callback),
+                            addEventListener('paymentmethodselected', callback),
+                            addEventListener('shippingmethodselected', callback),
+                            addEventListener('shippingcontactselected', callback),
+                            addEventListener('paymentauthorized', callback),
+                            addEventListener('cancel', callback)
                         ]).then(() => {
                             begin();
                         });
+                    }).catch(err => {
+                        throw err;
                     });
                 };
 
