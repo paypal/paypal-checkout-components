@@ -75,7 +75,6 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
 
     const getPayLaterProductsQuery = () => {
         return {
-            flex:   getPayLaterProductQuery(),
             payIn4: getPayLaterProductQuery()
         };
     };
