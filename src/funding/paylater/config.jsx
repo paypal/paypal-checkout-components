@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { COUNTRY, FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 import { node, Style } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -22,26 +22,12 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
         Label: ({ logo }) => logo,
 
-        Logo: ({ logoColor, nonce, locale }) => {
-            let label = <Text>Pay Later</Text>;
-
-            if (locale.country === COUNTRY.DE) {
-                label = <Text>Später Bezahlen</Text>;
-            }
-
-            if (locale.country === COUNTRY.FR) {
-                label = <Text>4x PayPal</Text>;
-            }
-
-            if (locale.country === COUNTRY.AU) {
-                label = <Text>Pay in 4</Text>;
-            }
-
+        Logo: ({ logoColor, nonce }) => {
             return (
                 <Style css={ css } nonce={ nonce }>
                     <PPLogo optional logoColor={ logoColor } />
                     <Space />
-                    { label }
+                    <Text>Pay Later</Text>
                 </Style>
             );
         },
