@@ -1,3 +1,10 @@
+## <small>5.0.156 (2021-05-12)</small>
+
+* Revert localized label (#1631) ([d60c46b](https://github.com/paypal/paypal-checkout-components/commit/d60c46b)), closes [#1631](https://github.com/paypal/paypal-checkout-components/issues/1631)
+* Update Apple Pay Events (#1634) ([dc8daa2](https://github.com/paypal/paypal-checkout-components/commit/dc8daa2)), closes [#1634](https://github.com/paypal/paypal-checkout-components/issues/1634)
+
+
+
 ## <small>5.0.155 (2021-05-10)</small>
 
 * Update ApplePaySession (#1628) ([cfe4c92](https://github.com/paypal/paypal-checkout-components/commit/cfe4c92)), closes [#1628](https://github.com/paypal/paypal-checkout-components/issues/1628)
