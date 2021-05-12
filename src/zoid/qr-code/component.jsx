@@ -92,16 +92,6 @@ export function getQRCodeComponent() : QRCodeComponent {
 }
 
 
-// type QRCodeContainerOptions = {|
-//     uid : string,
-//     frame : ?HTMLIFrameElement,
-//     prerenderFrame : ?HTMLIFrameElement,
-//     event : EventEmitterType,
-//     cspNonce? : ?string,
-//     close : () => ZalgoPromise<void>
-// |};
-
-
 export function QRCodeContainer({
     uid,
     frame,
