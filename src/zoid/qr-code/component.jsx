@@ -1,545 +1,221 @@
 /* @flow */
 /** @jsx node */
 
-// import { h, render, Fragment, Node } from 'preact';
-//import { getBody } from '../util';
-import {writeElementToWindow, memoize, inlineMemoize, destroyElement,toCSS, iframe } from 'belter/src';
+import { inlineMemoize, destroyElement, type EventEmitterType } from 'belter/src';
 import { create, EVENT, type ZoidComponent } from 'zoid/src';
-import { node, dom } from 'jsx-pragmatic/src';
-import {assertSameDomain} from 'cross-domain-utils/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain,getCSPNonce } from '@paypal/sdk-client/src';
-// import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
-//     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
-//     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-//     getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow } from '@paypal/sdk-client/src';
-// import { getModalComponent } from '@paypal/checkout-components/src/zoid/modal';\
-// import {Modal} from '@paypal/checkout-components';
-// import { QRCode } from './node-qrcode';
-import { Overlay, SpinnerPage } from '@paypal/common-components/src';
-
-// import type {ZoidComponentInstance, ZoidComponent} from '../../types';
-
-
-// import type { CrossDomainWindowType, SameDomainWindowType } from 'cross-domain-utils/src';
-// import { fragment } from 'typed-graphqlify';
-
+import { node, dom, type ChildType } from 'jsx-pragmatic/src';
+import type { ZalgoPromise } from 'zalgo-promise/src';
+import { getLogger, getPayPalDomainRegex, getPayPalDomain, getCSPNonce } from '@paypal/sdk-client/src';
+import { SpinnerPage } from '@paypal/common-components/src';
 
 const CLASS = {
-    VISIBLE:   'visible',
-    INVISIBLE: 'invisible'
+    VISIBLE:         'visible',
+    INVISIBLE:       'invisible',
+    COMPONENT_FRAME: 'component-frame',
+    PRERENDER_FRAME: 'prerender-frame'
 };
-// import {VenmoLogo} from '@paypal/sdk-logos';
 
-type QRCodeProps = {
+type QRCodeProps = {|
     qrPath : string,
-    cspNonce : ?string,
-    // window: SameDomainWindowType | ?CrossDomainWindowType,
-    // targetElement : any,
-    
-};
+    cspNonce : ?string
+|};
 
 export type QRCodeComponent = ZoidComponent<QRCodeProps>;
 
 export function getQRCodeComponent() : QRCodeComponent {
-//    return inlineMemoize(getQRCodeComponent, ()=>{
-
-    return create({
-        tag: 'paypal-qr-modal',
-        url: ({ props }) => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__QRCODE__ }?${props.qrPath}`,
-        domain: getPayPalDomainRegex(),
-        dimensions: {
-            width:  '100%',
-            height: '100%'
-        },
-        logger: getLogger(),
-        prerenderTemplate: () => {
-            return null;
-        },
-        // prerenderTemplate: ({ doc, props }) => {
-        //     return (
-        //         <SpinnerPage
-        //             nonce={ props.cspNonce }
-        //         />
-        //     ).render(dom({ doc }));
-        // },
-
-        containerTemplate: ({close,focus, frame, prerenderFrame, props, doc, uid, event }) => {
-            if (!frame || !prerenderFrame) {
-                return;
-            }
-
-            // event.on(EVENT.RENDERED, () => {
-            //     var span = document.createElement('span');
-            //     span.innerText = 'EVENT.RENDERED';
-            //     document.body.appendChild(span);
-            //     console.log('----');
-            //     console.log('rendered');                
-            // });
-
-            // prerenderFrame.classList.add(CLASS.VISIBLE);
-            // frame.classList.add(CLASS.INVISIBLE);
-            
-            event.on(EVENT.RENDER, () => {
-                console.log('EVENT.RENDER');
-                // debugger;
-                // prerenderFrame.classList.add(CLASS.INVISIBLE);
-                // // prerenderFrame.classList.remove(CLASS.VISIBLE);
-                // alert('yooo');
-                // 
-
-                // // frame.classList.remove(CLASS.INVISIBLE);
-                // // frame.classList.add(CLASS.VISIBLE);
-
-                // setTimeout(() => {
-                //     destroyElement(prerenderFrame);
-                // }, 1);
-            });
-            
-
-            
-            // const onRenderFiredFrame = () => {
-            //     console.log('zoid el.onLoad fired');                
-            //     prerenderFrame.classList.add(CLASS.INVISIBLE);
-            // }
-            const { cspNonce,qrPath } = props;
- 
-            // #${ uid } > iframe.${ CLASS.INVISIBLE } {
-            //     opacity: 0;
-            // }
-            // #${ uid } > iframe.${ CLASS.VISIBLE } {
-            //     opacity: 1;
-            // }
-
-            // #${ uid } {
-            //     display: flex;
-            //     position: fixed;
-            //     width: 100%;
-            //     height: 100%;
-            //     top: 0;
-            //     left: 0;
-            //     z-index: 200000;
-            //     align-items: center;
-            //     justify-content: center;
-            // }
-            // #${ uid } > iframe {
-            //     display: inline-block;
-            //     position: absolute;
-            //         z-index: 20000;
-            //     width: 100%;
-            //     height: 100%;
-            //     top: 0;
-            //     left: 0;
-            //     transition: opacity .2s ease-in-out;
-            // }
-
-
-            return (
-                <div id={ uid }>
-                    <style
-                        nonce={ cspNonce }
-                        innerHTML={ `
-                        #${ uid } {
-                            display: flex;
-                            position: fixed;
-                            width: 100%;
-                            height: 100%;
-                            top: 0;
-                            left: 0;
-                            z-index: 200000;
-                            align-items: center;
-                            justify-content: center;
-                        }
-                        #${ uid } > iframe {
-                            display: inline-block;
-                            position: absolute;
-                                z-index: 20000;
-                            width: 100%;
-                            height: 100%;
-                            top: 0;
-                            left: 0;
-                            transition: opacity .2s ease-in-out;
-                        }
-                        `
-                         } />
-                        
-                    <node el={ prerenderFrame }/>
-                    <node el={ frame } />              
-                </div>
-            ).render(dom({ doc }));
-        },
-        
-        autoResize: {
-            width:  true,
-            height: true
-        },
-        attributes: {
-            iframe: {
-                scrolling: 'no'
-            }
-        },
-        props: {
-            qrPath: {
-                type:       'string',
-                queryParam: true,
-                required:   true,
+    return inlineMemoize(getQRCodeComponent, () => {
+        return create({
+            tag:        'paypal-qr-modal',
+            url:        ({ props }) => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__QRCODE__ }?${ props.qrPath }`,
+            domain:     getPayPalDomainRegex(),
+            dimensions: {
+                width:  '100%',
+                height: '100%'
             },
-            cspNonce: {
-                type:       'string',
-                queryParam: false,
-                required:   false,
+            logger:            getLogger(),
+            prerenderTemplate: ({ doc, props }) => {
+                return (
+                    <SpinnerPage
+                        nonce={ props.cspNonce }
+                    />
+                ).render(dom({ doc }));
             },
-            // uid: {
-            //     type:       'string',
-            //     queryParam: true,
-            //     required:   false
-            // },
-            // removePrerenderFrame: {
-            //     type:       'function',
-            //     queryParam: false,
-            //     required:   true,
-            //     value:      ()=>{destroyElement(this.prerenderFrame);}
-            // }
-        }
-    });
-}
 
-
-
-
-    // });
-
-/*
-export function renderQRModal({ windowqrPath, cspNonce} : QRmodalProps) : ZoidComponentInstance {
-
-    qrCode({ qrPath, cspNonce });
-
-    qrCode.hide();
-    qrCode.renderTo(window.xprops.getParent(), `document.body`);
-
-    return qrCode;
-}
-*/
-
-
-
-// export function preRenderQRModal({ props, components } : {| props : ButtonProps, components : Components |}) {
-//     const { clientID, uid: containerUID } = props;
-//     const { Menu } = components;
-
-//     if (!clientID) {
-//         return;
-//     }
-    
-//     renderButtonSmartMenu({ containerUID, clientID, Menu });
-// }
-
-
-
-
-// { 
-//     cspNonce, 
-//     // window,
-//     targetElement,
-//     qrPath,
-// } : QRmodalProps) : () => ZoidComponent = memoize(() => {
-
-/*
-    const qrPathString = qrPath || 'abce';
-    // const logo = () => VenmoLogo
-    // console.log('fired');
-    // console.log(QRCodeDataURL());
-    
-
-    const content = ( <Fragment> 
-        <style nonce={ cspNonce }> { style } </style>
-        <div id="qr-modal">
-            <div>
-                <img src={QRCodeDataURL} alt="QR Code" />
-                <h1>Venmo</h1>
-            </div>
-            <div id="instructions">To scan QT code, Open your Venmo App</div>
-        </div> 
-    </Fragment>);
-
-    return render( content, targetElement )
-*/
-
-    /*
-    const Page = () =>{
-
-        return render(
-            <Modal>
-                <h1>QR CODE</h1>
-                <p>
-                    {`qrPath: ${qrPathString}`}
-                </p>
-            </Modal>
-        )
-    }
-    */
-        
-/*
-        return render (
-        <Fragment>
-        <style nonce={ cspNonce }>
-            {`
-                * {
-                    box-sizing: border-box;
+            containerTemplate: ({ close, frame, prerenderFrame, props, doc, uid, event }) => {
+                if (!frame || !prerenderFrame) {
+                    return;
                 }
 
-                html, body {
-                    background-color: pink !important;
-                }
-
-                body {
-                    padding: 5px 20px;
-                    display: inline-block;
-                    width: 100%;
-                }
-            `}
-        </style>
-        <h1>QR CODE</h1>
-        <p>
-            {`qrPath: ${qrPathString}`}
-        </p>
-        </Fragment>
-        
-    )};
-    // debugger;
-    if (window){
-        writeElementToWindow(assertSameDomain(window), Page());
-    } else {
-        //noo window :( 
-    }
-*/
-
-// export function generateQRpage({cspNonce}){}
-
-///=====
-
-/*
-                event.on(EVENT.RENDERED, () => {
-                    debugger;
-                    console.log('event.rendered')
-                });
-                event.on(EVENT.RENDER, () => {
-                    debugger;
-                    console.log('event.render')
-                });
+                const { cspNonce } = props;
 
                 return (
-                    <Overlay
-                        context={ 'iframe' }
-                        focus= { focus }
+                    <QRCodeContainer
+                        uid={ uid }
+                        cspNonce={ cspNonce }
                         close={ close }
                         event={ event }
                         frame={ frame }
                         prerenderFrame={ prerenderFrame }
-                        autoResize={ true }
-                        
                     />
+                    
                 ).render(dom({ doc }));
-*/                
-/*
-        <div id={ uid } onRender={ onRenderFired }>
+            },
+            autoResize: {
+                width:  true,
+                height: true
+            },
+            attributes: {
+                iframe: {
+                    scrolling: 'no'
+                }
+            },
+            props: {
+                qrPath: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   true
+                },
+                cspNonce: {
+                    type:       'string',
+                    queryParam: false,
+                    required:   false,
+                    value:      getCSPNonce
+                },
+                demo: {
+                    type:       'boolean',
+                    queryParam: true,
+                    required:   false
+                }
+            }
+        });
+    });
+}
+
+
+// type QRCodeContainerOptions = {|
+//     uid : string,
+//     frame : ?HTMLIFrameElement,
+//     prerenderFrame : ?HTMLIFrameElement,
+//     event : EventEmitterType,
+//     cspNonce? : ?string,
+//     close : () => ZalgoPromise<void>
+// |};
+
+
+export function QRCodeContainer({
+    uid,
+    frame,
+    prerenderFrame,
+    event,
+    cspNonce,
+    close
+} : {|
+    uid : string,
+    frame : ?HTMLIFrameElement,
+    prerenderFrame : ?HTMLIFrameElement,
+    event : EventEmitterType,
+    cspNonce? : ?string,
+    close : () => ZalgoPromise<void>
+|}) : ?ChildType {
+    if (!frame || !prerenderFrame) {
+        throw new Error(`Expected frame and prerenderframe`);
+    }
+
+    frame.classList.add(CLASS.COMPONENT_FRAME);
+    prerenderFrame.classList.add(CLASS.PRERENDER_FRAME);
+
+    frame.classList.add(CLASS.INVISIBLE);
+    prerenderFrame.classList.add(CLASS.VISIBLE);
+
+    event.on(EVENT.RENDERED, () => {
+        prerenderFrame.classList.remove(CLASS.VISIBLE);
+        prerenderFrame.classList.add(CLASS.INVISIBLE);
+
+        frame.classList.remove(CLASS.INVISIBLE);
+        frame.classList.add(CLASS.VISIBLE);
+
+        setTimeout(() => {
+            destroyElement(prerenderFrame);
+        }, 1000);
+    });
+
+    return (
+        <div id={ uid }>
             <style
                 nonce={ cspNonce }
                 innerHTML={ `
-
-                                #${ uid } {
-                                    display: flex;
-                                    position: fixed;
-                                    width: 100%;
-                                    height: 100%;
-                                    top: 0;
-                                    left: 0;
-                                    z-index: 200000;
-                                    align-items: center;
-                                    justify-content: center;
-                                    background-color: blue;
-                                    background-color: rgba(0, 0, 0, 0.4);
-                                    font-family: sans-serif;
-                                }
-            
-                                #${ uid } > iframe {
-                                    display: inline-block;
-                                    position: absolute;
-                                    width: 100%;
-                                    height: 100%;
-                                    top: 0;
-                                    left: 0;
-                                    transition: opacity .2s ease-in-out;
-                                }
-                                #${ uid } > iframe.${ CLASS.INVISIBLE } {
-                                    opacity: 0;
-                                }
-                                #${ uid } > iframe.${ CLASS.VISIBLE } {
-                                    opacity: 1;
-                                }
-                            
+            * {
+                box-sizing: border-box;
+            }
+        
+            #${ uid } {
+                display: flex;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 20000;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.4); 
+            }
+            #${ uid } iframe {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                transition: opacity .2s ease-in-out;
+            }
+            #qrModal {
+                background: #2F3033;
+                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
+                border-radius: 16px;                        
+                width: 720px;
+                height: 480px;  
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                position: relative;
+            }
+            #close {
+                position: absolute;
+                right: 16px;
+                top: 16px;
+                width: 16px;
+                height: 16px;
+                opacity: 0.6;
+                z-index: 10;
+            }
+            #close:hover {
+                opacity: 1;
+            }
+            #close:before, #close:after {
+                position: absolute;
+                left: 8px;
+                content: ' ';
+                height: 16px;
+                width: 2px;
+                background-color: #FFF;
+            }
+            #close:before {
+                transform: rotate(45deg);
+            }
+            #close:after {
+                transform: rotate(-45deg);
+            }        
+            ` } />
+            <div id="qrModal">
+                <a href="#" id="close" aria-label="close" role="button" onClick={ close } />
+                <node el={ prerenderFrame } />
+                <node el={ frame } />
+            </div>
                         
-                    }
-
-                    #${ uid } > iframe {
-                        display: inline-block;
-                        position: absolute;
-                        width: 100%;
-                        height: 100%;
-                        top: 0;
-                        left: 0;
-                        transition: opacity .2s ease-in-out;
-                    }
-                    #${ uid } > iframe.${ CLASS.INVISIBLE } {
-                        opacity: 0;
-                    }
-                    #${ uid } > iframe.${ CLASS.VISIBLE } {
-                        opacity: 1;
-                    }
-                ` } />
-            <node el={ frame } />
-            <node el={ prerenderFrame } />                        
         </div>
-*/
-
-/*
-                // prerenderFrame.classList.add(CLASS.VISIBLE);
-                // frame.classList.add(CLASS.INVISIBLE);
-                // event.on(EVENT.RENDERED, () => {
-                //     prerenderFrame.classList.remove(CLASS.VISIBLE);
-                //     prerenderFrame.classList.add(CLASS.INVISIBLE);
-    
-                //     frame.classList.remove(CLASS.INVISIBLE);
-                //     frame.classList.add(CLASS.VISIBLE);
-    
-                //     setTimeout(() => {
-                //         destroyElement(prerenderFrame);
-                //     }, 1);
-                // });
-                // const setupResize = (div) => {
-                //     event.on(EVENT.RESIZE, ({ width: newWidth, height: newHeight }) => {
-                //         if (typeof newWidth === 'number') {
-                //             div.style.width = toCSS(newWidth);
-                //         }
-
-                //         if (typeof newHeight === 'number') {
-                //             div.style.height = toCSS(newHeight);
-                //         }
-                //     });
-                // };
-
-
-                // const qrPathString = qrPath || 'abce';
-
-                const style = `
-                    #qr-modal {
-                        border: 1px solid #888C94;
-                        border-radius: 8px;
-                        display: inline-flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-direction: column;
-
-                    }
-                    #qr-modal h1 {
-                        color: #0074DE;
-                        text-align: center
-                    }
-                    #qr-modal > div {
-                        padding: 24px;
-                    }
-                    #instructions {        
-                        background-color: #F5F5F5;
-                        align-self: flex-end;
-                        width: 100%;
-                        z-index: -1;
-                    }
-                `;
-
-                let QRCodeDataURL;
-                QRCode.toDataURL(qrPath, 
-                    {
-                        color: {
-                            dark:"#0074DE",
-                            light:"#FFFFFF"
-                        } 
-                    },
-                    function(err,url) {
-                    // console.log(url);
-                        QRCodeDataURL = url; 
-                    }
-                );
-                
-                const onRenderFired = () => console.log('onRender fired');
-                
-
-                return (                    
-                    <div id={ uid } onRender={ onRenderFired }>
-                        <style
-                            nonce={ cspNonce }
-                            innerHTML={ style } 
-                        />
-                        <div id="qr-modal">
-                            <div>
-                                <img src={QRCodeDataURL} alt="QR Code" />
-                                <h1>Venmo</h1>
-                            </div>
-                            <div id="instructions">To scan QT code, Open your Venmo App</div>
-                        </div>                        
-                    </div>
-                ).render(dom({ doc }));
-*/
-
-//-----
-
-
-    
-                // prerenderFrame.classList.add(CLASS.VISIBLE);
-                // frame.classList.add(CLASS.INVISIBLE);
-/*    
-                event.on(EVENT.RENDERED, () => {
-                    alert('fired');
-                    prerenderFrame.classList.remove(CLASS.VISIBLE);
-                    prerenderFrame.classList.add(CLASS.INVISIBLE);
-    
-                    frame.classList.remove(CLASS.INVISIBLE);
-                    frame.classList.add(CLASS.VISIBLE);
-    
-                    setTimeout(() => {
-                        destroyElement(prerenderFrame);
-                    }, 1);
-                });
-*/
-/*
-                const setupEvents = (div) => {
-                    // prerenderFrame.classList.add(CLASS.VISIBLE);
-                    // frame.classList.add(CLASS.VISIBLE);
-
-                    // prerenderFrame.classList.remove(CLASS.VISIBLE);
-                    // prerenderFrame.classList.add(CLASS.INVISIBLE);
-
-                    event.on(EVENT.RESIZE, ({ width: newWidth, height: newHeight }) => {
-                        alert('fired');
-                        if (typeof newWidth === 'number') {
-                            div.style.width = toCSS(newWidth);
-                        }
-
-                        if (typeof newHeight === 'number') {
-                            div.style.height = toCSS(newHeight);
-                        }
-                    });
-
-                    // event.on(EVENT.RENDERED, () => {
-                    //     prerenderFrame.classList.remove(CLASS.VISIBLE);
-                    //     prerenderFrame.classList.add(CLASS.INVISIBLE);
-        
-                    //     frame.classList.remove(CLASS.INVISIBLE);
-                    //     frame.classList.add(CLASS.VISIBLE);
-        
-                    //     setTimeout(() => {
-                    //         destroyElement(prerenderFrame);
-                    //     }, 1);
-                    // });
-
-               };
-*/               
-//  onRender={ ()=>setupEvents }
+    );
+}
