@@ -9,7 +9,13 @@ import { noop } from 'belter';
 import { FUNDING } from '@paypal/sdk-constants';
 
 import { WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG } from '../webpack.config';
-import { getButtonMiddleware, getMenuMiddleware, getNativePopupMiddleware, getNativeFallbackMiddleware } from '../index';
+import {
+    getButtonMiddleware,
+    getMenuMiddleware,
+    getNativePopupMiddleware,
+    getNativeFallbackMiddleware,
+    getQRCodeMiddleware
+} from '../index';
 
 import type { GraphQL } from './lib/graphql';
 import type { ExpressRequest, ExpressResponse } from './types';
@@ -285,6 +291,11 @@ const nativeFallbackMiddleware = getNativeFallbackMiddleware({
     fundingSource: FUNDING.PAYPAL
 });
 
+const qrCodeMiddleware = getQRCodeMiddleware({
+    cache,
+    logger
+});
+
 const venmoPopupMiddleware = getNativePopupMiddleware({
     cache,
     logger,
@@ -305,6 +316,7 @@ const buttonsScriptMiddleware = webpackDevMiddleware(webpack(WEBPACK_CONFIG_BUTT
 
 app.use('/smart/buttons', defaultMiddleware, buttonsScriptMiddleware, buttonMiddleware);
 app.use('/smart/menu', defaultMiddleware, menuMiddleware);
+app.use('/smart/qrcode', defaultMiddleware, qrCodeMiddleware);
 app.use('/smart/checkout/native/popup', defaultMiddleware, nativePopupMiddleware);
 app.use('/smart/checkout/venmo/popup', defaultMiddleware, venmoPopupMiddleware);
 app.use('/smart/checkout/native/fallback', defaultMiddleware, nativeFallbackMiddleware);
@@ -318,5 +330,6 @@ app.listen(PORT, () => {
         Smart Button server listening
           - http://localhost.paypal.com:${ PORT }/smart/buttons?clientID=alc_client1
           - http://localhost.paypal.com:${ PORT }/smart/menu?clientID=alc_client1
+          - http://localhost.paypal.com:${ PORT }/smart/qrcode?demo=true&qrPath=string_to_be_encoded
     `);
 });

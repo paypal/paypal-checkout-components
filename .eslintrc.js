@@ -15,5 +15,7 @@ module.exports = {
     'globals': {
         '__SMART_BUTTONS__': true,
         'paypal': true
-    }
+    },
+
+    'ignorePatterns': ['node-qrcode.js']    
 };
