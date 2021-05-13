@@ -907,7 +907,7 @@ window.spb = function(modules) {
         }
         function uniqueID() {
             var chars = "0123456789abcdef";
-            return "xxxxxxxxxx".replace(/./g, (function() {
+            return "uid_" + "xxxxxxxxxx".replace(/./g, (function() {
                 return chars.charAt(Math.floor(Math.random() * chars.length));
             })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
         }
@@ -1193,7 +1193,14 @@ window.spb = function(modules) {
             var uid = script.getAttribute("data-uid");
             if (uid && "string" == typeof uid) return uid;
             if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
-            uid = uniqueID();
+            uid = script.src ? "uid_" + function(str) {
+                var hash = 0;
+                for (var i = 0; i < str.length; i++) hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
+                return Math.floor(Math.pow(Math.sqrt(hash), 5));
+            }(JSON.stringify({
+                src: script.src,
+                dataset: script.dataset
+            })) : uniqueID();
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
@@ -1817,7 +1824,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers11 = {}).authorization = "Bearer " + accessToken, _headers11["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers11["paypal-client-metadata-id"] = clientMetadataID, _headers11["x-app-name"] = "smart-payment-buttons", 
-            _headers11["x-app-version"] = "5.0.24", _headers11);
+            _headers11["x-app-version"] = "5.0.25", _headers11);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -1891,19 +1898,21 @@ window.spb = function(modules) {
             var _ref15$inline = _ref15.inline;
             return callGraphQL({
                 name: "UpdateClientConfig",
-                query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
+                query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!,\n                $buttonSessionID : String\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow,\n                    buttonSessionID: $buttonSessionID\n                )\n            }\n        ",
                 variables: {
                     orderID: orderID = (_ref10 = {
                         orderID: _ref15.orderID,
                         fundingSource: _ref15.fundingSource,
                         integrationArtifact: "PAYPAL_JS_SDK",
                         userExperienceFlow: _ref15.userExperienceFlow || (void 0 !== _ref15$inline && _ref15$inline ? "INLINE" : "INCONTEXT"),
-                        productFlow: "SMART_PAYMENT_BUTTONS"
+                        productFlow: "SMART_PAYMENT_BUTTONS",
+                        buttonSessionID: _ref15.buttonSessionID
                     }).orderID,
                     fundingSource: _ref10.fundingSource,
                     integrationArtifact: _ref10.integrationArtifact,
                     userExperienceFlow: _ref10.userExperienceFlow,
-                    productFlow: _ref10.productFlow
+                    productFlow: _ref10.productFlow,
+                    buttonSessionID: _ref10.buttonSessionID
                 },
                 headers: (_headers14 = {}, _headers14["paypal-client-context"] = orderID, _headers14)
             }).then(src_util_noop);
@@ -2178,10 +2187,10 @@ window.spb = function(modules) {
                     if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                     throw new Error("Unsupported intent for auto-capture: " + intent);
                 };
-            }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
+            }(intent) : _ref4$onApprove, partnerAttributionID = _ref4.partnerAttributionID, onError = _ref4.onError, clientAccessToken = _ref4.clientAccessToken, vault = _ref4.vault, userIDToken = _ref4.userIDToken, _ref4$upgradeLSAT = _ref4.upgradeLSAT, upgradeLSAT = void 0 !== _ref4$upgradeLSAT && _ref4$upgradeLSAT;
             var facilitatorAccessToken = _ref5.facilitatorAccessToken, branded = _ref5.branded, createOrder = _ref5.createOrder;
             if (!onApprove) throw new Error("Expected onApprove");
-            upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
+            upgradeLSAT = upgradeLSAT || Boolean(userIDToken) || upgradeLSATExperiment.isEnabled();
             return memoize((function(_ref6, _ref7) {
                 var payerID = _ref6.payerID, paymentID = _ref6.paymentID, billingToken = _ref6.billingToken, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken, authCode = _ref6.authCode, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI;
                 var restart = _ref7.restart;
@@ -2526,7 +2535,7 @@ window.spb = function(modules) {
         }
         function getOnAuth(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken, createOrder = _ref.createOrder, upgradeLSAT = _ref.upgradeLSAT;
-            upgradeLSAT = upgradeLSAT || upgradeLSATExperiment.isEnabled();
+            upgradeLSAT = upgradeLSAT || Boolean(_ref.userIDToken) || upgradeLSATExperiment.isEnabled();
             return function(_ref2) {
                 var accessToken = _ref2.accessToken;
                 logger_getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
@@ -2824,7 +2833,8 @@ window.spb = function(modules) {
                     partnerAttributionID: partnerAttributionID,
                     upgradeLSAT: upgradeLSAT,
                     clientAccessToken: clientAccessToken,
-                    vault: vault
+                    vault: vault,
+                    userIDToken: userIDToken
                 }, {
                     facilitatorAccessToken: facilitatorAccessToken,
                     branded: branded,
@@ -2847,7 +2857,8 @@ window.spb = function(modules) {
                 onAuth: getOnAuth({
                     facilitatorAccessToken: facilitatorAccessToken,
                     createOrder: createOrder,
-                    upgradeLSAT: upgradeLSAT
+                    upgradeLSAT: upgradeLSAT,
+                    userIDToken: userIDToken
                 }),
                 standaloneFundingSource: fundingSource,
                 paymentMethodNonce: paymentMethodNonce,
@@ -2863,7 +2874,8 @@ window.spb = function(modules) {
                 CardFields: _paypal.CardFields,
                 ThreeDomainSecure: _paypal.ThreeDomainSecure,
                 Menu: _paypal.Menu,
-                Installments: _paypal.Installments
+                Installments: _paypal.Installments,
+                QRCode: _paypal.QRCode
             };
         }
         function getConfig(_ref2) {
@@ -4171,7 +4183,7 @@ window.spb = function(modules) {
             },
             init: function(_ref4) {
                 var props = _ref4.props, components = _ref4.components, payment = _ref4.payment, serviceData = _ref4.serviceData, config = _ref4.config;
-                var createOrder = props.createOrder, onApprove = props.onApprove, clientMetadataID = props.clientMetadataID, vault = props.vault;
+                var createOrder = props.createOrder, onApprove = props.onApprove, clientMetadataID = props.clientMetadataID, vault = props.vault, onAuth = props.onAuth;
                 var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
                 var wallet = serviceData.wallet;
                 if (!wallet || !smartWalletPromise) throw new Error("No smart wallet found");
@@ -4231,6 +4243,9 @@ window.spb = function(modules) {
                                     buyerAccessToken: buyerAccessToken,
                                     instrumentID: instrumentID,
                                     clientMetadataID: clientMetadataID
+                                }),
+                                onAuth: onAuth({
+                                    accessToken: buyerAccessToken
                                 })
                             }).then((function(_ref6) {
                                 var orderApproval = _ref6.orderApproval;
@@ -5734,6 +5749,18 @@ window.spb = function(modules) {
                     close: destroy
                 };
             },
+            updateFlowClientConfig: function(_ref22) {
+                var orderID = _ref22.orderID, payment = _ref22.payment, userExperienceFlow = _ref22.userExperienceFlow, buttonSessionID = _ref22.buttonSessionID;
+                return promise_ZalgoPromise.try((function() {
+                    return updateButtonClientConfig({
+                        fundingSource: payment.fundingSource,
+                        orderID: orderID,
+                        inline: !1,
+                        userExperienceFlow: userExperienceFlow,
+                        buttonSessionID: buttonSessionID
+                    });
+                }));
+            },
             spinner: !0
         }, checkout ];
         function getPaymentFlow(_ref2) {
@@ -5836,7 +5863,7 @@ window.spb = function(modules) {
                                 return promise_ZalgoPromise.try((function() {
                                     var _getLogger$info$info$;
                                     var merchantID = serviceData.merchantID;
-                                    var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow;
+                                    var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID;
                                     !function(personalization) {
                                         personalization && personalization.tagline && personalization.tagline.tracking && sendBeacon(personalization.tagline.tracking.click);
                                         personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
@@ -5872,7 +5899,8 @@ window.spb = function(modules) {
                                                 if (updateFlowClientConfig) return updateFlowClientConfig({
                                                     orderID: orderID,
                                                     payment: payment,
-                                                    userExperienceFlow: userExperienceFlow
+                                                    userExperienceFlow: userExperienceFlow,
+                                                    buttonSessionID: buttonSessionID
                                                 });
                                                 updateButtonClientConfig({
                                                     orderID: orderID,
@@ -6437,7 +6465,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.24", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.25", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 

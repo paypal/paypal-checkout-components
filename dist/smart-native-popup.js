@@ -819,7 +819,7 @@
         }
         function uniqueID() {
             var chars = "0123456789abcdef";
-            return "xxxxxxxxxx".replace(/./g, (function() {
+            return "uid_" + "xxxxxxxxxx".replace(/./g, (function() {
                 return chars.charAt(Math.floor(Math.random() * chars.length));
             })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
         }
@@ -1023,7 +1023,14 @@
             var uid = script.getAttribute("data-uid");
             if (uid && "string" == typeof uid) return uid;
             if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
-            uid = uniqueID();
+            uid = script.src ? "uid_" + function(str) {
+                var hash = 0;
+                for (var i = 0; i < str.length; i++) hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
+                return Math.floor(Math.pow(Math.sqrt(hash), 5));
+            }(JSON.stringify({
+                src: script.src,
+                dataset: script.dataset
+            })) : uniqueID();
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
@@ -1453,7 +1460,7 @@
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.24", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.button_version = "5.0.25", _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {

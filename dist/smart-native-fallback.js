@@ -669,7 +669,7 @@
         }
         function uniqueID() {
             var chars = "0123456789abcdef";
-            return "xxxxxxxxxx".replace(/./g, (function() {
+            return "uid_" + "xxxxxxxxxx".replace(/./g, (function() {
                 return chars.charAt(Math.floor(Math.random() * chars.length));
             })) + "_" + function(str) {
                 if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
@@ -803,7 +803,14 @@
             var uid = script.getAttribute("data-uid");
             if (uid && "string" == typeof uid) return uid;
             if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
-            uid = uniqueID();
+            uid = script.src ? "uid_" + function(str) {
+                var hash = 0;
+                for (var i = 0; i < str.length; i++) hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
+                return Math.floor(Math.pow(Math.sqrt(hash), 5));
+            }(JSON.stringify({
+                src: script.src,
+                dataset: script.dataset
+            })) : uniqueID();
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
