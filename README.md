@@ -1,5 +1,4 @@
-PayPal Checkout
----------------
+## PayPal Checkout
 
 [![build status][build-badge]][build]
 [![code coverage][coverage-badge]][coverage]
@@ -22,7 +21,7 @@ A set of components allowing easy integration of PayPal Buttons and PayPal Check
 
 See [**developer.paypal.com/docs/checkout**](https://developer.paypal.com/docs/checkout/)
 
------
+---
 
 ## Development
 
@@ -48,17 +47,78 @@ Run in dev mode:
 npm run dev
 ```
 
-## Test Tasks
-```
+## Testing Tasks
+
+```bash
 npm test
 ```
 
-| Flags  | Description |
-| ------------- | ------------- |
-| --clear-cache | Clear Babel Loader and PhantomJS cache |
-| --debug | Debug mode.  PhantomJS, Karma, and CheckoutJS  |
-| --quick | Fastest testing.  Minimal output, no coverage |
-| --browser | Choose Browser |
+Runs all testing tasks `lint`, `flow`, `karma`, `jest-ssr`, `jest-screenshot`, & `check-size`.
+
+| Flags         | Description                                  |
+| ------------- | -------------------------------------------- |
+| --clear-cache | Clear Babel Loader and PhantomJS cache       |
+| --debug       | Debug mode. PhantomJS, Karma, and CheckoutJS |
+| --quick       | Fastest testing. Minimal output, no coverage |
+| --browser     | Choose Browser                               |
+
+&nbsp;
+
+### lint
+
+```bash
+npm run lint
+
+npm run lint -- --fix
+# attempt to automatically fix any problems
+```
+
+Runs [eslint](https://eslint.org/) using [definitions](./.eslinter.js) extended from [Grumbler-Scripts](https://github.com/krakenjs/grumbler-scripts/blob/master/config/.eslintrc-browser.js).
+
+### flow
+
+```
+npm run flow
+```
+
+Checks for typing issues using [Flow](https://flow.org/). Prior to running this task, `flow-typed` should be run to [generate type interfaces](https://github.com/flow-typed/flow-typed) for the various 3rd-party libraries we use.
+
+### karma
+
+```bash
+npm run karma
+
+npm run karma -- --keep-open
+# keeps the test browser window open to allow debugging
+npm run karma -- --capture-console
+# dumps the browser's console output into the terminal
+```
+
+Runs [Karma](https://mochajs.org/) tests using the [Mocha](https://mochajs.org/) framework. Responsible for running the [test/e2e](./test/e2e/) & [test/integration](./test/integration) directories.
+
+### jest-ssr
+
+```bash
+npm run jest-ssr
+```
+
+Checks for the correct rendering of components on the server-side using [Jest](https://jestjs.io/).
+
+### jest-screenshot
+
+```bash
+npm run jest-screenshot
+```
+
+Uses [Puppeteer](https://developers.google.com/web/tools/puppeteer) & [Jest](https://jestjs.io/) to take screenshots and checks against existing views to look for discrepancies. Tests are defined in [test/screenshot/config.js](./test/screenshot/config.js).
+
+### check-size
+
+```bash
+npm run check-size
+```
+
+Checks to make sure that the compiled & gzipped bundle doesn't exceed the recommended size limit.
 
 ## Releasing
 
