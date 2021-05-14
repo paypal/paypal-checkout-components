@@ -23,7 +23,7 @@ type PrerenderedButtonsProps = {|
 |};
 
 export function PrerenderedButtons({ nonce, onRenderCheckout, props } : PrerenderedButtonsProps) : ChildType {
-
+    let win;
     const handleClick = (event, { fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
         getLogger().info('button_prerender_click').track({
             [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
@@ -33,10 +33,13 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
         }).flush();
         
         if (supportsPopups()) {
-            const win = assertSameDomain(popup('', {
-                width:  DEFAULT_POPUP_SIZE.WIDTH,
-                height: DEFAULT_POPUP_SIZE.HEIGHT
-            }));
+            // remember the popup window to prevent showing a new popup window on every click in the prerender state
+            if (!win || win.closed) {
+                win = assertSameDomain(popup('', {
+                    width:  DEFAULT_POPUP_SIZE.WIDTH,
+                    height: DEFAULT_POPUP_SIZE.HEIGHT
+                }));
+            }
 
             const doc = window.document;
 
