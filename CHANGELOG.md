@@ -1,3 +1,14 @@
+## <small>5.0.157 (2021-05-14)</small>
+
+* adds QRcode Interface/Zoid Component functionality  (#1632) ([184dc26](https://github.com/paypal/paypal-checkout-components/commit/184dc26)), closes [#1632](https://github.com/paypal/paypal-checkout-components/issues/1632)
+* Avoid multiple popups on Prerender state (#1635) ([67d3e53](https://github.com/paypal/paypal-checkout-components/commit/67d3e53)), closes [#1635](https://github.com/paypal/paypal-checkout-components/issues/1635)
+* Readme update (#1636) ([17045e4](https://github.com/paypal/paypal-checkout-components/commit/17045e4)), closes [#1636](https://github.com/paypal/paypal-checkout-components/issues/1636)
+* Revert localized label (#1631) ([d60c46b](https://github.com/paypal/paypal-checkout-components/commit/d60c46b)), closes [#1631](https://github.com/paypal/paypal-checkout-components/issues/1631)
+* Update Apple Pay Events (#1634) ([dc8daa2](https://github.com/paypal/paypal-checkout-components/commit/dc8daa2)), closes [#1634](https://github.com/paypal/paypal-checkout-components/issues/1634)
+* chore(release): 5.0.156 :tada: ([6d708d1](https://github.com/paypal/paypal-checkout-components/commit/6d708d1))
+
+
+
 ## <small>5.0.156 (2021-05-12)</small>
 
 * Revert localized label (#1631) ([d60c46b](https://github.com/paypal/paypal-checkout-components/commit/d60c46b)), closes [#1631](https://github.com/paypal/paypal-checkout-components/issues/1631)
