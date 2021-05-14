@@ -118,7 +118,7 @@ Uses [Puppeteer](https://developers.google.com/web/tools/puppeteer) & [Jest](htt
 npm run check-size
 ```
 
-Checks the to make sure that the compiled & gzipped bundle doesn't exceed 65k.
+Checks the to make sure that the compiled & gzipped bundle doesn't exceed the recommended size limit.
 
 ## Releasing
 
