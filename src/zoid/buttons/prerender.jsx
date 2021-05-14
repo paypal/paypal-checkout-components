@@ -33,6 +33,7 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
         }).flush();
         
         if (supportsPopups()) {
+            // remember the popup window to prevent showing a new popup window on every click in the prerender state
             if (!win || win.closed) {
                 win = assertSameDomain(popup('', {
                     width:  DEFAULT_POPUP_SIZE.WIDTH,
