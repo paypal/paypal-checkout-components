@@ -1221,13 +1221,17 @@ window.spb = function(modules) {
         if (uid && "string" == typeof uid) return uid;
         if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
         uid = script.src ? "uid_" + function(str) {
-            var hash = 0;
-            for (var i = 0; i < str.length; i++) hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
-            return Math.floor(Math.pow(Math.sqrt(hash), 5));
+            var hash = "";
+            for (var i = 0; i < str.length; i++) {
+                var total = str[i].charCodeAt(0) * i;
+                str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
+                hash += String.fromCharCode(97 + Math.abs(total) % 26);
+            }
+            return hash;
         }(JSON.stringify({
             src: script.src,
             dataset: script.dataset
-        })) : uniqueID();
+        })).slice(0, 20) : uniqueID();
         script.setAttribute("data-uid-auto", uid);
         return uid;
     }));
