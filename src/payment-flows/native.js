@@ -2,17 +2,16 @@
 /* eslint max-lines: off, max-nested-callbacks: off */
 
 import { extendUrl, uniqueID, getUserAgent, supportsPopups, memoize, stringifyError,
-    stringifyErrorMessage, cleanup, once, noop, inlineMemoize } from 'belter/src';
+    stringifyErrorMessage, cleanup, once, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, ENV, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
-import { type CrossDomainWindowType, isWindowClosed, onCloseWindow, getDomain } from 'cross-domain-utils/src';
+import { type CrossDomainWindowType, onCloseWindow, getDomain } from 'cross-domain-utils/src';
 
 import type { ButtonProps } from '../button/props';
 import { WEB_CHECKOUT_URI, AMPLITUDE_API_KEY } from '../config';
 import { getNativeEligibility, firebaseSocket, updateButtonClientConfig, type MessageSocket, type FirebaseConfig, type NativeEligibility } from '../api';
-import { getLogger, promiseOne, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, unresolvedPromise } from '../lib';
+import { getLogger, promiseNoop, isIOSSafari, isAndroidChrome, getStorageState, unresolvedPromise } from '../lib';
 import { USER_ACTION, FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../constants';
-import { nativeFakeoutExperiment, androidPopupExperiment } from '../experiments';
 import { HASH } from '../native/popup/constants';
 import { type OnShippingChangeData } from '../props/onShippingChange';
 import type { NativePopupInputParams } from '../../server/components/native/params';
@@ -77,10 +76,6 @@ const NATIVE_CHECKOUT_FALLBACK_URI : { [$Values<typeof FUNDING> ] : string } = {
     [ FUNDING.VENMO ]:  '/smart/checkout/fallback'
 };
 
-const PARTIAL_ENCODING_CLIENT = [
-    'AeG7a0wQ2s97hNLb6yWzDqYTsuD-4AaxDHjz4I2EWMKN6vktKYqKJhtGqmH2cNj_JyjHR4Xj9Jt6ORHs'
-];
-
 let clean;
 let initialPageUrl;
 let nativeEligibility : NativeEligibility;
@@ -119,26 +114,6 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
     return nativeSocket;
 });
 
-function isPopupFakeout() : boolean {
-    if (window.xprops.popupFakeout || nativeFakeoutExperiment.isEnabled()) {
-        return true;
-    }
-
-    return false;
-}
-
-function deferABSplitToPopup() : boolean {
-    if (isAndroidChrome()) {
-        return false;
-    }
-
-    if (isIOSSafari()) {
-        return true;
-    }
-
-    return false;
-}
-
 function isTestGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
     const fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
 
@@ -157,30 +132,6 @@ function isControlGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
     }
 
     return false;
-}
-
-function useDirectAppSwitch(fundingSource : $Values<typeof FUNDING>) : boolean {
-    if (window.xprops.forceNativeDirectAppSwitch) {
-        return true;
-    }
-
-    if (window.xprops.forceNativePopupAppSwitch) {
-        return false;
-    }
-
-    if (isPopupFakeout()) {
-        return false;
-    }
-
-    if (isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.isEnabled()) {
-        return false;
-    }
-
-    return isAndroidChrome();
-}
-
-function didAppSwitch(popupWin : ?CrossDomainWindowType) : boolean {
-    return !popupWin || isWindowClosed(popupWin);
 }
 
 function isNativeOptedIn({ props } : {| props : ButtonProps |}) : boolean {
@@ -246,7 +197,7 @@ function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : 
     return true;
 }
 
-function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) : boolean {
+function isNativePaymentEligible({ payment } : IsPaymentEligibleOptions) : boolean {
     const { win, fundingSource } = payment;
 
     if (win) {
@@ -261,31 +212,13 @@ function isNativePaymentEligible({ payment, props } : IsPaymentEligibleOptions) 
         return false;
     }
 
-    if (isNativeOptedIn({ props })) {
-        return true;
-    }
-
-    if (nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) {
-        return true;
-    }
-
-    if (isControlGroup(fundingSource)) {
-        nativeFakeoutExperiment.logStart();
-
-        if (isPopupFakeout()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    return false;
+    return true;
 }
 
 function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
         const { getPageUrl, clientID, onShippingChange, currency, platform, env,
-            vault, buttonSessionID, enableFunding, stickinessID: defaultStickinessID, merchantDomain } = props;
+            vault, buttonSessionID, enableFunding, merchantDomain } = props;
         const { merchantID, buyerCountry, cookies } = serviceData;
 
         const shippingCallbackEnabled = Boolean(onShippingChange);
@@ -293,8 +226,8 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
         return ZalgoPromise.all([
             getNativeEligibility({
                 vault, platform, shippingCallbackEnabled, clientID, buyerCountry, currency, buttonSessionID, cookies, enableFunding,
-                stickinessID: deferABSplitToPopup() ? null : defaultStickinessID,
-                skipElmo:     deferABSplitToPopup(),
+                stickinessID: null,
+                skipElmo:     true,
                 merchantID:   merchantID[0],
                 domain:       merchantDomain
             }).then(result => {
@@ -339,102 +272,15 @@ function instrumentNativeSDKProps(props : NativeSDKProps) {
     }).flush();
 }
 
-type Query = {
-    [ string ] : boolean | string
-};
-
-export function urlEncodeWithPartialEncoding(str : string) : string {
-    return str.replace(/\?/g, '%3F').replace(/&/g, '%26').replace(/#/g, '%23').replace(/\+/g, '%2B').replace(/[=]/g, '%3D');
-}
-
-export function formatQueryWithPartialEncoding(obj : Query = {}) : string {
-
-    return Object.keys(obj).filter(key => {
-        return typeof obj[key] === 'string' || typeof obj[key] === 'boolean';
-    }).map(key => {
-        const val = obj[key];
-
-        if (typeof val !== 'string' && typeof val !== 'boolean') {
-            throw new TypeError(`Invalid type for query`);
-        }
-
-        return `${ urlEncodeWithPartialEncoding(key) }=${ urlEncodeWithPartialEncoding(val.toString()) }`;
-    }).join('&');
-}
-
-
-export function parseQueryWithPartialEncoding(queryString : string) : Object {
-    return inlineMemoize(parseQueryWithPartialEncoding, () : Object => {
-        const params = {};
-
-        if (!queryString) {
-            return params;
-        }
-
-        if (queryString.indexOf('=') === -1) {
-            return params;
-        }
-
-        for (let pair of queryString.split('&')) {
-            pair = pair.split('=');
-
-            if (pair[0] && pair[1]) {
-                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-            }
-        }
-
-        return params;
-    }, [ queryString ]);
-}
-
-export function extendQueryWithPartialEncoding(originalQuery : string, props : Query = {}) : string {
-
-    if (!props || !Object.keys(props).length) {
-        return originalQuery;
-    }
-
-    return formatQueryWithPartialEncoding({
-        ...parseQueryWithPartialEncoding(originalQuery),
-        ...props
-    });
-}
-
-export function extendUrlWithPartialEncoding(url : string, options : {| query? : Query, hash? : Query |}) : string {
-
-    const query = options.query || {};
-    const hash = options.hash || {};
-
-    let originalUrl;
-    let originalQuery;
-    let originalHash;
-
-    [ originalUrl, originalHash ] = url.split('#');
-    [ originalUrl, originalQuery ] = originalUrl.split('?');
-
-    const queryString = extendQueryWithPartialEncoding(originalQuery, query);
-    const hashString = extendQueryWithPartialEncoding(originalHash, hash);
-
-    if (queryString) {
-        originalUrl = `${ originalUrl }?${ queryString }`;
-    }
-
-    if (hashString) {
-        originalUrl = `${ originalUrl }#${ hashString }`;
-    }
-
-    return originalUrl;
-}
-
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, onCancel, onError, commit, clientID, sessionID, sdkCorrelationID,
         buttonSessionID, env, stageHost, apiStageHost, onClick, onShippingChange, vault, platform,
         currency, stickinessID: defaultStickinessID, enableFunding, merchantDomain } = props;
-    let { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
+    const { facilitatorAccessToken, sdkMeta, buyerCountry, merchantID, cookies } = serviceData;
     const { fundingSource } = payment;
     const { sdkVersion, firebase: firebaseConfig } = config;
 
     const shippingCallbackEnabled = Boolean(onShippingChange);
-    sdkMeta = sdkMeta.replace(/[=]+$/, '');
 
     if (!firebaseConfig) {
         throw new Error(`Can not run native flow without firebase config`);
@@ -451,9 +297,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     let didFallback = false;
 
     const conditionalExtendUrl = (...args) => {
-        if (isIOSSafari() && fundingSource === FUNDING.VENMO && PARTIAL_ENCODING_CLIENT.indexOf(clientID) !== -1) {
-            return extendUrlWithPartialEncoding(...args);
-        }
         return extendUrl(...args);
     };
 
@@ -500,18 +343,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         });
     });
 
-    const getDirectNativeUrl = memoize(({ pageUrl = initialPageUrl, sessionUID } = {}) : string => {
-        return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
-            query: {
-                sdkMeta, fundingSource, sessionUID, buttonSessionID, pageUrl, clientID, stickinessID:   defaultStickinessID,
-                enableFunding:  enableFunding.join(','),
-                domain:         merchantDomain,
-                rtdbInstanceID: firebaseConfig.databaseURL
-            }
-        });
-    });
-
-    const getDelayedNativeUrlQueryParams = ({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) => {
+    const getNativeUrlQueryParams = ({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) => {
         const webCheckoutUrl = getWebCheckoutUrl({ orderID });
         const userAgent = getUserAgent();
         const forceEligible = isNativeOptedIn({ props });
@@ -539,19 +371,19 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         };
     };
 
-    const getDelayedNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) : string => {
+    const getNativeUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) : string => {
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
-            query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID, stickinessID })
+            query: getNativeUrlQueryParams({ sessionUID, pageUrl, orderID, stickinessID })
         });
     });
 
-    const getDelayedNativeFallbackUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) : string => {
+    const getNativeFallbackUrl = memoize(({ sessionUID, pageUrl = initialPageUrl, orderID, stickinessID = defaultStickinessID } : {| sessionUID : string, pageUrl : string, orderID : string, stickinessID : ?string |}) : string => {
         return conditionalExtendUrl(`${ getNativeDomain() }${ NATIVE_CHECKOUT_FALLBACK_URI[fundingSource] }`, {
-            query: getDelayedNativeUrlQueryParams({ sessionUID, pageUrl, orderID, stickinessID })
+            query: getNativeUrlQueryParams({ sessionUID, pageUrl, orderID, stickinessID })
         });
     });
 
-    const getNativePopupParams = () : NativePopupInputParams => {
+    const getNativePopupQueryParams = () : NativePopupInputParams => {
         const parentDomain = getDomain();
         return {
             sdkMeta, buttonSessionID, parentDomain, env, clientID, sessionID, sdkCorrelationID, buyerCountry
@@ -561,7 +393,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const getNativePopupUrl = memoize(() : string => {
         const baseURL = conditionalExtendUrl(`${ getNativePopupDomain() }${ NATIVE_CHECKOUT_POPUP_URI[fundingSource] }`, {
             // $FlowFixMe
-            query: getNativePopupParams()
+            query: getNativePopupQueryParams()
         });
 
         return `${ baseURL }#${ HASH.INIT }`;
@@ -584,20 +416,11 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const onApproveCallback = ({ data: { payerID, paymentID, billingToken } }) => {
         approved = true;
 
-        if (isAndroidChrome() && !isControlGroup(fundingSource)) {
-            androidPopupExperiment.logComplete();
-        }
-
         getLogger().info(`native_message_onapprove`, { payerID, paymentID, billingToken })
             .track({
                 [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE,
                 [FPTI_CUSTOM_KEY.INFO_MSG]: `payerID: ${ payerID }, paymentID: ${ paymentID }, billingToken: ${ billingToken }`
             })
-            .flush();
-
-        getLogger()
-            .info(`native_approve_${ isIOSSafari() ? 'ios' : 'android' }_window_width_${ window.outerWidth }`)
-            .info(`native_approve_${ isIOSSafari() ? 'ios' : 'android' }_window_height_${ window.outerHeight }`)
             .flush();
 
         const data = { payerID, paymentID, billingToken, forceRestAPI: true };
@@ -683,7 +506,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         fallbackToWebCheckout();
     };
 
-    // This is where we initialize and configure the Firebase connection
     const connectNative = memoize(({ sessionUID } : {| sessionUID : string |}) : NativeConnection => {
         const socket = getNativeSocket({
             sessionUID, firebaseConfig, version: sdkVersion
@@ -741,6 +563,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         };
     });
 
+    const detectSwitchPromise = new ZalgoPromise();
+
     const detectAppSwitch = once(({ sessionUID } : {| sessionUID : string |}) => {
         getStorageState(state => {
             const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
@@ -773,7 +597,9 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
         }).flush();
 
-        return connectNative({ sessionUID }).setProps();
+        return connectNative({ sessionUID }).setProps().then(() => {
+            detectSwitchPromise.resolve();
+        });
     });
 
     const detectWebSwitch = once((fallbackWin : ?CrossDomainWindowType) => {
@@ -808,7 +634,9 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH
         }).flush();
 
-        return fallbackToWebCheckout(fallbackWin);
+        return fallbackToWebCheckout(fallbackWin).then(() => {
+            detectSwitchPromise.resolve();
+        });
     });
 
     const validate = memoize(() => {
@@ -820,81 +648,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const popup = memoize((url : string) => {
         return window.open(url);
     });
-
-    const initDirectAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
-        const nativeUrl = getDirectNativeUrl({ sessionUID });
-        const nativeWin = popup(nativeUrl);
-
-        const closePopup = (event) => {
-            const eventType = event && event.type ? String(event.type) : event;
-
-            getLogger().info(`native_closing_popup_${ eventType }`).track({
-                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:  event ? ` ${ FPTI_TRANSITION.NATIVE_CLOSING_POPUP }_${ eventType }` : FPTI_TRANSITION.NATIVE_CLOSING_POPUP
-            }).flush();
-
-            nativeWin.close();
-        };
-        window.addEventListener('pagehide', closePopup);
-        window.addEventListener('unload', closePopup);
-
-        getLogger()
-            .info(`native_attempt_appswitch_popup_shown`, { url: nativeUrl })
-            .info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
-            .track({
-                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
-            })
-            .track({
-                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH
-            }).flush();
-
-        const validatePromise = validate();
-        const delayPromise = ZalgoPromise.delay(500);
-
-        connectNative({ sessionUID });
-
-        return validatePromise.then(valid => {
-            if (!valid) {
-                getLogger().info(`native_onclick_invalid`).track({
-                    [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
-                }).flush();
-
-                return delayPromise.then(() => {
-                    if (didAppSwitch(nativeWin)) {
-                        return connectNative({ sessionUID }).close();
-                    }
-                }).then(() => {
-                    nativeWin.close();
-                    return destroy();
-                });
-            }
-
-            return createOrder().then(() => {
-                if (didAppSwitch(nativeWin)) {
-                    return detectAppSwitch({ sessionUID });
-                } else if (nativeWin) {
-                    return detectWebSwitch(nativeWin);
-                } else {
-                    throw new Error(`No window found`);
-                }
-            }).catch(err => {
-                getLogger().info(`native_attempt_appswitch_url_popup_errored`, { url: nativeUrl })
-                    .track({
-                        [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                        [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
-                        [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
-                    }).flush();
-                
-                nativeWin.close();
-                return connectNative({ sessionUID }).close().then(() => {
-                    throw err;
-                });
-            });
-        });
-    };
 
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         let redirected = false;
@@ -962,13 +715,9 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             getLogger().info(`native_popup_load_timeout`).flush();
         }, 5 * 1000);
 
-        const awaitRedirectListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app, pageUrl, sfvc, stickinessID: popupStickinessID } }) => {
+        const awaitRedirectListener = listen(popupWin, getNativePopupDomain(), POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app, pageUrl, sfvc, stickinessID } }) => {
             getLogger().info(`native_post_message_await_redirect`).flush();
             clearTimeout(redirectListenerTimeout);
-
-            const stickinessID = deferABSplitToPopup()
-                ? popupStickinessID
-                : defaultStickinessID;
 
             getLogger().addTrackingBuilder(() => {
                 return {
@@ -1032,13 +781,13 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
                 if (!eligible || (app && !app.installed)) {
                     return orderPromise.then(orderID => {
-                        const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID, stickinessID });
+                        const fallbackUrl = getNativeFallbackUrl({ sessionUID, pageUrl, orderID, stickinessID });
                         return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
                     });
                 }
 
                 return orderPromise.then(orderID => {
-                    const nativeUrl = getDelayedNativeUrl({ sessionUID, pageUrl, orderID, stickinessID });
+                    const nativeUrl = getNativeUrl({ sessionUID, pageUrl, orderID, stickinessID });
 
                     getLogger().info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
                         .track({
@@ -1068,7 +817,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     }).flush();
 
                 return orderPromise.then(orderID => {
-                    const fallbackUrl = getDelayedNativeFallbackUrl({ sessionUID, pageUrl, orderID, stickinessID });
+                    const fallbackUrl = getNativeFallbackUrl({ sessionUID, pageUrl, orderID, stickinessID });
                     return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
                 });
             }).catch(err => {
@@ -1133,10 +882,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 
         return awaitRedirectListener.then(() => {
             if (redirected) {
-                return promiseOne([
-                    detectAppSwitchListener,
-                    detectWebSwitchListener
-                ]);
+                return detectSwitchPromise;
             }
         });
     };
@@ -1145,11 +891,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return ZalgoPromise.try(() => {
             const sessionUID = uniqueID();
 
-            if (isAndroidChrome() && !isControlGroup(fundingSource)) {
-                androidPopupExperiment.logStart();
-            }
-
-            return useDirectAppSwitch(fundingSource) ? initDirectAppSwitch({ sessionUID }) : initPopupAppSwitch({ sessionUID });
+            return initPopupAppSwitch({ sessionUID });
         }).catch(err => {
             return destroy().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({

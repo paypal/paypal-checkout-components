@@ -18,7 +18,21 @@ import { triggerKeyPress } from './util';
 export const MOCK_BUYER_ACCESS_TOKEN = 'abc123xxxyyyzzz456';
 
 export function mockAsyncProp(handler? : Function = noop, time? : number = 1) : Function {
-    return (...args) => ZalgoPromise.delay(time).then(() => handler(...args));
+    const currentPromise = new ZalgoPromise();
+    
+    const asyncHandler = (...args) => {
+        return ZalgoPromise.delay(time).then(() => handler(...args)).then((res) => {
+            ZalgoPromise.delay(time).then(() => currentPromise.resolve(res));
+            return res;
+        }, err => {
+            ZalgoPromise.delay(time).then(() => currentPromise.reject(err));
+            throw err;
+        });
+    };
+    
+    asyncHandler.await = () => currentPromise;
+
+    return asyncHandler;
 }
 
 type CancelableZalgoPromise<T> = ZalgoPromise<T> & {| cancel : () => void |};
@@ -845,7 +859,7 @@ const mockScripts = {};
 
 export function mockScript({ src, expect = true, block = true } : {| src : string, expect? : boolean, block? : boolean |}) : {| done : () => void, await : () => ZalgoPromise<HTMLElement> |} {
     const promise = new ZalgoPromise();
-    mockScripts[src] = { expect, block, promise };
+    mockScripts[src] = { expect, block, promise, created: false };
 
     return {
         await: () => {

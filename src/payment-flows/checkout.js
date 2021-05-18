@@ -12,7 +12,6 @@ import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TY
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
 import { FUNDING_SKIP_LOGIN } from '../config';
-import { nativeFakeoutExperiment } from '../experiments';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from './types';
 
@@ -245,8 +244,6 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     let forceClosed = false;
 
     const init = () => {
-        nativeFakeoutExperiment.log('web_checkout_start');
-        
         return Checkout({
             window: win,
             sessionID,
@@ -331,7 +328,6 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             onApprove: ({ payerID, paymentID, billingToken, subscriptionID, authCode }) => {
                 approved = true;
 
-                nativeFakeoutExperiment.logComplete();
                 getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
 
                 // eslint-disable-next-line no-use-before-define
@@ -342,8 +338,6 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             },
 
             onAuth: ({ accessToken }) => {
-                nativeFakeoutExperiment.log('web_checkout_auth');
-
                 const access_token = accessToken ? accessToken : buyerAccessToken;
 
                 return onAuth({ accessToken: access_token }).then(token => {
@@ -352,8 +346,6 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             },
 
             onCancel: () => {
-                nativeFakeoutExperiment.log('web_checkout_cancel');
-                
                 // eslint-disable-next-line no-use-before-define
                 return close().then(() => {
                     return onCancel();
