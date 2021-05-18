@@ -84,24 +84,24 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
             const session = new window.ApplePaySession(version, request);
             const listeners = {};
 
-            session.onvalidatemerchant = (e) => {
-                listeners.validatemerchant({ validationURL: e.validationURL });
+            session.onvalidatemerchant = ({ validationURL }) => {
+                listeners.validatemerchant({ validationURL });
             };
 
-            session.onpaymentmethodselected = (e) => {
-                listeners.paymentmethodselected({ paymentMethod: e.paymentMethod });
+            session.onpaymentmethodselected = ({ paymentMethod }) => {
+                listeners.paymentmethodselected({ paymentMethod });
             };
 
-            session.onshippingmethodselected = (e) => {
-                listeners.shippingmethodselected({ shippingMethod: e.shippingMethod });
+            session.onshippingmethodselected = ({ shippingMethod }) => {
+                listeners.shippingmethodselected({ shippingMethod });
             };
 
-            session.onshippingcontactselected = (e) => {
-                listeners.shippingcontactselected({ shippingContact: e.shippingContact });
+            session.onshippingcontactselected = ({ shippingContact }) => {
+                listeners.shippingcontactselected({ shippingContact });
             };
 
-            session.onpaymentauthorized = (e) => {
-                listeners.paymentauthorized({ payment: e.payment });
+            session.onpaymentauthorized = ({ payment }) => {
+                listeners.paymentauthorized({ payment });
             };
 
             session.oncancel = () => {
