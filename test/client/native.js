@@ -11,7 +11,7 @@ import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getMockW
     mockFunction, getNativeFirebaseMock, getGraphQLApiMock, getPostRobotMock, generateOrderID } from './mocks';
 
 const IOS_SAFARI_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
-const Android_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
+const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
 
 describe('native ios cases', () => {
 
@@ -2231,7 +2231,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
 
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
@@ -2383,7 +2383,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to web path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
 
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
@@ -2513,7 +2513,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path in Android with multiple clicks', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
 
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
@@ -2680,7 +2680,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to web path in Android with multiple clicks', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
 
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
@@ -2830,7 +2830,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path with onCancel in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -2977,7 +2977,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path with onError in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -3112,7 +3112,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to native path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -3268,7 +3268,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to native path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -3324,7 +3324,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder rejecting, click the button, and render checkout via popup to native path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid, expectError }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -3384,7 +3384,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder and onClick resolving, click the button, and render checkout via popup to web path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -3511,7 +3511,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with eligibility rejecting, click the button, and render checkout via popup to web path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = false;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -3662,7 +3662,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder and onClick rejecting, click the button, and render checkout via popup to web path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -3719,7 +3719,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the venmo button, and render checkout via popup to native path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -3877,7 +3877,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path with error in onApprove in Android', async () => {
         return await wrapPromise(async ({ expect, expectError, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
@@ -4037,7 +4037,7 @@ describe('native chrome cases', () => {
             });
 
             await clickButton(FUNDING.PAYPAL);
-            
+
             try {
                 await window.xprops.onApprove.await();
             } catch {
@@ -4054,7 +4054,7 @@ describe('native chrome cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.navigator.mockUserAgent = Android_CHROME_USER_AGENT;
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
 
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
