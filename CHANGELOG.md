@@ -1,3 +1,10 @@
+## <small>5.0.158 (2021-05-18)</small>
+
+* Apple Pay Interface Fix (#1640) ([ed52004](https://github.com/paypal/paypal-checkout-components/commit/ed52004)), closes [#1640](https://github.com/paypal/paypal-checkout-components/issues/1640)
+* Ramp venmo experiment to 50% (#1639) ([383eb2c](https://github.com/paypal/paypal-checkout-components/commit/383eb2c)), closes [#1639](https://github.com/paypal/paypal-checkout-components/issues/1639)
+
+
+
 ## <small>5.0.157 (2021-05-14)</small>
 
 * adds QRcode Interface/Zoid Component functionality  (#1632) ([184dc26](https://github.com/paypal/paypal-checkout-components/commit/184dc26)), closes [#1632](https://github.com/paypal/paypal-checkout-components/issues/1632)
