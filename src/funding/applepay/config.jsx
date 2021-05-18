@@ -38,6 +38,8 @@ export function getApplePayConfig() : FundingSourceConfig {
         logoColors:  {
             [ BUTTON_COLOR.BLACK ]:  LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.WHITE ]:  LOGO_COLOR.BLACK
-        }
+        },
+
+        shippingChange: true
     };
 }

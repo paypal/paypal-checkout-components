@@ -89,19 +89,23 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
             };
 
             session.onpaymentmethodselected = (e) => {
-                listeners.paymentmethodselected({ paymentMethod: e.paymentMethod });
+                const paymentMethod = e.paymentMethod;
+                listeners.paymentmethodselected({ paymentMethod });
             };
 
             session.onshippingmethodselected = (e) => {
-                listeners.shippingmethodselected({ shippingMethod: e.shippingMethod });
+                const shippingMethod = e.shippingMethod;
+                listeners.shippingmethodselected({ shippingMethod });
             };
 
             session.onshippingcontactselected = (e) => {
-                listeners.shippingcontactselected({ shippingContact: e.shippingContact });
+                const shippingContact = e.shippingContact;
+                listeners.shippingcontactselected({ shippingContact });
             };
 
             session.onpaymentauthorized = (e) => {
-                listeners.paymentauthorized({ payment: e.payment });
+                const payment = e.payment;
+                listeners.paymentauthorized({ payment });
             };
 
             session.oncancel = () => {
