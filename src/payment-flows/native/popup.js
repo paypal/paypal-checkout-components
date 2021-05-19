@@ -25,6 +25,78 @@ const POST_MESSAGE = {
     ON_ERROR:           'onError'
 };
 
+type AppDetect = {|
+    installed : boolean,
+    [ string ] : string
+|};
+
+function logDetectedApp(app : AppDetect) {
+    if (app) {
+        Object.keys(app).forEach(key => {
+            getLogger().info(`native_app_${ app.installed ? 'installed' : 'not_installed' }_${ key }`, { [key]: app[key] })
+                .track({
+                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_INSTALLED,
+                    [FPTI_CUSTOM_KEY.INFO_MSG]: `native_app_${ app.installed ? 'installed' : 'not_installed' }_${ key }: ${ app[key].toString() }`
+                })
+                .flush();
+        });
+    }
+}
+
+type EligibilityOptions = {|
+    props : ButtonProps,
+    serviceData : ServiceData,
+    fundingSource : $Values<typeof FUNDING>,
+    sfvc : boolean,
+    validatePromise : ZalgoPromise<boolean>,
+    stickinessID : string,
+    appDetect : AppDetect
+|};
+
+function getEligibility({ fundingSource, props, serviceData, sfvc, validatePromise, stickinessID, appDetect } : EligibilityOptions) : ZalgoPromise<boolean> {
+    const { createOrder, onShippingChange, vault, platform, clientID, currency, buttonSessionID, enableFunding, merchantDomain } = props;
+    const { buyerCountry, cookies, merchantID } = serviceData;
+    const shippingCallbackEnabled = Boolean(onShippingChange);
+
+    return validatePromise.then(valid => {
+        if (!valid) {
+            return false;
+        }
+
+        if (appDetect && !appDetect.installed) {
+            return false;
+        }
+
+        if (isNativeOptedIn({ props })) {
+            return true;
+        }
+
+        if (sfvc) {
+            return false;
+        }
+
+        return createOrder().then(orderID => {
+            return getNativeEligibility({ vault, platform, shippingCallbackEnabled,
+                clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding, stickinessID,
+                merchantID:   merchantID[0],
+                domain:       merchantDomain
+            }).then(eligibility => {
+                if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
+                    getLogger().info(`native_appswitch_ineligible`, { orderID })
+                        .track({
+                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
+                        }).flush();
+
+                    return false;
+                }
+                return true;
+            });
+        });
+    });
+}
+
 type NativePopupOptions = {|
     props : ButtonProps,
     serviceData : ServiceData,
@@ -73,23 +145,19 @@ type NativePopup = {|
 |};
 
 export function openNativePopup({ props, serviceData, config, fundingSource, sessionUID, callbacks } : NativePopupOptions) : NativePopup {
-    const { onClick, createOrder, vault, platform, onShippingChange,
-        clientID, currency, buttonSessionID, enableFunding, merchantDomain } = props;
-    const { buyerCountry, cookies, merchantID } = serviceData;
+    const { onClick, createOrder } = props;
     const { firebase: firebaseConfig } = config;
+    let { onDetectAppSwitch, onDetectWebSwitch, onApprove, onCancel, onError, onFallback, onClose, onDestroy } = callbacks;
 
-    const shippingCallbackEnabled = Boolean(onShippingChange);
+    onDetectAppSwitch = once(onDetectAppSwitch);
+    onDetectWebSwitch = once(onDetectWebSwitch);
 
     if (!firebaseConfig) {
         throw new Error(`Can not load popup without firebase config`);
     }
     
-    const popupWin = window.open(getNativePopupUrl({ props, serviceData, fundingSource }));
+    const nativePopupWin = window.open(getNativePopupUrl({ props, serviceData, fundingSource }));
     const nativePopupDomain = getNativePopupDomain({ props });
-    let { onDetectAppSwitch, onDetectWebSwitch, onApprove, onCancel, onError, onFallback, onClose, onDestroy } = callbacks;
-
-    onDetectAppSwitch = once(onDetectAppSwitch);
-    onDetectWebSwitch = once(onDetectWebSwitch);
 
     getLogger().info(`native_attempt_appswitch_popup_shown`)
         .track({
@@ -97,7 +165,7 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
             [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
         }).flush();
 
-    const closeListener = onCloseWindow(popupWin, () => {
+    const closeListener = onCloseWindow(nativePopupWin, () => {
         getLogger().info(`native_popup_closed`).track({
             [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_POPUP_CLOSED
@@ -105,15 +173,13 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
         onClose();
     }, 500);
 
-    const closePopup = (event) => {
-        const eventType = event && event.type ? String(event.type) : event;
-
-        getLogger().info(`native_closing_popup_${ eventType }`).track({
+    const closePopup = (event : string) => {
+        getLogger().info(`native_closing_popup_${ event }`).track({
             [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-            [FPTI_KEY.TRANSITION]:  event ? `${ FPTI_TRANSITION.NATIVE_CLOSING_POPUP }_${ eventType }` : FPTI_TRANSITION.NATIVE_CLOSING_POPUP
+            [FPTI_KEY.TRANSITION]:  event ? `${ FPTI_TRANSITION.NATIVE_CLOSING_POPUP }_${ event }` : FPTI_TRANSITION.NATIVE_CLOSING_POPUP
         }).flush();
         closeListener.cancel();
-        popupWin.close();
+        nativePopupWin.close();
     };
 
     const redirectListenerTimeout = setTimeout(() => {
@@ -132,7 +198,7 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
 
         return valid;
     });
-        
+
     const orderPromise = validatePromise.then(valid => {
         if (valid) {
             return createOrder();
@@ -141,10 +207,10 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
         return unresolvedPromise();
     });
 
-    const awaitRedirectListener = onPostMessage(popupWin, nativePopupDomain, POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app, pageUrl, sfvc, stickinessID } }) => {
-        getLogger().info(`native_post_message_await_redirect`).flush();
-        getLogger().info(`native_post_message_await_redirect`).flush();
+    const awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app: appDetect, pageUrl, sfvc, stickinessID } }) => {
         clearTimeout(redirectListenerTimeout);
+        getLogger().info(`native_post_message_await_redirect`).flush();
+        logDetectedApp(appDetect);
 
         getLogger().addTrackingBuilder(() => {
             return {
@@ -152,64 +218,25 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
             };
         });
 
-        const eligibilityPromise = validatePromise.then(valid => {
-            if (!valid) {
-                return false;
-            }
-
-            if (isNativeOptedIn({ props })) {
-                return true;
-            }
-
-            if (sfvc) {
-                return false;
-            }
-
-            return orderPromise.then(orderID => {
-                return getNativeEligibility({ vault, platform, shippingCallbackEnabled,
-                    clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding, stickinessID,
-                    merchantID:   merchantID[0],
-                    domain:       merchantDomain
-                }).then(eligibility => {
-                    if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
-                        getLogger().info(`native_appswitch_ineligible`, { orderID })
-                            .track({
-                                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
-                            }).flush();
-
-                        return false;
-                    }
-                    return true;
-                });
-            });
-        });
-
         return ZalgoPromise.hash({
             valid:      validatePromise,
-            eligible:   eligibilityPromise
+            eligible:   getEligibility({ fundingSource, props, serviceData, sfvc, validatePromise, stickinessID, appDetect })
         }).then(({ valid, eligible }) => {
-            if (app) {
-                Object.keys(app).forEach(key => {
-                    getLogger().info(`native_app_${ app.installed ? 'installed' : 'not_installed' }_${ key }`, { [key]: app[key] })
-                        .track({
-                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_INSTALLED,
-                            [FPTI_CUSTOM_KEY.INFO_MSG]: `native_app_${ app.installed ? 'installed' : 'not_installed' }_${ key }: ${ app[key] }`
-                        })
-                        .flush();
-                });
-            }
 
             if (!valid) {
-                popupWin.close();
+                nativePopupWin.close();
                 return onDestroy();
             }
 
-            if (!eligible || (app && !app.installed)) {
+            if (!eligible) {
                 return orderPromise.then(orderID => {
-                    const fallbackUrl = getNativeFallbackUrl({ props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID });
-                    return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
+                    return {
+                        redirect:    true,
+                        appSwitch:   false,
+                        redirectUrl: getNativeFallbackUrl({
+                            props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID
+                        })
+                    };
                 });
             }
 
@@ -224,13 +251,15 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
                     }).flush();
 
                 if (isAndroidChrome()) {
-                    const appSwitchCloseListener = onCloseWindow(popupWin, () => {
-                        onDetectAppSwitch({ sessionUID });
-                    });
+                    const appSwitchCloseListener = onCloseWindow(nativePopupWin, () => onDetectAppSwitch({ sessionUID }));
                     setTimeout(appSwitchCloseListener.cancel, 1000);
                 }
 
-                return { redirect: true, appSwitch: true, redirectUrl: nativeUrl };
+                return {
+                    redirect:    true,
+                    appSwitch:   true,
+                    redirectUrl: nativeUrl
+                };
             });
 
         }).catch(err => {
@@ -242,11 +271,16 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
                 }).flush();
 
             return orderPromise.then(orderID => {
-                const fallbackUrl = getNativeFallbackUrl({ props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID });
-                return { redirect: true, appSwitch: false, redirectUrl: fallbackUrl };
+                return {
+                    redirect:    true,
+                    appSwitch:   false,
+                    redirectUrl: getNativeFallbackUrl({
+                        props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID
+                    })
+                };
             });
         }).catch(err => {
-            popupWin.close();
+            nativePopupWin.close();
 
             return onDestroy().then(() => {
                 return onError({ data: { message: stringifyError(err) } });
@@ -254,35 +288,35 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
         });
     });
 
-    const detectAppSwitchListener = onPostMessage(popupWin, nativePopupDomain, POST_MESSAGE.DETECT_APP_SWITCH, () => {
+    const detectAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.DETECT_APP_SWITCH, () => {
         getLogger().info(`native_post_message_detect_app_switch`).flush();
         return onDetectAppSwitch({ sessionUID });
     });
 
-    const detectWebSwitchListener = onPostMessage(popupWin, getNativeDomain({ props }), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
+    const detectWebSwitchListener = onPostMessage(nativePopupWin, getNativeDomain({ props }), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
         getLogger().info(`native_post_message_detect_web_switch`).flush();
-        return onDetectWebSwitch({ win: popupWin });
+        return onDetectWebSwitch({ win: nativePopupWin });
     });
 
-    const onApproveListener = onPostMessage(popupWin, nativePopupDomain, POST_MESSAGE.ON_APPROVE, (data) => {
+    const onApproveListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_APPROVE, (data) => {
         onApprove(data);
         closePopup('onApprove');
     });
 
-    const onCancelListener = onPostMessage(popupWin, nativePopupDomain, POST_MESSAGE.ON_CANCEL, () => {
+    const onCancelListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_CANCEL, () => {
         onCancel();
         closePopup('onCancel');
     });
 
-    const onFallbackListener = onPostMessage(popupWin, nativePopupDomain, POST_MESSAGE.ON_FALLBACK, () => {
+    const onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_FALLBACK, () => {
         getLogger().info(`native_message_onfallback`)
             .track({
                 [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_FALLBACK
             }).flush();
-        onFallback({ win: popupWin });
+        onFallback({ win: nativePopupWin });
     });
 
-    const onCompleteListener = onPostMessage(popupWin, nativePopupDomain, POST_MESSAGE.ON_COMPLETE, () => {
+    const onCompleteListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_COMPLETE, () => {
         getLogger().info(`native_post_message_on_complete`)
             .track({
                 [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
@@ -291,13 +325,13 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
         closePopup('onComplete');
     });
 
-    const onErrorListener = onPostMessage(popupWin, nativePopupDomain, POST_MESSAGE.ON_ERROR, (data) => {
+    const onErrorListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_ERROR, (data) => {
         onError(data);
         closePopup('onError');
     });
 
-    window.addEventListener('pagehide', closePopup);
-    window.addEventListener('unload', closePopup);
+    window.addEventListener('pagehide', () => closePopup('pagehide'));
+    window.addEventListener('unload', () => closePopup('unload'));
 
     const cancel = () => {
         return ZalgoPromise.all([
@@ -314,7 +348,7 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
     };
 
     const close = () => {
-        popupWin.close();
+        nativePopupWin.close();
     };
 
     return {

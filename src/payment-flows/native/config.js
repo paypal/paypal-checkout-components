@@ -11,6 +11,11 @@ type FundingConfig = {|
     [ $Values<typeof FUNDING> ] : string
 |};
 
+export const SUPPORTED_FUNDING : $ReadOnlyArray<$Values<typeof FUNDING>> = [
+    FUNDING.PAYPAL,
+    FUNDING.VENMO
+];
+
 export const NATIVE_DOMAIN : EnvConfig = {
     [ ENV.TEST ]:       'https://www.paypal.com',
     [ ENV.LOCAL ]:      'https://www.paypal.com',

@@ -59,6 +59,7 @@ const getNativeSocket = memoize(({ sessionUID, firebaseConfig, version } : Nativ
         targetApp:        TARGET_APP,
         config:           firebaseConfig
     });
+    
     nativeSocket.onError(err => {
         const stringifiedError = stringifyError(err);
         if (stringifiedError && stringifiedError.toLowerCase().indexOf('permission_denied') === -1) {

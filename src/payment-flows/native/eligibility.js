@@ -5,17 +5,14 @@ import { PLATFORM, ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { supportsPopups } from 'belter/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
-import { isIOSSafari, isAndroidChrome, getLogger } from '../../lib';
-import { AMPLITUDE_API_KEY } from '../../config';
+import { isIOSSafari, isAndroidChrome, enableAmplitude } from '../../lib';
 import type { ButtonProps, ServiceData } from '../../button/props';
 import type { IsEligibleOptions, IsPaymentEligibleOptions } from '../types';
 
-import { NATIVE_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI, NATIVE_CHECKOUT_FALLBACK_URI } from './config';
+import { NATIVE_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI, NATIVE_CHECKOUT_FALLBACK_URI, SUPPORTED_FUNDING } from './config';
 
-let prefetchedNativeEligibility : NativeEligibility;
-
-export function isTestGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
-    const fundingEligibility = prefetchedNativeEligibility && prefetchedNativeEligibility[fundingSource];
+export function isTestGroup(nativeEligibility : NativeEligibility, fundingSource : $Values<typeof FUNDING>) : boolean {
+    const fundingEligibility = nativeEligibility[fundingSource];
 
     if (fundingEligibility && fundingEligibility.eligibility) {
         return true;
@@ -24,11 +21,21 @@ export function isTestGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
     return false;
 }
 
-export function isControlGroup(fundingSource : $Values<typeof FUNDING>) : boolean {
-    const fundingEligibility = prefetchedNativeEligibility && prefetchedNativeEligibility[fundingSource];
+export function isControlGroup(nativeEligibility : NativeEligibility, fundingSource : $Values<typeof FUNDING>) : boolean {
+    const fundingEligibility = nativeEligibility[fundingSource];
 
     if (fundingEligibility && !fundingEligibility.eligibility && fundingEligibility.ineligibilityReason === 'experimentation_ineligibility') {
         return true;
+    }
+
+    return false;
+}
+
+export function isAnyTestOrControlGroup({ nativeEligibility } : {| nativeEligibility : NativeEligibility |}) : boolean {
+    for (const fundingSource of SUPPORTED_FUNDING) {
+        if (isTestGroup(nativeEligibility, fundingSource) || isControlGroup(nativeEligibility, fundingSource)) {
+            return true;
+        }
     }
 
     return false;
@@ -61,7 +68,6 @@ export function prefetchNativeEligibility({ props, serviceData } : PrefetchNativ
     const { clientID, onShippingChange, currency, platform, env,
         vault, buttonSessionID, enableFunding, merchantDomain } = props;
     const { merchantID, buyerCountry, cookies } = serviceData;
-
     const shippingCallbackEnabled = Boolean(onShippingChange);
 
     return getNativeEligibility({
@@ -70,13 +76,9 @@ export function prefetchNativeEligibility({ props, serviceData } : PrefetchNativ
         skipElmo:     true,
         merchantID:   merchantID[0],
         domain:       merchantDomain
-    }).then(result => {
-        prefetchedNativeEligibility = result;
-
-        if (isTestGroup(FUNDING.PAYPAL) || isTestGroup(FUNDING.VENMO) || isControlGroup(FUNDING.PAYPAL) || isControlGroup(FUNDING.VENMO) || isNativeOptedIn({ props })) {
-            getLogger().configure({
-                amplitudeApiKey: AMPLITUDE_API_KEY[env]
-            });
+    }).then(nativeEligibility => {
+        if (isAnyTestOrControlGroup({ nativeEligibility })) {
+            enableAmplitude({ env });
         }
     });
 }

@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, ENV, COUNTRY } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../types';
-import { LOGGER_URL } from '../config';
+import { LOGGER_URL, AMPLITUDE_API_KEY } from '../config';
 
 export function getLogger() : LoggerType {
     return inlineMemoize(getLogger, () =>
@@ -14,6 +14,12 @@ export function getLogger() : LoggerType {
             url:              LOGGER_URL,
             enableSendBeacon: true
         }));
+}
+
+export function enableAmplitude({ env } : {| env : $Values<typeof ENV> |}) {
+    getLogger().configure({
+        amplitudeApiKey: AMPLITUDE_API_KEY[env]
+    });
 }
 
 type LoggerOptions = {|

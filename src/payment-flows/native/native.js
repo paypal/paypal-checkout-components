@@ -69,16 +69,15 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const data = { payerID, paymentID, billingToken, forceRestAPI: true };
         const actions = { restart: () => fallbackToWebCheckout() };
         return ZalgoPromise.all([
-            onApprove(data, actions)
-                .catch(err => {
-                    getLogger().info(`native_message_onapprove_error`, { payerID, paymentID, billingToken })
-                        .track({
-                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE_ERROR,
-                            [FPTI_CUSTOM_KEY.INFO_MSG]: `Error: ${ stringifyError(err) }`
-                        })
-                        .flush();
-                    onError(err);
-                }),
+            onApprove(data, actions).catch(err => {
+                getLogger().info(`native_message_onapprove_error`, { payerID, paymentID, billingToken })
+                    .track({
+                        [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_APPROVE_ERROR,
+                        [FPTI_CUSTOM_KEY.INFO_MSG]: `Error: ${ stringifyError(err) }`
+                    })
+                    .flush();
+                onError(err);
+            }),
             destroy()
         ]).then(() => {
             return { buttonSessionID };
@@ -244,34 +243,30 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return fallbackToWebCheckout(win);
     };
 
+    const onCloseCallback = () => {
+        return ZalgoPromise.delay(1000).then(() => {
+            if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
+                return ZalgoPromise.all([
+                    onCancel(),
+                    destroy()
+                ]);
+            }
+        }).then(noop);
+    };
+
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         return new ZalgoPromise((resolve, reject) => {
             const nativePopup = openNativePopup({
                 props, serviceData, config, fundingSource, sessionUID,
                 callbacks: {
-                    onDetectWebSwitch: ({ win }) => {
-                        return detectWebSwitch({ win }).then(resolve, reject);
-                    },
-                    onDetectAppSwitch: () => {
-                        return detectAppSwitch({ sessionUID }).then(resolve, reject);
-                    },
-                    onApprove:  onApproveCallback,
-                    onCancel:   onCancelCallback,
-                    onError:    onErrorCallback,
-                    onFallback: onFallbackCallback,
-                    onClose:    () => {
-                        return ZalgoPromise.delay(1000).then(() => {
-                            if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
-                                return ZalgoPromise.all([
-                                    onCancel(),
-                                    destroy()
-                                ]);
-                            }
-                        }).then(noop);
-                    },
-                    onDestroy: () => {
-                        return destroy();
-                    }
+                    onDetectWebSwitch: ({ win }) => detectWebSwitch({ win }).then(resolve, reject),
+                    onDetectAppSwitch: () => detectAppSwitch({ sessionUID }).then(resolve, reject),
+                    onApprove:         onApproveCallback,
+                    onCancel:          onCancelCallback,
+                    onError:           onErrorCallback,
+                    onFallback:        onFallbackCallback,
+                    onClose:           onCloseCallback,
+                    onDestroy:         destroy
                 }
             });
 
