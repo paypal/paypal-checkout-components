@@ -1967,6 +1967,7 @@ describe('native ios cases', () => {
             });
 
             let gotOnApproveResponse = false;
+            let onApproveDonePromise;
 
             const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
                 getSessionUID: () => {
@@ -1987,7 +1988,7 @@ describe('native ios cases', () => {
                             domain: 'https://history.paypal.com'
                         });
 
-                        ZalgoPromise.delay(200)
+                        onApproveDonePromise = ZalgoPromise.delay(200)
                             .then(expect('onApproveDone', () => {
                                 if (!gotOnApproveResponse) {
                                     throw new Error(`Expected child window to get onApprove response`);
@@ -2045,6 +2046,8 @@ describe('native ios cases', () => {
             } catch {
                 // pass
             }
+
+            await onApproveDonePromise;
 
             mockWindow.done();
             mockWebSocketServer.done();
@@ -3972,6 +3975,7 @@ describe('native chrome cases', () => {
             });
 
             let gotOnApproveResponse = false;
+            let onApproveDonePromise;
 
             const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
                 getSessionUID: () => {
@@ -3985,7 +3989,7 @@ describe('native chrome cases', () => {
                     if (message_name === 'setProps' && message_type === 'request') {
                         ZalgoPromise.delay(50).then(onApprove);
 
-                        ZalgoPromise.delay(200)
+                        onApproveDonePromise = ZalgoPromise.delay(200)
                             .then(expect('onApproveDone', () => {
                                 if (!gotOnApproveResponse) {
                                     throw new Error(`Expected child window to get onApprove response`);
@@ -4043,6 +4047,8 @@ describe('native chrome cases', () => {
             } catch {
                 // pass
             }
+
+            await onApproveDonePromise;
 
             mockWindow.done();
             mockWebSocketServer.done();
