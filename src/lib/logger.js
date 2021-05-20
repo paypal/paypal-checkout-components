@@ -1,9 +1,9 @@
 /* @flow */
 
 import { Logger, type LoggerType } from 'beaver-logger/src';
-import { noop, stringifyError, stringifyErrorMessage, inlineMemoize } from 'belter/src';
+import { noop, stringifyError, stringifyErrorMessage, inlineMemoize, isAndroid, isIos } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, ENV, COUNTRY } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, ENV, COUNTRY, MOBILE_ENV } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../types';
 import { LOGGER_URL, AMPLITUDE_API_KEY } from '../config';
@@ -22,6 +22,18 @@ export function enableAmplitude({ env } : {| env : $Values<typeof ENV> |}) {
     });
 }
 
+
+type MobileEnvironment = $Values<typeof MOBILE_ENV>;
+
+function getSDKMobileEnvironment() : MobileEnvironment | null {
+    if (isIos()) {
+        return MOBILE_ENV.IOS;
+    }
+    if (isAndroid()) {
+        return MOBILE_ENV.ANDROID;
+    }
+    return null;
+}
 type LoggerOptions = {|
     env : $Values<typeof ENV>,
     sessionID : string,
@@ -56,6 +68,7 @@ export function setupLogger({ env, sessionID, clientID, sdkCorrelationID, buyerC
             [FPTI_KEY.BUYER_COUNTRY]:          buyerCountry,
             [FPTI_KEY.LOCALE]:                 `${ lang }_${ country }`,
             [FPTI_KEY.INTEGRATION_IDENTIFIER]: clientID,
+            [FPTI_KEY.SDK_ENVIRONMENT]:        getSDKMobileEnvironment(),
             [FPTI_KEY.SDK_NAME]:               FPTI_SDK_NAME.PAYMENTS_SDK,
             [FPTI_KEY.SDK_VERSION]:            sdkVersion,
             [FPTI_KEY.USER_AGENT]:             window.navigator && window.navigator.userAgent,
