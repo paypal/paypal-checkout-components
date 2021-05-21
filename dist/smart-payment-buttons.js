@@ -2009,7 +2009,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers14 = {}).authorization = "Bearer " + accessToken, _headers14["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers14["paypal-client-metadata-id"] = clientMetadataID, _headers14["x-app-name"] = "smart-payment-buttons", 
-            _headers14["x-app-version"] = "5.0.27", _headers14);
+            _headers14["x-app-version"] = "5.0.28", _headers14);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -6482,7 +6482,7 @@ window.spb = function(modules) {
                 facilitatorAccessToken: facilitatorAccessToken,
                 brandedDefault: brandedDefault
             });
-            var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, stickinessID = props.stickinessID, branded = props.branded;
+            var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, stickinessID = props.stickinessID;
             var config = getConfig({
                 serverCSPNonce: serverCSPNonce,
                 firebaseConfig: firebaseConfig
@@ -6513,333 +6513,324 @@ window.spb = function(modules) {
                                 }
                             } catch (err) {}
                         }(paymentFundingSource);
-                        if (smartFields) {
-                            if (!smartFields.isValid()) {
-                                win && win.close();
-                                return;
-                            }
-                        } else if (!1 === branded) {
-                            logger_getLogger().error("integration_error", {
-                                err: "hosted components not found"
+                        if (!smartFields || smartFields.isValid()) {
+                            onClick && onClick({
+                                fundingSource: paymentFundingSource
                             });
-                            throw new Error("Hosted components not found");
-                        }
-                        onClick && onClick({
-                            fundingSource: paymentFundingSource
-                        });
-                        if (isEnabled()) {
-                            paymentProcessing = !0;
-                            return function(_ref3) {
-                                var payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config, components = _ref3.components, props = _ref3.props;
-                                var button = payment.button, fundingSource = payment.fundingSource, instrumentType = payment.instrumentType;
-                                return promise_ZalgoPromise.try((function() {
-                                    var _getLogger$info$info$;
-                                    var merchantID = serviceData.merchantID;
-                                    var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID;
-                                    !function(personalization) {
-                                        personalization && personalization.tagline && personalization.tagline.tracking && sendBeacon(personalization.tagline.tracking.click);
-                                        personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
-                                    }(serviceData.personalization);
-                                    var _getPaymentFlow = getPaymentFlow({
-                                        props: props,
-                                        payment: payment,
-                                        config: config,
-                                        components: components,
-                                        serviceData: serviceData
-                                    }), name = _getPaymentFlow.name, inline = _getPaymentFlow.inline, spinner = _getPaymentFlow.spinner, updateFlowClientConfig = _getPaymentFlow.updateFlowClientConfig;
-                                    var _init = (0, _getPaymentFlow.init)({
-                                        props: props,
-                                        config: config,
-                                        serviceData: serviceData,
-                                        components: components,
-                                        payment: payment
-                                    }), _init$click = _init.click, start = _init.start, close = _init.close;
-                                    var clickPromise = promise_ZalgoPromise.try(void 0 === _init$click ? promiseNoop : _init$click);
-                                    clickPromise.catch(src_util_noop);
-                                    logger_getLogger().info("button_click").info("button_click_pay_flow_" + name).info("button_click_fundingsource_" + fundingSource).info("button_click_instrument_" + (instrumentType || "default")).track((_getLogger$info$info$ = {}, 
-                                    _getLogger$info$info$.transition_name = "process_button_click", _getLogger$info$info$.selected_payment_method = fundingSource, 
-                                    _getLogger$info$info$.chosen_fi_type = instrumentType, _getLogger$info$info$.payment_flow = name, 
-                                    _getLogger$info$info$.is_vault = instrumentType ? "1" : "0", _getLogger$info$info$)).flush();
-                                    return promise_ZalgoPromise.hash({
-                                        valid: !onClick || onClick({
-                                            fundingSource: fundingSource
-                                        })
-                                    }).then((function(_ref4) {
-                                        if (_ref4.valid) {
-                                            spinner && enableLoadingSpinner(button);
-                                            var updateClientConfigPromise = createOrder().then((function(orderID) {
-                                                if (updateFlowClientConfig) return updateFlowClientConfig({
-                                                    orderID: orderID,
-                                                    payment: payment,
-                                                    userExperienceFlow: userExperienceFlow,
-                                                    buttonSessionID: buttonSessionID
-                                                });
-                                                updateButtonClientConfig({
-                                                    orderID: orderID,
-                                                    fundingSource: fundingSource,
-                                                    inline: inline,
-                                                    userExperienceFlow: userExperienceFlow
-                                                }).catch((function(err) {
-                                                    logger_getLogger().error("update_client_config_error", {
-                                                        err: stringifyError(err)
+                            if (isEnabled()) {
+                                paymentProcessing = !0;
+                                return function(_ref3) {
+                                    var payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config, components = _ref3.components, props = _ref3.props;
+                                    var button = payment.button, fundingSource = payment.fundingSource, instrumentType = payment.instrumentType;
+                                    return promise_ZalgoPromise.try((function() {
+                                        var _getLogger$info$info$;
+                                        var merchantID = serviceData.merchantID;
+                                        var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID;
+                                        !function(personalization) {
+                                            personalization && personalization.tagline && personalization.tagline.tracking && sendBeacon(personalization.tagline.tracking.click);
+                                            personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
+                                        }(serviceData.personalization);
+                                        var _getPaymentFlow = getPaymentFlow({
+                                            props: props,
+                                            payment: payment,
+                                            config: config,
+                                            components: components,
+                                            serviceData: serviceData
+                                        }), name = _getPaymentFlow.name, inline = _getPaymentFlow.inline, spinner = _getPaymentFlow.spinner, updateFlowClientConfig = _getPaymentFlow.updateFlowClientConfig;
+                                        var _init = (0, _getPaymentFlow.init)({
+                                            props: props,
+                                            config: config,
+                                            serviceData: serviceData,
+                                            components: components,
+                                            payment: payment
+                                        }), _init$click = _init.click, start = _init.start, close = _init.close;
+                                        var clickPromise = promise_ZalgoPromise.try(void 0 === _init$click ? promiseNoop : _init$click);
+                                        clickPromise.catch(src_util_noop);
+                                        logger_getLogger().info("button_click").info("button_click_pay_flow_" + name).info("button_click_fundingsource_" + fundingSource).info("button_click_instrument_" + (instrumentType || "default")).track((_getLogger$info$info$ = {}, 
+                                        _getLogger$info$info$.transition_name = "process_button_click", _getLogger$info$info$.selected_payment_method = fundingSource, 
+                                        _getLogger$info$info$.chosen_fi_type = instrumentType, _getLogger$info$info$.payment_flow = name, 
+                                        _getLogger$info$info$.is_vault = instrumentType ? "1" : "0", _getLogger$info$info$)).flush();
+                                        return promise_ZalgoPromise.hash({
+                                            valid: !onClick || onClick({
+                                                fundingSource: fundingSource
+                                            })
+                                        }).then((function(_ref4) {
+                                            if (_ref4.valid) {
+                                                spinner && enableLoadingSpinner(button);
+                                                var updateClientConfigPromise = createOrder().then((function(orderID) {
+                                                    if (updateFlowClientConfig) return updateFlowClientConfig({
+                                                        orderID: orderID,
+                                                        payment: payment,
+                                                        userExperienceFlow: userExperienceFlow,
+                                                        buttonSessionID: buttonSessionID
                                                     });
+                                                    updateButtonClientConfig({
+                                                        orderID: orderID,
+                                                        fundingSource: fundingSource,
+                                                        inline: inline,
+                                                        userExperienceFlow: userExperienceFlow
+                                                    }).catch((function(err) {
+                                                        logger_getLogger().error("update_client_config_error", {
+                                                            err: stringifyError(err)
+                                                        });
+                                                    }));
+                                                })).catch(src_util_noop);
+                                                var intent = props.intent, currency = props.currency;
+                                                var startPromise = promise_ZalgoPromise.try((function() {
+                                                    return updateClientConfigPromise;
+                                                })).then((function() {
+                                                    return start();
                                                 }));
-                                            })).catch(src_util_noop);
-                                            var intent = props.intent, currency = props.currency;
-                                            var startPromise = promise_ZalgoPromise.try((function() {
-                                                return updateClientConfigPromise;
-                                            })).then((function() {
-                                                return start();
-                                            }));
-                                            var validateOrderPromise = createOrder().then((function(orderID) {
-                                                return function(orderID, _ref3) {
-                                                    var env = _ref3.env, clientID = _ref3.clientID, merchantID = _ref3.merchantID, currency = _ref3.currency, intent = _ref3.intent, vault = _ref3.vault;
-                                                    var logger = logger_getLogger();
-                                                    return getSupplementalOrderInfo(orderID).then((function(order) {
-                                                        var cart = order.checkoutSession.cart;
-                                                        var cartIntent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
-                                                        var cartCurrency = cart.amounts && cart.amounts.total.currencyCode;
-                                                        var cartAmount = cart.amounts && cart.amounts.total.currencyValue;
-                                                        var cartBillingType = cart.billingType;
-                                                        cartIntent === intent || (cart.supplementary && cart.supplementary.initiationIntent) === intent || -1 === VALIDATE_INTENTS.indexOf(intent) || triggerIntegrationError({
-                                                            error: "smart_button_validation_error_incorrect_intent",
-                                                            message: "Expected intent from order api call to be " + intent + ", got " + cartIntent + ". Please ensure you are passing intent=" + cartIntent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
-                                                            loggerPayload: {
-                                                                cartIntent: cartIntent,
-                                                                intent: intent
-                                                            },
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID
-                                                        });
-                                                        cartCurrency && cartCurrency !== currency && triggerIntegrationError({
-                                                            error: "smart_button_validation_error_incorrect_currency",
-                                                            message: "Expected currency from order api call to be " + currency + ", got " + cartCurrency + ". Please ensure you are passing currency=" + cartCurrency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
-                                                            loggerPayload: {
-                                                                cartCurrency: cartCurrency,
-                                                                currency: currency
-                                                            },
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID
-                                                        });
-                                                        merchantID && 0 !== merchantID.length || triggerIntegrationError({
-                                                            error: "smart_button_validation_error_no_merchant_id",
-                                                            message: "Could not determine correct merchant id",
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID
-                                                        });
-                                                        cartBillingType && !vault && triggerIntegrationError({
-                                                            error: "smart_button_validation_error_billing_" + (cartAmount ? "with" : "without") + "_purchase_no_vault",
-                                                            message: "Expected vault=" + VAULT.TRUE.toString() + " for a billing transaction",
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID,
-                                                            loggerPayload: {
-                                                                cartBillingType: cartBillingType,
-                                                                vault: vault
-                                                            },
-                                                            throwError: !1
-                                                        });
-                                                        !vault || cartBillingType || window.xprops.createBillingAgreement || window.xprops.createSubscription || window.xprops.clientAccessToken || window.xprops.userIDToken || triggerIntegrationError({
-                                                            error: "smart_button_validation_error_vault_passed_not_needed",
-                                                            message: "Expected vault=" + VAULT.FALSE.toString() + " for a non-billing, non-subscription transaction",
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID,
-                                                            loggerPayload: {
-                                                                vault: vault,
-                                                                cartBillingType: cartBillingType
-                                                            },
-                                                            throwError: !1
-                                                        });
-                                                        cartBillingType && !cartAmount && "tokenize" !== intent && triggerIntegrationError({
-                                                            error: "smart_button_validation_error_billing_without_purchase_intent_tokenize_not_passed",
-                                                            message: "Expected intent=tokenize for a billing-without-purchase transaction",
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID,
-                                                            loggerPayload: {
-                                                                vault: vault,
-                                                                cartBillingType: cartBillingType,
-                                                                cartAmount: cartAmount
-                                                            },
-                                                            throwError: !1
-                                                        });
-                                                        var payees = order.checkoutSession.payees;
-                                                        if (!payees) return triggerIntegrationError({
-                                                            error: "smart_button_validation_error_supplemental_order_missing_payees",
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID,
-                                                            throwError: !1
-                                                        });
-                                                        if (!payees.length) return triggerIntegrationError({
-                                                            error: "smart_button_validation_error_supplemental_order_no_payees",
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID,
-                                                            throwError: !1
-                                                        });
-                                                        var dict = {};
-                                                        var uniquePayees = [];
-                                                        for (var _i2 = 0; _i2 < payees.length; _i2++) {
-                                                            var payee = payees[_i2];
-                                                            if (!(payee.merchantId || payee.email && payee.email.stringValue)) return triggerIntegrationError({
-                                                                error: "smart_button_validation_error_supplemental_order_missing_values",
-                                                                env: env,
-                                                                clientID: clientID,
-                                                                orderID: orderID,
+                                                var validateOrderPromise = createOrder().then((function(orderID) {
+                                                    return function(orderID, _ref3) {
+                                                        var env = _ref3.env, clientID = _ref3.clientID, merchantID = _ref3.merchantID, currency = _ref3.currency, intent = _ref3.intent, vault = _ref3.vault;
+                                                        var logger = logger_getLogger();
+                                                        return getSupplementalOrderInfo(orderID).then((function(order) {
+                                                            var cart = order.checkoutSession.cart;
+                                                            var cartIntent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
+                                                            var cartCurrency = cart.amounts && cart.amounts.total.currencyCode;
+                                                            var cartAmount = cart.amounts && cart.amounts.total.currencyValue;
+                                                            var cartBillingType = cart.billingType;
+                                                            cartIntent === intent || (cart.supplementary && cart.supplementary.initiationIntent) === intent || -1 === VALIDATE_INTENTS.indexOf(intent) || triggerIntegrationError({
+                                                                error: "smart_button_validation_error_incorrect_intent",
+                                                                message: "Expected intent from order api call to be " + intent + ", got " + cartIntent + ". Please ensure you are passing intent=" + cartIntent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
                                                                 loggerPayload: {
-                                                                    payees: JSON.stringify(payees)
-                                                                },
-                                                                throwError: !1
-                                                            });
-                                                            if (payee.merchantId) {
-                                                                if (!dict[payee.merchantId]) {
-                                                                    dict[payee.merchantId] = 1;
-                                                                    uniquePayees.push(payee);
-                                                                }
-                                                            } else if (payee.email && payee.email.stringValue && !dict[payee.email.stringValue]) {
-                                                                dict[payee.email.stringValue] = 1;
-                                                                uniquePayees.push(payee);
-                                                            }
-                                                        }
-                                                        var payeesStr = uniquePayees.map((function(payee) {
-                                                            if (payee.merchantId) return payee.merchantId;
-                                                            if (payee.email && payee.email.stringValue) return payee.email.stringValue;
-                                                            triggerIntegrationError({
-                                                                error: "smart_button_validation_error_invalid_payee_state",
-                                                                message: "Invalid payee state: " + JSON.stringify(uniquePayees),
-                                                                loggerPayload: {
-                                                                    uniquePayees: JSON.stringify(uniquePayees)
+                                                                    cartIntent: cartIntent,
+                                                                    intent: intent
                                                                 },
                                                                 env: env,
                                                                 clientID: clientID,
                                                                 orderID: orderID
                                                             });
-                                                            throw new Error("Payees Incorrect");
-                                                        })).join(",");
-                                                        var xpropMerchantID = window.xprops.merchantID;
-                                                        if (xpropMerchantID && xpropMerchantID.length) isValidMerchantIDs(xpropMerchantID, uniquePayees) || triggerIntegrationError(1 === uniquePayees.length ? {
-                                                            error: "smart_button_validation_error_payee_no_match",
-                                                            message: "Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID
-                                                        } : {
-                                                            error: "smart_button_validation_error_payee_no_match",
-                                                            message: 'Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/',
-                                                            env: env,
-                                                            clientID: clientID,
-                                                            orderID: orderID
-                                                        }); else if (!isValidMerchantIDs(merchantID, uniquePayees)) {
-                                                            logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch", {
-                                                                payees: JSON.stringify(uniquePayees),
-                                                                merchantID: JSON.stringify(merchantID)
+                                                            cartCurrency && cartCurrency !== currency && triggerIntegrationError({
+                                                                error: "smart_button_validation_error_incorrect_currency",
+                                                                message: "Expected currency from order api call to be " + currency + ", got " + cartCurrency + ". Please ensure you are passing currency=" + cartCurrency + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                                loggerPayload: {
+                                                                    cartCurrency: cartCurrency,
+                                                                    currency: currency
+                                                                },
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID
                                                             });
-                                                            if (1 === uniquePayees.length) {
-                                                                "sandbox" === env && logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch_sandbox", {
-                                                                    payees: JSON.stringify(payees),
-                                                                    merchantID: JSON.stringify(merchantID)
-                                                                });
-                                                                triggerIntegrationError({
-                                                                    error: "smart_button_validation_error_payee_no_match",
-                                                                    message: "Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                            merchantID && 0 !== merchantID.length || triggerIntegrationError({
+                                                                error: "smart_button_validation_error_no_merchant_id",
+                                                                message: "Could not determine correct merchant id",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID
+                                                            });
+                                                            cartBillingType && !vault && triggerIntegrationError({
+                                                                error: "smart_button_validation_error_billing_" + (cartAmount ? "with" : "without") + "_purchase_no_vault",
+                                                                message: "Expected vault=" + VAULT.TRUE.toString() + " for a billing transaction",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID,
+                                                                loggerPayload: {
+                                                                    cartBillingType: cartBillingType,
+                                                                    vault: vault
+                                                                },
+                                                                throwError: !1
+                                                            });
+                                                            !vault || cartBillingType || window.xprops.createBillingAgreement || window.xprops.createSubscription || window.xprops.clientAccessToken || window.xprops.userIDToken || triggerIntegrationError({
+                                                                error: "smart_button_validation_error_vault_passed_not_needed",
+                                                                message: "Expected vault=" + VAULT.FALSE.toString() + " for a non-billing, non-subscription transaction",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID,
+                                                                loggerPayload: {
+                                                                    vault: vault,
+                                                                    cartBillingType: cartBillingType
+                                                                },
+                                                                throwError: !1
+                                                            });
+                                                            cartBillingType && !cartAmount && "tokenize" !== intent && triggerIntegrationError({
+                                                                error: "smart_button_validation_error_billing_without_purchase_intent_tokenize_not_passed",
+                                                                message: "Expected intent=tokenize for a billing-without-purchase transaction",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID,
+                                                                loggerPayload: {
+                                                                    vault: vault,
+                                                                    cartBillingType: cartBillingType,
+                                                                    cartAmount: cartAmount
+                                                                },
+                                                                throwError: !1
+                                                            });
+                                                            var payees = order.checkoutSession.payees;
+                                                            if (!payees) return triggerIntegrationError({
+                                                                error: "smart_button_validation_error_supplemental_order_missing_payees",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID,
+                                                                throwError: !1
+                                                            });
+                                                            if (!payees.length) return triggerIntegrationError({
+                                                                error: "smart_button_validation_error_supplemental_order_no_payees",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID,
+                                                                throwError: !1
+                                                            });
+                                                            var dict = {};
+                                                            var uniquePayees = [];
+                                                            for (var _i2 = 0; _i2 < payees.length; _i2++) {
+                                                                var payee = payees[_i2];
+                                                                if (!(payee.merchantId || payee.email && payee.email.stringValue)) return triggerIntegrationError({
+                                                                    error: "smart_button_validation_error_supplemental_order_missing_values",
                                                                     env: env,
                                                                     clientID: clientID,
                                                                     orderID: orderID,
+                                                                    loggerPayload: {
+                                                                        payees: JSON.stringify(payees)
+                                                                    },
                                                                     throwError: !1
                                                                 });
-                                                            } else triggerIntegrationError({
+                                                                if (payee.merchantId) {
+                                                                    if (!dict[payee.merchantId]) {
+                                                                        dict[payee.merchantId] = 1;
+                                                                        uniquePayees.push(payee);
+                                                                    }
+                                                                } else if (payee.email && payee.email.stringValue && !dict[payee.email.stringValue]) {
+                                                                    dict[payee.email.stringValue] = 1;
+                                                                    uniquePayees.push(payee);
+                                                                }
+                                                            }
+                                                            var payeesStr = uniquePayees.map((function(payee) {
+                                                                if (payee.merchantId) return payee.merchantId;
+                                                                if (payee.email && payee.email.stringValue) return payee.email.stringValue;
+                                                                triggerIntegrationError({
+                                                                    error: "smart_button_validation_error_invalid_payee_state",
+                                                                    message: "Invalid payee state: " + JSON.stringify(uniquePayees),
+                                                                    loggerPayload: {
+                                                                        uniquePayees: JSON.stringify(uniquePayees)
+                                                                    },
+                                                                    env: env,
+                                                                    clientID: clientID,
+                                                                    orderID: orderID
+                                                                });
+                                                                throw new Error("Payees Incorrect");
+                                                            })).join(",");
+                                                            var xpropMerchantID = window.xprops.merchantID;
+                                                            if (xpropMerchantID && xpropMerchantID.length) isValidMerchantIDs(xpropMerchantID, uniquePayees) || triggerIntegrationError(1 === uniquePayees.length ? {
+                                                                error: "smart_button_validation_error_payee_no_match",
+                                                                message: "Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                                env: env,
+                                                                clientID: clientID,
+                                                                orderID: orderID
+                                                            } : {
                                                                 error: "smart_button_validation_error_payee_no_match",
                                                                 message: 'Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/',
                                                                 env: env,
                                                                 clientID: clientID,
                                                                 orderID: orderID
+                                                            }); else if (!isValidMerchantIDs(merchantID, uniquePayees)) {
+                                                                logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch", {
+                                                                    payees: JSON.stringify(uniquePayees),
+                                                                    merchantID: JSON.stringify(merchantID)
+                                                                });
+                                                                if (1 === uniquePayees.length) {
+                                                                    "sandbox" === env && logger.warn("smart_button_validation_error_derived_payee_transaction_mismatch_sandbox", {
+                                                                        payees: JSON.stringify(payees),
+                                                                        merchantID: JSON.stringify(merchantID)
+                                                                    });
+                                                                    triggerIntegrationError({
+                                                                        error: "smart_button_validation_error_payee_no_match",
+                                                                        message: "Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=" + payeesStr + " or merchant-id=" + (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue ? uniquePayees[0].email.stringValue : "payee@merchant.com") + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                                                        env: env,
+                                                                        clientID: clientID,
+                                                                        orderID: orderID,
+                                                                        throwError: !1
+                                                                    });
+                                                                } else triggerIntegrationError({
+                                                                    error: "smart_button_validation_error_payee_no_match",
+                                                                    message: 'Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing merchant-id=* to the sdk url and data-merchant-id="' + payeesStr + '" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/',
+                                                                    env: env,
+                                                                    clientID: clientID,
+                                                                    orderID: orderID
+                                                                });
+                                                            }
+                                                        }));
+                                                    }(orderID, {
+                                                        env: env,
+                                                        clientID: clientID,
+                                                        merchantID: merchantID,
+                                                        intent: intent,
+                                                        currency: currency,
+                                                        vault: vault
+                                                    });
+                                                }));
+                                                var confirmOrderPromise = createOrder().then((function(orderID) {
+                                                    return window.xprops.sessionState.get("__confirm_" + fundingSource + "_payload__").then((function(confirmOrderPayload) {
+                                                        if (confirmOrderPayload) {
+                                                            return function(_ref, _ref2) {
+                                                                var orderID = _ref.orderID, payload = _ref.payload, partnerAttributionID = _ref.partnerAttributionID;
+                                                                var facilitatorAccessToken = _ref2.facilitatorAccessToken;
+                                                                var startTime = Date.now();
+                                                                return promise_ZalgoPromise.try((function() {
+                                                                    return function(orderID, data, _ref6) {
+                                                                        var _headers13;
+                                                                        return callRestAPI({
+                                                                            accessToken: _ref6.facilitatorAccessToken,
+                                                                            method: "post",
+                                                                            url: ORDERS_API_URL + "/" + orderID + "/confirm-payment-source",
+                                                                            data: data,
+                                                                            headers: (_headers13 = {}, _headers13["paypal-partner-attribution-id"] = _ref6.partnerAttributionID || "", 
+                                                                            _headers13.prefer = "return=representation", _headers13)
+                                                                        });
+                                                                    }(orderID, payload, {
+                                                                        facilitatorAccessToken: facilitatorAccessToken,
+                                                                        partnerAttributionID: partnerAttributionID
+                                                                    });
+                                                                })).catch((function(err) {
+                                                                    logger_getLogger().error("confirm_order_error", {
+                                                                        err: stringifyError(err)
+                                                                    });
+                                                                    throw err;
+                                                                })).then((function() {
+                                                                    var _getLogger$track;
+                                                                    var duration = Date.now() - startTime;
+                                                                    logger_getLogger().track((_getLogger$track = {}, _getLogger$track.state_name = "smart_button", 
+                                                                    _getLogger$track.transition_name = "process_confirm_order", _getLogger$track.context_type = "EC-Token", 
+                                                                    _getLogger$track.context_id = orderID, _getLogger$track.token = orderID, _getLogger$track.response_duration = duration.toString(), 
+                                                                    _getLogger$track)).flush();
+                                                                }));
+                                                            }({
+                                                                orderID: (_ref5 = {
+                                                                    orderID: orderID,
+                                                                    payload: confirmOrderPayload
+                                                                }).orderID,
+                                                                payload: _ref5.payload,
+                                                                partnerAttributionID: partnerAttributionID
+                                                            }, {
+                                                                facilitatorAccessToken: serviceData.facilitatorAccessToken
                                                             });
+                                                            var _ref5;
                                                         }
                                                     }));
-                                                }(orderID, {
-                                                    env: env,
-                                                    clientID: clientID,
-                                                    merchantID: merchantID,
-                                                    intent: intent,
-                                                    currency: currency,
-                                                    vault: vault
-                                                });
-                                            }));
-                                            var confirmOrderPromise = createOrder().then((function(orderID) {
-                                                return window.xprops.sessionState.get("__confirm_" + fundingSource + "_payload__").then((function(confirmOrderPayload) {
-                                                    if (confirmOrderPayload) {
-                                                        return function(_ref, _ref2) {
-                                                            var orderID = _ref.orderID, payload = _ref.payload, partnerAttributionID = _ref.partnerAttributionID;
-                                                            var facilitatorAccessToken = _ref2.facilitatorAccessToken;
-                                                            var startTime = Date.now();
-                                                            return promise_ZalgoPromise.try((function() {
-                                                                return function(orderID, data, _ref6) {
-                                                                    var _headers13;
-                                                                    return callRestAPI({
-                                                                        accessToken: _ref6.facilitatorAccessToken,
-                                                                        method: "post",
-                                                                        url: ORDERS_API_URL + "/" + orderID + "/confirm-payment-source",
-                                                                        data: data,
-                                                                        headers: (_headers13 = {}, _headers13["paypal-partner-attribution-id"] = _ref6.partnerAttributionID || "", 
-                                                                        _headers13.prefer = "return=representation", _headers13)
-                                                                    });
-                                                                }(orderID, payload, {
-                                                                    facilitatorAccessToken: facilitatorAccessToken,
-                                                                    partnerAttributionID: partnerAttributionID
-                                                                });
-                                                            })).catch((function(err) {
-                                                                logger_getLogger().error("confirm_order_error", {
-                                                                    err: stringifyError(err)
-                                                                });
-                                                                throw err;
-                                                            })).then((function() {
-                                                                var _getLogger$track;
-                                                                var duration = Date.now() - startTime;
-                                                                logger_getLogger().track((_getLogger$track = {}, _getLogger$track.state_name = "smart_button", 
-                                                                _getLogger$track.transition_name = "process_confirm_order", _getLogger$track.context_type = "EC-Token", 
-                                                                _getLogger$track.context_id = orderID, _getLogger$track.token = orderID, _getLogger$track.response_duration = duration.toString(), 
-                                                                _getLogger$track)).flush();
-                                                            }));
-                                                        }({
-                                                            orderID: (_ref5 = {
-                                                                orderID: orderID,
-                                                                payload: confirmOrderPayload
-                                                            }).orderID,
-                                                            payload: _ref5.payload,
-                                                            partnerAttributionID: partnerAttributionID
-                                                        }, {
-                                                            facilitatorAccessToken: serviceData.facilitatorAccessToken
-                                                        });
-                                                        var _ref5;
-                                                    }
                                                 }));
-                                            }));
-                                            return promise_ZalgoPromise.all([ clickPromise, startPromise, validateOrderPromise, confirmOrderPromise ]).catch((function(err) {
-                                                return promise_ZalgoPromise.try(close).then((function() {
-                                                    throw err;
-                                                }));
-                                            })).then(src_util_noop);
-                                        }
+                                                return promise_ZalgoPromise.all([ clickPromise, startPromise, validateOrderPromise, confirmOrderPromise ]).catch((function(err) {
+                                                    return promise_ZalgoPromise.try(close).then((function() {
+                                                        throw err;
+                                                    }));
+                                                })).then(src_util_noop);
+                                            }
+                                        }));
+                                    })).finally((function() {
+                                        disableLoadingSpinner(button);
                                     }));
-                                })).finally((function() {
-                                    disableLoadingSpinner(button);
+                                }({
+                                    payment: payment,
+                                    config: config,
+                                    serviceData: serviceData,
+                                    components: components,
+                                    props: paymentProps
+                                }).finally((function() {
+                                    paymentProcessing = !1;
                                 }));
-                            }({
-                                payment: payment,
-                                config: config,
-                                serviceData: serviceData,
-                                components: components,
-                                props: paymentProps
-                            }).finally((function() {
-                                paymentProcessing = !1;
-                            }));
-                        }
-                        win && win.close();
+                            }
+                            win && win.close();
+                        } else win && win.close();
                     }
                 })).catch((function(err) {
                     var _getLogger$info$track;
@@ -7138,7 +7129,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.27", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.28", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
