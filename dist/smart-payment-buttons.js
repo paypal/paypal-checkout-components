@@ -1035,6 +1035,37 @@ window.spb = function(modules) {
         function arrayFrom(item) {
             return [].slice.call(item);
         }
+        function cleanup(obj) {
+            var tasks = [];
+            var cleaned = !1;
+            var cleanErr;
+            return {
+                set: function(name, item) {
+                    if (!cleaned) {
+                        obj[name] = item;
+                        this.register((function() {
+                            delete obj[name];
+                        }));
+                    }
+                    return item;
+                },
+                register: function(method) {
+                    cleaned ? method(cleanErr) : tasks.push(once((function() {
+                        return method(cleanErr);
+                    })));
+                },
+                all: function(err) {
+                    cleanErr = err;
+                    var results = [];
+                    cleaned = !0;
+                    for (;tasks.length; ) {
+                        var task = tasks.shift();
+                        results.push(task());
+                    }
+                    return promise_ZalgoPromise.all(results).then(src_util_noop);
+                }
+            };
+        }
         var util_ExtendableError = function(_Error) {
             _inheritsLoose(ExtendableError, _Error);
             function ExtendableError(message) {
@@ -1352,6 +1383,211 @@ window.spb = function(modules) {
                 xhr.send(body);
             }));
         }
+        var COUNTRY = {
+            AD: "AD",
+            AE: "AE",
+            AG: "AG",
+            AI: "AI",
+            AL: "AL",
+            AM: "AM",
+            AN: "AN",
+            AO: "AO",
+            AR: "AR",
+            AT: "AT",
+            AU: "AU",
+            AW: "AW",
+            AZ: "AZ",
+            BA: "BA",
+            BB: "BB",
+            BE: "BE",
+            BF: "BF",
+            BG: "BG",
+            BH: "BH",
+            BI: "BI",
+            BJ: "BJ",
+            BM: "BM",
+            BN: "BN",
+            BO: "BO",
+            BR: "BR",
+            BS: "BS",
+            BT: "BT",
+            BW: "BW",
+            BY: "BY",
+            BZ: "BZ",
+            CA: "CA",
+            CD: "CD",
+            CG: "CG",
+            CH: "CH",
+            CI: "CI",
+            CK: "CK",
+            CL: "CL",
+            CM: "CM",
+            CN: "CN",
+            CO: "CO",
+            CR: "CR",
+            CV: "CV",
+            CY: "CY",
+            CZ: "CZ",
+            DE: "DE",
+            DJ: "DJ",
+            DK: "DK",
+            DM: "DM",
+            DO: "DO",
+            DZ: "DZ",
+            EC: "EC",
+            EE: "EE",
+            EG: "EG",
+            ER: "ER",
+            ES: "ES",
+            ET: "ET",
+            FI: "FI",
+            FJ: "FJ",
+            FK: "FK",
+            FM: "FM",
+            FO: "FO",
+            FR: "FR",
+            GA: "GA",
+            GB: "GB",
+            GD: "GD",
+            GE: "GE",
+            GF: "GF",
+            GI: "GI",
+            GL: "GL",
+            GM: "GM",
+            GN: "GN",
+            GP: "GP",
+            GR: "GR",
+            GT: "GT",
+            GW: "GW",
+            GY: "GY",
+            HK: "HK",
+            HN: "HN",
+            HR: "HR",
+            HU: "HU",
+            ID: "ID",
+            IE: "IE",
+            IL: "IL",
+            IN: "IN",
+            IS: "IS",
+            IT: "IT",
+            JM: "JM",
+            JO: "JO",
+            JP: "JP",
+            KE: "KE",
+            KG: "KG",
+            KH: "KH",
+            KI: "KI",
+            KM: "KM",
+            KN: "KN",
+            KR: "KR",
+            KW: "KW",
+            KY: "KY",
+            KZ: "KZ",
+            LA: "LA",
+            LC: "LC",
+            LI: "LI",
+            LK: "LK",
+            LS: "LS",
+            LT: "LT",
+            LU: "LU",
+            LV: "LV",
+            MA: "MA",
+            MC: "MC",
+            MD: "MD",
+            ME: "ME",
+            MG: "MG",
+            MH: "MH",
+            MK: "MK",
+            ML: "ML",
+            MN: "MN",
+            MQ: "MQ",
+            MR: "MR",
+            MS: "MS",
+            MT: "MT",
+            MU: "MU",
+            MV: "MV",
+            MW: "MW",
+            MX: "MX",
+            MY: "MY",
+            MZ: "MZ",
+            NA: "NA",
+            NC: "NC",
+            NE: "NE",
+            NF: "NF",
+            NG: "NG",
+            NI: "NI",
+            NL: "NL",
+            NO: "NO",
+            NP: "NP",
+            NR: "NR",
+            NU: "NU",
+            NZ: "NZ",
+            OM: "OM",
+            PA: "PA",
+            PE: "PE",
+            PF: "PF",
+            PG: "PG",
+            PH: "PH",
+            PL: "PL",
+            PM: "PM",
+            PN: "PN",
+            PT: "PT",
+            PW: "PW",
+            PY: "PY",
+            QA: "QA",
+            RE: "RE",
+            RO: "RO",
+            RS: "RS",
+            RU: "RU",
+            RW: "RW",
+            SA: "SA",
+            SB: "SB",
+            SC: "SC",
+            SE: "SE",
+            SG: "SG",
+            SH: "SH",
+            SI: "SI",
+            SJ: "SJ",
+            SK: "SK",
+            SL: "SL",
+            SM: "SM",
+            SN: "SN",
+            SO: "SO",
+            SR: "SR",
+            ST: "ST",
+            SV: "SV",
+            SZ: "SZ",
+            TC: "TC",
+            TD: "TD",
+            TG: "TG",
+            TH: "TH",
+            TJ: "TJ",
+            TM: "TM",
+            TN: "TN",
+            TO: "TO",
+            TR: "TR",
+            TT: "TT",
+            TV: "TV",
+            TW: "TW",
+            TZ: "TZ",
+            UA: "UA",
+            UG: "UG",
+            US: "US",
+            UY: "UY",
+            VA: "VA",
+            VC: "VC",
+            VE: "VE",
+            VG: "VG",
+            VN: "VN",
+            VU: "VU",
+            WF: "WF",
+            WS: "WS",
+            YE: "YE",
+            YT: "YT",
+            ZA: "ZA",
+            ZM: "ZM",
+            ZW: "ZW"
+        };
         var VAULT = {
             TRUE: !0,
             FALSE: !1
@@ -1600,83 +1836,6 @@ window.spb = function(modules) {
         function isEmailAddress(str) {
             return Boolean(str.match(/^.+@.+\..+$/));
         }
-        function createExperiment(name, _ref) {
-            var sample = _ref.sample, _ref$sticky = _ref.sticky, sticky = void 0 === _ref$sticky || _ref$sticky;
-            var logger = logger_getLogger();
-            return function(_ref) {
-                var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint, _ref$sticky = _ref.sticky;
-                var throttle = void 0 === _ref$sticky || _ref$sticky ? function(name) {
-                    return getBelterExperimentStorage().getState((function(state) {
-                        state.throttlePercentiles = state.throttlePercentiles || {};
-                        state.throttlePercentiles[name] = state.throttlePercentiles[name] || getRandomInteger(100);
-                        return state.throttlePercentiles[name];
-                    }));
-                }(name) : getRandomInteger(100);
-                var group;
-                var treatment = name + "_" + (group = throttle < sample ? "test" : sample >= 50 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle");
-                var started = !1;
-                var forced = !1;
-                try {
-                    window.localStorage && window.localStorage.getItem(name) && (forced = !0);
-                } catch (err) {}
-                return {
-                    isEnabled: function() {
-                        return "test" === group || forced;
-                    },
-                    isDisabled: function() {
-                        return "test" !== group && !forced;
-                    },
-                    getTreatment: function() {
-                        return treatment;
-                    },
-                    log: function(checkpoint, payload) {
-                        void 0 === payload && (payload = {});
-                        if (!started) return this;
-                        isEventUnique(treatment + "_" + JSON.stringify(payload)) && logTreatment({
-                            name: name,
-                            treatment: treatment,
-                            payload: payload,
-                            throttle: throttle
-                        });
-                        isEventUnique(treatment + "_" + checkpoint + "_" + JSON.stringify(payload)) && logCheckpoint({
-                            name: name,
-                            treatment: treatment,
-                            checkpoint: checkpoint,
-                            payload: payload,
-                            throttle: throttle
-                        });
-                        return this;
-                    },
-                    logStart: function(payload) {
-                        void 0 === payload && (payload = {});
-                        started = !0;
-                        return this.log("start", payload);
-                    },
-                    logComplete: function(payload) {
-                        void 0 === payload && (payload = {});
-                        return this.log("complete", payload);
-                    }
-                };
-            }({
-                name: name,
-                sample: sample,
-                logTreatment: function(_ref2) {
-                    var _extends2;
-                    var treatment = _ref2.treatment, payload = _ref2.payload;
-                    var fullPayload = _extends(((_extends2 = {}).state_name = "PXP_CHECK", _extends2.transition_name = "process_pxp_check", 
-                    _extends2.pxp_exp_id = name, _extends2.pxp_trtmnt_id = treatment, _extends2), payload);
-                    logger.track(fullPayload);
-                    logger.flush();
-                },
-                logCheckpoint: function(_ref3) {
-                    logger.info(_ref3.treatment + "_" + _ref3.checkpoint, _extends({}, _ref3.payload, {
-                        throttle: _ref3.throttle.toString()
-                    }));
-                    logger.flush();
-                },
-                sticky: sticky
-            });
-        }
         function isIOSSafari() {
             return isIos() && function(ua) {
                 void 0 === ua && (ua = getUserAgent());
@@ -1850,7 +2009,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers14 = {}).authorization = "Bearer " + accessToken, _headers14["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers14["paypal-client-metadata-id"] = clientMetadataID, _headers14["x-app-name"] = "smart-payment-buttons", 
-            _headers14["x-app-version"] = "5.0.26", _headers14);
+            _headers14["x-app-version"] = "5.0.27", _headers14);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -1913,11 +2072,23 @@ window.spb = function(modules) {
             var _headers20;
             return callGraphQL({
                 name: "GetCheckoutDetails",
-                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                                currencyValue\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
+                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID
                 },
                 headers: (_headers20 = {}, _headers20["paypal-client-context"] = orderID, _headers20)
+            });
+        }));
+        var getDetailedOrderInfo = memoize((function(orderID, country) {
+            var _headers21;
+            return callGraphQL({
+                name: "GetCheckoutDetails",
+                query: "\n            query GetCheckoutDetails($orderID: String!, $country: CountryCodes!) {\n                checkoutSession(token: $orderID) {\n                    allowedCardIssuers(country: $country)\n                    cart {\n                        amounts {\n                            shippingAndHandling {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            tax {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                }\n            }\n        ",
+                variables: {
+                    orderID: orderID,
+                    country: country
+                },
+                headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
             });
         }));
         function updateButtonClientConfig(_ref15) {
@@ -2195,17 +2366,83 @@ window.spb = function(modules) {
                 }));
             }));
         }
-        var nativeFakeoutExperiment = createExperiment("native_popup_fakeout_v2_" + (isIOSSafari() ? "ios_safari" : isAndroidChrome() ? "android_chrome" : "unsupported_platform"), {
-            sample: isIOSSafari() ? 100 : 50,
-            sticky: !1
-        });
-        var androidPopupExperiment = createExperiment("native_android_popup", {
-            sample: 100,
-            sticky: !1
-        });
-        var upgradeLSATExperiment = createExperiment("UPGRADE_LSAT_EXPERIMENT", {
+        var upgradeLSATExperiment = (name = "UPGRADE_LSAT_EXPERIMENT", sample = (_ref = {
             sample: 100
-        });
+        }).sample, sticky = void 0 === (_ref$sticky = _ref.sticky) || _ref$sticky, logger = logger_getLogger(), 
+        function(_ref) {
+            var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? src_util_noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? src_util_noop : _ref$logCheckpoint, _ref$sticky = _ref.sticky;
+            var throttle = void 0 === _ref$sticky || _ref$sticky ? function(name) {
+                return getBelterExperimentStorage().getState((function(state) {
+                    state.throttlePercentiles = state.throttlePercentiles || {};
+                    state.throttlePercentiles[name] = state.throttlePercentiles[name] || getRandomInteger(100);
+                    return state.throttlePercentiles[name];
+                }));
+            }(name) : getRandomInteger(100);
+            var group;
+            var treatment = name + "_" + (group = throttle < sample ? "test" : sample >= 50 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle");
+            var started = !1;
+            var forced = !1;
+            try {
+                window.localStorage && window.localStorage.getItem(name) && (forced = !0);
+            } catch (err) {}
+            return {
+                isEnabled: function() {
+                    return "test" === group || forced;
+                },
+                isDisabled: function() {
+                    return "test" !== group && !forced;
+                },
+                getTreatment: function() {
+                    return treatment;
+                },
+                log: function(checkpoint, payload) {
+                    void 0 === payload && (payload = {});
+                    if (!started) return this;
+                    isEventUnique(treatment + "_" + JSON.stringify(payload)) && logTreatment({
+                        name: name,
+                        treatment: treatment,
+                        payload: payload,
+                        throttle: throttle
+                    });
+                    isEventUnique(treatment + "_" + checkpoint + "_" + JSON.stringify(payload)) && logCheckpoint({
+                        name: name,
+                        treatment: treatment,
+                        checkpoint: checkpoint,
+                        payload: payload,
+                        throttle: throttle
+                    });
+                    return this;
+                },
+                logStart: function(payload) {
+                    void 0 === payload && (payload = {});
+                    started = !0;
+                    return this.log("start", payload);
+                },
+                logComplete: function(payload) {
+                    void 0 === payload && (payload = {});
+                    return this.log("complete", payload);
+                }
+            };
+        }({
+            name: name,
+            sample: sample,
+            logTreatment: function(_ref2) {
+                var _extends2;
+                var treatment = _ref2.treatment, payload = _ref2.payload;
+                var fullPayload = _extends(((_extends2 = {}).state_name = "PXP_CHECK", _extends2.transition_name = "process_pxp_check", 
+                _extends2.pxp_exp_id = name, _extends2.pxp_trtmnt_id = treatment, _extends2), payload);
+                logger.track(fullPayload);
+                logger.flush();
+            },
+            logCheckpoint: function(_ref3) {
+                logger.info(_ref3.treatment + "_" + _ref3.checkpoint, _extends({}, _ref3.payload, {
+                    throttle: _ref3.throttle.toString()
+                }));
+                logger.flush();
+            },
+            sticky: sticky
+        }));
+        var name, _ref, sample, _ref$sticky, sticky, logger;
         var onApprove_handleProcessorError = function(err, restart) {
             if (err && err.data && err.data.details && err.data.details.some((function(detail) {
                 return "INSTRUMENT_DECLINED" === detail.issue || "PAYER_ACTION_REQUIRED" === detail.issue;
@@ -2526,11 +2763,13 @@ window.spb = function(modules) {
                     logger_getLogger().info("button_cancel").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_cancel", 
                     _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                     _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                    return onCancel({
-                        orderID: {
-                            orderID: orderID
-                        }.orderID
-                    }, {
+                    return onCancel(function(_ref) {
+                        return {
+                            orderID: _ref.orderID
+                        };
+                    }({
+                        orderID: orderID
+                    }), {
                         redirect: function(url) {
                             if (!url) throw new Error("Expected redirect url");
                             if (-1 === url.indexOf("://")) {
@@ -2651,7 +2890,7 @@ window.spb = function(modules) {
             var xprops = window.xprops;
             var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, _xprops$upgradeLSAT = xprops.upgradeLSAT, upgradeLSAT = void 0 !== _xprops$upgradeLSAT && _xprops$upgradeLSAT, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, wallet = xprops.wallet, paymentMethodNonce = xprops.paymentMethodNonce, branded = xprops.branded, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
-            } : _xprops$getQueriedEli, storageID = xprops.storageID, userExperienceFlow = xprops.userExperienceFlow;
+            } : _xprops$getQueriedEli, storageID = xprops.storageID, applePay = xprops.applePay, userExperienceFlow = xprops.userExperienceFlow;
             var onInit = function(_ref) {
                 var onInit = _ref.onInit;
                 return function(data) {
@@ -2689,10 +2928,12 @@ window.spb = function(modules) {
             var onClick = function(_ref2) {
                 var onClick = _ref2.onClick;
                 if (onClick) return memoize((function(_ref3) {
-                    return onClick((_ref = {
+                    return onClick(function(_ref) {
+                        return {
+                            fundingSource: _ref.fundingSource
+                        };
+                    }({
                         fundingSource: _ref3.fundingSource
-                    }, {
-                        fundingSource: _ref.fundingSource
                     }), {
                         resolve: function() {
                             return promise_ZalgoPromise.try((function() {
@@ -2707,7 +2948,6 @@ window.spb = function(modules) {
                     }).then((function(valid) {
                         return !1 !== valid;
                     }));
-                    var _ref;
                 }));
             }({
                 onClick: xprops.onClick
@@ -2934,6 +3174,7 @@ window.spb = function(modules) {
                 paymentMethodNonce: paymentMethodNonce,
                 branded: branded,
                 stickinessID: stickinessID,
+                applePay: applePay,
                 userExperienceFlow: userExperienceFlow
             };
         }
@@ -2960,7 +3201,7 @@ window.spb = function(modules) {
         function getServiceData(_ref3) {
             return {
                 merchantID: _ref3.serverMerchantID,
-                buyerCountry: _ref3.buyerGeoCountry || "US",
+                buyerCountry: _ref3.buyerGeoCountry || COUNTRY.US,
                 fundingEligibility: _ref3.fundingEligibility,
                 wallet: _ref3.wallet,
                 sdkMeta: _ref3.sdkMeta,
@@ -2978,6 +3219,422 @@ window.spb = function(modules) {
         function disableLoadingSpinner(button) {
             button.classList.remove("paypal-button-loading");
         }
+        var validNetworks = {
+            discover: "discover",
+            visa: "visa",
+            mastercard: "masterCard",
+            amex: "amex"
+        };
+        var applepay_clean;
+        var applepay = {
+            name: "applepay",
+            setup: function() {
+                return promise_ZalgoPromise.resolve();
+            },
+            isEligible: function(_ref) {
+                var fundingEligibility = _ref.serviceData.fundingEligibility;
+                return !!(fundingEligibility && fundingEligibility.applepay && fundingEligibility.applepay.eligible) && fundingEligibility.applepay.eligible;
+            },
+            isPaymentEligible: function(_ref2) {
+                return "applepay" === _ref2.payment.fundingSource;
+            },
+            init: function(_ref3) {
+                var props = _ref3.props;
+                var createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, onClick = props.onClick, onShippingChange = props.onShippingChange, locale = props.locale, clientID = props.clientID, merchantDomain = props.merchantDomain, currency = props.currency, applePay = props.applePay, partnerAttributionID = props.partnerAttributionID;
+                var facilitatorAccessToken = _ref3.serviceData.facilitatorAccessToken;
+                var fundingSource = _ref3.payment.fundingSource;
+                applepay_clean && applepay_clean.all();
+                applepay_clean = cleanup();
+                var close = memoize((function() {
+                    return applepay_clean.all();
+                }));
+                var validate = memoize((function() {
+                    return promise_ZalgoPromise.try((function() {
+                        return !onClick || onClick({
+                            fundingSource: fundingSource
+                        });
+                    }));
+                }));
+                function logApplePayEvent(event, payload) {
+                    var _getLogger$info$track;
+                    var data = function(json) {
+                        try {
+                            JSON.parse(JSON.stringify(json));
+                            return !0;
+                        } catch (_unused) {
+                            return !1;
+                        }
+                    }(payload) ? payload : {};
+                    logger_getLogger().info("applepay_event_" + event, data).track((_getLogger$info$track = {}, 
+                    _getLogger$info$track.transition_name = "applepay_event_" + event, _getLogger$info$track.info_msg = JSON.stringify(data), 
+                    _getLogger$info$track)).flush();
+                }
+                function handleApplePayError(eventName, error) {
+                    var _getLogger$info$track2;
+                    logger_getLogger().info(eventName).track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = eventName, 
+                    _getLogger$info$track2.int_error_desc = "Error: " + stringifyError(error), _getLogger$info$track2)).flush();
+                    return close().then((function() {
+                        return onError(error);
+                    }));
+                }
+                return {
+                    click: function() {
+                        return promise_ZalgoPromise.try((function() {
+                            return currentShippingLabel = "Shipping", onShippingChangeCallback = function(_ref4) {
+                                var orderID = _ref4.orderID, shippingContact = _ref4.shippingContact, _ref4$shippingMethod = _ref4.shippingMethod, shippingMethod = void 0 === _ref4$shippingMethod ? null : _ref4$shippingMethod;
+                                var _validateShippingCont = function(contact) {
+                                    var errors = [];
+                                    contact.addressLines && contact.addressLines.length || errors.push({
+                                        code: "shippingContactInvalid",
+                                        contactField: "postalAddress",
+                                        message: "Address is invalid"
+                                    });
+                                    contact.locality || errors.push({
+                                        code: "shippingContactInvalid",
+                                        contactField: "postalAddress",
+                                        message: "City is invalid"
+                                    });
+                                    contact.administrativeArea || errors.push({
+                                        code: "shippingContactInvalid",
+                                        contactField: "postalAddress",
+                                        message: "State is invalid"
+                                    });
+                                    var country_code = contact.countryCode ? COUNTRY[contact.countryCode.toUpperCase()] : null;
+                                    country_code || errors.push({
+                                        code: "shippingContactInvalid",
+                                        contactField: "postalAddress",
+                                        message: "Country code is invalid"
+                                    });
+                                    contact.postalCode || errors.push({
+                                        code: "shippingContactInvalid",
+                                        contactField: "postalAddress",
+                                        message: "Postal code is invalid"
+                                    });
+                                    return {
+                                        errors: errors,
+                                        shipping_address: {
+                                            city: contact.locality,
+                                            state: contact.administrativeArea,
+                                            country_code: country_code,
+                                            postal_code: contact.postalCode
+                                        }
+                                    };
+                                }(shippingContact), errors = _validateShippingCont.errors;
+                                var data = {
+                                    amount: {
+                                        currency_code: currency,
+                                        value: "0.00"
+                                    },
+                                    orderID: orderID,
+                                    shipping_address: _validateShippingCont.shipping_address
+                                };
+                                errors && errors.length && Object.keys(errors[0]).length && (data.errors = errors);
+                                shippingMethod && (data.selected_shipping_option = {
+                                    label: shippingMethod.label || currentShippingLabel,
+                                    type: shippingMethod.identifier,
+                                    amount: {
+                                        currency_code: currency,
+                                        value: shippingMethod.amount
+                                    }
+                                });
+                                var actions = {
+                                    resolve: function() {
+                                        return promise_ZalgoPromise.resolve();
+                                    },
+                                    reject: function(err) {
+                                        return promise_ZalgoPromise.reject(err);
+                                    }
+                                };
+                                return onShippingChange(_extends({}, data, {
+                                    facilitatorAccessToken: facilitatorAccessToken,
+                                    partnerAttributionID: partnerAttributionID,
+                                    forceRestAPI: !0
+                                }), actions).then((function() {
+                                    currentShippingContact = shippingContact;
+                                    shippingMethod && (currentShippingMethod = shippingMethod);
+                                    return getDetailedOrderInfo(orderID, locale.country).then((function(updatedOrder) {
+                                        var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedShippingValue = _updatedOrder$checkou.shippingAndHandling.currencyValue, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
+                                        currentShippingAmount = updatedShippingValue;
+                                        currentTaxAmount = updatedTaxValue;
+                                        currentTotalAmount = updatedTotalValue;
+                                        return {
+                                            newTotal: {
+                                                label: "Total",
+                                                amount: updatedTotalValue
+                                            },
+                                            newLineItems: [ {
+                                                label: "Sales Tax",
+                                                amount: updatedTaxValue
+                                            }, {
+                                                label: currentShippingLabel,
+                                                amount: updatedShippingValue
+                                            } ]
+                                        };
+                                    }));
+                                }));
+                            }, orderPromise = validate().then((function(valid) {
+                                if (!valid) {
+                                    var _getLogger$info$track3;
+                                    logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track3 = {}, 
+                                    _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = "applepay_onclick_invalid", 
+                                    _getLogger$info$track3)).flush();
+                                }
+                                return valid;
+                            })).then((function(valid) {
+                                return valid ? createOrder() : unresolvedPromise();
+                            })), function setupApplePaySession() {
+                                return orderPromise.then((function(orderID) {
+                                    var country = locale.country;
+                                    return getDetailedOrderInfo(orderID, country).then((function(order) {
+                                        var applePayRequest = function(countryCode, order) {
+                                            var _order$checkoutSessio = order.checkoutSession, _order$checkoutSessio2 = _order$checkoutSessio.cart, _order$checkoutSessio3 = _order$checkoutSessio2.amounts, shippingValue = _order$checkoutSessio3.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio3.tax.currencyValue, _order$checkoutSessio4 = _order$checkoutSessio3.total, currencyCode = _order$checkoutSessio4.currencyCode, totalValue = _order$checkoutSessio4.currencyValue, shippingAddress = _order$checkoutSessio2.shippingAddress, shippingMethods = _order$checkoutSessio2.shippingMethods;
+                                            var supportedNetworks = function(issuers) {
+                                                if (!issuers || issuers && 0 === issuers.length) return [];
+                                                var validIssuers = [];
+                                                issuers.forEach((function(issuer) {
+                                                    var network = issuer.toLowerCase().replace(/_/g, "");
+                                                    -1 !== Object.keys(validNetworks).indexOf(network) && validIssuers.push(validNetworks[network]);
+                                                }));
+                                                return validIssuers;
+                                            }(_order$checkoutSessio.allowedCardIssuers);
+                                            var shippingContact = function(shippingAddress) {
+                                                return shippingAddress ? {
+                                                    givenName: shippingAddress.firstName,
+                                                    familyName: shippingAddress.lastName,
+                                                    addressLines: [ shippingAddress.line1, shippingAddress.line2 ],
+                                                    locality: shippingAddress.city,
+                                                    administrativeArea: shippingAddress.state,
+                                                    postalCode: shippingAddress.postalCode,
+                                                    country: shippingAddress.country
+                                                } : {
+                                                    givenName: "",
+                                                    familyName: "",
+                                                    addressLines: [],
+                                                    locality: "",
+                                                    administrativeArea: "",
+                                                    postalCode: "",
+                                                    country: ""
+                                                };
+                                            }(shippingAddress);
+                                            var applePayShippingMethods = function(shippingMethods) {
+                                                return shippingMethods && 0 !== shippingMethods.length ? [].concat(shippingMethods).sort((function(method) {
+                                                    return method.selected ? -1 : 0;
+                                                })).map((function(method) {
+                                                    return {
+                                                        amount: method.amount && method.amount.currencyValue ? method.amount.currencyValue : "0.00",
+                                                        detail: "",
+                                                        identifier: method.type,
+                                                        label: method.label
+                                                    };
+                                                })) : [];
+                                            }(shippingMethods);
+                                            var merchantCapabilities = function(supportedNetworks) {
+                                                var merchantCapabilities = [];
+                                                merchantCapabilities.push("supports3DS");
+                                                merchantCapabilities.push("supportsCredit");
+                                                merchantCapabilities.push("supportsDebit");
+                                                supportedNetworks && -1 !== supportedNetworks.indexOf("chinaUnionPay") && merchantCapabilities.push("supportsEMV");
+                                                return merchantCapabilities;
+                                            }(supportedNetworks);
+                                            var selectedShippingMethod = shippingMethods && shippingMethods.length ? shippingMethods.filter((function(method) {
+                                                return method.selected;
+                                            }))[0] : null;
+                                            var result = {
+                                                countryCode: countryCode,
+                                                currencyCode: currencyCode,
+                                                merchantCapabilities: merchantCapabilities,
+                                                supportedNetworks: supportedNetworks,
+                                                requiredBillingContactFields: [ "postalAddress", "name", "phone" ],
+                                                requiredShippingContactFields: [ "postalAddress", "name", "phone", "email" ],
+                                                shippingContact: shippingContact && shippingContact.givenName ? shippingContact : {},
+                                                shippingMethods: applePayShippingMethods && applePayShippingMethods.length ? applePayShippingMethods : [],
+                                                lineItems: [],
+                                                total: {
+                                                    label: "Total",
+                                                    amount: totalValue,
+                                                    type: "final"
+                                                }
+                                            };
+                                            taxValue && taxValue.length && result.lineItems.push({
+                                                label: "Sales Tax",
+                                                amount: taxValue
+                                            });
+                                            shippingValue && shippingValue.length && result.lineItems.push({
+                                                label: "Shipping",
+                                                amount: shippingValue
+                                            });
+                                            selectedShippingMethod && "PICKUP" === selectedShippingMethod.type && (result.requiredShippingContactFields = []);
+                                            return result;
+                                        }(country, order);
+                                        var _order$checkoutSessio = order.checkoutSession.cart.amounts, shippingValue = _order$checkoutSessio.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio.tax.currencyValue;
+                                        currentShippingAmount = shippingValue;
+                                        currentShippingLabel = applePayRequest.shippingMethods && applePayRequest.shippingMethods.length ? applePayRequest.shippingMethods[0].label : "Shipping";
+                                        currentShippingMethod = applePayRequest.shippingMethods && applePayRequest.shippingMethods.length ? applePayRequest.shippingMethods[0] : null;
+                                        currentTaxAmount = taxValue;
+                                        currentTotalAmount = _order$checkoutSessio.total.currencyValue;
+                                        return applePay(3, applePayRequest).then((function(response) {
+                                            var begin = response.begin, addEventListener = response.addEventListener, completeMerchantValidation = response.completeMerchantValidation, completeShippingContactSelection = response.completeShippingContactSelection, completePaymentMethodSelection = response.completePaymentMethodSelection, completeShippingMethodSelection = response.completeShippingMethodSelection, completePayment = response.completePayment;
+                                            promise_ZalgoPromise.all([ addEventListener("validatemerchant", (function(_ref5) {
+                                                var validationURL = _ref5.validationURL;
+                                                logApplePayEvent("validatemerchant", {
+                                                    validationURL: validationURL
+                                                });
+                                                (function(_ref3) {
+                                                    var merchantDomain = _ref3.merchantDomain;
+                                                    return callGraphQL({
+                                                        name: "GetApplePayMerchantSession",
+                                                        query: "\n            query GetApplePayMerchantSession(\n                $url : String!\n                $orderID : String!\n                $clientID : String!\n                $merchantDomain : String!\n            ) {\n                applePayMerchantSession(\n                    url: $url\n                    orderID: $orderID\n                    clientID: $clientID\n                    merchantDomain: $merchantDomain\n                ) {\n                    session\n                }\n            }\n        ",
+                                                        variables: {
+                                                            url: _ref3.url,
+                                                            clientID: _ref3.clientID,
+                                                            orderID: _ref3.orderID,
+                                                            merchantDomain: -1 !== merchantDomain.indexOf("://") ? merchantDomain.split("://")[1] : merchantDomain
+                                                        }
+                                                    }).then((function(gqlResult) {
+                                                        if (!gqlResult || !gqlResult.applePayMerchantSession) throw new Error("GraphQL GetApplePayMerchantSession returned no applePayMerchantSession object");
+                                                        return gqlResult.applePayMerchantSession;
+                                                    }));
+                                                })({
+                                                    url: validationURL,
+                                                    clientID: clientID,
+                                                    orderID: orderID,
+                                                    merchantDomain: merchantDomain
+                                                }).then((function(merchantSession) {
+                                                    try {
+                                                        var session = atob(merchantSession.session);
+                                                        completeMerchantValidation(JSON.parse(session));
+                                                    } catch (err) {
+                                                        handleApplePayError("applepay_merchant_validation_completion_error", err);
+                                                    }
+                                                })).catch((function(err) {
+                                                    handleApplePayError("applepay_merchant_validation_error", err);
+                                                }));
+                                            })), addEventListener("paymentmethodselected", (function(_ref6) {
+                                                logApplePayEvent("paymentmethodselected", _ref6.paymentMethod);
+                                                var update = {
+                                                    newTotal: {
+                                                        label: "Total",
+                                                        amount: currentTotalAmount
+                                                    },
+                                                    newLineItems: []
+                                                };
+                                                taxValue && taxValue.length && update.newLineItems.push({
+                                                    label: "Sales Tax",
+                                                    amount: currentTaxAmount
+                                                });
+                                                shippingValue && shippingValue.length && update.newLineItems.push({
+                                                    label: currentShippingLabel,
+                                                    amount: currentShippingAmount
+                                                });
+                                                completePaymentMethodSelection(update);
+                                            })), addEventListener("shippingmethodselected", (function(_ref7) {
+                                                var shippingMethod = _ref7.shippingMethod;
+                                                logApplePayEvent("shippingmethodselected");
+                                                onShippingChangeCallback({
+                                                    orderID: orderID,
+                                                    shippingContact: currentShippingContact,
+                                                    shippingMethod: shippingMethod
+                                                }).then((function(update) {
+                                                    currentShippingMethod = shippingMethod;
+                                                    completeShippingMethodSelection(update);
+                                                })).catch((function() {
+                                                    var update = {
+                                                        newTotal: {
+                                                            label: "Total",
+                                                            amount: currentTotalAmount
+                                                        },
+                                                        newLineItems: []
+                                                    };
+                                                    taxValue && taxValue.length && update.newLineItems.push({
+                                                        label: "Sales Tax",
+                                                        amount: currentTaxAmount
+                                                    });
+                                                    shippingValue && shippingValue.length && update.newLineItems.push({
+                                                        label: currentShippingLabel,
+                                                        amount: currentShippingAmount
+                                                    });
+                                                    completeShippingMethodSelection(update);
+                                                }));
+                                            })), addEventListener("shippingcontactselected", (function(_ref8) {
+                                                var shippingContact = _ref8.shippingContact;
+                                                logApplePayEvent("shippingcontactselected", shippingContact);
+                                                onShippingChangeCallback({
+                                                    orderID: orderID,
+                                                    shippingContact: shippingContact,
+                                                    shippingMethod: currentShippingMethod
+                                                }).then((function(update) {
+                                                    completeShippingContactSelection(update);
+                                                })).catch((function(err) {
+                                                    handleApplePayError("shippingContactSelected", err);
+                                                }));
+                                            })), addEventListener("paymentauthorized", (function(_ref9) {
+                                                var applePayPayment = _ref9.payment;
+                                                logApplePayEvent("paymentauthorized");
+                                                if (!applePayPayment) throw new Error("No payment received from Apple.");
+                                                applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase();
+                                                applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
+                                                (function(orderID, clientID, applePayPayment) {
+                                                    return callGraphQL({
+                                                        name: "ApproveApplePayPayment",
+                                                        query: "\n            mutation ApproveApplePayPayment(\n                $token: ApplePayPaymentToken!\n                $orderID: String!\n                $clientID : String!\n                $billingContact: ApplePayPaymentContact!\n                $shippingContact: ApplePayPaymentContact!\n            ) {\n                approveApplePayPayment(\n                    token: $token\n                    orderID: $orderID\n                    clientID: $clientID\n                    billingContact: $billingContact\n                    shippingContact: $shippingContact\n                )\n            }\n        ",
+                                                        variables: {
+                                                            token: applePayPayment.token,
+                                                            orderID: orderID,
+                                                            clientID: clientID,
+                                                            billingContact: applePayPayment.billingContact,
+                                                            shippingContact: applePayPayment.shippingContact
+                                                        }
+                                                    }).then((function(gqlResult) {
+                                                        if (!gqlResult || !gqlResult.approveApplePayPayment) throw new Error("GraphQL GetApplePayPayment returned no applePayment object");
+                                                        return gqlResult.approveApplePayPayment;
+                                                    }));
+                                                })(orderID, clientID, applePayPayment).then((function(validatedPayment) {
+                                                    if (validatedPayment) {
+                                                        completePayment(window.ApplePaySession.STATUS_SUCCESS);
+                                                        var actions = {
+                                                            restart: function() {
+                                                                return promise_ZalgoPromise.try(setupApplePaySession);
+                                                            }
+                                                        };
+                                                        return promise_ZalgoPromise.all([ onApprove({}, actions), close() ]);
+                                                    }
+                                                })).catch((function(err) {
+                                                    completePayment(window.ApplePaySession.STATUS_FAILURE);
+                                                    handleApplePayError("applepay_payment_error", err);
+                                                }));
+                                            })), addEventListener("cancel", (function() {
+                                                logApplePayEvent("cancel");
+                                                onCancel && onCancel();
+                                            })) ]).then((function() {
+                                                begin();
+                                            }));
+                                        })).catch((function(err) {
+                                            handleApplePayError("applepay_get_details_error", err);
+                                        }));
+                                    }));
+                                })).catch((function(err) {
+                                    handleApplePayError("applepay_create_order_error", err);
+                                }));
+                            }();
+                            var currentTotalAmount, currentTaxAmount, currentShippingAmount, currentShippingLabel, currentShippingContact, currentShippingMethod, onShippingChangeCallback, orderPromise;
+                        })).catch((function(err) {
+                            return close().then((function() {
+                                var _getLogger$error$trac;
+                                logger_getLogger().error("applepay_flow_error", {
+                                    err: stringifyError(err)
+                                }).track((_getLogger$error$trac = {}, _getLogger$error$trac.transition_name = "applepay_flow_error", 
+                                _getLogger$error$trac.ext_error_code = "applepay_error", _getLogger$error$trac.ext_error_desc = stringifyErrorMessage(err), 
+                                _getLogger$error$trac)).flush();
+                                throw err;
+                            }));
+                        }));
+                    },
+                    start: promiseNoop,
+                    close: close
+                };
+            },
+            spinner: !0
+        };
         function _renderChildren(children, renderer) {
             var result = [];
             for (var _i2 = 0; _i2 < children.length; _i2++) {
@@ -3237,281 +3894,274 @@ window.spb = function(modules) {
                     }));
                 };
                 var start = memoize((function() {
-                    return (instance = function() {
-                        nativeFakeoutExperiment.log("web_checkout_start");
-                        return Checkout({
-                            window: win,
-                            sessionID: sessionID,
-                            buttonSessionID: buttonSessionID,
-                            clientAccessToken: clientAccessToken,
-                            venmoPayloadID: venmoPayloadID,
-                            createAuthCode: function() {
-                                return promise_ZalgoPromise.try((function() {
-                                    var fundingSkipLogin = FUNDING_SKIP_LOGIN[fundingSource];
-                                    return payment.createAccessToken ? payment.createAccessToken() : buyerAccessToken || (clientID && userIDToken && fundingSkipLogin ? getSmartWallet({
-                                        clientID: clientID,
-                                        merchantID: merchantID,
-                                        currency: currency,
-                                        amount: amount,
-                                        clientMetadataID: cmid || sessionID,
-                                        userIDToken: userIDToken,
-                                        env: env,
-                                        cspNonce: cspNonce
-                                    }).then((function(wallet) {
-                                        var walletInstruments = wallet[fundingSkipLogin] && wallet[fundingSkipLogin].instruments;
-                                        if (walletInstruments) for (var _i2 = 0; _i2 < walletInstruments.length; _i2++) {
-                                            var instrument = walletInstruments[_i2];
-                                            if (instrument.accessToken) return instrument.accessToken;
+                    return (instance = Checkout({
+                        window: win,
+                        sessionID: sessionID,
+                        buttonSessionID: buttonSessionID,
+                        clientAccessToken: clientAccessToken,
+                        venmoPayloadID: venmoPayloadID,
+                        createAuthCode: function() {
+                            return promise_ZalgoPromise.try((function() {
+                                var fundingSkipLogin = FUNDING_SKIP_LOGIN[fundingSource];
+                                return payment.createAccessToken ? payment.createAccessToken() : buyerAccessToken || (clientID && userIDToken && fundingSkipLogin ? getSmartWallet({
+                                    clientID: clientID,
+                                    merchantID: merchantID,
+                                    currency: currency,
+                                    amount: amount,
+                                    clientMetadataID: cmid || sessionID,
+                                    userIDToken: userIDToken,
+                                    env: env,
+                                    cspNonce: cspNonce
+                                }).then((function(wallet) {
+                                    var walletInstruments = wallet[fundingSkipLogin] && wallet[fundingSkipLogin].instruments;
+                                    if (walletInstruments) for (var _i2 = 0; _i2 < walletInstruments.length; _i2++) {
+                                        var instrument = walletInstruments[_i2];
+                                        if (instrument.accessToken) return instrument.accessToken;
+                                    }
+                                })) : void 0);
+                            })).then((function(accessToken) {
+                                if (accessToken && ("pay" === buyerIntent || "pay_with_different_funding_shipping" === buyerIntent)) return function(buyerAccessToken) {
+                                    return callGraphQL({
+                                        name: "ExchangeAuthCode",
+                                        query: "\n            query ExchangeAuthCode(\n                $buyerAccessToken: String!\n            ) {\n                auth(\n                    accessToken: $buyerAccessToken\n                ) {\n                    authCode\n                }\n            }\n        ",
+                                        variables: {
+                                            buyerAccessToken: buyerAccessToken
                                         }
-                                    })) : void 0);
-                                })).then((function(accessToken) {
-                                    if (accessToken && ("pay" === buyerIntent || "pay_with_different_funding_shipping" === buyerIntent)) return function(buyerAccessToken) {
-                                        return callGraphQL({
-                                            name: "ExchangeAuthCode",
-                                            query: "\n            query ExchangeAuthCode(\n                $buyerAccessToken: String!\n            ) {\n                auth(\n                    accessToken: $buyerAccessToken\n                ) {\n                    authCode\n                }\n            }\n        ",
-                                            variables: {
-                                                buyerAccessToken: buyerAccessToken
-                                            }
-                                        }).then((function(_ref4) {
-                                            return _ref4.auth.authCode;
-                                        }));
-                                    }(accessToken);
+                                    }).then((function(_ref4) {
+                                        return _ref4.auth.authCode;
+                                    }));
+                                }(accessToken);
+                            })).catch((function(err) {
+                                logger_getLogger().warn("exchange_access_token_auth_code_error", {
+                                    err: stringifyError(err)
+                                });
+                            }));
+                        },
+                        getConnectURL: connect && connectEligible ? function(_ref9) {
+                            var payerID = _ref9.payerID;
+                            if (!clientID) throw new Error("Expected clientID");
+                            return _createOrder().then((function(orderID) {
+                                return (_ref5 = {
+                                    orderID: orderID,
+                                    payerID: payerID,
+                                    clientID: clientID,
+                                    fundingSource: fundingSource,
+                                    connect: connect
+                                }, callGraphQL({
+                                    name: "GetConnectURL",
+                                    query: "\n            query GetConnectURL(\n                $clientID: String!\n                $orderID: String!\n                $scopes: [String]!\n                $fundingSource: String\n                $payerID: String\n            ) {\n                auth(\n                    clientId: $clientID\n                ) {\n                    connectUrl(\n                        token: $orderID\n                        scopes: $scopes\n                        fundingSource: $fundingSource\n                        payerId: $payerID\n                    ) {\n                        href\n                    }\n                }\n            }\n        ",
+                                    variables: {
+                                        clientID: _ref5.clientID,
+                                        orderID: _ref5.orderID,
+                                        payerID: _ref5.payerID,
+                                        scopes: _ref5.connect.scopes,
+                                        fundingSource: _ref5.fundingSource
+                                    }
+                                }).then((function(_ref6) {
+                                    return _ref6.auth.connectUrl.href;
+                                }))).then((function(connectURL) {
+                                    var _getLogger$info$track;
+                                    logger_getLogger().info("connect_redirect", {
+                                        connectURL: connectURL
+                                    }).track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_connect_redirect", 
+                                    _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
+                                    _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
+                                    return extendUrl(connectURL, {
+                                        query: {
+                                            sdkMeta: sdkMeta
+                                        }
+                                    });
                                 })).catch((function(err) {
-                                    logger_getLogger().warn("exchange_access_token_auth_code_error", {
+                                    logger_getLogger().error("connect_redirect_error", {
                                         err: stringifyError(err)
                                     });
+                                    throw err;
                                 }));
-                            },
-                            getConnectURL: connect && connectEligible ? function(_ref9) {
-                                var payerID = _ref9.payerID;
-                                if (!clientID) throw new Error("Expected clientID");
-                                return _createOrder().then((function(orderID) {
-                                    return (_ref5 = {
-                                        orderID: orderID,
-                                        payerID: payerID,
-                                        clientID: clientID,
-                                        fundingSource: fundingSource,
-                                        connect: connect
-                                    }, callGraphQL({
-                                        name: "GetConnectURL",
-                                        query: "\n            query GetConnectURL(\n                $clientID: String!\n                $orderID: String!\n                $scopes: [String]!\n                $fundingSource: String\n                $payerID: String\n            ) {\n                auth(\n                    clientId: $clientID\n                ) {\n                    connectUrl(\n                        token: $orderID\n                        scopes: $scopes\n                        fundingSource: $fundingSource\n                        payerId: $payerID\n                    ) {\n                        href\n                    }\n                }\n            }\n        ",
-                                        variables: {
-                                            clientID: _ref5.clientID,
-                                            orderID: _ref5.orderID,
-                                            payerID: _ref5.payerID,
-                                            scopes: _ref5.connect.scopes,
-                                            fundingSource: _ref5.fundingSource
-                                        }
-                                    }).then((function(_ref6) {
-                                        return _ref6.auth.connectUrl.href;
-                                    }))).then((function(connectURL) {
-                                        var _getLogger$info$track;
-                                        logger_getLogger().info("connect_redirect", {
-                                            connectURL: connectURL
-                                        }).track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_connect_redirect", 
-                                        _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
-                                        _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                                        return extendUrl(connectURL, {
-                                            query: {
-                                                sdkMeta: sdkMeta
-                                            }
-                                        });
-                                    })).catch((function(err) {
-                                        logger_getLogger().error("connect_redirect_error", {
-                                            err: stringifyError(err)
-                                        });
-                                        throw err;
-                                    }));
-                                    var _ref5;
-                                }));
-                            } : null,
-                            createOrder: function() {
-                                return _createOrder().then((function(orderID) {
-                                    return promise_ZalgoPromise.try((function() {
-                                        if (clientID && "pay" === buyerIntent) return function(_ref6) {
-                                            var orderID = _ref6.orderID, vault = _ref6.vault, clientAccessToken = _ref6.clientAccessToken, createBillingAgreement = _ref6.createBillingAgreement, createSubscription = _ref6.createSubscription, fundingSource = _ref6.fundingSource, clientID = _ref6.clientID, merchantID = _ref6.merchantID, buyerCountry = _ref6.buyerCountry, currency = _ref6.currency, commit = _ref6.commit, intent = _ref6.intent, disableFunding = _ref6.disableFunding, disableCard = _ref6.disableCard, userIDToken = _ref6.userIDToken;
-                                            return promise_ZalgoPromise.try((function() {
-                                                logger_getLogger().info("vault_auto_setup_vault_" + vault.toString() + "_id_token_" + (userIDToken ? "present" : "not_present")).flush();
-                                                return function(_ref5) {
-                                                    var vault = _ref5.vault, clientAccessToken = _ref5.clientAccessToken, createBillingAgreement = _ref5.createBillingAgreement, createSubscription = _ref5.createSubscription, fundingSource = _ref5.fundingSource, clientID = _ref5.clientID, merchantID = _ref5.merchantID, buyerCountry = _ref5.buyerCountry, currency = _ref5.currency, commit = _ref5.commit, intent = _ref5.intent, disableFunding = _ref5.disableFunding, disableCard = _ref5.disableCard;
-                                                    return promise_ZalgoPromise.try((function() {
-                                                        return !!clientAccessToken && !createBillingAgreement && !createSubscription && (!!vault || function(_ref4) {
-                                                            var accessToken = _ref4.accessToken, fundingSource = _ref4.fundingSource, clientID = _ref4.clientID, merchantID = _ref4.merchantID, buyerCountry = _ref4.buyerCountry, currency = _ref4.currency, commit = _ref4.commit, vault = _ref4.vault, intent = _ref4.intent, disableFunding = _ref4.disableFunding, disableCard = _ref4.disableCard;
-                                                            return promise_ZalgoPromise.try((function() {
-                                                                return "paypal" === fundingSource && function(query, _ref) {
-                                                                    var _headers;
-                                                                    var accessToken = _ref.accessToken, intent = _ref.intent, disableFunding = _ref.disableFunding, disableCard = _ref.disableCard;
-                                                                    return callGraphQL({
-                                                                        name: "GetFundingEligibility",
-                                                                        query: "\n            query GetFundingEligibility(\n                $clientID:String,\n                $merchantID:[ String ],\n                $buyerCountry:CountryCodes,\n                $currency:SupportedCountryCurrencies,\n                $intent:FundingEligibilityIntent,\n                $commit:Boolean,\n                $vault:Boolean,\n                $disableFunding:[ SupportedPaymentMethodsType ],\n                $disableCard:[ SupportedCardsType ]\n            ) {\n            fundingEligibility(\n                clientId: $clientID,\n                buyerCountry: $buyerCountry,\n                currency: $currency,\n                intent: $intent,\n                commit: $commit,\n                vault: $vault,\n                disableFunding: $disableFunding,\n                disableCard: $disableCard,\n                merchantId: $merchantID\n            ) {\n                " + query + "\n            }\n          }\n        ",
-                                                                        variables: {
-                                                                            clientID: _ref.clientID,
-                                                                            merchantID: _ref.merchantID,
-                                                                            buyerCountry: _ref.buyerCountry,
-                                                                            currency: _ref.currency,
-                                                                            commit: _ref.commit,
-                                                                            vault: _ref.vault,
-                                                                            intent: intent ? intent.toUpperCase() : intent,
-                                                                            disableFunding: disableFunding ? disableFunding.map((function(f) {
-                                                                                return f && f.toUpperCase();
-                                                                            })) : disableFunding,
-                                                                            disableCard: disableCard ? disableCard.map((function(f) {
-                                                                                return f && f.toUpperCase();
-                                                                            })) : disableCard
-                                                                        },
-                                                                        headers: (_headers = {}, _headers["x-paypal-internal-euat"] = accessToken || "", 
-                                                                        _headers)
-                                                                    }).then((function(gqlResult) {
-                                                                        if (!gqlResult || !gqlResult.fundingEligibility) throw new Error("GraphQL fundingEligibility returned no fundingEligibility object");
-                                                                        return gqlResult && gqlResult.fundingEligibility;
-                                                                    }));
-                                                                }("\n                " + fundingSource + " {\n                    vaultable\n                }\n            ", {
-                                                                    accessToken: accessToken,
-                                                                    clientID: clientID,
-                                                                    merchantID: merchantID,
-                                                                    buyerCountry: buyerCountry,
-                                                                    currency: currency,
-                                                                    commit: commit,
-                                                                    vault: vault,
-                                                                    intent: intent,
-                                                                    disableFunding: disableFunding,
-                                                                    disableCard: disableCard
-                                                                }).then((function(newFundingEligibility) {
-                                                                    return !(!newFundingEligibility[fundingSource] || !newFundingEligibility[fundingSource].vaultable);
+                                var _ref5;
+                            }));
+                        } : null,
+                        createOrder: function() {
+                            return _createOrder().then((function(orderID) {
+                                return promise_ZalgoPromise.try((function() {
+                                    if (clientID && "pay" === buyerIntent) return function(_ref6) {
+                                        var orderID = _ref6.orderID, vault = _ref6.vault, clientAccessToken = _ref6.clientAccessToken, createBillingAgreement = _ref6.createBillingAgreement, createSubscription = _ref6.createSubscription, fundingSource = _ref6.fundingSource, clientID = _ref6.clientID, merchantID = _ref6.merchantID, buyerCountry = _ref6.buyerCountry, currency = _ref6.currency, commit = _ref6.commit, intent = _ref6.intent, disableFunding = _ref6.disableFunding, disableCard = _ref6.disableCard, userIDToken = _ref6.userIDToken;
+                                        return promise_ZalgoPromise.try((function() {
+                                            logger_getLogger().info("vault_auto_setup_vault_" + vault.toString() + "_id_token_" + (userIDToken ? "present" : "not_present")).flush();
+                                            return function(_ref5) {
+                                                var vault = _ref5.vault, clientAccessToken = _ref5.clientAccessToken, createBillingAgreement = _ref5.createBillingAgreement, createSubscription = _ref5.createSubscription, fundingSource = _ref5.fundingSource, clientID = _ref5.clientID, merchantID = _ref5.merchantID, buyerCountry = _ref5.buyerCountry, currency = _ref5.currency, commit = _ref5.commit, intent = _ref5.intent, disableFunding = _ref5.disableFunding, disableCard = _ref5.disableCard;
+                                                return promise_ZalgoPromise.try((function() {
+                                                    return !!clientAccessToken && !createBillingAgreement && !createSubscription && (!!vault || function(_ref4) {
+                                                        var accessToken = _ref4.accessToken, fundingSource = _ref4.fundingSource, clientID = _ref4.clientID, merchantID = _ref4.merchantID, buyerCountry = _ref4.buyerCountry, currency = _ref4.currency, commit = _ref4.commit, vault = _ref4.vault, intent = _ref4.intent, disableFunding = _ref4.disableFunding, disableCard = _ref4.disableCard;
+                                                        return promise_ZalgoPromise.try((function() {
+                                                            return "paypal" === fundingSource && function(query, _ref) {
+                                                                var _headers;
+                                                                var accessToken = _ref.accessToken, intent = _ref.intent, disableFunding = _ref.disableFunding, disableCard = _ref.disableCard;
+                                                                return callGraphQL({
+                                                                    name: "GetFundingEligibility",
+                                                                    query: "\n            query GetFundingEligibility(\n                $clientID:String,\n                $merchantID:[ String ],\n                $buyerCountry:CountryCodes,\n                $currency:SupportedCountryCurrencies,\n                $intent:FundingEligibilityIntent,\n                $commit:Boolean,\n                $vault:Boolean,\n                $disableFunding:[ SupportedPaymentMethodsType ],\n                $disableCard:[ SupportedCardsType ]\n            ) {\n            fundingEligibility(\n                clientId: $clientID,\n                buyerCountry: $buyerCountry,\n                currency: $currency,\n                intent: $intent,\n                commit: $commit,\n                vault: $vault,\n                disableFunding: $disableFunding,\n                disableCard: $disableCard,\n                merchantId: $merchantID\n            ) {\n                " + query + "\n            }\n          }\n        ",
+                                                                    variables: {
+                                                                        clientID: _ref.clientID,
+                                                                        merchantID: _ref.merchantID,
+                                                                        buyerCountry: _ref.buyerCountry,
+                                                                        currency: _ref.currency,
+                                                                        commit: _ref.commit,
+                                                                        vault: _ref.vault,
+                                                                        intent: intent ? intent.toUpperCase() : intent,
+                                                                        disableFunding: disableFunding ? disableFunding.map((function(f) {
+                                                                            return f && f.toUpperCase();
+                                                                        })) : disableFunding,
+                                                                        disableCard: disableCard ? disableCard.map((function(f) {
+                                                                            return f && f.toUpperCase();
+                                                                        })) : disableCard
+                                                                    },
+                                                                    headers: (_headers = {}, _headers["x-paypal-internal-euat"] = accessToken || "", 
+                                                                    _headers)
+                                                                }).then((function(gqlResult) {
+                                                                    if (!gqlResult || !gqlResult.fundingEligibility) throw new Error("GraphQL fundingEligibility returned no fundingEligibility object");
+                                                                    return gqlResult && gqlResult.fundingEligibility;
                                                                 }));
+                                                            }("\n                " + fundingSource + " {\n                    vaultable\n                }\n            ", {
+                                                                accessToken: accessToken,
+                                                                clientID: clientID,
+                                                                merchantID: merchantID,
+                                                                buyerCountry: buyerCountry,
+                                                                currency: currency,
+                                                                commit: commit,
+                                                                vault: vault,
+                                                                intent: intent,
+                                                                disableFunding: disableFunding,
+                                                                disableCard: disableCard
+                                                            }).then((function(newFundingEligibility) {
+                                                                return !(!newFundingEligibility[fundingSource] || !newFundingEligibility[fundingSource].vaultable);
                                                             }));
-                                                        }({
-                                                            accessToken: clientAccessToken,
-                                                            fundingSource: fundingSource,
-                                                            clientID: clientID,
-                                                            merchantID: merchantID,
-                                                            buyerCountry: buyerCountry,
-                                                            currency: currency,
-                                                            commit: commit,
-                                                            vault: vault,
-                                                            intent: intent,
-                                                            disableFunding: disableFunding,
-                                                            disableCard: disableCard
-                                                        }).catch((function(err) {
-                                                            logger_getLogger().warn("funding_vaultable_error", {
-                                                                err: stringifyError(err)
-                                                            });
-                                                            return !1;
-                                                        })));
-                                                    }));
-                                                }({
-                                                    vault: vault,
-                                                    clientAccessToken: clientAccessToken,
-                                                    createBillingAgreement: createBillingAgreement,
-                                                    createSubscription: createSubscription,
-                                                    fundingSource: fundingSource,
-                                                    clientID: clientID,
-                                                    merchantID: merchantID,
-                                                    buyerCountry: buyerCountry,
-                                                    currency: currency,
-                                                    commit: commit,
-                                                    intent: intent,
-                                                    disableFunding: disableFunding,
-                                                    disableCard: disableCard
-                                                });
-                                            })).then((function(eligible) {
-                                                if (eligible && clientAccessToken) return function(_ref8) {
-                                                    var _headers15;
-                                                    var orderID = _ref8.orderID;
-                                                    return callGraphQL({
-                                                        name: "EnableVault",
-                                                        query: "\n            mutation EnableVault(\n                $orderID : String!\n            ) {\n                enableVault(\n                    token: $orderID\n                )\n            }\n        ",
-                                                        variables: {
-                                                            orderID: orderID
-                                                        },
-                                                        headers: (_headers15 = {}, _headers15["x-paypal-internal-euat"] = _ref8.clientAccessToken, 
-                                                        _headers15["paypal-client-context"] = orderID, _headers15)
-                                                    });
-                                                }({
-                                                    orderID: orderID,
-                                                    clientAccessToken: clientAccessToken
-                                                }).catch((function(err) {
-                                                    if (vault) throw err;
+                                                        }));
+                                                    }({
+                                                        accessToken: clientAccessToken,
+                                                        fundingSource: fundingSource,
+                                                        clientID: clientID,
+                                                        merchantID: merchantID,
+                                                        buyerCountry: buyerCountry,
+                                                        currency: currency,
+                                                        commit: commit,
+                                                        vault: vault,
+                                                        intent: intent,
+                                                        disableFunding: disableFunding,
+                                                        disableCard: disableCard
+                                                    }).catch((function(err) {
+                                                        logger_getLogger().warn("funding_vaultable_error", {
+                                                            err: stringifyError(err)
+                                                        });
+                                                        return !1;
+                                                    })));
                                                 }));
+                                            }({
+                                                vault: vault,
+                                                clientAccessToken: clientAccessToken,
+                                                createBillingAgreement: createBillingAgreement,
+                                                createSubscription: createSubscription,
+                                                fundingSource: fundingSource,
+                                                clientID: clientID,
+                                                merchantID: merchantID,
+                                                buyerCountry: buyerCountry,
+                                                currency: currency,
+                                                commit: commit,
+                                                intent: intent,
+                                                disableFunding: disableFunding,
+                                                disableCard: disableCard
+                                            });
+                                        })).then((function(eligible) {
+                                            if (eligible && clientAccessToken) return function(_ref8) {
+                                                var _headers15;
+                                                var orderID = _ref8.orderID;
+                                                return callGraphQL({
+                                                    name: "EnableVault",
+                                                    query: "\n            mutation EnableVault(\n                $orderID : String!\n            ) {\n                enableVault(\n                    token: $orderID\n                )\n            }\n        ",
+                                                    variables: {
+                                                        orderID: orderID
+                                                    },
+                                                    headers: (_headers15 = {}, _headers15["x-paypal-internal-euat"] = _ref8.clientAccessToken, 
+                                                    _headers15["paypal-client-context"] = orderID, _headers15)
+                                                });
+                                            }({
+                                                orderID: orderID,
+                                                clientAccessToken: clientAccessToken
+                                            }).catch((function(err) {
+                                                if (vault) throw err;
                                             }));
-                                        }({
-                                            orderID: orderID,
-                                            vault: vault,
-                                            clientAccessToken: clientAccessToken,
-                                            fundingEligibility: fundingEligibility,
-                                            fundingSource: fundingSource,
-                                            createBillingAgreement: createBillingAgreement,
-                                            createSubscription: createSubscription,
-                                            clientID: clientID,
-                                            merchantID: merchantID,
-                                            buyerCountry: buyerCountry,
-                                            currency: currency,
-                                            commit: commit,
-                                            intent: intent,
-                                            disableFunding: disableFunding,
-                                            disableCard: disableCard,
-                                            userIDToken: userIDToken
-                                        });
-                                    })).then((function() {
-                                        return orderID;
-                                    }));
+                                        }));
+                                    }({
+                                        orderID: orderID,
+                                        vault: vault,
+                                        clientAccessToken: clientAccessToken,
+                                        fundingEligibility: fundingEligibility,
+                                        fundingSource: fundingSource,
+                                        createBillingAgreement: createBillingAgreement,
+                                        createSubscription: createSubscription,
+                                        clientID: clientID,
+                                        merchantID: merchantID,
+                                        buyerCountry: buyerCountry,
+                                        currency: currency,
+                                        commit: commit,
+                                        intent: intent,
+                                        disableFunding: disableFunding,
+                                        disableCard: disableCard,
+                                        userIDToken: userIDToken
+                                    });
+                                })).then((function() {
+                                    return orderID;
                                 }));
-                            },
-                            onApprove: function(_ref10) {
-                                var payerID = _ref10.payerID, paymentID = _ref10.paymentID, billingToken = _ref10.billingToken, subscriptionID = _ref10.subscriptionID, authCode = _ref10.authCode;
-                                approved = !0;
-                                nativeFakeoutExperiment.logComplete();
-                                logger_getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
-                                return close().then((function() {
-                                    return _onApprove({
-                                        payerID: payerID,
-                                        paymentID: paymentID,
-                                        billingToken: billingToken,
-                                        subscriptionID: subscriptionID,
-                                        buyerAccessToken: buyerAccessToken,
-                                        authCode: authCode
-                                    }, {
-                                        restart: restart
-                                    }).catch(src_util_noop);
-                                }));
-                            },
-                            onAuth: function(_ref11) {
-                                var accessToken = _ref11.accessToken;
-                                nativeFakeoutExperiment.log("web_checkout_auth");
-                                return _onAuth({
-                                    accessToken: accessToken || buyerAccessToken
-                                }).then((function(token) {
-                                    buyerAccessToken = token;
-                                }));
-                            },
-                            onCancel: function() {
-                                nativeFakeoutExperiment.log("web_checkout_cancel");
-                                return close().then((function() {
-                                    return _onCancel();
-                                }));
-                            },
-                            onShippingChange: onShippingChange ? function(data, actions) {
-                                return onShippingChange(_extends({
-                                    buyerAccessToken: buyerAccessToken
-                                }, data), actions);
-                            } : null,
-                            onClose: function() {
-                                checkoutOpen = !1;
-                                if (!forceClosed && !approved) return _onCancel();
-                            },
-                            onError: onError,
-                            fundingSource: fundingSource,
-                            card: card,
-                            buyerCountry: buyerCountry,
-                            locale: locale,
-                            commit: commit,
-                            cspNonce: cspNonce,
-                            clientMetadataID: cmid,
-                            enableFunding: enableFunding,
-                            standaloneFundingSource: standaloneFundingSource,
-                            branded: branded
-                        });
-                    }()).renderTo((top = getTop(window), canRenderTop && top ? top : utils_getParent() ? utils_getParent() : window), "body", context).catch((function(err) {
+                            }));
+                        },
+                        onApprove: function(_ref10) {
+                            var payerID = _ref10.payerID, paymentID = _ref10.paymentID, billingToken = _ref10.billingToken, subscriptionID = _ref10.subscriptionID, authCode = _ref10.authCode;
+                            approved = !0;
+                            logger_getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
+                            return close().then((function() {
+                                return _onApprove({
+                                    payerID: payerID,
+                                    paymentID: paymentID,
+                                    billingToken: billingToken,
+                                    subscriptionID: subscriptionID,
+                                    buyerAccessToken: buyerAccessToken,
+                                    authCode: authCode
+                                }, {
+                                    restart: restart
+                                }).catch(src_util_noop);
+                            }));
+                        },
+                        onAuth: function(_ref11) {
+                            return _onAuth({
+                                accessToken: _ref11.accessToken || buyerAccessToken
+                            }).then((function(token) {
+                                buyerAccessToken = token;
+                            }));
+                        },
+                        onCancel: function() {
+                            return close().then((function() {
+                                return _onCancel();
+                            }));
+                        },
+                        onShippingChange: onShippingChange ? function(data, actions) {
+                            return onShippingChange(_extends({
+                                buyerAccessToken: buyerAccessToken
+                            }, data), actions);
+                        } : null,
+                        onClose: function() {
+                            checkoutOpen = !1;
+                            if (!forceClosed && !approved) return _onCancel();
+                        },
+                        onError: onError,
+                        fundingSource: fundingSource,
+                        card: card,
+                        buyerCountry: buyerCountry,
+                        locale: locale,
+                        commit: commit,
+                        cspNonce: cspNonce,
+                        clientMetadataID: cmid,
+                        enableFunding: enableFunding,
+                        standaloneFundingSource: standaloneFundingSource,
+                        branded: branded
+                    })).renderTo((top = getTop(window), canRenderTop && top ? top : utils_getParent() ? utils_getParent() : window), "body", context).catch((function(err) {
                         if (checkoutOpen) throw err;
                     }));
                     var top;
@@ -4425,6 +5075,7 @@ window.spb = function(modules) {
             inline: !0
         };
         var _NATIVE_DOMAIN, _NATIVE_POPUP_DOMAIN, _NATIVE_CHECKOUT_URI, _NATIVE_CHECKOUT_POPU, _NATIVE_CHECKOUT_FALL;
+        var SUPPORTED_FUNDING = [ "paypal", "venmo" ];
         var NATIVE_DOMAIN = ((_NATIVE_DOMAIN = {}).test = "https://www.paypal.com", _NATIVE_DOMAIN.local = "https://www.paypal.com", 
         _NATIVE_DOMAIN.stage = "https://www.paypal.com", _NATIVE_DOMAIN.sandbox = "https://www.sandbox.paypal.com", 
         _NATIVE_DOMAIN.production = "https://www.paypal.com", _NATIVE_DOMAIN);
@@ -4438,10 +5089,147 @@ window.spb = function(modules) {
         _NATIVE_CHECKOUT_POPU.venmo = "/smart/checkout/venmo/popup", _NATIVE_CHECKOUT_POPU);
         var NATIVE_CHECKOUT_FALLBACK_URI = ((_NATIVE_CHECKOUT_FALL = {}).paypal = "/smart/checkout/fallback", 
         _NATIVE_CHECKOUT_FALL.venmo = "/smart/checkout/fallback", _NATIVE_CHECKOUT_FALL);
-        var PARTIAL_ENCODING_CLIENT = [ "AeG7a0wQ2s97hNLb6yWzDqYTsuD-4AaxDHjz4I2EWMKN6vktKYqKJhtGqmH2cNj_JyjHR4Xj9Jt6ORHs" ];
-        var native_clean;
-        var initialPageUrl;
-        var nativeEligibility;
+        function isTestGroup(nativeEligibility, fundingSource) {
+            var fundingEligibility = nativeEligibility[fundingSource];
+            return !(!fundingEligibility || !fundingEligibility.eligibility);
+        }
+        function isControlGroup(nativeEligibility, fundingSource) {
+            var fundingEligibility = nativeEligibility[fundingSource];
+            return !(!fundingEligibility || fundingEligibility.eligibility || "experimentation_ineligibility" !== fundingEligibility.ineligibilityReason);
+        }
+        function isNativeOptedIn(_ref2) {
+            if (_ref2.props.enableNativeCheckout) return !0;
+            try {
+                if (window.localStorage.getItem("__native_checkout__")) return !0;
+            } catch (err) {}
+            return !1;
+        }
+        function getNativeDomain(_ref) {
+            var props = _ref.props;
+            var env = props.env;
+            return "sandbox" !== env || !isNativeOptedIn({
+                props: props
+            }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain ? NATIVE_DOMAIN[env] : "https://www.paypal.com";
+        }
+        function getNativePopupDomain(_ref2) {
+            var props = _ref2.props;
+            var env = props.env;
+            return "sandbox" !== env || !isNativeOptedIn({
+                props: props
+            }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain ? NATIVE_POPUP_DOMAIN[env] : "https://www.sandbox.paypal.com";
+        }
+        function getWebCheckoutUrl(_ref3) {
+            var orderID = _ref3.orderID, props = _ref3.props, fundingSource = _ref3.fundingSource, facilitatorAccessToken = _ref3.facilitatorAccessToken;
+            var commit = props.commit;
+            return extendUrl(getNativeDomain({
+                props: props
+            }) + "/checkoutnow", {
+                query: {
+                    fundingSource: fundingSource,
+                    facilitatorAccessToken: facilitatorAccessToken,
+                    token: orderID,
+                    useraction: commit ? "commit" : "continue",
+                    native_xo: "1"
+                }
+            });
+        }
+        function getNativeUrlQueryParams(_ref4) {
+            var props = _ref4.props, serviceData = _ref4.serviceData, fundingSource = _ref4.fundingSource, sessionUID = _ref4.sessionUID, firebaseConfig = _ref4.firebaseConfig, pageUrl = _ref4.pageUrl, orderID = _ref4.orderID, stickinessID = _ref4.stickinessID;
+            var env = props.env, clientID = props.clientID, commit = props.commit, buttonSessionID = props.buttonSessionID, stageHost = props.stageHost, apiStageHost = props.apiStageHost, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
+            var facilitatorAccessToken = serviceData.facilitatorAccessToken, sdkMeta = serviceData.sdkMeta;
+            var webCheckoutUrl = getWebCheckoutUrl({
+                orderID: orderID,
+                props: props,
+                fundingSource: fundingSource,
+                facilitatorAccessToken: facilitatorAccessToken
+            });
+            var userAgent = getUserAgent();
+            var forceEligible = isNativeOptedIn({
+                props: props
+            });
+            return {
+                sdkMeta: sdkMeta,
+                sessionUID: sessionUID,
+                orderID: orderID,
+                facilitatorAccessToken: facilitatorAccessToken,
+                pageUrl: pageUrl,
+                clientID: clientID,
+                commit: String(commit),
+                webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : "",
+                stickinessID: stickinessID,
+                userAgent: userAgent,
+                buttonSessionID: buttonSessionID,
+                env: env,
+                stageHost: stageHost || "",
+                apiStageHost: apiStageHost || "",
+                forceEligible: forceEligible,
+                fundingSource: fundingSource,
+                enableFunding: enableFunding.join(","),
+                domain: merchantDomain,
+                rtdbInstanceID: firebaseConfig.databaseURL
+            };
+        }
+        function getNativeFallbackUrl(_ref6) {
+            var props = _ref6.props, fundingSource = _ref6.fundingSource;
+            var queryParams = getNativeUrlQueryParams({
+                props: props,
+                serviceData: _ref6.serviceData,
+                fundingSource: fundingSource,
+                sessionUID: _ref6.sessionUID,
+                firebaseConfig: _ref6.firebaseConfig,
+                pageUrl: _ref6.pageUrl,
+                orderID: _ref6.orderID,
+                stickinessID: _ref6.stickinessID
+            });
+            return extendUrl("" + getNativeDomain({
+                props: props
+            }) + NATIVE_CHECKOUT_FALLBACK_URI[fundingSource], {
+                query: queryParams
+            });
+        }
+        function onPostMessage(win, domain, event, handler) {
+            return paypal.postRobot.once(event, {
+                window: win,
+                domain: domain
+            }, handler);
+        }
+        function getEligibility(_ref) {
+            var fundingSource = _ref.fundingSource, props = _ref.props, serviceData = _ref.serviceData, sfvc = _ref.sfvc, validatePromise = _ref.validatePromise, stickinessID = _ref.stickinessID, appDetect = _ref.appDetect;
+            var createOrder = props.createOrder, vault = props.vault, platform = props.platform, clientID = props.clientID, currency = props.currency, buttonSessionID = props.buttonSessionID, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
+            var buyerCountry = serviceData.buyerCountry, cookies = serviceData.cookies, merchantID = serviceData.merchantID;
+            var shippingCallbackEnabled = Boolean(props.onShippingChange);
+            return validatePromise.then((function(valid) {
+                return !!valid && !(appDetect && !appDetect.installed) && (!!isNativeOptedIn({
+                    props: props
+                }) || !sfvc && createOrder().then((function(orderID) {
+                    return getNativeEligibility({
+                        vault: vault,
+                        platform: platform,
+                        shippingCallbackEnabled: shippingCallbackEnabled,
+                        clientID: clientID,
+                        buyerCountry: buyerCountry,
+                        currency: currency,
+                        buttonSessionID: buttonSessionID,
+                        cookies: cookies,
+                        orderID: orderID,
+                        enableFunding: enableFunding,
+                        stickinessID: stickinessID,
+                        merchantID: merchantID[0],
+                        domain: merchantDomain
+                    }).then((function(eligibility) {
+                        if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
+                            var _getLogger$info$track2;
+                            logger_getLogger().info("native_appswitch_ineligible", {
+                                orderID: orderID
+                            }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.state_name = "smart_button", 
+                            _getLogger$info$track2.transition_name = "app_switch_ineligible", _getLogger$info$track2)).flush();
+                            return !1;
+                        }
+                        return !0;
+                    }));
+                })));
+            }));
+        }
         var getNativeSocket = memoize((function(_ref) {
             var nativeSocket = (config = (_ref9 = {
                 sessionUID: _ref.sessionUID,
@@ -4744,73 +5532,37 @@ window.spb = function(modules) {
             }));
             return nativeSocket;
         }));
-        function isPopupFakeout() {
-            return !(!window.xprops.popupFakeout && !nativeFakeoutExperiment.isEnabled());
+        function getSDKSocketProps(_ref2) {
+            var props = _ref2.props, fundingSource = _ref2.fundingSource;
+            var commit = props.commit, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost;
+            var facilitatorAccessToken = _ref2.serviceData.facilitatorAccessToken;
+            return (0, props.createOrder)().then((function(orderID) {
+                var userAgent = getUserAgent();
+                var webCheckoutUrl = getWebCheckoutUrl({
+                    orderID: orderID,
+                    props: props,
+                    fundingSource: fundingSource,
+                    facilitatorAccessToken: facilitatorAccessToken
+                });
+                var forceEligible = isNativeOptedIn({
+                    props: props
+                });
+                return {
+                    orderID: orderID,
+                    facilitatorAccessToken: facilitatorAccessToken,
+                    pageUrl: "",
+                    commit: commit,
+                    webCheckoutUrl: webCheckoutUrl,
+                    userAgent: userAgent,
+                    buttonSessionID: buttonSessionID,
+                    env: env,
+                    stageHost: stageHost,
+                    apiStageHost: apiStageHost,
+                    forceEligible: forceEligible
+                };
+            }));
         }
-        function deferABSplitToPopup() {
-            return !isAndroidChrome() && !!isIOSSafari();
-        }
-        function isTestGroup(fundingSource) {
-            var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
-            return !(!fundingEligibility || !fundingEligibility.eligibility);
-        }
-        function isControlGroup(fundingSource) {
-            var fundingEligibility = nativeEligibility && nativeEligibility[fundingSource];
-            return !(!fundingEligibility || fundingEligibility.eligibility || "experimentation_ineligibility" !== fundingEligibility.ineligibilityReason);
-        }
-        function didAppSwitch(popupWin) {
-            return !popupWin || isWindowClosed(popupWin);
-        }
-        function isNativeOptedIn(_ref2) {
-            if (_ref2.props.enableNativeCheckout) return !0;
-            try {
-                if (window.localStorage.getItem("__native_checkout__")) return !0;
-            } catch (err) {}
-            return !1;
-        }
-        function urlEncodeWithPartialEncoding(str) {
-            return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B").replace(/[=]/g, "%3D");
-        }
-        function parseQueryWithPartialEncoding(queryString) {
-            return inlineMemoize(parseQueryWithPartialEncoding, (function() {
-                var params = {};
-                if (!queryString) return params;
-                if (-1 === queryString.indexOf("=")) return params;
-                for (var _i2 = 0, _queryString$split2 = queryString.split("&"); _i2 < _queryString$split2.length; _i2++) {
-                    var pair = _queryString$split2[_i2];
-                    (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
-                }
-                return params;
-            }), [ queryString ]);
-        }
-        function extendQueryWithPartialEncoding(originalQuery, props) {
-            void 0 === props && (props = {});
-            return props && Object.keys(props).length ? function(obj) {
-                void 0 === obj && (obj = {});
-                return Object.keys(obj).filter((function(key) {
-                    return "string" == typeof obj[key] || "boolean" == typeof obj[key];
-                })).map((function(key) {
-                    var val = obj[key];
-                    if ("string" != typeof val && "boolean" != typeof val) throw new TypeError("Invalid type for query");
-                    return urlEncodeWithPartialEncoding(key) + "=" + urlEncodeWithPartialEncoding(val.toString());
-                })).join("&");
-            }(_extends({}, parseQueryWithPartialEncoding(originalQuery), props)) : originalQuery;
-        }
-        function extendUrlWithPartialEncoding(url, options) {
-            var query = options.query || {};
-            var hash = options.hash || {};
-            var originalUrl;
-            var originalHash;
-            var _url$split = url.split("#");
-            originalHash = _url$split[1];
-            var _originalUrl$split = (originalUrl = _url$split[0]).split("?");
-            originalUrl = _originalUrl$split[0];
-            var queryString = extendQueryWithPartialEncoding(_originalUrl$split[1], query);
-            var hashString = extendQueryWithPartialEncoding(originalHash, hash);
-            queryString && (originalUrl = originalUrl + "?" + queryString);
-            hashString && (originalUrl = originalUrl + "#" + hashString);
-            return originalUrl;
-        }
+        var native_clean;
         var parentPopupBridge;
         function isValidMerchantIDs(merchantIDs, payees) {
             if (merchantIDs.length !== payees.length) return !1;
@@ -4923,7 +5675,7 @@ window.spb = function(modules) {
                                 logger_getLogger().info("nonce_payment_initiated");
                                 if (!branded) throw new Error("Expected payment to be branded");
                                 return function(_ref16) {
-                                    var _headers21;
+                                    var _headers22;
                                     var orderID = _ref16.orderID, paymentMethodNonce = _ref16.paymentMethodNonce, clientID = _ref16.clientID, _ref16$branded = _ref16.branded, branded = void 0 === _ref16$branded || _ref16$branded, buttonSessionID = _ref16.buttonSessionID;
                                     logger_getLogger().info("pay_with_nonce_input_params", {
                                         orderID: orderID,
@@ -4942,7 +5694,7 @@ window.spb = function(modules) {
                                             branded: branded,
                                             buttonSessionID: buttonSessionID
                                         },
-                                        headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
+                                        headers: (_headers22 = {}, _headers22["paypal-client-context"] = orderID, _headers22)
                                     }).then((function(_ref17) {
                                         var approvePaymentWithNonce = _ref17.approvePaymentWithNonce;
                                         logger_getLogger().info("pay_with_paymentMethodNonce", JSON.stringify(approvePaymentWithNonce));
@@ -5035,119 +5787,79 @@ window.spb = function(modules) {
                 };
             },
             spinner: !0
-        }, {
+        }, applepay, {
             name: "native",
-            setup: function(_ref5) {
-                var props = _ref5.props, serviceData = _ref5.serviceData;
-                return promise_ZalgoPromise.try((function() {
-                    var getPageUrl = props.getPageUrl, clientID = props.clientID, currency = props.currency, platform = props.platform, env = props.env, vault = props.vault, buttonSessionID = props.buttonSessionID, enableFunding = props.enableFunding, defaultStickinessID = props.stickinessID, merchantDomain = props.merchantDomain;
-                    var merchantID = serviceData.merchantID, buyerCountry = serviceData.buyerCountry, cookies = serviceData.cookies;
-                    var shippingCallbackEnabled = Boolean(props.onShippingChange);
-                    return promise_ZalgoPromise.all([ getNativeEligibility({
-                        vault: vault,
-                        platform: platform,
-                        shippingCallbackEnabled: shippingCallbackEnabled,
-                        clientID: clientID,
-                        buyerCountry: buyerCountry,
-                        currency: currency,
-                        buttonSessionID: buttonSessionID,
-                        cookies: cookies,
-                        enableFunding: enableFunding,
-                        stickinessID: deferABSplitToPopup() ? null : defaultStickinessID,
-                        skipElmo: deferABSplitToPopup(),
-                        merchantID: merchantID[0],
-                        domain: merchantDomain
-                    }).then((function(result) {
-                        nativeEligibility = result;
-                        (isTestGroup("paypal") || isTestGroup("venmo") || isControlGroup("paypal") || isControlGroup("venmo") || isNativeOptedIn({
-                            props: props
-                        })) && logger_getLogger().configure({
+            setup: function(_ref) {
+                return (_ref3 = {
+                    props: _ref.props,
+                    serviceData: _ref.serviceData
+                }, props = _ref3.props, serviceData = _ref3.serviceData, clientID = props.clientID, 
+                currency = props.currency, env = props.env, buttonSessionID = props.buttonSessionID, 
+                enableFunding = props.enableFunding, merchantDomain = props.merchantDomain, merchantID = serviceData.merchantID, 
+                buyerCountry = serviceData.buyerCountry, cookies = serviceData.cookies, getNativeEligibility({
+                    vault: props.vault,
+                    platform: props.platform,
+                    shippingCallbackEnabled: Boolean(props.onShippingChange),
+                    clientID: clientID,
+                    buyerCountry: buyerCountry,
+                    currency: currency,
+                    buttonSessionID: buttonSessionID,
+                    cookies: cookies,
+                    enableFunding: enableFunding,
+                    stickinessID: null,
+                    skipElmo: !0,
+                    merchantID: merchantID[0],
+                    domain: merchantDomain
+                }).then((function(nativeEligibility) {
+                    (function(_ref) {
+                        var nativeEligibility = _ref.nativeEligibility;
+                        for (var _i2 = 0; _i2 < SUPPORTED_FUNDING.length; _i2++) {
+                            var fundingSource = SUPPORTED_FUNDING[_i2];
+                            if (isTestGroup(nativeEligibility, fundingSource) || isControlGroup(nativeEligibility, fundingSource)) return !0;
+                        }
+                        return !1;
+                    })({
+                        nativeEligibility: nativeEligibility
+                    }) && function(_ref) {
+                        var env = _ref.env;
+                        logger_getLogger().configure({
                             amplitudeApiKey: AMPLITUDE_API_KEY[env]
                         });
-                    })), getPageUrl().then((function(pageUrl) {
-                        initialPageUrl = pageUrl;
-                    })) ]);
-                })).then(src_util_noop);
+                    }({
+                        env: env
+                    });
+                }))).then(src_util_noop);
+                var _ref3, props, serviceData, clientID, currency, env, buttonSessionID, enableFunding, merchantDomain, merchantID, buyerCountry, cookies;
             },
-            isEligible: function(_ref3) {
-                var props = _ref3.props;
+            isEligible: function(_ref4) {
+                var props = _ref4.props;
                 var createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, env = props.env;
-                var firebaseConfig = _ref3.config.firebase;
-                var merchantID = _ref3.serviceData.merchantID;
+                var firebaseConfig = _ref4.config.firebase;
+                var merchantID = _ref4.serviceData.merchantID;
                 return !("mobile" !== props.platform || props.onShippingChange && !isNativeOptedIn({
                     props: props
                 }) || createBillingAgreement || createSubscription || !supportsPopups() || !firebaseConfig || !isIOSSafari() && !isAndroidChrome() || !isNativeOptedIn({
                     props: props
                 }) && ("local" === env || "stage" === env || merchantID.length > 1));
             },
-            isPaymentEligible: function(_ref4) {
-                var payment = _ref4.payment;
+            isPaymentEligible: function(_ref5) {
+                var payment = _ref5.payment;
                 var fundingSource = payment.fundingSource;
-                if (payment.win) return !1;
-                if (!initialPageUrl) return !1;
-                if (!NATIVE_CHECKOUT_URI[fundingSource]) return !1;
-                if (isNativeOptedIn({
-                    props: _ref4.props
-                })) return !0;
-                if (nativeEligibility && nativeEligibility[fundingSource] && nativeEligibility[fundingSource].eligibility) return !0;
-                if (isControlGroup(fundingSource)) {
-                    nativeFakeoutExperiment.logStart();
-                    return !!isPopupFakeout();
-                }
-                return !1;
+                return !payment.win && !!(NATIVE_CHECKOUT_URI[fundingSource] && NATIVE_CHECKOUT_POPUP_URI[fundingSource] && NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]);
             },
-            init: function(_ref6) {
-                var props = _ref6.props, components = _ref6.components, config = _ref6.config, payment = _ref6.payment, serviceData = _ref6.serviceData;
-                var createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, commit = props.commit, clientID = props.clientID, sessionID = props.sessionID, sdkCorrelationID = props.sdkCorrelationID, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost, onClick = props.onClick, onShippingChange = props.onShippingChange, vault = props.vault, platform = props.platform, currency = props.currency, defaultStickinessID = props.stickinessID, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
-                var facilitatorAccessToken = serviceData.facilitatorAccessToken, sdkMeta = serviceData.sdkMeta, buyerCountry = serviceData.buyerCountry, merchantID = serviceData.merchantID, cookies = serviceData.cookies;
+            init: function(_ref2) {
+                var props = _ref2.props, components = _ref2.components, config = _ref2.config, payment = _ref2.payment, serviceData = _ref2.serviceData;
+                var onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, buttonSessionID = props.buttonSessionID, onShippingChange = props.onShippingChange;
                 var fundingSource = payment.fundingSource;
-                var sdkVersion = config.sdkVersion, firebaseConfig = config.firebase;
-                var shippingCallbackEnabled = Boolean(onShippingChange);
-                sdkMeta = sdkMeta.replace(/[=]+$/, "");
-                if (!firebaseConfig) throw new Error("Can not run native flow without firebase config");
+                if (!config.firebase) throw new Error("Can not run native flow without firebase config");
                 native_clean && native_clean.all();
-                native_clean = (tasks = [], cleaned = !1, {
-                    set: function(name, item) {
-                        if (!cleaned) {
-                            (void 0)[name] = item;
-                            this.register((function() {
-                                delete (void 0)[name];
-                            }));
-                        }
-                        return item;
-                    },
-                    register: function(method) {
-                        cleaned ? method(cleanErr) : tasks.push(once((function() {
-                            return method(cleanErr);
-                        })));
-                    },
-                    all: function(err) {
-                        cleanErr = err;
-                        var results = [];
-                        cleaned = !0;
-                        for (;tasks.length; ) {
-                            var task = tasks.shift();
-                            results.push(task());
-                        }
-                        return promise_ZalgoPromise.all(results).then(src_util_noop);
-                    }
-                });
-                var tasks, cleaned, cleanErr;
+                native_clean = cleanup();
                 var approved = !1;
                 var cancelled = !1;
                 var didFallback = !1;
-                var conditionalExtendUrl = function() {
-                    return isIOSSafari() && "venmo" === fundingSource && -1 !== PARTIAL_ENCODING_CLIENT.indexOf(clientID) ? extendUrlWithPartialEncoding.apply(void 0, arguments) : extendUrl.apply(void 0, arguments);
-                };
                 var destroy = memoize((function() {
                     return native_clean.all();
                 }));
-                var listen = function(popupWin, domain, event, handler) {
-                    return paypal.postRobot.once(event, {
-                        window: popupWin,
-                        domain: domain
-                    }, handler);
-                };
                 var fallbackToWebCheckout = function(fallbackWin) {
                     didFallback = !0;
                     var checkoutPayment = _extends({}, payment, {
@@ -5167,150 +5879,17 @@ window.spb = function(modules) {
                     }));
                     return instance.start();
                 };
-                var getNativeDomain = memoize((function() {
-                    return "sandbox" !== env || !isNativeOptedIn({
-                        props: props
-                    }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain ? NATIVE_DOMAIN[env] : "https://www.paypal.com";
-                }));
-                var getNativePopupDomain = memoize((function() {
-                    return "sandbox" !== env || !isNativeOptedIn({
-                        props: props
-                    }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain ? NATIVE_POPUP_DOMAIN[env] : "https://www.sandbox.paypal.com";
-                }));
-                var getWebCheckoutUrl = memoize((function(_ref7) {
-                    var orderID = _ref7.orderID;
-                    return conditionalExtendUrl(getNativeDomain() + "/checkoutnow", {
-                        query: {
-                            fundingSource: fundingSource,
-                            facilitatorAccessToken: facilitatorAccessToken,
-                            token: orderID,
-                            useraction: commit ? "commit" : "continue",
-                            native_xo: "1"
-                        }
-                    });
-                }));
-                var getDirectNativeUrl = memoize((function(_temp) {
-                    var _ref8 = void 0 === _temp ? {} : _temp, _ref8$pageUrl = _ref8.pageUrl, pageUrl = void 0 === _ref8$pageUrl ? initialPageUrl : _ref8$pageUrl, sessionUID = _ref8.sessionUID;
-                    return conditionalExtendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
-                        query: {
-                            sdkMeta: sdkMeta,
-                            fundingSource: fundingSource,
-                            sessionUID: sessionUID,
-                            buttonSessionID: buttonSessionID,
-                            pageUrl: pageUrl,
-                            clientID: clientID,
-                            stickinessID: defaultStickinessID,
-                            enableFunding: enableFunding.join(","),
-                            domain: merchantDomain,
-                            rtdbInstanceID: firebaseConfig.databaseURL
-                        }
-                    });
-                }));
-                var getDelayedNativeUrlQueryParams = function(_ref9) {
-                    var sessionUID = _ref9.sessionUID, _ref9$pageUrl = _ref9.pageUrl, pageUrl = void 0 === _ref9$pageUrl ? initialPageUrl : _ref9$pageUrl, orderID = _ref9.orderID, _ref9$stickinessID = _ref9.stickinessID, stickinessID = void 0 === _ref9$stickinessID ? defaultStickinessID : _ref9$stickinessID;
-                    var webCheckoutUrl = getWebCheckoutUrl({
-                        orderID: orderID
-                    });
-                    var userAgent = getUserAgent();
-                    var forceEligible = isNativeOptedIn({
-                        props: props
-                    });
-                    return {
-                        sdkMeta: sdkMeta,
-                        sessionUID: sessionUID,
-                        orderID: orderID,
-                        facilitatorAccessToken: facilitatorAccessToken,
-                        pageUrl: pageUrl,
-                        clientID: clientID,
-                        commit: String(commit),
-                        webCheckoutUrl: isIOSSafari() ? webCheckoutUrl : "",
-                        stickinessID: stickinessID || defaultStickinessID,
-                        userAgent: userAgent,
-                        buttonSessionID: buttonSessionID,
-                        env: env,
-                        stageHost: stageHost || "",
-                        apiStageHost: apiStageHost || "",
-                        forceEligible: forceEligible,
-                        fundingSource: fundingSource,
-                        enableFunding: enableFunding.join(","),
-                        domain: merchantDomain,
-                        rtdbInstanceID: firebaseConfig.databaseURL
-                    };
-                };
-                var getDelayedNativeUrl = memoize((function(_ref10) {
-                    var sessionUID = _ref10.sessionUID, _ref10$pageUrl = _ref10.pageUrl, pageUrl = void 0 === _ref10$pageUrl ? initialPageUrl : _ref10$pageUrl, orderID = _ref10.orderID, _ref10$stickinessID = _ref10.stickinessID, stickinessID = void 0 === _ref10$stickinessID ? defaultStickinessID : _ref10$stickinessID;
-                    return conditionalExtendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_URI[fundingSource], {
-                        query: getDelayedNativeUrlQueryParams({
-                            sessionUID: sessionUID,
-                            pageUrl: pageUrl,
-                            orderID: orderID,
-                            stickinessID: stickinessID
-                        })
-                    });
-                }));
-                var getDelayedNativeFallbackUrl = memoize((function(_ref11) {
-                    var sessionUID = _ref11.sessionUID, _ref11$pageUrl = _ref11.pageUrl, pageUrl = void 0 === _ref11$pageUrl ? initialPageUrl : _ref11$pageUrl, orderID = _ref11.orderID, _ref11$stickinessID = _ref11.stickinessID, stickinessID = void 0 === _ref11$stickinessID ? defaultStickinessID : _ref11$stickinessID;
-                    return conditionalExtendUrl("" + getNativeDomain() + NATIVE_CHECKOUT_FALLBACK_URI[fundingSource], {
-                        query: getDelayedNativeUrlQueryParams({
-                            sessionUID: sessionUID,
-                            pageUrl: pageUrl,
-                            orderID: orderID,
-                            stickinessID: stickinessID
-                        })
-                    });
-                }));
-                var getNativePopupUrl = memoize((function() {
-                    var parentDomain;
-                    return conditionalExtendUrl("" + getNativePopupDomain() + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
-                        query: (parentDomain = getDomain(), {
-                            sdkMeta: sdkMeta,
-                            buttonSessionID: buttonSessionID,
-                            parentDomain: parentDomain,
-                            env: env,
-                            clientID: clientID,
-                            sessionID: sessionID,
-                            sdkCorrelationID: sdkCorrelationID,
-                            buyerCountry: buyerCountry
-                        })
-                    }) + "#init";
-                }));
-                var getSDKProps = memoize((function() {
-                    return createOrder().then((function(orderID) {
-                        var userAgent = getUserAgent();
-                        var webCheckoutUrl = getWebCheckoutUrl({
-                            orderID: orderID
-                        });
-                        var forceEligible = isNativeOptedIn({
-                            props: props
-                        });
-                        return {
-                            orderID: orderID,
-                            facilitatorAccessToken: facilitatorAccessToken,
-                            pageUrl: "",
-                            commit: commit,
-                            webCheckoutUrl: webCheckoutUrl,
-                            userAgent: userAgent,
-                            buttonSessionID: buttonSessionID,
-                            env: env,
-                            stageHost: stageHost,
-                            apiStageHost: apiStageHost,
-                            forceEligible: forceEligible
-                        };
-                    }));
-                }));
-                var onApproveCallback = function(_ref12) {
-                    var _getLogger$info$track2;
-                    var _ref12$data = _ref12.data, payerID = _ref12$data.payerID, paymentID = _ref12$data.paymentID, billingToken = _ref12$data.billingToken;
+                var onApproveCallback = function(_ref3) {
+                    var _getLogger$info$track;
+                    var _ref3$data = _ref3.data, payerID = _ref3$data.payerID, paymentID = _ref3$data.paymentID, billingToken = _ref3$data.billingToken;
                     approved = !0;
-                    isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.logComplete();
                     logger_getLogger().info("native_message_onapprove", {
                         payerID: payerID,
                         paymentID: paymentID,
                         billingToken: billingToken
-                    }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "native_onapprove", 
-                    _getLogger$info$track2.info_msg = "payerID: " + payerID + ", paymentID: " + paymentID + ", billingToken: " + billingToken, 
-                    _getLogger$info$track2)).flush();
-                    logger_getLogger().info("native_approve_" + (isIOSSafari() ? "ios" : "android") + "_window_width_" + window.outerWidth).info("native_approve_" + (isIOSSafari() ? "ios" : "android") + "_window_height_" + window.outerHeight).flush();
+                    }).track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "native_onapprove", 
+                    _getLogger$info$track.info_msg = "payerID: " + payerID + ", paymentID: " + (paymentID || "undefined") + ", billingToken: " + (billingToken || "undefined"), 
+                    _getLogger$info$track)).flush();
                     return promise_ZalgoPromise.all([ onApprove({
                         payerID: payerID,
                         paymentID: paymentID,
@@ -5321,13 +5900,13 @@ window.spb = function(modules) {
                             return fallbackToWebCheckout();
                         }
                     }).catch((function(err) {
-                        var _getLogger$info$track3;
+                        var _getLogger$info$track2;
                         logger_getLogger().info("native_message_onapprove_error", {
                             payerID: payerID,
                             paymentID: paymentID,
                             billingToken: billingToken
-                        }).track((_getLogger$info$track3 = {}, _getLogger$info$track3.transition_name = "native_onapprove_error", 
-                        _getLogger$info$track3.info_msg = "Error: " + stringifyError(err), _getLogger$info$track3)).flush();
+                        }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "native_onapprove_error", 
+                        _getLogger$info$track2.info_msg = "Error: " + stringifyError(err), _getLogger$info$track2)).flush();
                         onError(err);
                     })), destroy() ]).then((function() {
                         return {
@@ -5336,481 +5915,504 @@ window.spb = function(modules) {
                     }));
                 };
                 var onCancelCallback = function() {
-                    var _getLogger$info$track4;
+                    var _getLogger$info$track3;
                     cancelled = !0;
-                    logger_getLogger().info("native_message_oncancel").track((_getLogger$info$track4 = {}, 
-                    _getLogger$info$track4.transition_name = "native_oncancel", _getLogger$info$track4)).flush();
+                    logger_getLogger().info("native_message_oncancel").track((_getLogger$info$track3 = {}, 
+                    _getLogger$info$track3.transition_name = "native_oncancel", _getLogger$info$track3)).flush();
                     return promise_ZalgoPromise.all([ onCancel(), destroy() ]).then((function() {
                         return {
                             buttonSessionID: buttonSessionID
                         };
                     }));
                 };
-                var onErrorCallback = function(_ref13) {
-                    var _getLogger$info$track5;
-                    var message = _ref13.data.message;
+                var onErrorCallback = function(_ref4) {
+                    var _getLogger$info$track4;
+                    var message = _ref4.data.message;
                     logger_getLogger().info("native_message_onerror", {
                         err: message
-                    }).track((_getLogger$info$track5 = {}, _getLogger$info$track5.transition_name = "native_onerror", 
-                    _getLogger$info$track5.info_msg = "Error message: " + message, _getLogger$info$track5)).flush();
+                    }).track((_getLogger$info$track4 = {}, _getLogger$info$track4.transition_name = "native_onerror", 
+                    _getLogger$info$track4.info_msg = "Error message: " + message, _getLogger$info$track4)).flush();
                     return promise_ZalgoPromise.all([ onError(new Error(message)), destroy() ]).then((function() {
                         return {
                             buttonSessionID: buttonSessionID
                         };
                     }));
                 };
-                var onShippingChangeCallback = function(_ref14) {
-                    var _getLogger$info$track6;
-                    var data = _ref14.data;
-                    logger_getLogger().info("native_message_onshippingchange").track((_getLogger$info$track6 = {}, 
-                    _getLogger$info$track6.transition_name = "native_onshippingchange", _getLogger$info$track6)).flush();
-                    if (onShippingChange) {
-                        var resolved = !0;
-                        var actions = {
-                            resolve: function() {
-                                return promise_ZalgoPromise.try((function() {
-                                    resolved = !0;
-                                }));
-                            },
-                            reject: function() {
-                                return promise_ZalgoPromise.try((function() {
-                                    resolved = !1;
-                                }));
-                            }
-                        };
-                        return onShippingChange(_extends({}, data, {
-                            forceRestAPI: !0
-                        }), actions).then((function() {
-                            return {
-                                resolved: resolved
+                var onShippingChangeCallback = function(_ref5) {
+                    var data = _ref5.data;
+                    return promise_ZalgoPromise.try((function() {
+                        var _getLogger$info$track5;
+                        logger_getLogger().info("native_message_onshippingchange").track((_getLogger$info$track5 = {}, 
+                        _getLogger$info$track5.transition_name = "native_onshippingchange", _getLogger$info$track5)).flush();
+                        if (onShippingChange) {
+                            var resolved = !0;
+                            var actions = {
+                                resolve: function() {
+                                    return promise_ZalgoPromise.try((function() {
+                                        resolved = !0;
+                                    }));
+                                },
+                                reject: function() {
+                                    return promise_ZalgoPromise.try((function() {
+                                        resolved = !1;
+                                    }));
+                                }
                             };
-                        }));
-                    }
+                            return onShippingChange(_extends({}, data, {
+                                forceRestAPI: !0
+                            }), actions).then((function() {
+                                return {
+                                    resolved: resolved
+                                };
+                            }));
+                        }
+                        return {
+                            resolved: !0
+                        };
+                    }));
                 };
                 var onFallbackCallback = function() {
-                    var _getLogger$info$track7;
-                    logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track7 = {}, 
-                    _getLogger$info$track7.transition_name = "native_onfallback", _getLogger$info$track7)).flush();
-                    fallbackToWebCheckout();
-                };
-                var connectNative = memoize((function(_ref15) {
-                    var socket = getNativeSocket({
-                        sessionUID: _ref15.sessionUID,
-                        firebaseConfig: firebaseConfig,
-                        version: sdkVersion
-                    });
-                    var closeNative = memoize((function() {
-                        logger_getLogger().info("native_message_close").flush();
-                        return socket.send("close", {
-                            buttonSessionID: buttonSessionID
-                        }).then((function() {
-                            logger_getLogger().info("native_response_close").flush();
-                            return destroy();
-                        }));
-                    }));
-                    var getPropsListener = socket.on("getProps", (function() {
-                        logger_getLogger().info("native_message_getprops").flush();
-                        return getSDKProps();
-                    }));
-                    var onShippingChangeListener = socket.on("onShippingChange", onShippingChangeCallback);
-                    var onApproveListener = socket.on("onApprove", onApproveCallback);
-                    var onCancelListener = socket.on("onCancel", onCancelCallback);
-                    var onErrorListener = socket.on("onError", onErrorCallback);
-                    var onFallbackListener = socket.on("onFallback", onFallbackCallback);
-                    native_clean.register(getPropsListener.cancel);
-                    native_clean.register(onShippingChangeListener.cancel);
-                    native_clean.register(onApproveListener.cancel);
-                    native_clean.register(onCancelListener.cancel);
-                    native_clean.register(onErrorListener.cancel);
-                    native_clean.register(onFallbackListener.cancel);
-                    socket.reconnect();
-                    return {
-                        setProps: function() {
-                            return getSDKProps().then((function(sdkProps) {
-                                logger_getLogger().info("native_message_setprops").flush();
-                                !function(props) {
-                                    var _getLogger$info$track;
-                                    var sanitizedProps = _extends({}, props, {
-                                        facilitatorAccessToken: props.facilitatorAccessToken ? "********************" : ""
-                                    });
-                                    logger_getLogger().info("native_setprops_request", sanitizedProps).track((_getLogger$info$track = {}, 
-                                    _getLogger$info$track.transition_name = "process_set_props_attempt", _getLogger$info$track)).flush();
-                                }(sdkProps);
-                                return socket.send("setProps", sdkProps);
-                            })).then((function() {
-                                var _getLogger$info$track8;
-                                logger_getLogger().info("native_response_setprops").track((_getLogger$info$track8 = {}, 
-                                _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.transition_name = "native_app_switch_ack", 
-                                _getLogger$info$track8)).flush();
-                            })).catch((function(err) {
-                                var _getLogger$info$track9;
-                                logger_getLogger().info("native_response_setprops_error").track((_getLogger$info$track9 = {}, 
-                                _getLogger$info$track9.state_name = "smart_button", _getLogger$info$track9.int_error_desc = stringifyError(err), 
-                                _getLogger$info$track9)).flush();
-                            }));
-                        },
-                        close: closeNative
-                    };
-                }));
-                var detectAppSwitch = once((function(_ref16) {
-                    var _getLogger$info$track10;
-                    var sessionUID = _ref16.sessionUID;
-                    getStorageState((function(state) {
-                        var _state$lastAppSwitchT = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT ? 0 : _state$lastAppSwitchT, _state$lastWebSwitchT = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT ? 0 : _state$lastWebSwitchT;
-                        lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_app_switch", {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                        lastWebSwitchTime > lastAppSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_web_switch", {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                        lastAppSwitchTime || lastWebSwitchTime || logger_getLogger().info("app_switch_detect_with_no_previous_switch", {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                        state.lastAppSwitchTime = Date.now();
-                    }));
-                    logger_getLogger().info("native_detect_app_switch").track((_getLogger$info$track10 = {}, 
-                    _getLogger$info$track10.transition_name = "native_detect_app_switch", _getLogger$info$track10)).flush();
-                    return connectNative({
-                        sessionUID: sessionUID
-                    }).setProps();
-                }));
-                var detectWebSwitch = once((function(fallbackWin) {
-                    var _getLogger$info$track11;
-                    getStorageState((function(state) {
-                        var _state$lastAppSwitchT2 = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT2 ? 0 : _state$lastAppSwitchT2, _state$lastWebSwitchT2 = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT2 ? 0 : _state$lastWebSwitchT2;
-                        lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_app_switch", {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                        lastWebSwitchTime > lastAppSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_web_switch", {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                        lastAppSwitchTime || lastWebSwitchTime || logger_getLogger().info("web_switch_detect_with_no_previous_switch", {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                        state.lastWebSwitchTime = Date.now();
-                    }));
-                    logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track11 = {}, 
-                    _getLogger$info$track11.transition_name = "native_detect_web_switch", _getLogger$info$track11)).flush();
-                    return fallbackToWebCheckout(fallbackWin);
-                }));
-                var validate = memoize((function() {
                     return promise_ZalgoPromise.try((function() {
-                        return !onClick || onClick({
-                            fundingSource: fundingSource
-                        });
+                        var _getLogger$info$track6;
+                        logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track6 = {}, 
+                        _getLogger$info$track6.transition_name = "native_onfallback", _getLogger$info$track6)).flush();
+                        fallbackToWebCheckout();
+                        return {
+                            buttonSessionID: buttonSessionID
+                        };
                     }));
-                }));
-                var popup = memoize((function(url) {
-                    return window.open(url);
-                }));
-                return {
-                    click: function() {
-                        return promise_ZalgoPromise.try((function() {
-                            var sessionUID = uniqueID();
-                            isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.logStart();
-                            return function(fundingSource) {
-                                return !!window.xprops.forceNativeDirectAppSwitch || !window.xprops.forceNativePopupAppSwitch && !isPopupFakeout() && !(isAndroidChrome() && !isControlGroup(fundingSource) && androidPopupExperiment.isEnabled()) && isAndroidChrome();
-                            }(fundingSource) ? function(_ref17) {
-                                var _getLogger$info$info$, _getLogger$info$info$2;
-                                var sessionUID = _ref17.sessionUID;
-                                var nativeUrl = getDirectNativeUrl({
-                                    sessionUID: sessionUID
+                };
+                var onCloseCallback = function() {
+                    return promise_ZalgoPromise.delay(1e3).then((function() {
+                        if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.all([ onCancel(), destroy() ]);
+                    })).then(src_util_noop);
+                };
+                var initPopupAppSwitch = function(_ref8) {
+                    var sessionUID = _ref8.sessionUID;
+                    return new promise_ZalgoPromise((function(resolve, reject) {
+                        var nativePopup = function(_ref2) {
+                            var _getLogger$info$track3;
+                            var props = _ref2.props, serviceData = _ref2.serviceData, fundingSource = _ref2.fundingSource, sessionUID = _ref2.sessionUID, callbacks = _ref2.callbacks;
+                            var onClick = props.onClick, createOrder = props.createOrder;
+                            var firebaseConfig = _ref2.config.firebase;
+                            var onDetectAppSwitch = callbacks.onDetectAppSwitch, onDetectWebSwitch = callbacks.onDetectWebSwitch, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, onError = callbacks.onError, onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy;
+                            onDetectAppSwitch = once(onDetectAppSwitch);
+                            onDetectWebSwitch = once(onDetectWebSwitch);
+                            if (!firebaseConfig) throw new Error("Can not load popup without firebase config");
+                            var nativePopupWin = window.open(function(_ref8) {
+                                var props = _ref8.props, fundingSource = _ref8.fundingSource;
+                                var queryParams = function(_ref7) {
+                                    var props = _ref7.props, serviceData = _ref7.serviceData;
+                                    var env = props.env, clientID = props.clientID, sessionID = props.sessionID, sdkCorrelationID = props.sdkCorrelationID;
+                                    var buyerCountry = serviceData.buyerCountry;
+                                    return {
+                                        sdkMeta: serviceData.sdkMeta,
+                                        buttonSessionID: props.buttonSessionID,
+                                        parentDomain: getDomain(),
+                                        env: env,
+                                        clientID: clientID,
+                                        sessionID: sessionID,
+                                        sdkCorrelationID: sdkCorrelationID,
+                                        buyerCountry: buyerCountry
+                                    };
+                                }({
+                                    props: props,
+                                    serviceData: _ref8.serviceData,
+                                    fundingSource: fundingSource
                                 });
-                                var nativeWin = popup(nativeUrl);
-                                var closePopup = function(event) {
-                                    var _getLogger$info$track12;
-                                    var eventType = event && event.type ? String(event.type) : event;
-                                    logger_getLogger().info("native_closing_popup_" + eventType).track((_getLogger$info$track12 = {}, 
-                                    _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = event ? " native_closing_popup_" + eventType : "native_closing_popup", 
-                                    _getLogger$info$track12)).flush();
-                                    nativeWin.close();
-                                };
-                                window.addEventListener("pagehide", closePopup);
-                                window.addEventListener("unload", closePopup);
-                                logger_getLogger().info("native_attempt_appswitch_popup_shown", {
-                                    url: nativeUrl
-                                }).info("native_attempt_appswitch_url_popup", {
-                                    url: nativeUrl
-                                }).track((_getLogger$info$info$ = {}, _getLogger$info$info$.state_name = "smart_button", 
-                                _getLogger$info$info$.transition_name = "popup_shown", _getLogger$info$info$)).track((_getLogger$info$info$2 = {}, 
-                                _getLogger$info$info$2.state_name = "smart_button", _getLogger$info$info$2.transition_name = "app_switch_attempted", 
-                                _getLogger$info$info$2)).flush();
-                                var validatePromise = validate();
-                                var delayPromise = promise_ZalgoPromise.delay(500);
-                                connectNative({
-                                    sessionUID: sessionUID
-                                });
-                                return validatePromise.then((function(valid) {
-                                    if (!valid) {
-                                        var _getLogger$info$track13;
-                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track13 = {}, 
-                                        _getLogger$info$track13.state_name = "smart_button", _getLogger$info$track13.transition_name = "native_onclick_invalid", 
-                                        _getLogger$info$track13)).flush();
-                                        return delayPromise.then((function() {
-                                            if (didAppSwitch(nativeWin)) return connectNative({
-                                                sessionUID: sessionUID
-                                            }).close();
-                                        })).then((function() {
-                                            nativeWin.close();
-                                            return destroy();
-                                        }));
-                                    }
-                                    return createOrder().then((function() {
-                                        if (didAppSwitch(nativeWin)) return detectAppSwitch({
-                                            sessionUID: sessionUID
-                                        });
-                                        if (nativeWin) return detectWebSwitch(nativeWin);
-                                        throw new Error("No window found");
-                                    })).catch((function(err) {
-                                        var _getLogger$info$track14;
-                                        logger_getLogger().info("native_attempt_appswitch_url_popup_errored", {
-                                            url: nativeUrl
-                                        }).track((_getLogger$info$track14 = {}, _getLogger$info$track14.state_name = "smart_button", 
-                                        _getLogger$info$track14.transition_name = "app_switch_attempted_errored", _getLogger$info$track14.int_error_desc = stringifyError(err), 
-                                        _getLogger$info$track14)).flush();
-                                        nativeWin.close();
-                                        return connectNative({
-                                            sessionUID: sessionUID
-                                        }).close().then((function() {
-                                            throw err;
-                                        }));
-                                    }));
-                                }));
+                                return extendUrl("" + getNativePopupDomain({
+                                    props: props
+                                }) + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
+                                    query: queryParams
+                                }) + "#init";
                             }({
-                                sessionUID: sessionUID
-                            }) : function(_ref18) {
-                                var _getLogger$info$track15;
-                                var sessionUID = _ref18.sessionUID;
-                                var redirected = !1;
-                                var popupWin = popup(getNativePopupUrl());
-                                logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track15 = {}, 
-                                _getLogger$info$track15.state_name = "smart_button", _getLogger$info$track15.transition_name = "popup_shown", 
-                                _getLogger$info$track15)).flush();
-                                var closeListener = onCloseWindow(popupWin, (function() {
-                                    var _getLogger$info$track16;
-                                    logger_getLogger().info("native_popup_closed").track((_getLogger$info$track16 = {}, 
-                                    _getLogger$info$track16.state_name = "smart_button", _getLogger$info$track16.transition_name = "popup_closed", 
-                                    _getLogger$info$track16)).flush();
-                                    return promise_ZalgoPromise.delay(1e3).then((function() {
-                                        if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.all([ onCancel(), destroy() ]);
-                                    })).then(src_util_noop);
-                                }), 500);
-                                var closePopup = function(event) {
-                                    var _getLogger$info$track17;
-                                    var eventType = event && event.type ? String(event.type) : event;
-                                    logger_getLogger().info("native_closing_popup_" + eventType).track((_getLogger$info$track17 = {}, 
-                                    _getLogger$info$track17.state_name = "smart_button", _getLogger$info$track17.transition_name = event ? "native_closing_popup_" + eventType : "native_closing_popup", 
-                                    _getLogger$info$track17)).flush();
-                                    closeListener.cancel();
-                                    popupWin.close();
-                                };
-                                window.addEventListener("pagehide", closePopup);
-                                window.addEventListener("unload", closePopup);
-                                native_clean.register((function() {
-                                    closeListener.cancel();
+                                props: props,
+                                serviceData: serviceData,
+                                fundingSource: fundingSource
+                            }));
+                            var nativePopupDomain = getNativePopupDomain({
+                                props: props
+                            });
+                            logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track3 = {}, 
+                            _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = "popup_shown", 
+                            _getLogger$info$track3)).flush();
+                            var closeListener = onCloseWindow(nativePopupWin, (function() {
+                                var _getLogger$info$track4;
+                                logger_getLogger().info("native_popup_closed").track((_getLogger$info$track4 = {}, 
+                                _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = "popup_closed", 
+                                _getLogger$info$track4)).flush();
+                                onClose();
+                            }), 500);
+                            var closePopup = function(event) {
+                                var _getLogger$info$track5;
+                                logger_getLogger().info("native_closing_popup_" + event).track((_getLogger$info$track5 = {}, 
+                                _getLogger$info$track5.state_name = "smart_button", _getLogger$info$track5.transition_name = event ? "native_closing_popup_" + event : "native_closing_popup", 
+                                _getLogger$info$track5)).flush();
+                                closeListener.cancel();
+                                nativePopupWin.close();
+                            };
+                            var redirectListenerTimeout = setTimeout((function() {
+                                logger_getLogger().info("native_popup_load_timeout").flush();
+                            }), 5e3);
+                            var validatePromise = promise_ZalgoPromise.try((function() {
+                                return !onClick || onClick({
+                                    fundingSource: fundingSource
+                                });
+                            })).then((function(valid) {
+                                if (!valid) {
+                                    var _getLogger$info$track6;
+                                    logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track6 = {}, 
+                                    _getLogger$info$track6.state_name = "smart_button", _getLogger$info$track6.transition_name = "native_onclick_invalid", 
+                                    _getLogger$info$track6)).flush();
+                                }
+                                return valid;
+                            }));
+                            var orderPromise = validatePromise.then((function(valid) {
+                                return valid ? createOrder() : unresolvedPromise();
+                            }));
+                            var awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, "awaitRedirect", (function(_ref3) {
+                                var _ref3$data = _ref3.data, appDetect = _ref3$data.app, pageUrl = _ref3$data.pageUrl, sfvc = _ref3$data.sfvc, stickinessID = _ref3$data.stickinessID;
+                                clearTimeout(redirectListenerTimeout);
+                                logger_getLogger().info("native_post_message_await_redirect").flush();
+                                (app = appDetect) && Object.keys(app).forEach((function(key) {
+                                    var _getLogger$info, _getLogger$info$track;
+                                    logger_getLogger().info("native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key, (_getLogger$info = {}, 
+                                    _getLogger$info[key] = app[key], _getLogger$info)).track((_getLogger$info$track = {}, 
+                                    _getLogger$info$track.state_name = "smart_button", _getLogger$info$track.transition_name = "native_app_installed", 
+                                    _getLogger$info$track.info_msg = "native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key + ": " + app[key].toString(), 
+                                    _getLogger$info$track)).flush();
                                 }));
-                                var validatePromise = validate().then((function(valid) {
-                                    if (!valid) {
-                                        var _getLogger$info$track18;
-                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track18 = {}, 
-                                        _getLogger$info$track18.state_name = "smart_button", _getLogger$info$track18.transition_name = "native_onclick_invalid", 
-                                        _getLogger$info$track18)).flush();
+                                var app;
+                                logger_getLogger().addTrackingBuilder((function() {
+                                    var _ref4;
+                                    return (_ref4 = {}).stickiness_id = stickinessID, _ref4;
+                                }));
+                                return promise_ZalgoPromise.hash({
+                                    valid: validatePromise,
+                                    eligible: getEligibility({
+                                        fundingSource: fundingSource,
+                                        props: props,
+                                        serviceData: serviceData,
+                                        sfvc: sfvc,
+                                        validatePromise: validatePromise,
+                                        stickinessID: stickinessID,
+                                        appDetect: appDetect
+                                    })
+                                }).then((function(_ref5) {
+                                    var eligible = _ref5.eligible;
+                                    if (!_ref5.valid) {
+                                        nativePopupWin.close();
+                                        return onDestroy();
                                     }
-                                    return valid;
-                                }));
-                                var orderPromise = validatePromise.then((function(valid) {
-                                    return valid ? createOrder() : unresolvedPromise();
-                                }));
-                                var redirectListenerTimeout = setTimeout((function() {
-                                    logger_getLogger().info("native_popup_load_timeout").flush();
-                                }), 5e3);
-                                var awaitRedirectListener = listen(popupWin, getNativePopupDomain(), "awaitRedirect", (function(_ref19) {
-                                    var _ref19$data = _ref19.data, app = _ref19$data.app, pageUrl = _ref19$data.pageUrl, sfvc = _ref19$data.sfvc, popupStickinessID = _ref19$data.stickinessID;
-                                    logger_getLogger().info("native_post_message_await_redirect").flush();
-                                    clearTimeout(redirectListenerTimeout);
-                                    var stickinessID = deferABSplitToPopup() ? popupStickinessID : defaultStickinessID;
-                                    logger_getLogger().addTrackingBuilder((function() {
-                                        var _ref20;
-                                        return (_ref20 = {}).stickiness_id = stickinessID, _ref20;
-                                    }));
-                                    var eligibilityPromise = validatePromise.then((function(valid) {
-                                        return !!valid && (!!isNativeOptedIn({
-                                            props: props
-                                        }) || !sfvc && orderPromise.then((function(orderID) {
-                                            return getNativeEligibility({
-                                                vault: vault,
-                                                platform: platform,
-                                                shippingCallbackEnabled: shippingCallbackEnabled,
-                                                clientID: clientID,
-                                                buyerCountry: buyerCountry,
-                                                currency: currency,
-                                                buttonSessionID: buttonSessionID,
-                                                cookies: cookies,
-                                                orderID: orderID,
-                                                enableFunding: enableFunding,
-                                                stickinessID: stickinessID,
-                                                merchantID: merchantID[0],
-                                                domain: merchantDomain
-                                            }).then((function(eligibility) {
-                                                if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
-                                                    var _getLogger$info$track19;
-                                                    logger_getLogger().info("native_appswitch_ineligible", {
-                                                        orderID: orderID
-                                                    }).track((_getLogger$info$track19 = {}, _getLogger$info$track19.state_name = "smart_button", 
-                                                    _getLogger$info$track19.transition_name = "app_switch_ineligible", _getLogger$info$track19)).flush();
-                                                    return !1;
-                                                }
-                                                return !0;
+                                    return orderPromise.then(eligible ? function(orderID) {
+                                        var _getLogger$info$track7;
+                                        var nativeUrl = function(_ref5) {
+                                            var props = _ref5.props, fundingSource = _ref5.fundingSource;
+                                            var queryParams = getNativeUrlQueryParams({
+                                                props: props,
+                                                serviceData: _ref5.serviceData,
+                                                fundingSource: fundingSource,
+                                                sessionUID: _ref5.sessionUID,
+                                                firebaseConfig: _ref5.firebaseConfig,
+                                                pageUrl: _ref5.pageUrl,
+                                                orderID: _ref5.orderID,
+                                                stickinessID: _ref5.stickinessID
+                                            });
+                                            return extendUrl("" + getNativeDomain({
+                                                props: props
+                                            }) + NATIVE_CHECKOUT_URI[fundingSource], {
+                                                query: queryParams
+                                            });
+                                        }({
+                                            props: props,
+                                            serviceData: serviceData,
+                                            fundingSource: fundingSource,
+                                            firebaseConfig: firebaseConfig,
+                                            sessionUID: sessionUID,
+                                            pageUrl: pageUrl,
+                                            orderID: orderID,
+                                            stickinessID: stickinessID
+                                        });
+                                        logger_getLogger().info("native_attempt_appswitch_url_popup", {
+                                            url: nativeUrl
+                                        }).track((_getLogger$info$track7 = {}, _getLogger$info$track7.state_name = "smart_button", 
+                                        _getLogger$info$track7.transition_name = "app_switch_attempted", _getLogger$info$track7.info_msg = nativeUrl, 
+                                        _getLogger$info$track7)).flush();
+                                        if (isAndroidChrome()) {
+                                            var appSwitchCloseListener = onCloseWindow(nativePopupWin, (function() {
+                                                return onDetectAppSwitch({
+                                                    sessionUID: sessionUID
+                                                });
                                             }));
-                                        })));
-                                    }));
-                                    return promise_ZalgoPromise.hash({
-                                        valid: validatePromise,
-                                        eligible: eligibilityPromise
-                                    }).then((function(_ref21) {
-                                        var valid = _ref21.valid, eligible = _ref21.eligible;
-                                        app && Object.keys(app).forEach((function(key) {
-                                            var _getLogger$info, _getLogger$info$track20;
-                                            logger_getLogger().info("native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key, (_getLogger$info = {}, 
-                                            _getLogger$info[key] = app[key], _getLogger$info)).track((_getLogger$info$track20 = {}, 
-                                            _getLogger$info$track20.state_name = "smart_button", _getLogger$info$track20.transition_name = "native_app_installed", 
-                                            _getLogger$info$track20.info_msg = "native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key + ": " + app[key], 
-                                            _getLogger$info$track20)).flush();
-                                        }));
-                                        if (!valid) {
-                                            popupWin.close();
-                                            return destroy();
+                                            setTimeout(appSwitchCloseListener.cancel, 1e3);
                                         }
-                                        return orderPromise.then(!eligible || app && !app.installed ? function(orderID) {
-                                            return {
-                                                redirect: !0,
-                                                appSwitch: !1,
-                                                redirectUrl: getDelayedNativeFallbackUrl({
-                                                    sessionUID: sessionUID,
-                                                    pageUrl: pageUrl,
-                                                    orderID: orderID,
-                                                    stickinessID: stickinessID
-                                                })
-                                            };
-                                        } : function(orderID) {
-                                            var _getLogger$info$track21;
-                                            var nativeUrl = getDelayedNativeUrl({
+                                        return {
+                                            redirect: !0,
+                                            appSwitch: !0,
+                                            redirectUrl: nativeUrl
+                                        };
+                                    } : function(orderID) {
+                                        return {
+                                            redirect: !0,
+                                            appSwitch: !1,
+                                            redirectUrl: getNativeFallbackUrl({
+                                                props: props,
+                                                serviceData: serviceData,
+                                                fundingSource: fundingSource,
+                                                firebaseConfig: firebaseConfig,
                                                 sessionUID: sessionUID,
                                                 pageUrl: pageUrl,
                                                 orderID: orderID,
                                                 stickinessID: stickinessID
-                                            });
-                                            logger_getLogger().info("native_attempt_appswitch_url_popup", {
-                                                url: nativeUrl
-                                            }).track((_getLogger$info$track21 = {}, _getLogger$info$track21.state_name = "smart_button", 
-                                            _getLogger$info$track21.transition_name = "app_switch_attempted", _getLogger$info$track21.info_msg = nativeUrl, 
-                                            _getLogger$info$track21)).flush();
-                                            redirected = !0;
-                                            if (isAndroidChrome()) {
-                                                var appSwitchCloseListener = onCloseWindow(popupWin, (function() {
-                                                    detectAppSwitch({
-                                                        sessionUID: sessionUID
-                                                    });
-                                                }));
-                                                setTimeout(appSwitchCloseListener.cancel, 1e3);
-                                            }
-                                            return {
-                                                redirect: !0,
-                                                appSwitch: !0,
-                                                redirectUrl: nativeUrl
-                                            };
-                                        });
-                                    })).catch((function(err) {
-                                        var _getLogger$info$track22;
-                                        logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track22 = {}, 
-                                        _getLogger$info$track22.state_name = "smart_button", _getLogger$info$track22.transition_name = "app_switch_attempted_errored", 
-                                        _getLogger$info$track22.int_error_desc = stringifyError(err), _getLogger$info$track22)).flush();
-                                        return orderPromise.then((function(orderID) {
-                                            return {
-                                                redirect: !0,
-                                                appSwitch: !1,
-                                                redirectUrl: getDelayedNativeFallbackUrl({
-                                                    sessionUID: sessionUID,
-                                                    pageUrl: pageUrl,
-                                                    orderID: orderID,
-                                                    stickinessID: stickinessID
-                                                })
-                                            };
-                                        }));
-                                    })).catch((function(err) {
-                                        popupWin.close();
-                                        return destroy().then((function() {
-                                            return onError(err);
-                                        }));
-                                    }));
-                                }));
-                                var detectAppSwitchListener = listen(popupWin, getNativePopupDomain(), "detectAppSwitch", (function() {
-                                    logger_getLogger().info("native_post_message_detect_app_switch").flush();
-                                    return detectAppSwitch({
-                                        sessionUID: sessionUID
+                                            })
+                                        };
                                     });
-                                }));
-                                var onApproveListener = listen(popupWin, getNativePopupDomain(), "onApprove", (function(data) {
-                                    onApproveCallback(data);
-                                    closePopup("onApprove");
-                                }));
-                                var onCancelListener = listen(popupWin, getNativePopupDomain(), "onCancel", (function() {
-                                    onCancelCallback();
-                                    closePopup("onCancel");
-                                }));
-                                var onFallbackListener = listen(popupWin, getNativePopupDomain(), "onFallback", (function() {
-                                    var _getLogger$info$track23;
-                                    logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track23 = {}, 
-                                    _getLogger$info$track23.transition_name = "native_onfallback", _getLogger$info$track23)).flush();
-                                    fallbackToWebCheckout(popupWin);
-                                }));
-                                var onCompleteListener = listen(popupWin, getNativePopupDomain(), "onComplete", (function() {
-                                    var _getLogger$info$track24;
-                                    logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track24 = {}, 
-                                    _getLogger$info$track24.state_name = "smart_button", _getLogger$info$track24.transition_name = "native_oncomplete", 
-                                    _getLogger$info$track24)).flush();
-                                    closePopup("onComplete");
-                                }));
-                                var onErrorListener = listen(popupWin, getNativePopupDomain(), "onError", (function(data) {
-                                    onErrorCallback(data);
-                                    closePopup("onError");
-                                }));
-                                var detectWebSwitchListener = listen(popupWin, getNativeDomain(), "detectWebSwitch", (function() {
-                                    logger_getLogger().info("native_post_message_detect_web_switch").flush();
-                                    return detectWebSwitch(popupWin);
-                                }));
-                                native_clean.register(awaitRedirectListener.cancel);
-                                native_clean.register(detectAppSwitchListener.cancel);
-                                native_clean.register(onApproveListener.cancel);
-                                native_clean.register(onCancelListener.cancel);
-                                native_clean.register(onFallbackListener.cancel);
-                                native_clean.register(onCompleteListener.cancel);
-                                native_clean.register(onErrorListener.cancel);
-                                native_clean.register(detectWebSwitchListener.cancel);
-                                return awaitRedirectListener.then((function() {
-                                    if (redirected) return promises = [ detectAppSwitchListener, detectWebSwitchListener ], 
-                                    new promise_ZalgoPromise((function(resolve, reject) {
-                                        for (var _i2 = 0; _i2 < promises.length; _i2++) promises[_i2].then(resolve, reject);
+                                })).catch((function(err) {
+                                    var _getLogger$info$track8;
+                                    logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track8 = {}, 
+                                    _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.transition_name = "app_switch_attempted_errored", 
+                                    _getLogger$info$track8.int_error_desc = stringifyError(err), _getLogger$info$track8)).flush();
+                                    return orderPromise.then((function(orderID) {
+                                        return {
+                                            redirect: !0,
+                                            appSwitch: !1,
+                                            redirectUrl: getNativeFallbackUrl({
+                                                props: props,
+                                                serviceData: serviceData,
+                                                fundingSource: fundingSource,
+                                                firebaseConfig: firebaseConfig,
+                                                sessionUID: sessionUID,
+                                                pageUrl: pageUrl,
+                                                orderID: orderID,
+                                                stickinessID: stickinessID
+                                            })
+                                        };
                                     }));
-                                    var promises;
+                                })).catch((function(err) {
+                                    nativePopupWin.close();
+                                    return onDestroy().then((function() {
+                                        return onError({
+                                            data: {
+                                                message: stringifyError(err)
+                                            }
+                                        });
+                                    }));
                                 }));
-                            }({
+                            }));
+                            var detectAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, "detectAppSwitch", (function() {
+                                logger_getLogger().info("native_post_message_detect_app_switch").flush();
+                                return onDetectAppSwitch({
+                                    sessionUID: sessionUID
+                                });
+                            }));
+                            var detectWebSwitchListener = onPostMessage(nativePopupWin, getNativeDomain({
+                                props: props
+                            }), "detectWebSwitch", (function() {
+                                logger_getLogger().info("native_post_message_detect_web_switch").flush();
+                                return onDetectWebSwitch({
+                                    win: nativePopupWin
+                                });
+                            }));
+                            var onApproveListener = onPostMessage(nativePopupWin, nativePopupDomain, "onApprove", (function(data) {
+                                onApprove(data);
+                                closePopup("onApprove");
+                            }));
+                            var onCancelListener = onPostMessage(nativePopupWin, nativePopupDomain, "onCancel", (function() {
+                                onCancel();
+                                closePopup("onCancel");
+                            }));
+                            var onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, "onFallback", (function() {
+                                var _getLogger$info$track9;
+                                logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track9 = {}, 
+                                _getLogger$info$track9.transition_name = "native_onfallback", _getLogger$info$track9)).flush();
+                                onFallback({
+                                    win: nativePopupWin
+                                });
+                            }));
+                            var onCompleteListener = onPostMessage(nativePopupWin, nativePopupDomain, "onComplete", (function() {
+                                var _getLogger$info$track10;
+                                logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track10 = {}, 
+                                _getLogger$info$track10.state_name = "smart_button", _getLogger$info$track10.transition_name = "native_oncomplete", 
+                                _getLogger$info$track10)).flush();
+                                closePopup("onComplete");
+                            }));
+                            var onErrorListener = onPostMessage(nativePopupWin, nativePopupDomain, "onError", (function(data) {
+                                onError(data);
+                                closePopup("onError");
+                            }));
+                            window.addEventListener("pagehide", (function() {
+                                return closePopup("pagehide");
+                            }));
+                            window.addEventListener("unload", (function() {
+                                return closePopup("unload");
+                            }));
+                            return {
+                                cancel: function() {
+                                    return promise_ZalgoPromise.all([ awaitRedirectListener.cancel, detectAppSwitchListener.cancel, onApproveListener.cancel, onCancelListener.cancel, onFallbackListener.cancel, onCompleteListener.cancel, onErrorListener.cancel, detectWebSwitchListener.cancel, closeListener.cancel ]).then(src_util_noop);
+                                },
+                                close: function() {
+                                    nativePopupWin.close();
+                                }
+                            };
+                        }({
+                            props: props,
+                            serviceData: serviceData,
+                            config: config,
+                            fundingSource: fundingSource,
+                            sessionUID: sessionUID,
+                            callbacks: {
+                                onDetectWebSwitch: function(_ref9) {
+                                    return function(_ref7) {
+                                        var _getLogger$info$track8;
+                                        var win = _ref7.win;
+                                        getStorageState((function(state) {
+                                            var _state$lastAppSwitchT2 = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT2 ? 0 : _state$lastAppSwitchT2, _state$lastWebSwitchT2 = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT2 ? 0 : _state$lastWebSwitchT2;
+                                            lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_app_switch", {
+                                                lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                                lastWebSwitchTime: lastWebSwitchTime.toString()
+                                            });
+                                            lastWebSwitchTime > lastAppSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_web_switch", {
+                                                lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                                lastWebSwitchTime: lastWebSwitchTime.toString()
+                                            });
+                                            lastAppSwitchTime || lastWebSwitchTime || logger_getLogger().info("web_switch_detect_with_no_previous_switch", {
+                                                lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                                lastWebSwitchTime: lastWebSwitchTime.toString()
+                                            });
+                                            state.lastWebSwitchTime = Date.now();
+                                        }));
+                                        logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track8 = {}, 
+                                        _getLogger$info$track8.transition_name = "native_detect_web_switch", _getLogger$info$track8)).flush();
+                                        return fallbackToWebCheckout(win);
+                                    }({
+                                        win: _ref9.win
+                                    }).then(resolve, reject);
+                                },
+                                onDetectAppSwitch: function() {
+                                    return function(_ref6) {
+                                        var _getLogger$info$track7;
+                                        var sessionUID = _ref6.sessionUID;
+                                        getStorageState((function(state) {
+                                            var _state$lastAppSwitchT = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT ? 0 : _state$lastAppSwitchT, _state$lastWebSwitchT = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT ? 0 : _state$lastWebSwitchT;
+                                            lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_app_switch", {
+                                                lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                                lastWebSwitchTime: lastWebSwitchTime.toString()
+                                            });
+                                            lastWebSwitchTime > lastAppSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_web_switch", {
+                                                lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                                lastWebSwitchTime: lastWebSwitchTime.toString()
+                                            });
+                                            lastAppSwitchTime || lastWebSwitchTime || logger_getLogger().info("app_switch_detect_with_no_previous_switch", {
+                                                lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                                lastWebSwitchTime: lastWebSwitchTime.toString()
+                                            });
+                                            state.lastAppSwitchTime = Date.now();
+                                        }));
+                                        logger_getLogger().info("native_detect_app_switch").track((_getLogger$info$track7 = {}, 
+                                        _getLogger$info$track7.transition_name = "native_detect_app_switch", _getLogger$info$track7)).flush();
+                                        var connection = function(_ref3) {
+                                            var props = _ref3.props, serviceData = _ref3.serviceData, config = _ref3.config, fundingSource = _ref3.fundingSource, sessionUID = _ref3.sessionUID, callbacks = _ref3.callbacks;
+                                            var onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, onShippingChange = callbacks.onShippingChange, onError = callbacks.onError, onFallback = callbacks.onFallback;
+                                            var firebaseConfig = config.firebase, sdkVersion = config.sdkVersion;
+                                            if (!firebaseConfig) throw new Error("Firebase config not found");
+                                            var socket = getNativeSocket({
+                                                sessionUID: sessionUID,
+                                                firebaseConfig: firebaseConfig,
+                                                version: sdkVersion
+                                            });
+                                            var getPropsListener = socket.on("getProps", (function() {
+                                                logger_getLogger().info("native_message_getprops").flush();
+                                                return getSDKSocketProps({
+                                                    props: props,
+                                                    serviceData: serviceData,
+                                                    fundingSource: fundingSource
+                                                });
+                                            }));
+                                            var onShippingChangeListener = socket.on("onShippingChange", onShippingChange);
+                                            var onApproveListener = socket.on("onApprove", onApprove);
+                                            var onCancelListener = socket.on("onCancel", onCancel);
+                                            var onErrorListener = socket.on("onError", onError);
+                                            var onFallbackListener = socket.on("onFallback", onFallback);
+                                            socket.reconnect();
+                                            return {
+                                                setProps: function() {
+                                                    return getSDKSocketProps({
+                                                        props: props,
+                                                        serviceData: serviceData,
+                                                        fundingSource: fundingSource
+                                                    }).then((function(sdkProps) {
+                                                        logger_getLogger().info("native_message_setprops").flush();
+                                                        !function(props) {
+                                                            var _getLogger$info$track;
+                                                            var sanitizedProps = _extends({}, props, {
+                                                                facilitatorAccessToken: props.facilitatorAccessToken ? "********************" : ""
+                                                            });
+                                                            logger_getLogger().info("native_setprops_request", sanitizedProps).track((_getLogger$info$track = {}, 
+                                                            _getLogger$info$track.transition_name = "process_set_props_attempt", _getLogger$info$track)).flush();
+                                                        }(sdkProps);
+                                                        return socket.send("setProps", sdkProps);
+                                                    })).then((function() {
+                                                        var _getLogger$info$track2;
+                                                        logger_getLogger().info("native_response_setprops").track((_getLogger$info$track2 = {}, 
+                                                        _getLogger$info$track2.state_name = "smart_button", _getLogger$info$track2.transition_name = "native_app_switch_ack", 
+                                                        _getLogger$info$track2)).flush();
+                                                    })).catch((function(err) {
+                                                        var _getLogger$info$track3;
+                                                        logger_getLogger().info("native_response_setprops_error").track((_getLogger$info$track3 = {}, 
+                                                        _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.int_error_desc = stringifyError(err), 
+                                                        _getLogger$info$track3)).flush();
+                                                    }));
+                                                },
+                                                cancel: function() {
+                                                    return promise_ZalgoPromise.all([ getPropsListener.cancel(), onShippingChangeListener.cancel(), onApproveListener.cancel(), onCancelListener.cancel(), onErrorListener.cancel(), onFallbackListener.cancel() ]).then(src_util_noop);
+                                                }
+                                            };
+                                        }({
+                                            props: props,
+                                            serviceData: serviceData,
+                                            config: config,
+                                            fundingSource: fundingSource,
+                                            sessionUID: sessionUID,
+                                            callbacks: {
+                                                onApprove: onApproveCallback,
+                                                onCancel: onCancelCallback,
+                                                onError: onErrorCallback,
+                                                onFallback: onFallbackCallback,
+                                                onShippingChange: onShippingChangeCallback
+                                            }
+                                        });
+                                        native_clean.register(connection.cancel);
+                                        return connection.setProps();
+                                    }({
+                                        sessionUID: sessionUID
+                                    }).then(resolve, reject);
+                                },
+                                onApprove: onApproveCallback,
+                                onCancel: onCancelCallback,
+                                onError: onErrorCallback,
+                                onFallback: onFallbackCallback,
+                                onClose: onCloseCallback,
+                                onDestroy: destroy
+                            }
+                        });
+                        native_clean.register(nativePopup.cancel);
+                    }));
+                };
+                return {
+                    click: function() {
+                        return promise_ZalgoPromise.try((function() {
+                            var sessionUID = uniqueID();
+                            return initPopupAppSwitch({
                                 sessionUID: sessionUID
                             });
                         })).catch((function(err) {
                             return destroy().then((function() {
-                                var _getLogger$error$trac2;
+                                var _getLogger$error$trac;
                                 logger_getLogger().error("native_error", {
                                     err: stringifyError(err)
-                                }).track((_getLogger$error$trac2 = {}, _getLogger$error$trac2.transition_name = "native_app_switch_ack", 
-                                _getLogger$error$trac2.ext_error_code = "native_error", _getLogger$error$trac2.ext_error_desc = stringifyErrorMessage(err), 
-                                _getLogger$error$trac2)).flush();
+                                }).track((_getLogger$error$trac = {}, _getLogger$error$trac.transition_name = "native_app_switch_ack", 
+                                _getLogger$error$trac.ext_error_code = "native_error", _getLogger$error$trac.ext_error_desc = stringifyErrorMessage(err), 
+                                _getLogger$error$trac)).flush();
                                 throw err;
                             }));
                         }));
@@ -5819,8 +6421,8 @@ window.spb = function(modules) {
                     close: destroy
                 };
             },
-            updateFlowClientConfig: function(_ref22) {
-                var orderID = _ref22.orderID, payment = _ref22.payment, userExperienceFlow = _ref22.userExperienceFlow, buttonSessionID = _ref22.buttonSessionID;
+            updateFlowClientConfig: function(_ref10) {
+                var orderID = _ref10.orderID, payment = _ref10.payment, userExperienceFlow = _ref10.userExperienceFlow, buttonSessionID = _ref10.buttonSessionID;
                 return promise_ZalgoPromise.try((function() {
                     return updateButtonClientConfig({
                         fundingSource: payment.fundingSource,
@@ -6485,8 +7087,8 @@ window.spb = function(modules) {
             var setupButtonLogsTask = function(_ref) {
                 var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, sdkVersion = _ref.sdkVersion, style = _ref.style, fundingSource = _ref.fundingSource, getQueriedEligibleFunding = _ref.getQueriedEligibleFunding, stickinessID = _ref.stickinessID, buyerCountry = _ref.buyerCountry;
                 var logger = logger_getLogger();
-                !function(_ref) {
-                    var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, sdkCorrelationID = _ref.sdkCorrelationID, buyerCountry = _ref.buyerCountry, locale = _ref.locale, sdkVersion = _ref.sdkVersion;
+                !function(_ref2) {
+                    var env = _ref2.env, sessionID = _ref2.sessionID, clientID = _ref2.clientID, sdkCorrelationID = _ref2.sdkCorrelationID, buyerCountry = _ref2.buyerCountry, locale = _ref2.locale, sdkVersion = _ref2.sdkVersion;
                     var logger = logger_getLogger();
                     logger.addPayloadBuilder((function() {
                         return {
@@ -6497,14 +7099,15 @@ window.spb = function(modules) {
                         };
                     }));
                     logger.addTrackingBuilder((function() {
-                        var _ref2;
+                        var _ref3;
                         var lang = locale.lang, country = locale.country;
-                        return (_ref2 = {}).feed_name = "payments_sdk", _ref2.serverside_data_source = "checkout", 
-                        _ref2.client_id = clientID, _ref2.page_session_id = sessionID, _ref2.referer_url = window.location.host, 
-                        _ref2.buyer_cntry = buyerCountry, _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, 
-                        _ref2.sdk_name = "payments_sdk", _ref2.sdk_version = sdkVersion, _ref2.user_agent = window.navigator && window.navigator.userAgent, 
-                        _ref2.context_correlation_id = sdkCorrelationID, _ref2.t = Date.now().toString(), 
-                        _ref2;
+                        return (_ref3 = {}).feed_name = "payments_sdk", _ref3.serverside_data_source = "checkout", 
+                        _ref3.client_id = clientID, _ref3.page_session_id = sessionID, _ref3.referer_url = window.location.host, 
+                        _ref3.buyer_cntry = buyerCountry, _ref3.locale = lang + "_" + country, _ref3.integration_identifier = clientID, 
+                        _ref3.sdk_environment = isIos() ? "ios" : isAndroid() ? "android" : null, _ref3.sdk_name = "payments_sdk", 
+                        _ref3.sdk_version = sdkVersion, _ref3.user_agent = window.navigator && window.navigator.userAgent, 
+                        _ref3.context_correlation_id = sdkCorrelationID, _ref3.t = Date.now().toString(), 
+                        _ref3;
                     }));
                     promise_ZalgoPromise.onPossiblyUnhandledException((function(err) {
                         var _logger$track;
@@ -6535,7 +7138,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.26", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.27", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 

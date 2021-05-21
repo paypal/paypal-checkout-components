@@ -191,6 +191,10 @@
         function getUserAgent() {
             return window.navigator.mockUserAgent || window.navigator.userAgent;
         }
+        function isAndroid(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /Android/.test(ua);
+        }
         function isIos(ua) {
             void 0 === ua && (ua = getUserAgent());
             return /iPhone|iPod|iPad/.test(ua);
@@ -1410,8 +1414,8 @@
             var logger = function(_ref) {
                 var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, sdkVersion = _ref.sdkVersion, locale = _ref.locale, buyerCountry = _ref.buyerCountry;
                 var logger = getLogger();
-                !function(_ref) {
-                    var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, sdkCorrelationID = _ref.sdkCorrelationID, buyerCountry = _ref.buyerCountry, locale = _ref.locale, sdkVersion = _ref.sdkVersion;
+                !function(_ref2) {
+                    var env = _ref2.env, sessionID = _ref2.sessionID, clientID = _ref2.clientID, sdkCorrelationID = _ref2.sdkCorrelationID, buyerCountry = _ref2.buyerCountry, locale = _ref2.locale, sdkVersion = _ref2.sdkVersion;
                     var logger = getLogger();
                     logger.addPayloadBuilder((function() {
                         return {
@@ -1422,14 +1426,15 @@
                         };
                     }));
                     logger.addTrackingBuilder((function() {
-                        var _ref2;
+                        var _ref3;
                         var lang = locale.lang, country = locale.country;
-                        return (_ref2 = {}).feed_name = "payments_sdk", _ref2.serverside_data_source = "checkout", 
-                        _ref2.client_id = clientID, _ref2.page_session_id = sessionID, _ref2.referer_url = window.location.host, 
-                        _ref2.buyer_cntry = buyerCountry, _ref2.locale = lang + "_" + country, _ref2.integration_identifier = clientID, 
-                        _ref2.sdk_name = "payments_sdk", _ref2.sdk_version = sdkVersion, _ref2.user_agent = window.navigator && window.navigator.userAgent, 
-                        _ref2.context_correlation_id = sdkCorrelationID, _ref2.t = Date.now().toString(), 
-                        _ref2;
+                        return (_ref3 = {}).feed_name = "payments_sdk", _ref3.serverside_data_source = "checkout", 
+                        _ref3.client_id = clientID, _ref3.page_session_id = sessionID, _ref3.referer_url = window.location.host, 
+                        _ref3.buyer_cntry = buyerCountry, _ref3.locale = lang + "_" + country, _ref3.integration_identifier = clientID, 
+                        _ref3.sdk_environment = isIos() ? "ios" : isAndroid() ? "android" : null, _ref3.sdk_name = "payments_sdk", 
+                        _ref3.sdk_version = sdkVersion, _ref3.user_agent = window.navigator && window.navigator.userAgent, 
+                        _ref3.context_correlation_id = sdkCorrelationID, _ref3.t = Date.now().toString(), 
+                        _ref3;
                     }));
                     promise_ZalgoPromise.onPossiblyUnhandledException((function(err) {
                         var _logger$track;
@@ -1463,8 +1468,8 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.26", _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.27", 
+                    _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -1556,10 +1561,7 @@
                 logger.info("native_popup_pagehide").track((_logger$info$track5 = {}, _logger$info$track5.transition_name = "native_popup_pagehide", 
                 _logger$info$track5)).flush();
             }));
-            (function(ua) {
-                void 0 === ua && (ua = getUserAgent());
-                return /Android/.test(ua);
-            })() && isChrome() && ("paypal" === fundingSource ? appInstalledPromise = isAndroidAppInstalled("com.paypal.android.p2pmobile").then((function(app) {
+            isAndroid() && isChrome() && ("paypal" === fundingSource ? appInstalledPromise = isAndroidAppInstalled("com.paypal.android.p2pmobile").then((function(app) {
                 return _extends({}, app);
             })).catch((function(err) {
                 var _logger$info$track6;
