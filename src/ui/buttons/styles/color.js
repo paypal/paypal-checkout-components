@@ -44,7 +44,7 @@ export const buttonColorStyle = `
         right: 5px;
         bottom: 5px;
         left: 5px;
-        border: 0.125rem solid #009cde;
+        border: 0.125rem solid #008CFF;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
         pointer-events: none;
@@ -57,7 +57,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.VENMO }].${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
-        background: #009cde;
+        background: #008CFF;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE }:hover {
@@ -76,7 +76,7 @@ export const buttonColorStyle = `
         left: 5px;
         border: 0.125rem solid #0000a6;
         border-radius: inherit;
-        box-shadow: 0 0 0 0.5rem #009cde;
+        box-shadow: 0 0 0 0.5rem #008CFF;
         pointer-events: none;
     }
 
@@ -99,7 +99,7 @@ export const buttonColorStyle = `
         right: 5px;
         bottom: 5px;
         left: 5px;
-        border: 0.125rem solid #009cde;
+        border: 0.125rem solid #008CFF;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
         pointer-events: none;
@@ -124,7 +124,7 @@ export const buttonColorStyle = `
         right: 5px;
         bottom: 5px;
         left: 5px;
-        border: 0.125rem solid #009cde;
+        border: 0.125rem solid #008CFF;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
         pointer-events: none;
@@ -151,7 +151,7 @@ export const buttonColorStyle = `
         right: 5px;
         bottom: 5px;
         left: 5px;
-        border: 0.125rem solid #009cde;
+        border: 0.125rem solid #008CFF;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
         pointer-events: none;
@@ -177,7 +177,7 @@ export const buttonColorStyle = `
         right: 5px;
         bottom: 5px;
         left: 5px;
-        border: 0.125rem solid #009cde;
+        border: 0.125rem solid #008CFF;
         border-radius: inherit;
         box-shadow: 0 0 0 0.5rem #0000a6;
         pointer-events: none;
