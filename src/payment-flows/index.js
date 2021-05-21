@@ -1,5 +1,6 @@
 /* @flow */
 
+export * from './applepay';
 export * from './checkout';
 export * from './card-fields';
 export * from './vault-capture';

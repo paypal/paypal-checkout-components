@@ -158,3 +158,47 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
         return gqlResult.mobileSDKEligibility;
     });
 }
+
+type ApplePaySession = {|
+    session : string
+|};
+
+type ValidateMerchantOptions = {|
+    url : string,
+    clientID : string,
+    orderID : string,
+    merchantDomain : string
+|};
+
+export function getApplePayMerchantSession({ url, clientID, orderID, merchantDomain } : ValidateMerchantOptions) : ZalgoPromise<ApplePaySession> {
+    const domain = merchantDomain.indexOf('://') !== -1 ? merchantDomain.split('://')[1] : merchantDomain;
+
+    return callGraphQL({
+        name:  'GetApplePayMerchantSession',
+        query: `
+            query GetApplePayMerchantSession(
+                $url : String!
+                $orderID : String!
+                $clientID : String!
+                $merchantDomain : String!
+            ) {
+                applePayMerchantSession(
+                    url: $url
+                    orderID: $orderID
+                    clientID: $clientID
+                    merchantDomain: $merchantDomain
+                ) {
+                    session
+                }
+            }
+        `,
+        variables: {
+            url, clientID, orderID, merchantDomain: domain
+        }
+    }).then((gqlResult) => {
+        if (!gqlResult || !gqlResult.applePayMerchantSession) {
+            throw new Error(`GraphQL GetApplePayMerchantSession returned no applePayMerchantSession object`);
+        }
+        return gqlResult.applePayMerchantSession;
+    });
+}

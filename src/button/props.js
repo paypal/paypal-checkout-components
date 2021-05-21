@@ -7,6 +7,7 @@ import type { InstallmentsFlowType } from '@paypal/installments/src/types';
 
 import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
     ThreeDomainSecureFlowType, MenuFlowType, ConnectOptions, PersonalizationType, QRCodeType } from '../types';
+import type { XApplePaySessionConfigRequest } from '../payment-flows/types';
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit,
     XOnInit, OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError,
     OnError, XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding
@@ -101,8 +102,9 @@ export type ButtonXProps = {|
 
     paymentMethodNonce : string,
     branded? : boolean,
-    userExperienceFlow : string
+    userExperienceFlow : string,
 
+    applePay : XApplePaySessionConfigRequest
 |};
 
 export type ButtonProps = {|
@@ -167,6 +169,9 @@ export type ButtonProps = {|
     onAuth : OnAuth,
 
     paymentMethodNonce : string,
+
+    applePay : XApplePaySessionConfigRequest,
+
     branded : boolean | null,
     userExperienceFlow : string
 |};
@@ -218,6 +223,7 @@ export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilit
         branded,
         getQueriedEligibleFunding = () => ZalgoPromise.resolve([]),
         storageID,
+        applePay,
         userExperienceFlow
     } = xprops;
 
@@ -349,6 +355,7 @@ export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilit
         paymentMethodNonce,
         branded,
         stickinessID,
+        applePay,
         userExperienceFlow
     };
 }

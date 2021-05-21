@@ -6,8 +6,9 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { PAYMENTS_API_URL } from '../config';
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS } from '../constants';
+import type { ApplePayPayment } from '../payment-flows/types';
 
-import { callRestAPI } from './api';
+import { callGraphQL, callRestAPI } from './api';
 
 type PaymentAPIOptions = {|
     facilitatorAccessToken : string,
@@ -120,5 +121,36 @@ export function patchPayment(paymentID : string, data : PatchData, { facilitator
         headers:     {
             [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || ''
         }
+    });
+}
+
+export function approveApplePayPayment(orderID : string, clientID : string, applePayPayment : ApplePayPayment) : ZalgoPromise<void> {
+    const { token, billingContact, shippingContact } = applePayPayment;
+
+    return callGraphQL({
+        name:    'ApproveApplePayPayment',
+        query: `
+            mutation ApproveApplePayPayment(
+                $token: ApplePayPaymentToken!
+                $orderID: String!
+                $clientID : String!
+                $billingContact: ApplePayPaymentContact!
+                $shippingContact: ApplePayPaymentContact!
+            ) {
+                approveApplePayPayment(
+                    token: $token
+                    orderID: $orderID
+                    clientID: $clientID
+                    billingContact: $billingContact
+                    shippingContact: $shippingContact
+                )
+            }
+        `,
+        variables: { token, orderID, clientID, billingContact, shippingContact }
+    }).then((gqlResult) => {
+        if (!gqlResult || !gqlResult.approveApplePayPayment) {
+            throw new Error(`GraphQL GetApplePayPayment returned no applePayment object`);
+        }
+        return gqlResult.approveApplePayPayment;
     });
 }
