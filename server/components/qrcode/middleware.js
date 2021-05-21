@@ -3,9 +3,8 @@
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware,
     isLocalOrTest, type ExpressMiddleware } from '../../lib';
 import type { LoggerType, CacheType } from '../../types';
-import { VENMO_BLUE } from '../../../src/constants';
 
-import { EVENT } from './constants';
+import { EVENT, VENMO_BLUE } from './constants';
 import { getParams } from './params';
 import { getSmartQRCodeClientScript } from './script';
 import { QRCode } from './node-qrcode';
