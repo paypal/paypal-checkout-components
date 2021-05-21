@@ -70,7 +70,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     const props = getProps({ facilitatorAccessToken, brandedDefault });
     const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding, getQueriedEligibleFunding,
-        style, fundingSource, intent, createBillingAgreement, createSubscription, stickinessID, branded } = props;
+        style, fundingSource, intent, createBillingAgreement, createSubscription, stickinessID } = props;
         
     const config = getConfig({ serverCSPNonce, firebaseConfig });
     const { sdkVersion } = config;
@@ -98,11 +98,6 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
                         win.close();
                     }
                     return;
-                }
-            } else {
-                if (branded === false) {
-                    getLogger().error('integration_error', { err: 'hosted components not found' });
-                    throw new Error(`Hosted components not found`);
                 }
             }
 
