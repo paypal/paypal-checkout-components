@@ -1224,18 +1224,21 @@ window.spb = function(modules) {
             var uid = script.getAttribute("data-uid");
             if (uid && "string" == typeof uid) return uid;
             if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
-            uid = script.src ? "uid_" + function(str) {
-                var hash = "";
-                for (var i = 0; i < str.length; i++) {
-                    var total = str[i].charCodeAt(0) * i;
-                    str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
-                    hash += String.fromCharCode(97 + Math.abs(total) % 26);
-                }
-                return hash;
-            }(JSON.stringify({
-                src: script.src,
-                dataset: script.dataset
-            })).slice(0, 20) : uniqueID();
+            if (script.src) {
+                var hashedString = function(str) {
+                    var hash = "";
+                    for (var i = 0; i < str.length; i++) {
+                        var total = str[i].charCodeAt(0) * i;
+                        str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
+                        hash += String.fromCharCode(97 + Math.abs(total) % 26);
+                    }
+                    return hash;
+                }(JSON.stringify({
+                    src: script.src,
+                    dataset: script.dataset
+                }));
+                uid = "uid_" + hashedString.slice(hashedString.length - 30);
+            } else uid = uniqueID();
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
@@ -2009,7 +2012,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers14 = {}).authorization = "Bearer " + accessToken, _headers14["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers14["paypal-client-metadata-id"] = clientMetadataID, _headers14["x-app-name"] = "smart-payment-buttons", 
-            _headers14["x-app-version"] = "5.0.28", _headers14);
+            _headers14["x-app-version"] = "5.0.29", _headers14);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3284,30 +3287,25 @@ window.spb = function(modules) {
                                 var orderID = _ref4.orderID, shippingContact = _ref4.shippingContact, _ref4$shippingMethod = _ref4.shippingMethod, shippingMethod = void 0 === _ref4$shippingMethod ? null : _ref4$shippingMethod;
                                 var _validateShippingCont = function(contact) {
                                     var errors = [];
-                                    contact.addressLines && contact.addressLines.length || errors.push({
-                                        code: "shippingContactInvalid",
-                                        contactField: "postalAddress",
-                                        message: "Address is invalid"
-                                    });
                                     contact.locality || errors.push({
                                         code: "shippingContactInvalid",
-                                        contactField: "postalAddress",
+                                        contactField: "locality",
                                         message: "City is invalid"
                                     });
                                     contact.administrativeArea || errors.push({
                                         code: "shippingContactInvalid",
-                                        contactField: "postalAddress",
+                                        contactField: "administrativeArea",
                                         message: "State is invalid"
                                     });
                                     var country_code = contact.countryCode ? COUNTRY[contact.countryCode.toUpperCase()] : null;
                                     country_code || errors.push({
                                         code: "shippingContactInvalid",
-                                        contactField: "postalAddress",
+                                        contactField: "countryCode",
                                         message: "Country code is invalid"
                                     });
                                     contact.postalCode || errors.push({
                                         code: "shippingContactInvalid",
-                                        contactField: "postalAddress",
+                                        contactField: "postalCode",
                                         message: "Postal code is invalid"
                                     });
                                     return {
@@ -3319,16 +3317,29 @@ window.spb = function(modules) {
                                             postal_code: contact.postalCode
                                         }
                                     };
-                                }(shippingContact), errors = _validateShippingCont.errors;
+                                }(shippingContact), errors = _validateShippingCont.errors, shipping_address = _validateShippingCont.shipping_address;
+                                if (errors && errors.length) return promise_ZalgoPromise.resolve({
+                                    errors: errors,
+                                    newTotal: {
+                                        label: "Total",
+                                        amount: currentTotalAmount
+                                    },
+                                    newLineItems: [ {
+                                        label: "Sales Tax",
+                                        amount: currentTaxAmount
+                                    }, {
+                                        label: currentShippingLabel,
+                                        amount: currentShippingAmount
+                                    } ]
+                                });
                                 var data = {
                                     amount: {
                                         currency_code: currency,
                                         value: "0.00"
                                     },
                                     orderID: orderID,
-                                    shipping_address: _validateShippingCont.shipping_address
+                                    shipping_address: shipping_address
                                 };
-                                errors && errors.length && Object.keys(errors[0]).length && (data.errors = errors);
                                 shippingMethod && (data.selected_shipping_option = {
                                     label: shippingMethod.label || currentShippingLabel,
                                     type: shippingMethod.identifier,
@@ -3357,7 +3368,7 @@ window.spb = function(modules) {
                                         currentShippingAmount = updatedShippingValue;
                                         currentTaxAmount = updatedTaxValue;
                                         currentTotalAmount = updatedTotalValue;
-                                        return {
+                                        return promise_ZalgoPromise.resolve({
                                             newTotal: {
                                                 label: "Total",
                                                 amount: updatedTotalValue
@@ -3369,7 +3380,7 @@ window.spb = function(modules) {
                                                 label: currentShippingLabel,
                                                 amount: updatedShippingValue
                                             } ]
-                                        };
+                                        });
                                     }));
                                 }));
                             }, orderPromise = validate().then((function(valid) {
@@ -7129,7 +7140,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.28", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.29", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 

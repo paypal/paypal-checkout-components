@@ -803,18 +803,21 @@
             var uid = script.getAttribute("data-uid");
             if (uid && "string" == typeof uid) return uid;
             if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
-            uid = script.src ? "uid_" + function(str) {
-                var hash = "";
-                for (var i = 0; i < str.length; i++) {
-                    var total = str[i].charCodeAt(0) * i;
-                    str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
-                    hash += String.fromCharCode(97 + Math.abs(total) % 26);
-                }
-                return hash;
-            }(JSON.stringify({
-                src: script.src,
-                dataset: script.dataset
-            })).slice(0, 20) : uniqueID();
+            if (script.src) {
+                var hashedString = function(str) {
+                    var hash = "";
+                    for (var i = 0; i < str.length; i++) {
+                        var total = str[i].charCodeAt(0) * i;
+                        str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
+                        hash += String.fromCharCode(97 + Math.abs(total) % 26);
+                    }
+                    return hash;
+                }(JSON.stringify({
+                    src: script.src,
+                    dataset: script.dataset
+                }));
+                uid = "uid_" + hashedString.slice(hashedString.length - 30);
+            } else uid = uniqueID();
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
