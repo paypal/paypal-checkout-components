@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from 'jsx-pragmatic/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getLocale } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getLocale, getCSPNonce } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize } from 'belter/src';
 import { Overlay, SpinnerPage } from '@paypal/common-components/src';
@@ -33,14 +33,16 @@ export function getInstallmentsComponent() : InstallmentsComponent {
             logger: getLogger(),
 
             prerenderTemplate: ({ doc, props }) => {
+                const nonce = props.nonce || getCSPNonce();
                 return (
                     <SpinnerPage
-                        nonce={ props.nonce }
+                        nonce={ nonce }
                     />
                 ).render(dom({ doc }));
             },
 
-            containerTemplate: ({ context, close, focus, doc, event, frame, prerenderFrame }) => {
+            containerTemplate: ({ context, close, focus, doc, event, frame, prerenderFrame, props }) => {
+                const { nonce } = props;
                 return (
                     <Overlay
                         context={ context }
@@ -51,6 +53,7 @@ export function getInstallmentsComponent() : InstallmentsComponent {
                         prerenderFrame={ prerenderFrame }
                         autoResize={ true }
                         hideCloseButton={ true }
+                        nonce={ nonce }
                     />
                 ).render(dom({ doc }));
             },
@@ -72,6 +75,11 @@ export function getInstallmentsComponent() : InstallmentsComponent {
                     type:       'object',
                     queryParam: true,
                     value:      getLocale
+                },
+                nonce: {
+                    type:     'string',
+                    default:  getCSPNonce,
+                    required: false
                 }
             }
         });

@@ -173,4 +173,20 @@ describe(`paypal checkout component happy path`, () => {
             });
         }, { timeout: 8000 });
     });
+
+    it('should render checkout using a nonce, then complete the payment', () => {
+        return wrapPromise(({ expect, error }) => {
+            const nonce = '12345';
+            return runOnClick(() => {
+                return window.paypal.Checkout({
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', generateOrderID),
+                    onApprove:       expect('onApprove'),
+                    onCancel:        error('onCancel'),
+                    nonce
+                }).render('body');
+            });
+        });
+    });
 });

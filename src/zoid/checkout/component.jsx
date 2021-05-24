@@ -3,13 +3,15 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from 'jsx-pragmatic/src';
-import { getPayPalDomainRegex, getLogger, getLocale,
-    getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion, getPayPalDomain, getClientMetadataID } from '@paypal/sdk-client/src';
+import {
+    getPayPalDomainRegex, getLogger, getLocale,
+    getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion, getPayPalDomain, getClientMetadataID
+} from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent, EVENT } from 'zoid/src';
 import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { Overlay, SpinnerPage } from '@paypal/common-components/src';
+import { SpinnerPage, Overlay } from '@paypal/common-components/src';
 
 import { getSessionID } from '../../lib';
 
@@ -39,17 +41,17 @@ export function getCheckoutComponent() : CheckoutComponent {
             logger: getLogger(),
         
             prerenderTemplate: ({ doc, props }) => {
+                const { nonce } = props;
                 return (
                     <SpinnerPage
-                        nonce={ props.nonce }
+                        nonce={ nonce }
                     />
                 ).render(dom({ doc }));
             },
 
-            containerTemplate: ({ props, context, close, focus, doc, event, frame, prerenderFrame }) => {
-                const { locale: { lang } } = props;
+            containerTemplate: ({ context, close, focus, doc, event, frame, prerenderFrame, props }) => {
+                const { nonce, locale: { lang } } = props;
                 const content = containerContent[lang];
-
                 return (
                     <Overlay
                         context={ context }
@@ -59,6 +61,7 @@ export function getCheckoutComponent() : CheckoutComponent {
                         frame={ frame }
                         prerenderFrame={ prerenderFrame }
                         content={ content }
+                        nonce={ nonce }
                     />
                 ).render(dom({ doc }));
             },
@@ -95,9 +98,10 @@ export function getCheckoutComponent() : CheckoutComponent {
                 },
         
                 nonce: {
-                    type:     'string',
-                    required: false,
-                    value:    getCSPNonce
+                    type:          'string',
+                    required:      false,
+                    value:         getCSPNonce,
+                    allowDelegate: true
                 },
 
                 createAuthCode: {
