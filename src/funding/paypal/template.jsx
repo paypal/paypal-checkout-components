@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, Fragment, Style, type ChildType } from 'jsx-pragmatic/src';
-import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS, VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS, VenmoLogo } from '@paypal/sdk-logos/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
