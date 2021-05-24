@@ -80,6 +80,15 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
             return;
         }
 
+        const convertErrorsFromUpdate = (update) => {
+            if (update.errors && update.errors.length) {
+                // $FlowFixMe
+                return update.errors.map(error => new window.ApplePayError(error.code, error.contactField, error.message));
+            }
+
+            return update;
+        };
+
         return (version, request) => {
             const session = new window.ApplePaySession(version, request);
             const listeners = {};
@@ -122,10 +131,12 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                     session.completeShippingMethodSelection(update);
                 },
                 completeShippingContactSelection: (update) => {
-                    session.completeShippingContactSelection(update);
+                    const newUpdate = convertErrorsFromUpdate(update);
+                    session.completeShippingContactSelection(newUpdate);
                 },
-                completePayment: (result) => {
-                    session.completePayment(result);
+                completePayment: (update) => {
+                    const newUpdate = convertErrorsFromUpdate(update);
+                    session.completePayment(newUpdate);
                 },
                 begin: () => session.begin()
             };
