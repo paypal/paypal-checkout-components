@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, Fragment, Style, type ChildType } from 'jsx-pragmatic/src';
-import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
+import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS, VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
@@ -148,6 +148,7 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 
 
 export function Label(opts : LabelOptions) : ChildType {
+
     return (
         <Fragment>
             <BasicLabel { ...opts } />
@@ -217,7 +218,7 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
     const { logoColor, instrument, content, commit, vault, textColor, fundingSource } = opts;
 
-    if (instrument && !instrument.type) {
+    if (instrument && !instrument.type && fundingSource !== FUNDING.VENMO) {
         return WalletLabelOld(opts);
     }
 
@@ -229,7 +230,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         branded = instrument.branded;
     } else if (fundingSource === FUNDING.PAYPAL || fundingSource === FUNDING.CREDIT) {
         branded = true;
-    } else if (fundingSource === FUNDING.CARD) {
+    } else if (fundingSource === FUNDING.CARD || fundingSource === FUNDING.VENMO) {
         branded = false;
     } else {
         branded = true;
@@ -260,12 +261,18 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
 
             label = content && content.balance;
         
+        } else if (instrument.type === WALLET_INSTRUMENT.VENMO && instrument.label) {
+            logo =  <VenmoLogo logoColor={ logoColor } />;
+
+            label = instrument.label;
+
         } else if (instrument.label) {
             label = instrument.label;
         }
     }
 
     const payNow = Boolean((instrument && instrument.oneClick) && commit && !vault);
+    const hidePayWith = Boolean(instrument && instrument.type === WALLET_INSTRUMENT.VENMO);
 
     const attrs = {};
     if (payNow) {
@@ -286,15 +293,18 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                         : null
                 }
 
-                <div class='pay-label' optional={ 2 }>
-                    <Space />
-                    {
-                        (instrument && content)
-                            ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
-                            : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
-                    }
-                    <Space />
-                </div>
+                {
+                    hidePayWith ? null : (
+                        <div class='pay-label' optional={ 2 }>
+                            <Space />
+                            {
+                                (instrument && content)
+                                    ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
+                                    : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
+                            }
+                            <Space />
+                        </div>)
+                }
                 <div class='logo' optional={ 1 }>
                     {
                         (instrument && logo)
@@ -302,6 +312,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                             : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
                     }
                 </div>
+                
                 <div class='label'>
                     <Space />
                     {
