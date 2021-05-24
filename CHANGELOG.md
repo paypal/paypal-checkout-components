@@ -1,3 +1,9 @@
+## <small>5.0.159 (2021-05-24)</small>
+
+* Convert Errors to ApplePayError (#1644) ([7fadbec](https://github.com/paypal/paypal-checkout-components/commit/7fadbec)), closes [#1644](https://github.com/paypal/paypal-checkout-components/issues/1644)
+
+
+
 ## <small>5.0.158 (2021-05-18)</small>
 
 * Apple Pay Interface Fix (#1640) ([ed52004](https://github.com/paypal/paypal-checkout-components/commit/ed52004)), closes [#1640](https://github.com/paypal/paypal-checkout-components/issues/1640)
