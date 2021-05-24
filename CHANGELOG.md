@@ -1,3 +1,34 @@
+## <small>5.0.159 (2021-05-24)</small>
+
+* Convert Errors to ApplePayError (#1644) ([7fadbec](https://github.com/paypal/paypal-checkout-components/commit/7fadbec)), closes [#1644](https://github.com/paypal/paypal-checkout-components/issues/1644)
+
+
+
+## <small>5.0.158 (2021-05-18)</small>
+
+* Apple Pay Interface Fix (#1640) ([ed52004](https://github.com/paypal/paypal-checkout-components/commit/ed52004)), closes [#1640](https://github.com/paypal/paypal-checkout-components/issues/1640)
+* Ramp venmo experiment to 50% (#1639) ([383eb2c](https://github.com/paypal/paypal-checkout-components/commit/383eb2c)), closes [#1639](https://github.com/paypal/paypal-checkout-components/issues/1639)
+
+
+
+## <small>5.0.157 (2021-05-14)</small>
+
+* adds QRcode Interface/Zoid Component functionality  (#1632) ([184dc26](https://github.com/paypal/paypal-checkout-components/commit/184dc26)), closes [#1632](https://github.com/paypal/paypal-checkout-components/issues/1632)
+* Avoid multiple popups on Prerender state (#1635) ([67d3e53](https://github.com/paypal/paypal-checkout-components/commit/67d3e53)), closes [#1635](https://github.com/paypal/paypal-checkout-components/issues/1635)
+* Readme update (#1636) ([17045e4](https://github.com/paypal/paypal-checkout-components/commit/17045e4)), closes [#1636](https://github.com/paypal/paypal-checkout-components/issues/1636)
+* Revert localized label (#1631) ([d60c46b](https://github.com/paypal/paypal-checkout-components/commit/d60c46b)), closes [#1631](https://github.com/paypal/paypal-checkout-components/issues/1631)
+* Update Apple Pay Events (#1634) ([dc8daa2](https://github.com/paypal/paypal-checkout-components/commit/dc8daa2)), closes [#1634](https://github.com/paypal/paypal-checkout-components/issues/1634)
+* chore(release): 5.0.156 :tada: ([6d708d1](https://github.com/paypal/paypal-checkout-components/commit/6d708d1))
+
+
+
+## <small>5.0.156 (2021-05-12)</small>
+
+* Revert localized label (#1631) ([d60c46b](https://github.com/paypal/paypal-checkout-components/commit/d60c46b)), closes [#1631](https://github.com/paypal/paypal-checkout-components/issues/1631)
+* Update Apple Pay Events (#1634) ([dc8daa2](https://github.com/paypal/paypal-checkout-components/commit/dc8daa2)), closes [#1634](https://github.com/paypal/paypal-checkout-components/issues/1634)
+
+
+
 ## <small>5.0.155 (2021-05-10)</small>
 
 * Update ApplePaySession (#1628) ([cfe4c92](https://github.com/paypal/paypal-checkout-components/commit/cfe4c92)), closes [#1628](https://github.com/paypal/paypal-checkout-components/issues/1628)

@@ -11,6 +11,7 @@ import { getCardFieldsComponent, type CardFieldsComponent } from '../zoid/card-f
 import { getMenuComponent, type MenuComponent } from '../zoid/menu';
 import { getInstallmentsComponent, type InstallmentsComponent } from '../zoid/installments';
 import { Buttons as _ButtonsTemplate } from '../ui/buttons';
+import { getQRCodeComponent, type QRCodeComponent } from '../zoid/qr-code';
 import { getModalComponent, type ModalComponent } from '../zoid/modal/component';
 
 function protectedExport<T>(xport : T) : ?T {
@@ -41,6 +42,10 @@ export const Modal : LazyProtectedExport<ModalComponent> = {
 
 export const Installments : LazyProtectedExport<InstallmentsComponent> =  {
     __get__: () => protectedExport(getInstallmentsComponent())
+};
+
+export const QRCode : LazyExport<QRCodeComponent> = {
+    __get__: () => getQRCodeComponent()
 };
 
 export const ButtonsTemplate : LazyProtectedExport<typeof _ButtonsTemplate> = {
