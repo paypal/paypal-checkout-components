@@ -3,7 +3,7 @@
 /* @flow */
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { CURRENCY, FPTI_KEY, FUNDING, WALLET_INSTRUMENT, INTENT } from '@paypal/sdk-constants/src';
-import { request, noop, memoize } from 'belter/src';
+import { request, noop, memoize, stringifyError } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
@@ -70,21 +70,11 @@ export function createOrderID(order : OrderCreateRequest, { facilitatorAccessTok
 }
 
 const handleRestAPIResponse = (err, orderID : string, action : string) => {
-    // $FlowFixMe
-    const { headers } = err.response;
-    const corrID = headers[HEADERS.PAYPAL_DEBUG_ID];
-    getLogger().info(`call_rest_api_failure_${ action }`, { corrID, orderID });
+    getLogger().info(`call_rest_api_failure_${ action }`, { err: stringifyError(err), orderID });
 };
 
 const handleSmartResponse = (response, orderID : string, restAPIError, action : string) => {
-    const { headers } = response;
-    const corrID = headers[HEADERS.PAYPAL_DEBUG_ID];
-
-    // $FlowFixMe
-    const { apiHeaders } = restAPIError.response;
-    const apiCorrID = apiHeaders[HEADERS.PAYPAL_DEBUG_ID];
-    
-    getLogger().info(`lsat_uprade_shadow_success_get_${ action }`, { corrID, apiCorrID, orderID });
+    getLogger().info(`lsat_uprade_shadow_success_get_${ action }`, { orderID });
 
     return response;
 };
