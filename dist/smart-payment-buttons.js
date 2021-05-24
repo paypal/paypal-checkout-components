@@ -1968,18 +1968,13 @@ window.spb = function(modules) {
             }));
         }
         var order_handleRestAPIResponse = function(err, orderID, action) {
-            var corrID = err.response.headers["paypal-debug-id"];
             logger_getLogger().info("call_rest_api_failure_" + action, {
-                corrID: corrID,
+                err: stringifyError(err),
                 orderID: orderID
             });
         };
         var order_handleSmartResponse = function(response, orderID, restAPIError, action) {
-            var corrID = response.headers["paypal-debug-id"];
-            var apiCorrID = restAPIError.response.apiHeaders["paypal-debug-id"];
             logger_getLogger().info("lsat_uprade_shadow_success_get_" + action, {
-                corrID: corrID,
-                apiCorrID: apiCorrID,
                 orderID: orderID
             });
             return response;
@@ -2012,7 +2007,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers14 = {}).authorization = "Bearer " + accessToken, _headers14["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers14["paypal-client-metadata-id"] = clientMetadataID, _headers14["x-app-name"] = "smart-payment-buttons", 
-            _headers14["x-app-version"] = "5.0.29", _headers14);
+            _headers14["x-app-version"] = "5.0.30", _headers14);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2532,7 +2527,7 @@ window.spb = function(modules) {
                                                     url: "/smart/api/order/" + orderID,
                                                     headers: (_headers3 = {}, _headers3["paypal-client-context"] = orderID, _headers3)
                                                 }).then((function(smartResponse) {
-                                                    return order_handleSmartResponse(smartResponse, orderID, err, "get");
+                                                    return order_handleSmartResponse(smartResponse, orderID, 0, "get");
                                                 }));
                                             }));
                                         }
@@ -2570,7 +2565,7 @@ window.spb = function(modules) {
                                                     url: "/smart/api/order/" + orderID + "/capture",
                                                     headers: (_headers6 = {}, _headers6["paypal-client-context"] = orderID, _headers6)
                                                 }).then((function(smartResponse) {
-                                                    return order_handleSmartResponse(smartResponse, orderID, err, "capture");
+                                                    return order_handleSmartResponse(smartResponse, orderID, 0, "capture");
                                                 }));
                                             }));
                                         }
@@ -2611,7 +2606,7 @@ window.spb = function(modules) {
                                                     url: "/smart/api/order/" + orderID + "/authorize",
                                                     headers: (_headers9 = {}, _headers9["paypal-client-context"] = orderID, _headers9)
                                                 }).then((function(smartResponse) {
-                                                    return order_handleSmartResponse(smartResponse, orderID, err, "authorize");
+                                                    return order_handleSmartResponse(smartResponse, orderID, 0, "authorize");
                                                 }));
                                             }));
                                         }
@@ -7140,7 +7135,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.29", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.30", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
