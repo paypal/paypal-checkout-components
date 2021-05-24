@@ -187,20 +187,12 @@ type ShippingContactValidation = {|
 |};
 
 export function validateShippingContact(contact : ApplePayPaymentContact) : ShippingContactValidation {
-    const errors = [];
+    const errors : Array<ApplePayError> = [];
 
-    if (!contact.addressLines || !contact.addressLines.length) {
-        errors.push({
-            code:           'shippingContactInvalid',
-            contactField:   'postalAddress',
-            message:        'Address is invalid'
-        });
-    }
-    
     if (!contact.locality) {
         errors.push({
             code:           'shippingContactInvalid',
-            contactField:   'postalAddress',
+            contactField:   'locality',
             message:        'City is invalid'
         });
     }
@@ -208,7 +200,7 @@ export function validateShippingContact(contact : ApplePayPaymentContact) : Ship
     if (!contact.administrativeArea) {
         errors.push({
             code:           'shippingContactInvalid',
-            contactField:   'postalAddress',
+            contactField:   'administrativeArea',
             message:        'State is invalid'
         });
     }
@@ -216,7 +208,7 @@ export function validateShippingContact(contact : ApplePayPaymentContact) : Ship
     if (!country_code) {
         errors.push({
             code:           'shippingContactInvalid',
-            contactField:   'postalAddress',
+            contactField:   'countryCode',
             message:        'Country code is invalid'
         });
     }
@@ -224,7 +216,7 @@ export function validateShippingContact(contact : ApplePayPaymentContact) : Ship
     if (!contact.postalCode) {
         errors.push({
             code:           'shippingContactInvalid',
-            contactField:   'postalAddress',
+            contactField:   'postalCode',
             message:        'Postal code is invalid'
         });
     }

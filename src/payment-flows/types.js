@@ -147,6 +147,7 @@ export type ApplePayLineItem = {|
 |};
 
 export type ApplePayContactField = 'email' | 'name' | 'phone' | 'postalAddress' | 'phoneticName';
+export type ApplePayErrorContactField = 'postalAddress' | 'locality' | 'subLocality' | 'postalCode' | 'administrativeArea' | 'subAdministrativeArea' | 'country' | 'countryCode';
 
 export type ApplePayPaymentContact = {|
     phoneNumber? : string,
@@ -232,7 +233,7 @@ type ApplePayErrorCode = 'shippingContactInvalid' | 'billingContactInvalid' | 'a
 
 export type ApplePayError = {|
     code : ApplePayErrorCode,
-    contactField : ApplePayContactField,
+    contactField : ApplePayErrorContactField,
     message : string
 |};
 
