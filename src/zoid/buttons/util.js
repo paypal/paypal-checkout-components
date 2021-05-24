@@ -82,6 +82,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
 
         const convertErrorsFromUpdate = (update) => {
             if (update.errors && update.errors.length) {
+                // $FlowFixMe
                 return update.errors.map(error => new window.ApplePayError(error.code, error.contactField, error.message));
             }
 
