@@ -1,3 +1,11 @@
+## <small>5.0.160 (2021-05-25)</small>
+
+* Convert Errors to ApplePayError (#1644) ([7fadbec](https://github.com/paypal/paypal-checkout-components/commit/7fadbec)), closes [#1644](https://github.com/paypal/paypal-checkout-components/issues/1644)
+* Pass nonce to Overlay component (#1645) ([37c2c01](https://github.com/paypal/paypal-checkout-components/commit/37c2c01)), closes [#1645](https://github.com/paypal/paypal-checkout-components/issues/1645)
+* chore(release): 5.0.159 :tada: ([917251f](https://github.com/paypal/paypal-checkout-components/commit/917251f))
+
+
+
 ## <small>5.0.159 (2021-05-24)</small>
 
 * Convert Errors to ApplePayError (#1644) ([7fadbec](https://github.com/paypal/paypal-checkout-components/commit/7fadbec)), closes [#1644](https://github.com/paypal/paypal-checkout-components/issues/1644)
