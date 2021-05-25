@@ -225,6 +225,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
     let logo;
     let label;
     let branded;
+    let walletLabelClass = 'wallet-label-new';
 
     if (instrument && typeof instrument.branded === 'boolean') {
         branded = instrument.branded;
@@ -272,16 +273,21 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
     }
 
     const payNow = Boolean((instrument && instrument.oneClick) && commit && !vault);
-    const hidePayWith = Boolean(instrument && instrument.type === WALLET_INSTRUMENT.VENMO);
+    const isVenmoInstrument = Boolean(instrument && instrument.type === WALLET_INSTRUMENT.VENMO);
 
     const attrs = {};
     if (payNow) {
         attrs[ATTRIBUTE.PAY_NOW] = true;
     }
 
+    if (isVenmoInstrument) {
+        walletLabelClass = 'wallet-label-venmo';
+    }
+
+
     return (
         <Style css={ css }>
-            <div class='wallet-label-new' { ...attrs }>
+            <div class={ walletLabelClass } { ...attrs }>
                 {
                     branded
                         ? (
@@ -294,7 +300,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                 }
 
                 {
-                    hidePayWith ? null : (
+                    isVenmoInstrument ? null : (
                         <div class='pay-label' optional={ 2 }>
                             <Space />
                             {

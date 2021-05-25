@@ -81,3 +81,28 @@
         }
     }
 }
+
+.wallet-label-venmo {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+
+    * {
+        display: inline-block;
+        vertical-align: top;
+        height: 100%;
+    }
+
+    .logo {
+        margin-left: auto;
+    }
+
+    @media only screen and (max-width: 150px) {
+        text-align: center;
+        display: inline-block;
+
+        .logo {
+            display: none;
+        }
+    }
+}
