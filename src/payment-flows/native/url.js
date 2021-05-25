@@ -1,7 +1,7 @@
 /* @flow */
 
 
-import { extendUrl, getUserAgent } from 'belter/src';
+import { extendUrl, getUserAgent, isDevice } from 'belter/src';
 import { ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { getDomain } from 'cross-domain-utils/src';
 
@@ -69,6 +69,7 @@ type GetNativeUrlOptions = {|
 |};
 
 type NativeUrlQuery = {|
+    channel : string,
     sdkMeta : string,
     sessionUID : string,
     orderID : string,
@@ -90,6 +91,11 @@ type NativeUrlQuery = {|
     rtdbInstanceID : string
 |};
 
+const CHANNEL = {
+    DESKTOP: 'desktop-web',
+    MOBILE:  'mobile-web'
+};
+
 function getNativeUrlQueryParams({ props, serviceData, fundingSource, sessionUID, firebaseConfig, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : NativeUrlQuery {
     const { env, clientID, commit, buttonSessionID, stageHost, apiStageHost, enableFunding, merchantDomain } = props;
     const { facilitatorAccessToken, sdkMeta } = serviceData;
@@ -97,8 +103,10 @@ function getNativeUrlQueryParams({ props, serviceData, fundingSource, sessionUID
     const webCheckoutUrl = getWebCheckoutUrl({ orderID, props, fundingSource, facilitatorAccessToken });
     const userAgent = getUserAgent();
     const forceEligible = isNativeOptedIn({ props });
+    const channel = isDevice() ? CHANNEL.MOBILE : CHANNEL.DESKTOP;
 
     return {
+        channel,
         sdkMeta,
         sessionUID,
         orderID,
