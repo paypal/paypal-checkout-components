@@ -3,7 +3,7 @@
 /* @flow */
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { CURRENCY, FPTI_KEY, FUNDING, WALLET_INSTRUMENT, INTENT } from '@paypal/sdk-constants/src';
-import { request, noop, memoize, stringifyError } from 'belter/src';
+import { request, noop, memoize } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
@@ -69,14 +69,22 @@ export function createOrderID(order : OrderCreateRequest, { facilitatorAccessTok
     });
 }
 
-const handleRestAPIResponse = (err, orderID : string, action : string) => {
-    getLogger().info(`call_rest_api_failure_${ action }`, { err: stringifyError(err), orderID });
+const handleRestAPIResponse = (err, orderID : string, action : string) : string => {
+    // $FlowFixMe
+    const headers = err?.response?.headers;
+    const corrID = headers && headers[HEADERS.PAYPAL_DEBUG_ID] ? headers[HEADERS.PAYPAL_DEBUG_ID] : 'No correlation id.  Probably because the request wasn\'t made due to no access token being passed.';
+    
+    getLogger().info(`call_rest_api_failure_${ action }`, { corrID, orderID });
+
+    return corrID;
 };
 
-const handleSmartResponse = (response, orderID : string, restAPIError, action : string) => {
-    getLogger().info(`lsat_uprade_shadow_success_get_${ action }`, { orderID });
+const handleSmartResponse = (data : Object, headers : {| [$Values<typeof HEADERS>] : string |}, orderID : string, apiCorrID : string, action : string) => {
+    const corrID = headers && headers[HEADERS.PAYPAL_DEBUG_ID] ? headers[HEADERS.PAYPAL_DEBUG_ID] : '';
 
-    return response;
+    getLogger().info(`lsat_uprade_shadow_success_get_${ action }`, { apiCorrID, corrID, orderID });
+
+    return data;
 };
 
 export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
@@ -89,7 +97,7 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         }).catch(err => {
-            handleRestAPIResponse(err, orderID, 'get');
+            const corrID = handleRestAPIResponse(err, orderID, 'get');
 
             return callSmartAPI({
                 accessToken: buyerAccessToken,
@@ -97,8 +105,8 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]:         orderID
                 }
-            }).then(smartResponse => {
-                return handleSmartResponse(smartResponse, orderID, err, 'get');
+            }).then(({ data, headers }) => {
+                return handleSmartResponse(data, headers, orderID, corrID, 'get');
             });
         });
     }
@@ -109,6 +117,8 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
         headers:     {
             [HEADERS.CLIENT_CONTEXT]:         orderID
         }
+    }).then(({ data }) => {
+        return data;
     });
 }
 
@@ -123,7 +133,7 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         }).catch(err => {
-            handleRestAPIResponse(err, orderID, 'capture');
+            const corrID = handleRestAPIResponse(err, orderID, 'capture');
 
             return callSmartAPI({
                 accessToken: buyerAccessToken,
@@ -132,8 +142,8 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]: orderID
                 }
-            }).then(smartResponse => {
-                return handleSmartResponse(smartResponse, orderID, err, 'capture');
+            }).then(({ data, headers }) => {
+                return handleSmartResponse(data, headers, orderID, corrID, 'capture');
             });
         });
     }
@@ -145,6 +155,8 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
         headers:     {
             [HEADERS.CLIENT_CONTEXT]: orderID
         }
+    }).then(({ data }) => {
+        return data;
     });
 }
 
@@ -159,7 +171,7 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         }).catch(err => {
-            handleRestAPIResponse(err, orderID, 'authorize');
+            const corrID = handleRestAPIResponse(err, orderID, 'authorize');
 
             return callSmartAPI({
                 accessToken: buyerAccessToken,
@@ -168,8 +180,8 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]: orderID
                 }
-            }).then(smartResponse => {
-                return handleSmartResponse(smartResponse, orderID, err, 'authorize');
+            }).then(({ data, headers }) => {
+                return handleSmartResponse(data, headers, orderID, corrID, 'authorize');
             });
         });
     }
@@ -181,6 +193,8 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
         headers:     {
             [HEADERS.CLIENT_CONTEXT]: orderID
         }
+    }).then(({ data }) => {
+        return data;
     });
 }
 
@@ -208,6 +222,8 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
             headers:     {
                 [HEADERS.CLIENT_CONTEXT]: orderID
             }
+        }).then(({ data: orderData }) => {
+            return orderData;
         });
 }
 
@@ -233,6 +249,8 @@ export function confirmOrderAPI(orderID : string, data : ConfirmData, { facilita
             [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID || '',
             [HEADERS.PREFER]:                 PREFER.REPRESENTATION
         }
+    }).then(({ data: orderData }) => {
+        return orderData;
     });
 }
 
@@ -320,7 +338,7 @@ export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<stri
     return callSmartAPI({
         method: 'post',
         url:    `${ SMART_API_URI.PAYMENT }/${ billingToken }/ectoken`
-    }).then(data => {
+    }).then(({ data }) => {
         return data.token;
     });
 }
@@ -329,7 +347,7 @@ export function subscriptionIdToCartId(subscriptionID : string) : ZalgoPromise<s
     return callSmartAPI({
         method: 'post',
         url:    `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }/cartid`
-    }).then(data => {
+    }).then(({ data }) => {
         return data.token;
     });
 }

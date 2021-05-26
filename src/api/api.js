@@ -57,7 +57,12 @@ type APIRequest = {|
     headers? : { [string] : string }
 |};
 
-export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHeaders = {}, json } : APIRequest) : ZalgoPromise<Object> {
+export type APIResponse = {|
+    data : Object,
+    headers : {| [$Values<typeof HEADERS>] : string |}
+|};
+
+export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHeaders = {}, json } : APIRequest) : ZalgoPromise<APIResponse> {
 
     reqHeaders[HEADERS.REQUESTED_BY] = SMART_PAYMENT_BUTTONS;
 
@@ -82,7 +87,7 @@ export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHea
                 throw new Error(`Api: ${ url } returned ack: ${ body.ack } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })`);
             }
 
-            return body.data;
+            return { data: body.data, headers };
         });
 }
 

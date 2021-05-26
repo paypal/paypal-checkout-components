@@ -2063,7 +2063,7 @@ describe('native ios cases', () => {
             window.xprops.onCancel = avoid('onCancel');
 
             window.xprops.onApprove = expectError('onApprove', () => {
-                return ZalgoPromise.delay(50).then(() => {
+                return ZalgoPromise.try(() => {
                     throw err;
                 });
             });

@@ -412,6 +412,20 @@ export function getAuthorizeOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
+export function getRestfulAuthorizeOrderApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    new RegExp('/v2/checkout/orders/[^/]+/authorize'),
+        data:   {
+            ack:  'success',
+            data: {
+
+            }
+        },
+        ...options
+    });
+}
+
 export function getMapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',

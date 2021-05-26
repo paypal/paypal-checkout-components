@@ -26,8 +26,6 @@ export type SubscriptionCreateRequest = {|
     |}
 |};
 
-export type SubscriptionResponse = {||};
-
 type SubscriptionOptions = {|
     clientID : ?string,
     merchantID? : $ReadOnlyArray<string>,
@@ -126,11 +124,15 @@ type SubscriptionAPICredentials = {|
     buyerAccessToken : ?string
 |};
 
+export type SubscriptionResponse = {||};
+
 export function activateSubscription(subscriptionID : string, { buyerAccessToken } : SubscriptionAPICredentials) : ZalgoPromise<SubscriptionResponse> {
     return callSmartAPI({
         accessToken: buyerAccessToken,
         method:      `post`,
         url:         `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }/activate`
+    }).then(({ data }) => {
+        return data;
     });
 }
 
@@ -138,5 +140,7 @@ export function getSubscription(subscriptionID : string, { buyerAccessToken } : 
     return callSmartAPI({
         accessToken: buyerAccessToken,
         url:         `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }`
+    }).then(({ data }) => {
+        return data;
     });
 }

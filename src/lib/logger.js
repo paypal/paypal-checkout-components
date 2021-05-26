@@ -52,6 +52,7 @@ export function setupLogger({ env, sessionID, clientID, sdkCorrelationID, buyerC
             referer: window.location.host,
             sdkCorrelationID,
             sessionID,
+            clientID,
             env
         };
     });
