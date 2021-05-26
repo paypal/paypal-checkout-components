@@ -20,29 +20,30 @@
   
     Vue.component("app", {
       template: `
-        <paypal-buttons [props]="{
-            createOrder: createOrder,
-            onApprove: onApprove
-        }"></paypal-buttons>
+        <paypal-buttons :onApprove="onApprove" :createOrder="createOrder" />
       `,
       components: {
         "paypal-buttons": PayPalButton,
       },
   
       computed: {
-        createOrder: function (data, actions) {
-          return actions.order.create({
+        createOrder: function () {
+          return (data, actions) => {
+            return actions.order.create({
             purchase_units: [
               {
                 amount: {
-                  value: "0.01",
+                  value: "10",
                 },
               },
             ],
           });
+          }
         },
-        onApprove: function (data, actions) {
-          return actions.order.capture();
+        onApprove: function () {
+            return (data, actions) => {
+              return actions.order.capture();
+            }
         },
       },
     });
