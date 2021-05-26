@@ -605,6 +605,12 @@ export type DetailedOrderInfo = {|
                     currencyCode : $Values<typeof CURRENCY>
                 |},
                 
+                subtotal : {|
+                    currencyFormatSymbolISOCurrency : string,
+                    currencyValue : string,
+                    currencyCode : $Values<typeof CURRENCY>
+                |},
+
                 total : {|
                     currencyFormatSymbolISOCurrency : string,
                     currencyValue : string,
@@ -634,6 +640,11 @@ export const getDetailedOrderInfo : GetDetailedOrderInfo = (orderID, country) =>
                                 currencyFormat
                             }
                             tax {
+                                currencyValue
+                                currencySymbol
+                                currencyFormat
+                            }
+                            subtotal {
                                 currencyValue
                                 currencySymbol
                                 currencyFormat

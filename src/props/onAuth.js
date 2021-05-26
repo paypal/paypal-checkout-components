@@ -6,6 +6,7 @@ import { stringifyError } from 'belter/src';
 import { upgradeFacilitatorAccessToken } from '../api';
 import { getLogger } from '../lib';
 import { upgradeLSATExperiment } from '../experiments';
+import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../constants';
 
 import type { CreateOrder } from './createOrder';
 
@@ -19,11 +20,12 @@ type GetOnAuthOptions = {|
     facilitatorAccessToken : string,
     createOrder : CreateOrder,
     upgradeLSAT : boolean,
-    userIDToken : ?string
+    userIDToken : ?string,
+    clientID : string
 |};
 
-export function getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT, userIDToken } : GetOnAuthOptions) : OnAuth {
-    upgradeLSAT = upgradeLSAT || Boolean(userIDToken) || upgradeLSATExperiment.isEnabled();
+export function getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT, userIDToken, clientID } : GetOnAuthOptions) : OnAuth {
+    upgradeLSAT = (upgradeLSAT || Boolean(userIDToken) || upgradeLSATExperiment.isEnabled()) && LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
 
     return ({ accessToken } : XOnAuthDataType) => {
         getLogger().info(`spb_onauth_access_token_${ accessToken ? 'present' : 'not_present' }`);

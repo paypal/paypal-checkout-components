@@ -67,14 +67,17 @@ describe('Apple Pay Flow', () => {
                                     intent:  'capture',
                                     amounts: {
                                         shippingAndHandling: {
-                                            currencyValue: '1.00'
+                                            currencyValue: '1.99'
                                         },
                                         tax: {
                                             currencyValue: '0.98'
                                         },
+                                        subtotal: {
+                                            currencyValue: '1.00'
+                                        },
                                         total: {
                                             currencyCode:  'USD',
-                                            currencyValue: '1.99'
+                                            currencyValue: '3.97'
                                         }
                                     },
                                     shippingAddress: {

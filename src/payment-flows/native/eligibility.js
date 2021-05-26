@@ -8,6 +8,7 @@ import { type NativeEligibility, getNativeEligibility } from '../../api';
 import { isIOSSafari, isAndroidChrome, enableAmplitude } from '../../lib';
 import type { ButtonProps, ServiceData } from '../../button/props';
 import type { IsEligibleOptions, IsPaymentEligibleOptions } from '../types';
+import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../../constants';
 
 import { NATIVE_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI, NATIVE_CHECKOUT_FALLBACK_URI, SUPPORTED_FUNDING } from './config';
 
@@ -85,7 +86,7 @@ export function prefetchNativeEligibility({ props, serviceData } : PrefetchNativ
 
 export function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
 
-    const { platform, onShippingChange, createBillingAgreement, createSubscription, env } = props;
+    const { clientID, platform, onShippingChange, createBillingAgreement, createSubscription, env } = props;
     const { firebase: firebaseConfig } = config;
     const { merchantID } = serviceData;
 
@@ -122,6 +123,10 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
     }
 
     if (merchantID.length > 1) {
+        return false;
+    }
+
+    if (LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) !== -1) {
         return false;
     }
 
