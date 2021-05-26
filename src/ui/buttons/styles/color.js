@@ -57,7 +57,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.VENMO }].${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE } {
-        background: #009cde;
+        background: #008CFF;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE }:hover {
