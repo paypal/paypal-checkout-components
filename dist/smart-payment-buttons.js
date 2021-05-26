@@ -81,6 +81,10 @@ window.spb = function(modules) {
         function getUserAgent() {
             return window.navigator.mockUserAgent || window.navigator.userAgent;
         }
+        function isDevice(userAgent) {
+            void 0 === userAgent && (userAgent = getUserAgent());
+            return !!userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
+        }
         function isOperaMini(ua) {
             void 0 === ua && (ua = getUserAgent());
             return /Opera Mini/i.test(ua);
@@ -2007,7 +2011,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers14 = {}).authorization = "Bearer " + accessToken, _headers14["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers14["paypal-client-metadata-id"] = clientMetadataID, _headers14["x-app-name"] = "smart-payment-buttons", 
-            _headers14["x-app-version"] = "5.0.30", _headers14);
+            _headers14["x-app-version"] = "5.0.31", _headers14);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2077,7 +2081,7 @@ window.spb = function(modules) {
                 headers: (_headers20 = {}, _headers20["paypal-client-context"] = orderID, _headers20)
             });
         }));
-        var getDetailedOrderInfo = memoize((function(orderID, country) {
+        var order_getDetailedOrderInfo = function(orderID, country) {
             var _headers21;
             return callGraphQL({
                 name: "GetCheckoutDetails",
@@ -2088,7 +2092,7 @@ window.spb = function(modules) {
                 },
                 headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
             });
-        }));
+        };
         function updateButtonClientConfig(_ref15) {
             var _ref15$inline = _ref15.inline;
             return callGraphQL({
@@ -3358,7 +3362,7 @@ window.spb = function(modules) {
                                 }), actions).then((function() {
                                     currentShippingContact = shippingContact;
                                     shippingMethod && (currentShippingMethod = shippingMethod);
-                                    return getDetailedOrderInfo(orderID, locale.country).then((function(updatedOrder) {
+                                    return order_getDetailedOrderInfo(orderID, locale.country).then((function(updatedOrder) {
                                         var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedShippingValue = _updatedOrder$checkou.shippingAndHandling.currencyValue, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
                                         currentShippingAmount = updatedShippingValue;
                                         currentTaxAmount = updatedTaxValue;
@@ -3391,7 +3395,7 @@ window.spb = function(modules) {
                             })), function setupApplePaySession() {
                                 return orderPromise.then((function(orderID) {
                                     var country = locale.country;
-                                    return getDetailedOrderInfo(orderID, country).then((function(order) {
+                                    return order_getDetailedOrderInfo(orderID, country).then((function(order) {
                                         var applePayRequest = function(countryCode, order) {
                                             var _order$checkoutSessio = order.checkoutSession, _order$checkoutSessio2 = _order$checkoutSessio.cart, _order$checkoutSessio3 = _order$checkoutSessio2.amounts, shippingValue = _order$checkoutSessio3.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio3.tax.currencyValue, _order$checkoutSessio4 = _order$checkoutSessio3.total, currencyCode = _order$checkoutSessio4.currencyCode, totalValue = _order$checkoutSessio4.currencyValue, shippingAddress = _order$checkoutSessio2.shippingAddress, shippingMethods = _order$checkoutSessio2.shippingMethods;
                                             var supportedNetworks = function(issuers) {
@@ -5154,6 +5158,7 @@ window.spb = function(modules) {
                 props: props
             });
             return {
+                channel: isDevice() ? "mobile-web" : "desktop-web",
                 sdkMeta: sdkMeta,
                 sessionUID: sessionUID,
                 orderID: orderID,
@@ -7135,7 +7140,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.30", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.31", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
