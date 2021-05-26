@@ -601,7 +601,7 @@ export type DetailedOrderInfo = {|
 
 export type GetDetailedOrderInfo = (string, string) => ZalgoPromise<DetailedOrderInfo>;
 
-export const getDetailedOrderInfo : GetDetailedOrderInfo = memoize((orderID, country) => {
+export const getDetailedOrderInfo : GetDetailedOrderInfo = (orderID, country) => {
     return callGraphQL({
         name:  'GetCheckoutDetails',
         query: `
@@ -654,7 +654,7 @@ export const getDetailedOrderInfo : GetDetailedOrderInfo = memoize((orderID, cou
             [HEADERS.CLIENT_CONTEXT]: orderID
         }
     });
-});
+};
 
 type UpdateButtonClientConfigOptions = {|
     orderID : string,
