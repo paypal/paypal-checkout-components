@@ -2024,7 +2024,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers14 = {}).authorization = "Bearer " + accessToken, _headers14["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers14["paypal-client-metadata-id"] = clientMetadataID, _headers14["x-app-name"] = "smart-payment-buttons", 
-            _headers14["x-app-version"] = "5.0.32", _headers14);
+            _headers14["x-app-version"] = "5.0.33", _headers14);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3308,24 +3308,28 @@ window.spb = function(modules) {
                 return {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
-                            return currentShippingLabel = "Shipping", onShippingChangeCallback = function(_ref4) {
+                            return onShippingChangeCallback = function(_ref4) {
                                 var orderID = _ref4.orderID, shippingContact = _ref4.shippingContact, _ref4$shippingMethod = _ref4.shippingMethod, shippingMethod = void 0 === _ref4$shippingMethod ? null : _ref4$shippingMethod;
-                                if (!onShippingChange) return promise_ZalgoPromise.resolve({
-                                    newTotal: {
-                                        label: "Total",
-                                        amount: currentTotalAmount
-                                    },
-                                    newLineItems: [ {
-                                        label: "Subtotal",
-                                        amount: currentSubtotalAmount
-                                    }, {
-                                        label: "Sales Tax",
-                                        amount: currentTaxAmount
-                                    }, {
-                                        label: currentShippingLabel,
-                                        amount: currentShippingAmount
-                                    } ]
-                                });
+                                if (!onShippingChange) {
+                                    var _currentShippingMetho;
+                                    var update = {
+                                        newTotal: {
+                                            label: "Total",
+                                            amount: currentTotalAmount
+                                        },
+                                        newLineItems: [ {
+                                            label: "Subtotal",
+                                            amount: currentSubtotalAmount
+                                        }, {
+                                            label: "Sales Tax",
+                                            amount: currentTaxAmount
+                                        }, {
+                                            label: (null == (_currentShippingMetho = currentShippingMethod) ? void 0 : _currentShippingMetho.label) || "Shipping",
+                                            amount: currentShippingAmount
+                                        } ]
+                                    };
+                                    return promise_ZalgoPromise.resolve(update);
+                                }
                                 var _validateShippingCont = function(contact) {
                                     var errors = [];
                                     contact.locality || errors.push({
@@ -3359,23 +3363,27 @@ window.spb = function(modules) {
                                         }
                                     };
                                 }(shippingContact), errors = _validateShippingCont.errors, shipping_address = _validateShippingCont.shipping_address;
-                                if (errors && errors.length) return promise_ZalgoPromise.resolve({
-                                    errors: errors,
-                                    newTotal: {
-                                        label: "Total",
-                                        amount: currentTotalAmount
-                                    },
-                                    newLineItems: [ {
-                                        label: "Subtotal",
-                                        amount: currentSubtotalAmount
-                                    }, {
-                                        label: "Sales Tax",
-                                        amount: currentTaxAmount
-                                    }, {
-                                        label: currentShippingLabel,
-                                        amount: currentShippingAmount
-                                    } ]
-                                });
+                                if (errors && errors.length) {
+                                    var _currentShippingMetho2;
+                                    var _update = {
+                                        errors: errors,
+                                        newTotal: {
+                                            label: "Total",
+                                            amount: currentTotalAmount
+                                        },
+                                        newLineItems: [ {
+                                            label: "Subtotal",
+                                            amount: currentSubtotalAmount
+                                        }, {
+                                            label: "Sales Tax",
+                                            amount: currentTaxAmount
+                                        }, {
+                                            label: (null == (_currentShippingMetho2 = currentShippingMethod) ? void 0 : _currentShippingMetho2.label) || "Shipping",
+                                            amount: currentShippingAmount
+                                        } ]
+                                    };
+                                    return promise_ZalgoPromise.resolve(_update);
+                                }
                                 var data = {
                                     amount: {
                                         currency_code: currency,
@@ -3384,14 +3392,17 @@ window.spb = function(modules) {
                                     orderID: orderID,
                                     shipping_address: shipping_address
                                 };
-                                shippingMethod && (data.selected_shipping_option = {
-                                    label: shippingMethod.label || currentShippingLabel,
-                                    type: shippingMethod.identifier,
-                                    amount: {
-                                        currency_code: currency,
-                                        value: shippingMethod.amount
-                                    }
-                                });
+                                if (shippingMethod) {
+                                    var _currentShippingMetho3;
+                                    data.selected_shipping_option = {
+                                        label: shippingMethod.label || (null == (_currentShippingMetho3 = currentShippingMethod) ? void 0 : _currentShippingMetho3.label) || "Shipping",
+                                        type: shippingMethod.identifier,
+                                        amount: {
+                                            currency_code: currency,
+                                            value: shippingMethod.amount
+                                        }
+                                    };
+                                }
                                 var actions = {
                                     resolve: function() {
                                         return promise_ZalgoPromise.resolve();
@@ -3408,11 +3419,12 @@ window.spb = function(modules) {
                                     currentShippingContact = shippingContact;
                                     shippingMethod && (currentShippingMethod = shippingMethod);
                                     return order_getDetailedOrderInfo(orderID, locale.country).then((function(updatedOrder) {
-                                        var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedShippingValue = _updatedOrder$checkou.shippingAndHandling.currencyValue, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
-                                        currentShippingAmount = updatedShippingValue;
+                                        var _currentShippingMetho4, _currentShippingMetho5;
+                                        var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
+                                        currentShippingAmount = (null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.amount) || "0.00";
                                         currentTaxAmount = updatedTaxValue;
                                         currentTotalAmount = updatedTotalValue;
-                                        return promise_ZalgoPromise.resolve({
+                                        var update = {
                                             newTotal: {
                                                 label: "Total",
                                                 amount: updatedTotalValue
@@ -3424,10 +3436,11 @@ window.spb = function(modules) {
                                                 label: "Sales Tax",
                                                 amount: updatedTaxValue
                                             }, {
-                                                label: currentShippingLabel,
-                                                amount: updatedShippingValue
+                                                label: (null == (_currentShippingMetho5 = currentShippingMethod) ? void 0 : _currentShippingMetho5.label) || "Shipping",
+                                                amount: currentShippingAmount
                                             } ]
-                                        });
+                                        };
+                                        return promise_ZalgoPromise.resolve(update);
                                     }));
                                 }));
                             }, orderPromise = validate().then((function(valid) {
@@ -3445,7 +3458,7 @@ window.spb = function(modules) {
                                     var country = locale.country;
                                     return order_getDetailedOrderInfo(orderID, country).then((function(order) {
                                         var applePayRequest = function(countryCode, order) {
-                                            var _order$checkoutSessio = order.checkoutSession, _order$checkoutSessio2 = _order$checkoutSessio.cart, _order$checkoutSessio3 = _order$checkoutSessio2.amounts, shippingValue = _order$checkoutSessio3.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio3.tax.currencyValue, _order$checkoutSessio4 = _order$checkoutSessio3.total, currencyCode = _order$checkoutSessio4.currencyCode, totalValue = _order$checkoutSessio4.currencyValue, shippingAddress = _order$checkoutSessio2.shippingAddress, shippingMethods = _order$checkoutSessio2.shippingMethods;
+                                            var _order$checkoutSessio = order.checkoutSession, _order$checkoutSessio2 = _order$checkoutSessio.cart, _order$checkoutSessio3 = _order$checkoutSessio2.amounts, shippingValue = _order$checkoutSessio3.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio3.tax.currencyValue, subtotalValue = _order$checkoutSessio3.subtotal.currencyValue, _order$checkoutSessio4 = _order$checkoutSessio3.total, currencyCode = _order$checkoutSessio4.currencyCode, totalValue = _order$checkoutSessio4.currencyValue, shippingAddress = _order$checkoutSessio2.shippingAddress, shippingMethods = _order$checkoutSessio2.shippingMethods;
                                             var supportedNetworks = function(issuers) {
                                                 if (!issuers || issuers && 0 === issuers.length) return [];
                                                 var validIssuers = [];
@@ -3513,6 +3526,10 @@ window.spb = function(modules) {
                                                     type: "final"
                                                 }
                                             };
+                                            subtotalValue && subtotalValue.length && result.lineItems.push({
+                                                label: "Subtotal",
+                                                amount: subtotalValue
+                                            });
                                             taxValue && taxValue.length && result.lineItems.push({
                                                 label: "Sales Tax",
                                                 amount: taxValue
@@ -3526,7 +3543,6 @@ window.spb = function(modules) {
                                         }(country, order);
                                         var _order$checkoutSessio = order.checkoutSession.cart.amounts, shippingValue = _order$checkoutSessio.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio.tax.currencyValue, subtotalValue = _order$checkoutSessio.subtotal.currencyValue;
                                         currentShippingAmount = shippingValue;
-                                        currentShippingLabel = applePayRequest.shippingMethods && applePayRequest.shippingMethods.length ? applePayRequest.shippingMethods[0].label : "Shipping";
                                         currentShippingMethod = applePayRequest.shippingMethods && applePayRequest.shippingMethods.length ? applePayRequest.shippingMethods[0] : null;
                                         currentTaxAmount = taxValue;
                                         currentSubtotalAmount = subtotalValue;
@@ -3585,10 +3601,13 @@ window.spb = function(modules) {
                                                     label: "Sales Tax",
                                                     amount: currentTaxAmount
                                                 });
-                                                shippingValue && shippingValue.length && update.newLineItems.push({
-                                                    label: currentShippingLabel,
-                                                    amount: currentShippingAmount
-                                                });
+                                                if (shippingValue && shippingValue.length) {
+                                                    var _currentShippingMetho6;
+                                                    update.newLineItems.push({
+                                                        label: (null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.label) || "Shipping",
+                                                        amount: currentShippingAmount
+                                                    });
+                                                }
                                                 completePaymentMethodSelection(update);
                                             })), addEventListener("shippingmethodselected", (function(_ref7) {
                                                 var shippingMethod = _ref7.shippingMethod;
@@ -3616,10 +3635,13 @@ window.spb = function(modules) {
                                                         label: "Sales Tax",
                                                         amount: currentTaxAmount
                                                     });
-                                                    shippingValue && shippingValue.length && update.newLineItems.push({
-                                                        label: currentShippingLabel,
-                                                        amount: currentShippingAmount
-                                                    });
+                                                    if (shippingValue && shippingValue.length) {
+                                                        var _currentShippingMetho7;
+                                                        update.newLineItems.push({
+                                                            label: (null == (_currentShippingMetho7 = currentShippingMethod) ? void 0 : _currentShippingMetho7.label) || "Shipping",
+                                                            amount: currentShippingAmount
+                                                        });
+                                                    }
                                                     completeShippingMethodSelection(update);
                                                 }));
                                             })), addEventListener("shippingcontactselected", (function(_ref8) {
@@ -3683,7 +3705,7 @@ window.spb = function(modules) {
                                     handleApplePayError("applepay_create_order_error", err);
                                 }));
                             }();
-                            var currentTotalAmount, currentSubtotalAmount, currentTaxAmount, currentShippingAmount, currentShippingLabel, currentShippingContact, currentShippingMethod, onShippingChangeCallback, orderPromise;
+                            var currentTotalAmount, currentSubtotalAmount, currentTaxAmount, currentShippingAmount, currentShippingContact, currentShippingMethod, onShippingChangeCallback, orderPromise;
                         })).catch((function(err) {
                             return close().then((function() {
                                 var _getLogger$error$trac;
@@ -7200,7 +7222,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.32", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.33", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
