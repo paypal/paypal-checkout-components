@@ -197,8 +197,8 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         } = updatedOrder.checkoutSession;
 
                         currentShippingAmount = currentShippingMethod?.amount || '0.00';
-                        currentTaxAmount = updatedTaxValue;
-                        currentSubtotalAmount = updatedSubtotalValue;
+                        currentTaxAmount = updatedTaxValue === '0.00' ? currentTaxAmount : updatedTaxValue;
+                        currentSubtotalAmount = updatedSubtotalValue === '0.00' ? currentSubtotalAmount : updatedSubtotalValue;
                         currentTotalAmount = updatedTotalValue;
 
                         const update = {
@@ -213,7 +213,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                 },
                                 {
                                     label:  'Sales Tax',
-                                    amount: updatedTaxValue
+                                    amount: currentTaxAmount
                                 },
                                 {
                                     label:  currentShippingMethod?.label || 'Shipping',
