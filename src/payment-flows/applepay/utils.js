@@ -108,6 +108,9 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
                 tax: {
                     currencyValue: taxValue
                 },
+                subtotal: {
+                    currencyValue: subtotalValue
+                },
                 total: {
                     currencyCode,
                     currencyValue: totalValue
@@ -150,6 +153,13 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
             type:   'final'
         }
     };
+
+    if (subtotalValue && subtotalValue.length) {
+        result.lineItems.push({
+            label:  'Subtotal',
+            amount: subtotalValue
+        });
+    }
 
     if (taxValue && taxValue.length) {
         result.lineItems.push({
