@@ -203,8 +203,8 @@ type PatchData = {|
 |};
 
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    return forceRestAPI
-        ? callRestAPI({
+    if (forceRestAPI) {
+        return callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `patch`,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
@@ -213,18 +213,34 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
                 [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
-        })
-        : callSmartAPI({
-            accessToken: buyerAccessToken,
-            method:      'post',
-            url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
-            json:        { data: Array.isArray(data) ? { patch: data } : data },
-            headers:     {
-                [HEADERS.CLIENT_CONTEXT]: orderID
-            }
-        }).then(({ data: orderData }) => {
-            return orderData;
+        }).catch(err => {
+            const corrID = handleRestAPIResponse(err, orderID, 'patch');
+
+            return callSmartAPI({
+                accessToken: buyerAccessToken,
+                method:      'post',
+                url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
+                json:        { data: Array.isArray(data) ? { patch: data } : data },
+                headers:     {
+                    [HEADERS.CLIENT_CONTEXT]: orderID
+                }
+            }).then(({ data: patchData, headers }) => {
+                return handleSmartResponse(patchData, headers, orderID, corrID, 'patch');
+            });
         });
+    }
+
+    return callSmartAPI({
+        accessToken: buyerAccessToken,
+        method:      'post',
+        url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
+        json:        { data: Array.isArray(data) ? { patch: data } : data },
+        headers:     {
+            [HEADERS.CLIENT_CONTEXT]: orderID
+        }
+    }).then(({ data: patchData }) => {
+        return patchData;
+    });
 }
 
 export type ConfirmData = {|
