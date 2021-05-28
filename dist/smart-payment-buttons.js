@@ -1995,16 +1995,36 @@ window.spb = function(modules) {
             return data;
         };
         function patchOrder(orderID, data, _ref11) {
-            var _headers11, _headers12;
+            var _headers13;
             var buyerAccessToken = _ref11.buyerAccessToken, _ref11$forceRestAPI = _ref11.forceRestAPI;
-            return void 0 !== _ref11$forceRestAPI && _ref11$forceRestAPI ? callRestAPI({
-                accessToken: _ref11.facilitatorAccessToken,
-                method: "patch",
-                url: ORDERS_API_URL + "/" + orderID,
-                data: data,
-                headers: (_headers11 = {}, _headers11["paypal-partner-attribution-id"] = _ref11.partnerAttributionID || "", 
-                _headers11.prefer = "return=representation", _headers11)
-            }) : callSmartAPI({
+            if (void 0 !== _ref11$forceRestAPI && _ref11$forceRestAPI) {
+                var _headers11;
+                return callRestAPI({
+                    accessToken: _ref11.facilitatorAccessToken,
+                    method: "patch",
+                    url: ORDERS_API_URL + "/" + orderID,
+                    data: data,
+                    headers: (_headers11 = {}, _headers11["paypal-partner-attribution-id"] = _ref11.partnerAttributionID || "", 
+                    _headers11.prefer = "return=representation", _headers11)
+                }).catch((function(err) {
+                    var _headers12;
+                    var corrID = order_handleRestAPIResponse(err, orderID, "patch");
+                    return callSmartAPI({
+                        accessToken: buyerAccessToken,
+                        method: "post",
+                        url: "/smart/api/order/" + orderID + "/patch",
+                        json: {
+                            data: Array.isArray(data) ? {
+                                patch: data
+                            } : data
+                        },
+                        headers: (_headers12 = {}, _headers12["paypal-client-context"] = orderID, _headers12)
+                    }).then((function(_ref12) {
+                        return order_handleSmartResponse(_ref12.data, _ref12.headers, orderID, corrID, "patch");
+                    }));
+                }));
+            }
+            return callSmartAPI({
                 accessToken: buyerAccessToken,
                 method: "post",
                 url: "/smart/api/order/" + orderID + "/patch",
@@ -2013,18 +2033,18 @@ window.spb = function(modules) {
                         patch: data
                     } : data
                 },
-                headers: (_headers12 = {}, _headers12["paypal-client-context"] = orderID, _headers12)
-            }).then((function(_ref12) {
-                return _ref12.data;
+                headers: (_headers13 = {}, _headers13["paypal-client-context"] = orderID, _headers13)
+            }).then((function(_ref13) {
+                return _ref13.data;
             }));
         }
-        function validatePaymentMethod(_ref15) {
-            var _headers14;
-            var accessToken = _ref15.accessToken, orderID = _ref15.orderID, paymentMethodID = _ref15.paymentMethodID, enableThreeDomainSecure = _ref15.enableThreeDomainSecure, partnerAttributionID = _ref15.partnerAttributionID, clientMetadataID = _ref15.clientMetadataID, installmentPlan = _ref15.installmentPlan;
+        function validatePaymentMethod(_ref16) {
+            var _headers15;
+            var accessToken = _ref16.accessToken, orderID = _ref16.orderID, paymentMethodID = _ref16.paymentMethodID, enableThreeDomainSecure = _ref16.enableThreeDomainSecure, partnerAttributionID = _ref16.partnerAttributionID, clientMetadataID = _ref16.clientMetadataID, installmentPlan = _ref16.installmentPlan;
             logger_getLogger().info("rest_api_create_order_token");
-            var headers = ((_headers14 = {}).authorization = "Bearer " + accessToken, _headers14["paypal-partner-attribution-id"] = partnerAttributionID, 
-            _headers14["paypal-client-metadata-id"] = clientMetadataID, _headers14["x-app-name"] = "smart-payment-buttons", 
-            _headers14["x-app-version"] = "5.0.33", _headers14);
+            var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
+            _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
+            _headers15["x-app-version"] = "5.0.34", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2051,51 +2071,51 @@ window.spb = function(modules) {
             return callSmartAPI({
                 method: "post",
                 url: "/smart/api/payment/" + billingToken + "/ectoken"
-            }).then((function(_ref16) {
-                return _ref16.data.token;
+            }).then((function(_ref17) {
+                return _ref17.data.token;
             }));
         }
         function subscriptionIdToCartId(subscriptionID) {
             return callSmartAPI({
                 method: "post",
                 url: "/smart/api/billagmt/subscriptions/" + subscriptionID + "/cartid"
-            }).then((function(_ref17) {
-                return _ref17.data.token;
+            }).then((function(_ref18) {
+                return _ref18.data.token;
             }));
         }
-        function oneClickApproveOrder(_ref23) {
-            var _headers19;
-            var orderID = _ref23.orderID, clientMetadataID = _ref23.clientMetadataID;
+        function oneClickApproveOrder(_ref24) {
+            var _headers20;
+            var orderID = _ref24.orderID, clientMetadataID = _ref24.clientMetadataID;
             return callGraphQL({
                 name: "OneClickApproveOrder",
                 query: "\n            mutation OneClickApproveOrder(\n                $orderID : String!\n                $instrumentType : String!\n                $instrumentID : String!\n            ) {\n                oneClickPayment(\n                    token: $orderID\n                    selectedInstrumentType : $instrumentType\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    userId\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID,
-                    instrumentType: _ref23.instrumentType,
-                    instrumentID: _ref23.instrumentID
+                    instrumentType: _ref24.instrumentType,
+                    instrumentID: _ref24.instrumentID
                 },
-                headers: (_headers19 = {}, _headers19["x-paypal-internal-euat"] = _ref23.buyerAccessToken, 
-                _headers19["paypal-client-context"] = orderID, _headers19["paypal-client-metadata-id"] = clientMetadataID || orderID, 
-                _headers19)
-            }).then((function(_ref24) {
+                headers: (_headers20 = {}, _headers20["x-paypal-internal-euat"] = _ref24.buyerAccessToken, 
+                _headers20["paypal-client-context"] = orderID, _headers20["paypal-client-metadata-id"] = clientMetadataID || orderID, 
+                _headers20)
+            }).then((function(_ref25) {
                 return {
-                    payerID: _ref24.oneClickPayment.userId
+                    payerID: _ref25.oneClickPayment.userId
                 };
             }));
         }
         var getSupplementalOrderInfo = memoize((function(orderID) {
-            var _headers20;
+            var _headers21;
             return callGraphQL({
                 name: "GetCheckoutDetails",
                 query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID
                 },
-                headers: (_headers20 = {}, _headers20["paypal-client-context"] = orderID, _headers20)
+                headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
             });
         }));
         var order_getDetailedOrderInfo = function(orderID, country) {
-            var _headers21;
+            var _headers22;
             return callGraphQL({
                 name: "GetCheckoutDetails",
                 query: "\n            query GetCheckoutDetails($orderID: String!, $country: CountryCodes!) {\n                checkoutSession(token: $orderID) {\n                    allowedCardIssuers(country: $country)\n                    cart {\n                        amounts {\n                            shippingAndHandling {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            tax {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            subtotal {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                }\n            }\n        ",
@@ -2103,32 +2123,32 @@ window.spb = function(modules) {
                     orderID: orderID,
                     country: country
                 },
-                headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
+                headers: (_headers22 = {}, _headers22["paypal-client-context"] = orderID, _headers22)
             });
         };
-        function updateButtonClientConfig(_ref25) {
-            var _ref25$inline = _ref25.inline;
+        function updateButtonClientConfig(_ref26) {
+            var _ref26$inline = _ref26.inline;
             return callGraphQL({
                 name: "UpdateClientConfig",
                 query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!,\n                $buttonSessionID : String\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow,\n                    buttonSessionID: $buttonSessionID\n                )\n            }\n        ",
                 variables: {
-                    orderID: orderID = (_ref20 = {
-                        orderID: _ref25.orderID,
-                        fundingSource: _ref25.fundingSource,
+                    orderID: orderID = (_ref21 = {
+                        orderID: _ref26.orderID,
+                        fundingSource: _ref26.fundingSource,
                         integrationArtifact: "PAYPAL_JS_SDK",
-                        userExperienceFlow: _ref25.userExperienceFlow || (void 0 !== _ref25$inline && _ref25$inline ? "INLINE" : "INCONTEXT"),
+                        userExperienceFlow: _ref26.userExperienceFlow || (void 0 !== _ref26$inline && _ref26$inline ? "INLINE" : "INCONTEXT"),
                         productFlow: "SMART_PAYMENT_BUTTONS",
-                        buttonSessionID: _ref25.buttonSessionID
+                        buttonSessionID: _ref26.buttonSessionID
                     }).orderID,
-                    fundingSource: _ref20.fundingSource,
-                    integrationArtifact: _ref20.integrationArtifact,
-                    userExperienceFlow: _ref20.userExperienceFlow,
-                    productFlow: _ref20.productFlow,
-                    buttonSessionID: _ref20.buttonSessionID
+                    fundingSource: _ref21.fundingSource,
+                    integrationArtifact: _ref21.integrationArtifact,
+                    userExperienceFlow: _ref21.userExperienceFlow,
+                    productFlow: _ref21.productFlow,
+                    buttonSessionID: _ref21.buttonSessionID
                 },
-                headers: (_headers17 = {}, _headers17["paypal-client-context"] = orderID, _headers17)
+                headers: (_headers18 = {}, _headers18["paypal-client-context"] = orderID, _headers18)
             }).then(src_util_noop);
-            var _ref20, _headers17, orderID;
+            var _ref21, _headers18, orderID;
         }
         function createRequest(accessToken, subscriptionPayload, partnerAttributionID) {
             return request({
@@ -3420,9 +3440,8 @@ window.spb = function(modules) {
                                     shippingMethod && (currentShippingMethod = shippingMethod);
                                     return order_getDetailedOrderInfo(orderID, locale.country).then((function(updatedOrder) {
                                         var _currentShippingMetho4, _currentShippingMetho5;
-                                        var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
+                                        var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedSubtotalValue = _updatedOrder$checkou.subtotal.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
                                         currentShippingAmount = (null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.amount) || "0.00";
-                                        currentTaxAmount = updatedTaxValue;
                                         currentTotalAmount = updatedTotalValue;
                                         var update = {
                                             newTotal: {
@@ -3431,10 +3450,10 @@ window.spb = function(modules) {
                                             },
                                             newLineItems: [ {
                                                 label: "Subtotal",
-                                                amount: currentSubtotalAmount = _updatedOrder$checkou.subtotal.currencyValue
+                                                amount: currentSubtotalAmount = "0.00" === updatedSubtotalValue ? currentSubtotalAmount : updatedSubtotalValue
                                             }, {
                                                 label: "Sales Tax",
-                                                amount: updatedTaxValue
+                                                amount: currentTaxAmount = "0.00" === updatedTaxValue ? currentTaxAmount : updatedTaxValue
                                             }, {
                                                 label: (null == (_currentShippingMetho5 = currentShippingMethod) ? void 0 : _currentShippingMetho5.label) || "Shipping",
                                                 amount: currentShippingAmount
@@ -4159,17 +4178,17 @@ window.spb = function(modules) {
                                                 disableCard: disableCard
                                             });
                                         })).then((function(eligible) {
-                                            if (eligible && clientAccessToken) return function(_ref18) {
-                                                var _headers15;
-                                                var orderID = _ref18.orderID;
+                                            if (eligible && clientAccessToken) return function(_ref19) {
+                                                var _headers16;
+                                                var orderID = _ref19.orderID;
                                                 return callGraphQL({
                                                     name: "EnableVault",
                                                     query: "\n            mutation EnableVault(\n                $orderID : String!\n            ) {\n                enableVault(\n                    token: $orderID\n                )\n            }\n        ",
                                                     variables: {
                                                         orderID: orderID
                                                     },
-                                                    headers: (_headers15 = {}, _headers15["x-paypal-internal-euat"] = _ref18.clientAccessToken, 
-                                                    _headers15["paypal-client-context"] = orderID, _headers15)
+                                                    headers: (_headers16 = {}, _headers16["x-paypal-internal-euat"] = _ref19.clientAccessToken, 
+                                                    _headers16["paypal-client-context"] = orderID, _headers16)
                                                 });
                                             }({
                                                 orderID: orderID,
@@ -4901,23 +4920,23 @@ window.spb = function(modules) {
                         logger_getLogger().info("click_unlink_account").track((_getLogger$info$track4 = {}, 
                         _getLogger$info$track4.transition_name = "process_click_unlink_account", _getLogger$info$track4.optsel = "unlink_account", 
                         _getLogger$info$track4)).flush();
-                        return (_ref19 = {
+                        return (_ref20 = {
                             paymentMethodID: paymentMethodID,
                             clientAccessToken: clientAccessToken
                         }, callGraphQL({
                             name: "DeleteVault",
                             query: "\n            mutation DeleteVault(\n                $paymentMethodID : String!\n            ) {\n                deleteVault(\n                    paymentMethodID: $paymentMethodID\n                )\n            }\n        ",
                             variables: {
-                                paymentMethodID: _ref19.paymentMethodID
+                                paymentMethodID: _ref20.paymentMethodID
                             },
-                            headers: (_headers16 = {}, _headers16["x-paypal-internal-euat"] = _ref19.clientAccessToken, 
-                            _headers16)
+                            headers: (_headers17 = {}, _headers17["x-paypal-internal-euat"] = _ref20.clientAccessToken, 
+                            _headers17)
                         })).then((function() {
                             !function(element) {
                                 element && element.parentNode && element.parentNode.removeChild(element);
                             }(element);
                         }));
-                        var _ref19, _headers16;
+                        var _ref20, _headers17;
                     }
                 } ];
                 throw new Error("Can not render menu for " + fundingSource);
@@ -5764,9 +5783,9 @@ window.spb = function(modules) {
                                 var orderID = _ref5.orderID, paymentMethodNonce = _ref5.paymentMethodNonce, clientID = _ref5.clientID, branded = _ref5.branded, buttonSessionID = _ref5.buttonSessionID;
                                 logger_getLogger().info("nonce_payment_initiated");
                                 if (!branded) throw new Error("Expected payment to be branded");
-                                return function(_ref26) {
-                                    var _headers22;
-                                    var orderID = _ref26.orderID, paymentMethodNonce = _ref26.paymentMethodNonce, clientID = _ref26.clientID, _ref26$branded = _ref26.branded, branded = void 0 === _ref26$branded || _ref26$branded, buttonSessionID = _ref26.buttonSessionID;
+                                return function(_ref27) {
+                                    var _headers23;
+                                    var orderID = _ref27.orderID, paymentMethodNonce = _ref27.paymentMethodNonce, clientID = _ref27.clientID, _ref27$branded = _ref27.branded, branded = void 0 === _ref27$branded || _ref27$branded, buttonSessionID = _ref27.buttonSessionID;
                                     logger_getLogger().info("pay_with_nonce_input_params", {
                                         orderID: orderID,
                                         paymentMethodNonce: paymentMethodNonce,
@@ -5784,9 +5803,9 @@ window.spb = function(modules) {
                                             branded: branded,
                                             buttonSessionID: buttonSessionID
                                         },
-                                        headers: (_headers22 = {}, _headers22["paypal-client-context"] = orderID, _headers22)
-                                    }).then((function(_ref27) {
-                                        var approvePaymentWithNonce = _ref27.approvePaymentWithNonce;
+                                        headers: (_headers23 = {}, _headers23["paypal-client-context"] = orderID, _headers23)
+                                    }).then((function(_ref28) {
+                                        var approvePaymentWithNonce = _ref28.approvePaymentWithNonce;
                                         logger_getLogger().info("pay_with_paymentMethodNonce", JSON.stringify(approvePaymentWithNonce));
                                         return {
                                             payerID: approvePaymentWithNonce.buyer.userId
@@ -6858,17 +6877,17 @@ window.spb = function(modules) {
                                                                 var facilitatorAccessToken = _ref2.facilitatorAccessToken;
                                                                 var startTime = Date.now();
                                                                 return promise_ZalgoPromise.try((function() {
-                                                                    return function(orderID, data, _ref13) {
-                                                                        var _headers13;
+                                                                    return function(orderID, data, _ref14) {
+                                                                        var _headers14;
                                                                         return callRestAPI({
-                                                                            accessToken: _ref13.facilitatorAccessToken,
+                                                                            accessToken: _ref14.facilitatorAccessToken,
                                                                             method: "post",
                                                                             url: ORDERS_API_URL + "/" + orderID + "/confirm-payment-source",
                                                                             data: data,
-                                                                            headers: (_headers13 = {}, _headers13["paypal-partner-attribution-id"] = _ref13.partnerAttributionID || "", 
-                                                                            _headers13.prefer = "return=representation", _headers13)
-                                                                        }).then((function(_ref14) {
-                                                                            return _ref14.data;
+                                                                            headers: (_headers14 = {}, _headers14["paypal-partner-attribution-id"] = _ref14.partnerAttributionID || "", 
+                                                                            _headers14.prefer = "return=representation", _headers14)
+                                                                        }).then((function(_ref15) {
+                                                                            return _ref15.data;
                                                                         }));
                                                                     }(orderID, payload, {
                                                                         facilitatorAccessToken: facilitatorAccessToken,
@@ -7222,7 +7241,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.33", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.34", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
