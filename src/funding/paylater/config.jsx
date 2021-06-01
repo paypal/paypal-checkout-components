@@ -22,12 +22,20 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
         Label: ({ logo }) => logo,
 
-        Logo: ({ logoColor, nonce }) => {
+        Logo: ({ logoColor, nonce, fundingEligibility }) => {
+            const { paylater } = fundingEligibility;
+
+            let label = <Text>Pay Later</Text>;
+
+            if (paylater?.products?.payIn4?.eligible) {
+                label = <Text>Pay in 4</Text>;
+            }
+
             return (
                 <Style css={ css } nonce={ nonce }>
                     <PPLogo optional logoColor={ logoColor } />
                     <Space />
-                    <Text>Pay Later</Text>
+                    { label }
                 </Style>
             );
         },
