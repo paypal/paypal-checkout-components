@@ -1,0 +1,42 @@
+
+
+.wallet-label-venmo {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+
+    .divider {
+      margin: 0 5px;
+      opacity: 0.2;
+    }
+
+    * {
+        display: inline-block;
+        vertical-align: top;
+        height: 100%;
+    }
+
+    .logo {
+        margin-left: auto;
+    }
+
+    .label {
+      max-width: 40%;
+
+      .limit {
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+    }
+
+    @media only screen and (max-width: 150px) {
+        text-align: center;
+        display: inline-block;
+
+        .logo {
+            display: none;
+        }
+    }
+}
+
