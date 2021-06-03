@@ -327,14 +327,13 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
 
             onApprove: ({ payerID, paymentID, billingToken, subscriptionID, authCode }) => {
                 approved = true;
-
                 getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
 
                 // eslint-disable-next-line no-use-before-define
-                return close().then(() => {
+                return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart })
                     // eslint-disable-next-line no-use-before-define
-                    return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart }).catch(noop);
-                });
+                    .finally(() => close().then(noop))
+                    .catch(noop);
             },
 
             onAuth: ({ accessToken }) => {

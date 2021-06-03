@@ -170,4 +170,65 @@ describe('popup cases', () => {
             await clickButton(FUNDING.PAYPAL);
         });
     });
+
+
+    it('should close the popup only after onApprove and all the inner promises are resolved', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            const orderID = generateOrderID();
+            const payerID = 'YYYYYYYYYY';
+            const timeout : ZalgoPromise<void> = new ZalgoPromise(resolve => {
+                setTimeout(resolve);
+            });
+            let previouslyExecutedMethod = '';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                previouslyExecutedMethod = 'createOrder';
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
+                previouslyExecutedMethod = 'onApprove';
+                return ZalgoPromise.all([ timeout, timeout ]).then(noop);
+            }));
+
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                mockFunction(checkoutInstance, 'close', expect('close', () => {
+                    if (previouslyExecutedMethod !== 'onApprove') {
+                        throw new Error('Should have called onApprove and wait for all inner promises to get resolved before closing the popup');
+                    }
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
+
 });
