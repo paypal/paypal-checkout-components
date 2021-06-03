@@ -20,7 +20,7 @@
     
       Vue.component("app", {
         template: `
-          <paypal-buttons :onApprove="onApprove" :createOrder="createOrder" />
+          <paypal-buttons :on-approve="onApprove" :create-order="createOrder" />
         `,
         components: {
           "paypal-buttons": PayPalButton,
