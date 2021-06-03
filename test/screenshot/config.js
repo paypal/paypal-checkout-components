@@ -301,6 +301,27 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
+    userAgent: IPHONE6_USER_AGENT,
+    button:    {
+        fundingSource: 'venmo'
+    },
+    fundingEligibility: {
+        venmo: {
+            eligible: true
+        }
+    },
+    wallet: {
+        venmo: {
+            instruments: [
+                {
+                    label: '@foo'
+                }
+            ]
+        }
+    }
+});
+
+buttonConfigs.push({
     diffThreshold: 1000,
     container:     {
         width: 350
