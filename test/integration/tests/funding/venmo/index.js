@@ -15,7 +15,7 @@ describe(`venmo button label test`, () => {
         destroyTestContainer();
     });
 
-    it(`should display label when it's passed in as instrument`, () => {
+    it(`should display label when it's passed in as instrument`, (done) => {
         const fundingSource = FUNDING.VENMO;
         const wallet = {
             [fundingSource]: {
@@ -29,17 +29,17 @@ describe(`venmo button label test`, () => {
 
         mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
 
-        const button = window.paypal.Buttons({
+        window.paypal.Buttons({
             fundingSource,
-            wallet
-        });
-
-        if (!button.isEligible()) {
-            throw new Error(`Expected venmo to be eligible`);
-        }
-
-        return button.render('#testContainer').then(() => {
-            assert.equal(getElementRecursive('.paypal-button-text').innerHTML, '@foo');
-        });
+            wallet,
+            test:   {
+                onRender: ('onRender', () => {
+                    setTimeout(() => {
+                        assert.equal(getElementRecursive('.paypal-button-text').innerHTML, '@foo');
+                        done();
+                    }, 1000);
+                })
+            }
+        }).render('#testContainer');
     });
 });
