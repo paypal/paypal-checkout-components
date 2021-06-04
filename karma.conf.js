@@ -61,7 +61,10 @@ export default function configKarma(karma : Object) {
 
         coverageReporter: {
             reporters: [
-                { type: 'lcov' }
+                {
+                    type: 'lcov',
+                    dir:  'coverage/karma'
+                }
             ]
         }
     });

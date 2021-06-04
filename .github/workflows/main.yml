@@ -32,5 +32,14 @@ jobs:
       - name: ▶️ Run build script
         run: npm run build
 
-      - name: ⬆️ Upload coverage report
+      - name: ⬆️ Upload karma coverage report
         uses: codecov/codecov-action@v1
+        with:
+          directory: ./coverage/karma
+          flags: karma
+
+      - name: ⬆️ Upload jest coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          directory: ./coverage/jest
+          flags: jest
