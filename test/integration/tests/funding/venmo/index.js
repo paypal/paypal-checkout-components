@@ -2,12 +2,13 @@
 
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { createTestContainer, destroyTestContainer, mockProp, assert, getElementRecursive } from '../../common';
+import { IPHONE6_USER_AGENT, createTestContainer, destroyTestContainer, mockProp, assert, getElementRecursive } from '../../common';
 
 describe(`venmo button label test`, () => {
 
     beforeEach(() => {
         createTestContainer();
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
     });
 
     afterEach(() => {
