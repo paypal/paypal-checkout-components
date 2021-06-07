@@ -19,7 +19,7 @@ describe(`venmo button label test`, () => {
         const fundingSource = FUNDING.VENMO;
         const wallet = {
             [fundingSource]: {
-                intruments: [
+                instruments: [
                     {
                         label: '@foo'
                     }
