@@ -3,6 +3,7 @@
 
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 import { html, ElementNode } from 'jsx-pragmatic';
+import { ERROR_CODE } from '@paypal/sdk-constants';
 
 import { webpackCompileToString } from '../screenshot/lib/compile';
 import { fundingEligibility } from '../globals';
@@ -78,6 +79,32 @@ test(`Button should fail to render with ssr, with invalid style option`, async (
 
     if (!expectedErr) {
         throw new Error(`Expected button render to error out`);
+    }
+});
+
+test(`Button should fail to render with ssr, with no fundingSources available`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    let expectedErr;
+
+    try {
+        Buttons({
+            locale:             { country: 'US', lang: 'en' },
+            platform:           'desktop',
+            sessionID:          'xyz',
+            buttonSessionID:    'abc',
+            fundingEligibility: {}
+        }).render(html());
+    } catch (err) {
+        expectedErr = err;
+    }
+
+    if (!expectedErr) {
+        throw new Error(`Expected button render to error out`);
+    }
+    if (expectedErr.code !== ERROR_CODE.VALIDATION_ERROR) {
+        throw new Error(`Expected button render to error out with err.code = ${ ERROR_CODE.VALIDATION_ERROR }`);
     }
 });
 

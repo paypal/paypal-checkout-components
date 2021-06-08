@@ -1,5 +1,6 @@
 /* @flow */
 
-export * from './session';
-export * from './security';
+export * from './errors';
 export * from './isRTLLanguage';
+export * from './security';
+export * from './session';
