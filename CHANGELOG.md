@@ -1,3 +1,14 @@
+## <small>5.0.162 (2021-06-08)</small>
+
+* Add coverage report for jest-ssr tests (#1660) ([926d8c4](https://github.com/paypal/paypal-checkout-components/commit/926d8c4)), closes [#1660](https://github.com/paypal/paypal-checkout-components/issues/1660)
+* Add validation error code when no fundingSources are available on Buttons render (#1658) ([84efb89](https://github.com/paypal/paypal-checkout-components/commit/84efb89)), closes [#1658](https://github.com/paypal/paypal-checkout-components/issues/1658)
+* Add vaulted button for returning Venmo Pay users  (#1647) ([498dae3](https://github.com/paypal/paypal-checkout-components/commit/498dae3)), closes [#1647](https://github.com/paypal/paypal-checkout-components/issues/1647)
+* Get Pay Later AU label from products (#1643) ([6ca972e](https://github.com/paypal/paypal-checkout-components/commit/6ca972e)), closes [#1643](https://github.com/paypal/paypal-checkout-components/issues/1643)
+* Update Venmo blue color (#1641) ([db21504](https://github.com/paypal/paypal-checkout-components/commit/db21504)), closes [#1641](https://github.com/paypal/paypal-checkout-components/issues/1641)
+* chore(release): 5.0.161 :tada: ([631821e](https://github.com/paypal/paypal-checkout-components/commit/631821e))
+
+
+
 ## <small>5.0.161 (2021-06-07)</small>
 
 * Add __SDK_HOST__ to test globals ([d981061](https://github.com/paypal/paypal-checkout-components/commit/d981061))
