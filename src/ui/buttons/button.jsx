@@ -135,7 +135,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     if (
         WalletLabel &&
         flow === BUTTON_FLOW.PURCHASE &&
-        (instrument || (__WEB__ && userIDToken && fundingSource === FUNDING.PAYPAL))
+        (instrument || (__WEB__ && userIDToken && (fundingSource === FUNDING.PAYPAL || fundingSource === FUNDING.VENMO)))
     ) {
         labelNode = (
             <WalletLabel
