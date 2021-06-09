@@ -56,11 +56,11 @@ export function createVenmoExperiment() : Experiment | void {
     }
 
     if (isIos() && isSafari()) {
-        return createExperiment('enable_venmo_ios', 50);
+        return createExperiment('enable_venmo_ios', 90);
     }
 
     if (isAndroid() && isChrome()) {
-        return createExperiment('enable_venmo_android', 50);
+        return createExperiment('enable_venmo_android', 90);
     }
 }
 
@@ -116,7 +116,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
             session.oncancel = () => {
                 listeners.cancel();
             };
-                            
+
             return {
                 addEventListener: (name, handler) => {
                     listeners[name] = handler;
