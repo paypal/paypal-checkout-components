@@ -8,7 +8,7 @@ import { request, noop, memoize } from 'belter/src';
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS,
-    INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER } from '../constants';
+    INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER, LSAT_UPGRADE_FAILED } from '../constants';
 import type { ShippingMethod, ShippingAddress } from '../payment-flows/types';
 
 import { callSmartAPI, callGraphQL, callRestAPI } from './api';
@@ -88,7 +88,7 @@ const handleSmartResponse = (data : Object, headers : {| [$Values<typeof HEADERS
 };
 
 export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    if (forceRestAPI) {
+    if (forceRestAPI && !window[LSAT_UPGRADE_FAILED]) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
@@ -111,6 +111,7 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
         });
     }
 
+    getLogger().info(`lsat_upgrade_false`);
     return callSmartAPI({
         accessToken: buyerAccessToken,
         url:         `${ SMART_API_URI.ORDER }/${ orderID }`,
@@ -123,7 +124,7 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
 }
 
 export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    if (forceRestAPI) {
+    if (forceRestAPI && !window[LSAT_UPGRADE_FAILED]) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `post`,
@@ -148,6 +149,7 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
         });
     }
 
+    getLogger().info(`lsat_upgrade_false`);
     return callSmartAPI({
         accessToken: buyerAccessToken,
         method:      'post',
@@ -161,7 +163,7 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
 }
 
 export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    if (forceRestAPI) {
+    if (forceRestAPI && !window[LSAT_UPGRADE_FAILED]) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `post`,
@@ -186,6 +188,7 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
         });
     }
 
+    getLogger().info(`lsat_upgrade_false`);
     return callSmartAPI({
         accessToken: buyerAccessToken,
         method:      'post',
@@ -203,7 +206,7 @@ type PatchData = {|
 |};
 
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    if (forceRestAPI) {
+    if (forceRestAPI && !window[LSAT_UPGRADE_FAILED]) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `patch`,
@@ -230,6 +233,7 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
         });
     }
 
+    getLogger().info(`lsat_upgrade_false`);
     return callSmartAPI({
         accessToken: buyerAccessToken,
         method:      'post',

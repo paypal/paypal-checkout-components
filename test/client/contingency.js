@@ -5,15 +5,21 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getGraphQLApiMock } from './mocks';
+import { LSAT_UPGRADE_FAILED } from '../../src/constants';
+
+import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, MOCK_BUYER_ACCESS_TOKEN, mockFunction, clickButton, getGraphQLApiMock } from './mocks';
 
 describe('contingency cases', () => {
+    beforeEach(() => {
+        window[LSAT_UPGRADE_FAILED] = false;
+    });
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture and auto restart with INSTRUMENT_DECLINED', async () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
+            const accessToken = MOCK_BUYER_ACCESS_TOKEN;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -68,7 +74,8 @@ describe('contingency cases', () => {
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
-
+                window[LSAT_UPGRADE_FAILED] = true;
+                props.onAuth({ accessToken });
                 mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
                     return onApproveOriginal({ ...data, payerID }, actions);
                 }));
@@ -101,6 +108,7 @@ describe('contingency cases', () => {
 
             const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
+            const accessToken = MOCK_BUYER_ACCESS_TOKEN;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -155,7 +163,8 @@ describe('contingency cases', () => {
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
-
+                window[LSAT_UPGRADE_FAILED] = true;
+                props.onAuth({ accessToken });
                 mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
                     return onApproveOriginal({ ...data, payerID }, actions);
                 }));
@@ -191,29 +200,39 @@ describe('contingency cases', () => {
 
             window.xprops.intent = INTENT.AUTHORIZE;
 
+            const accessToken = MOCK_BUYER_ACCESS_TOKEN;
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.AUTHORIZE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
+                extraHandler: expect('checkoutGQLCall', ({ data }) => {
+
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  'authorize',
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        }
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:      {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
-                }
+
+                    return {};
+
+
+                })
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -269,7 +288,8 @@ describe('contingency cases', () => {
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
-
+                window[LSAT_UPGRADE_FAILED] = true;
+                props.onAuth({ accessToken });
                 mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
                     return onApproveOriginal({ ...data, payerID }, actions);
                 }));
@@ -294,7 +314,6 @@ describe('contingency cases', () => {
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
-
             gqlMock.done();
         });
     });
@@ -307,29 +326,39 @@ describe('contingency cases', () => {
 
             window.xprops.intent = INTENT.AUTHORIZE;
 
+            const accessToken = MOCK_BUYER_ACCESS_TOKEN;
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.AUTHORIZE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
+                extraHandler: expect('checkoutGQLCall', ({ data }) => {
+
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  'authorize',
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        }
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:      {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
-                }
+
+                    return {};
+
+
+                })
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
@@ -385,7 +414,8 @@ describe('contingency cases', () => {
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
-
+                window[LSAT_UPGRADE_FAILED] = true;
+                props.onAuth({ accessToken });
                 mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
                     return onApproveOriginal({ ...data, payerID }, actions);
                 }));
@@ -410,7 +440,6 @@ describe('contingency cases', () => {
             await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
-
             gqlMock.done();
         });
     });

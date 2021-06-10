@@ -226,3 +226,5 @@ export const LSAT_UPGRADE_EXCLUDED_MERCHANTS = [
     'AejlsIlg_KjKjmLKqxJqFIAwn3ZP02emx41Z2It4IfirQ-nNgZgzWk1CU-Q1QDbYUXjWoYJZ4dq1S2pK',
     'AQXD7-m_2yMo-5AxJ1fQaPeEWYDE7NZ9XrLzEXeiPLTHDu9vfe_T0foF8BoX8K5cMfXuRDysUEmhw-8Z'
 ];
+
+export const LSAT_UPGRADE_FAILED = '__pp_lsat_upgrade_failure__';

@@ -9,7 +9,6 @@ import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, autho
 import { ORDER_API_ERROR, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { ENABLE_PAYMENT_API } from '../config';
-import { upgradeLSATExperiment } from '../experiments';
 
 import type { CreateOrder } from './createOrder';
 import type { XOnError } from './onError';
@@ -224,18 +223,17 @@ type GetOnApproveOptions = {|
     onApprove : ?XOnApprove,
     partnerAttributionID : ?string,
     onError : XOnError,
-    upgradeLSAT : boolean,
     clientAccessToken : ?string,
     vault : boolean,
-    userIDToken : ?string,
     clientID : string
 |};
 
-export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, clientAccessToken, vault, userIDToken, clientID, upgradeLSAT = false } : GetOnApproveOptions, { facilitatorAccessToken, branded, createOrder } : {| facilitatorAccessToken : string, branded : boolean | null, createOrder : CreateOrder |}) : OnApprove {
+export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, clientAccessToken, vault, clientID } : GetOnApproveOptions, { facilitatorAccessToken, branded, createOrder } : {| facilitatorAccessToken : string, branded : boolean | null, createOrder : CreateOrder |}) : OnApprove {
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }
-    upgradeLSAT = (upgradeLSAT || Boolean(userIDToken) || upgradeLSATExperiment.isEnabled()) && LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
+    
+    const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
 
     return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
         return ZalgoPromise.try(() => {

@@ -6,7 +6,6 @@ import { COUNTRY, CURRENCY, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { patchOrder, type OrderResponse } from '../api';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../constants';
 import { getLogger } from '../lib';
-import { upgradeLSATExperiment } from '../experiments';
 
 import type { CreateOrder } from './createOrder';
 
@@ -99,12 +98,11 @@ export type OnShippingChange = (OnShippingChangeData, OnShippingChangeActionsTyp
 type OnShippingChangeXProps = {|
     onShippingChange : ?XOnShippingChange,
     partnerAttributionID : ?string,
-    upgradeLSAT : boolean,
     clientID : string
 |};
 
-export function getOnShippingChange({ onShippingChange, partnerAttributionID, clientID, upgradeLSAT = false } : OnShippingChangeXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : ?OnShippingChange {
-    upgradeLSAT = (upgradeLSAT ||  upgradeLSATExperiment.isEnabled()) && LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
+export function getOnShippingChange({ onShippingChange, partnerAttributionID, clientID } : OnShippingChangeXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : ?OnShippingChange {
+    const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
 
     if (onShippingChange) {
         return ({ buyerAccessToken, forceRestAPI = upgradeLSAT, ...data }, actions) => {

@@ -87,7 +87,6 @@ export type ButtonXProps = {|
     storageID? : string,
     stageHost : ?string,
     apiStageHost : ?string,
-    upgradeLSAT? : boolean,
     connect? : ConnectOptions,
 
     amount : ?string,
@@ -178,7 +177,6 @@ export type ButtonProps = {|
 
 // eslint-disable-next-line complexity
 export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilitatorAccessToken : string, brandedDefault : boolean | null |}) : ButtonProps {
-
     const xprops : ButtonXProps = window.xprops;
 
     let {
@@ -212,7 +210,6 @@ export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilit
         connect,
         intent,
         merchantID,
-        upgradeLSAT = false,
         amount,
         userIDToken,
         enableFunding,
@@ -290,10 +287,10 @@ export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilit
     const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken, createBillingAgreement, createSubscription });
 
     const onError = getOnError({ onError: xprops.onError });
-    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, upgradeLSAT, clientAccessToken, vault, userIDToken, clientID }, { facilitatorAccessToken, branded, createOrder });
+    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, clientAccessToken, vault, clientID }, { facilitatorAccessToken, branded, createOrder });
     const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
-    const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID, clientID, upgradeLSAT }, { facilitatorAccessToken, createOrder });
-    const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, upgradeLSAT, userIDToken, clientID });
+    const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID, clientID }, { facilitatorAccessToken, createOrder });
+    const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, createSubscription, clientID });
 
     return {
         uid,
