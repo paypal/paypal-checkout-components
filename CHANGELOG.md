@@ -1,3 +1,9 @@
+## <small>5.0.163 (2021-06-10)</small>
+
+* Ramp venmo experiment to 90% (#1664) ([a2bc044](https://github.com/paypal/paypal-checkout-components/commit/a2bc044)), closes [#1664](https://github.com/paypal/paypal-checkout-components/issues/1664)
+
+
+
 ## <small>5.0.162 (2021-06-08)</small>
 
 * Add coverage report for jest-ssr tests (#1660) ([926d8c4](https://github.com/paypal/paypal-checkout-components/commit/926d8c4)), closes [#1660](https://github.com/paypal/paypal-checkout-components/issues/1660)
