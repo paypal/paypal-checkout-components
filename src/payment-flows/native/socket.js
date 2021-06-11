@@ -18,7 +18,7 @@ const TARGET_APP = 'paypal_native_checkout';
 
 const SOCKET_MESSAGE = {
     SET_PROPS:          'setProps',
-    GET_PROPS:          'getProps',
+    ON_INIT:            'onInit',
     ON_SHIPPING_CHANGE: 'onShippingChange',
     ON_APPROVE:         'onApprove',
     ON_CANCEL:          'onCancel',
@@ -116,6 +116,9 @@ type ConnectNativeOptions = {|
     sessionUID : string,
     config : Config,
     callbacks : {|
+        onInit : () => ZalgoPromise<{|
+            buttonSessionID : string
+        |}>,
         onApprove : ({|
             data : {|
                 payerID : string,
@@ -147,7 +150,7 @@ type ConnectNativeOptions = {|
 |};
 
 export function connectNative({ props, serviceData, config, fundingSource, sessionUID, callbacks } : ConnectNativeOptions) : NativeConnection {
-    const { onApprove, onCancel, onShippingChange, onError, onFallback } = callbacks;
+    const { onInit, onApprove, onCancel, onShippingChange, onError, onFallback } = callbacks;
     const { firebase: firebaseConfig, sdkVersion } = config;
 
     if (!firebaseConfig) {
@@ -175,11 +178,8 @@ export function connectNative({ props, serviceData, config, fundingSource, sessi
             }).flush();
         });
     };
-    const getPropsListener = socket.on(SOCKET_MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKSocketProps> => {
-        getLogger().info(`native_message_getprops`).flush();
-        return getSDKSocketProps({ props, serviceData, fundingSource });
-    });
 
+    const onInitListener = socket.on(SOCKET_MESSAGE.ON_INIT, onInit);
     const onShippingChangeListener = socket.on(SOCKET_MESSAGE.ON_SHIPPING_CHANGE, onShippingChange);
     const onApproveListener = socket.on(SOCKET_MESSAGE.ON_APPROVE, onApprove);
     const onCancelListener = socket.on(SOCKET_MESSAGE.ON_CANCEL, onCancel);
@@ -188,7 +188,7 @@ export function connectNative({ props, serviceData, config, fundingSource, sessi
 
     const cancel = () => {
         return ZalgoPromise.all([
-            getPropsListener.cancel(),
+            onInitListener.cancel(),
             onShippingChangeListener.cancel(),
             onApproveListener.cancel(),
             onCancelListener.cancel(),

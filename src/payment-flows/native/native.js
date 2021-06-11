@@ -56,6 +56,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return instance.start();
     };
 
+    const onInitCallback = () => {
+        return ZalgoPromise.try(() => {
+            return { buttonSessionID };
+        });
+    };
+
     const onApproveCallback = ({ data: { payerID, paymentID, billingToken } }) => {
         approved = true;
 
@@ -195,6 +201,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         const connection = connectNative({
             props, serviceData, config, fundingSource, sessionUID,
             callbacks: {
+                onInit:           onInitCallback,
                 onApprove:        onApproveCallback,
                 onCancel:         onCancelCallback,
                 onError:          onErrorCallback,

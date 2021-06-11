@@ -22,10 +22,10 @@ export function mockAsyncProp(handler? : Function = noop, time? : number = 1) : 
     
     const asyncHandler = (...args) => {
         return ZalgoPromise.delay(time).then(() => handler(...args)).then((res) => {
-            ZalgoPromise.delay(time).then(() => currentPromise.resolve(res));
+            ZalgoPromise.delay(time).then(() => currentPromise.resolve(res)).catch(noop);
             return res;
         }, err => {
-            ZalgoPromise.delay(time).then(() => currentPromise.reject(err));
+            ZalgoPromise.delay(time).then(() => currentPromise.reject(err)).catch(noop);
             throw err;
         });
     };
@@ -681,6 +681,7 @@ type NativeMockWebSocket = {|
         done : () => Promise<void>
     |},
     // getProps : () => void,
+    onInit : () => void,
     onApprove : () => void,
     onCancel : () => void,
     onError : () => void,
@@ -693,6 +694,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     let props;
 
     let getPropsRequestID;
+    let onInitRequestID;
     let onApproveRequestID;
     let onCancelRequestID;
     let onErrorRequestID;
@@ -764,6 +766,22 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     };
 
     */
+
+    const onInit = () => {
+        onInitRequestID = uniqueID();
+
+        send(JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onInitRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onInit',
+            message_data:       {}
+        }));
+    };
 
     const onApprove = () => {
         if (!props) {
@@ -865,7 +883,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     };
 
     return {
-        expect, onApprove, onCancel, onError, onShippingChange, onFallback, fallback: noop
+        expect, onInit, onApprove, onCancel, onError, onShippingChange, onFallback, fallback: noop
     };
 }
 
@@ -1085,6 +1103,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
     let props;
 
     let getPropsRequestID;
+    let onInitRequestID;
     let onApproveRequestID;
     let onCancelRequestID;
     let onErrorRequestID;
@@ -1240,6 +1259,25 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
 
     */
 
+    const onInit = () => {
+        onInitRequestID = `${ uniqueID()  }_onInit`;
+
+        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onInitRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onInit',
+            message_data:       {}
+        }));
+
+        waitingForResponse.push(onInitRequestID);
+    };
+
+
     const onApprove = () => {
         if (!props) {
             throw new Error(`Can not approve without getting props`);
@@ -1391,7 +1429,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
     };
 
     return {
-        expect, onApprove, onCancel, onError, onShippingChange, fallback, onFallback
+        expect, onInit, onApprove, onCancel, onError, onShippingChange, fallback, onFallback
     };
 }
 
