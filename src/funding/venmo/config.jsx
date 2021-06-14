@@ -7,6 +7,8 @@ import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
+import { WalletLabel } from './template';
+
 export function getVenmoConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
@@ -26,8 +28,12 @@ export function getVenmoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.HORIZONTAL,
             BUTTON_LAYOUT.VERTICAL
         ],
+        
+        Logo:  ({ logoColor, optional }) => VenmoLogo({ logoColor, optional }),
 
-        Logo: ({ logoColor, optional }) => VenmoLogo({ logoColor, optional }),
+        WalletLabel: (...props) => WalletLabel(...props),
+
+        showWalletMenu: () => false,
 
         colors: [
             BUTTON_COLOR.BLUE,

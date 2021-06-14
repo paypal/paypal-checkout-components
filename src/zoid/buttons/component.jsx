@@ -445,6 +445,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 }
             },
 
+            nonce: {
+                type:    'string',
+                default: getCSPNonce
+            },
+
             getPageUrl: {
                 type:  'function',
                 value: () => {

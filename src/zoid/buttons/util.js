@@ -56,11 +56,11 @@ export function createVenmoExperiment() : Experiment | void {
     }
 
     if (isIos() && isSafari()) {
-        return createExperiment('enable_venmo_ios', 25);
+        return createExperiment('enable_venmo_ios', 90);
     }
 
     if (isAndroid() && isChrome()) {
-        return createExperiment('enable_venmo_android', 25);
+        return createExperiment('enable_venmo_android', 90);
     }
 }
 
@@ -80,11 +80,46 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
             return;
         }
 
+        const convertErrorsFromUpdate = (update) => {
+            if (update.errors && update.errors.length) {
+                // $FlowFixMe
+                return update.errors.map(error => new window.ApplePayError(error.code, error.contactField, error.message));
+            }
+
+            return update;
+        };
+
         return (version, request) => {
             const session = new window.ApplePaySession(version, request);
+            const listeners = {};
+
+            session.onvalidatemerchant = ({ validationURL }) => {
+                listeners.validatemerchant({ validationURL });
+            };
+
+            session.onpaymentmethodselected = ({ paymentMethod }) => {
+                listeners.paymentmethodselected({ paymentMethod });
+            };
+
+            session.onshippingmethodselected = ({ shippingMethod }) => {
+                listeners.shippingmethodselected({ shippingMethod });
+            };
+
+            session.onshippingcontactselected = ({ shippingContact }) => {
+                listeners.shippingcontactselected({ shippingContact });
+            };
+
+            session.onpaymentauthorized = ({ payment }) => {
+                listeners.paymentauthorized({ payment });
+            };
+
+            session.oncancel = () => {
+                listeners.cancel();
+            };
+
             return {
                 addEventListener: (name, handler) => {
-                    session.addEventListener(name, handler);
+                    listeners[name] = handler;
                 },
                 completeMerchantValidation: (validatedSession) => {
                     session.completeMerchantValidation(validatedSession);
@@ -96,10 +131,12 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                     session.completeShippingMethodSelection(update);
                 },
                 completeShippingContactSelection: (update) => {
-                    session.completeShippingContactSelection(update);
+                    const newUpdate = convertErrorsFromUpdate(update);
+                    session.completeShippingContactSelection(newUpdate);
                 },
-                completePayment: (result) => {
-                    session.completePayment(result);
+                completePayment: (update) => {
+                    const newUpdate = convertErrorsFromUpdate(update);
+                    session.completePayment(newUpdate);
                 },
                 begin: () => session.begin()
             };

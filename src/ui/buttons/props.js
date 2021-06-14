@@ -177,9 +177,9 @@ export type ApplePayError = {|
 
 export type ApplePayLineItemType = 'final' | 'pending';
 export type ApplePayLineItem = {|
-    type : ApplePayLineItemType,
-    label : string,
-    amount : string
+    type? : ApplePayLineItemType,
+    label? : string,
+    amount? : string
 |};
 
 export type ApplePayShippingMethod = {|
@@ -198,12 +198,12 @@ export type ApplePayShippingContactUpdate = {|
 
 export type ApplePayPaymentMethodUpdate = {|
     newTotal : ApplePayLineItem,
-    newLineItems : $ReadOnlyArray<ApplePayLineItem>
+    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
 |};
 
 export type ApplePayShippingMethodUpdate = {|
     newTotal : ApplePayLineItem,
-    newLineItems : $ReadOnlyArray<ApplePayLineItem>
+    newLineItems? : $ReadOnlyArray<ApplePayLineItem>
 |};
 
 export type ApplePayPaymentAuthorizationResult = {|
@@ -249,7 +249,7 @@ export type RenderButtonProps = {|
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    applePay : ApplePaySessionConfig,
+    applePay : ApplePaySessionConfigRequest,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
@@ -297,7 +297,7 @@ export type ButtonProps = {|
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
     applePaySupport : boolean,
-    applePay : ApplePaySessionConfig
+    applePay : ApplePaySessionConfigRequest
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -317,21 +317,21 @@ export type ButtonPropsInputs = {
     remember? : $PropertyType<ButtonProps, 'remember'> | void,
     sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
     buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
-    nonce? : string,
+    nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
     personalization? : Personalization,
     clientAccessToken? : ?string,
     wallet? : ?Wallet,
-    csp? : {|
-        nonce? : string
+    csp : {|
+        nonce : string
     |},
     content? : ContentType,
     flow? : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
     vault : boolean,
     userIDToken : ?string,
-    applePay : ApplePaySessionConfig,
+    applePay : ApplePaySessionConfigRequest,
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
@@ -457,9 +457,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         fundingEligibility,
         sessionID = uniqueID(),
         buttonSessionID = uniqueID(),
-        csp = {},
         components = [ COMPONENTS.BUTTONS ],
-        nonce = '',
+        nonce,
         onShippingChange,
         personalization,
         clientAccessToken,
@@ -499,10 +498,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     if (PLATFORMS.indexOf(platform) === -1) {
         throw new Error(`Expected valid platform, got ${ platform || 'undefined' }`);
-    }
-
-    if (csp && csp.nonce) {
-        nonce = csp.nonce;
     }
 
     if (fundingSource) {

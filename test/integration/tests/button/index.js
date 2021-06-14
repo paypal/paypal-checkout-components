@@ -15,3 +15,4 @@ import './popupBridge';
 import './standalone';
 import './clone';
 import './renderOrder';
+import './nonce';

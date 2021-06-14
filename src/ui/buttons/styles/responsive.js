@@ -77,7 +77,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                 }
 
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.APPLEPAY }] .${ CLASS.BUTTON_LABEL } .${ CLASS.TEXT } {
-                    line-height: ${ perc(buttonHeight, 80) + 5 + 1 }px;
+                    line-height: ${ perc(buttonHeight, 80) + 5 }px;
                 }
 
                 .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ CLASS.BUTTON_LABEL },
