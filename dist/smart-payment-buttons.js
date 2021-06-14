@@ -2027,7 +2027,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.36", _headers15);
+            _headers15["x-app-version"] = "5.0.37", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -5145,7 +5145,7 @@ window.spb = function(modules) {
         function getNativeUrlQueryParams(_ref4) {
             var props = _ref4.props, serviceData = _ref4.serviceData, fundingSource = _ref4.fundingSource, sessionUID = _ref4.sessionUID, firebaseConfig = _ref4.firebaseConfig, pageUrl = _ref4.pageUrl, orderID = _ref4.orderID, stickinessID = _ref4.stickinessID;
             var env = props.env, clientID = props.clientID, commit = props.commit, buttonSessionID = props.buttonSessionID, stageHost = props.stageHost, apiStageHost = props.apiStageHost, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
-            var facilitatorAccessToken = serviceData.facilitatorAccessToken, sdkMeta = serviceData.sdkMeta;
+            var facilitatorAccessToken = serviceData.facilitatorAccessToken, sdkMeta = serviceData.sdkMeta, buyerCountry = serviceData.buyerCountry;
             var webCheckoutUrl = getWebCheckoutUrl({
                 orderID: orderID,
                 props: props,
@@ -5176,7 +5176,8 @@ window.spb = function(modules) {
                 fundingSource: fundingSource,
                 enableFunding: enableFunding.join(","),
                 domain: merchantDomain,
-                rtdbInstanceID: firebaseConfig.databaseURL
+                rtdbInstanceID: firebaseConfig.databaseURL,
+                buyerCountry: buyerCountry
             };
         }
         function getNativeFallbackUrl(_ref6) {
@@ -5542,36 +5543,6 @@ window.spb = function(modules) {
             }));
             return nativeSocket;
         }));
-        function getSDKSocketProps(_ref2) {
-            var props = _ref2.props, fundingSource = _ref2.fundingSource;
-            var commit = props.commit, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost;
-            var facilitatorAccessToken = _ref2.serviceData.facilitatorAccessToken;
-            return (0, props.createOrder)().then((function(orderID) {
-                var userAgent = getUserAgent();
-                var webCheckoutUrl = getWebCheckoutUrl({
-                    orderID: orderID,
-                    props: props,
-                    fundingSource: fundingSource,
-                    facilitatorAccessToken: facilitatorAccessToken
-                });
-                var forceEligible = isNativeOptedIn({
-                    props: props
-                });
-                return {
-                    orderID: orderID,
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    pageUrl: "",
-                    commit: commit,
-                    webCheckoutUrl: webCheckoutUrl,
-                    userAgent: userAgent,
-                    buttonSessionID: buttonSessionID,
-                    env: env,
-                    stageHost: stageHost,
-                    apiStageHost: apiStageHost,
-                    forceEligible: forceEligible
-                };
-            }));
-        }
         var native_clean;
         var parentPopupBridge;
         function isValidMerchantIDs(merchantIDs, payees) {
@@ -5888,6 +5859,13 @@ window.spb = function(modules) {
                         return instance.close();
                     }));
                     return instance.start();
+                };
+                var onInitCallback = function() {
+                    return promise_ZalgoPromise.try((function() {
+                        return {
+                            buttonSessionID: buttonSessionID
+                        };
+                    }));
                 };
                 var onApproveCallback = function(_ref3) {
                     var _getLogger$info$track;
@@ -6322,7 +6300,7 @@ window.spb = function(modules) {
                                         _getLogger$info$track7.transition_name = "native_detect_app_switch", _getLogger$info$track7)).flush();
                                         var connection = function(_ref3) {
                                             var props = _ref3.props, serviceData = _ref3.serviceData, config = _ref3.config, fundingSource = _ref3.fundingSource, sessionUID = _ref3.sessionUID, callbacks = _ref3.callbacks;
-                                            var onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, onShippingChange = callbacks.onShippingChange, onError = callbacks.onError, onFallback = callbacks.onFallback;
+                                            var onInit = callbacks.onInit, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, onShippingChange = callbacks.onShippingChange, onError = callbacks.onError, onFallback = callbacks.onFallback;
                                             var firebaseConfig = config.firebase, sdkVersion = config.sdkVersion;
                                             if (!firebaseConfig) throw new Error("Firebase config not found");
                                             var socket = getNativeSocket({
@@ -6330,14 +6308,7 @@ window.spb = function(modules) {
                                                 firebaseConfig: firebaseConfig,
                                                 version: sdkVersion
                                             });
-                                            var getPropsListener = socket.on("getProps", (function() {
-                                                logger_getLogger().info("native_message_getprops").flush();
-                                                return getSDKSocketProps({
-                                                    props: props,
-                                                    serviceData: serviceData,
-                                                    fundingSource: fundingSource
-                                                });
-                                            }));
+                                            var onInitListener = socket.on("onInit", onInit);
                                             var onShippingChangeListener = socket.on("onShippingChange", onShippingChange);
                                             var onApproveListener = socket.on("onApprove", onApprove);
                                             var onCancelListener = socket.on("onCancel", onCancel);
@@ -6346,7 +6317,36 @@ window.spb = function(modules) {
                                             socket.reconnect();
                                             return {
                                                 setProps: function() {
-                                                    return getSDKSocketProps({
+                                                    return function(_ref2) {
+                                                        var props = _ref2.props, fundingSource = _ref2.fundingSource;
+                                                        var commit = props.commit, buttonSessionID = props.buttonSessionID, env = props.env, stageHost = props.stageHost, apiStageHost = props.apiStageHost;
+                                                        var facilitatorAccessToken = _ref2.serviceData.facilitatorAccessToken;
+                                                        return (0, props.createOrder)().then((function(orderID) {
+                                                            var userAgent = getUserAgent();
+                                                            var webCheckoutUrl = getWebCheckoutUrl({
+                                                                orderID: orderID,
+                                                                props: props,
+                                                                fundingSource: fundingSource,
+                                                                facilitatorAccessToken: facilitatorAccessToken
+                                                            });
+                                                            var forceEligible = isNativeOptedIn({
+                                                                props: props
+                                                            });
+                                                            return {
+                                                                orderID: orderID,
+                                                                facilitatorAccessToken: facilitatorAccessToken,
+                                                                pageUrl: "",
+                                                                commit: commit,
+                                                                webCheckoutUrl: webCheckoutUrl,
+                                                                userAgent: userAgent,
+                                                                buttonSessionID: buttonSessionID,
+                                                                env: env,
+                                                                stageHost: stageHost,
+                                                                apiStageHost: apiStageHost,
+                                                                forceEligible: forceEligible
+                                                            };
+                                                        }));
+                                                    }({
                                                         props: props,
                                                         serviceData: serviceData,
                                                         fundingSource: fundingSource
@@ -6374,7 +6374,7 @@ window.spb = function(modules) {
                                                     }));
                                                 },
                                                 cancel: function() {
-                                                    return promise_ZalgoPromise.all([ getPropsListener.cancel(), onShippingChangeListener.cancel(), onApproveListener.cancel(), onCancelListener.cancel(), onErrorListener.cancel(), onFallbackListener.cancel() ]).then(src_util_noop);
+                                                    return promise_ZalgoPromise.all([ onInitListener.cancel(), onShippingChangeListener.cancel(), onApproveListener.cancel(), onCancelListener.cancel(), onErrorListener.cancel(), onFallbackListener.cancel() ]).then(src_util_noop);
                                                 }
                                             };
                                         }({
@@ -6384,6 +6384,7 @@ window.spb = function(modules) {
                                             fundingSource: fundingSource,
                                             sessionUID: sessionUID,
                                             callbacks: {
+                                                onInit: onInitCallback,
                                                 onApprove: onApproveCallback,
                                                 onCancel: onCancelCallback,
                                                 onError: onErrorCallback,
@@ -7142,7 +7143,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.36", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.37", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
