@@ -105,6 +105,10 @@ describe('native ios cases', () => {
                             throw new Error(`Expected channel to be passed in url`);
                         }
 
+                        if (!redirectQuery.buyerCountry) {
+                            throw new Error(`Expected buyerCountry to be passed in url`);
+                        }
+
                         sessionUID = redirectQuery.sessionUID;
 
                         postRobotMock.receive({

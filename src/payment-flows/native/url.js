@@ -2,7 +2,7 @@
 
 
 import { extendUrl, getUserAgent, isDevice } from 'belter/src';
-import { ENV, FUNDING } from '@paypal/sdk-constants/src';
+import { COUNTRY, ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { getDomain } from 'cross-domain-utils/src';
 
 import { WEB_CHECKOUT_URI } from '../../config';
@@ -88,7 +88,8 @@ type NativeUrlQuery = {|
     fundingSource : string,
     enableFunding : string,
     domain : string,
-    rtdbInstanceID : string
+    rtdbInstanceID : string,
+    buyerCountry : $Values<typeof COUNTRY>
 |};
 
 const CHANNEL = {
@@ -98,7 +99,7 @@ const CHANNEL = {
 
 function getNativeUrlQueryParams({ props, serviceData, fundingSource, sessionUID, firebaseConfig, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : NativeUrlQuery {
     const { env, clientID, commit, buttonSessionID, stageHost, apiStageHost, enableFunding, merchantDomain } = props;
-    const { facilitatorAccessToken, sdkMeta } = serviceData;
+    const { facilitatorAccessToken, sdkMeta, buyerCountry } = serviceData;
 
     const webCheckoutUrl = getWebCheckoutUrl({ orderID, props, fundingSource, facilitatorAccessToken });
     const userAgent = getUserAgent();
@@ -125,7 +126,8 @@ function getNativeUrlQueryParams({ props, serviceData, fundingSource, sessionUID
         fundingSource,
         enableFunding:  enableFunding.join(','),
         domain:         merchantDomain,
-        rtdbInstanceID: firebaseConfig.databaseURL
+        rtdbInstanceID: firebaseConfig.databaseURL,
+        buyerCountry
     };
 }
 
