@@ -69,13 +69,15 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
 
     const getPayLaterProductQuery = () => {
         return {
-            eligible:  graphqlTypes.boolean
+            eligible:  graphqlTypes.boolean,
+            variant:   graphqlTypes.string
         };
     };
 
     const getPayLaterProductsQuery = () => {
         return {
-            payIn4: getPayLaterProductQuery()
+            payIn4:   getPayLaterProductQuery(),
+            paylater: getPayLaterProductQuery()
         };
     };
 
