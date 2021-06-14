@@ -81,6 +81,11 @@ export function getQRCodeComponent() : QRCodeComponent {
                     required:   false,
                     value:      getCSPNonce
                 },
+                debug: {
+                    type:       'boolean',
+                    queryParam: true,
+                    required:   false
+                },
                 state: {
                     type:       'string',
                     queryParam: false,
@@ -96,7 +101,7 @@ export function getQRCodeComponent() : QRCodeComponent {
                     queryParam:  true,
                     sendToChild: false,
                     value:       getSDKMeta
-                },
+                }
             }
         });
     });
