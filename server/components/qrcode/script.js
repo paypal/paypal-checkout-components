@@ -2,6 +2,7 @@
 
 import { join } from 'path';
 
+import { noop } from 'belter';
 import { ENV } from '@paypal/sdk-constants';
 
 import type { CacheType } from '../../types';
@@ -49,9 +50,12 @@ export async function getSmartQRCodeClientScript({ logBuffer, cache, debug = fal
         }
     }
 
-    const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
-    const { version } = await watcher.get(ACTIVE_TAG);
-    const script = await watcher.read(debug ? QRCODE_CLIENT_JS : QRCODE_CLIENT_MIN_JS, ACTIVE_TAG);
+    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { version } = await getTag();
+    const script = await read(debug ? QRCODE_CLIENT_JS : QRCODE_CLIENT_MIN_JS, ACTIVE_TAG);
+
+    // non-blocking download of the DEPLOY_TAG
+    getDeployTag().catch(noop);
 
     return { script, version };
 }

@@ -10,16 +10,41 @@ import { SDK_RELEASE_MODULE, SMART_BUTTONS_MODULE, MODULE_POLL_INTERVAL, SDK_CDN
 let paypalSDKWatcher;
 let paypalSmartButtonsWatcher;
 
+type ModuleDetails = {|
+    nodeModulesPath : string,
+    modulePath : string,
+    version : string,
+    previousVersion : string,
+    dependencies : {
+        [string] : {|
+            version : string,
+            path : string
+        |}
+    }
+|};
+
 type Watcher = {|
-    get : (tag? : string) => Promise<{|
-        version : string
-    |}>,
+    get : (tag? : string) => Promise<ModuleDetails>,
+    getTag : () => Promise<ModuleDetails>,
+    getDeployTag : () => Promise<ModuleDetails>,
     // eslint-disable-next-line no-undef
     import : <T>(string, string) => Promise<T>,
     // eslint-disable-next-line no-undef
     importDependency : <T>(string, string, string) => Promise<T>,
     read : (string, string) => Promise<string>
 |};
+
+function logInfo(logBuffer : LoggerBufferType, name : string, moduleDetails : ModuleDetails) {
+    const {
+        modulePath,
+        nodeModulesPath,
+        version,
+        previousVersion
+    } = moduleDetails;
+
+    logBuffer.info(`${ name }_tag_fetched`, { modulePath, nodeModulesPath, version, previousVersion });
+    logBuffer.info(`${ name }_version_${ version.replace(/[^0-9]+/g, '_') }`, {});
+}
 
 export function getPayPalSDKWatcher({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) : Watcher {
     if (!cache || !logBuffer) {
@@ -38,7 +63,31 @@ export function getPayPalSDKWatcher({ logBuffer, cache } : {| logBuffer : ?Logge
         cache
     });
 
-    return paypalSDKWatcher;
+    const { get } = paypalSDKWatcher;
+
+    const getTag = () => {
+        return get(ACTIVE_TAG).then(tag => {
+            if (logBuffer) {
+                logInfo(logBuffer, 'render', tag);
+            }
+            return tag;
+        });
+    };
+
+    const getDeployTag = () => {
+        return get(LATEST_TAG).then(tag => {
+            if (logBuffer) {
+                logInfo(logBuffer, 'deploy_render', tag);
+            }
+            return tag;
+        });
+    };
+
+    return {
+        ...paypalSDKWatcher,
+        getTag,
+        getDeployTag
+    };
 }
 
 export function getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |}) : Watcher {
@@ -56,8 +105,32 @@ export function getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache } : {| lo
         logger:       logBuffer,
         cache
     });
-    
-    return paypalSmartButtonsWatcher;
+
+    const { get } = paypalSmartButtonsWatcher;
+
+    const getTag = () => {
+        return get(ACTIVE_TAG).then(tag => {
+            if (logBuffer) {
+                logInfo(logBuffer, 'client', tag);
+            }
+            return tag;
+        });
+    };
+
+    const getDeployTag = () => {
+        return get(LATEST_TAG).then(tag => {
+            if (logBuffer) {
+                logInfo(logBuffer, 'deploy_client', tag);
+            }
+            return tag;
+        });
+    };
+
+    return {
+        ...paypalSmartButtonsWatcher,
+        getTag,
+        getDeployTag
+    };
 }
 
 export function startWatchers({ logBuffer, cache } : {| logBuffer : ?LoggerBufferType, cache : ?CacheType |} = {}) {

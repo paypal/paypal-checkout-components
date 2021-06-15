@@ -3,6 +3,7 @@
 import { join, dirname } from 'path';
 import { readFileSync } from 'fs';
 
+import { noop } from 'belter';
 import { ENV, FUNDING } from '@paypal/sdk-constants';
 
 import type { CacheType } from '../../types';
@@ -50,9 +51,12 @@ export async function getNativePopupClientScript({ logBuffer, cache, debug = fal
         }
     }
 
-    const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
-    const { version } = await watcher.get(ACTIVE_TAG);
-    const script = await watcher.read(debug ? NATIVE_POPUP_CLIENT_JS : NATIVE_POPUP_CLIENT_MIN_JS, ACTIVE_TAG);
+    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { version } = await getTag();
+    const script = await read(debug ? NATIVE_POPUP_CLIENT_JS : NATIVE_POPUP_CLIENT_MIN_JS, ACTIVE_TAG);
+
+    // non-blocking download of the DEPLOY_TAG
+    getDeployTag().catch(noop);
 
     return { script, version };
 }
@@ -98,10 +102,14 @@ export async function getNativePopupRenderScript({ logBuffer, cache, debug, useL
             return script;
         }
     }
-    
-    const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
-    const { version } = await watcher.get(ACTIVE_TAG);
-    const popup = await watcher.import(debug ? NATIVE_POPUP_CLIENT_JS : NATIVE_POPUP_CLIENT_MIN_JS, ACTIVE_TAG);
+
+    const { getTag, getDeployTag, import: watcherImport } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { version } = await getTag();
+    const popup = await watcherImport(debug ? NATIVE_POPUP_CLIENT_JS : NATIVE_POPUP_CLIENT_MIN_JS, ACTIVE_TAG);
+
+    // non-blocking download of the DEPLOY_TAG
+    getDeployTag().catch(noop);
+
     return { popup, version };
 }
 
@@ -142,9 +150,12 @@ export async function getNativeFallbackClientScript({ logBuffer, cache, debug = 
         }
     }
 
-    const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
-    const { version } = await watcher.get(ACTIVE_TAG);
-    const script = await watcher.read(debug ? NATIVE_FALLBACK_CLIENT_JS : NATIVE_FALLBACK_CLIENT_MIN_JS, ACTIVE_TAG);
+    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { version } = await getTag();
+    const script = await read(debug ? NATIVE_FALLBACK_CLIENT_JS : NATIVE_FALLBACK_CLIENT_MIN_JS, ACTIVE_TAG);
+
+    // non-blocking download of the DEPLOY_TAG
+    getDeployTag().catch(noop);
 
     return { script, version };
 }
@@ -190,9 +201,13 @@ export async function getNativeFallbackRenderScript({ logBuffer, cache, debug, u
             return script;
         }
     }
-    
-    const watcher = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
-    const { version } = await watcher.get(ACTIVE_TAG);
-    const fallback = await watcher.import(debug ? NATIVE_FALLBACK_CLIENT_JS : NATIVE_FALLBACK_CLIENT_MIN_JS, ACTIVE_TAG);
+
+    const { getTag, getDeployTag, import: watcherImport } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { version } = await getTag();
+    const fallback = await watcherImport(debug ? NATIVE_FALLBACK_CLIENT_JS : NATIVE_FALLBACK_CLIENT_MIN_JS, ACTIVE_TAG);
+
+    // non-blocking download of the DEPLOY_TAG
+    getDeployTag().catch(noop);
+
     return { fallback, version };
 }
