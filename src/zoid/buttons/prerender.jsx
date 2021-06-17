@@ -8,6 +8,7 @@ import { assertSameDomain, type CrossDomainWindowType } from 'cross-domain-utils
 import { SpinnerPage } from '@paypal/common-components/src';
 import { getLogger } from '@paypal/sdk-client/src';
 
+import { CLASS } from '../../constants';
 import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
@@ -31,8 +32,21 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
             [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click'
         }).flush();
-        
-        if (supportsPopups()) {
+
+        if (fundingSource === FUNDING.VENMO) {
+            const target : HTMLElement = event.currentTarget;
+            const spinner = target.querySelector(`.${ CLASS.SPINNER }`);
+            const label = target.querySelector(`.${ CLASS.BUTTON_LABEL }`);
+            if (spinner) {
+                spinner.setAttribute('style', 'display:block !important');
+            }
+            if (label) {
+                label.setAttribute('style', 'display:none;');
+            }
+
+            onRenderCheckout({ fundingSource, card });
+
+        } else if (supportsPopups()) {
             // remember the popup window to prevent showing a new popup window on every click in the prerender state
             if (!win || win.closed) {
                 win = assertSameDomain(popup('', {
