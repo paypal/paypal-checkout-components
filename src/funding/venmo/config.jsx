@@ -13,16 +13,12 @@ export function getVenmoConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        // requires: {
-        //     popup:          true,
-        //     native:         true
-        // },
-
         shippingChange: false,
 
-        // platforms: [
-        //     PLATFORM.MOBILE
-        // ],
+        platforms: [
+            PLATFORM.DESKTOP,
+            PLATFORM.MOBILE
+        ],
 
         layouts: [
             BUTTON_LAYOUT.HORIZONTAL,
