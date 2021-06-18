@@ -27,8 +27,16 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
             let label = <Text>Pay Later</Text>;
 
+            if (paylater?.products?.paylater?.eligible && paylater?.products?.paylater?.variant === 'DE') {
+                label = <Text>Später Bezahlen</Text>;
+            }
+
             if (paylater?.products?.payIn4?.eligible) {
                 label = <Text>Pay in 4</Text>;
+            }
+
+            if (paylater?.products?.payIn4?.eligible && paylater?.products?.payIn4?.variant === 'FR') {
+                label = <Text>4X PayPal</Text>;
             }
 
             return (
