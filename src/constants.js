@@ -156,6 +156,8 @@ export const FPTI_TRANSITION = {
     NATIVE_POPUP_BEFORE_UNLOAD:             ('native_popup_beforeunload' : 'native_popup_beforeunload'),
     NATIVE_POPUP_PAGEHIDE:                  ('native_popup_pagehide' : 'native_popup_pagehide'),
     NATIVE_POPUP_OPENER_DETECT_CLOSE:       ('native_popup_opener_detect_close', 'native_popup_opener_detect_close'),
+    NATIVE_OPT_OUT:                         ('native_opt_out', 'native_opt_out'),
+    NATIVE_FALLBACK:                        ('native_fallback', 'native_fallback'),
     
     HONEY_IDENTIFY:                         ('honey_identify')
 };
@@ -177,7 +179,8 @@ export const FPTI_CUSTOM_KEY = {
     INTEGRATION_ISSUE:     ('integration_issue' : 'integration_issue'),
     INTEGRATION_WHITELIST: ('whitelist' : 'whitelist'),
     INFO_MSG:              ('info_msg' : 'info_msg'),
-    PMT_TOKEN:             ('pmt_token' : 'pmt_token')
+    PMT_TOKEN:             ('pmt_token' : 'pmt_token'),
+    TRANSITION_TYPE:       ('transition_type' : 'transition_type')
 };
 
 export const FPTI_BUTTON_KEY = {

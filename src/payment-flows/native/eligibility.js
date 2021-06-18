@@ -5,7 +5,7 @@ import { PLATFORM, ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { supportsPopups } from 'belter/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
-import { isIOSSafari, isAndroidChrome, enableAmplitude } from '../../lib';
+import { isIOSSafari, isAndroidChrome, enableAmplitude, getStorageState } from '../../lib';
 import type { ButtonProps, ServiceData } from '../../button/props';
 import type { IsEligibleOptions, IsPaymentEligibleOptions } from '../types';
 import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../../constants';
@@ -60,6 +60,18 @@ export function isNativeOptedIn({ props } : {| props : ButtonProps |}) : boolean
     return false;
 }
 
+export function isNativeOptOut() : boolean {
+    const now = Date.now();
+    let optOutLifetime = 0;
+    getStorageState(state => {
+        const { nativeOptOutLifetime } = state;
+        if (nativeOptOutLifetime && typeof nativeOptOutLifetime === 'number') {
+            optOutLifetime = nativeOptOutLifetime;
+        }
+    });
+    return optOutLifetime > now;
+}
+
 type PrefetchNativeEligibilityOptions = {|
     props : ButtonProps,
     serviceData : ServiceData
@@ -90,6 +102,7 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
     const { firebase: firebaseConfig } = config;
     const { merchantID } = serviceData;
 
+
     if (platform !== PLATFORM.MOBILE) {
         return false;
     }
@@ -111,6 +124,10 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
     }
 
     if (!isIOSSafari() && !isAndroidChrome()) {
+        return false;
+    }
+
+    if (isNativeOptOut()) {
         return false;
     }
 

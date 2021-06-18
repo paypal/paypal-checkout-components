@@ -3,6 +3,7 @@
 import { getUserAgent, memoize, stringifyError, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
+import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { ButtonProps, ServiceData, Config } from '../../button/props';
 import { firebaseSocket, type MessageSocket, type FirebaseConfig } from '../../api';
@@ -143,7 +144,12 @@ type ConnectNativeOptions = {|
         |}) => ZalgoPromise<{|
             buttonSessionID : string
         |}>,
-        onFallback : () => ZalgoPromise<{|
+        onFallback : ({|
+            data? : {|
+                win? : CrossDomainWindowType,
+                type? : string
+            |}
+        |}) => ZalgoPromise<{|
             buttonSessionID : string
         |}>
     |}

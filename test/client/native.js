@@ -5,7 +5,7 @@ import { wrapPromise, parseQuery, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 
-import { promiseNoop } from '../../src/lib';
+import { promiseNoop, getStorageState } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getMockWindowOpen,
     mockFunction, getNativeFirebaseMock, getGraphQLApiMock, getPostRobotMock, generateOrderID } from './mocks';
@@ -4343,4 +4343,181 @@ describe('native chrome cases', () => {
 
         });
     });
+
+    it('should render a button with createOrder, click the button, render checkout via popup to native path in Android, fallback due native opt-out and continue with web checkout', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
+
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+            
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (data.query.includes('query GetFireBaseSessionToken')) {
+                        if (!data.variables.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed`);
+                        }
+
+                        return {
+                            data: {
+                                firebase: {
+                                    auth: {
+                                        sessionUID: data.variables.sessionUID,
+                                        sessionToken
+                                    }
+                                }
+                            }
+                        };
+                    }
+                })
+            }).expectCalls();
+
+            let sessionUID;
+
+            const postRobotMock = getPostRobotMock();
+            let popupWin;
+            const mockWindow = getMockWindowOpen({
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectClose:        true,
+                onOpen:             ({ win }) => {
+                    popupWin = win;
+                    postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://history.paypal.com',
+                        data:   {
+                            redirect: true,
+                            pageUrl:  `${ window.location.href }#fallback`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (res.redirect !== true) {
+                            throw new Error(`Expected redirect to be true`);
+                        }
+
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
+                        }
+
+                        if (!redirectQuery.channel) {
+                            throw new Error(`Expected channel to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        popupWin.close();
+                    }));
+                }
+            });
+
+            const { expect: expectSocket, onFallbackOptOut } = getNativeFirebaseMock({
+                getSessionUID: () => {
+                    if (!sessionUID) {
+                        throw new Error(`Session UID not present`);
+                    }
+
+                    return sessionUID;
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'setProps' && message_type === 'request') {
+                        ZalgoPromise.delay(10).then(onFallbackOptOut);
+                    }
+                })
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = generateOrderID();
+            const payerID = 'AAABBBCCC';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }), 50);
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            // First click should trigger the native flow
+            await clickButton(FUNDING.PAYPAL);
+            await window.xprops.onApprove.await();
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            // Second click should use the web flow
+            await clickButton(FUNDING.PAYPAL);
+            await window.xprops.onApprove.await();
+
+            await mockWebSocketServer.done();
+            postRobotMock.done();
+            gqlMock.done();
+            mockWindow.done();
+
+
+            // Reset nativeOptOutLifetime
+            getStorageState(state => {
+                state.nativeOptOutLifetime = 0;
+            });
+
+        });
+    });
+
 });
