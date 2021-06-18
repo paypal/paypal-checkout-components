@@ -1,7 +1,6 @@
 /* @flow */
 /** @jsx node */
 
-import { PLATFORM } from '@paypal/sdk-constants/src';
 import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
@@ -14,11 +13,6 @@ export function getVenmoConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         shippingChange: false,
-
-        platforms: [
-            PLATFORM.DESKTOP,
-            PLATFORM.MOBILE
-        ],
 
         layouts: [
             BUTTON_LAYOUT.HORIZONTAL,
