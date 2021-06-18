@@ -1,3 +1,16 @@
+## <small>5.0.164 (2021-06-18)</small>
+
+* Add validation error code when no fundingSources are available on Buttons render (#1658) ([84efb89](https://github.com/paypal/paypal-checkout-components/commit/84efb89)), closes [#1658](https://github.com/paypal/paypal-checkout-components/issues/1658)
+* Add vaulted button for returning Venmo Pay users  (#1647) ([498dae3](https://github.com/paypal/paypal-checkout-components/commit/498dae3)), closes [#1647](https://github.com/paypal/paypal-checkout-components/issues/1647)
+* Create venmo desktop experiment (#1652) ([ea2b211](https://github.com/paypal/paypal-checkout-components/commit/ea2b211)), closes [#1652](https://github.com/paypal/paypal-checkout-components/issues/1652)
+* Fix Vue example (#1650) ([91538b3](https://github.com/paypal/paypal-checkout-components/commit/91538b3)), closes [#1650](https://github.com/paypal/paypal-checkout-components/issues/1650)
+* Ramp venmo experiment to 90% (#1664) ([a2bc044](https://github.com/paypal/paypal-checkout-components/commit/a2bc044)), closes [#1664](https://github.com/paypal/paypal-checkout-components/issues/1664)
+* Update Pay Later label for DE and FR (#1659) ([5368f8c](https://github.com/paypal/paypal-checkout-components/commit/5368f8c)), closes [#1659](https://github.com/paypal/paypal-checkout-components/issues/1659)
+* chore(release): 5.0.162 :tada: ([ef15975](https://github.com/paypal/paypal-checkout-components/commit/ef15975))
+* chore(release): 5.0.163 :tada: ([d2dcbbb](https://github.com/paypal/paypal-checkout-components/commit/d2dcbbb))
+
+
+
 ## <small>5.0.163 (2021-06-10)</small>
 
 * Ramp venmo experiment to 90% (#1664) ([a2bc044](https://github.com/paypal/paypal-checkout-components/commit/a2bc044)), closes [#1664](https://github.com/paypal/paypal-checkout-components/issues/1664)
