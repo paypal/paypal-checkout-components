@@ -1,5 +1,5 @@
 /* @flow */
-import { FUNDING, COUNTRY } from '@paypal/sdk-constants';
+import { FUNDING } from '@paypal/sdk-constants';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT } from '../../src/constants';
 
@@ -907,7 +907,7 @@ buttonConfigs.push({
             products: {
                 paylater: {
                     eligible: true,
-                    variant: 'DE'
+                    variant:  'DE'
                 }
             }
         }
