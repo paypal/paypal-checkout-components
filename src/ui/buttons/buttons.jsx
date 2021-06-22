@@ -182,6 +182,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                 (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
                     ? <PoweredByPayPal
                         locale={ locale }
+                        nonce={ nonce }
                     /> : null
             }
 
