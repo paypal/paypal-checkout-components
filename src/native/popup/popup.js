@@ -153,9 +153,15 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         }
     }
 
+    const replaceHash = (hash) => {
+        return window.location.replace(
+            `#${ hash.replace(/^#/, '') }`
+        );
+    };
+
     const closeWindow = () => {
         window.close();
-        window.location.hash = HASH.CLOSED;
+        replaceHash(HASH.CLOSED);
     };
 
     const getRawHash = () => {
@@ -274,7 +280,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     window.addEventListener(EVENT.HASHCHANGE, handleHash);
     clean.register(() => window.removeEventListener(EVENT.HASHCHANGE, handleHash));
 
-    window.location.hash = HASH.LOADED;
+    replaceHash(HASH.LOADED);
     handleHash();
 
     const stickinessID = getStorageID();
@@ -286,7 +292,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
                 return;
             }
 
-            window.location.hash = appSwitch ? HASH.APPSWITCH : HASH.WEBSWITCH;
+            replaceHash(appSwitch ? HASH.APPSWITCH : HASH.WEBSWITCH);
             window.location.replace(redirectUrl);
 
             let didRedirect = false;
