@@ -13,6 +13,8 @@ import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
 
+import { canUseQRPay } from './util';
+
 type PrerenderedButtonsProps = {|
     nonce : ?string,
     props : ButtonProps,
@@ -33,7 +35,7 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click'
         }).flush();
 
-        if (fundingSource === FUNDING.VENMO) {
+        if (canUseQRPay) {
             const target : HTMLElement = event.currentTarget;
             const spinner = target.querySelector(`.${ CLASS.SPINNER }`);
             const label = target.querySelector(`.${ CLASS.BUTTON_LABEL }`);

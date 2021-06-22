@@ -18,6 +18,14 @@ export function determineFlow(props : ButtonProps) : $Values<typeof BUTTON_FLOW>
     }
 }
 
+export function canUseQRPay(funding : $Values<typeof FUNDING>) : boolean {
+    if (funding === FUNDING.VENMO && !isIos() && !isAndroid()) {
+        return true;
+    }
+
+    return false;
+}
+
 export function isSupportedNativeBrowser() : boolean {
     if (typeof window === 'undefined') {
         return false;
@@ -149,3 +157,4 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
         return undefined;
     }
 }
+
