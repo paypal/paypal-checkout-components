@@ -67,6 +67,7 @@ export function setupMocks() {
     };
 
     window.paypal = {
+        version: 'TEST',
         config:  {
             locale: {
                 country: 'US',

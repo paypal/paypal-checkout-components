@@ -237,14 +237,14 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
                         redirect:    true,
                         appSwitch:   false,
                         redirectUrl: getNativeFallbackUrl({
-                            props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID
+                            props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID
                         })
                     };
                 });
             }
 
             return orderPromise.then(orderID => {
-                const nativeUrl = getNativeUrl({ props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID });
+                const nativeUrl = getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID });
 
                 getLogger().info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
                     .track({
@@ -278,7 +278,7 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
                     redirect:    true,
                     appSwitch:   false,
                     redirectUrl: getNativeFallbackUrl({
-                        props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID
+                        props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID
                     })
                 };
             });

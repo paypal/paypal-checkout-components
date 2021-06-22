@@ -9,8 +9,7 @@ import { WEB_CHECKOUT_URI } from '../../config';
 import { isIOSSafari } from '../../lib';
 import { USER_ACTION } from '../../constants';
 import { HASH } from '../../native/popup/constants';
-import type { FirebaseConfig } from '../../api';
-import type { ButtonProps, ServiceData } from '../../button/props';
+import type { ButtonProps, ServiceData, Config } from '../../button/props';
 import type { NativePopupInputParams } from '../../../server/components/native/params';
 
 import { isNativeOptedIn } from './eligibility';
@@ -60,7 +59,7 @@ export function getWebCheckoutUrl({ orderID, props, fundingSource, facilitatorAc
 type GetNativeUrlOptions = {|
     props : ButtonProps,
     serviceData : ServiceData,
-    firebaseConfig : FirebaseConfig,
+    config : Config,
     fundingSource : $Values<typeof FUNDING>,
     sessionUID : string,
     pageUrl : string,
@@ -89,7 +88,8 @@ type NativeUrlQuery = {|
     enableFunding : string,
     domain : string,
     rtdbInstanceID : string,
-    buyerCountry : $Values<typeof COUNTRY>
+    buyerCountry : $Values<typeof COUNTRY>,
+    sdkVersion : string
 |};
 
 const CHANNEL = {
@@ -97,14 +97,19 @@ const CHANNEL = {
     MOBILE:  'mobile-web'
 };
 
-function getNativeUrlQueryParams({ props, serviceData, fundingSource, sessionUID, firebaseConfig, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : NativeUrlQuery {
+function getNativeUrlQueryParams({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : NativeUrlQuery {
     const { env, clientID, commit, buttonSessionID, stageHost, apiStageHost, enableFunding, merchantDomain } = props;
     const { facilitatorAccessToken, sdkMeta, buyerCountry } = serviceData;
+    const { sdkVersion, firebase } = config;
 
     const webCheckoutUrl = getWebCheckoutUrl({ orderID, props, fundingSource, facilitatorAccessToken });
     const userAgent = getUserAgent();
     const forceEligible = isNativeOptedIn({ props });
     const channel = isDevice() ? CHANNEL.MOBILE : CHANNEL.DESKTOP;
+
+    if (!firebase) {
+        throw new Error(`Can not find firebase config`);
+    }
 
     return {
         channel,
@@ -126,13 +131,14 @@ function getNativeUrlQueryParams({ props, serviceData, fundingSource, sessionUID
         fundingSource,
         enableFunding:  enableFunding.join(','),
         domain:         merchantDomain,
-        rtdbInstanceID: firebaseConfig.databaseURL,
-        buyerCountry
+        rtdbInstanceID: firebase.databaseURL,
+        buyerCountry,
+        sdkVersion
     };
 }
 
-export function getNativeUrl({ props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : string {
-    const queryParams = getNativeUrlQueryParams({ props, serviceData, fundingSource, sessionUID, firebaseConfig, pageUrl, orderID, stickinessID });
+export function getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : string {
+    const queryParams = getNativeUrlQueryParams({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID });
     
     return extendUrl(`${ getNativeDomain({ props }) }${ NATIVE_CHECKOUT_URI[fundingSource] }`, {
         // $FlowFixMe
@@ -140,8 +146,8 @@ export function getNativeUrl({ props, serviceData, fundingSource, firebaseConfig
     });
 }
 
-export function getNativeFallbackUrl({ props, serviceData, fundingSource, firebaseConfig, sessionUID, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : string {
-    const queryParams = getNativeUrlQueryParams({ props, serviceData, fundingSource, sessionUID, firebaseConfig, pageUrl, orderID, stickinessID });
+export function getNativeFallbackUrl({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : string {
+    const queryParams = getNativeUrlQueryParams({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID });
 
     return extendUrl(`${ getNativeDomain({ props }) }${ NATIVE_CHECKOUT_FALLBACK_URI[fundingSource] }`, {
         // $FlowFixMe

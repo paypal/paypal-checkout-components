@@ -109,6 +109,10 @@ describe('native ios cases', () => {
                             throw new Error(`Expected buyerCountry to be passed in url`);
                         }
 
+                        if (!redirectQuery.sdkVersion) {
+                            throw new Error(`Expected sdkVersion to be passed in url`);
+                        }
+
                         sessionUID = redirectQuery.sessionUID;
 
                         postRobotMock.receive({
