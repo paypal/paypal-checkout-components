@@ -1,5 +1,5 @@
 /* @flow */
-import { FUNDING } from '@paypal/sdk-constants';
+import { FUNDING, COUNTRY } from '@paypal/sdk-constants';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT } from '../../src/constants';
 
@@ -885,6 +885,32 @@ buttonConfigs.push({
     },
     button: {
         fundingSource: 'card'
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal',
+            label:  'pay'
+        }
+    },
+    container: {
+        width: 330
+    },
+    fundingEligibility: {
+        [ FUNDING.PAYPAL ]: {
+            eligible: true
+        },
+        [ FUNDING.PAYLATER ]: {
+            eligible: true,
+            products: {
+                paylater: {
+                    eligible: true,
+                    variant: 'DE'
+                }
+            }
+        }
     }
 });
 
