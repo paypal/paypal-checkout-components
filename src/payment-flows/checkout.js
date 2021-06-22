@@ -400,8 +400,11 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     });
 
     const restart = memoize(() : ZalgoPromise<void> => {
-        return initCheckout({ props, components, serviceData, config, payment: { button, fundingSource, card, buyerIntent, isClick: false } })
-            .start().finally(unresolvedPromise);
+        // Closing any previous checkout popup before restarting
+        return close().finally(() => {
+            return initCheckout({ props, components, serviceData, config, payment: { button, fundingSource, card, buyerIntent, isClick: false } })
+                .start().finally(unresolvedPromise);
+        });
     });
 
     const click = () => {
