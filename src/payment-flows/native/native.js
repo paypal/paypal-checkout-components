@@ -274,10 +274,9 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const onCloseCallback = () => {
         return ZalgoPromise.delay(1000).then(() => {
             if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
-                return ZalgoPromise.all([
-                    onCancel(),
-                    destroy()
-                ]);
+                return ZalgoPromise.try(() => {
+                    return destroy();
+                });
             }
         }).then(noop);
     };

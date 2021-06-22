@@ -496,6 +496,25 @@ describe('happy cases', () => {
         });
     });
 
+    it('should render a button, click the button, and render checkout, then not call onCancel if onClick returns false', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            window.xprops.onClick = mockAsyncProp(expect('onClick', async () => {
+                return false;
+            }));
+
+            window.xprops.createOrder = avoid('createOrder');
+            window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onApprove = avoid('onApprove');
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
+
     it('should render a button, click the button, and render checkout, onApprove, restart and call onApprove again', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 

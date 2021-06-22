@@ -816,7 +816,7 @@ describe('native ios cases', () => {
         });
     });
 
-    it('should render a button with createOrder, click the button, and render checkout via popup to native path with onCancel when popup closed in iOS', async () => {
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path with no onCancel when popup closed in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
             window.xprops.enableNativeCheckout = true;
@@ -929,7 +929,7 @@ describe('native ios cases', () => {
                 extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
                     if (message_name === 'onInit' && message_type === 'request') {
                         mockWindow.expectClose();
-                        ZalgoPromise.delay(50).then(() => popupWin.close());
+                        popupWin.close();
                     }
                 })
             });
@@ -946,11 +946,7 @@ describe('native ios cases', () => {
 
             window.xprops.onApprove = avoid('onApprove');
 
-            window.xprops.onCancel = mockAsyncProp(expect('onCancel', (data) => {
-                if (data.orderID !== orderID) {
-                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                }
-            }));
+            window.xprops.onCancel = avoid('onCancel');
 
             createButtonHTML();
 
@@ -963,7 +959,6 @@ describe('native ios cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
             await ZalgoPromise.delay(50).then(onInit);
-            await window.xprops.onCancel.await();
 
             await mockWebSocketServer.done();
             mockWindow.done();
