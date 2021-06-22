@@ -216,3 +216,34 @@ test('should render empty personalization when config is disabled', async () => 
         throw new Error(`Expected personalization to be empty, got: ${ JSON.stringify(setupButtonParams.personalization) }`);
     }
 });
+
+test('should render filled out tagline when config is enabled', async () => {
+    const buttonMiddleware = getButtonMiddleware({
+        graphQL,
+        getAccessToken,
+        getMerchantID,
+        content:                   mockContent,
+        cache,
+        logger,
+        tracking,
+        getPersonalizationEnabled: () => true,
+        isFundingSourceBranded
+    });
+
+    const req = mockReq({
+        query: {
+            clientID: 'xyz'
+        }
+    });
+    const res = mockRes();
+    
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+    const html = res.getBody();
+
+    const setupButtonParams = getSetupButtonParams(html);
+    
+    if (!setupButtonParams.personalization.buttonText || !setupButtonParams.personalization.tagline) {
+        throw new Error(`Expected personalization to be rendered, got: ${ JSON.stringify(setupButtonParams.personalization) }`);
+    }
+});

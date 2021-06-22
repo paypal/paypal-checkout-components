@@ -105,9 +105,15 @@ export function getButtonMiddleware({
             }).catch(noop);
 
             const personalizationEnabled = getPersonalizationEnabled(req);
-            const personalizationPromise = resolvePersonalization(req, gqlBatch, {
-                logger, clientID, merchantID: sdkMerchantID, buyerCountry, locale, buttonSessionID,
-                currency, intent, commit, vault, label, period, tagline, personalizationEnabled
+            const personalizationPromise = promiseTimeout(
+                merchantIDPromise.then(merchantID =>
+                    resolvePersonalization(req, gqlBatch, {
+                        logger, clientID, merchantID, buyerCountry, locale, buttonSessionID,
+                        currency, intent, commit, vault, label, period, tagline, personalizationEnabled
+                    })),
+                EXPERIMENT_TIMEOUT
+            ).catch(() => {
+                return {};
             });
 
             gqlBatch.flush();
