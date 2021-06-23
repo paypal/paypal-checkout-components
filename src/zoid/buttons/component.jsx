@@ -67,13 +67,13 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingSource,
                 onShippingChange,
                 style = {},
-                applePaySupport = isApplePaySupported(),
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
                 experiment = getVenmoExperiment(enableVenmoExperiment)
             } = props;
-
+            
+            const applePaySupport = fundingEligibility && fundingEligibility[FUNDING.APPLEPAY]?.eligible ? isApplePaySupported() : false;
             const flow = determineFlow(props);
 
             if (!fundingSource) {
@@ -506,7 +506,9 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
             applePaySupport: {
                 type:       'boolean',
-                value:      isApplePaySupported,
+                value: ({ props }) => {
+                    return props.fundingEligibility && props.fundingEligibility[FUNDING.APPLEPAY]?.eligible ? isApplePaySupported() : false;
+                },
                 queryParam: true
             },
 
