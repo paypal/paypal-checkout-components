@@ -250,7 +250,6 @@ export type RenderButtonProps = {|
     vault : boolean,
     userIDToken : ?string,
     applePay : ApplePaySessionConfigRequest,
-    applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
 |};
@@ -296,7 +295,6 @@ export type ButtonProps = {|
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
-    applePaySupport : boolean,
     applePay : ApplePaySessionConfigRequest
 |};
 
@@ -332,7 +330,6 @@ export type ButtonPropsInputs = {
     vault : boolean,
     userIDToken : ?string,
     applePay : ApplePaySessionConfigRequest,
-    applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean
 };
@@ -469,7 +466,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         vault,
         userIDToken,
         applePay,
-        applePaySupport = false,
         supportsPopups = false,
         supportedNativeBrowser = false
     } = props;
@@ -505,7 +501,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Invalid funding source: ${ fundingSource }`);
         }
 
-        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser })) {
+        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, supportsPopups, supportedNativeBrowser })) {
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
@@ -514,5 +510,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
-        experiment, vault, userIDToken, applePay, applePaySupport, supportsPopups, supportedNativeBrowser };
+        experiment, vault, userIDToken, applePay, supportsPopups, supportedNativeBrowser };
 }

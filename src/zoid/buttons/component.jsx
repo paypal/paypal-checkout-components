@@ -9,7 +9,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop } from 'belter/src';
+import { uniqueID, memoize, supportsPopups as userAgentSupportsPopups, noop } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
@@ -73,7 +73,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 experiment = getVenmoExperiment(enableVenmoExperiment)
             } = props;
             
-            const applePaySupport = fundingEligibility && fundingEligibility[FUNDING.APPLEPAY]?.eligible ? isApplePaySupported() : false;
             const flow = determineFlow(props);
 
             if (!fundingSource) {
@@ -91,7 +90,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const platform           = getPlatform();
             const components         = getComponents();
 
-            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment })) {
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, supportedNativeBrowser, experiment })) {
                 return {
                     eligible: true
                 };
@@ -110,7 +109,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
 
                 validate: ({ props }) => {
-                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), applePaySupport, supportsPopups, supportedNativeBrowser } = props;
+                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), supportsPopups, supportedNativeBrowser } = props;
 
                     const flow = determineFlow(props);
                     const { layout } = style;
@@ -118,7 +117,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     const platform           = getPlatform();
                     const components         = getComponents();
 
-                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser })) {
+                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, supportsPopups, supportedNativeBrowser })) {
                         throw new Error(`${ fundingSource } is not eligible`);
                     }
                 }
@@ -502,14 +501,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'boolean',
                 queryParam: true,
                 required:   false
-            },
-
-            applePaySupport: {
-                type:       'boolean',
-                value: ({ props }) => {
-                    return props.fundingEligibility && props.fundingEligibility[FUNDING.APPLEPAY]?.eligible ? isApplePaySupported() : false;
-                },
-                queryParam: true
             },
 
             supportsPopups: {
