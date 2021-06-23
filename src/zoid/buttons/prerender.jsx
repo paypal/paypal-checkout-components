@@ -12,7 +12,7 @@ import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
 
-import { canUseQRPay, showButtonLoading } from './util';
+import { mightUseQRPay, showButtonLoading } from './util';
 
 type PrerenderedButtonsProps = {|
     nonce : ?string,
@@ -34,7 +34,7 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click'
         }).flush();
 
-        if (canUseQRPay(fundingSource)) {
+        if (mightUseQRPay(fundingSource)) {
             showButtonLoading(event.target);
             onRenderCheckout({ fundingSource, card });
 
