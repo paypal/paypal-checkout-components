@@ -8,12 +8,11 @@ import { assertSameDomain, type CrossDomainWindowType } from 'cross-domain-utils
 import { SpinnerPage } from '@paypal/common-components/src';
 import { getLogger } from '@paypal/sdk-client/src';
 
-import { CLASS } from '../../constants';
 import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
 
-import { canUseQRPay } from './util';
+import { mightUseQRPay, showButtonLoading } from './util';
 
 type PrerenderedButtonsProps = {|
     nonce : ?string,
@@ -35,17 +34,8 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click'
         }).flush();
 
-        if (canUseQRPay) {
-            const target : HTMLElement = event.currentTarget;
-            const spinner = target.querySelector(`.${ CLASS.SPINNER }`);
-            const label = target.querySelector(`.${ CLASS.BUTTON_LABEL }`);
-            if (spinner) {
-                spinner.setAttribute('style', 'display:block !important');
-            }
-            if (label) {
-                label.setAttribute('style', 'display:none;');
-            }
-
+        if (mightUseQRPay(fundingSource)) {
+            showButtonLoading(event.target);
             onRenderCheckout({ fundingSource, card });
 
         } else if (supportsPopups()) {
