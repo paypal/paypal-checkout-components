@@ -4,7 +4,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding, createExperiment, getFundingEligibility } from '@paypal/sdk-client/src';
 
 import type { Experiment as VenmoExperiment } from '../../types';
-import { BUTTON_FLOW } from '../../constants';
+import { BUTTON_FLOW, CLASS } from '../../constants';
 import type { ApplePaySessionConfigRequest, ButtonProps } from '../../ui/buttons/props';
 
 export function determineFlow(props : ButtonProps) : $Values<typeof BUTTON_FLOW> {
@@ -24,6 +24,22 @@ export function canUseQRPay(funding : $Values<typeof FUNDING>) : boolean {
     }
 
     return false;
+}
+
+export function showButtonLoading (targetElement : HTMLElement) : void {
+    const buttonElement = (targetElement.getAttribute('role') === 'button') ?
+        targetElement :
+        targetElement.closest('[role="button"]');
+    if (buttonElement) {
+        const spinner = buttonElement.querySelector(`.${ CLASS.SPINNER }`);
+        const label = buttonElement.querySelector(`.${ CLASS.BUTTON_LABEL }`);
+        if (spinner) {
+            spinner.setAttribute('style', 'display:block !important');
+        }
+        if (label) {
+            label.setAttribute('style', 'display:none;');
+        }
+    }
 }
 
 export function isSupportedNativeBrowser() : boolean {
