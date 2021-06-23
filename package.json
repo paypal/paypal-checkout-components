@@ -4,7 +4,7 @@
     "description": "PayPal Checkout components, for integrating checkout products.",
     "main": "index.js",
     "scripts": {
-        "dev": "NODE_ENV=test babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
+        "dev": "babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
         "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
         "flow-typed": "rm -rf flow-typed && flow-typed install",
         "flow": "flow",
