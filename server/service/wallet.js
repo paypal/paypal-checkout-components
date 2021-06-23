@@ -187,7 +187,8 @@ function buildSmartWalletQuery() : string {
     const fundingQuery = {
         [ FUNDING.PAYPAL ]: getSmartWalletFundingQuery(),
         [ FUNDING.CREDIT ]: getSmartWalletFundingQuery(),
-        [ FUNDING.CARD ]:   getSmartWalletFundingQuery()
+        [ FUNDING.CARD ]:   getSmartWalletFundingQuery(),
+        [ FUNDING.VENMO ]:   getSmartWalletFundingQuery()
     };
 
     return query('GetSmartWallet', params(InputTypes, {
@@ -232,9 +233,11 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
         },
         card: {
             instruments: []
+        },
+        venmo: {
+            instruments: []
         }
     };
-
 
     if (userIDToken || userRefreshToken || buyerAccessToken || paymentMethodNonce) {
         try {
