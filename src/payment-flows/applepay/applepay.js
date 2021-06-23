@@ -414,7 +414,9 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             approveApplePayPayment(orderID, clientID, applePayPayment)
                                 .then(validatedPayment => {
                                     if (validatedPayment) {
-                                        completePayment(window.ApplePaySession.STATUS_SUCCESS);
+                                        completePayment({
+                                            status: window.ApplePaySession.STATUS_SUCCESS
+                                        });
 
                                         const data = {};
                                         const actions = { restart: () => ZalgoPromise.try(setupApplePaySession) };
@@ -426,7 +428,9 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                     }
                                 })
                                 .catch(err => {
-                                    completePayment(window.ApplePaySession.STATUS_FAILURE);
+                                    completePayment({
+                                        status: window.ApplePaySession.STATUS_FAILURE
+                                    });
                                     handleApplePayError(FPTI_TRANSITION.APPLEPAY_PAYMENT_ERROR, err);
                                 });
                         }
