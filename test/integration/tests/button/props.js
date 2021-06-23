@@ -17,7 +17,7 @@ describe(`paypal button component props`, () => {
         destroyTestContainer();
     });
 
-    it('should render an Apple Pay button if eligible', () => {
+    it.only('should render an Apple Pay button if eligible', () => {
         window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
 
         function ApplePaySession(version, request) : Object {
@@ -85,10 +85,15 @@ describe(`paypal button component props`, () => {
                         onRender: (...args) => onRender(...args)
                     },
                     fundingSource,
+                    fundingEligibility: {
+                        [FUNDING.APPLEPAY]: {
+                            eligible: true
+                        }
+                    },
                     onCancel:  avoid('onCancel')
 
                 });
-                
+
                 if (instance.isEligible()) {
                     onRender = expect('onRender', onRender);
                     return instance.render('#testContainer');
