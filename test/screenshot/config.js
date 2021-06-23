@@ -888,3 +888,29 @@ buttonConfigs.push({
     }
 });
 
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal',
+            label:  'pay'
+        }
+    },
+    container: {
+        width: 330
+    },
+    fundingEligibility: {
+        [ FUNDING.PAYPAL ]: {
+            eligible: true
+        },
+        [ FUNDING.PAYLATER ]: {
+            eligible: true,
+            products: {
+                paylater: {
+                    eligible: true,
+                    variant:  'DE'
+                }
+            }
+        }
+    }
+});
+

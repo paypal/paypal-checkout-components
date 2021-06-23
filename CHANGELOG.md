@@ -1,3 +1,19 @@
+## <small>5.0.165 (2021-06-23)</small>
+
+* Add new test globals for paypal domains (#1669) ([ca32d99](https://github.com/paypal/paypal-checkout-components/commit/ca32d99)), closes [#1669](https://github.com/paypal/paypal-checkout-components/issues/1669)
+* Create venmo desktop experiment (#1652) ([ea2b211](https://github.com/paypal/paypal-checkout-components/commit/ea2b211)), closes [#1652](https://github.com/paypal/paypal-checkout-components/issues/1652)
+* Delete optional from PPLogo render (#1670) ([b43fad6](https://github.com/paypal/paypal-checkout-components/commit/b43fad6)), closes [#1670](https://github.com/paypal/paypal-checkout-components/issues/1670)
+* Fix Vue example (#1650) ([91538b3](https://github.com/paypal/paypal-checkout-components/commit/91538b3)), closes [#1650](https://github.com/paypal/paypal-checkout-components/issues/1650)
+* Only check for Apple Pay support if eligible (#1672) ([47a932f](https://github.com/paypal/paypal-checkout-components/commit/47a932f)), closes [#1672](https://github.com/paypal/paypal-checkout-components/issues/1672)
+* Pass csp nonce to PoweredByPayPal component (#1668) ([ff5a931](https://github.com/paypal/paypal-checkout-components/commit/ff5a931)), closes [#1668](https://github.com/paypal/paypal-checkout-components/issues/1668)
+* Update Pay Later label for DE and FR (#1659) ([5368f8c](https://github.com/paypal/paypal-checkout-components/commit/5368f8c)), closes [#1659](https://github.com/paypal/paypal-checkout-components/issues/1659)
+* chore(deps): update dependency fs-extra to v10 (#1626) ([170d0a5](https://github.com/paypal/paypal-checkout-components/commit/170d0a5)), closes [#1626](https://github.com/paypal/paypal-checkout-components/issues/1626)
+* chore(deps): update dependency imgur to v1 (#1567) ([1984233](https://github.com/paypal/paypal-checkout-components/commit/1984233)), closes [#1567](https://github.com/paypal/paypal-checkout-components/issues/1567)
+* chore(deps): update dependency serve to v12 (#1663) ([1ebc28e](https://github.com/paypal/paypal-checkout-components/commit/1ebc28e)), closes [#1663](https://github.com/paypal/paypal-checkout-components/issues/1663)
+* chore(release): 5.0.164 :tada: ([5c3e1fc](https://github.com/paypal/paypal-checkout-components/commit/5c3e1fc))
+
+
+
 ## <small>5.0.164 (2021-06-18)</small>
 
 * Add validation error code when no fundingSources are available on Buttons render (#1658) ([84efb89](https://github.com/paypal/paypal-checkout-components/commit/84efb89)), closes [#1658](https://github.com/paypal/paypal-checkout-components/issues/1658)
