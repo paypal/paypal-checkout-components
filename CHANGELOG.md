@@ -1,3 +1,9 @@
+## <small>5.0.166 (2021-06-23)</small>
+
+* ApplePay Component Performance (#1675) ([be40f6b](https://github.com/paypal/paypal-checkout-components/commit/be40f6b)), closes [#1675](https://github.com/paypal/paypal-checkout-components/issues/1675)
+
+
+
 ## <small>5.0.165 (2021-06-23)</small>
 
 * Add new test globals for paypal domains (#1669) ([ca32d99](https://github.com/paypal/paypal-checkout-components/commit/ca32d99)), closes [#1669](https://github.com/paypal/paypal-checkout-components/issues/1669)
