@@ -1472,7 +1472,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.37", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.38", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
@@ -1586,9 +1586,12 @@
                     installed: !0
                 };
             }))));
+            var replaceHash = function(hash) {
+                return window.location.replace("#" + hash.replace(/^#/, ""));
+            };
             var closeWindow = function() {
                 window.close();
-                window.location.hash = "closed";
+                replaceHash("closed");
             };
             var getRawHash = function() {
                 return (window.location.hash || "none").replace(/^#/, "").replace(/\?.+/, "");
@@ -1710,13 +1713,16 @@
                         break;
 
                       case "fallback":
-                        sendToParent("onFallback");
+                        var _parseQuery3 = parseQuery(queryString);
+                        sendToParent("onFallback", {
+                            type: _parseQuery3.type
+                        });
                         break;
 
                       case "onError":
-                        var _parseQuery3 = parseQuery(queryString);
+                        var _parseQuery4 = parseQuery(queryString);
                         sendToParent("onError", {
-                            message: _parseQuery3.message
+                            message: _parseQuery4.message
                         }).finally(closeWindow);
                         break;
 
@@ -1738,7 +1744,7 @@
             clean.register((function() {
                 return window.removeEventListener("hashchange", handleHash);
             }));
-            window.location.hash = "loaded";
+            replaceHash("loaded");
             handleHash();
             var stickinessID = getStorage({
                 name: "smart_payment_buttons"
@@ -1753,7 +1759,7 @@
                 }).then((function(_ref3) {
                     var _ref3$redirect = _ref3.redirect, redirectUrl = _ref3.redirectUrl, _ref3$appSwitch = _ref3.appSwitch, appSwitch = void 0 === _ref3$appSwitch || _ref3$appSwitch;
                     if (void 0 === _ref3$redirect || _ref3$redirect) {
-                        window.location.hash = appSwitch ? "appswitch" : "webswitch";
+                        replaceHash(appSwitch ? "appswitch" : "webswitch");
                         window.location.replace(redirectUrl);
                         var didRedirect = !1;
                         var markRedirect = function() {
