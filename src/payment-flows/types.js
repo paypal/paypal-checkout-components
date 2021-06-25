@@ -12,7 +12,7 @@ import { BUYER_INTENT } from '../constants';
 export const TYPES = true;
 
 export type PaymentFlowInstance = {|
-    click? : () => ?ZalgoPromise<void>,
+    click? : () => ?ZalgoPromise<void | boolean> | boolean,
     start : () => ZalgoPromise<void>,
     close : () => ZalgoPromise<void>
 |};

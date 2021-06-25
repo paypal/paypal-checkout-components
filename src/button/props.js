@@ -1,29 +1,13 @@
 /* @flow */
 
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
-import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { COUNTRY, FUNDING, CARD, INTENT, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import type { InstallmentsFlowType } from '@paypal/installments/src/types';
 
-import type { ContentType, LocaleType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
-    ThreeDomainSecureFlowType, MenuFlowType, ConnectOptions, PersonalizationType, QRCodeType } from '../types';
-import type { XApplePaySessionConfigRequest } from '../payment-flows/types';
-import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit,
-    XOnInit, OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError,
-    OnError, XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding
-} from '../props';
+import type { ContentType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
+    ThreeDomainSecureFlowType, MenuFlowType, PersonalizationType, QRCodeType } from '../types';
 import { type FirebaseConfig } from '../api';
-import { getNonce, getStorageID, isStorageStateFresh } from '../lib';
-import { getOnInit } from '../props/onInit';
-import { getCreateOrder } from '../props/createOrder';
-import { getOnApprove } from '../props/onApprove';
-import { getOnCancel } from '../props/onCancel';
-import { getOnShippingChange } from '../props/onShippingChange';
-import { getOnClick } from '../props/onClick';
-import { getCreateBillingAgreement } from '../props/createBillingAgreement';
-import { getCreateSubscription } from '../props/createSubscription';
-import { getOnAuth } from '../props/onAuth';
-import { getOnError } from '../props/onError';
+import { getNonce } from '../lib';
+import { getProps, type XProps, type Props } from '../props/props';
 
 // export something to force webpack to see this as an ES module
 export const TYPES = true;
@@ -43,195 +27,30 @@ export type ButtonStyle = {|
 |};
 
 export type ButtonXProps = {|
-    env : $Values<typeof ENV>,
-    locale : LocaleType,
+    ...XProps,
+
     style : ButtonStyle,
-    uid : string,
-
-    sessionID : string,
-    buttonSessionID : string,
-    clientID : string,
-    partnerAttributionID : ?string,
-    sdkCorrelationID : string,
-    platform : $Values<typeof PLATFORM>,
-    merchantID : $ReadOnlyArray<string>,
-
-    vault : boolean,
-    commit : boolean,
-    intent : $Values<typeof INTENT>,
-    currency : $Values<typeof CURRENCY>,
-    wallet : Wallet,
-
-    clientAccessToken : ?string,
-    buyerCountry : $Values<typeof COUNTRY>,
-
-    createOrder : ?XCreateOrder,
-    createBillingAgreement : ?XCreateBillingAgreement,
-    createSubscription : ?XCreateSubscription,
-
-    getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
-    getPopupBridge : XGetPopupBridge,
-    remember : RememberFunding,
-    enableThreeDomainSecure : boolean,
-    enableNativeCheckout : boolean | void,
-    enableVaultInstallments : boolean,
-    getParentDomain : () => string,
-    getPageUrl : GetPageURL,
-    getParent : () => CrossDomainWindowType,
-    clientMetadataID : ?string,
-    fundingSource : ?$Values<typeof FUNDING>,
-    disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
-    enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
-    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
-    getQueriedEligibleFunding? : GetQueriedEligibleFunding,
-    storageID? : string,
-    stageHost : ?string,
-    apiStageHost : ?string,
-    connect? : ConnectOptions,
-
-    amount : ?string,
-    userIDToken : ?string,
-
-    onInit : XOnInit,
-    onApprove : ?XOnApprove,
-    onCancel : XOnCancel,
-    onClick : XOnClick,
-    onError : XOnError,
-    onShippingChange : ?XOnShippingChange,
-
-    paymentMethodNonce : string,
-    branded? : boolean,
-    userExperienceFlow : string,
-
-    applePay : XApplePaySessionConfigRequest
+    buttonSessionID : string
 |};
 
 export type ButtonProps = {|
-    env : $Values<typeof ENV>,
-    locale : LocaleType,
+    ...Props,
+
     style : ButtonStyle,
-    uid : string,
-
-    sessionID : string,
-    buttonSessionID : string,
-    clientID : string,
-    partnerAttributionID : ?string,
-    clientMetadataID : ?string,
-    sdkCorrelationID : string,
-    platform : $Values<typeof PLATFORM>,
-
-    vault : boolean,
-    commit : boolean,
-    currency : $Values<typeof CURRENCY>,
-    intent : $Values<typeof INTENT>,
-    wallet : Wallet,
-
-    clientAccessToken : ?string,
-
-    getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
-    getPopupBridge : GetPopupBridge,
-    rememberFunding : RememberFunding,
-    enableThreeDomainSecure : boolean,
-    enableNativeCheckout : boolean,
-    enableVaultInstallments : boolean,
-    merchantDomain : string,
-    getPageUrl : GetPageURL,
-    getParent : () => CrossDomainWindowType,
-    fundingSource : ?$Values<typeof FUNDING>,
-    standaloneFundingSource : ?$Values<typeof FUNDING>,
-    disableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
-    enableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
-    disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
-    getQueriedEligibleFunding : GetQueriedEligibleFunding,
-
-    stageHost : ?string,
-    apiStageHost : ?string,
-
-    amount : ?string,
-    userIDToken : ?string,
-    stickinessID : string,
-
-    onInit : OnInit,
-    onError : OnError,
-    onClick : ?OnClick,
-    connect : ?ConnectOptions,
-
-    createOrder : CreateOrder,
-
-    createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?XCreateSubscription,
-
-    onApprove : OnApprove,
-
-    onCancel : OnCancel,
-    onShippingChange : ?OnShippingChange,
-    onAuth : OnAuth,
-
-    paymentMethodNonce : string,
-
-    applePay : XApplePaySessionConfigRequest,
-
-    branded : boolean | null,
-    userExperienceFlow : string
+    buttonSessionID : string
 |};
 
-// eslint-disable-next-line complexity
-export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilitatorAccessToken : string, brandedDefault : boolean | null |}) : ButtonProps {
+export function getButtonProps({ facilitatorAccessToken, brandedDefault } : {| facilitatorAccessToken : string, brandedDefault : boolean | null |}) : ButtonProps {
     const xprops : ButtonXProps = window.xprops;
 
     let {
-        uid,
-        env,
-        vault = false,
-        commit,
-        locale,
-        platform,
-        sessionID,
         buttonSessionID,
-        clientID,
-        partnerAttributionID,
-        clientMetadataID,
-        sdkCorrelationID,
-        getParentDomain,
-        clientAccessToken,
-        getPopupBridge,
-        getPrerenderDetails,
-        getPageUrl,
-        enableThreeDomainSecure,
-        enableVaultInstallments,
-        enableNativeCheckout = false,
-        remember: rememberFunding,
-        stageHost,
-        apiStageHost,
         style,
-        getParent,
-        fundingSource,
-        currency,
-        connect,
-        intent,
-        merchantID,
-        amount,
-        userIDToken,
-        enableFunding,
-        disableFunding,
-        disableCard,
-        wallet,
-        paymentMethodNonce,
         branded,
-        getQueriedEligibleFunding = () => ZalgoPromise.resolve([]),
-        storageID,
-        applePay,
-        userExperienceFlow
+        intent
     } = xprops;
 
-    const onInit = getOnInit({ onInit: xprops.onInit });
-    const merchantDomain = (typeof getParentDomain === 'function') ? getParentDomain() : 'unknown';
-
-    enableFunding = enableFunding || [];
-    disableFunding = disableFunding || [];
     branded = branded ?? brandedDefault;
-
-    const onClick = getOnClick({ onClick: xprops.onClick });
 
     if (xprops.createBillingAgreement) {
         if (xprops.createOrder) {
@@ -277,83 +96,11 @@ export function getProps({ facilitatorAccessToken, brandedDefault } : {| facilit
         }
     }
 
-    const stickinessID = (storageID && isStorageStateFresh())
-        ? storageID
-        : getStorageID();
-
-    const createBillingAgreement = getCreateBillingAgreement({ createBillingAgreement: xprops.createBillingAgreement });
-    const createSubscription = getCreateSubscription({ createSubscription: xprops.createSubscription, partnerAttributionID, merchantID, clientID }, { facilitatorAccessToken });
-
-    const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken, createBillingAgreement, createSubscription });
-
-    const onError = getOnError({ onError: xprops.onError });
-    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, clientAccessToken, vault, clientID }, { facilitatorAccessToken, branded, createOrder });
-    const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
-    const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID, clientID }, { facilitatorAccessToken, createOrder });
-    const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, createSubscription, clientID });
-
     return {
-        uid,
-        env,
+        ...getProps({ facilitatorAccessToken, branded }),
         style,
-
-        vault,
-        commit,
-
-        clientAccessToken,
-        locale,
-
-        sessionID,
         buttonSessionID,
-        clientID,
-        partnerAttributionID,
-        clientMetadataID,
-        sdkCorrelationID,
-        merchantDomain,
-        platform,
-        currency,
-        intent,
-        wallet,
-
-        getPopupBridge,
-        getPrerenderDetails,
-        getPageUrl,
-        rememberFunding,
-        getParent,
-        connect,
-        fundingSource,
-        enableFunding,
-        disableFunding,
-        disableCard,
-        getQueriedEligibleFunding,
-
-        amount,
-        userIDToken,
-
-        enableThreeDomainSecure,
-        enableNativeCheckout,
-        enableVaultInstallments,
-
-        onClick,
-        onInit,
-        onError,
-        stageHost,
-        apiStageHost,
-
-        createOrder,
-        createBillingAgreement,
-        createSubscription,
-        onApprove,
-        onCancel,
-        onShippingChange,
-
-        onAuth,
-        standaloneFundingSource: fundingSource,
-        paymentMethodNonce,
-        branded,
-        stickinessID,
-        applePay,
-        userExperienceFlow
+        branded
     };
 }
 

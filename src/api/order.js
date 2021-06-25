@@ -1,9 +1,9 @@
+/* @flow */
 /* eslint max-lines: 0 */
 
-/* @flow */
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { CURRENCY, FPTI_KEY, FUNDING, WALLET_INSTRUMENT, INTENT } from '@paypal/sdk-constants/src';
-import { request, noop, memoize } from 'belter/src';
+import { request, noop, memoize, uniqueID } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
@@ -773,5 +773,45 @@ export function payWithNonce({ orderID, paymentMethodNonce, clientID, branded = 
         return {
             payerID: approvePaymentWithNonce.buyer.userId
         };
+    });
+}
+
+type TokenizeCardOptions = {|
+    card : {|
+        number : string,
+        cvv : string,
+        expiry : string
+    |}
+|};
+
+type TokenizeCardResult = {|
+    paymentMethodToken : string
+|};
+
+export function tokenizeCard({ card } : TokenizeCardOptions) : ZalgoPromise<TokenizeCardResult> {
+    return ZalgoPromise.try(() => {
+        // eslint-disable-next-line no-console
+        console.warn('Card Tokenize GQL mutation not yet implemented', { card });
+        return {
+            paymentMethodToken: uniqueID()
+        };
+    });
+}
+
+type ApproveCardPaymentOptions = {|
+    orderID : string,
+    vault : boolean,
+    branded : boolean,
+    card : {|
+        number : string,
+        cvv : string,
+        expiry : string
+    |}
+|};
+
+export function approveCardPayment({ card, orderID, vault, branded } : ApproveCardPaymentOptions) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
+        // eslint-disable-next-line no-console
+        console.warn('Card Approve Payment GQL mutation not yet implemented', { card, orderID, vault, branded });
     });
 }

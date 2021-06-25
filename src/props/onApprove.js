@@ -197,7 +197,8 @@ export type OnApproveData = {|
     subscriptionID? : ?string,
     buyerAccessToken? : ?string,
     authCode? : ?string,
-    forceRestAPI? : boolean
+    forceRestAPI? : boolean,
+    paymentMethodToken? : string
 |};
 
 export type OnApproveActions = {|

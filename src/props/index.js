@@ -1,5 +1,6 @@
 /* @flow */
 
+export * from './props';
 export * from './createOrder';
 export * from './confirmOrder';
 export * from './createBillingAgreement';

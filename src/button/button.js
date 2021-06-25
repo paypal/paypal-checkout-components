@@ -10,7 +10,7 @@ import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
 import { type Payment } from '../payment-flows';
 
-import { getProps, getConfig, getComponents, getServiceData, type ButtonProps } from './props';
+import { getButtonProps, getConfig, getComponents, getServiceData, type ButtonProps } from './props';
 import { getSelectedFunding, getButtons, getMenuButton } from './dom';
 import { setupButtonLogger } from './logger';
 import { setupRemember } from './remember';
@@ -67,7 +67,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
         sdkMeta, buyerAccessToken, wallet, content, personalization });
     const { merchantID, buyerCountry } = serviceData;
 
-    const props = getProps({ facilitatorAccessToken, brandedDefault });
+    const props = getButtonProps({ facilitatorAccessToken, brandedDefault });
     const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding, getQueriedEligibleFunding,
         style, fundingSource, intent, createBillingAgreement, createSubscription, stickinessID } = props;
@@ -163,7 +163,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             event.preventDefault();
             event.stopPropagation();
 
-            const paymentProps = getProps({ facilitatorAccessToken, brandedDefault });
+            const paymentProps = getButtonProps({ facilitatorAccessToken, brandedDefault });
             const payPromise = initiatePayment({ payment, props: paymentProps });
             const { onError } = paymentProps;
 
@@ -204,7 +204,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
                 throw new Error(`Can not find button element`);
             }
 
-            const paymentProps = getProps({ facilitatorAccessToken, brandedDefault });
+            const paymentProps = getButtonProps({ facilitatorAccessToken, brandedDefault });
             const payment = { win, button, fundingSource: paymentFundingSource, card, buyerIntent: BUYER_INTENT.PAY };
             const payPromise = initiatePayment({ payment, props: paymentProps });
             const { onError } = paymentProps;

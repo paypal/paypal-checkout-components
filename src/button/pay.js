@@ -4,7 +4,7 @@ import { noop, stringifyError } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { applepay, checkout, cardFields, native, nonce, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
+import { applepay, checkout, cardField, cardFields, native, nonce, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
 import { getLogger, promiseNoop, sendBeacon } from '../lib';
 import { FPTI_TRANSITION } from '../constants';
 import { updateButtonClientConfig } from '../api';
@@ -19,6 +19,7 @@ const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     nonce,
     vaultCapture,
     walletCapture,
+    cardField,
     cardFields,
     popupBridge,
     applepay,
@@ -89,10 +90,12 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 [FPTI_KEY.IS_VAULT]:       instrumentType ? '1' : '0'
             }).flush();
 
-        return ZalgoPromise.hash({
-            valid: onClick ? onClick({ fundingSource }) : true
-        }).then(({ valid }) => {
-            if (!valid) {
+        return ZalgoPromise.try(() => {
+            return onClick ? onClick({ fundingSource }) : true;
+        }).then(valid => {
+            return valid ? clickPromise : false;
+        }).then(valid => {
+            if (valid === false) {
                 return;
             }
 

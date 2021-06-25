@@ -92,6 +92,32 @@ export const WEBPACK_CONFIG_MENU_DEBUG : WebpackConfig = getSmartWebpackConfig({
     minify:     false,
     vars:       globals
 });
+
+export const WEBPACK_CONFIG_CARD : WebpackConfig = getSmartWebpackConfig({
+    modulename: 'smartCard',
+    entry:      'src/card',
+    filename:   'smart-card',
+    minify:     false,
+    vars:       globals
+});
+
+export const WEBPACK_CONFIG_CARD_MIN : WebpackConfig = getSmartWebpackConfig({
+    modulename: 'smartCard',
+    entry:      'src/card',
+    filename:   'smart-card',
+    minify:     true,
+    vars:       globals
+});
+
+export const WEBPACK_CONFIG_CARD_DEBUG : WebpackConfig = getSmartWebpackConfig({
+    modulename: 'smartCard',
+    entry:      'src/card',
+    filename:   'smart-card',
+    debug:      true,
+    minify:     false,
+    vars:       globals
+});
+
 export const WEBPACK_CONFIG_QRCODE : WebpackConfig = getSmartWebpackConfig({
     modulename: 'spbQRCode',
     entry:      'src/qrcode',

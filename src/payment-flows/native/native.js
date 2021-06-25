@@ -290,7 +290,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
                     onDetectAppSwitch: () => detectAppSwitch({ sessionUID }).then(resolve, reject),
                     onApprove:         onApproveCallback,
                     onCancel:          onCancelCallback,
-                    onError:           onErrorCallback,
+                    onError:           ({ data }) => {
+                        reject(data);
+                        return onErrorCallback({ data });
+                    },
                     onFallback:        onFallbackCallback,
                     onClose:           onCloseCallback,
                     onDestroy:         destroy

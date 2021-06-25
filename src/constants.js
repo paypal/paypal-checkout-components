@@ -211,7 +211,11 @@ export const UPGRADE_LSAT_RAMP = {
 };
 
 export const FRAME_NAME = {
-    SMART_FIELDS: 'smart-fields'
+    SMART_FIELDS:      'smart-fields',
+    CARD_FIELD:        'card-field',
+    CARD_NUMBER_FIELD: 'card-number-field',
+    CARD_CVV_FIELD:    'card-cvv-field',
+    CARD_EXPIRY_FIELD: 'card-expiry-field'
 };
 
 export const AMPLITUDE_KEY = {
