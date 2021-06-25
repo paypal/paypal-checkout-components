@@ -57,6 +57,886 @@ window.spb = function(modules) {
     __webpack_require__.p = "";
     return __webpack_require__(__webpack_require__.s = "./src/button/index.js");
 }({
+    "./node_modules/@paypal/sdk-constants/dist/paypal-sdk-constants.js": function(module, exports, __webpack_require__) {
+        "undefined" != typeof self && self, module.exports = function(E) {
+            var N = {};
+            function S(R) {
+                if (N[R]) return N[R].exports;
+                var t = N[R] = {
+                    i: R,
+                    l: !1,
+                    exports: {}
+                };
+                return E[R].call(t.exports, t, t.exports, S), t.l = !0, t.exports;
+            }
+            return S.m = E, S.c = N, S.d = function(E, N, R) {
+                S.o(E, N) || Object.defineProperty(E, N, {
+                    enumerable: !0,
+                    get: R
+                });
+            }, S.r = function(E) {
+                "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(E, Symbol.toStringTag, {
+                    value: "Module"
+                }), Object.defineProperty(E, "__esModule", {
+                    value: !0
+                });
+            }, S.t = function(E, N) {
+                if (1 & N && (E = S(E)), 8 & N) return E;
+                if (4 & N && "object" == typeof E && E && E.__esModule) return E;
+                var R = Object.create(null);
+                if (S.r(R), Object.defineProperty(R, "default", {
+                    enumerable: !0,
+                    value: E
+                }), 2 & N && "string" != typeof E) for (var t in E) S.d(R, t, function(N) {
+                    return E[N];
+                }.bind(null, t));
+                return R;
+            }, S.n = function(E) {
+                var N = E && E.__esModule ? function() {
+                    return E.default;
+                } : function() {
+                    return E;
+                };
+                return S.d(N, "a", N), N;
+            }, S.o = function(E, N) {
+                return {}.hasOwnProperty.call(E, N);
+            }, S.p = "", S(S.s = 0);
+        }([ function(E, N, S) {
+            "use strict";
+            S.r(N), S.d(N, "DEFAULT_COUNTRY", (function() {
+                return C;
+            })), S.d(N, "DEFAULT_CURRENCY", (function() {
+                return u;
+            })), S.d(N, "DEFAULT_INTENT", (function() {
+                return a;
+            })), S.d(N, "DEFAULT_COMMIT", (function() {
+                return L;
+            })), S.d(N, "DEFAULT_SALE_COMMIT", (function() {
+                return d;
+            })), S.d(N, "DEFAULT_NONSALE_COMMIT", (function() {
+                return P;
+            })), S.d(N, "DEFAULT_VAULT", (function() {
+                return c;
+            })), S.d(N, "DEFAULT_COMPONENTS", (function() {
+                return U;
+            })), S.d(N, "DEFAULT_DEBUG", (function() {
+                return G;
+            })), S.d(N, "ENV", (function() {
+                return B;
+            })), S.d(N, "MOBILE_ENV", (function() {
+                return s;
+            })), S.d(N, "ERROR_CODE", (function() {
+                return K;
+            })), S.d(N, "FPTI_KEY", (function() {
+                return f;
+            })), S.d(N, "FPTI_USER_ACTION", (function() {
+                return p;
+            })), S.d(N, "FPTI_DATA_SOURCE", (function() {
+                return l;
+            })), S.d(N, "FPTI_FEED", (function() {
+                return Y;
+            })), S.d(N, "FPTI_SDK_NAME", (function() {
+                return V;
+            })), S.d(N, "FUNDING", (function() {
+                return m;
+            })), S.d(N, "FUNDING_BRAND_LABEL", (function() {
+                return y;
+            })), S.d(N, "CARD", (function() {
+                return b;
+            })), S.d(N, "WALLET_INSTRUMENT", (function() {
+                return W;
+            })), S.d(N, "FUNDING_PRODUCTS", (function() {
+                return J;
+            })), S.d(N, "COUNTRY", (function() {
+                return R;
+            })), S.d(N, "LANG", (function() {
+                return t;
+            })), S.d(N, "COUNTRY_LANGS", (function() {
+                return T;
+            })), S.d(N, "INTENT", (function() {
+                return e;
+            })), S.d(N, "COMMIT", (function() {
+                return n;
+            })), S.d(N, "VAULT", (function() {
+                return A;
+            })), S.d(N, "CURRENCY", (function() {
+                return F;
+            })), S.d(N, "SDK_PATH", (function() {
+                return r;
+            })), S.d(N, "SDK_SETTINGS", (function() {
+                return H;
+            })), S.d(N, "SDK_QUERY_KEYS", (function() {
+                return D;
+            })), S.d(N, "COMPONENTS", (function() {
+                return _;
+            })), S.d(N, "DEBUG", (function() {
+                return I;
+            })), S.d(N, "QUERY_BOOL", (function() {
+                return o;
+            })), S.d(N, "UNKNOWN", (function() {
+                return O;
+            })), S.d(N, "PROTOCOL", (function() {
+                return Z;
+            })), S.d(N, "PAGE_TYPES", (function() {
+                return i;
+            })), S.d(N, "MERCHANT_ID_MAX", (function() {
+                return M;
+            })), S.d(N, "PLATFORM", (function() {
+                return k;
+            })), S.d(N, "TYPES", (function() {
+                return g;
+            }));
+            var R = {
+                AD: "AD",
+                AE: "AE",
+                AG: "AG",
+                AI: "AI",
+                AL: "AL",
+                AM: "AM",
+                AN: "AN",
+                AO: "AO",
+                AR: "AR",
+                AT: "AT",
+                AU: "AU",
+                AW: "AW",
+                AZ: "AZ",
+                BA: "BA",
+                BB: "BB",
+                BE: "BE",
+                BF: "BF",
+                BG: "BG",
+                BH: "BH",
+                BI: "BI",
+                BJ: "BJ",
+                BM: "BM",
+                BN: "BN",
+                BO: "BO",
+                BR: "BR",
+                BS: "BS",
+                BT: "BT",
+                BW: "BW",
+                BY: "BY",
+                BZ: "BZ",
+                CA: "CA",
+                CD: "CD",
+                CG: "CG",
+                CH: "CH",
+                CI: "CI",
+                CK: "CK",
+                CL: "CL",
+                CM: "CM",
+                CN: "CN",
+                CO: "CO",
+                CR: "CR",
+                CV: "CV",
+                CY: "CY",
+                CZ: "CZ",
+                DE: "DE",
+                DJ: "DJ",
+                DK: "DK",
+                DM: "DM",
+                DO: "DO",
+                DZ: "DZ",
+                EC: "EC",
+                EE: "EE",
+                EG: "EG",
+                ER: "ER",
+                ES: "ES",
+                ET: "ET",
+                FI: "FI",
+                FJ: "FJ",
+                FK: "FK",
+                FM: "FM",
+                FO: "FO",
+                FR: "FR",
+                GA: "GA",
+                GB: "GB",
+                GD: "GD",
+                GE: "GE",
+                GF: "GF",
+                GI: "GI",
+                GL: "GL",
+                GM: "GM",
+                GN: "GN",
+                GP: "GP",
+                GR: "GR",
+                GT: "GT",
+                GW: "GW",
+                GY: "GY",
+                HK: "HK",
+                HN: "HN",
+                HR: "HR",
+                HU: "HU",
+                ID: "ID",
+                IE: "IE",
+                IL: "IL",
+                IN: "IN",
+                IS: "IS",
+                IT: "IT",
+                JM: "JM",
+                JO: "JO",
+                JP: "JP",
+                KE: "KE",
+                KG: "KG",
+                KH: "KH",
+                KI: "KI",
+                KM: "KM",
+                KN: "KN",
+                KR: "KR",
+                KW: "KW",
+                KY: "KY",
+                KZ: "KZ",
+                LA: "LA",
+                LC: "LC",
+                LI: "LI",
+                LK: "LK",
+                LS: "LS",
+                LT: "LT",
+                LU: "LU",
+                LV: "LV",
+                MA: "MA",
+                MC: "MC",
+                MD: "MD",
+                ME: "ME",
+                MG: "MG",
+                MH: "MH",
+                MK: "MK",
+                ML: "ML",
+                MN: "MN",
+                MQ: "MQ",
+                MR: "MR",
+                MS: "MS",
+                MT: "MT",
+                MU: "MU",
+                MV: "MV",
+                MW: "MW",
+                MX: "MX",
+                MY: "MY",
+                MZ: "MZ",
+                NA: "NA",
+                NC: "NC",
+                NE: "NE",
+                NF: "NF",
+                NG: "NG",
+                NI: "NI",
+                NL: "NL",
+                NO: "NO",
+                NP: "NP",
+                NR: "NR",
+                NU: "NU",
+                NZ: "NZ",
+                OM: "OM",
+                PA: "PA",
+                PE: "PE",
+                PF: "PF",
+                PG: "PG",
+                PH: "PH",
+                PL: "PL",
+                PM: "PM",
+                PN: "PN",
+                PT: "PT",
+                PW: "PW",
+                PY: "PY",
+                QA: "QA",
+                RE: "RE",
+                RO: "RO",
+                RS: "RS",
+                RU: "RU",
+                RW: "RW",
+                SA: "SA",
+                SB: "SB",
+                SC: "SC",
+                SE: "SE",
+                SG: "SG",
+                SH: "SH",
+                SI: "SI",
+                SJ: "SJ",
+                SK: "SK",
+                SL: "SL",
+                SM: "SM",
+                SN: "SN",
+                SO: "SO",
+                SR: "SR",
+                ST: "ST",
+                SV: "SV",
+                SZ: "SZ",
+                TC: "TC",
+                TD: "TD",
+                TG: "TG",
+                TH: "TH",
+                TJ: "TJ",
+                TM: "TM",
+                TN: "TN",
+                TO: "TO",
+                TR: "TR",
+                TT: "TT",
+                TV: "TV",
+                TW: "TW",
+                TZ: "TZ",
+                UA: "UA",
+                UG: "UG",
+                US: "US",
+                UY: "UY",
+                VA: "VA",
+                VC: "VC",
+                VE: "VE",
+                VG: "VG",
+                VN: "VN",
+                VU: "VU",
+                WF: "WF",
+                WS: "WS",
+                YE: "YE",
+                YT: "YT",
+                ZA: "ZA",
+                ZM: "ZM",
+                ZW: "ZW"
+            }, t = {
+                AR: "ar",
+                BG: "bg",
+                CS: "cs",
+                DA: "da",
+                DE: "de",
+                EL: "el",
+                EN: "en",
+                ES: "es",
+                ET: "et",
+                FI: "fi",
+                FR: "fr",
+                HE: "he",
+                HU: "hu",
+                ID: "id",
+                IT: "it",
+                JA: "ja",
+                KO: "ko",
+                LT: "lt",
+                LV: "lv",
+                MS: "ms",
+                NL: "nl",
+                NO: "no",
+                PL: "pl",
+                PT: "pt",
+                RO: "ro",
+                RU: "ru",
+                SI: "si",
+                SK: "sk",
+                SL: "sl",
+                SQ: "sq",
+                SV: "sv",
+                TH: "th",
+                TL: "tl",
+                TR: "tr",
+                VI: "vi",
+                ZH: "zh"
+            }, T = {
+                AD: [ t.EN, t.FR, t.ES, t.ZH ],
+                AE: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
+                AG: [ t.EN, t.FR, t.ES, t.ZH ],
+                AI: [ t.EN, t.FR, t.ES, t.ZH ],
+                AL: [ t.SQ, t.EN ],
+                AM: [ t.EN, t.FR, t.ES, t.ZH ],
+                AN: [ t.EN, t.FR, t.ES, t.ZH ],
+                AO: [ t.EN, t.FR, t.ES, t.ZH ],
+                AR: [ t.ES, t.EN ],
+                AT: [ t.DE, t.EN ],
+                AU: [ t.EN ],
+                AW: [ t.EN, t.FR, t.ES, t.ZH ],
+                AZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                BA: [ t.EN ],
+                BB: [ t.EN, t.FR, t.ES, t.ZH ],
+                BE: [ t.EN, t.NL, t.FR ],
+                BF: [ t.FR, t.EN, t.ES, t.ZH ],
+                BG: [ t.BG, t.EN ],
+                BH: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                BI: [ t.FR, t.EN, t.ES, t.ZH ],
+                BJ: [ t.FR, t.EN, t.ES, t.ZH ],
+                BM: [ t.EN, t.FR, t.ES, t.ZH ],
+                BN: [ t.MS, t.EN ],
+                BO: [ t.ES, t.EN, t.FR, t.ZH ],
+                BR: [ t.PT, t.EN ],
+                BS: [ t.EN, t.FR, t.ES, t.ZH ],
+                BT: [ t.EN ],
+                BW: [ t.EN, t.FR, t.ES, t.ZH ],
+                BY: [ t.EN ],
+                BZ: [ t.EN, t.ES, t.FR, t.ZH ],
+                CA: [ t.EN, t.FR ],
+                CD: [ t.FR, t.EN, t.ES, t.ZH ],
+                CG: [ t.EN, t.FR, t.ES, t.ZH ],
+                CH: [ t.DE, t.FR, t.EN ],
+                CI: [ t.FR, t.EN ],
+                CK: [ t.EN, t.FR, t.ES, t.ZH ],
+                CL: [ t.ES, t.EN, t.FR, t.ZH ],
+                CM: [ t.FR, t.EN ],
+                CN: [ t.ZH ],
+                CO: [ t.ES, t.EN, t.FR, t.ZH ],
+                CR: [ t.ES, t.EN, t.FR, t.ZH ],
+                CV: [ t.EN, t.FR, t.ES, t.ZH ],
+                CY: [ t.EN ],
+                CZ: [ t.CS, t.EN, t.FR, t.ES, t.ZH ],
+                DE: [ t.DE, t.EN ],
+                DJ: [ t.FR, t.EN, t.ES, t.ZH ],
+                DK: [ t.DA, t.EN ],
+                DM: [ t.EN, t.FR, t.ES, t.ZH ],
+                DO: [ t.ES, t.EN, t.FR, t.ZH ],
+                DZ: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                EC: [ t.ES, t.EN, t.FR, t.ZH ],
+                EE: [ t.ET, t.EN, t.RU, t.FR, t.ES, t.ZH ],
+                EG: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                ER: [ t.EN, t.FR, t.ES, t.ZH ],
+                ES: [ t.ES, t.EN ],
+                ET: [ t.EN, t.FR, t.ES, t.ZH ],
+                FI: [ t.FI, t.EN, t.FR, t.ES, t.ZH ],
+                FJ: [ t.EN, t.FR, t.ES, t.ZH ],
+                FK: [ t.EN, t.FR, t.ES, t.ZH ],
+                FM: [ t.EN ],
+                FO: [ t.DA, t.EN, t.FR, t.ES, t.ZH ],
+                FR: [ t.FR, t.EN ],
+                GA: [ t.FR, t.EN, t.ES, t.ZH ],
+                GB: [ t.EN ],
+                GD: [ t.EN, t.FR, t.ES, t.ZH ],
+                GE: [ t.EN, t.FR, t.ES, t.ZH ],
+                GF: [ t.EN, t.FR, t.ES, t.ZH ],
+                GI: [ t.EN, t.FR, t.ES, t.ZH ],
+                GL: [ t.DA, t.EN, t.FR, t.ES, t.ZH ],
+                GM: [ t.EN, t.FR, t.ES, t.ZH ],
+                GN: [ t.FR, t.EN, t.ES, t.ZH ],
+                GP: [ t.EN, t.FR, t.ES, t.ZH ],
+                GR: [ t.EL, t.EN, t.FR, t.ES, t.ZH ],
+                GT: [ t.ES, t.EN, t.FR, t.ZH ],
+                GW: [ t.EN, t.FR, t.ES, t.ZH ],
+                GY: [ t.EN, t.FR, t.ES, t.ZH ],
+                HK: [ t.EN, t.ZH ],
+                HN: [ t.ES, t.EN, t.FR, t.ZH ],
+                HR: [ t.EN ],
+                HU: [ t.HU, t.EN, t.FR, t.ES, t.ZH ],
+                ID: [ t.ID, t.EN ],
+                IE: [ t.EN, t.FR, t.ES, t.ZH ],
+                IL: [ t.HE, t.EN ],
+                IN: [ t.EN ],
+                IS: [ t.EN ],
+                IT: [ t.IT, t.EN ],
+                JM: [ t.EN, t.ES, t.FR, t.ZH ],
+                JO: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                JP: [ t.JA, t.EN ],
+                KE: [ t.EN, t.FR, t.ES, t.ZH ],
+                KG: [ t.EN, t.FR, t.ES, t.ZH ],
+                KH: [ t.EN ],
+                KI: [ t.EN, t.FR, t.ES, t.ZH ],
+                KM: [ t.FR, t.EN, t.ES, t.ZH ],
+                KN: [ t.EN, t.FR, t.ES, t.ZH ],
+                KR: [ t.KO, t.EN ],
+                KW: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                KY: [ t.EN, t.FR, t.ES, t.ZH ],
+                KZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                LA: [ t.EN ],
+                LC: [ t.EN, t.FR, t.ES, t.ZH ],
+                LI: [ t.EN, t.FR, t.ES, t.ZH ],
+                LK: [ t.SI, t.EN ],
+                LS: [ t.EN, t.FR, t.ES, t.ZH ],
+                LT: [ t.LT, t.EN, t.RU, t.FR, t.ES, t.ZH ],
+                LU: [ t.EN, t.DE, t.FR, t.ES, t.ZH ],
+                LV: [ t.LV, t.EN, t.RU, t.FR, t.ES, t.ZH ],
+                MA: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                MC: [ t.FR, t.EN ],
+                MD: [ t.EN ],
+                ME: [ t.EN ],
+                MG: [ t.EN, t.FR, t.ES, t.ZH ],
+                MH: [ t.EN, t.FR, t.ES, t.ZH ],
+                MK: [ t.EN ],
+                ML: [ t.FR, t.EN, t.ES, t.ZH ],
+                MN: [ t.EN ],
+                MQ: [ t.EN, t.FR, t.ES, t.ZH ],
+                MR: [ t.EN, t.FR, t.ES, t.ZH ],
+                MS: [ t.EN, t.FR, t.ES, t.ZH ],
+                MT: [ t.EN ],
+                MU: [ t.EN, t.FR, t.ES, t.ZH ],
+                MV: [ t.EN ],
+                MW: [ t.EN, t.FR, t.ES, t.ZH ],
+                MX: [ t.ES, t.EN ],
+                MY: [ t.MS, t.EN ],
+                MZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                NA: [ t.EN, t.FR, t.ES, t.ZH ],
+                NC: [ t.EN, t.FR, t.ES, t.ZH ],
+                NE: [ t.FR, t.EN, t.ES, t.ZH ],
+                NF: [ t.EN, t.FR, t.ES, t.ZH ],
+                NG: [ t.EN ],
+                NI: [ t.ES, t.EN, t.FR, t.ZH ],
+                NL: [ t.NL, t.EN ],
+                NO: [ t.NO, t.EN ],
+                NP: [ t.EN ],
+                NR: [ t.EN, t.FR, t.ES, t.ZH ],
+                NU: [ t.EN, t.FR, t.ES, t.ZH ],
+                NZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                OM: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                PA: [ t.ES, t.EN, t.FR, t.ZH ],
+                PE: [ t.ES, t.EN, t.FR, t.ZH ],
+                PF: [ t.EN, t.FR, t.ES, t.ZH ],
+                PG: [ t.EN, t.FR, t.ES, t.ZH ],
+                PH: [ t.TL, t.EN ],
+                PL: [ t.PL, t.EN ],
+                PM: [ t.EN, t.FR, t.ES, t.ZH ],
+                PN: [ t.EN, t.FR, t.ES, t.ZH ],
+                PT: [ t.PT, t.EN ],
+                PW: [ t.EN, t.FR, t.ES, t.ZH ],
+                PY: [ t.ES, t.EN ],
+                QA: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
+                RE: [ t.EN, t.FR, t.ES, t.ZH ],
+                RO: [ t.RO, t.EN, t.FR, t.ES, t.ZH ],
+                RS: [ t.EN, t.FR, t.ES, t.ZH ],
+                RU: [ t.RU, t.EN ],
+                RW: [ t.FR, t.EN, t.ES, t.ZH ],
+                SA: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                SB: [ t.EN, t.FR, t.ES, t.ZH ],
+                SC: [ t.FR, t.EN, t.ES, t.ZH ],
+                SE: [ t.SV, t.EN ],
+                SG: [ t.EN ],
+                SH: [ t.EN, t.FR, t.ES, t.ZH ],
+                SI: [ t.SL, t.EN, t.FR, t.ES, t.ZH ],
+                SJ: [ t.EN, t.FR, t.ES, t.ZH ],
+                SK: [ t.SK, t.EN, t.FR, t.ES, t.ZH ],
+                SL: [ t.EN, t.FR, t.ES, t.ZH ],
+                SM: [ t.EN, t.FR, t.ES, t.ZH ],
+                SN: [ t.FR, t.EN, t.ES, t.ZH ],
+                SO: [ t.EN, t.FR, t.ES, t.ZH ],
+                SR: [ t.EN, t.FR, t.ES, t.ZH ],
+                ST: [ t.EN, t.FR, t.ES, t.ZH ],
+                SV: [ t.ES, t.EN, t.FR, t.ZH ],
+                SZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                TC: [ t.EN, t.FR, t.ES, t.ZH ],
+                TD: [ t.FR, t.EN, t.ES, t.ZH ],
+                TG: [ t.FR, t.EN, t.ES, t.ZH ],
+                TH: [ t.TH, t.EN ],
+                TJ: [ t.EN, t.FR, t.ES, t.ZH ],
+                TM: [ t.EN, t.FR, t.ES, t.ZH ],
+                TN: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                TO: [ t.EN ],
+                TR: [ t.TR, t.EN ],
+                TT: [ t.EN, t.FR, t.ES, t.ZH ],
+                TV: [ t.EN, t.FR, t.ES, t.ZH ],
+                TW: [ t.ZH, t.EN ],
+                TZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                UA: [ t.EN, t.RU, t.FR, t.ES, t.ZH ],
+                UG: [ t.EN, t.FR, t.ES, t.ZH ],
+                US: [ t.EN, t.FR, t.ES, t.ZH ],
+                UY: [ t.ES, t.EN, t.FR, t.ZH ],
+                VA: [ t.EN, t.FR, t.ES, t.ZH ],
+                VC: [ t.EN, t.FR, t.ES, t.ZH ],
+                VE: [ t.ES, t.EN, t.FR, t.ZH ],
+                VG: [ t.EN, t.FR, t.ES, t.ZH ],
+                VN: [ t.VI, t.EN ],
+                VU: [ t.EN, t.FR, t.ES, t.ZH ],
+                WF: [ t.EN, t.FR, t.ES, t.ZH ],
+                WS: [ t.EN ],
+                YE: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                YT: [ t.EN, t.FR, t.ES, t.ZH ],
+                ZA: [ t.EN, t.FR, t.ES, t.ZH ],
+                ZM: [ t.EN, t.FR, t.ES, t.ZH ],
+                ZW: [ t.EN ]
+            }, e = {
+                CAPTURE: "capture",
+                AUTHORIZE: "authorize",
+                ORDER: "order",
+                TOKENIZE: "tokenize",
+                SUBSCRIPTION: "subscription"
+            }, n = {
+                TRUE: !0,
+                FALSE: !1
+            }, A = {
+                TRUE: !0,
+                FALSE: !1
+            }, F = {
+                AED: "AED",
+                ALL: "ALL",
+                ANG: "ANG",
+                AOA: "AOA",
+                AUD: "AUD",
+                AWG: "AWG",
+                BAM: "BAM",
+                BBD: "BBD",
+                BGN: "BGN",
+                BIF: "BIF",
+                BMD: "BMD",
+                BND: "BND",
+                BOB: "BOB",
+                BRL: "BRL",
+                BSD: "BSD",
+                BTN: "BTN",
+                CAD: "CAD",
+                CDF: "CDF",
+                CHF: "CHF",
+                CLP: "CLP",
+                COP: "COP",
+                CRC: "CRC",
+                CVE: "CVE",
+                CZK: "CZK",
+                DJF: "DJF",
+                DKK: "DKK",
+                DOP: "DOP",
+                DZD: "DZD",
+                EGP: "EGP",
+                ETB: "ETB",
+                EUR: "EUR",
+                FJD: "FJD",
+                FKP: "FKP",
+                GBP: "GBP",
+                GIP: "GIP",
+                GMD: "GMD",
+                GNF: "GNF",
+                GTQ: "GTQ",
+                GYD: "GYD",
+                HKD: "HKD",
+                HNL: "HNL",
+                HRK: "HRK",
+                HUF: "HUF",
+                IDR: "IDR",
+                ILS: "ILS",
+                INR: "INR",
+                ISK: "ISK",
+                JMD: "JMD",
+                JPY: "JPY",
+                KES: "KES",
+                KMF: "KMF",
+                KRW: "KRW",
+                KYD: "KYD",
+                LAK: "LAK",
+                LKR: "LKR",
+                MDL: "MDL",
+                MGA: "MGA",
+                MKD: "MKD",
+                MNT: "MNT",
+                MRO: "MRO",
+                MUR: "MUR",
+                MVR: "MVR",
+                MXN: "MXN",
+                MYR: "MYR",
+                NAD: "NAD",
+                NIO: "NIO",
+                NOK: "NOK",
+                NPR: "NPR",
+                NZD: "NZD",
+                PEN: "PEN",
+                PGK: "PGK",
+                PHP: "PHP",
+                PLN: "PLN",
+                PYG: "PYG",
+                QAR: "QAR",
+                RON: "RON",
+                RSD: "RSD",
+                RUB: "RUB",
+                SAR: "SAR",
+                SBD: "SBD",
+                SCR: "SCR",
+                SEK: "SEK",
+                SGD: "SGD",
+                SHP: "SHP",
+                SLL: "SLL",
+                SOS: "SOS",
+                SRD: "SRD",
+                SZL: "SZL",
+                THB: "THB",
+                TJS: "TJS",
+                TOP: "TOP",
+                TTD: "TTD",
+                TWD: "TWD",
+                TZS: "TZS",
+                USD: "USD",
+                UYU: "UYU",
+                VND: "VND",
+                VUV: "VUV",
+                WST: "WST",
+                XAF: "XAF",
+                XCD: "XCD",
+                YER: "YER"
+            }, r = "/sdk/js", H = {
+                NAMESPACE: "data-namespace",
+                CLIENT_TOKEN: "data-client-token",
+                MERCHANT_ID: "data-merchant-id",
+                PARTNER_ATTRIBUTION_ID: "data-partner-attribution-id",
+                STAGE_HOST: "data-stage-host",
+                API_STAGE_HOST: "data-api-stage-host",
+                CSP_NONCE: "data-csp-nonce",
+                ENABLE_3DS: "data-enable-3ds",
+                SDK_INTEGRATION_SOURCE: "data-sdk-integration-source",
+                USER_ID_TOKEN: "data-user-id-token",
+                AMOUNT: "data-amount",
+                CLIENT_METADATA_ID: "data-client-metadata-id",
+                PAGE_TYPE: "data-page-type",
+                USER_EXPERIENCE_FLOW: "data-user-experience-flow"
+            }, D = {
+                COMPONENTS: "components",
+                ENV: "env",
+                DEBUG: "debug",
+                CACHEBUST: "cachebust",
+                CLIENT_ID: "client-id",
+                MERCHANT_ID: "merchant-id",
+                LOCALE: "locale",
+                CURRENCY: "currency",
+                INTENT: "intent",
+                COMMIT: "commit",
+                VAULT: "vault",
+                BUYER_COUNTRY: "buyer-country",
+                ENABLE_FUNDING: "enable-funding",
+                DISABLE_FUNDING: "disable-funding",
+                DISABLE_CARD: "disable-card",
+                INTEGRATION_DATE: "integration-date",
+                STAGE_HOST: "stage-host",
+                STAGE_ALIAS: "stage-alias",
+                CDN_REGISTRY: "cdn-registry",
+                VERSION: "version"
+            }, _ = {
+                BUTTONS: "buttons",
+                HOSTED_FIELDS: "hosted-fields"
+            }, I = {
+                TRUE: !0,
+                FALSE: !1
+            }, o = {
+                TRUE: "true",
+                FALSE: "false"
+            }, O = "unknown", Z = {
+                HTTP: "http",
+                HTTPS: "https"
+            }, i = {
+                HOME: "home",
+                PRODUCT: "product",
+                CART: "cart",
+                CHECKOUT: "checkout",
+                PRODUCT_LISTING: "product-listing",
+                SEARCH_RESULTS: "search-results",
+                PRODUCT_DETAILS: "product-details",
+                MINI_CART: "mini-cart"
+            }, M = 10, C = R.US, u = F.USD, a = e.CAPTURE, L = n.TRUE, d = n.TRUE, P = n.TRUE, c = A.FALSE, U = _.BUTTONS, G = I.FALSE, B = {
+                LOCAL: "local",
+                STAGE: "stage",
+                SANDBOX: "sandbox",
+                PRODUCTION: "production",
+                TEST: "test"
+            }, s = {
+                ANDROID: "android",
+                IOS: "iOS"
+            }, K = {
+                VALIDATION_ERROR: "validation_error"
+            }, f = {
+                FEED: "feed_name",
+                STATE: "state_name",
+                TRANSITION: "transition_name",
+                BUTTON_TYPE: "button_type",
+                SESSION_UID: "page_session_id",
+                BUTTON_SESSION_UID: "button_session_id",
+                TOKEN: "token",
+                CONTEXT_ID: "context_id",
+                CONTEXT_TYPE: "context_type",
+                REFERER: "referer_url",
+                MERCHANT_DOMAIN: "merchant_domain",
+                PAY_ID: "pay_id",
+                SELLER_ID: "seller_id",
+                CLIENT_ID: "client_id",
+                DATA_SOURCE: "serverside_data_source",
+                BUTTON_SOURCE: "button_source",
+                ERROR_CODE: "ext_error_code",
+                ERROR_DESC: "ext_error_desc",
+                PAGE_LOAD_TIME: "page_load_time",
+                EXPERIMENT_NAME: "pxp_exp_id",
+                TREATMENT_NAME: "pxp_trtmnt_id",
+                TRANSITION_TIME: "transition_time",
+                FUNDING_LIST: "eligible_payment_methods",
+                FUNDING_COUNT: "eligible_payment_count",
+                CHOSEN_FUNDING: "selected_payment_method",
+                BUTTON_LAYOUT: "button_layout",
+                VERSION: "checkoutjs_version",
+                LOCALE: "locale",
+                BUYER_COUNTRY: "buyer_cntry",
+                INTEGRATION_IDENTIFIER: "integration_identifier",
+                PARTNER_ATTRIBUTION_ID: "bn_code",
+                PAGE_TYPE: "pp_placement",
+                SDK_NAME: "sdk_name",
+                SDK_VERSION: "sdk_version",
+                SDK_ENVIRONMENT: "sdk_environment",
+                MOBILE_APP_VERSION: "mobile_app_version",
+                MOBILE_BUNDLE_IDENTIFIER: "mapv",
+                USER_AGENT: "user_agent",
+                USER_ACTION: "user_action",
+                CONTEXT_CORRID: "context_correlation_id",
+                SDK_CACHE: "sdk_cache",
+                SDK_LOAD_TIME: "sdk_load_time",
+                IS_VAULT: "is_vault",
+                DISABLE_FUNDING: "disable_funding",
+                DISABLE_CARD: "disable_card",
+                RESPONSE_DURATION: "response_duration",
+                SDK_INTEGRATION_SOURCE: "sdk_integration_source",
+                PAYMENT_FLOW: "payment_flow",
+                BUTTON_VERSION: "button_version",
+                FI_LIST: "fi_list",
+                CHOSEN_FI_TYPE: "chosen_fi_type",
+                SELECTED_FI: "merchant_selected_funding_source",
+                POTENTIAL_PAYMENT_METHODS: "potential_payment_methods",
+                PAY_NOW: "pay_now",
+                STICKINESS_ID: "stickiness_id",
+                TIMESTAMP: "t",
+                OPTION_SELECTED: "optsel"
+            }, p = {
+                COMMIT: "commit",
+                CONTINUE: "continue"
+            }, l = {
+                PAYMENTS_SDK: "checkout"
+            }, Y = {
+                PAYMENTS_SDK: "payments_sdk"
+            }, V = {
+                PAYMENTS_SDK: "payments_sdk"
+            }, m = {
+                PAYPAL: "paypal",
+                VENMO: "venmo",
+                APPLEPAY: "applepay",
+                ITAU: "itau",
+                CREDIT: "credit",
+                PAYLATER: "paylater",
+                CARD: "card",
+                IDEAL: "ideal",
+                SEPA: "sepa",
+                BANCONTACT: "bancontact",
+                GIROPAY: "giropay",
+                SOFORT: "sofort",
+                EPS: "eps",
+                MYBANK: "mybank",
+                P24: "p24",
+                VERKKOPANKKI: "verkkopankki",
+                PAYU: "payu",
+                BLIK: "blik",
+                TRUSTLY: "trustly",
+                ZIMPLER: "zimpler",
+                MAXIMA: "maxima",
+                OXXO: "oxxo",
+                BOLETO: "boleto",
+                WECHATPAY: "wechatpay",
+                MERCADOPAGO: "mercadopago"
+            }, y = {
+                PAYPAL: "PayPal",
+                CREDIT: "PayPal Credit"
+            }, b = {
+                VISA: "visa",
+                MASTERCARD: "mastercard",
+                AMEX: "amex",
+                DISCOVER: "discover",
+                HIPER: "hiper",
+                ELO: "elo",
+                JCB: "jcb",
+                CUP: "cup"
+            }, W = {
+                BALANCE: "balance",
+                CARD: "card",
+                BANK: "bank",
+                CREDIT: "credit"
+            }, J = {
+                PAY_IN_4: "payIn4",
+                PAYLATER: "paylater",
+                CREDIT: "credit"
+            }, k = {
+                DESKTOP: "desktop",
+                MOBILE: "mobile"
+            }, g = !0;
+        } ]);
+    },
+    "./node_modules/@paypal/sdk-constants/index.js": function(module, exports, __webpack_require__) {
+        module.exports = __webpack_require__("./node_modules/@paypal/sdk-constants/dist/paypal-sdk-constants.js");
+    },
     "./src/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.r(__webpack_exports__);
@@ -64,19 +944,19 @@ window.spb = function(modules) {
             return setupButton;
         }));
         __webpack_require__.d(__webpack_exports__, "TYPES", (function() {
-            return props_TYPES;
+            return button_props_TYPES;
         }));
-        __webpack_require__.d(__webpack_exports__, "getProps", (function() {
-            return getProps;
+        __webpack_require__.d(__webpack_exports__, "getButtonProps", (function() {
+            return getButtonProps;
         }));
         __webpack_require__.d(__webpack_exports__, "getComponents", (function() {
-            return getComponents;
+            return props_getComponents;
         }));
         __webpack_require__.d(__webpack_exports__, "getConfig", (function() {
-            return getConfig;
+            return props_getConfig;
         }));
         __webpack_require__.d(__webpack_exports__, "getServiceData", (function() {
-            return getServiceData;
+            return props_getServiceData;
         }));
         function getUserAgent() {
             return window.navigator.mockUserAgent || window.navigator.userAgent;
@@ -594,6 +1474,13 @@ window.spb = function(modules) {
                 } catch (err) {}
                 if (utils_getParent(frame) === frame) return frame;
             }
+        }
+        function getAllFramesInWindow(win) {
+            var top = getTop(win);
+            if (!top) throw new Error("Can not determine top window");
+            var result = [].concat(getAllChildFrames(top), [ top ]);
+            -1 === result.indexOf(win) && (result = [].concat(result, [ win ], getAllChildFrames(win)));
+            return result;
         }
         var iframeWindows = [];
         var iframeFrames = [];
@@ -2023,7 +2910,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.38", _headers15);
+            _headers15["x-app-version"] = "5.0.39", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -2830,74 +3717,13 @@ window.spb = function(modules) {
                 }));
             };
         }
-        var props_TYPES = !0;
-        function getProps(_ref) {
+        var button_props_TYPES = !0;
+        function getButtonProps(_ref) {
             var _branded;
-            var facilitatorAccessToken = _ref.facilitatorAccessToken, brandedDefault = _ref.brandedDefault;
+            var facilitatorAccessToken = _ref.facilitatorAccessToken;
             var xprops = window.xprops;
-            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, style = xprops.style, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, wallet = xprops.wallet, paymentMethodNonce = xprops.paymentMethodNonce, branded = xprops.branded, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
-                return promise_ZalgoPromise.resolve([]);
-            } : _xprops$getQueriedEli, storageID = xprops.storageID, applePay = xprops.applePay, userExperienceFlow = xprops.userExperienceFlow;
-            var onInit = function(_ref) {
-                var onInit = _ref.onInit;
-                return function(data) {
-                    var enabled = !0;
-                    return {
-                        initPromise: promise_ZalgoPromise.try((function() {
-                            if (onInit) return onInit(data, (set = function(val) {
-                                enabled = val;
-                            }, {
-                                enable: function() {
-                                    return promise_ZalgoPromise.try((function() {
-                                        return set(!0);
-                                    }));
-                                },
-                                disable: function() {
-                                    return promise_ZalgoPromise.try((function() {
-                                        return set(!1);
-                                    }));
-                                }
-                            }));
-                            var set;
-                        })),
-                        isEnabled: function() {
-                            return enabled;
-                        }
-                    };
-                };
-            }({
-                onInit: xprops.onInit
-            });
-            var merchantDomain = "function" == typeof getParentDomain ? getParentDomain() : "unknown";
-            enableFunding = enableFunding || [];
-            disableFunding = disableFunding || [];
-            branded = null != (_branded = branded) ? _branded : brandedDefault;
-            var onClick = function(_ref2) {
-                var onClick = _ref2.onClick;
-                if (onClick) return memoize((function(_ref3) {
-                    return onClick((_ref = {
-                        fundingSource: _ref3.fundingSource
-                    }, {
-                        fundingSource: _ref.fundingSource
-                    }), {
-                        resolve: function() {
-                            return promise_ZalgoPromise.try((function() {
-                                return !0;
-                            }));
-                        },
-                        reject: function() {
-                            return promise_ZalgoPromise.try((function() {
-                                return !1;
-                            }));
-                        }
-                    }).then((function(valid) {
-                        return !1 !== valid;
-                    }));
-                    var _ref;
-                }));
-            }({
-                onClick: xprops.onClick
-            });
+            var buttonSessionID = xprops.buttonSessionID, style = xprops.style, branded = xprops.branded, intent = xprops.intent;
+            branded = null != (_branded = branded) ? _branded : _ref.brandedDefault;
             if (xprops.createBillingAgreement) {
                 if (xprops.createOrder) throw new Error("Do not pass both createBillingAgreement and createOrder");
                 if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createBillingAgreement");
@@ -2915,215 +3741,286 @@ window.spb = function(modules) {
                 if (!xprops.createSubscription) throw new Error("Must pass createSubscription with intent=subscription");
                 if (xprops.createOrder || xprops.createBillingAgreement) throw new Error("Must not pass createOrder or createBillingAgreement with intent=tokenize");
             }
-            var stickinessID = storageID && isStorageStateFresh() ? storageID : getSDKStorage().getID();
-            var createBillingAgreement = function(_ref) {
-                var createBillingAgreement = _ref.createBillingAgreement;
-                if (createBillingAgreement) return function() {
-                    return createBillingAgreement({}, {}).then((function(billingToken) {
-                        if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
-                        return billingToken;
-                    }));
-                };
-            }({
-                createBillingAgreement: xprops.createBillingAgreement
-            });
-            var createSubscription = function(_ref2, _ref3) {
-                var createSubscription = _ref2.createSubscription, partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
-                var facilitatorAccessToken = _ref3.facilitatorAccessToken;
-                if (createSubscription) {
-                    if (merchantID && merchantID[0]) {
-                        logger_getLogger().info("src_props_subscriptions_recreate_access_token_cache");
-                        auth_createAccessToken(clientID, {
-                            targetSubject: merchantID[0]
-                        });
-                    }
-                    return function() {
-                        return createSubscription({}, function(_ref) {
-                            var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID, merchantID = _ref.merchantID, clientID = _ref.clientID;
-                            return {
-                                subscription: {
-                                    create: function(data) {
-                                        return function(accessToken, subscriptionPayload, _ref2) {
-                                            var partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
-                                            logger_getLogger().info("rest_api_create_subscription_id");
-                                            if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
-                                            if (merchantID && merchantID[0]) {
-                                                logger_getLogger().info("rest_api_subscriptions_recreate_access_token");
-                                                return auth_createAccessToken(clientID, {
-                                                    targetSubject: merchantID[0]
-                                                }).then((function(thirdPartyAccessToken) {
-                                                    return createRequest(thirdPartyAccessToken, subscriptionPayload, partnerAttributionID);
-                                                }));
-                                            }
-                                            if (!accessToken) throw new Error("Access token not passed");
-                                            return createRequest(accessToken, subscriptionPayload, partnerAttributionID);
-                                        }(facilitatorAccessToken, data, {
-                                            partnerAttributionID: partnerAttributionID,
-                                            merchantID: merchantID,
-                                            clientID: clientID
-                                        });
+            return _extends({}, function(_ref) {
+                var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded;
+                var xprops = window.xprops;
+                var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, wallet = xprops.wallet, paymentMethodNonce = xprops.paymentMethodNonce, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+                    return promise_ZalgoPromise.resolve([]);
+                } : _xprops$getQueriedEli, storageID = xprops.storageID, applePay = xprops.applePay, userExperienceFlow = xprops.userExperienceFlow;
+                var onInit = function(_ref) {
+                    var onInit = _ref.onInit;
+                    return function(data) {
+                        var enabled = !0;
+                        return {
+                            initPromise: promise_ZalgoPromise.try((function() {
+                                if (onInit) return onInit(data, (set = function(val) {
+                                    enabled = val;
+                                }, {
+                                    enable: function() {
+                                        return promise_ZalgoPromise.try((function() {
+                                            return set(!0);
+                                        }));
                                     },
-                                    revise: function(subscriptionID, data) {
-                                        return function(accessToken, subscriptionID, subscriptionPayload, _ref4) {
-                                            var partnerAttributionID = _ref4.partnerAttributionID, merchantID = _ref4.merchantID, clientID = _ref4.clientID;
-                                            logger_getLogger().info("rest_api_create_subscription_id");
-                                            if (!subscriptionID) throw new Error("Expected subscription id to be passed as first argument to revise subscription api");
-                                            if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
-                                            if (merchantID && merchantID[0]) {
-                                                logger_getLogger().info("rest_api_subscriptions_recreate_access_token");
-                                                return auth_createAccessToken(clientID, {
-                                                    targetSubject: merchantID[0]
-                                                }).then((function(thirdPartyAccessToken) {
-                                                    return reviseRequest(thirdPartyAccessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
-                                                }));
-                                            }
-                                            if (!accessToken) throw new Error("Access token not passed");
-                                            return reviseRequest(accessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
-                                        }(facilitatorAccessToken, subscriptionID, data, {
-                                            partnerAttributionID: partnerAttributionID,
-                                            merchantID: merchantID,
-                                            clientID: clientID
-                                        });
+                                    disable: function() {
+                                        return promise_ZalgoPromise.try((function() {
+                                            return set(!1);
+                                        }));
                                     }
-                                }
-                            };
-                        }({
-                            facilitatorAccessToken: facilitatorAccessToken,
-                            partnerAttributionID: partnerAttributionID,
-                            merchantID: merchantID,
-                            clientID: clientID
-                        })).then((function(subscriptionID) {
-                            if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
-                            return subscriptionID;
+                                }));
+                                var set;
+                            })),
+                            isEnabled: function() {
+                                return enabled;
+                            }
+                        };
+                    };
+                }({
+                    onInit: xprops.onInit
+                });
+                var merchantDomain = "function" == typeof getParentDomain ? getParentDomain() : "unknown";
+                enableFunding = enableFunding || [];
+                disableFunding = disableFunding || [];
+                var onClick = function(_ref2) {
+                    var onClick = _ref2.onClick;
+                    if (onClick) return memoize((function(_ref3) {
+                        return onClick((_ref = {
+                            fundingSource: _ref3.fundingSource
+                        }, {
+                            fundingSource: _ref.fundingSource
+                        }), {
+                            resolve: function() {
+                                return promise_ZalgoPromise.try((function() {
+                                    return !0;
+                                }));
+                            },
+                            reject: function() {
+                                return promise_ZalgoPromise.try((function() {
+                                    return !1;
+                                }));
+                            }
+                        }).then((function(valid) {
+                            return !1 !== valid;
+                        }));
+                        var _ref;
+                    }));
+                }({
+                    onClick: xprops.onClick
+                });
+                var stickinessID = storageID && isStorageStateFresh() ? storageID : getSDKStorage().getID();
+                var createBillingAgreement = function(_ref) {
+                    var createBillingAgreement = _ref.createBillingAgreement;
+                    if (createBillingAgreement) return function() {
+                        return createBillingAgreement({}, {}).then((function(billingToken) {
+                            if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
+                            return billingToken;
                         }));
                     };
-                }
-            }({
-                createSubscription: xprops.createSubscription,
-                partnerAttributionID: partnerAttributionID,
-                merchantID: merchantID,
-                clientID: clientID
-            }, {
-                facilitatorAccessToken: facilitatorAccessToken
-            });
-            var createOrder = getCreateOrder({
-                createOrder: xprops.createOrder,
-                currency: currency,
-                intent: intent,
-                merchantID: merchantID,
-                partnerAttributionID: partnerAttributionID
-            }, {
-                facilitatorAccessToken: facilitatorAccessToken,
-                createBillingAgreement: createBillingAgreement,
-                createSubscription: createSubscription
-            });
-            var onError = function(_ref) {
-                var onError = _ref.onError;
-                var onErrorHandler = onError ? (handler = onError, seenErrors = [], seenStringifiedErrors = {}, 
-                function(err) {
-                    if (-1 === seenErrors.indexOf(err)) {
-                        seenErrors.push(err);
-                        var stringifiedError = stringifyError(err);
-                        if (!seenStringifiedErrors[stringifiedError]) {
-                            seenStringifiedErrors[stringifiedError] = !0;
-                            return handler(err);
+                }({
+                    createBillingAgreement: xprops.createBillingAgreement
+                });
+                var createSubscription = function(_ref2, _ref3) {
+                    var createSubscription = _ref2.createSubscription, partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
+                    var facilitatorAccessToken = _ref3.facilitatorAccessToken;
+                    if (createSubscription) {
+                        if (merchantID && merchantID[0]) {
+                            logger_getLogger().info("src_props_subscriptions_recreate_access_token_cache");
+                            auth_createAccessToken(clientID, {
+                                targetSubject: merchantID[0]
+                            });
                         }
+                        return function() {
+                            return createSubscription({}, function(_ref) {
+                                var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID, merchantID = _ref.merchantID, clientID = _ref.clientID;
+                                return {
+                                    subscription: {
+                                        create: function(data) {
+                                            return function(accessToken, subscriptionPayload, _ref2) {
+                                                var partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
+                                                logger_getLogger().info("rest_api_create_subscription_id");
+                                                if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
+                                                if (merchantID && merchantID[0]) {
+                                                    logger_getLogger().info("rest_api_subscriptions_recreate_access_token");
+                                                    return auth_createAccessToken(clientID, {
+                                                        targetSubject: merchantID[0]
+                                                    }).then((function(thirdPartyAccessToken) {
+                                                        return createRequest(thirdPartyAccessToken, subscriptionPayload, partnerAttributionID);
+                                                    }));
+                                                }
+                                                if (!accessToken) throw new Error("Access token not passed");
+                                                return createRequest(accessToken, subscriptionPayload, partnerAttributionID);
+                                            }(facilitatorAccessToken, data, {
+                                                partnerAttributionID: partnerAttributionID,
+                                                merchantID: merchantID,
+                                                clientID: clientID
+                                            });
+                                        },
+                                        revise: function(subscriptionID, data) {
+                                            return function(accessToken, subscriptionID, subscriptionPayload, _ref4) {
+                                                var partnerAttributionID = _ref4.partnerAttributionID, merchantID = _ref4.merchantID, clientID = _ref4.clientID;
+                                                logger_getLogger().info("rest_api_create_subscription_id");
+                                                if (!subscriptionID) throw new Error("Expected subscription id to be passed as first argument to revise subscription api");
+                                                if (!subscriptionPayload) throw new Error("Expected subscription payload to be passed");
+                                                if (merchantID && merchantID[0]) {
+                                                    logger_getLogger().info("rest_api_subscriptions_recreate_access_token");
+                                                    return auth_createAccessToken(clientID, {
+                                                        targetSubject: merchantID[0]
+                                                    }).then((function(thirdPartyAccessToken) {
+                                                        return reviseRequest(thirdPartyAccessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
+                                                    }));
+                                                }
+                                                if (!accessToken) throw new Error("Access token not passed");
+                                                return reviseRequest(accessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
+                                            }(facilitatorAccessToken, subscriptionID, data, {
+                                                partnerAttributionID: partnerAttributionID,
+                                                merchantID: merchantID,
+                                                clientID: clientID
+                                            });
+                                        }
+                                    }
+                                };
+                            }({
+                                facilitatorAccessToken: facilitatorAccessToken,
+                                partnerAttributionID: partnerAttributionID,
+                                merchantID: merchantID,
+                                clientID: clientID
+                            })).then((function(subscriptionID) {
+                                if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
+                                return subscriptionID;
+                            }));
+                        };
                     }
-                }) : src_util_noop;
-                var handler, seenErrors, seenStringifiedErrors;
-                return function(err) {
-                    return promise_ZalgoPromise.try((function() {
-                        return onErrorHandler(err);
-                    }));
+                }({
+                    createSubscription: xprops.createSubscription,
+                    partnerAttributionID: partnerAttributionID,
+                    merchantID: merchantID,
+                    clientID: clientID
+                }, {
+                    facilitatorAccessToken: facilitatorAccessToken
+                });
+                var createOrder = getCreateOrder({
+                    createOrder: xprops.createOrder,
+                    currency: currency,
+                    intent: intent,
+                    merchantID: merchantID,
+                    partnerAttributionID: partnerAttributionID
+                }, {
+                    facilitatorAccessToken: facilitatorAccessToken,
+                    createBillingAgreement: createBillingAgreement,
+                    createSubscription: createSubscription
+                });
+                var onError = function(_ref) {
+                    var onError = _ref.onError;
+                    var onErrorHandler = onError ? (handler = onError, seenErrors = [], seenStringifiedErrors = {}, 
+                    function(err) {
+                        if (-1 === seenErrors.indexOf(err)) {
+                            seenErrors.push(err);
+                            var stringifiedError = stringifyError(err);
+                            if (!seenStringifiedErrors[stringifiedError]) {
+                                seenStringifiedErrors[stringifiedError] = !0;
+                                return handler(err);
+                            }
+                        }
+                    }) : src_util_noop;
+                    var handler, seenErrors, seenStringifiedErrors;
+                    return function(err) {
+                        return promise_ZalgoPromise.try((function() {
+                            return onErrorHandler(err);
+                        }));
+                    };
+                }({
+                    onError: xprops.onError
+                });
+                return {
+                    uid: uid,
+                    env: env,
+                    vault: vault,
+                    commit: commit,
+                    clientAccessToken: clientAccessToken,
+                    locale: locale,
+                    sessionID: sessionID,
+                    clientID: clientID,
+                    partnerAttributionID: partnerAttributionID,
+                    clientMetadataID: clientMetadataID,
+                    sdkCorrelationID: sdkCorrelationID,
+                    merchantDomain: merchantDomain,
+                    platform: platform,
+                    currency: currency,
+                    intent: intent,
+                    wallet: wallet,
+                    getPopupBridge: getPopupBridge,
+                    getPrerenderDetails: getPrerenderDetails,
+                    getPageUrl: getPageUrl,
+                    rememberFunding: rememberFunding,
+                    getParent: getParent,
+                    connect: connect,
+                    fundingSource: fundingSource,
+                    enableFunding: enableFunding,
+                    disableFunding: disableFunding,
+                    disableCard: disableCard,
+                    getQueriedEligibleFunding: getQueriedEligibleFunding,
+                    amount: amount,
+                    userIDToken: userIDToken,
+                    enableThreeDomainSecure: enableThreeDomainSecure,
+                    enableNativeCheckout: enableNativeCheckout,
+                    enableVaultInstallments: enableVaultInstallments,
+                    onClick: onClick,
+                    onInit: onInit,
+                    onError: onError,
+                    stageHost: stageHost,
+                    apiStageHost: apiStageHost,
+                    createOrder: createOrder,
+                    createBillingAgreement: createBillingAgreement,
+                    createSubscription: createSubscription,
+                    onApprove: getOnApprove({
+                        onApprove: xprops.onApprove,
+                        intent: intent,
+                        onError: onError,
+                        partnerAttributionID: partnerAttributionID,
+                        clientAccessToken: clientAccessToken,
+                        vault: vault,
+                        clientID: clientID
+                    }, {
+                        facilitatorAccessToken: facilitatorAccessToken,
+                        branded: branded,
+                        createOrder: createOrder
+                    }),
+                    onCancel: getOnCancel({
+                        onCancel: xprops.onCancel,
+                        onError: onError
+                    }, {
+                        createOrder: createOrder
+                    }),
+                    onShippingChange: getOnShippingChange({
+                        onShippingChange: xprops.onShippingChange,
+                        partnerAttributionID: partnerAttributionID,
+                        clientID: clientID
+                    }, {
+                        facilitatorAccessToken: facilitatorAccessToken,
+                        createOrder: createOrder
+                    }),
+                    onAuth: getOnAuth({
+                        facilitatorAccessToken: facilitatorAccessToken,
+                        createOrder: createOrder,
+                        createSubscription: createSubscription,
+                        clientID: clientID
+                    }),
+                    standaloneFundingSource: fundingSource,
+                    paymentMethodNonce: paymentMethodNonce,
+                    branded: branded,
+                    stickinessID: stickinessID,
+                    applePay: applePay,
+                    userExperienceFlow: userExperienceFlow
                 };
             }({
-                onError: xprops.onError
-            });
-            return {
-                uid: uid,
-                env: env,
+                facilitatorAccessToken: facilitatorAccessToken,
+                branded: branded
+            }), {
                 style: style,
-                vault: vault,
-                commit: commit,
-                clientAccessToken: clientAccessToken,
-                locale: locale,
-                sessionID: sessionID,
                 buttonSessionID: buttonSessionID,
-                clientID: clientID,
-                partnerAttributionID: partnerAttributionID,
-                clientMetadataID: clientMetadataID,
-                sdkCorrelationID: sdkCorrelationID,
-                merchantDomain: merchantDomain,
-                platform: platform,
-                currency: currency,
-                intent: intent,
-                wallet: wallet,
-                getPopupBridge: getPopupBridge,
-                getPrerenderDetails: getPrerenderDetails,
-                getPageUrl: getPageUrl,
-                rememberFunding: rememberFunding,
-                getParent: getParent,
-                connect: connect,
-                fundingSource: fundingSource,
-                enableFunding: enableFunding,
-                disableFunding: disableFunding,
-                disableCard: disableCard,
-                getQueriedEligibleFunding: getQueriedEligibleFunding,
-                amount: amount,
-                userIDToken: userIDToken,
-                enableThreeDomainSecure: enableThreeDomainSecure,
-                enableNativeCheckout: enableNativeCheckout,
-                enableVaultInstallments: enableVaultInstallments,
-                onClick: onClick,
-                onInit: onInit,
-                onError: onError,
-                stageHost: stageHost,
-                apiStageHost: apiStageHost,
-                createOrder: createOrder,
-                createBillingAgreement: createBillingAgreement,
-                createSubscription: createSubscription,
-                onApprove: getOnApprove({
-                    onApprove: xprops.onApprove,
-                    intent: intent,
-                    onError: onError,
-                    partnerAttributionID: partnerAttributionID,
-                    clientAccessToken: clientAccessToken,
-                    vault: vault,
-                    clientID: clientID
-                }, {
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    branded: branded,
-                    createOrder: createOrder
-                }),
-                onCancel: getOnCancel({
-                    onCancel: xprops.onCancel,
-                    onError: onError
-                }, {
-                    createOrder: createOrder
-                }),
-                onShippingChange: getOnShippingChange({
-                    onShippingChange: xprops.onShippingChange,
-                    partnerAttributionID: partnerAttributionID,
-                    clientID: clientID
-                }, {
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    createOrder: createOrder
-                }),
-                onAuth: getOnAuth({
-                    facilitatorAccessToken: facilitatorAccessToken,
-                    createOrder: createOrder,
-                    createSubscription: createSubscription,
-                    clientID: clientID
-                }),
-                standaloneFundingSource: fundingSource,
-                paymentMethodNonce: paymentMethodNonce,
-                branded: branded,
-                stickinessID: stickinessID,
-                applePay: applePay,
-                userExperienceFlow: userExperienceFlow
-            };
+                branded: branded
+            });
         }
-        function getComponents() {
+        function props_getComponents() {
             var _paypal = paypal;
             return {
                 Checkout: _paypal.Checkout,
@@ -3134,7 +4031,7 @@ window.spb = function(modules) {
                 QRCode: _paypal.QRCode
             };
         }
-        function getConfig(_ref2) {
+        function props_getConfig(_ref2) {
             var firebaseConfig = _ref2.firebaseConfig;
             var cspNonce = _ref2.serverCSPNonce || getNonce();
             return {
@@ -3143,7 +4040,7 @@ window.spb = function(modules) {
                 firebase: firebaseConfig
             };
         }
-        function getServiceData(_ref3) {
+        function props_getServiceData(_ref3) {
             return {
                 merchantID: _ref3.serverMerchantID,
                 buyerCountry: _ref3.buyerGeoCountry || COUNTRY.US,
@@ -4440,6 +5337,120 @@ window.spb = function(modules) {
             },
             inline: !0
         };
+        var sdk_constants = __webpack_require__("./node_modules/@paypal/sdk-constants/index.js");
+        function getExportsByFrameName(name) {
+            try {
+                for (var _i2 = 0, _getAllFramesInWindow2 = getAllFramesInWindow(window); _i2 < _getAllFramesInWindow2.length; _i2++) {
+                    var win = _getAllFramesInWindow2[_i2];
+                    if (isSameDomain(win) && win.exports && win.exports.name === name) return win.exports;
+                }
+            } catch (err) {}
+        }
+        function hasCardFields() {
+            if (getExportsByFrameName("card-field")) return !0;
+            var cardNumberFrame = getExportsByFrameName("card-number-field");
+            var cardCVVFrame = getExportsByFrameName("card-cvv-field");
+            var cardExpiryFrame = getExportsByFrameName("card-expiry-field");
+            return !!(cardNumberFrame && cardCVVFrame && cardExpiryFrame);
+        }
+        function getCardFields() {
+            var cardFrame = getExportsByFrameName("card-field");
+            if (cardFrame && cardFrame.isFieldValid()) return cardFrame.getFieldValue();
+            var cardNumberFrame = getExportsByFrameName("card-number-field");
+            var cardCVVFrame = getExportsByFrameName("card-cvv-field");
+            var cardExpiryFrame = getExportsByFrameName("card-expiry-field");
+            return cardNumberFrame && cardNumberFrame.isFieldValid() && cardCVVFrame && cardCVVFrame.isFieldValid() && cardExpiryFrame && cardExpiryFrame.isFieldValid() ? {
+                number: cardNumberFrame.getFieldValue(),
+                cvv: cardCVVFrame.getFieldValue(),
+                expiry: cardExpiryFrame.getFieldValue()
+            } : void 0;
+        }
+        var cardField = {
+            name: "card_field",
+            setup: function() {},
+            isEligible: function(_ref) {
+                var props = _ref.props;
+                return !props.vault && !props.onShippingChange;
+            },
+            isPaymentEligible: function(_ref2) {
+                var _ref3 = _ref2.payment || {}, fundingSource = _ref3.fundingSource;
+                return !(_ref3.win || fundingSource && "card" !== fundingSource || !hasCardFields());
+            },
+            init: function(_ref4) {
+                var props = _ref4.props;
+                var createOrder = props.createOrder, onApprove = props.onApprove, branded = props.branded, vault = props.vault, intent = props.intent;
+                return {
+                    click: function() {
+                        if (!getCardFields()) return !1;
+                    },
+                    start: function() {
+                        return function(_ref) {
+                            var intent = _ref.intent, branded = _ref.branded, vault = _ref.vault, createOrder = _ref.createOrder, onApprove = _ref.onApprove;
+                            return promise_ZalgoPromise.try((function() {
+                                if (!hasCardFields()) throw new Error("Card fields not available to submit");
+                                var card = getCardFields();
+                                if (card) {
+                                    var restart = function() {
+                                        throw new Error("Restart not implemented for card fields flow");
+                                    };
+                                    return intent === sdk_constants.INTENT.TOKENIZE ? function(_ref29) {
+                                        var card = _ref29.card;
+                                        return promise_ZalgoPromise.try((function() {
+                                            console.warn("Card Tokenize GQL mutation not yet implemented", {
+                                                card: card
+                                            });
+                                            return {
+                                                paymentMethodToken: uniqueID()
+                                            };
+                                        }));
+                                    }({
+                                        card: card
+                                    }).then((function(_ref2) {
+                                        return onApprove({
+                                            paymentMethodToken: _ref2.paymentMethodToken
+                                        }, {
+                                            restart: restart
+                                        });
+                                    })) : intent === sdk_constants.INTENT.CAPTURE || intent === sdk_constants.INTENT.AUTHORIZE ? createOrder().then((function(orderID) {
+                                        return function(_ref30) {
+                                            var card = _ref30.card, orderID = _ref30.orderID, vault = _ref30.vault, branded = _ref30.branded;
+                                            return promise_ZalgoPromise.try((function() {
+                                                console.warn("Card Approve Payment GQL mutation not yet implemented", {
+                                                    card: card,
+                                                    orderID: orderID,
+                                                    vault: vault,
+                                                    branded: branded
+                                                });
+                                            }));
+                                        }({
+                                            card: card,
+                                            orderID: orderID,
+                                            vault: vault,
+                                            branded: branded
+                                        });
+                                    })).then((function() {
+                                        return onApprove({
+                                            payerID: uniqueID()
+                                        }, {
+                                            restart: restart
+                                        });
+                                    })) : void 0;
+                                }
+                            }));
+                        }({
+                            createOrder: createOrder,
+                            onApprove: onApprove,
+                            branded: null == branded || branded,
+                            vault: vault,
+                            intent: intent
+                        });
+                    },
+                    close: promiseNoop
+                };
+            },
+            inline: !0,
+            spinner: !0
+        };
         function lib_logger_getLogger() {
             return inlineMemoize(lib_logger_getLogger, (function() {
                 return Logger({
@@ -5722,7 +6733,7 @@ window.spb = function(modules) {
                 };
             },
             inline: !0
-        }, vaultCapture, walletCapture, cardFields, {
+        }, vaultCapture, walletCapture, cardField, cardFields, {
             name: "popup_bridge",
             setup: function(_ref) {
                 var props = _ref.props;
@@ -6435,7 +7446,13 @@ window.spb = function(modules) {
                                 },
                                 onApprove: onApproveCallback,
                                 onCancel: onCancelCallback,
-                                onError: onErrorCallback,
+                                onError: function(_ref11) {
+                                    var data = _ref11.data;
+                                    reject(data);
+                                    return onErrorCallback({
+                                        data: data
+                                    });
+                                },
                                 onFallback: onFallbackCallback,
                                 onClose: onCloseCallback,
                                 onDestroy: destroy
@@ -6467,8 +7484,8 @@ window.spb = function(modules) {
                     close: destroy
                 };
             },
-            updateFlowClientConfig: function(_ref11) {
-                var orderID = _ref11.orderID, payment = _ref11.payment, userExperienceFlow = _ref11.userExperienceFlow, buttonSessionID = _ref11.buttonSessionID;
+            updateFlowClientConfig: function(_ref12) {
+                var orderID = _ref12.orderID, payment = _ref12.payment, userExperienceFlow = _ref12.userExperienceFlow, buttonSessionID = _ref12.buttonSessionID;
                 return promise_ZalgoPromise.try((function() {
                     return updateButtonClientConfig({
                         fundingSource: payment.fundingSource,
@@ -6510,7 +7527,7 @@ window.spb = function(modules) {
             if (!window.paypal) throw new Error("PayPal SDK not loaded");
             var facilitatorAccessToken = opts.facilitatorAccessToken, fundingEligibility = opts.fundingEligibility, serverCSPNonce = opts.cspNonce, firebaseConfig = opts.firebaseConfig, _opts$correlationID = opts.correlationID, buttonCorrelationID = void 0 === _opts$correlationID ? "" : _opts$correlationID, _opts$brandedDefault = opts.brandedDefault, brandedDefault = void 0 === _opts$brandedDefault ? null : _opts$brandedDefault;
             var clientID = window.xprops.clientID;
-            var serviceData = getServiceData({
+            var serviceData = props_getServiceData({
                 eligibility: opts.eligibility,
                 facilitatorAccessToken: facilitatorAccessToken,
                 buyerGeoCountry: opts.buyerCountry,
@@ -6524,17 +7541,17 @@ window.spb = function(modules) {
                 personalization: opts.personalization
             });
             var merchantID = serviceData.merchantID, buyerCountry = serviceData.buyerCountry;
-            var props = getProps({
+            var props = getButtonProps({
                 facilitatorAccessToken: facilitatorAccessToken,
                 brandedDefault: brandedDefault
             });
             var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, stickinessID = props.stickinessID;
-            var config = getConfig({
+            var config = props_getConfig({
                 serverCSPNonce: serverCSPNonce,
                 firebaseConfig: firebaseConfig
             });
             var sdkVersion = config.sdkVersion;
-            var components = getComponents();
+            var components = props_getComponents();
             var _onInit = onInit({
                 correlationID: buttonCorrelationID
             }), initPromise = _onInit.initPromise, isEnabled = _onInit.isEnabled;
@@ -6547,13 +7564,7 @@ window.spb = function(modules) {
                         var onClick = paymentProps.onClick;
                         var smartFields = function(fundingSource) {
                             try {
-                                for (var _i2 = 0, _getAllFramesInWindow2 = function(win) {
-                                    var top = getTop(win);
-                                    if (!top) throw new Error("Can not determine top window");
-                                    var result = [].concat(getAllChildFrames(top), [ top ]);
-                                    -1 === result.indexOf(win) && (result = [].concat(result, [ win ], getAllChildFrames(win)));
-                                    return result;
-                                }(window); _i2 < _getAllFramesInWindow2.length; _i2++) {
+                                for (var _i2 = 0, _getAllFramesInWindow2 = getAllFramesInWindow(window); _i2 < _getAllFramesInWindow2.length; _i2++) {
                                     var win = _getAllFramesInWindow2[_i2];
                                     if (isSameDomain(win) && win.exports && "smart-fields" === win.exports.name && win.exports.fundingSource === fundingSource) return win.exports;
                                 }
@@ -6596,12 +7607,14 @@ window.spb = function(modules) {
                                         _getLogger$info$info$.transition_name = "process_button_click", _getLogger$info$info$.selected_payment_method = fundingSource, 
                                         _getLogger$info$info$.chosen_fi_type = instrumentType, _getLogger$info$info$.payment_flow = name, 
                                         _getLogger$info$info$.is_vault = instrumentType ? "1" : "0", _getLogger$info$info$)).flush();
-                                        return promise_ZalgoPromise.hash({
-                                            valid: !onClick || onClick({
+                                        return promise_ZalgoPromise.try((function() {
+                                            return !onClick || onClick({
                                                 fundingSource: fundingSource
-                                            })
-                                        }).then((function(_ref4) {
-                                            if (_ref4.valid) {
+                                            });
+                                        })).then((function(valid) {
+                                            return !!valid && clickPromise;
+                                        })).then((function(valid) {
+                                            if (!1 !== valid) {
                                                 spinner && enableLoadingSpinner(button);
                                                 var updateClientConfigPromise = createOrder().then((function(orderID) {
                                                     if (updateFlowClientConfig) return updateFlowClientConfig({
@@ -6844,16 +7857,16 @@ window.spb = function(modules) {
                                                                     _getLogger$track)).flush();
                                                                 }));
                                                             }({
-                                                                orderID: (_ref5 = {
+                                                                orderID: (_ref4 = {
                                                                     orderID: orderID,
                                                                     payload: confirmOrderPayload
                                                                 }).orderID,
-                                                                payload: _ref5.payload,
+                                                                payload: _ref4.payload,
                                                                 partnerAttributionID: partnerAttributionID
                                                             }, {
                                                                 facilitatorAccessToken: serviceData.facilitatorAccessToken
                                                             });
-                                                            var _ref5;
+                                                            var _ref4;
                                                         }
                                                     }));
                                                 }));
@@ -6937,7 +7950,7 @@ window.spb = function(modules) {
                 dom_onClick(button, (function(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    var paymentProps = getProps({
+                    var paymentProps = getButtonProps({
                         facilitatorAccessToken: facilitatorAccessToken,
                         brandedDefault: brandedDefault
                     });
@@ -6973,8 +7986,8 @@ window.spb = function(modules) {
                         var menuPromise = function(_ref2) {
                             var payment = _ref2.payment;
                             return promise_ZalgoPromise.try((function() {
-                                if (!paymentProcessing) return isEnabled() ? function(_ref6) {
-                                    var payment = _ref6.payment, serviceData = _ref6.serviceData, config = _ref6.config, components = _ref6.components, props = _ref6.props;
+                                if (!paymentProcessing) return isEnabled() ? function(_ref5) {
+                                    var payment = _ref5.payment, serviceData = _ref5.serviceData, config = _ref5.config, components = _ref5.components, props = _ref5.props;
                                     return promise_ZalgoPromise.try((function() {
                                         var _getLogger$info$info$2;
                                         var fundingSource = payment.fundingSource, button = payment.button;
@@ -7089,7 +8102,7 @@ window.spb = function(modules) {
                         var win = prerenderDetails.win, paymentFundingSource = prerenderDetails.fundingSource, card = prerenderDetails.card;
                         var button = document.querySelector("[data-funding-source=" + paymentFundingSource + "]");
                         if (!button) throw new Error("Can not find button element");
-                        var paymentProps = getProps({
+                        var paymentProps = getButtonProps({
                             facilitatorAccessToken: facilitatorAccessToken,
                             brandedDefault: brandedDefault
                         });
@@ -7144,7 +8157,7 @@ window.spb = function(modules) {
                         return (_ref3 = {}).feed_name = "payments_sdk", _ref3.serverside_data_source = "checkout", 
                         _ref3.client_id = clientID, _ref3.page_session_id = sessionID, _ref3.referer_url = window.location.host, 
                         _ref3.buyer_cntry = buyerCountry, _ref3.locale = lang + "_" + country, _ref3.integration_identifier = clientID, 
-                        _ref3.sdk_environment = isIos() ? "ios" : isAndroid() ? "android" : null, _ref3.sdk_name = "payments_sdk", 
+                        _ref3.sdk_environment = isIos() ? "iOS" : isAndroid() ? "android" : null, _ref3.sdk_name = "payments_sdk", 
                         _ref3.sdk_version = sdkVersion, _ref3.user_agent = window.navigator && window.navigator.userAgent, 
                         _ref3.context_correlation_id = sdkCorrelationID, _ref3.t = Date.now().toString(), 
                         _ref3;
@@ -7178,7 +8191,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.38", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.39", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
