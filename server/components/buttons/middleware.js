@@ -65,13 +65,13 @@ export function getButtonMiddleware({
             for (const name of Object.keys(req.cookies || {})) {
                 logger.info(req, `smart_buttons_cookie_${ name || 'unknown' }`);
             }
-            
+
             tracking(req);
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale,
                 clientMetadataID, pageSessionID, correlationID, cookies, enableFunding, style, paymentMethodNonce, branded, fundingSource } = getButtonParams(params, req, res);
-            
+
             const { label, period, tagline } = style;
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
 
@@ -138,7 +138,7 @@ export function getButtonMiddleware({
             const wallet = await walletPromise;
             const personalization = await personalizationPromise;
             const brandedDefault = await isFundingSourceBranded(req, { clientID, fundingSource, wallet });
-            
+
             const eligibility = {
                 cardFields: isCardFieldsExperimentEnabled
             };
@@ -155,10 +155,11 @@ export function getButtonMiddleware({
                 if (render.button.validateButtonProps) {
                     render.button.validateButtonProps(buttonProps);
                 }
+
             } catch (err) {
                 return clientErrorResponse(res, err.stack || err.message);
             }
-            
+
             const buttonHTML = render.button.Buttons(buttonProps).render(html());
 
             const setupParams = {
@@ -172,7 +173,7 @@ export function getButtonMiddleware({
                 <head></head>
                 <body data-nonce="${ cspNonce }" data-client-version="${ client.version }" data-render-version="${ render.version }">
                     <style nonce="${ cspNonce }">${ buttonStyle }</style>
-                    
+
                     <div id="buttons-container" class="buttons-container" role="main" aria-label="PayPal">${ buttonHTML }</div>
 
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }

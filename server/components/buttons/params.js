@@ -3,10 +3,10 @@
 
 import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
 import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY,
-    COUNTRY_LANGS, PLATFORM, FUNDING_PRODUCTS, SDK_QUERY_KEYS } from '@paypal/sdk-constants';
+    COUNTRY_LANGS, PLATFORM, FUNDING_PRODUCTS, SDK_QUERY_KEYS, ERROR_CODE } from '@paypal/sdk-constants';
 import { values, constHas } from 'belter';
 
-import { HTTP_HEADER, ERROR_CODE } from '../../config';
+import { HTTP_HEADER } from '../../config';
 import type { ExpressRequest, ExpressResponse, LocaleType, RiskData } from '../../types';
 import { makeError, getCSPNonce } from '../../lib';
 
@@ -156,11 +156,11 @@ function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibilityTy
                         if (typeof vendorEligibilityInput.eligible === 'boolean') {
                             vendorEligibility.eligible = vendorEligibilityInput.eligible;
                         }
-        
+
                         if (typeof vendorEligibilityInput.branded === 'boolean') {
                             vendorEligibility.branded = vendorEligibilityInput.branded;
                         }
-        
+
                         if (typeof vendorEligibilityInput.vaultable === 'boolean') {
                             vendorEligibility.vaultable = vendorEligibilityInput.vaultable;
                         }
@@ -378,7 +378,7 @@ export function getButtonPreflightParams(params : ButtonPreflightInputParams) : 
         [ SPB_QUERY_KEYS.USER_ID_TOKEN ]: userIDToken,
         [ SPB_QUERY_KEYS.AMOUNT ]: amount = '0.00'
     } = params;
-    
+
     if (merchantID) {
         merchantID = merchantID.split(',');
     } else {

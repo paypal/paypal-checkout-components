@@ -2,10 +2,11 @@
 
 import { unpackSDKMeta } from '@paypal/sdk-client';
 import { undotify } from 'belter';
+import { ERROR_CODE } from '@paypal/sdk-constants';
 
 import type { ExpressRequest, ExpressResponse, LoggerType, CacheType } from '../types';
 import { startWatchers } from '../watchers';
-import { EVENT, ERROR_CODE, BROWSER_CACHE_TIME, HTTP_HEADER } from '../config';
+import { EVENT, BROWSER_CACHE_TIME, HTTP_HEADER } from '../config';
 
 import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType,
     getLogBuffer, safeJSON, isError, emptyResponse } from './util';
@@ -161,7 +162,7 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
             console.error(err.stack ? err.stack : err); // eslint-disable-line no-console
             logger.error(req, EVENT.ERROR, { err: err.stack ? err.stack : err.toString() });
             return serverErrorResponse(res, err.stack ? err.stack : err.toString());
-            
+
         } finally {
             logBuffer.flush(req);
         }
