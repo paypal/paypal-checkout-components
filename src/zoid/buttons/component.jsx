@@ -194,7 +194,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'function',
                 required:   false,
                 queryParam: true,
-                queryValue: ({ value }) => {
+                queryValue: ({ value }) : string => {
                     return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
                 }
             },
