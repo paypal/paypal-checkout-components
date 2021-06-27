@@ -39,7 +39,7 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
         const layout = BUTTON_LAYOUT.VERTICAL;
         const components = getComponents();
         const flow = BUTTON_FLOW.PURCHASE;
-        const applePaySupport = isApplePaySupported();
+        const applePaySupport = fundingEligibility?.applepay?.eligible ? isApplePaySupported() : false;
         const supportsPopups = userAgentSupportsPopups();
         const supportedNativeBrowser = isSupportedNativeBrowser();
         const enableVenmoExperiment = createVenmoExperiment();

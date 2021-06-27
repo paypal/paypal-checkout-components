@@ -28,6 +28,7 @@ const WEBPACK_CONFIG_DEV : WebpackConfig = getWebpackConfig({
         __SDK_HOST__:        `${ HOSTNAME }:${ PORT }`,
         __PORT__:            PORT,
         __PATH__:            `/${ FILE_NAME }.js`,
+        __PAYPAL_DOMAIN__:   'https://sandbox.paypal.com',
         __PAYPAL_CHECKOUT__: {
             ...testGlobals.__PAYPAL_CHECKOUT__,
             __URI__:                {

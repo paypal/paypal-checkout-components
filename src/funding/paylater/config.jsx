@@ -41,7 +41,7 @@ export function getPaylaterConfig() : FundingSourceConfig {
 
             return (
                 <Style css={ css } nonce={ nonce }>
-                    <PPLogo optional logoColor={ logoColor } />
+                    <PPLogo logoColor={ logoColor } />
                     <Space />
                     { label }
                 </Style>

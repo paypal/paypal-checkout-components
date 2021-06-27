@@ -26,7 +26,7 @@ const POWERED_BY_PAYPAL_STYLE = `
         margin-right: 3px;
         bottom: 3px;
     }
-    
+
     .${ CLASS.POWERED_BY } > .${ CLASS.TEXT },
     .${ CLASS.POWERED_BY } > .${ LOGO_CLASS.LOGO } {
         display: inline-block;
@@ -38,15 +38,16 @@ const POWERED_BY_PAYPAL_STYLE = `
 `;
 
 type PoweredByPayPalProps = {|
-    locale : LocaleType
+    locale : LocaleType,
+    nonce : string
 |};
 
-export function PoweredByPayPal({ locale: { lang } } : PoweredByPayPalProps) : ChildType {
+export function PoweredByPayPal({ locale: { lang }, nonce } : PoweredByPayPalProps) : ChildType {
     const { PoweredBy } = buttonContent[lang];
 
     return (
         <div class={ CLASS.POWERED_BY }>
-            <style innerHTML={ POWERED_BY_PAYPAL_STYLE } />
+            <style nonce={ nonce } innerHTML={ POWERED_BY_PAYPAL_STYLE } />
             { __WEB__
                 ? <Text />
                 : <PoweredBy logoColor={ LOGO_COLOR.BLUE } />}
