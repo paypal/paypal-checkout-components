@@ -14,12 +14,13 @@ describe(`paylater button text`, () => {
         destroyTestContainer();
     });
 
-    it(`should display Pay in 4 button text when payIn4 product is eligible`, () => {
+    it(`should display Pay in 4 button text when payIn4 product is eligible and no variant`, () => {
         const fundingSource = FUNDING.PAYLATER;
         mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
         mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'products', {
             payIn4: {
-                eligible: true
+                eligible: true,
+                variant:  null
             }
         });
 
@@ -55,6 +56,52 @@ describe(`paylater button text`, () => {
 
         return button.render('#testContainer').then(() => {
             assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Pay Later');
+        });
+    });
+
+    it(`should display Später Bezahlen label when paylater product is eligible and variant is DE`, () => {
+        const fundingSource = FUNDING.PAYLATER;
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'products', {
+            paylater: {
+                eligible: true,
+                variant:  'DE'
+            }
+        });
+
+        const button = window.paypal.Buttons({
+            fundingSource
+        });
+
+        if (!button.isEligible()) {
+            throw new Error(`Expected paylater to be eligible`);
+        }
+
+        return button.render('#testContainer').then(() => {
+            assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Später Bezahlen');
+        });
+    });
+
+    it(`should display 4X PayPal label when payIn4 product is eligible and variant is FR`, () => {
+        const fundingSource = FUNDING.PAYLATER;
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'products', {
+            payIn4: {
+                eligible: true,
+                variant:  'FR'
+            }
+        });
+
+        const button = window.paypal.Buttons({
+            fundingSource
+        });
+
+        if (!button.isEligible()) {
+            throw new Error(`Expected paylater to be eligible`);
+        }
+
+        return button.render('#testContainer').then(() => {
+            assert.equal(getElementRecursive('.paypal-button-text').innerHTML, '4X PayPal');
         });
     });
 

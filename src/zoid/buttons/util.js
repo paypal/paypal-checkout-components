@@ -74,8 +74,8 @@ export function createVenmoExperiment() : Experiment | void {
     const isEligibleForVenmo = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
 
     // exclude buyers who are not eligible
-    // exclude integrations using enable-funding=venmo
-    if (!isEligibleForVenmo || isEnableFundingVenmo) {
+    // exclude non-desktop integrations using enable-funding=venmo
+    if (!isEligibleForVenmo || (isEnableFundingVenmo && isDevice())) {
         return;
     }
 
@@ -94,7 +94,7 @@ export function createVenmoExperiment() : Experiment | void {
 
 export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     const enableFunding = getEnableFunding();
-    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
+    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1 && isDevice();
     const isExperimentEnabled = experiment && experiment.isEnabled();
 
     return {
