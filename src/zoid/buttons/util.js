@@ -19,7 +19,7 @@ export function determineFlow(props : ButtonProps) : $Values<typeof BUTTON_FLOW>
 }
 
 export function supportsQRPay(funding : $Values<typeof FUNDING>) : boolean {
-    if (funding === FUNDING.VENMO && !isIos() && !isAndroid()) {
+    if (funding === FUNDING.VENMO && !isDevice()) {
         return true;
     }
 
