@@ -26,7 +26,13 @@ type PrerenderedButtonsProps = {|
 
 export function PrerenderedButtons({ nonce, onRenderCheckout, props } : PrerenderedButtonsProps) : ChildType {
     let win;
-    const handleClick = (event, { fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
+    const handleClick = (
+        event : Event,
+        { fundingSource, card } : {|
+            fundingSource : $Values<typeof FUNDING>,
+            card : ?$Values<typeof CARD>
+        |}
+    ) => {
         getLogger().info('button_prerender_click').track({
             [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
             [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id',
@@ -34,8 +40,14 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click'
         }).flush();
 
+        
         if (supportsQRPay(fundingSource)) {
-            showButtonLoading(event.target);
+            showButtonLoading(
+                fundingSource,
+                // $FlowFixMe[prop-missing]
+                // $FlowFixMe[incompatible-call]
+                event
+            );
             onRenderCheckout({ fundingSource, card });
 
         } else if (supportsPopups()) {

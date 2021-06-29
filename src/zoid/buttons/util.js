@@ -26,10 +26,18 @@ export function supportsQRPay(funding : $Values<typeof FUNDING>) : boolean {
     return false;
 }
 
-export function showButtonLoading (targetElement : HTMLElement) : void {
-    const buttonElement = (targetElement.getAttribute('role') === 'button') ?
-        targetElement :
-        targetElement.closest('[role="button"]');
+/* eslint-disable flowtype/require-exact-type */
+type ButtonLoadingEventType = {
+    ...Event,
+    target : {
+        ...EventTarget,
+        ownerDocument : Document
+    }
+};
+/* eslint-enable flowtype/require-exact-type */
+
+export function showButtonLoading (fundingSource : $Values<typeof FUNDING>, event : ButtonLoadingEventType) : void {
+    const buttonElement = event.target.ownerDocument.querySelector(`[data-funding-source="${ fundingSource }"]`);
     if (buttonElement) {
         const spinner = buttonElement.querySelector(`.${ CLASS.SPINNER }`);
         const label = buttonElement.querySelector(`.${ CLASS.BUTTON_LABEL }`);
