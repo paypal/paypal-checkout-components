@@ -30,6 +30,7 @@ module.exports = {
             __INSTALLMENTS__: '/smart/installments',
             __MODAL__:        '/smart/modal',
             __CARD_FIELDS__:  '/smart/card-fields',
+            __CARD_FIELD__:   '/smart/card-field',
             __WALLET__:       '/smart/wallet',
             __FIELDS__:       '/altpayfields'
         }

@@ -194,7 +194,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'function',
                 required:   false,
                 queryParam: true,
-                queryValue: ({ value }) => {
+                queryValue: ({ value }) : string => {
                     return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
                 }
             },
@@ -228,7 +228,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             start:     (url) => {
                                 return new ZalgoPromise((resolve, reject) => {
                                     window.popupBridge.onComplete = (err, result) => {
-                                        return err ? reject(err) : resolve(result.queryItems);
+                                        const queryItems = result && result.queryItems ? result.queryItems : {};
+                                        return err ? reject(err) : resolve(queryItems);
                                     };
                                     window.popupBridge.open(url);
                                 });
