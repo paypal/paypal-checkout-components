@@ -82,5 +82,27 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 }).render('#testContainer');
             });
         });
+
+        it('should render a button with popup bridge, cancel the popup flow and return with no errors', () => {
+            return wrapPromise(({ expect }) => {
+                const orderID = generateOrderID();
+
+                window.popupBridge = {
+                    open: expect('open', () => {
+                        window.popupBridge.onComplete(null, null);
+                    }),
+                    getReturnUrlPrefix: expect('getReturnUrlPrefix', () => {
+                        return 'native://foobar';
+                    })
+                };
+
+                return window.paypal.Buttons({
+                    test: { flow, action: 'checkout' },
+
+                    createOrder: expect('createOrder', () => orderID)
+
+                }).render('#testContainer');
+            });
+        });
     });
 }

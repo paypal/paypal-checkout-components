@@ -44,27 +44,31 @@ const SMART_CARDS = [
 ];
 
 module.exports = {
-    buttons: {
+    'buttons': {
         entry:          './src/interface/button',
         setupHandler:   'setupButtons',
         globals,
         fundingSources: SMART_FUNDING_SOURCES,
         cards:          SMART_CARDS
     },
-    marks: {
+    'marks': {
         entry:          './src/interface/marks',
         globals,
         fundingSources: SMART_FUNDING_SOURCES,
         cards:          SMART_CARDS
     },
-    wallet: {
+    'wallet': {
         entry: './src/interface/wallet',
         globals
     },
-    fields: {
+    'fields': {
         entry:          './src/interface/fields',
         globals,
         fundingSources: SMART_FUNDING_SOURCES,
         cards:          SMART_CARDS
+    },
+    'card-fields': {
+        entry:          './src/interface/card',
+        globals
     }
 };
