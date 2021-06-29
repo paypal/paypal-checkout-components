@@ -3,9 +3,9 @@
     "dist-tags": {
         "latest": "5.0.41",
         "noop": "2.0.290",
-        "active-test": "5.0.40",
-        "active-local": "5.0.40",
-        "active-stage": "5.0.40",
+        "active-test": "5.0.41",
+        "active-local": "5.0.41",
+        "active-stage": "5.0.41",
         "active-sandbox": "5.0.40",
         "active-production": "5.0.40",
         "alpha": "5.0.39-qr.2",
