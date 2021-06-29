@@ -83,7 +83,7 @@ describe(`venmo desktop web button test `, () => {
         const paypalButtons = window.paypal.Buttons({
             fundingSource
         });
-        assert.equal(paypalButtons.isEligible() === false);
+        assert.equal(paypalButtons.isEligible(), false);
         done();
     });
 });
