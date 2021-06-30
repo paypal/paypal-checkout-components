@@ -4,7 +4,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding, createExperiment, getFundingEligibility } from '@paypal/sdk-client/src';
 
 import type { Experiment as VenmoExperiment } from '../../types';
-import { BUTTON_FLOW } from '../../constants';
+import { BUTTON_FLOW, CLASS } from '../../constants';
 import type { ApplePaySessionConfigRequest, ButtonProps } from '../../ui/buttons/props';
 
 export function determineFlow(props : ButtonProps) : $Values<typeof BUTTON_FLOW> {
@@ -15,6 +15,38 @@ export function determineFlow(props : ButtonProps) : $Values<typeof BUTTON_FLOW>
         return BUTTON_FLOW.SUBSCRIPTION_SETUP;
     } else {
         return BUTTON_FLOW.PURCHASE;
+    }
+}
+
+export function supportsQRPay(funding : $Values<typeof FUNDING>) : boolean {
+    if (funding === FUNDING.VENMO && !isDevice()) {
+        return true;
+    }
+
+    return false;
+}
+
+/* eslint-disable flowtype/require-exact-type */
+type ButtonLoadingEventType = {
+    ...Event,
+    target : {
+        ...EventTarget,
+        ownerDocument : Document
+    }
+};
+/* eslint-enable flowtype/require-exact-type */
+
+export function showButtonLoading (fundingSource : $Values<typeof FUNDING>, event : ButtonLoadingEventType) : void {
+    const buttonElement = event.target.ownerDocument.querySelector(`[data-funding-source="${ fundingSource }"]`);
+    if (buttonElement) {
+        const spinner = buttonElement.querySelector(`.${ CLASS.SPINNER }`);
+        const label = buttonElement.querySelector(`.${ CLASS.BUTTON_LABEL }`);
+        if (spinner) {
+            spinner.setAttribute('style', 'display:block !important');
+        }
+        if (label) {
+            label.setAttribute('style', 'display:none;');
+        }
     }
 }
 
@@ -50,8 +82,8 @@ export function createVenmoExperiment() : Experiment | void {
     const isEligibleForVenmo = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
 
     // exclude buyers who are not eligible
-    // exclude integrations using enable-funding=venmo
-    if (!isEligibleForVenmo || isEnableFundingVenmo) {
+    // exclude non-desktop integrations using enable-funding=venmo
+    if (!isEligibleForVenmo || (isEnableFundingVenmo && isSupportedNativeBrowser())) {
         return;
     }
 
@@ -70,7 +102,7 @@ export function createVenmoExperiment() : Experiment | void {
 
 export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     const enableFunding = getEnableFunding();
-    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
+    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1 && isSupportedNativeBrowser();
     const isExperimentEnabled = experiment && experiment.isEnabled();
 
     return {

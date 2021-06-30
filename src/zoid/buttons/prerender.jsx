@@ -12,6 +12,8 @@ import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
 
+import { supportsQRPay, showButtonLoading } from './util';
+
 type PrerenderedButtonsProps = {|
     nonce : ?string,
     props : ButtonProps,
@@ -24,15 +26,31 @@ type PrerenderedButtonsProps = {|
 
 export function PrerenderedButtons({ nonce, onRenderCheckout, props } : PrerenderedButtonsProps) : ChildType {
     let win;
-    const handleClick = (event, { fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
+    const handleClick = (
+        event : Event,
+        { fundingSource, card } : {|
+            fundingSource : $Values<typeof FUNDING>,
+            card : ?$Values<typeof CARD>
+        |}
+    ) => {
         getLogger().info('button_prerender_click').track({
             [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
             [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id',
             [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
             [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click'
         }).flush();
+
         
-        if (supportsPopups()) {
+        if (supportsQRPay(fundingSource)) {
+            showButtonLoading(
+                fundingSource,
+                // $FlowFixMe[prop-missing]
+                // $FlowFixMe[incompatible-call]
+                event
+            );
+            onRenderCheckout({ fundingSource, card });
+
+        } else if (supportsPopups()) {
             // remember the popup window to prevent showing a new popup window on every click in the prerender state
             if (!win || win.closed) {
                 win = assertSameDomain(popup('', {
