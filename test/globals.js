@@ -1,6 +1,6 @@
 /* @flow */
 
-import { __POST_ROBOT__, __ZOID__ } from '../globals';
+// import { __POST_ROBOT__, __ZOID__ } from '../globals';
 
 export const fundingEligibility = {
     bancontact: {
@@ -135,14 +135,22 @@ export const testGlobals = {
     __PAYPAL_API_DOMAIN__: 'mock://msmaster.qa.paypal.com',
 
     __ZOID__: {
-        ...__ZOID__,
-        __SCRIPT_NAMESPACE__: false
-
+      __VERSION__: '9_0_69',
+      __GLOBAL_KEY__: '__zoid_9_0_69__',
+      __IFRAME_SUPPORT__: true,
+      __POPUP_SUPPORT__: true,
+      __FRAMEWORK_SUPPORT__: true,
+      __DEFAULT_CONTAINER__: true,
+      __DEFAULT_PRERENDER__: true,
+      __SCRIPT_NAMESPACE__: false
     },
-
     __POST_ROBOT__: {
-        ...__POST_ROBOT__,
-        __SCRIPT_NAMESPACE__: false
+      __GLOBAL_KEY__: '__post_robot_10_0_42__',
+      __AUTO_SETUP__: true,
+      __IE_POPUP_SUPPORT__: false,
+      __GLOBAL_MESSAGE_SUPPORT__: true,
+      __SCRIPT_NAMESPACE__: false
     }
-
 };
+
+console.log('testGlobals', testGlobals);
