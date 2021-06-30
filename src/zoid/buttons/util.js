@@ -102,7 +102,7 @@ export function createVenmoExperiment() : Experiment | void {
 
 export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     const enableFunding = getEnableFunding();
-    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1 && isDevice();
+    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1 && isSupportedNativeBrowser();
     const isExperimentEnabled = experiment && experiment.isEnabled();
 
     return {
