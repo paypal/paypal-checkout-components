@@ -1,3 +1,9 @@
+## <small>5.0.168 (2021-06-30)</small>
+
+* FEATURE: Integrate Donate as a label (#1678) ([822d50f](https://github.com/paypal/paypal-checkout-components/commit/822d50f)), closes [#1678](https://github.com/paypal/paypal-checkout-components/issues/1678)
+
+
+
 ## <small>5.0.167 (2021-06-30)</small>
 
 * Add card field components ([ea75aa9](https://github.com/paypal/paypal-checkout-components/commit/ea75aa9))
