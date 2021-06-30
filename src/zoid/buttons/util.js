@@ -83,7 +83,7 @@ export function createVenmoExperiment() : Experiment | void {
 
     // exclude buyers who are not eligible
     // exclude non-desktop integrations using enable-funding=venmo
-    if (!isEligibleForVenmo || (isEnableFundingVenmo && isDevice())) {
+    if (!isEligibleForVenmo || (isEnableFundingVenmo && isSupportedNativeBrowser())) {
         return;
     }
 
