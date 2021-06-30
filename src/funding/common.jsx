@@ -100,7 +100,7 @@ export function BasicLabel({ logo, label, period, locale: { lang } } : LabelOpti
         return logo;
     }
 
-    const { Checkout, Pay, BuyNow, Installment, Subscribe } = componentContent[lang];
+    const { Checkout, Pay, BuyNow, Installment, Subscribe, Donate } = componentContent[lang];
 
     if (label === BUTTON_LABEL.CHECKOUT) {
         return <Checkout logo={ logo } />;
@@ -108,6 +108,10 @@ export function BasicLabel({ logo, label, period, locale: { lang } } : LabelOpti
 
     if (label === BUTTON_LABEL.SUBSCRIBE && Subscribe) {
         return <Subscribe logo={ logo } />;
+    }
+    
+    if (label === BUTTON_LABEL.DONATE && Donate) {
+        return <Donate logo={ logo } />;
     }
 
     if (label === BUTTON_LABEL.PAY) {
