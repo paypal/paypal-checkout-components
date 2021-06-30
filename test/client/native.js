@@ -55,7 +55,7 @@ describe('native ios cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     popupWin = win;
                     postRobotMock.receive({
@@ -77,9 +77,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -247,7 +244,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -268,9 +265,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -365,7 +359,7 @@ describe('native ios cases', () => {
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 times:              2,
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     popupWin = win;
                     postRobotMock.receive({
@@ -387,9 +381,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -563,7 +554,7 @@ describe('native ios cases', () => {
 
             const mockWindowConfig = {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 times:              1,
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
@@ -585,9 +576,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -699,7 +687,7 @@ describe('native ios cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     popupWin = win;
                     postRobotMock.receive({
@@ -721,9 +709,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -860,7 +845,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:   'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery: [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery: [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:        ({ win }) => {
                     popupWin = win;
 
@@ -883,9 +868,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -1012,7 +994,7 @@ describe('native ios cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     popupWin = win;
                     postRobotMock.receive({
@@ -1034,9 +1016,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -1047,7 +1026,7 @@ describe('native ios cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
                         }
 
                         if (!redirectQuery.channel) {
@@ -1161,7 +1140,7 @@ describe('native ios cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     popupWin = win;
                     postRobotMock.receive({
@@ -1183,9 +1162,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -1302,7 +1278,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -1320,12 +1296,16 @@ describe('native ios cases', () => {
                 }
             });
 
-            window.xprops.createOrder = mockAsyncProp(avoid('createOrder', promiseNoop));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return generateOrderID();
+                });
+            }), 50);
 
             window.xprops.onClick = mockAsyncProp(expect('onClick', async (data, actions) => {
                 mockWindow.expectClose();
                 return actions.reject();
-            }), 50);
+            }), 75);
 
             window.xprops.onCancel = mockAsyncProp(avoid('onCancel', promiseNoop));
             window.xprops.onApprove = mockAsyncProp(avoid('onApprove', promiseNoop));
@@ -1358,7 +1338,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -1443,7 +1423,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -1464,9 +1444,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -1574,7 +1551,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -1599,9 +1576,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -1704,7 +1678,7 @@ describe('native ios cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -1722,7 +1696,11 @@ describe('native ios cases', () => {
                 }
             });
 
-            window.xprops.createOrder = mockAsyncProp(avoid('createOrder'));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return generateOrderID();
+                });
+            }), 50);
 
             window.xprops.onClick = mockAsyncProp(expect('onClick', async (data, actions) => {
                 mockWindow.expectClose();
@@ -1790,7 +1768,7 @@ describe('native ios cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/venmo/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     popupWin = win;
                     postRobotMock.receive({
@@ -1811,10 +1789,6 @@ describe('native ios cases', () => {
                         }
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -1964,7 +1938,7 @@ describe('native ios cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     popupWin = win;
                     postRobotMock.receive({
@@ -1985,10 +1959,6 @@ describe('native ios cases', () => {
                         }
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -2164,7 +2134,7 @@ describe('native ios cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     popupWin = win;
                     postRobotMock.receive({
@@ -2186,9 +2156,6 @@ describe('native ios cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -2337,7 +2304,7 @@ describe('native chrome cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 expectClose:        true,
                 onOpen:             ({ win }) => {
                     popupWin = win;
@@ -2360,9 +2327,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -2512,7 +2476,7 @@ describe('native chrome cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -2533,9 +2497,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -2630,7 +2591,7 @@ describe('native chrome cases', () => {
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
                 times:              2,
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 expectClose:        true,
                 onOpen:             ({ win }) => {
                     popupWin = win;
@@ -2653,9 +2614,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -2819,7 +2777,7 @@ describe('native chrome cases', () => {
 
             const mockWindowConfig = {
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 times:              1,
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
@@ -2841,9 +2799,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -2955,7 +2910,7 @@ describe('native chrome cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 expectClose:        true,
                 onOpen:             ({ win }) => {
                     popupWin = win;
@@ -2978,9 +2933,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -3107,7 +3059,7 @@ describe('native chrome cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 expectClose:        true,
                 onOpen:             ({ win }) => {
                     popupWin = win;
@@ -3130,9 +3082,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -3143,7 +3092,7 @@ describe('native chrome cases', () => {
                         }
 
                         if (!redirectQuery.buttonSessionID) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
                         }
 
                         if (!redirectQuery.channel) {
@@ -3247,7 +3196,7 @@ describe('native chrome cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 expectClose:        true,
                 onOpen:             ({ win }) => {
                     popupWin = win;
@@ -3270,9 +3219,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -3379,7 +3325,7 @@ describe('native chrome cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -3397,7 +3343,11 @@ describe('native chrome cases', () => {
                 }
             });
 
-            window.xprops.createOrder = mockAsyncProp(avoid('createOrder', promiseNoop));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return generateOrderID();
+                });
+            }), 50);
 
             window.xprops.onClick = mockAsyncProp(expect('onClick', async (data, actions) => {
                 mockWindow.expectClose();
@@ -3435,7 +3385,7 @@ describe('native chrome cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -3520,7 +3470,7 @@ describe('native chrome cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -3541,9 +3491,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -3651,7 +3598,7 @@ describe('native chrome cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -3676,9 +3623,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -3781,7 +3725,7 @@ describe('native chrome cases', () => {
 
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 onOpen:             ({ win }) => {
                     postRobotMock.receive({
                         win,
@@ -3799,7 +3743,12 @@ describe('native chrome cases', () => {
                 }
             });
 
-            window.xprops.createOrder = mockAsyncProp(avoid('createOrder'));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return generateOrderID();
+                });
+            }), 50);
+
 
             window.xprops.onClick = mockAsyncProp(expect('onClick', async (data, actions) => {
                 mockWindow.expectClose();
@@ -3867,7 +3816,7 @@ describe('native chrome cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/venmo/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 expectClose:        true,
                 onOpen:             ({ win }) => {
                     popupWin = win;
@@ -3889,10 +3838,6 @@ describe('native chrome cases', () => {
                         }
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
-
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -4032,7 +3977,7 @@ describe('native chrome cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 expectClose:        true,
                 onOpen:             ({ win }) => {
                     popupWin = win;
@@ -4055,9 +4000,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);
@@ -4222,7 +4164,7 @@ describe('native chrome cases', () => {
             let popupWin;
             const mockWindow = getMockWindowOpen({
                 expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
-                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
                 expectClose:        true,
                 onOpen:             ({ win }) => {
                     popupWin = win;
@@ -4245,9 +4187,6 @@ describe('native chrome cases', () => {
 
                         const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
 
-                        if (!redirectQuery.sdkMeta) {
-                            throw new Error(`Expected sdkMeta to be passed in url`);
-                        }
 
                         if (!redirectQuery.sessionUID) {
                             throw new Error(`Expected sessionUID to be passed in url`);

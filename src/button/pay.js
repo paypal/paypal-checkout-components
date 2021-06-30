@@ -36,6 +36,10 @@ export function setupPaymentFlows({ props, config, serviceData, components } : {
 }
 
 export function getPaymentFlow({ props, payment, config, serviceData } : {| props : ButtonProps, payment : Payment, config : Config, components : Components, serviceData : ServiceData |}) : PaymentFlow {
+    if (!props.fundingSource && payment.fundingSource) {
+        props.fundingSource = payment.fundingSource;
+    }
+
     for (const flow of PAYMENT_FLOWS) {
         if (flow.isEligible({ props, config, serviceData }) && flow.isPaymentEligible({ props, payment, config, serviceData })) {
             return flow;

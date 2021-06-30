@@ -2,59 +2,67 @@
 /** @jsx h */
 
 import { h, render, Fragment } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 
-import { getBody } from '../lib';
+import {
+    getBody
+} from '../lib';
+import { QRCODE_STATE } from '../constants';
 
-import { type NodeType, InstructionIcon, Logo, VenmoMark, AuthMark, cardStyle, DemoWrapper, DemoControls } from './components';
+import { type NodeType,
+    ErrorMessage,
+    QRCodeElement,
+    InstructionIcon,
+    Logo,
+    VenmoMark,
+    AuthMark,
+    cardStyle,
+    debugging_nextStateMap
+} from './components';
 
-type QRCardProps = {|
-    cspNonce : ?string,
-    svgString : string,
-    demo : boolean
-|};
 
-function ErrorMessage({
-    message,
-    resetFunc
-} : {|
-    message? : string,
-    resetFunc : () => void
-|}) : NodeType {
-    return (
-        <div id="error-view">
-            <div className="error-message">{message || 'An issue has occurred' }</div>
-            <button className="reset-button" type="button" onClick={ resetFunc }>Try scanning again</button>
-        </div>
-    );
-}
+function useXProps<T>() : T {
+    const [ xprops, setXProps ] = useState(window.xprops);
+    useEffect(() => xprops.onProps(newProps => {
+        setXProps({ ...newProps });
+    }), []);
 
-function QRCodeElement({ svgString } : {| svgString : string |}) : NodeType {
-    
-    const src = `data:image/svg+xml;base64,${ btoa(svgString) }`;
-    return (<img id="qr-code" src={ src } alt="QR Code" />);
+    function setState (newState : $Values<typeof QRCODE_STATE>) {
+        setXProps({
+            ...xprops,
+            state: newState
+        });
+    }
+
+    return {
+        ...xprops,
+        setState
+    };
 }
 
 function QRCard({
     cspNonce,
     svgString,
-    demo
-} : QRCardProps) : NodeType {
-    const [ processState, setProcessState ] = useState(null);
-    const [ errorMessage, setErrorMessage ] = useState(null);
-
-    const isError = () => processState === 'error';
-    const setState_error = () => setProcessState('error');
-    const setState_scanned = () => setProcessState('scanned');
-    const setState_authorized = () => setProcessState('authorized');
-    const setState_default = () => setProcessState(null);
+    debug
+} : {|
+    cspNonce : ?string,
+    svgString : string,
+    debug? : boolean
+|}) : NodeType {
+    const { state, errorText, setState } = useXProps();
+    const isError = () => {
+        return state === QRCODE_STATE.ERROR;
+    };
 
     return (
         <Fragment>
             <style nonce={ cspNonce }> { cardStyle } </style>
-            <div id="view-boxes" className={ processState }>
+            <div id="view-boxes" className={ state }>
                 { isError() ?
-                    <ErrorMessage message={ errorMessage } resetFunc={ () => setState_default() } /> :
+                    <ErrorMessage
+                        message={ errorText }
+                        resetFunc={ () => setState(QRCODE_STATE.DEFAULT) }
+                    /> :
                     <div id="front-view" className="card">
                         <QRCodeElement svgString={ svgString } />
                         <Logo />
@@ -77,19 +85,12 @@ function QRCard({
                     </div>
 
                 </div>
+                { debug && <button
+                    type="button"
+                    style={ { position: 'absolute', bottom: '8px', padding: '4px', right: '8px' } }
+                    onClick={ () => setState(debugging_nextStateMap.get(state)) }
+                >Next State</button>}
             </div>
-
-            { demo ?
-                <DemoControls
-                    cspNonce={ cspNonce }
-                    processState={ processState }
-                    isError={ isError }
-                    setState_error={ setState_error }
-                    setState_scanned={ setState_scanned }
-                    setState_authorized={ setState_authorized }
-                    setState_default={ setState_default }
-                    setErrorMessage={ setErrorMessage }
-                /> : null}
         </Fragment>
     );
 }
@@ -97,15 +98,20 @@ function QRCard({
 type RenderQRCodeOptions = {|
     cspNonce? : string,
     svgString : string,
-    demo? : boolean
+    debug : boolean
 |};
 
-export function renderQRCode({ cspNonce = '', svgString, demo = false } : RenderQRCodeOptions) {
-    const PropedCard = <QRCard cspNonce={ cspNonce } svgString={ svgString } demo={ demo } />;
+export function renderQRCode({
+    cspNonce = '',
+    svgString,
+    debug = false
+} : RenderQRCodeOptions) {
     render(
-        demo ?
-            DemoWrapper(PropedCard, cspNonce) :
-            PropedCard,
+        <QRCard
+            cspNonce={ cspNonce }
+            svgString={ svgString }
+            debug={ debug }
+        />,
         getBody()
     );
 }

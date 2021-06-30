@@ -155,6 +155,7 @@ export function getNativeEligibility({ vault, shippingCallbackEnabled, merchantI
         if (!gqlResult || !gqlResult.mobileSDKEligibility) {
             throw new Error(`GraphQL GetNativeEligibility returned no mobileSDKEligibility object`);
         }
+
         return gqlResult.mobileSDKEligibility;
     });
 }

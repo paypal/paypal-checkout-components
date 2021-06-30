@@ -159,6 +159,9 @@ export const FPTI_TRANSITION = {
     NATIVE_OPT_OUT:                         ('native_opt_out', 'native_opt_out'),
     NATIVE_FALLBACK:                        ('native_fallback', 'native_fallback'),
     
+    QR_SHOWN:                               ('qr_shown' : 'qr_shown'),
+    QR_CLOSING:                             ('qr_closing' : 'qr_closing'),
+    
     HONEY_IDENTIFY:                         ('honey_identify')
 };
 
@@ -223,6 +226,13 @@ export const AMPLITUDE_KEY = {
 };
 
 export const VENMO_BLUE : string = '#3D93CE';
+
+export const QRCODE_STATE = {
+    ERROR:      'qr_error',
+    SCANNED:    'qr_scanned',
+    AUTHORIZED: 'qr_authorized',
+    DEFAULT:    'qr_default'
+};
 
 export const LSAT_UPGRADE_EXCLUDED_MERCHANTS = [
     'AQipcJ1uXz50maKgYx49lKUB8MlSOXP573M6cpsFpHqDZOqnopsJpfYY7bQC_9CtQJsEhGlk8HLs2oZz',

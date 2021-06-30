@@ -2,9 +2,9 @@
 
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { COUNTRY, LANG, FUNDING, CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import { COUNTRY, LANG, CARD, WALLET_INSTRUMENT, FUNDING } from '@paypal/sdk-constants/src';
 
-import { CONTEXT } from './constants';
+import { CONTEXT, QRCODE_STATE } from './constants';
 
 // export something to force webpack to see this as an ES module
 export const TYPES = true;
@@ -19,6 +19,8 @@ export type LocaleType = {|
     lang : $Values<typeof LANG>
 |};
 
+export type FundingType = $Values<typeof FUNDING>;
+
 export type ZoidComponentInstance<P> = {|
     render : (string, ?$Values<typeof CONTEXT>) => ZalgoPromise<void>,
     renderTo : (CrossDomainWindowType, string, ?$Values<typeof CONTEXT>) => ZalgoPromise<void>,
@@ -26,14 +28,14 @@ export type ZoidComponentInstance<P> = {|
     close : () => ZalgoPromise<void>,
     show : () => ZalgoPromise<void>,
     hide : () => ZalgoPromise<void>,
-    onError : (mixed) => ZalgoPromise<void>
+    onError : (mixed) => ZalgoPromise<void>,
+    onClose : () => ZalgoPromise<void>
 |};
 
 export type ZoidComponent<P> = {|
     canRenderTo : (CrossDomainWindowType) => ZalgoPromise<boolean>,
     (P): ZoidComponentInstance<P>
 |};
-
 export type CheckoutProps = {|
     window? : ?(ProxyWindow | CrossDomainWindowType),
     sessionID : string,
@@ -48,7 +50,7 @@ export type CheckoutProps = {|
     onShippingChange : ?({| |}, {| resolve : () => ZalgoPromise<void>, reject : () => ZalgoPromise<void> |}) => ZalgoPromise<void> | void,
     onError : (mixed) => ZalgoPromise<void> | void,
     onClose : () => ZalgoPromise<void> | void,
-    fundingSource : $Values<typeof FUNDING>,
+    fundingSource : FundingType,
     card : ?$Values<typeof CARD>,
     buyerCountry : $Values<typeof COUNTRY>,
     locale : LocaleType,
@@ -56,8 +58,8 @@ export type CheckoutProps = {|
     cspNonce : ?string,
     venmoPayloadID? : ?string,
     clientMetadataID : ?string,
-    enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
-    standaloneFundingSource : ?$Values<typeof FUNDING>,
+    enableFunding : ?$ReadOnlyArray<FundingType>,
+    standaloneFundingSource : ?FundingType,
     amplitude? : boolean,
     branded : boolean | null
 |};
@@ -76,7 +78,7 @@ export type CardFieldsProps = {|
     onError : (mixed) => ZalgoPromise<void> | void,
     onClose : () => ZalgoPromise<void> | void,
     onCardTypeChange : ({| card : $Values<typeof CARD> |}) => ZalgoPromise<void> | void,
-    fundingSource : $Values<typeof FUNDING>,
+    fundingSource : FundingType,
     card : ?$Values<typeof CARD>,
     buyerCountry : $Values<typeof COUNTRY>,
     locale : LocaleType,
@@ -121,10 +123,12 @@ export type MenuComponentInstance = ZoidComponentInstance<MenuFlowProps>;
 
 export type QRCodeProps = {|
     qrPath : string,
-    cspNonce : ?string
+    cspNonce : ?string,
+    state? : $Values<typeof QRCODE_STATE>,
+    errorText? : string,
+    onClose? : () => ZalgoPromise<void>
 |};
 export type QRCodeType = ZoidComponent<QRCodeProps>;
-export type QRCodeComponentInstance = ZoidComponentInstance<QRCodeProps>;
 
 export type ContentType = {|
     instantlyPayWith : string,
@@ -181,7 +185,7 @@ export type ConnectOptions = {|
 
 export type SmartFields = {|
     name : string,
-    fundingSource : $Values<typeof FUNDING>,
+    fundingSource : FundingType,
     isValid : () => boolean
 |};
 

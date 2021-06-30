@@ -30,8 +30,8 @@ export const MENU_CLIENT_MIN_JS = 'dist/smart-menu.min.js';
 export const CARD_CLIENT_JS = 'dist/smart-card.js';
 export const CARD_CLIENT_MIN_JS = 'dist/smart-card.min.js';
 
-export const QRCODE_CLIENT_JS : string = 'dist/smart-qr-code.js';
-export const QRCODE_CLIENT_MIN_JS : string = 'dist/smart-qr-code.min.js';
+export const QRCODE_CLIENT_JS : string = 'dist/smart-qrcode.js';
+export const QRCODE_CLIENT_MIN_JS : string = 'dist/smart-qrcode.min.js';
 
 export const NATIVE_POPUP_CLIENT_JS = 'dist/smart-native-popup.js';
 export const NATIVE_POPUP_CLIENT_MIN_JS = 'dist/smart-native-popup.min.js';

@@ -2,13 +2,14 @@
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { PLATFORM, ENV, FUNDING } from '@paypal/sdk-constants/src';
-import { supportsPopups } from 'belter/src';
+import { supportsPopups, isIos, isAndroid } from 'belter/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
-import { isIOSSafari, isAndroidChrome, enableAmplitude, getStorageState } from '../../lib';
+import { enableAmplitude, getStorageState } from '../../lib';
+import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../../constants';
+import type { FundingType } from '../../types';
 import type { ButtonProps, ServiceData } from '../../button/props';
 import type { IsEligibleOptions, IsPaymentEligibleOptions } from '../types';
-import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../../constants';
 
 import { NATIVE_CHECKOUT_URI, NATIVE_CHECKOUT_POPUP_URI, NATIVE_CHECKOUT_FALLBACK_URI, SUPPORTED_FUNDING } from './config';
 
@@ -96,17 +97,26 @@ export function prefetchNativeEligibility({ props, serviceData } : PrefetchNativ
     });
 }
 
-export function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
+export function canUseQRPay(funding : ?FundingType) : boolean {
+    return (!funding) ? false :
+        (funding === FUNDING.VENMO)  &&
+        !isIos() &&
+        !isAndroid();
+}
 
-    const { clientID, platform, onShippingChange, createBillingAgreement, createSubscription, env } = props;
+export function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
+    const { clientID, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription, env } = props;
     const { firebase: firebaseConfig } = config;
     const { merchantID } = serviceData;
+    const funding = fundingSource;
+    const isValidVenmoDesktopPaySituation = canUseQRPay(funding);
 
-
-    if (platform !== PLATFORM.MOBILE) {
+    if (platform !== PLATFORM.MOBILE &&
+        !isValidVenmoDesktopPaySituation
+    ) {
         return false;
     }
-
+    
     if (onShippingChange && !isNativeOptedIn({ props })) {
         return false;
     }
@@ -120,10 +130,6 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
     }
 
     if (!firebaseConfig) {
-        return false;
-    }
-
-    if (!isIOSSafari() && !isAndroidChrome()) {
         return false;
     }
 
@@ -151,6 +157,7 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
 }
 
 export function isNativePaymentEligible({ payment } : IsPaymentEligibleOptions) : boolean {
+
     const { win, fundingSource } = payment;
 
     if (win) {

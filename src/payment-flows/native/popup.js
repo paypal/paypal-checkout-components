@@ -158,7 +158,7 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
     if (!firebaseConfig) {
         throw new Error(`Can not load popup without firebase config`);
     }
-    
+
     const nativePopupWin = window.open(getNativePopupUrl({ props, serviceData, fundingSource }));
     const nativePopupDomain = getNativePopupDomain({ props });
 

@@ -7,6 +7,8 @@ import type { ExpressRequest, ExpressResponse, LocaleType } from '../../types';
 import { getCSPNonce, makeError } from '../../lib';
 import { HTTP_HEADER } from '../../config';
 
+import { CHANNEL } from './constants';
+
 export type NativePopupInputParams = {|
     debug? : boolean,
     parentDomain : string,
@@ -15,7 +17,8 @@ export type NativePopupInputParams = {|
     buttonSessionID : string,
     sdkCorrelationID : string,
     env : $Values<typeof ENV>,
-    sdkMeta : string,
+    sdkMeta? : string,
+    channel : $Values<typeof CHANNEL>,
     buyerCountry : $Values<typeof COUNTRY>
 |};
 

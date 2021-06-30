@@ -249,6 +249,7 @@ export function mockMenu() : ZoidComponentInstance<MenuFlowProps> {
         renderTo:    () => ZalgoPromise.resolve(),
         render:      () => ZalgoPromise.resolve(),
         onError:     () => ZalgoPromise.resolve(),
+        onClose:       () => ZalgoPromise.resolve(),
         updateProps: () => ZalgoPromise.resolve(),
         close:       () => ZalgoPromise.resolve(),
         show:        () => ZalgoPromise.resolve(),

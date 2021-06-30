@@ -9,6 +9,7 @@ import { WEB_CHECKOUT_URI } from '../../config';
 import { isIOSSafari } from '../../lib';
 import { USER_ACTION } from '../../constants';
 import { HASH } from '../../native/popup/constants';
+import { CHANNEL } from '../../../server/components/native/constants';
 import type { ButtonProps, ServiceData, Config } from '../../button/props';
 import type { NativePopupInputParams } from '../../../server/components/native/params';
 
@@ -69,7 +70,7 @@ type GetNativeUrlOptions = {|
 
 type NativeUrlQuery = {|
     channel : string,
-    sdkMeta : string,
+    sdkMeta? : string,
     sessionUID : string,
     orderID : string,
     facilitatorAccessToken : string,
@@ -92,11 +93,6 @@ type NativeUrlQuery = {|
     sdkVersion : string
 |};
 
-const CHANNEL = {
-    DESKTOP: 'desktop-web',
-    MOBILE:  'mobile-web'
-};
-
 function getNativeUrlQueryParams({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : NativeUrlQuery {
     const { env, clientID, commit, buttonSessionID, stageHost, apiStageHost, enableFunding, merchantDomain } = props;
     const { facilitatorAccessToken, sdkMeta, buyerCountry } = serviceData;
@@ -110,8 +106,7 @@ function getNativeUrlQueryParams({ props, serviceData, config, fundingSource, se
     if (!firebase) {
         throw new Error(`Can not find firebase config`);
     }
-
-    return {
+    const queryParams = {
         channel,
         sdkMeta,
         sessionUID,
@@ -135,6 +130,12 @@ function getNativeUrlQueryParams({ props, serviceData, config, fundingSource, se
         buyerCountry,
         sdkVersion
     };
+
+    if (queryParams.channel === CHANNEL.DESKTOP) {
+        delete queryParams.sdkMeta;
+    }
+
+    return queryParams;
 }
 
 export function getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID } : GetNativeUrlOptions) : string {
@@ -165,9 +166,19 @@ const getNativePopupQueryParams = ({ props, serviceData } : GetNativePopupUrlOpt
     const { buttonSessionID, env, clientID, sessionID, sdkCorrelationID } = props;
     const { sdkMeta, buyerCountry } = serviceData;
     const parentDomain = getDomain();
-    return {
-        sdkMeta, buttonSessionID, parentDomain, env, clientID, sessionID, sdkCorrelationID, buyerCountry
+    const channel = isDevice() ? CHANNEL.MOBILE : CHANNEL.DESKTOP;
+    const queryParams = {
+        buttonSessionID,
+        buyerCountry,
+        clientID,
+        channel,
+        env,
+        parentDomain,
+        sdkCorrelationID,
+        sdkMeta,
+        sessionID
     };
+    return queryParams;
 };
 
 export function getNativePopupUrl({ props, serviceData, fundingSource } : GetNativePopupUrlOptions) : string {

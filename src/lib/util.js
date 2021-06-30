@@ -8,6 +8,7 @@ import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
 import { getLogger } from './logger';
 
+
 export function unresolvedPromise<T>() : ZalgoPromise<T> {
     return new ZalgoPromise(noop);
 }

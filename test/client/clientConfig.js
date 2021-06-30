@@ -158,6 +158,7 @@ describe('client config cases', () => {
     });
 
     it('should pass venmo when button clicked', async () => {
+        window.navigator.mockUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
         return await wrapPromise(async ({ expect }) => {
 
             const fundingSource = FUNDING.VENMO;

@@ -2,12 +2,33 @@
 /** @jsx h */
 
 import { preact } from 'jsx-pragmatic';
-import { h, Fragment, Node } from 'preact';
+import { h, Node } from 'preact';
 import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { VENMO_BLUE } from '../constants';
+import { VENMO_BLUE, QRCODE_STATE } from '../constants';
 
 export type NodeType = typeof Node;
+
+
+export function ErrorMessage({
+    message,
+    resetFunc
+} : {|
+    message? : string,
+    resetFunc : () => void
+|}) : NodeType {
+    return (
+        <div id="error-view">
+            <div className="error-message">{message || 'An issue has occurred' }</div>
+            <button className="reset-button" type="button" onClick={ resetFunc }>Try scanning again</button>
+        </div>
+    );
+}
+
+export function QRCodeElement({ svgString } : {| svgString : string |}) : NodeType {
+    const src = `data:image/svg+xml;base64,${ btoa(svgString) }`;
+    return (<img id="qr-code" src={ src } alt="QR Code" />);
+}
 
 export function Logo() : NodeType {
     return VenmoLogo({ logoColor: LOGO_COLOR.DEFAULT }).render(preact({ Preact: { h } }));
@@ -99,13 +120,16 @@ export const cardStyle : string = `
         flex-direction: column;
     }
     .card {
-        border-radius: 8px;        
-        width: 280px;
-        height: 320px; 
+        border-radius: 8px;
+        min-width: 280px;
+        min-height: 320px;
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
         transition: transform 1s;
         transform-style: preserve-3d;
+    }
+    .card * {
+        box-sizing: content-box;
     }
     #view-boxes {
         display: flex;
@@ -114,13 +138,14 @@ export const cardStyle : string = `
         height: 100%;
         width: 100%;
     }
-    #view-boxes.scanned #front-view,
-    #view-boxes.authorized #front-view {
+    #view-boxes.${ QRCODE_STATE.SCANNED } #front-view,
+    #view-boxes.${ QRCODE_STATE.AUTHORIZED } #front-view {
         transform: rotateY(180deg);
         position: absolute;
     }
-    #view-boxes.scanned #back-view,
-    #view-boxes.authorized #back-view {
+    #view-boxes #back-view {width: 320px;}
+    #view-boxes.${ QRCODE_STATE.SCANNED } #back-view,
+    #view-boxes.${ QRCODE_STATE.AUTHORIZED } #back-view {
         transform: rotateY(0deg);
         position: relative;
     }
@@ -128,14 +153,14 @@ export const cardStyle : string = `
     #view-boxes #back-view .success-message {
         opacity: 0;
     }
-    #view-boxes.authorized #back-view #success-mark,
-    #view-boxes.authorized #back-view .success-message {
+    #view-boxes.${ QRCODE_STATE.AUTHORIZED } #back-view #success-mark,
+    #view-boxes.${ QRCODE_STATE.AUTHORIZED } #back-view .success-message {
         opacity: 1;
     }
-    #view-boxes.authorized #back-view #success-mark {
+    #view-boxes.${ QRCODE_STATE.AUTHORIZED } #back-view #success-mark {
         transform: rotate(720deg);
     }
-    #view-boxes.authorized #back-view .auth-message {
+    #view-boxes.${ QRCODE_STATE.AUTHORIZED } #back-view .auth-message {
         opacity: 0;
     }
     #front-view {
@@ -156,11 +181,13 @@ export const cardStyle : string = `
     #qr-code {
         min-width: 160px;
         min-height: 160px;
+        width: calc(100% - 32px);
     }
     #instructions {
         background-color: #F5F5F5;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
+        box-sizing: border-box;
         padding: 16px;
         display: flex;
         align-items: center;
@@ -201,131 +228,15 @@ export const cardStyle : string = `
         left: 50%;
         bottom: -10%;
         transition: transform 500ms, opacity 500ms;
+        transition-delay: 350ms;
     }
     `;
 
-export function DemoWrapper(component : NodeType, cspNonce : ?string) : NodeType {
-    return (
-        <Fragment>
-            <style nonce={ cspNonce } >{`html{background-color: rgba(0, 0, 0, 0.4);}`}</style>
-            <div style={ `
-                background: #2F3033;
-                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
-                border-radius: 16px;                        
-                width: 720px;
-                height: 480px;  
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                position: relative;
-            }
-            ` }>
-                {component}
-            </div>
-        </Fragment>
-    );
+export const debugging_nextStateMap : Map<string, string> = new Map([
+    [ QRCODE_STATE.DEFAULT, QRCODE_STATE.SCANNED ],
+    [ QRCODE_STATE.ERROR, QRCODE_STATE.DEFAULT ],
+    [ QRCODE_STATE.AUTHORIZED, QRCODE_STATE.ERROR ],
+    [ QRCODE_STATE.SCANNED, QRCODE_STATE.AUTHORIZED ]
+]);
+
     
-}
-
-
-type DemoControlsOptions = {|
-    cspNonce? : string,
-    processState : string | null,
-    errorMessage : string | null,
-    isError : () => boolean,
-    setState_error : () => void,
-    setState_scanned : () => void,
-    setState_authorized : () => void,
-    setState_default : () => void,
-    setErrorMessage : (string) => void
-|};
-
-export function DemoControls({
-    cspNonce,
-    processState,
-    errorMessage,
-    isError,
-    setState_error,
-    setState_scanned,
-    setState_authorized,
-    setState_default,
-    setErrorMessage
-} : DemoControlsOptions) : NodeType {
-    return (
-        <div id="controls">
-            <style nonce={ cspNonce }> {`
-                    #controls {
-                        position: fixed;
-                        bottom: 1rem;
-                        left: 1rem;
-                        padding: 1rem;
-                        border: 1px solid #888C94;
-                        display: flex;
-                        flex-wrap: wrap;
-                    }
-                    #controls button {min-width: 48px;}
-                    #controls > * {margin: 0 0.5rem;}
-                    #controls div {display: flex; flex-direction: column;}
-                `}
-            </style>
-            <button
-                type="button"
-                disabled={ isError() }
-                onClick={ () => {
-                    switch (processState) {
-                    case 'authorized': setState_default();
-                        break;
-                    case 'scanned' : setState_authorized();
-                        break;
-                    default: setState_scanned();
-                    } } }>
-                {{ 'null':       'Scan',
-                    'error':      'Scan',
-                    'authorized': 'Reset',
-                    'scanned':    'Auth'
-                }[processState || 'null' ]}
-            </button>
-                
-            <button
-                type="button"
-                onClick={ () => setState_error() }>
-                Show Error
-            </button>
-            <div>
-                <button
-                    type="button"
-                    onClick={ () => {
-                        setState_error();
-                    } }>
-                    Set Error Value
-                </button>
-                <input type="text" id="errorMsg" value={ errorMessage } onChange={ (e) => setErrorMessage(e.target.value) } />
-            </div>
-            <button
-                type="button"
-                style={ { fontWeight: '700' } }
-                onClick={ () => {
-                    setState_default();
-                    setErrorMessage('An issue has occurred');
-                } }> Reset
-            </button>
-            <button
-                type="button"
-                onClick={ () => {
-                    /* eslint-disable-next-line no-console */
-                    console.log(`
-                        errorMessage: ${ errorMessage || 'null' }
-                        processState: ${ processState || 'null' }
-                        possible states: 
-                        null,
-                        scanned,
-                        authorized,
-                        error
-                    `); } }>
-                Observe State
-            </button>
-        </div>
-    );
-}
-

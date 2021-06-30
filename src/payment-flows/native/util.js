@@ -10,4 +10,3 @@ type PostMessageListener<T> = ZalgoPromise<T> & {|
 export function onPostMessage<D, R>(win : CrossDomainWindowType, domain : string, event : string, handler : (D) => R) : PostMessageListener<R> {
     return paypal.postRobot.once(event, { window: win, domain }, handler);
 }
-    

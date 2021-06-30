@@ -8,15 +8,17 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { updateButtonClientConfig } from '../../api';
-import { getLogger, promiseNoop, isAndroidChrome, getStorageState } from '../../lib';
-import { FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../../constants';
+import { getLogger, promiseNoop, isAndroidChrome, getStorageState, getStorageID } from '../../lib';
+import { FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY, TARGET_ELEMENT, QRCODE_STATE } from '../../constants';
 import { type OnShippingChangeData } from '../../props/onShippingChange';
 import { checkout } from '../checkout';
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from '../types';
 
-import { isNativeEligible, isNativePaymentEligible, prefetchNativeEligibility } from './eligibility';
+import { isNativeEligible, isNativePaymentEligible, prefetchNativeEligibility, canUseQRPay } from './eligibility';
 import { openNativePopup } from './popup';
+import { getNativeUrl } from './url';
 import { connectNative } from './socket';
+
 
 let clean;
 
@@ -40,9 +42,13 @@ function setNativeOptOut(data? : {| type? : string,  win? : CrossDomainWindowTyp
 
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
     const { onApprove, onCancel, onError,
-        buttonSessionID, onShippingChange } = props;
+        buttonSessionID, onShippingChange, createOrder } = props;
     const { fundingSource } = payment;
     const { firebase: firebaseConfig } = config;
+
+    const isQRDesktopPay = canUseQRPay(fundingSource);
+    
+    const createOrderIDPromise = createOrder();
 
     if (!firebaseConfig) {
         throw new Error(`Can not run native flow without firebase config`);
@@ -272,7 +278,9 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const onCloseCallback = () => {
+
         return ZalgoPromise.delay(1000).then(() => {
+            
             if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
                 return ZalgoPromise.try(() => {
                     return destroy();
@@ -280,6 +288,95 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             }
         }).then(noop);
     };
+
+    const initQRCode = ({ sessionUID, orderIDPromise } : {| sessionUID : string, orderIDPromise : ZalgoPromise<string>|}) => {
+        const { QRCode } = components;
+        const qrCodeRenderTarget = window.xprops.getParent();
+        const pageUrl = window.xprops.getPageUrl();
+        const stickinessID = getStorageID();
+        
+
+        getLogger().info(`VenmoDesktopPay_qrcode`).track({
+            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.QR_SHOWN
+        }).flush();
+
+
+        const closeQRCode = (event? : string = 'closeQRCode') => {
+            getLogger().info(`VenmoDesktopPay_qrcode_closing_${ event }`).track({
+                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:  event ? `${ FPTI_TRANSITION.QR_CLOSING }_${ event }` : FPTI_TRANSITION.QR_CLOSING
+            }).flush();
+            return onCloseCallback();
+        };
+        
+        return orderIDPromise.then((orderID) => {
+            const url = getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, orderID, stickinessID, pageUrl });
+
+            const qrCodeComponentInstance = QRCode({
+                cspNonce:  config.cspNonce,
+                qrPath:    url,
+                state:     QRCODE_STATE.DEFAULT,
+                onClose:   closeQRCode
+            });
+
+            function updateQRCodeComponentState(newState : {|
+                state : $Values<typeof QRCODE_STATE>,
+                errorText? : string
+            |}) : ZalgoPromise<void> {
+                return qrCodeComponentInstance.updateProps({
+                    cspNonce: config.cspNonce,
+                    qrPath:   url,
+                    onClose:  closeQRCode,
+                    ...newState
+                });
+            }
+            const onInitializeQR  = () => {
+                return updateQRCodeComponentState({ state: QRCODE_STATE.SCANNED }).then(() => {
+                    return onInitCallback();
+                });
+            };
+            const onApproveQR = (res) => {
+                return updateQRCodeComponentState({ state: QRCODE_STATE.AUTHORIZED }).then(() => {
+                    return closeQRCode('onApprove').then(() => {
+                        return onApproveCallback(res);
+                    });
+                });
+            };
+            const onCancelQR = () => {
+                return closeQRCode('onCancel').then(() => {
+                    return onCancelCallback();
+                });
+            };
+            const onErrorQR = (res) => {
+                const errorText = res.data.message;
+                return updateQRCodeComponentState({
+                    state: QRCODE_STATE.AUTHORIZED,
+                    errorText
+                }).then(() => {
+                    return onErrorCallback(res);
+                });
+            };
+
+            const connection = connectNative({
+                props, serviceData, config, fundingSource, sessionUID,
+                callbacks: {
+                    onInit:           onInitializeQR,
+                    onApprove:        onApproveQR,
+                    onCancel:         onCancelQR,
+                    onError:          onErrorQR,
+                    onFallback:       onFallbackCallback,
+                    onShippingChange: onShippingChangeCallback
+                }
+            });
+            clean.register(connection.cancel);
+            connection.setProps();
+
+            return qrCodeComponentInstance.renderTo(qrCodeRenderTarget, TARGET_ELEMENT.BODY);
+            
+            
+        });
+    };
+
 
     const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
         return new ZalgoPromise((resolve, reject) => {
@@ -305,10 +402,10 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const click = () => {
+        
         return ZalgoPromise.try(() => {
             const sessionUID = uniqueID();
-
-            return initPopupAppSwitch({ sessionUID });
+            return isQRDesktopPay ? initQRCode({ sessionUID, orderIDPromise: createOrderIDPromise }) : initPopupAppSwitch({ sessionUID });
         }).catch(err => {
             return destroy().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({
@@ -332,6 +429,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
 }
 
 function updateNativeClientConfig({ orderID, payment, userExperienceFlow, buttonSessionID }) : ZalgoPromise<void> {
+
     return ZalgoPromise.try(() => {
         const { fundingSource } = payment;
         return updateButtonClientConfig({ fundingSource, orderID, inline: false, userExperienceFlow, buttonSessionID });
