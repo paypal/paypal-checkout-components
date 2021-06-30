@@ -1112,10 +1112,6 @@
             } ]);
         }
         var http_headerBuilders = [];
-        function getPayPal() {
-            if (!window.paypal) throw new Error("paypal not found");
-            return window.paypal;
-        }
         var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
         function httpTransport(_ref) {
@@ -1387,6 +1383,10 @@
                 return /Safari/.test(ua) && !isChrome(ua);
             }();
         }
+        function getPayPal() {
+            if (!window.paypal) throw new Error("paypal not found");
+            return window.paypal;
+        }
         function isAndroidAppInstalled(appId) {
             return window.navigator && window.navigator.getInstalledRelatedApps ? window.navigator.getInstalledRelatedApps().then((function(result) {
                 if (result && result.length) {
@@ -1472,7 +1472,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.41", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.42", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
