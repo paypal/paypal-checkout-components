@@ -1,3 +1,16 @@
+## <small>5.0.167 (2021-06-30)</small>
+
+* Add card field components ([ea75aa9](https://github.com/paypal/paypal-checkout-components/commit/ea75aa9))
+* Fix problem with window.popupBridge.onComplete and queryParams (#1671) ([acb4a54](https://github.com/paypal/paypal-checkout-components/commit/acb4a54)), closes [#1671](https://github.com/paypal/paypal-checkout-components/issues/1671)
+* QRCode component eligibility updates  (#1667) ([f0df753](https://github.com/paypal/paypal-checkout-components/commit/f0df753)), closes [#1667](https://github.com/paypal/paypal-checkout-components/issues/1667)
+* Remove venmo from screenshot (#1684) ([8d3035a](https://github.com/paypal/paypal-checkout-components/commit/8d3035a)), closes [#1684](https://github.com/paypal/paypal-checkout-components/issues/1684)
+* Revert "chore(deps): update dependency fs-extra to v10 (#1626)" (#1682) ([4479ba4](https://github.com/paypal/paypal-checkout-components/commit/4479ba4)), closes [#1626](https://github.com/paypal/paypal-checkout-components/issues/1626) [#1682](https://github.com/paypal/paypal-checkout-components/issues/1682)
+* Revert "chore(deps): update dependency imgur to v1 (#1567)" (#1681) ([57b6343](https://github.com/paypal/paypal-checkout-components/commit/57b6343)), closes [#1567](https://github.com/paypal/paypal-checkout-components/issues/1567) [#1681](https://github.com/paypal/paypal-checkout-components/issues/1681)
+* Revert "chore(deps): update dependency serve to v12 (#1663)" (#1683) ([dfb7e88](https://github.com/paypal/paypal-checkout-components/commit/dfb7e88)), closes [#1663](https://github.com/paypal/paypal-checkout-components/issues/1663) [#1683](https://github.com/paypal/paypal-checkout-components/issues/1683)
+* Use local web server for 'npm run dev' (#1679) ([dfada7d](https://github.com/paypal/paypal-checkout-components/commit/dfada7d)), closes [#1679](https://github.com/paypal/paypal-checkout-components/issues/1679)
+
+
+
 ## <small>5.0.166 (2021-06-23)</small>
 
 * ApplePay Component Performance (#1675) ([be40f6b](https://github.com/paypal/paypal-checkout-components/commit/be40f6b)), closes [#1675](https://github.com/paypal/paypal-checkout-components/issues/1675)
