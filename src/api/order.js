@@ -8,7 +8,7 @@ import { request, noop, memoize, uniqueID } from 'belter/src';
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS,
-    INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER, LSAT_UPGRADE_FAILED } from '../constants';
+    INTEGRATION_ARTIFACT, ITEM_CATEGORY, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER, LSAT_UPGRADE_FAILED } from '../constants';
 import type { ShippingMethod, ShippingAddress } from '../payment-flows/types';
 
 import { callSmartAPI, callGraphQL, callRestAPI } from './api';
@@ -548,7 +548,8 @@ type SupplementalOrderInfo = {|
             |},
             supplementary? : {|
                 initiationIntent? : string
-            |}
+            |},
+            category? : $Values<typeof ITEM_CATEGORY>
         |},
         buyer? : {|
             userId? : string
@@ -588,6 +589,7 @@ export const getSupplementalOrderInfo : GetSupplementalOrderInfo = memoize(order
                         supplementary {
                             initiationIntent
                         }
+                        category
                     }
                     flags {
                         isChangeShippingAddressAllowed

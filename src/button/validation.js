@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { INTENT, SDK_QUERY_KEYS, CURRENCY, ENV, FPTI_KEY, SDK_SETTINGS, VAULT } from '@paypal/sdk-constants/src';
 
 import type { CreateBillingAgreement, CreateSubscription } from '../props';
-import { FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY } from '../constants';
+import { BUTTON_LABEL, FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY, ITEM_CATEGORY } from '../constants';
 import { getSupplementalOrderInfo } from '../api';
 import { getLogger, isEmailAddress } from '../lib';
 import { ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '../config';
@@ -16,7 +16,8 @@ type OrderValidateOptions = {|
     merchantID : $ReadOnlyArray<string>,
     intent : $Values<typeof INTENT>,
     currency : $Values<typeof CURRENCY>,
-    vault : boolean
+    vault : boolean,
+    buttonLabel : ?string
 |};
 
 type Payee = {|
@@ -153,7 +154,7 @@ const VALIDATE_INTENTS = [
     INTENT.ORDER
 ];
 
-export function validateOrder(orderID : string, { env, clientID, merchantID, currency, intent, vault } : OrderValidateOptions) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { env, clientID, merchantID, currency, intent, vault, buttonLabel } : OrderValidateOptions) : ZalgoPromise<void> {
     const logger = getLogger();
 
     // eslint-disable-next-line complexity
@@ -173,6 +174,20 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, cur
                 loggerPayload: { cartIntent, intent },
                 env, clientID, orderID
             });
+        }
+
+        if (buttonLabel === BUTTON_LABEL.DONATE) {
+            const category = ITEM_CATEGORY.DONATION;
+            const itemCategory = cart.category || '';
+
+            if (!itemCategory || itemCategory !== category) {
+                triggerIntegrationError({
+                    error:         'smart_button_validation_error_incorrect_item_category',
+                    message:       `Expected item category from order api call to be ${ category }, got ${ itemCategory }. Please ensure you are passing category=${ category } for all items in the order payload. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
+                    loggerPayload: { itemCategory, category },
+                    env, clientID, orderID
+                });
+            }
         }
 
         if (cartCurrency && cartCurrency !== currency) {
