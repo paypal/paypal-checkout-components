@@ -89,7 +89,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
         [FPTI_CUSTOM_KEY.INFO_MSG]: base64encode(window.location.href)
     }).flush();
 
-    const sfvc = isSFVC();
+    let sfvc = isSFVC();
     const sfvcOrSafari = !sfvc ? isSFVCorSafari() : false;
     const sfvcOrSafariLog = sfvcOrSafari ? 'sfvcOrSafari' : 'browser';
     const logMessage = sfvc ? 'sfvc' : sfvcOrSafariLog;
@@ -287,6 +287,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
     const pageUrl = `${ window.location.href.split('#')[0] }#${  HASH.CLOSE }`;
 
     appInstalledPromise.then(app => {
+        sfvc = !sfvc ? sfvcOrSafari === true : true;
         sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl, sfvc, stickinessID }).then(({ redirect = true, redirectUrl, appSwitch = true }) => {
             if (!redirect) {
                 return;
