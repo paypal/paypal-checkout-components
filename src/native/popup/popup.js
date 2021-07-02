@@ -253,8 +253,8 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
             break;
         }
         case HASH.ON_FALLBACK: {
-            const { type } = parseQuery(queryString);
-            sendToParent(MESSAGE.ON_FALLBACK, { type });
+            const { type, skip_native_duration } = parseQuery(queryString);
+            sendToParent(MESSAGE.ON_FALLBACK, { type, skip_native_duration });
             break;
         }
         case HASH.ON_ERROR: {

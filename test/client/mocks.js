@@ -1426,7 +1426,8 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
             message_type:       'request',
             message_name:       'onFallback',
             message_data:       {
-                type: 'native_opt_out'
+                type:                 'native_opt_out',
+                skip_native_duration: 604800000
             }
         }));
 

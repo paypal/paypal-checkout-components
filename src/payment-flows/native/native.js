@@ -26,11 +26,17 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
     return prefetchNativeEligibility({ props, serviceData }).then(noop);
 }
 
-function setNativeOptOut(data? : {| type? : string,  win? : CrossDomainWindowType |}) : boolean {
+function setNativeOptOut(data? : {| type? : string, skip_native_duration? : number,  win? : CrossDomainWindowType |}) : boolean {
     let optOut = false;
     if (data && data.type === FPTI_TRANSITION.NATIVE_OPT_OUT) {
-        // Opt-out 1 week from native experience
-        const OPT_OUT_TIME = 7 * 24 * 60 * 60 * 1000;
+        const { skip_native_duration } = data;
+
+        // Opt-out 6 weeks from native experience as default
+        let OPT_OUT_TIME = 6 * 7 * 24 * 60 * 60 * 1000;
+        if (skip_native_duration && typeof skip_native_duration === 'number') {
+            OPT_OUT_TIME = skip_native_duration;
+        }
+
         const now = Date.now();
         getStorageState(state => {
             state.nativeOptOutLifetime = now + OPT_OUT_TIME;
@@ -175,7 +181,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         });
     };
 
-    const onFallbackCallback = ({ data } : {| data? : {| type? : string,  win? : CrossDomainWindowType |} |}) => {
+    const onFallbackCallback = ({ data } : {| data? : {| type? : string, skip_native_duration? : number,  win? : CrossDomainWindowType |} |}) => {
         
         return ZalgoPromise.try(() => {
             const optOut = setNativeOptOut(data);
