@@ -131,3 +131,7 @@ export function isIOSSafari() : boolean {
 export function isAndroidChrome() : boolean {
     return isAndroid() && isChrome();
 }
+
+export function slashToUnderscore(endpoint : string) : string {
+    return endpoint.replace(/\//g, '_');
+}
