@@ -1,3 +1,9 @@
+## <small>5.0.169 (2021-07-08)</small>
+
+* Add eligible checks before for venmo experiments after client-side validations (#1685) ([8856dbb](https://github.com/paypal/paypal-checkout-components/commit/8856dbb)), closes [#1685](https://github.com/paypal/paypal-checkout-components/issues/1685)
+
+
+
 ## <small>5.0.168 (2021-06-30)</small>
 
 * FEATURE: Integrate Donate as a label (#1678) ([822d50f](https://github.com/paypal/paypal-checkout-components/commit/822d50f)), closes [#1678](https://github.com/paypal/paypal-checkout-components/issues/1678)
