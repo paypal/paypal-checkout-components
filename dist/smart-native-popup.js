@@ -1472,7 +1472,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.42", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.44", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
@@ -1715,7 +1715,8 @@
                       case "fallback":
                         var _parseQuery3 = parseQuery(queryString);
                         sendToParent("onFallback", {
-                            type: _parseQuery3.type
+                            type: _parseQuery3.type,
+                            skip_native_duration: _parseQuery3.skip_native_duration
                         });
                         break;
 
@@ -1754,7 +1755,7 @@
                 sendToParent("awaitRedirect", {
                     app: app,
                     pageUrl: pageUrl,
-                    sfvc: sfvc,
+                    sfvc: sfvc = !!sfvc || !0 === sfvcOrSafari,
                     stickinessID: stickinessID
                 }).then((function(_ref3) {
                     var _ref3$redirect = _ref3.redirect, redirectUrl = _ref3.redirectUrl, _ref3$appSwitch = _ref3.appSwitch, appSwitch = void 0 === _ref3$appSwitch || _ref3$appSwitch;
