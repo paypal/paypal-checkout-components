@@ -5,7 +5,7 @@ import type { WebpackConfig } from 'grumbler-scripts/config/types';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 import { ENV } from '@paypal/sdk-constants';
 
-import { testGlobals } from './test/globals';
+import { getTestGlobals } from './test/globals';
 import globals from './globals';
 
 const FILE_NAME = 'sdk';
@@ -14,6 +14,8 @@ const PROTOCOL = 'https';
 const HOSTNAME = 'localhost.paypal.com';
 const PORT = 9001;
 
+const testGlobals = getTestGlobals(globals);
+
 const WEBPACK_CONFIG_DEV : WebpackConfig = getWebpackConfig({
     entry:         './paypal.dev.js',
     filename:      `${ FILE_NAME }.js`,
@@ -21,7 +23,6 @@ const WEBPACK_CONFIG_DEV : WebpackConfig = getWebpackConfig({
     minify:        false,
     env:           ENV.LOCAL,
     vars:          {
-        ...globals,
         ...testGlobals,
         __PROTOCOL__:        PROTOCOL,
         __HOST__:            `${ HOSTNAME }:${ PORT }`,
