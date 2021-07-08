@@ -1,6 +1,6 @@
-/* @flow */
+/* eslint import/no-commonjs: off, flowtype/require-valid-file-annotation: off, flowtype/require-return-type: off */
 
-export const fundingEligibility = {
+const fundingEligibility = {
     bancontact: {
         eligible: false
     },
@@ -103,7 +103,7 @@ export const fundingEligibility = {
     }
 };
 
-export function getTestGlobals(productionGlobals) {
+function getTestGlobals(productionGlobals) {
     return {
         ...productionGlobals,
         __PAYPAL_CHECKOUT__: {
@@ -118,7 +118,7 @@ export function getTestGlobals(productionGlobals) {
             }
         },
 
-        __FUNDING_ELIGIBILITY__: () : string => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
+        __FUNDING_ELIGIBILITY__: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
 
         __PROTOCOL__:          'http',
         __PORT__:              8000,
@@ -144,5 +144,10 @@ export function getTestGlobals(productionGlobals) {
             ...productionGlobals.__POST_ROBOT__,
             __SCRIPT_NAMESPACE__: false
         }
-    }
+    };
 }
+
+module.exports = {
+    fundingEligibility,
+    getTestGlobals
+};
