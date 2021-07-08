@@ -15,6 +15,10 @@ const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X B
 
 describe('native ios cases', () => {
 
+    afterEach(() => {
+        window.localStorage.clear();
+    });
+
     it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
@@ -2260,9 +2264,186 @@ describe('native ios cases', () => {
 
         });
     });
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to mobile native path in iOS when enable_mobile_native_popup_domain is enabled', async () => {
+        window.localStorage.setItem('enable_mobile_native_popup_domain', true);
+
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+            
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (!data.query.includes('query GetFireBaseSessionToken')) {
+                        return;
+                    }
+
+                    if (!data.variables.sessionUID) {
+                        throw new Error(`Expected sessionUID to be passed`);
+                    }
+
+                    return {
+                        data: {
+                            firebase: {
+                                auth: {
+                                    sessionUID: data.variables.sessionUID,
+                                    sessionToken
+                                }
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            let sessionUID;
+
+            const postRobotMock = getPostRobotMock();
+            let popupWin;
+
+            const mockWindow = getMockWindowOpen({
+                expectedUrl:        'https://mobile.paypal.com/smart/checkout/native/popup',
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
+                onOpen:             ({ win }) => {
+                    popupWin = win;
+                    postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://mobile.paypal.com',
+                        data:   {
+                            redirect: true,
+                            pageUrl:  `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (res.redirect !== true) {
+                            throw new Error(`Expected redirect to be true`);
+                        }
+
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
+                        }
+
+                        if (!redirectQuery.channel) {
+                            throw new Error(`Expected channel to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buyerCountry) {
+                            throw new Error(`Expected buyerCountry to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sdkVersion) {
+                            throw new Error(`Expected sdkVersion to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        postRobotMock.receive({
+                            win,
+                            name:   'detectAppSwitch',
+                            domain: 'https://mobile.paypal.com'
+                        });
+                    }));
+                }
+            });
+
+            const { expect: expectSocket, onInit, onApprove } = getNativeFirebaseMock({
+                getSessionUID: () => {
+                    if (!sessionUID) {
+                        throw new Error(`Session UID not present`);
+                    }
+
+                    return sessionUID;
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'onInit' && message_type === 'request') {
+                        mockWindow.expectClose();
+                        ZalgoPromise.delay(50).then(onApprove);
+                        postRobotMock.receive({
+                            win:    popupWin,
+                            name:   'onComplete',
+                            domain: 'https://mobile.paypal.com'
+                        });
+                    }
+                })
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = generateOrderID();
+            const payerID = 'XXYYZZ123456';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }), 50);
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+            await ZalgoPromise.delay(50).then(onInit);
+            await window.xprops.onApprove.await();
+
+            await mockWebSocketServer.done();
+            postRobotMock.done();
+            gqlMock.done();
+            mockWindow.done();
+
+        });
+    });
 });
 
 describe('native chrome cases', () => {
+
+    afterEach(() => {
+        window.localStorage.clear();
+    });
 
     it('should render a button with createOrder, click the button, and render checkout via popup to native path in Android', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
@@ -4454,6 +4635,162 @@ describe('native chrome cases', () => {
             getStorageState(state => {
                 state.nativeOptOutLifetime = 0;
             });
+
+        });
+    });
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to mobile native path in Android  when enable_mobile_native_popup_domain is enabled', async () => {
+        window.localStorage.setItem('enable_mobile_native_popup_domain', true);
+
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
+
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+            
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (!data.query.includes('query GetFireBaseSessionToken')) {
+                        return;
+                    }
+
+                    if (!data.variables.sessionUID) {
+                        throw new Error(`Expected sessionUID to be passed`);
+                    }
+
+                    return {
+                        data: {
+                            firebase: {
+                                auth: {
+                                    sessionUID: data.variables.sessionUID,
+                                    sessionToken
+                                }
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            let sessionUID;
+
+            const postRobotMock = getPostRobotMock();
+            let popupWin;
+            const mockWindow = getMockWindowOpen({
+                expectedUrl:        'https://mobile.paypal.com/smart/checkout/native/popup',
+                expectedQuery:      [ 'buttonSessionID', 'parentDomain' ],
+                expectClose:        true,
+                onOpen:             ({ win }) => {
+                    popupWin = win;
+                    postRobotMock.receive({
+                        win,
+                        name:   'awaitRedirect',
+                        domain: 'https://mobile.paypal.com',
+                        data:   {
+                            redirect: true,
+                            pageUrl:  `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (res.redirect !== true) {
+                            throw new Error(`Expected redirect to be true`);
+                        }
+
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const redirectQuery = parseQuery(res.redirectUrl.split('?')[1]);
+
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
+                        }
+
+                        if (!redirectQuery.channel) {
+                            throw new Error(`Expected channel to be passed in url`);
+                        }
+
+                        sessionUID = redirectQuery.sessionUID;
+
+                        popupWin.close();
+                    }));
+                }
+            });
+
+            const { expect: expectSocket, onApprove, onInit } = getNativeFirebaseMock({
+                getSessionUID: () => {
+                    if (!sessionUID) {
+                        throw new Error(`Session UID not present`);
+                    }
+
+                    return sessionUID;
+                },
+                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
+                    if (message_name === 'onInit' && message_type === 'request') {
+                        ZalgoPromise.delay(50).then(onApprove);
+                    }
+                })
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = generateOrderID();
+            const payerID = 'XXYYZZ123456';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }), 50);
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+            await ZalgoPromise.delay(50).then(onInit);
+            await window.xprops.onApprove.await();
+
+            await mockWebSocketServer.done();
+            postRobotMock.done();
+            gqlMock.done();
+            mockWindow.done();
 
         });
     });
