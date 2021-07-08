@@ -245,7 +245,16 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        if (enableVenmoExperiment) {
+                        const { onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), applePaySupport, supportsPopups, supportedNativeBrowser } = props;
+
+                        const flow = determineFlow(props);
+                        const { layout } = style;
+
+                        const platform   = getPlatform();
+                        const components = getComponents();
+                        const experiment = getVenmoExperiment(enableVenmoExperiment);
+
+                        if (enableVenmoExperiment && isFundingEligible(FUNDING.VENMO, { layout, platform, fundingSource: FUNDING.VENMO, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment })) {
                             enableVenmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
                         }
 
