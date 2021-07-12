@@ -1,10 +1,11 @@
 /* @flow */
 
 import { max, perc, roundUp } from 'belter/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
 
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from '../../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
+
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
@@ -12,7 +13,7 @@ const MIN_SPLIT_BUTTON_WIDTH = 300;
 const FIRST_BUTTON_PERC = 50;
 const WALLET_BUTTON_PERC = 60;
 
-export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : string {
+export function buttonResponsiveStyle({ height, locale } : {| height? : ?number, locale? : ?LocaleType |}) : string {
 
     return Object.keys(BUTTON_SIZE_STYLE).map(size => {
 
@@ -20,10 +21,13 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
         const buttonHeight = height || style.defaultHeight;
         const minDualWidth = Math.max(Math.round(buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)), MIN_SPLIT_BUTTON_WIDTH);
 
+        const textPercPercentage = locale?.lang === 'de' ? 32 : 36;
+        const labelPercPercentage = locale?.lang === 'de' ? 32 : 35;
+        const smallerLabelHeight = max(roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2), 12);
+
         const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
         return `
-
             @media only screen and (min-width: ${ style.minWidth }px) {
 
                 .${ CLASS.CONTAINER } {
@@ -132,6 +136,25 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                 }
             }
 
+            @media only screen and (min-width: ${ style.minWidth }px) and (max-width: 320px) {
+
+                .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.TEXT }, .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.SPACE } {
+                    font-size: ${ max(perc(buttonHeight, textPercPercentage), 10) }px;
+                    margin-top: -${ perc(max(perc(buttonHeight, textPercPercentage), 10), 10) }px;
+                    line-height: ${ smallerLabelHeight }px;
+                }
+
+
+                .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.TEXT } * {
+                    margin-top: ${ perc(max(perc(buttonHeight, textPercPercentage), 10), 10) }px;
+                }
+
+                .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
+                    margin: 0px 4vw;
+                    height: ${ smallerLabelHeight }px;
+                }
+            }
+
             @media only screen and (min-width: ${ style.minWidth }px) and (max-width: ${ minDualWidth }px) {
 
                 .${ CLASS.BUTTON_ROW }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
@@ -173,6 +196,7 @@ export function buttonResponsiveStyle({ height } : {| height? : ?number |}) : st
                     display: block;
                 }
             }
+        
         `;
 
     }).join('\n');
