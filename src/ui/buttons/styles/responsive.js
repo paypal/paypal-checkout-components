@@ -22,7 +22,10 @@ export function buttonResponsiveStyle({ height, locale } : {| height? : ?number,
         const minDualWidth = Math.max(Math.round(buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)), MIN_SPLIT_BUTTON_WIDTH);
 
         const textPercPercentage = locale?.lang === 'de' ? 32 : 36;
-        const labelHeight = max(roundUp(perc(buttonHeight, textPercPercentage) + 5, 2), 12);
+        const labelPercPercentage = locale?.lang === 'de' ? 32 : 35;
+        const smallerLabelHeight = max(roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2), 12);
+
+        const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
         return `
             @media only screen and (min-width: ${ style.minWidth }px) {
@@ -138,12 +141,17 @@ export function buttonResponsiveStyle({ height, locale } : {| height? : ?number,
                 .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.TEXT }, .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.SPACE } {
                     font-size: ${ max(perc(buttonHeight, textPercPercentage), 10) }px;
                     margin-top: -${ perc(max(perc(buttonHeight, textPercPercentage), 10), 10) }px;
-                    line-height: ${ labelHeight }px;
+                    line-height: ${ smallerLabelHeight }px;
                 }
 
 
                 .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW } .${ CLASS.TEXT } * {
                     margin-top: ${ perc(max(perc(buttonHeight, textPercPercentage), 10), 10) }px;
+                }
+
+                .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
+                    margin: 0px 4vw;
+                    height: ${ smallerLabelHeight }px;
                 }
             }
 
