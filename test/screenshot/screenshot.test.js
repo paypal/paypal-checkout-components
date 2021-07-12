@@ -4,7 +4,7 @@
 import fs from 'fs-extra';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
-import { testGlobals } from '../globals';
+import { getTestGlobals } from '../globals';
 import globals from '../../globals';
 import { testContent } from '../content';
 
@@ -29,7 +29,7 @@ const setupBrowserPage = (async () => {
         libraryTarget: 'window',
         test:          true,
         web:           false,
-        vars:          { ...globals, ...testGlobals }
+        vars:          { ...getTestGlobals(globals) }
     })), { headless: HEADLESS, devtools: DEVTOOLS });
 
     for (const filename of await fs.readdir(IMAGE_DIR)) {
@@ -150,7 +150,7 @@ for (const config of buttonConfigs) {
                 await screenshot.write(filepath);
 
                 let imgurUrl = '';
-                
+
                 if (process.env.TRAVIS) {
                     imgurUrl = await uploadToImgur(filepath);
                 }
@@ -161,7 +161,7 @@ for (const config of buttonConfigs) {
         } else {
             await screenshot.write(filepath);
         }
-            
+
     });
 
     (only ? test.only : test)(`Render button with ${ description }`, async () => {

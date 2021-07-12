@@ -4,7 +4,7 @@
 import type { WebpackConfig } from 'grumbler-scripts/config/types';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
-import { testGlobals } from './test/globals';
+import { getTestGlobals } from './test/globals';
 import globals from './globals';
 
 const MODULE_NAME = 'paypal';
@@ -17,8 +17,7 @@ export const WEBPACK_CONFIG_TEST : WebpackConfig = getWebpackConfig({
     debug:  true,
 
     vars: {
-        ...globals,
-        ...testGlobals,
+        ...getTestGlobals(globals),
         __CLIENT_ID__:   'abcxyz123',
         __MERCHANT_ID__: 'abc'
     }
