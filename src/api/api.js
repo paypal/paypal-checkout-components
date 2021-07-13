@@ -51,7 +51,8 @@ export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : 
     });
 }
 
-type APIRequest = {|
+type SmartAPIRequest = {|
+    authenticated? : boolean,
     accessToken? : ?string,
     url : string,
     method? : string,
@@ -64,9 +65,13 @@ export type APIResponse = {|
     headers : {| [$Values<typeof HEADERS>] : string |}
 |};
 
-export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHeaders = {}, json } : APIRequest) : ZalgoPromise<APIResponse> {
+export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHeaders = {}, json, authenticated = true } : SmartAPIRequest) : ZalgoPromise<APIResponse> {
 
     reqHeaders[HEADERS.REQUESTED_BY] = SMART_PAYMENT_BUTTONS;
+
+    if (authenticated && !accessToken) {
+        throw new Error(`Buyer access token not present - can not call smart api: ${ url }`);
+    }
 
     if (accessToken) {
         reqHeaders[HEADERS.ACCESS_TOKEN] = accessToken;

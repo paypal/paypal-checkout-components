@@ -356,8 +356,9 @@ export function validatePaymentMethod({ accessToken, orderID, paymentMethodID, e
 
 export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<string> {
     return callSmartAPI({
-        method: 'post',
-        url:    `${ SMART_API_URI.PAYMENT }/${ billingToken }/ectoken`
+        authenticated: false,
+        method:        'post',
+        url:           `${ SMART_API_URI.PAYMENT }/${ billingToken }/ectoken`
     }).then(({ data }) => {
         return data.token;
     });
@@ -365,8 +366,9 @@ export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<stri
 
 export function subscriptionIdToCartId(subscriptionID : string) : ZalgoPromise<string> {
     return callSmartAPI({
-        method: 'post',
-        url:    `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }/cartid`
+        authenticated: false,
+        method:        'post',
+        url:           `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }/cartid`
     }).then(({ data }) => {
         return data.token;
     });
