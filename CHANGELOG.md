@@ -1,3 +1,10 @@
+## <small>5.0.170 (2021-07-13)</small>
+
+* Fix button label issue for German (#1687) ([f225109](https://github.com/paypal/paypal-checkout-components/commit/f225109)), closes [#1687](https://github.com/paypal/paypal-checkout-components/issues/1687)
+* Fix webpack json loader error w/ test globals (#1686) ([ad5336c](https://github.com/paypal/paypal-checkout-components/commit/ad5336c)), closes [#1686](https://github.com/paypal/paypal-checkout-components/issues/1686)
+
+
+
 ## <small>5.0.169 (2021-07-08)</small>
 
 * Add eligible checks before for venmo experiments after client-side validations (#1685) ([8856dbb](https://github.com/paypal/paypal-checkout-components/commit/8856dbb)), closes [#1685](https://github.com/paypal/paypal-checkout-components/issues/1685)
