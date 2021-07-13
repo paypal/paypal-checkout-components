@@ -1,7 +1,7 @@
 /* @flow */
 
 import { max, perc, roundUp } from 'belter/src';
-import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
+import { FUNDING, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from '../../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
@@ -13,7 +13,7 @@ const MIN_SPLIT_BUTTON_WIDTH = 300;
 const FIRST_BUTTON_PERC = 50;
 const WALLET_BUTTON_PERC = 60;
 
-export function buttonResponsiveStyle({ height, locale } : {| height? : ?number, locale? : ?LocaleType |}) : string {
+export function buttonResponsiveStyle({ height, fundingEligibility } : {| height? : ?number, fundingEligibility : FundingEligibilityType |}) : string {
 
     return Object.keys(BUTTON_SIZE_STYLE).map(size => {
 
@@ -21,8 +21,11 @@ export function buttonResponsiveStyle({ height, locale } : {| height? : ?number,
         const buttonHeight = height || style.defaultHeight;
         const minDualWidth = Math.max(Math.round(buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)), MIN_SPLIT_BUTTON_WIDTH);
 
-        const textPercPercentage = locale?.lang === 'de' ? 32 : 36;
-        const labelPercPercentage = locale?.lang === 'de' ? 32 : 35;
+        const { paylater } = fundingEligibility;
+        const isInGerman = paylater?.products?.paylater?.variant === 'DE';
+
+        const textPercPercentage = isInGerman ? 32 : 36;
+        const labelPercPercentage = isInGerman ? 32 : 35;
         const smallerLabelHeight = max(roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2), 12);
 
         const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
