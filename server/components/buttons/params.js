@@ -43,6 +43,7 @@ type ButtonInputParams = {|
     riskData? : string,
     platform : ?$Values<typeof PLATFORM>,
     paymentMethodNonce? : ?string,
+    paymentMethodToken? : ?string,
     branded? : boolean,
     fundingSource : $Values<typeof FUNDING>
 |};
@@ -81,7 +82,7 @@ type ButtonParams = {|
     correlationID : string,
     platform : $Values<typeof PLATFORM>,
     cookies : string,
-    paymentMethodNonce : ?string,
+    paymentMethodToken : ?string,
     branded : ?boolean,
     fundingSource : $Values<typeof FUNDING>
 |};
@@ -197,14 +198,14 @@ function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibilityTy
 }
 
 
-function getPaymentMethodNonce(req : ExpressRequest) : ?string {
-    const paymentMethodNonce = req.query && req.query.paymentMethodNonce;
+function getPaymentMethodToken(req : ExpressRequest) : ?string {
+    const paymentMethodToken = req.query && (req.query.paymentMethodNonce || req.query.paymentMethodToken);
 
-    if (!paymentMethodNonce || typeof paymentMethodNonce !== 'string') {
+    if (!paymentMethodToken || typeof paymentMethodToken !== 'string') {
         return;
     }
 
-    return paymentMethodNonce;
+    return paymentMethodToken;
 }
 
 
@@ -312,7 +313,7 @@ export function getButtonParams(params : ButtonInputParams, req : ExpressRequest
     const buyerCountry = getBuyerCountry(req, params);
 
     const basicFundingEligibility = getFundingEligibilityParam(req);
-    const paymentMethodNonce = getPaymentMethodNonce(req);
+    const paymentMethodToken = getPaymentMethodToken(req);
 
     const branded = getBranded(params);
     const riskData = getRiskDataParam(req);
@@ -349,7 +350,7 @@ export function getButtonParams(params : ButtonInputParams, req : ExpressRequest
         correlationID,
         platform,
         cookies,
-        paymentMethodNonce,
+        paymentMethodToken,
         branded
     };
 }

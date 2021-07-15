@@ -17,7 +17,7 @@ type GetSmartWalletOptions = {|
     clientMetadataID : string,
     userIDToken : string,
     vetted? : boolean,
-    paymentMethodNonce? : ?string,
+    paymentMethodToken? : ?string,
     branded? : ?boolean
 |};
 
@@ -25,7 +25,7 @@ const DEFAULT_AMOUNT = '0.00';
 
 type GetSmartWallet = (GetSmartWalletOptions) => ZalgoPromise<Wallet>;
 
-export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true, paymentMethodNonce, branded }) => {
+export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true, paymentMethodToken, branded }) => {
     return callGraphQL({
         name:  'GetSmartWallet',
         query: `
@@ -36,7 +36,7 @@ export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, 
                 $amount: String
                 $userIDToken: String
                 $vetted: Boolean
-                $paymentMethodNonce: String
+                $paymentMethodToken: String
                 $branded: Boolean
             ) {
                 smartWallet(
@@ -46,7 +46,7 @@ export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, 
                     amount: $amount
                     userIdToken: $userIDToken
                     vetted: $vetted
-                    paymentMethodNonce: $paymentMethodNonce
+                    paymentMethodNonce: $paymentMethodToken
                     branded: $branded
                 ) {
                     paypal {
@@ -87,7 +87,7 @@ export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, 
                 }
             }
         `,
-        variables: { clientID, merchantID, currency, amount, userIDToken, vetted, paymentMethodNonce, branded },
+        variables: { clientID, merchantID, currency, amount, userIDToken, vetted, paymentMethodToken, branded },
         headers:   {
             [HEADERS.CLIENT_METADATA_ID]: clientMetadataID
         }

@@ -91,7 +91,8 @@ export type XProps = {|
     onError : XOnError,
     onShippingChange : ?XOnShippingChange,
 
-    paymentMethodNonce : string,
+    paymentMethodNonce : ?string,
+    paymentMethodToken : ?string,
     branded? : boolean,
     userExperienceFlow : string,
 
@@ -157,7 +158,7 @@ export type Props = {|
     onShippingChange : ?OnShippingChange,
     onAuth : OnAuth,
 
-    paymentMethodNonce : string,
+    paymentMethodToken : ?string,
 
     applePay : XApplePaySessionConfigRequest,
 
@@ -204,6 +205,7 @@ export function getProps({ facilitatorAccessToken, branded } : {| facilitatorAcc
         disableCard,
         wallet,
         paymentMethodNonce,
+        paymentMethodToken = paymentMethodNonce,
         getQueriedEligibleFunding = () => ZalgoPromise.resolve([]),
         storageID,
         applePay,
@@ -288,7 +290,7 @@ export function getProps({ facilitatorAccessToken, branded } : {| facilitatorAcc
 
         onAuth,
         standaloneFundingSource: fundingSource,
-        paymentMethodNonce,
+        paymentMethodToken,
         branded,
         stickinessID,
         applePay,

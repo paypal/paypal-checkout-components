@@ -4,32 +4,36 @@ import { noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src/funding';
 
-import { payWithNonce, loadFraudnet } from '../api';
+import { payWithPaymentMethodToken, loadFraudnet } from '../api';
 import { getLogger, promiseNoop } from '../lib';
 import type { ButtonProps } from '../button/props';
 
 import type { PaymentFlow, PaymentFlowInstance } from './types';
 import { checkout } from './checkout';
 
+const ERROR_CODE = {
+    PAY_WITH_DIFFERENT_CARD: 'PAY_WITH_DIFFERENT_CARD'
+};
+
 function getClientMetadataID({ props } : {| props : ButtonProps |}) : string {
     const { clientMetadataID, sessionID } = props;
     return clientMetadataID || sessionID;
 }
 
-function setupNonce({ props, config }) {
+function setupBrandedVaultCard({ props, config }) {
     const { env } = props;
     const { cspNonce } = config;
     const clientMetadataID = getClientMetadataID({ props });
     loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop);
 }
 
-function isNonceEligible({ props, serviceData }) : boolean {
-    const { paymentMethodNonce, branded } = props;
+function isBrandedVaultCardEligible({ props, serviceData }) : boolean {
+    const { paymentMethodToken, branded } = props;
     const { wallet } = serviceData;
 
-    const instrument  = wallet?.card?.instruments.filter(({ tokenID })  => (tokenID === paymentMethodNonce))[0];
+    const instrument  = wallet?.card?.instruments.filter(({ tokenID })  => (tokenID === paymentMethodToken))[0];
 
-    if (!paymentMethodNonce) {
+    if (!paymentMethodToken) {
         return false;
     }
 
@@ -54,7 +58,7 @@ function isNonceEligible({ props, serviceData }) : boolean {
     return true;
 }
 
-function isNoncePaymentEligible({ props, payment, serviceData }) : boolean {
+function isBrandedVaultCardPaymentEligible({ props, payment, serviceData }) : boolean {
 
     const { branded } = props;
     const { wallet } = serviceData;
@@ -82,33 +86,33 @@ function isNoncePaymentEligible({ props, payment, serviceData }) : boolean {
     return true;
 }
 
-function startPaymentWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID, clientMetadataID }) : ZalgoPromise<{| payerID : string |}> {
-    getLogger().info('nonce_payment_initiated');
+function approveOrder({ orderID, paymentMethodToken, clientID, branded, buttonSessionID, clientMetadataID }) : ZalgoPromise<{| payerID : string |}> {
+    getLogger().info('branded_vault_card_payment_initiated');
 
     if (!branded) {
         throw new Error(`Expected payment to be branded`);
     }
 
-    return payWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID, clientMetadataID })
+    return payWithPaymentMethodToken({ orderID, paymentMethodToken, clientID, branded, buttonSessionID, clientMetadataID })
         .catch((error) => {
-            getLogger().info('nonce_payment_failed');
+            getLogger().info('branded_vault_card_payment_failed');
             // $FlowFixMe
-            error.code = 'PAY_WITH_DIFFERENT_CARD';
+            error.code = ERROR_CODE.PAY_WITH_DIFFERENT_CARD;
             throw error;
         });
 }
 
-function initNonce({ props, components, payment, serviceData, config }) : PaymentFlowInstance {
+function initBrandedVaultCard({ props, components, payment, serviceData, config }) : PaymentFlowInstance {
     const { createOrder, onApprove, clientID, branded, buttonSessionID } = props;
     const { wallet } = serviceData;
     const { paymentMethodID } = payment;
 
     const clientMetadataID = getClientMetadataID({ props });
     const instrument  = wallet?.card?.instruments.filter(({ tokenID })  => (tokenID === paymentMethodID))[0];
-    const paymentMethodNonce = instrument?.tokenID;
+    const paymentMethodToken = instrument?.tokenID;
 
-    if (!paymentMethodNonce) {
-        getLogger().info('nonce_payment_failed');
+    if (!paymentMethodToken) {
+        getLogger().info('branded_vault_card_payment_failed');
         throw new Error('PAY_WITH_DIFFERENT_CARD');
     }
 
@@ -125,8 +129,7 @@ function initNonce({ props, components, payment, serviceData, config }) : Paymen
 
     const start = () => {
         return createOrder().then(orderID => {
-            getLogger().info('orderid_in_nonce', { orderID });
-            return startPaymentWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID, clientMetadataID }).then(({ payerID }) => {
+            return approveOrder({ orderID, paymentMethodToken, clientID, branded, buttonSessionID, clientMetadataID }).then(({ payerID }) => {
                 return onApprove({ payerID }, { restart });
             });
         });
@@ -139,11 +142,11 @@ function initNonce({ props, components, payment, serviceData, config }) : Paymen
 }
 
 
-export const nonce : PaymentFlow = {
+export const brandedVaultCard : PaymentFlow = {
     name:              'nonce',
-    setup:             setupNonce,
-    isEligible:        isNonceEligible,
-    isPaymentEligible: isNoncePaymentEligible,
-    init:              initNonce,
+    setup:             setupBrandedVaultCard,
+    isEligible:        isBrandedVaultCardEligible,
+    isPaymentEligible: isBrandedVaultCardPaymentEligible,
+    init:              initBrandedVaultCard,
     inline:            true
 };

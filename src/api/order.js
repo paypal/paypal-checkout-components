@@ -729,31 +729,31 @@ export function updateButtonClientConfig({ orderID, fundingSource, inline = fals
     });
 }
 
-type PayWithNonceOptions = {|
+type PayWithPaymentMethodTokenOptions = {|
     orderID : string,
-    paymentMethodNonce : string,
+    paymentMethodToken : string,
     clientID : string,
     branded : boolean,
     buttonSessionID : string,
     clientMetadataID : string
 |};
 
-export function payWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID, clientMetadataID } : PayWithNonceOptions) : ZalgoPromise<ApproveData> {
-    getLogger().info(`pay_with_nonce_input_params`, { orderID, paymentMethodNonce, clientID, branded, buttonSessionID });
+export function payWithPaymentMethodToken({ orderID, paymentMethodToken, clientID, branded, buttonSessionID, clientMetadataID } : PayWithPaymentMethodTokenOptions) : ZalgoPromise<ApproveData> {
+    getLogger().info(`pay_with_payment_method_token_input_params`, { orderID, paymentMethodToken, clientID, branded, buttonSessionID });
     return callGraphQL({
         name:  'approvePaymentWithNonce',
         query: `
             mutation ApprovePaymentWithNonce(
                 $orderID : String!
                 $clientID : String!
-                $paymentMethodNonce: String!
+                $paymentMethodToken: String!
                 $branded: Boolean!
                 $buttonSessionID: String
             ) {
                 approvePaymentWithNonce(
                     token: $orderID
                     clientID: $clientID
-                    paymentMethodNonce: $paymentMethodNonce
+                    paymentMethodNonce: $paymentMethodToken
                     branded: $branded
                     buttonSessionID: $buttonSessionID
                 ) {
@@ -766,7 +766,7 @@ export function payWithNonce({ orderID, paymentMethodNonce, clientID, branded, b
         variables: {
             orderID,
             clientID,
-            paymentMethodNonce,
+            paymentMethodToken,
             branded,
             buttonSessionID
         },
@@ -775,7 +775,7 @@ export function payWithNonce({ orderID, paymentMethodNonce, clientID, branded, b
             [ HEADERS.CLIENT_METADATA_ID ]: clientMetadataID
         }
     }).then(({ approvePaymentWithNonce }) => {
-        getLogger().info('pay_with_paymentMethodNonce', JSON.stringify(approvePaymentWithNonce));
+        getLogger().info('pay_with_paymentMethodToken', JSON.stringify(approvePaymentWithNonce));
         return {
             payerID: approvePaymentWithNonce.buyer.userId
         };

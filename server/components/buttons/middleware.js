@@ -70,7 +70,7 @@ export function getButtonMiddleware({
 
             const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard, userIDToken, amount,
                 merchantID: sdkMerchantID, currency, intent, commit, vault, clientAccessToken, basicFundingEligibility, locale,
-                correlationID, cookies, enableFunding, style, paymentMethodNonce, branded, fundingSource } = getButtonParams(params, req, res);
+                correlationID, cookies, enableFunding, style, paymentMethodToken, branded, fundingSource } = getButtonParams(params, req, res);
 
             const { label, period, tagline } = style;
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
@@ -101,7 +101,7 @@ export function getButtonMiddleware({
 
             const walletPromise = resolveWallet(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault, amount,
-                disableFunding, disableCard, clientAccessToken, buyerCountry, userIDToken, paymentMethodNonce, branded
+                disableFunding, disableCard, clientAccessToken, buyerCountry, userIDToken, paymentMethodToken, branded
             }).catch(noop);
 
             const personalizationEnabled = getPersonalizationEnabled(req);
