@@ -7,6 +7,7 @@ import { popup, supportsPopups, writeElementToWindow } from 'belter/src';
 import { assertSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { SpinnerPage } from '@paypal/common-components/src';
 import { getLogger } from '@paypal/sdk-client/src';
+import type { ZoidProps } from 'zoid/src';
 
 import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
@@ -16,7 +17,7 @@ import { supportsQRPay, showButtonLoading } from './util';
 
 type PrerenderedButtonsProps = {|
     nonce : ?string,
-    props : ButtonProps,
+    props : ZoidProps<ButtonProps>,
     onRenderCheckout : ({|
         win? : CrossDomainWindowType,
         fundingSource : $Values<typeof FUNDING>,

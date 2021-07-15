@@ -297,7 +297,8 @@ export type ButtonProps = {|
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
     applePaySupport : boolean,
-    applePay : ApplePaySessionConfigRequest
+    applePay : ApplePaySessionConfigRequest,
+    meta : {||}
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type

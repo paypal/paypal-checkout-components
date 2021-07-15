@@ -70,10 +70,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
-                experiment = getVenmoExperiment(enableVenmoExperiment)
+                experiment = getVenmoExperiment(enableVenmoExperiment),
+                createBillingAgreement, createSubscription
             } = props;
 
-            const flow = determineFlow(props);
+            const flow = determineFlow({ createBillingAgreement, createSubscription });
             const applePaySupport = fundingEligibility?.applepay?.eligible ? isApplePaySupported() : false;
 
             if (!fundingSource) {
@@ -110,9 +111,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
 
                 validate: ({ props }) => {
-                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), applePaySupport, supportsPopups, supportedNativeBrowser } = props;
+                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
+                        applePaySupport, supportsPopups, supportedNativeBrowser, createBillingAgreement, createSubscription } = props;
 
-                    const flow = determineFlow(props);
+                    const flow = determineFlow({ createBillingAgreement, createSubscription });
                     const { layout } = style;
 
                     const platform           = getPlatform();
@@ -194,7 +196,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'function',
                 required:   false,
                 queryParam: true,
-                queryValue: ({ value }) : string => {
+                queryValue: ({ value }) => {
                     return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
                 }
             },
@@ -245,9 +247,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        const { onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), applePaySupport, supportsPopups, supportedNativeBrowser } = props;
+                        const { onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(), applePaySupport,
+                            supportsPopups, supportedNativeBrowser, createBillingAgreement, createSubscription } = props;
 
-                        const flow = determineFlow(props);
+                        const flow = determineFlow({ createBillingAgreement, createSubscription });
                         const { layout } = style;
 
                         const platform   = getPlatform();
@@ -379,7 +382,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             flow: {
                 type:       'string',
                 queryParam: true,
-                value:      ({ props }) => determineFlow(props)
+                value:      ({ props }) => {
+                    const { createBillingAgreement, createSubscription } = props;
+                    return determineFlow({ createBillingAgreement, createSubscription });
+                }
             },
 
             remember: {

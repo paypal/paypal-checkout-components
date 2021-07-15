@@ -5,9 +5,14 @@ import { getEnableFunding, createExperiment, getFundingEligibility } from '@payp
 
 import type { Experiment as VenmoExperiment } from '../../types';
 import { BUTTON_FLOW, CLASS } from '../../constants';
-import type { ApplePaySessionConfigRequest, ButtonProps } from '../../ui/buttons/props';
+import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription } from '../../ui/buttons/props';
 
-export function determineFlow(props : ButtonProps) : $Values<typeof BUTTON_FLOW> {
+type DetermineFlowOptions = {|
+    createBillingAgreement : CreateBillingAgreement,
+    createSubscription : CreateSubscription
+|};
+
+export function determineFlow(props : DetermineFlowOptions) : $Values<typeof BUTTON_FLOW> {
 
     if (props.createBillingAgreement) {
         return BUTTON_FLOW.BILLING_SETUP;
