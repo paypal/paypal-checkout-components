@@ -7,7 +7,7 @@ import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-util
 
 import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
-import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL, getFundingEligibility, updateButtonClientConfig, getSmartWallet  } from '../api';
+import { enableVault, exchangeAccessTokenForAuthCode, getConnectURL, getFundingEligibility, updateButtonClientConfig, getSmartWallet, loadFraudnet  } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger } from '../lib';
 import { openPopup } from '../ui';
@@ -229,9 +229,9 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick, amount,
-        clientID, connect, clientMetadataID: cmid, onAuth, userIDToken, env,
+        clientID, connect, clientMetadataID: cmid, onAuth, userIDToken,
         currency, intent, disableFunding, disableCard, enableFunding,
-        standaloneFundingSource, branded } = props;
+        standaloneFundingSource, branded, env } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
         venmoPayloadID, buyerIntent } = payment;
     const { fundingEligibility, buyerCountry, sdkMeta, merchantID } = serviceData;
@@ -262,7 +262,9 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                     } else if (clientID && userIDToken && fundingSkipLogin) {
                         const clientMetadataID = cmid || sessionID;
 
-                        return getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken, env, cspNonce }).then(wallet => {
+                        return loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop).then(() => {
+                            return getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken });
+                        }).then(wallet => {
                             // $FlowFixMe
                             const walletInstruments = wallet[fundingSkipLogin] && wallet[fundingSkipLogin].instruments;
 

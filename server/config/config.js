@@ -8,9 +8,6 @@ import { getEnv } from './env';
 
 export const MODULE_POLL_INTERVAL = 5 * 60;
 
-export const FNCLS = 'fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99';
-export const FRAUDNET_ID = 'SMART_PAYMENT_BUTTONS';
-
 export const WEBPACK_CONFIG = 'webpack.config';
 
 export const MODULE_DIR : string = join(__dirname, '..');

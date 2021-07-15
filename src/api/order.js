@@ -734,10 +734,11 @@ type PayWithNonceOptions = {|
     paymentMethodNonce : string,
     clientID : string,
     branded : boolean,
-    buttonSessionID : string
+    buttonSessionID : string,
+    clientMetadataID : string
 |};
 
-export function payWithNonce({ orderID, paymentMethodNonce, clientID, branded = true, buttonSessionID } : PayWithNonceOptions) : ZalgoPromise<ApproveData> {
+export function payWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID, clientMetadataID } : PayWithNonceOptions) : ZalgoPromise<ApproveData> {
     getLogger().info(`pay_with_nonce_input_params`, { orderID, paymentMethodNonce, clientID, branded, buttonSessionID });
     return callGraphQL({
         name:  'approvePaymentWithNonce',
@@ -770,7 +771,8 @@ export function payWithNonce({ orderID, paymentMethodNonce, clientID, branded = 
             buttonSessionID
         },
         headers: {
-            [ HEADERS.CLIENT_CONTEXT ]: orderID
+            [ HEADERS.CLIENT_CONTEXT ]:     orderID,
+            [ HEADERS.CLIENT_METADATA_ID ]: clientMetadataID
         }
     }).then(({ approvePaymentWithNonce }) => {
         getLogger().info('pay_with_paymentMethodNonce', JSON.stringify(approvePaymentWithNonce));

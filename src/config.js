@@ -24,6 +24,7 @@ export const GRAPHQL_URI = '/graphql';
 export const WEB_CHECKOUT_URI = '/checkoutnow';
 
 export const FUNDING_SKIP_LOGIN : { [$Values<typeof FUNDING>] : $Values<typeof FUNDING> } = {
+    [ FUNDING.PAYPAL ]:   FUNDING.PAYPAL,
     [ FUNDING.PAYLATER ]: FUNDING.PAYPAL,
     [ FUNDING.CREDIT ]:   FUNDING.PAYPAL
 };

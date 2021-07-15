@@ -1,16 +1,26 @@
 /* @flow */
 
+import { noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src/funding';
 
-import { payWithNonce } from '../api';
+import { payWithNonce, loadFraudnet } from '../api';
 import { getLogger, promiseNoop } from '../lib';
+import type { ButtonProps } from '../button/props';
 
 import type { PaymentFlow, PaymentFlowInstance } from './types';
 import { checkout } from './checkout';
 
-function setupNonce() {
-// pass
+function getClientMetadataID({ props } : {| props : ButtonProps |}) : string {
+    const { clientMetadataID, sessionID } = props;
+    return clientMetadataID || sessionID;
+}
+
+function setupNonce({ props, config }) {
+    const { env } = props;
+    const { cspNonce } = config;
+    const clientMetadataID = getClientMetadataID({ props });
+    loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop);
 }
 
 function isNonceEligible({ props, serviceData }) : boolean {
@@ -72,14 +82,14 @@ function isNoncePaymentEligible({ props, payment, serviceData }) : boolean {
     return true;
 }
 
-function startPaymentWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID }) : ZalgoPromise<{| payerID : string |}> {
+function startPaymentWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID, clientMetadataID }) : ZalgoPromise<{| payerID : string |}> {
     getLogger().info('nonce_payment_initiated');
 
     if (!branded) {
         throw new Error(`Expected payment to be branded`);
     }
 
-    return payWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID })
+    return payWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID, clientMetadataID })
         .catch((error) => {
             getLogger().info('nonce_payment_failed');
             // $FlowFixMe
@@ -93,6 +103,7 @@ function initNonce({ props, components, payment, serviceData, config }) : Paymen
     const { wallet } = serviceData;
     const { paymentMethodID } = payment;
 
+    const clientMetadataID = getClientMetadataID({ props });
     const instrument  = wallet?.card?.instruments.filter(({ tokenID })  => (tokenID === paymentMethodID))[0];
     const paymentMethodNonce = instrument?.tokenID;
 
@@ -115,7 +126,7 @@ function initNonce({ props, components, payment, serviceData, config }) : Paymen
     const start = () => {
         return createOrder().then(orderID => {
             getLogger().info('orderid_in_nonce', { orderID });
-            return startPaymentWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID }).then(({ payerID }) => {
+            return startPaymentWithNonce({ orderID, paymentMethodNonce, clientID, branded, buttonSessionID, clientMetadataID }).then(({ payerID }) => {
                 return onApprove({ payerID }, { restart });
             });
         });

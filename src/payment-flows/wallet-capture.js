@@ -5,8 +5,9 @@ import { stringifyError, noop } from 'belter/src';
 import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';
-import { getSupplementalOrderInfo, oneClickApproveOrder, getSmartWallet, updateButtonClientConfig } from '../api';
+import { getSupplementalOrderInfo, oneClickApproveOrder, getSmartWallet, loadFraudnet, updateButtonClientConfig } from '../api';
 import { BUYER_INTENT, FPTI_TRANSITION, FPTI_MENU_OPTION } from '../constants';
+import { type ButtonProps } from '../button/props';
 import { getLogger } from '../lib';
 
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions, MenuOptions, Payment } from './types';
@@ -27,25 +28,35 @@ function isWalletCaptureEligible({ props, serviceData } : IsEligibleOptions) : b
     return true;
 }
 
+function getClientMetadataID({ props } : {| props : ButtonProps |}) : string {
+    const { clientMetadataID, sessionID } = props;
+    return clientMetadataID || sessionID;
+}
+
 let smartWalletPromise;
 let smartWalletErrored = false;
 
 function setupWalletCapture({ props, config, serviceData } : SetupOptions) {
-    const { env, sessionID, clientID, currency, amount, userIDToken, clientMetadataID: cmid } = props;
+    const { env, clientID, currency, amount, userIDToken } = props;
     const { cspNonce } = config;
     const { merchantID, wallet } = serviceData;
 
-    const clientMetadataID = cmid || sessionID;
+    const clientMetadataID = getClientMetadataID({ props });
 
-    if (clientID && userIDToken) {
-        smartWalletPromise = getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken, env, cspNonce }).catch(err => {
-            getLogger().warn('load_smart_wallet_error', { err: stringifyError(err) });
-            smartWalletErrored = true;
-            throw err;
-        });
-    } else if (wallet) {
-        smartWalletPromise = ZalgoPromise.resolve(wallet);
+    if (!wallet) {
+        throw new Error(`No wallet found`);
     }
+
+    smartWalletPromise = loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop).then(() => {
+        return userIDToken
+            ? getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken })
+            : wallet;
+    });
+
+    smartWalletPromise.catch(err => {
+        getLogger().warn('load_smart_wallet_error', { err: stringifyError(err) });
+        smartWalletErrored = true;
+    });
 }
 
 function getInstrument(wallet : Wallet, fundingSource : $Values<typeof FUNDING>, instrumentID : string) : WalletInstrument {
@@ -87,6 +98,10 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
         return false;
     }
 
+    if (!smartWalletPromise) {
+        return false;
+    }
+
     if (smartWalletErrored) {
         return false;
     }
@@ -94,10 +109,6 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
     try {
         getInstrument(wallet, fundingSource, instrumentID);
     } catch (err) {
-        return false;
-    }
-
-    if (!smartWalletPromise) {
         return false;
     }
 
@@ -121,21 +132,17 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
 
     const createAccessToken = () => {
         if (!smartWalletPromise) {
-            return ZalgoPromise.resolve();
+            throw new Error(`No smart wallet found`);
         }
                     
         return smartWalletPromise.then(smartWallet => {
-            const smartInstrument = getInstrument(smartWallet, fundingSource, instrumentID);
+            const { accessToken } = getInstrument(smartWallet, fundingSource, instrumentID);
 
-            if (!smartInstrument) {
-                throw new Error(`Instrument not found`);
-            }
-
-            if (!smartInstrument.accessToken) {
+            if (!accessToken) {
                 throw new Error(`Instrument access token not found`);
             }
 
-            return smartInstrument.accessToken;
+            return accessToken;
         });
     };
 
