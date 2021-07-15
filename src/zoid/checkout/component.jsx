@@ -110,6 +110,7 @@ export function getCheckoutComponent() : CheckoutComponent {
                     required:   false,
                     // $FlowFixMe
                     queryValue: ({ value }) => ZalgoPromise.try(value),
+                    // $FlowFixMe
                     decorate:   ({ value }) => memoize(value)
                 },
 
