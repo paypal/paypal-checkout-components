@@ -508,6 +508,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false
             },
 
+            paymentMethodToken: {
+                type:       'string',
+                queryParam: true,
+                required:   false
+            },
+
             branded: {
                 type:       'boolean',
                 queryParam: true,
