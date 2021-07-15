@@ -37,7 +37,7 @@ function getSDKMobileEnvironment() : MobileEnvironment | null {
 type LoggerOptions = {|
     env : $Values<typeof ENV>,
     sessionID : string,
-    clientID : ?string,
+    clientID : string,
     sdkCorrelationID : string,
     locale : LocaleType,
     buyerCountry : $Values<typeof COUNTRY>,

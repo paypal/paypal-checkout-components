@@ -12,7 +12,7 @@ import { ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '
 
 type OrderValidateOptions = {|
     env : $Values<typeof ENV>,
-    clientID : ?string,
+    clientID : string,
     merchantID : $ReadOnlyArray<string>,
     intent : $Values<typeof INTENT>,
     currency : $Values<typeof CURRENCY>,
@@ -75,7 +75,7 @@ function isValidMerchantIDs(merchantIDs : $ReadOnlyArray<string>, payees : $Read
 type triggerIntegrationErrorOptions = {|
     error : string,
     message? : string,
-    clientID : ?string,
+    clientID : string,
     orderID? : string,
     env : $Values<typeof ENV>,
     loggerPayload? : {|

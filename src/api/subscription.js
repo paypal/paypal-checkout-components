@@ -27,7 +27,7 @@ export type SubscriptionCreateRequest = {|
 |};
 
 type SubscriptionOptions = {|
-    clientID : ?string,
+    clientID : string,
     merchantID? : $ReadOnlyArray<string>,
     partnerAttributionID? : ?string
 |};

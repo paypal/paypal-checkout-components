@@ -24,7 +24,7 @@ function getClientVersion() : string {
 type ButtonLoggerOptions = {|
     env : $Values<typeof ENV>,
     sessionID : string,
-    clientID : ?string,
+    clientID : string,
     partnerAttributionID : ?string,
     commit : boolean,
     sdkCorrelationID : string,

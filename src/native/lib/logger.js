@@ -12,7 +12,7 @@ import { FPTI_TRANSITION, FPTI_STATE, FPTI_CONTEXT_TYPE, AMPLITUDE_KEY } from '.
 type NativeLoggerOptions = {|
     env : $Values<typeof ENV>,
     sessionID : string,
-    clientID : ?string,
+    clientID : string,
     buttonSessionID : string,
     sdkCorrelationID : string,
     fundingSource : ?$Values<typeof FUNDING>,

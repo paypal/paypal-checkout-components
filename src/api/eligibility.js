@@ -74,7 +74,7 @@ export function getFundingEligibility(query : string, { accessToken, clientID, m
 }
 
 type NativeEligibilityOptions = {|
-    clientID : ?string,
+    clientID : string,
     buyerCountry : ?$Values<typeof COUNTRY>,
     currency : $Values<typeof CURRENCY>,
     vault : boolean,

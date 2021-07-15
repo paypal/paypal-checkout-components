@@ -21,7 +21,7 @@ export function buildXCreateSubscriptionData() : XCreateSubscriptionDataType {
     return {};
 }
 
-export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID, merchantID, clientID } : {| facilitatorAccessToken : string, partnerAttributionID? : ?string, merchantID? : $ReadOnlyArray<string>, clientID : ?string |}) : XCreateSubscriptionActionsType {
+export function buildXCreateSubscriptionActions({ facilitatorAccessToken, partnerAttributionID, merchantID, clientID } : {| facilitatorAccessToken : string, partnerAttributionID? : ?string, merchantID? : $ReadOnlyArray<string>, clientID : string |}) : XCreateSubscriptionActionsType {
     const create = (data) => {
         return createSubcriptionID(facilitatorAccessToken, data, { partnerAttributionID, merchantID, clientID });
     };
@@ -41,7 +41,7 @@ type CreateSubscriptionXProps = {|
     createSubscription : ?XCreateSubscription,
     partnerAttributionID? : ?string,
     merchantID? : $ReadOnlyArray<string>,
-    clientID : ?string
+    clientID : string
 |};
 
 export function getCreateSubscription({ createSubscription, partnerAttributionID, merchantID, clientID } : CreateSubscriptionXProps, { facilitatorAccessToken } : {| facilitatorAccessToken : string |}) : ?CreateSubscription {

@@ -21,7 +21,7 @@ export type NativePopupOptions = {|
     sessionID : string,
     buttonSessionID : string,
     sdkCorrelationID : string,
-    clientID? : string,
+    clientID : string,
     fundingSource : $Values<typeof FUNDING>,
     locale : LocaleType,
     buyerCountry : $Values<typeof COUNTRY>

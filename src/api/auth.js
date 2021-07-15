@@ -15,7 +15,7 @@ type GenerateAccessTokenOptions = {|
     targetSubject? : string
 |};
 
-export function createAccessToken(clientID : ?string, { targetSubject } : GenerateAccessTokenOptions = {}) : ZalgoPromise<string> {
+export function createAccessToken(clientID : string, { targetSubject } : GenerateAccessTokenOptions = {}) : ZalgoPromise<string> {
     return inlineMemoize(createAccessToken, () => {
 
         getLogger().info(`rest_api_create_access_token`);
