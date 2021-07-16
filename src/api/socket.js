@@ -67,9 +67,11 @@ export type MessageSocketOptions = {|
 |};
 
 export type MessageSocket = {|
-    on : <T, R>( // eslint-disable-line no-undef
+    on : (
         name : string,
-        handler : ({| data : T |}) => ZalgoPromise<R> | R, // eslint-disable-line no-undef
+        handler : ({|
+            data : Object
+        |}) => ZalgoPromise<Object> | Object,
         opts? : {|
             requireSessionUID? : boolean
         |}
@@ -98,7 +100,15 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
     let requestListeners = {};
     let errorListeners = [];
 
-    const sendMessage = (socket, data) => {
+    type SendMessageData = {|
+        request_uid : string,
+        message_name : string,
+        message_status? : $Values<typeof RESPONSE_STATUS>,
+        message_type : $Values<typeof MESSAGE_TYPE>,
+        message_data : Object
+    |};
+
+    const sendMessage = (socket, data : SendMessageData) => {
         const messageUID = uniqueID();
         receivedMessages[messageUID] = true;
 

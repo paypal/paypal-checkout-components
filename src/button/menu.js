@@ -23,10 +23,12 @@ export function renderButtonSmartMenu({ containerUID, clientID, Menu } : SmartMe
         return menu;
     }
 
-    menu = Menu({ clientID });
+    const newMenu = Menu({ clientID });
 
-    menu.hide();
-    menu.renderTo(window.xprops.getParent(), `#${ containerUID } #smart-menu`);
+    newMenu.hide();
+    newMenu.renderTo(window.xprops.getParent(), `#${ containerUID } #smart-menu`);
+
+    menu = newMenu;
 
     return menu;
 }

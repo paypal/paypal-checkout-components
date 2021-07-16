@@ -911,7 +911,9 @@ export function mockScript({ src, expect = true, block = true } : {| src : strin
     };
 }
 
+// $FlowFixMe[method-unbinding]
 const createElement = document.createElement;
+
 // $FlowFixMe
 document.createElement = function mockCreateElement(name : string) : HTMLElement {
     const el = createElement.apply(this, arguments);

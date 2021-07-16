@@ -1,6 +1,6 @@
 /* @flow */
 
-import { onClick as onElementClick, noop, stringifyErrorMessage, stringifyError, preventClickFocus } from 'belter/src';
+import { onClick as onElementClick, querySelectorAll, noop, stringifyErrorMessage, stringifyError, preventClickFocus } from 'belter/src';
 import { COUNTRY, FPTI_KEY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -41,7 +41,7 @@ type ButtonOpts = {|
 
 try {
     if (!window.paypal) {
-        const script = Array.prototype.slice.call(document.querySelectorAll('script')).find(el => el.getAttribute('data-namespace'));
+        const script = querySelectorAll('script').find(el => el.getAttribute('data-namespace'));
 
         if (script) {
             window.paypal = window[script.getAttribute('data-namespace')];

@@ -572,7 +572,10 @@ describe('happy cases', () => {
                         throw new Error(`Expected correct window to be passed`);
                     }
 
-                    mockWin.done();
+                    if (mockWin) {
+                        mockWin.done();
+                    }
+
                     mockWin = null;
                 }
 
@@ -662,7 +665,10 @@ describe('happy cases', () => {
                         throw new Error(`Expected correct window to be passed`);
                     }
 
-                    mockWin.done();
+                    if (mockWin) {
+                        mockWin.done();
+                    }
+                    
                     mockWin = null;
                 }
 

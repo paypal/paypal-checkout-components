@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: off, max-nested-callbacks: off */
 
-import { cleanup, memoize, stringifyError, stringifyErrorMessage } from 'belter/src';
+import { cleanup, memoize, stringifyError, stringifyErrorMessage, noop } from 'belter/src';
 import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -424,7 +424,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                         return ZalgoPromise.all([
                                             onApprove(data, actions),
                                             close()
-                                        ]);
+                                        ]).then(noop);
                                     }
                                 })
                                 .catch(err => {

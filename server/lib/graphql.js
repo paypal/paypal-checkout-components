@@ -30,9 +30,9 @@ export type GraphQL = (
     result : Object
 |}>>;
 
-export type GraphQLBatchCallOptions<V> = {|
+export type GraphQLBatchCallOptions = {|
     query : string,
-    variables : V,
+    variables : { [string] : mixed },
     accessToken? : ?string,
     clientMetadataID? : string,
     timeout? : number
@@ -41,14 +41,22 @@ export type GraphQLBatchCallOptions<V> = {|
 // eslint-disable-next-line flowtype/require-exact-type
 export type GraphQLBatchCall = {
     // eslint-disable-next-line no-undef
-    <V, R>(GraphQLBatchCallOptions<V>) : Promise<R>,
+    <R>(GraphQLBatchCallOptions) : Promise<R>,
     flush : () => void
 };
 
 export function graphQLBatch(req : ExpressRequest, graphQL : GraphQL, opts? : GraphQLBatchOptions) : GraphQLBatchCall {
     const { env } = opts || {};
 
-    let batch = [];
+    // eslint-disable-next-line flowtype/no-mutable-array
+    type Batch = Array<{|
+        query : string,
+        variables : { [string] : mixed },
+        resolve : (*) => void,
+        reject : (mixed) => void
+    |}>;
+
+    let batch : Batch = [];
     let accessToken;
     let clientMetadataID = req.get(HTTP_HEADER.CLIENT_METADATA_ID);
     let timer;
@@ -160,6 +168,15 @@ type Query = {|
     [ string ] : Symbol | Query
 |};
 
+function assertQuery(value : Symbol | Query) : Query {
+    if (typeof value === 'object' && value !== null) {
+        // $FlowFixMe[class-object-subtyping]
+        return value;
+    }
+
+    throw new Error(`Invalid query`);
+}
+
 function treeShakeQuery(query : Query) : Query {
     const result = {};
 
@@ -176,7 +193,7 @@ function treeShakeQuery(query : Query) : Query {
         }
   
         if (typeof value === 'object' && value !== null) {
-            const treeShakedQuery = treeShakeQuery(value);
+            const treeShakedQuery = treeShakeQuery(assertQuery(value));
             if (!isEmpty(treeShakedQuery)) {
                 result[key] = treeShakedQuery;
             }
@@ -211,7 +228,7 @@ export function pruneQuery<T>(query : Query, existingData : T) : Query {
                 throw new Error(`Expected existing value to be object`);
             }
 
-            result[key] = pruneQuery(value, existingValue);
+            result[key] = pruneQuery(assertQuery(value), existingValue);
             continue;
         }
 
