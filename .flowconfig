@@ -5,6 +5,7 @@
 .*/node_modules/jsonlint
 .*/node_modules/**/test
 .*/dist/module
+.*/flow-typed/npm/puppeteer_v1.20.x.js
 [include]
 [libs]
 flow-typed

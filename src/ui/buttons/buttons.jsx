@@ -81,6 +81,7 @@ function getWalletInstruments({ wallet, layout, fundingSources, onShippingChange
         }
     }
 
+    // $FlowFixMe[incompatible-return]
     return instruments;
 }
 

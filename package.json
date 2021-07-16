@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
         "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
-        "flow-typed": "rm -rf flow-typed && flow-typed install",
+        "flow-typed": "rm -rf flow-typed && flow-typed install && rm flow-typed/npm/puppeteer_*",
         "flow": "flow",
         "karma": "cross-env NODE_ENV=test babel-node $(npm bin)/karma start",
         "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run jest-ssr && npm run karma && npm run jest-screenshot && npm run check-size; fi;",
@@ -63,7 +63,7 @@
     "devDependencies": {
         "babel-core": "^7.0.0-bridge.0",
         "conventional-changelog-cli": "^2.0.34",
-        "flow-bin": "0.135.0",
+        "flow-bin": "0.155.0",
         "fs-extra": "^9.0.1",
         "grumbler-scripts": "^3.0.70",
         "imagemagick": "^0.1.3",

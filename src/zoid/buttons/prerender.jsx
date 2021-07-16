@@ -28,7 +28,8 @@ type PrerenderedButtonsProps = {|
 export function PrerenderedButtons({ nonce, onRenderCheckout, props } : PrerenderedButtonsProps) : ChildType {
     let win;
     const handleClick = (
-        event : Event,
+        // eslint-disable-next-line no-undef
+        event : SyntheticInputEvent<HTMLInputElement>,
         { fundingSource, card } : {|
             fundingSource : $Values<typeof FUNDING>,
             card : ?$Values<typeof CARD>

@@ -31,17 +31,8 @@ export function supportsQRPay(funding : $Values<typeof FUNDING>) : boolean {
     return false;
 }
 
-/* eslint-disable flowtype/require-exact-type */
-type ButtonLoadingEventType = {
-    ...Event,
-    target : {
-        ...EventTarget,
-        ownerDocument : Document
-    }
-};
-/* eslint-enable flowtype/require-exact-type */
-
-export function showButtonLoading (fundingSource : $Values<typeof FUNDING>, event : ButtonLoadingEventType) : void {
+// eslint-disable-next-line no-undef
+export function showButtonLoading (fundingSource : $Values<typeof FUNDING>, event : SyntheticInputEvent<HTMLInputElement>) : void {
     const buttonElement = event.target.ownerDocument.querySelector(`[data-funding-source="${ fundingSource }"]`);
     if (buttonElement) {
         const spinner = buttonElement.querySelector(`.${ CLASS.SPINNER }`);

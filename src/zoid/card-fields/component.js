@@ -63,6 +63,7 @@ export function getCardFieldsComponent() : CardFieldsComponent {
                     type:       'function',
                     queryParam: 'token',
                     alias:      'payment',
+                    // $FlowFixMe
                     queryValue: ({ value }) => ZalgoPromise.try(value)
                 },
 

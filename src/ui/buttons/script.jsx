@@ -47,6 +47,7 @@ function getComponentScript() : () => void {
 
         // eslint-disable-next-line flowtype/no-mutable-array
         function toArray<T>(item) : Array<T> {
+            // $FlowFixMe[method-unbinding]
             return Array.prototype.slice.call(item);
         }
 

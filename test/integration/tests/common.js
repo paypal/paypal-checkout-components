@@ -78,6 +78,7 @@ export function getElements(selector : string, container : HTMLElement | Documen
         throw new Error(`No element passed`);
     }
 
+    // $FlowFixMe[method-unbinding]
     const elements = Array.prototype.slice.call(container.querySelectorAll(selector));
 
     if (!elements) {
@@ -269,6 +270,7 @@ export function onWindowOpen({ time = 500 } : {| time? : number |} = {}) : Zalgo
     return new ZalgoPromise((resolve, reject) => {
 
         const winOpen = window.open;
+        // $FlowFixMe[method-unbinding]
         const documentCreateElement = document.createElement;
 
         const reset = () => {
