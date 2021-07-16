@@ -337,7 +337,7 @@ export const componentContent : ContentMap = {
         Subscribe: ({ logo }) => <Fragment>{ logo }<Text animate optional> 订购</Text></Fragment>,
         SaferTag:  () => <Text animate optional>更安全、更便捷的付款方式</Text>,
         Pay:       ({ logo }) => <Fragment><Text animate optional>用</Text>{ logo }<Text animate optional>付款</Text></Fragment>,
-        Donate:    ({ logo }) => <Fragment>{ logo }<Text animate optional> 捐赠</Text></Fragment>
+        Donate:    ({ logo }) => <Fragment>{ logo }<Text animate optional> 捐赠</Text></Fragment>,
         BuyNow:    ({ logo }) => <Fragment>{ logo }<Text animate optional> 立即购买</Text></Fragment>
     },
     zh_Hant: {
@@ -345,6 +345,8 @@ export const componentContent : ContentMap = {
         Subscribe: ({ logo }) => <Fragment>{ logo }<Text animate optional> 訂閱</Text></Fragment>,
         SaferTag:  () => <Text animate optional>更安全方便的付款方式</Text>,
         Pay:       ({ logo }) => <Fragment><Text animate optional>使用</Text>{ logo }<Text animate optional>付款</Text></Fragment>,
+        // MISSING VALUE FOR DONATE !!!!
+        Donate:    ({ logo }) => <Fragment>{ logo }<Text animate optional> 捐赠</Text></Fragment>,
         BuyNow:    ({ logo }) => <Fragment>{ logo }<Text animate optional> 立即購</Text></Fragment>
     }
 };
