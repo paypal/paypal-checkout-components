@@ -12,6 +12,7 @@ import { config } from '../config';
 import { memoize } from './util';
 
 function isDocumentReady() : boolean {
+    // eslint-disable-next-line compat/compat
     return Boolean(document.body) && document.readyState === 'complete';
 }
 
@@ -260,7 +261,6 @@ export function hasMetaViewPort() : boolean {
 }
 
 export function getBrowserLocales() : $ReadOnlyArray<string> {
-    // eslint-disable-next-line compat/compat
     const nav = window.navigator;
 
     const locales = nav.languages
