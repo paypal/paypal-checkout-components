@@ -739,7 +739,7 @@ export const config = {
 
     get wwwApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `https://${ config.stageUrl }`,
+            [ ENV.LOCAL ]:      `${ window.location.protocol }//${ window.location.host }`,
             [ ENV.STAGE ]:      `https://${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
@@ -749,7 +749,7 @@ export const config = {
 
     get corsApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `https://${ config.apiStageUrl }:12326`,
+            [ ENV.LOCAL ]:      `${ window.location.protocol }//${ window.location.host }`,
             [ ENV.STAGE ]:      `https://${ config.apiStageUrl }:12326`,
             [ ENV.SANDBOX ]:    `https://cors.api.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://cors.api.paypal.com`,
