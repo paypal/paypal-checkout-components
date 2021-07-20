@@ -71,7 +71,33 @@ export function getFirebaseSessionToken(sessionUID : string) : ZalgoPromise<stri
     });
 }
 
+let lsatUpgradeCalled : boolean = false;
+let lsatUpgradeError : ?mixed;
+
+export const onLsatUpgradeCalled = () => {
+    lsatUpgradeCalled = false;
+};
+
+export const getLsatUpgradeCalled = () : boolean => {
+    return lsatUpgradeCalled;
+};
+
+export const onLsatUpgradeError = (err : mixed) => {
+    lsatUpgradeError = err;
+};
+
+export const getLsatUpgradeError = () : ?mixed => {
+    return lsatUpgradeError;
+};
+
+export const clearLsatState = () => {
+    lsatUpgradeCalled = false;
+    lsatUpgradeError = null;
+};
+
 export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, { buyerAccessToken, orderID } : {| buyerAccessToken : string, orderID : string |}) : ZalgoPromise<void> {
+    onLsatUpgradeCalled();
+
     return callGraphQL({
         name:    'UpgradeFacilitatorAccessToken',
         headers: {
@@ -92,7 +118,10 @@ export function upgradeFacilitatorAccessToken(facilitatorAccessToken : string, {
             }
         `,
         variables: { facilitatorAccessToken, buyerAccessToken, orderID }
-    }).then(noop);
+    }).then(noop).catch(err => {
+        onLsatUpgradeError(err);
+        throw err;
+    });
 }
 
 export function exchangeAccessTokenForAuthCode(buyerAccessToken : string) : ZalgoPromise<string> {

@@ -7,7 +7,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { updateButtonClientConfig } from '../../api';
+import { updateButtonClientConfig, onLsatUpgradeCalled } from '../../api';
 import { getLogger, promiseNoop, isAndroidChrome, getStorageState, getStorageID } from '../../lib';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY, TARGET_ELEMENT, QRCODE_STATE } from '../../constants';
 import { type OnShippingChangeData } from '../../props/onShippingChange';
@@ -200,6 +200,8 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const detectAppSwitch = ({ sessionUID } : {| sessionUID : string |}) : ZalgoPromise<void> => {
+        onLsatUpgradeCalled();
+        
         getStorageState(state => {
             const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
 

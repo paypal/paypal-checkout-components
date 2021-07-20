@@ -34,13 +34,10 @@ export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : 
         json:    data
     }).then(({ status, body, headers: responseHeaders }) : T => {
         if (status >= 300) {
-            const hasDetails = body.details && body.details.length;
-            const issue = (hasDetails && body.details[0].issue) ? body.details[0].issue : 'Generic Error';
-            const description = (hasDetails && body.details[0].description) ? body.details[0].description : 'no description';
-            
-            const error = new Error(`${ issue }: ${ description } (Corr ID: ${ responseHeaders[HEADERS.PAYPAL_DEBUG_ID] }`);
+            const error = new Error(`${ url } returned status ${ status } (Corr ID: ${ responseHeaders[HEADERS.PAYPAL_DEBUG_ID] }).\n\n${ JSON.stringify(body) }`);
+
             // $FlowFixMe
-            error.response = { status, headers: responseHeaders };
+            error.response = { status, headers: responseHeaders, body };
 
             throw error;
         }
@@ -80,16 +77,18 @@ export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHea
             if (body.ack === 'contingency') {
                 const err = new Error(body.contingency);
                 // $FlowFixMe
+                err.response = { url, method, headers: reqHeaders, body };
+                // $FlowFixMe
                 err.data = body.data;
                 throw err;
             }
 
             if (status > 400) {
-                throw new Error(`Api: ${ url } returned status code: ${ status } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })`);
+                throw new Error(`Api: ${ url } returned status code: ${ status } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })\n\n${ JSON.stringify(body) }`);
             }
 
             if (body.ack !== 'success') {
-                throw new Error(`Api: ${ url } returned ack: ${ body.ack } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })`);
+                throw new Error(`Api: ${ url } returned ack: ${ body.ack } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })\n\n${ JSON.stringify(body) }`);
             }
 
             return { data: body.data, headers };
@@ -117,9 +116,28 @@ export function callGraphQL<T>({ name, query, variables = {}, headers = {} } : {
         }
 
         if (status !== 200) {
-            throw new Error(`${ GRAPHQL_URI } returned status ${ status }`);
+            throw new Error(`${ GRAPHQL_URI } returned status ${ status }\n\n${ JSON.stringify(body) }`);
         }
 
         return body.data;
     });
+}
+
+export type Response = {|
+    data : mixed,
+    headers : {|
+        [string] : string
+    |}
+|};
+
+export function getResponseCorrelationID(res : Response) : ?string {
+    return res.headers[HEADERS.PAYPAL_DEBUG_ID];
+}
+
+export function getErrorResponseCorrelationID(err : mixed) : ?string {
+    // $FlowFixMe
+    const res : Response = err?.response;
+    if (res) {
+        return getResponseCorrelationID(res);
+    }
 }

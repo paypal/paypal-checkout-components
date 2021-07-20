@@ -4,14 +4,14 @@
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { mockWebSocket, patchWebSocket } from 'sync-browser-mocks/src/webSocket';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { values, destroyElement, noop, uniqueID, parseQuery } from 'belter/src';
+import { values, destroyElement, noop, uniqueID, parseQuery, once } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { isWindowClosed, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { ZoidComponentInstance, MenuFlowProps } from '../../src/types';
 import { setupButton } from '../../src';
-import { loadFirebaseSDK } from '../../src/api';
+import { loadFirebaseSDK, clearLsatState } from '../../src/api';
 
 import { triggerKeyPress } from './util';
 
@@ -45,6 +45,7 @@ export function cancelablePromise<T>(promise : ZalgoPromise<T>) : CancelableZalg
 }
 
 export function setupMocks() {
+    clearLsatState();
     delete window.navigator.mockUserAgent;
     const body = document.body;
 
@@ -78,6 +79,8 @@ export function setupMocks() {
             throw new Error(`Expected menu to not be rendered`);
         },
         Checkout: (props) => {
+            props.onAuth = once(props.onAuth);
+
             return {
                 renderTo: () => {
                     props.onAuth({ accessToken: MOCK_BUYER_ACCESS_TOKEN });
@@ -106,6 +109,8 @@ export function setupMocks() {
             };
         },
         CardFields: (props) => {
+            props.onAuth = once(props.onAuth);
+
             return {
                 render: () => {
                     props.onAuth({ accessToken: MOCK_BUYER_ACCESS_TOKEN });
@@ -386,7 +391,7 @@ export function getCaptureOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
-export function getRestfulCapturedOrderApiMock(options : Object = {}) : MockEndpoint {
+export function getRestfulCaptureOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
         uri:    new RegExp('/v2/checkout/orders/[^/]+/capture'),
@@ -448,6 +453,20 @@ export function getPatchOrderApiMock(options : Object = {}) : MockEndpoint {
         data:   {
             ack:  'success',
             data: {}
+        },
+        ...options
+    });
+}
+
+export function getRestfulPatchOrderApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'PATCH',
+        uri:    new RegExp('/v2/checkout/orders/[^/]+'),
+        data:   {
+            ack:  'success',
+            data: {
+
+            }
         },
         ...options
     });
@@ -664,16 +683,25 @@ export function getValidatePaymentMethodApiMock(options : Object = {}) : MockEnd
 }
 
 getCreateAccessTokenMock().listen();
+
 getCreateOrderApiMock().listen();
 getGetOrderApiMock().listen();
 getCaptureOrderApiMock().listen();
 getAuthorizeOrderApiMock().listen();
-getMapBillingTokenApiMock().listen();
 getPatchOrderApiMock().listen();
+
+getMapBillingTokenApiMock().listen();
 getSubscriptionIdToCartIdApiMock().listen();
+
 getGraphQLApiMock().listen();
 getLoggerApiMock().listen();
 getValidatePaymentMethodApiMock().listen();
+
+getRestfulGetOrderApiMock().listen();
+getRestfulCaptureOrderApiMock().listen();
+getRestfulAuthorizeOrderApiMock().listen();
+getRestfulPatchOrderApiMock().listen();
+
 
 // eslint-disable-next-line compat/compat
 navigator.sendBeacon = () => true;

@@ -5,11 +5,11 @@ import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 
-import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, getRestfulCaptureOrderApiMock,
-    getRestfulAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, MOCK_BUYER_ACCESS_TOKEN, mockFunction,
-    clickButton, getGraphQLApiMock } from './mocks';
+import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, getCaptureOrderApiMock,
+    getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, MOCK_BUYER_ACCESS_TOKEN, mockFunction,
+    clickButton, getGraphQLApiMock, getRestfulCaptureOrderApiMock, getRestfulAuthorizeOrderApiMock } from './mocks';
 
-describe('contingency cases', () => {
+describe('contingency cases with smart api fallback', () => {
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture and auto restart with INSTRUMENT_DECLINED', async () => {
         return await wrapPromise(async ({ expect }) => {
 
@@ -42,13 +42,20 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const captureOrderMock2 = getRestfulCaptureOrderApiMock();
+                    const captureOrderRESTMock2 = getRestfulCaptureOrderApiMock({ status: 403 });
+                    captureOrderRESTMock2.expectCalls();
+
+                    const captureOrderMock2 = getCaptureOrderApiMock();
                     captureOrderMock2.expectCalls();
                     await actions.order.capture();
                     captureOrderMock2.done();
+                    captureOrderRESTMock2.done();
                 });
 
-                const captureOrderMock = getRestfulCaptureOrderApiMock({
+                const captureOrderRESTMock = getRestfulCaptureOrderApiMock({ status: 403 });
+                captureOrderRESTMock.expectCalls();
+
+                const captureOrderMock = getCaptureOrderApiMock({
                     status: 400,
                     data:   {
                         ack:         'contingency',
@@ -66,6 +73,7 @@ describe('contingency cases', () => {
                 captureOrderMock.expectCalls();
                 actions.order.capture();
                 captureOrderMock.done();
+                captureOrderRESTMock.done();
             });
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
@@ -131,12 +139,20 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const captureOrderMock2 = getRestfulCaptureOrderApiMock();
+                    const captureOrderRESTMock2 = getRestfulCaptureOrderApiMock({ status: 403 });
+                    captureOrderRESTMock2.expectCalls();
+
+                    const captureOrderMock2 = getCaptureOrderApiMock();
                     captureOrderMock2.expectCalls();
                     await actions.order.capture();
                     captureOrderMock2.done();
+                    captureOrderRESTMock2.done();
                 });
-                const captureOrderMock = getRestfulCaptureOrderApiMock({
+
+                const captureOrderRESTMock = getRestfulCaptureOrderApiMock({ status: 403 });
+                captureOrderRESTMock.expectCalls();
+
+                const captureOrderMock = getCaptureOrderApiMock({
                     status: 400,
                     data:   {
                         ack:         'contingency',
@@ -154,6 +170,7 @@ describe('contingency cases', () => {
                 captureOrderMock.expectCalls();
                 actions.order.capture();
                 captureOrderMock.done();
+                captureOrderRESTMock.done();
             });
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
@@ -255,13 +272,21 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const authorizeOrderMock2 = getRestfulAuthorizeOrderApiMock();
+                    const authorizeOrderRESTMock2 = getRestfulAuthorizeOrderApiMock({ status: 403 });
+                    authorizeOrderRESTMock2.expectCalls();
+
+                    const authorizeOrderMock2 = getAuthorizeOrderApiMock();
                     authorizeOrderMock2.expectCalls();
                     await actions.order.authorize();
                     authorizeOrderMock2.done();
+
+                    authorizeOrderRESTMock2.done();
                 });
 
-                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock({
+                const authorizeOrderRESTMock = getRestfulAuthorizeOrderApiMock({ status: 403 });
+                authorizeOrderRESTMock.expectCalls();
+
+                const authorizeOrderMock = getAuthorizeOrderApiMock({
                     status: 400,
                     data:   {
                         ack:         'contingency',
@@ -279,6 +304,7 @@ describe('contingency cases', () => {
                 authorizeOrderMock.expectCalls();
                 actions.order.authorize();
                 authorizeOrderMock.done();
+                authorizeOrderRESTMock.done();
             });
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
@@ -381,13 +407,20 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const authorizeOrderMock2 = getRestfulAuthorizeOrderApiMock();
+                    const authorizeOrderRESTMock2 = getRestfulAuthorizeOrderApiMock({ status: 403 });
+                    authorizeOrderRESTMock2.expectCalls();
+
+                    const authorizeOrderMock2 = getAuthorizeOrderApiMock();
                     authorizeOrderMock2.expectCalls();
                     await actions.order.authorize();
                     authorizeOrderMock2.done();
+                    authorizeOrderRESTMock2.done();
                 });
 
-                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock({
+                const authorizeOrderRESTMock = getRestfulAuthorizeOrderApiMock({ status: 403 });
+                authorizeOrderRESTMock.expectCalls();
+
+                const authorizeOrderMock = getAuthorizeOrderApiMock({
                     status: 400,
                     data:   {
                         ack:         'contingency',
@@ -405,6 +438,7 @@ describe('contingency cases', () => {
                 authorizeOrderMock.expectCalls();
                 actions.order.authorize();
                 authorizeOrderMock.done();
+                authorizeOrderRESTMock.done();
             });
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
@@ -473,10 +507,14 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const captureOrderMock2 = getRestfulCaptureOrderApiMock();
+                    const captureOrderRESTMock2 = getRestfulCaptureOrderApiMock({ status: 403 });
+                    captureOrderRESTMock2.expectCalls();
+
+                    const captureOrderMock2 = getCaptureOrderApiMock();
                     captureOrderMock2.expectCalls();
                     await actions.order.capture();
                     captureOrderMock2.done();
+                    captureOrderRESTMock2.done();
                 });
 
                 actions.restart().then(avoid('restartThen'));

@@ -3,15 +3,16 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { CURRENCY, FPTI_KEY, FUNDING, WALLET_INSTRUMENT, INTENT } from '@paypal/sdk-constants/src';
-import { request, noop, memoize, uniqueID } from 'belter/src';
+import { request, noop, memoize, uniqueID, stringifyError } from 'belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS, SMART_PAYMENT_BUTTONS,
-    INTEGRATION_ARTIFACT, ITEM_CATEGORY, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER, LSAT_UPGRADE_FAILED } from '../constants';
+    INTEGRATION_ARTIFACT, ITEM_CATEGORY, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, PREFER, ORDER_API_ERROR } from '../constants';
 import type { ShippingMethod, ShippingAddress } from '../payment-flows/types';
 
-import { callSmartAPI, callGraphQL, callRestAPI } from './api';
+import { callSmartAPI, callGraphQL, callRestAPI, getResponseCorrelationID, getErrorResponseCorrelationID } from './api';
+import { getLsatUpgradeError, getLsatUpgradeCalled } from './auth';
 
 export type OrderCreateRequest = {|
     intent? : 'CAPTURE' | 'AUTHORIZE',
@@ -69,26 +70,11 @@ export function createOrderID(order : OrderCreateRequest, { facilitatorAccessTok
     });
 }
 
-const handleRestAPIResponse = (err, orderID : string, action : string) : string => {
-    // $FlowFixMe
-    const headers = err?.response?.headers;
-    const corrID = headers && headers[HEADERS.PAYPAL_DEBUG_ID] ? headers[HEADERS.PAYPAL_DEBUG_ID] : 'No correlation id.  Probably because the request wasn\'t made due to no access token being passed.';
-    
-    getLogger().info(`call_rest_api_failure_${ action }`, { corrID, orderID });
-
-    return corrID;
-};
-
-const handleSmartResponse = (data : Object, headers : {| [$Values<typeof HEADERS>] : string |}, orderID : string, apiCorrID : string, action : string) => {
-    const corrID = headers && headers[HEADERS.PAYPAL_DEBUG_ID] ? headers[HEADERS.PAYPAL_DEBUG_ID] : '';
-
-    getLogger().info(`lsat_uprade_shadow_success_get_${ action }`, { apiCorrID, corrID, orderID });
-
-    return data;
-};
-
 export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    if (forceRestAPI && !window[LSAT_UPGRADE_FAILED]) {
+    getLogger().info(`get_order_lsat_upgrade_${ getLsatUpgradeCalled() ? 'called' : 'not_called' }`);
+    getLogger().info(`get_order_lsat_upgrade_${ getLsatUpgradeError() ? 'errored' : 'did_not_error' }`, { err: stringifyError(getLsatUpgradeError()) });
+
+    if (forceRestAPI && !getLsatUpgradeError()) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
@@ -97,21 +83,27 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         }).catch(err => {
-            const corrID = handleRestAPIResponse(err, orderID, 'get');
+            const restCorrID = getErrorResponseCorrelationID(err);
+            getLogger().warn(`get_order_call_rest_api_error`, { restCorrID, orderID, err: stringifyError(err) });
 
             return callSmartAPI({
                 accessToken: buyerAccessToken,
                 url:         `${ SMART_API_URI.ORDER }/${ orderID }`,
                 headers:     {
-                    [HEADERS.CLIENT_CONTEXT]:         orderID
+                    [HEADERS.CLIENT_CONTEXT]: orderID
                 }
-            }).then(({ data, headers }) => {
-                return handleSmartResponse(data, headers, orderID, corrID, 'get');
+            }).then((res) => {
+                const smartCorrID = getResponseCorrelationID(res);
+                getLogger().info(`get_order_smart_fallback_success`, { smartCorrID, restCorrID, orderID });
+                return res.data;
+            }).catch(smartErr => {
+                const smartCorrID = getErrorResponseCorrelationID(err);
+                getLogger().error(`get_order_smart_fallback_error`, { smartCorrID, restCorrID, orderID, err: stringifyError(smartErr) });
+                throw smartErr;
             });
         });
     }
 
-    getLogger().info(`lsat_upgrade_false`);
     return callSmartAPI({
         accessToken: buyerAccessToken,
         url:         `${ SMART_API_URI.ORDER }/${ orderID }`,
@@ -123,8 +115,18 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
     });
 }
 
+export function isProcessorDeclineError(err : mixed) : boolean {
+    // $FlowFixMe
+    return Boolean(err?.response?.body?.data?.details?.some(detail => {
+        return detail.issue === ORDER_API_ERROR.INSTRUMENT_DECLINED || detail.issue === ORDER_API_ERROR.PAYER_ACTION_REQUIRED;
+    }));
+}
+
 export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    if (forceRestAPI && !window[LSAT_UPGRADE_FAILED]) {
+    getLogger().info(`capture_order_lsat_upgrade_${ getLsatUpgradeCalled() ? 'called' : 'not_called' }`);
+    getLogger().info(`capture_order_lsat_upgrade_${ getLsatUpgradeError() ? 'errored' : 'did_not_error' }`, { err: stringifyError(getLsatUpgradeError()) });
+
+    if (forceRestAPI && !getLsatUpgradeError()) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `post`,
@@ -134,7 +136,12 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         }).catch(err => {
-            const corrID = handleRestAPIResponse(err, orderID, 'capture');
+            const restCorrID = getErrorResponseCorrelationID(err);
+            getLogger().warn(`capture_order_call_rest_api_error`, { restCorrID, orderID, err: stringifyError(err) });
+
+            if (isProcessorDeclineError(err)) {
+                throw err;
+            }
 
             return callSmartAPI({
                 accessToken: buyerAccessToken,
@@ -143,13 +150,18 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]: orderID
                 }
-            }).then(({ data, headers }) => {
-                return handleSmartResponse(data, headers, orderID, corrID, 'capture');
+            }).then((res) => {
+                const smartCorrID = getResponseCorrelationID(res);
+                getLogger().info(`capture_order_smart_fallback_success`, { smartCorrID, restCorrID, orderID });
+                return res.data;
+            }).catch(smartErr => {
+                const smartCorrID = getErrorResponseCorrelationID(err);
+                getLogger().info(`capture_order_smart_fallback_error`, { smartCorrID, restCorrID, orderID, err: stringifyError(smartErr) });
+                throw smartErr;
             });
         });
     }
 
-    getLogger().info(`lsat_upgrade_false`);
     return callSmartAPI({
         accessToken: buyerAccessToken,
         method:      'post',
@@ -163,7 +175,10 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
 }
 
 export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    if (forceRestAPI && !window[LSAT_UPGRADE_FAILED]) {
+    getLogger().info(`authorize_order_lsat_upgrade_${ getLsatUpgradeCalled() ? 'called' : 'not_called' }`);
+    getLogger().info(`authorize_order_lsat_upgrade_${ getLsatUpgradeError() ? 'errored' : 'did_not_error' }`, { err: stringifyError(getLsatUpgradeError()) });
+
+    if (forceRestAPI && !getLsatUpgradeError()) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `post`,
@@ -173,7 +188,12 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         }).catch(err => {
-            const corrID = handleRestAPIResponse(err, orderID, 'authorize');
+            const restCorrID = getErrorResponseCorrelationID(err);
+            getLogger().warn(`authorize_order_call_rest_api_error`, { restCorrID, orderID, err: stringifyError(err) });
+
+            if (isProcessorDeclineError(err)) {
+                throw err;
+            }
 
             return callSmartAPI({
                 accessToken: buyerAccessToken,
@@ -182,8 +202,14 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]: orderID
                 }
-            }).then(({ data, headers }) => {
-                return handleSmartResponse(data, headers, orderID, corrID, 'authorize');
+            }).then((res) => {
+                const smartCorrID = getResponseCorrelationID(res);
+                getLogger().info(`authorize_order_smart_fallback_success`, { smartCorrID, restCorrID, orderID });
+                return res.data;
+            }).catch(smartErr => {
+                const smartCorrID = getErrorResponseCorrelationID(err);
+                getLogger().info(`authorize_order_smart_fallback_error`, { smartCorrID, restCorrID, orderID, err: stringifyError(smartErr) });
+                throw smartErr;
             });
         });
     }
@@ -206,7 +232,10 @@ type PatchData = {|
 |};
 
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
-    if (forceRestAPI && !window[LSAT_UPGRADE_FAILED]) {
+    getLogger().info(`patch_order_lsat_upgrade_${ getLsatUpgradeCalled() ? 'called' : 'not_called' }`);
+    getLogger().info(`patch_order_lsat_upgrade_${ getLsatUpgradeError() ? 'errored' : 'did_not_error' }`, { err: stringifyError(getLsatUpgradeError()) });
+
+    if (forceRestAPI && !getLsatUpgradeError()) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             method:      `patch`,
@@ -217,7 +246,8 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
             }
         }).catch(err => {
-            const corrID = handleRestAPIResponse(err, orderID, 'patch');
+            const restCorrID = getErrorResponseCorrelationID(err);
+            getLogger().warn(`patch_order_call_rest_api_error`, { restCorrID, orderID, err: stringifyError(err) });
 
             return callSmartAPI({
                 accessToken: buyerAccessToken,
@@ -227,8 +257,14 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]: orderID
                 }
-            }).then(({ data: patchData, headers }) => {
-                return handleSmartResponse(patchData, headers, orderID, corrID, 'patch');
+            }).then((res) => {
+                const smartCorrID = getResponseCorrelationID(res);
+                getLogger().info(`patch_order_smart_fallback_success`, { smartCorrID, restCorrID, orderID });
+                return res.data;
+            }).catch(smartErr => {
+                const smartCorrID = getErrorResponseCorrelationID(err);
+                getLogger().info(`patch_order_smart_fallback_error`, { smartCorrID, restCorrID, orderID, err: stringifyError(smartErr) });
+                throw smartErr;
             });
         });
     }

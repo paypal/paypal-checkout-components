@@ -8,7 +8,7 @@ import { FUNDING, INTENT, COUNTRY } from '@paypal/sdk-constants/src';
 import {
     mockAsyncProp,
     createButtonHTML,
-    getAuthorizeOrderApiMock,
+    getRestfulAuthorizeOrderApiMock,
     DEFAULT_FUNDING_ELIGIBILITY,
     mockFunction,
     clickButton,
@@ -82,7 +82,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -195,7 +195,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -308,7 +308,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -521,7 +521,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -1029,7 +1029,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -1242,7 +1242,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -1554,7 +1554,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -1668,7 +1668,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -1980,7 +1980,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -2094,7 +2094,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -2208,7 +2208,7 @@ describe('payee cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = getAuthorizeOrderApiMock();
+                const authorizeOrderMock = getRestfulAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
