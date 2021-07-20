@@ -114,7 +114,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
 
     const isWallet = (
-        flow === BUTTON_FLOW.PURCHASE,
+        flow === BUTTON_FLOW.PURCHASE &&
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
 

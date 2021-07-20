@@ -25,12 +25,12 @@ describe(`venmo native button test `, () => {
         window.paypal.Buttons({
             fundingSource,
             test:   {
-                onRender: ('onRender', () => {
+                onRender: () => {
                     setTimeout(() => {
                         assert.ok(getElementRecursive(`[data-funding-source="${ fundingSource }"]`), 'Button');
                         done();
                     }, 1000);
-                })
+                }
             }
         }).render('#testContainer');
     });
@@ -52,12 +52,12 @@ describe(`venmo native button test `, () => {
             fundingSource,
             wallet,
             test:   {
-                onRender: ('onRender', () => {
+                onRender: () => {
                     setTimeout(() => {
                         assert.equal(getElementRecursive('.paypal-button-text').innerHTML, '@foo');
                         done();
                     }, 1000);
-                })
+                }
             }
         }).render('#testContainer');
     });
