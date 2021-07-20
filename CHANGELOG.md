@@ -1,3 +1,32 @@
+## <small>5.0.172 (2021-07-20)</small>
+
+* Add card field components ([ea75aa9](https://github.com/paypal/paypal-checkout-components/commit/ea75aa9))
+* Add eligible checks before for venmo experiments after client-side validations (#1685) ([8856dbb](https://github.com/paypal/paypal-checkout-components/commit/8856dbb)), closes [#1685](https://github.com/paypal/paypal-checkout-components/issues/1685)
+* Add paymentMethodToken prop to buttons ([d320b41](https://github.com/paypal/paypal-checkout-components/commit/d320b41))
+* Fix button label issue for German (#1687) ([f225109](https://github.com/paypal/paypal-checkout-components/commit/f225109)), closes [#1687](https://github.com/paypal/paypal-checkout-components/issues/1687)
+* Fix lint errors ([704559e](https://github.com/paypal/paypal-checkout-components/commit/704559e))
+* Fix problem with window.popupBridge.onComplete and queryParams (#1671) ([acb4a54](https://github.com/paypal/paypal-checkout-components/commit/acb4a54)), closes [#1671](https://github.com/paypal/paypal-checkout-components/issues/1671)
+* Fix webpack json loader error w/ test globals (#1686) ([ad5336c](https://github.com/paypal/paypal-checkout-components/commit/ad5336c)), closes [#1686](https://github.com/paypal/paypal-checkout-components/issues/1686)
+* Flow fixes ([5a259e1](https://github.com/paypal/paypal-checkout-components/commit/5a259e1))
+* German label - Use funding eligibility instead of locale (#1689) ([67abccb](https://github.com/paypal/paypal-checkout-components/commit/67abccb)), closes [#1689](https://github.com/paypal/paypal-checkout-components/issues/1689)
+* QRCode component eligibility updates  (#1667) ([f0df753](https://github.com/paypal/paypal-checkout-components/commit/f0df753)), closes [#1667](https://github.com/paypal/paypal-checkout-components/issues/1667)
+* Ramp venmo desktop experiment to 5% (#1697) ([204d290](https://github.com/paypal/paypal-checkout-components/commit/204d290)), closes [#1697](https://github.com/paypal/paypal-checkout-components/issues/1697)
+* Remove venmo from screenshot (#1684) ([8d3035a](https://github.com/paypal/paypal-checkout-components/commit/8d3035a)), closes [#1684](https://github.com/paypal/paypal-checkout-components/issues/1684)
+* Revert "chore(deps): update dependency fs-extra to v10 (#1626)" (#1682) ([4479ba4](https://github.com/paypal/paypal-checkout-components/commit/4479ba4)), closes [#1626](https://github.com/paypal/paypal-checkout-components/issues/1626) [#1682](https://github.com/paypal/paypal-checkout-components/issues/1682)
+* Revert "chore(deps): update dependency imgur to v1 (#1567)" (#1681) ([57b6343](https://github.com/paypal/paypal-checkout-components/commit/57b6343)), closes [#1567](https://github.com/paypal/paypal-checkout-components/issues/1567) [#1681](https://github.com/paypal/paypal-checkout-components/issues/1681)
+* Revert "chore(deps): update dependency serve to v12 (#1663)" (#1683) ([dfb7e88](https://github.com/paypal/paypal-checkout-components/commit/dfb7e88)), closes [#1663](https://github.com/paypal/paypal-checkout-components/issues/1663) [#1683](https://github.com/paypal/paypal-checkout-components/issues/1683)
+* Type fixes ([b39d162](https://github.com/paypal/paypal-checkout-components/commit/b39d162))
+* Upgrade to flow 155 ([4c98d56](https://github.com/paypal/paypal-checkout-components/commit/4c98d56))
+* Use local web server for 'npm run dev' (#1679) ([dfada7d](https://github.com/paypal/paypal-checkout-components/commit/dfada7d)), closes [#1679](https://github.com/paypal/paypal-checkout-components/issues/1679)
+* chore(release): 5.0.167 :tada: ([a8ed962](https://github.com/paypal/paypal-checkout-components/commit/a8ed962))
+* chore(release): 5.0.168 :tada: ([7cdb9c5](https://github.com/paypal/paypal-checkout-components/commit/7cdb9c5))
+* chore(release): 5.0.169 :tada: ([89fcbb4](https://github.com/paypal/paypal-checkout-components/commit/89fcbb4))
+* chore(release): 5.0.170 :tada: ([0763abf](https://github.com/paypal/paypal-checkout-components/commit/0763abf))
+* chore(release): 5.0.171 :tada: ([c460810](https://github.com/paypal/paypal-checkout-components/commit/c460810))
+* FEATURE: Integrate Donate as a label (#1678) ([822d50f](https://github.com/paypal/paypal-checkout-components/commit/822d50f)), closes [#1678](https://github.com/paypal/paypal-checkout-components/issues/1678)
+
+
+
 ## <small>5.0.171 (2021-07-14)</small>
 
 * Add card field components ([ea75aa9](https://github.com/paypal/paypal-checkout-components/commit/ea75aa9))
