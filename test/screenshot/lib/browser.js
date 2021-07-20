@@ -28,7 +28,7 @@ export async function openPage(scriptURL : string) : Promise<Object> {
     });
 
     page.on('error', err => {
-        console.error('Browser error:', err.stack);
+        console.error('Browser error:', err.message, err.stack);
         process.exit(1);
     });
 
