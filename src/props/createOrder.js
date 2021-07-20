@@ -203,15 +203,27 @@ export function getCreateOrder({ createOrder, intent, currency, merchantID, part
             }
 
             const duration = Date.now() - startTime;
-    
-            getLogger().track({
-                [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
-                [FPTI_KEY.CONTEXT_TYPE]:       FPTI_CONTEXT_TYPE.ORDER_ID,
-                [FPTI_KEY.CONTEXT_ID]:         orderID,
-                [FPTI_KEY.TOKEN]:              orderID,
-                [FPTI_KEY.RESPONSE_DURATION]:  duration.toString()
-            }).flush();
+
+            getLogger()
+                .addPayloadBuilder(() => {
+                    return {
+                        token: orderID
+                    };
+                })
+                .addTrackingBuilder(() => {
+                    return {
+                        [FPTI_KEY.TOKEN]: orderID
+                    };
+                })
+                .track({
+                    [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
+                    [FPTI_KEY.CONTEXT_TYPE]:       FPTI_CONTEXT_TYPE.ORDER_ID,
+                    [FPTI_KEY.CONTEXT_ID]:         orderID,
+                    [FPTI_KEY.TOKEN]:              orderID,
+                    [FPTI_KEY.RESPONSE_DURATION]:  duration.toString()
+                })
+                .flush();
     
             return orderID;
         });
