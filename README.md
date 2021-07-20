@@ -1,4 +1,4 @@
-## PayPal Checkout
+## PayPal Checkout foo bar
 
 [![build status][build-badge]][build]
 [![code coverage][coverage-badge]][coverage]
