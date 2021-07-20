@@ -92,7 +92,7 @@ export function createVenmoExperiment() : Experiment | void {
     }
 
     if (!isDevice()) {
-        return createExperiment('enable_venmo_desktop', 0);
+        return createExperiment('enable_venmo_desktop', 5);
     }
 }
 
