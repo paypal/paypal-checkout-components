@@ -269,3 +269,49 @@ test('should render filled out tagline when config is enabled', async () => {
         throw new Error(`Expected personalization to be rendered, got: ${ JSON.stringify(setupButtonParams.personalization) }`);
     }
 });
+
+test('should do a basic button render with post and succeed', async () => {
+    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, isFundingSourceBranded });
+
+    const req = mockReq({
+        method: 'post',
+        body:   {
+            clientID: 'xyz'
+        }
+    });
+    const res = mockRes();
+
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+
+    const status = res.getStatus();
+    const contentType = res.getHeader('content-type');
+    const html = res.getBody();
+
+    if (status !== 200) {
+        throw new Error(`Expected response status to be 200, got ${ status }`);
+    }
+
+    if (contentType !== 'text/html') {
+        throw new Error(`Expected content type to be text/html, got ${ contentType || 'undefined' }`);
+    }
+
+    if (!html) {
+        throw new Error(`Expected res to have a body`);
+    }
+
+    if (html.indexOf(`class="paypal-button-container`) === -1) {
+        throw new Error(`Expected button template to be rendered`);
+    }
+
+    const fundingSources = getRenderedFundingSources(html);
+    if (fundingSources.indexOf(FUNDING.PAYPAL) === -1) {
+        throw new Error(`Expected paypal button to be rendered, got: ${ fundingSources.join(', ') }`);
+    }
+
+    const setupButtonParams = getSetupButtonParams(html);
+
+    if (!setupButtonParams.personalization.buttonText || !setupButtonParams.personalization.tagline) {
+        throw new Error(`Expected personalization to be rendered, got: ${ JSON.stringify(setupButtonParams.personalization) }`);
+    }
+});

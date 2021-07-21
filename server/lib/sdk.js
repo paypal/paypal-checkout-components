@@ -76,7 +76,7 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
             let params;
 
             try {
-                params = undotify(req.query);
+                params = { ...undotify(req.query), ...undotify(req.body) };
             } catch (err) {
                 return clientErrorResponse(res, `Invalid params: ${ safeJSON(req.query) }`);
             }
