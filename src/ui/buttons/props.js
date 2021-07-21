@@ -376,7 +376,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         throw new Error(`Expected ${ fundingSource || FUNDING.PAYPAL } to be eligible`);
     }
 
-    const {
+    let {
         label,
         layout = fundingSource ? BUTTON_LAYOUT.HORIZONTAL : fundingConfig.layouts[0],
         shape = fundingConfig.shapes[0],
@@ -384,6 +384,12 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         height,
         period
     } = style;
+
+    // $FlowFixMe
+    if (tagline === 'false') {
+        // $FlowFixMe
+        tagline = false;
+    }
 
     // if color is a falsy value, set it to the default color from the funding config
     const color = style.color ? style.color : fundingConfig.colors[0];

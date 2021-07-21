@@ -801,6 +801,12 @@ const buttonConfigs = [
             },
 
             {
+                tagline: 'false',
+                layout:  'horizontal',
+                valid:   true
+            },
+
+            {
                 tagline: true,
                 valid:   false,
                 layout:  'vertical'
