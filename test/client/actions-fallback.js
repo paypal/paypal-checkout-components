@@ -411,10 +411,6 @@ describe('actions smart fallback cases', () => {
                             }
                         };
                     }
-
-                    return {};
-
-
                 })
             }).expectCalls();
 

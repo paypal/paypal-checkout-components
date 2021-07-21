@@ -312,10 +312,6 @@ describe('actions cases', () => {
                             }
                         };
                     }
-
-                    return {};
-
-
                 })
             }).expectCalls();
 

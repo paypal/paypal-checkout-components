@@ -45,33 +45,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -158,33 +158,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -271,33 +271,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -385,33 +385,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
-
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -484,33 +484,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -598,33 +598,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -697,33 +697,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -795,33 +795,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -893,33 +893,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -992,33 +992,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1106,33 +1106,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1205,33 +1205,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1319,33 +1319,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1418,33 +1418,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1517,33 +1517,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1631,33 +1631,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1745,33 +1745,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1844,33 +1844,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -1943,33 +1943,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -2057,33 +2057,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 
@@ -2171,33 +2171,33 @@ describe('payee cases', () => {
                         if (!data.variables.orderID) {
                             throw new Error(`Expected orderID to be passed`);
                         }
-                    }
 
-                    return {
-                        data: {
-                            checkoutSession: {
-                                cart: {
-                                    intent:  INTENT.AUTHORIZE,
-                                    amounts: {
-                                        total: {
-                                            currencyCode: 'USD'
-                                        }
-                                    }
-                                },
-                                payees: payees.map(id => {
-                                    return (id.indexOf('@') === -1)
-                                        ? {
-                                            merchantId: id
-                                        }
-                                        : {
-                                            email: {
-                                                stringValue: id
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.AUTHORIZE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
                                             }
-                                        };
-                                })
+                                        }
+                                    },
+                                    payees: payees.map(id => {
+                                        return (id.indexOf('@') === -1)
+                                            ? {
+                                                merchantId: id
+                                            }
+                                            : {
+                                                email: {
+                                                    stringValue: id
+                                                }
+                                            };
+                                    })
+                                }
                             }
-                        }
-                    };
+                        };
+                    }
                 })
             }).expectCalls();
 

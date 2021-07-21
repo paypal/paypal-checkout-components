@@ -223,10 +223,6 @@ describe('contingency cases', () => {
                             }
                         };
                     }
-
-                    return {};
-
-
                 })
             }).expectCalls();
 
@@ -349,10 +345,6 @@ describe('contingency cases', () => {
                             }
                         };
                     }
-
-                    return {};
-
-
                 })
             }).expectCalls();
 

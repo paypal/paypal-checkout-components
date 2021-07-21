@@ -14,7 +14,7 @@ import { type OnShippingChangeData } from '../../props/onShippingChange';
 import { checkout } from '../checkout';
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from '../types';
 
-import { isNativeEligible, isNativePaymentEligible, prefetchNativeEligibility, canUseQRPay } from './eligibility';
+import { isNativeEligible, isNativePaymentEligible, prefetchNativeEligibility, canUsePopupAppSwitch, canUseNativeQRCode } from './eligibility';
 import { openNativePopup } from './popup';
 import { getNativeUrl } from './url';
 import { connectNative } from './socket';
@@ -51,8 +51,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         buttonSessionID, onShippingChange, createOrder } = props;
     const { fundingSource } = payment;
     const { firebase: firebaseConfig } = config;
-
-    const isQRDesktopPay = canUseQRPay(fundingSource);
     
     const createOrderIDPromise = createOrder();
 
@@ -425,7 +423,14 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         
         return ZalgoPromise.try(() => {
             const sessionUID = uniqueID();
-            return isQRDesktopPay ? initQRCode({ sessionUID, orderIDPromise: createOrderIDPromise }) : initPopupAppSwitch({ sessionUID });
+
+            if (canUsePopupAppSwitch({ fundingSource })) {
+                return initPopupAppSwitch({ sessionUID });
+            } else if (canUseNativeQRCode({ fundingSource })) {
+                return initQRCode({ sessionUID, orderIDPromise: createOrderIDPromise });
+            } else {
+                throw new Error(`No valid native payment flow found`);
+            }
         }).catch(err => {
             return destroy().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({

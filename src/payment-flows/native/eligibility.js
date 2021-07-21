@@ -1,13 +1,12 @@
 /* @flow */
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { PLATFORM, ENV, FUNDING } from '@paypal/sdk-constants/src';
+import { ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { supportsPopups, isIos, isAndroid } from 'belter/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
-import { enableAmplitude, getStorageState } from '../../lib';
+import { enableAmplitude, getStorageState, isIOSSafari, isAndroidChrome } from '../../lib';
 import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../../constants';
-import type { FundingType } from '../../types';
 import type { ButtonProps, ServiceData } from '../../button/props';
 import type { IsEligibleOptions, IsPaymentEligibleOptions } from '../types';
 
@@ -97,23 +96,36 @@ export function prefetchNativeEligibility({ props, serviceData } : PrefetchNativ
     });
 }
 
-export function canUseQRPay(funding : ?FundingType) : boolean {
-    return (!funding) ? false :
-        (funding === FUNDING.VENMO)  &&
-        !isIos() &&
-        !isAndroid();
+export function canUsePopupAppSwitch({ fundingSource } : {| fundingSource : ?$Values<typeof FUNDING> |}) : boolean {
+    if (!isIOSSafari() && !isAndroidChrome()) {
+        return false;
+    }
+
+    if (fundingSource && fundingSource !== FUNDING.PAYPAL && fundingSource !== FUNDING.VENMO) {
+        return false;
+    }
+
+    return true;
+}
+
+export function canUseNativeQRCode({ fundingSource } : {| fundingSource : ?$Values<typeof FUNDING> |}) : boolean {
+    if (isIos() || isAndroid()) {
+        return false;
+    }
+
+    if (fundingSource && fundingSource !== FUNDING.VENMO) {
+        return false;
+    }
+
+    return true;
 }
 
 export function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
-    const { clientID, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription, env } = props;
+    const { clientID, fundingSource, onShippingChange, createBillingAgreement, createSubscription, env } = props;
     const { firebase: firebaseConfig } = config;
     const { merchantID } = serviceData;
-    const funding = fundingSource;
-    const isValidVenmoDesktopPaySituation = canUseQRPay(funding);
 
-    if (platform !== PLATFORM.MOBILE &&
-        !isValidVenmoDesktopPaySituation
-    ) {
+    if (!canUsePopupAppSwitch({ fundingSource }) && !canUseNativeQRCode({ fundingSource })) {
         return false;
     }
     
@@ -165,6 +177,10 @@ export function isNativePaymentEligible({ payment } : IsPaymentEligibleOptions) 
     }
 
     if (!NATIVE_CHECKOUT_URI[fundingSource] || !NATIVE_CHECKOUT_POPUP_URI[fundingSource] || !NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]) {
+        return false;
+    }
+
+    if (!canUsePopupAppSwitch({ fundingSource }) && !canUseNativeQRCode({ fundingSource })) {
         return false;
     }
 

@@ -240,10 +240,6 @@ describe('contingency cases with smart api fallback', () => {
                             }
                         };
                     }
-
-                    return {};
-
-
                 })
             }).expectCalls();
 
@@ -375,10 +371,6 @@ describe('contingency cases with smart api fallback', () => {
                             }
                         };
                     }
-
-                    return {};
-
-
                 })
             }).expectCalls();
 

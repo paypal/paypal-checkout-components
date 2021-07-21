@@ -264,32 +264,36 @@ describe('vault cases', () => {
             window.xprops.clientAccessToken = 'abc-123';
 
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.CAPTURE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
-                                },
-                                shippingAddress: {
-                                    isFullAddress: false
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: false
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: false
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            flags: {
-                                isChangeShippingAddressAllowed: false
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:       {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
                 }
             }).expectCalls();
@@ -341,32 +345,36 @@ describe('vault cases', () => {
             window.xprops.clientAccessToken = 'abc-123';
 
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.CAPTURE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
-                                },
-                                shippingAddress: {
-                                    isFullAddress: false
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: false
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: false
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            flags: {
-                                isChangeShippingAddressAllowed: false
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:       {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
                 }
             }).expectCalls();
@@ -428,32 +436,36 @@ describe('vault cases', () => {
             window.xprops.clientAccessToken = 'abc-123';
 
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.CAPTURE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
-                                },
-                                shippingAddress: {
-                                    isFullAddress: false
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: false
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: false
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            flags: {
-                                isChangeShippingAddressAllowed: false
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:       {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
                 }
             }).expectCalls();
@@ -517,32 +529,36 @@ describe('vault cases', () => {
             window.xprops.clientAccessToken = 'abc-123';
 
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.CAPTURE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
-                                },
-                                shippingAddress: {
-                                    isFullAddress: true
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: true
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: false
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            flags: {
-                                isChangeShippingAddressAllowed: false
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:       {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
                 }
             }).expectCalls();
@@ -594,32 +610,36 @@ describe('vault cases', () => {
             window.xprops.clientAccessToken = 'abc-123';
 
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.CAPTURE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
-                                },
-                                shippingAddress: {
-                                    isFullAddress: true
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: true
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: false
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            flags: {
-                                isChangeShippingAddressAllowed: false
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:       {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
                 }
             }).expectCalls();
@@ -681,32 +701,36 @@ describe('vault cases', () => {
             window.xprops.clientAccessToken = 'abc-123';
             
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.CAPTURE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
-                                },
-                                shippingAddress: {
-                                    isFullAddress: false
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: false
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: true
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            flags: {
-                                isChangeShippingAddressAllowed: true
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:       {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
                 }
             }).expectCalls();
@@ -760,32 +784,36 @@ describe('vault cases', () => {
             window.xprops.clientAccessToken = 'abc-123';
 
             const gqlMock = getGraphQLApiMock({
-                data: {
-                    data: {
-                        checkoutSession: {
-                            cart: {
-                                intent:  INTENT.CAPTURE,
-                                amounts: {
-                                    total: {
-                                        currencyCode: 'USD'
-                                    }
-                                },
-                                shippingAddress: {
-                                    isFullAddress: false
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: false
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: true
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:       {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
                                 }
-                            },
-                            flags: {
-                                isChangeShippingAddressAllowed: true
-                            },
-                            payees: [
-                                {
-                                    merchantId: 'XYZ12345',
-                                    email:       {
-                                        stringValue: 'xyz-us-b1@paypal.com'
-                                    }
-                                }
-                            ]
-                        }
+                            }
+                        };
                     }
                 }
             }).expectCalls();
