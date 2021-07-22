@@ -1,11 +1,13 @@
 /* @flow */
-import { supportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice } from 'belter/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { getEnableFunding, createExperiment, getFundingEligibility } from '@paypal/sdk-client/src';
+import { getEnableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
+import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import type { Experiment as VenmoExperiment } from '../../types';
 import { BUTTON_FLOW, CLASS } from '../../constants';
-import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription } from '../../ui/buttons/props';
+import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription, ButtonProps } from '../../ui/buttons/props';
+import { determineEligibleFunding } from '../../funding';
 
 type DetermineFlowOptions = {|
     createBillingAgreement : CreateBillingAgreement,
@@ -51,7 +53,7 @@ export function isSupportedNativeBrowser() : boolean {
         return false;
     }
 
-    if (!supportsPopups()) {
+    if (!userAgentSupportsPopups()) {
         return false;
     }
 
@@ -109,6 +111,21 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
             enableVenmo: Boolean(isExperimentEnabled)
         };
     }
+}
+
+export function getButtonsArray(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
+    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
+        experiment = getVenmoExperiment(createVenmoExperiment()), applePaySupport, supportsPopups = userAgentSupportsPopups(),
+        supportedNativeBrowser = isSupportedNativeBrowser(), createBillingAgreement, createSubscription } = props;
+
+    const flow               = determineFlow({ createBillingAgreement, createSubscription });
+    const { layout }         = style;
+    const remembered         = [];
+    const platform           = getPlatform();
+    const components         = getComponents();
+
+    const buttonsArray = determineEligibleFunding({ fundingSource, remembered, layout, platform, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
+    return buttonsArray;
 }
 
 export function applePaySession() : ?ApplePaySessionConfigRequest {
