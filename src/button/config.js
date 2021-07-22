@@ -70,7 +70,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
         tag:     `{ content: safer_tag }`,
         dualTag: `{ content: dual_tag|safer_tag }`,
 
-        defaultLocale:           `en_US`,
+        defaultLocale:           { country: 'US', lang: 'en' },
         defaultLabel:            BUTTON_LABEL.CHECKOUT,
         defaultVerticalLabel:    BUTTON_LABEL.PAYPAL,
         defaultColor:            BUTTON_COLOR.GOLD,

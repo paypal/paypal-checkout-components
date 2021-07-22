@@ -8,6 +8,9 @@ import type { FundingSource, FundingList } from '../types';
 import { getStorageState, getGlobalState, getSessionState } from './session';
 import { openMetaFrame } from './meta';
 import { identity } from './util';
+import { determineEligibleFunding } from '../funding';
+import { parseLocale } from '../button/props';
+import { labelToFunding, getButtonConfig } from '../button/config';
 
 // $FlowFixMe
 export function getRememberedFunding<T>(handler? : (rememberedFunding : FundingList) => T = identity) : T {
@@ -112,4 +115,30 @@ export function precacheRememberedFunding() : ZalgoPromise<void> {
         return loadMeta();
     }
     return ZalgoPromise.resolve();
+}
+
+export function getButtonsArray(props: Object): string {
+    const { 
+        commit,
+        env,
+        funding,
+        locale: rawLocale,
+        style: {
+            layout,
+            label
+        },
+    } = props;
+
+    const locale = rawLocale ? parseLocale(rawLocale) : getButtonConfig('DEFAULT', 'defaultLocale');
+    const selected = labelToFunding(label);
+    const sources = determineEligibleFunding({
+        funding,
+        selected,
+        locale,
+        env,
+        layout,
+        commit
+    });
+    console.log(sources);
+    return sources;
 }
