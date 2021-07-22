@@ -133,6 +133,18 @@ export const BUTTON = getWebpackConfig({
     }
 });
 
+export const LOCAL = getWebpackConfig({
+    context:       __dirname,
+    entry:         './src/load.js',
+    filename:      `${ FILE_NAME }.js`,
+    minify:        false,
+    debug:         true,
+    libraryTarget: null,
+    env:           'local',
+    vars:          globals
+});
+
+
 export const TEST = getWebpackConfig({
     test:          true,
     minify:        false,

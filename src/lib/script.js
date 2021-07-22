@@ -6,10 +6,12 @@ import { PAGE_TYPES, SDK_SETTINGS } from '@paypal/sdk-constants/src';
 import { values } from 'belter/src';
 
 import { config } from '../config';
+import { ENV } from '../constants';
 
 import { memoize, domainMatches } from './util';
 
 export const getCurrentScript = memoize(() : ?HTMLScriptElement => {
+    const localSDKUrl = config.localSDKUrl;
 
     const scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
@@ -19,6 +21,10 @@ export const getCurrentScript = memoize(() : ?HTMLScriptElement => {
         }
 
         if (script.src && (script.src.indexOf('paypal.checkout.v4.js') !== -1)) {
+            return script;
+        }
+
+        if (config.env === ENV.LOCAL && localSDKUrl && script.src === localSDKUrl) {
             return script;
         }
     }
