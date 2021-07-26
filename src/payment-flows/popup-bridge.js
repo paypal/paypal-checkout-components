@@ -49,11 +49,14 @@ function isPopupBridgePaymentEligible({ payment } : IsPaymentEligibleOptions) : 
 }
 
 function initPopupBridge({ props, payment } : InitOptions) : PaymentFlowInstance {
+
     const { createOrder, onApprove, onCancel, commit } = props;
+
     const { fundingSource } = payment;
 
     const start = () => {
         return createOrder().then(orderID => {
+
             if (!parentPopupBridge) {
                 throw new Error(`Popup bridge required`);
             }
@@ -67,7 +70,6 @@ function initPopupBridge({ props, payment } : InitOptions) : PaymentFlowInstance
                     native_xo:    '1'
                 }
             });
-
             return parentPopupBridge.start(url);
 
         }).then(({ opType, PayerID: payerID, paymentId: paymentID, ba_token: billingToken }) => {
