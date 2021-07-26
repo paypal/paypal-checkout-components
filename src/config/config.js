@@ -24,7 +24,7 @@ function getDefaultEnv() : $Values<typeof ENV> {
         return ENV.SANDBOX;
     }
 
-    return ENV.PRODUCTION;
+    return __ENV__;
 }
 
 export const config = {
@@ -62,8 +62,26 @@ export const config = {
         return `www.${ config.apiStage }.${ config.stageDomain }`;
     },
 
+    get localSDKUrl() : ?string {
+        const scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
+
+        for (const script of scripts) {
+            if (config.env === ENV.LOCAL && script.src.match(/checkout(\.min)?\.js$/)) {
+                return script.src;
+            }
+        }
+    },
+
+    get localSDKDomain() : ?string {
+        const localSDKUrl = config.localSDKUrl;
+
+        if (localSDKUrl) {
+            return new URL(localSDKUrl).origin;
+        }
+    },
+
     get localhostUrl() : string {
-        return `http://localhost.paypal.com:${ config.ports.default }`;
+        return config.localSDKDomain || `http://localhost.paypal.com:${ config.ports.default }`;
     },
 
     set localhostUrl(val) {
@@ -728,7 +746,7 @@ export const config = {
 
     get paypalDomains() : Object {
         return {
-            [ ENV.LOCAL ]:      'http://localhost.paypal.com:8000',
+            [ ENV.LOCAL ]:      config.localhostUrl,
             [ ENV.STAGE ]:      `https://${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
@@ -739,7 +757,7 @@ export const config = {
 
     get wwwApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `http://${ window.location.host }`,
+            [ ENV.LOCAL ]:      config.localSDKDomain || `https://${ config.stageUrl }`,
             [ ENV.STAGE ]:      `https://${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
@@ -749,7 +767,7 @@ export const config = {
 
     get corsApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `http://${ window.location.host }`,
+            [ ENV.LOCAL ]:      config.localSDKDomain || `https://${ config.stageUrl }`,
             [ ENV.STAGE ]:      `https://${ config.apiStageUrl }:12326`,
             [ ENV.SANDBOX ]:    `https://cors.api.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://cors.api.paypal.com`,
