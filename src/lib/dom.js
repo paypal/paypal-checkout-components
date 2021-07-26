@@ -323,7 +323,6 @@ export function isElementVisible(el : HTMLElement) : boolean {
 }
 
 export const enablePerformance = memoize(() : boolean => {
-    /* eslint-disable compat/compat */
     return Boolean(
         window.performance &&
         performance.now &&
@@ -333,7 +332,6 @@ export const enablePerformance = memoize(() : boolean => {
         (Math.abs(performance.now() - Date.now()) > 1000) &&
         (performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart)) > 0
     );
-    /* eslint-enable compat/compat */
 });
 
 export function getPageRenderTime() : ZalgoPromise<?number> {
@@ -343,7 +341,7 @@ export function getPageRenderTime() : ZalgoPromise<?number> {
             return;
         }
 
-        const timing = window.performance.timing; // eslint-disable-line compat/compat
+        const timing = window.performance.timing;
 
         if (timing.connectEnd && timing.domInteractive) {
             return timing.domInteractive - timing.connectEnd;

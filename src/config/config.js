@@ -702,11 +702,11 @@ export const config = {
 
     SUPPORTED_BROWSERS: {
         msie:           '11',
-        firefox:        '30',
-        chrome:         '27',
-        safari:         '7',
-        opera:          '16',
-        msedge:         '12',
+        firefox:        '43',
+        chrome:         '41',
+        safari:         '8',
+        opera:          '23',
+        msedge:         '14',
         samsungBrowser: '2.1',
         silk:           '59.3',
         ucbrowser:      '10.0.0.488',
@@ -767,7 +767,7 @@ export const config = {
 
     get corsApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `https://${ config.apiStageUrl }:12326`,
+            [ ENV.LOCAL ]:      `https://${ config.stageUrl }`,
             [ ENV.STAGE ]:      `https://${ config.apiStageUrl }:12326`,
             [ ENV.SANDBOX ]:    `https://cors.api.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://cors.api.paypal.com`,

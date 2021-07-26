@@ -5,7 +5,6 @@ export function loadScript(url : string, prop : string, attrs : Object, callback
     if (window[prop]) {
         return callback(null, window[prop]);
     }
-
     // eslint-disable-next-line compat/compat
     const container = document.body || document.head;
 
