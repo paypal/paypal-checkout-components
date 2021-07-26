@@ -767,7 +767,7 @@ export const config = {
 
     get corsApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      config.localSDKDomain || `https://${ config.stageUrl }`,
+            [ ENV.LOCAL ]:      `https://${ config.stageUrl }`,
             [ ENV.STAGE ]:      `https://${ config.apiStageUrl }:12326`,
             [ ENV.SANDBOX ]:    `https://cors.api.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://cors.api.paypal.com`,
