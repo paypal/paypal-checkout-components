@@ -107,8 +107,9 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                         position: absolute;
                         top: 0;
                         left: 0;
-                        width: 100%;
                         height: 100%;
+                        width: 1px;
+                        min-width: 100%;
                     }
 
                     #${ uid } > iframe.${ CLASS.COMPONENT_FRAME } {
