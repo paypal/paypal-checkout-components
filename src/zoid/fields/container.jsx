@@ -88,7 +88,8 @@ export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : F
                         position: absolute;
                         top: 0;
                         left: 0;
-                        width: 100%;
+                        width: 0;
+                        min-width: 100%;
                         height: 100%;
                     }
 
