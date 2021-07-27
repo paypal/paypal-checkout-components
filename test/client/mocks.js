@@ -108,6 +108,26 @@ export function setupMocks() {
                 }
             };
         },
+        QRCode: (props) => {
+            return {
+                renderTo: () => {
+                    return ZalgoPromise.resolve();
+                },
+                close: () => {
+                    return ZalgoPromise.delay(50).then(() => {
+                        if (props.onClose) {
+                            return props.onClose();
+                        }
+                    });
+                },
+                onError: (err) => {
+                    throw err;
+                },
+                updateProps: () => {
+                    return ZalgoPromise.resolve();
+                }
+            };
+        },
         CardFields: (props) => {
             props.onAuth = once(props.onAuth);
 
@@ -816,7 +836,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
 
     const onApprove = () => {
         if (!props) {
-            throw new Error(`Can not approve without getting props`);
+            // throw new Error(`Can not approve without getting props`);
         }
 
         onApproveRequestID = uniqueID();
@@ -831,7 +851,6 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
             message_type:       'request',
             message_name:       'onApprove',
             message_data:       {
-                orderID: props.orderID,
                 payerID: 'XXYYZZ123456'
             }
         }));
@@ -839,7 +858,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
 
     const onCancel = () => {
         if (!props) {
-            throw new Error(`Can not approve without getting props`);
+            // throw new Error(`Can not approve without getting props`);
         }
 
         onCancelRequestID = uniqueID();
@@ -854,7 +873,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
             message_type:       'request',
             message_name:       'onCancel',
             message_data:       {
-                orderID: props.orderID
+
             }
         }));
     };
@@ -1313,7 +1332,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
 
     const onApprove = () => {
         if (!props) {
-            throw new Error(`Can not approve without getting props`);
+            // throw new Error(`Can not approve without getting props`);
         }
 
         onApproveRequestID = `${ uniqueID()  }_onApprove`;
@@ -1328,7 +1347,6 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
             message_type:       'request',
             message_name:       'onApprove',
             message_data:       {
-                orderID: props.orderID,
                 payerID: 'XXYYZZ123456'
             }
         }));
@@ -1338,7 +1356,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
 
     const onCancel = () => {
         if (!props) {
-            throw new Error(`Can not approve without getting props`);
+            // throw new Error(`Can not approve without getting props`);
         }
 
         onCancelRequestID = `${ uniqueID()  }_onCancel`;
@@ -1353,7 +1371,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
             message_type:       'request',
             message_name:       'onCancel',
             message_data:       {
-                orderID: props.orderID
+                
             }
         }));
 
@@ -1382,7 +1400,7 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
 
     const onShippingChange = () => {
         if (!props) {
-            throw new Error(`Can not approve without getting props`);
+            // throw new Error(`Can not approve without getting props`);
         }
 
         onShippingChangeRequestID = `${ uniqueID()  }_onShippingChange`;

@@ -6,7 +6,7 @@ import { supportsPopups, isIos, isAndroid } from 'belter/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
 import { enableAmplitude, getStorageState, isIOSSafari, isAndroidChrome } from '../../lib';
-import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../../constants';
+import { LSAT_UPGRADE_EXCLUDED_MERCHANTS, FPTI_TRANSITION } from '../../constants';
 import type { ButtonProps, ServiceData } from '../../button/props';
 import type { IsEligibleOptions, IsPaymentEligibleOptions } from '../types';
 
@@ -185,4 +185,32 @@ export function isNativePaymentEligible({ payment } : IsPaymentEligibleOptions) 
     }
 
     return true;
+}
+
+export type NativeOptOutOptions = {|
+    type? : string,
+    skip_native_duration? : number
+|};
+
+export function getDefaultNativeOptOutOptions() : NativeOptOutOptions {
+    // $FlowFixMe
+    return {};
+}
+
+export function setNativeOptOut(optOut : NativeOptOutOptions) : boolean {
+    if (optOut.type === FPTI_TRANSITION.NATIVE_OPT_OUT) {
+
+        // Opt-out 6 weeks from native experience as default
+        let OPT_OUT_TIME = 6 * 7 * 24 * 60 * 60 * 1000;
+        if (optOut.skip_native_duration && typeof optOut.skip_native_duration === 'number') {
+            OPT_OUT_TIME = optOut.skip_native_duration;
+        }
+
+        const now = Date.now();
+        getStorageState(state => {
+            state.nativeOptOutLifetime = now + OPT_OUT_TIME;
+        });
+        return true;
+    }
+    return false;
 }

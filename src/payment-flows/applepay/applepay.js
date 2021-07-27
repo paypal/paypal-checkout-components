@@ -230,7 +230,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
 
         const validatePromise = validate().then(valid => {
             if (!valid) {
-                getLogger().info(`native_onclick_invalid`).track({
+                getLogger().info(`applepay_onclick_invalid`).track({
                     [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
                     [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.APPLEPAY_ON_CLICK_INVALID
                 }).flush();

@@ -98,7 +98,17 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
     const activeRequests = [];
 
     let requestListeners = {};
-    let errorListeners = [];
+    let errorListeners : Array<(mixed) => void> = [];
+
+    const onError = (handler : (mixed) => void) : void => {
+        errorListeners.push(handler);
+    };
+
+    const triggerError = (err : mixed) => {
+        for (const errorListener of errorListeners) {
+            errorListener(err);
+        }
+    };
 
     type SendMessageData = {|
         request_uid : string,
@@ -171,11 +181,11 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         const { listenerPromise, requireSessionUID } = responseListeners[requestUID] || {};
         
         if (!listenerPromise) {
-            throw new Error(`Could not find response listener for ${ messageName } with id: ${ requestUID }`);
+            return triggerError(new Error(`Could not find response listener for ${ messageName } with id: ${ requestUID }`));
         }
 
         if (requireSessionUID && messageSessionUID !== sessionUID) {
-            throw new Error(`Incorrect sessionUID: ${ messageSessionUID || 'undefined' }`);
+            return triggerError(new Error(`Incorrect sessionUID: ${ messageSessionUID || 'undefined' }`));
         }
         
         delete responseListeners[requestUID];
@@ -185,7 +195,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         } else if (responseStatus === RESPONSE_STATUS.ERROR) {
             listenerPromise.reject(new Error(messageData.message));
         } else {
-            throw new Error(`Can not handle response status: ${ status || 'undefined' }`);
+            listenerPromise.reject(new Error(`Can not handle response status: ${ status || 'undefined' }`));
         }
     };
 
@@ -275,10 +285,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         
                 instance.onError(err => {
                     reject(err);
-
-                    for (const errorListener of errorListeners) {
-                        errorListener(err);
-                    }
+                    triggerError(err);
                 });
             });
 
@@ -373,10 +380,6 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
                 noop
             );
         });
-    };
-
-    const onError = (handler) => {
-        errorListeners.push(handler);
     };
         
     return { on, send, onError, reconnect, close };

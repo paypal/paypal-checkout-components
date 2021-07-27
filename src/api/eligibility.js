@@ -85,7 +85,7 @@ type NativeEligibilityOptions = {|
     cookies : string,
     orderID? : ?string,
     enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
-    stickinessID : ?string,
+    stickinessID? : ?string,
     domain : string,
     skipElmo? : boolean
 |};
