@@ -1,3 +1,10 @@
+## <small>5.0.173 (2021-07-27)</small>
+
+* Revert PR 1685/Remove test group check (#1704) ([0cd5e29](https://github.com/paypal/paypal-checkout-components/commit/0cd5e29)), closes [#1704](https://github.com/paypal/paypal-checkout-components/issues/1704)
+* Treat tagline: 'false' as false for compatibility ([a58ca8e](https://github.com/paypal/paypal-checkout-components/commit/a58ca8e))
+
+
+
 ## <small>5.0.172 (2021-07-20)</small>
 
 * Add card field components ([ea75aa9](https://github.com/paypal/paypal-checkout-components/commit/ea75aa9))
