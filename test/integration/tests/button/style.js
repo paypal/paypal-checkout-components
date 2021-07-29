@@ -4,7 +4,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { once } from 'belter/src';
 
-import { generateOrderID, createTestContainer, destroyTestContainer, getElementRecursive, assert, WEBVIEW_USER_AGENT } from '../common';
+import { generateOrderID, createTestContainer, destroyTestContainer, getElementRecursive, getElements, assert, WEBVIEW_USER_AGENT } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
@@ -107,6 +107,60 @@ describe('paypal button color', () => {
                 }
             },
 
+            onError: done
+
+        }).render('#testContainer');
+    });
+});
+
+describe('paypal button label', () => {
+
+    beforeEach(() => {
+        createTestContainer();
+    });
+
+    afterEach(() => {
+        destroyTestContainer();
+    });
+
+    it('should render buttons with properly aria-abel', (done) => {
+        done = once(done);
+        const style = {
+            label: 'pay'
+        };
+        window.paypal.Buttons({
+            style,
+            test: {
+                onRender: ('onRender', () => {
+                    setTimeout(() => {
+                        const buttons = getElements('[role="button"]');
+                        
+                        if (buttons.length < 1) {
+                            return done(new Error('Could not find buttons in the document'));
+                        }
+
+                        const [ paypal, credit, debitOrCredit ] = buttons;
+                        const paypalButtonAriaLabel = paypal.getAttribute('aria-label') || 'undefined';
+                        const creditButtonAriaLabel = credit.getAttribute('aria-label') || 'undefined';
+                        const debitOrCreditButtonAriaLabel = debitOrCredit.getAttribute('aria-label') || 'undefined';
+
+                        if (paypalButtonAriaLabel !== 'Pay with paypal')  {
+                            done(new Error(`Expected aria-label to be 'Pay with paypal', but got ${ paypalButtonAriaLabel }`));
+                        }
+
+                        if (creditButtonAriaLabel !== 'Pay with credit')  {
+                            done(new Error(`Expected aria-label to be 'Pay with credit', but got ${ paypalButtonAriaLabel }`));
+                        }
+
+                        if (debitOrCreditButtonAriaLabel !== 'Debit or Credit Card')  {
+                            done(new Error(`Expected aria-label to be 'Debit or Credit Card', but got ${ paypalButtonAriaLabel }`));
+                        }
+
+                        return done();
+
+                    }, 1000);
+                })
+            },
             onError: done
 
         }).render('#testContainer');
