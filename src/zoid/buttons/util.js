@@ -5,7 +5,6 @@ import { getEnableFunding, createExperiment, getFundingEligibility } from '@payp
 
 import type { Experiment as VenmoExperiment } from '../../types';
 import { BUTTON_FLOW, CLASS } from '../../constants';
-import { isFundingEligible } from '../../funding/funding';
 import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription } from '../../ui/buttons/props';
 
 type DetermineFlowOptions = {|
