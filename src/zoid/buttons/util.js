@@ -5,6 +5,7 @@ import { getEnableFunding, createExperiment, getFundingEligibility } from '@payp
 
 import type { Experiment as VenmoExperiment } from '../../types';
 import { BUTTON_FLOW, CLASS } from '../../constants';
+import { isFundingEligible } from '../../funding/funding';
 import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription } from '../../ui/buttons/props';
 
 type DetermineFlowOptions = {|
@@ -77,21 +78,19 @@ export function createVenmoExperiment() : Experiment | void {
     const fundingEligibility = getFundingEligibility();
     const isEligibleForVenmo = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
 
-    // exclude buyers who are not eligible
-    // exclude non-desktop integrations using enable-funding=venmo
-    if (!isEligibleForVenmo || (isEnableFundingVenmo && isSupportedNativeBrowser())) {
-        return;
-    }
+    if (isDevice()) {
+        if (!isEligibleForVenmo || (isEnableFundingVenmo && isSupportedNativeBrowser()) || !isSupportedNativeBrowser()) {
+            return;
+        }
 
-    if (isIos() && isSafari()) {
-        return createExperiment('enable_venmo_ios', 90);
-    }
+        if (isIos() && isSafari()) {
+            return createExperiment('enable_venmo_ios', 90);
+        }
 
-    if (isAndroid() && isChrome()) {
-        return createExperiment('enable_venmo_android', 90);
-    }
-
-    if (!isDevice()) {
+        if (isAndroid() && isChrome()) {
+            return createExperiment('enable_venmo_android', 90);
+        }
+    } else {
         return createExperiment('enable_venmo_desktop', 5);
     }
 }
@@ -102,9 +101,15 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     const isNativeSupported = isSupportedNativeBrowser();
     const isExperimentEnabled = experiment && experiment.isEnabled();
 
-    return {
-        enableVenmo: Boolean(isExperimentEnabled && isVenmoFundingEnabled && isNativeSupported)
-    };
+    if (isDevice()) {
+        return {
+            enableVenmo: Boolean((isExperimentEnabled || isVenmoFundingEnabled) && isNativeSupported)
+        };
+    } else {
+        return {
+            enableVenmo: Boolean(isExperimentEnabled || isVenmoFundingEnabled)
+        };
+    }
 }
 
 export function applePaySession() : ?ApplePaySessionConfigRequest {

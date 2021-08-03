@@ -1,6 +1,6 @@
 /* @flow */
 
-import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 import { inlineMemoize } from 'belter/src';
 
 import { type FundingSourceConfig } from './common';
@@ -30,11 +30,11 @@ import { getBoletoConfig } from './boleto';
 import { getMaximaConfig } from './maxima';
 import { getMercadopagoConfig } from './mercadopago';
 
-export function getFundingConfig(platform? : $Values<typeof PLATFORM>) : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } {
+export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } {
     return inlineMemoize(getFundingConfig, () => {
         return {
             [ FUNDING.PAYPAL ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.paypal !== 'undefined'         && __FUNDING_ELIGIBILITY__.paypal.eligible)) ? getPayPalConfig() : null,
-            [ FUNDING.VENMO ]:          (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.venmo !== 'undefined'          && __FUNDING_ELIGIBILITY__.venmo.eligible)) ? getVenmoConfig(platform) : null,
+            [ FUNDING.VENMO ]:          (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.venmo !== 'undefined'          && __FUNDING_ELIGIBILITY__.venmo.eligible)) ? getVenmoConfig() : null,
             [ FUNDING.APPLEPAY ]:       (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.applepay !== 'undefined'       && __FUNDING_ELIGIBILITY__.applepay.eligible)) ? getApplePayConfig() : null,
             [ FUNDING.ITAU ]:           (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.itau !== 'undefined'           && __FUNDING_ELIGIBILITY__.itau.eligible)) ? getItauConfig() : null,
             [ FUNDING.CREDIT ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.credit !== 'undefined'         && __FUNDING_ELIGIBILITY__.credit.eligible)) ? getCreditConfig() : null,
