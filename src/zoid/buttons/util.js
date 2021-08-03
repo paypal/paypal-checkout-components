@@ -113,7 +113,7 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     }
 }
 
-export function getButtonsArray(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
+export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
     const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
         experiment = getVenmoExperiment(createVenmoExperiment()), applePaySupport, supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(), createBillingAgreement, createSubscription } = props;
@@ -124,8 +124,8 @@ export function getButtonsArray(props : ButtonProps) : $ReadOnlyArray<$Values<ty
     const platform           = getPlatform();
     const components         = getComponents();
 
-    const buttonsArray = determineEligibleFunding({ fundingSource, remembered, layout, platform, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
-    return buttonsArray;
+    const renderedButtons = determineEligibleFunding({ fundingSource, remembered, layout, platform, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
+    return renderedButtons;
 }
 
 export function applePaySession() : ?ApplePaySessionConfigRequest {
