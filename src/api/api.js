@@ -1,10 +1,12 @@
 /* @flow */
 
+import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { request } from 'belter/src';
 
 import { GRAPHQL_URI } from '../config';
-import { HEADERS, SMART_PAYMENT_BUTTONS } from '../constants';
+import { FPTI_CUSTOM_KEY, FPTI_TRANSITION, HEADERS, SMART_PAYMENT_BUTTONS, STATUS_CODES } from '../constants';
+import { getLogger } from '../lib';
 
 type RESTAPIParams<D> = {|
     accessToken : string,
@@ -39,6 +41,13 @@ export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : 
             // $FlowFixMe
             error.response = { status, headers: responseHeaders, body };
 
+            if (status === STATUS_CODES.TOO_MANY_REQUESTS) {
+                getLogger().track({
+                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.CALL_REST_API,
+                    [FPTI_CUSTOM_KEY.ERR_DESC]: `Error: ${ status } - ${ body }`,
+                    [FPTI_CUSTOM_KEY.INFO_MSG]: `URL: ${ url }`
+                });
+            }
             throw error;
         }
 
@@ -81,6 +90,14 @@ export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHea
                 // $FlowFixMe
                 err.data = body.data;
                 throw err;
+            }
+
+            if (status === STATUS_CODES.TOO_MANY_REQUESTS) {
+                getLogger().track({
+                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.CALL_REST_API,
+                    [FPTI_CUSTOM_KEY.ERR_DESC]: `Error: ${ status } - ${ body }`,
+                    [FPTI_CUSTOM_KEY.INFO_MSG]: `URL: ${ url }`
+                });
             }
 
             if (status > 400) {
