@@ -2781,6 +2781,12 @@ window.spb = function(modules) {
                         headers: responseHeaders,
                         body: body
                     };
+                    if (429 === status) {
+                        var _getLogger$track;
+                        logger_getLogger().track(((_getLogger$track = {}).transition_name = "call_rest_api", 
+                        _getLogger$track.int_error_desc = "Error: " + status + " - " + body, _getLogger$track.info_msg = "URL: " + url, 
+                        _getLogger$track));
+                    }
                     throw error;
                 }
                 return body;
@@ -2808,6 +2814,12 @@ window.spb = function(modules) {
                     };
                     err.data = body.data;
                     throw err;
+                }
+                if (429 === status) {
+                    var _getLogger$track2;
+                    logger_getLogger().track(((_getLogger$track2 = {}).transition_name = "call_rest_api", 
+                    _getLogger$track2.int_error_desc = "Error: " + status + " - " + body, _getLogger$track2.info_msg = "URL: " + url, 
+                    _getLogger$track2));
                 }
                 if (status > 400) throw new Error("Api: " + url + " returned status code: " + status + " (Corr ID: " + headers["paypal-debug-id"] + ")\n\n" + JSON.stringify(body));
                 if ("success" !== body.ack) throw new Error("Api: " + url + " returned ack: " + body.ack + " (Corr ID: " + headers["paypal-debug-id"] + ")\n\n" + JSON.stringify(body));
@@ -2974,7 +2986,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.46", _headers15);
+            _headers15["x-app-version"] = "5.0.47", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -6781,7 +6793,7 @@ window.spb = function(modules) {
                         domain: merchantDomain,
                         skipElmo: !0
                     }).then((function(eligibility) {
-                        if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
+                        if (!eligibility && !eligibility[fundingSource] && !eligibility[fundingSource].eligibility && eligibility[fundingSource].ineligibilityReason && eligibility[fundingSource].ineligibilityReason.length && -1 === eligibility[fundingSource].ineligibilityReason.indexOf("isUserAgentEligible") && -1 === eligibility[fundingSource].ineligibilityReason.indexOf("isBrowserMobileAndroid")) {
                             var _getLogger$info$track;
                             logger_getLogger().info("native_appswitch_ineligible", {
                                 orderID: orderID
@@ -8701,7 +8713,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.46", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.47", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
