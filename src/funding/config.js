@@ -30,7 +30,7 @@ import { getBoletoConfig } from './boleto';
 import { getMaximaConfig } from './maxima';
 import { getMercadopagoConfig } from './mercadopago';
 
-export function getFundingConfig(platform : $Values<typeof PLATFORM>) : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } {
+export function getFundingConfig(platform? : $Values<typeof PLATFORM>) : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } {
     return inlineMemoize(getFundingConfig, () => {
         return {
             [ FUNDING.PAYPAL ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.paypal !== 'undefined'         && __FUNDING_ELIGIBILITY__.paypal.eligible)) ? getPayPalConfig() : null,
