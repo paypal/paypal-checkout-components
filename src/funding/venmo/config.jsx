@@ -11,7 +11,7 @@ import { WalletLabel } from './template';
 
 export function getVenmoConfig(platform : ?$Values<typeof PLATFORM>) : FundingSourceConfig {
     const requires = {};
-    if (platform && platform === PLATFORM.MOBILE) {
+    if (platform === PLATFORM.MOBILE) {
         requires.native = true;
         requires.popup = true;
     }
