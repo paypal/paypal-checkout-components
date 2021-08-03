@@ -32,7 +32,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
-    const fundingConfig = getFundingConfig()[source];
+    const fundingConfig = getFundingConfig(platform)[source];
 
     if (!fundingConfig) {
         return false;

@@ -2,16 +2,24 @@
 /** @jsx node */
 
 import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { PLATFORM } from '@paypal/sdk-constants/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
 import { WalletLabel } from './template';
 
-export function getVenmoConfig() : FundingSourceConfig {
+export function getVenmoConfig(platform : $Values<typeof PLATFORM>) : FundingSourceConfig {
+    const requires = {};
+    if (platform === PLATFORM.MOBILE) {
+        requires.native = true;
+        requires.popup = true;
+    }
+
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
+        requires,
         shippingChange: false,
 
         layouts: [
