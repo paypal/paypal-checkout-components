@@ -98,11 +98,12 @@ export function createVenmoExperiment() : Experiment | void {
 
 export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     const enableFunding = getEnableFunding();
-    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1 && isSupportedNativeBrowser();
+    const isVenmoFundingEnabled = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
+    const isNativeSupported = isSupportedNativeBrowser();
     const isExperimentEnabled = experiment && experiment.isEnabled();
 
     return {
-        enableVenmo: Boolean(isExperimentEnabled || isEnableFundingVenmo)
+        enableVenmo: Boolean(isExperimentEnabled && isVenmoFundingEnabled && isNativeSupported)
     };
 }
 
