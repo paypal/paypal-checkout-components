@@ -1,8 +1,7 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice } from 'belter/src';
+import { supportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, memoize } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
-import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import type { Experiment as VenmoExperiment } from '../../types';
 import { BUTTON_FLOW, CLASS } from '../../constants';
@@ -53,7 +52,7 @@ export function isSupportedNativeBrowser() : boolean {
         return false;
     }
 
-    if (!userAgentSupportsPopups()) {
+    if (!supportsPopups()) {
         return false;
     }
 
@@ -114,9 +113,8 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
 }
 
 export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
-    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
-        experiment = getVenmoExperiment(createVenmoExperiment()), applePaySupport, supportsPopups = userAgentSupportsPopups(),
-        supportedNativeBrowser = isSupportedNativeBrowser(), createBillingAgreement, createSubscription } = props;
+    const { fundingSource, onShippingChange, style = {}, fundingEligibility, experiment, applePaySupport, supportsPopups,
+        supportedNativeBrowser, createBillingAgreement, createSubscription } = props;
 
     const flow               = determineFlow({ createBillingAgreement, createSubscription });
     const { layout }         = style;
