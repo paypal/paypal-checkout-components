@@ -2,10 +2,9 @@
 
 import { noop, type CleanupType } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FPTI_KEY, FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { getNativeEligibility } from '../../api';
 import { getLogger, getStorageID } from '../../lib';
 import { FPTI_STATE, FPTI_TRANSITION, TARGET_ELEMENT, QRCODE_STATE } from '../../constants';
 import type { ButtonProps, ServiceData, Config, Components } from '../../button/props';
@@ -13,51 +12,7 @@ import { type OnShippingChangeData } from '../../props/onShippingChange';
 
 import { getNativeUrl } from './url';
 import { connectNative } from './socket';
-import { isNativeOptedIn, type NativeOptOutOptions } from './eligibility';
-
-type EligibilityOptions = {|
-    props : ButtonProps,
-    serviceData : ServiceData,
-    fundingSource : $Values<typeof FUNDING>,
-    validatePromise : ZalgoPromise<boolean>
-|};
-
-function getEligibility({ fundingSource, props, serviceData, validatePromise } : EligibilityOptions) : ZalgoPromise<boolean> {
-    const { createOrder, onShippingChange, vault, clientID, currency, buttonSessionID, enableFunding, merchantDomain } = props;
-    const { buyerCountry, cookies, merchantID } = serviceData;
-    const shippingCallbackEnabled = Boolean(onShippingChange);
-    const platform = PLATFORM.MOBILE;
-
-    return validatePromise.then(valid => {
-        if (!valid) {
-            return false;
-        }
-
-        if (isNativeOptedIn({ props })) {
-            return true;
-        }
-
-        return createOrder().then(orderID => {
-            return getNativeEligibility({ vault, platform, shippingCallbackEnabled,
-                clientID, buyerCountry, currency, buttonSessionID, cookies, orderID, enableFunding,
-                merchantID:   merchantID[0],
-                domain:       merchantDomain,
-                skipElmo:   true
-            }).then(eligibility => {
-                if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
-                    getLogger().info(`native_appswitch_ineligible`, { orderID })
-                        .track({
-                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
-                        }).flush();
-
-                    return false;
-                }
-                return true;
-            });
-        });
-    });
-}
+import { type NativeOptOutOptions } from './eligibility';
 
 type NativeQRCodeOptions = {|
     props : ButtonProps,
@@ -142,16 +97,9 @@ export function openNativeQRCode({ props, serviceData, config, components, fundi
         return valid;
     });
 
-    return ZalgoPromise.hash({
-        valid:      validatePromise,
-        eligible:   getEligibility({ fundingSource, props, serviceData, validatePromise })
-    }).then(({ valid, eligible }) => {
+    return validatePromise.then(valid => {
         if (!valid) {
             return;
-        }
-
-        if (!eligible) {
-            return onFallback().then(noop);
         }
 
         return createOrder().then((orderID) => {
