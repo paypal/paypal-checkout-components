@@ -106,7 +106,7 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
         };
     } else {
         return {
-            enableVenmo: Boolean(isExperimentEnabled || isVenmoFundingEnabled)
+            enableVenmo: Boolean(isExperimentEnabled)
         };
     }
 }

@@ -77,13 +77,13 @@ describe(`venmo desktop web button test `, () => {
     });
 
 
-    it(`should display button when it's passed in as instrument on desktop web`, (done) => {
+    it(`should not display button when it's passed in as instrument on desktop web`, (done) => {
         mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
         
         const paypalButtons = window.paypal.Buttons({
             fundingSource
         });
-        assert.equal(paypalButtons.isEligible(), true);
+        assert.equal(paypalButtons.isEligible(), false);
         done();
     });
 });
