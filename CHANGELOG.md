@@ -1,3 +1,10 @@
+## <small>5.0.174 (2021-08-04)</small>
+
+* Disable trustly (#1696) ([fd81c96](https://github.com/paypal/paypal-checkout-components/commit/fd81c96)), closes [#1696](https://github.com/paypal/paypal-checkout-components/issues/1696)
+* Handle Venmo Desktop (#1708) ([824d607](https://github.com/paypal/paypal-checkout-components/commit/824d607)), closes [#1708](https://github.com/paypal/paypal-checkout-components/issues/1708)
+
+
+
 ## <small>5.0.173 (2021-07-27)</small>
 
 * Revert PR 1685/Remove test group check (#1704) ([0cd5e29](https://github.com/paypal/paypal-checkout-components/commit/0cd5e29)), closes [#1704](https://github.com/paypal/paypal-checkout-components/issues/1704)
