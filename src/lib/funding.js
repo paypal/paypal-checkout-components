@@ -4,13 +4,13 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { FUNDING } from '../constants';
 import type { FundingSource, FundingList } from '../types';
+import { labelToFunding, getButtonConfig } from '../button/config';
+import { determineEligibleFunding } from '../funding';
+import { parseLocale } from '../button/props';
 
 import { getStorageState, getGlobalState, getSessionState } from './session';
 import { openMetaFrame } from './meta';
 import { identity } from './util';
-import { determineEligibleFunding } from '../funding';
-import { parseLocale } from '../button/props';
-import { labelToFunding, getButtonConfig } from '../button/config';
 
 // $FlowFixMe
 export function getRememberedFunding<T>(handler? : (rememberedFunding : FundingList) => T = identity) : T {
@@ -117,8 +117,8 @@ export function precacheRememberedFunding() : ZalgoPromise<void> {
     return ZalgoPromise.resolve();
 }
 
-export function getButtonsArray(props: Object): string {
-    const { 
+export function getRenderedButtons(props : Object) : string {
+    const {
         commit,
         env,
         funding,
@@ -126,7 +126,7 @@ export function getButtonsArray(props: Object): string {
         style: {
             layout,
             label
-        },
+        }
     } = props;
 
     const locale = rawLocale ? parseLocale(rawLocale) : getButtonConfig('DEFAULT', 'defaultLocale');
@@ -139,6 +139,5 @@ export function getButtonsArray(props: Object): string {
         layout,
         commit
     });
-    console.log(sources);
-    return sources;
+    return String(sources);
 }

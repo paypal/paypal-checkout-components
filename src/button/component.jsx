@@ -19,7 +19,7 @@ import { redirect as redir, checkRecognizedBrowser,
     isEligible, getCurrentScriptUrl,
     getDomainSetting, extendUrl, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle,
-    getBrowser, isSupportedNativeBrowser, getButtonsArray } from '../lib';
+    getBrowser, isSupportedNativeBrowser, getRenderedButtons } from '../lib';
 import { rest } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -222,11 +222,11 @@ export const Button : Component<ButtonOptions> = create({
             queryParam: true
         },
 
-        buttonsArray: {
-            type: 'string',
+        renderedButtons: {
+            type:     'string',
             required: false,
             def(props) : string {
-                return getButtonsArray(props);
+                return getRenderedButtons(props);
             },
             queryParam: true
         },
