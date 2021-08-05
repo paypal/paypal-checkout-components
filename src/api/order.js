@@ -44,8 +44,9 @@ export function createOrderID(order : OrderCreateRequest, { facilitatorAccessTok
     getLogger().info(`rest_api_create_order_id`);
     return callRestAPI({
         accessToken: facilitatorAccessToken,
-        method:      `post`,
+        method:      'post',
         url:         `${ ORDERS_API_URL }`,
+        eventName:   'v2_checkout_orders_create',
         data:        order,
         headers:     {
             [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
@@ -78,6 +79,7 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
         return callRestAPI({
             accessToken: facilitatorAccessToken,
             url:         `${ ORDERS_API_URL }/${ orderID }`,
+            eventName:   'v2_checkout_orders_get',
             headers:     {
                 [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
                 [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
@@ -89,6 +91,7 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
             return callSmartAPI({
                 accessToken: buyerAccessToken,
                 url:         `${ SMART_API_URI.ORDER }/${ orderID }`,
+                eventName:   'order_get',
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]: orderID
                 }
@@ -107,6 +110,7 @@ export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccess
     return callSmartAPI({
         accessToken: buyerAccessToken,
         url:         `${ SMART_API_URI.ORDER }/${ orderID }`,
+        eventName:   'order_get',
         headers:     {
             [HEADERS.CLIENT_CONTEXT]:         orderID
         }
@@ -129,7 +133,8 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
     if (forceRestAPI && !getLsatUpgradeError()) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
-            method:      `post`,
+            method:      'post',
+            eventName:   'v2_checkout_orders_capture',
             url:         `${ ORDERS_API_URL }/${ orderID }/capture`,
             headers:     {
                 [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
@@ -146,6 +151,7 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
             return callSmartAPI({
                 accessToken: buyerAccessToken,
                 method:      'post',
+                eventName:   'order_capture',
                 url:         `${ SMART_API_URI.ORDER }/${ orderID }/capture`,
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]: orderID
@@ -165,6 +171,7 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
     return callSmartAPI({
         accessToken: buyerAccessToken,
         method:      'post',
+        eventName:   'order_capture',
         url:         `${ SMART_API_URI.ORDER }/${ orderID }/capture`,
         headers:     {
             [HEADERS.CLIENT_CONTEXT]: orderID
@@ -181,7 +188,8 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
     if (forceRestAPI && !getLsatUpgradeError()) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
-            method:      `post`,
+            method:      'post',
+            eventName:   'v2_checkout_orders_authorize',
             url:         `${ ORDERS_API_URL }/${ orderID }/authorize`,
             headers:     {
                 [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
@@ -198,6 +206,7 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
             return callSmartAPI({
                 accessToken: buyerAccessToken,
                 method:      'post',
+                eventName:   'order_authorize',
                 url:         `${ SMART_API_URI.ORDER }/${ orderID }/authorize`,
                 headers:     {
                     [HEADERS.CLIENT_CONTEXT]: orderID
@@ -218,6 +227,7 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
     return callSmartAPI({
         accessToken: buyerAccessToken,
         method:      'post',
+        eventName:   'order_authorize',
         url:         `${ SMART_API_URI.ORDER }/${ orderID }/authorize`,
         headers:     {
             [HEADERS.CLIENT_CONTEXT]: orderID
@@ -238,7 +248,8 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
     if (forceRestAPI && !getLsatUpgradeError()) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
-            method:      `patch`,
+            method:      'patch',
+            eventName:   'v2_checkout_orders_patch',
             url:         `${ ORDERS_API_URL }/${ orderID }`,
             data,
             headers:     {
@@ -252,6 +263,7 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
             return callSmartAPI({
                 accessToken: buyerAccessToken,
                 method:      'post',
+                eventName:   'order_patch',
                 url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
                 json:        { data: Array.isArray(data) ? { patch: data } : data },
                 headers:     {
@@ -273,6 +285,7 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
     return callSmartAPI({
         accessToken: buyerAccessToken,
         method:      'post',
+        eventName:   'order_patch',
         url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
         json:        { data: Array.isArray(data) ? { patch: data } : data },
         headers:     {
@@ -298,7 +311,8 @@ export type ConfirmData = {|
 export function confirmOrderAPI(orderID : string, data : ConfirmData, { facilitatorAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<OrderConfirmResponse> {
     return callRestAPI({
         accessToken: facilitatorAccessToken,
-        method:      `post`,
+        method:      'post',
+        eventName:   'order_confirm_payment_source',
         url:         `${ ORDERS_API_URL }/${ orderID }/confirm-payment-source`,
         data,
         headers:     {
@@ -383,7 +397,7 @@ export function validatePaymentMethod({ accessToken, orderID, paymentMethodID, e
     };
 
     return request({
-        method: `post`,
+        method: 'post',
         url:    `${ ORDERS_API_URL }/${ orderID }/${ VALIDATE_PAYMENT_METHOD_API }`,
         headers,
         json
@@ -394,6 +408,7 @@ export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<stri
     return callSmartAPI({
         authenticated: false,
         method:        'post',
+        eventName:     'payment_ectoken',
         url:           `${ SMART_API_URI.PAYMENT }/${ billingToken }/ectoken`
     }).then(({ data }) => {
         return data.token;
@@ -404,6 +419,7 @@ export function subscriptionIdToCartId(subscriptionID : string) : ZalgoPromise<s
     return callSmartAPI({
         authenticated: false,
         method:        'post',
+        eventName:     'billagmt_subscriptions_cartid',
         url:           `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }/cartid`
     }).then(({ data }) => {
         return data.token;

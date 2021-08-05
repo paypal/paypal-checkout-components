@@ -30,21 +30,24 @@ export function createAccessToken(clientID : string, { targetSubject } : Generat
         }
 
         return request({
-
             method:  `post`,
             url:     AUTH_API_URL,
             headers: {
                 Authorization: `Basic ${ basicAuth }`
             },
             data
-
         }).then(({ body }) => {
-
             if (body && body.error === 'invalid_client') {
+                const eventName = 'v1_oauth2_token_create';
+
+                getLogger().warn(`rest_api_${ eventName }_error`, { err: 'invalid client id' });
                 throw new Error(`Auth Api invalid client id: ${ clientID || '' }:\n\n${ JSON.stringify(body, null, 4) }`);
             }
 
             if (!body || !body.access_token) {
+                const eventName = 'v1_oauth2_token_create';
+
+                getLogger().warn(`rest_api_${ eventName }_error`);
                 throw new Error(`Auth Api response error:\n\n${ JSON.stringify(body, null, 4) }`);
             }
 

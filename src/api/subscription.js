@@ -34,7 +34,7 @@ type SubscriptionOptions = {|
 
 
 // Create Subscription Request method
-function createRequest(accessToken : string, subscriptionPayload : SubscriptionCreateRequest, partnerAttributionID? : ?string) : ZalgoPromise<string> {
+function createRequest(accessToken : string, subscriptionPayload : SubscriptionCreateRequest, partnerAttributionID? : ?string, eventName : string) : ZalgoPromise<string> {
     const headers : Object = {
         'Authorization':                 `Bearer ${ accessToken }`,
         'PayPal-Partner-Attribution-Id': partnerAttributionID || ''
@@ -48,6 +48,7 @@ function createRequest(accessToken : string, subscriptionPayload : SubscriptionC
     }).then(({ body }) : string => {
 
         if (!body || !body.id) {
+            getLogger().warn(`rest_api_${ eventName }_error`);
             throw new Error(`Create Subscription Api response error:\n\n${ JSON.stringify(body, null, 4) }`);
         }
         return body.id;
@@ -63,19 +64,23 @@ export function createSubscription(accessToken : string, subscriptionPayload : S
 
     if (merchantID && merchantID[0]) {
         getLogger().info(`rest_api_subscriptions_recreate_access_token`);
+        const eventName = 'v1_billing_subscriptions_recreate';
+
         return createAccessToken(clientID, { targetSubject: merchantID[0] }).then((thirdPartyAccessToken) : ZalgoPromise<string> => {
-            return createRequest(thirdPartyAccessToken, subscriptionPayload, partnerAttributionID);
+            return createRequest(thirdPartyAccessToken, subscriptionPayload, partnerAttributionID, eventName);
         });
     }
 
     if (!accessToken) {
         throw new Error(`Access token not passed`);
     }
-    return createRequest(accessToken, subscriptionPayload, partnerAttributionID);
+
+    const eventName = 'v1_billing_subscriptions_create';
+    return createRequest(accessToken, subscriptionPayload, partnerAttributionID, eventName);
 }
 
 // Revise Subscription API request
-function reviseRequest(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest, partnerAttributionID? : ?string) : ZalgoPromise<string> {
+function reviseRequest(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest, partnerAttributionID? : ?string, eventName : string) : ZalgoPromise<string> {
     const headers : Object = {
         'Authorization':                 `Bearer ${ accessToken }`,
         'PayPal-Partner-Attribution-Id': partnerAttributionID || ''
@@ -89,6 +94,7 @@ function reviseRequest(accessToken : string, subscriptionID : string, subscripti
     }).then(({ body, status }) : string => {
 
         if (status !== 200) {
+            getLogger().warn(`rest_api_${ eventName }_error`);
             throw new Error(`Revise Subscription Api HTTP-${ status } response: error:\n\n${ JSON.stringify(body, null, 4) }`);
         }
         // for revision flow the same subscription id is returned
@@ -109,15 +115,19 @@ export function reviseSubscription(accessToken : string, subscriptionID : string
 
     if (merchantID && merchantID[0]) {
         getLogger().info(`rest_api_subscriptions_recreate_access_token`);
+        const eventName = 'v1_billing_subscriptions_revise_recreate';
+
         return createAccessToken(clientID, { targetSubject: merchantID[0] }).then((thirdPartyAccessToken) : ZalgoPromise<string> => {
-            return reviseRequest(thirdPartyAccessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
+            return reviseRequest(thirdPartyAccessToken, subscriptionID, subscriptionPayload, partnerAttributionID, eventName);
         });
     }
 
     if (!accessToken) {
         throw new Error(`Access token not passed`);
     }
-    return reviseRequest(accessToken, subscriptionID, subscriptionPayload, partnerAttributionID);
+
+    const eventName = 'v1_billing_subscriptions_revise_create';
+    return reviseRequest(accessToken, subscriptionID, subscriptionPayload, partnerAttributionID, eventName);
 }
 
 type SubscriptionAPICredentials = {|
@@ -129,7 +139,8 @@ export type SubscriptionResponse = {||};
 export function activateSubscription(subscriptionID : string, { buyerAccessToken } : SubscriptionAPICredentials) : ZalgoPromise<SubscriptionResponse> {
     return callSmartAPI({
         accessToken: buyerAccessToken,
-        method:      `post`,
+        method:      'post',
+        eventName:   'billagmt_subscriptions_activate',
         url:         `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }/activate`
     }).then(({ data }) => {
         return data;
@@ -139,6 +150,7 @@ export function activateSubscription(subscriptionID : string, { buyerAccessToken
 export function getSubscription(subscriptionID : string, { buyerAccessToken } : SubscriptionAPICredentials) : ZalgoPromise<SubscriptionResponse> {
     return callSmartAPI({
         accessToken: buyerAccessToken,
+        eventName:   'billagmt_subscriptions_get',
         url:         `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }`
     }).then(({ data }) => {
         return data;

@@ -13,10 +13,11 @@ type RESTAPIParams<D> = {|
     method? : string,
     url : string,
     data? : D,
-    headers? : { [string] : string }
+    headers? : { [string] : string },
+    eventName : string
 |};
 
-export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : RESTAPIParams<D>) : ZalgoPromise<T> {
+export function callRestAPI<D, T>({ accessToken, method, url, data, headers, eventName } : RESTAPIParams<D>) : ZalgoPromise<T> {
 
     if (!accessToken) {
         throw new Error(`No access token passed to ${ url }`);
@@ -48,6 +49,8 @@ export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : 
                     [FPTI_CUSTOM_KEY.INFO_MSG]: `URL: ${ url }`
                 });
             }
+
+            getLogger().warn(`rest_api_${ eventName }_error`);
             throw error;
         }
 
@@ -61,7 +64,8 @@ type SmartAPIRequest = {|
     url : string,
     method? : string,
     json? : $ReadOnlyArray<mixed> | Object,
-    headers? : { [string] : string }
+    headers? : { [string] : string },
+    eventName : string
 |};
 
 export type APIResponse = {|
@@ -69,7 +73,7 @@ export type APIResponse = {|
     headers : {| [$Values<typeof HEADERS>] : string |}
 |};
 
-export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHeaders = {}, json, authenticated = true } : SmartAPIRequest) : ZalgoPromise<APIResponse> {
+export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHeaders = {}, json, authenticated = true, eventName } : SmartAPIRequest) : ZalgoPromise<APIResponse> {
 
     reqHeaders[HEADERS.REQUESTED_BY] = SMART_PAYMENT_BUTTONS;
 
@@ -89,6 +93,8 @@ export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHea
                 err.response = { url, method, headers: reqHeaders, body };
                 // $FlowFixMe
                 err.data = body.data;
+
+                getLogger().warn(`smart_api_${ eventName }_contingency_error`);
                 throw err;
             }
 
@@ -101,10 +107,12 @@ export function callSmartAPI({ accessToken, url, method = 'get', headers: reqHea
             }
 
             if (status > 400) {
+                getLogger().warn(`smart_api_${ eventName }_status_${ status }_error`);
                 throw new Error(`Api: ${ url } returned status code: ${ status } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })\n\n${ JSON.stringify(body) }`);
             }
 
             if (body.ack !== 'success') {
+                getLogger().warn(`smart_api_${ eventName }_ack_error`);
                 throw new Error(`Api: ${ url } returned ack: ${ body.ack } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })\n\n${ JSON.stringify(body) }`);
             }
 
@@ -129,10 +137,13 @@ export function callGraphQL<T>({ name, query, variables = {}, headers = {} } : {
 
         if (errors.length) {
             const message = errors[0].message || JSON.stringify(errors[0]);
+
+            getLogger().warn(`graphql_${ name }_error`, { err: message });
             throw new Error(message);
         }
 
         if (status !== 200) {
+            getLogger().warn(`graphql_${ name }_status_${ status }_error`);
             throw new Error(`${ GRAPHQL_URI } returned status ${ status }\n\n${ JSON.stringify(body) }`);
         }
 
