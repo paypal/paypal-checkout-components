@@ -135,4 +135,33 @@ describe(`paypal button component props`, () => {
             });
         }));
     });
+
+    it('should render a button and get the renderedButtons props', () => {
+        return ZalgoPromise.try(() => {
+            return wrapPromise(({ expect, avoid }) => {
+                let onRender = ({ xprops }) => {
+                    const renderedButtons = xprops.renderedButtons;
+                    if (!renderedButtons.length) {
+                        throw new Error(`Expected some value on renderedButtons array, got ${ renderedButtons } (empty array)`);
+                    }
+                };
+
+                const instance = window.paypal.Buttons({
+                    test: {
+                        action:   'checkout',
+                        onRender: (...args) => onRender(...args)
+                    },
+
+                    onApprove: avoid('onApprove'),
+                    onCancel:  avoid('onCancel')
+
+                });
+                
+                if (instance.isEligible()) {
+                    onRender = expect('onRender', onRender);
+                    return instance.render('#testContainer');
+                }
+            });
+        });
+    });
 });
