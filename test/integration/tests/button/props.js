@@ -135,4 +135,39 @@ describe(`paypal button component props`, () => {
             });
         }));
     });
+
+    it('should render a button and get the renderedButtons props', () => {
+        const renderedButtons = [
+            FUNDING.PAYPAL,
+            FUNDING.APPLEPAY,
+            FUNDING.CARD
+        ];
+
+        return ZalgoPromise.try(() => {
+            return wrapPromise(({ expect, avoid }) => {
+                let onRender = ({ xprops }) => {
+                    const queriedRenderedButtons = xprops.renderedButtons;
+                    if (JSON.stringify(queriedRenderedButtons) !== JSON.stringify(renderedButtons)) {
+                        throw new Error(`Expected ${ renderedButtons.join(',') } to be queried, got ${ queriedRenderedButtons.join(',') }`);
+                    }
+                };
+
+                const instance = window.paypal.Buttons({
+                    test: {
+                        action:   'checkout',
+                        onRender: (...args) => onRender(...args)
+                    },
+
+                    onApprove: avoid('onApprove'),
+                    onCancel:  avoid('onCancel')
+
+                });
+                
+                if (instance.isEligible()) {
+                    onRender = expect('onRender', onRender);
+                    return instance.render('#testContainer');
+                }
+            });
+        });
+    });
 });

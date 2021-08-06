@@ -30,7 +30,7 @@ export function TagLine({ fundingSource, locale, multiple, nonce, personalizatio
     return (
         <div class={ CLASS.TAGLINE }>
             {
-                (tagline && !multiple)
+                (tagline)
                     ? (
                         <Fragment>
                             <span>

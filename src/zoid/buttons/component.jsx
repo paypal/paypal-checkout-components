@@ -19,7 +19,7 @@ import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
-import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment, getVenmoExperiment } from './util';
+import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment, getVenmoExperiment, getRenderedButtons } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -439,6 +439,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'array',
                 queryParam: true,
                 value:      getMerchantID
+            },
+
+            renderedButtons: {
+                type:       'array',
+                queryParam: true,
+                value:      ({ props }) => getRenderedButtons(props)
             },
 
             csp: {
