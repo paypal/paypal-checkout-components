@@ -137,12 +137,18 @@ describe(`paypal button component props`, () => {
     });
 
     it('should render a button and get the renderedButtons props', () => {
+        const renderedButtons = [
+            FUNDING.PAYPAL,
+            FUNDING.APPLEPAY,
+            FUNDING.CARD
+        ];
+
         return ZalgoPromise.try(() => {
             return wrapPromise(({ expect, avoid }) => {
                 let onRender = ({ xprops }) => {
-                    const renderedButtons = xprops.renderedButtons;
-                    if (!renderedButtons.length) {
-                        throw new Error(`Expected some value on renderedButtons array, got ${ renderedButtons } (empty array)`);
+                    const queriedRenderedButtons = xprops.renderedButtons;
+                    if (JSON.stringify(queriedRenderedButtons) !== JSON.stringify(renderedButtons)) {
+                        throw new Error(`Expected ${ renderedButtons.join(',') } to be queried, got ${ queriedRenderedButtons.join(',') }`);
                     }
                 };
 
