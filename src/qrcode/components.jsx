@@ -2,13 +2,10 @@
 /** @jsx h */
 
 import { preact } from 'jsx-pragmatic';
-import { h, Node } from 'preact';
+import { h } from 'preact';
 import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { VENMO_BLUE, QRCODE_STATE } from '../constants';
-
-export type NodeType = typeof Node;
-
 
 export function ErrorMessage({
     message,
@@ -16,7 +13,7 @@ export function ErrorMessage({
 } : {|
     message? : string,
     resetFunc : () => void
-|}) : NodeType {
+|}) : mixed {
     return (
         <div id="error-view">
             <div className="error-message">{message || 'An issue has occurred' }</div>
@@ -25,16 +22,16 @@ export function ErrorMessage({
     );
 }
 
-export function QRCodeElement({ svgString } : {| svgString : string |}) : NodeType {
+export function QRCodeElement({ svgString } : {| svgString : string |}) : mixed {
     const src = `data:image/svg+xml;base64,${ btoa(svgString) }`;
     return (<img id="qr-code" src={ src } alt="QR Code" />);
 }
 
-export function Logo() : NodeType {
+export function Logo() : mixed {
     return VenmoLogo({ logoColor: LOGO_COLOR.DEFAULT }).render(preact({ Preact: { h } }));
 }
 
-export function InstructionIcon({ stylingClass = 'instruction-icon' } : {|stylingClass? : string |}) : NodeType {
+export function InstructionIcon({ stylingClass = 'instruction-icon' } : {|stylingClass? : string |}) : mixed {
     return (
         <svg className={ stylingClass } width="68" height="46" viewBox="0 0 68 46" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="49" cy="25" r="18" fill="white" stroke="#888C94" stroke-width="2" />
@@ -45,7 +42,7 @@ export function InstructionIcon({ stylingClass = 'instruction-icon' } : {|stylin
     );
 }
 
-export function VenmoMark() : NodeType {
+export function VenmoMark() : mixed {
     // <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/venmo-mark-monotone.svg" alt="Venmo Mark" />
     return (
         <svg id="venmo-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
@@ -54,7 +51,7 @@ export function VenmoMark() : NodeType {
     );
 }
 
-export function AuthMark() : NodeType {
+export function AuthMark() : mixed {
     return  (
         <svg id="success-mark" width="59" height="59" viewBox="0 0 59 59" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="1" width="57" height="57" rx="28.5" fill="#148572" stroke="#888C94" />

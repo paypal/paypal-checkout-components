@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx h */
 
-import { h, render, Fragment, Node } from 'preact';
+import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 
 import { getBody } from '../../lib';
@@ -18,7 +18,7 @@ type PageProps = {|
     props : CardProps
 |};
 
-function Page({ cspNonce, props } : PageProps) : typeof Node {
+function Page({ cspNonce, props } : PageProps) : mixed {
     const {
         createOrder, onApprove, intent, branded, vault,
         style, type, onChange, export: xport

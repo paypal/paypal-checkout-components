@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx h */
 
-import { h, Fragment, Node } from 'preact';
+import { h, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 
 import type { Card } from '../types';
@@ -11,7 +11,7 @@ type CardFieldProps = {|
     onChange : ({| value : Card, valid : boolean |}) => void
 |};
 
-export function CardField({ cspNonce, onChange } : CardFieldProps) : typeof Node {
+export function CardField({ cspNonce, onChange } : CardFieldProps) : mixed {
     const [ number, setNumber ] = useState('');
     const [ cvv, setCVV ] = useState('');
     const [ expiry, setExpiry ] = useState('');
@@ -83,7 +83,7 @@ type CardNumberFieldProps = {|
     onChange : ({| value : string, valid : boolean |}) => void
 |};
 
-export function CardNumberField({ cspNonce, onChange } : CardNumberFieldProps) : typeof Node {
+export function CardNumberField({ cspNonce, onChange } : CardNumberFieldProps) : mixed {
     const [ number, setNumber ] = useState('');
 
     useEffect(() => {
@@ -124,7 +124,7 @@ type CardCvvFieldProps = {|
     onChange : ({| value : string, valid : boolean |}) => void
 |};
 
-export function CardCVVField({ cspNonce, onChange } : CardCvvFieldProps) : typeof Node {
+export function CardCVVField({ cspNonce, onChange } : CardCvvFieldProps) : mixed {
     const [ cvv, setCvv ] = useState('');
 
     useEffect(() => {
@@ -165,7 +165,7 @@ type CardExpiryFieldProps = {|
     onChange : ({| value : string, valid : boolean |}) => void
 |};
 
-export function CardExpiryField({ cspNonce, onChange } : CardExpiryFieldProps) : typeof Node {
+export function CardExpiryField({ cspNonce, onChange } : CardExpiryFieldProps) : mixed {
     const [ expiry, setExpiry ] = useState('');
 
     useEffect(() => {

@@ -9,7 +9,7 @@ import {
 } from '../lib';
 import { QRCODE_STATE } from '../constants';
 
-import { type NodeType,
+import {
     ErrorMessage,
     QRCodeElement,
     InstructionIcon,
@@ -48,7 +48,7 @@ function QRCard({
     cspNonce : ?string,
     svgString : string,
     debug? : boolean
-|}) : NodeType {
+|}) : mixed {
     const { state, errorText, setState } = useXProps();
     const isError = () => {
         return state === QRCODE_STATE.ERROR;

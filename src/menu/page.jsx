@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx h */
 
-import { h, render, Fragment, Node } from 'preact';
+import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import { noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -17,7 +17,7 @@ type PageProps = {|
     cspNonce : string
 |};
 
-function Page({ cspNonce } : PageProps) : typeof Node {
+function Page({ cspNonce } : PageProps) : mixed {
     const { choices, onChoose, verticalOffset, hide, onBlur = noop, onFocus = noop, onFocusFail = noop } = useXProps();
     const [ opaque, setOpaque ] = useState(false);
     const [ visible, setVisible ] = useState(false);
