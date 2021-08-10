@@ -85,6 +85,12 @@ export function getCheckoutComponent() : CheckoutComponent {
                     required:   false
                 },
                 
+                stickinessID: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false
+                },
+                
                 env: {
                     type:       'string',
                     queryParam: true,
