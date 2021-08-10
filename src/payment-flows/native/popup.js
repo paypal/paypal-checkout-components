@@ -248,13 +248,19 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
                 }).flush();
 
                 const connection = connectNative({
-                    props, serviceData, config, fundingSource, sessionUID,
+                    config, sessionUID,
                     callbacks: {
-                        onInit,
+                        onInit: () => {
+                            resolve();
+                            return onInit();
+                        },
                         onApprove,
                         onCancel,
                         onShippingChange,
-                        onError,
+                        onError: ({ data }) => {
+                            reject(new Error(data.message));
+                            return onError({ data });
+                        },
                         onFallback: ({ data }) => {
                             return onFallback({
                                 win:    nativePopupWin,
@@ -265,9 +271,7 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
                 });
 
                 clean.register(connection.cancel);
-
-                return connection.setProps();
-            }).then(resolve, reject);
+            }).catch(reject);
         });
 
         const detectWebSwitch = once(() : ZalgoPromise<void> => {
@@ -358,7 +362,7 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
                         }).flush();
 
                     if (isAndroidChrome()) {
-                        const appSwitchCloseListener = onCloseWindow(nativePopupWin, () => detectAppSwitch());
+                        const appSwitchCloseListener = onCloseWindow(nativePopupWin, () => detectAppSwitch(), 50);
                         setTimeout(appSwitchCloseListener.cancel, 1000);
                     }
 

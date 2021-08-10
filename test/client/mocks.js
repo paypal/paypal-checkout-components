@@ -17,6 +17,10 @@ import { triggerKeyPress } from './util';
 
 export const MOCK_BUYER_ACCESS_TOKEN = 'abc123xxxyyyzzz456';
 
+export function promiseNoop() : ZalgoPromise<void> {
+    return ZalgoPromise.resolve();
+}
+
 export function mockAsyncProp(handler? : Function = noop, time? : number = 1) : Function {
     const currentPromise = new ZalgoPromise();
     
@@ -731,14 +735,14 @@ type NativeMockWebSocket = {|
         done : () => Promise<void>
     |},
     // getProps : () => void,
-    onInit : () => void,
-    onApprove : () => void,
-    onCancel : () => void,
-    onError : () => void,
-    onShippingChange : () => void,
-    onFallback : () => void,
-    fallback : ({| buyerAccessToken : string |}) => void,
-    onFallbackOptOut : () => void
+    onInit : () => ZalgoPromise<void>,
+    onApprove : ({| payerID : string |}) => ZalgoPromise<void>,
+    onCancel : () => ZalgoPromise<void>,
+    onError : () => ZalgoPromise<void>,
+    onShippingChange : () => ZalgoPromise<void>,
+    onFallback : () => ZalgoPromise<void>,
+    fallback : ({| buyerAccessToken : string |}) => ZalgoPromise<void>,
+    onFallbackOptOut : () => ZalgoPromise<void>
 |};
 
 export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : () => ?string |}) : NativeMockWebSocket {
@@ -821,7 +825,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     const onInit = () => {
         onInitRequestID = uniqueID();
 
-        send(JSON.stringify({
+        return send(JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -841,7 +845,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
 
         onApproveRequestID = uniqueID();
 
-        send(JSON.stringify({
+        return send(JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -863,7 +867,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
 
         onCancelRequestID = uniqueID();
 
-        send(JSON.stringify({
+        return send(JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -881,7 +885,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     const onError = () => {
         onErrorRequestID = uniqueID();
 
-        send(JSON.stringify({
+        return send(JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -899,7 +903,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     const onShippingChange = () => {
         onShippingChangeRequestID = uniqueID();
 
-        send(JSON.stringify({
+        return send(JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -917,7 +921,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     const onFallback = () => {
         onShippingChangeRequestID = uniqueID();
 
-        send(JSON.stringify({
+        return send(JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
@@ -933,7 +937,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     };
 
     return {
-        expect, onInit, onApprove, onCancel, onError, onShippingChange, onFallback, fallback: noop, onFallbackOptOut: noop
+        expect, onInit, onApprove, onCancel, onError, onShippingChange, onFallback, fallback: promiseNoop, onFallbackOptOut: promiseNoop
     };
 }
 
@@ -1048,7 +1052,7 @@ export const MOCK_FIREBASE_CONFIG = {
 };
 
 type MockFirebase = {|
-    send : (string, Object) => void,
+    send : (string, Object) => ZalgoPromise<void>,
     expect : () => {|
         done : () => void
     |}
@@ -1075,9 +1079,11 @@ function mockFirebase({ handler } : {| handler : ({| data : Object |}) => void |
         const { namespace, key } = splitPath(path);
         messages[namespace] = messages[namespace] || {};
         messages[namespace][key] = data;
-        for (const listener of (listeners[namespace] || [])) {
-            listener({ val: () => messages[namespace] });
-        }
+        return ZalgoPromise.delay(5).then(() => {
+            for (const listener of (listeners[namespace] || [])) {
+                listener({ val: () => messages[namespace] });
+            }
+        });
     };
 
     firebaseScriptsMock.await().then(() => {
@@ -1151,7 +1157,7 @@ function mockFirebase({ handler } : {| handler : ({| data : Object |}) => void |
     return { send, expect };
 }
 
-export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSessionUID : () => string, extraHandler? : Function |}) : NativeMockWebSocket {
+export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionUID : string, extraHandler? : Function |}) : NativeMockWebSocket {
     let props;
 
     let getPropsRequestID;
@@ -1194,36 +1200,9 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                     extraHandler(message);
                 }
 
-                if (messageType === 'request'  && messageName === 'setProps') {
-                    const {
-                        orderID, facilitatorAccessToken, pageUrl, commit,
-                        userAgent, buttonSessionID, env, webCheckoutUrl
-                    } = messageData;
-
-                    if (!orderID || !facilitatorAccessToken || pageUrl !== '' || !commit || !userAgent || !buttonSessionID || !env || !webCheckoutUrl) {
-                        throw new Error(`Missing props`);
-                    }
-
-                    send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-                        session_uid:        getSessionUID(),
-                        source_app:         'paypal_native_checkout_sdk',
-                        source_app_version: '1.2.3',
-                        target_app:         'paypal_smart_payment_buttons',
-                        request_uid:        requestUID,
-                        message_uid:        uniqueID(),
-                        message_type:       'response',
-                        message_name:       'setProps',
-                        message_status:     'success',
-                        message_data:       {}
-                    }));
-
-
-                    props = messageData;
-                }
-
                 if (messageType === 'request' && messageName === 'close') {
-                    send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-                        session_uid:        getSessionUID(),
+                    send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+                        session_uid:        sessionUID,
                         source_app:         'paypal_native_checkout_sdk',
                         source_app_version: '1.2.3',
                         target_app:         'paypal_smart_payment_buttons',
@@ -1241,8 +1220,8 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                         throw new Error(messageData.message);
                     }
 
-                    send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-                        session_uid:        getSessionUID(),
+                    send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+                        session_uid:        sessionUID,
                         source_app:         'paypal_native_checkout_sdk',
                         source_app_version: '1.2.3',
                         target_app:         'paypal_smart_payment_buttons',
@@ -1295,8 +1274,8 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
     const getProps = () => {
         getPropsRequestID = `${ uniqueID()  }_getProps`;
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1313,9 +1292,10 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
 
     const onInit = () => {
         onInitRequestID = `${ uniqueID()  }_onInit`;
+        waitingForResponse.push(onInitRequestID);
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1325,20 +1305,19 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
             message_name:       'onInit',
             message_data:       {}
         }));
-
-        waitingForResponse.push(onInitRequestID);
     };
 
 
-    const onApprove = () => {
+    const onApprove = ({ payerID }) => {
         if (!props) {
             // throw new Error(`Can not approve without getting props`);
         }
 
         onApproveRequestID = `${ uniqueID()  }_onApprove`;
+        waitingForResponse.push(onApproveRequestID);
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1347,11 +1326,9 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
             message_type:       'request',
             message_name:       'onApprove',
             message_data:       {
-                payerID: 'XXYYZZ123456'
+                payerID
             }
         }));
-
-        waitingForResponse.push(onApproveRequestID);
     };
 
     const onCancel = () => {
@@ -1360,9 +1337,10 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
         }
 
         onCancelRequestID = `${ uniqueID()  }_onCancel`;
+        waitingForResponse.push(onCancelRequestID);
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1374,15 +1352,14 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                 
             }
         }));
-
-        waitingForResponse.push(onCancelRequestID);
     };
 
     const onError = () => {
         onErrorRequestID = `${ uniqueID()  }_onError`;
+        waitingForResponse.push(onErrorRequestID);
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1394,8 +1371,6 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                 message: 'Something went wrong'
             }
         }));
-
-        waitingForResponse.push(onErrorRequestID);
     };
 
     const onShippingChange = () => {
@@ -1404,9 +1379,10 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
         }
 
         onShippingChangeRequestID = `${ uniqueID()  }_onShippingChange`;
+        waitingForResponse.push(onShippingChangeRequestID);
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1418,15 +1394,14 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
 
             }
         }));
-
-        waitingForResponse.push(onShippingChangeRequestID);
     };
 
     const fallback = ({ buyerAccessToken } : {| buyerAccessToken : string |}) => {
         fallbackRequestID = `${ uniqueID() }_fallback`;
+        waitingForResponse.push(onErrorRequestID);
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1436,15 +1411,14 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
             message_name:       'fallback',
             message_data:       { buyerAccessToken }
         }));
-
-        waitingForResponse.push(onErrorRequestID);
     };
 
     const onFallback = () => {
         onApproveRequestID = `${ uniqueID()  }_onApprove`;
+        waitingForResponse.push(onApproveRequestID);
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1457,15 +1431,14 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                 payerID: 'XXYYZZ123456'
             }
         }));
-
-        waitingForResponse.push(onApproveRequestID);
     };
 
     const onFallbackOptOut = () => {
         fallbackRequestID = `${ uniqueID()  }_fallback`;
+        waitingForResponse.push(fallbackRequestID);
 
-        send(`users/${ getSessionUID() }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        getSessionUID(),
+        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
+            session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
@@ -1478,8 +1451,6 @@ export function getNativeFirebaseMock({ getSessionUID, extraHandler } : {| getSe
                 skip_native_duration: 604800000
             }
         }));
-
-        waitingForResponse.push(fallbackRequestID);
     };
 
     const expect = () => {
@@ -1587,7 +1558,7 @@ export function getPostRobotMock() : PostRobotMock {
                 continue;
             }
 
-            return ZalgoPromise.try(() => listener.handler({ source: win, origin: domain, data }))
+            return ZalgoPromise.delay(5).then(() => listener.handler({ source: win, origin: domain, data }))
                 .then(res => {
                     if (listener.promise) {
                         listener.promise.resolve(res || data);
@@ -1601,7 +1572,7 @@ export function getPostRobotMock() : PostRobotMock {
                 });
         }
 
-        throw new Error(`No postRobot handler found for message name: ${ name }`);
+        throw new Error(`No postRobot handler found for message name: ${ name } from ${ domain || 'unset domain' }`);
     };
 
     const done = () => {
@@ -1627,11 +1598,19 @@ type MockWindowOptions = {|
         win : CrossDomainWindowType,
         url : string,
         query : {| [string] : string |}
+    |}) => void,
+    onFirstLoad? : ({|
+        win : CrossDomainWindowType,
+        url : string,
+        query : {| [string] : string |}
     |}) => void
 |};
 
 type MockWindow = {|
     getWindow : () => ?CrossDomainWindowType,
+    send : ({| name : string, data? : mixed |}) => ZalgoPromise<Object>,
+    redirect : (url : string) => ZalgoPromise<void>,
+    close : () => void,
     expectClose : () => void,
     done : () => void
 |};
@@ -1644,6 +1623,7 @@ const getDefaultMockWindowOptions = () : MockWindowOptions => {
 export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, expectClose = false, onOpen = noop, expectedQuery = [], expectImmediateUrl = true } : MockWindowOptions = getDefaultMockWindowOptions()) : MockWindow {
 
     let windowOpenedTimes = 0;
+    const postRobotMock = getPostRobotMock();
 
     let win : ?CrossDomainWindowType;
 
@@ -1661,7 +1641,7 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
 
         let currentUrl = 'about:blank';
 
-        const onLoad = () => {
+        const onLoad = once(() => {
             if (!win) {
                 throw new Error(`Expected win to be set`);
             }
@@ -1685,17 +1665,15 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
                 url: currentUrl,
                 query
             });
-        };
+        });
 
         const newWin : CrossDomainWindowType = {
-            get location() : {||} {
-                // $FlowFixMe
-                return {
-                    protocol: 'about:'
-                };
+            // $FlowFixMe
+            get location() : URL {
+                return new URL(currentUrl); // eslint-disable-line compat/compat
             },
             set location(loc : string) {
-                ZalgoPromise.delay(10).then(() => {
+                ZalgoPromise.delay(5).then(() => {
                     currentUrl = loc;
                     onLoad();
                 });
@@ -1765,6 +1743,30 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
         return newWin;
     };
 
+    const send = ({ name, data }) => {
+        if (!win) {
+            throw new Error(`Can not send message ${ name }, window not open`);
+        }
+
+        return postRobotMock.receive({
+            win,
+            // $FlowFixMe
+            domain: win.location.origin,
+            name,
+            data
+        });
+    };
+
+    const redirect = (url) => {
+        if (!win) {
+            throw new Error(`Can not redirect to ${ url }, window not open`);
+        }
+
+        win.location = url;
+        
+        return ZalgoPromise.delay(10);
+    };
+
     const done = () => {
         window.open = windowOpen;
 
@@ -1785,6 +1787,17 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
             expectClose = true;
             win.close();
         }
+
+        postRobotMock.done();
+    };
+
+    const close = () => {
+        if (!win) {
+            throw new Error(`Can not close window, window not open`);
+        }
+
+        expectClose = true;
+        win.close();
     };
 
     const getWindow = () => {
@@ -1797,6 +1810,9 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
 
     return {
         getWindow,
+        send,
+        redirect,
+        close,
         expectClose: doExpectClose,
         done
     };

@@ -246,7 +246,7 @@ export function openNativeQRCode({ props, serviceData, config, components, fundi
             };
 
             const connection = connectNative({
-                props, serviceData, config, fundingSource, sessionUID,
+                config, sessionUID,
                 callbacks: {
                     onInit:           onInitializeQR,
                     onApprove:        onApproveQR,

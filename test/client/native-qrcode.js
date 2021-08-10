@@ -8,7 +8,7 @@ import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 import { promiseNoop } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton,
-    getNativeFirebaseMock, getGraphQLApiMock, generateOrderID, mockFunction } from './mocks';
+    getNativeFirebaseMock, getGraphQLApiMock, mockFunction } from './mocks';
 
 describe('native qrcode cases', () => {
 
@@ -19,6 +19,8 @@ describe('native qrcode cases', () => {
             delete window.xprops.onClick;
 
             const sessionToken = uniqueID();
+            const orderID = uniqueID();
+            const payerID = uniqueID();
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('firebaseGQLCall', ({ data }) => {
@@ -43,33 +45,25 @@ describe('native qrcode cases', () => {
                 })
             }).expectCalls();
 
-            let sessionUID;
+            let mockWebSocketServer;
 
             mockFunction(window.paypal, 'QRCode', expect('QRCode', ({ original, args: [ props ] }) => {
                 const query = parseQuery(props.qrPath.split('?')[1]);
-                sessionUID = query.sessionUID;
+
+                const { expect: expectSocket, onInit, onApprove } = getNativeFirebaseMock({
+                    sessionUID:   query.sessionUID
+                });
+
+                mockWebSocketServer = expectSocket();
+                
+                ZalgoPromise.try(() => {
+                    return onInit();
+                }).then(() => {
+                    return onApprove({ payerID });
+                });
+
                 return original(props);
             }));
-
-            const { expect: expectSocket, onInit, onApprove } = getNativeFirebaseMock({
-                getSessionUID: () => {
-                    if (!sessionUID) {
-                        throw new Error(`Session UID not present`);
-                    }
-
-                    return sessionUID;
-                },
-                extraHandler: expect('extraHandler', ({ message_name, message_type }) => {
-                    if (message_name === 'onInit' && message_type === 'request') {
-                        ZalgoPromise.delay(50).then(onApprove);
-                    }
-                })
-            });
-
-            const mockWebSocketServer = expectSocket();
-
-            const orderID = generateOrderID();
-            const payerID = 'XXYYZZ123456';
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -105,10 +99,12 @@ describe('native qrcode cases', () => {
             });
 
             await clickButton(FUNDING.VENMO);
-            await ZalgoPromise.delay(50).then(onInit);
             await window.xprops.onApprove.await();
 
-            await mockWebSocketServer.done();
+            if (mockWebSocketServer) {
+                mockWebSocketServer.done();
+            }
+            
             gqlMock.done();
         });
     });
