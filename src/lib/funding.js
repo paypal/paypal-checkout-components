@@ -4,9 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { FUNDING } from '../constants';
 import type { FundingSource, FundingList } from '../types';
-import { labelToFunding, getButtonConfig } from '../button/config';
-import { determineEligibleFunding } from '../funding';
-import { parseLocale } from '../button/props';
+import { normalizeProps } from '../button/props';
 
 import { getStorageState, getGlobalState, getSessionState } from './session';
 import { openMetaFrame } from './meta';
@@ -118,26 +116,7 @@ export function precacheRememberedFunding() : ZalgoPromise<void> {
 }
 
 export function getRenderedButtons(props : Object) : string {
-    const {
-        commit,
-        env,
-        funding,
-        locale: rawLocale,
-        style: {
-            layout,
-            label
-        }
-    } = props;
 
-    const locale = rawLocale ? parseLocale(rawLocale) : getButtonConfig('DEFAULT', 'defaultLocale');
-    const selected = labelToFunding(label);
-    const sources = determineEligibleFunding({
-        funding,
-        selected,
-        locale,
-        env,
-        layout,
-        commit
-    });
-    return String(sources);
+    const { sources } = normalizeProps(props);
+    return sources.toString();
 }
