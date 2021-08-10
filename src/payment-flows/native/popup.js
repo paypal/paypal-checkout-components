@@ -178,6 +178,10 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
             onClose();
         }, 500);
 
+        const closeErrorListener = onCloseWindow(nativePopupWin, () => {
+            reject(new Error(`Native popup closed`));
+        }, 500);
+
         const closePopup = (event : string) => {
             getLogger().info(`native_closing_popup_${ event }`).track({
                 [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
@@ -362,6 +366,7 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
                         }).flush();
 
                     if (isAndroidChrome()) {
+                        closeErrorListener.cancel();
                         const appSwitchCloseListener = onCloseWindow(nativePopupWin, () => detectAppSwitch(), 50);
                         setTimeout(appSwitchCloseListener.cancel, 1000);
                     }

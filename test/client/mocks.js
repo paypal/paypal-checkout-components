@@ -1225,7 +1225,7 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
                         source_app:         'paypal_native_checkout_sdk',
                         source_app_version: '1.2.3',
                         target_app:         'paypal_smart_payment_buttons',
-                        request_uid:        onApproveRequestID,
+                        request_uid:        uniqueID(),
                         message_uid:        uniqueID(),
                         message_type:       'request',
                         message_name:       'onError',
