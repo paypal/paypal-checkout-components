@@ -28,7 +28,7 @@ function getWalletInstrument({ wallet, fundingSource, onShippingChange } : GetWa
         return;
     }
 
-    const walletFunding = wallet && wallet && wallet[fundingSource.toString()];
+    const walletFunding = wallet && wallet[fundingSource.toString()];
     const instruments = walletFunding && walletFunding.instruments;
 
     if (!instruments || !instruments.length) {
