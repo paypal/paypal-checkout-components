@@ -93,7 +93,7 @@ export function createVenmoExperiment() : Experiment | void {
                 return createExperiment('enable_venmo_android', 90);
             }
         } else {
-            return createExperiment('enable_venmo_desktop', 100);
+            return createExperiment('enable_venmo_desktop', 50);
         }
     });
 }
