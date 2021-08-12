@@ -1,3 +1,26 @@
+## <small>5.0.175 (2021-08-12)</small>
+
+* Add paymentMethodToken prop to buttons ([d320b41](https://github.com/paypal/paypal-checkout-components/commit/d320b41))
+* Add stickiness ID Checkout prop (#1705) ([df4cb69](https://github.com/paypal/paypal-checkout-components/commit/df4cb69)), closes [#1705](https://github.com/paypal/paypal-checkout-components/issues/1705)
+* Disable trustly (#1696) ([fd81c96](https://github.com/paypal/paypal-checkout-components/commit/fd81c96)), closes [#1696](https://github.com/paypal/paypal-checkout-components/issues/1696)
+* Fix lint errors ([704559e](https://github.com/paypal/paypal-checkout-components/commit/704559e))
+* Flow fixes ([5a259e1](https://github.com/paypal/paypal-checkout-components/commit/5a259e1))
+* German label - Use funding eligibility instead of locale (#1689) ([67abccb](https://github.com/paypal/paypal-checkout-components/commit/67abccb)), closes [#1689](https://github.com/paypal/paypal-checkout-components/issues/1689)
+* Handle Venmo Desktop (#1708) ([824d607](https://github.com/paypal/paypal-checkout-components/commit/824d607)), closes [#1708](https://github.com/paypal/paypal-checkout-components/issues/1708)
+* Ramp venmo desktop experiment to 5% (#1697) ([204d290](https://github.com/paypal/paypal-checkout-components/commit/204d290)), closes [#1697](https://github.com/paypal/paypal-checkout-components/issues/1697)
+* Remove double checking on wallet (#1718) ([f7a3590](https://github.com/paypal/paypal-checkout-components/commit/f7a3590)), closes [#1718](https://github.com/paypal/paypal-checkout-components/issues/1718)
+* Revert PR 1685/Remove test group check (#1704) ([0cd5e29](https://github.com/paypal/paypal-checkout-components/commit/0cd5e29)), closes [#1704](https://github.com/paypal/paypal-checkout-components/issues/1704)
+* Treat tagline: 'false' as false for compatibility ([a58ca8e](https://github.com/paypal/paypal-checkout-components/commit/a58ca8e))
+* Type fixes ([b39d162](https://github.com/paypal/paypal-checkout-components/commit/b39d162))
+* Upgrade to flow 155 ([4c98d56](https://github.com/paypal/paypal-checkout-components/commit/4c98d56))
+* feat(DTNAVYA-1153): Add logic to show tagline for multiple buttons (#1700) ([b9ca90d](https://github.com/paypal/paypal-checkout-components/commit/b9ca90d)), closes [#1700](https://github.com/paypal/paypal-checkout-components/issues/1700)
+* chore(release): 5.0.171 :tada: ([c460810](https://github.com/paypal/paypal-checkout-components/commit/c460810))
+* chore(release): 5.0.172 :tada: ([8dfcc7c](https://github.com/paypal/paypal-checkout-components/commit/8dfcc7c))
+* chore(release): 5.0.173 :tada: ([0b1c316](https://github.com/paypal/paypal-checkout-components/commit/0b1c316))
+* chore(release): 5.0.174 :tada: ([ef855cc](https://github.com/paypal/paypal-checkout-components/commit/ef855cc))
+
+
+
 ## <small>5.0.174 (2021-08-04)</small>
 
 * Disable trustly (#1696) ([fd81c96](https://github.com/paypal/paypal-checkout-components/commit/fd81c96)), closes [#1696](https://github.com/paypal/paypal-checkout-components/issues/1696)
