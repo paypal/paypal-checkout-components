@@ -8,7 +8,7 @@ import { FUNDING_ORDER } from '../funding/config';
 
 import { getButtonConfig, labelToFunding } from './config';
 
-function parseLocale(locale : string) : LocaleType {
+export function parseLocale(locale : string) : LocaleType {
     const [ lang, country ] = locale.split('_');
     return { country, lang };
 }

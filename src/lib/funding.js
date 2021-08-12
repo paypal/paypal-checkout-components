@@ -4,6 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { FUNDING } from '../constants';
 import type { FundingSource, FundingList } from '../types';
+import { normalizeProps } from '../button/props';
 
 import { getStorageState, getGlobalState, getSessionState } from './session';
 import { openMetaFrame } from './meta';
@@ -112,4 +113,10 @@ export function precacheRememberedFunding() : ZalgoPromise<void> {
         return loadMeta();
     }
     return ZalgoPromise.resolve();
+}
+
+export function getRenderedButtons(props : Object) : string {
+
+    const { sources } = normalizeProps(props);
+    return sources.toString();
 }
