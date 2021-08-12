@@ -5,7 +5,7 @@ import getBrowserFingerprint from 'get-browser-fingerprint';
 
 function getSDKStorage() : Storage {
     return getStorage({
-        name: 'smart_payment_buttons'
+        name: 'paypal'
     });
 }
 

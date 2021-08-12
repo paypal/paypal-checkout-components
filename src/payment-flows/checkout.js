@@ -111,7 +111,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick, amount,
         clientID, connect, clientMetadataID: cmid, onAuth, userIDToken, env,
-        currency, enableFunding,
+        currency, enableFunding, stickinessID,
         standaloneFundingSource, branded } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
         venmoPayloadID, buyerIntent } = payment;
@@ -129,6 +129,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
             window: win,
             sessionID,
             buttonSessionID,
+            stickinessID,
             clientAccessToken,
             venmoPayloadID,
 

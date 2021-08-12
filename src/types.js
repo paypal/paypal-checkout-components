@@ -40,6 +40,7 @@ export type CheckoutProps = {|
     window? : ?(ProxyWindow | CrossDomainWindowType),
     sessionID : string,
     buttonSessionID : string,
+    stickinessID : string,
     clientAccessToken? : ?string,
     createAuthCode? : () => ZalgoPromise<?string>,
     getConnectURL? : ?({| payerID : string |}) => ZalgoPromise<string>,
