@@ -232,8 +232,9 @@
                         }
                     }
                     if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
-                        _result2.resolved ? promise.resolve(_result2.value) : promise.reject(_result2.error);
-                        _result2.errorHandled = !0;
+                        var promiseResult = _result2;
+                        promiseResult.resolved ? promise.resolve(promiseResult.value) : promise.reject(promiseResult.error);
+                        promiseResult.errorHandled = !0;
                     } else utils_isPromise(_result2) ? _result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected) ? _result2.resolved ? promise.resolve(_result2.value) : promise.reject(_result2.error) : chain(_result2, promise) : promise.resolve(_result2);
                 }
                 handlers.length = 0;
@@ -298,7 +299,7 @@
         ZalgoPromise.all = function(promises) {
             var promise = new ZalgoPromise;
             var count = promises.length;
-            var results = [];
+            var results = [].slice();
             if (!count) {
                 promise.resolve(results);
                 return promise;
@@ -679,7 +680,7 @@
     }
     function uniqueID() {
         var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, (function() {
+        return "uid_" + "xxxxxxxxxx".replace(/./g, (function() {
             return chars.charAt(Math.floor(Math.random() * chars.length));
         })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     }
@@ -814,7 +815,21 @@
         var uid = script.getAttribute("data-uid");
         if (uid && "string" == typeof uid) return uid;
         if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
-        uid = uniqueID();
+        if (script.src) {
+            var hashedString = function(str) {
+                var hash = "";
+                for (var i = 0; i < str.length; i++) {
+                    var total = str[i].charCodeAt(0) * i;
+                    str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
+                    hash += String.fromCharCode(97 + Math.abs(total) % 26);
+                }
+                return hash;
+            }(JSON.stringify({
+                src: script.src,
+                dataset: script.dataset
+            }));
+            uid = "uid_" + hashedString.slice(hashedString.length - 30);
+        } else uid = uniqueID();
         script.setAttribute("data-uid-auto", uid);
         return uid;
     }));
@@ -965,7 +980,10 @@
         _secondaryColors.white = "white", _secondaryColors),
         tag: "{ content: safer_tag }",
         dualTag: "{ content: dual_tag|safer_tag }",
-        defaultLocale: "en_US",
+        defaultLocale: {
+            country: "US",
+            lang: "en"
+        },
         defaultLabel: "checkout",
         defaultVerticalLabel: "paypal",
         defaultColor: "gold",
@@ -9267,7 +9285,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.330", 
+        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.331", 
         _ref21), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,

@@ -59,7 +59,7 @@
             return {}.hasOwnProperty.call(object, property);
         };
         __webpack_require__.p = "";
-        return __webpack_require__(__webpack_require__.s = 44);
+        return __webpack_require__(__webpack_require__.s = 48);
     }([ function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "m", (function() {
@@ -813,8 +813,8 @@
         __webpack_require__.d(__webpack_exports__, "b", (function() {
             return jsxRender;
         }));
-        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
-        var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+        var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
         function htmlEncode(html) {
             void 0 === html && (html = "");
             return html.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
@@ -1033,8 +1033,9 @@
                             }
                         }
                         if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
-                            _result2.resolved ? promise.resolve(_result2.value) : promise.reject(_result2.error);
-                            _result2.errorHandled = !0;
+                            var promiseResult = _result2;
+                            promiseResult.resolved ? promise.resolve(promiseResult.value) : promise.reject(promiseResult.error);
+                            promiseResult.errorHandled = !0;
                         } else utils_isPromise(_result2) ? _result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected) ? _result2.resolved ? promise.resolve(_result2.value) : promise.reject(_result2.error) : chain(_result2, promise) : promise.resolve(_result2);
                     }
                     handlers.length = 0;
@@ -1099,7 +1100,7 @@
             ZalgoPromise.all = function(promises) {
                 var promise = new ZalgoPromise;
                 var count = promises.length;
-                var results = [];
+                var results = [].slice();
                 if (!count) {
                     promise.resolve(results);
                     return promise;
@@ -1200,9 +1201,9 @@
             locales: constants.A,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.330",
+            version: "4.0.331",
             cors: !0,
-            env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
+            env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
             state: "checkoutjs",
             locale: {
                 country: constants.r.US,
@@ -1216,8 +1217,19 @@
             get apiStageUrl() {
                 return "www." + config.apiStage + "." + config.stageDomain;
             },
+            get localSDKUrl() {
+                var scripts = [].slice.call(document.getElementsByTagName("script"));
+                for (var _i2 = 0; _i2 < scripts.length; _i2++) {
+                    var script = scripts[_i2];
+                    if (config.env === constants.t.LOCAL && script.src.match(/checkout(\.min)?\.js$/)) return script.src;
+                }
+            },
+            get localSDKDomain() {
+                var localSDKUrl = config.localSDKUrl;
+                if (localSDKUrl) return new URL(localSDKUrl).origin;
+            },
             get localhostUrl() {
-                return "http://localhost.paypal.com:" + config.ports.default;
+                return config.localSDKDomain || "http://localhost.paypal.com:" + config.ports.default;
             },
             set localhostUrl(val) {
                 delete this.localhostUrl;
@@ -1684,11 +1696,11 @@
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
-                firefox: "30",
-                chrome: "27",
-                safari: "7",
-                opera: "16",
-                msedge: "12",
+                firefox: "43",
+                chrome: "41",
+                safari: "8",
+                opera: "23",
+                msedge: "14",
                 samsungBrowser: "2.1",
                 silk: "59.3",
                 ucbrowser: "10.0.0.488",
@@ -1719,23 +1731,23 @@
             },
             get paypalDomains() {
                 var _ref2;
-                return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:8000", _ref2[constants.t.STAGE] = "https://" + config.stageUrl, 
+                return (_ref2 = {})[constants.t.LOCAL] = config.localhostUrl, _ref2[constants.t.STAGE] = "https://" + config.stageUrl, 
                 _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", 
                 _ref2[constants.t.TEST] = "mock://www.paypal.com", _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref2;
             },
             get wwwApiUrls() {
                 var _ref3;
-                return (_ref3 = {})[constants.t.LOCAL] = "https://" + config.stageUrl, _ref3[constants.t.STAGE] = "https://" + config.stageUrl, 
-                _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", 
-                _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
+                return (_ref3 = {})[constants.t.LOCAL] = config.localSDKDomain || "https://" + config.stageUrl, 
+                _ref3[constants.t.STAGE] = "https://" + config.stageUrl, _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
+                _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref3;
             },
             get corsApiUrls() {
                 var _ref4;
-                return (_ref4 = {})[constants.t.LOCAL] = "https://" + config.apiStageUrl + ":12326", 
-                _ref4[constants.t.STAGE] = "https://" + config.apiStageUrl + ":12326", _ref4[constants.t.SANDBOX] = "https://cors.api.sandbox.paypal.com", 
-                _ref4[constants.t.PRODUCTION] = "https://cors.api.paypal.com", _ref4[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
+                return (_ref4 = {})[constants.t.LOCAL] = "https://" + config.stageUrl, _ref4[constants.t.STAGE] = "https://" + config.apiStageUrl + ":12326", 
+                _ref4[constants.t.SANDBOX] = "https://cors.api.sandbox.paypal.com", _ref4[constants.t.PRODUCTION] = "https://cors.api.paypal.com", 
+                _ref4[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref4;
             },
             get apiUrls() {
@@ -2032,6 +2044,906 @@
                 lang: constants.y.EN
             }
         };
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "F", (function() {
+            return isSupportedNativeBrowser;
+        }));
+        __webpack_require__.d(__webpack_exports__, "I", (function() {
+            return util.j;
+        }));
+        __webpack_require__.d(__webpack_exports__, "K", (function() {
+            return util.k;
+        }));
+        __webpack_require__.d(__webpack_exports__, "V", (function() {
+            return util.s;
+        }));
+        __webpack_require__.d(__webpack_exports__, "H", (function() {
+            return util.i;
+        }));
+        __webpack_require__.d(__webpack_exports__, "R", (function() {
+            return util.o;
+        }));
+        __webpack_require__.d(__webpack_exports__, "e", (function() {
+            return util.c;
+        }));
+        __webpack_require__.d(__webpack_exports__, "b", (function() {
+            return util.a;
+        }));
+        __webpack_require__.d(__webpack_exports__, "T", (function() {
+            return util.q;
+        }));
+        __webpack_require__.d(__webpack_exports__, "U", (function() {
+            return util.r;
+        }));
+        __webpack_require__.d(__webpack_exports__, "M", (function() {
+            return util.l;
+        }));
+        __webpack_require__.d(__webpack_exports__, "f", (function() {
+            return util.d;
+        }));
+        __webpack_require__.d(__webpack_exports__, "A", (function() {
+            return initLogger;
+        }));
+        __webpack_require__.d(__webpack_exports__, "S", (function() {
+            return setLogLevel;
+        }));
+        __webpack_require__.d(__webpack_exports__, "h", (function() {
+            return getBrowser;
+        }));
+        __webpack_require__.d(__webpack_exports__, "C", (function() {
+            return isEligible;
+        }));
+        __webpack_require__.d(__webpack_exports__, "d", (function() {
+            return checkRecognizedBrowser;
+        }));
+        __webpack_require__.d(__webpack_exports__, "c", (function() {
+            return checkForCommonErrors;
+        }));
+        __webpack_require__.d(__webpack_exports__, "G", (function() {
+            return loadScript;
+        }));
+        __webpack_require__.d(__webpack_exports__, "n", (function() {
+            return getElement;
+        }));
+        __webpack_require__.d(__webpack_exports__, "o", (function() {
+            return getElements;
+        }));
+        __webpack_require__.d(__webpack_exports__, "J", (function() {
+            return onDocumentReady;
+        }));
+        __webpack_require__.d(__webpack_exports__, "q", (function() {
+            return getQueryParam;
+        }));
+        __webpack_require__.d(__webpack_exports__, "W", (function() {
+            return urlWillRedirectPage;
+        }));
+        __webpack_require__.d(__webpack_exports__, "g", (function() {
+            return extendUrl;
+        }));
+        __webpack_require__.d(__webpack_exports__, "O", (function() {
+            return redirect;
+        }));
+        __webpack_require__.d(__webpack_exports__, "i", (function() {
+            return getBrowserLocale;
+        }));
+        __webpack_require__.d(__webpack_exports__, "B", (function() {
+            return isElementVisible;
+        }));
+        __webpack_require__.d(__webpack_exports__, "p", (function() {
+            return getPageRenderTime;
+        }));
+        __webpack_require__.d(__webpack_exports__, "t", (function() {
+            return getResourceLoadTime;
+        }));
+        __webpack_require__.d(__webpack_exports__, "Q", (function() {
+            return request;
+        }));
+        __webpack_require__.d(__webpack_exports__, "z", (function() {
+            return getThrottle;
+        }));
+        __webpack_require__.d(__webpack_exports__, "u", (function() {
+            return getReturnToken;
+        }));
+        __webpack_require__.d(__webpack_exports__, "y", (function() {
+            return getStorageID;
+        }));
+        __webpack_require__.d(__webpack_exports__, "x", (function() {
+            return getSessionState;
+        }));
+        __webpack_require__.d(__webpack_exports__, "w", (function() {
+            return getSessionID;
+        }));
+        __webpack_require__.d(__webpack_exports__, "j", (function() {
+            return getButtonSessionID;
+        }));
+        __webpack_require__.d(__webpack_exports__, "L", (function() {
+            return openMetaFrame;
+        }));
+        __webpack_require__.d(__webpack_exports__, "r", (function() {
+            return getRememberedFunding;
+        }));
+        __webpack_require__.d(__webpack_exports__, "P", (function() {
+            return rememberFunding;
+        }));
+        __webpack_require__.d(__webpack_exports__, "D", (function() {
+            return isFundingRemembered;
+        }));
+        __webpack_require__.d(__webpack_exports__, "N", (function() {
+            return precacheRememberedFunding;
+        }));
+        __webpack_require__.d(__webpack_exports__, "s", (function() {
+            return getRenderedButtons;
+        }));
+        __webpack_require__.d(__webpack_exports__, "k", (function() {
+            return getCurrentScript;
+        }));
+        __webpack_require__.d(__webpack_exports__, "v", (function() {
+            return getScriptVersion;
+        }));
+        __webpack_require__.d(__webpack_exports__, "l", (function() {
+            return getCurrentScriptUrl;
+        }));
+        __webpack_require__.d(__webpack_exports__, "m", (function() {
+            return getDomainSetting;
+        }));
+        __webpack_require__.d(__webpack_exports__, "a", (function() {
+            return allowIframe;
+        }));
+        __webpack_require__.d(__webpack_exports__, "E", (function() {
+            return isPayPalDomain;
+        }));
+        var cross_domain_utils_src = __webpack_require__(7);
+        var belter_src = __webpack_require__(11);
+        function isSupportedNativeBrowser() {
+            var userAgent = Object(belter_src.c)();
+            return !(!Object(belter_src.t)(userAgent) || Object(belter_src.n)() || (!Object(belter_src.l)() || !Object(belter_src.o)()) && (!Object(belter_src.f)() || !Object(belter_src.g)()));
+        }
+        var util = __webpack_require__(14);
+        var post_robot_src = __webpack_require__(15);
+        var client = __webpack_require__(5);
+        var config = __webpack_require__(3);
+        var constants = __webpack_require__(0);
+        var zalgo_promise_src = __webpack_require__(2);
+        function isDocumentReady() {
+            return Boolean(document.body) && "complete" === document.readyState;
+        }
+        var documentReady = new zalgo_promise_src.a((function(resolve) {
+            if (isDocumentReady()) return resolve();
+            var interval = setInterval((function() {
+                if (isDocumentReady()) {
+                    clearInterval(interval);
+                    return resolve();
+                }
+            }), 10);
+        }));
+        documentReady.then((function() {
+            if (document.body) return document.body;
+            throw new Error("Document ready but document.body not present");
+        }));
+        function loadScript(src, timeout, attrs) {
+            void 0 === timeout && (timeout = 0);
+            void 0 === attrs && (attrs = {});
+            return new zalgo_promise_src.a((function(resolve, reject) {
+                var script = document.createElement("script");
+                script.addEventListener("load", (function() {
+                    resolve();
+                }));
+                script.onreadystatechange = function() {
+                    "complete" !== this.readyState && "loaded" !== this.readyState || resolve();
+                };
+                var scriptLoadError = new Error("script_loading_error");
+                script.addEventListener("error", (function() {
+                    return reject(scriptLoadError);
+                }));
+                timeout && setTimeout((function() {
+                    return reject(new Error("script_loading_timed_out"));
+                }), timeout);
+                for (var _i2 = 0, _Object$keys2 = Object.keys(attrs); _i2 < _Object$keys2.length; _i2++) {
+                    var attr = _Object$keys2[_i2];
+                    script.setAttribute(attr, attrs[attr]);
+                }
+                script.setAttribute("src", src);
+                document.getElementsByTagName("head")[0].appendChild(script);
+            }));
+        }
+        function getElement(item) {
+            if (item) {
+                if (item instanceof HTMLElement) return item;
+                if ("string" == typeof item) {
+                    if (document.querySelector) {
+                        var result = document.querySelector(item);
+                        if (result) return result;
+                    }
+                    return document.getElementById(item);
+                }
+            }
+        }
+        function getElements(collection) {
+            if (!collection) return [];
+            if (collection instanceof HTMLElement || "string" == typeof collection) {
+                var element = getElement(collection);
+                return element ? [ element ] : [];
+            }
+            if (Array.isArray(collection) || collection instanceof NodeList || collection instanceof HTMLCollection) {
+                var result = [];
+                for (var i = 0; i < collection.length; i++) {
+                    var el = getElement(collection[i]);
+                    el && result.push(el);
+                }
+                return result;
+            }
+            return [];
+        }
+        function onDocumentReady(method) {
+            return documentReady.then(method);
+        }
+        var parseQuery = Object(util.i)((function(queryString) {
+            var params = {};
+            if (!queryString) return params;
+            if (-1 === queryString.indexOf("=")) return params;
+            for (var _i4 = 0, _queryString$split2 = queryString.split("&"); _i4 < _queryString$split2.length; _i4++) {
+                var pair = _queryString$split2[_i4];
+                (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
+            }
+            return params;
+        }));
+        function getQueryParam(name) {
+            return parseQuery(window.location.search.slice(1))[name];
+        }
+        function urlWillRedirectPage(url) {
+            return -1 === url.indexOf("#") || 0 !== url.indexOf("#") && url.split("#")[0] !== window.location.href.split("#")[0];
+        }
+        function extendUrl(url, params) {
+            void 0 === params && (params = {});
+            var hasHash = url.indexOf("#") > 0;
+            var _url$split = url.split("#"), serverUrl = _url$split[0], hash = _url$split[1];
+            if (hash && !serverUrl) {
+                var _ref = [ "#" + hash, "" ];
+                serverUrl = _ref[0];
+                hash = _ref[1];
+            }
+            var _serverUrl$split = serverUrl.split("?"), originalUrl = _serverUrl$split[0], originalQueryString = _serverUrl$split[1];
+            if (originalQueryString) {
+                var originalQuery = parseQuery(originalQueryString);
+                for (var _key in originalQuery) params.hasOwnProperty(_key) || (params[_key] = originalQuery[_key]);
+            }
+            var newQueryString = Object.keys(params).filter((function(key) {
+                return key && params[key];
+            })).sort().map((function(key) {
+                return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+            })).join("&");
+            var newUrl = originalUrl;
+            newQueryString && (newUrl = newUrl + "?" + newQueryString);
+            hasHash && (newUrl = newUrl + "#" + (hash || ""));
+            return newUrl;
+        }
+        function redirect(win, url) {
+            void 0 === win && (win = window);
+            return new zalgo_promise_src.a((function(resolve) {
+                Object(client.k)("redirect", {
+                    url: url
+                });
+                setTimeout((function() {
+                    win.location = url;
+                    urlWillRedirectPage(url) || resolve();
+                }), 1);
+            }));
+        }
+        function normalizeLocale(locale) {
+            if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+                var _locale$split = locale.split(/[-_]/), lang = _locale$split[0], country = _locale$split[1];
+                if (constants.A[country] && -1 !== constants.A[country].indexOf(lang)) return {
+                    country: country,
+                    lang: lang
+                };
+            }
+        }
+        function normalizeLang(lang) {
+            if (lang && lang.match(/^[a-z]{2}$/) && constants.z[lang]) return {
+                country: constants.z[lang],
+                lang: lang
+            };
+        }
+        var getBrowserLocale = Object(util.i)((function() {
+            var locales = function() {
+                var nav = window.navigator;
+                var locales = nav.languages ? [].slice.apply(nav.languages) : [];
+                nav.language && locales.push(nav.language);
+                nav.userLanguage && locales.push(nav.userLanguage);
+                return locales;
+            }();
+            for (var _i6 = 0; _i6 < locales.length; _i6++) {
+                var locale = locales[_i6];
+                var loc = normalizeLocale(locale);
+                if (loc) {
+                    Object(client.k)("better_browser_locale_full");
+                    return loc;
+                }
+                if (loc = normalizeLang(locale)) {
+                    Object(client.k)("better_browser_locale_lang");
+                    return loc;
+                }
+            }
+            return config.a.defaultLocale;
+        }));
+        function isElementVisible(el) {
+            return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+        }
+        var enablePerformance = Object(util.i)((function() {
+            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
+        }));
+        function getPageRenderTime() {
+            return documentReady.then((function() {
+                if (enablePerformance()) {
+                    var timing = window.performance.timing;
+                    return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
+                }
+            }));
+        }
+        function getResourceLoadTime(url) {
+            if (enablePerformance() && window.performance && "function" == typeof window.performance.getEntries) {
+                var entries = window.performance.getEntries();
+                for (var i = 0; i < entries.length; i++) {
+                    var entry = entries[i];
+                    if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 6e4) return Math.floor(entry.duration);
+                }
+            }
+        }
+        function allowIframe() {
+            if (!Object(belter_src.t)()) return !0;
+            var parentWindow = Object(cross_domain_utils_src.n)(window);
+            if (parentWindow && Object(cross_domain_utils_src.v)(parentWindow)) return !0;
+            var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
+            return !(!parentComponentWindow || !Object(cross_domain_utils_src.v)(parentComponentWindow));
+        }
+        function isPayPalDomain() {
+            return Boolean((window.location.protocol + "//" + window.location.host).match(config.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+        }
+        var accessedStorage;
+        function getStorageState(handler) {
+            var localStorageEnabled = Object(util.f)();
+            var storage;
+            accessedStorage && (storage = accessedStorage);
+            if (!storage && localStorageEnabled) {
+                var rawStorage = window.localStorage.getItem("__paypal_storage__");
+                rawStorage && (storage = JSON.parse(rawStorage));
+            }
+            storage || (storage = window.__paypal_storage__);
+            storage || (storage = {
+                id: Object(util.s)()
+            });
+            storage.id || (storage.id = Object(util.s)());
+            accessedStorage = storage;
+            var result = handler(storage);
+            localStorageEnabled ? window.localStorage.setItem("__paypal_storage__", JSON.stringify(storage)) : window.__paypal_storage__ = storage;
+            accessedStorage = null;
+            return result;
+        }
+        function getStorageID() {
+            return getStorageState((function(storage) {
+                return storage.id;
+            }));
+        }
+        function getSession(handler) {
+            return getStorageState((function(storage) {
+                var session = storage.__paypal_session__;
+                var now = Date.now();
+                session && now - session.created > config.a.session_uid_lifetime && (session = null);
+                session || (session = {
+                    guid: Object(util.s)(),
+                    created: now
+                });
+                storage.__paypal_session__ = session;
+                return handler(session);
+            }));
+        }
+        function getSessionState(handler) {
+            return getSession((function(session) {
+                session.state = session.state || {};
+                return handler(session.state);
+            }));
+        }
+        function getSessionID() {
+            var xprops = window.xprops;
+            if (xprops && xprops.sessionID) return xprops.sessionID;
+            var querySessionID = getQueryParam("sessionID");
+            return isPayPalDomain() && querySessionID ? querySessionID : getSession((function(session) {
+                return session.guid;
+            }));
+        }
+        function getButtonSessionID() {
+            if (window.xprops && window.xprops.buttonSessionID) return window.xprops.buttonSessionID;
+            var querySessionID = getQueryParam("buttonSessionID");
+            return isPayPalDomain() && querySessionID ? querySessionID : void 0;
+        }
+        var PAGE_TYPES = {
+            HOME: "home",
+            PRODUCT: "product",
+            CART: "cart",
+            CHECKOUT: "checkout",
+            PRODUCT_LISTING: "product-listing",
+            SEARCH_RESULTS: "search-results",
+            PRODUCT_DETAILS: "product-details",
+            MINI_CART: "mini-cart"
+        };
+        var getCurrentScript = Object(util.i)((function() {
+            var localSDKUrl = config.a.localSDKUrl;
+            var scripts = [].slice.call(document.getElementsByTagName("script"));
+            for (var _i2 = 0; _i2 < scripts.length; _i2++) {
+                var script = scripts[_i2];
+                if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
+                if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
+                if (config.a.env === constants.t.LOCAL && localSDKUrl && script.src === localSDKUrl) return script;
+            }
+            document.currentScript && Object(client.f)("current_script_not_recognized", {
+                src: document.currentScript.src
+            });
+        }));
+        function getScriptVersion() {
+            return "4.0.331";
+        }
+        function getCurrentScriptUrl() {
+            var script = getCurrentScript();
+            if (script && "string" == typeof script.src) {
+                var scriptUrl = script.src;
+                0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
+                0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
+                return scriptUrl;
+            }
+            return "https://www.paypalobjects.com/api/checkout.4.0.331.js";
+        }
+        function getDomainSetting(name, def) {
+            var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
+            if (config.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(config.a.domain_settings); _i4 < _Object$keys2.length; _i4++) {
+                var domain = _Object$keys2[_i4];
+                if (Object(util.b)(hostname, domain)) return config.a.domain_settings[domain][name];
+            }
+            return def;
+        }
+        function getRefererDomain() {
+            return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
+        }
+        var setupProxyLogTransport = Object(util.k)((function() {
+            Object(client.o)(function(name, win, originalMethod) {
+                if (win && Object(cross_domain_utils_src.h)() === config.a.paypalDomain && !Object(cross_domain_utils_src.v)(win)) {
+                    win && Object(post_robot_src.send)(win, "proxy_log", {
+                        originalMethod: originalMethod
+                    }).catch(util.j);
+                    return originalMethod;
+                }
+                var methods = [];
+                Object(post_robot_src.on)("proxy_log", {
+                    domain: config.a.paypal_domain_regex
+                }, (function(_ref) {
+                    methods.push(_ref.data.originalMethod);
+                }));
+                return function() {
+                    var _arguments = arguments, _this = this;
+                    return (methods = methods.filter((function(method) {
+                        return !Object(cross_domain_utils_src.z)(method.source);
+                    }))).length ? methods[methods.length - 1].apply(this, arguments).catch((function() {
+                        return originalMethod.apply(_this, _arguments);
+                    })) : originalMethod.apply(this, arguments);
+                };
+            }(0, Object(cross_domain_utils_src.n)(window), Object(client.i)()));
+        }));
+        function initLogger() {
+            setupProxyLogTransport();
+            Object(client.c)((function() {
+                return {
+                    referer: getRefererDomain(),
+                    host: window.location.host,
+                    path: window.location.pathname,
+                    env: config.a.env,
+                    country: config.a.locale.country,
+                    lang: config.a.locale.lang,
+                    uid: getSessionID(),
+                    ver: "4.0.331"
+                };
+            }));
+            Object(client.a)((function() {
+                return {
+                    "x-app-name": "checkoutjs"
+                };
+            }));
+            Object(client.b)((function() {
+                return {
+                    state: config.a.state
+                };
+            }));
+            Object(client.d)((function(payload) {
+                var _ref;
+                void 0 === payload && (payload = {});
+                var sessionID = getSessionID();
+                var paymentToken = function() {
+                    if (window.root && window.root.token) return window.root.token;
+                    if (isPayPalDomain()) {
+                        var queryToken = getQueryParam("token");
+                        if (queryToken) return queryToken;
+                    }
+                }();
+                var buttonSessionID = payload[constants.u.KEY.BUTTON_SESSION_UID] || getButtonSessionID();
+                var contextType;
+                var contextID;
+                if (paymentToken) {
+                    contextType = constants.u.CONTEXT_TYPE[constants.C.EC_TOKEN];
+                    contextID = paymentToken;
+                } else if (buttonSessionID) {
+                    contextType = constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID;
+                    contextID = buttonSessionID;
+                } else {
+                    contextType = payload[constants.u.KEY.CONTEXT_TYPE];
+                    contextID = payload[constants.u.KEY.CONTEXT_ID];
+                }
+                return (_ref = {})[constants.u.KEY.FEED] = constants.u.FEED.CHECKOUTJS, _ref[constants.u.KEY.DATA_SOURCE] = constants.u.DATA_SOURCE.CHECKOUT, 
+                _ref[constants.u.KEY.CONTEXT_TYPE] = contextType, _ref[constants.u.KEY.CONTEXT_ID] = contextID, 
+                _ref[constants.u.KEY.SELLER_ID] = config.a.merchantID, _ref[constants.u.KEY.SESSION_UID] = sessionID, 
+                _ref[constants.u.KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref[constants.u.KEY.VERSION] = config.a.version, 
+                _ref[constants.u.KEY.TOKEN] = paymentToken, _ref[constants.u.KEY.PAGE_TYPE] = function() {
+                    var script = getCurrentScript();
+                    if (script && script.hasAttribute("data-page-type")) {
+                        var pageType = script.getAttribute("data-page-type").toLowerCase();
+                        if (-1 === Object(belter_src.v)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
+                        return pageType;
+                    }
+                    return "";
+                }(), _ref[constants.u.KEY.REFERER] = getRefererDomain(), _ref[constants.u.KEY.TIMESTAMP] = Date.now().toString(), 
+                _ref;
+            }));
+            window.location.protocol !== cross_domain_utils_src.a.FILE && Object(client.l)({
+                uri: config.a.loggerUrl,
+                heartbeat: !1,
+                logPerformance: !1,
+                prefix: "ppxo",
+                logLevel: "warn"
+            });
+        }
+        function setLogLevel(logLevel) {
+            if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
+            config.a.logLevel = logLevel;
+            client.e.logLevel = logLevel;
+            post_robot_src.CONFIG.LOG_LEVEL = logLevel;
+            window.LOG_LEVEL = logLevel;
+        }
+        var bowserCache = {};
+        function getBowser() {
+            var userAgent = Object(belter_src.c)();
+            if (bowserCache[userAgent]) return bowserCache[userAgent];
+            delete __webpack_require__.c[42];
+            var bowser = __webpack_require__(42);
+            bowserCache[userAgent] = bowser;
+            return bowser;
+        }
+        function getBrowser() {
+            var bowser = getBowser();
+            for (var _i2 = 0, _Object$keys2 = Object.keys(config.a.SUPPORTED_BROWSERS); _i2 < _Object$keys2.length; _i2++) {
+                var browser = _Object$keys2[_i2];
+                if (bowser[browser]) return {
+                    browser: browser,
+                    version: bowser.version
+                };
+            }
+            return {};
+        }
+        var eligibilityResults = {};
+        function isEligible() {
+            if (Object(belter_src.k)()) return !1;
+            var userAgent = window.navigator.userAgent;
+            if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
+            var result = function() {
+                if (Object(belter_src.k)()) return !1;
+                var bowser = getBowser();
+                var _getBrowser = getBrowser(), browser = _getBrowser.browser, version = _getBrowser.version;
+                return !browser || !version || -1 !== bowser.compareVersions([ version, config.a.SUPPORTED_BROWSERS[browser] ]);
+            }();
+            eligibilityResults[userAgent] = result;
+            return result;
+        }
+        var checkRecognizedBrowser = Object(util.k)((function(state) {
+            if (!getBrowser().browser) {
+                var _getBowser = getBowser(), name = _getBowser.name, version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
+                Object(client.k)("unrecognized_browser_" + state, {
+                    name: name,
+                    version: version,
+                    mobile: mobile,
+                    android: android,
+                    ios: ios
+                });
+                Object(client.h)();
+            }
+        }));
+        function logWarn(err) {
+            if (window.console) {
+                if (window.console.warn) return window.console.warn(err);
+                if (window.console.log) return window.console.log(err);
+            }
+        }
+        function checkForCommonErrors() {
+            if ("[]" !== JSON.stringify([])) {
+                logWarn([].toJSON ? "Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js" : "JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.");
+                Object(client.q)("json_stringify_array_broken");
+            }
+            if ("{}" !== JSON.stringify({})) {
+                logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
+                Object(client.q)("json_stringify_object_broken");
+            }
+            Object(belter_src.k)() && Object(client.q)("ie_intranet_mode");
+            Object(belter_src.i)() && !Object(belter_src.j)() && Object(client.q)("ie_meta_compatibility_header_missing", {
+                message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
+            });
+            3 !== function(bar, baz, zomg) {}.bind({
+                a: 1
+            }).length && Object(client.q)("function_bind_arrity_overwritten");
+            window.opener && window.parent !== window && Object(client.q)("window_has_opener_and_parent");
+            window.name && 0 === window.name.indexOf("__prerender") && Object(client.q)("prerender_running_checkoutjs");
+            var context = {};
+            (function() {
+                return this;
+            }).bind(context)() !== context && Object(client.q)("function_bind_broken");
+            window.Window && window.constructor && window.Window !== window.constructor && Object(client.q)("window_constructor_does_not_match_window");
+            Object.assign && JSON.stringify({
+                a: 1,
+                b: 2,
+                c: 3
+            }) != JSON.stringify({
+                a: 1,
+                b: 2,
+                c: 3
+            }) && Object(client.q)("object_assign_broken");
+        }
+        var esm_extends = __webpack_require__(13);
+        var headerBuilders = [];
+        var corrids = [];
+        Object(client.c)((function() {
+            return {
+                prev_corr_ids: corrids.join(",")
+            };
+        }));
+        function request(_ref) {
+            var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+            return "/demo/checkout/api/braintree/client-token/" === url ? zalgo_promise_src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new zalgo_promise_src.a((function(resolve, reject) {
+                if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+                var normalizedHeaders = {};
+                for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
+                    var _key2 = _Object$keys2[_i4];
+                    normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+                }
+                json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
+                normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
+                for (var _i6 = 0; _i6 < headerBuilders.length; _i6++) {
+                    var builtHeaders = (0, headerBuilders[_i6])();
+                    for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
+                        var _key3 = _Object$keys4[_i8];
+                        normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+                    }
+                }
+                var xhr = new win.XMLHttpRequest;
+                xhr.addEventListener("load", (function() {
+                    var responseHeaders = function(rawHeaders) {
+                        void 0 === rawHeaders && (rawHeaders = "");
+                        var result = {};
+                        for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
+                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                            result[_key.toLowerCase()] = values.join(":").trim();
+                        }
+                        return result;
+                    }(this.getAllResponseHeaders());
+                    var corrID = responseHeaders["paypal-debug-id"] || "unknown";
+                    responseHeaders["paypal-debug-id"] && corrids.push(responseHeaders["paypal-debug-id"]);
+                    if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code. Correlation id: " + corrID));
+                    var contentType = responseHeaders["content-type"];
+                    var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
+                    var res = this.responseText;
+                    try {
+                        res = JSON.parse(this.responseText);
+                    } catch (err) {
+                        if (isJSON) return reject(new Error("Invalid json: " + this.responseText + ". Correlation id: " + corrID));
+                    }
+                    if (this.status >= 400) {
+                        var message = "Request to " + method.toLowerCase() + " " + url + " failed with " + this.status + " error. Correlation id: " + corrID;
+                        if (res) {
+                            "object" == typeof res && null !== res && (res = JSON.stringify(res, null, 4));
+                            message = message + "\n\n" + res + "\n";
+                        }
+                        return reject(new Error(message));
+                    }
+                    return resolve(res);
+                }), !1);
+                xhr.addEventListener("error", (function(evt) {
+                    var corrID = this.getResponseHeader("paypal-debug-id");
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + ". Correlation id: " + corrID));
+                }), !1);
+                xhr.open(method, url, !0);
+                for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+                json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
+                    return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+                })).join("&"));
+                xhr.timeout = timeout;
+                xhr.ontimeout = function() {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+                };
+                xhr.send(body);
+            }));
+        }
+        request.get = function(url, options) {
+            void 0 === options && (options = {});
+            return request(Object(esm_extends.a)({
+                method: "get",
+                url: url
+            }, options));
+        };
+        request.post = function(url, data, options) {
+            void 0 === options && (options = {});
+            return request(Object(esm_extends.a)({
+                method: "post",
+                url: url,
+                data: data
+            }, options));
+        };
+        request.addHeaderBuilder = function(method) {
+            headerBuilders.push(method);
+        };
+        function getThrottle(name, sample, sticky) {
+            void 0 === sticky && (sticky = !0);
+            var uid = getStorageID();
+            var percentile = sticky ? function(name) {
+                return getStorageState((function(storage) {
+                    storage.throttlePercentiles = storage.throttlePercentiles || {};
+                    storage.throttlePercentiles[name] = storage.throttlePercentiles[name] || Math.floor(100 * Math.random());
+                    return storage.throttlePercentiles[name];
+                }));
+            }(name) : Math.floor(100 * Math.random());
+            var group;
+            var treatment = name + "_" + (group = percentile < sample ? "test" : sample >= 50 || sample <= percentile && percentile < 2 * sample ? "control" : "throttle");
+            var started = !1;
+            var forced = !1;
+            try {
+                window.localStorage && window.localStorage.getItem(name) && (forced = !0);
+            } catch (err) {}
+            return {
+                isEnabled: function() {
+                    return "test" === group || forced;
+                },
+                isDisabled: function() {
+                    return "test" !== group && !forced;
+                },
+                getTreatment: function() {
+                    return treatment;
+                },
+                log: function(checkpointName, payload) {
+                    var _extends2;
+                    void 0 === payload && (payload = {});
+                    if (!started) return this;
+                    var checkpoint = name + "_" + treatment + "_" + checkpointName;
+                    Object(client.k)(checkpoint, Object(esm_extends.a)({}, payload, {
+                        expuid: uid
+                    }));
+                    Object(client.p)(Object(esm_extends.a)(((_extends2 = {})[constants.u.KEY.EXPERIMENT_NAME] = name, 
+                    _extends2[constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
+                    Object(client.h)();
+                    return this;
+                },
+                logStart: function(payload) {
+                    void 0 === payload && (payload = {});
+                    started = !0;
+                    return this.log("start", payload);
+                },
+                logComplete: function(payload) {
+                    void 0 === payload && (payload = {});
+                    return started ? this.log("complete", payload) : this;
+                }
+            };
+        }
+        function getReturnToken() {
+            var token = Object(util.g)(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
+            var payer = Object(util.g)(window.location.href, /PayerID=([A-Z0-9]+)/);
+            if (token && payer) return token;
+        }
+        var openMetaFrame = Object(util.i)((function(env) {
+            void 0 === env && (env = config.a.env);
+            return zalgo_promise_src.a.try((function() {
+                if (Object(belter_src.k)()) return {
+                    iframeEligible: !1,
+                    iframeEligibleReason: "ie_intranet",
+                    rememberedFunding: []
+                };
+                var metaFrameUrl = config.a.metaFrameUrls[env];
+                var metaFrameDomain = config.a.paypalDomains[env];
+                return zalgo_promise_src.a.try((function() {
+                    if (!post_robot_src.bridge) throw new Error("Opening meta window without bridge support is not currently supported");
+                    var metaListener = Object(post_robot_src.once)("meta", {
+                        domain: metaFrameDomain
+                    });
+                    return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
+                        version: "4.0.331"
+                    }), metaFrameDomain).then((function() {
+                        return metaListener;
+                    })).then((function(_ref) {
+                        return _ref.data;
+                    }));
+                }));
+            }));
+        }));
+        var button_props = __webpack_require__(26);
+        function getRememberedFunding(handler) {
+            void 0 === handler && (handler = util.e);
+            return getStorageState((function(storage) {
+                storage.rememberedFunding = storage.rememberedFunding || [];
+                return handler(storage.rememberedFunding);
+            }));
+        }
+        function hasRememberedFunding(source) {
+            return !!getRememberedFunding((function(rememberedFunding) {
+                return -1 !== rememberedFunding.indexOf(source);
+            })) || !!getSessionState((function(session) {
+                return session.recentlyCheckedRemembered;
+            }));
+        }
+        function getRememberedFundingPromises() {
+            return function(handler) {
+                window.__paypal_global__ = window.__paypal_global__ || {};
+                return function(global) {
+                    global.rememberFundingPromises = global.rememberFundingPromises || {};
+                    return global.rememberFundingPromises;
+                }(window.__paypal_global__);
+            }();
+        }
+        function getRememberedFundingPromise(source) {
+            var promises = getRememberedFundingPromises();
+            var promise = promises[source] = promises[source] || new zalgo_promise_src.a;
+            hasRememberedFunding(source) && promise.resolve(function(source) {
+                if (getRememberedFunding((function(rememberedFunding) {
+                    return -1 !== rememberedFunding.indexOf(source);
+                }))) return !0;
+                if (getSessionState((function(session) {
+                    return session.recentlyCheckedRemembered;
+                }))) return !1;
+                throw new Error("Can not find remembered funding result");
+            }(source));
+            return promise;
+        }
+        function rememberFunding(sources) {
+            getRememberedFunding((function(rememberedFunding) {
+                for (var _i4 = 0; _i4 < sources.length; _i4++) {
+                    var source = sources[_i4];
+                    source !== constants.v.VENMO && -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
+                }
+                !function() {
+                    var promises = getRememberedFundingPromises();
+                    var rememberedFunding = getRememberedFunding((function(sources) {
+                        return sources;
+                    }));
+                    for (var _i2 = 0, _Object$keys2 = Object.keys(promises); _i2 < _Object$keys2.length; _i2++) {
+                        var source = _Object$keys2[_i2];
+                        promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
+                    }
+                }();
+            }));
+            getSessionState((function(session) {
+                session.recentlyCheckedRemembered = !0;
+            }));
+        }
+        function loadMeta() {
+            return openMetaFrame().then((function(_ref) {
+                rememberFunding(_ref.rememberedFunding || []);
+            }));
+        }
+        function isFundingRemembered(source) {
+            void 0 === source && (source = constants.v.PAYPAL);
+            return hasRememberedFunding(source) ? getRememberedFundingPromise(source) : loadMeta().then((function() {
+                return getRememberedFundingPromise(source);
+            }));
+        }
+        function precacheRememberedFunding() {
+            return getSessionState((function(session) {
+                return session.recentlyCheckedRemembered;
+            })) ? zalgo_promise_src.a.resolve() : loadMeta();
+        }
+        function getRenderedButtons(props) {
+            return Object(button_props.a)(props).sources.toString();
+        }
+        __webpack_require__(1);
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "i", (function() {
@@ -2574,897 +3486,6 @@
         }));
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        __webpack_require__.d(__webpack_exports__, "E", (function() {
-            return isSupportedNativeBrowser;
-        }));
-        __webpack_require__.d(__webpack_exports__, "H", (function() {
-            return util.j;
-        }));
-        __webpack_require__.d(__webpack_exports__, "J", (function() {
-            return util.k;
-        }));
-        __webpack_require__.d(__webpack_exports__, "U", (function() {
-            return util.s;
-        }));
-        __webpack_require__.d(__webpack_exports__, "G", (function() {
-            return util.i;
-        }));
-        __webpack_require__.d(__webpack_exports__, "Q", (function() {
-            return util.o;
-        }));
-        __webpack_require__.d(__webpack_exports__, "e", (function() {
-            return util.c;
-        }));
-        __webpack_require__.d(__webpack_exports__, "b", (function() {
-            return util.a;
-        }));
-        __webpack_require__.d(__webpack_exports__, "S", (function() {
-            return util.q;
-        }));
-        __webpack_require__.d(__webpack_exports__, "T", (function() {
-            return util.r;
-        }));
-        __webpack_require__.d(__webpack_exports__, "L", (function() {
-            return util.l;
-        }));
-        __webpack_require__.d(__webpack_exports__, "f", (function() {
-            return util.d;
-        }));
-        __webpack_require__.d(__webpack_exports__, "z", (function() {
-            return initLogger;
-        }));
-        __webpack_require__.d(__webpack_exports__, "R", (function() {
-            return setLogLevel;
-        }));
-        __webpack_require__.d(__webpack_exports__, "h", (function() {
-            return getBrowser;
-        }));
-        __webpack_require__.d(__webpack_exports__, "B", (function() {
-            return isEligible;
-        }));
-        __webpack_require__.d(__webpack_exports__, "d", (function() {
-            return checkRecognizedBrowser;
-        }));
-        __webpack_require__.d(__webpack_exports__, "c", (function() {
-            return checkForCommonErrors;
-        }));
-        __webpack_require__.d(__webpack_exports__, "F", (function() {
-            return loadScript;
-        }));
-        __webpack_require__.d(__webpack_exports__, "n", (function() {
-            return getElement;
-        }));
-        __webpack_require__.d(__webpack_exports__, "o", (function() {
-            return getElements;
-        }));
-        __webpack_require__.d(__webpack_exports__, "I", (function() {
-            return onDocumentReady;
-        }));
-        __webpack_require__.d(__webpack_exports__, "q", (function() {
-            return getQueryParam;
-        }));
-        __webpack_require__.d(__webpack_exports__, "V", (function() {
-            return urlWillRedirectPage;
-        }));
-        __webpack_require__.d(__webpack_exports__, "g", (function() {
-            return extendUrl;
-        }));
-        __webpack_require__.d(__webpack_exports__, "N", (function() {
-            return redirect;
-        }));
-        __webpack_require__.d(__webpack_exports__, "i", (function() {
-            return getBrowserLocale;
-        }));
-        __webpack_require__.d(__webpack_exports__, "A", (function() {
-            return isElementVisible;
-        }));
-        __webpack_require__.d(__webpack_exports__, "p", (function() {
-            return getPageRenderTime;
-        }));
-        __webpack_require__.d(__webpack_exports__, "s", (function() {
-            return getResourceLoadTime;
-        }));
-        __webpack_require__.d(__webpack_exports__, "P", (function() {
-            return request;
-        }));
-        __webpack_require__.d(__webpack_exports__, "y", (function() {
-            return getThrottle;
-        }));
-        __webpack_require__.d(__webpack_exports__, "t", (function() {
-            return getReturnToken;
-        }));
-        __webpack_require__.d(__webpack_exports__, "x", (function() {
-            return getStorageID;
-        }));
-        __webpack_require__.d(__webpack_exports__, "w", (function() {
-            return getSessionState;
-        }));
-        __webpack_require__.d(__webpack_exports__, "v", (function() {
-            return getSessionID;
-        }));
-        __webpack_require__.d(__webpack_exports__, "j", (function() {
-            return getButtonSessionID;
-        }));
-        __webpack_require__.d(__webpack_exports__, "K", (function() {
-            return openMetaFrame;
-        }));
-        __webpack_require__.d(__webpack_exports__, "r", (function() {
-            return getRememberedFunding;
-        }));
-        __webpack_require__.d(__webpack_exports__, "O", (function() {
-            return rememberFunding;
-        }));
-        __webpack_require__.d(__webpack_exports__, "C", (function() {
-            return isFundingRemembered;
-        }));
-        __webpack_require__.d(__webpack_exports__, "M", (function() {
-            return precacheRememberedFunding;
-        }));
-        __webpack_require__.d(__webpack_exports__, "k", (function() {
-            return getCurrentScript;
-        }));
-        __webpack_require__.d(__webpack_exports__, "u", (function() {
-            return getScriptVersion;
-        }));
-        __webpack_require__.d(__webpack_exports__, "l", (function() {
-            return getCurrentScriptUrl;
-        }));
-        __webpack_require__.d(__webpack_exports__, "m", (function() {
-            return getDomainSetting;
-        }));
-        __webpack_require__.d(__webpack_exports__, "a", (function() {
-            return allowIframe;
-        }));
-        __webpack_require__.d(__webpack_exports__, "D", (function() {
-            return isPayPalDomain;
-        }));
-        var cross_domain_utils_src = __webpack_require__(7);
-        var belter_src = __webpack_require__(11);
-        function isSupportedNativeBrowser() {
-            var userAgent = Object(belter_src.c)();
-            return !(!Object(belter_src.t)(userAgent) || Object(belter_src.n)() || (!Object(belter_src.l)() || !Object(belter_src.o)()) && (!Object(belter_src.f)() || !Object(belter_src.g)()));
-        }
-        var util = __webpack_require__(13);
-        var post_robot_src = __webpack_require__(14);
-        var client = __webpack_require__(4);
-        var config = __webpack_require__(3);
-        var constants = __webpack_require__(0);
-        var zalgo_promise_src = __webpack_require__(2);
-        function isDocumentReady() {
-            return Boolean(document.body) && "complete" === document.readyState;
-        }
-        var documentReady = new zalgo_promise_src.a((function(resolve) {
-            if (isDocumentReady()) return resolve();
-            var interval = setInterval((function() {
-                if (isDocumentReady()) {
-                    clearInterval(interval);
-                    return resolve();
-                }
-            }), 10);
-        }));
-        documentReady.then((function() {
-            if (document.body) return document.body;
-            throw new Error("Document ready but document.body not present");
-        }));
-        function loadScript(src, timeout, attrs) {
-            void 0 === timeout && (timeout = 0);
-            void 0 === attrs && (attrs = {});
-            return new zalgo_promise_src.a((function(resolve, reject) {
-                var script = document.createElement("script");
-                script.addEventListener("load", (function() {
-                    resolve();
-                }));
-                script.onreadystatechange = function() {
-                    "complete" !== this.readyState && "loaded" !== this.readyState || resolve();
-                };
-                var scriptLoadError = new Error("script_loading_error");
-                script.addEventListener("error", (function() {
-                    return reject(scriptLoadError);
-                }));
-                timeout && setTimeout((function() {
-                    return reject(new Error("script_loading_timed_out"));
-                }), timeout);
-                for (var _i2 = 0, _Object$keys2 = Object.keys(attrs); _i2 < _Object$keys2.length; _i2++) {
-                    var attr = _Object$keys2[_i2];
-                    script.setAttribute(attr, attrs[attr]);
-                }
-                script.setAttribute("src", src);
-                document.getElementsByTagName("head")[0].appendChild(script);
-            }));
-        }
-        function getElement(item) {
-            if (item) {
-                if (item instanceof HTMLElement) return item;
-                if ("string" == typeof item) {
-                    if (document.querySelector) {
-                        var result = document.querySelector(item);
-                        if (result) return result;
-                    }
-                    return document.getElementById(item);
-                }
-            }
-        }
-        function getElements(collection) {
-            if (!collection) return [];
-            if (collection instanceof HTMLElement || "string" == typeof collection) {
-                var element = getElement(collection);
-                return element ? [ element ] : [];
-            }
-            if (Array.isArray(collection) || collection instanceof NodeList || collection instanceof HTMLCollection) {
-                var result = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var el = getElement(collection[i]);
-                    el && result.push(el);
-                }
-                return result;
-            }
-            return [];
-        }
-        function onDocumentReady(method) {
-            return documentReady.then(method);
-        }
-        var parseQuery = Object(util.i)((function(queryString) {
-            var params = {};
-            if (!queryString) return params;
-            if (-1 === queryString.indexOf("=")) return params;
-            for (var _i4 = 0, _queryString$split2 = queryString.split("&"); _i4 < _queryString$split2.length; _i4++) {
-                var pair = _queryString$split2[_i4];
-                (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
-            }
-            return params;
-        }));
-        function getQueryParam(name) {
-            return parseQuery(window.location.search.slice(1))[name];
-        }
-        function urlWillRedirectPage(url) {
-            return -1 === url.indexOf("#") || 0 !== url.indexOf("#") && url.split("#")[0] !== window.location.href.split("#")[0];
-        }
-        function extendUrl(url, params) {
-            void 0 === params && (params = {});
-            var hasHash = url.indexOf("#") > 0;
-            var _url$split = url.split("#"), serverUrl = _url$split[0], hash = _url$split[1];
-            if (hash && !serverUrl) {
-                var _ref = [ "#" + hash, "" ];
-                serverUrl = _ref[0];
-                hash = _ref[1];
-            }
-            var _serverUrl$split = serverUrl.split("?"), originalUrl = _serverUrl$split[0], originalQueryString = _serverUrl$split[1];
-            if (originalQueryString) {
-                var originalQuery = parseQuery(originalQueryString);
-                for (var _key in originalQuery) params.hasOwnProperty(_key) || (params[_key] = originalQuery[_key]);
-            }
-            var newQueryString = Object.keys(params).filter((function(key) {
-                return key && params[key];
-            })).sort().map((function(key) {
-                return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
-            })).join("&");
-            var newUrl = originalUrl;
-            newQueryString && (newUrl = newUrl + "?" + newQueryString);
-            hasHash && (newUrl = newUrl + "#" + (hash || ""));
-            return newUrl;
-        }
-        function redirect(win, url) {
-            void 0 === win && (win = window);
-            return new zalgo_promise_src.a((function(resolve) {
-                Object(client.k)("redirect", {
-                    url: url
-                });
-                setTimeout((function() {
-                    win.location = url;
-                    urlWillRedirectPage(url) || resolve();
-                }), 1);
-            }));
-        }
-        function normalizeLocale(locale) {
-            if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
-                var _locale$split = locale.split(/[-_]/), lang = _locale$split[0], country = _locale$split[1];
-                if (constants.A[country] && -1 !== constants.A[country].indexOf(lang)) return {
-                    country: country,
-                    lang: lang
-                };
-            }
-        }
-        function normalizeLang(lang) {
-            if (lang && lang.match(/^[a-z]{2}$/) && constants.z[lang]) return {
-                country: constants.z[lang],
-                lang: lang
-            };
-        }
-        var getBrowserLocale = Object(util.i)((function() {
-            var locales = function() {
-                var nav = window.navigator;
-                var locales = nav.languages ? [].slice.apply(nav.languages) : [];
-                nav.language && locales.push(nav.language);
-                nav.userLanguage && locales.push(nav.userLanguage);
-                return locales;
-            }();
-            for (var _i6 = 0; _i6 < locales.length; _i6++) {
-                var locale = locales[_i6];
-                var loc = normalizeLocale(locale);
-                if (loc) {
-                    Object(client.k)("better_browser_locale_full");
-                    return loc;
-                }
-                if (loc = normalizeLang(locale)) {
-                    Object(client.k)("better_browser_locale_lang");
-                    return loc;
-                }
-            }
-            return config.a.defaultLocale;
-        }));
-        function isElementVisible(el) {
-            return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-        }
-        var enablePerformance = Object(util.i)((function() {
-            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
-        }));
-        function getPageRenderTime() {
-            return documentReady.then((function() {
-                if (enablePerformance()) {
-                    var timing = window.performance.timing;
-                    return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
-                }
-            }));
-        }
-        function getResourceLoadTime(url) {
-            if (enablePerformance() && window.performance && "function" == typeof window.performance.getEntries) {
-                var entries = window.performance.getEntries();
-                for (var i = 0; i < entries.length; i++) {
-                    var entry = entries[i];
-                    if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 6e4) return Math.floor(entry.duration);
-                }
-            }
-        }
-        function allowIframe() {
-            if (!Object(belter_src.t)()) return !0;
-            var parentWindow = Object(cross_domain_utils_src.n)(window);
-            if (parentWindow && Object(cross_domain_utils_src.v)(parentWindow)) return !0;
-            var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
-            return !(!parentComponentWindow || !Object(cross_domain_utils_src.v)(parentComponentWindow));
-        }
-        function isPayPalDomain() {
-            return Boolean((window.location.protocol + "//" + window.location.host).match(config.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
-        }
-        var accessedStorage;
-        function getStorageState(handler) {
-            var localStorageEnabled = Object(util.f)();
-            var storage;
-            accessedStorage && (storage = accessedStorage);
-            if (!storage && localStorageEnabled) {
-                var rawStorage = window.localStorage.getItem("__paypal_storage__");
-                rawStorage && (storage = JSON.parse(rawStorage));
-            }
-            storage || (storage = window.__paypal_storage__);
-            storage || (storage = {
-                id: Object(util.s)()
-            });
-            storage.id || (storage.id = Object(util.s)());
-            accessedStorage = storage;
-            var result = handler(storage);
-            localStorageEnabled ? window.localStorage.setItem("__paypal_storage__", JSON.stringify(storage)) : window.__paypal_storage__ = storage;
-            accessedStorage = null;
-            return result;
-        }
-        function getStorageID() {
-            return getStorageState((function(storage) {
-                return storage.id;
-            }));
-        }
-        function getSession(handler) {
-            return getStorageState((function(storage) {
-                var session = storage.__paypal_session__;
-                var now = Date.now();
-                session && now - session.created > config.a.session_uid_lifetime && (session = null);
-                session || (session = {
-                    guid: Object(util.s)(),
-                    created: now
-                });
-                storage.__paypal_session__ = session;
-                return handler(session);
-            }));
-        }
-        function getSessionState(handler) {
-            return getSession((function(session) {
-                session.state = session.state || {};
-                return handler(session.state);
-            }));
-        }
-        function getSessionID() {
-            var xprops = window.xprops;
-            if (xprops && xprops.sessionID) return xprops.sessionID;
-            var querySessionID = getQueryParam("sessionID");
-            return isPayPalDomain() && querySessionID ? querySessionID : getSession((function(session) {
-                return session.guid;
-            }));
-        }
-        function getButtonSessionID() {
-            if (window.xprops && window.xprops.buttonSessionID) return window.xprops.buttonSessionID;
-            var querySessionID = getQueryParam("buttonSessionID");
-            return isPayPalDomain() && querySessionID ? querySessionID : void 0;
-        }
-        var PAGE_TYPES = {
-            HOME: "home",
-            PRODUCT: "product",
-            CART: "cart",
-            CHECKOUT: "checkout",
-            PRODUCT_LISTING: "product-listing",
-            SEARCH_RESULTS: "search-results",
-            PRODUCT_DETAILS: "product-details",
-            MINI_CART: "mini-cart"
-        };
-        var getCurrentScript = Object(util.i)((function() {
-            var scripts = [].slice.call(document.getElementsByTagName("script"));
-            for (var _i2 = 0; _i2 < scripts.length; _i2++) {
-                var script = scripts[_i2];
-                if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
-                if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
-            }
-            document.currentScript && Object(client.f)("current_script_not_recognized", {
-                src: document.currentScript.src
-            });
-        }));
-        function getScriptVersion() {
-            return "4.0.330";
-        }
-        function getCurrentScriptUrl() {
-            var script = getCurrentScript();
-            if (script && "string" == typeof script.src) {
-                var scriptUrl = script.src;
-                0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
-                0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
-                return scriptUrl;
-            }
-            return "https://www.paypalobjects.com/api/checkout.4.0.330.js";
-        }
-        function getDomainSetting(name, def) {
-            var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
-            if (config.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(config.a.domain_settings); _i4 < _Object$keys2.length; _i4++) {
-                var domain = _Object$keys2[_i4];
-                if (Object(util.b)(hostname, domain)) return config.a.domain_settings[domain][name];
-            }
-            return def;
-        }
-        function getRefererDomain() {
-            return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
-        }
-        var setupProxyLogTransport = Object(util.k)((function() {
-            Object(client.o)(function(name, win, originalMethod) {
-                if (win && Object(cross_domain_utils_src.h)() === config.a.paypalDomain && !Object(cross_domain_utils_src.v)(win)) {
-                    win && Object(post_robot_src.send)(win, "proxy_log", {
-                        originalMethod: originalMethod
-                    }).catch(util.j);
-                    return originalMethod;
-                }
-                var methods = [];
-                Object(post_robot_src.on)("proxy_log", {
-                    domain: config.a.paypal_domain_regex
-                }, (function(_ref) {
-                    methods.push(_ref.data.originalMethod);
-                }));
-                return function() {
-                    var _arguments = arguments, _this = this;
-                    return (methods = methods.filter((function(method) {
-                        return !Object(cross_domain_utils_src.z)(method.source);
-                    }))).length ? methods[methods.length - 1].apply(this, arguments).catch((function() {
-                        return originalMethod.apply(_this, _arguments);
-                    })) : originalMethod.apply(this, arguments);
-                };
-            }(0, Object(cross_domain_utils_src.n)(window), Object(client.i)()));
-        }));
-        function initLogger() {
-            setupProxyLogTransport();
-            Object(client.c)((function() {
-                return {
-                    referer: getRefererDomain(),
-                    host: window.location.host,
-                    path: window.location.pathname,
-                    env: config.a.env,
-                    country: config.a.locale.country,
-                    lang: config.a.locale.lang,
-                    uid: getSessionID(),
-                    ver: "4.0.330"
-                };
-            }));
-            Object(client.a)((function() {
-                return {
-                    "x-app-name": "checkoutjs"
-                };
-            }));
-            Object(client.b)((function() {
-                return {
-                    state: config.a.state
-                };
-            }));
-            Object(client.d)((function(payload) {
-                var _ref;
-                void 0 === payload && (payload = {});
-                var sessionID = getSessionID();
-                var paymentToken = function() {
-                    if (window.root && window.root.token) return window.root.token;
-                    if (isPayPalDomain()) {
-                        var queryToken = getQueryParam("token");
-                        if (queryToken) return queryToken;
-                    }
-                }();
-                var buttonSessionID = payload[constants.u.KEY.BUTTON_SESSION_UID] || getButtonSessionID();
-                var contextType;
-                var contextID;
-                if (paymentToken) {
-                    contextType = constants.u.CONTEXT_TYPE[constants.C.EC_TOKEN];
-                    contextID = paymentToken;
-                } else if (buttonSessionID) {
-                    contextType = constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID;
-                    contextID = buttonSessionID;
-                } else {
-                    contextType = payload[constants.u.KEY.CONTEXT_TYPE];
-                    contextID = payload[constants.u.KEY.CONTEXT_ID];
-                }
-                return (_ref = {})[constants.u.KEY.FEED] = constants.u.FEED.CHECKOUTJS, _ref[constants.u.KEY.DATA_SOURCE] = constants.u.DATA_SOURCE.CHECKOUT, 
-                _ref[constants.u.KEY.CONTEXT_TYPE] = contextType, _ref[constants.u.KEY.CONTEXT_ID] = contextID, 
-                _ref[constants.u.KEY.SELLER_ID] = config.a.merchantID, _ref[constants.u.KEY.SESSION_UID] = sessionID, 
-                _ref[constants.u.KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref[constants.u.KEY.VERSION] = config.a.version, 
-                _ref[constants.u.KEY.TOKEN] = paymentToken, _ref[constants.u.KEY.PAGE_TYPE] = function() {
-                    var script = getCurrentScript();
-                    if (script && script.hasAttribute("data-page-type")) {
-                        var pageType = script.getAttribute("data-page-type").toLowerCase();
-                        if (-1 === Object(belter_src.v)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
-                        return pageType;
-                    }
-                    return "";
-                }(), _ref[constants.u.KEY.REFERER] = getRefererDomain(), _ref[constants.u.KEY.TIMESTAMP] = Date.now().toString(), 
-                _ref;
-            }));
-            window.location.protocol !== cross_domain_utils_src.a.FILE && Object(client.l)({
-                uri: config.a.loggerUrl,
-                heartbeat: !1,
-                logPerformance: !1,
-                prefix: "ppxo",
-                logLevel: "warn"
-            });
-        }
-        function setLogLevel(logLevel) {
-            if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
-            config.a.logLevel = logLevel;
-            client.e.logLevel = logLevel;
-            post_robot_src.CONFIG.LOG_LEVEL = logLevel;
-            window.LOG_LEVEL = logLevel;
-        }
-        var bowserCache = {};
-        function getBowser() {
-            var userAgent = Object(belter_src.c)();
-            if (bowserCache[userAgent]) return bowserCache[userAgent];
-            delete __webpack_require__.c[38];
-            var bowser = __webpack_require__(38);
-            bowserCache[userAgent] = bowser;
-            return bowser;
-        }
-        function getBrowser() {
-            var bowser = getBowser();
-            for (var _i2 = 0, _Object$keys2 = Object.keys(config.a.SUPPORTED_BROWSERS); _i2 < _Object$keys2.length; _i2++) {
-                var browser = _Object$keys2[_i2];
-                if (bowser[browser]) return {
-                    browser: browser,
-                    version: bowser.version
-                };
-            }
-            return {};
-        }
-        var eligibilityResults = {};
-        function isEligible() {
-            if (Object(belter_src.k)()) return !1;
-            var userAgent = window.navigator.userAgent;
-            if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
-            var result = function() {
-                if (Object(belter_src.k)()) return !1;
-                var bowser = getBowser();
-                var _getBrowser = getBrowser(), browser = _getBrowser.browser, version = _getBrowser.version;
-                return !browser || !version || -1 !== bowser.compareVersions([ version, config.a.SUPPORTED_BROWSERS[browser] ]);
-            }();
-            eligibilityResults[userAgent] = result;
-            return result;
-        }
-        var checkRecognizedBrowser = Object(util.k)((function(state) {
-            if (!getBrowser().browser) {
-                var _getBowser = getBowser(), name = _getBowser.name, version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
-                Object(client.k)("unrecognized_browser_" + state, {
-                    name: name,
-                    version: version,
-                    mobile: mobile,
-                    android: android,
-                    ios: ios
-                });
-                Object(client.h)();
-            }
-        }));
-        function logWarn(err) {
-            if (window.console) {
-                if (window.console.warn) return window.console.warn(err);
-                if (window.console.log) return window.console.log(err);
-            }
-        }
-        function checkForCommonErrors() {
-            if ("[]" !== JSON.stringify([])) {
-                logWarn([].toJSON ? "Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js" : "JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.");
-                Object(client.q)("json_stringify_array_broken");
-            }
-            if ("{}" !== JSON.stringify({})) {
-                logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
-                Object(client.q)("json_stringify_object_broken");
-            }
-            Object(belter_src.k)() && Object(client.q)("ie_intranet_mode");
-            Object(belter_src.i)() && !Object(belter_src.j)() && Object(client.q)("ie_meta_compatibility_header_missing", {
-                message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
-            });
-            3 !== function(bar, baz, zomg) {}.bind({
-                a: 1
-            }).length && Object(client.q)("function_bind_arrity_overwritten");
-            window.opener && window.parent !== window && Object(client.q)("window_has_opener_and_parent");
-            window.name && 0 === window.name.indexOf("__prerender") && Object(client.q)("prerender_running_checkoutjs");
-            var context = {};
-            (function() {
-                return this;
-            }).bind(context)() !== context && Object(client.q)("function_bind_broken");
-            window.Window && window.constructor && window.Window !== window.constructor && Object(client.q)("window_constructor_does_not_match_window");
-            Object.assign && JSON.stringify({
-                a: 1,
-                b: 2,
-                c: 3
-            }) != JSON.stringify({
-                a: 1,
-                b: 2,
-                c: 3
-            }) && Object(client.q)("object_assign_broken");
-        }
-        var esm_extends = __webpack_require__(12);
-        var headerBuilders = [];
-        var corrids = [];
-        Object(client.c)((function() {
-            return {
-                prev_corr_ids: corrids.join(",")
-            };
-        }));
-        function request(_ref) {
-            var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
-            return "/demo/checkout/api/braintree/client-token/" === url ? zalgo_promise_src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new zalgo_promise_src.a((function(resolve, reject) {
-                if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
-                var normalizedHeaders = {};
-                for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
-                    var _key2 = _Object$keys2[_i4];
-                    normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
-                }
-                json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
-                normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
-                for (var _i6 = 0; _i6 < headerBuilders.length; _i6++) {
-                    var builtHeaders = (0, headerBuilders[_i6])();
-                    for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
-                        var _key3 = _Object$keys4[_i8];
-                        normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
-                    }
-                }
-                var xhr = new win.XMLHttpRequest;
-                xhr.addEventListener("load", (function() {
-                    var responseHeaders = function(rawHeaders) {
-                        void 0 === rawHeaders && (rawHeaders = "");
-                        var result = {};
-                        for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
-                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
-                            result[_key.toLowerCase()] = values.join(":").trim();
-                        }
-                        return result;
-                    }(this.getAllResponseHeaders());
-                    var corrID = responseHeaders["paypal-debug-id"] || "unknown";
-                    responseHeaders["paypal-debug-id"] && corrids.push(responseHeaders["paypal-debug-id"]);
-                    if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code. Correlation id: " + corrID));
-                    var contentType = responseHeaders["content-type"];
-                    var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
-                    var res = this.responseText;
-                    try {
-                        res = JSON.parse(this.responseText);
-                    } catch (err) {
-                        if (isJSON) return reject(new Error("Invalid json: " + this.responseText + ". Correlation id: " + corrID));
-                    }
-                    if (this.status >= 400) {
-                        var message = "Request to " + method.toLowerCase() + " " + url + " failed with " + this.status + " error. Correlation id: " + corrID;
-                        if (res) {
-                            "object" == typeof res && null !== res && (res = JSON.stringify(res, null, 4));
-                            message = message + "\n\n" + res + "\n";
-                        }
-                        return reject(new Error(message));
-                    }
-                    return resolve(res);
-                }), !1);
-                xhr.addEventListener("error", (function(evt) {
-                    var corrID = this.getResponseHeader("paypal-debug-id");
-                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + ". Correlation id: " + corrID));
-                }), !1);
-                xhr.open(method, url, !0);
-                for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
-                json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
-                    return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
-                })).join("&"));
-                xhr.timeout = timeout;
-                xhr.ontimeout = function() {
-                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
-                };
-                xhr.send(body);
-            }));
-        }
-        request.get = function(url, options) {
-            void 0 === options && (options = {});
-            return request(Object(esm_extends.a)({
-                method: "get",
-                url: url
-            }, options));
-        };
-        request.post = function(url, data, options) {
-            void 0 === options && (options = {});
-            return request(Object(esm_extends.a)({
-                method: "post",
-                url: url,
-                data: data
-            }, options));
-        };
-        request.addHeaderBuilder = function(method) {
-            headerBuilders.push(method);
-        };
-        function getThrottle(name, sample, sticky) {
-            void 0 === sticky && (sticky = !0);
-            var uid = getStorageID();
-            var percentile = sticky ? function(name) {
-                return getStorageState((function(storage) {
-                    storage.throttlePercentiles = storage.throttlePercentiles || {};
-                    storage.throttlePercentiles[name] = storage.throttlePercentiles[name] || Math.floor(100 * Math.random());
-                    return storage.throttlePercentiles[name];
-                }));
-            }(name) : Math.floor(100 * Math.random());
-            var group;
-            var treatment = name + "_" + (group = percentile < sample ? "test" : sample >= 50 || sample <= percentile && percentile < 2 * sample ? "control" : "throttle");
-            var started = !1;
-            var forced = !1;
-            try {
-                window.localStorage && window.localStorage.getItem(name) && (forced = !0);
-            } catch (err) {}
-            return {
-                isEnabled: function() {
-                    return "test" === group || forced;
-                },
-                isDisabled: function() {
-                    return "test" !== group && !forced;
-                },
-                getTreatment: function() {
-                    return treatment;
-                },
-                log: function(checkpointName, payload) {
-                    var _extends2;
-                    void 0 === payload && (payload = {});
-                    if (!started) return this;
-                    var checkpoint = name + "_" + treatment + "_" + checkpointName;
-                    Object(client.k)(checkpoint, Object(esm_extends.a)({}, payload, {
-                        expuid: uid
-                    }));
-                    Object(client.p)(Object(esm_extends.a)(((_extends2 = {})[constants.u.KEY.EXPERIMENT_NAME] = name, 
-                    _extends2[constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
-                    Object(client.h)();
-                    return this;
-                },
-                logStart: function(payload) {
-                    void 0 === payload && (payload = {});
-                    started = !0;
-                    return this.log("start", payload);
-                },
-                logComplete: function(payload) {
-                    void 0 === payload && (payload = {});
-                    return started ? this.log("complete", payload) : this;
-                }
-            };
-        }
-        function getReturnToken() {
-            var token = Object(util.g)(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
-            var payer = Object(util.g)(window.location.href, /PayerID=([A-Z0-9]+)/);
-            if (token && payer) return token;
-        }
-        var openMetaFrame = Object(util.i)((function(env) {
-            void 0 === env && (env = config.a.env);
-            return zalgo_promise_src.a.try((function() {
-                if (Object(belter_src.k)()) return {
-                    iframeEligible: !1,
-                    iframeEligibleReason: "ie_intranet",
-                    rememberedFunding: []
-                };
-                var metaFrameUrl = config.a.metaFrameUrls[env];
-                var metaFrameDomain = config.a.paypalDomains[env];
-                return zalgo_promise_src.a.try((function() {
-                    if (!post_robot_src.bridge) throw new Error("Opening meta window without bridge support is not currently supported");
-                    var metaListener = Object(post_robot_src.once)("meta", {
-                        domain: metaFrameDomain
-                    });
-                    return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.330"
-                    }), metaFrameDomain).then((function() {
-                        return metaListener;
-                    })).then((function(_ref) {
-                        return _ref.data;
-                    }));
-                }));
-            }));
-        }));
-        function getRememberedFunding(handler) {
-            void 0 === handler && (handler = util.e);
-            return getStorageState((function(storage) {
-                storage.rememberedFunding = storage.rememberedFunding || [];
-                return handler(storage.rememberedFunding);
-            }));
-        }
-        function hasRememberedFunding(source) {
-            return !!getRememberedFunding((function(rememberedFunding) {
-                return -1 !== rememberedFunding.indexOf(source);
-            })) || !!getSessionState((function(session) {
-                return session.recentlyCheckedRemembered;
-            }));
-        }
-        function getRememberedFundingPromises() {
-            return function(handler) {
-                window.__paypal_global__ = window.__paypal_global__ || {};
-                return function(global) {
-                    global.rememberFundingPromises = global.rememberFundingPromises || {};
-                    return global.rememberFundingPromises;
-                }(window.__paypal_global__);
-            }();
-        }
-        function getRememberedFundingPromise(source) {
-            var promises = getRememberedFundingPromises();
-            var promise = promises[source] = promises[source] || new zalgo_promise_src.a;
-            hasRememberedFunding(source) && promise.resolve(function(source) {
-                if (getRememberedFunding((function(rememberedFunding) {
-                    return -1 !== rememberedFunding.indexOf(source);
-                }))) return !0;
-                if (getSessionState((function(session) {
-                    return session.recentlyCheckedRemembered;
-                }))) return !1;
-                throw new Error("Can not find remembered funding result");
-            }(source));
-            return promise;
-        }
-        function rememberFunding(sources) {
-            getRememberedFunding((function(rememberedFunding) {
-                for (var _i4 = 0; _i4 < sources.length; _i4++) {
-                    var source = sources[_i4];
-                    source !== constants.v.VENMO && -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
-                }
-                !function() {
-                    var promises = getRememberedFundingPromises();
-                    var rememberedFunding = getRememberedFunding((function(sources) {
-                        return sources;
-                    }));
-                    for (var _i2 = 0, _Object$keys2 = Object.keys(promises); _i2 < _Object$keys2.length; _i2++) {
-                        var source = _Object$keys2[_i2];
-                        promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
-                    }
-                }();
-            }));
-            getSessionState((function(session) {
-                session.recentlyCheckedRemembered = !0;
-            }));
-        }
-        function loadMeta() {
-            return openMetaFrame().then((function(_ref) {
-                rememberFunding(_ref.rememberedFunding || []);
-            }));
-        }
-        function isFundingRemembered(source) {
-            void 0 === source && (source = constants.v.PAYPAL);
-            return hasRememberedFunding(source) ? getRememberedFundingPromise(source) : loadMeta().then((function() {
-                return getRememberedFundingPromise(source);
-            }));
-        }
-        function precacheRememberedFunding() {
-            return getSessionState((function(session) {
-                return session.recentlyCheckedRemembered;
-            })) ? zalgo_promise_src.a.resolve() : loadMeta();
-        }
-        __webpack_require__(1);
-    }, function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
         __webpack_require__.d(__webpack_exports__, "d", (function() {
             return appendChild;
         }));
@@ -3618,11 +3639,11 @@
         __webpack_require__.d(__webpack_exports__, "v", (function() {
             return global;
         }));
-        var esm_extends = __webpack_require__(12);
+        var esm_extends = __webpack_require__(13);
         var src = __webpack_require__(7);
         var zalgo_promise_src = __webpack_require__(2);
-        var cross_domain_safe_weakmap_src = __webpack_require__(17);
-        var error = __webpack_require__(23);
+        var cross_domain_safe_weakmap_src = __webpack_require__(18);
+        var error = __webpack_require__(25);
         function urlEncode(str) {
             return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
         }
@@ -4311,8 +4332,8 @@
             };
             descriptor.value.displayName = name + ":memoized";
         }
-        var post_robot_src = __webpack_require__(14);
-        var client = __webpack_require__(4);
+        var post_robot_src = __webpack_require__(15);
+        var client = __webpack_require__(5);
         function setLogLevel(logLevel) {
             if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
             client.e.logLevel = logLevel;
@@ -4772,7 +4793,7 @@
             })));
         }
         function stringifyDomainPattern(pattern) {
-            return Array.isArray(pattern) ? "(" + pattern.join(" | ") + ")" : isRegex(pattern) ? "RegExp(" + pattern.toString() : pattern.toString();
+            return Array.isArray(pattern) ? "(" + pattern.join(" | ") + ")" : isRegex(pattern) ? "RegExp(" + pattern.toString() + ")" : pattern.toString();
         }
         function getDomainFromUrl(url) {
             return url.match(/^(https?|mock|file):\/\//) ? url.split("/").slice(0, 3).join("/") : getDomain();
@@ -5322,13 +5343,13 @@
             void 0 === ua && (ua = getUserAgent());
             return /Safari/.test(ua) && !isChrome(ua);
         }
-        __webpack_require__(19);
-        __webpack_require__(12);
-        var src = __webpack_require__(2);
+        __webpack_require__(21);
+        __webpack_require__(13);
+        var zalgo_promise_src = __webpack_require__(2);
         __webpack_require__(7);
-        var cross_domain_safe_weakmap_src = __webpack_require__(17);
-        __webpack_require__(22);
-        __webpack_require__(26);
+        var cross_domain_safe_weakmap_src = __webpack_require__(18);
+        __webpack_require__(24);
+        __webpack_require__(30);
         function getFunctionName(fn) {
             return fn.name || fn.__name__ || fn.displayName || "anonymous";
         }
@@ -5349,7 +5370,7 @@
         }
         function uniqueID() {
             var chars = "0123456789abcdef";
-            return "xxxxxxxxxx".replace(/./g, (function() {
+            return "uid_" + "xxxxxxxxxx".replace(/./g, (function() {
                 return chars.charAt(Math.floor(Math.random() * chars.length));
             })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
         }
@@ -5428,12 +5449,12 @@
                 }
             }), getFunctionName(method) + "::once");
         }
-        var values = function(obj) {
+        function values(obj) {
             if (Object.values) return Object.values(obj);
             var result = [];
             for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
             return result;
-        };
+        }
         memoize(values);
         function identity(item) {
             return item;
@@ -5460,7 +5481,7 @@
             return Boolean(document.body) && "interactive" === document.readyState;
         }
         memoize((function() {
-            return new src.a((function(resolve) {
+            return new zalgo_promise_src.a((function(resolve) {
                 if (isDocumentReady() || isDocumentInteractive()) return resolve();
                 var interval = setInterval((function() {
                     if (isDocumentReady() || isDocumentInteractive()) {
@@ -5552,10 +5573,9 @@
                     for (;element.parentNode; ) element = element.parentNode;
                     if (isShadowElement(element)) return element;
                 }(element);
-                if (shadowRoot.host) return shadowRoot.host;
+                if (shadowRoot && shadowRoot.host) return shadowRoot.host;
             }(element);
             if (!shadowHost) throw new Error("Element is not in shadow dom");
-            if (isShadowElement(shadowHost)) throw new Error("Host element is also in shadow dom");
             var slotName = "shadow-slot-" + uniqueID();
             var slot = document.createElement("slot");
             slot.setAttribute("name", slotName);
@@ -5563,7 +5583,7 @@
             var slotProvider = document.createElement("div");
             slotProvider.setAttribute("slot", slotName);
             shadowHost.appendChild(slotProvider);
-            return slotProvider;
+            return isShadowElement(shadowHost) ? insertShadowSlot(slotProvider) : slotProvider;
         }
         var currentScript = "undefined" != typeof document ? document.currentScript : null;
         var getCurrentScript = memoize((function() {
@@ -5599,10 +5619,586 @@
             var uid = script.getAttribute("data-uid");
             if (uid && "string" == typeof uid) return uid;
             if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
-            uid = uniqueID();
+            if (script.src) {
+                var hashedString = function(str) {
+                    var hash = "";
+                    for (var i = 0; i < str.length; i++) {
+                        var total = str[i].charCodeAt(0) * i;
+                        str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
+                        hash += String.fromCharCode(97 + Math.abs(total) % 26);
+                    }
+                    return hash;
+                }(JSON.stringify({
+                    src: script.src,
+                    dataset: script.dataset
+                }));
+                uid = "uid_" + hashedString.slice(hashedString.length - 30);
+            } else uid = uniqueID();
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", (function() {
+            return BUTTON_CONFIG;
+        }));
+        __webpack_require__.d(__webpack_exports__, "b", (function() {
+            return BUTTON_RELATIVE_STYLE;
+        }));
+        __webpack_require__.d(__webpack_exports__, "c", (function() {
+            return BUTTON_STYLE;
+        }));
+        __webpack_require__.d(__webpack_exports__, "f", (function() {
+            return labelToFunding;
+        }));
+        __webpack_require__.d(__webpack_exports__, "d", (function() {
+            return fundingToDefaultLabel;
+        }));
+        __webpack_require__.d(__webpack_exports__, "e", (function() {
+            return getButtonConfig;
+        }));
+        var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
+        var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[_constants__WEBPACK_IMPORTED_MODULE_0__.s] = {
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            sizes: [ _constants__WEBPACK_IMPORTED_MODULE_0__.l.SMALL, _constants__WEBPACK_IMPORTED_MODULE_0__.l.MEDIUM, _constants__WEBPACK_IMPORTED_MODULE_0__.l.LARGE, _constants__WEBPACK_IMPORTED_MODULE_0__.l.RESPONSIVE ],
+            shapes: [ _constants__WEBPACK_IMPORTED_MODULE_0__.k.PILL, _constants__WEBPACK_IMPORTED_MODULE_0__.k.RECT ],
+            layouts: [ _constants__WEBPACK_IMPORTED_MODULE_0__.g.HORIZONTAL, _constants__WEBPACK_IMPORTED_MODULE_0__.g.VERTICAL ],
+            logoColors: (_logoColors = {}, _logoColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLUE, 
+            _logoColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLUE, 
+            _logoColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLUE, 
+            _logoColors),
+            tagLineColors: (_tagLineColors = {}, _tagLineColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.n.BLUE, 
+            _tagLineColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.n.BLUE, 
+            _tagLineColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.n.BLUE, 
+            _tagLineColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.n.BLACK, 
+            _tagLineColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.n.BLUE, 
+            _tagLineColors),
+            secondaryColors: (_secondaryColors = {}, _secondaryColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, 
+            _secondaryColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, 
+            _secondaryColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors),
+            tag: "{ content: safer_tag }",
+            dualTag: "{ content: dual_tag|safer_tag }",
+            defaultLocale: {
+                country: "US",
+                lang: "en"
+            },
+            defaultLabel: _constants__WEBPACK_IMPORTED_MODULE_0__.f.CHECKOUT,
+            defaultVerticalLabel: _constants__WEBPACK_IMPORTED_MODULE_0__.f.PAYPAL,
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD,
+            defaultSize: _constants__WEBPACK_IMPORTED_MODULE_0__.l.SMALL,
+            defaultVerticalSize: _constants__WEBPACK_IMPORTED_MODULE_0__.l.MEDIUM,
+            defaultShape: _constants__WEBPACK_IMPORTED_MODULE_0__.k.PILL,
+            defaultLayout: _constants__WEBPACK_IMPORTED_MODULE_0__.g.HORIZONTAL,
+            defaultBranding: !0,
+            defaultVerticalBranding: !0,
+            defaultFundingIcons: !1,
+            defaultTagline: !0,
+            defaultDual: "",
+            minimumSize: _constants__WEBPACK_IMPORTED_MODULE_0__.l.TINY,
+            minimumVerticalSize: _constants__WEBPACK_IMPORTED_MODULE_0__.l.MEDIUM,
+            maximumSize: _constants__WEBPACK_IMPORTED_MODULE_0__.l.HUGE,
+            maximumVerticalSize: _constants__WEBPACK_IMPORTED_MODULE_0__.l.HUGE,
+            minHorizontalButtons: 1,
+            minVerticalButtons: 1,
+            maxHorizontalButtons: 2,
+            maxVerticalButtons: 6,
+            allowUnbranded: !1,
+            allowFundingIcons: !0,
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.PAYPAL] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PP + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PAYPAL + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PP + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PAYPAL + " }",
+            allowPrimary: !0,
+            allowPrimaryVertical: !0,
+            allowPrimaryHorizontal: !0,
+            title: "" + _constants__WEBPACK_IMPORTED_MODULE_0__.w.PAYPAL
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.CHECKOUT] = {
+            label: "{ content: checkout }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PP + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PAYPAL + " }",
+            allowPrimary: !0,
+            allowPrimaryVertical: !0,
+            allowPrimaryHorizontal: !0
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.PAY] = {
+            label: "{ content: pay }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PAYPAL + " }",
+            allowPrimary: !0,
+            allowPrimaryVertical: !0,
+            allowPrimaryHorizontal: !0
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BUYNOW] = {
+            label: "{ content: buynow }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PP + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PAYPAL + " }",
+            defaultBranding: void 0,
+            allowPrimary: !0,
+            allowPrimaryVertical: !0,
+            allowPrimaryHorizontal: !0,
+            allowUnbranded: !0
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.INSTALLMENT] = {
+            label: function(style) {
+                return "{ content: " + (style.installmentperiod ? "installment_period" : "installment") + " }";
+            },
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PP + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PAYPAL + " }",
+            allowPrimary: !0,
+            allowPrimaryVertical: !0,
+            allowPrimaryHorizontal: !0,
+            allowSecondaryVertical: !1,
+            allowSecondaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.CREDIT] = {
+            label: function(_ref) {
+                return _ref.locale.country === _constants__WEBPACK_IMPORTED_MODULE_0__.r.DE ? "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.CREDIT + " }" : "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PP + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PAYPAL + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.CREDIT + " }";
+            },
+            logoLabel: function(_ref2) {
+                return _ref2.locale.country === _constants__WEBPACK_IMPORTED_MODULE_0__.r.DE ? "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.CREDIT + " }" : "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PP + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.PAYPAL + " } { logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.CREDIT + " }";
+            },
+            tag: "{ content: later_tag }",
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors2 = {}, _logoColors2[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors2[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors2[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLUE, 
+            _logoColors2),
+            secondaryColors: (_secondaryColors2 = {}, _secondaryColors2[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, 
+            _secondaryColors2[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, 
+            _secondaryColors2[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, 
+            _secondaryColors2[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors2[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors2),
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE,
+            allowPrimary: !0,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1,
+            allowFundingIcons: !1,
+            title: "" + _constants__WEBPACK_IMPORTED_MODULE_0__.w.CREDIT
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.VENMO] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.VENMO + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.VENMO + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors3 = {}, _logoColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLUE, 
+            _logoColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLUE, 
+            _logoColors3),
+            secondaryColors: (_secondaryColors3 = {}, _secondaryColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, 
+            _secondaryColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, 
+            _secondaryColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors3[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors3),
+            allowPrimary: !0,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !0
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.ITAU] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.ITAU + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.ITAU + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK ],
+            logoColors: (_logoColors4 = {}, _logoColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors4),
+            secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, 
+            _secondaryColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, 
+            _secondaryColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, 
+            _secondaryColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, 
+            _secondaryColors4[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE, 
+            _secondaryColors4),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !0
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.IDEAL] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.IDEAL + " } Online betalen",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.IDEAL + " } Online betalen",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors5 = {}, _logoColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors5),
+            secondaryColors: (_secondaryColors5 = {}, _secondaryColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors5[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors5),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.ELV] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.ELV + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.ELV + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors6 = {}, _logoColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors6),
+            secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors6[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors6),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BANCONTACT] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BANCONTACT + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BANCONTACT + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors7 = {}, _logoColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors7),
+            secondaryColors: (_secondaryColors7 = {}, _secondaryColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors7[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors7),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.GIROPAY] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.GIROPAY + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.GIROPAY + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors8 = {}, _logoColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors8),
+            secondaryColors: (_secondaryColors8 = {}, _secondaryColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors8[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors8),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.SOFORT] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.SOFORT + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.SOFORT + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors9 = {}, _logoColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors9),
+            secondaryColors: (_secondaryColors9 = {}, _secondaryColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors9[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors9),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.EPS] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.EPS + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.EPS + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors10 = {}, _logoColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors10),
+            secondaryColors: (_secondaryColors10 = {}, _secondaryColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors10),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MYBANK] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MYBANK + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MYBANK + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors11 = {}, _logoColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors11),
+            secondaryColors: (_secondaryColors11 = {}, _secondaryColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors11),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.P24] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.P24 + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.P24 + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors12 = {}, _logoColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors12),
+            secondaryColors: (_secondaryColors12 = {}, _secondaryColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors12),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BLIK] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BLIK + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BLIK + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors13 = {}, _logoColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors13),
+            secondaryColors: (_secondaryColors13 = {}, _secondaryColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors13),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MAXIMA] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MAXIMA + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MAXIMA + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors14 = {}, _logoColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors14),
+            secondaryColors: (_secondaryColors14 = {}, _secondaryColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors14),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BOLETO] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BOLETO + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BOLETO + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors15 = {}, _logoColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors15),
+            secondaryColors: (_secondaryColors15 = {}, _secondaryColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors15),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.OXXO] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.OXXO + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.OXXO + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors16 = {}, _logoColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors16),
+            secondaryColors: (_secondaryColors16 = {}, _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors16),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MERCADOPAGO] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MERCADOPAGO + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MERCADOPAGO + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors17 = {}, _logoColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors17),
+            secondaryColors: (_secondaryColors17 = {}, _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors17),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.CARD] = {
+            label: "{ cards }",
+            logoLabel: "{ cards }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT ],
+            logoColors: (_logoColors18 = {}, _logoColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors18),
+            secondaryColors: (_secondaryColors18 = {}, _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors18),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1,
+            title: "" + _constants__WEBPACK_IMPORTED_MODULE_0__.w.CARD
+        }, _BUTTON_CONFIG);
+        var FUNDING_TO_DEFAULT_LABEL = ((_FUNDING_TO_DEFAULT_L = {})[_constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.PAYPAL, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.VENMO] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.VENMO, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.ITAU] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.ITAU, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.CARD] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.CARD, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.CREDIT] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.CREDIT, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.IDEAL] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.IDEAL, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.ELV] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.ELV, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.BANCONTACT] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.BANCONTACT, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.GIROPAY] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.GIROPAY, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.SOFORT] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.SOFORT, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.EPS] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.EPS, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.P24] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.P24, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.MYBANK] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.MYBANK, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.BLIK] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.BLIK, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.MAXIMA] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.MAXIMA, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.BOLETO] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.BOLETO, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.OXXO] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.OXXO, 
+        _FUNDING_TO_DEFAULT_L[_constants__WEBPACK_IMPORTED_MODULE_0__.v.MERCADOPAGO] = _constants__WEBPACK_IMPORTED_MODULE_0__.f.MERCADOPAGO, 
+        _FUNDING_TO_DEFAULT_L);
+        var LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[_constants__WEBPACK_IMPORTED_MODULE_0__.f.PAYPAL] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.CHECKOUT] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.PAY] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BUYNOW] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.INSTALLMENT] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.CARD] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.CARD, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.CREDIT] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.CREDIT, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.VENMO] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.VENMO, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.ITAU] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.ITAU, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.IDEAL] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.IDEAL, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BANCONTACT] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.BANCONTACT, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.GIROPAY] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.GIROPAY, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.EPS] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.EPS, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.SOFORT] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.SOFORT, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.P24] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.P24, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MYBANK] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.MYBANK, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BLIK] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.BLIK, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MAXIMA] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.MAXIMA, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BOLETO] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.BOLETO, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.OXXO] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.OXXO, 
+        _LABEL_TO_FUNDING[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MERCADOPAGO] = _constants__WEBPACK_IMPORTED_MODULE_0__.v.MERCADOPAGO, 
+        _LABEL_TO_FUNDING);
+        var BUTTON_RELATIVE_STYLE = {
+            FUNDINGICONS: 100,
+            TAGLINE: 50,
+            VERTICAL_MARGIN: 30
+        };
+        var BUTTON_STYLE = ((_BUTTON_STYLE = {})[_constants__WEBPACK_IMPORTED_MODULE_0__.l.TINY] = {
+            defaultWidth: 75,
+            defaultHeight: 25,
+            minWidth: 75,
+            maxWidth: 150,
+            minHeight: 25,
+            maxHeight: 30,
+            buttonTextMargin: .5,
+            allowFunding: !0,
+            allowTagline: !1,
+            byPayPalHeight: 0
+        }, _BUTTON_STYLE[_constants__WEBPACK_IMPORTED_MODULE_0__.l.SMALL] = {
+            defaultWidth: 150,
+            defaultHeight: 25,
+            minWidth: 150,
+            maxWidth: 200,
+            minHeight: 25,
+            maxHeight: 55,
+            buttonTextMargin: .5,
+            allowFunding: !0,
+            allowTagline: !0,
+            byPayPalHeight: 0
+        }, _BUTTON_STYLE[_constants__WEBPACK_IMPORTED_MODULE_0__.l.MEDIUM] = {
+            defaultWidth: 250,
+            defaultHeight: 35,
+            minWidth: 200,
+            maxWidth: 300,
+            minHeight: 35,
+            maxHeight: 55,
+            buttonTextMargin: 1,
+            allowFunding: !0,
+            allowTagline: !0,
+            byPayPalHeight: 30
+        }, _BUTTON_STYLE[_constants__WEBPACK_IMPORTED_MODULE_0__.l.LARGE] = {
+            defaultWidth: 350,
+            defaultHeight: 45,
+            minWidth: 300,
+            maxWidth: 500,
+            minHeight: 30,
+            maxHeight: 55,
+            buttonTextMargin: 1,
+            allowFunding: !0,
+            allowTagline: !0,
+            byPayPalHeight: 30
+        }, _BUTTON_STYLE[_constants__WEBPACK_IMPORTED_MODULE_0__.l.HUGE] = {
+            defaultWidth: 500,
+            defaultHeight: 55,
+            minWidth: 500,
+            maxWidth: 750,
+            minHeight: 40,
+            maxHeight: 55,
+            buttonTextMargin: 1.25,
+            allowFunding: !0,
+            allowTagline: !0,
+            byPayPalHeight: 30
+        }, _BUTTON_STYLE);
+        function labelToFunding(label) {
+            return label ? LABEL_TO_FUNDING[label] : _constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL;
+        }
+        function fundingToDefaultLabel(funding) {
+            return FUNDING_TO_DEFAULT_LABEL[funding];
+        }
+        function getButtonConfig(label, key, def) {
+            return function(conf, category, key, def) {
+                var categoryConfig = conf[category];
+                if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
+                if (conf[_constants__WEBPACK_IMPORTED_MODULE_0__.s] && conf[_constants__WEBPACK_IMPORTED_MODULE_0__.s].hasOwnProperty(key)) return conf[_constants__WEBPACK_IMPORTED_MODULE_0__.s][key];
+                if (arguments.length >= 4) return def;
+                throw new Error("No value found for " + category + ":" + key);
+            }(BUTTON_CONFIG, label, key, def);
+        }
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", (function() {
@@ -5937,16 +6533,16 @@
         __webpack_require__.d(interface_namespaceObject, "init", (function() {
             return init;
         }));
-        var lib = __webpack_require__(15);
+        var lib = __webpack_require__(16);
         var src = __webpack_require__(7);
         var conf = __webpack_require__(10);
         var global = __webpack_require__(9);
-        var esm_extends = __webpack_require__(12);
+        var esm_extends = __webpack_require__(13);
         var zalgo_promise_src = __webpack_require__(2);
         var SEND_MESSAGE_STRATEGIES = {};
         SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
             try {
-                __webpack_require__(39).emulateIERestrictions(window, win);
+                __webpack_require__(43).emulateIERestrictions(window, win);
             } catch (err) {
                 return;
             }
@@ -5961,7 +6557,7 @@
                 return win.postMessage(serializedMessage, dom);
             }));
         };
-        var _require = __webpack_require__(21), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
+        var _require = __webpack_require__(23), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
         SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
             if (needsBridgeForBrowser() || isBridge()) {
                 if (Object(src.v)(win)) throw new Error("Post message through bridge disabled between same domain windows");
@@ -6022,7 +6618,7 @@
                 }));
             }));
         }
-        var cross_domain_safe_weakmap_src = __webpack_require__(17);
+        var cross_domain_safe_weakmap_src = __webpack_require__(18);
         global.a.responseListeners = global.a.responseListeners || {};
         global.a.requestListeners = global.a.requestListeners || {};
         global.a.WINDOW_WILDCARD = global.a.WINDOW_WILDCARD || new function() {};
@@ -6167,7 +6763,7 @@
                 data: event.data
             };
             try {
-                __webpack_require__(39).emulateIERestrictions(messageEvent.source, window);
+                __webpack_require__(43).emulateIERestrictions(messageEvent.source, window);
             } catch (err) {
                 return;
             }
@@ -6450,11 +7046,11 @@
             global.a.methods.delete(win);
             global.a.readyPromises.delete(win);
         }
-        var bridge = __webpack_require__(41);
+        var bridge = __webpack_require__(45);
         function init() {
             if (!global.a.initialized) {
                 Object(lib.a)(window, "message", messageListener);
-                __webpack_require__(21).openTunnelToOpener();
+                __webpack_require__(23).openTunnelToOpener();
                 Object(lib.d)();
                 Object(lib.h)({
                     on: _on,
@@ -6521,7 +7117,7 @@
         __webpack_require__.d(__webpack_exports__, "k", (function() {
             return onChildWindowReady;
         }));
-        var src = __webpack_require__(17);
+        var src = __webpack_require__(18);
         var cross_domain_utils_src = __webpack_require__(7);
         var conf = __webpack_require__(10);
         function stringifyError(err, level) {
@@ -6812,21 +7408,21 @@
         __webpack_require__.d(__webpack_exports__, "a", (function() {
             return Checkout;
         }));
-        var esm_extends = __webpack_require__(12);
+        var esm_extends = __webpack_require__(13);
         var src = __webpack_require__(2);
-        var beaver_logger_client = __webpack_require__(4);
-        var zoid_src = __webpack_require__(20);
+        var beaver_logger_client = __webpack_require__(5);
+        var zoid_src = __webpack_require__(22);
         var belter_src = __webpack_require__(11);
-        var lib = __webpack_require__(5);
+        var lib = __webpack_require__(4);
         var config = __webpack_require__(3);
         var constants = __webpack_require__(0);
-        var post_robot_src = __webpack_require__(14);
+        var post_robot_src = __webpack_require__(15);
         function match(str, pattern) {
             var regmatch = str.match(pattern);
             if (regmatch) return regmatch[1];
         }
         var onAuthorize;
-        Object(lib.D)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
+        Object(lib.E)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
             window: window.parent
         }, (function(_ref) {
             onAuthorize = _ref.data.method;
@@ -6834,14 +7430,14 @@
         function onLegacyPaymentAuthorize(method) {
             onAuthorize = method;
             return src.a.try((function() {
-                if (post_robot_src.bridge && !Object(lib.D)()) return post_robot_src.bridge.openBridge(Object(lib.g)(config.a.postBridgeUrl, {
-                    version: Object(lib.u)()
+                if (post_robot_src.bridge && !Object(lib.E)()) return post_robot_src.bridge.openBridge(Object(lib.g)(config.a.postBridgeUrl, {
+                    version: Object(lib.v)()
                 }), config.a.postBridgeDomain).then((function(postBridge) {
                     return Object(post_robot_src.send)(postBridge, "onLegacyPaymentAuthorize", {
                         method: method
                     }, {
                         domain: config.a.paypalDomain
-                    }).then(lib.H);
+                    }).then(lib.I);
                 }));
             }));
         }
@@ -6875,7 +7471,7 @@
                                     win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                         value: Math.random().toString()
                                     });
-                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.H);
+                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.I);
                                 }
                             } catch (err) {
                                 return;
@@ -6900,8 +7496,8 @@
             }), 100);
         };
         window.onLegacyFallback = window.watchForLegacyFallback;
-        var integrations = __webpack_require__(24);
-        var template = __webpack_require__(27);
+        var integrations = __webpack_require__(28);
+        var template = __webpack_require__(31);
         var Checkout = Object(zoid_src.c)({
             tag: "paypal-checkout",
             name: "ppcheckout",
@@ -6931,10 +7527,10 @@
                 popup: !0
             },
             get version() {
-                return Object(lib.u)();
+                return Object(lib.v)();
             },
             validate: function() {
-                Object(lib.B)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
+                Object(lib.C)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
             },
             prerenderTemplate: template.a,
             containerTemplate: template.b,
@@ -6943,7 +7539,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.v)();
+                        return Object(lib.w)();
                     },
                     queryParam: !0
                 },
@@ -7053,7 +7649,7 @@
                     },
                     childDecorate: function(payment) {
                         var token = Object(lib.q)("token");
-                        return token ? Object(lib.G)((function() {
+                        return token ? Object(lib.H)((function() {
                             return src.a.resolve(token);
                         })) : payment;
                     },
@@ -7122,13 +7718,13 @@
                                 }));
                             };
                             var redirect = function(win, url) {
-                                return src.a.all([ Object(lib.N)(win || window.top, url || data.returnUrl), close() ]);
+                                return src.a.all([ Object(lib.O)(win || window.top, url || data.returnUrl), close() ]);
                             };
                             return src.a.try((function() {
                                 try {
                                     var isButton = -1 !== window.location.href.indexOf("/smart/button");
                                     var isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                    if (isButton && isGuest) return Object(lib.P)({
+                                    if (isButton && isGuest) return Object(lib.Q)({
                                         win: _this.window,
                                         method: "get",
                                         url: "/webapps/xoonboarding/api/auth"
@@ -7187,7 +7783,7 @@
                                 }));
                             };
                             var redirect = function(win, url) {
-                                return src.a.all([ Object(lib.N)(win || window.top, url || data.cancelUrl), close() ]);
+                                return src.a.all([ Object(lib.O)(win || window.top, url || data.cancelUrl), close() ]);
                             };
                             return src.a.try((function() {
                                 return original.call(_this2, data, Object(esm_extends.a)({}, actions, {
@@ -7306,9 +7902,9 @@
             }
         });
         if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
-            Checkout.xprops && Checkout.xprops.logLevel && Object(lib.R)(Checkout.xprops.logLevel);
+            Checkout.xprops && Checkout.xprops.logLevel && Object(lib.S)(Checkout.xprops.logLevel);
             Checkout.xchild.onProps((function(xprops) {
-                Object(lib.L)(xprops, "onAuthorize", (function(_ref) {
+                Object(lib.M)(xprops, "onAuthorize", (function(_ref) {
                     var callOriginal = _ref.callOriginal, data = _ref.args[0];
                     if (data && !data.intent) {
                         Object(beaver_logger_client.q)("hermes_authorize_no_intent", {
@@ -7329,21 +7925,21 @@
                 }));
             }));
         }
-        Object(lib.L)(Checkout, "init", (function(_ref2) {
+        Object(lib.M)(Checkout, "init", (function(_ref2) {
             var _ref2$args = _ref2.args;
             return _ref2.original.call(_ref2.context, _ref2$args[0], _ref2$args[1], "body");
         }));
-        Object(lib.L)(Checkout, "render", (function(_ref3) {
+        Object(lib.M)(Checkout, "render", (function(_ref3) {
             return _ref3.original.call(_ref3.context, _ref3.args[0], "body");
         }));
-        Object(lib.L)(Checkout, "renderTo", (function(_ref4) {
+        Object(lib.M)(Checkout, "renderTo", (function(_ref4) {
             var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context;
             var payment = props.payment();
             props.payment = function() {
                 return payment;
             };
             return original.call(context, win, props, "body").catch((function(err) {
-                if (err instanceof zoid_src.b && Object(lib.D)()) {
+                if (err instanceof zoid_src.b && Object(lib.E)()) {
                     Checkout.contexts.iframe = !0;
                     return original.call(context, win, props, "body");
                 }
@@ -8597,10 +9193,167 @@
         _cardLogos);
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        __webpack_require__.d(__webpack_exports__, "c", (function() {
+            return FUNDING_PRIORITY;
+        }));
+        __webpack_require__.d(__webpack_exports__, "b", (function() {
+            return FUNDING_ORDER;
+        }));
+        __webpack_require__.d(__webpack_exports__, "a", (function() {
+            return FUNDING_CONFIG;
+        }));
+        __webpack_require__.d(__webpack_exports__, "e", (function() {
+            return getFundingConfig;
+        }));
+        __webpack_require__.d(__webpack_exports__, "d", (function() {
+            return getCardConfig;
+        }));
+        var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+        var _FUNDING_CONFIG, _CARD_CONFIG;
+        var FUNDING_PRIORITY = [ _constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL, _constants__WEBPACK_IMPORTED_MODULE_0__.v.VENMO, _constants__WEBPACK_IMPORTED_MODULE_0__.v.ITAU, _constants__WEBPACK_IMPORTED_MODULE_0__.v.CREDIT, _constants__WEBPACK_IMPORTED_MODULE_0__.v.CARD, _constants__WEBPACK_IMPORTED_MODULE_0__.v.IDEAL, _constants__WEBPACK_IMPORTED_MODULE_0__.v.ELV, _constants__WEBPACK_IMPORTED_MODULE_0__.v.BANCONTACT, _constants__WEBPACK_IMPORTED_MODULE_0__.v.GIROPAY, _constants__WEBPACK_IMPORTED_MODULE_0__.v.EPS, _constants__WEBPACK_IMPORTED_MODULE_0__.v.SOFORT, _constants__WEBPACK_IMPORTED_MODULE_0__.v.MYBANK, _constants__WEBPACK_IMPORTED_MODULE_0__.v.BLIK, _constants__WEBPACK_IMPORTED_MODULE_0__.v.P24, _constants__WEBPACK_IMPORTED_MODULE_0__.v.MAXIMA, _constants__WEBPACK_IMPORTED_MODULE_0__.v.BOLETO, _constants__WEBPACK_IMPORTED_MODULE_0__.v.OXXO, _constants__WEBPACK_IMPORTED_MODULE_0__.v.MERCADOPAGO ];
+        var FUNDING_ORDER = [ _constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL, _constants__WEBPACK_IMPORTED_MODULE_0__.v.VENMO, _constants__WEBPACK_IMPORTED_MODULE_0__.v.ITAU, _constants__WEBPACK_IMPORTED_MODULE_0__.v.CREDIT, _constants__WEBPACK_IMPORTED_MODULE_0__.v.IDEAL, _constants__WEBPACK_IMPORTED_MODULE_0__.v.ELV, _constants__WEBPACK_IMPORTED_MODULE_0__.v.BANCONTACT, _constants__WEBPACK_IMPORTED_MODULE_0__.v.GIROPAY, _constants__WEBPACK_IMPORTED_MODULE_0__.v.EPS, _constants__WEBPACK_IMPORTED_MODULE_0__.v.SOFORT, _constants__WEBPACK_IMPORTED_MODULE_0__.v.MYBANK, _constants__WEBPACK_IMPORTED_MODULE_0__.v.BLIK, _constants__WEBPACK_IMPORTED_MODULE_0__.v.P24, _constants__WEBPACK_IMPORTED_MODULE_0__.v.MAXIMA, _constants__WEBPACK_IMPORTED_MODULE_0__.v.BOLETO, _constants__WEBPACK_IMPORTED_MODULE_0__.v.OXXO, _constants__WEBPACK_IMPORTED_MODULE_0__.v.MERCADOPAGO, _constants__WEBPACK_IMPORTED_MODULE_0__.v.CARD ];
+        var FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[_constants__WEBPACK_IMPORTED_MODULE_0__.s] = {
+            enabled: !0,
+            allowOptIn: !0,
+            allowOptOut: !0,
+            allowRemember: !0,
+            allowHorizontal: !0,
+            allowVertical: !0,
+            requireCommitAsTrue: !1
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.PAYPAL] = {
+            default: !0,
+            allowOptIn: !1,
+            allowOptOut: !1,
+            allowHorizontal: !0,
+            allowVertical: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.CARD] = {
+            default: "undefined" == typeof __paypal_checkout__ || __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded,
+            allowHorizontal: !1,
+            allowVertical: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.VENMO] = {
+            allowOptOut: !0,
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.US ],
+            allowHorizontal: !0,
+            allowVertical: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.ITAU] = {
+            allowOptOut: !0,
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.BR ],
+            allowHorizontal: !0,
+            allowVertical: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.CREDIT] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.US, _constants__WEBPACK_IMPORTED_MODULE_0__.r.GB, _constants__WEBPACK_IMPORTED_MODULE_0__.r.DE ],
+            defaultVerticalCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.US ],
+            platforms: [ _constants__WEBPACK_IMPORTED_MODULE_0__.D.MOBILE ],
+            allowHorizontal: !0,
+            allowVertical: !0,
+            allowRemember: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.IDEAL] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.NL ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.ELV] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.DE ],
+            defaultVerticalCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.DE ],
+            allowHorizontal: !1,
+            allowVertical: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.BANCONTACT] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.BE ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.GIROPAY] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.DE ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.SOFORT] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.DE, _constants__WEBPACK_IMPORTED_MODULE_0__.r.AT, _constants__WEBPACK_IMPORTED_MODULE_0__.r.BE, _constants__WEBPACK_IMPORTED_MODULE_0__.r.ES, _constants__WEBPACK_IMPORTED_MODULE_0__.r.IT, _constants__WEBPACK_IMPORTED_MODULE_0__.r.NL ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.EPS] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.AT ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.MYBANK] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.IT ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.P24] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.PL ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.BLIK] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.PL ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.MAXIMA] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.LT ],
+            allowedEnvs: [ _constants__WEBPACK_IMPORTED_MODULE_0__.t.LOCAL, _constants__WEBPACK_IMPORTED_MODULE_0__.t.STAGE, _constants__WEBPACK_IMPORTED_MODULE_0__.t.TEST ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.BOLETO] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.BR ],
+            allowedEnvs: [ _constants__WEBPACK_IMPORTED_MODULE_0__.t.LOCAL, _constants__WEBPACK_IMPORTED_MODULE_0__.t.STAGE, _constants__WEBPACK_IMPORTED_MODULE_0__.t.TEST ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.OXXO] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.MX ],
+            allowedEnvs: [ _constants__WEBPACK_IMPORTED_MODULE_0__.t.LOCAL, _constants__WEBPACK_IMPORTED_MODULE_0__.t.STAGE, _constants__WEBPACK_IMPORTED_MODULE_0__.t.TEST ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.MERCADOPAGO] = {
+            allowedCountries: [ _constants__WEBPACK_IMPORTED_MODULE_0__.r.MX, _constants__WEBPACK_IMPORTED_MODULE_0__.r.BR ],
+            allowedEnvs: [ _constants__WEBPACK_IMPORTED_MODULE_0__.t.LOCAL, _constants__WEBPACK_IMPORTED_MODULE_0__.t.STAGE, _constants__WEBPACK_IMPORTED_MODULE_0__.t.TEST ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.v.ZIMPLER] = {
+            allowedCountries: [],
+            allowHorizontal: !1,
+            allowVertical: !1,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG);
+        var CARD_CONFIG = ((_CARD_CONFIG = {})[_constants__WEBPACK_IMPORTED_MODULE_0__.s] = {
+            priority: [ _constants__WEBPACK_IMPORTED_MODULE_0__.o.VISA, _constants__WEBPACK_IMPORTED_MODULE_0__.o.MASTERCARD, _constants__WEBPACK_IMPORTED_MODULE_0__.o.AMEX ]
+        }, _CARD_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.r.GB] = {
+            priority: [ _constants__WEBPACK_IMPORTED_MODULE_0__.o.VISA, _constants__WEBPACK_IMPORTED_MODULE_0__.o.MASTERCARD, _constants__WEBPACK_IMPORTED_MODULE_0__.o.AMEX, _constants__WEBPACK_IMPORTED_MODULE_0__.o.DISCOVER, _constants__WEBPACK_IMPORTED_MODULE_0__.o.MAESTRO ]
+        }, _CARD_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.r.US] = {
+            priority: [ _constants__WEBPACK_IMPORTED_MODULE_0__.o.VISA, _constants__WEBPACK_IMPORTED_MODULE_0__.o.MASTERCARD, _constants__WEBPACK_IMPORTED_MODULE_0__.o.AMEX, _constants__WEBPACK_IMPORTED_MODULE_0__.o.DISCOVER ]
+        }, _CARD_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.r.BR] = {
+            priority: [ _constants__WEBPACK_IMPORTED_MODULE_0__.o.VISA, _constants__WEBPACK_IMPORTED_MODULE_0__.o.MASTERCARD, _constants__WEBPACK_IMPORTED_MODULE_0__.o.AMEX, _constants__WEBPACK_IMPORTED_MODULE_0__.o.HIPER, _constants__WEBPACK_IMPORTED_MODULE_0__.o.ELO ]
+        }, _CARD_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.r.JP] = {
+            priority: [ _constants__WEBPACK_IMPORTED_MODULE_0__.o.VISA, _constants__WEBPACK_IMPORTED_MODULE_0__.o.MASTERCARD, _constants__WEBPACK_IMPORTED_MODULE_0__.o.AMEX, _constants__WEBPACK_IMPORTED_MODULE_0__.o.JCB ]
+        }, _CARD_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.r.CN] = {
+            priority: [ _constants__WEBPACK_IMPORTED_MODULE_0__.o.VISA, _constants__WEBPACK_IMPORTED_MODULE_0__.o.MASTERCARD, _constants__WEBPACK_IMPORTED_MODULE_0__.o.AMEX, _constants__WEBPACK_IMPORTED_MODULE_0__.o.CUP ]
+        }, _CARD_CONFIG);
+        function getConfig(conf, category, key, def) {
+            var categoryConfig = conf[category];
+            if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
+            if (conf[_constants__WEBPACK_IMPORTED_MODULE_0__.s] && conf[_constants__WEBPACK_IMPORTED_MODULE_0__.s].hasOwnProperty(key)) return conf[_constants__WEBPACK_IMPORTED_MODULE_0__.s][key];
+            if (arguments.length >= 4) return def;
+            throw new Error("No value found for " + category + ":" + key);
+        }
+        function getFundingConfig(source, key, def) {
+            return getConfig(FUNDING_CONFIG, source, key, def);
+        }
+        function getCardConfig(source, key, def) {
+            return getConfig(CARD_CONFIG, source, key, def);
+        }
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
         __webpack_require__.d(__webpack_exports__, "a", (function() {
             return _inheritsLoose;
         }));
-        var _babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
+        var _babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
         function _inheritsLoose(subClass, superClass) {
             subClass.prototype = Object.create(superClass.prototype);
             subClass.prototype.constructor = subClass;
@@ -8649,9 +9402,9 @@
         __webpack_require__.d(interface_namespaceObject, "CONSTANTS", (function() {
             return CONSTANTS;
         }));
-        var src = __webpack_require__(14);
-        var assertThisInitialized = __webpack_require__(22);
-        var inheritsLoose = __webpack_require__(19);
+        var src = __webpack_require__(15);
+        var assertThisInitialized = __webpack_require__(24);
+        var inheritsLoose = __webpack_require__(21);
         function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
             var desc = {};
             Object.keys(descriptor).forEach((function(key) {
@@ -8785,10 +9538,10 @@
             };
             return BaseComponent;
         }();
-        var esm_extends = __webpack_require__(12);
-        var client = __webpack_require__(4);
+        var esm_extends = __webpack_require__(13);
+        var client = __webpack_require__(5);
         var belter_src = __webpack_require__(11);
-        var base32 = __webpack_require__(30);
+        var base32 = __webpack_require__(34);
         var base32_default = __webpack_require__.n(base32);
         var constants = __webpack_require__(8);
         function normalize(str) {
@@ -8842,7 +9595,7 @@
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
             return getWindowByRef(componentMeta.renderParent);
         }));
-        var src_error = __webpack_require__(23);
+        var src_error = __webpack_require__(25);
         function normalizeChildProp(component, props, key, value) {
             var prop = component.getProp(key);
             return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
@@ -10364,7 +11117,7 @@
             } ]);
             return DelegateComponent;
         }(base_BaseComponent);
-        var drivers = __webpack_require__(25);
+        var drivers = __webpack_require__(29);
         function defaultContainerTemplate(_ref) {
             var id = _ref.id, CLASS = _ref.CLASS, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _ref$dimensions = _ref.dimensions;
             return jsxDom("div", {
@@ -10913,7 +11666,7 @@
         }));
         var src = __webpack_require__(7);
         var conf = __webpack_require__(10);
-        var lib = __webpack_require__(15);
+        var lib = __webpack_require__(16);
         var global = __webpack_require__(9);
         global.a.tunnelWindows = global.a.tunnelWindows || {};
         global.a.tunnelWindowId = 0;
@@ -10984,7 +11737,7 @@
             });
         };
         var zalgo_promise_src = __webpack_require__(2);
-        var cross_domain_safe_weakmap_src = __webpack_require__(17);
+        var cross_domain_safe_weakmap_src = __webpack_require__(18);
         function needsBridgeForBrowser() {
             return !!Object(src.p)(window).match(/MSIE|trident|edge\/12|edge\/13/i) || !conf.a.ALLOW_POSTMESSAGE_POPUP;
         }
@@ -11276,6 +12029,225 @@
         RenderError.prototype = Object.create(Error.prototype);
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", (function() {
+            return normalizeProps;
+        }));
+        var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+        var _funding__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
+        var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
+        var _funding_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
+        var _config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
+        var normalizeProps = Object(_lib_util__WEBPACK_IMPORTED_MODULE_2__.i)((function(props, defs) {
+            void 0 === defs && (defs = {});
+            var env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit, checkoutCustomization = props.checkoutCustomization;
+            locale = locale ? function(locale) {
+                var _locale$split = locale.split("_");
+                return {
+                    country: _locale$split[1],
+                    lang: _locale$split[0]
+                };
+            }(locale) : defs.locale || Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)("DEFAULT", "defaultLocale");
+            (funding = funding || {}).allowed = funding.allowed || [];
+            funding.disallowed = funding.disallowed || [];
+            funding.remembered = funding.remembered || [];
+            var label = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.LABEL] || Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)("DEFAULT", style.layout === _constants__WEBPACK_IMPORTED_MODULE_0__.g.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
+            var layout = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.LAYOUT] || Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "defaultLayout");
+            var _style$BUTTON_STYLE_O = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.SIZE], size = void 0 === _style$BUTTON_STYLE_O ? Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, layout === _constants__WEBPACK_IMPORTED_MODULE_0__.g.VERTICAL ? "defaultVerticalSize" : "defaultSize") : _style$BUTTON_STYLE_O, _style$BUTTON_STYLE_O2 = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.COLOR], color = void 0 === _style$BUTTON_STYLE_O2 ? Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "defaultColor") : _style$BUTTON_STYLE_O2, _style$BUTTON_STYLE_O3 = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.SHAPE], shape = void 0 === _style$BUTTON_STYLE_O3 ? Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "defaultShape") : _style$BUTTON_STYLE_O3, _style$BUTTON_STYLE_O4 = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.BRANDING], branding = void 0 === _style$BUTTON_STYLE_O4 ? Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, layout === _constants__WEBPACK_IMPORTED_MODULE_0__.g.VERTICAL ? "defaultVerticalBranding" : "defaultBranding") : _style$BUTTON_STYLE_O4, _style$BUTTON_STYLE_O5 = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.FUNDINGICONS], fundingicons = void 0 === _style$BUTTON_STYLE_O5 ? Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "defaultFundingIcons") : _style$BUTTON_STYLE_O5, _style$BUTTON_STYLE_O6 = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.TAGLINE], tagline = void 0 === _style$BUTTON_STYLE_O6 ? Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "defaultTagline") : _style$BUTTON_STYLE_O6, max = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.MAXBUTTONS], height = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.HEIGHT], installmentperiod = style[_constants__WEBPACK_IMPORTED_MODULE_0__.m.INSTALLMENTPERIOD];
+            max = function(_ref) {
+                var label = _ref.label, layout = _ref.layout, max = _ref.max;
+                if (!(layout === _constants__WEBPACK_IMPORTED_MODULE_0__.g.HORIZONTAL ? Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "allowPrimaryHorizontal") : Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "allowPrimaryVertical"))) return 1;
+                var configMax = layout === _constants__WEBPACK_IMPORTED_MODULE_0__.g.HORIZONTAL ? Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "maxHorizontalButtons") : Object(_config__WEBPACK_IMPORTED_MODULE_4__.e)(label, "maxVerticalButtons");
+                return max ? Math.min(configMax, max) : configMax;
+            }({
+                label: label,
+                layout: layout,
+                max: max
+            });
+            var selected = Object(_config__WEBPACK_IMPORTED_MODULE_4__.f)(label);
+            var sources = Object(_funding__WEBPACK_IMPORTED_MODULE_1__.b)({
+                funding: funding,
+                selected: selected,
+                locale: locale,
+                env: env,
+                layout: layout,
+                commit: commit
+            });
+            var multiple = (sources = Object(_lib_util__WEBPACK_IMPORTED_MODULE_2__.p)(sources.slice(0, max), _funding_config__WEBPACK_IMPORTED_MODULE_3__.b)).length > 1;
+            multiple && (branding = !0);
+            var _ref2;
+            return {
+                size: size,
+                label: label,
+                locale: locale,
+                color: color,
+                shape: shape,
+                branding: branding,
+                fundingicons: fundingicons,
+                tagline: tagline = (_ref2 = {
+                    tagline: tagline,
+                    branding: branding,
+                    fundingicons: fundingicons,
+                    layout: layout
+                }, Boolean(_ref2.tagline && _ref2.branding && !_ref2.fundingicons && _ref2.layout === _constants__WEBPACK_IMPORTED_MODULE_0__.g.HORIZONTAL)),
+                funding: funding,
+                layout: layout,
+                sources: sources,
+                max: max,
+                multiple: multiple,
+                env: env,
+                height: height,
+                cards: Object(_funding__WEBPACK_IMPORTED_MODULE_1__.a)({
+                    funding: funding,
+                    locale: locale
+                }),
+                installmentperiod: installmentperiod,
+                checkoutCustomization: checkoutCustomization
+            };
+        }));
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "d", (function() {
+            return isFundingIneligible;
+        }));
+        __webpack_require__.d(__webpack_exports__, "c", (function() {
+            return isFundingAutoEligible;
+        }));
+        __webpack_require__.d(__webpack_exports__, "b", (function() {
+            return determineEligibleFunding;
+        }));
+        __webpack_require__.d(__webpack_exports__, "a", (function() {
+            return determineEligibleCards;
+        }));
+        __webpack_require__.d(__webpack_exports__, "f", (function() {
+            return validateFunding;
+        }));
+        __webpack_require__.d(__webpack_exports__, "e", (function() {
+            return logFundingEligibility;
+        }));
+        var constants = __webpack_require__(0);
+        var config = __webpack_require__(20);
+        var fundingEligibilityReasons = [];
+        function isFundingIneligible(source, _ref) {
+            var locale = _ref.locale, funding = _ref.funding, commit = _ref.commit, env = _ref.env;
+            var isVertical = _ref.layout === constants.g.VERTICAL;
+            if (!Object(config.e)(source, isVertical ? "allowVertical" : "allowHorizontal")) return constants.x.SECONDARY_DISALLOWED;
+            if (-1 !== funding.disallowed.indexOf(source) && Object(config.e)(source, "allowOptOut")) return constants.x.OPT_OUT;
+            if (-1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO) return constants.x.OPT_OUT;
+            if (-1 !== funding.disallowed.indexOf(source) && source === constants.v.ITAU) return constants.x.OPT_OUT;
+            if (-1 === Object(config.e)(source, "allowedCountries", [ locale.country ]).indexOf(locale.country)) return constants.x.DISALLOWED_COUNTRY;
+            if (Object(config.e)(source, "requireCommitAsTrue") && !commit) return constants.x.COMMIT_NOT_SET;
+            var allowedEnvs = Object(config.e)(source, "allowedEnvs");
+            return allowedEnvs && -1 === allowedEnvs.indexOf(env) ? constants.x.INVALID_ENV : void 0;
+        }
+        function isFundingAutoEligible(source, _ref2) {
+            var locale = _ref2.locale, funding = _ref2.funding;
+            return _ref2.layout === constants.g.VERTICAL && -1 !== Object(config.e)(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.x.DEFAULT_COUNTRY : Object(config.e)(source, "default") ? constants.x.DEFAULT : -1 !== funding.allowed.indexOf(source) && Object(config.e)(source, "allowOptIn") ? constants.x.OPT_IN : -1 !== funding.remembered.indexOf(source) && Object(config.e)(source, "allowRemember") ? constants.x.REMEMBERED : void 0;
+        }
+        function determineEligibleFunding(_ref4) {
+            var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, commit = _ref4.commit;
+            var reasons = {};
+            var eligibleFunding = config.c.filter((function(source) {
+                var _isFundingEligible = function(source, _ref3) {
+                    var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected, commit = _ref3.commit;
+                    if (selected && source === selected) return {
+                        eligible: !0,
+                        reason: constants.x.PRIMARY
+                    };
+                    if (!(Object(config.e)(source, "enabled") || env === constants.t.TEST && Object(config.e)(source, "test"))) return {
+                        eligible: !1,
+                        reason: constants.x.NOT_ENABLED
+                    };
+                    var ineligibleReason = isFundingIneligible(source, {
+                        locale: locale,
+                        funding: funding,
+                        layout: layout,
+                        commit: commit,
+                        env: env
+                    });
+                    if (ineligibleReason) return {
+                        eligible: !1,
+                        reason: ineligibleReason
+                    };
+                    var autoEligibleReason = isFundingAutoEligible(source, {
+                        locale: locale,
+                        funding: funding,
+                        layout: layout
+                    });
+                    return autoEligibleReason ? {
+                        eligible: !0,
+                        reason: autoEligibleReason
+                    } : {
+                        eligible: !1,
+                        reason: constants.x.NEED_OPT_IN
+                    };
+                }(source, {
+                    selected: selected,
+                    locale: locale,
+                    funding: funding,
+                    env: env,
+                    layout: layout,
+                    commit: commit
+                }), eligible = _isFundingEligible.eligible;
+                reasons[source] = {
+                    eligible: eligible,
+                    reason: _isFundingEligible.reason,
+                    factors: {
+                        env: env,
+                        locale: locale,
+                        layout: layout
+                    }
+                };
+                return eligible;
+            }));
+            fundingEligibilityReasons.push(reasons);
+            eligibleFunding.splice(eligibleFunding.indexOf(selected), 1);
+            eligibleFunding.unshift(selected);
+            return eligibleFunding;
+        }
+        function determineEligibleCards(_ref5) {
+            var funding = _ref5.funding, locale = _ref5.locale;
+            return Object(config.d)(locale.country, "priority").filter((function(card) {
+                return -1 === funding.disallowed.indexOf(card);
+            }));
+        }
+        function validateFunding(funding) {
+            void 0 === funding && (funding = {
+                allowed: [],
+                disallowed: [],
+                remembered: []
+            });
+            if (funding.allowed) for (var _i2 = 0, _funding$allowed2 = funding.allowed; _i2 < _funding$allowed2.length; _i2++) {
+                var source = _funding$allowed2[_i2];
+                if (-1 === constants.p.indexOf(source)) {
+                    if (!config.a.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
+                    if (!Object(config.e)(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
+                    if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
+                }
+            }
+            if (funding.disallowed) for (var _i4 = 0, _funding$disallowed2 = funding.disallowed; _i4 < _funding$disallowed2.length; _i4++) {
+                var _source = _funding$disallowed2[_i4];
+                if (-1 === constants.p.indexOf(_source)) {
+                    if (!config.a.hasOwnProperty(_source)) throw new Error("Invalid funding source: " + _source);
+                    if (!Object(config.e)(_source, "allowOptOut")) throw new Error("Can not disallow funding source: " + _source);
+                }
+            }
+        }
+        function logFundingEligibility() {
+            fundingEligibilityReasons.forEach((function(reasons, i) {
+                console.log("\nButton " + (i + 1) + ":\n");
+                console.table(Object.keys(reasons).map((function(source) {
+                    var _reasons$source = reasons[source];
+                    return {
+                        Funding: source,
+                        Reason: _reasons$source.reason,
+                        Eligibility: _reasons$source.eligible ? "eligible" : "ineligible",
+                        Factors: JSON.stringify(_reasons$source.factors)
+                    };
+                })));
+            }));
+        }
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
         __webpack_require__.d(__webpack_exports__, "b", (function() {
             return checkout.a;
         }));
@@ -11291,7 +12263,7 @@
         __webpack_require__.d(__webpack_exports__, "e", (function() {
             return mapPaymentToBraintree;
         }));
-        var checkout = __webpack_require__(28);
+        var checkout = __webpack_require__(32);
         var src = __webpack_require__(2);
         function awaitBraintreeClient(braintree, auth) {
             return src.a.resolve(auth).then((function(authorization) {
@@ -11373,34 +12345,34 @@
         }
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(31);
+        var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(35);
         __webpack_require__.d(__webpack_exports__, "script", (function() {
             return _script__WEBPACK_IMPORTED_MODULE_0__.a;
         }));
-        var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
+        var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36);
         __webpack_require__.d(__webpack_exports__, "react", (function() {
             return _react__WEBPACK_IMPORTED_MODULE_1__.a;
         }));
-        var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
+        var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(37);
         __webpack_require__.d(__webpack_exports__, "vue", (function() {
             return _vue__WEBPACK_IMPORTED_MODULE_2__.a;
         }));
-        var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(34);
+        var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(38);
         __webpack_require__.d(__webpack_exports__, "angular", (function() {
             return _angular__WEBPACK_IMPORTED_MODULE_3__.a;
         }));
-        var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(35);
+        var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(39);
         __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", (function() {
             return _ember__WEBPACK_IMPORTED_MODULE_4__.angular2;
         }));
         __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
             return _ember__WEBPACK_IMPORTED_MODULE_4__.glimmer;
         }));
-        var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(36);
+        var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(40);
         __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
             return _glimmer__WEBPACK_IMPORTED_MODULE_5__.a;
         }));
-        var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(37);
+        var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(41);
         __webpack_require__.d(__webpack_exports__, "angular2", (function() {
             return _angular2__WEBPACK_IMPORTED_MODULE_6__.a;
         }));
@@ -11446,9 +12418,9 @@
         }
         var src = __webpack_require__(11);
         var zalgo_promise_src = __webpack_require__(2);
-        var resources = __webpack_require__(18);
+        var resources = __webpack_require__(19);
         var constants = __webpack_require__(0);
-        var containerContent = __webpack_require__(29);
+        var containerContent = __webpack_require__(33);
         function getContainerStyle(_ref) {
             var id = _ref.id, tag = _ref.tag, CONTEXT = _ref.CONTEXT, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION;
             return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: calc(95vh - 60px);\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
@@ -14807,7 +15779,7 @@
             var root = "object" == typeof window ? window : {};
             !root.HI_BASE32_NO_NODE_JS && "object" == typeof process && process.versions && process.versions.node && (root = window);
             var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" == typeof module && module.exports;
-            var AMD = __webpack_require__(42);
+            var AMD = __webpack_require__(46);
             var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
             var BASE32_DECODE_CHAR = {
                 A: 0,
@@ -15119,7 +16091,7 @@
         __webpack_require__.d(__webpack_exports__, "a", (function() {
             return react;
         }));
-        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
+        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
         var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
         var react = {
             global: function() {
@@ -15264,8 +16236,8 @@
         __webpack_require__.d(__webpack_exports__, "a", (function() {
             return glimmer;
         }));
-        var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
-        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
+        var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+        var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(21);
         var glimmer = {
             global: function() {},
             register: function(component, GlimmerComponent) {
@@ -15286,7 +16258,7 @@
         __webpack_require__.d(__webpack_exports__, "a", (function() {
             return angular2;
         }));
-        var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
+        var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
         var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
         var angular2 = {
             global: function() {},
@@ -15334,7 +16306,7 @@
         };
     }, function(module, exports, __webpack_require__) {
         !function(e, t, n) {
-            module.exports ? module.exports = n() : __webpack_require__(43)("bowser", n);
+            module.exports ? module.exports = n() : __webpack_require__(47)("bowser", n);
         }(0, 0, (function() {
             function t(t) {
                 function n(e) {
@@ -15685,7 +16657,7 @@
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-        var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+        var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
         __webpack_require__.d(__webpack_exports__, "openBridge", (function() {
             return _index__WEBPACK_IMPORTED_MODULE_0__.openBridge;
         }));
@@ -15767,13 +16739,13 @@
             return constants.o;
         }));
         __webpack_require__.d(__webpack_exports__, "request", (function() {
-            return lib.P;
+            return lib.Q;
         }));
         __webpack_require__.d(__webpack_exports__, "isEligible", (function() {
-            return lib.B;
+            return lib.C;
         }));
         __webpack_require__.d(__webpack_exports__, "isFundingRemembered", (function() {
-            return lib.C;
+            return lib.D;
         }));
         __webpack_require__.d(__webpack_exports__, "forceIframe", (function() {
             return lib.a;
@@ -15788,7 +16760,7 @@
             return logExperimentTreatment;
         }));
         __webpack_require__.d(__webpack_exports__, "logFundingEligibility", (function() {
-            return logFundingEligibility;
+            return src_funding.e;
         }));
         __webpack_require__.d(__webpack_exports__, "onPossiblyUnhandledException", (function() {
             return onPossiblyUnhandledException;
@@ -15865,13 +16837,13 @@
             return constants.o;
         }));
         __webpack_require__.d(interface_namespaceObject, "request", (function() {
-            return lib.P;
+            return lib.Q;
         }));
         __webpack_require__.d(interface_namespaceObject, "isEligible", (function() {
-            return lib.B;
+            return lib.C;
         }));
         __webpack_require__.d(interface_namespaceObject, "isFundingRemembered", (function() {
-            return lib.C;
+            return lib.D;
         }));
         __webpack_require__.d(interface_namespaceObject, "forceIframe", (function() {
             return lib.a;
@@ -15886,7 +16858,7 @@
             return logExperimentTreatment;
         }));
         __webpack_require__.d(interface_namespaceObject, "logFundingEligibility", (function() {
-            return logFundingEligibility;
+            return src_funding.e;
         }));
         __webpack_require__.d(interface_namespaceObject, "onPossiblyUnhandledException", (function() {
             return onPossiblyUnhandledException;
@@ -15921,19 +16893,19 @@
         __webpack_require__.d(interface_namespaceObject, "ThreeDomainSecure", (function() {
             return interface_ThreeDomainSecure;
         }));
-        var beaver_logger_client = __webpack_require__(4);
-        var src = __webpack_require__(20);
+        var beaver_logger_client = __webpack_require__(5);
+        var src = __webpack_require__(22);
         var zalgo_promise_src = __webpack_require__(2);
-        var post_robot_src = __webpack_require__(14);
-        var lib = __webpack_require__(5);
-        var src_checkout = __webpack_require__(16);
-        var esm_extends = __webpack_require__(12);
+        var post_robot_src = __webpack_require__(15);
+        var lib = __webpack_require__(4);
+        var src_checkout = __webpack_require__(17);
+        var esm_extends = __webpack_require__(13);
         var belter_src = __webpack_require__(11);
         var constants = __webpack_require__(0);
         var config = __webpack_require__(3);
-        var resources = __webpack_require__(18);
-        var containerContent = __webpack_require__(29);
-        var checkout_template = __webpack_require__(27);
+        var resources = __webpack_require__(19);
+        var containerContent = __webpack_require__(33);
+        var checkout_template = __webpack_require__(31);
         var _LOGO_COLOR;
         var LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, 
         _LOGO_COLOR);
@@ -16039,7 +17011,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.v)();
+                        return Object(lib.w)();
                     },
                     queryParam: !0
                 },
@@ -16235,7 +17207,7 @@
                 };
                 clientId ? params.client_id = clientId : delete params.client_id;
                 var fullUrl = Object(lib.g)(config.a.pptmUrl, params);
-                Object(lib.F)(fullUrl, 0, {
+                Object(lib.G)(fullUrl, 0, {
                     async: !0,
                     id: constants.E
                 }).then((function() {
@@ -16245,13 +17217,13 @@
                     _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
                 })).catch((function(err) {
                     Object(beaver_logger_client.k)("pptm_script_error", {
-                        error: Object(lib.S)(err)
+                        error: Object(lib.T)(err)
                     });
                 }));
             },
             shouldCreateInitialPptmScript: function() {
                 if (!window.location.hostname) return !1;
-                if (Object(lib.D)()) return !1;
+                if (Object(lib.E)()) return !1;
                 var existingScript = Object(lib.n)(constants.E);
                 if (Boolean(existingScript)) {
                     Object(beaver_logger_client.k)("pptm_tried_loading_twice");
@@ -16260,7 +17232,7 @@
                 return !0;
             },
             shouldReloadPptmScript: function(clientId) {
-                return !1 !== noContentFoundInContainer && !Object(lib.D)() && !config.a.merchantID && !!clientId;
+                return !1 !== noContentFoundInContainer && !Object(lib.E)() && !config.a.merchantID && !!clientId;
             },
             removePptm: function() {
                 var script = Object(lib.n)(constants.E);
@@ -16269,13 +17241,13 @@
         });
         var noContentFoundInContainer, callback, listener, obj;
         var proxyRest = {};
-        var createAccessToken = Object(lib.G)((function(env, client) {
+        var createAccessToken = Object(lib.H)((function(env, client) {
             Object(beaver_logger_client.k)("rest_api_create_access_token");
             var clientID = client[env = env || config.a.env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
             var basicAuth = Object(belter_src.a)(clientID + ":");
-            return Object(lib.P)({
+            return Object(lib.Q)({
                 method: "post",
                 url: config.a.authApiUrls[env],
                 headers: {
@@ -16292,7 +17264,7 @@
         }), {
             time: 6e5
         });
-        var createExperienceProfile = Object(lib.G)((function(env, client, experienceDetails) {
+        var createExperienceProfile = Object(lib.H)((function(env, client, experienceDetails) {
             void 0 === experienceDetails && (experienceDetails = {});
             Object(beaver_logger_client.k)("rest_api_create_experience_profile");
             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
@@ -16300,7 +17272,7 @@
             experienceDetails.temporary = !0;
             experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
             return createAccessToken(env, client).then((function(accessToken) {
-                return Object(lib.P)({
+                return Object(lib.Q)({
                     method: "post",
                     url: config.a.experienceApiUrls[env],
                     headers: {
@@ -16356,12 +17328,12 @@
                     return zalgo_promise_src.a.try((function() {
                         if (tracking) return zalgo_promise_src.a.resolve(function(env, client, merchantID, trackingData) {
                             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
-                            var trackingID = Object(lib.U)();
+                            var trackingID = Object(lib.V)();
                             return createAccessToken(env, client).then((function(accessToken) {
                                 var headers = {
                                     Authorization: "Bearer " + accessToken
                                 };
-                                return Object(lib.P)({
+                                return Object(lib.Q)({
                                     method: "put",
                                     url: config.a.trackingApiUrls[env] + "/" + merchantID + "/" + trackingID,
                                     headers: headers,
@@ -16381,7 +17353,7 @@
                         };
                         trackingID && (headers["Paypal-Client-Metadata-Id"] = trackingID);
                         meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                        return Object(lib.P)({
+                        return Object(lib.Q)({
                             method: "post",
                             url: config.a.paymentApiUrls[env],
                             headers: headers,
@@ -16418,7 +17390,7 @@
                     Authorization: "Bearer " + accessToken
                 };
                 meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                return Object(lib.P)({
+                return Object(lib.Q)({
                     method: "post",
                     url: config.a.orderApiUrls[env],
                     headers: headers,
@@ -16445,7 +17417,7 @@
                     if (experienceDetails) return zalgo_promise_src.a.resolve(createExperienceProfile(env, client, experienceDetails));
                 })).then((function(experienceID) {
                     experienceID && (billingDetails.experience_profile_id = experienceID);
-                    return Object(lib.P)({
+                    return Object(lib.Q)({
                         method: "post",
                         url: config.a.billingApiUrls[env],
                         headers: {
@@ -16479,7 +17451,7 @@
         }, (function(_ref) {
             proxyRest = _ref.data;
         }));
-        parentWin && Object(lib.D)() && !Object(cross_domain_utils_src.v)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
+        parentWin && Object(lib.E)() && !Object(cross_domain_utils_src.v)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
             createAccessToken: createAccessToken,
             createExperienceProfile: createExperienceProfile,
             createPayment: createPayment,
@@ -16488,7 +17460,7 @@
         }).catch((function() {}));
         var onAuthorizeListener = Object(lib.e)();
         function log(experiment, treatment, token, state) {
-            Object(lib.w)((function(session) {
+            Object(lib.x)((function(session) {
                 var event = experiment + "_" + treatment + "_" + state;
                 var loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
                 if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.k)("duplicate_" + event); else {
@@ -16509,7 +17481,7 @@
         function logExperimentTreatment(_ref) {
             var experiment = _ref.experiment, treatment = _ref.treatment, state = _ref.state, token = _ref.token;
             if (experiment && treatment) {
-                Object(lib.w)((function(session) {
+                Object(lib.x)((function(session) {
                     session.externalExperiment = experiment;
                     session.externalExperimentTreatment = treatment;
                     token && (session.externalExperimentToken = token);
@@ -16518,7 +17490,7 @@
             }
         }
         function logReturn(token) {
-            var _getSessionState = Object(lib.w)((function(session) {
+            var _getSessionState = Object(lib.x)((function(session) {
                 return session;
             })), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
             externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.k)("experiment_mismatch", {
@@ -16535,13 +17507,13 @@
                     logReturn(paymentToken);
                 }), 1);
             }));
-            var returnToken = Object(lib.t)();
+            var returnToken = Object(lib.u)();
             returnToken && setTimeout((function() {
                 returnToken && logReturn(returnToken);
             }), 1);
         }
-        var integrations = __webpack_require__(24);
-        var integrations_checkout = __webpack_require__(28);
+        var integrations = __webpack_require__(28);
+        var integrations_checkout = __webpack_require__(32);
         function normalizeCheckoutProps(props) {
             return {
                 env: props.env = props.env || config.a.env,
@@ -16573,742 +17545,9 @@
                 }(popupBridge);
             }));
         }
-        var _FUNDING_CONFIG, _CARD_CONFIG;
-        var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.CARD, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.MERCADOPAGO ];
-        var FUNDING_ORDER = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.BLIK, constants.v.P24, constants.v.MAXIMA, constants.v.BOLETO, constants.v.OXXO, constants.v.MERCADOPAGO, constants.v.CARD ];
-        var FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
-            enabled: !0,
-            allowOptIn: !0,
-            allowOptOut: !0,
-            allowRemember: !0,
-            allowHorizontal: !0,
-            allowVertical: !0,
-            requireCommitAsTrue: !1
-        }, _FUNDING_CONFIG[constants.v.PAYPAL] = {
-            default: !0,
-            allowOptIn: !1,
-            allowOptOut: !1,
-            allowHorizontal: !0,
-            allowVertical: !0
-        }, _FUNDING_CONFIG[constants.v.CARD] = {
-            default: "undefined" == typeof __paypal_checkout__ || __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded,
-            allowHorizontal: !1,
-            allowVertical: !0
-        }, _FUNDING_CONFIG[constants.v.VENMO] = {
-            allowOptOut: !0,
-            allowedCountries: [ constants.r.US ],
-            allowHorizontal: !0,
-            allowVertical: !0
-        }, _FUNDING_CONFIG[constants.v.ITAU] = {
-            allowOptOut: !0,
-            allowedCountries: [ constants.r.BR ],
-            allowHorizontal: !0,
-            allowVertical: !0
-        }, _FUNDING_CONFIG[constants.v.CREDIT] = {
-            allowedCountries: [ constants.r.US, constants.r.GB, constants.r.DE ],
-            defaultVerticalCountries: [ constants.r.US ],
-            platforms: [ constants.D.MOBILE ],
-            allowHorizontal: !0,
-            allowVertical: !0,
-            allowRemember: !0
-        }, _FUNDING_CONFIG[constants.v.IDEAL] = {
-            allowedCountries: [ constants.r.NL ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.ELV] = {
-            allowedCountries: [ constants.r.DE ],
-            defaultVerticalCountries: [ constants.r.DE ],
-            allowHorizontal: !1,
-            allowVertical: !0
-        }, _FUNDING_CONFIG[constants.v.BANCONTACT] = {
-            allowedCountries: [ constants.r.BE ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.GIROPAY] = {
-            allowedCountries: [ constants.r.DE ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.SOFORT] = {
-            allowedCountries: [ constants.r.DE, constants.r.AT, constants.r.BE, constants.r.ES, constants.r.IT, constants.r.NL ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.EPS] = {
-            allowedCountries: [ constants.r.AT ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.MYBANK] = {
-            allowedCountries: [ constants.r.IT ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.P24] = {
-            allowedCountries: [ constants.r.PL ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.BLIK] = {
-            allowedCountries: [ constants.r.PL ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.MAXIMA] = {
-            allowedCountries: [ constants.r.LT ],
-            allowedEnvs: [ constants.t.LOCAL, constants.t.STAGE, constants.t.TEST ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.BOLETO] = {
-            allowedCountries: [ constants.r.BR ],
-            allowedEnvs: [ constants.t.LOCAL, constants.t.STAGE, constants.t.TEST ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.OXXO] = {
-            allowedCountries: [ constants.r.MX ],
-            allowedEnvs: [ constants.t.LOCAL, constants.t.STAGE, constants.t.TEST ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.MERCADOPAGO] = {
-            allowedCountries: [ constants.r.MX, constants.r.BR ],
-            allowedEnvs: [ constants.t.LOCAL, constants.t.STAGE, constants.t.TEST ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.v.ZIMPLER] = {
-            allowedCountries: [],
-            allowHorizontal: !1,
-            allowVertical: !1,
-            requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG);
-        var CARD_CONFIG = ((_CARD_CONFIG = {})[constants.s] = {
-            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX ]
-        }, _CARD_CONFIG[constants.r.GB] = {
-            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.DISCOVER, constants.o.MAESTRO ]
-        }, _CARD_CONFIG[constants.r.US] = {
-            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.DISCOVER ]
-        }, _CARD_CONFIG[constants.r.BR] = {
-            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.HIPER, constants.o.ELO ]
-        }, _CARD_CONFIG[constants.r.JP] = {
-            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.JCB ]
-        }, _CARD_CONFIG[constants.r.CN] = {
-            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.CUP ]
-        }, _CARD_CONFIG);
-        function getConfig(conf, category, key, def) {
-            var categoryConfig = conf[category];
-            if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
-            if (conf[constants.s] && conf[constants.s].hasOwnProperty(key)) return conf[constants.s][key];
-            if (arguments.length >= 4) return def;
-            throw new Error("No value found for " + category + ":" + key);
-        }
-        function getFundingConfig(source, key, def) {
-            return getConfig(FUNDING_CONFIG, source, key, def);
-        }
-        var fundingEligibilityReasons = [];
-        function isFundingIneligible(source, _ref) {
-            var locale = _ref.locale, funding = _ref.funding, commit = _ref.commit, env = _ref.env;
-            if (!getFundingConfig(source, _ref.layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal")) return constants.x.SECONDARY_DISALLOWED;
-            if (-1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut")) return constants.x.OPT_OUT;
-            if (-1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO) return constants.x.OPT_OUT;
-            if (-1 !== funding.disallowed.indexOf(source) && source === constants.v.ITAU) return constants.x.OPT_OUT;
-            if (-1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country)) return constants.x.DISALLOWED_COUNTRY;
-            if (getFundingConfig(source, "requireCommitAsTrue") && !commit) return constants.x.COMMIT_NOT_SET;
-            var allowedEnvs = getFundingConfig(source, "allowedEnvs");
-            return allowedEnvs && -1 === allowedEnvs.indexOf(env) ? constants.x.INVALID_ENV : void 0;
-        }
-        function isFundingAutoEligible(source, _ref2) {
-            var locale = _ref2.locale, funding = _ref2.funding;
-            return _ref2.layout === constants.g.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.x.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.x.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.x.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.x.REMEMBERED : void 0;
-        }
-        function determineEligibleCards(_ref5) {
-            var funding = _ref5.funding;
-            return (source = _ref5.locale.country, getConfig(CARD_CONFIG, source, "priority", void 0)).filter((function(card) {
-                return -1 === funding.disallowed.indexOf(card);
-            }));
-            var source;
-        }
-        function logFundingEligibility() {
-            fundingEligibilityReasons.forEach((function(reasons, i) {
-                console.log("\nButton " + (i + 1) + ":\n");
-                console.table(Object.keys(reasons).map((function(source) {
-                    var _reasons$source = reasons[source];
-                    return {
-                        Funding: source,
-                        Reason: _reasons$source.reason,
-                        Eligibility: _reasons$source.eligible ? "eligible" : "ineligible",
-                        Factors: JSON.stringify(_reasons$source.factors)
-                    };
-                })));
-            }));
-        }
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
-        var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[constants.s] = {
-            colors: [ constants.e.GOLD, constants.e.BLUE, constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            sizes: [ constants.l.SMALL, constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ],
-            shapes: [ constants.k.PILL, constants.k.RECT ],
-            layouts: [ constants.g.HORIZONTAL, constants.g.VERTICAL ],
-            logoColors: (_logoColors = {}, _logoColors[constants.e.GOLD] = constants.i.BLUE, 
-            _logoColors[constants.e.SILVER] = constants.i.BLUE, _logoColors[constants.e.BLUE] = constants.i.WHITE, 
-            _logoColors[constants.e.BLACK] = constants.i.WHITE, _logoColors[constants.e.BLACK] = constants.i.WHITE, 
-            _logoColors[constants.e.WHITE] = constants.i.BLUE, _logoColors),
-            tagLineColors: (_tagLineColors = {}, _tagLineColors[constants.e.GOLD] = constants.n.BLUE, 
-            _tagLineColors[constants.e.SILVER] = constants.n.BLUE, _tagLineColors[constants.e.BLUE] = constants.n.BLUE, 
-            _tagLineColors[constants.e.BLACK] = constants.n.BLACK, _tagLineColors[constants.e.DARKBLUE] = constants.n.BLUE, 
-            _tagLineColors),
-            secondaryColors: (_secondaryColors = {}, _secondaryColors[constants.e.GOLD] = constants.e.BLUE, 
-            _secondaryColors[constants.e.SILVER] = constants.e.BLUE, _secondaryColors[constants.e.BLUE] = constants.e.SILVER, 
-            _secondaryColors[constants.e.BLACK] = constants.e.BLACK, _secondaryColors[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors[constants.e.WHITE] = constants.e.WHITE, _secondaryColors),
-            tag: "{ content: safer_tag }",
-            dualTag: "{ content: dual_tag|safer_tag }",
-            defaultLocale: "en_US",
-            defaultLabel: constants.f.CHECKOUT,
-            defaultVerticalLabel: constants.f.PAYPAL,
-            defaultColor: constants.e.GOLD,
-            defaultSize: constants.l.SMALL,
-            defaultVerticalSize: constants.l.MEDIUM,
-            defaultShape: constants.k.PILL,
-            defaultLayout: constants.g.HORIZONTAL,
-            defaultBranding: !0,
-            defaultVerticalBranding: !0,
-            defaultFundingIcons: !1,
-            defaultTagline: !0,
-            defaultDual: "",
-            minimumSize: constants.l.TINY,
-            minimumVerticalSize: constants.l.MEDIUM,
-            maximumSize: constants.l.HUGE,
-            maximumVerticalSize: constants.l.HUGE,
-            minHorizontalButtons: 1,
-            minVerticalButtons: 1,
-            maxHorizontalButtons: 2,
-            maxVerticalButtons: 6,
-            allowUnbranded: !1,
-            allowFundingIcons: !0,
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.PAYPAL] = {
-            label: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
-            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
-            allowPrimary: !0,
-            allowPrimaryVertical: !0,
-            allowPrimaryHorizontal: !0,
-            title: "" + constants.w.PAYPAL
-        }, _BUTTON_CONFIG[constants.f.CHECKOUT] = {
-            label: "{ content: checkout }",
-            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
-            allowPrimary: !0,
-            allowPrimaryVertical: !0,
-            allowPrimaryHorizontal: !0
-        }, _BUTTON_CONFIG[constants.f.PAY] = {
-            label: "{ content: pay }",
-            logoLabel: "{ logo: " + constants.h.PAYPAL + " }",
-            allowPrimary: !0,
-            allowPrimaryVertical: !0,
-            allowPrimaryHorizontal: !0
-        }, _BUTTON_CONFIG[constants.f.BUYNOW] = {
-            label: "{ content: buynow }",
-            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
-            defaultBranding: void 0,
-            allowPrimary: !0,
-            allowPrimaryVertical: !0,
-            allowPrimaryHorizontal: !0,
-            allowUnbranded: !0
-        }, _BUTTON_CONFIG[constants.f.INSTALLMENT] = {
-            label: function(style) {
-                return "{ content: " + (style.installmentperiod ? "installment_period" : "installment") + " }";
-            },
-            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
-            allowPrimary: !0,
-            allowPrimaryVertical: !0,
-            allowPrimaryHorizontal: !0,
-            allowSecondaryVertical: !1,
-            allowSecondaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.CREDIT] = {
-            label: function(_ref) {
-                return _ref.locale.country === constants.r.DE ? "{ logo: " + constants.h.CREDIT + " }" : "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " } { logo: " + constants.h.CREDIT + " }";
-            },
-            logoLabel: function(_ref2) {
-                return _ref2.locale.country === constants.r.DE ? "{ logo: " + constants.h.CREDIT + " }" : "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " } { logo: " + constants.h.CREDIT + " }";
-            },
-            tag: "{ content: later_tag }",
-            colors: [ constants.e.DARKBLUE, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors2 = {}, _logoColors2[constants.e.BLACK] = constants.i.WHITE, 
-            _logoColors2[constants.e.DARKBLUE] = constants.i.WHITE, _logoColors2[constants.e.WHITE] = constants.i.BLUE, 
-            _logoColors2),
-            secondaryColors: (_secondaryColors2 = {}, _secondaryColors2[constants.e.GOLD] = constants.e.DARKBLUE, 
-            _secondaryColors2[constants.e.BLUE] = constants.e.DARKBLUE, _secondaryColors2[constants.e.SILVER] = constants.e.DARKBLUE, 
-            _secondaryColors2[constants.e.BLACK] = constants.e.BLACK, _secondaryColors2[constants.e.WHITE] = constants.e.WHITE, 
-            _secondaryColors2),
-            defaultColor: constants.e.DARKBLUE,
-            allowPrimary: !0,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1,
-            allowFundingIcons: !1,
-            title: "" + constants.w.CREDIT
-        }, _BUTTON_CONFIG[constants.f.VENMO] = {
-            label: "{ logo: " + constants.h.VENMO + " }",
-            logoLabel: "{ logo: " + constants.h.VENMO + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.BLUE, constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors3 = {}, _logoColors3[constants.e.BLUE] = constants.i.WHITE, 
-            _logoColors3[constants.e.SILVER] = constants.i.BLUE, _logoColors3[constants.e.BLACK] = constants.i.WHITE, 
-            _logoColors3[constants.e.WHITE] = constants.i.BLUE, _logoColors3),
-            secondaryColors: (_secondaryColors3 = {}, _secondaryColors3[constants.e.GOLD] = constants.e.BLUE, 
-            _secondaryColors3[constants.e.BLUE] = constants.e.SILVER, _secondaryColors3[constants.e.SILVER] = constants.e.BLUE, 
-            _secondaryColors3[constants.e.BLACK] = constants.e.BLACK, _secondaryColors3[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors3[constants.e.WHITE] = constants.e.WHITE, _secondaryColors3),
-            allowPrimary: !0,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !0
-        }, _BUTTON_CONFIG[constants.f.ITAU] = {
-            label: "{ logo: " + constants.h.ITAU + " }",
-            logoLabel: "{ logo: " + constants.h.ITAU + " }",
-            defaultColor: constants.e.DARKBLUE,
-            colors: [ constants.e.DARKBLUE, constants.e.BLUE, constants.e.BLACK ],
-            logoColors: (_logoColors4 = {}, _logoColors4[constants.e.DARKBLUE] = constants.i.WHITE, 
-            _logoColors4[constants.e.BLUE] = constants.i.WHITE, _logoColors4[constants.e.BLACK] = constants.i.WHITE, 
-            _logoColors4),
-            secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[constants.e.GOLD] = constants.e.DARKBLUE, 
-            _secondaryColors4[constants.e.BLUE] = constants.e.BLUE, _secondaryColors4[constants.e.SILVER] = constants.e.DARKBLUE, 
-            _secondaryColors4[constants.e.BLACK] = constants.e.BLACK, _secondaryColors4[constants.e.DARKBLUE] = constants.e.DARKBLUE, 
-            _secondaryColors4[constants.e.WHITE] = constants.e.DARKBLUE, _secondaryColors4),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !0
-        }, _BUTTON_CONFIG[constants.f.IDEAL] = {
-            label: "{ logo: " + constants.h.IDEAL + " } Online betalen",
-            logoLabel: "{ logo: " + constants.h.IDEAL + " } Online betalen",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors5 = {}, _logoColors5[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors5[constants.e.BLACK] = constants.i.WHITE, _logoColors5[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors5),
-            secondaryColors: (_secondaryColors5 = {}, _secondaryColors5[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors5[constants.e.BLUE] = constants.e.SILVER, _secondaryColors5[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors5[constants.e.BLACK] = constants.e.BLACK, _secondaryColors5[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors5[constants.e.WHITE] = constants.e.WHITE, _secondaryColors5),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.ELV] = {
-            label: "{ logo: " + constants.h.ELV + " }",
-            logoLabel: "{ logo: " + constants.h.ELV + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors6 = {}, _logoColors6[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors6[constants.e.BLACK] = constants.i.WHITE, _logoColors6[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors6),
-            secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors6[constants.e.BLUE] = constants.e.SILVER, _secondaryColors6[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors6[constants.e.BLACK] = constants.e.BLACK, _secondaryColors6[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors6[constants.e.WHITE] = constants.e.WHITE, _secondaryColors6),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.BANCONTACT] = {
-            label: "{ logo: " + constants.h.BANCONTACT + " }",
-            logoLabel: "{ logo: " + constants.h.BANCONTACT + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors7 = {}, _logoColors7[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors7[constants.e.BLACK] = constants.i.WHITE, _logoColors7[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors7),
-            secondaryColors: (_secondaryColors7 = {}, _secondaryColors7[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors7[constants.e.BLUE] = constants.e.SILVER, _secondaryColors7[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors7[constants.e.BLACK] = constants.e.BLACK, _secondaryColors7[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors7[constants.e.WHITE] = constants.e.WHITE, _secondaryColors7),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.GIROPAY] = {
-            label: "{ logo: " + constants.h.GIROPAY + " }",
-            logoLabel: "{ logo: " + constants.h.GIROPAY + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors8 = {}, _logoColors8[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors8[constants.e.BLACK] = constants.i.WHITE, _logoColors8[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors8),
-            secondaryColors: (_secondaryColors8 = {}, _secondaryColors8[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors8[constants.e.BLUE] = constants.e.SILVER, _secondaryColors8[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors8[constants.e.BLACK] = constants.e.BLACK, _secondaryColors8[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors8[constants.e.WHITE] = constants.e.WHITE, _secondaryColors8),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.SOFORT] = {
-            label: "{ logo: " + constants.h.SOFORT + " }",
-            logoLabel: "{ logo: " + constants.h.SOFORT + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors9 = {}, _logoColors9[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors9[constants.e.BLACK] = constants.i.WHITE, _logoColors9[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors9),
-            secondaryColors: (_secondaryColors9 = {}, _secondaryColors9[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors9[constants.e.BLUE] = constants.e.SILVER, _secondaryColors9[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors9[constants.e.BLACK] = constants.e.BLACK, _secondaryColors9[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors9[constants.e.WHITE] = constants.e.WHITE, _secondaryColors9),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.EPS] = {
-            label: "{ logo: " + constants.h.EPS + " }",
-            logoLabel: "{ logo: " + constants.h.EPS + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors10 = {}, _logoColors10[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors10[constants.e.BLACK] = constants.i.WHITE, _logoColors10[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors10),
-            secondaryColors: (_secondaryColors10 = {}, _secondaryColors10[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors10[constants.e.BLUE] = constants.e.SILVER, _secondaryColors10[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors10[constants.e.BLACK] = constants.e.BLACK, _secondaryColors10[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors10[constants.e.WHITE] = constants.e.WHITE, _secondaryColors10),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.MYBANK] = {
-            label: "{ logo: " + constants.h.MYBANK + " }",
-            logoLabel: "{ logo: " + constants.h.MYBANK + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors11 = {}, _logoColors11[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors11[constants.e.BLACK] = constants.i.WHITE, _logoColors11[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors11),
-            secondaryColors: (_secondaryColors11 = {}, _secondaryColors11[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors11[constants.e.BLUE] = constants.e.SILVER, _secondaryColors11[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors11[constants.e.BLACK] = constants.e.BLACK, _secondaryColors11[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors11[constants.e.WHITE] = constants.e.WHITE, _secondaryColors11),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.P24] = {
-            label: "{ logo: " + constants.h.P24 + " }",
-            logoLabel: "{ logo: " + constants.h.P24 + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors12 = {}, _logoColors12[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors12[constants.e.BLACK] = constants.i.WHITE, _logoColors12[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors12),
-            secondaryColors: (_secondaryColors12 = {}, _secondaryColors12[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors12[constants.e.BLUE] = constants.e.SILVER, _secondaryColors12[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors12[constants.e.BLACK] = constants.e.BLACK, _secondaryColors12[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors12[constants.e.WHITE] = constants.e.WHITE, _secondaryColors12),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.BLIK] = {
-            label: "{ logo: " + constants.h.BLIK + " }",
-            logoLabel: "{ logo: " + constants.h.BLIK + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors13 = {}, _logoColors13[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors13[constants.e.BLACK] = constants.i.WHITE, _logoColors13[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors13),
-            secondaryColors: (_secondaryColors13 = {}, _secondaryColors13[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors13[constants.e.BLUE] = constants.e.SILVER, _secondaryColors13[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors13[constants.e.BLACK] = constants.e.BLACK, _secondaryColors13[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors13[constants.e.WHITE] = constants.e.WHITE, _secondaryColors13),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.MAXIMA] = {
-            label: "{ logo: " + constants.h.MAXIMA + " }",
-            logoLabel: "{ logo: " + constants.h.MAXIMA + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors14 = {}, _logoColors14[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors14[constants.e.BLACK] = constants.i.WHITE, _logoColors14[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors14),
-            secondaryColors: (_secondaryColors14 = {}, _secondaryColors14[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors14[constants.e.BLUE] = constants.e.SILVER, _secondaryColors14[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors14[constants.e.BLACK] = constants.e.BLACK, _secondaryColors14[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors14[constants.e.WHITE] = constants.e.WHITE, _secondaryColors14),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.BOLETO] = {
-            label: "{ logo: " + constants.h.BOLETO + " }",
-            logoLabel: "{ logo: " + constants.h.BOLETO + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors15 = {}, _logoColors15[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors15[constants.e.BLACK] = constants.i.WHITE, _logoColors15[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors15),
-            secondaryColors: (_secondaryColors15 = {}, _secondaryColors15[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors15[constants.e.BLUE] = constants.e.SILVER, _secondaryColors15[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors15[constants.e.BLACK] = constants.e.BLACK, _secondaryColors15[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors15[constants.e.WHITE] = constants.e.WHITE, _secondaryColors15),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.OXXO] = {
-            label: "{ logo: " + constants.h.OXXO + " }",
-            logoLabel: "{ logo: " + constants.h.OXXO + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors16 = {}, _logoColors16[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors16[constants.e.BLACK] = constants.i.WHITE, _logoColors16[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors16),
-            secondaryColors: (_secondaryColors16 = {}, _secondaryColors16[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors16[constants.e.BLUE] = constants.e.SILVER, _secondaryColors16[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors16[constants.e.BLACK] = constants.e.BLACK, _secondaryColors16[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors16[constants.e.WHITE] = constants.e.WHITE, _secondaryColors16),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.MERCADOPAGO] = {
-            label: "{ logo: " + constants.h.MERCADOPAGO + " }",
-            logoLabel: "{ logo: " + constants.h.MERCADOPAGO + " }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-            logoColors: (_logoColors17 = {}, _logoColors17[constants.e.SILVER] = constants.i.BLACK, 
-            _logoColors17[constants.e.BLACK] = constants.i.WHITE, _logoColors17[constants.e.WHITE] = constants.i.BLACK, 
-            _logoColors17),
-            secondaryColors: (_secondaryColors17 = {}, _secondaryColors17[constants.e.GOLD] = constants.e.SILVER, 
-            _secondaryColors17[constants.e.BLUE] = constants.e.SILVER, _secondaryColors17[constants.e.SILVER] = constants.e.SILVER, 
-            _secondaryColors17[constants.e.BLACK] = constants.e.BLACK, _secondaryColors17[constants.e.DARKBLUE] = constants.e.SILVER, 
-            _secondaryColors17[constants.e.WHITE] = constants.e.WHITE, _secondaryColors17),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.f.CARD] = {
-            label: "{ cards }",
-            logoLabel: "{ cards }",
-            defaultColor: constants.e.SILVER,
-            colors: [ constants.e.TRANSPARENT ],
-            logoColors: (_logoColors18 = {}, _logoColors18[constants.e.TRANSPARENT] = constants.i.BLACK, 
-            _logoColors18),
-            secondaryColors: (_secondaryColors18 = {}, _secondaryColors18[constants.e.GOLD] = constants.e.TRANSPARENT, 
-            _secondaryColors18[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors18[constants.e.SILVER] = constants.e.TRANSPARENT, 
-            _secondaryColors18[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors18[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
-            _secondaryColors18[constants.e.WHITE] = constants.e.TRANSPARENT, _secondaryColors18),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1,
-            title: "" + constants.w.CARD
-        }, _BUTTON_CONFIG);
-        var FUNDING_TO_DEFAULT_LABEL = ((_FUNDING_TO_DEFAULT_L = {})[constants.v.PAYPAL] = constants.f.PAYPAL, 
-        _FUNDING_TO_DEFAULT_L[constants.v.VENMO] = constants.f.VENMO, _FUNDING_TO_DEFAULT_L[constants.v.ITAU] = constants.f.ITAU, 
-        _FUNDING_TO_DEFAULT_L[constants.v.CARD] = constants.f.CARD, _FUNDING_TO_DEFAULT_L[constants.v.CREDIT] = constants.f.CREDIT, 
-        _FUNDING_TO_DEFAULT_L[constants.v.IDEAL] = constants.f.IDEAL, _FUNDING_TO_DEFAULT_L[constants.v.ELV] = constants.f.ELV, 
-        _FUNDING_TO_DEFAULT_L[constants.v.BANCONTACT] = constants.f.BANCONTACT, _FUNDING_TO_DEFAULT_L[constants.v.GIROPAY] = constants.f.GIROPAY, 
-        _FUNDING_TO_DEFAULT_L[constants.v.SOFORT] = constants.f.SOFORT, _FUNDING_TO_DEFAULT_L[constants.v.EPS] = constants.f.EPS, 
-        _FUNDING_TO_DEFAULT_L[constants.v.P24] = constants.f.P24, _FUNDING_TO_DEFAULT_L[constants.v.MYBANK] = constants.f.MYBANK, 
-        _FUNDING_TO_DEFAULT_L[constants.v.BLIK] = constants.f.BLIK, _FUNDING_TO_DEFAULT_L[constants.v.MAXIMA] = constants.f.MAXIMA, 
-        _FUNDING_TO_DEFAULT_L[constants.v.BOLETO] = constants.f.BOLETO, _FUNDING_TO_DEFAULT_L[constants.v.OXXO] = constants.f.OXXO, 
-        _FUNDING_TO_DEFAULT_L[constants.v.MERCADOPAGO] = constants.f.MERCADOPAGO, _FUNDING_TO_DEFAULT_L);
-        var LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.f.PAYPAL] = constants.v.PAYPAL, 
-        _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.PAY] = constants.v.PAYPAL, 
-        _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.v.PAYPAL, 
-        _LABEL_TO_FUNDING[constants.f.CARD] = constants.v.CARD, _LABEL_TO_FUNDING[constants.f.CREDIT] = constants.v.CREDIT, 
-        _LABEL_TO_FUNDING[constants.f.VENMO] = constants.v.VENMO, _LABEL_TO_FUNDING[constants.f.ITAU] = constants.v.ITAU, 
-        _LABEL_TO_FUNDING[constants.f.IDEAL] = constants.v.IDEAL, _LABEL_TO_FUNDING[constants.f.BANCONTACT] = constants.v.BANCONTACT, 
-        _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.GIROPAY, _LABEL_TO_FUNDING[constants.f.EPS] = constants.v.EPS, 
-        _LABEL_TO_FUNDING[constants.f.SOFORT] = constants.v.SOFORT, _LABEL_TO_FUNDING[constants.f.P24] = constants.v.P24, 
-        _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.v.MYBANK, _LABEL_TO_FUNDING[constants.f.BLIK] = constants.v.BLIK, 
-        _LABEL_TO_FUNDING[constants.f.MAXIMA] = constants.v.MAXIMA, _LABEL_TO_FUNDING[constants.f.BOLETO] = constants.v.BOLETO, 
-        _LABEL_TO_FUNDING[constants.f.OXXO] = constants.v.OXXO, _LABEL_TO_FUNDING[constants.f.MERCADOPAGO] = constants.v.MERCADOPAGO, 
-        _LABEL_TO_FUNDING);
-        var BUTTON_STYLE = ((_BUTTON_STYLE = {})[constants.l.TINY] = {
-            defaultWidth: 75,
-            defaultHeight: 25,
-            minWidth: 75,
-            maxWidth: 150,
-            minHeight: 25,
-            maxHeight: 30,
-            buttonTextMargin: .5,
-            allowFunding: !0,
-            allowTagline: !1,
-            byPayPalHeight: 0
-        }, _BUTTON_STYLE[constants.l.SMALL] = {
-            defaultWidth: 150,
-            defaultHeight: 25,
-            minWidth: 150,
-            maxWidth: 200,
-            minHeight: 25,
-            maxHeight: 55,
-            buttonTextMargin: .5,
-            allowFunding: !0,
-            allowTagline: !0,
-            byPayPalHeight: 0
-        }, _BUTTON_STYLE[constants.l.MEDIUM] = {
-            defaultWidth: 250,
-            defaultHeight: 35,
-            minWidth: 200,
-            maxWidth: 300,
-            minHeight: 35,
-            maxHeight: 55,
-            buttonTextMargin: 1,
-            allowFunding: !0,
-            allowTagline: !0,
-            byPayPalHeight: 30
-        }, _BUTTON_STYLE[constants.l.LARGE] = {
-            defaultWidth: 350,
-            defaultHeight: 45,
-            minWidth: 300,
-            maxWidth: 500,
-            minHeight: 30,
-            maxHeight: 55,
-            buttonTextMargin: 1,
-            allowFunding: !0,
-            allowTagline: !0,
-            byPayPalHeight: 30
-        }, _BUTTON_STYLE[constants.l.HUGE] = {
-            defaultWidth: 500,
-            defaultHeight: 55,
-            minWidth: 500,
-            maxWidth: 750,
-            minHeight: 40,
-            maxHeight: 55,
-            buttonTextMargin: 1.25,
-            allowFunding: !0,
-            allowTagline: !0,
-            byPayPalHeight: 30
-        }, _BUTTON_STYLE);
-        function labelToFunding(label) {
-            return label ? LABEL_TO_FUNDING[label] : constants.v.PAYPAL;
-        }
-        function getButtonConfig(label, key, def) {
-            return function(conf, category, key, def) {
-                var categoryConfig = conf[category];
-                if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
-                if (conf[constants.s] && conf[constants.s].hasOwnProperty(key)) return conf[constants.s][key];
-                if (arguments.length >= 4) return def;
-                throw new Error("No value found for " + category + ":" + key);
-            }(BUTTON_CONFIG, label, key, def);
-        }
-        var util = __webpack_require__(13);
-        var normalizeProps = Object(util.i)((function(props, defs) {
-            void 0 === defs && (defs = {});
-            var env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit, checkoutCustomization = props.checkoutCustomization;
-            locale = locale ? function(locale) {
-                var _locale$split = locale.split("_");
-                return {
-                    country: _locale$split[1],
-                    lang: _locale$split[0]
-                };
-            }(locale) : defs.locale || getButtonConfig("DEFAULT", "defaultLocale");
-            (funding = funding || {}).allowed = funding.allowed || [];
-            funding.disallowed = funding.disallowed || [];
-            funding.remembered = funding.remembered || [];
-            var label = style[constants.m.LABEL] || getButtonConfig("DEFAULT", style.layout === constants.g.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
-            var layout = style[constants.m.LAYOUT] || getButtonConfig(label, "defaultLayout");
-            var _style$BUTTON_STYLE_O = style[constants.m.SIZE], size = void 0 === _style$BUTTON_STYLE_O ? getButtonConfig(label, layout === constants.g.VERTICAL ? "defaultVerticalSize" : "defaultSize") : _style$BUTTON_STYLE_O, _style$BUTTON_STYLE_O2 = style[constants.m.COLOR], color = void 0 === _style$BUTTON_STYLE_O2 ? getButtonConfig(label, "defaultColor") : _style$BUTTON_STYLE_O2, _style$BUTTON_STYLE_O3 = style[constants.m.SHAPE], shape = void 0 === _style$BUTTON_STYLE_O3 ? getButtonConfig(label, "defaultShape") : _style$BUTTON_STYLE_O3, _style$BUTTON_STYLE_O4 = style[constants.m.BRANDING], branding = void 0 === _style$BUTTON_STYLE_O4 ? getButtonConfig(label, layout === constants.g.VERTICAL ? "defaultVerticalBranding" : "defaultBranding") : _style$BUTTON_STYLE_O4, _style$BUTTON_STYLE_O5 = style[constants.m.FUNDINGICONS], fundingicons = void 0 === _style$BUTTON_STYLE_O5 ? getButtonConfig(label, "defaultFundingIcons") : _style$BUTTON_STYLE_O5, _style$BUTTON_STYLE_O6 = style[constants.m.TAGLINE], tagline = void 0 === _style$BUTTON_STYLE_O6 ? getButtonConfig(label, "defaultTagline") : _style$BUTTON_STYLE_O6, max = style[constants.m.MAXBUTTONS], height = style[constants.m.HEIGHT], installmentperiod = style[constants.m.INSTALLMENTPERIOD];
-            max = function(_ref) {
-                var label = _ref.label, layout = _ref.layout, max = _ref.max;
-                if (!getButtonConfig(label, layout === constants.g.HORIZONTAL ? "allowPrimaryHorizontal" : "allowPrimaryVertical")) return 1;
-                var configMax = getButtonConfig(label, layout === constants.g.HORIZONTAL ? "maxHorizontalButtons" : "maxVerticalButtons");
-                return max ? Math.min(configMax, max) : configMax;
-            }({
-                label: label,
-                layout: layout,
-                max: max
-            });
-            var sources = function(_ref4) {
-                var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, commit = _ref4.commit;
-                var reasons = {};
-                var eligibleFunding = FUNDING_PRIORITY.filter((function(source) {
-                    var _isFundingEligible = function(source, _ref3) {
-                        var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected, commit = _ref3.commit;
-                        if (selected && source === selected) return {
-                            eligible: !0,
-                            reason: constants.x.PRIMARY
-                        };
-                        if (!(getFundingConfig(source, "enabled") || env === constants.t.TEST && getFundingConfig(source, "test"))) return {
-                            eligible: !1,
-                            reason: constants.x.NOT_ENABLED
-                        };
-                        var ineligibleReason = isFundingIneligible(source, {
-                            locale: locale,
-                            funding: funding,
-                            layout: layout,
-                            commit: commit,
-                            env: env
-                        });
-                        if (ineligibleReason) return {
-                            eligible: !1,
-                            reason: ineligibleReason
-                        };
-                        var autoEligibleReason = isFundingAutoEligible(source, {
-                            locale: locale,
-                            funding: funding,
-                            layout: layout
-                        });
-                        return autoEligibleReason ? {
-                            eligible: !0,
-                            reason: autoEligibleReason
-                        } : {
-                            eligible: !1,
-                            reason: constants.x.NEED_OPT_IN
-                        };
-                    }(source, {
-                        selected: selected,
-                        locale: locale,
-                        funding: funding,
-                        env: env,
-                        layout: layout,
-                        commit: commit
-                    }), eligible = _isFundingEligible.eligible;
-                    reasons[source] = {
-                        eligible: eligible,
-                        reason: _isFundingEligible.reason,
-                        factors: {
-                            env: env,
-                            locale: locale,
-                            layout: layout
-                        }
-                    };
-                    return eligible;
-                }));
-                fundingEligibilityReasons.push(reasons);
-                eligibleFunding.splice(eligibleFunding.indexOf(selected), 1);
-                eligibleFunding.unshift(selected);
-                return eligibleFunding;
-            }({
-                funding: funding,
-                selected: labelToFunding(label),
-                locale: locale,
-                env: env,
-                layout: layout,
-                commit: commit
-            });
-            var multiple = (sources = Object(util.p)(sources.slice(0, max), FUNDING_ORDER)).length > 1;
-            multiple && (branding = !0);
-            var _ref2;
-            return {
-                size: size,
-                label: label,
-                locale: locale,
-                color: color,
-                shape: shape,
-                branding: branding,
-                fundingicons: fundingicons,
-                tagline: tagline = (_ref2 = {
-                    tagline: tagline,
-                    branding: branding,
-                    fundingicons: fundingicons,
-                    layout: layout
-                }, Boolean(_ref2.tagline && _ref2.branding && !_ref2.fundingicons && _ref2.layout === constants.g.HORIZONTAL)),
-                funding: funding,
-                layout: layout,
-                sources: sources,
-                max: max,
-                multiple: multiple,
-                env: env,
-                height: height,
-                cards: determineEligibleCards({
-                    funding: funding,
-                    locale: locale
-                }),
-                installmentperiod: installmentperiod,
-                checkoutCustomization: checkoutCustomization
-            };
-        }));
+        var src_funding = __webpack_require__(27);
+        var button_config = __webpack_require__(12);
+        var button_props = __webpack_require__(26);
         var jsx = __webpack_require__(1);
         function validateButtonLocale(locale) {
             if (!locale) throw new Error("Expected props.locale to be set");
@@ -17319,34 +17558,34 @@
         function validateButtonStyle(style, props) {
             void 0 === style && (style = {});
             if (!style) throw new Error("Expected props.style to be set");
-            var label = style[constants.m.LABEL] || getButtonConfig("DEFAULT", style[constants.m.LAYOUT] === constants.g.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
-            if (!BUTTON_CONFIG[label]) throw new Error("Invalid button label: " + label + ", expected: " + Object.keys(BUTTON_CONFIG[label]).join(", "));
+            var label = style[constants.m.LABEL] || Object(button_config.e)("DEFAULT", style[constants.m.LAYOUT] === constants.g.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
+            if (!button_config.a[label]) throw new Error("Invalid button label: " + label + ", expected: " + Object.keys(button_config.a[label]).join(", "));
             var color = style[constants.m.COLOR], shape = style[constants.m.SHAPE], size = style[constants.m.SIZE], branding = style[constants.m.BRANDING], fundingicons = style[constants.m.FUNDINGICONS], tagline = style[constants.m.TAGLINE], layout = style[constants.m.LAYOUT], maxbuttons = style[constants.m.MAXBUTTONS], height = style[constants.m.HEIGHT];
-            if (color && -1 === getButtonConfig(label, "colors").indexOf(color)) throw new Error("Unexpected style." + constants.m.COLOR + " for " + label + " button: " + color + ", expected " + getButtonConfig(label, "colors").join(", "));
-            if (shape && -1 === getButtonConfig(label, "shapes").indexOf(shape)) throw new Error("Unexpected style." + constants.m.SHAPE + " for " + label + " button: " + shape + ", expected " + getButtonConfig(label, "shapes").join(", "));
-            if (size && -1 === getButtonConfig(label, "sizes").indexOf(size)) throw new Error("Unexpected style." + constants.m.SIZE + " for " + label + " button: " + size + ", expected " + getButtonConfig(label, "sizes").join(", "));
+            if (color && -1 === Object(button_config.e)(label, "colors").indexOf(color)) throw new Error("Unexpected style." + constants.m.COLOR + " for " + label + " button: " + color + ", expected " + Object(button_config.e)(label, "colors").join(", "));
+            if (shape && -1 === Object(button_config.e)(label, "shapes").indexOf(shape)) throw new Error("Unexpected style." + constants.m.SHAPE + " for " + label + " button: " + shape + ", expected " + Object(button_config.e)(label, "shapes").join(", "));
+            if (size && -1 === Object(button_config.e)(label, "sizes").indexOf(size)) throw new Error("Unexpected style." + constants.m.SIZE + " for " + label + " button: " + size + ", expected " + Object(button_config.e)(label, "sizes").join(", "));
             if (!1 === branding) throw new Error("style." + constants.m.BRANDING + ":false is not allowed");
-            if (fundingicons && !getButtonConfig(label, "allowFundingIcons")) throw new Error("style." + constants.m.FUNDINGICONS + ":true is not allowed for " + label + " button");
-            if (layout && -1 === getButtonConfig(label, "layouts").indexOf(layout)) throw new Error("Unexpected style." + constants.m.LAYOUT + " for " + label + " button: " + layout + ", expected " + getButtonConfig(label, "layouts").join(", "));
+            if (fundingicons && !Object(button_config.e)(label, "allowFundingIcons")) throw new Error("style." + constants.m.FUNDINGICONS + ":true is not allowed for " + label + " button");
+            if (layout && -1 === Object(button_config.e)(label, "layouts").indexOf(layout)) throw new Error("Unexpected style." + constants.m.LAYOUT + " for " + label + " button: " + layout + ", expected " + Object(button_config.e)(label, "layouts").join(", "));
             if (void 0 !== maxbuttons) {
                 if ("number" != typeof maxbuttons) throw new TypeError("Expected style." + constants.m.MAXBUTTONS + " to be a number, got: " + maxbuttons);
                 if (maxbuttons < 1) throw new Error("Expected style." + constants.m.MAXBUTTONS + " to be a at least 1, got: " + maxbuttons);
-                var minButtons = getButtonConfig(label, layout === constants.g.VERTICAL ? "minVerticalButtons" : "minHorizontalButtons");
+                var minButtons = layout === constants.g.VERTICAL ? Object(button_config.e)(label, "minVerticalButtons") : Object(button_config.e)(label, "minHorizontalButtons");
                 if (maxbuttons < minButtons) throw new Error("Expected style." + constants.m.MAXBUTTONS + " to be no fewer than " + minButtons + ", got " + maxbuttons);
             }
             if (void 0 !== height) {
                 if ("number" != typeof height) throw new TypeError("Expected style." + constants.m.HEIGHT + " to be a number, got: " + maxbuttons);
-                var buttonSize = size || getButtonConfig(label, style.layout === constants.g.VERTICAL ? "defaultVerticalSize" : "defaultSize");
+                var buttonSize = size || Object(button_config.e)(label, style.layout === constants.g.VERTICAL ? "defaultVerticalSize" : "defaultSize");
                 var _ref = size === constants.l.RESPONSIVE ? {
-                    minHeight: BUTTON_STYLE[constants.l.SMALL].minHeight,
-                    maxHeight: BUTTON_STYLE[constants.l.HUGE].maxHeight
-                } : BUTTON_STYLE[buttonSize], minHeight = _ref.minHeight, maxHeight = _ref.maxHeight;
+                    minHeight: button_config.c[constants.l.SMALL].minHeight,
+                    maxHeight: button_config.c[constants.l.HUGE].maxHeight
+                } : button_config.c[buttonSize], minHeight = _ref.minHeight, maxHeight = _ref.maxHeight;
                 if (height < minHeight || height > maxHeight) throw new Error("Expected style." + constants.m.HEIGHT + " to be between " + minHeight + "px and " + maxHeight + "px - got " + height + "px");
             }
-            if (!getButtonConfig(label, "allowPrimary")) throw new Error(label + " can not be used as primary button label");
+            if (!Object(button_config.e)(label, "allowPrimary")) throw new Error(label + " can not be used as primary button label");
             if (layout === constants.g.VERTICAL) {
                 if (size && -1 === [ constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ].indexOf(size)) throw new Error("Button must be at least " + constants.l.MEDIUM + " size for " + constants.g.VERTICAL + " layout");
-                if (!getButtonConfig(label, "allowPrimaryVertical")) throw new Error("style." + constants.m.LABEL + " option is not allowed for " + constants.g.VERTICAL + " layout - got " + label);
+                if (!Object(button_config.e)(label, "allowPrimaryVertical")) throw new Error("style." + constants.m.LABEL + " option is not allowed for " + constants.g.VERTICAL + " layout - got " + label);
                 if (fundingicons) throw new Error("style." + constants.m.FUNDINGICONS + " not allowed for " + constants.g.VERTICAL + " layout - got " + fundingicons);
                 if (tagline) throw new Error("style." + constants.m.TAGLINE + " is not allowed for " + constants.g.VERTICAL + " layout - got " + tagline);
             }
@@ -17390,7 +17629,8 @@
         var buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus, ." + class_CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.BUTTON + ":focus,\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.BUTTON_LABEL + " {\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n    }\n    \n    ." + class_CLASS.BUTTON + " > ." + class_CLASS.BUTTON_LABEL + " > * {\n        vertical-align: top;\n        height: 100%;\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    }\n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
         var layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n";
         var brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n";
-        var labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n";
+        var labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + button_config.c[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + button_config.c[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n";
+        var util = __webpack_require__(14);
         var buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.WHITE + " {\n        background: #fff;\n        color: #2C2E2F;\n        border: 1px solid #2C2E2F;\n    }\n";
         var componentContent = {
             AD: {
@@ -23292,8 +23532,8 @@
         }
         function determineLabel(_ref3) {
             var label = _ref3.label, source = _ref3.source, multiple = _ref3.multiple, layout = _ref3.layout;
-            var defaultLabel = FUNDING_TO_DEFAULT_LABEL[source];
-            return labelToFunding(label) === source ? multiple && layout === constants.g.HORIZONTAL ? defaultLabel : label : defaultLabel;
+            var defaultLabel = Object(button_config.d)(source);
+            return Object(button_config.f)(label) === source ? multiple && layout === constants.g.HORIZONTAL ? defaultLabel : label : defaultLabel;
         }
         function renderCards(_ref5) {
             var layout = _ref5.layout, size = _ref5.size;
@@ -23403,7 +23643,7 @@
                 validateButtonLocale(props.locale);
                 validateButtonStyle(style, props);
             }(props);
-            var _normalizeProps = normalizeProps(props), locale = _normalizeProps.locale, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, checkoutCustomization = _normalizeProps.checkoutCustomization;
+            var _normalizeProps = Object(button_props.a)(props), locale = _normalizeProps.locale, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, checkoutCustomization = _normalizeProps.checkoutCustomization;
             var buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, multiple = _ref4.multiple, layout = _ref4.layout;
                 return _ref4.sources.map((function(source, i) {
@@ -23416,7 +23656,7 @@
                     return {
                         source: source,
                         label: buttonLabel,
-                        color: multiple && i > 0 ? getButtonConfig(buttonLabel, "secondaryColors")[color] : color
+                        color: multiple && i > 0 ? Object(button_config.e)(buttonLabel, "secondaryColors")[color] : color
                     };
                 }));
             }({
@@ -23429,7 +23669,7 @@
                 return function(_ref14) {
                     var _ref15, _ref16, _ref17;
                     var size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod;
-                    var logoColor = getButtonConfig(label, "logoColors")[color];
+                    var logoColor = Object(button_config.e)(label, "logoColors")[color];
                     var buttonLabel = determineLabel({
                         label: label,
                         source: source,
@@ -23443,7 +23683,7 @@
                         installmentperiod: installmentperiod,
                         locale: locale
                     };
-                    contentText = renderContent(contentText = "function" == typeof (contentText = getButtonConfig(label, buttonLabel !== label || label !== constants.f.BUYNOW || branding ? "logoLabel" : "label")) ? contentText(dynamicContent) : contentText, {
+                    contentText = renderContent(contentText = "function" == typeof (contentText = buttonLabel !== label || label !== constants.f.BUYNOW || branding ? Object(button_config.e)(label, "logoLabel") : Object(button_config.e)(label, "label")) ? contentText(dynamicContent) : contentText, {
                         label: label,
                         locale: locale,
                         color: color,
@@ -23456,7 +23696,7 @@
                         layout: layout,
                         size: size
                     });
-                    var title = BUTTON_CONFIG[label].title;
+                    var title = button_config.a[label].title;
                     var buttonTitle = "string" == typeof title ? title : function(_ref13) {
                         var label = _ref13.label, branding = _ref13.branding;
                         var localeContent = getLocaleContent(_ref13.locale);
@@ -23576,12 +23816,12 @@
                         cardNumber: cardNumber
                     }, "\n        " + pageStyle + "\n        " + buttonStyle + "\n        " + buttonColorStyle + "\n        " + layoutStyle + "\n        " + brandingStyle + "\n        " + labelStyle + "\n        " + function(_ref) {
                         var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
-                        return Object.keys(BUTTON_STYLE).map((function(size) {
-                            var style = BUTTON_STYLE[size];
+                        return Object.keys(button_config.c).map((function(size) {
+                            var style = button_config.c[size];
                             var buttonHeight = height || style.defaultHeight;
                             var buttonTextMarginTop = style.buttonTextMargin;
                             var minDualWidth = Math.round(2.8 * buttonHeight * 2);
-                            return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + class_CLASS.BUTTON_LABEL + " {\n                    height: 100%;\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.BUTTON_LABEL + " {\n                    height: " + (Object(util.m)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.BUTTON + " ." + class_CLASS.BUTTON_LABEL + " ." + class_CLASS.TEXT + " {\n                    margin-top: " + buttonTextMarginTop + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.MYBANK + " {\n                    height: " + (Object(util.m)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.m)(buttonHeight, 30) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.m)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, 50) + "px;\n                    line-height: " + Object(util.m)(buttonHeight, 50) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, 100) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.m)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.m)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.m)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.m)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.h)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+                            return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + class_CLASS.BUTTON_LABEL + " {\n                    height: 100%;\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.BUTTON_LABEL + " {\n                    height: " + (Object(util.m)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.BUTTON + " ." + class_CLASS.BUTTON_LABEL + " ." + class_CLASS.TEXT + " {\n                    margin-top: " + buttonTextMarginTop + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.MYBANK + " {\n                    height: " + (Object(util.m)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.m)(buttonHeight, button_config.b.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.m)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, button_config.b.TAGLINE) + "px;\n                    line-height: " + Object(util.m)(buttonHeight, button_config.b.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, button_config.b.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.m)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.m)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.m)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.m)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.h)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
                         })).join("\n");
                     }({
                         height: _ref.height,
@@ -23709,8 +23949,8 @@
                 }, renderContent("{ content: poweredBy }", Object(esm_extends.a)({}, props, {
                     logoColor: "blue"
                 })));
-            }(normalizeProps(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.330", 
+            }(Object(button_props.a)(props)) : null;
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.331", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -23737,28 +23977,28 @@
             listenForResize: !0,
             containerTemplate: function(_ref) {
                 var _ref3;
-                var id = _ref.id, CLASS = _ref.CLASS, tag = _ref.tag, context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom;
-                var _normalizeProps = normalizeProps(_ref.props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height;
-                var minimumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize");
-                var maximumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
+                var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, tag = _ref.tag, context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom;
+                var _normalizeProps = Object(button_props.a)(props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height;
+                var minimumSize = Object(button_config.e)(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize");
+                var maximumSize = Object(button_config.e)(label, layout === constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (buttonHeight) {
                     var possibleSizes = Object(util.t)(constants.l).filter((function(possibleSize) {
-                        return BUTTON_STYLE[possibleSize] && buttonHeight && BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
+                        return button_config.c[possibleSize] && buttonHeight && button_config.c[possibleSize].minHeight <= buttonHeight && button_config.c[possibleSize].maxHeight >= buttonHeight;
                     }));
                     possibleSizes.sort((function(sizeA, sizeB) {
-                        return BUTTON_STYLE[sizeA].defaultWidth - BUTTON_STYLE[sizeB].defaultWidth;
+                        return button_config.c[sizeA].defaultWidth - button_config.c[sizeB].defaultWidth;
                     }));
                     minimumSize = possibleSizes[0];
                     maximumSize = possibleSizes[possibleSizes.length - 1];
                 }
-                var _ref2 = BUTTON_STYLE[size] || BUTTON_STYLE[constants.l.SMALL], defaultWidth = _ref2.defaultWidth, defaultHeight = _ref2.defaultHeight;
+                var _ref2 = button_config.c[size] || button_config.c[constants.l.SMALL], defaultWidth = _ref2.defaultWidth, defaultHeight = _ref2.defaultHeight;
                 setTimeout((function() {
                     outlet.style.transition = "all 0.5s ease-in-out 0.3s";
                 }), 3e3);
                 return jsxDom("div", Object(esm_extends.a)({
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.330", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.331", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             autoResize: {
                 height: !0,
@@ -23791,7 +24031,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return Object(lib.u)();
+                return Object(lib.v)();
             },
             get domain() {
                 return config.a.paypalDomains;
@@ -23803,7 +24043,7 @@
                 }
             },
             validate: function() {
-                Object(lib.B)() || Object(beaver_logger_client.q)("button_render_ineligible");
+                Object(lib.C)() || Object(beaver_logger_client.q)("button_render_ineligible");
             },
             props: {
                 domain: {
@@ -23818,7 +24058,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.v)();
+                        return Object(lib.w)();
                     },
                     queryParam: !0
                 },
@@ -23826,7 +24066,15 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.U)();
+                        return Object(lib.V)();
+                    },
+                    queryParam: !0
+                },
+                renderedButtons: {
+                    type: "string",
+                    required: !1,
+                    def: function(props) {
+                        return Object(lib.s)(props);
                     },
                     queryParam: !0
                 },
@@ -23834,7 +24082,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.x)();
+                        return Object(lib.y)();
                     },
                     queryParam: !0
                 },
@@ -23958,7 +24206,7 @@
                             var _this2 = this;
                             void 0 === data && (data = {});
                             var actions = {
-                                request: lib.P,
+                                request: lib.Q,
                                 payment: {
                                     create: function(options) {
                                         return _this2.props.braintree ? _this2.props.braintree.then((function(client) {
@@ -24018,31 +24266,10 @@
                     required: !1,
                     queryParam: !0,
                     validate: function(_temp) {
-                        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$allowed = _ref2.allowed, _ref2$disallowed = _ref2.disallowed;
-                        !function(funding) {
-                            void 0 === funding && (funding = {
-                                allowed: [],
-                                disallowed: [],
-                                remembered: []
-                            });
-                            if (funding.allowed) for (var _i2 = 0, _funding$allowed2 = funding.allowed; _i2 < _funding$allowed2.length; _i2++) {
-                                var source = _funding$allowed2[_i2];
-                                if (-1 === constants.p.indexOf(source)) {
-                                    if (!FUNDING_CONFIG.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
-                                    if (!getFundingConfig(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
-                                    if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
-                                }
-                            }
-                            if (funding.disallowed) for (var _i4 = 0, _funding$disallowed2 = funding.disallowed; _i4 < _funding$disallowed2.length; _i4++) {
-                                var _source = _funding$disallowed2[_i4];
-                                if (-1 === constants.p.indexOf(_source)) {
-                                    if (!FUNDING_CONFIG.hasOwnProperty(_source)) throw new Error("Invalid funding source: " + _source);
-                                    if (!getFundingConfig(_source, "allowOptOut")) throw new Error("Can not disallow funding source: " + _source);
-                                }
-                            }
-                        }({
-                            allowed: void 0 === _ref2$allowed ? [] : _ref2$allowed,
-                            disallowed: void 0 === _ref2$disallowed ? [] : _ref2$disallowed,
+                        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$allowed = _ref2.allowed, allowed = void 0 === _ref2$allowed ? [] : _ref2$allowed, _ref2$disallowed = _ref2.disallowed, disallowed = void 0 === _ref2$disallowed ? [] : _ref2$disallowed;
+                        Object(src_funding.f)({
+                            allowed: allowed,
+                            disallowed: disallowed,
                             remembered: []
                         });
                     },
@@ -24057,7 +24284,7 @@
                             return source !== constants.v.ITAU;
                         })));
                         (function(props) {
-                            var _normalizeProps = normalizeProps(props, {
+                            var _normalizeProps = Object(button_props.a)(props, {
                                 locale: Object(lib.i)()
                             }), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, locale = _normalizeProps.locale, max = _normalizeProps.max, sources = _normalizeProps.sources, env = _normalizeProps.env;
                             var allowed = funding.allowed;
@@ -24067,13 +24294,13 @@
                             if (1 === max) return !1;
                             if (label === constants.f.CREDIT) return !1;
                             if (country !== constants.r.US) return !1;
-                            if (isFundingIneligible(constants.v.CREDIT, {
+                            if (Object(src_funding.d)(constants.v.CREDIT, {
                                 funding: funding,
                                 locale: locale,
                                 layout: layout,
                                 env: env
                             })) return !1;
-                            if (isFundingAutoEligible(constants.v.CREDIT, {
+                            if (Object(src_funding.c)(constants.v.CREDIT, {
                                 funding: funding,
                                 locale: locale,
                                 layout: layout
@@ -24081,20 +24308,20 @@
                             if (-1 !== sources.indexOf(constants.v.CREDIT)) return !1;
                             var domain = Object(cross_domain_utils_src.h)().replace(/^https?:\/\//, "").replace(/^www\./, "");
                             return -1 !== config.a.creditTestDomains.indexOf(domain);
-                        })(props) && (creditThrottle = Object(lib.y)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
+                        })(props) && (creditThrottle = Object(lib.z)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
                         var remembered = Object(lib.r)((function(sources) {
                             return sources;
                         }));
                         remembered && -1 !== remembered.indexOf(constants.v.VENMO) && (remembered = remembered.filter((function(source) {
                             return source !== constants.v.VENMO;
                         })));
-                        Object(lib.E)() && !Object(lib.m)("disable_venmo") || disallowed && -1 === disallowed.indexOf(constants.v.VENMO) && (disallowed = [].concat(disallowed, [ constants.v.VENMO ]));
+                        Object(lib.F)() && !Object(lib.m)("disable_venmo") || disallowed && -1 === disallowed.indexOf(constants.v.VENMO) && (disallowed = [].concat(disallowed, [ constants.v.VENMO ]));
                         return {
                             allowed: allowed,
                             disallowed: disallowed,
                             remembered: remembered,
                             remember: function(sources) {
-                                Object(lib.O)(sources);
+                                Object(lib.P)(sources);
                             }
                         };
                     }
@@ -24159,7 +24386,7 @@
                             _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_APPROVE, _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track3[constants.u.KEY.BUTTON_VERSION] = data && data.button_version, _track3));
                             Object(belter_src.k)() && Object(beaver_logger_client.q)("button_authorize_intranet_mode");
-                            Object(lib.B)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
+                            Object(lib.C)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
                             Object(lib.d)("authorize");
                             Object(beaver_logger_client.h)();
                             var restart = actions.restart;
@@ -24172,10 +24399,10 @@
                                 return zalgo_promise_src.a.try((function() {
                                     if (actions.close) return actions.close();
                                 })).then((function() {
-                                    return Object(lib.N)(win || window.top, url || data.returnUrl);
+                                    return Object(lib.O)(win || window.top, url || data.returnUrl);
                                 }));
                             };
-                            actions.payment.tokenize = Object(lib.G)((function() {
+                            actions.payment.tokenize = Object(lib.H)((function() {
                                 if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
                                 return _this3.props.braintree.then((function(client) {
                                     return client.tokenizePayment(data);
@@ -24201,7 +24428,7 @@
                                     return result;
                                 }));
                             };
-                            actions.request = lib.P;
+                            actions.request = lib.Q;
                             onAuthorizeListener.trigger({
                                 paymentToken: data.paymentToken
                             });
@@ -24299,7 +24526,7 @@
                             Object(beaver_logger_client.h)();
                             return original.call(this, data, Object(esm_extends.a)({}, actions, {
                                 redirect: function(win, url) {
-                                    return zalgo_promise_src.a.all([ Object(lib.N)(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                    return zalgo_promise_src.a.all([ Object(lib.O)(win || window.top, url || data.cancelUrl), actions.close() ]);
                                 }
                             }));
                         };
@@ -24553,11 +24780,11 @@
                                 "payment" === opType ? actions.redirect = function(win, redirectUrl) {
                                     void 0 === win && (win = window);
                                     void 0 === redirectUrl && (redirectUrl = return_uri);
-                                    return Object(lib.N)(win, redirectUrl);
+                                    return Object(lib.O)(win, redirectUrl);
                                 } : "cancel" === opType && (actions.redirect = function(win, redirectUrl) {
                                     void 0 === win && (win = window);
                                     void 0 === redirectUrl && (redirectUrl = cancel_uri);
-                                    return Object(lib.N)(win, redirectUrl);
+                                    return Object(lib.O)(win, redirectUrl);
                                 });
                                 return actions;
                             }(payload.queryItems);
@@ -24570,7 +24797,7 @@
                         }));
                     }(props, popupBridge).catch((function(err) {
                         Object(beaver_logger_client.g)("popup_bridge_error", {
-                            err: Object(lib.S)(err)
+                            err: Object(lib.T)(err)
                         });
                         return original();
                     })) : original();
@@ -24619,7 +24846,7 @@
                 }
             }));
             var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
-            xprops && xprops.logLevel && Object(lib.R)(xprops.logLevel);
+            xprops && xprops.logLevel && Object(lib.S)(xprops.logLevel);
             xprops.payment && !xprops.createOrder && (xprops.createOrder = xprops.payment);
             xprops.onAuthorize && !xprops.onApprove && (xprops.onApprove = xprops.onAuthorize);
             try {
@@ -24653,17 +24880,17 @@
                 src_checkout.a.canRenderTo(hacks_top).then((function(result) {
                     canRenderTop = result;
                 }));
-                Object(lib.L)(src_checkout.a, "renderTo", (function(_ref) {
+                Object(lib.M)(src_checkout.a, "renderTo", (function(_ref) {
                     var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
                     canRenderTop || (win = Object(cross_domain_utils_src.n)(window));
                     return original.call(context, win, props, el);
                 }));
             }
         }
-        Object(lib.L)(src_checkout.a, "renderTo", (function(_ref2) {
+        Object(lib.M)(src_checkout.a, "renderTo", (function(_ref2) {
             var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
             if (Object(lib.m)("allow_full_page_fallback")) {
-                var handleError = Object(lib.J)((function(err) {
+                var handleError = Object(lib.K)((function(err) {
                     try {
                         console.error(err && err.stack);
                     } catch (err2) {}
@@ -24679,7 +24906,7 @@
             return callOriginal();
         }));
         var debounce = !1;
-        Object(lib.L)(src_checkout.a, "renderTo", (function(_ref3) {
+        Object(lib.M)(src_checkout.a, "renderTo", (function(_ref3) {
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
             if (debounce) {
                 Object(beaver_logger_client.q)("button_mutliple_click_debounce");
@@ -24697,7 +24924,7 @@
             for (var _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ]; _i2 < _ref5.length; _i2++) _loop(_i2, _ref5);
             return callOriginal();
         }));
-        Object(lib.L)(rest.payment, "create", (function(_ref6) {
+        Object(lib.M)(rest.payment, "create", (function(_ref6) {
             var _ref6$args = _ref6.args, options = _ref6$args[2];
             options.payment || (options = {
                 payment: options,
@@ -24705,7 +24932,7 @@
             });
             return _ref6.original.call(_ref6.context, _ref6$args[0], _ref6$args[1], options);
         }));
-        Object(lib.L)(component_Button.props.style, "validate", (function(_ref7) {
+        Object(lib.M)(component_Button.props.style, "validate", (function(_ref7) {
             var callOriginal = _ref7.callOriginal, style = _ref7.args[0];
             if (!style) return callOriginal();
             style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE);
@@ -24716,7 +24943,7 @@
             }
             return callOriginal();
         }));
-        Object(lib.L)(component_Button, "render", (function(_ref8) {
+        Object(lib.M)(component_Button, "render", (function(_ref8) {
             var callOriginal = _ref8.callOriginal, props = _ref8.args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
@@ -24724,12 +24951,12 @@
             }
             return callOriginal();
         }));
-        Object(lib.L)(component_Button.props.payment, "decorate", (function(_ref9) {
+        Object(lib.M)(component_Button.props.payment, "decorate", (function(_ref9) {
             var originalPayment = _ref9.args[0];
             return _ref9.original.call(_ref9.context, (function(data, actions) {
                 var _this = this;
                 return new zalgo_promise_src.a((function(resolve, reject) {
-                    Object(lib.L)(actions.payment, "create", (function(_ref10) {
+                    Object(lib.M)(actions.payment, "create", (function(_ref10) {
                         var _ref10$args = _ref10.args, options = _ref10$args[0];
                         options.payment || (options = {
                             payment: options,
@@ -24786,7 +25013,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.v)();
+                        return Object(lib.w)();
                     },
                     queryParam: !0
                 },
@@ -24904,14 +25131,14 @@
         zalgo_promise_src.a.onPossiblyUnhandledException((function(err) {
             var _track;
             Object(beaver_logger_client.g)("unhandled_error", {
-                stack: Object(lib.S)(err),
+                stack: Object(lib.T)(err),
                 errtype: {}.toString.call(err)
             });
             Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _track[constants.u.KEY.ERROR_DESC] = Object(lib.T)(err), _track));
+            _track[constants.u.KEY.ERROR_DESC] = Object(lib.U)(err), _track));
             return Object(beaver_logger_client.h)().catch((function(err2) {
                 if (window.console) try {
-                    window.console.error ? window.console.error("Error flushing:", Object(lib.S)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.S)(err2));
+                    window.console.error ? window.console.error("Error flushing:", Object(lib.T)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.T)(err2));
                 } catch (err3) {
                     setTimeout((function() {
                         throw err3;
@@ -24921,14 +25148,14 @@
         }));
         var currentScript = Object(lib.k)();
         var currentProtocol = window.location.protocol.split(":")[0];
-        var init = Object(lib.J)((function(_ref2) {
+        var init = Object(lib.K)((function(_ref2) {
             var precacheRemembered = _ref2.precacheRemembered;
-            Object(lib.B)() || Object(beaver_logger_client.q)("ineligible");
+            Object(lib.C)() || Object(beaver_logger_client.q)("ineligible");
             Object(lib.c)();
-            Object(lib.z)();
+            Object(lib.A)();
             pptm.shouldCreateInitialPptmScript() && pptm.createPptmScript();
-            precacheRemembered && Object(lib.M)();
-            Object(lib.m)("force_bridge") && !Object(lib.D)() && Object(lib.K)(config.a.env);
+            precacheRemembered && Object(lib.N)();
+            Object(lib.m)("force_bridge") && !Object(lib.E)() && Object(lib.L)(config.a.env);
             Object(beaver_logger_client.k)("setup_" + config.a.env);
             Object(beaver_logger_client.f)("current_protocol_" + currentProtocol);
         }));
@@ -24982,7 +25209,7 @@
                     config.a.state = state;
                 }
                 merchantID && (config.a.merchantID = merchantID);
-                logLevel ? Object(lib.R)(logLevel) : Object(lib.R)(config.a.logLevel);
+                logLevel ? Object(lib.S)(logLevel) : Object(lib.S)(config.a.logLevel);
             }(options);
             init(options);
         }
@@ -24991,18 +25218,18 @@
             stage: currentScript.getAttribute("data-stage"),
             apiStage: currentScript.getAttribute("data-api-stage"),
             stageUrl: currentScript.getAttribute("data-stage-url"),
-            localhostUrl: Object(lib.D)() ? currentScript.getAttribute("data-localhost-url") : void 0,
-            checkoutUri: Object(lib.D)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
+            localhostUrl: Object(lib.E)() ? currentScript.getAttribute("data-localhost-url") : void 0,
+            checkoutUri: Object(lib.E)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
             state: currentScript.getAttribute("data-state"),
             logLevel: currentScript.getAttribute("data-log-level"),
             merchantID: currentScript.getAttribute("data-merchant-id"),
             authCode: currentScript.getAttribute("data-auth-code"),
             precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding")
         }) : setup();
-        if (!Object(lib.D)()) if (currentScript) {
+        if (!Object(lib.E)()) if (currentScript) {
             var setup_track2;
             var scriptProtocol = currentScript.src.split(":")[0];
-            var loadTime = Object(lib.s)(currentScript.src);
+            var loadTime = Object(lib.t)(currentScript.src);
             Object(beaver_logger_client.f)("current_script_protocol_" + scriptProtocol);
             Object(beaver_logger_client.f)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
             Object(beaver_logger_client.f)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
@@ -25027,10 +25254,10 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.330";
+        var interface_version = "4.0.331";
         var interface_checkout;
         var apps;
-        var legacy = __webpack_require__(45);
+        var legacy = __webpack_require__(49);
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout;
@@ -25040,7 +25267,7 @@
         var enableCheckoutIframe;
         var logger;
         var interface_ThreeDomainSecure;
-        if (Object(lib.D)()) {
+        if (Object(lib.E)()) {
             interface_Checkout = src_checkout.a;
             interface_BillingPage = BillingPage;
             interface_ThreeDomainSecure = ThreeDomainSecure;
@@ -25089,8 +25316,8 @@
         __webpack_require__.d(__webpack_exports__, "setup", (function() {
             return setup;
         }));
-        var client = __webpack_require__(4);
-        var lib = __webpack_require__(5);
+        var client = __webpack_require__(5);
+        var lib = __webpack_require__(4);
         var constants = __webpack_require__(0);
         var LOG_PREFIX = "paypal_legacy";
         var ATTRIBUTES = {
@@ -25102,16 +25329,16 @@
         var CLASSES = {
             HIDDEN_BUTTON: "paypal-button-hidden"
         };
-        var esm_extends = __webpack_require__(12);
+        var esm_extends = __webpack_require__(13);
         var src = __webpack_require__(2);
-        var form_serialize = __webpack_require__(40);
+        var form_serialize = __webpack_require__(44);
         var form_serialize_default = __webpack_require__.n(form_serialize);
         var belter_src = __webpack_require__(11);
-        var checkout = __webpack_require__(16);
+        var checkout = __webpack_require__(17);
         var config = __webpack_require__(3);
-        var post_robot_src = __webpack_require__(14);
+        var post_robot_src = __webpack_require__(15);
         function isLegacyEligible() {
-            return !!Object(lib.B)() && !!Object(belter_src.t)() && !Object(belter_src.h)();
+            return !!Object(lib.C)() && !!Object(belter_src.t)() && !Object(belter_src.h)();
         }
         var warn = Object(client.n)(LOG_PREFIX).warn;
         var DEFAULT_COUNTRY = constants.r.US;
@@ -25141,19 +25368,19 @@
             };
         }
         var button_prefix = Object(client.n)(LOG_PREFIX), info = button_prefix.info, debug = button_prefix.debug, error = button_prefix.error;
-        var loadButtonJS = Object(lib.G)((function() {
+        var loadButtonJS = Object(lib.H)((function() {
             debug("buttonjs_load");
-            return Object(lib.F)(config.a.buttonJSUrl).catch((function(err) {
+            return Object(lib.G)(config.a.buttonJSUrl).catch((function(err) {
                 info("buttonjs_load_error_retry", {
-                    error: Object(lib.S)(err)
+                    error: Object(lib.T)(err)
                 });
-                return Object(lib.F)(config.a.buttonJSUrl);
+                return Object(lib.G)(config.a.buttonJSUrl);
             })).then((function(result) {
                 debug("buttonjs_load_success");
                 return result;
             })).catch((function(err) {
                 error("buttonjs_load_error", {
-                    error: Object(lib.S)(err)
+                    error: Object(lib.T)(err)
                 });
                 throw err;
             }));
@@ -25188,7 +25415,7 @@
                             }).el;
                             container.appendChild(el);
                             try {
-                                info("in_page_button_" + (Object(lib.A)(el) ? "visible" : "not_visible"));
+                                info("in_page_button_" + (Object(lib.B)(el) ? "visible" : "not_visible"));
                             } catch (err) {}
                             return el.childNodes[0];
                         }));
@@ -25241,15 +25468,15 @@
         var redirected = !1;
         function logRedirect(location) {
             redirected && util_warn("multiple_redirects");
-            Object(lib.V)(location) && (redirected = !0);
+            Object(lib.W)(location) && (redirected = !0);
             Object(client.h)();
         }
         function redirect(url) {
             return src.a.try((function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (config.a.env === constants.t.TEST && Object(lib.V)(url)) return Object(lib.N)(window, "#fullpageRedirect?url=" + url);
+                if (config.a.env === constants.t.TEST && Object(lib.W)(url)) return Object(lib.O)(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
-                return Object(lib.N)(window, url);
+                return Object(lib.O)(window, url);
             }));
         }
         var options_prefix = Object(client.n)(LOG_PREFIX), options_info = options_prefix.info, options_warn = options_prefix.warn;
@@ -25351,7 +25578,7 @@
                     }
                     if (method && _url) {
                         event.preventDefault();
-                        Object(lib.P)({
+                        Object(lib.Q)({
                             method: method,
                             url: _url,
                             body: body,
@@ -25378,7 +25605,7 @@
                 interface_checkout.initXO = function() {
                     interface_warn("gettoken_initxo");
                 };
-                interface_checkout.startFlow = Object(lib.J)((function(item) {
+                interface_checkout.startFlow = Object(lib.K)((function(item) {
                     interface_debug("gettoken_startflow", {
                         item: item
                     });
@@ -25450,9 +25677,9 @@
                     resolve(data.paymentToken);
                 };
             }));
-            var errorHandler = Object(lib.J)((function(err) {
+            var errorHandler = Object(lib.K)((function(err) {
                 interface_error("component_error", {
-                    error: Object(lib.S)(err)
+                    error: Object(lib.T)(err)
                 });
                 if (hijackTarget) {
                     interface_warn("render_error_hijack_revert_target");
@@ -25497,7 +25724,7 @@
             interface_info("setup", {
                 id: id = id || "merchant",
                 env: options.environment,
-                options: Object(lib.Q)(options)
+                options: Object(lib.R)(options)
             });
             setupCalled && interface_debug("setup_called_multiple_times");
             setupCalled = !0;
@@ -25624,7 +25851,7 @@
                 Object(client.f)("setup_post_bridge", {
                     env: env
                 });
-                return Object(lib.K)(env).then(lib.H);
+                return Object(lib.L)(env).then(lib.I);
             }));
             var env;
             return src.a.try((function() {
@@ -25659,7 +25886,7 @@
                                         clickHandler(event);
                                     } catch (err) {
                                         interface_error("click_handler_error", {
-                                            error: Object(lib.S)(err)
+                                            error: Object(lib.T)(err)
                                         });
                                     }
                                 }(clickHandler, event) : function(event, element) {
@@ -25764,7 +25991,7 @@
                     }
                 };
                 !function(method) {
-                    Object(lib.I)((function() {
+                    Object(lib.J)((function() {
                         ready_debug("paypal_checkout_ready");
                         setTimeout((function() {
                             window.paypal || ready_error("paypal_checkout_ready_no_window_paypal");
@@ -25775,7 +26002,7 @@
                 return oneTimeReady;
             }
         }));
-        Object(lib.I)((function() {
+        Object(lib.J)((function() {
             var buttons = [].slice.call(document.querySelectorAll("[" + ATTRIBUTES.BUTTON + "]"));
             if (buttons && buttons.length) {
                 ready_debug("data_paypal_button", {
