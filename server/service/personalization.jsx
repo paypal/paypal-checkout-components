@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT } from '@paypal/sdk-constants';
+import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, FUNDING } from '@paypal/sdk-constants';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 import { node } from 'jsx-pragmatic';
 import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos';
@@ -49,8 +49,9 @@ const PERSONALIZATION_QUERY = `
         $userAgent: String,
         $locale: LocaleInput!,
         $label: ButtonLabels,
-        $period: String
-        $taglineEnabled: Boolean
+        $period: String,
+        $taglineEnabled: Boolean,
+        $renderedButtons: [FundingButtonType]
     ) {
         checkoutCustomization(
             clientId: $clientID,
@@ -67,7 +68,8 @@ const PERSONALIZATION_QUERY = `
             locale: $locale,
             buttonLabel: $label,
             installmentPeriod: $period,
-            taglineEnabled: $taglineEnabled
+            taglineEnabled: $taglineEnabled,
+            renderedButtons: $renderedButtons
         ) {
             tagline {
                 text
@@ -101,7 +103,8 @@ export type PersonalizationOptions = {|
     label : string,
     period : ?number,
     tagline? : boolean | string,
-    personalizationEnabled : boolean
+    personalizationEnabled : boolean,
+    renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>
 |};
 
 function getDefaultPersonalization() : Personalization {
@@ -132,8 +135,8 @@ function contentToJSX(content : string) : ComponentFunctionType<PersonalizationC
 }
 
 export async function resolvePersonalization(req : ExpressRequest, gqlBatch : GraphQLBatchCall, personalizationOptions : PersonalizationOptions) : Promise<Personalization> {
-    let { logger, clientID, merchantID, locale, buyerCountry, buttonSessionID, currency,
-        intent, commit, vault, label, period, tagline, personalizationEnabled } = personalizationOptions;
+    let { logger, clientID, merchantID, locale, buyerCountry, buttonSessionID, currency, intent, commit,
+        vault, label, period, tagline, personalizationEnabled, renderedButtons } = personalizationOptions;
     
     if (!personalizationEnabled) {
         return getDefaultPersonalization();
@@ -152,7 +155,7 @@ export async function resolvePersonalization(req : ExpressRequest, gqlBatch : Gr
             query:     PERSONALIZATION_QUERY,
             variables: {
                 clientID, merchantID, locale, buyerCountry, currency, intent, commit, vault, ip, cookies, userAgent,
-                buttonSessionID, label, period, taglineEnabled
+                buttonSessionID, label, period, taglineEnabled, renderedButtons
             },
             timeout: PERSONALIZATION_TIMEOUT
         });
