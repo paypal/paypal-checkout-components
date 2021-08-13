@@ -2,7 +2,8 @@
 /** @jsx node */
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
-import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import { getLogger } from '@paypal/sdk-client/src';
 import { noop } from 'belter/src';
 
 import type { Wallet, WalletInstrument } from '../../types';
@@ -117,6 +118,15 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         flow === BUTTON_FLOW.PURCHASE &&
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
+
+    if (!(tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource)) {
+        getLogger().track({
+            [FPTI_KEY.STATE]:      'SMART_BUTTON',
+            [FPTI_KEY.TRANSITION]: 'PROCESS_BUTTON_LOAD',
+            tagline_shown:         false,
+            tagline_message:       'NA'
+        });
+    }
 
     return (
         <div class={ [

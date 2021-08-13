@@ -1,8 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
+import { FUNDING, FPTI_KEY, type LocaleType } from '@paypal/sdk-constants/src';
 import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
+import { getLogger } from '@paypal/sdk-client/src';
 
 import { CLASS } from '../../constants';
 import { getFundingConfig } from '../../funding';
@@ -22,10 +23,32 @@ export function TagLine({ fundingSource, locale, multiple, nonce, personalizatio
     const { Tag } = fundingConfig;
 
     if (!Tag) {
+        getLogger().track({
+            [FPTI_KEY.STATE]:      'SMART_BUTTON',
+            [FPTI_KEY.TRANSITION]: 'PROCESS_BUTTON_LOAD',
+            tagline_shown:         false,
+            tagline_message:       'NA'
+        });
         return;
     }
 
     const tagline = personalization && personalization.tagline;
+
+    if (tagline) {
+        getLogger().track({
+            [FPTI_KEY.STATE]:      'SMART_BUTTON',
+            [FPTI_KEY.TRANSITION]: 'PROCESS_BUTTON_LOAD',
+            tagline_shown:         true,
+            tagline_message:       tagline.text
+        });
+    } else {
+        getLogger().track({
+            [FPTI_KEY.STATE]:      'SMART_BUTTON',
+            [FPTI_KEY.TRANSITION]: 'PROCESS_BUTTON_LOAD',
+            tagline_shown:         true,
+            tagline_message:       `default-${ multiple ? 'dual' : 'safer' }-tagline`
+        });
+    }
 
     return (
         <div class={ CLASS.TAGLINE }>
