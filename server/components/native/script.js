@@ -6,7 +6,7 @@ import { readFileSync } from 'fs';
 import { noop } from 'belter';
 import { ENV, FUNDING } from '@paypal/sdk-constants';
 
-import type { CacheType } from '../../types';
+import type { CacheType, InstanceLocationInformation } from '../../types';
 import { NATIVE_POPUP_CLIENT_JS, NATIVE_POPUP_CLIENT_MIN_JS, NATIVE_FALLBACK_CLIENT_JS,
     NATIVE_FALLBACK_CLIENT_MIN_JS, SMART_BUTTONS_MODULE, WEBPACK_CONFIG, ACTIVE_TAG } from '../../config';
 import { isLocalOrTest, compileWebpack, babelRequire, resolveScript, evalRequireScript, dynamicRequire, type LoggerBufferType } from '../../lib';
@@ -40,10 +40,11 @@ type GetNativePopupClientScriptOptions = {|
     debug : boolean,
     logBuffer : ?LoggerBufferType,
     cache : ?CacheType,
-    useLocal? : boolean
+    useLocal? : boolean,
+    locationInformation : InstanceLocationInformation
 |};
 
-export async function getNativePopupClientScript({ logBuffer, cache, debug = false, useLocal = isLocalOrTest() } : GetNativePopupClientScriptOptions = {}) : Promise<NativePopupClientScript> {
+export async function getNativePopupClientScript({ logBuffer, cache, debug = false, useLocal = isLocalOrTest(), locationInformation } : GetNativePopupClientScriptOptions = {}) : Promise<NativePopupClientScript> {
     if (useLocal) {
         const script = await compileNativePopupClientScript();
         if (script) {
@@ -51,7 +52,7 @@ export async function getNativePopupClientScript({ logBuffer, cache, debug = fal
         }
     }
 
-    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache, locationInformation });
     const { version } = await getTag();
     const script = await read(debug ? NATIVE_POPUP_CLIENT_JS : NATIVE_POPUP_CLIENT_MIN_JS, ACTIVE_TAG);
 
@@ -74,7 +75,8 @@ type GetNativePopupRenderScriptOptions = {|
     debug : boolean,
     logBuffer : LoggerBufferType,
     cache : CacheType,
-    useLocal? : boolean
+    useLocal? : boolean,
+    locationInformation : InstanceLocationInformation
 |};
 
 async function getLocalNativePopupRenderScript() : Promise<?NativePopupRenderScript> {
@@ -95,7 +97,7 @@ async function getLocalNativePopupRenderScript() : Promise<?NativePopupRenderScr
     }
 }
 
-export async function getNativePopupRenderScript({ logBuffer, cache, debug, useLocal = isLocalOrTest() } : GetNativePopupRenderScriptOptions = {}) : Promise<NativePopupRenderScript> {
+export async function getNativePopupRenderScript({ logBuffer, cache, debug, useLocal = isLocalOrTest(), locationInformation } : GetNativePopupRenderScriptOptions = {}) : Promise<NativePopupRenderScript> {
     if (useLocal) {
         const script = await getLocalNativePopupRenderScript();
         if (script) {
@@ -103,7 +105,7 @@ export async function getNativePopupRenderScript({ logBuffer, cache, debug, useL
         }
     }
 
-    const { getTag, getDeployTag, import: watcherImport } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { getTag, getDeployTag, import: watcherImport } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache, locationInformation });
     const { version } = await getTag();
     const popup = await watcherImport(debug ? NATIVE_POPUP_CLIENT_JS : NATIVE_POPUP_CLIENT_MIN_JS, ACTIVE_TAG);
 
@@ -139,10 +141,11 @@ type GetNativeFallbackClientScriptOptions = {|
     debug : boolean,
     logBuffer : LoggerBufferType,
     cache : CacheType,
-    useLocal? : boolean
+    useLocal? : boolean,
+    locationInformation : InstanceLocationInformation
 |};
 
-export async function getNativeFallbackClientScript({ logBuffer, cache, debug = false, useLocal = isLocalOrTest() } : GetNativeFallbackClientScriptOptions = {}) : Promise<NativeFallbackClientScript> {
+export async function getNativeFallbackClientScript({ logBuffer, cache, debug = false, useLocal = isLocalOrTest(), locationInformation } : GetNativeFallbackClientScriptOptions = {}) : Promise<NativeFallbackClientScript> {
     if (useLocal) {
         const script = await compileNativeFallbackClientScript();
         if (script) {
@@ -150,7 +153,7 @@ export async function getNativeFallbackClientScript({ logBuffer, cache, debug = 
         }
     }
 
-    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache, locationInformation });
     const { version } = await getTag();
     const script = await read(debug ? NATIVE_FALLBACK_CLIENT_JS : NATIVE_FALLBACK_CLIENT_MIN_JS, ACTIVE_TAG);
 
@@ -173,7 +176,8 @@ type GetNativeFallbackRenderScriptOptions = {|
     debug : boolean,
     logBuffer : LoggerBufferType,
     cache : CacheType,
-    useLocal? : boolean
+    useLocal? : boolean,
+    locationInformation : InstanceLocationInformation
 |};
 
 async function getLocalNativeFallbackRenderScript() : Promise<?NativeFallbackRenderScript> {
@@ -194,7 +198,7 @@ async function getLocalNativeFallbackRenderScript() : Promise<?NativeFallbackRen
     }
 }
 
-export async function getNativeFallbackRenderScript({ logBuffer, cache, debug, useLocal = isLocalOrTest() } : GetNativeFallbackRenderScriptOptions = {}) : Promise<NativeFallbackRenderScript> {
+export async function getNativeFallbackRenderScript({ logBuffer, cache, debug, useLocal = isLocalOrTest(), locationInformation } : GetNativeFallbackRenderScriptOptions = {}) : Promise<NativeFallbackRenderScript> {
     if (useLocal) {
         const script = await getLocalNativeFallbackRenderScript();
         if (script) {
@@ -202,7 +206,7 @@ export async function getNativeFallbackRenderScript({ logBuffer, cache, debug, u
         }
     }
 
-    const { getTag, getDeployTag, import: watcherImport } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { getTag, getDeployTag, import: watcherImport } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache, locationInformation });
     const { version } = await getTag();
     const fallback = await watcherImport(debug ? NATIVE_FALLBACK_CLIENT_JS : NATIVE_FALLBACK_CLIENT_MIN_JS, ACTIVE_TAG);
 

@@ -5,7 +5,7 @@ import { html } from 'jsx-pragmatic';
 
 import { htmlResponse, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     type GraphQL, isLocalOrTest } from '../../lib';
-import type { LoggerType, CacheType, ExpressRequest } from '../../types';
+import type { LoggerType, CacheType, ExpressRequest, InstanceLocationInformation } from '../../types';
 import type { NativePopupOptions } from '../../../src/native/popup';
 
 import { getNativePopupParams, getNativeFallbackParams } from './params';
@@ -17,16 +17,19 @@ type NativePopupMiddlewareOptions = {|
     cache : CacheType,
     tracking : (ExpressRequest) => void,
     fundingSource : $Values<typeof FUNDING>,
-    cdn? : boolean
+    cdn? : boolean,
+    getInstanceLocationInformation : () => InstanceLocationInformation
 |};
 
 export function getNativePopupMiddleware({
     logger = defaultLogger, cdn = !isLocalOrTest(),
-    cache, tracking, fundingSource
+    cache, tracking, fundingSource, getInstanceLocationInformation
 } : NativePopupMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;
 
-    return sdkMiddleware({ logger, cache }, {
+    const locationInformation = getInstanceLocationInformation();
+
+    return sdkMiddleware({ logger, cache, locationInformation }, {
         app: async ({ req, res, params, meta, logBuffer }) => {
             logger.info(req, 'smart_native_popup_render');
             tracking(req);
@@ -38,8 +41,8 @@ export function getNativePopupMiddleware({
             const { cspNonce, debug, parentDomain, env, sessionID, buttonSessionID,
                 sdkCorrelationID, clientID, locale, buyerCountry } = getNativePopupParams(params, req, res);
 
-            const { NativePopup } = (await getNativePopupRenderScript({ logBuffer, cache, debug, useLocal })).popup;
-            const client = await getNativePopupClientScript({ debug, logBuffer, cache, useLocal });
+            const { NativePopup } = (await getNativePopupRenderScript({ logBuffer, cache, debug, useLocal, locationInformation })).popup;
+            const client = await getNativePopupClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
 
             const setupParams : NativePopupOptions = {
                 parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID,
@@ -72,16 +75,18 @@ type NativeFallbackMiddlewareOptions = {|
     cache : CacheType,
     tracking : (ExpressRequest) => void,
     fundingSource : $Values<typeof FUNDING>,
-    cdn? : boolean
+    cdn? : boolean,
+    getInstanceLocationInformation : () => InstanceLocationInformation
 |};
 
 export function getNativeFallbackMiddleware({
     logger = defaultLogger, cdn = !isLocalOrTest(),
-    cache, tracking, fundingSource
+    cache, tracking, fundingSource, getInstanceLocationInformation
 } : NativeFallbackMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;
+    const locationInformation = getInstanceLocationInformation();
 
-    return sdkMiddleware({ logger, cache }, {
+    return sdkMiddleware({ logger, cache, locationInformation  }, {
         app: async ({ req, res, params, meta, logBuffer }) => {
             logger.info(req, 'smart_native_fallback_render');
             tracking(req);
@@ -92,8 +97,8 @@ export function getNativeFallbackMiddleware({
 
             const { cspNonce, debug } = getNativeFallbackParams(params, req, res);
 
-            const { NativeFallback } = (await getNativeFallbackRenderScript({ logBuffer, cache, debug, useLocal })).fallback;
-            const client = await getNativeFallbackClientScript({ debug, logBuffer, cache, useLocal });
+            const { NativeFallback } = (await getNativeFallbackRenderScript({ logBuffer, cache, debug, useLocal, locationInformation })).fallback;
+            const client = await getNativeFallbackClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
 
             const setupParams = {
                 

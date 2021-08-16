@@ -5,7 +5,7 @@ import { join } from 'path';
 import { noop } from 'belter';
 import { ENV } from '@paypal/sdk-constants';
 
-import type { CacheType } from '../../types';
+import type { CacheType, InstanceLocationInformation } from '../../types';
 import { MENU_CLIENT_JS, MENU_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG, SMART_BUTTONS_MODULE } from '../../config';
 import { isLocalOrTest, compileWebpack, babelRequire, resolveScript, dynamicRequire, type LoggerBufferType } from '../../lib';
 import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
@@ -38,10 +38,11 @@ type GetSmartMenuClientScriptOptions = {|
     debug : boolean,
     logBuffer : ?LoggerBufferType,
     cache : ?CacheType,
-    useLocal? : boolean
+    useLocal? : boolean,
+    locationInformation : InstanceLocationInformation
 |};
 
-export async function getSmartMenuClientScript({ logBuffer, cache, debug = false, useLocal = isLocalOrTest() } : GetSmartMenuClientScriptOptions = {}) : Promise<SmartMenuClientScript> {
+export async function getSmartMenuClientScript({ logBuffer, cache, debug = false, useLocal = isLocalOrTest(), locationInformation } : GetSmartMenuClientScriptOptions = {}) : Promise<SmartMenuClientScript> {
     if (useLocal) {
         const script = await compileLocalSmartMenuClientScript();
 
@@ -50,7 +51,7 @@ export async function getSmartMenuClientScript({ logBuffer, cache, debug = false
         }
     }
 
-    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache, locationInformation });
     const { version } = await getTag();
     const script = await read(debug ? MENU_CLIENT_JS : MENU_CLIENT_MIN_JS, ACTIVE_TAG);
 

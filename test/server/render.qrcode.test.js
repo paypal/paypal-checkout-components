@@ -4,11 +4,14 @@ import { noop } from 'belter';
 
 import { getQRCodeMiddleware, cancelWatchers } from '../../server';
 
-import { mockReq, mockRes } from './mock';
+import { mockReq, mockRes, getInstanceLocationInformation } from './mock';
 
 jest.setTimeout(300000);
 
-afterAll(cancelWatchers);
+afterAll((done) => {
+    cancelWatchers();
+    done();
+});
 
 const cache = {
     // eslint-disable-next-line no-unused-vars
@@ -38,7 +41,7 @@ function isRenderCallCorrect ({ html, debug } : {|html : string, debug : boolean
 }
 
 test('should do a basic QRCode page render', async () => {
-    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache });
+    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
@@ -73,7 +76,7 @@ test('should do a basic QRCode page render', async () => {
 });
 
 test('should fail if qrPath query param not provided', async () => {
-    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache });
+    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
@@ -107,7 +110,7 @@ test('should fail if qrPath query param not provided', async () => {
 });
 
 test('should fail with a non-paypal domain', async () => {
-    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache });
+    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
@@ -137,7 +140,7 @@ test('should fail with a non-paypal domain', async () => {
 });
 
 test('should render & make correct init call when when "debug" param passed', async () => {
-    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache });
+    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {

@@ -4,12 +4,13 @@ import { unpackSDKMeta } from '@paypal/sdk-client';
 import { undotify } from 'belter';
 import { ERROR_CODE } from '@paypal/sdk-constants';
 
-import type { ExpressRequest, ExpressResponse, LoggerType, CacheType } from '../types';
+import type { ExpressRequest, ExpressResponse, LoggerType, CacheType, InstanceLocationInformation } from '../types';
 import { startWatchers } from '../watchers';
 import { EVENT, BROWSER_CACHE_TIME, HTTP_HEADER } from '../config';
 
 import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType,
     getLogBuffer, safeJSON, isError, emptyResponse } from './util';
+
 
 function getSDKMetaString(req : ExpressRequest) : string {
     const sdkMeta = req.query.sdkMeta || '';
@@ -31,7 +32,8 @@ export function getSDKMeta(req : ExpressRequest) : SDKMeta {
 
 export type SDKMiddlewareOptions = {|
     logger : LoggerType | void,
-    cache : ?CacheType
+    cache : ?CacheType,
+    locationInformation : InstanceLocationInformation
 |};
 
 export type SDKMiddleware = ({|
@@ -65,9 +67,9 @@ export type ExpressMiddleware = (
 
 let logBuffer;
 
-export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareOptions, { app, script, preflight } : {| app : SDKMiddleware, script? : SDKScriptMiddleware, preflight? : SDKPreflightMiddleware |}) : ExpressMiddleware {
+export function sdkMiddleware({ logger = defaultLogger, cache, locationInformation } : SDKMiddlewareOptions, { app, script, preflight } : {| app : SDKMiddleware, script? : SDKScriptMiddleware, preflight? : SDKPreflightMiddleware |}) : ExpressMiddleware {
     logBuffer = logBuffer || getLogBuffer(logger);
-    startWatchers({ logBuffer, cache });
+    startWatchers({ logBuffer, cache, locationInformation });
 
     const appMiddleware = async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
         logBuffer.flush(req);

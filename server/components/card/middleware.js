@@ -2,7 +2,7 @@
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware,
     isLocalOrTest, type ExpressMiddleware } from '../../lib';
-import type { LoggerType, CacheType, ExpressRequest } from '../../types';
+import type { LoggerType, CacheType, ExpressRequest, InstanceLocationInformation } from '../../types';
 import type { SetupCardOptions } from '../../../src/card/types';
 
 
@@ -14,19 +14,21 @@ type CardMiddlewareOptions = {|
     logger? : LoggerType,
     cache? : CacheType,
     cdn? : boolean,
-    getAccessToken : (ExpressRequest, string) => Promise<string>
+    getAccessToken : (ExpressRequest, string) => Promise<string>,
+    getInstanceLocationInformation : () => InstanceLocationInformation
 |};
 
-export function getCardMiddleware({ logger = defaultLogger, cache, cdn = !isLocalOrTest(), getAccessToken } : CardMiddlewareOptions = {}) : ExpressMiddleware {
+export function getCardMiddleware({ logger = defaultLogger, cache, cdn = !isLocalOrTest(), getAccessToken, getInstanceLocationInformation } : CardMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;
+    const locationInformation = getInstanceLocationInformation();
 
-    return sdkMiddleware({ logger, cache }, {
+    return sdkMiddleware({ logger, cache, locationInformation }, {
         app: async ({ req, res, params, meta, logBuffer }) => {
             logger.info(req, EVENT.RENDER);
 
             const { clientID, cspNonce, debug } = getParams(params, req, res);
             
-            const client = await getSmartCardClientScript({ debug, logBuffer, cache, useLocal });
+            const client = await getSmartCardClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
 
             logger.info(req, `card_client_version_${ client.version }`);
             logger.info(req, `card_params`, { params: JSON.stringify(params) });

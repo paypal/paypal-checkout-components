@@ -39,7 +39,11 @@ test('getSmartQRCodeClientScript - base', async () => {
 
 test('getSmartQRCodeClientScript - debug', async () => {
     const debug = true;
-    const script = await getSmartQRCodeClientScript({ logBuffer, cache, debug });
+    const locationInformation = {
+        cdnHostName:  '',
+        paypalDomain: ''
+    };
+    const script = await getSmartQRCodeClientScript({ logBuffer, cache, debug, locationInformation });
 
     if (!script) {
         throw new Error(`Expected a script from compileLocalSmartQRCodeClientScript`);

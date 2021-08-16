@@ -230,6 +230,18 @@ const getMerchantID = () => {
 const getPersonalizationEnabled = () => true;
 const isFundingSourceBranded = () => Promise.resolve(true);
 
+const getInstanceLocationInformation = () => {
+    return {
+        cdnHostName:  'string',
+        paypalDomain: 'string'
+    };
+};
+
+const getSDKLocationInformation = () => Promise.resolve({
+    sdkCDNRegistry: 'string',
+    sdkActiveTag:   'string'
+});
+
 const content = {
     US: {
         en: {
@@ -258,6 +270,7 @@ const defaultMiddleware = (req : ExpressRequest, res : ExpressResponse, next) =>
     next();
 };
 
+
 const buttonMiddleware = getButtonMiddleware({
     cache,
     logger,
@@ -267,12 +280,15 @@ const buttonMiddleware = getButtonMiddleware({
     content,
     tracking,
     getPersonalizationEnabled,
-    isFundingSourceBranded
+    isFundingSourceBranded,
+    getInstanceLocationInformation,
+    getSDKLocationInformation
 });
 
 const menuMiddleware = getMenuMiddleware({
     cache,
-    logger
+    logger,
+    getInstanceLocationInformation
 });
 
 const nativePopupMiddleware = getNativePopupMiddleware({
@@ -280,7 +296,8 @@ const nativePopupMiddleware = getNativePopupMiddleware({
     logger,
     graphQL,
     tracking,
-    fundingSource: FUNDING.PAYPAL
+    fundingSource: FUNDING.PAYPAL,
+    getInstanceLocationInformation
 });
 
 const nativeFallbackMiddleware = getNativeFallbackMiddleware({
@@ -288,12 +305,14 @@ const nativeFallbackMiddleware = getNativeFallbackMiddleware({
     logger,
     graphQL,
     tracking,
-    fundingSource: FUNDING.PAYPAL
+    fundingSource: FUNDING.PAYPAL,
+    getInstanceLocationInformation
 });
 
 const qrCodeMiddleware = getQRCodeMiddleware({
     cache,
-    logger
+    logger,
+    getInstanceLocationInformation
 });
 
 const venmoPopupMiddleware = getNativePopupMiddleware({
@@ -301,7 +320,8 @@ const venmoPopupMiddleware = getNativePopupMiddleware({
     logger,
     graphQL,
     tracking,
-    fundingSource: FUNDING.VENMO
+    fundingSource: FUNDING.VENMO,
+    getInstanceLocationInformation
 });
 
 const venmoFallbackMiddleware = getNativeFallbackMiddleware({
@@ -309,7 +329,8 @@ const venmoFallbackMiddleware = getNativeFallbackMiddleware({
     logger,
     graphQL,
     tracking,
-    fundingSource: FUNDING.VENMO
+    fundingSource: FUNDING.VENMO,
+    getInstanceLocationInformation
 });
 
 const buttonsScriptMiddleware = webpackDevMiddleware(webpack(WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG), { serverSideRender: true });

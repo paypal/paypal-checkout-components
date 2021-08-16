@@ -49,3 +49,14 @@ export type FirebaseConfig = {|
 export type RiskData = {|
     
 |};
+
+export type InstanceLocationInformation = {|
+    cdnHostName : string,
+    paypalDomain : string
+|};
+
+export type SDKLocationInformation = {|
+    sdkCDNRegistry : ?string,
+    sdkActiveTag : ?string
+|};
+

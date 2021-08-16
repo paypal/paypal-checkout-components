@@ -5,7 +5,7 @@ import { join } from 'path';
 import { noop } from 'belter';
 import { ENV } from '@paypal/sdk-constants';
 
-import type { CacheType } from '../../types';
+import type { CacheType, InstanceLocationInformation } from '../../types';
 import { CARD_CLIENT_JS, CARD_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG, SMART_BUTTONS_MODULE } from '../../config';
 import { isLocalOrTest, compileWebpack, babelRequire, resolveScript, dynamicRequire, type LoggerBufferType } from '../../lib';
 import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
@@ -38,10 +38,11 @@ type GetSmartCardClientScriptOptions = {|
     debug : boolean,
     logBuffer : ?LoggerBufferType,
     cache : ?CacheType,
-    useLocal? : boolean
+    useLocal? : boolean,
+    locationInformation : InstanceLocationInformation
 |};
 
-export async function getSmartCardClientScript({ logBuffer, cache, debug = false, useLocal = isLocalOrTest() } : GetSmartCardClientScriptOptions = {}) : Promise<SmartCardClientScript> {
+export async function getSmartCardClientScript({ logBuffer, cache, debug = false, useLocal = isLocalOrTest(), locationInformation } : GetSmartCardClientScriptOptions = {}) : Promise<SmartCardClientScript> {
     if (useLocal) {
         const script = await compileLocalSmartCardClientScript();
 
@@ -50,7 +51,7 @@ export async function getSmartCardClientScript({ logBuffer, cache, debug = false
         }
     }
 
-    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache });
+    const { getTag, getDeployTag, read } = getPayPalSmartPaymentButtonsWatcher({ logBuffer, cache, locationInformation });
     const { version } = await getTag();
     const script = await read(debug ? CARD_CLIENT_JS : CARD_CLIENT_MIN_JS, ACTIVE_TAG);
 

@@ -5,11 +5,14 @@ import { FUNDING } from '@paypal/sdk-constants';
 
 import { getNativePopupMiddleware, getNativeFallbackMiddleware, cancelWatchers } from '../../server';
 
-import { mockReq, mockRes, graphQL, tracking } from './mock';
+import { mockReq, mockRes, graphQL, tracking, getInstanceLocationInformation } from './mock';
 
 jest.setTimeout(300000);
 
-afterAll(cancelWatchers);
+afterAll((done) => {
+    cancelWatchers();
+    done();
+});
 
 const cache = {
     // eslint-disable-next-line no-unused-vars
@@ -25,7 +28,7 @@ const logger = {
 };
 
 test('should do a basic native popup render and succeed', async () => {
-    const paypalNativePopupMiddleware = getNativePopupMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.PAYPAL });
+    const paypalNativePopupMiddleware = getNativePopupMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.PAYPAL, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
@@ -55,7 +58,7 @@ test('should do a basic native popup render and succeed', async () => {
 });
 
 test('should do a basic native popup render and fail with a non-paypal domain', async () => {
-    const paypalNativePopupMiddleware = getNativePopupMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.PAYPAL });
+    const paypalNativePopupMiddleware = getNativePopupMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.PAYPAL, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
@@ -85,7 +88,7 @@ test('should do a basic native popup render and fail with a non-paypal domain', 
 });
 
 test('should do a basic venmo popup render and succeed', async () => {
-    const paypalNativePopupMiddleware = getNativePopupMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.VENMO });
+    const paypalNativePopupMiddleware = getNativePopupMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.VENMO, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
@@ -115,7 +118,7 @@ test('should do a basic venmo popup render and succeed', async () => {
 });
 
 test('should do a basic venmo popup render and fail with a non-paypal domain', async () => {
-    const paypalNativePopupMiddleware = getNativePopupMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.VENMO });
+    const paypalNativePopupMiddleware = getNativePopupMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.VENMO, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
@@ -145,7 +148,7 @@ test('should do a basic venmo popup render and fail with a non-paypal domain', a
 });
 
 test('should do a basic native fallback render and succeed', async () => {
-    const paypalNativePopupMiddleware = getNativeFallbackMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.PAYPAL });
+    const paypalNativePopupMiddleware = getNativeFallbackMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.PAYPAL, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
@@ -175,7 +178,7 @@ test('should do a basic native fallback render and succeed', async () => {
 });
 
 test('should do a basic venmo fallback render and succeed', async () => {
-    const paypalNativePopupMiddleware = getNativeFallbackMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.VENMO });
+    const paypalNativePopupMiddleware = getNativeFallbackMiddleware({ graphQL, cache, logger, tracking, fundingSource: FUNDING.VENMO, getInstanceLocationInformation });
 
     const req = mockReq({
         query: {
