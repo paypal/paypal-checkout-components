@@ -248,7 +248,7 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
     if (forceRestAPI && !getLsatUpgradeError()) {
         return callRestAPI({
             accessToken: facilitatorAccessToken,
-            method:      'patch',
+            method:      'PATCH',
             eventName:   'v2_checkout_orders_patch',
             url:         `${ ORDERS_API_URL }/${ orderID }`,
             data,
