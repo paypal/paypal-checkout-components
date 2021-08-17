@@ -6,7 +6,7 @@ import { FPTI_KEY, ENV, FUNDING, COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType } from '../../types';
-import { getLogger, setupLogger } from '../../lib';
+import { enableAmplitude, getLogger, setupLogger } from '../../lib';
 import { FPTI_TRANSITION, FPTI_STATE, FPTI_CONTEXT_TYPE, AMPLITUDE_KEY } from '../../constants';
 
 type NativeLoggerOptions = {|
@@ -25,12 +25,7 @@ export function setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelat
     const logger = getLogger();
 
     setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale, sdkVersion, buyerCountry });
-
-    logger.addMetaBuilder(() => {
-        return {
-            amplitude: true
-        };
-    });
+    enableAmplitude({ env });
 
     logger.addPayloadBuilder(() => {
         return {

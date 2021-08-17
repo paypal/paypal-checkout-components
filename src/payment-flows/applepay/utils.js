@@ -9,14 +9,20 @@ type ValidNetworks = {|
     discover : ApplePaySupportedNetworks,
     visa : ApplePaySupportedNetworks,
     mastercard : ApplePaySupportedNetworks,
-    amex : ApplePaySupportedNetworks
+    amex : ApplePaySupportedNetworks,
+    cb_nationale : ApplePaySupportedNetworks,
+    maestro : ApplePaySupportedNetworks,
+    jcb : ApplePaySupportedNetworks
 |};
 
 const validNetworks : ValidNetworks = {
     discover:       'discover',
     visa:           'visa',
     mastercard:     'masterCard',
-    amex:           'amex'
+    amex:           'amex',
+    cb_nationale:   'cartesBancaires',
+    maestro:        'maestro',
+    jcb:            'jcb'
 };
 
 function getSupportedNetworksFromIssuers(issuers : $ReadOnlyArray<string>) : $ReadOnlyArray<ApplePaySupportedNetworks> {

@@ -12,7 +12,7 @@ import type { ApplePayPaymentContact, ApplePayShippingMethod, ApplePayShippingMe
 
 import { createApplePayRequest, isJSON, validateShippingContact } from './utils';
 
-const SUPPORTED_VERSION = 3;
+const SUPPORTED_VERSION = 4;
 
 let clean;
 function setupApplePay() : ZalgoPromise<void> {
