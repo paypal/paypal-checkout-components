@@ -3,7 +3,7 @@
 import { Logger, type LoggerType } from 'beaver-logger/src';
 import { noop, stringifyError, stringifyErrorMessage, inlineMemoize, isAndroid, isIos } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, ENV, COUNTRY, MOBILE_ENV } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, ENV, COUNTRY, MOBILE_ENV, FUNDING } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../types';
 import { LOGGER_URL, AMPLITUDE_API_KEY } from '../config';
@@ -41,10 +41,11 @@ type LoggerOptions = {|
     sdkCorrelationID : string,
     locale : LocaleType,
     buyerCountry : $Values<typeof COUNTRY>,
-    sdkVersion : string
+    sdkVersion : string,
+    fundingSource : ?$Values<typeof FUNDING>
 |};
 
-export function setupLogger({ env, sessionID, clientID, sdkCorrelationID, buyerCountry, locale, sdkVersion } : LoggerOptions) {
+export function setupLogger({ env, sessionID, clientID, sdkCorrelationID, buyerCountry, locale, sdkVersion, fundingSource } : LoggerOptions) {
     const logger = getLogger();
 
     logger.addPayloadBuilder(() => {
@@ -74,7 +75,8 @@ export function setupLogger({ env, sessionID, clientID, sdkCorrelationID, buyerC
             [FPTI_KEY.SDK_VERSION]:            sdkVersion,
             [FPTI_KEY.USER_AGENT]:             window.navigator && window.navigator.userAgent,
             [FPTI_KEY.CONTEXT_CORRID]:         sdkCorrelationID,
-            [FPTI_KEY.TIMESTAMP]:              Date.now().toString()
+            [FPTI_KEY.TIMESTAMP]:              Date.now().toString(),
+            [FPTI_KEY.CHOSEN_FUNDING]:         fundingSource
         };
     });
 

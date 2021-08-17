@@ -24,7 +24,7 @@ type NativeLoggerOptions = {|
 export function setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelationID, clientID, fundingSource, sdkVersion, locale, buyerCountry } : NativeLoggerOptions) : LoggerType {
     const logger = getLogger();
 
-    setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale, sdkVersion, buyerCountry });
+    setupLogger({ env, sessionID, clientID, sdkCorrelationID, locale, sdkVersion, buyerCountry, fundingSource });
     enableAmplitude({ env });
 
     logger.addPayloadBuilder(() => {
