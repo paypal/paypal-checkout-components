@@ -3,11 +3,11 @@
 
 import { node, type ChildType } from 'jsx-pragmatic/src';
 
-type PrerenderedFieldsProps = {|
+type PrerenderedPaymentFieldsProps = {|
     nonce : ?string
 |};
 
-export function FieldsPrerender({ nonce } : PrerenderedFieldsProps) : ChildType {
+export function PaymentFieldsPrerender({ nonce } : PrerenderedPaymentFieldsProps) : ChildType {
     return (
         <html>
             <body>
@@ -19,10 +19,11 @@ export function FieldsPrerender({ nonce } : PrerenderedFieldsProps) : ChildType 
                             margin: 0;
                             width: 100%;
                             height: 100%;
+                            background: transparent;
                         }
 
                         body {
-                            background: #e9ebee;
+                            background: transparent;
                             position: relative;
                             overflow: hidden;
                         }
@@ -30,8 +31,7 @@ export function FieldsPrerender({ nonce } : PrerenderedFieldsProps) : ChildType 
                         body::after {
                             content: "";
                             display: block;
-                            background-color: #efefef;
-                            border-radius: 8px;
+                            background-color: transparent;
                             overflow: hidden;
                             position: absolute;
                             top: 0;
@@ -39,8 +39,6 @@ export function FieldsPrerender({ nonce } : PrerenderedFieldsProps) : ChildType 
                             width: 100%;
                             height: 100%;
                             transform: translateX(0);
-                            box-shadow: 0px 0px 107px 60px #efefef;
-                            animation: 1.5s loading-placeholder ease-in-out infinite;
                         }
 
                         @keyframes loading-placeholder {

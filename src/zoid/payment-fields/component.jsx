@@ -10,17 +10,17 @@ import { inlineMemoize, uniqueID } from 'belter/src';
 
 import { storageState, sessionState } from '../../lib';
 
-import { type FieldsProps } from './props';
-import { FieldsPrerender } from './prerender';
-import { FieldsContainer } from './container';
+import { type PaymentFieldsProps } from './props';
+import { PaymentFieldsPrerender } from './prerender';
+import { PaymentFieldsContainer } from './container';
 
-export type FieldsComponent = ZoidComponent<FieldsProps>;
+export type PaymentFieldsComponent = ZoidComponent<PaymentFieldsProps>;
 
-export function getFieldsComponent() : FieldsComponent {
-    return inlineMemoize(getFieldsComponent, () => {
+export function getPaymentFieldsComponent() : PaymentFieldsComponent {
+    return inlineMemoize(getPaymentFieldsComponent, () => {
         return create({
             tag: 'paypal-fields',
-            url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__FIELDS__ }`,
+            url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__PAYMENT_FIELDS__ }`,
 
             domain: getPayPalDomainRegex(),
             
@@ -39,13 +39,13 @@ export function getFieldsComponent() : FieldsComponent {
 
             containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
                 return (
-                    <FieldsContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ props.nonce } />
+                    <PaymentFieldsContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ props.nonce } />
                 ).render(dom({ doc }));
             },
 
             prerenderTemplate: ({ props, doc }) => {
                 return (
-                    <FieldsPrerender nonce={ props.nonce } />
+                    <PaymentFieldsPrerender nonce={ props.nonce } />
                 ).render(dom({ doc }));
             },
 
