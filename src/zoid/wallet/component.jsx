@@ -254,7 +254,7 @@ export function getWalletComponent() : WalletComponent {
                     type:       'boolean',
                     queryParam: true,
                     required:   false,
-                    default:    true
+                    default:    () => true
                 }
             }
         });

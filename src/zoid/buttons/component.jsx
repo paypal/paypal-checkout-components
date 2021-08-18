@@ -562,7 +562,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'boolean',
                 queryParam: true,
                 required:   false,
-                default:    true
+                default:    () => true
             }
         }
     });
