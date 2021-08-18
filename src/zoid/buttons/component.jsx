@@ -556,6 +556,13 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'function',
                 required:   false,
                 value:      applePaySession
+            },
+
+            allowBillingPayments: {
+                type:       'boolean',
+                queryParam: true,
+                required:   false,
+                default:    true
             }
         }
     });
