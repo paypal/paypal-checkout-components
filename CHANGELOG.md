@@ -1,3 +1,11 @@
+## <small>5.0.173-0 (2021-08-18)</small>
+
+* Add allowBillingPayments prop ([f5cd037](https://github.com/paypal/paypal-checkout-components/commit/f5cd037))
+* Fix errors ([8bc4db2](https://github.com/paypal/paypal-checkout-components/commit/8bc4db2))
+* Treat tagline: 'false' as false for compatibility ([a58ca8e](https://github.com/paypal/paypal-checkout-components/commit/a58ca8e))
+
+
+
 ## <small>5.0.172 (2021-07-20)</small>
 
 * Add card field components ([ea75aa9](https://github.com/paypal/paypal-checkout-components/commit/ea75aa9))
