@@ -1,3 +1,9 @@
+## <small>5.0.176 (2021-08-20)</small>
+
+* Use POST for id token on local and stage ([4a5eadc](https://github.com/paypal/paypal-checkout-components/commit/4a5eadc))
+
+
+
 ## <small>5.0.175 (2021-08-12)</small>
 
 * Add paymentMethodToken prop to buttons ([d320b41](https://github.com/paypal/paypal-checkout-components/commit/d320b41))
