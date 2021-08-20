@@ -473,7 +473,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'string',
                 default:    getUserIDToken,
                 required:   false,
-                queryParam: true
+                queryParam: (getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE),
+                bodyParam:  (getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE)
             },
 
             clientMetadataID: {
