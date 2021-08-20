@@ -285,31 +285,33 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     });
 
     const click = () => {
-        if (!win && supportsPopups()) {
-            try {
-                win = openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
-            } catch (err) {
-                getLogger().warn('popup_open_error_iframe_fallback', { err: stringifyError(err) });
+        return ZalgoPromise.try(() => {
+            if (!win && supportsPopups()) {
+                try {
+                    win = openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+                } catch (err) {
+                    getLogger().warn('popup_open_error_iframe_fallback', { err: stringifyError(err) });
 
-                if (err instanceof PopupOpenError) {
-                    context = CONTEXT.IFRAME;
-                } else {
-                    throw err;
+                    if (err instanceof PopupOpenError) {
+                        context = CONTEXT.IFRAME;
+                    } else {
+                        throw err;
+                    }
                 }
             }
-        }
 
-        if (!onClick) {
-            start();
-            return;
-        }
-
-        return ZalgoPromise.try(() => {
-            return onClick ? onClick({ fundingSource }) : true;
-        }).then(valid => {
-            if (win && !valid) {
-                win.close();
+            if (!onClick) {
+                start();
+                return;
             }
+
+            return ZalgoPromise.try(() => {
+                return onClick ? onClick({ fundingSource }) : true;
+            }).then(valid => {
+                if (win && !valid) {
+                    win.close();
+                }
+            });
         });
     };
 

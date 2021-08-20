@@ -8,7 +8,7 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { updateButtonClientConfig, onLsatUpgradeCalled } from '../../api';
-import { getLogger, promiseNoop, isAndroidChrome } from '../../lib';
+import { getLogger, isAndroidChrome } from '../../lib';
 import { FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../../constants';
 import { type OnShippingChangeData } from '../../props/onShippingChange';
 import { checkout } from '../checkout';
@@ -16,8 +16,8 @@ import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from
 
 import { isNativeEligible, isNativePaymentEligible, prefetchNativeEligibility, canUsePopupAppSwitch,
     canUseNativeQRCode, setNativeOptOut, getDefaultNativeOptOutOptions, type NativeOptOutOptions } from './eligibility';
-import { openNativeQRCode } from './qrcode';
-import { openNativePopup } from './popup';
+import { initNativeQRCode } from './qrcode';
+import { initNativePopup } from './popup';
 
 let clean;
 
@@ -177,7 +177,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     };
 
     const onCloseCallback = () => {
-
         return ZalgoPromise.delay(1000).then(() => {
             
             if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
@@ -188,49 +187,38 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         }).then(noop);
     };
 
-    const initQRCode = ({ sessionUID } : {| sessionUID : string |}) => {
-        return openNativeQRCode({
-            props, serviceData, config, components, fundingSource, clean, sessionUID,
-            callbacks: {
-                onInit:            onInitCallback,
-                onApprove:         onApproveCallback,
-                onCancel:          onCancelCallback,
-                onError:           onErrorCallback,
-                onShippingChange:  onShippingChangeCallback,
-                onFallback:        onFallbackCallback,
-                onClose:           onCloseCallback,
-                onDestroy:         destroy
-            }
-        });
-    };
+    const sessionUID = uniqueID();
+    let initFlow;
 
-    const initPopupAppSwitch = ({ sessionUID } : {| sessionUID : string |}) => {
-        return openNativePopup({
-            props, serviceData, config, components, fundingSource, clean, sessionUID,
-            callbacks: {
-                onInit:            onInitCallback,
-                onApprove:         onApproveCallback,
-                onCancel:          onCancelCallback,
-                onError:           onErrorCallback,
-                onShippingChange:  onShippingChangeCallback,
-                onFallback:        onFallbackCallback,
-                onClose:           onCloseCallback,
-                onDestroy:         destroy
-            }
-        });
-    };
+    if (canUsePopupAppSwitch({ fundingSource })) {
+        initFlow = initNativePopup;
+    } else if (canUseNativeQRCode({ fundingSource })) {
+        initFlow = initNativeQRCode;
+    } else {
+        throw new Error(`No valid native payment flow found`);
+    }
+
+    const flow = initFlow({
+        props, serviceData, config, components, fundingSource, clean, sessionUID,
+        callbacks: {
+            onInit:            onInitCallback,
+            onApprove:         onApproveCallback,
+            onCancel:          onCancelCallback,
+            onError:           onErrorCallback,
+            onShippingChange:  onShippingChangeCallback,
+            onFallback:        onFallbackCallback,
+            onClose:           onCloseCallback,
+            onDestroy:         destroy
+        }
+    });
 
     const click = () => {
-        return ZalgoPromise.try(() => {
-            const sessionUID = uniqueID();
+        return flow.click();
+    };
 
-            if (canUsePopupAppSwitch({ fundingSource })) {
-                return initPopupAppSwitch({ sessionUID });
-            } else if (canUseNativeQRCode({ fundingSource })) {
-                return initQRCode({ sessionUID });
-            } else {
-                throw new Error(`No valid native payment flow found`);
-            }
+    const start = () => {
+        return ZalgoPromise.try(() => {
+            return flow.start();
         }).catch(err => {
             return destroy().then(() => {
                 getLogger().error(`native_error`, { err: stringifyError(err) }).track({
@@ -243,8 +231,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
             });
         });
     };
-
-    const start = promiseNoop;
 
     return {
         click,

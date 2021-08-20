@@ -147,7 +147,12 @@ type NativePopupOptions = {|
     |}
 |};
 
-export function openNativePopup({ props, serviceData, config, fundingSource, sessionUID, callbacks, clean } : NativePopupOptions) : ZalgoPromise<void> {
+type NativePopup = {|
+    click : () => void,
+    start : () => ZalgoPromise<void>
+|};
+
+export function initNativePopup({ props, serviceData, config, fundingSource, sessionUID, callbacks, clean } : NativePopupOptions) : NativePopup {
     const { onClick, createOrder } = props;
     const { firebase: firebaseConfig } = config;
     const { onInit, onApprove, onCancel, onError, onFallback, onClose, onDestroy, onShippingChange } = callbacks;
@@ -156,314 +161,333 @@ export function openNativePopup({ props, serviceData, config, fundingSource, ses
         throw new Error(`Can not load popup without firebase config`);
     }
 
-    return new ZalgoPromise((resolve, reject) => {
-        const nativePopupWin = window.open(getNativePopupUrl({ props, serviceData, fundingSource }));
-        const nativePopupDomain = getNativePopupDomain({ props });
+    let nativePopupPromise;
 
-        getLogger().info(`native_attempt_appswitch_popup_shown`)
-            .track({
-                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
-            }).flush();
+    return {
+        click: () => {
+            nativePopupPromise = new ZalgoPromise((resolve, reject) => {
+                const nativePopupWin = window.open(getNativePopupUrl({ props, serviceData, fundingSource }));
 
-        const closeListener = onCloseWindow(nativePopupWin, () => {
-            getLogger().info(`native_popup_closed`).track({
-                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_POPUP_CLOSED
-            }).flush();
-            onClose();
-        }, 500);
-
-        const closeErrorListener = onCloseWindow(nativePopupWin, () => {
-            reject(new Error(`Native popup closed`));
-        }, 500);
-
-        const closePopup = (event : string) => {
-            getLogger().info(`native_closing_popup_${ event }`).track({
-                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:  event ? `${ FPTI_TRANSITION.NATIVE_CLOSING_POPUP }_${ event }` : FPTI_TRANSITION.NATIVE_CLOSING_POPUP
-            }).flush();
-            closeListener.cancel();
-            nativePopupWin.close();
-        };
-
-        const redirectListenerTimeout = setTimeout(() => {
-            getLogger().info(`native_popup_load_timeout`).flush();
-        }, 5 * 1000);
-
-        const validatePromise = ZalgoPromise.try(() => {
-            return onClick ? onClick({ fundingSource }) : true;
-        }).then(valid => {
-            if (!valid) {
-                getLogger().info(`native_onclick_invalid`).track({
-                    [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
-                }).flush();
-            }
-
-            return valid;
-        });
-
-        const orderPromise = validatePromise.then(valid => {
-            if (valid) {
-                return createOrder();
-            }
-
-            return unresolvedPromise();
-        });
-
-        const detectAppSwitch = once(() : ZalgoPromise<void> => {
-            return ZalgoPromise.try(() => {
-                onLsatUpgradeCalled();
-        
-                getStorageState(state => {
-                    const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
-
-                    if (lastAppSwitchTime > lastWebSwitchTime) {
-                        getLogger().info('app_switch_detect_with_previous_app_switch', {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                    }
-
-                    if (lastWebSwitchTime > lastAppSwitchTime) {
-                        getLogger().info('app_switch_detect_with_previous_web_switch', {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                    }
-
-                    if (!lastAppSwitchTime && !lastWebSwitchTime) {
-                        getLogger().info('app_switch_detect_with_no_previous_switch', {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                    }
-
-                    state.lastAppSwitchTime = Date.now();
-                });
-
-                getLogger().info(`native_detect_app_switch`).track({
-                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
-                }).flush();
-
-                const connection = connectNative({
-                    config, sessionUID,
-                    callbacks: {
-                        onInit: () => {
-                            resolve();
-                            return onInit();
-                        },
-                        onApprove,
-                        onCancel,
-                        onShippingChange,
-                        onError: ({ data }) => {
-                            reject(new Error(data.message));
-                            return onError({ data });
-                        },
-                        onFallback: ({ data }) => {
-                            return onFallback({
-                                win:    nativePopupWin,
-                                optOut: data
-                            });
-                        }
-                    }
-                });
-
-                clean.register(connection.cancel);
-            }).catch(reject);
-        });
-
-        const detectWebSwitch = once(() : ZalgoPromise<void> => {
-            return ZalgoPromise.try(() => {
-                getStorageState(state => {
-                    const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
-
-                    if (lastAppSwitchTime > lastWebSwitchTime) {
-                        getLogger().info('web_switch_detect_with_previous_app_switch', {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                    }
-
-                    if (lastWebSwitchTime > lastAppSwitchTime) {
-                        getLogger().info('web_switch_detect_with_previous_web_switch', {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                    }
-
-                    if (!lastAppSwitchTime && !lastWebSwitchTime) {
-                        getLogger().info('web_switch_detect_with_no_previous_switch', {
-                            lastAppSwitchTime: lastAppSwitchTime.toString(),
-                            lastWebSwitchTime: lastWebSwitchTime.toString()
-                        });
-                    }
-
-                    state.lastWebSwitchTime = Date.now();
-                });
-
-                getLogger().info(`native_detect_web_switch`).track({
-                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH
-                }).flush();
-
-                return onFallback({
-                    win: nativePopupWin
-                }).then(noop);
-            }).then(resolve, reject);
-        });
-
-        const awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app: appDetect, pageUrl, sfvc, stickinessID } }) => {
-            clearTimeout(redirectListenerTimeout);
-            getLogger().info(`native_post_message_await_redirect`).flush();
-            logDetectedApp(appDetect);
-
-            getLogger().addTrackingBuilder(() => {
-                return {
-                    [FPTI_KEY.STICKINESS_ID]: stickinessID
-                };
-            });
-
-            return ZalgoPromise.hash({
-                valid:      validatePromise,
-                eligible:   getEligibility({ fundingSource, props, serviceData, sfvc, validatePromise, stickinessID, appDetect })
-            }).then(({ valid, eligible }) => {
-
-                if (!valid) {
-                    nativePopupWin.close();
-                    return onDestroy().then(() => {
-                        return {
-                            redirect:  false,
-                            appSwitch: false
-                        };
-                    });
+                if (!nativePopupWin) {
+                    throw new Error(`Expected native popup to have opened`);
                 }
 
-                if (!eligible) {
-                    return orderPromise.then(orderID => {
-                        return {
-                            redirect:    true,
-                            appSwitch:   false,
-                            redirectUrl: getNativeFallbackUrl({
-                                props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID
-                            })
-                        };
-                    });
-                }
+                const nativePopupDomain = getNativePopupDomain({ props });
 
-                return orderPromise.then(orderID => {
-                    const nativeUrl = getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID });
-
-                    getLogger().info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
-                        .track({
-                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH,
-                            [FPTI_CUSTOM_KEY.INFO_MSG]: nativeUrl
-                        }).flush();
-
-                    if (isAndroidChrome()) {
-                        closeErrorListener.cancel();
-                        const appSwitchCloseListener = onCloseWindow(nativePopupWin, () => detectAppSwitch(), 50);
-                        setTimeout(appSwitchCloseListener.cancel, 1000);
-                    }
-
-                    return {
-                        redirect:    true,
-                        appSwitch:   true,
-                        redirectUrl: nativeUrl
-                    };
-                });
-
-            }).catch(err => {
-                getLogger().info(`native_attempt_appswitch_url_popup_errored`)
+                getLogger().info(`native_attempt_appswitch_popup_shown`)
                     .track({
-                        [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                        [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
-                        [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                        [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
                     }).flush();
 
-                return orderPromise.then(orderID => {
-                    return {
-                        redirect:    true,
-                        appSwitch:   false,
-                        redirectUrl: getNativeFallbackUrl({
-                            props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID
-                        })
-                    };
-                });
-            }).catch(err => {
-                nativePopupWin.close();
-                reject(err);
+                const closeListener = onCloseWindow(nativePopupWin, () => {
+                    getLogger().info(`native_popup_closed`).track({
+                        [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_POPUP_CLOSED
+                    }).flush();
+                    onClose();
+                }, 500);
 
-                return onDestroy().then(() => {
-                    return onError({ data: { message: stringifyError(err) } });
-                }).then(() => {
-                    return {
-                        redirect:  false,
-                        appSwitch: false
-                    };
+                const closeErrorListener = onCloseWindow(nativePopupWin, () => {
+                    reject(new Error(`Native popup closed`));
+                }, 500);
+
+                const closePopup = (event : string) => {
+                    getLogger().info(`native_closing_popup_${ event }`).track({
+                        [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:  event ? `${ FPTI_TRANSITION.NATIVE_CLOSING_POPUP }_${ event }` : FPTI_TRANSITION.NATIVE_CLOSING_POPUP
+                    }).flush();
+                    closeListener.cancel();
+                    nativePopupWin.close();
+                };
+
+                const redirectListenerTimeout = setTimeout(() => {
+                    getLogger().info(`native_popup_load_timeout`).flush();
+                }, 5 * 1000);
+
+                const validatePromise = ZalgoPromise.try(() => {
+                    return onClick ? onClick({ fundingSource }) : true;
+                }).then(valid => {
+                    if (!valid) {
+                        getLogger().info(`native_onclick_invalid`).track({
+                            [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                            [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
+                        }).flush();
+                    }
+
+                    return valid;
+                });
+
+                const orderPromise = validatePromise.then(valid => {
+                    if (valid) {
+                        return createOrder();
+                    }
+
+                    return unresolvedPromise();
+                });
+
+                const detectAppSwitch = once(() : ZalgoPromise<void> => {
+                    return ZalgoPromise.try(() => {
+                        onLsatUpgradeCalled();
+        
+                        getStorageState(state => {
+                            const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
+
+                            if (lastAppSwitchTime > lastWebSwitchTime) {
+                                getLogger().info('app_switch_detect_with_previous_app_switch', {
+                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                                });
+                            }
+
+                            if (lastWebSwitchTime > lastAppSwitchTime) {
+                                getLogger().info('app_switch_detect_with_previous_web_switch', {
+                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                                });
+                            }
+
+                            if (!lastAppSwitchTime && !lastWebSwitchTime) {
+                                getLogger().info('app_switch_detect_with_no_previous_switch', {
+                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                                });
+                            }
+
+                            state.lastAppSwitchTime = Date.now();
+                        });
+
+                        getLogger().info(`native_detect_app_switch`).track({
+                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_DETECT_APP_SWITCH
+                        }).flush();
+
+                        const connection = connectNative({
+                            config, sessionUID,
+                            callbacks: {
+                                onInit: () => {
+                                    resolve();
+                                    return onInit();
+                                },
+                                onApprove,
+                                onCancel,
+                                onShippingChange,
+                                onError: ({ data }) => {
+                                    reject(new Error(data.message));
+                                    return onError({ data });
+                                },
+                                onFallback: ({ data }) => {
+                                    return onFallback({
+                                        win:    nativePopupWin,
+                                        optOut: data
+                                    });
+                                }
+                            }
+                        });
+
+                        clean.register(connection.cancel);
+                    }).catch(reject);
+                });
+
+                const detectWebSwitch = once(() : ZalgoPromise<void> => {
+                    return ZalgoPromise.try(() => {
+                        getStorageState(state => {
+                            const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
+
+                            if (lastAppSwitchTime > lastWebSwitchTime) {
+                                getLogger().info('web_switch_detect_with_previous_app_switch', {
+                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                                });
+                            }
+
+                            if (lastWebSwitchTime > lastAppSwitchTime) {
+                                getLogger().info('web_switch_detect_with_previous_web_switch', {
+                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                                });
+                            }
+
+                            if (!lastAppSwitchTime && !lastWebSwitchTime) {
+                                getLogger().info('web_switch_detect_with_no_previous_switch', {
+                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                    lastWebSwitchTime: lastWebSwitchTime.toString()
+                                });
+                            }
+
+                            state.lastWebSwitchTime = Date.now();
+                        });
+
+                        getLogger().info(`native_detect_web_switch`).track({
+                            [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH
+                        }).flush();
+
+                        return onFallback({
+                            win: nativePopupWin
+                        }).then(noop);
+                    }).then(resolve, reject);
+                });
+
+                const awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.AWAIT_REDIRECT, ({ data: { app: appDetect, pageUrl, sfvc, stickinessID } }) => {
+                    clearTimeout(redirectListenerTimeout);
+                    getLogger().info(`native_post_message_await_redirect`).flush();
+                    logDetectedApp(appDetect);
+
+                    getLogger().addTrackingBuilder(() => {
+                        return {
+                            [FPTI_KEY.STICKINESS_ID]: stickinessID
+                        };
+                    });
+
+                    return ZalgoPromise.hash({
+                        valid:      validatePromise,
+                        eligible:   getEligibility({ fundingSource, props, serviceData, sfvc, validatePromise, stickinessID, appDetect })
+                    }).then(({ valid, eligible }) => {
+
+                        if (!valid) {
+                            nativePopupWin.close();
+                            return onDestroy().then(() => {
+                                return {
+                                    redirect:  false,
+                                    appSwitch: false
+                                };
+                            });
+                        }
+
+                        if (!eligible) {
+                            return orderPromise.then(orderID => {
+                                return {
+                                    redirect:    true,
+                                    appSwitch:   false,
+                                    redirectUrl: getNativeFallbackUrl({
+                                        props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID
+                                    })
+                                };
+                            });
+                        }
+
+                        return orderPromise.then(orderID => {
+                            const nativeUrl = getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID });
+
+                            getLogger().info(`native_attempt_appswitch_url_popup`, { url: nativeUrl })
+                                .track({
+                                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH,
+                                    [FPTI_CUSTOM_KEY.INFO_MSG]: nativeUrl
+                                }).flush();
+
+                            if (isAndroidChrome()) {
+                                closeErrorListener.cancel();
+                                const appSwitchCloseListener = onCloseWindow(nativePopupWin, () => detectAppSwitch(), 50);
+                                setTimeout(appSwitchCloseListener.cancel, 1000);
+                            }
+
+                            return {
+                                redirect:    true,
+                                appSwitch:   true,
+                                redirectUrl: nativeUrl
+                            };
+                        });
+
+                    }).catch(err => {
+                        getLogger().info(`native_attempt_appswitch_url_popup_errored`)
+                            .track({
+                                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ATTEMPT_APP_SWITCH_ERRORED,
+                                [FPTI_CUSTOM_KEY.ERR_DESC]: stringifyError(err)
+                            }).flush();
+
+                        return orderPromise.then(orderID => {
+                            return {
+                                redirect:    true,
+                                appSwitch:   false,
+                                redirectUrl: getNativeFallbackUrl({
+                                    props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID
+                                })
+                            };
+                        });
+                    }).catch(err => {
+                        nativePopupWin.close();
+                        reject(err);
+
+                        return onDestroy().then(() => {
+                            return onError({ data: { message: stringifyError(err) } });
+                        }).then(() => {
+                            return {
+                                redirect:  false,
+                                appSwitch: false
+                            };
+                        });
+                    });
+                });
+
+                const detectAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.DETECT_APP_SWITCH, () => {
+                    getLogger().info(`native_post_message_detect_app_switch`).flush();
+                    return detectAppSwitch();
+                });
+
+                const detectWebSwitchListener = onPostMessage(nativePopupWin, getNativeDomain({ props }), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
+                    getLogger().info(`native_post_message_detect_web_switch`).flush();
+                    return detectWebSwitch({ win: nativePopupWin });
+                });
+
+                const onApproveListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_APPROVE, (data) => {
+                    onApprove(data);
+                    closePopup('onApprove');
+                });
+
+                const onCancelListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_CANCEL, () => {
+                    onCancel();
+                    closePopup('onCancel');
+                });
+
+                const onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_FALLBACK, (data) => {
+                    getLogger().info(`native_message_onfallback`)
+                        .track({
+                            [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_FALLBACK
+                        }).flush();
+                    onFallback({ win: nativePopupWin, optOut: data });
+                });
+
+                const onCompleteListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_COMPLETE, () => {
+                    getLogger().info(`native_post_message_on_complete`)
+                        .track({
+                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_COMPLETE
+                        }).flush();
+                    closePopup('onComplete');
+                });
+
+                const onErrorListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_ERROR, (data) => {
+                    onError(data);
+                    closePopup('onError');
+                    reject(data);
+                });
+
+                window.addEventListener('pagehide', () => closePopup('pagehide'));
+                window.addEventListener('unload', () => closePopup('unload'));
+
+                clean.register(() => {
+                    return ZalgoPromise.all([
+                        awaitRedirectListener.cancel,
+                        detectAppSwitchListener.cancel,
+                        onApproveListener.cancel,
+                        onCancelListener.cancel,
+                        onFallbackListener.cancel,
+                        onCompleteListener.cancel,
+                        onErrorListener.cancel,
+                        detectWebSwitchListener.cancel,
+                        closeListener.cancel
+                    ]).then(noop);
                 });
             });
-        });
+        },
 
-        const detectAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.DETECT_APP_SWITCH, () => {
-            getLogger().info(`native_post_message_detect_app_switch`).flush();
-            return detectAppSwitch();
-        });
+        start: () => {
+            if (!nativePopupPromise) {
+                throw new Error(`Expected native popup promise to be set`);
+            }
 
-        const detectWebSwitchListener = onPostMessage(nativePopupWin, getNativeDomain({ props }), POST_MESSAGE.DETECT_WEB_SWITCH, () => {
-            getLogger().info(`native_post_message_detect_web_switch`).flush();
-            return detectWebSwitch({ win: nativePopupWin });
-        });
-
-        const onApproveListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_APPROVE, (data) => {
-            onApprove(data);
-            closePopup('onApprove');
-        });
-
-        const onCancelListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_CANCEL, () => {
-            onCancel();
-            closePopup('onCancel');
-        });
-
-        const onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_FALLBACK, (data) => {
-            getLogger().info(`native_message_onfallback`)
-                .track({
-                    [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_FALLBACK
-                }).flush();
-            onFallback({ win: nativePopupWin, optOut: data });
-        });
-
-        const onCompleteListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_COMPLETE, () => {
-            getLogger().info(`native_post_message_on_complete`)
-                .track({
-                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_COMPLETE
-                }).flush();
-            closePopup('onComplete');
-        });
-
-        const onErrorListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_ERROR, (data) => {
-            onError(data);
-            closePopup('onError');
-            reject(data);
-        });
-
-        window.addEventListener('pagehide', () => closePopup('pagehide'));
-        window.addEventListener('unload', () => closePopup('unload'));
-
-        clean.register(() => {
-            return ZalgoPromise.all([
-                awaitRedirectListener.cancel,
-                detectAppSwitchListener.cancel,
-                onApproveListener.cancel,
-                onCancelListener.cancel,
-                onFallbackListener.cancel,
-                onCompleteListener.cancel,
-                onErrorListener.cancel,
-                detectWebSwitchListener.cancel,
-                closeListener.cancel
-            ]).then(noop);
-        });
-    });
+            return nativePopupPromise;
+        }
+    };
 }

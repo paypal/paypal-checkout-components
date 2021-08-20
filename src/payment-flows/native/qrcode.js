@@ -118,7 +118,12 @@ type NativeQRCodeOptions = {|
     |}
 |};
 
-export function openNativeQRCode({ props, serviceData, config, components, fundingSource, clean, callbacks, sessionUID } : NativeQRCodeOptions) : ZalgoPromise<void> {
+type NativeQRCode = {|
+    click : () => void,
+    start : () => ZalgoPromise<void>
+|};
+
+export function initNativeQRCode({ props, serviceData, config, components, fundingSource, clean, callbacks, sessionUID } : NativeQRCodeOptions) : NativeQRCode {
     const { createOrder, onClick } = props;
     const { QRCode } = components;
     const { onInit, onApprove, onCancel, onError, onFallback, onClose, onDestroy, onShippingChange } = callbacks;
@@ -127,135 +132,140 @@ export function openNativeQRCode({ props, serviceData, config, components, fundi
     const pageUrl = window.xprops.getPageUrl();
     const stickinessID = getStorageID();
 
-    getLogger().info(`VenmoDesktopPay_qrcode`).track({
-        [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.QR_SHOWN
-    }).flush();
-
-    const onQRClose = (event? : string = 'closeQRCode') => {
-        return ZalgoPromise.try(() => {
-            getLogger().info(`VenmoDesktopPay_qrcode_closing_${ event }`).track({
-                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:  event ? `${ FPTI_TRANSITION.QR_CLOSING }_${ event }` : FPTI_TRANSITION.QR_CLOSING
+    return {
+        click: noop,
+        start: () => {
+            getLogger().info(`VenmoDesktopPay_qrcode`).track({
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.QR_SHOWN
             }).flush();
-            onClose();
-        });
-    };
 
-    const validatePromise = ZalgoPromise.try(() => {
-        return onClick ? onClick({ fundingSource }) : true;
-    }).then(valid => {
-        if (!valid) {
-            getLogger().info(`native_onclick_invalid`).track({
-                [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
-            }).flush();
-        }
+            const onQRClose = (event? : string = 'closeQRCode') => {
+                return ZalgoPromise.try(() => {
+                    getLogger().info(`VenmoDesktopPay_qrcode_closing_${ event }`).track({
+                        [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:  event ? `${ FPTI_TRANSITION.QR_CLOSING }_${ event }` : FPTI_TRANSITION.QR_CLOSING
+                    }).flush();
+                    onClose();
+                });
+            };
 
-        return valid;
-    });
+            const validatePromise = ZalgoPromise.try(() => {
+                return onClick ? onClick({ fundingSource }) : true;
+            }).then(valid => {
+                if (!valid) {
+                    getLogger().info(`native_onclick_invalid`).track({
+                        [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_ON_CLICK_INVALID
+                    }).flush();
+                }
 
-    return ZalgoPromise.hash({
-        valid:      validatePromise,
-        eligible:   getEligibility({ fundingSource, props, serviceData, validatePromise })
-    }).then(({ valid, eligible }) => {
-        if (!valid) {
-            return;
-        }
-
-        if (!eligible) {
-            return onFallback().then(noop);
-        }
-
-        return createOrder().then((orderID) => {
-            const url = getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, orderID, stickinessID, pageUrl });
-
-            const qrCodeComponentInstance = QRCode({
-                cspNonce:  config.cspNonce,
-                qrPath:    url,
-                state:     QRCODE_STATE.DEFAULT,
-                onClose:   onQRClose
+                return valid;
             });
 
-            function updateQRCodeComponentState(newState : {|
+            return ZalgoPromise.hash({
+                valid:      validatePromise,
+                eligible:   getEligibility({ fundingSource, props, serviceData, validatePromise })
+            }).then(({ valid, eligible }) => {
+                if (!valid) {
+                    return;
+                }
+
+                if (!eligible) {
+                    return onFallback().then(noop);
+                }
+
+                return createOrder().then((orderID) => {
+                    const url = getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, orderID, stickinessID, pageUrl });
+
+                    const qrCodeComponentInstance = QRCode({
+                        cspNonce:  config.cspNonce,
+                        qrPath:    url,
+                        state:     QRCODE_STATE.DEFAULT,
+                        onClose:   onQRClose
+                    });
+
+                    function updateQRCodeComponentState(newState : {|
                 state : $Values<typeof QRCODE_STATE>,
                 errorText? : string
             |}) : ZalgoPromise<void> {
-                return qrCodeComponentInstance.updateProps({
-                    cspNonce: config.cspNonce,
-                    qrPath:   url,
-                    onClose:  onQRClose,
-                    ...newState
-                });
-            }
+                        return qrCodeComponentInstance.updateProps({
+                            cspNonce: config.cspNonce,
+                            qrPath:   url,
+                            onClose:  onQRClose,
+                            ...newState
+                        });
+                    }
 
-            const closeQRCode = (event? : string) => {
-                onQRClose(event);
+                    const closeQRCode = (event? : string) => {
+                        onQRClose(event);
 
-                return ZalgoPromise.delay(2000).then(() => {
-                    return ZalgoPromise.try(() => {
-                        qrCodeComponentInstance.close();
-                        return onDestroy();
+                        return ZalgoPromise.delay(2000).then(() => {
+                            return ZalgoPromise.try(() => {
+                                qrCodeComponentInstance.close();
+                                return onDestroy();
+                            });
+                        }).then(noop);
+                    };
+
+                    const onInitializeQR  = () => {
+                        return updateQRCodeComponentState({ state: QRCODE_STATE.SCANNED }).then(() => {
+                            return onInit();
+                        });
+                    };
+
+                    const onApproveQR = (res) => {
+                        return updateQRCodeComponentState({ state: QRCODE_STATE.AUTHORIZED }).then(() => {
+                            return closeQRCode('onApprove').then(() => {
+
+                                return onApprove(res);
+                            });
+                        });
+                    };
+
+                    const onCancelQR = () => {
+                        return updateQRCodeComponentState({
+                            state:     QRCODE_STATE.ERROR,
+                            errorText: 'The authorization was canceled'
+                        }).then(() => {
+                            return onCancel();
+                        });
+                    };
+
+                    const onFallbackQR = ({ data }) => {
+                        return updateQRCodeComponentState({
+                            state:     QRCODE_STATE.ERROR,
+                            errorText: 'The authorization was canceled'
+                        }).then(() => {
+                            return onFallback({ optOut: data });
+                        });
+                    };
+
+                    const onErrorQR = (res) => {
+                        const errorText = res.data.message;
+                        return updateQRCodeComponentState({
+                            state: QRCODE_STATE.AUTHORIZED,
+                            errorText
+                        }).then(() => {
+                            return onError(res);
+                        });
+                    };
+
+                    const connection = connectNative({
+                        config, sessionUID,
+                        callbacks: {
+                            onInit:           onInitializeQR,
+                            onApprove:        onApproveQR,
+                            onCancel:         onCancelQR,
+                            onError:          onErrorQR,
+                            onFallback:       onFallbackQR,
+                            onShippingChange
+                        }
                     });
-                }).then(noop);
-            };
+                    clean.register(connection.cancel);
 
-            const onInitializeQR  = () => {
-                return updateQRCodeComponentState({ state: QRCODE_STATE.SCANNED }).then(() => {
-                    return onInit();
+                    return qrCodeComponentInstance.renderTo(qrCodeRenderTarget, TARGET_ELEMENT.BODY);
                 });
-            };
-
-            const onApproveQR = (res) => {
-                return updateQRCodeComponentState({ state: QRCODE_STATE.AUTHORIZED }).then(() => {
-                    return closeQRCode('onApprove').then(() => {
-
-                        return onApprove(res);
-                    });
-                });
-            };
-
-            const onCancelQR = () => {
-                return updateQRCodeComponentState({
-                    state:     QRCODE_STATE.ERROR,
-                    errorText: 'The authorization was canceled'
-                }).then(() => {
-                    return onCancel();
-                });
-            };
-
-            const onFallbackQR = ({ data }) => {
-                return updateQRCodeComponentState({
-                    state:     QRCODE_STATE.ERROR,
-                    errorText: 'The authorization was canceled'
-                }).then(() => {
-                    return onFallback({ optOut: data });
-                });
-            };
-
-            const onErrorQR = (res) => {
-                const errorText = res.data.message;
-                return updateQRCodeComponentState({
-                    state: QRCODE_STATE.AUTHORIZED,
-                    errorText
-                }).then(() => {
-                    return onError(res);
-                });
-            };
-
-            const connection = connectNative({
-                config, sessionUID,
-                callbacks: {
-                    onInit:           onInitializeQR,
-                    onApprove:        onApproveQR,
-                    onCancel:         onCancelQR,
-                    onError:          onErrorQR,
-                    onFallback:       onFallbackQR,
-                    onShippingChange
-                }
             });
-            clean.register(connection.cancel);
-
-            return qrCodeComponentInstance.renderTo(qrCodeRenderTarget, TARGET_ELEMENT.BODY);
-        });
-    });
+        }
+    };
 }
