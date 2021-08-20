@@ -92,7 +92,6 @@ const PERSONALIZATION_QUERY = `
 export type PersonalizationOptions = {|
     logger : LoggerType,
     clientID : string,
-    merchantID : ?$ReadOnlyArray<string>,
     locale : LocaleType,
     buyerCountry : $Values<typeof COUNTRY>,
     buttonSessionID : string,
@@ -135,7 +134,7 @@ function contentToJSX(content : string) : ComponentFunctionType<PersonalizationC
 }
 
 export async function resolvePersonalization(req : ExpressRequest, gqlBatch : GraphQLBatchCall, personalizationOptions : PersonalizationOptions) : Promise<Personalization> {
-    let { logger, clientID, merchantID, locale, buyerCountry, buttonSessionID, currency, intent, commit,
+    let { logger, clientID, locale, buyerCountry, buttonSessionID, currency, intent, commit,
         vault, label, period, tagline, personalizationEnabled, renderedButtons } = personalizationOptions;
     
     if (!personalizationEnabled) {
@@ -154,7 +153,7 @@ export async function resolvePersonalization(req : ExpressRequest, gqlBatch : Gr
         const result = await gqlBatch({
             query:     PERSONALIZATION_QUERY,
             variables: {
-                clientID, merchantID, locale, buyerCountry, currency, intent, commit, vault, ip, cookies, userAgent,
+                clientID, locale, buyerCountry, currency, intent, commit, vault, ip, cookies, userAgent,
                 buttonSessionID, label, period, taglineEnabled, renderedButtons
             },
             timeout: PERSONALIZATION_TIMEOUT
