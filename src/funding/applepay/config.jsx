@@ -13,8 +13,10 @@ export function getApplePayConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        requires: {
-            applepay: true
+        requires: () => {
+            return {
+                applepay: true
+            };
         },
 
         platforms: [
