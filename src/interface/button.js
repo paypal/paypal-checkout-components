@@ -44,8 +44,8 @@ export const Installments : LazyProtectedExport<InstallmentsComponent> =  {
     __get__: () => protectedExport(getInstallmentsComponent())
 };
 
-export const QRCode : LazyExport<QRCodeComponent> = {
-    __get__: () => getQRCodeComponent()
+export const QRCode : LazyProtectedExport<QRCodeComponent> = {
+    __get__: () => protectedExport(getQRCodeComponent())
 };
 
 export const ButtonsTemplate : LazyProtectedExport<typeof _ButtonsTemplate> = {
