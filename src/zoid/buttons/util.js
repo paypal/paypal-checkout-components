@@ -134,8 +134,8 @@ export function createNoPaylaterExperiment() : Experiment | void {
         if (isDevice()) {
             // No experiment because ineligible, already forced on or off, unsupported browser
             if (!isEligibleForPaylater
-                || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser()) 
-                || !isSupportedNativeBrowser()) 
+                || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser())
+                || !isSupportedNativeBrowser())
             {
                 return;
             }
