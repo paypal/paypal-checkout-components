@@ -1,10 +1,10 @@
 /* @flow */
 import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { getEnableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
+import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
-import type { Experiment as VenmoExperiment } from '../../types';
+import type { Experiment as EligibilityExperiment } from '../../types';
 import { BUTTON_FLOW, CLASS } from '../../constants';
 import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription, ButtonProps } from '../../ui/buttons/props';
 import { determineEligibleFunding } from '../../funding';
@@ -117,6 +117,54 @@ export function getVenmoExperiment() : VenmoExperiment {
     } else {
         return {
             enableVenmo: Boolean(isExperimentEnabled)
+        };
+    }
+}
+
+export function createNoPaylaterExperiment() : Experiment | void {
+    return inlineMemoize(createNoPaylaterExperiment, () => {
+        const disableFunding = getDisableFunding();
+        const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
+        const enableFunding = getEnableFunding();
+        const isEnableFundingPaylater = enableFunding && enableFunding.indexOf(FUNDING.PAYLATER) !== -1;
+
+        const fundingEligibility = getFundingEligibility();
+        const isEligibleForPaylater = fundingEligibility && fundingEligibility[FUNDING.PAYLATER] && fundingEligibility[FUNDING.PAYLATER].eligible;
+
+        if (isDevice()) {
+            // No experiment because ineligible, already forced on or off, unsupported browser
+            if (!isEligibleForPaylater
+                || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser()) 
+                || !isSupportedNativeBrowser()) 
+            {
+                return;
+            }
+
+            if (isIos() && isSafari()) {
+                return createExperiment('disable_paylater_ios', 50);
+            }
+
+            if (isAndroid() && isChrome()) {
+                return createExperiment('disable_paylater_android', 50);
+            }
+        } else {
+            return createExperiment('disable_paylater_desktop', 50);
+        }
+    });
+}
+
+export function getNoPaylaterExperiment(experiment : ?Experiment) : EligibilityExperiment {
+    const disableFunding = getDisableFunding();
+    const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
+    const isNativeSupported = isSupportedNativeBrowser();
+    const isExperimentEnabled = experiment && experiment.isEnabled();
+    if (isDevice()) {
+        return {
+            disablePaylater: Boolean((isExperimentEnabled || isDisableFundingPaylater) && isNativeSupported)
+        };
+    } else {
+        return {
+            disablePaylater: Boolean(isExperimentEnabled)
         };
     }
 }
