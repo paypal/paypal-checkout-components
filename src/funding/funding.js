@@ -4,7 +4,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 
-import type { Wallet, Experiment as EligibilityExperiment } from '../types';
+import type { Wallet, Experiment } from '../types';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
 import type { OnShippingChange } from '../ui/buttons/props';
 
@@ -22,7 +22,7 @@ type IsFundingEligibleOptions = {|
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
-    experiment? : EligibilityExperiment
+    experiment? : Experiment
 |};
 
 export function isFundingEligible(source : $Values<typeof FUNDING>,
@@ -86,21 +86,13 @@ export function isFundingEligible(source : $Values<typeof FUNDING>,
         return false;
     }
 
-    if (source === FUNDING.VENMO && experiment && experiment.enableVenmo === false) {
-        return false;
-    }
-
-    if (source === FUNDING.PAYLATER && experiment && experiment.disablePaylater === true) {
-        return false;
-    }
-
     return true;
 }
 
 export function determineEligibleFunding({ fundingSource, layout, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment } :
     {| fundingSource : ?$Values<typeof FUNDING>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>,
     platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, applePaySupport : boolean, supportsPopups : boolean, supportedNativeBrowser : boolean, experiment : EligibilityExperiment |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
+    onShippingChange? : ?Function, flow : $Values<typeof BUTTON_FLOW>, wallet? : ?Wallet, applePaySupport : boolean, supportsPopups : boolean, supportedNativeBrowser : boolean, experiment : Experiment |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
 
     if (fundingSource) {
         return [ fundingSource ];
