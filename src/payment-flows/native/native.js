@@ -26,10 +26,15 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
 }
 
 function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
-    const { onApprove, onCancel, onError,
-        buttonSessionID, onShippingChange } = props;
+    const { onApprove, onCancel, onError, buttonSessionID, onShippingChange } = props;
     const { fundingSource } = payment;
     const { firebase: firebaseConfig } = config;
+
+    getLogger().addTrackingBuilder(() => {
+        return {
+            [FPTI_KEY.CHOSEN_FUNDING]: fundingSource
+        };
+    });
 
     if (!firebaseConfig) {
         throw new Error(`Can not run native flow without firebase config`);

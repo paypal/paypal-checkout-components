@@ -7,7 +7,7 @@ import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { getNativeEligibility } from '../../api';
 import { getLogger, getStorageID } from '../../lib';
-import { FPTI_STATE, FPTI_TRANSITION, TARGET_ELEMENT, QRCODE_STATE } from '../../constants';
+import { FPTI_STATE, FPTI_TRANSITION, TARGET_ELEMENT, QRCODE_STATE, FPTI_CUSTOM_KEY } from '../../constants';
 import type { ButtonProps, ServiceData, Config, Components } from '../../button/props';
 import { type OnShippingChangeData } from '../../props/onShippingChange';
 
@@ -49,7 +49,7 @@ function getEligibility({ fundingSource, props, serviceData, validatePromise } :
                 const ineligibleReasons = eligibility && eligibility[fundingSource]?.ineligibilityReason?.split(',');
 
                 const eligible = ineligibleReasons?.every(reason => {
-                    return eligibleReasons?.indexOf(reason) !== -1;
+                    return reason ? eligibleReasons?.indexOf(reason) !== -1 : true;
                 });
 
                 if (
@@ -59,7 +59,8 @@ function getEligibility({ fundingSource, props, serviceData, validatePromise } :
                     getLogger().info(`native_appswitch_ineligible`, { orderID })
                         .track({
                             [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
+                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE,
+                            [FPTI_CUSTOM_KEY.INFO_MSG]: ineligibleReasons?.join(',')
                         }).flush();
 
                     return false;

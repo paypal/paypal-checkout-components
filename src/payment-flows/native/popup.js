@@ -85,11 +85,14 @@ function getEligibility({ fundingSource, props, serviceData, sfvc, validatePromi
                 merchantID:   merchantID[0],
                 domain:       merchantDomain
             }).then(eligibility => {
+                const ineligibilityReason = eligibility && eligibility[fundingSource]?.ineligibilityReason ? eligibility[fundingSource].ineligibilityReason : '';
+
                 if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
                     getLogger().info(`native_appswitch_ineligible`, { orderID })
                         .track({
                             [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE
+                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_SWITCH_INELIGIBLE,
+                            [FPTI_CUSTOM_KEY.INFO_MSG]: ineligibilityReason
                         }).flush();
 
                     return false;

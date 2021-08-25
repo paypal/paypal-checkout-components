@@ -1,7 +1,7 @@
 /* @flow */
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { ENV, FUNDING } from '@paypal/sdk-constants/src';
+import { ENV, FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 import { supportsPopups, isIos, isAndroid } from 'belter/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
@@ -77,6 +77,8 @@ type PrefetchNativeEligibilityOptions = {|
     serviceData : ServiceData
 |};
 
+let nativeEligibilityResults;
+
 export function prefetchNativeEligibility({ props, serviceData } : PrefetchNativeEligibilityOptions) : ZalgoPromise<void> {
     const { clientID, onShippingChange, currency, platform, env,
         vault, buttonSessionID, enableFunding, merchantDomain } = props;
@@ -90,6 +92,8 @@ export function prefetchNativeEligibility({ props, serviceData } : PrefetchNativ
         merchantID:   merchantID[0],
         domain:       merchantDomain
     }).then(nativeEligibility => {
+        nativeEligibilityResults = nativeEligibility;
+ 
         if (isAnyTestOrControlGroup({ nativeEligibility })) {
             enableAmplitude({ env });
         }
@@ -168,8 +172,9 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
     return true;
 }
 
-export function isNativePaymentEligible({ payment } : IsPaymentEligibleOptions) : boolean {
+export function isNativePaymentEligible({ props, payment } : IsPaymentEligibleOptions) : boolean {
 
+    const { platform } = props;
     const { win, fundingSource } = payment;
 
     if (win) {
@@ -184,6 +189,23 @@ export function isNativePaymentEligible({ payment } : IsPaymentEligibleOptions) 
         return false;
     }
 
+    // For Venmo desktop, ignore failing eligibility if the given reasons are returned from NativeEligibility
+    if (platform && platform === PLATFORM.DESKTOP) {
+        const eligibleReasons = [ 'isUserAgentEligible', 'isBrowserMobileAndroid' ];
+        const ineligibleReasons = nativeEligibilityResults && nativeEligibilityResults[fundingSource]?.ineligibilityReason?.split(',');
+
+        const eligible = ineligibleReasons?.every(reason => {
+            return reason ? eligibleReasons?.indexOf(reason) !== -1 : true;
+        });
+
+        if (
+            ineligibleReasons &&
+            !eligible
+        ) {
+            return false;
+        }
+    }
+    
     return true;
 }
 
