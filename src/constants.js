@@ -184,7 +184,8 @@ export const FPTI_CUSTOM_KEY = {
     INTEGRATION_WHITELIST: ('whitelist' : 'whitelist'),
     INFO_MSG:              ('info_msg' : 'info_msg'),
     PMT_TOKEN:             ('pmt_token' : 'pmt_token'),
-    TRANSITION_TYPE:       ('transition_type' : 'transition_type')
+    TRANSITION_TYPE:       ('transition_type' : 'transition_type'),
+    TRANSITION_REASON:     ('transition_reason' : 'transition_reason')
 };
 
 export const FPTI_BUTTON_KEY = {

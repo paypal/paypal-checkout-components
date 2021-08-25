@@ -168,11 +168,13 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return ZalgoPromise.try(() => {
             if (optOut) {
                 const result = setNativeOptOut(optOut);
+                const { fallback_reason } = optOut;
 
                 getLogger().info(`native_message_onfallback`)
                     .track({
-                        [FPTI_KEY.TRANSITION]:             FPTI_TRANSITION.NATIVE_ON_FALLBACK,
-                        [FPTI_CUSTOM_KEY.TRANSITION_TYPE]:  result ? FPTI_TRANSITION.NATIVE_OPT_OUT :  FPTI_TRANSITION.NATIVE_FALLBACK
+                        [FPTI_KEY.TRANSITION]:               FPTI_TRANSITION.NATIVE_ON_FALLBACK,
+                        [FPTI_CUSTOM_KEY.TRANSITION_TYPE]:   result ? FPTI_TRANSITION.NATIVE_OPT_OUT :  FPTI_TRANSITION.NATIVE_FALLBACK,
+                        [FPTI_CUSTOM_KEY.TRANSITION_REASON]: fallback_reason || ''
                     }).flush();
             }
 

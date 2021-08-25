@@ -90,7 +90,8 @@ type ConnectNativeOptions = {|
         onFallback : ({|
             data? : {|
                 type? : string,
-                skip_native_duration? : number
+                skip_native_duration? : number,
+                fallback_reason? : string
             |}
         |}) => ZalgoPromise<{|
             buttonSessionID : string
