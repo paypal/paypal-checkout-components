@@ -1,11 +1,12 @@
 /* @flow */
 
 import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
-import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal/sdk-constants';
+import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, FPTI_KEY } from '@paypal/sdk-constants';
 import { strictMerge } from 'strict-merge';
 
+import { FPTI_STATE } from '../../src/constants';
 import { pruneQuery, buildQuery, graphqlTypes, copy, type GraphQLBatchCall } from '../lib';
-import { FUNDING_ELIGIBILITY_TIMEOUT } from '../config';
+import { FUNDING_ELIGIBILITY_TIMEOUT, TIMEOUT_ERROR_MESSAGE } from '../config';
 import type { ExpressRequest, LoggerType } from '../types';
 
 function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibilityType) : ?string {
@@ -193,6 +194,15 @@ export async function resolveFundingEligibility(req : ExpressRequest, gqlBatch :
         return strictMerge(basicFundingEligibility, fundingEligibility, (first, second) => second);
 
     } catch (err) {
+        if (err.message && err.message.includes(TIMEOUT_ERROR_MESSAGE)) {
+            logger.track(req, {
+                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:      'funding_eligibility_promise_timeout',
+                [FPTI_KEY.CONTEXT_ID]:      buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]:    'button_session_id',
+                [FPTI_KEY.FEED]:            'payments_sdk'
+            }, {});
+        }
         logger.error(req, 'funding_eligibility_error_fallback', { err: err.stack ? err.stack : err.toString() });
         return basicFundingEligibility;
     }

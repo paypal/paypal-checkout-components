@@ -24,7 +24,8 @@ const logger = {
     debug: noop,
     info:  noop,
     warn:  noop,
-    error: noop
+    error: noop,
+    track: noop
 };
 
 test('should do a basic native popup render and succeed', async () => {

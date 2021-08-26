@@ -7,7 +7,7 @@ import webpack from 'webpack';
 import { regexTokenize } from 'belter';
 import type { ChildType, NullableChildType } from 'jsx-pragmatic/src';
 
-import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE, HTTP_CONTENT_DISPOSITION } from '../config';
+import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE, HTTP_CONTENT_DISPOSITION, TIMEOUT_ERROR_MESSAGE } from '../config';
 import type { ExpressRequest, ExpressResponse, LoggerType, LoggerPayload } from '../types';
 
 function response(res : ExpressResponse, status : $Values<typeof HTTP_STATUS_CODE>, type : $Values<typeof HTTP_CONTENT_TYPE>, message : string) {
@@ -62,7 +62,8 @@ export const defaultLogger : LoggerType = {
     debug: (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.debug(...args), // eslint-disable-line no-console
     info:  (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.info(...args),  // eslint-disable-line no-console
     warn:  (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.warn(...args), // eslint-disable-line no-console
-    error: (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.error(...args) // eslint-disable-line no-console
+    error: (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.error(...args), // eslint-disable-line no-console
+    track: (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.error(...args) // eslint-disable-line no-console
 };
 
 const registerDirs = [];
@@ -237,7 +238,7 @@ export function copy<T>(obj : T) : T {
 export async function promiseTimeout<T>(promise : Promise<T>, time : number) : Promise<T> {
     return await new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
-            reject(new Error(`Timed out after ${ time }ms`));
+            reject(new Error(`${ TIMEOUT_ERROR_MESSAGE } ${ time }ms`));
         }, time);
 
         const res = (val) => {

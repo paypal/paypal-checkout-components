@@ -1,13 +1,14 @@
 /* @flow */
 
 import { html } from 'jsx-pragmatic';
-import { COUNTRY, LANG, FUNDING } from '@paypal/sdk-constants';
+import { COUNTRY, LANG, FUNDING, FPTI_KEY } from '@paypal/sdk-constants';
 import { stringifyError, noop } from 'belter';
 
+import { FPTI_STATE } from '../../../src/constants';
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest } from '../../lib';
 import { resolveFundingEligibility, resolveMerchantID, resolveWallet, resolvePersonalization } from '../../service';
-import { EXPERIMENT_TIMEOUT } from '../../config';
+import { EXPERIMENT_TIMEOUT, TIMEOUT_ERROR_MESSAGE } from '../../config';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig, InstanceLocationInformation, SDKLocationInformation } from '../../types';
 import type { ContentType, Wallet } from '../../../src/types';
 
@@ -97,7 +98,17 @@ export function getButtonMiddleware({
                 merchantIDPromise.then(merchantID =>
                     getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry })),
                 EXPERIMENT_TIMEOUT
-            ).catch(() => false);
+            ).catch((err) => {
+                if (err.message && err.message.includes(TIMEOUT_ERROR_MESSAGE)) {
+                    logger.track(req, {
+                        [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:      'is_card_fields_experiment_enabled_promise_timeout',
+                        [FPTI_KEY.CONTEXT_ID]:      buttonSessionID,
+                        [FPTI_KEY.CONTEXT_TYPE]:    'button_session_id',
+                        [FPTI_KEY.FEED]:            'payments_sdk'
+                    }, {});
+                }
+            });
 
             const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,

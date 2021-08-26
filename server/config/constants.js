@@ -35,3 +35,5 @@ export const EVENT = {
 export const AUTH_ERROR_CODE = {
     INVALID_CLIENT: 'invalid_client'
 };
+
+export const TIMEOUT_ERROR_MESSAGE = 'Timed out after';
