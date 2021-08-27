@@ -39,7 +39,8 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
             [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id',
             [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
-            [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click'
+            [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click',
+            [ FPTI_KEY.CHOSEN_FUNDING]:      fundingSource
         }).flush();
 
         
@@ -52,6 +53,8 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             );
             onRenderCheckout({ fundingSource, card });
 
+        } else if (fundingSource === FUNDING.VENMO) {
+            // wait for button to load
         } else if (supportsPopups()) {
             // remember the popup window to prevent showing a new popup window on every click in the prerender state
             if (!win || win.closed) {
