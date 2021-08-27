@@ -182,7 +182,7 @@ export function QRCodeContainer({
                 box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
                 border-radius: 16px;                        
                 width: 720px;
-                height: 480px;  
+                height: 544px;  
                 display: flex;
                 align-items: center;
                 justify-content: center;
