@@ -39,7 +39,8 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
             [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id',
             [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
-            [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click'
+            [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click',
+            [ FPTI_KEY.CHOSEN_FUNDING]:      fundingSource
         }).flush();
 
         
