@@ -52,6 +52,8 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             );
             onRenderCheckout({ fundingSource, card });
 
+        } else if (fundingSource === FUNDING.VENMO) {
+            // wait for button to load
         } else if (supportsPopups()) {
             // remember the popup window to prevent showing a new popup window on every click in the prerender state
             if (!win || win.closed) {
