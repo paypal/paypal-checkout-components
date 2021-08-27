@@ -168,7 +168,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             const { onError } = paymentProps;
 
             payPromise.catch(err => {
-                getLogger().error('click_initiate_payment_reject', { err: stringifyError(err) }).flush();
+                getLogger().warn('click_initiate_payment_reject', { err: stringifyError(err) }).flush();
                 onError(err);
             });
 

@@ -160,8 +160,12 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, cur
     // eslint-disable-next-line complexity
     return getSupplementalOrderInfo(orderID).then(order => {
         const cart = order.checkoutSession.cart;
-        const cartIntent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
-        const initiationIntent = cart.supplementary && cart.supplementary.initiationIntent;
+        const cartIntent = (cart.intent.toLowerCase() === 'sale')
+            ? INTENT.CAPTURE
+            : cart.intent.toLowerCase();
+        const initiationIntent = cart.supplementary?.initiationIntent?.toLowerCase() === 'authorization'
+            ? INTENT.AUTHORIZE
+            : cart.supplementary?.initiationIntent?.toLowerCase();
         const cartCurrency = cart.amounts && cart.amounts.total.currencyCode;
         const cartAmount = cart.amounts && cart.amounts.total.currencyValue;
         const cartBillingType = cart.billingType;
@@ -170,7 +174,7 @@ export function validateOrder(orderID : string, { env, clientID, merchantID, cur
         if (!intentMatch && VALIDATE_INTENTS.indexOf(intent) !== -1) {
             triggerIntegrationError({
                 error:         'smart_button_validation_error_incorrect_intent',
-                message:       `Expected intent from order api call to be ${ intent }, got ${ cartIntent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ cartIntent } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
+                message:       `Expected intent from order api call to be ${ intent }, got ${ cartIntent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ initiationIntent || cartIntent } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
                 loggerPayload: { cartIntent, intent },
                 env, clientID, orderID
             });

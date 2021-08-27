@@ -140,6 +140,8 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             const validateOrderPromise = createOrder().then(orderID => {
                 return validateOrder(orderID, { env, clientID, merchantID, intent, currency, vault, buttonLabel });
             });
+
+            validateOrderPromise.catch(noop);
             
             const confirmOrder = ({ orderID, payload }) => getConfirmOrder({ orderID, payload, partnerAttributionID }, { facilitatorAccessToken: serviceData.facilitatorAccessToken });
 
