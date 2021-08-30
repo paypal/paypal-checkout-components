@@ -5,7 +5,7 @@ import { wrapPromise } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT } from '../common';
+import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, mockProp } from '../common';
 
 describe(`paypal button component props`, () => {
 
@@ -170,4 +170,106 @@ describe(`paypal button component props`, () => {
             });
         });
     });
+
+    it('should not render a paylater button when the experiment disables it', () => {
+
+        return ZalgoPromise.try(() => {
+            return wrapPromise(({ expect, avoid }) => {
+                const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__, 'paylater', {
+                    eligible: true,
+                    products: {
+                        paylater: {
+                            eligible: true,
+                            variant: 'experimentable'
+                        },
+                        payIn4: {
+                            eligible: false,
+                            variant: 'experimentable'
+                        }
+                    }
+                });
+        
+                window.localStorage.setItem('disable_paylater_desktop', true);
+                window.localStorage.setItem('disable_paylater_ios', true);
+                window.localStorage.setItem('disable_paylater_android', true);
+
+                let onRender = ({ xprops }) => {
+                    const renderedButtons = xprops.renderedButtons;
+                    const experiment = xprops.experiment;
+                    const funding = window.__TEST_FUNDING_ELIGIBILITY__;
+
+                    if ( JSON.stringify(renderedButtons).includes('paylater') ) {
+                        throw new Error(` \n\n ${ renderedButtons } \n\n ${ JSON.stringify(experiment) } \n\n ${ JSON.stringify(funding) }`);
+                    }
+                };
+
+                const instance = window.paypal.Buttons({
+                    test: {
+                        action:   'checkout',
+                        onRender: (...args) => onRender(...args)
+                    },
+
+
+                    onApprove: avoid('onApprove'),
+                    onCancel:  avoid('onCancel')
+
+                });
+                
+                if (instance.isEligible()) {
+                    onRender = expect('onRender', onRender);
+                    // mockEligibility.cancel();
+                    return instance.render('#testContainer');
+                }
+            });
+        });
+    });
+
+    // it('should render a paylater button when the experiment does not disable', () => {
+    //     const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__, 'paylater', {
+    //         eligible: true,
+    //         products: {
+    //             paylater: {
+    //                 eligible: true,
+    //                 variant: 'experimentable'
+    //             },
+    //             payIn4: {
+    //                 eligible: false,
+    //                 variant: 'experimentable'
+    //             }
+    //         }
+    //     });
+
+    //     return ZalgoPromise.try(() => {
+    //         return wrapPromise(({ expect, avoid }) => {
+    //             let onRender = () => {
+    //                 const paylaterButtons = window.document.querySelectorAll("[data-funding-source='paylater']");
+    //                 if ( paylaterButtons.length === 0 ) {
+    //                     throw new Error('Expected paylater button, got no paylater button');
+    //                 }
+    //             };
+
+    //             const instance = window.paypal.Buttons({
+    //                 test: {
+    //                     action:   'checkout',
+    //                     onRender: (...args) => onRender(...args)
+    //                 },
+
+    //                 style: {
+    //                     layout: 'vertical',
+    //                     label: 'paypal'
+    //                 },
+
+    //                 onApprove: avoid('onApprove'),
+    //                 onCancel:  avoid('onCancel')
+
+    //             });
+                
+    //             if (instance.isEligible()) {
+    //                 onRender = expect('onRender', onRender);
+    //                 mockEligibility.cancel();
+    //                 return instance.render('#testContainer');
+    //             }
+    //         });
+    //     });
+    // });
 });
